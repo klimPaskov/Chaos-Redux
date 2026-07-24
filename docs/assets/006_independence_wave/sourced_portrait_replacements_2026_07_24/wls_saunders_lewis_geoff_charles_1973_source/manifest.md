@@ -1,6 +1,6 @@
 # Saunders Lewis archival source package — Geoff Charles, 4 October 1973
 
-Status: `needs_user_review`.
+Status: `source_evidence_only_rejected_for_1936_runtime`.
 
 This package records a stronger, rights-clear identity source for the Event 6 Wales civic leader, but it is not an era-matched 1936 portrait. The source is an archival National Library of Wales photograph released on Wikimedia Commons under CC BY-SA 4.0. It is supplied only as an identity-geometry reference; no ImageGen result, deterministic PNG, DDS, GFX edit, or gameplay edit is included.
 
@@ -44,7 +44,7 @@ The crop is a mechanical source-pixel extraction from the unchanged master. Coor
 
 ## Era and likeness disposition
 
-The scenario starts in 1936, while this capture is from 1973, when Lewis was approximately eighty years old. It therefore cannot be described as a period-matching 1936 portrait and must not be wired without explicit user approval of a later-life identity source and a controlled age reconstruction. The package is `needs_user_review`, not `approved_for_runtime`.
+The scenario starts in 1936, while this capture is from 1973, when Lewis was approximately eighty years old. It therefore cannot be described as a period-matching 1936 portrait and is rejected as a runtime repaint base. Faithfully preserving this source would preserve the wrong period age, while reconstructing Lewis as a younger man would violate the source-locked identity workflow.
 
 The source is still a stronger identity reference than the failed 1916 Y Drych trials because it supplies clean facial geometry and both shoulders at useful resolution. It does not, by itself, repair the prior likeness failure: the 1973 eye shape is broad and bright, and a later identity-preserving generation step would have to age the face toward 1936 without inventing a generic face. That step was intentionally not performed in this source-only handoff.
 
@@ -52,7 +52,7 @@ The source is still a stronger identity reference than the failed 1916 Y Drych t
 
 | Candidate | Disposition | Reason |
 | --- | --- | --- |
-| Geoff Charles / NLW, 4 Oct 1973, Commons 1520393 | `needs_user_review` | Clear CC BY-SA 4.0 provenance and strong facial resolution; postwar age/date mismatch for 1936. |
+| Geoff Charles / NLW, 4 Oct 1973, Commons 1520393 | `source_evidence_only_rejected_for_1936_runtime` | Clear CC BY-SA 4.0 provenance and strong facial resolution; postwar age/date mismatch for 1936. |
 | *Y Drych*, 3 Feb 1916, NLW/Commons | Rejected for this retry | Rights basis is defensible, but trials 01 and 02 failed the independent likeness gate: halftone detail was too weak and the generated eyes became generic. Existing source remains in its prior package; it is not copied here. |
 | Dr Gwent Jones photograph, October 1936 | Rejected / rights unclear | The caption in *The Story of Plaid Cymru* identifies the strongest era-matched composition, but the 1990 Plaid Cymru reprint states “All rights reserved” and no direct rights-cleared original was located. No image was copied. |
 | 1960s People’s Collection Wales group photographs | Rejected | Noncommercial or unclear reuse terms and not a clean head-and-shoulders source. |
@@ -60,4 +60,4 @@ The source is still a stronger identity reference than the failed 1916 Y Drych t
 
 ## Processing boundary
 
-This source-only package stops after the immutable master and explicit crop. Do not infer a generated portrait or runtime DDS from the presence of these files. Future source-locked ImageGen, deterministic 156×210 processing, independent likeness audit, attribution/share-alike review, DDS conversion, and GFX wiring remain separate gates.
+This source-only package stops after the immutable master and explicit crop. Do not use this 1973 image as an ImageGen runtime base and do not infer a generated portrait or runtime DDS from the presence of these files. A different rights-clear, age-appropriate Saunders Lewis photograph must begin a fresh archival-master chain before source-locked ImageGen, deterministic 156×210 processing, independent likeness audit, DDS conversion, and GFX wiring can proceed.

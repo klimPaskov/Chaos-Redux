@@ -19,4 +19,4 @@ This handoff deliberately stops before ImageGen and runtime processing. The pack
 
 ## Next gate if the user approves the date/licensing exception
 
-Use the crop as the sole identity source for a source-locked ImageGen pass. Preserve the subject's facial geometry, asymmetric eye placement, ears, nose, jaw, and expression while aging the 1973 sitter toward a restrained 1936 adult appearance; do not use the source's suit as 1936 clothing evidence. Any generated output must pass the independent likeness audit before deterministic processing or runtime wiring. CC BY-SA attribution/share-alike obligations must be reviewed before shipping an adapted portrait.
+Do not use this crop as a runtime ImageGen base. Preserving the 1973 sitter would retain the wrong period age, while aging him toward 1936 would reconstruct source-hidden facial geometry and violate the source-locked identity gate. Retain the master and crop as attributed comparison evidence only. A different rights-clear, age-appropriate Saunders Lewis photograph must start a fresh source chain.
