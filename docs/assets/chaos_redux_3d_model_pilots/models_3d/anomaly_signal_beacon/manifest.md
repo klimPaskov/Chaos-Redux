@@ -66,7 +66,7 @@ Status: needs_user_review
 - Runtime artifact: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_signal_beacon.mesh`
 - Runtime maps: `Image_0.dds`, `Image_1.dds`, and `Image_2.dds`; each final map is `1024 x 1024` one-level uncompressed BGRA
 - Proposed entity: `building_anomaly_signal_beacon_pilot_spawn`
-- Live consumer evidence: prepared isolated showcase consumer; the beacon map row is `64;anomaly_signal_beacon_pilot_spawn;2996.00;9.70;1588.00;0.00;0` inside Brandenburg state 64 and province 11219, with no vanilla building row at that coordinate. Live HOI4 renderer launch and screenshot capture were explicitly waived by the user on 2026-07-22.
+- Live consumer evidence: prepared isolated showcase consumer; the beacon map row is `64;anomaly_signal_beacon_pilot_spawn;2998.00;9.70;1552.00;0.00;0` inside Brandenburg state 64 and province 9560, with no vanilla building row at that coordinate. The effect selects the exact province with `province = { id = 9560 }`. Live HOI4 renderer launch and screenshot capture were explicitly waived by the user on 2026-07-22.
 - Crosswalk: `runtime/crosswalk.md`
 - Parent handoff: `runtime/handoff.md`
 

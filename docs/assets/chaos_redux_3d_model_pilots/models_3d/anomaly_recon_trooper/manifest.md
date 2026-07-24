@@ -37,18 +37,18 @@ Status: needs_user_review
 - Adapter: `chaosx_blender_hoi4` `1.0.0`
 - Exporter: `io_pdx_mesh` `0.91.0`, archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`
 - Export preset: selected working mesh/armature only, triangulated, `exp_selected=true`, `split_verts=true`; the split-vertex setting is required for the pinned 0.91 exporter to avoid its quadratic unsplit-vertex path
-- Source and rig/action checkpoints: `blender/checkpoints/`; final action checkpoints are `attack_pre_export.blend`, `idle_pre_export.blend`, and `move_pre_export.blend`
+- Source and rig/action checkpoints: `blender/checkpoints/`; corrected action checkpoints are `08_runtime_candidate_sanitized_attack.blend`, `08_runtime_candidate_sanitized_idle.blend`, and `08_runtime_candidate_sanitized_move.blend`
 - Vanilla reference staging: `blender/reference/western_european_infantry.mesh`; source checksum and read-only staging evidence are in `blender/reports/vanilla_reference_stage.json`
 - Working geometry: one Blender mesh object `char1.001` exported as `.mesh` object `char1.002`, 30,000 triangles, 36,990 source vertices, one UV layer, one explicitly textured PDX material, one armature with 24 bones
-- Normalized source-mesh height: `7.351824` target units against the measured vanilla infantry mesh; final attack preparation height is `7.353092` units and final idle preparation height is `7.349009` units after controlled reduction
+- Normalized source-mesh height: `7.351824` target units against the measured vanilla infantry mesh; corrected runtime-candidate geometry measures `7.351824` units after evaluated-vertex normalization
 - QA: 0 non-manifold edges, 0 degenerate faces, no negative scale objects
 - Review warning: 31,520 loose boundary edges remain in the provider geometry and are carried as a visible review item; the Blender front, rear, and three-quarter previews show the complete head, torso, limbs, gloves, trousers, and boots, but the provider mesh remains an open-surface asset rather than a watertight body
 - Provider-only `Icosphere` and `Icosphere.001` objects are explicitly excluded from working/render/export collections; the source remains preserved for audit
 - Vanilla calibration reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh`
 - Vanilla entity reference: `gfx/entities/units_infantry.asset#infantry_rifle_entity`, runtime `scale = 0.8`
 - Reference measurement: main imported `polySurface106` height `7.3518248` source units, collision geometry excluded, `-Y` forward and `+Z` up; effective runtime height `5.8814594` units
-- Corrected pilot normalization: Blender target `7.3518242835` source units, final source-calibrated heights `5.882473` attack and `5.879207` idle; the live unit consumer is separately calibrated to entity scale `0.25` (about `1.837956` source units)
-- Animation scale sanitation: the provider working actions had 72 root/bone scale F-curves removed, non-unit `Hips` pose scale reset to `(1, 1, 1)`, and the authored move action was created without scale channels.
+- Corrected pilot normalization: Blender target `7.3518242835` source units, runtime entity scale `0.8`, and expected effective runtime height `5.8814594268` source units, matching the vanilla infantry reference calibration
+- Animation sanitation: the provider working actions had 72 root/bone scale F-curves removed, non-unit `Hips` pose scale reset to `(1, 1, 1)`, the authored move action was created without scale channels, and every exported animation translation sample was divided by the uniform armature world scale so animation coordinates use mesh units
 
 ## Textures and PDX exports
 
@@ -66,7 +66,8 @@ Status: needs_user_review
 - Idle action: `export/anim/chaosx_anomaly_recon_trooper_idle.anim`, 77,395 bytes, SHA-256 `72F6C722052DC7CBDCC76CC23CB99D111252A06778724F1548E11EBF74A815CB`, frames `0-97`, 24 fps, loop, no scale channels
 - Attack action: `export/anim/chaosx_anomaly_recon_trooper_attack.anim`, 55,123 bytes, SHA-256 `C42D5507BD8549C055C0840491A22A913139A0B2C488E3AB652E3A140FFC14C0`, frames `0-68`, 24 fps, non-loop, unit root scale
 - Move action: `export/anim/chaosx_anomaly_recon_trooper_move.anim`, 21,331 bytes, SHA-256 `2C6D5B504887722E8588D9D666D6DF84DB097B930FD4C2C8F0C6A3982C646B74`, frames `0-24`, 24 fps, loop, Blender-authored in place with a root translation channel and no scale channels
-- Mesh reimport: `validation/reimport_chaosx_anomaly_recon_trooper_attack.json`, idle equivalent, and `validation/reimport_chaosx_anomaly_recon_trooper_move.json`
+- Mesh reimport: corrected `validation/reimport_chaosx_anomaly_recon_trooper_attack_corrected.json`, `validation/reimport_chaosx_anomaly_recon_trooper_idle_corrected.json`, and `validation/reimport_chaosx_anomaly_recon_trooper_move_corrected.json`
+- Corrected reimport bounds: `validation/reimport_evaluated_bounds_corrected.json` records bounded Blender depsgraph measurements for idle, attack, and move proof scenes after `io_pdx_mesh` reimport
 - Action export reports: provider idle and attack reports plus `blender/reports/author_locomotion_action.json` and the move export report
 
 ## Runtime handoff state
@@ -78,7 +79,7 @@ Status: needs_user_review
 - Runtime artifacts: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`, `gfx/models/chaosx_3d_model_pilots/texture_0.dds`, `gfx/models/chaosx_3d_model_pilots/texture_normal.dds`, `gfx/models/chaosx_3d_model_pilots/texture_specular.dds`, and `gfx/models/units/chaosx_3d_model_pilots/*.anim`
 - Proposed entity: `chaosx_anomaly_recon_trooper_entity`
 - Live consumer evidence: prepared isolated showcase consumer; the offline repair also removes the prior move-scale collapse, material-channel mismatch, and stale building placement.
-- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, animation scale tracks are unit-stable, explicit diffuse/normal/specular maps are installed, the model is normalized to the vanilla infantry source mesh, and a real move action is registered. The working previews show a complete full-body trooper. The post-fix live renderer check and screenshot remain pending because HOI4 was not launched.
+- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, animation scale and translation tracks are unit-stable, explicit diffuse/normal/specular maps are installed, the model is normalized to the vanilla infantry source mesh, and a real move action is registered. The working previews show a complete full-body trooper. The post-fix live renderer check and screenshot remain pending because HOI4 was not launched.
 - Crosswalk: `runtime/crosswalk.md`
 - Parent handoff: `runtime/handoff.md`
 
@@ -89,6 +90,6 @@ The pilot remains `needs_user_review` until the corrected unit is visibly confir
 
 - `MAX_TEXTURE_SIZE`: fixed by rebuilding `texture_0.dds`, `texture_normal.dds`, and `texture_specular.dds` at `1024 x 1024`.
 - Missing `unit_chaosx_anomaly_recon_trooper_icon_small`: fixed by registering the custom texticon in `interface/chaosx_3d_model_pilots.gfx`.
-- Unit-size mismatch: the Blender export remains calibrated to the imported vanilla infantry mesh, while the pilot entity uses the separately recorded live-consumer calibration `scale = 0.25`.
+- Unit-size mismatch: the corrected Blender export is calibrated to the imported vanilla infantry mesh and the pilot entity uses the matching vanilla consumer calibration `scale = 0.8`.
 - White/black material and missing-surface symptom: fixed offline by packing Meshy metallic and roughness maps into the PDX `spec` channel layout and matching `meshsettings.name` to the exported `char1.002` object.
-- Moving disappearance: fixed offline by normalizing every exported animation sample to unit scale and exporting a dedicated 24-frame in-place move action with no scale channels and a submillimeter root translation channel; live confirmation remains pending.
+- Moving disappearance: fixed offline by normalizing every exported animation scale sample and translation sample into mesh units and exporting a dedicated 24-frame in-place move action with no scale channels; live confirmation remains pending.
