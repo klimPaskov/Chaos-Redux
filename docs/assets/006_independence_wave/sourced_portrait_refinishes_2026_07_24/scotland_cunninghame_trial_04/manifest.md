@@ -1,10 +1,11 @@
 # R. B. Cunninghame Graham source-locked portrait trial 04
 
-Status: `candidate_requires_independent_review`.
+Status: `independently_approved_and_wired`.
 
 This package retries the grounded real-male IW-001 Scotland civic-leader portrait after trial 03 failed the exact-identity gate.
 
-No DDS, runtime, GFX, gameplay, advisor, dossier, `_small`, female, fictional, flag, focus, decision, or localisation asset is authorized by this package.
+The source-locked portrait passed the independent audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_cunninghame_graham_trial04_independent_audit_2026_07_24.md`.
+No advisor, dossier, `_small`, female, fictional, alternate, flag, focus, decision, or second runtime portrait is authorized by this package.
 
 ## Subject and role
 
@@ -64,8 +65,8 @@ No DDS, runtime, GFX, gameplay, advisor, dossier, `_small`, female, fictional, f
 
 ## Runtime gate
 
-No DDS exists.
-
-Do not convert, copy, register, wire, or use this candidate until an independent reviewer who did not produce it records PASS for provenance, exact likeness, HOI4 painted style, role fit, and ownership.
-
-Even after a portrait PASS, IW-001 remains closed until Victor Morven Fortune and Cunninghame Graham are both wired to exact runtime DDS files and a fresh full Scotland country-package audit passes.
+The independent reviewer recorded PASS for provenance and rights, exact likeness and identity, HOI4 political-leader style, role fit, and ownership/exclusivity.
+The exact processed candidate was converted to `gfx/leaders/006_independence_wave/portrait_SCO_independence_wave_civic_convention.dds`, SHA-256 `61C08E14A90FFE6522781B7AD74CF0AF36B7C11426A6FAEF85A3B1887346DA53`.
+The runtime DDS is a legacy one-level BGRA texture, exactly `156x210` and 131,168 bytes, and decodes pixel-identically to the approved processed PNG.
+The stable sprite `GFX_portrait_SCO_independence_wave_civic_convention` already points to that runtime path and is authorized only for the male country-leader consumer.
+IW-001 remains closed until the fresh full Scotland country-package audit passes.

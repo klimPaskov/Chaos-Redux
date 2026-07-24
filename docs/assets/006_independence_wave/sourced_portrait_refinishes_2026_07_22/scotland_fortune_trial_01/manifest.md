@@ -1,8 +1,9 @@
 # Victor Morven Fortune source-locked portrait trial
 
-Status: **candidate awaiting independent visual and provenance audit; not approved for runtime wiring**
+Status: `independently_approved_and_wired_with_disclosures`.
 
-This package contains one sourced real-male Scottish territorial-command portrait candidate. It creates no advisor, dossier, `_small`, female, fictional, flag, focus, decision, localisation, gameplay, interface, or runtime asset.
+This package contains one sourced real-male Scottish territorial-command portrait that passed the independent source-locked audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sco_fortune_trial01_source_locked_visual_provenance_audit_2026_07_23.md`.
+It creates no advisor, dossier, `_small`, female, fictional, flag, focus, decision, or alternate asset.
 
 ## Subject and role
 
@@ -43,4 +44,9 @@ The candidate preserves Fortune's broad face, compact moustache, narrowed eyes, 
 
 ## Runtime gate
 
-Do not copy this candidate into `gfx/leaders/006_independence_wave/`, convert it to DDS, register or change a sprite, edit the character, or reopen IW-001 on this package alone. Scotland also needs an independently approved R. B. Cunninghame Graham civic portrait, exact runtime wiring, and a fresh full country-package audit.
+The exact processed candidate was converted to `gfx/leaders/006_independence_wave/portrait_SCO_independence_wave_territorial_commandant.dds`, SHA-256 `71531A64CDEAF535EC6F93E4FC00B30AFBDD46929B3B104C7A47E83A65FE3F1A`.
+The runtime DDS is a legacy one-level BGRA texture, exactly `156x210` and 131,168 bytes, and decodes pixel-identically to the approved processed PNG.
+The stable sprite `GFX_portrait_SCO_independence_wave_territorial_commandant` already points to that runtime path.
+The only authorized consumers are the existing male `SCO_independence_wave_territorial_commandant` full civilian-large and army-large slots.
+The independent audit discloses the 1940 source date, mild possible de-aging, and necessarily reconstructed fine cap-badge detail; no medal set or unsupported insignia was added.
+Scotland still requires a fresh full country-package audit before IW-001 admission.
