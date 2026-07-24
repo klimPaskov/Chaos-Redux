@@ -22,7 +22,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_asante_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_asante
@@ -30,7 +29,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_oyo_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_oyo
@@ -38,7 +36,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_sokoto_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_sokoto
@@ -46,7 +43,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_kanem_bornu_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_kanem_bornu
@@ -54,7 +50,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_kongo_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_kongo
@@ -62,7 +57,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_luba_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_luba
@@ -70,7 +64,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_lunda_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_lunda
@@ -78,7 +71,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_buganda_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_buganda
@@ -86,7 +78,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_harar_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_harar
@@ -94,7 +85,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_kilwa_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_kilwa
@@ -102,7 +92,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_zulu_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_zulu
@@ -110,7 +99,6 @@ africa_priority_member_record_iw_overlap_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_merina_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		set_country_flag = africa_priority_origin_merina
@@ -122,7 +110,6 @@ africa_priority_member_record_supported_carrier_origin = {
 	if = {
 		limit = {
 			is_independence_wave_registry_africa_nonmatching_vanilla_carrier = yes
-			NOT = { is_independence_wave_registry_event6_origin = yes }
 			NOT = { is_independence_wave_registry_soviet_origin = yes }
 		}
 		if = { limit = { original_tag = MLI } set_country_flag = africa_priority_origin_manden }
@@ -254,31 +241,33 @@ africa_priority_member_resolve_requalification_issue = {
 	}
 }
 
-# COUNTRY scope after complete package registration. Event 012 loads its tree
-# only for a generic carrier that is not owned by Event 006 or Event 005. A
-# meaningful existing tree is preserved; the Africa package's decisions,
-# ideas, forces, and AI still apply in that additive mode.
+# COUNTRY scope after complete package registration. The seven niche African
+# country tags registered by Event 006 receive the Event 012 priority-member
+# tree directly. Existing vanilla carriers receive it only when they still use
+# the generic tree; a meaningful vanilla tree remains intact while Event 012
+# decisions, ideas, forces, and AI apply additively.
 africa_priority_member_ensure_focus_tree_loaded = {
 	if = {
 		limit = {
 			africa_priority_member_has_package = yes
-			is_independence_wave_registry_africa_origin = yes
 		}
 		clr_country_flag = africa_priority_member_focus_tree_loaded
 		clr_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		if = {
+			limit = { has_focus_tree = africa_priority_member_focus_tree }
+			set_country_flag = africa_priority_member_focus_tree_loaded
+		}
+		else_if = {
 			limit = {
-				NOT = { has_focus_tree = africa_priority_member_focus_tree }
-				has_focus_tree = generic_focus
+				OR = {
+					africa_priority_member_uses_independence_wave_country_tag = yes
+					has_focus_tree = generic_focus
+				}
 			}
 			load_focus_tree = {
 				tree = africa_priority_member_focus_tree
 				keep_completed = yes
 			}
-			set_country_flag = africa_priority_member_focus_tree_loaded
-		}
-		else_if = {
-			limit = { has_focus_tree = africa_priority_member_focus_tree }
 			set_country_flag = africa_priority_member_focus_tree_loaded
 		}
 		else = {
@@ -443,78 +432,6 @@ africa_priority_member_load_requested_package_from_origin = {
 	}
 }
 
-# COUNTRY scope. Applies the direct public identity that belongs to the
-# validated package while retaining the carrier's original tag, history,
-# territory, cores, and government. The identity deliberately survives the
-# package runtime cleanup because the promoted country remains playable.
-africa_priority_member_apply_public_identity = {
-	if = {
-		limit = { africa_priority_member_package_is_asante = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_ASANTE
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_oyo = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_OYO
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_sokoto = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_SOKOTO
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_kanem_bornu = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_KANEM_BORNU
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_manden = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_MANDEN
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_kongo = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_KONGO
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_buganda = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_BUGANDA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_aksum = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_AKSUM
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_harar = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_HARAR
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_kilwa = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_KILWA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_nubia = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_NUBIA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_luba = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_LUBA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_lunda = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_LUNDA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_great_zimbabwe = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_GREAT_ZIMBABWE
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_merina = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_MERINA
-	}
-	else_if = {
-		limit = { africa_priority_member_package_is_zulu = yes }
-		set_cosmetic_tag = AFRICA_PRIORITY_ZULU
-	}
-	set_country_flag = africa_priority_member_public_identity_applied
-}
-
 africa_priority_member_register_requested_package = {
 	set_temp_variable = { africa_priority_registration_valid = constant:africa_value.zero }
 	if = {
@@ -644,7 +561,7 @@ africa_priority_member_register_requested_package = {
 		set_country_flag = africa_priority_member_origin_validated
 		set_country_flag = africa_priority_member_overlap_dispute_active
 		clr_country_flag = africa_priority_relationship_unresolved
-		africa_priority_member_apply_public_identity = yes
+		set_country_flag = africa_priority_member_content_loaded_on_original_tag
 		africa_priority_member_recruit_institutional_council = yes
 		africa_priority_member_ensure_focus_tree_loaded = yes
 		africa_priority_member_apply_starting_problem_idea = yes
