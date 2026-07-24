@@ -562,3 +562,16 @@ Four dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedi
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `233`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.345` returned `EVENT_ISSUE_LIMIT` with 23,025 issues against a fixed ceiling of 20,000 and no artifact, so its exact engine-sensitive reachability remains unproven.
+
+## The Working Machine automated-facility tranche
+
+The Working Machine is implemented as a dormant country-level chain at `chaosx.fallout.352` through `.358`.
+It uses candidate `352`, transaction key `710024`, route `7124`, and Event Log history `9129`.
+The gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state using industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
+Four authored policies freeze Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result.
+The result updates resources, Stability, War Support, reclamation, local supply, exposure, facility damage, state memory, and Deaths-backed failure, then schedules a 300-day inspection callback.
+Human and hidden-AI lanes share the same delayed transaction, Event Log history, and authenticated cleanup wrappers.
+Six dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedicated report image, a manifest, and a GFX handoff are wired.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `240`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned, so its exact engine-sensitive reachability remains unproven.

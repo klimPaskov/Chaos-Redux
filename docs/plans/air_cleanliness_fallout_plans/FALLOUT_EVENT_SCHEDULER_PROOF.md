@@ -427,3 +427,14 @@ Its facility score uses native non-damaged industrial and arms factory levels, w
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.345` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,025 issues against a fixed ceiling of 20,000 and no artifact.
 Delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
+
+## The Working Machine scheduler correction
+
+The reviewed ordinary producer now carries twenty-four rows and the defined living-world event range reaches `358`, with `240` defined blocks.
+The Working Machine is candidate `352`, transaction `710024`, route `7124`, and history `9129`.
+Its machine score uses native non-damaged industrial complex, synthetic refinery, and arms factory levels, with the lowest native state id as the deterministic tie-break.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges.
+It returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned in the returned bounded result.
+The exact result is recorded in `FALLOUT_WORKING_MACHINE_CHAIN_PROOF.md`.
+Delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.

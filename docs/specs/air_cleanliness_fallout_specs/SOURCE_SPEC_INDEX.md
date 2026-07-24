@@ -19,6 +19,9 @@
 15. `specs/19_reviewed_global_survival_first_streetlight.md`
 16. `specs/20_reviewed_global_survival_working_elevator.md`
 17. `specs/21_reviewed_global_survival_sealed_warehouse.md`
+18. `specs/22_reviewed_global_survival_dead_city_permit.md`
+19. `specs/23_reviewed_global_survival_manual_nobody_read.md`
+20. `specs/24_reviewed_global_survival_working_machine.md`
 
 
 ## Accepted baseline specs included here
@@ -59,6 +62,7 @@
 - `specs/21_reviewed_global_survival_sealed_warehouse.md`
 - `specs/22_reviewed_global_survival_dead_city_permit.md`
 - `specs/23_reviewed_global_survival_manual_nobody_read.md`
+- `specs/24_reviewed_global_survival_working_machine.md`
 
 ## Matrices
 
