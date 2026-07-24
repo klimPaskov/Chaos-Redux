@@ -41,6 +41,8 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_387_candidate_medical_pressure
 	clear_variable = fallout_event_394_candidate_state_id
 	clear_variable = fallout_event_394_candidate_legitimacy_pressure
+	clear_variable = fallout_event_401_candidate_state_id
+	clear_variable = fallout_event_401_calendar_pressure
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -1121,6 +1123,59 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_temp_variable = fallout_event_pilot_state_candidate_id
 			clear_variable = fallout_event_394_candidate_state_id
 			clear_variable = fallout_event_394_candidate_legitimacy_pressure
+
+			# Year Zero records the first public calendar chosen after the rewrite.
+			# It uses the lowest native state id so the anniversary returns to the
+			# same place on every deterministic rebuild.
+			if = { limit = { NOT = { has_variable = fallout_calendar_memory_current } } set_variable = { fallout_calendar_memory_current = constant:fallout_event_401_threshold.initial_calendar_memory } }
+			if = { limit = { NOT = { has_variable = fallout_year_zero_legitimacy_current } } set_variable = { fallout_year_zero_legitimacy_current = constant:fallout_event_401_threshold.initial_legitimacy } }
+			if = { limit = { NOT = { has_variable = fallout_anniversary_cohesion_current } } set_variable = { fallout_anniversary_cohesion_current = constant:fallout_event_401_threshold.initial_anniversary_cohesion } }
+			set_variable = { fallout_event_401_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_401_calendar_pressure = fallout_year_zero_legitimacy_current }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_401_calendar_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_401_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_401_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_401_candidate_state_id = fallout_event_pilot_state_candidate_id }
+				}
+			}
+			if = {
+				limit = { fallout_event_401_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.year_zero_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.year_zero_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.major_arc }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.successor_memory }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.year_zero_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.year_zero_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.second_world }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_401_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_401_calendar_pressure }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.cause_memory }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_401_calendar_pressure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.cause_memory }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_401_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_three }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_401_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.year_zero_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_401_candidate_state_id
+			clear_variable = fallout_event_401_calendar_pressure
 
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.

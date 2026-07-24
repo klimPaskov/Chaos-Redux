@@ -638,4 +638,8 @@ The defined living-world total is now `275`, while countable Fallout living-worl
 ## The Ration Thief Election government-legitimacy tranche
 
 The Ration Thief Election is implemented as a dormant country-level chain at `chaosx.fallout.394` through `.400`. It has four government-aware policies, frozen food, medicine, recognition, cohesion, ration trust, and legitimacy ledgers, a delayed result, a second-count callback, Deaths-system failure accounting, branch memories, cleanup receipts, Event Log history `9135`, candidate row `394`, and a dedicated report-art package. The defined living-world total is now `282`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## Year Zero calendar-memory tranche
+
+Year Zero is implemented as a dormant country-level chain at `chaosx.fallout.401` through `.407`. It has four calendar identity policies, frozen food, recognition, cohesion, calendar memory, legitimacy, anniversary cohesion, and ideology-pressure ledgers, a delayed result, a first-anniversary callback, Deaths-system failure accounting, branch and anniversary memories, cleanup receipts, Event Log history `9136`, candidate row `401`, and a dedicated report-art package. The defined living-world total is now `289`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded inspector boundary, if attempted, will be recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.

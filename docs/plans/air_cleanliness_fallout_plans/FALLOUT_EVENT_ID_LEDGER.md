@@ -496,3 +496,9 @@ The documented living-world block total is now `275`, while the countable Fallou
 The Ration Thief Election adds seven dormant country-level event blocks at suffixes `394` through `400`. It uses candidate `394`, transaction `710030`, route `7130`, and history `9135`.
 
 The documented living-world block total is now `282`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Year Zero count correction
+
+Year Zero adds seven dormant country-level event blocks at suffixes `401` through `407`. It uses candidate `401`, transaction `710031`, route `7131`, and history `9136`.
+
+The documented living-world block total is now `289`, while the countable Fallout living-world release-floor total remains `0 of 660`.

@@ -28,6 +28,7 @@
 24. `specs/28_reviewed_global_survival_market_under_viaduct.md`
 25. `specs/29_reviewed_global_survival_counterfeit_antibiotics.md`
 26. `specs/30_reviewed_global_survival_ration_thief_election.md`
+27. `specs/31_reviewed_global_survival_year_zero.md`
 
 
 ## Accepted baseline specs included here
@@ -75,6 +76,7 @@
 - `specs/28_reviewed_global_survival_market_under_viaduct.md`
 - `specs/29_reviewed_global_survival_counterfeit_antibiotics.md`
 - `specs/30_reviewed_global_survival_ration_thief_election.md`
+- `specs/31_reviewed_global_survival_year_zero.md`
 
 ## Matrices
 
