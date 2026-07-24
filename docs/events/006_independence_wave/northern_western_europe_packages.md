@@ -10,19 +10,14 @@ Package sections:
 - Rhineland and Bavaria (IW-008–IW-009)
 - Saar (IW-010)
 
-Current portrait authority is the sourced-only gate in the accepted
-specification and event-asset skill. The earlier twenty generated large
-portraits remain consumer/provenance evidence but no longer satisfy grounded
-country readiness. These packages remain withdrawn from runtime content
-attestation until their source status and full package audits pass. IW-001,
-IW-007, IW-008, and IW-009 have source-cleared portrait rosters; IW-002 has a
-source-cleared civic leader but a blocked commander; IW-004, IW-006, and IW-010
-still have unresolved grounded roles. Route-owned Rupprecht and Matthes remain
-protected and byte-identical. Gameplay
-advisor offices remain active without custom Event 006 advisor cards, sprites,
-or runtime DDS files. Any later section describing these packages as promoted
-records the earlier gameplay audit and is superseded for current visual
-admission by this paragraph.
+Current portrait authority is the sourced-only gate in the accepted specification and event-asset skill.
+The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
+IW-001 Scotland, IW-004 Brittany, and IW-007 Frisia have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
+IW-008 and IW-009 have partially approved sourced rosters but remain outside runtime attestation until every stable consumer, rights record, and full package audit passes.
+IW-002 has a source-cleared civic leader but a blocked commander, while IW-006 and IW-010 retain unresolved grounded roles.
+Route-owned Rupprecht and Matthes remain protected and byte-identical.
+Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
+Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
 
 ---
 
