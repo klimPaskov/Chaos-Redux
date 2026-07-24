@@ -1,0 +1,460 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE PALEO/XENO DECISIONS
+# ============================================================================
+# Separate paid sites, finite staffing, bounded equipment cycles, canonical
+# template recruitment, and incident handling for the Paleogenetic and
+# Xenobiological project families. Neither family satisfies the other's gates.
+# ============================================================================
+
+brilliant_scientist_krg_paleogenetics_category = {
+	brilliant_scientist_krg_designate_paleogenetic_reserve = {
+		icon = GFX_decision_brilliant_scientist_krg_paleogenetic_hatchery
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_reserve_and_hatchery_designation
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_krg_is_valid_owned_construction_state = yes
+				NOT = { has_state_flag = brilliant_scientist_paleogenetic_reserve }
+				NOT = { has_state_flag = brilliant_scientist_xenobiological_vat_complex }
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_reserve_and_hatchery_designation
+		}
+		available = { brilliant_scientist_krg_can_pay_heavy_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				FROM = { NOT = { brilliant_scientist_krg_is_valid_owned_construction_state = yes NOT = { has_state_flag = brilliant_scientist_paleogenetic_reserve } NOT = { has_state_flag = brilliant_scientist_xenobiological_vat_complex } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = infrastructure level = constant:brilliant_scientist_krg_facility.infrastructure_increment instant_build = yes }
+				set_state_flag = brilliant_scientist_paleogenetic_reserve
+			}
+			brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_construct_paleogenetic_hatchery = {
+		icon = GFX_decision_brilliant_scientist_krg_paleogenetic_hatchery
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_reserve_and_hatchery_designation
+			any_owned_state = { has_state_flag = brilliant_scientist_paleogenetic_reserve }
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_krg_is_valid_owned_construction_state = yes
+				NOT = { has_state_flag = brilliant_scientist_paleogenetic_hatchery }
+				NOT = { has_state_flag = brilliant_scientist_xenobiological_control_center }
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_reserve_and_hatchery_designation
+		}
+		available = { brilliant_scientist_krg_can_pay_heavy_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				FROM = { NOT = { brilliant_scientist_krg_is_valid_owned_construction_state = yes NOT = { has_state_flag = brilliant_scientist_paleogenetic_hatchery } NOT = { has_state_flag = brilliant_scientist_xenobiological_control_center } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = industrial_complex level = constant:brilliant_scientist_krg_value.one instant_build = yes }
+				set_state_flag = brilliant_scientist_paleogenetic_hatchery
+			}
+			brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_recruit_paleogenetic_handler = {
+		icon = GFX_decision_brilliant_scientist_krg_staff_recruitment
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_finite_handler_recruitment
+		}
+		available = {
+			check_variable = { brilliant_scientist_krg_paleogenetic_handler_roster < constant:brilliant_scientist_krg_capacity.paleogenetic_handler_roster_maximum }
+			brilliant_scientist_krg_can_pay_standard_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.standard_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = { add_to_variable = { brilliant_scientist_krg_paleogenetic_handler_roster = constant:brilliant_scientist_krg_value.one } }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_establish_paleogenetic_veterinary_support = {
+		icon = GFX_decision_brilliant_scientist_krg_staff_recruitment
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_veterinary_support
+			NOT = { has_country_flag = brilliant_scientist_krg_paleogenetic_veterinary_support_active }
+		}
+		available = {
+			check_variable = { brilliant_scientist_krg_paleogenetic_handler_roster > constant:brilliant_scientist_krg_value.zero }
+			brilliant_scientist_krg_can_pay_standard_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = { set_country_flag = brilliant_scientist_krg_paleogenetic_veterinary_support_active }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_construct_paleogenetic_transport_pen = {
+		icon = GFX_decision_brilliant_scientist_krg_supply_depot
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_transport_pen_construction
+		}
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = brilliant_scientist_paleogenetic_reserve
+					has_state_flag = brilliant_scientist_paleogenetic_hatchery
+				}
+				NOT = { has_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen }
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_transport_pen_construction
+		}
+		available = { brilliant_scientist_krg_can_pay_standard_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				FROM = { NOT = { is_owned_by = ROOT is_controlled_by = ROOT OR = { has_state_flag = brilliant_scientist_paleogenetic_reserve has_state_flag = brilliant_scientist_paleogenetic_hatchery } NOT = { has_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = infrastructure level = constant:brilliant_scientist_krg_facility.infrastructure_increment instant_build = yes }
+				set_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_authorize_paleogenetic_shock_pack_recruitment = {
+		icon = GFX_decision_brilliant_scientist_krg_project_unit_deployment
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paleogenetic_shock_pack_recruitment
+			NOT = { has_country_flag = brilliant_scientist_krg_paleogenetic_recruitment_authorized }
+		}
+		available = {
+			brilliant_scientist_kruger_focus_paleogenetics_is_operational = yes
+			has_country_flag = brilliant_scientist_paleogenetic_sites_ready
+			check_variable = { brilliant_scientist_krg_paleogenetic_handler_roster > constant:brilliant_scientist_krg_value.zero }
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.light_days
+		remove_effect = {
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+			set_country_flag = brilliant_scientist_krg_paleogenetic_recruitment_authorized
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_run_bounded_paleogenetic_breeding_cycle = {
+		icon = GFX_decision_brilliant_scientist_krg_paleogenetic_hatchery
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_bounded_paleogenetic_breeding
+			has_country_flag = brilliant_scientist_krg_paleogenetic_recruitment_authorized
+		}
+		available = {
+			brilliant_scientist_kruger_focus_paleogenetics_is_operational = yes
+			has_country_flag = brilliant_scientist_krg_paleogenetic_veterinary_support_active
+			any_owned_state = { has_state_flag = brilliant_scientist_krg_paleogenetic_transport_pen }
+			brilliant_scientist_krg_can_pay_project_batch_cost = yes
+			check_variable = { brilliant_scientist_krg_paleogenetic_breeding_cycles < constant:brilliant_scientist_krg_capacity.paleogenetic_breeding_cycle_maximum }
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		remove_effect = {
+			add_equipment_to_stockpile = { type = kruger_paleogenetic_equipment_1 amount = constant:brilliant_scientist_krg_output.paleogenetic_equipment_batch }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.paleogenetic_support_batch }
+			add_to_variable = { brilliant_scientist_krg_paleogenetic_breeding_cycles = constant:brilliant_scientist_krg_value.one }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
+	}
+
+	brilliant_scientist_krg_execute_paleogenetic_escape_response = {
+		icon = GFX_decision_brilliant_scientist_krg_emergency_containment
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paleogenetic_escape_response
+			has_country_flag = brilliant_scientist_paleogenetics_incident_active
+		}
+		available = { brilliant_scientist_krg_can_pay_standard_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+			brilliant_scientist_resolve_family_project_incident = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+
+	brilliant_scientist_krg_evacuate_and_recapture_paleogenetic_site = {
+		icon = GFX_decision_brilliant_scientist_krg_relocation_convoy
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paleogenetic_evacuation_and_recapture
+			has_country_flag = brilliant_scientist_paleogenetics_incident_active
+		}
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = brilliant_scientist_paleogenetic_reserve
+					has_state_flag = brilliant_scientist_paleogenetic_hatchery
+				}
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paleogenetic_evacuation_and_recapture
+			has_country_flag = brilliant_scientist_paleogenetics_incident_active
+		}
+		available = { brilliant_scientist_krg_can_pay_heavy_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				NOT = { has_country_flag = brilliant_scientist_paleogenetics_incident_active }
+				FROM = { NOT = { is_owned_by = ROOT is_controlled_by = ROOT OR = { has_state_flag = brilliant_scientist_paleogenetic_reserve has_state_flag = brilliant_scientist_paleogenetic_hatchery } } }
+			}
+		}
+		remove_effect = {
+			FROM = { add_building_construction = { type = infrastructure level = constant:brilliant_scientist_krg_facility.infrastructure_increment instant_build = yes } }
+			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+			brilliant_scientist_resolve_family_project_incident = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+}
+
+brilliant_scientist_krg_xenobiology_category = {
+	brilliant_scientist_krg_construct_xenobiological_vat_complex = {
+		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_vat_complex_construction
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_krg_is_valid_owned_construction_state = yes
+				NOT = { has_state_flag = brilliant_scientist_xenobiological_vat_complex }
+				NOT = { has_state_flag = brilliant_scientist_paleogenetic_reserve }
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_paid_vat_complex_construction
+		}
+		available = { brilliant_scientist_krg_can_pay_heavy_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				FROM = { NOT = { brilliant_scientist_krg_is_valid_owned_construction_state = yes NOT = { has_state_flag = brilliant_scientist_xenobiological_vat_complex } NOT = { has_state_flag = brilliant_scientist_paleogenetic_reserve } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = industrial_complex level = constant:brilliant_scientist_krg_value.one instant_build = yes }
+				set_state_flag = brilliant_scientist_xenobiological_vat_complex
+			}
+			brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_establish_xenobiological_medical_fabrication = {
+		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_medical_fabrication
+			any_owned_state = { has_state_flag = brilliant_scientist_xenobiological_vat_complex }
+		}
+		target_trigger = {
+			FROM = {
+				brilliant_scientist_krg_is_valid_owned_construction_state = yes
+				NOT = { has_state_flag = brilliant_scientist_xenobiological_control_center }
+				NOT = { has_state_flag = brilliant_scientist_paleogenetic_hatchery }
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_medical_fabrication
+		}
+		available = { brilliant_scientist_krg_can_pay_heavy_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
+				FROM = { NOT = { brilliant_scientist_krg_is_valid_owned_construction_state = yes NOT = { has_state_flag = brilliant_scientist_xenobiological_control_center } NOT = { has_state_flag = brilliant_scientist_paleogenetic_hatchery } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = fuel_silo level = constant:brilliant_scientist_krg_facility.fuel_silo_increment instant_build = yes }
+				set_state_flag = brilliant_scientist_xenobiological_control_center
+				set_state_flag = brilliant_scientist_krg_xenobiological_medical_fabrication
+			}
+			brilliant_scientist_rebuild_transferred_facility_capabilities = yes
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_choose_xenobiological_control_mode = {
+		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_xeno_control_mode_event
+			NOT = { brilliant_scientist_has_exact_xeno_control_mode = yes }
+		}
+		available = {
+			brilliant_scientist_kruger_focus_xenobiological_is_operational = yes
+			has_country_flag = brilliant_scientist_xenobiological_sites_ready
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.light_days
+		remove_effect = { country_event = { id = chaosx.brilliant_scientist_krg.30 } }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+
+	brilliant_scientist_krg_authorize_xenobiological_assault_recruitment = {
+		icon = GFX_decision_brilliant_scientist_krg_project_unit_deployment
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_xenobiological_assault_recruitment
+			NOT = { has_country_flag = brilliant_scientist_krg_xenobiological_recruitment_authorized }
+		}
+		available = {
+			brilliant_scientist_kruger_focus_xenobiological_is_operational = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+			has_country_flag = brilliant_scientist_xenobiological_sites_ready
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.light_days
+		remove_effect = {
+			brilliant_scientist_rebuild_project_force_runtime_package = yes
+			set_country_flag = brilliant_scientist_krg_xenobiological_recruitment_authorized
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_run_bounded_xenobiological_production_cycle = {
+		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_bounded_xenobiological_production
+			has_country_flag = brilliant_scientist_krg_xenobiological_recruitment_authorized
+		}
+		available = {
+			brilliant_scientist_kruger_focus_xenobiological_is_operational = yes
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+			any_owned_state = { has_state_flag = brilliant_scientist_krg_xenobiological_medical_fabrication }
+			brilliant_scientist_krg_can_pay_project_batch_cost = yes
+			check_variable = { brilliant_scientist_krg_xenobiological_production_cycles < constant:brilliant_scientist_krg_capacity.xenobiological_production_cycle_maximum }
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.heavy_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		remove_effect = {
+			add_equipment_to_stockpile = { type = kruger_xenobiological_equipment_1 amount = constant:brilliant_scientist_krg_output.xenobiological_equipment_batch }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.xenobiological_support_batch }
+			add_to_variable = { brilliant_scientist_krg_xenobiological_production_cycles = constant:brilliant_scientist_krg_value.one }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
+	}
+
+	brilliant_scientist_krg_complete_engineered_population_transition = {
+		icon = GFX_decision_brilliant_scientist_krg_xenobiological_vat
+		visible = {
+			brilliant_scientist_krg_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_engineered_population_transition
+			has_country_flag = brilliant_scientist_route_xenobiological_ascendancy
+			NOT = { has_country_flag = brilliant_scientist_krg_engineered_population_transition_complete }
+		}
+		available = {
+			brilliant_scientist_has_exact_xeno_control_mode = yes
+			check_variable = {
+				var = brilliant_scientist_krg_xenobiological_production_cycles
+				value = constant:brilliant_scientist_krg_capacity.xenobiological_production_cycle_maximum
+				compare = greater_than_or_equals
+			}
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.integration_days
+		remove_effect = {
+			brilliant_scientist_establish_engineered_population_majority = yes
+			set_country_flag = brilliant_scientist_krg_engineered_population_transition_complete
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+}

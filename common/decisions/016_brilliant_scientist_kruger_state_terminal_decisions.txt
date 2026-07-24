@@ -1,0 +1,475 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE TERMINAL-PROGRAM DECISIONS
+# ============================================================================
+# Paid coalition counterplay, laboratory-world administration, synthesis
+# government, and the complete singularity lifecycle: audit, arm, authorize,
+# fire, or dismantle. Each terminal transition has an explicit cost and timer.
+# ============================================================================
+
+brilliant_scientist_krg_terminal_program_category = {
+	brilliant_scientist_krg_disrupt_containment_coalition_planning = {
+		icon = GFX_decision_brilliant_scientist_krg_sabotage_charge
+		state_target = any_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_global_program
+			has_country_flag = brilliant_scientist_focus_unlock_coalition_counterplay
+		}
+		target_trigger = {
+			FROM = {
+				is_capital = yes
+				OWNER = {
+					brilliant_scientist_krg_is_valid_foreign_country_target = yes
+					NOT = { has_country_flag = brilliant_scientist_krg_coalition_planning_disrupted }
+				}
+			}
+		}
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_global_program
+			has_country_flag = brilliant_scientist_focus_unlock_coalition_counterplay
+		}
+		available = {
+			brilliant_scientist_krg_can_pay_foreign_operation_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_long_days
+		complete_effect = { brilliant_scientist_krg_pay_foreign_operation_cost = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_terminal_decisions_are_active = yes }
+				FROM = { NOT = { is_capital = yes OWNER = { brilliant_scientist_krg_is_valid_foreign_country_target = yes NOT = { has_country_flag = brilliant_scientist_krg_coalition_planning_disrupted } } } }
+			}
+		}
+		remove_effect = {
+			FROM = {
+				OWNER = {
+					set_country_flag = brilliant_scientist_krg_coalition_planning_disrupted
+					add_stability = constant:brilliant_scientist_krg_outcome.stability_standard_loss
+					add_war_support = constant:brilliant_scientist_krg_outcome.war_support_minor_loss
+				}
+			}
+			brilliant_scientist_refresh_world_threat_source = yes
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.high
+			modifier = { factor = constant:brilliant_scientist_krg_ai.urgent_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_krg_establish_global_submission_administration = {
+		icon = GFX_decision_brilliant_scientist_krg_charter_negotiation
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_laboratory_world_program
+			has_country_flag = brilliant_scientist_focus_unlock_global_submission_integration_administration
+			has_country_flag = brilliant_scientist_terminal_commitment_lab_world
+			NOT = { has_country_flag = brilliant_scientist_krg_global_submission_administration_established }
+		}
+		available = {
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_krg_timing.integration_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_krg_global_submission_administration_established
+			set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.administration_major_gain }
+			brilliant_scientist_krg_add_administration_score = yes
+			brilliant_scientist_refresh_world_threat_source = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+
+	brilliant_scientist_krg_administer_accepted_submissions = {
+		icon = GFX_decision_brilliant_scientist_krg_charter_negotiation
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_global_submission_integration_administration
+			has_country_flag = brilliant_scientist_krg_global_submission_administration_established
+		}
+		available = {
+			check_variable = { brilliant_scientist_submission_acceptance_count > constant:brilliant_scientist_krg_value.zero }
+			brilliant_scientist_krg_can_pay_standard_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.standard_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.administration_standard_gain }
+			brilliant_scientist_krg_add_administration_score = yes
+			brilliant_scientist_refresh_world_threat_source = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_convene_project_synthesis_council = {
+		icon = GFX_decision_brilliant_scientist_krg_scientific_assembly
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_project_synthesis_government
+			has_country_flag = brilliant_scientist_route_project_synthesis
+			NOT = { has_country_flag = brilliant_scientist_krg_project_synthesis_council_active }
+		}
+		available = { brilliant_scientist_krg_can_pay_standard_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = {
+			brilliant_scientist_establish_project_council_command = yes
+			set_country_flag = brilliant_scientist_krg_project_synthesis_council_active
+			add_stability = constant:brilliant_scientist_krg_outcome.stability_standard
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+
+	brilliant_scientist_krg_arbitrate_synthesis_project_burdens = {
+		icon = GFX_decision_brilliant_scientist_krg_charter_negotiation
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_project_synthesis_government
+			has_country_flag = brilliant_scientist_krg_project_synthesis_council_active
+		}
+		available = { brilliant_scientist_krg_can_pay_light_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.light_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.light_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_light_material_cost = yes }
+		remove_effect = { add_stability = constant:brilliant_scientist_krg_outcome.stability_minor }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_review_singularity_component_intelligence = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_component
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+			has_country_flag = brilliant_scientist_focus_unlock_singularity_component_intelligence_event
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			NOT = { has_country_flag = brilliant_scientist_krg_singularity_component_intelligence_reviewed }
+		}
+		available = { brilliant_scientist_krg_can_pay_standard_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		remove_effect = {
+			brilliant_scientist_audit_singularity_facilities = yes
+			set_country_flag = brilliant_scientist_krg_singularity_component_intelligence_reviewed
+			country_event = { id = chaosx.brilliant_scientist_krg.50 }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.high }
+	}
+
+	brilliant_scientist_krg_refresh_singularity_facility_intelligence = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_component
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_singularity_component_intelligence_event
+			has_country_flag = brilliant_scientist_krg_singularity_component_intelligence_reviewed
+		}
+		available = { brilliant_scientist_krg_can_pay_light_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_light
+		days_remove = constant:brilliant_scientist_krg_timing.light_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_standard_days
+		complete_effect = { brilliant_scientist_krg_pay_light_material_cost = yes }
+		remove_effect = { brilliant_scientist_audit_singularity_facilities = yes }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
+	}
+
+	brilliant_scientist_krg_begin_singularity_arming = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_arming
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+			NOT = { has_country_flag = brilliant_scientist_singularity_routes_blocked }
+			NOT = { has_country_flag = brilliant_scientist_global_weapons_dismantled }
+			NOT = { has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete }
+			NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete }
+			NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_singularity_arming_ready_tt
+				brilliant_scientist_krg_singularity_arming_is_ready = yes
+			}
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_singularity.arming_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		complete_effect = {
+			brilliant_scientist_krg_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_begin_singularity_arming = yes
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_krg_singularity_arming_can_continue = yes } }
+		cancel_effect = { brilliant_scientist_krg_cancel_singularity_arming = yes }
+		remove_effect = {
+			if = {
+				limit = { brilliant_scientist_krg_singularity_arming_can_continue = yes }
+				brilliant_scientist_krg_complete_singularity_arming = yes
+			}
+			else = { brilliant_scientist_krg_cancel_singularity_arming = yes }
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.low
+			modifier = { factor = constant:brilliant_scientist_krg_ai.preferred has_country_flag = brilliant_scientist_world_conquest_decision_active }
+			modifier = { factor = constant:brilliant_scientist_krg_ai.high has_war = yes }
+		}
+	}
+
+	brilliant_scientist_krg_activate_singularity_fail_deadly = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_arming
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			has_country_flag = brilliant_scientist_singularity_armed
+			NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_fail_deadly_activation_ready_tt
+				brilliant_scientist_krg_fail_deadly_activation_is_ready = yes
+			}
+			brilliant_scientist_krg_can_pay_standard_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_heavy
+		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.standard_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_standard_material_cost = yes }
+		cancel_trigger = { NOT = { brilliant_scientist_krg_fail_deadly_activation_is_ready = yes } }
+		remove_effect = {
+			if = {
+				limit = { brilliant_scientist_krg_fail_deadly_activation_is_ready = yes }
+				brilliant_scientist_krg_activate_singularity_fail_deadly = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.low
+			modifier = { factor = constant:brilliant_scientist_krg_ai.urgent_factor surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold }
+		}
+	}
+
+	brilliant_scientist_krg_authorize_deliberate_singularity_detonation = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_arming
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			has_country_flag = brilliant_scientist_singularity_armed
+			has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_deliberate_singularity_detonation_ready_tt
+				brilliant_scientist_krg_can_deliberately_detonate_singularity = yes
+			}
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_krg_timing.strategic_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		complete_effect = {
+			brilliant_scientist_krg_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_begin_singularity_detonation_protocol = yes
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_krg_singularity_detonation_can_continue = yes } }
+		cancel_effect = { brilliant_scientist_krg_cancel_singularity_detonation_protocol = yes }
+		remove_effect = {
+			if = {
+				limit = { brilliant_scientist_krg_singularity_detonation_can_continue = yes }
+				brilliant_scientist_execute_singularity_terminal = yes
+			}
+			brilliant_scientist_krg_cancel_singularity_detonation_protocol = yes
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.never
+		}
+	}
+
+	brilliant_scientist_krg_begin_controlled_singularity_disarmament = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete }
+			OR = {
+				has_country_flag = brilliant_scientist_singularity_armed
+				has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+				AND = {
+					has_country_flag = brilliant_scientist_singularity_arming_ever_started
+					NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+					NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_controlled_singularity_disarmament_ready_tt
+				brilliant_scientist_krg_can_begin_controlled_singularity_disarmament = yes
+			}
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_krg_timing.terminal_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		complete_effect = {
+			brilliant_scientist_krg_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_begin_controlled_singularity_disarmament = yes
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_krg_controlled_singularity_disarmament_can_continue = yes } }
+		cancel_effect = { brilliant_scientist_krg_cancel_controlled_singularity_disarmament = yes }
+		remove_effect = {
+			if = {
+				limit = { brilliant_scientist_krg_controlled_singularity_disarmament_can_continue = yes }
+				brilliant_scientist_krg_complete_controlled_singularity_disarmament = yes
+			}
+			else = { brilliant_scientist_krg_cancel_controlled_singularity_disarmament = yes }
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.low
+			modifier = { factor = constant:brilliant_scientist_krg_ai.preferred has_country_flag = brilliant_scientist_world_conquest_decision_active }
+			modifier = { factor = constant:brilliant_scientist_krg_ai.never has_war = yes }
+		}
+	}
+
+	brilliant_scientist_krg_audit_laboratory_world_order = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_component
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_laboratory_world_program
+			has_country_flag = brilliant_scientist_terminal_commitment_lab_world
+		}
+		available = { brilliant_scientist_krg_can_pay_light_material_cost = yes }
+		cost = constant:brilliant_scientist_krg_cost.pp_light
+		days_remove = constant:brilliant_scientist_krg_timing.audit_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
+		complete_effect = { brilliant_scientist_krg_pay_light_material_cost = yes }
+		remove_effect = { brilliant_scientist_krg_audit_terminal_world_state = yes }
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.low
+			modifier = { factor = constant:brilliant_scientist_krg_ai.high has_country_flag = brilliant_scientist_world_conquest_decision_active }
+		}
+	}
+
+	brilliant_scientist_krg_complete_laboratory_world = {
+		icon = GFX_decision_brilliant_scientist_krg_singularity_component
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_terminal_commitment_lab_world
+			NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_laboratory_world_completion_ready_tt
+				brilliant_scientist_lab_world_terminal_is_ready = yes
+			}
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_krg_timing.terminal_days
+		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		complete_effect = { brilliant_scientist_krg_pay_heavy_material_cost = yes }
+		cancel_trigger = { NOT = { brilliant_scientist_krg_terminal_decisions_are_active = yes } }
+		remove_effect = {
+			brilliant_scientist_krg_audit_terminal_world_state = yes
+			if = {
+				limit = { brilliant_scientist_lab_world_terminal_is_ready = yes }
+				brilliant_scientist_execute_lab_world_terminal = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_krg_ai.low
+			modifier = { factor = constant:brilliant_scientist_krg_ai.preferred brilliant_scientist_lab_world_terminal_is_ready = yes }
+		}
+	}
+
+	brilliant_scientist_krg_begin_singularity_disarmament_hold = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_focus_unlock_singularity_program
+			has_country_flag = brilliant_scientist_global_weapons_dismantled
+			NOT = { has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete }
+			NOT = { has_country_flag = brilliant_scientist_krg_singularity_disarmament_hold_active }
+			NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_singularity_armed }
+			NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+			brilliant_scientist_krg_can_pay_standard_material_cost = yes
+			brilliant_scientist_krg_has_strategic_factory_capacity = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		complete_effect = {
+			brilliant_scientist_krg_pay_standard_material_cost = yes
+			set_country_flag = brilliant_scientist_krg_singularity_disarmament_hold_active
+			activate_mission = brilliant_scientist_krg_singularity_disarmament_hold_mission
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+
+	brilliant_scientist_krg_singularity_disarmament_hold_mission = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:brilliant_scientist_krg_timing.disarmament_hold_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_krg_modifier.strategic_factory_use }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_krg_terminal_decisions_are_active = yes }
+				NOT = { has_country_flag = brilliant_scientist_global_weapons_dismantled }
+				has_country_flag = brilliant_scientist_singularity_armed
+				has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+				has_global_flag = brilliant_scientist_singularity_terminal_fired
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_krg_singularity_disarmament_hold_active }
+		timeout_effect = {
+			clr_country_flag = brilliant_scientist_krg_singularity_disarmament_hold_active
+			set_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
+			brilliant_scientist_refresh_world_threat_source = yes
+		}
+	}
+
+	brilliant_scientist_krg_certify_durable_nonterminal_settlement = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
+			OR = {
+				has_country_flag = brilliant_scientist_global_weapons_dismantled
+				has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete
+			}
+			NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+		}
+		available = {
+			brilliant_scientist_krg_can_verify_durable_nonterminal_settlement = yes
+			brilliant_scientist_krg_can_pay_light_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_standard
+		days_remove = constant:brilliant_scientist_krg_timing.audit_days
+		complete_effect = { brilliant_scientist_krg_pay_light_material_cost = yes }
+		remove_effect = { brilliant_scientist_krg_complete_durable_settlement = yes }
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
+	}
+}
