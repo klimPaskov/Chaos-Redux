@@ -1,6 +1,6 @@
 # David Kalākaua Kawānanakoa source-locked portrait trial 01
 
-Status: `candidate_pending_independent_audit`
+Status: `rejected_identity_runtime_hold`
 
 ## Immutable archival source
 
@@ -31,12 +31,20 @@ Status: `candidate_pending_independent_audit`
 - Deterministic `156×210` candidate: `processed_png/portrait_HAW_david_kalakaua_kawananakoa.png`, SHA-256 `88EA77261859DE81D1E5082802EA83DA3C79C646C2E200CA0495C9401887F607`.
 - Processor metadata: `metadata/HAW_david_kalakaua_kawananakoa_processing.json`, SHA-256 `0C6D9AB93845841A5C66A4B8DFA0622E2AC369E5E81915E01B68BA33E081FDBE`.
 - Processor comparison sheet: `review_sheets/HAW_david_kalakaua_kawananakoa_processor_style_comparison.png`, SHA-256 `710B281C326101FE643D35DE5D9079036F17DBF6A5441AB91C923C16355862A4`.
-- Independent provenance/likeness/style audit: pending.
-- DDS conversion and runtime wiring: forbidden until the independent audit records PASS.
+- Independent audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_hawaii_kawananakoa_trial01_independent_audit_2026_07_24.md`.
+- Audit reviewer/date: `chaosx_country_package_auditor`, 24 July 2026.
+- Provenance verdict: `PASS_WITH_CAVEATS`.
+- HOI4 style verdict: `PASS`.
+- Framing verdict: `PASS`.
+- Male-only verdict: `PASS`.
+- Consumer-boundary verdict: `PASS`.
+- Identity/likeness verdict: `FAIL`. The archival source clips identity-bearing highlights, and the repaint reconstructs missing geometry instead of preserving only source-visible facial evidence.
+- Runtime verdict: `HOLD`.
+- DDS conversion and runtime wiring: forbidden. A style pass cannot compensate for the failed likeness gate.
 
 ## Consumer boundary
 
 The only proposed Event 6 consumer is the existing vanilla David Kalākaua Kawānanakoa country leader during exact IW-173 HAW setup.
 The Event 6 implementation must not edit vanilla HAW history.
-If the portrait passes, Event 6 may apply a package-gated full-size country-leader portrait override only to the exact existing leader.
+This rejected trial may not supply a portrait override.
 No advisor, dossier, `_small`, commander, operative, or unrelated HAW consumer is authorized.

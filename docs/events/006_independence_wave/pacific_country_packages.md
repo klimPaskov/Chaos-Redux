@@ -17,12 +17,12 @@ force map align on these IDs. California is the exact carrier candidate.
 Hawai'i and Micronesia remain autonomous countries and never become replacement
 tags for a Pacific federation.
 
-## Current promotion state (2026-07-22)
+## Current promotion state (2026-07-24)
 
 No Pacific package is currently in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
 IW-173 `HAW` is withdrawn because vanilla maps the real David Kalakaua
-Kawananakoa to generic `Portrait_Asia_Generic_land_5.dds`. IW-179 `FSM` and
+Kawananakoa to generic `Portrait_Asia_Generic_land_5.dds`. A source-locked repaint trial of the correct 1925 archival photograph passed HOI4 style review but failed the independent non-compensable likeness gate because the source clips identity-bearing facial highlights; no DDS was created or wired. IW-179 `FSM` and
 IW-184 `HBX` retain their implemented gameplay, but their generated
 fictional officeholders are invalid for grounded Micronesia and California.
 Both packages are fail-closed until sourced real male replacements pass review.
