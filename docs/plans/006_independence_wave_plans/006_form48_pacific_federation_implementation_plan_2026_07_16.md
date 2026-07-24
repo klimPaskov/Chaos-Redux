@@ -2,16 +2,11 @@
 
 Date: 2026-07-16
 
-Status: implemented and superseded as a next-tranche status document (parent
-promotion: 2026-07-18)
+Status: implemented design tranche, runtime admission blocked, and superseded as a next-tranche status document (parent promotion: 2026-07-18)
 
-> Current-state note: the locked FORM-48 design in this plan has been
-> implemented and promoted. IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` are
-> present in the runtime content-attestation set; family 48 readiness is
-> attested after coordinated PASS audits. The historical fail-closed language
-> below records the pre-promotion boundary and is retained for traceability.
-> Use `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md`
-> for current status. FORM-42 and FORM-06 through FORM-47 remain fail-closed.
+> Current-state note (2026-07-24): the locked FORM-48 design and gameplay/system surfaces in this plan remain implemented, but the runtime content-attestation set is exactly IW-001, IW-004, IW-007, IW-008, IW-017, and IW-019. IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` are not admitted, so FORM-48 is currently unreachable through a compliant carrier/member set. The repaired automatic planner assigns zero weight to unadmitted IDs and rejects a direct or stale reservation before anchor allocation. Exactly zero custom Event 006 advisor icons, assets, sprites, or portrait blocks are authorized or present. FORM-42 and FORM-06 through FORM-47 remain fail-closed.
+>
+> Historical promotion note (2026-07-18, superseded): the parent promotion recorded IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` as attested and treated family 48 readiness as promoted. The later sourced-only portrait gate withdrew those package admissions. This status correction preserves the locked design, implementation, and audit evidence below for traceability and does not claim FORM-48 completion.
 
 ## Locked direction
 

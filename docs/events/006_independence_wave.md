@@ -8,7 +8,23 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](006_independence_wave/pacific_country_packages.md).
 
-## Current portrait-gated admission (2026-07-22)
+## Current runtime admission and documentation supersession (2026-07-24)
+
+The exact compile-time content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-017 Corsica, and IW-019 Sicily. These six packages have the current sourced real-male portrait and package-audit approvals required by the runtime gate.
+
+Grounded Event 006 packages require sourced real-male, head-and-shoulders, identity-preserving HOI4 portrait treatments. Protected BAY Rupprecht and RHI Matthes remain unchanged. IW-009 BAY also has an independently approved and runtime-promoted Heinrich Held, but its commander role and fresh package audit remain open, so BAY is not admitted.
+
+The canonical content gate now gives unadmitted automatic candidates zero weight and rejects a direct or stale reservation before anchor allocation. With six admitted packages, the 3/4/5 bands are conditionally viable when their live host, anchor, reservation, Event 005 collision, force, chaos-band, and transaction checks pass. The 7/10 bands and the ten-country World Collapse band remain fail-closed below admitted capacity. The exact wave ladder remains 3/4/5/7/10, and World Collapse remains a ten-country count.
+
+FORM-48 gameplay and its HBX carrier plus sovereign HAW/FSM member contract remain implemented, but IW-173 HAW, IW-179 FSM, and IW-184 HBX are not admitted, so FORM-48 is currently unreachable through a compliant carrier/member set. FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event 006 completion audit remains pending.
+
+The current allocator audit records 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, and Event 005-first joint reservation ordering. Exactly zero custom Event 006 advisor icons, assets, sprites, or portrait blocks are authorized or present. ASSET040-ASSET043 remain missing and unwired, with no authored frames, static fallback, or runtime consumer handoff.
+
+Super-event 6002 is implemented at source level but only partly reachable while the hidden-formable and ten-country predicates lack an admitted carrier or sufficient current capacity. Super-event 6001 remains blocked by exact-recording rights, with no fallback or substitute authorized. The Radical Bloc achievement definition and trigger scaffolding exist, but no currently admitted route can complete its containment-survival proof.
+
+The former 2026-07-22 admission paragraph below is retained as historical evidence and is superseded by this current gate.
+
+## Historical portrait-gated admission (2026-07-22, superseded)
 
 IW-004 Brittany, IW-007 Frisia, and IW-017 Corsica are the packages currently present in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`.
@@ -66,7 +82,7 @@ The Event Details branch uses final non-spoiler premise text about the synchroni
 
 The package finalizer is a four-pass incident transaction: prepare the exact package, activate its live registries, validate the complete live package, then append durable origin history and evolution delivery. The entire package pipeline begins only after the frozen ownership footprint has passed, because technology inheritance, starting forces, stockpiles, and host air/naval transfers are not exactly reversible. The pre-release runtime attestation makes this finalizer deterministic; a failed terminal count is retained as a finalization failure rather than routed through an invalid partial rollback. The same adapter is used by standalone waves, joint Event 5/Event 6 execution, and SCN-008.
 
-The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count. The 126 automatic/high-chaos selectors contain only bound rows with an automatic readiness verdict. Overlay-only, community-variant-only, formable-or-route-only, scenario-variant-only, and unbound rows remain available only through their explicit owning systems; Open Sovereignty cannot promote them merely to fill a wave.
+The automatic wave counts are 3, 4, 5, 7, and 10. World Collapse remains at 10; its force level, instability, package rarity, and regional ambition change instead of its country count. The repaired planner applies the canonical content-attestation trigger during weight calculation and anchor reservation, so unadmitted candidates receive zero automatic weight and a direct stale reservation fails before any host, country, or state is reserved. The 3/4/5 bands are conditionally viable from the six admitted packages when all live gates pass, while the 7/10 bands and the ten-country World Collapse band fail closed below capacity. Overlay-only, community-variant-only, formable-or-route-only, scenario-variant-only, and unbound rows remain available only through their explicit owning systems; Open Sovereignty cannot promote them merely to fill a wave.
 
 SCN-008 uses the same anchor-first transaction but attempts every viable ranked candidate at every intensity. Intensity selects anchor/compact/extended territory and fragile/viable/armed/high-chaos forces; scenario type independently selects league, host-war, belligerence, patron, and partition rules. Great Partition may advance the territory tier but never the candidate count. Universal Belligerence keeps a bounded target array only for the duration of its launch, preventing duplicate targets inside one incident while clearing every target mark after successful or failed war declarations.
 
@@ -164,7 +180,7 @@ used by the mechanics foundation are:
 
 Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
-Final source, processed PNG, DDS, provenance, contact-sheet, and animation records live under `docs/assets/006_independence_wave/`. Animated league, route, and high-chaos pieces require genuine frame sequences plus static fallbacks and are wired through the same interface file and the relevant scripted GUI surface.
+Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. ASSET040-ASSET043 are still missing and unwired. They require authored source frames, static fallbacks, manifests, contact sheets, previews, accepted GUI dimensions, and runtime consumer handoffs before they can be treated as implemented animation assets.
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
@@ -181,24 +197,9 @@ Maximum scenario batch; a hidden-high-chaos formable carried by the exact
 leader of a qualifying radical league; or three successfully committed
 league-backed DM-57 sponsorship contracts.
 
-Four routes are presently reachable. The hidden-formable predicate is wired,
-and FORM-42 and FORM-48 are the registered `hidden_high_chaos` families. FORM-48
-has its exact carrier/member transaction, human ballot, post-formation work
-program, radical-league leadership, and direct reason-4 publication path. Its
-family-48 registration now binds the six shared readiness flags and attests the
-carrier/member package after the coordinated PASS audits. Publication still
-requires a qualifying hidden-high-chaos league and action proof; FORM-42 remains
-fail-closed and no ordinary formable is accepted as a substitute. Revisionist
-pressure is a visible scalar, while each completed high-chaos focus or
-qualifying league operation adds exactly one completed action to the separate
-three-action gate.
+The slot, audio, wrappers, Event Log payload, settings-aware FIFO, and five factual predicates are implemented. Current reachability is partial: hidden-formable and ten-country predicates remain unavailable while FORM-48 has no admitted carrier/member set and the 7/10 bands fail closed below capacity. FORM-42 remains fail-closed and no ordinary formable is accepted as a substitute. Revisionist pressure is a visible scalar, while each completed high-chaos focus or qualifying league operation adds exactly one completed action to the separate three-action gate.
 
-The qualifying actor and reason are frozen at the mutation boundary. Event 6
-history receives payload 6002 without creating a sixth evolution. The shared
-settings-aware FIFO preserves any already visible super-event and later
-dispatches slot 24 with its registered volume wrapper. Only the first package
-records Radical Bloc achievement qualification. The achievement definition and
-its separate containment-survival award path remain unimplemented.
+The qualifying actor and reason are frozen at the mutation boundary. Event 6 history receives payload 6002 without creating a sixth evolution. The shared settings-aware FIFO preserves any already visible super-event and later dispatches slot 24 with its registered volume wrapper. Only the first package records Radical Bloc achievement qualification. The Radical Bloc definition and trigger scaffolding exist, but no currently admitted route can complete its containment-survival proof, so achievement reachability remains blocked.
 
 `The League of New States` remains absent: the accepted 1949 recording lacks
 verified United States redistribution permission, so slot 23 and audio ID 6001
