@@ -7,6 +7,10 @@
 # - Reserves the host before the candidate, and the unique anchor before any
 #   optional compact or extended state.
 # - Trims unavailable optional territory without sacrificing a valid anchor.
+# - Gives positive allocation weight only to exact package IDs in the current
+#   compile-time runtime-content attestation set.
+# - Rechecks that same attestation before the first host, country, or anchor
+#   reservation so direct or stale dispatch also fails closed.
 # - Commits package metadata only after the complete candidate is valid.
 # - Makes no ownership change; execution begins only after the shared plan is
 #   locked and revalidated.
@@ -93,11 +97,13 @@ independence_wave_begin_package_reservation = {
 	set_temp_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.anchor }
 	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	set_temp_variable = { independence_wave_execution_package_id = independence_wave_candidate_package_id }
 	if = {
 		limit = {
 			check_variable = {
 				independence_wave_reservation_phase = constant:independence_wave_reservation_phase.anchors
 			}
+			has_independence_wave_runtime_package_content_attestation_for_execution_id = yes
 		}
 		add_to_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_plan.loop_increment }
 		set_temp_variable = { liberation_candidate_state_row_start = global.liberation_plan_states^num }
@@ -133,6 +139,14 @@ independence_wave_begin_package_reservation = {
 				set_temp_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.selected }
 			}
 		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				independence_wave_reservation_phase = constant:independence_wave_reservation_phase.anchors
+			}
+		}
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.package_unready }
 	}
 	else = {
 		# Optional territory is published only after every selected candidate has
@@ -247,6 +261,7 @@ independence_wave_begin_package_reservation = {
 			set_global_flag = independence_wave_plan_optional_expansion_failed
 		}
 	}
+	clear_temp_variable = independence_wave_execution_package_id
 }
 
 # Reads `liberation_candidate_state_host` and returns a temporary boolean.
@@ -468,6 +483,7 @@ independence_wave_calculate_candidate_allocation_weight = {
 	set_temp_variable = { independence_wave_candidate_earliest_band = constant:independence_wave_chaos_band.world_collapse }
 	set_temp_variable = { independence_wave_candidate_dispatch_id = independence_wave_candidate_package_id }
 	round_temp_variable = independence_wave_candidate_dispatch_id
+	set_temp_variable = { independence_wave_execution_package_id = independence_wave_candidate_dispatch_id }
 	meta_effect = {
 		text = {
 			set_temp_variable = {
@@ -500,6 +516,7 @@ independence_wave_calculate_candidate_allocation_weight = {
 	}
 	if = {
 		limit = {
+			has_independence_wave_runtime_package_content_attestation_for_execution_id = yes
 			check_variable = {
 				var = independence_wave_wave_chaos_band
 				value = independence_wave_candidate_earliest_band
@@ -653,6 +670,7 @@ independence_wave_calculate_candidate_allocation_weight = {
 			set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.minimum }
 		}
 	}
+	clear_temp_variable = independence_wave_execution_package_id
 }
 
 independence_wave_finish_package_reservation = {

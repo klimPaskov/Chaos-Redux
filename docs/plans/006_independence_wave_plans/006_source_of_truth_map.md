@@ -96,7 +96,7 @@ achievements remain hidden by their intended route and survival conditions.
 | Mechanics, decisions, focus, forces, evolutions, scenario | Materially implemented | Commits `e7a84fced`, `fc785387e`, `84e7257c5`, `c6ef74f66`, `a777e48a9`, and `d617ef049`. This does not certify every accepted route or package |
 | Installed tag architecture | Audited snapshot | 206 packages resolve to 102 custom `X`-shell rows, 91 registered vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only identities: 191 unique nonblank carrier tags overall, with only `CHU` and `BIA` intentionally shared. The 2026-07-24 installed-mod audit covers 108 Event 006-owned identifiers, all 16 custom cosmetic identifiers, 122 Workshop directories, eight archives, four sibling local mods, and reports zero tag and custom-cosmetic collisions |
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
-| Allocator and joint reservation | Audited and current | 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering; runtime host, anchor, reservation, and wave-size gates remain authoritative |
+| Allocator and joint reservation | Audited and current after content-gate repair | 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering remain implemented. `006_automatic_content_attestation_weight_gate_2026_07_24.md` records the centralized repair: an unadmitted package receives zero automatic weight and a direct or stale anchor-phase dispatch receives `package_unready` before any host, country, or state reservation. Capacity, scenario preflight, reservation, and execution all reuse the same exact compile-time attestation authority. Runtime host, anchor, reservation, Event 5 collision, chaos-band, force, and wave-size gates remain mandatory |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
@@ -104,7 +104,7 @@ achievements remain hidden by their intended route and survival conditions.
 | IW-007 AGX | Admitted after current package and portrait audits | The complete Frisia package passes the bounded identity, state-36/RG-36, HOL-survival, Event-5 collision, setup, p7 force, focus, decision, AI, cleanup, localisation, researched flag, and portrait audits. The previously approved Douwe Kalma and Pieter Reenalda retry-02 source-locked HOI4 portraits remain the authoritative runtime pair. The separate 2026-07-24 Kalma and Reenalda trial-01 candidates both passed HOI4 style but failed the non-compensable likeness gate; Reenalda also clarified source-soft shoulder-board detail, so neither trial was converted or wired and neither replaced the existing DDS. IW-007 remains exact compile-time attested; every live allocation proof remains mandatory |
 | IW-001 SCO | Admitted after current package and portrait audits | Robert Bontine Cunninghame Graham and Victor Morven Fortune are sourced real male figures with identity-preserving HOI4 repaints wired to the exact full-size civilian and army consumers. The post-wiring audit passes the exact SCO tag reuse, state-121 anchor, ENG-survival, setup, force, focus, decision, idea, AI, formable, localisation, flag, and cleanup surfaces. IW-001 is exact compile-time attested; every live host, anchor, reservation, Event-5 collision, chaos-band, and transaction proof remains mandatory |
 | IW-008 RHI | Admitted after current package, portrait, and ownership audits | Wilhelm Marx and Gustav-Adolf von Zangen are sourced real male figures with independently approved identity-preserving HOI4 repaints wired to the exact full-size civilian and army consumers. Protected Josef Friedrich Matthes remains byte-identical. The post-wiring audit passes dormant-vanilla identity safety, state-51 anchor, RG-RHINE-SAAR collision handling, GER survival, Event-5 separation, setup, force, focus, decisions, incidents, ideas, AI, FORM-04, localisation, flags, cleanup, and forbidden-asset checks. IW-008 is exact compile-time attested; every live allocation proof remains mandatory |
-| IW-002/006/009/010 | Gameplay retained; runtime admission closed | Ironside and Epp remain rejected because vanilla recruits them as active ENG/GER characters. IW-002 Saunders Lewis trials 01 and 02 and Lewis Pugh Evans trials 01 and 02 passed broad provenance/style/framing gates but failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders source is comparison evidence only: preserving it would retain the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936 and leaves the October 1936 Gwent Jones lead blocked by reproduction access and rights. IW-006 has the independently approved and wired Jules Destrée civic portrait, but Herman Baltia trial 01 failed likeness and stable-consumer transfer and remains unwired. Pire, Descamps, and Keyaerts are active vanilla owners; the remaining Walloon alternatives lacked a rights-clear archival master, so no substitute was authorized. IW-009's protected Rupprecht remains approved. Dollmann trial 02 has exact-crop evidence but ImageGen remained safety-blocked; Lossow trial 02 passed likeness and HOI4 commander style but failed provenance because `PD-US` and an unverified object identity do not establish the required runtime rights chain. IW-010 retains two unresolved grounded roles |
+| IW-002/006/009/010 | Gameplay retained; runtime admission closed | Ironside and Epp remain rejected because vanilla recruits them as active ENG/GER characters. IW-002 Saunders Lewis trials 01 and 02 and Lewis Pugh Evans trials 01 and 02 passed broad provenance/style/framing gates but failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders source is comparison evidence only: preserving it would retain the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936 and leaves the October 1936 Gwent Jones lead blocked by reproduction access and rights. IW-006 has the independently approved and wired Jules Destrée civic portrait, but Herman Baltia trial 01 failed likeness and stable-consumer transfer and remains unwired. Pire, Descamps, and Keyaerts are active vanilla owners; the remaining Walloon alternatives lacked a rights-clear archival master, so no substitute was authorized. IW-009's protected Rupprecht remains approved, and Heinrich Held's unchanged archival master, exact-pixel crop record, source-locked ImageGen repaint, deterministic `156x210` processing, independent likeness/style/provenance PASS, and byte-identical evidence/runtime DDS close the civic-leader role. Dollmann trial 02 has exact-crop evidence but ImageGen remained safety-blocked; Lossow trial 02 passed likeness and HOI4 commander style but failed provenance because `PD-US` and an unverified object identity do not establish the required runtime rights chain. BAY still needs one cleared commander and a fresh package audit. IW-010 retains two unresolved grounded roles |
 | IW-017 COR | Admitted after current portrait and full post-wiring package audits | Adolphe Landry and Jean Chiappe are sourced real male figures with independently approved identity-preserving HOI4 repaints. The exact runtime DDS files are pixel-identical to the approved PNGs. The bounded package audit passes dormant-vanilla identity safety, state-1/RG-1, FRA survival, Event-5 collision guards, setup, force, focus, decisions, events, AI, cleanup, localisation, historical flag, and FORM-05 access. IW-017 is exact compile-time attested; every live allocation proof remains mandatory |
 | IW-019 ASX | Admitted after current package, portrait, and consumer-role audits | Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto are sourced real male figures with independently approved identity-preserving HOI4 repaints wired to role-correct full-size consumers. Rizzo is the civilian-large Straits Security Directorate political leader under the recorded fictional-office disclosure, and Di Benedetto is the sole army-large corps commander. The final package audit passes state-115/ITA-survival setup, force, focus, decisions, ideas, AI, FORM-05, localisation, flags, cleanup, runtime DDS hashes, and forbidden-asset checks. IW-019 is exact compile-time attested; every live allocation proof remains mandatory |
 | IW-018 ARX | Gameplay retained; runtime admission closed | Emilio Lussu's 1916 source-locked trial 01 passed broad style/framing gates but failed likeness because it reconstructed the source-soft eye and regularized the face; the candidate is unwired and the older stable DDS is not approval. The crown-route and command roles also remain unresolved. FORM-05 gameplay remains implemented while IW-018 stays outside runtime attestation |
@@ -183,13 +183,11 @@ implemented, but it lacks a complete currently admitted carrier/member set. No
 unlisted package or formable family should be described as automatically
 selectable.
 
-Six attested IDs can supply the three-, four-, and five-country automatic waves only
-when the required number independently pass their live host, anchor, reservation,
-Event-5 collision, chaos-band, force, and transaction gates. Higher automatic
-bands remain unavailable until enough additional packages are admitted.
-The allocator therefore fails closed before release while sourced
-replacement work and package re-audits are incomplete. The exact 3/4/5/7/10
-targets and World Collapse count of ten are unchanged.
+Six attested IDs can supply the three-, four-, and five-country automatic waves only when the required number independently pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
+The candidate-weight calculation now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but visually unadmitted packages remain at zero weight and cannot poison a frozen automatic transaction.
+Higher automatic bands remain unavailable until enough additional packages are admitted.
+The allocator therefore fails closed before release while sourced replacement work and package re-audits are incomplete.
+The exact 3/4/5/7/10 targets and World Collapse count of ten are unchanged.
 World Collapse remains exactly ten; it does not increase the release count.
 Static source audits do not prove an in-engine release, scenario load, or every
 possible host-state combination.
@@ -281,10 +279,10 @@ For super-event `6002`, the preserved source, final `109.992517 s` OGG and WAV,
 hashes, loudness measurements, and exact wrappers are documented in
 `../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
 The audio registry, slot-24 dispatch, Event Log payload, and settings-aware FIFO
-submission are complete. Four qualification routes are reachable. The fifth
-predicate has a promoted FORM-48 carrier, but remains conditional on a valid
-hidden-high-chaos league and action proof; FORM-42 remains fail-closed. The
-parent Event 006 completion audit is still pending.
+submission are complete. The hidden-formable and ten-country qualification paths
+are currently unreachable under the canonical six-package gate, and no full
+runtime reachability proof exists for the remaining predicates. FORM-42 remains
+fail-closed. The parent Event 006 completion audit is still pending.
 
 Super-event `6001` remains absent from runtime dispatch, localisation, audio,
 and firing. ASSET-005's static DDS exists and its sprite is registered, but it
@@ -346,15 +344,15 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older resume and curator files call the event script and localisation placeholders | Superseded. Substantial event and localisation source exists |
 | Older asset research says no final assets exist | Superseded by the runtime DDS files and current manifests |
 | Older portrait handoffs approve 2026-07-15, 2026-07-16, or 2026-07-18 fictional-person or army-small art | Superseded by the 2026-07-22 sourced-treatment ledger and independent source/refinish/post-wire audits |
-| Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Four routes are reachable; the hidden-formable predicate now has a promoted FORM-48 carrier but remains conditional on its high-chaos league/action proof, while FORM-42 remains fail-closed. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
-| Earlier AFX source was revoked for missing Level 2 content | Resolved. The Sambre-Meuse lane and unique visual package passed the final exact-package audit, and IW-006 is restored to the exact registry |
+| Older audio notes say `6002` derivatives, wrappers, or gameplay firing are absent | Partly superseded. Slot 24, audio 6002, five predicates, Event Log payload, and queued settings-aware playback are implemented. Its hidden-formable and ten-country paths remain unreachable under the current six-package gate, while FORM-42 remains fail-closed. Audio 6001 and all slot-23 runtime dispatch remain absent, while its dormant ASSET-005 DDS and sprite registration are retained |
+| Earlier AFX source says its Level 2 implementation restored runtime admission | Historical implementation evidence only. IW-006 remains outside the canonical six-package content-attestation set until its grounded roster and complete package receive a fresh audit |
 | Older curator status for IW-005 | Superseded by the independently audited overlay committed in `a2c274d1e`. Its remaining risks are the one-day timeout ordering edge and opportunistic AI garrison placement |
-| Older curator status for BRI and AJX | Superseded by implementation commit `7368cc0bf` and exact promotion commits `5d17e55b3` and `f64d9640e` |
-| Pacific admission handoffs say HOLD/FAIL-CLOSED | Historical verdicts are preserved. The 2026-07-18 parent promotion supersedes only their current admission disposition; their package, audit, and validation findings remain evidence |
+| Older curator status for BRI and AJX | BRI is admitted under the current source-locked portrait and package audits. AJX implementation evidence remains useful, but IW-010 is outside the canonical six-package gate until both grounded roles and the complete package pass current audits |
+| Pacific admission handoffs say HOLD/FAIL-CLOSED | Current admission authority agrees with those bounded verdicts. HAW, FSM, and HBX remain outside the canonical six-package gate; their gameplay, formable-contract, audit, and validation findings remain implementation evidence only |
 | Older tag ledgers report 128 new tags, 107 shells, 21 inert identities, or 78/103/90 reuse splits | Superseded first-pass snapshots. The current identity authority is the candidate registry CSV, current binding CSV, and tag collision/reuse audit; only `CHU` and `BIA` are intentionally shared carriers |
-| IW-043/IW-058 improvement addendum says neither package is admitted and all assets are absent | Resolved. The addendum now records the admitted exact CHU/ASY signature tranche, final assets, and operational transactions. Historical fail-closed passages remain at-the-time evidence and are superseded by final audits |
-| Vanilla CHU/ASY formable decisions bypass exact Event 006 contracts | Compatibility PASS: `zz_006_independence_wave_vanilla_formable_compatibility_decisions.txt` blocks only active Event 006 CHU/ASY shortcuts; ordinary and Event 005 behavior remains vanilla. Attested FORM-12/13/18 use scoped consent, anchor, integration, and cleanup contracts |
-| Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical pre-admission snapshots. Their collision, proof-writer, and no-advisor findings remain useful; current admission and art status are recorded by this map and the package manifests |
+| IW-043/IW-058 improvement addendum says neither package is admitted and all assets are absent | Partly superseded implementation evidence. Final CHU/ASY assets and operational transactions exist, but IW-043 and IW-058 remain outside the canonical six-package content-attestation set |
+| Vanilla CHU/ASY formable decisions bypass exact Event 006 contracts | Compatibility PASS: `zz_006_independence_wave_vanilla_formable_compatibility_decisions.txt` blocks only active Event 006 CHU/ASY shortcuts; ordinary and Event 005 behavior remains vanilla. FORM-12/13/18 contract logic exists, but its carrier packages are not currently content-attested |
+| Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical implementation snapshots. Their collision, proof-writer, asset, and no-advisor findings remain useful; neither package is currently runtime-admitted |
 | Specification README still describes major implementation work as future | Preserve it as accepted-design context. Use this map for current implementation status |
 | Event documentation and workbook may lag current gameplay | Resolved for the shared Event Details, five evolutions, Liberations cluster, and SCN-008 mirror fields by the dated direct comparison. Recheck only when those player-facing localisation sources change |
 
@@ -362,19 +360,22 @@ Parent decisions still required:
 
 1. Preserve IW-005 as a living-BEL `BEL_flanders` overlay. Do not add it to the
    selectable release registry.
-2. Preserve the sixteen exact package attestations and the allocator's
-   reservation groups that allow World Collapse to attempt exactly ten releases.
+2. Preserve the canonical six-package content-attestation set until additional
+   packages pass the current package and portrait gates. Preserve the allocator's
+   exact 3/4/5/7/10 reservation contract and keep World Collapse at exactly ten;
+   the seven- and ten-country bands must remain fail-closed below capacity.
 3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
    and settings-aware queued `6002` playback. Keep `6001` blocked unless its
    exact recording rights are cleared.
-4. Preserve the promoted FORM-48 HBX/HAW/FSM/PFX tranche and its exact
-   sovereign-autonomous membership contract. Keep FORM-42 and FORM-06 through
-   FORM-47 fail-closed; use no generic flags, emblems, portraits, or
+4. Preserve the implemented FORM-48 HBX/HAW/FSM/PFX design tranche and its exact
+   sovereign-autonomous membership contract, but keep it runtime-unreachable
+   until HAW, FSM, and HBX are independently admitted. Keep FORM-42 and FORM-06
+   through FORM-47 fail-closed; use no generic flags, emblems, portraits, or
    regional-report substitutes. The parent Event 006 completion audit remains
    pending.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
-6. Keep the exact vanilla-formable compatibility PASS. Preserve the admitted
+6. Keep the exact vanilla-formable compatibility PASS. Preserve the implemented
    CHU/ASY formable adapters, paid 180-day congresses, consent and anchor
    ledgers, staged sovereignty-preserving integration, and sole proof writers.
    Preserve the former-host-or-regional-partner autonomy contract, locked
