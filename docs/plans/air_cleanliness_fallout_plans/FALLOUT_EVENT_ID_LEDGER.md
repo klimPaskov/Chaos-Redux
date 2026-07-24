@@ -436,3 +436,10 @@ The Dead City Permit adds seven dormant country-level event blocks at suffixes `
 Candidate `338` uses transaction key `710022`, route `7122`, and history `9127`.
 It follows the closed Sealed Warehouse memory, then offers a state expedition, licensed guilds, military seizure, or forbidden entry with deterministic grading, a 28-day permit result, a 210-day city callback, hidden-AI parity, Deaths-backed failure, durable city ledgers, dedicated modifiers, Event Log payloads, dedicated report art, and authenticated cleanup.
 The documented living-world block total is now `226`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Manual Nobody Read count correction
+
+The Manual Nobody Read adds seven dormant country-level event blocks at suffixes `345` through `351`.
+Candidate `345` uses transaction key `710023`, route `7123`, and history `9128`.
+It follows the closed Dead City Permit memory, then offers a verified manual, improvisation, foreign engineer, or sealed facility policy with deterministic facility selection, a 35-day technical result, a 240-day maintenance callback, hidden-AI parity, Deaths-backed failure, dedicated modifiers, Event Log payloads, dedicated report art, and authenticated cleanup.
+The documented living-world block total is now `233`, while the countable Fallout living-world release-floor total remains `0 of 660`.

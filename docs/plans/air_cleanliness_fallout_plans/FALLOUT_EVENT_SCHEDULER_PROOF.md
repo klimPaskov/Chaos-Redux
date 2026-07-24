@@ -418,3 +418,12 @@ The reviewed ordinary producer now carries twenty-two rows and the defined livin
 The Dead City Permit is candidate `338`, transaction `710022`, route `7122`, and history `9127`.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 Its bounded read-only event-inspector request returned `EVENT_ISSUE_LIMIT` with 23,001 issues against a fixed ceiling of 20,000 and no artifact, so delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
+
+## Manual Nobody Read scheduler correction
+
+The reviewed ordinary producer now carries twenty-three rows and the defined living-world event range reaches `351`, with `233` defined blocks.
+The Manual Nobody Read is candidate `345`, transaction `710023`, route `7123`, and history `9128`.
+Its facility score uses native non-damaged industrial and arms factory levels, with the lowest native state id as the deterministic tie-break.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.345` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,025 issues against a fixed ceiling of 20,000 and no artifact.
+Delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.

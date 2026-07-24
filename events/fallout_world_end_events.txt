@@ -13975,3 +13975,116 @@ country_event = {
 	trigger = { fallout_event_338_cleanup_can_enter = yes }
 	immediate = { fallout_event_338_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.345
+	title = chaosx.fallout.345.t
+	desc = chaosx.fallout.345.d
+	picture = GFX_report_event_fallout_manual_nobody_read
+	is_triggered_only = yes
+	trigger = { fallout_event_345_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.345.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_345_cost.follow_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_345_cost.follow_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_345_cost.follow_medicine compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.follow_manual } fallout_event_345_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.345.a.tt
+	}
+	option = {
+		name = chaosx.fallout.345.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_345_cost.improvise_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_345_cost.improvise_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.improvise } fallout_event_345_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.345.b.tt
+	}
+	option = {
+		name = chaosx.fallout.345.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_345_cost.recruit_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_345_cost.recruit_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_345_cost.recruit_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.recruit_engineer } fallout_event_345_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.345.c.tt
+	}
+	option = {
+		name = chaosx.fallout.345.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_345_cost.shut_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_345_cost.shut_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_345_cost.shut_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.shut_facility } fallout_event_345_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.345.d_option.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.346
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_345_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_345_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.347
+	title = chaosx.fallout.347.t
+	desc = { text = chaosx.fallout.347.follow.success.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.follow_manual } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.347.follow.partial.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.follow_manual } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.347.follow.failure.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.follow_manual } } }
+	desc = { text = chaosx.fallout.347.improvise.success.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.improvise } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.347.improvise.partial.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.improvise } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.347.improvise.failure.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.improvise } } }
+	desc = { text = chaosx.fallout.347.recruit.success.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.recruit_engineer } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.347.recruit.partial.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.recruit_engineer } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.347.recruit.failure.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.recruit_engineer } } }
+	desc = { text = chaosx.fallout.347.shut.success.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.shut_facility } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.347.shut.partial.d trigger = { check_variable = { fallout_event_345_selected_branch = constant:fallout_event_345_branch.shut_facility } check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.347.shut.failure.d
+	picture = GFX_report_event_fallout_manual_nobody_read
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_345_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.manual_nobody_read_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.347.a hidden_effect = { fallout_event_345_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.347.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.348
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_345_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.manual_nobody_read_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_345_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.349
+	title = chaosx.fallout.349.t
+	desc = { text = chaosx.fallout.349.success.d trigger = { check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.349.partial.d trigger = { check_variable = { fallout_event_345_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.349.failure.d
+	picture = GFX_report_event_fallout_manual_nobody_read
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_345_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.manual_nobody_read_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_345_registry_is_current = yes }
+	option = { name = chaosx.fallout.349.a hidden_effect = { fallout_event_345_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.349.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.350
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_345_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.manual_nobody_read_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_345_registry_is_current = yes }
+	immediate = { fallout_event_345_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.351
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_345_cleanup_can_enter = yes }
+	immediate = { fallout_event_345_cleanup = yes }
+}
