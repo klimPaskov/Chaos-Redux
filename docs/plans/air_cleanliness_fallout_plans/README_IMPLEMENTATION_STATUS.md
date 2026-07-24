@@ -651,3 +651,7 @@ The Orchard Flowers Once is implemented as a dormant state-level chain at `chaos
 ## The Refugee Train border and migration tranche
 
 The Refugee Train is implemented as a dormant state-level chain at `chaosx.fallout.415` through `.421`. It has four authored rail-border policies, frozen Food, Recognition, Cohesion, family-memory, border-legitimacy, integration, and bilateral-trust ledgers, a delayed result, a first-anniversary callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9138`, candidate row `415`, and a dedicated report-art package. The defined living-world total is now `303`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Ship That Will Not Dock maritime tranche
+
+The Ship That Will Not Dock is implemented as a dormant coastal state-level chain at `chaosx.fallout.422` through `.428`. It has four authored maritime policies, frozen Food, Recognition, Cohesion, diaspora-memory, port-legitimacy, quarantine-cohesion, and maritime-trust ledgers, branch-specific passenger transfer, a delayed result, a first-harbour review callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9139`, candidate row `422`, and a dedicated report-art package. The defined living-world total is now `310`, while countable Fallout living-world blocks remain `0 of 660`.

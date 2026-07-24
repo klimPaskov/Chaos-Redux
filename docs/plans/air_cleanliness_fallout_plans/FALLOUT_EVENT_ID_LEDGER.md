@@ -514,3 +514,9 @@ The documented living-world block total is now `296`, while the countable Fallou
 The Refugee Train reservation adds seven dormant state-level event blocks at suffixes `415` through `421`. It uses candidate `415`, transaction `710033`, route `7133`, and history `9138`. The chain carries four rail-border policies, deterministic state selection, a delayed result, an anniversary callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
 
 The documented living-world block total is now `303`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## The Ship That Will Not Dock count correction
+
+The Ship That Will Not Dock reservation adds seven dormant coastal state-level event blocks at suffixes `422` through `428`. It uses candidate `422`, transaction `710034`, route `7134`, and history `9139`. The chain carries four maritime policies, deterministic coastal naval-base selection, branch-specific passenger movement, a delayed result, a first-harbour review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
+
+The documented living-world block total is now `310`, while the countable Fallout living-world release-floor total remains `0 of 660`.
