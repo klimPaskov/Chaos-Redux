@@ -45,6 +45,14 @@ Implemented in the completed strategic-raid, operative-release, battlefield-diss
 - Route-aware sabotage AI evaluates policy route, retaliation, desperation, domestic program safety, agent-specific state evidence, Japan-China context, and sanctions vulnerability. Defensive profiles and existing outbreak risk suppress use.
 - Four final type-specific sabotage decision icons are registered in `interface/biological_warfare.gfx`. No existing raid icon or Chaos Redux runtime asset was overwritten.
 - `docs/plans/chaos_warfare_system_plans/2026-07-19_stage_7_biological_sabotage_validation.md` records the bounded source and scenario audit for this tranche.
+- The ordinary countermeasure tranche provides national Medical Capacity, Biological Security, surveillance, exact-state field hospitals, quarantine, agent-specific antibiotics, Smallpox vaccination, exact bilateral border closures, international medical missions, and four exact-state containment durations with full, partial, and failed outcomes.
+- Weapon potency is strictly `Tularemia < Anthrax < Plague < Smallpox`; only Smallpox is classified as severe. The four strategic biological raids continue to use the same success, critical, and disaster factors, so delivery reliability remains independent from post-release harm.
+- Medical teams and treatment services reserve exact capacity at dispatch, store their provider on the selected state, prevent parallel overcommit, and return capacity exactly once after failed arrival, agent recovery, program stand-down, mission resolution, or final state cleanup. Consumed equipment is not refunded.
+- Public agent-threat gates read exact local detection or per-agent global confirmed-use history written at the real confirmed-attribution transition. Secret foreign projects do not leak through response decisions.
+- International assistance uses existing inspection or observer access and bounded allied or outward-guaranteed country scopes. It does not scan the world, infer an inverse guarantee, fabricate a donor, or maintain a relationship proxy.
+- Ten unique final decision icons and two unique final idea icons are registered in `interface/biological_countermeasures.gfx`; existing field-hospital and Smallpox decision sprites are reused without overwriting any military-raid asset.
+- The current decision source exposes 25 timed mission AI surfaces and three immediate decision AI surfaces to the installed probability adapter, with zero unresolved inputs.
+- `docs/plans/chaos_warfare_system_plans/2026-07-24_stage_7_biological_countermeasure_validation.md` records the bounded source, asset, AI, cleanup, and migration evidence for this tranche.
 
 Still queued under this active plan:
 

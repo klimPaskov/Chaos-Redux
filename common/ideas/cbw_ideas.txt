@@ -88,138 +88,114 @@ ideas = {
         ###############################################################################################################
 
 
-        # Antibiotics mass production - provides contamination resistance based on civilian factories
-        anthrax_antibiotics_mass_production_idea = {
-            picture = anthrax_antibiotics
+		bio_surveillance_network_idea = {
+			picture = bio_surveillance_network
 
-            allowed_civil_war = {
-                always = yes
-            }
+			allowed_civil_war = {
+				always = yes
+			}
 
-            on_add = {
-                # Apply antibiotics protection to all contaminated states
-                apply_anthrax_antibiotics_protection = yes
-            }
+			modifier = {
+				consumer_goods_factor = constant:bio_countermeasure_idea.surveillance_consumer_goods
+				political_power_gain = constant:bio_countermeasure_idea.surveillance_political_power
+			}
+		}
 
-            on_remove = {
-                # Remove antibiotics protection from all states
-                remove_anthrax_antibiotics_protection = yes
-            }
+		anthrax_antibiotics_mass_production_idea = {
+			picture = anthrax_antibiotics
 
-            modifier = {
-                consumer_goods_factor = 0.10
-            }
-        }
+			allowed_civil_war = {
+				always = yes
+			}
 
-        # Research slowdown during retroactive antibiotics development
-        developing_anthrax_antibiotics_research_slowdown = {
-            picture = generic_research_bonus
+			modifier = {
+				consumer_goods_factor = constant:bio_countermeasure_idea.anthrax_consumer_goods
+			}
+		}
 
-            allowed_civil_war = {
-                always = yes
-            }
+		developing_anthrax_antibiotics_research_slowdown = {
+			picture = generic_research_bonus
 
-            modifier = {
-                research_speed_factor = -0.20
-            }
+			allowed_civil_war = {
+				always = yes
+			}
 
-            cancel = {
-                NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
-            }
-        }
+			modifier = {
+				research_speed_factor = constant:bio_countermeasure_idea.anthrax_research_slowdown
+			}
 
-        # Plague antibiotics mass production - provides contamination resistance based on civilian factories
-        plague_antibiotics_mass_production_idea = {
-            picture = plague_antibiotics
+			cancel = {
+				NOT = { has_country_flag = developing_anthrax_antibiotics_retroactively }
+			}
+		}
 
-            allowed_civil_war = {
-                always = yes
-            }
+		plague_antibiotics_mass_production_idea = {
+			picture = plague_antibiotics
 
-            on_add = {
-                # Apply antibiotics protection to all contaminated states
-                apply_plague_antibiotics_protection = yes
-            }
+			allowed_civil_war = {
+				always = yes
+			}
 
-            on_remove = {
-                # Remove antibiotics protection from all states
-                remove_plague_antibiotics_protection = yes
-            }
+			modifier = {
+				consumer_goods_factor = constant:bio_countermeasure_idea.plague_consumer_goods
+			}
+		}
 
-            modifier = {
-                consumer_goods_factor = 0.15  # Higher cost than anthrax due to plague's severity
-            }
-        }
+		developing_plague_antibiotics_research_slowdown = {
+			picture = generic_research_bonus
 
-        # Research slowdown during retroactive plague antibiotics development
-        developing_plague_antibiotics_research_slowdown = {
-            picture = generic_research_bonus
+			allowed_civil_war = {
+				always = yes
+			}
 
-            allowed_civil_war = {
-                always = yes
-            }
+			modifier = {
+				research_speed_factor = constant:bio_countermeasure_idea.plague_research_slowdown
+			}
 
-            modifier = {
-                research_speed_factor = -0.25  # Slightly higher penalty than anthrax
-            }
+			cancel = {
+				NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
+			}
+		}
 
-            cancel = {
-                NOT = { has_country_flag = developing_plague_antibiotics_retroactively }
-            }
-        }
+		tularemia_antibiotics_mass_production_idea = {
+			picture = tularemia_antibiotics
 
-        # Tularemia antibiotics mass production - provides contamination resistance based on civilian factories
-        tularemia_antibiotics_mass_production_idea = {
-            picture = tularemia_antibiotics
+			allowed_civil_war = {
+				always = yes
+			}
 
-            allowed_civil_war = {
-                always = yes
-            }
+			modifier = {
+				consumer_goods_factor = constant:bio_countermeasure_idea.tularemia_consumer_goods
+			}
+		}
 
-            on_add = {
-                # Apply antibiotics protection to all contaminated states
-                apply_tularemia_antibiotics_protection = yes
-            }
+		developing_tularemia_antibiotics_research_slowdown = {
+			picture = generic_research_bonus
 
-            on_remove = {
-                # Remove antibiotics protection from all states
-                remove_tularemia_antibiotics_protection = yes
-            }
+			allowed_civil_war = {
+				always = yes
+			}
 
-            modifier = {
-                consumer_goods_factor = 0.08  # Lower cost than anthrax/plague due to easier treatment
-            }
-        }
+			modifier = {
+				research_speed_factor = constant:bio_countermeasure_idea.tularemia_research_slowdown
+			}
 
-        # Research slowdown during retroactive tularemia antibiotics development
-        developing_tularemia_antibiotics_research_slowdown = {
-            picture = generic_research_bonus
+			cancel = {
+				NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
+			}
+		}
 
-            allowed_civil_war = {
-                always = yes
-            }
+		smallpox_vaccination_program_idea = {
+			picture = smallpox_vaccination
 
-            modifier = {
-                research_speed_factor = -0.15  # Lower penalty than anthrax/plague due to easier research
-            }
+			allowed_civil_war = {
+				always = yes
+			}
 
-            cancel = {
-                NOT = { has_country_flag = developing_tularemia_antibiotics_retroactively }
-            }
-        }
-
-        # Smallpox vaccination mass program - provides contamination resistance based on civilian factories
-        smallpox_vaccination_program_idea = {
-            picture = smallpox_vaccination
-
-            allowed_civil_war = {
-                always = yes
-            }
-
-            modifier = {
-                consumer_goods_factor = 0.25  # Very high cost for strategic weapon countermeasure
-                political_power_gain = -0.25  # Administrative burden
-            }
-        }
+			modifier = {
+				consumer_goods_factor = constant:bio_countermeasure_idea.smallpox_consumer_goods
+				political_power_gain = constant:bio_countermeasure_idea.smallpox_political_power
+			}
+		}
     }
 }

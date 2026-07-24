@@ -1,0 +1,221 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL COUNTERMEASURE CONSTANTS
+# ============================================================================
+# Central tuning for national public-health capacity, exact-state outbreak
+# response, treatment, transparency, tradeoffs, and route-aware AI.
+# Values are gameplay tuning rather than historical estimates.
+# ============================================================================
+
+bio_countermeasure_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	expand_medical_pp = 50
+	expand_medical_support = 120
+	expand_medical_trucks = 40
+	expand_biosecurity_pp = 50
+	expand_biosecurity_instruments = 80
+	expand_biosecurity_support = 80
+	surveillance_pp = 40
+	surveillance_instruments = 80
+	surveillance_support = 60
+	surveillance_trucks = 20
+	field_hospital_pp = 10
+	field_hospital_command_power = 10
+	field_hospital_support = 120
+	field_hospital_trucks = 60
+	field_hospital_instruments = 20
+	quarantine_pp = 25
+	quarantine_command_power = 10
+	quarantine_support = 80
+	quarantine_trucks = 40
+	quarantine_infantry = 200
+	quarantine_manpower = 1000
+	quarantine_stability = -0.01
+	antibiotic_development_pp = 40
+	antibiotic_production_pp = 50
+	antibiotic_distribution_pp = 10
+	antibiotic_distribution_support = 50
+	antibiotic_distribution_trucks = 20
+	vaccination_pp = 150
+	vaccination_support = 250
+	vaccination_trucks = 100
+	vaccination_instruments = 50
+	international_mission_pp = 30
+	international_mission_support = 50
+	international_mission_trucks = 25
+	international_mission_instruments = 20
+	containment_mission_pp = 35
+	containment_mission_command_power = 15
+	containment_mission_support = 150
+	containment_mission_trucks = 75
+	containment_mission_instruments = 40
+	containment_sustain_support = 75
+	containment_sustain_trucks = 30
+	containment_sustain_instruments = 10
+	border_close_pp = 20
+	border_reopen_pp = 5
+}
+
+bio_countermeasure_capacity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	medical_investment_gain = 20
+	biosecurity_investment_gain = 20
+	medical_investment_max_start = 80
+	biosecurity_investment_max_start = 80
+	surveillance_medical_commitment = 10
+	field_hospital_medical_commitment = 8
+	antibiotic_service_medical_commitment = 5
+	vaccination_medical_commitment = 10
+	international_mission_medical_commitment = 8
+	containment_mission_medical_commitment = 10
+	containment_mission_remaining_medical_floor = 5
+	medical_response_factor = 0.50
+	biosecurity_response_factor = 0.50
+}
+
+bio_countermeasure_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	capacity_investment_days = 90
+	surveillance_activation_days = 60
+	surveillance_stand_down_days = 30
+	field_hospital_deployment_days = 7
+	quarantine_deployment_days = 10
+	anthrax_development_days = 75
+	plague_development_days = 90
+	tularemia_development_days = 60
+	anthrax_production_days = 75
+	plague_production_days = 90
+	tularemia_production_days = 60
+	antibiotic_distribution_days = 3
+	antibiotic_course_cooldown_days = 45
+	antibiotic_shutdown_days = 30
+	vaccination_activation_days = 180
+	vaccination_shutdown_days = 30
+	international_mission_deployment_days = 14
+	border_cleanup_interval_days = 30
+	containment_isolated_days = 90
+	containment_local_days = 180
+	containment_regional_days = 270
+	containment_severe_days = 365
+}
+
+bio_countermeasure_response = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	surveillance_network_add = 25
+	international_surveillance_add = 15
+	international_containment_add = 15
+	international_medical_add = 15
+	surveillance_detection_evidence_add = 10
+	international_evidence_add = 20
+	international_attribution_control_loss = 5
+	international_condemnation_credit = 8
+	international_hidden_exposure_fraction = 0.20
+	containment_success_intensity_reduction = 15
+	containment_success_exposed_reduction = 0.05
+	containment_success_medical_reduction = 15
+	containment_partial_intensity_reduction = 5
+	containment_partial_exposed_reduction = 0.01
+	containment_partial_medical_reduction = 5
+	containment_failure_intensity_add = 10
+	containment_failure_exposed_add = 0.02
+	containment_failure_medical_add = 10
+	containment_success_stability = 0.01
+}
+
+bio_countermeasure_treatment = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	maximum_courses_per_episode = 3
+	diminishing_course_threshold = 1
+	anthrax_diminished_growth_mult = 0.85
+	anthrax_diminished_death_mult = 0.70
+	plague_diminished_growth_mult = 0.88
+	plague_diminished_death_mult = 0.75
+	tularemia_diminished_growth_mult = 0.82
+	tularemia_diminished_death_mult = 0.65
+}
+
+bio_countermeasure_idea = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	surveillance_consumer_goods = 0.03
+	surveillance_political_power = -0.05
+	anthrax_consumer_goods = 0.10
+	plague_consumer_goods = 0.15
+	tularemia_consumer_goods = 0.08
+	smallpox_consumer_goods = 0.25
+	smallpox_political_power = -0.25
+	anthrax_research_slowdown = -0.20
+	plague_research_slowdown = -0.25
+	tularemia_research_slowdown = -0.15
+}
+
+bio_countermeasure_quarantine = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	state_construction = -0.20
+	local_factories = -0.15
+	local_resources = -0.15
+	local_supplies = -0.15
+	resistance_growth = 0.10
+}
+
+bio_countermeasure_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	low = 1
+	base = 3
+	high = 5
+	urgent = 10
+	critical = 20
+	prepared_factor = 2
+	democratic_factor = 1.50
+	authoritarian_quarantine_factor = 1.50
+	chinese_emergency_factor = 2
+	low_stability_factor = 0.50
+	low_industry_factor = 0.25
+	active_outbreak_factor = 3
+	smallpox_factor = 4
+	plague_factor = 3
+	containment_isolated = 3
+	containment_local = 5
+	containment_regional = 10
+	containment_severe = 20
+	safe_revoke_factor = 5
+	war_revoke_factor = 0.50
+	weak_stability_threshold = 0.40
+	minimum_industry_tiny = 6
+	minimum_industry_small = 8
+	minimum_industry_standard = 10
+	minimum_industry_large = 12
+	minimum_industry_mass = 15
+	high_opinion_threshold = 75
+}

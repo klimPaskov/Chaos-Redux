@@ -35,13 +35,13 @@ Exact-size PNG previews were produced from the transparent intermediate with FFm
 
 ## Wiring table
 
-The sprite names and DDS paths above are stable and ready for later registration.
+The sprite names and DDS paths above are stable and registered in `interface/biological_countermeasures.gfx`.
 
-No `.gfx` path was provided in the bounded request, so no `.gfx` file was created or edited.
+The ten decision sprites are wired to the matching biological response decisions.
 
-The main agent should register the decision sprites in the later Stage 7 biowarfare decision sprite definition and the idea sprites in the later Stage 7 biowarfare idea sprite definition, preserving the exact names and texture paths above.
+The two idea sprites are wired to `bio_surveillance_network_idea` and `smallpox_vaccination_program_idea`.
 
-No gameplay, localisation, GUI, `.gfx`, existing icon, raid asset, or protected reference file was changed.
+No existing icon or military-raid asset was removed, renamed, resized into another asset type, or overwritten.
 
 ## Source provenance records
 

@@ -55,18 +55,20 @@ smallpox_contaminated_state = {
     state_production_speed_buildings_factor = var:smallpox_production_modifier
     attrition_for_controller = var:smallpox_attrition_modifier
     army_speed_factor_for_controller = var:smallpox_speed_modifier
-    # Growth over time (severity increases if untreated)
+    # Growth over time (outbreak burden increases if untreated)
     # Note: This will be handled by events that modify the variables
 }
 
 quarantined_contaminated_state = {
-    icon = GFX_idea_quarantine_contamination
+	icon = GFX_idea_quarantine_contamination
 
-    state_production_speed_buildings_factor = -0.20
-    political_power_gain = -0.10
-    stability_weekly = -0.002
+	state_production_speed_buildings_factor = constant:bio_countermeasure_quarantine.state_construction
+	local_factories = constant:bio_countermeasure_quarantine.local_factories
+	local_resources = constant:bio_countermeasure_quarantine.local_resources
+	local_supplies = constant:bio_countermeasure_quarantine.local_supplies
+	resistance_growth = constant:bio_countermeasure_quarantine.resistance_growth
 
-    remove_trigger = {
-        NOT = { has_state_flag = quarantine_measures_active }
-    }
+	remove_trigger = {
+		NOT = { has_state_flag = quarantine_measures_active }
+	}
 }

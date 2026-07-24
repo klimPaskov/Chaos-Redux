@@ -1,8 +1,8 @@
 # Stage 7 Biological Countermeasure Icon GFX Handoff
 
-This handoff is for the main agent that will register the later Stage 7 biowarfare sprites.
+The Stage 7 biological-countermeasure sprites are registered in `interface/biological_countermeasures.gfx`.
 
-No `.gfx` file was edited because the bounded request supplied sprite names and final DDS paths but no target registration file.
+The definitions below are the exact registered runtime contract.
 
 Preserve every sprite name and texture path exactly as shown below.
 
@@ -76,6 +76,6 @@ spriteType = {
 
 The decisions are exact 32x32 runtime compositions and the ideas are exact 64x64 runtime compositions.
 
-The later wiring pass should connect these sprites to the already registered Stage 7 ids without renaming or changing the asset type.
+The decision sprites are wired to their matching biological response decisions, and the two idea sprites are wired to `bio_surveillance_network_idea` and `smallpox_vaccination_program_idea`.
 
-No localisation, gameplay, GUI, existing icon, military-raid asset, or protected reference file was changed by this package.
+No existing icon or military-raid asset was removed, renamed, resized into another asset type, or overwritten.
