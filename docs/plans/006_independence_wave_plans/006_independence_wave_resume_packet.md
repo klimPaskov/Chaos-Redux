@@ -85,24 +85,25 @@ they are not current routing documents.
   promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains
   fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM/
   HBX carrier set has no currently admitted country and cannot form.
-- IW-001/002/006/008/009/010, IW-018/019, IW-043/058,
-  IW-173/179/184, IW-093, and IW-098 retain implemented gameplay adapters, but
-  their generated or generic grounded-polity portraits withdraw visual
-  readiness and runtime content attestation. The compile-time package content-
-  attestation set contains IW-004, IW-007, and IW-017.
-- Protected BAY Rupprecht and RHI Matthes remain approved and untouched. Their
-  packages still require sourced replacements for every other live leader and
-  commander role.
+- IW-002/006/009/010, IW-018, IW-043/058, IW-173/179/184, IW-093, and
+  IW-098 retain implemented gameplay adapters, but their generated, generic, or
+  incomplete grounded-polity portrait rosters withdraw visual readiness and
+  runtime content attestation. The compile-time package content-attestation set
+  contains IW-001, IW-004, IW-007, IW-008, IW-017, and IW-019.
+- Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
+  RHI's complete replacement roster is admitted; BAY still requires an approved
+  replacement for its remaining command role and a fresh package audit.
 - IW-173 HAW is also withdrawn: vanilla defines the real David Kalakaua
   Kawananakoa but maps him to generic `Portrait_Asia_Generic_land_5.dds`, not a
   sourced portrait of the person.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
   carriers cannot execute while their owning package admission is withdrawn.
-- The three attested packages can satisfy the minimum three-country automatic
-  wave only when all three pass their live host, anchor, reservation, Event-5
-  collision, chaos-band, force, and transaction gates. Higher automatic bands
-  remain fail-closed until enough additional packages are admitted. The exact
-  3/4/5/7/10 ladder and World Collapse count of ten remain unchanged. FORM-48's
+- The six attested packages can satisfy the three-, four-, and five-country
+  automatic waves only when the required number pass their live host, anchor,
+  reservation, Event-5 collision, chaos-band, force, and transaction gates.
+  The seven- and ten-country bands remain fail-closed until enough additional
+  packages are admitted. The exact 3/4/5/7/10 ladder and World Collapse count
+  of ten remain unchanged. FORM-48's
   proof writers own `independence_wave_form48_registry_surface_registered` and
   `independence_wave_form48_readiness_attested`; no annexation or integration
   fallback is used.
@@ -163,7 +164,7 @@ they are not current routing documents.
 | IW-007 AGX | Admitted after current package and portrait audits | The retry-02 Douwe Kalma and Pieter Reenalda candidate-02 portraits pass independent source-likeness and HOI4-style review and are wired to the existing sprites; candidate 01 remains rejected. The fresh package audit passes state-36/RG-36, HOL survival, Event-5 collision, setup, p7 force, focus, decisions, AI, localisation, flag, and cleanup. Preserve exact-ID compile-time attestation and every live allocation proof |
 | IW-001 SCO | Admitted after current package and portrait audits | Robert Bontine Cunninghame Graham and Victor Morven Fortune have independently approved sourced real-male HOI4 repaints wired to the stable full-size consumers. The post-wiring package audit passes tag reuse, state-121/ENG-survival setup, force, focus, decisions, ideas, AI, formables, localisation, flags, and cleanup. Preserve exact-ID content attestation and every live allocation proof |
 | IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis is sourced, processed, and wired as the civic leader. Preserve the package logic, but keep execution closed until the mountain commander is replaced by a sourced real military identity and the full roster is re-audited |
-| IW-008 RHI | Gameplay retained; portrait production blocked | Preserve protected Matthes, sourced Josef Harpe, the Level 2 lane, incidents, and FORM-04 delegation logic. Adenauer stays rejected because vanilla recruits `GER_konrad_adenauer`. Karl Jarres is the source-ready Rhenish civic replacement primary with no vanilla/current ownership hit; he and Harpe still require a compliant HOI4-painted finish and visual re-audit before admission |
+| IW-008 RHI | Admitted after current package, portrait, ownership, and runtime audits | Preserve protected Matthes, sourced Wilhelm Marx and Gustav-Adolf von Zangen, the Level 2 lane, incidents, FORM-04 delegation logic, exact-ID content attestation, and every live host, anchor, reservation, Event-5 collision, force, and transaction proof. The approved full-size runtime DDS files are pixel-identical to their approved `156x210` PNGs and no advisor, dossier, `_small`, female, generic, or fallback derivative is authorized |
 | IW-009 BAY | Gameplay retained; portrait production blocked | Preserve protected Rupprecht, sourced Heinrich Held, the Level 2 lane, incidents, and South German settlement. Epp stays rejected because vanilla recruits `GER_franz_ritter_von_epp`. Eugen Ritter von Schobert is the source-ready Bavarian military replacement primary with no vanilla/current ownership hit; Schobert and Held still require a compliant HOI4-painted finish and visual re-audit before admission |
 | IW-003 Cornwall | Hard blocked | Preserve ACX as reserved and dormant. Do not invent a state fallback |
 | IW-005 Flanders | Committed and independently audited living-BEL overlay | Preserve `BEL` and `BEL_flanders`. Do not treat it as a selectable release package. Carry the timeout-ordering and opportunistic-garrison risks |
@@ -179,7 +180,7 @@ they are not current routing documents.
 | IW-058 ASY | Signature gameplay retained; visual admission withdrawn | Gallo Shabo is sourced, processed, and wired. Preserve ASY identity, route, forces, focus, decisions, centralized politics, exact vanilla guards, FORM-18, and the sovereign-autonomy terminal contract. Keep execution closed until the other three route leaders are replaced and the full package is re-audited |
 | IW-093 DOX | Signature focus/decision/idea/AI/icon, Prempeh II leadership, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the exact new X-tag, state-274/Kumasi contract, high-chaos-only disposition, host-survival proof, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. The TNA/OGL Prempeh II photograph remains the approved source and identity, but the installed DDS is an ImageGen restyling of that real person and is withdrawn under the current deterministic real-person pipeline. Rebuild it from the unchanged archive master. The origin recruits commanders currently named Kwame Frimpong and Kwaku Ntim and proves both corps roles. Their generated images and invented identities must be replaced by sourced real-person full portraits and matching names. Event 6 defines no commander miniatures. Preserve force row 93 and its generation-bound river/jungle opening force. Do not add runtime/SCN-008 attestation until the complete sourced roster, exact flag, FORM-24 contract, and final country audits pass |
 | IW-098 SOK | Signature focus/decision/idea/AI/icon, date-aware leadership logic, route politics, bilateral host settlement, command, and starting-force tranches implemented; fail-closed | Preserve the dormant vanilla SOK identity, state-902 contract, automatic-if-not-living rule, Event-012 flags, the 17 June 1938 Hasan-to-Siddiq boundary, visible values, compatible shared/package route locks, host-answer receipt rule, and 57-icon shared package. Muhammadu Dikko has a valid sourced TNA master and replaces fictional Umaru Gwadabawa, but the current photographic treatment fails the HOI4 painted-style gate. Vanilla maps post-cutover Siddiq to generic `Portrait_Africa_Generic_3.dds`; it is not sourced likeness evidence. Hasan, Siddiq, and Bello Rabah still require sourced real-person portraits before admission. Preserve the gameplay roles, corps gates, force row 98, and generation-bound mounted opening force while the package remains closed. Do not promote until the complete sourced roster, exact flag, FORM-25 contract, and final country audits pass |
-| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains IW-001, IW-004, IW-007, IW-017, and IW-019 |
+| Other package IDs | Fail-closed | Implement and audit individually before promotion. The current compile-time content-attestation set contains IW-001, IW-004, IW-007, IW-008, IW-017, and IW-019 |
 
 An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
