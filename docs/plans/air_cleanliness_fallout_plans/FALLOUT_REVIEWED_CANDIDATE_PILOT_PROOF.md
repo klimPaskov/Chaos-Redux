@@ -332,6 +332,10 @@ Counterfeit Antibiotics is the twenty-ninth reviewed ordinary candidate.
 ## The Ration Thief Election correction
 
 The Ration Thief Election is the thirtieth reviewed ordinary candidate. It is a dormant candidate row with four government-aware legitimacy branches, a 28-day result, a 240-day second-count callback, Deaths-system failure accounting, Event Log payloads, cleanup receipts, and dedicated report art. The candidate is not countable toward the 660-block release floor while scheduler activation and runtime delivery remain unproven.
+
+## Year Zero correction
+
+Year Zero is the thirty-first reviewed ordinary candidate. It is a dormant candidate row with four calendar identity branches, a 35-day result, a 365-day first-anniversary callback, Deaths-system failure accounting, Event Log payloads, cleanup receipts, and dedicated report art. The candidate is not countable toward the 660-block release floor while scheduler activation and runtime delivery remain unproven.
 It uses country candidate id `387`, transaction `710029`, route `7129`, event tokens `387` through `393`, and history `9134`.
 Its gate selects the lowest valid native state id with current Air Winter exposure, a surviving population, an accepted Fallout state grade, and medicine-market pressure in the reviewed band.
 The chain freezes Medicine, Food, Recognition, Cohesion, and three medicine provenance ledgers before a 42-day result and a 330-day supplier review callback.
