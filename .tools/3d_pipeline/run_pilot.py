@@ -491,6 +491,10 @@ def _finalize_pdx_runtime_texture(
         raise RuntimeError(f"No extracted normal texture conversion for {image_name}.")
     processed_rel = f"textures/processed/{image_name}.png"
     processed = job / processed_rel
+    if processed.exists():
+        if not processed.is_file():
+            raise RuntimeError(f"Processed texture target is not a file: {processed}")
+        processed.unlink()
     shutil.copy2(packed_source, processed)
     dds_rel = str(conversion["dds"])
     dds = job / dds_rel
@@ -643,6 +647,7 @@ def run_candidate(spec: Dict[str, Any]) -> Dict[str, Any]:
         source_rel=generation_glb["file"]["relative_path"],
         asset_kind=spec["asset_kind"],
         target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
         runtime_stem=f"{spec['runtime_stem']}_candidate",
         target_triangles=profile["triangle_range"]["working_triangle_target"],
         vanilla_reference=vanilla_reference,
@@ -842,6 +847,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         source_rel=final_source,
         asset_kind="humanoid",
         target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
         runtime_stem=f"{spec['runtime_stem']}_attack",
         target_triangles=profile["triangle_range"]["working_triangle_target"],
         excluded_provider_objects=spec.get("excluded_provider_objects"),
@@ -905,6 +911,7 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         source_rel=idle_source,
         asset_kind="humanoid",
         target_height_m=spec.get("blender_target_height_m", spec["target_height_m"]),
+        runtime_entity_scale=float(spec.get("runtime_entity_scale", 1.0)),
         runtime_stem=f"{spec['runtime_stem']}_idle",
         target_triangles=profile["triangle_range"]["working_triangle_target"],
         excluded_provider_objects=spec.get("excluded_provider_objects"),

@@ -208,19 +208,12 @@ def import_vanilla_reference(
     expected_height = float(reference["mesh_height"])
     entity_scale = float(reference["entity_scale"])
     expected_runtime_height = float(reference["runtime_height"])
-    target_height = float(payload["target_height_m"])
     measurement_tolerance = max(0.01, expected_height * 0.01)
     if abs(source_height - expected_height) > measurement_tolerance:
         raise RuntimeError(
             f"Vanilla reference height changed: measured {source_height:.6f}, "
             f"expected {expected_height:.6f}, tolerance {measurement_tolerance:.6f}."
         )
-    if abs(target_height - source_height) > measurement_tolerance:
-        raise RuntimeError(
-            f"Humanoid Blender target must match the vanilla source mesh height: "
-            f"target {target_height:.6f}, measured {source_height:.6f}."
-        )
-
     return {
         "mesh_rel": mesh_rel,
         "objects": [obj.name for obj in imported],
@@ -236,6 +229,7 @@ def import_vanilla_reference(
         "forward_axis": reference.get("forward_axis"),
         "up_axis": reference.get("up_axis"),
         "ground_contact_z": minimum.z,
+        "reference_policy": "read_only_vanilla_source_measurement; pilot mesh target may bake its calibrated runtime scale",
         "status": "passed",
     }
 
@@ -333,6 +327,23 @@ def bind_geometry_to_existing_rig(
             target_groups[name].add([vertex.index], weight / total, "REPLACE")
         transferred_vertices += 1
 
+    mesh_world_scale = target_mesh.matrix_world.to_scale()
+    rig_world_scale = target_armature.matrix_world.to_scale()
+    if (
+        max(mesh_world_scale) - min(mesh_world_scale) > 1e-5
+        or max(rig_world_scale) - min(rig_world_scale) > 1e-5
+        or min(mesh_world_scale) <= 0.0
+        or min(rig_world_scale) <= 0.0
+    ):
+        raise RuntimeError(
+            "Dual-source rig transfer requires positive uniform mesh and armature transforms."
+        )
+    export_scale_ratio = float(mesh_world_scale[0] / rig_world_scale[0])
+    for vertex in target_mesh.data.vertices:
+        vertex.co *= export_scale_ratio
+    target_mesh.data.update()
+    target_mesh.scale = rig_world_scale
+    bpy.context.view_layer.update()
     world_matrix = target_mesh.matrix_world.copy()
     target_mesh.parent = target_armature
     target_mesh.parent_type = "OBJECT"
@@ -351,6 +362,11 @@ def bind_geometry_to_existing_rig(
         "alignment_scale": source_height / target_height,
         "source_height": source_height,
         "target_height_before_alignment": target_height,
+        "export_transform_policy": "bake mesh/armature scale agreement into mesh data before parenting",
+        "mesh_world_scale_before_bake": list(mesh_world_scale),
+        "armature_world_scale": list(rig_world_scale),
+        "mesh_data_scale_ratio": export_scale_ratio,
+        "mesh_world_scale_after_bake": list(target_mesh.matrix_world.to_scale()),
     }
 
 
@@ -1599,6 +1615,9 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     save_blend(imported_checkpoint)
 
     target_height = float(payload["target_height_m"])
+    runtime_entity_scale = float(payload.get("runtime_entity_scale", 1.0))
+    if runtime_entity_scale <= 0.0:
+        raise RuntimeError("Candidate preparation requires a positive runtime entity scale.")
     normalize = normalize_geometry(target_height)
     triangulation = triangulate_and_normals()
     weld_distance = float(payload.get("topology_weld_distance", 1e-5))
@@ -1621,10 +1640,12 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     if vanilla_reference:
         final_height = float(geometry["dimensions"][2])
         vanilla_reference["final_mesh_height"] = final_height
-        vanilla_reference["final_effective_runtime_height"] = final_height * vanilla_reference["entity_scale"]
+        vanilla_reference["pilot_entity_scale"] = runtime_entity_scale
+        vanilla_reference["pilot_target_runtime_height"] = target_height * runtime_entity_scale
+        vanilla_reference["final_effective_runtime_height"] = final_height * runtime_entity_scale
         vanilla_reference["final_runtime_height_delta"] = (
             vanilla_reference["final_effective_runtime_height"]
-            - vanilla_reference["expected_runtime_height"]
+            - vanilla_reference["pilot_target_runtime_height"]
         )
     geometry_checkpoint = job / "blender" / "checkpoints" / "01_geometry_approved.blend"
     save_blend(geometry_checkpoint)
@@ -1674,6 +1695,12 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "geometry_transfer": geometry_transfer,
         "imported_geometry": imported_metrics,
         "normalization": normalize,
+        "runtime_calibration": {
+            "mesh_target_height_m": target_height,
+            "entity_scale": runtime_entity_scale,
+            "effective_runtime_height_m": target_height * runtime_entity_scale,
+            "policy": "bake the calibrated pilot runtime height into mesh coordinates and keep the entity scale neutral",
+        },
         "triangulation": triangulation,
         "controlled_reduction": reduction,
         "topology_repair": topology_repair,
@@ -1767,6 +1794,21 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
                 ],
             }
         )
+    def object_transform(obj: bpy.types.Object) -> Dict[str, Any]:
+        return {
+            "location": [float(value) for value in obj.location],
+            "rotation_euler": [float(value) for value in obj.rotation_euler],
+            "scale": [float(value) for value in obj.scale],
+            "dimensions": [float(value) for value in obj.dimensions],
+            "matrix_world": [
+                [float(value) for value in row]
+                for row in obj.matrix_world
+            ],
+            "hidden": bool(obj.hide_get()),
+            "chaosx_working": bool(obj.get("chaosx_working", False)),
+            "chaosx_source_object": obj.get("chaosx_source_object"),
+        }
+
     return {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "objects": [
@@ -1775,6 +1817,7 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
                 "type": obj.type,
                 "parent": obj.parent.name if obj.parent else None,
                 "parent_type": obj.parent_type if obj.parent else None,
+                "transform": object_transform(obj),
                 "modifiers": [
                     {
                         "name": modifier.name,
@@ -1812,7 +1855,12 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
             else:
                 original = Path(bpy.path.abspath(image.filepath))
                 if original.exists() and original.suffix.lower() in {".png", ".jpg", ".jpeg", ".tga", ".tif", ".tiff"}:
-                    shutil.copy2(original, output)
+                    if original.resolve() != output.resolve():
+                        if output.exists():
+                            if not output.is_file():
+                                raise RuntimeError(f"Processed texture target is not a file: {output}")
+                            output.unlink()
+                        shutil.copy2(original, output)
                 else:
                     image.save_render(filepath=str(output))
             image.filepath = str(output)
