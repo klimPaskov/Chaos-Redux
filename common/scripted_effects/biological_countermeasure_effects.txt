@@ -1,0 +1,1002 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL COUNTERMEASURE SCRIPTED EFFECTS
+# ============================================================================
+# Overview:
+# - Builds national Medical Capacity and Biological Security from real stores.
+# - Commits and restores exact medical capacity for selected-state responses.
+# - Applies surveillance, quarantine, hospitals, agent-specific antibiotics,
+#   vaccination, and international-transparency consequences.
+# - Releases exact-state medical reservations when a treated agent recovers or
+#   a paid deployment reaches a state that is no longer eligible.
+# - Resolves exact-state containment missions from recorded intensity and
+#   event-driven outbound-spread history.
+# - No helper scans the world or infers a target state.
+# ============================================================================
+
+@BIO_ANTIBIOTIC_COURSE_COOLDOWN_DAYS = 45
+
+bio_countermeasure_debit_support_equipment = {
+	set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_support_cost }
+	multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = bio_countermeasure_equipment_debit
+	}
+}
+
+bio_countermeasure_debit_motorized_equipment = {
+	set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_truck_cost }
+	multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+	add_equipment_to_stockpile = {
+		type = motorized_equipment
+		amount = bio_countermeasure_equipment_debit
+	}
+}
+
+bio_countermeasure_debit_instrument_equipment = {
+	set_temp_variable = { bio_countermeasure_instrument_remaining = bio_countermeasure_instrument_cost }
+	clamp_temp_variable = { var = bio_countermeasure_instrument_remaining min = constant:cbrn_math.zero }
+
+	set_temp_variable = { bio_countermeasure_instrument_available = num_equipment@cbrn_instrument_equipment_1 }
+	set_temp_variable = { bio_countermeasure_instrument_take = bio_countermeasure_instrument_remaining }
+	clamp_temp_variable = { var = bio_countermeasure_instrument_take min = constant:cbrn_math.zero max = bio_countermeasure_instrument_available }
+	if = {
+		limit = { check_variable = { bio_countermeasure_instrument_take > constant:cbrn_math.zero } }
+		set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_instrument_take }
+		multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+		add_equipment_to_stockpile = {
+			type = cbrn_instrument_equipment_1
+			amount = bio_countermeasure_equipment_debit
+		}
+		subtract_from_temp_variable = { bio_countermeasure_instrument_remaining = bio_countermeasure_instrument_take }
+	}
+
+	set_temp_variable = { bio_countermeasure_instrument_available = num_equipment@cbrn_instrument_equipment_2 }
+	set_temp_variable = { bio_countermeasure_instrument_take = bio_countermeasure_instrument_remaining }
+	clamp_temp_variable = { var = bio_countermeasure_instrument_take min = constant:cbrn_math.zero max = bio_countermeasure_instrument_available }
+	if = {
+		limit = { check_variable = { bio_countermeasure_instrument_take > constant:cbrn_math.zero } }
+		set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_instrument_take }
+		multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+		add_equipment_to_stockpile = {
+			type = cbrn_instrument_equipment_2
+			amount = bio_countermeasure_equipment_debit
+		}
+		subtract_from_temp_variable = { bio_countermeasure_instrument_remaining = bio_countermeasure_instrument_take }
+	}
+
+	set_temp_variable = { bio_countermeasure_instrument_available = num_equipment@cbrn_instrument_equipment_3 }
+	set_temp_variable = { bio_countermeasure_instrument_take = bio_countermeasure_instrument_remaining }
+	clamp_temp_variable = { var = bio_countermeasure_instrument_take min = constant:cbrn_math.zero max = bio_countermeasure_instrument_available }
+	if = {
+		limit = { check_variable = { bio_countermeasure_instrument_take > constant:cbrn_math.zero } }
+		set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_instrument_take }
+		multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+		add_equipment_to_stockpile = {
+			type = cbrn_instrument_equipment_3
+			amount = bio_countermeasure_equipment_debit
+		}
+		subtract_from_temp_variable = { bio_countermeasure_instrument_remaining = bio_countermeasure_instrument_take }
+	}
+}
+
+bio_countermeasure_debit_infantry_equipment = {
+	set_temp_variable = { bio_countermeasure_equipment_debit = bio_countermeasure_infantry_cost }
+	multiply_temp_variable = { bio_countermeasure_equipment_debit = constant:bio_lifecycle_math.negation }
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = bio_countermeasure_equipment_debit
+	}
+}
+
+bio_countermeasure_pay_command_power = {
+	set_temp_variable = { bio_countermeasure_command_power_debit = bio_countermeasure_command_power_cost }
+	multiply_temp_variable = { bio_countermeasure_command_power_debit = constant:bio_lifecycle_math.negation }
+	add_command_power = bio_countermeasure_command_power_debit
+}
+
+bio_countermeasure_pay_expand_medical_capacity = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.expand_medical_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.expand_medical_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+}
+
+bio_countermeasure_complete_medical_capacity_investment = {
+	cbrn_initialize_country_data = yes
+	add_to_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.medical_investment_gain }
+	clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+}
+
+bio_countermeasure_pay_expand_biosecurity_capacity = {
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.expand_biosecurity_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.expand_biosecurity_support }
+	bio_countermeasure_debit_support_equipment = yes
+}
+
+bio_countermeasure_complete_biosecurity_capacity_investment = {
+	cbrn_initialize_country_data = yes
+	add_to_variable = { cbrn_biological_security = constant:bio_countermeasure_capacity.biosecurity_investment_gain }
+	clamp_variable = { var = cbrn_biological_security min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+}
+
+bio_countermeasure_pay_surveillance_network = {
+	cbrn_initialize_country_data = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.surveillance_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.surveillance_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.surveillance_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.surveillance_medical_commitment }
+	clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	set_country_flag = bio_surveillance_capacity_committed
+	set_country_flag = bio_surveillance_network_activation_in_progress
+}
+
+bio_countermeasure_activate_surveillance_network = {
+	add_ideas = bio_surveillance_network_idea
+	clr_country_flag = bio_surveillance_network_activation_in_progress
+}
+
+bio_countermeasure_stand_down_surveillance_network = {
+	remove_ideas = bio_surveillance_network_idea
+	if = {
+		limit = { has_country_flag = bio_surveillance_capacity_committed }
+		add_to_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.surveillance_medical_commitment }
+		clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clr_country_flag = bio_surveillance_capacity_committed
+	}
+}
+
+bio_countermeasure_pay_field_hospital = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.field_hospital_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.field_hospital_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.field_hospital_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+	set_temp_variable = { bio_countermeasure_command_power_cost = constant:bio_countermeasure_cost.field_hospital_command_power }
+	bio_countermeasure_pay_command_power = yes
+}
+
+bio_countermeasure_reserve_field_hospital_capacity = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_field_hospital_capacity_committed }
+			NOT = { has_state_flag = bio_field_hospital_deployment_pending }
+			NOT = { has_state_flag = field_hospitals_deployed }
+			has_variable = bio_ordinary_outbreak_cycle
+		}
+		set_state_flag = bio_field_hospital_capacity_committed
+		set_state_flag = bio_field_hospital_deployment_pending
+		set_variable = { bio_field_hospital_medical_provider = ROOT }
+		set_variable = { bio_field_hospital_medical_commitment = constant:bio_countermeasure_capacity.field_hospital_medical_commitment }
+		set_variable = { bio_field_hospital_order_cycle = bio_ordinary_outbreak_cycle }
+		ROOT = {
+			cbrn_initialize_country_data = yes
+			subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.field_hospital_medical_commitment }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+}
+
+bio_countermeasure_release_field_hospital_reservation = {
+	if = {
+		limit = {
+			has_state_flag = bio_field_hospital_capacity_committed
+			has_variable = bio_field_hospital_medical_provider
+			has_variable = bio_field_hospital_medical_commitment
+			var:bio_field_hospital_medical_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_field_hospital_medical_commitment }
+		var:bio_field_hospital_medical_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+	clr_state_flag = bio_field_hospital_capacity_committed
+	clr_state_flag = bio_field_hospital_deployment_pending
+	clear_variable = bio_field_hospital_medical_provider
+	clear_variable = bio_field_hospital_medical_commitment
+	clear_variable = bio_field_hospital_order_cycle
+	clear_temp_variable = bio_countermeasure_refund_value
+}
+
+bio_countermeasure_apply_field_hospital = {
+	set_state_flag = field_hospitals_deployed
+	clr_state_flag = bio_field_hospital_deployment_pending
+	clear_variable = bio_field_hospital_order_cycle
+}
+
+bio_countermeasure_pay_quarantine = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.quarantine_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.quarantine_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_infantry_cost = constant:bio_countermeasure_cost.quarantine_infantry }
+	bio_countermeasure_debit_infantry_equipment = yes
+	set_temp_variable = { bio_countermeasure_command_power_cost = constant:bio_countermeasure_cost.quarantine_command_power }
+	bio_countermeasure_pay_command_power = yes
+	set_temp_variable = { bio_countermeasure_manpower_debit = constant:bio_countermeasure_cost.quarantine_manpower }
+	multiply_temp_variable = { bio_countermeasure_manpower_debit = constant:bio_lifecycle_math.negation }
+	add_manpower = bio_countermeasure_manpower_debit
+	add_stability = constant:bio_countermeasure_cost.quarantine_stability
+}
+
+bio_countermeasure_apply_quarantine = {
+	set_state_flag = quarantine_measures_active
+	set_state_flag = bio_ordinary_quarantine_active
+	clr_state_flag = bio_quarantine_deployment_pending
+	clear_variable = bio_quarantine_order_provider
+	clear_variable = bio_quarantine_order_cycle
+	add_dynamic_modifier = { modifier = quarantined_contaminated_state }
+}
+
+bio_countermeasure_record_quarantine_order = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_quarantine_deployment_pending }
+			NOT = { has_state_flag = bio_ordinary_quarantine_active }
+			has_variable = bio_ordinary_outbreak_cycle
+		}
+		set_state_flag = bio_quarantine_deployment_pending
+		set_variable = { bio_quarantine_order_provider = ROOT }
+		set_variable = { bio_quarantine_order_cycle = bio_ordinary_outbreak_cycle }
+	}
+}
+
+bio_countermeasure_clear_quarantine_order = {
+	clr_state_flag = bio_quarantine_deployment_pending
+	clear_variable = bio_quarantine_order_provider
+	clear_variable = bio_quarantine_order_cycle
+}
+
+bio_countermeasure_pay_antibiotic_distribution = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.antibiotic_distribution_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.antibiotic_distribution_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+}
+
+bio_countermeasure_reserve_state_antibiotic_service = {
+	if = {
+		limit = { NOT = { has_state_flag = bio_antibiotic_state_service_capacity_committed } }
+		set_state_flag = bio_antibiotic_state_service_capacity_committed
+		set_variable = { bio_antibiotic_medical_provider = ROOT }
+		set_variable = { bio_antibiotic_medical_commitment = constant:bio_countermeasure_capacity.antibiotic_service_medical_commitment }
+		ROOT = {
+			cbrn_initialize_country_data = yes
+			subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.antibiotic_service_medical_commitment }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+}
+
+bio_countermeasure_record_anthrax_antibiotic_order = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_anthrax_antibiotic_course_pending }
+			has_variable = bio_agent_1_episode_count
+		}
+		set_state_flag = bio_anthrax_antibiotic_course_pending
+		set_variable = { bio_anthrax_antibiotic_order_provider = ROOT }
+		set_variable = { bio_anthrax_antibiotic_order_episode = bio_agent_1_episode_count }
+		bio_countermeasure_reserve_state_antibiotic_service = yes
+	}
+}
+
+bio_countermeasure_record_plague_antibiotic_order = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_plague_antibiotic_course_pending }
+			has_variable = bio_agent_2_episode_count
+		}
+		set_state_flag = bio_plague_antibiotic_course_pending
+		set_variable = { bio_plague_antibiotic_order_provider = ROOT }
+		set_variable = { bio_plague_antibiotic_order_episode = bio_agent_2_episode_count }
+		bio_countermeasure_reserve_state_antibiotic_service = yes
+	}
+}
+
+bio_countermeasure_record_tularemia_antibiotic_order = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_tularemia_antibiotic_course_pending }
+			has_variable = bio_agent_3_episode_count
+		}
+		set_state_flag = bio_tularemia_antibiotic_course_pending
+		set_variable = { bio_tularemia_antibiotic_order_provider = ROOT }
+		set_variable = { bio_tularemia_antibiotic_order_episode = bio_agent_3_episode_count }
+		bio_countermeasure_reserve_state_antibiotic_service = yes
+	}
+}
+
+bio_countermeasure_clear_anthrax_antibiotic_order = {
+	clr_state_flag = bio_anthrax_antibiotic_course_pending
+	clear_variable = bio_anthrax_antibiotic_order_provider
+	clear_variable = bio_anthrax_antibiotic_order_episode
+}
+
+bio_countermeasure_clear_plague_antibiotic_order = {
+	clr_state_flag = bio_plague_antibiotic_course_pending
+	clear_variable = bio_plague_antibiotic_order_provider
+	clear_variable = bio_plague_antibiotic_order_episode
+}
+
+bio_countermeasure_clear_tularemia_antibiotic_order = {
+	clr_state_flag = bio_tularemia_antibiotic_course_pending
+	clear_variable = bio_tularemia_antibiotic_order_provider
+	clear_variable = bio_tularemia_antibiotic_order_episode
+}
+
+bio_countermeasure_release_antibiotic_service_if_unused = {
+	if = {
+		limit = {
+			has_state_flag = bio_antibiotic_state_service_capacity_committed
+			NOT = { bio_countermeasure_state_has_active_or_pending_antibiotic_service = yes }
+		}
+		if = {
+			limit = {
+				has_variable = bio_antibiotic_medical_provider
+				has_variable = bio_antibiotic_medical_commitment
+				var:bio_antibiotic_medical_provider = { exists = yes }
+			}
+			set_temp_variable = { bio_countermeasure_refund_value = bio_antibiotic_medical_commitment }
+			var:bio_antibiotic_medical_provider = {
+				add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+				clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+			}
+		}
+		clr_state_flag = bio_antibiotic_state_service_capacity_committed
+		clear_variable = bio_antibiotic_medical_provider
+		clear_variable = bio_antibiotic_medical_commitment
+	}
+}
+
+bio_countermeasure_apply_anthrax_antibiotic_course = {
+	bio_countermeasure_clear_anthrax_antibiotic_order = yes
+	set_state_flag = bio_anthrax_antibiotics_active
+	if = {
+		limit = { NOT = { has_variable = bio_anthrax_antibiotic_courses } }
+		set_variable = { bio_anthrax_antibiotic_courses = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_anthrax_antibiotic_courses = constant:bio_lifecycle_math.one }
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_anthrax_antibiotic_courses
+				value = constant:bio_countermeasure_treatment.diminishing_course_threshold
+				compare = greater_than
+			}
+		}
+		set_state_flag = bio_anthrax_antibiotics_diminished
+	}
+	set_state_flag = { flag = bio_anthrax_antibiotic_course_cooldown days = @BIO_ANTIBIOTIC_COURSE_COOLDOWN_DAYS }
+}
+
+bio_countermeasure_apply_plague_antibiotic_course = {
+	bio_countermeasure_clear_plague_antibiotic_order = yes
+	set_state_flag = bio_plague_antibiotics_active
+	if = {
+		limit = { NOT = { has_variable = bio_plague_antibiotic_courses } }
+		set_variable = { bio_plague_antibiotic_courses = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_plague_antibiotic_courses = constant:bio_lifecycle_math.one }
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_plague_antibiotic_courses
+				value = constant:bio_countermeasure_treatment.diminishing_course_threshold
+				compare = greater_than
+			}
+		}
+		set_state_flag = bio_plague_antibiotics_diminished
+	}
+	set_state_flag = { flag = bio_plague_antibiotic_course_cooldown days = @BIO_ANTIBIOTIC_COURSE_COOLDOWN_DAYS }
+}
+
+bio_countermeasure_apply_tularemia_antibiotic_course = {
+	bio_countermeasure_clear_tularemia_antibiotic_order = yes
+	set_state_flag = bio_tularemia_antibiotics_active
+	if = {
+		limit = { NOT = { has_variable = bio_tularemia_antibiotic_courses } }
+		set_variable = { bio_tularemia_antibiotic_courses = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_tularemia_antibiotic_courses = constant:bio_lifecycle_math.one }
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_tularemia_antibiotic_courses
+				value = constant:bio_countermeasure_treatment.diminishing_course_threshold
+				compare = greater_than
+			}
+		}
+		set_state_flag = bio_tularemia_antibiotics_diminished
+	}
+	set_state_flag = { flag = bio_tularemia_antibiotic_course_cooldown days = @BIO_ANTIBIOTIC_COURSE_COOLDOWN_DAYS }
+}
+
+bio_countermeasure_cleanup_current_agent_antibiotic_service = {
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_active_agent
+				value = constant:bio_lifecycle_agent.anthrax
+				compare = equals
+			}
+		}
+		clr_state_flag = bio_anthrax_antibiotics_active
+		clr_state_flag = bio_anthrax_antibiotics_diminished
+		clr_state_flag = bio_anthrax_antibiotic_course_cooldown
+		bio_countermeasure_clear_anthrax_antibiotic_order = yes
+		clear_variable = bio_anthrax_antibiotic_courses
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_active_agent
+				value = constant:bio_lifecycle_agent.plague
+				compare = equals
+			}
+		}
+		clr_state_flag = bio_plague_antibiotics_active
+		clr_state_flag = bio_plague_antibiotics_diminished
+		clr_state_flag = bio_plague_antibiotic_course_cooldown
+		bio_countermeasure_clear_plague_antibiotic_order = yes
+		clear_variable = bio_plague_antibiotic_courses
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_active_agent
+				value = constant:bio_lifecycle_agent.tularemia
+				compare = equals
+			}
+		}
+		clr_state_flag = bio_tularemia_antibiotics_active
+		clr_state_flag = bio_tularemia_antibiotics_diminished
+		clr_state_flag = bio_tularemia_antibiotic_course_cooldown
+		bio_countermeasure_clear_tularemia_antibiotic_order = yes
+		clear_variable = bio_tularemia_antibiotic_courses
+	}
+	bio_countermeasure_release_antibiotic_service_if_unused = yes
+}
+
+bio_countermeasure_pay_vaccination_program = {
+	cbrn_initialize_country_data = yes
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.vaccination_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.vaccination_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.vaccination_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+	subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.vaccination_medical_commitment }
+	clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	set_country_flag = bio_vaccination_capacity_committed
+	set_country_flag = smallpox_vaccination_program_in_progress
+}
+
+bio_countermeasure_activate_vaccination_program = {
+	add_ideas = smallpox_vaccination_program_idea
+	clr_country_flag = smallpox_vaccination_program_in_progress
+}
+
+bio_countermeasure_revoke_vaccination_program = {
+	remove_ideas = smallpox_vaccination_program_idea
+	if = {
+		limit = { has_country_flag = bio_vaccination_capacity_committed }
+		add_to_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.vaccination_medical_commitment }
+		clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		clr_country_flag = bio_vaccination_capacity_committed
+	}
+}
+
+bio_countermeasure_pay_international_mission = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.international_mission_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.international_mission_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.international_mission_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+}
+
+bio_countermeasure_reserve_international_mission_capacity = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_international_mission_capacity_committed }
+			NOT = { has_state_flag = bio_international_medical_mission_pending }
+			NOT = { has_state_flag = bio_international_medical_mission_active }
+			has_variable = bio_ordinary_outbreak_cycle
+		}
+		set_state_flag = bio_international_mission_capacity_committed
+		set_state_flag = bio_international_medical_mission_pending
+		set_variable = { bio_international_medical_provider = ROOT }
+		set_variable = { bio_international_medical_commitment = constant:bio_countermeasure_capacity.international_mission_medical_commitment }
+		set_variable = { bio_international_order_cycle = bio_ordinary_outbreak_cycle }
+		ROOT = {
+			cbrn_initialize_country_data = yes
+			subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.international_mission_medical_commitment }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+}
+
+bio_countermeasure_release_international_mission_reservation = {
+	if = {
+		limit = {
+			has_state_flag = bio_international_mission_capacity_committed
+			has_variable = bio_international_medical_provider
+			has_variable = bio_international_medical_commitment
+			var:bio_international_medical_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_international_medical_commitment }
+		var:bio_international_medical_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+	clr_state_flag = bio_international_mission_capacity_committed
+	clr_state_flag = bio_international_medical_mission_pending
+	clear_variable = bio_international_medical_provider
+	clear_variable = bio_international_medical_commitment
+	clear_variable = bio_international_order_cycle
+	clear_temp_variable = bio_countermeasure_refund_value
+}
+
+bio_countermeasure_add_international_transparency_to_agent = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					OR = {
+						has_state_flag = bio_agent_[BIO_AGENT]_incubating
+						has_state_flag = bio_agent_[BIO_AGENT]_active
+					}
+				}
+				add_to_variable = { bio_agent_[BIO_AGENT]_evidence = constant:bio_countermeasure_response.international_evidence_add }
+				clamp_variable = { var = bio_agent_[BIO_AGENT]_evidence min = constant:bio_lifecycle_bounds.evidence_min max = constant:bio_lifecycle_bounds.evidence_max }
+				subtract_from_variable = { bio_agent_[BIO_AGENT]_concealment = constant:bio_countermeasure_response.international_attribution_control_loss }
+				clamp_variable = { var = bio_agent_[BIO_AGENT]_concealment min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+				set_temp_variable = { bio_active_agent = [BIO_AGENT] }
+				bio_lifecycle_load_current_agent_record = yes
+				bio_lifecycle_update_current_agent_attribution = yes
+			}
+		}
+		BIO_AGENT = "[?bio_countermeasure_transparency_agent|.0]"
+	}
+}
+
+bio_countermeasure_apply_international_mission = {
+	set_state_flag = bio_international_medical_mission_active
+	clr_state_flag = bio_international_medical_mission_pending
+	clear_variable = bio_international_order_cycle
+	ROOT = {
+		condemnation_initialize_country = yes
+		add_to_variable = { condemnation_decay_credit = constant:bio_countermeasure_response.international_condemnation_credit }
+		clamp_variable = { var = condemnation_decay_credit min = constant:condemnation_decay.minimum_total max = constant:condemnation_compliance_credit.maximum }
+		if = {
+			limit = { condemnation_has_biological_stockpile = yes }
+			set_country_flag = bio_international_medical_mission_program_disclosure
+			subtract_from_variable = { cbrn_attribution_control = constant:bio_countermeasure_response.international_attribution_control_loss }
+			clamp_variable = { var = cbrn_attribution_control min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+			set_temp_variable = { condemnation_hidden_exposure_fraction = constant:bio_countermeasure_response.international_hidden_exposure_fraction }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.inspection_disclosure }
+			condemnation_expose_hidden_evidence = yes
+		}
+	}
+	set_temp_variable = { bio_countermeasure_transparency_agent = constant:bio_lifecycle_agent.anthrax }
+	bio_countermeasure_add_international_transparency_to_agent = yes
+	set_temp_variable = { bio_countermeasure_transparency_agent = constant:bio_lifecycle_agent.plague }
+	bio_countermeasure_add_international_transparency_to_agent = yes
+	set_temp_variable = { bio_countermeasure_transparency_agent = constant:bio_lifecycle_agent.tularemia }
+	bio_countermeasure_add_international_transparency_to_agent = yes
+	set_temp_variable = { bio_countermeasure_transparency_agent = constant:bio_lifecycle_agent.smallpox }
+	bio_countermeasure_add_international_transparency_to_agent = yes
+	clear_temp_variable = bio_countermeasure_transparency_agent
+	clear_temp_variable = bio_active_agent
+}
+
+bio_countermeasure_pay_containment_mission = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.containment_mission_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.containment_mission_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.containment_mission_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+	set_temp_variable = { bio_countermeasure_command_power_cost = constant:bio_countermeasure_cost.containment_mission_command_power }
+	bio_countermeasure_pay_command_power = yes
+}
+
+bio_countermeasure_pay_containment_sustainment = {
+	set_temp_variable = { bio_countermeasure_support_cost = constant:bio_countermeasure_cost.containment_sustain_support }
+	bio_countermeasure_debit_support_equipment = yes
+	set_temp_variable = { bio_countermeasure_truck_cost = constant:bio_countermeasure_cost.containment_sustain_trucks }
+	bio_countermeasure_debit_motorized_equipment = yes
+	set_temp_variable = { bio_countermeasure_instrument_cost = constant:bio_countermeasure_cost.containment_sustain_instruments }
+	bio_countermeasure_debit_instrument_equipment = yes
+}
+
+bio_countermeasure_prepare_state_max_intensity = {
+	set_temp_variable = { bio_countermeasure_state_max_intensity = constant:bio_lifecycle_math.zero }
+	if = {
+		limit = {
+			has_variable = bio_agent_1_intensity
+			check_variable = { var = bio_agent_1_intensity value = bio_countermeasure_state_max_intensity compare = greater_than }
+		}
+		set_temp_variable = { bio_countermeasure_state_max_intensity = bio_agent_1_intensity }
+	}
+	if = {
+		limit = {
+			has_variable = bio_agent_2_intensity
+			check_variable = { var = bio_agent_2_intensity value = bio_countermeasure_state_max_intensity compare = greater_than }
+		}
+		set_temp_variable = { bio_countermeasure_state_max_intensity = bio_agent_2_intensity }
+	}
+	if = {
+		limit = {
+			has_variable = bio_agent_3_intensity
+			check_variable = { var = bio_agent_3_intensity value = bio_countermeasure_state_max_intensity compare = greater_than }
+		}
+		set_temp_variable = { bio_countermeasure_state_max_intensity = bio_agent_3_intensity }
+	}
+	if = {
+		limit = {
+			has_variable = bio_agent_4_intensity
+			check_variable = { var = bio_agent_4_intensity value = bio_countermeasure_state_max_intensity compare = greater_than }
+		}
+		set_temp_variable = { bio_countermeasure_state_max_intensity = bio_agent_4_intensity }
+	}
+}
+
+bio_countermeasure_start_containment_mission = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = bio_containment_mission_active }
+			NOT = { has_state_flag = bio_containment_mission_capacity_committed }
+			has_variable = bio_ordinary_outbreak_cycle
+		}
+		set_state_flag = bio_containment_mission_active
+		set_state_flag = bio_containment_mission_capacity_committed
+		set_variable = { bio_containment_mission_provider = ROOT }
+		set_variable = { bio_containment_mission_medical_commitment = constant:bio_countermeasure_capacity.containment_mission_medical_commitment }
+		set_variable = { bio_containment_mission_new_spreads = constant:bio_lifecycle_math.zero }
+		set_variable = { bio_containment_mission_cycle = bio_ordinary_outbreak_cycle }
+		bio_countermeasure_prepare_state_max_intensity = yes
+		set_variable = { bio_containment_mission_start_intensity = bio_countermeasure_state_max_intensity }
+		ROOT = {
+			subtract_from_variable = { cbrn_medical_capacity = constant:bio_countermeasure_capacity.containment_mission_medical_commitment }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+		clear_temp_variable = bio_countermeasure_state_max_intensity
+	}
+}
+
+bio_countermeasure_adjust_containment_agent = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					OR = {
+						has_state_flag = bio_agent_[BIO_AGENT]_incubating
+						has_state_flag = bio_agent_[BIO_AGENT]_active
+					}
+				}
+				add_to_variable = { bio_agent_[BIO_AGENT]_intensity = bio_containment_intensity_delta }
+				clamp_variable = { var = bio_agent_[BIO_AGENT]_intensity min = constant:bio_lifecycle_bounds.intensity_min max = constant:bio_lifecycle_bounds.intensity_max }
+				add_to_variable = { bio_agent_[BIO_AGENT]_exposed_share = bio_containment_exposed_delta }
+				clamp_variable = { var = bio_agent_[BIO_AGENT]_exposed_share min = constant:bio_lifecycle_bounds.exposed_share_min max = constant:bio_lifecycle_bounds.exposed_share_max }
+				add_to_variable = { bio_agent_[BIO_AGENT]_medical_saturation = bio_containment_medical_delta }
+				clamp_variable = { var = bio_agent_[BIO_AGENT]_medical_saturation min = constant:bio_lifecycle_bounds.medical_min max = constant:bio_lifecycle_bounds.medical_max }
+			}
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+}
+
+bio_countermeasure_adjust_all_containment_agents = {
+	set_temp_variable = { bio_active_agent = constant:bio_lifecycle_agent.anthrax }
+	bio_countermeasure_adjust_containment_agent = yes
+	set_temp_variable = { bio_active_agent = constant:bio_lifecycle_agent.plague }
+	bio_countermeasure_adjust_containment_agent = yes
+	set_temp_variable = { bio_active_agent = constant:bio_lifecycle_agent.tularemia }
+	bio_countermeasure_adjust_containment_agent = yes
+	set_temp_variable = { bio_active_agent = constant:bio_lifecycle_agent.smallpox }
+	bio_countermeasure_adjust_containment_agent = yes
+	clear_temp_variable = bio_active_agent
+	bio_lifecycle_refresh_state_modifiers = yes
+}
+
+bio_countermeasure_apply_containment_success = {
+	set_temp_variable = { bio_containment_intensity_delta = constant:bio_countermeasure_response.containment_success_intensity_reduction }
+	multiply_temp_variable = { bio_containment_intensity_delta = constant:bio_lifecycle_math.negation }
+	set_temp_variable = { bio_containment_exposed_delta = constant:bio_countermeasure_response.containment_success_exposed_reduction }
+	multiply_temp_variable = { bio_containment_exposed_delta = constant:bio_lifecycle_math.negation }
+	set_temp_variable = { bio_containment_medical_delta = constant:bio_countermeasure_response.containment_success_medical_reduction }
+	multiply_temp_variable = { bio_containment_medical_delta = constant:bio_lifecycle_math.negation }
+	bio_countermeasure_adjust_all_containment_agents = yes
+	set_state_flag = bio_containment_mission_success_history
+	clear_temp_variable = bio_containment_intensity_delta
+	clear_temp_variable = bio_containment_exposed_delta
+	clear_temp_variable = bio_containment_medical_delta
+}
+
+bio_countermeasure_apply_containment_partial_success = {
+	set_temp_variable = { bio_containment_intensity_delta = constant:bio_countermeasure_response.containment_partial_intensity_reduction }
+	multiply_temp_variable = { bio_containment_intensity_delta = constant:bio_lifecycle_math.negation }
+	set_temp_variable = { bio_containment_exposed_delta = constant:bio_countermeasure_response.containment_partial_exposed_reduction }
+	multiply_temp_variable = { bio_containment_exposed_delta = constant:bio_lifecycle_math.negation }
+	set_temp_variable = { bio_containment_medical_delta = constant:bio_countermeasure_response.containment_partial_medical_reduction }
+	multiply_temp_variable = { bio_containment_medical_delta = constant:bio_lifecycle_math.negation }
+	bio_countermeasure_adjust_all_containment_agents = yes
+	set_state_flag = bio_containment_mission_partial_history
+	clear_temp_variable = bio_containment_intensity_delta
+	clear_temp_variable = bio_containment_exposed_delta
+	clear_temp_variable = bio_containment_medical_delta
+}
+
+bio_countermeasure_apply_containment_failure = {
+	set_temp_variable = { bio_containment_intensity_delta = constant:bio_countermeasure_response.containment_failure_intensity_add }
+	set_temp_variable = { bio_containment_exposed_delta = constant:bio_countermeasure_response.containment_failure_exposed_add }
+	set_temp_variable = { bio_containment_medical_delta = constant:bio_countermeasure_response.containment_failure_medical_add }
+	bio_countermeasure_adjust_all_containment_agents = yes
+	set_state_flag = bio_containment_mission_failure_history
+	clear_temp_variable = bio_containment_intensity_delta
+	clear_temp_variable = bio_containment_exposed_delta
+	clear_temp_variable = bio_containment_medical_delta
+}
+
+bio_countermeasure_clear_containment_mission = {
+	if = {
+		limit = {
+			has_state_flag = bio_containment_mission_capacity_committed
+			has_variable = bio_containment_mission_provider
+			has_variable = bio_containment_mission_medical_commitment
+			var:bio_containment_mission_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_containment_mission_medical_commitment }
+		var:bio_containment_mission_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+	clr_state_flag = bio_containment_mission_active
+	clr_state_flag = bio_containment_mission_capacity_committed
+	clear_variable = bio_containment_mission_provider
+	clear_variable = bio_containment_mission_medical_commitment
+	clear_variable = bio_containment_mission_cycle
+	clear_variable = bio_containment_mission_start_intensity
+	clear_variable = bio_containment_mission_new_spreads
+	clear_temp_variable = bio_countermeasure_refund_value
+}
+
+bio_countermeasure_resolve_containment_mission = {
+	if = {
+		limit = { bio_countermeasure_containment_mission_record_is_current = yes }
+		if = {
+			limit = { NOT = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			set_state_flag = bio_containment_mission_success_history
+			if = {
+				limit = {
+					has_variable = bio_containment_mission_provider
+					var:bio_containment_mission_provider = { exists = yes }
+				}
+				var:bio_containment_mission_provider = {
+					add_stability = constant:bio_countermeasure_response.containment_success_stability
+				}
+			}
+		}
+		else_if = {
+			limit = { bio_countermeasure_containment_mission_is_success = yes }
+			var:bio_containment_mission_provider = {
+				bio_countermeasure_pay_containment_sustainment = yes
+				add_stability = constant:bio_countermeasure_response.containment_success_stability
+			}
+			bio_countermeasure_apply_containment_success = yes
+		}
+		else_if = {
+			limit = { bio_countermeasure_containment_mission_is_partial_success = yes }
+			var:bio_containment_mission_provider = {
+				bio_countermeasure_pay_containment_sustainment = yes
+			}
+			bio_countermeasure_apply_containment_partial_success = yes
+		}
+		else = {
+			bio_countermeasure_apply_containment_failure = yes
+		}
+		bio_countermeasure_clear_containment_mission = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = bio_containment_mission_active
+				has_state_flag = bio_containment_mission_capacity_committed
+			}
+		}
+		bio_countermeasure_clear_containment_mission = yes
+	}
+}
+
+bio_countermeasure_cleanup_orphaned_containment_mission = {
+	if = {
+		limit = {
+			has_state_flag = bio_containment_mission_active
+			OR = {
+				NOT = { has_variable = bio_containment_mission_provider }
+				var:bio_containment_mission_provider = { exists = no }
+			}
+		}
+		clr_state_flag = bio_containment_mission_active
+		clr_state_flag = bio_containment_mission_capacity_committed
+		clear_variable = bio_containment_mission_provider
+		clear_variable = bio_containment_mission_medical_commitment
+		clear_variable = bio_containment_mission_cycle
+		clear_variable = bio_containment_mission_start_intensity
+		clear_variable = bio_containment_mission_new_spreads
+	}
+}
+
+bio_countermeasure_remove_border_overrides_if_unused = {
+	if = {
+		limit = {
+			has_country_flag = bio_border_relation_override_active
+			check_variable = {
+				var = closed_bio_borders^num
+				value = constant:bio_lifecycle_math.zero
+				compare = less_than_or_equals
+			}
+		}
+		remove_relation_rule_override = {
+			trigger = bio_border_closure_relation_target
+			can_access_market = no
+		}
+		remove_relation_rule_override = {
+			trigger = bio_border_closure_relation_target
+			can_send_volunteers = no
+		}
+		clr_country_flag = bio_border_relation_override_active
+	}
+}
+
+bio_countermeasure_cleanup_invalid_closed_borders = {
+	clear_temp_array = bio_invalid_closed_bio_borders
+	for_each_scope_loop = {
+		array = ROOT.closed_bio_borders
+		if = {
+			limit = {
+				OR = {
+					exists = no
+					NOT = { is_neighbor_of = ROOT }
+				}
+			}
+			add_to_temp_array = { bio_invalid_closed_bio_borders = THIS }
+		}
+	}
+	for_each_scope_loop = {
+		array = bio_invalid_closed_bio_borders
+		remove_from_array = {
+			array = ROOT.closed_bio_borders
+			value = THIS
+		}
+	}
+	clear_temp_array = bio_invalid_closed_bio_borders
+	bio_countermeasure_remove_border_overrides_if_unused = yes
+}
+
+bio_countermeasure_start_border_cleanup_job = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = bio_border_cleanup_job_active }
+			check_variable = {
+				var = closed_bio_borders^num
+				value = constant:bio_lifecycle_math.zero
+				compare = greater_than
+			}
+		}
+		set_country_flag = bio_border_cleanup_job_active
+		set_temp_variable = { bio_border_cleanup_delay = constant:bio_countermeasure_timing.border_cleanup_interval_days }
+		country_event = { id = bio_countermeasure.1 days = bio_border_cleanup_delay }
+		clear_temp_variable = bio_border_cleanup_delay
+	}
+}
+
+bio_countermeasure_cleanup_state_commitments = {
+	bio_countermeasure_cleanup_orphaned_containment_mission = yes
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = bio_containment_mission_active
+				has_state_flag = bio_containment_mission_capacity_committed
+			}
+		}
+		bio_countermeasure_clear_containment_mission = yes
+	}
+	if = {
+		limit = {
+			has_state_flag = bio_field_hospital_capacity_committed
+			has_variable = bio_field_hospital_medical_provider
+			has_variable = bio_field_hospital_medical_commitment
+			var:bio_field_hospital_medical_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_field_hospital_medical_commitment }
+		var:bio_field_hospital_medical_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = bio_antibiotic_state_service_capacity_committed
+			has_variable = bio_antibiotic_medical_provider
+			has_variable = bio_antibiotic_medical_commitment
+			var:bio_antibiotic_medical_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_antibiotic_medical_commitment }
+		var:bio_antibiotic_medical_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+	if = {
+		limit = {
+			has_state_flag = bio_international_mission_capacity_committed
+			has_variable = bio_international_medical_provider
+			has_variable = bio_international_medical_commitment
+			var:bio_international_medical_provider = { exists = yes }
+		}
+		set_temp_variable = { bio_countermeasure_refund_value = bio_international_medical_commitment }
+		var:bio_international_medical_provider = {
+			add_to_variable = { cbrn_medical_capacity = bio_countermeasure_refund_value }
+			clamp_variable = { var = cbrn_medical_capacity min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+		}
+	}
+
+	clr_state_flag = bio_field_hospital_capacity_committed
+	clr_state_flag = bio_field_hospital_deployment_pending
+	if = {
+		limit = { NOT = { has_state_flag = black_plague_emergency_hospital_active } }
+		clr_state_flag = field_hospitals_deployed
+	}
+	clr_state_flag = bio_ordinary_quarantine_active
+	clr_state_flag = bio_quarantine_deployment_pending
+	if = {
+		limit = { NOT = { has_state_flag = black_plague_quarantine_active } }
+		clr_state_flag = quarantine_measures_active
+	}
+	clr_state_flag = bio_antibiotic_state_service_capacity_committed
+	clr_state_flag = bio_anthrax_antibiotics_active
+	clr_state_flag = bio_anthrax_antibiotics_diminished
+	clr_state_flag = bio_anthrax_antibiotic_course_cooldown
+	bio_countermeasure_clear_anthrax_antibiotic_order = yes
+	clr_state_flag = bio_plague_antibiotics_active
+	clr_state_flag = bio_plague_antibiotics_diminished
+	clr_state_flag = bio_plague_antibiotic_course_cooldown
+	bio_countermeasure_clear_plague_antibiotic_order = yes
+	clr_state_flag = bio_tularemia_antibiotics_active
+	clr_state_flag = bio_tularemia_antibiotics_diminished
+	clr_state_flag = bio_tularemia_antibiotic_course_cooldown
+	bio_countermeasure_clear_tularemia_antibiotic_order = yes
+	clr_state_flag = bio_international_mission_capacity_committed
+	clr_state_flag = bio_international_medical_mission_active
+	clr_state_flag = bio_international_medical_mission_pending
+	if = {
+		limit = { has_dynamic_modifier = { modifier = quarantined_contaminated_state } }
+		remove_dynamic_modifier = { modifier = quarantined_contaminated_state }
+	}
+
+	clear_variable = bio_field_hospital_medical_provider
+	clear_variable = bio_field_hospital_medical_commitment
+	clear_variable = bio_field_hospital_order_cycle
+	clear_variable = bio_quarantine_order_provider
+	clear_variable = bio_quarantine_order_cycle
+	clear_variable = bio_antibiotic_medical_provider
+	clear_variable = bio_antibiotic_medical_commitment
+	clear_variable = bio_anthrax_antibiotic_courses
+	clear_variable = bio_plague_antibiotic_courses
+	clear_variable = bio_tularemia_antibiotic_courses
+	clear_variable = bio_international_medical_provider
+	clear_variable = bio_international_medical_commitment
+	clear_variable = bio_international_order_cycle
+	clear_temp_variable = bio_countermeasure_refund_value
+}

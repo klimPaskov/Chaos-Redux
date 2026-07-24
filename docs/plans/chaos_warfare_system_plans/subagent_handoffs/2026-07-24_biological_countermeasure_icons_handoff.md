@@ -49,4 +49,10 @@ The main agent should register the twelve sprite definitions in the later Stage 
 
 The requested `.gfx` target file was not supplied, so no target path was guessed and no `.gfx` file was added.
 
+## Parent integration status
+
+The parent implementation registered all twelve definitions in `interface/biological_countermeasures.gfx` and wired them to the matching biological response decisions and continuing ideas.
+
+The parent integration preserved every existing icon and every asset under `gfx/interface/military_raids/`.
+
 No items are blocked or marked `needs_user_review` within this bounded static asset package.

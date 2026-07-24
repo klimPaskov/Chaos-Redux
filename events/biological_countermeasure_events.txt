@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL COUNTERMEASURE RUNTIME EVENTS
+# ============================================================================
+# Overview:
+# - Runs a self-scheduled cleanup job only for countries with recorded
+#   biological border closures.
+# - Removes extinct or no-longer-adjacent countries from the exact closure
+#   array and unregisters relation overrides when no valid pair remains.
+# - No all-country daily, weekly, or monthly pulse is used.
+# ============================================================================
+
+add_namespace = bio_countermeasure
+
+country_event = {
+	id = bio_countermeasure.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		bio_countermeasure_cleanup_invalid_closed_borders = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = closed_bio_borders^num
+					value = constant:bio_lifecycle_math.zero
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { bio_border_cleanup_delay = constant:bio_countermeasure_timing.border_cleanup_interval_days }
+			country_event = { id = bio_countermeasure.1 days = bio_border_cleanup_delay }
+			clear_temp_variable = bio_border_cleanup_delay
+		}
+		else = {
+			clr_country_flag = bio_border_cleanup_job_active
+		}
+	}
+}
