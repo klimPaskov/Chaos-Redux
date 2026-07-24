@@ -28,9 +28,9 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Exported mesh object: `Mesh_0.001`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
 - Final mesh payload: shared-vertex export, 14,970 source vertices, 30,000 triangles, and 0 source loose boundary edges; the dual-source geometry comes from the watertight generation candidate while the provider armature supplies the approved actions and weights.
 - Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; read-only source height `7.351824`, reference entity scale `0.8`, pilot mesh target `1.8379560709`, and neutral pilot entity scale `1.0`
-- Transform agreement: the mesh data absorbs the `94.7711071693` mesh-to-armature scale ratio before parenting, so the exported mesh and armature share uniform world scale `0.0102108670`
+- Transform agreement: the mesh data absorbs the `94.7711071693` mesh-to-armature scale ratio before parenting, and export bakes the remaining uniform armature object scale `0.0102108670` into armature data so the emitted bind matrices are unit-scale.
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
-- Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, exports unit scale values, and divides exported translation samples by the uniform armature world scale so movement uses mesh units.
+- Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, bakes the uniform armature object scale into armature data, and preserves mesh-unit translations so movement uses the same units as the exported mesh.
 
 ## Provenance and evidence
 

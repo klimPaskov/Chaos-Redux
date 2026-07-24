@@ -14,9 +14,9 @@
 | Unit texticon | `interface/chaosx_3d_model_pilots.gfx` | `unit_chaosx_anomaly_recon_trooper_icon_small` | registered; pending live check |
 | `.mesh` export | shared-vertex `export/mesh/chaosx_anomaly_recon_trooper.mesh`, `Mesh_0.001`, 14,970 source vertices, 30,000 triangles, 0 source boundary edges | runtime `.mesh` | complete |
 | Reimport proof | idle/attack/move validation JSON and proof `.blend` files | exporter/importer path | complete |
-| Transform agreement | Mesh data absorbs the 94.7711071693 mesh-to-armature scale ratio before parenting; exported mesh and armature share uniform world scale 0.0102108670 | Blender checkpoints and `.mesh` export | complete |
+| Transform agreement | Mesh data absorbs the 94.7711071693 mesh-to-armature scale ratio before parenting; export bakes the remaining uniform armature object scale 0.0102108670 into armature data and emits unit-scale bind matrices | Blender checkpoints and `.mesh` export | complete |
 | Hole/topology proof | Reimport reports record 6,772 raw UV/normal seam edges and 0 position-welded loose or non-manifold edges | exported `.mesh` | complete |
 | Live unit consumer | `common/units/chaosx_3d_model_pilots.txt` | `chaosx_anomaly_recon_trooper` | registered |
-| Animation translation units | Corrected Blender worker export reports; translation samples divided by uniform armature world scale after provider actions were authored in armature units | idle, attack, and move `.anim` files | corrected; pending live check |
+| Animation translation units | Corrected Blender worker export reports; armature data scale is baked at export and translation normalization runs with unit multiplier | idle, attack, and move `.anim` files | corrected; pending live check |
 | Live runtime placement | `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`; `common/on_actions/chaosx_3d_model_pilot_showcase_on_actions.txt`; `map/buildings.txt`; `history/states/64-Brandenburg.txt` | Troop in Germany province 6521; beacon in Brandenburg state 64, province 9560 at map coordinate `2995, 9.70, 1556` using the `anomaly_signal_beacon_pilot_spawn` spawn-point row and registered `building_anomaly_signal_beacon_pilot_spawn` entity | wired; pending live check |
 | In-game renderer proof | `runtime/screenshots/` | unit entity | pending |

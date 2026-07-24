@@ -19,7 +19,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import bpy
 import bmesh
-from mathutils import Quaternion, Vector
+from mathutils import Matrix, Quaternion, Vector
 from mathutils.kdtree import KDTree
 
 
@@ -390,6 +390,49 @@ def armatures(working_only: bool = True) -> List[bpy.types.Object]:
             continue
         result.append(obj)
     return result
+
+
+def prepare_pdx_export_transforms() -> Dict[str, Any]:
+    """Bake the rig object scale into armature data before io_pdx_mesh export."""
+
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(
+            f"PDX export requires exactly one working armature, found {len(rigs)}."
+        )
+    rig = rigs[0]
+    rig_scale = rig.matrix_world.to_scale()
+    if (
+        max(rig_scale) - min(rig_scale) > 1e-5
+        or min(rig_scale) <= 0.0
+    ):
+        raise RuntimeError(
+            "PDX export requires a positive uniform armature world scale, "
+            f"got {tuple(rig_scale)}."
+        )
+    source_scale = float(sum(rig_scale) / 3.0)
+    mesh_world_matrices = {
+        obj.name: obj.matrix_world.copy()
+        for obj in mesh_objects()
+    }
+    if abs(source_scale - 1.0) > 1e-6:
+        rig.data.transform(Matrix.Scale(source_scale, 4))
+        rig.scale = (1.0, 1.0, 1.0)
+        bpy.context.view_layer.update()
+        for obj in mesh_objects():
+            obj.matrix_world = mesh_world_matrices[obj.name]
+        bpy.context.view_layer.update()
+    return {
+        "policy": "bake_uniform_armature_object_scale_into_armature_data_and_preserve_mesh_world_transform",
+        "armature": rig.name,
+        "armature_world_scale_before": list(rig_scale),
+        "armature_data_scale_factor": source_scale,
+        "armature_world_scale_after": list(rig.matrix_world.to_scale()),
+        "mesh_world_scales_after": {
+            obj.name: list(obj.matrix_world.to_scale())
+            for obj in mesh_objects()
+        },
+    }
 
 
 def ensure_material_nodes(material: bpy.types.Material) -> None:
@@ -1895,6 +1938,7 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     output.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     pdx = load_pdx(req["io_pdx_root"])
+    export_transforms = prepare_pdx_export_transforms()
     bpy.ops.object.select_all(action="DESELECT")
     working = [
         obj for obj in bpy.context.scene.objects
@@ -1938,6 +1982,7 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         else None,
         "exported_checkpoint": str(exported_checkpoint.relative_to(job)).replace("\\", "/"),
         "geometry": geometry_metrics(),
+        "export_transforms": export_transforms,
         "warnings": [],
     }
     report = job / "blender" / "reports" / "export_mesh.json"
@@ -1974,14 +2019,7 @@ def normalize_exported_animation_scales(
     pdx: Dict[str, Any],
     translation_scale: float,
 ) -> Dict[str, Any]:
-    """Keep animation samples from changing the authored unit scale at runtime.
-
-    The pinned Blender exporter can emit a root-bone scale sample even when the
-    working Blender action has no scale F-curves. The exporter also writes bone
-    translations in the armature's raw local units while the PDX mesh exporter
-    applies the armature object scale to the mesh and skeleton. Both channels
-    must be normalized before HOI4 consumes the pair.
-    """
+    """Keep animation samples from changing the authored unit scale at runtime."""
 
     from io_pdx_mesh import pdx_data  # type: ignore
 
@@ -2029,7 +2067,7 @@ def normalize_exported_animation_scales(
         text_path.write_text(f"{pdx_data.PDXData(root_xml)}\n", encoding="utf-8")
 
     return {
-        "policy": "normalize_exported_bone_scales_and_translations_to_mesh_units",
+        "policy": "normalize_exported_bone_scales_and_preserve_mesh_unit_translations",
         "translation_scale": translation_scale,
         "initial_scale_values_changed": initial_values_changed,
         "sample_scale_values_changed": sample_values_changed,
@@ -2049,12 +2087,7 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     pdx = load_pdx(req["io_pdx_root"])
     rig, action, start, end = select_armature_and_action(payload["action_name"])
-    rig_scale = rig.matrix_world.to_scale()
-    if max(rig_scale) - min(rig_scale) > 1e-5 or min(rig_scale) <= 0.0:
-        raise RuntimeError(
-            f"Animation export requires a positive uniform armature world scale, got {tuple(rig_scale)}."
-        )
-    translation_scale = float(sum(rig_scale) / 3.0)
+    export_transforms = prepare_pdx_export_transforms()
     bpy.context.scene.frame_start = start
     bpy.context.scene.frame_end = end
     for old_output in (output, output.with_suffix(".txt")):
@@ -2069,7 +2102,7 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         uniform_scale=True,
         plain_txt=True,
     )
-    scale_normalization = normalize_exported_animation_scales(output, pdx, translation_scale)
+    scale_normalization = normalize_exported_animation_scales(output, pdx, 1.0)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "action": action.name,
@@ -2077,7 +2110,8 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         "frame_start": start,
         "frame_end": end,
         "fps": bpy.context.scene.render.fps,
-        "armature_world_scale": list(rig_scale),
+        "armature_world_scale": export_transforms["armature_world_scale_after"],
+        "export_transforms": export_transforms,
         "anim": str(output.relative_to(job)).replace("\\", "/"),
         "anim_bytes": output.stat().st_size,
         "anim_text": str(output.with_suffix(".txt").relative_to(job)).replace("\\", "/")
