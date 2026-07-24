@@ -1,0 +1,3 @@
+# Old Weather Station report image prompt
+
+A remote post-collapse weather station in a snow and ash landscape with a rusted radar dish, a radio mast, frost on instrument housings, and one observer writing pressure readings by lantern. Slate blue twilight, charcoal ash cloud on the horizon, grounded alternate-history realism, no text, no logos, no flags. The image is framed for a 210 by 176 report-event card with darker edges for the interface overlay.

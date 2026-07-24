@@ -601,3 +601,13 @@ Seven dedicated event blocks, six timed modifiers, fifteen Event Log payloads, l
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `254`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges. It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23,102 issues against a fixed ceiling of 20,000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`. The exact result is recorded in `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md`, so its delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
+
+## The Old Weather Station climate-data tranche
+
+The Old Weather Station is implemented as a dormant country-level chain at `chaosx.fallout.373` through `.379`.
+It owns candidate `373`, transaction `710027`, route `7127`, and Event Log history `9132`.
+Its producer selects one native radar-station state using current Air Winter provenance, exposure, population, reclamation or supply instability, and a deterministic radar, infrastructure, and industrial score.
+The four branches fund observers, militarize the forecast, share the records, or abandon the tower. The chain freezes resources and climate ledgers before a 42-day result, schedules a 300-day station review callback, records branch-specific state memory and modifiers, and routes failure through Deaths.
+The dedicated report art, manifest, GFX handoff, localisation, Event Log mapping, and bounded inspector proof are recorded in `FALLOUT_OLD_WEATHER_STATION_CHAIN_PROOF.md`.
+The documented living-world block total is now `261`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` lint for `chaosx.fallout.373` returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23137`, and `maximum: 20000`, with no files scanned, diagnostics, proposed files, changed files, or artifacts and `validation.passed: false`.

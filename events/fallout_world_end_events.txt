@@ -14431,3 +14431,118 @@ country_event = {
 	trigger = { fallout_event_366_cleanup_can_enter = yes }
 	immediate = { fallout_event_366_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.373
+	title = chaosx.fallout.373.t
+	desc = chaosx.fallout.373.d
+	picture = GFX_report_event_fallout_old_weather_station
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_373_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.373.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_373_cost.fund_observers_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_373_cost.fund_observers_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_373_cost.fund_observers_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_373_cost.fund_observers_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_373_requested_branch = constant:fallout_event_373_branch.fund_observers } fallout_event_373_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.373.a.tt
+	}
+	option = {
+		name = chaosx.fallout.373.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_373_cost.militarize_forecast_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_373_cost.militarize_forecast_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_373_cost.militarize_forecast_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_373_requested_branch = constant:fallout_event_373_branch.militarize_forecast } fallout_event_373_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.373.b.tt
+	}
+	option = {
+		name = chaosx.fallout.373.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_373_cost.share_global_data_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_373_cost.share_global_data_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_373_cost.share_global_data_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_373_requested_branch = constant:fallout_event_373_branch.share_global_data } fallout_event_373_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.373.c.tt
+	}
+	option = {
+		name = chaosx.fallout.373.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_373_cost.abandon_station_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_373_cost.abandon_station_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_373_cost.abandon_station_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_373_requested_branch = constant:fallout_event_373_branch.abandon_station } fallout_event_373_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.373.d_option.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.374
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_373_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_373_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.375
+	title = chaosx.fallout.375.t
+	desc = { text = chaosx.fallout.375.fund_observers.success.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.fund_observers } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.375.fund_observers.partial.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.fund_observers } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.375.fund_observers.failure.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.fund_observers } } }
+	desc = { text = chaosx.fallout.375.militarize_forecast.success.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.militarize_forecast } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.375.militarize_forecast.partial.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.militarize_forecast } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.375.militarize_forecast.failure.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.militarize_forecast } } }
+	desc = { text = chaosx.fallout.375.share_global_data.success.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.share_global_data } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.375.share_global_data.partial.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.share_global_data } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.375.share_global_data.failure.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.share_global_data } } }
+	desc = { text = chaosx.fallout.375.abandon_station.success.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.abandon_station } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.375.abandon_station.partial.d trigger = { check_variable = { fallout_event_373_selected_branch = constant:fallout_event_373_branch.abandon_station } check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.375.abandon_station.failure.d
+	picture = GFX_report_event_fallout_old_weather_station
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_373_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_weather_station_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.375.a hidden_effect = { fallout_event_373_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.375.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.376
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_373_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_weather_station_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_373_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.377
+	title = chaosx.fallout.377.t
+	desc = { text = chaosx.fallout.377.success.d trigger = { check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.377.partial.d trigger = { check_variable = { fallout_event_373_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.377.failure.d
+	picture = GFX_report_event_fallout_old_weather_station
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_373_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_weather_station_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_373_registry_is_current = yes }
+	option = { name = chaosx.fallout.377.a hidden_effect = { fallout_event_373_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.377.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.378
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_373_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_weather_station_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_373_registry_is_current = yes }
+	immediate = { fallout_event_373_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.379
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_373_cleanup_can_enter = yes }
+	immediate = { fallout_event_373_cleanup = yes }
+}

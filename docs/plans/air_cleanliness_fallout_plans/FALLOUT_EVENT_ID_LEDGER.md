@@ -466,3 +466,11 @@ It owns candidate `366`, transaction `710026`, route `7126`, and Event Log histo
 The row selects one native nuclear-reactor state using reactor level, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break and unstable-ownership gates.
 Its four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown, each with a human lane, hidden AI lane, delayed result, inspection callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
 The documented living-world block total is now `254`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Old Weather Station count correction
+
+The Old Weather Station adds seven dormant country-level event blocks at suffixes `373` through `379`.
+It owns candidate `373`, transaction `710027`, route `7127`, and Event Log history `9132`.
+The row selects one native radar-station state using radar, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break and Air Winter instability gates.
+Its four branches fund observers, militarize the forecast, share the records, or abandon the tower, each with a human lane, hidden AI lane, delayed result, station review callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
+The documented living-world block total is now `261`, while the countable Fallout living-world release-floor total remains `0 of 660`.

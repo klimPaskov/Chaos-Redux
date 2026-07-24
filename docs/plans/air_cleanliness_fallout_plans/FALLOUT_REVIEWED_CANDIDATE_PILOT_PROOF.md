@@ -304,3 +304,12 @@ The chain freezes Power, Fuel, Medicine, Recognition, Cohesion, and the selected
 The four policies create joint authority, military occupation, engineer protectorate, or permanent shutdown, with reactor-first failure damage and separate branch memories, modifiers, and Event Log payloads.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,102 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.
+
+## The Old Weather Station correction
+
+The Old Weather Station is the twenty-seventh reviewed ordinary candidate.
+It uses country candidate id `373`, transaction `710027`, route `7127`, event tokens `373` through `379`, and history `9132`.
+Its gate follows the closed Reactor Without a Country memory and selects one deterministic native radar-station state with current Air Winter data, exposure from `12` through `67`, a surviving population, a repair route through infrastructure or industry, and reclamation or supply access below the stable station thresholds.
+The chain freezes Power, Fuel, Medicine, Recognition, Cohesion, and forecast, contact, and intelligence ledgers before a 42-day result and a 300-day station review callback.
+The four policies fund observers, militarize the forecast, share the records, or abandon the tower, with radar-first failure damage, separate climate ledgers, branch memories, modifiers, and Event Log payloads.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
