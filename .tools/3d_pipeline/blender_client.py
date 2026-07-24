@@ -78,6 +78,9 @@ class BlenderAdapterClient:
         excluded_provider_objects: Optional[list[str]] = None,
         vanilla_reference: Optional[Dict[str, Any]] = None,
         texture_source_rels: Optional[Dict[str, str]] = None,
+        geometry_source_rel: Optional[str] = None,
+        repair_before_reduction: bool = False,
+        topology_weld_distance: float = 1e-5,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_prepare_candidate",
@@ -91,6 +94,9 @@ class BlenderAdapterClient:
                 "excluded_provider_objects": excluded_provider_objects or [],
                 "vanilla_reference": vanilla_reference or {},
                 "texture_source_rels": texture_source_rels or {},
+                "geometry_source_rel": geometry_source_rel or "",
+                "repair_before_reduction": repair_before_reduction,
+                "topology_weld_distance": topology_weld_distance,
             },
         )
 
