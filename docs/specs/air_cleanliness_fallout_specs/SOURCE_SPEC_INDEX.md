@@ -58,6 +58,7 @@
 - `specs/20_reviewed_global_survival_working_elevator.md`
 - `specs/21_reviewed_global_survival_sealed_warehouse.md`
 - `specs/22_reviewed_global_survival_dead_city_permit.md`
+- `specs/23_reviewed_global_survival_manual_nobody_read.md`
 
 ## Matrices
 

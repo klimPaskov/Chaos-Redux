@@ -263,7 +263,15 @@ The dedicated report art and the event-inspector `Transport closed` proof are re
 
 The producer now carries the twenty-second reviewed ordinary row.
 The Dead City Permit uses country candidate id `338`, transaction key `710022`, route `7122`, and event tokens `338` through `344`.
+
 Its gate requires the closed Sealed Warehouse memory, a deterministic owned city or large-city dead state, exposure at least `42`, population at least `1,000`, campaign day `730` through `1999`, Scrap, Medicine, Fuel, Recognition, Cohesion, and one affordable expedition policy.
 Its severity is the clamped recorded city exposure and its mechanic-pressure field is the selected state's exposure.
 The chain freezes resource and state ledgers, uses a 28-day permit result and a 210-day city callback with hidden-AI parity, records history `9127`, and remains dormant and uncounted.
 The dedicated report art and the `EVENT_ISSUE_LIMIT` inspector proof are recorded in `FALLOUT_DEAD_CITY_PERMIT_CHAIN_PROOF.md`.
+
+## Manual Nobody Read correction
+
+The Manual Nobody Read uses country candidate id `345`, transaction key `710023`, route `7123`, and event tokens `345` through `351`.
+Its gate follows the closed Dead City Permit memory and selects one deterministic owned technical facility with current Air Winter state data, exposure from 18 through 69, a surviving population, and a non-damaged industrial complex or arms factory.
+The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the target state, then applies four policy lanes, a 35-day result, a 240-day maintenance callback, hidden-AI parity, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
+It remains dormant and uncounted while the scheduler activation and engine-sensitive receipt surfaces remain unproven.

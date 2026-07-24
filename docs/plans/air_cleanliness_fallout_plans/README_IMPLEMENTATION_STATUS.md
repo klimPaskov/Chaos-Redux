@@ -549,3 +549,16 @@ Six dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedic
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The bounded event-inspector request returned `EVENT_ISSUE_LIMIT` with 23,001 issues against a fixed ceiling of 20,000 and no artifact.
 The defined living-world total is now `226`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## Manual Nobody Read technical-facility tranche
+
+The Manual Nobody Read is implemented as a dormant country-level chain at `chaosx.fallout.345` through `.351`.
+It uses candidate `345`, transaction key `710023`, route `7123`, and Event Log history `9128`.
+The gate follows the closed Dead City Permit memory and selects one deterministic native facility state using non-damaged industrial and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
+Four authored policies freeze Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 35-day technical result.
+The result updates resources, Stability, War Support, reclamation, local supply, exposure, facility damage, state memory, and Deaths-backed failure, then schedules a 240-day maintenance callback.
+Human and hidden-AI lanes share the same delayed transaction, Event Log history, and authenticated cleanup wrappers.
+Four dedicated timed modifiers, fifteen Event Log payloads, localisation, a dedicated report image, a manifest, and a GFX handoff are wired.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `233`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.345` returned `EVENT_ISSUE_LIMIT` with 23,025 issues against a fixed ceiling of 20,000 and no artifact, so its exact engine-sensitive reachability remains unproven.
