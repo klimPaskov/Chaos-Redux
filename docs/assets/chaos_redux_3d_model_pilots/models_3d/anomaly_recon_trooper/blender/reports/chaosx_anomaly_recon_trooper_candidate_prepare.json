@@ -25,23 +25,27 @@
   },
   "excluded_provider_objects": [],
   "geometry": {
+    "boundary_component_count": 182,
     "bounds_max": [
-      3.368481159210205,
-      0.8052167296409607,
-      7.351199150085449
+      0.8421202898025513,
+      0.20130418241024017,
+      1.8377997875213623
     ],
     "bounds_min": [
-      -3.3743388652801514,
-      -0.8067257404327393,
-      -0.003920078277587891
+      -0.8435847163200378,
+      -0.20168143510818481,
+      -0.0009800195693969727
     ],
+    "branched_boundary_component_count": 107,
+    "closed_boundary_component_count": 75,
     "degenerate_faces": 0,
     "dimensions": [
-      6.742819786071777,
-      1.6119425296783447,
-      7.355119228363037
+      1.6857049465179443,
+      0.4029856324195862,
+      1.8387798070907593
     ],
-    "loose_boundary_edges": 12666,
+    "loose_boundary_edges": 11748,
+    "max_boundary_component_edges": 1230,
     "negative_scale_objects": [],
     "non_manifold_edges": 0,
     "objects": 1,
@@ -52,9 +56,13 @@
         "UVMap"
       ]
     },
-    "vertices": 21492
+    "vertices": 20122,
+    "zero_length_normals": 0
   },
+  "geometry_source": null,
+  "geometry_transfer": null,
   "imported_geometry": {
+    "boundary_component_count": 143,
     "bounds_max": [
       0.86947101354599,
       0.20878100395202637,
@@ -65,6 +73,8 @@
       -0.20793099701404572,
       -0.9506509900093079
     ],
+    "branched_boundary_component_count": 0,
+    "closed_boundary_component_count": 143,
     "degenerate_faces": 0,
     "dimensions": [
       1.7407879829406738,
@@ -72,6 +82,7 @@
       1.899312973022461
     ],
     "loose_boundary_edges": 19360,
+    "max_boundary_component_edges": 441,
     "negative_scale_objects": [],
     "non_manifold_edges": 0,
     "objects": 1,
@@ -82,7 +93,8 @@
         "UVMap"
       ]
     },
-    "vertices": 220063
+    "vertices": 220063,
+    "zero_length_normals": 0
   },
   "io_pdx_mesh_manifest": "C:\\Users\\klimp\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\user_default\\io_pdx_mesh\\blender_manifest.toml",
   "materials": {
@@ -94,18 +106,18 @@
   },
   "normalization": {
     "bounds_max": [
-      3.3655319213867188,
-      0.8081455230712891,
-      7.3518242835998535
+      0.8413829803466797,
+      0.20203638076782227,
+      1.8379560708999634
     ],
     "bounds_min": [
-      -3.3726773262023926,
-      -0.8048553466796875,
+      -0.8431693315505981,
+      -0.20121383666992188,
       0.0
     ],
     "ground_contact_z": 0.0,
-    "scale_factor": 3.8707808496672964,
-    "target_height_m": 7.3518242835
+    "scale_factor": 0.9676952124299868,
+    "target_height_m": 1.8379560709
   },
   "previews": [
     "blender/previews/chaosx_anomaly_recon_trooper_candidate_front.png",
@@ -125,23 +137,39 @@
       "remaining_scale_fcurves": 0
     }
   },
+  "runtime_calibration": {
+    "effective_runtime_height_m": 1.8379560709,
+    "entity_scale": 1.0,
+    "mesh_target_height_m": 1.8379560709,
+    "policy": "bake the calibrated pilot runtime height into mesh coordinates and keep the entity scale neutral"
+  },
   "source": "provider/downloads/generation_model.glb",
   "source_objects": 1,
   "topology_repair": {
-    "applied": false,
-    "method": "bmesh holes_fill on bounded boundary loops with transactional non-manifold rollback, then triangulate and recalc normals",
+    "applied": true,
+    "method": "bmesh remove_doubles at 1e-05, remove duplicate-overlap faces, then bounded holes_fill/triangle_fill on loops up to 96 edges with cap-only non-manifold rollback",
     "objects": [
       {
-        "boundary_edges_after": 12666,
+        "boundary_edges_after": 11748,
         "boundary_edges_before": 12666,
+        "cap_methods": {
+          "holes_fill": 42,
+          "triangle_fill": 20
+        },
+        "component_rejections": 13,
         "degenerate_faces_removed": 0,
+        "duplicate_faces_removed": 0,
         "faces_added": 0,
         "non_manifold_edges_after": 0,
         "non_manifold_edges_before": 0,
         "object": "Mesh_0.001",
         "rolled_back_non_manifold": true,
-        "skipped_components": 1,
-        "triangles_after": 30000
+        "skipped_components": 120,
+        "triangles_after": 30000,
+        "weld_rolled_back": false,
+        "welded_boundary_edges": 11748,
+        "welded_non_manifold_edges": 0,
+        "welded_vertices": 1370
       }
     ]
   },
@@ -168,9 +196,9 @@
     ],
     "expected_mesh_height": 7.3518242835,
     "expected_runtime_height": 5.8814594268,
-    "final_effective_runtime_height": 5.88409538269043,
-    "final_mesh_height": 7.355119228363037,
-    "final_runtime_height_delta": 0.002635955890429642,
+    "final_effective_runtime_height": 1.8387798070907593,
+    "final_mesh_height": 1.8387798070907593,
+    "final_runtime_height_delta": 0.0008237361907592611,
     "forward_axis": "-Y",
     "ground_contact_z": 0.00841899961233139,
     "mesh_rel": "blender/reference/western_european_infantry.mesh",
@@ -178,6 +206,9 @@
       "pCube1",
       "polySurface106"
     ],
+    "pilot_entity_scale": 1.0,
+    "pilot_target_runtime_height": 1.8379560709,
+    "reference_policy": "read_only_vanilla_source_measurement; pilot mesh target may bake its calibrated runtime scale",
     "selected_meshes": [
       "polySurface106"
     ],

@@ -8,8 +8,9 @@ A complete full-body anomaly reconnaissance trooper in a dark 1940s-inspired fie
 
 - Profile: humanoid_unit
 - Meshy/provider character height: 1.8 m
-- Blender source-mesh calibration height: 7.3518242835 m
-- Blender effective runtime height after entity scale: 5.8814594268 m
+- Blender source-mesh calibration height: 1.8379560709 m
+- Blender effective runtime height after entity scale: 1.8379560709 m
+- Pilot unit consumer scale: 1.0
 - Target topology: triangles
 - Meshy model: meshy-6
 - Meshy reference: refs/original/meshy_input.png

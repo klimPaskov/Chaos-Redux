@@ -11,7 +11,7 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Source `.mesh`: `export/mesh/chaosx_anomaly_recon_trooper.mesh`
 - Runtime `.mesh`: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`
 - Humanoid entity: `chaosx_anomaly_recon_trooper_entity`
-- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, `scale = 0.25`; effective runtime height is `1.837956` source units from the `7.351824` normalized mesh
+- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, neutral `scale = 1.0`; the calibrated mesh height is `1.8379560709` source units and the final evaluated reimport height is `1.8376898766`
 - Humanoid object definition: `gfx/entities/chaosx_3d_model_pilots.gfx`
 - Unit consumer: `chaosx_anomaly_recon_trooper` in `common/units/chaosx_3d_model_pilots.txt`
 - Live consumer effect: `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`
@@ -27,7 +27,8 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
 - Exported mesh object: `Mesh_0.001`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
 - Final mesh payload: shared-vertex export, 14,970 source vertices, 30,000 triangles, and 0 source loose boundary edges; the dual-source geometry comes from the watertight generation candidate while the provider armature supplies the approved actions and weights.
-- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; source mesh target `7.351824`, reference entity scale `0.8`, and the pilot's separately measured consumer calibration is `0.25` for an effective height of `1.837956`
+- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; read-only source height `7.351824`, reference entity scale `0.8`, pilot mesh target `1.8379560709`, and neutral pilot entity scale `1.0`
+- Transform agreement: the mesh data absorbs the `94.7711071693` mesh-to-armature scale ratio before parenting, so the exported mesh and armature share uniform world scale `0.0102108670`
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
 - Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, exports unit scale values, and divides exported translation samples by the uniform armature world scale so movement uses mesh units.
 
