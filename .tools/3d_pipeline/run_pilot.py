@@ -10,6 +10,8 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from PIL import Image
+
 
 if not os.environ.get("MESHY_API_KEY", "").strip():
     print(
@@ -533,6 +535,106 @@ def _finalize_pdx_runtime_texture(
     return textures
 
 
+def _apply_runtime_diffuse_grade(
+    job: Path,
+    spec: Dict[str, Any],
+    textures: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Make a deliberately dark provider diffuse map readable in the engine.
+
+    The provider source remains immutable. The runtime-derived diffuse map is
+    rebuilt from that source on every continuation, so repeated runs never
+    compound the grade. A gamma below one lifts near-black cloth without
+    flattening the authored seams and hardware detail.
+    """
+
+    gamma = float(spec.get("runtime_diffuse_gamma", 1.0))
+    if gamma <= 0.0:
+        raise ValueError("runtime_diffuse_gamma must be greater than zero.")
+    if abs(gamma - 1.0) < 1e-9 or spec["asset_kind"] != "humanoid":
+        return textures
+
+    provider_sources = dict(
+        spec.get("_provider_texture_source_rels")
+        or spec.get("texture_source_rels")
+        or {}
+    )
+    source_rel = provider_sources.get("diffuse")
+    if not source_rel:
+        raise RuntimeError("Runtime diffuse grading requires a provider diffuse source.")
+    source = (job / source_rel).resolve()
+    if not source.is_file():
+        raise FileNotFoundError(f"Runtime diffuse source is missing: {source}")
+    conversion = next(
+        (
+            item
+            for item in textures.get("conversions", [])
+            if item.get("image") == "texture_0"
+        ),
+        None,
+    )
+    if conversion is None:
+        raise RuntimeError("No extracted diffuse texture conversion was recorded.")
+
+    width = int(conversion.get("width") or 1024)
+    height = int(conversion.get("height") or 1024)
+    processed_rel = f"textures/processed/{conversion['image']}.png"
+    processed = job / processed_rel
+    with Image.open(source) as source_image:
+        rgba = source_image.convert("RGBA")
+        if rgba.size != (width, height):
+            rgba = rgba.resize((width, height), Image.Resampling.LANCZOS)
+        lut = [
+            int(round(255.0 * ((value / 255.0) ** gamma)))
+            for value in range(256)
+        ]
+        graded_rgb = Image.merge(
+            "RGB",
+            tuple(channel.point(lut) for channel in rgba.convert("RGB").split()),
+        )
+        graded = Image.merge("RGBA", (*graded_rgb.split(), rgba.getchannel("A")))
+        graded.save(processed, format="PNG", optimize=True)
+
+    dds = job / str(conversion["dds"])
+    if dds.exists():
+        if not dds.is_file():
+            raise RuntimeError(f"Runtime diffuse DDS target is not a file: {dds}")
+        dds.unlink()
+    converter = REPO_ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
+    converter_args = [
+        sys.executable,
+        str(converter),
+        "--input",
+        str(processed),
+        "--output",
+        str(dds),
+        "--width",
+        str(width),
+        "--height",
+        str(height),
+    ]
+    completed = subprocess.run(
+        converter_args,
+        cwd=str(REPO_ROOT),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=600,
+        check=False,
+    )
+    if completed.returncode != 0 or not dds.exists():
+        raise RuntimeError(f"Runtime diffuse DDS conversion failed for {dds}.")
+    conversion["png"] = processed_rel
+    textures["runtime_diffuse_grade"] = {
+        "source": source_rel,
+        "processed": processed_rel,
+        "dds": str(conversion["dds"]),
+        "gamma": gamma,
+        "policy": "provider_source_rebuilt_each_run_with_single_gamma_lift",
+    }
+    return textures
+
+
 def finalize_pdx_runtime_textures(
     job: Path,
     spec: Dict[str, Any],
@@ -540,7 +642,24 @@ def finalize_pdx_runtime_textures(
 ) -> Dict[str, Any]:
     """Keep Blender previews conventional while installing PDX runtime DDS maps."""
 
-    provider_sources = spec.get("_provider_texture_source_rels") or spec.get("texture_source_rels") or {}
+    textures = _apply_runtime_diffuse_grade(job, spec, textures)
+    provider_sources = dict(
+        spec.get("_provider_texture_source_rels")
+        or spec.get("texture_source_rels")
+        or {}
+    )
+    if spec["asset_kind"] == "humanoid":
+        # The preview binding deliberately uses roughness.png. The runtime
+        # binding must always go back to the provider metallic/roughness source
+        # so the PDX packed channels cannot silently be replaced by gray RGB.
+        specular_source = provider_sources.get("specular")
+        if not specular_source or Path(specular_source).name.casefold() == "roughness.png":
+            candidate = job / "provider" / "downloads" / "generation_model_textures" / "metallic_roughness.png"
+            if not candidate.is_file():
+                raise FileNotFoundError(
+                    "Humanoid runtime material finalization requires the provider metallic_roughness.png map."
+                )
+            provider_sources["specular"] = str(candidate.relative_to(job)).replace("\\", "/")
     image_names = {
         "diffuse": "texture_0" if spec["asset_kind"] == "humanoid" else "Image_0",
         "specular": "texture_specular" if spec["asset_kind"] == "humanoid" else "Image_1",
@@ -581,6 +700,7 @@ def finalize_pdx_runtime_textures(
             },
         )
     report = job / "blender" / "reports" / "textures_dds.json"
+    textures["runtime_texture_sources"] = provider_sources
     report.write_text(json.dumps(textures, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return textures
 

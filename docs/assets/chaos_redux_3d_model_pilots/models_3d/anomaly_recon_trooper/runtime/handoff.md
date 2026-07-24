@@ -11,7 +11,7 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Source `.mesh`: `export/mesh/chaosx_anomaly_recon_trooper.mesh`
 - Runtime `.mesh`: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`
 - Humanoid entity: `chaosx_anomaly_recon_trooper_entity`
-- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, neutral `scale = 1.0`; the calibrated mesh height is `1.8379560709` source units and the final evaluated reimport height is `1.8376898766`
+- Humanoid entity definition: `gfx/entities/chaosx_3d_model_pilots.asset`, vanilla-matched `scale = 0.8`; the calibrated mesh height is `7.3518242835` source units and the final evaluated export height is `7.3507595062` source units (`5.8806076049` effective runtime units)
 - Humanoid object definition: `gfx/entities/chaosx_3d_model_pilots.gfx`
 - Unit consumer: `chaosx_anomaly_recon_trooper` in `common/units/chaosx_3d_model_pilots.txt`
 - Live consumer effect: `common/scripted_effects/chaosx_3d_model_pilot_showcase_effects.txt`
@@ -24,11 +24,12 @@ The template is created in Germany's country scope, and the live `create_unit` c
 - Idle binding: `idle` -> `chaosx_anomaly_recon_trooper_idle_animation` -> `chaosx_anomaly_recon_trooper_idle.anim`
 - Attack binding: `attack` -> `chaosx_anomaly_recon_trooper_attack_animation` -> `chaosx_anomaly_recon_trooper_attack.anim`
 - Move binding: `move`/`retreat` -> `chaosx_anomaly_recon_trooper_move_animation` -> `chaosx_anomaly_recon_trooper_move.anim`; the action is a 24-frame in-place Blender-authored walk cycle
-- Texture channels: `texture_0.dds` diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
+- Texture channels: `texture_0.dds` graded diffuse, `texture_normal.dds` PDX normal with red `0`, green tangent X, blue `0`, and alpha tangent Y, and `texture_specular.dds` PDX packed specular/roughness with red `0`, green `32`, blue metallic, and alpha roughness; shader `PdxMeshAdvanced`, final DDS `1024 x 1024` uncompressed BGRA for each map
+- Diffuse readability: the provider `base_color.png` remains archived unchanged, while the runtime diffuse derivative is rebuilt from it with gamma `0.72` on every continuation so dark cloth remains textured and repeated runs do not compound the grade.
 - Exported mesh object: `Mesh_0.001`; `gfx/entities/chaosx_3d_model_pilots.gfx` uses the same `meshsettings.name`
 - Final mesh payload: shared-vertex export, 14,970 source vertices, 30,000 triangles, and 0 source loose boundary edges; the dual-source geometry comes from the watertight generation candidate while the provider armature supplies the approved actions and weights.
-- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; read-only source height `7.351824`, reference entity scale `0.8`, pilot mesh target `1.8379560709`, and neutral pilot entity scale `1.0`
-- Transform agreement: the mesh data absorbs the `94.7711071693` mesh-to-armature scale ratio before parenting, and export bakes the remaining uniform armature object scale `0.0102108670` into armature data so the emitted bind matrices are unit-scale.
+- Vanilla scale reference: `gfx/models/units/western_european_infantry.mesh` against `gfx/entities/units_infantry.asset#infantry_rifle_entity`; read-only source height `7.351824`, reference entity scale `0.8`, pilot mesh target `7.3518242835`, and pilot entity scale `0.8`
+- Transform agreement: the mesh data absorbs the `94.7711071693` mesh-to-armature scale ratio before parenting, and export bakes the remaining uniform armature object scale `0.0408434682` into armature data so the emitted bind matrices are unit-scale.
 - Unit texticon: `interface/chaosx_3d_model_pilots.gfx` registers `unit_chaosx_anomaly_recon_trooper_icon_small` against the vanilla infantry icon
 - Animation stability: the Blender worker removes provider scale F-curves, resets the imported `Hips` pose scale, bakes the uniform armature object scale into armature data, and preserves mesh-unit translations so movement uses the same units as the exported mesh.
 

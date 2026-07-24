@@ -40,7 +40,7 @@ Status: needs_user_review
 - Source and rig/action checkpoints: `blender/checkpoints/`; corrected dual-source checkpoints are `attack_runtime_candidate_dual_20260724.blend`, `idle_runtime_candidate_dual_20260724.blend`, and `move_runtime_candidate_dual_20260724.blend`
 - Vanilla reference staging: `blender/reference/western_european_infantry.mesh`; source checksum and read-only staging evidence are in `blender/reports/vanilla_reference_stage.json`
 - Working geometry: watertight generation geometry from `provider/downloads/generation_model.glb` is bound to the provider armature with 24-bone weight transfer; one Blender mesh object `Mesh_0.001` is exported as `.mesh` object `Mesh_0.001`, with 30,000 triangles, 14,970 source vertices, one UV layer, one explicitly textured PDX material, and one armature
-- Vanilla source measurement: the read-only infantry reference measures `7.351824` source units; the pilot's calibrated mesh is authored at `1.8379560709` source units so the runtime entity can remain neutral
+- Vanilla source measurement: the read-only infantry reference measures `7.351824` source units; the pilot's calibrated mesh is authored at `7.3518242835` source units so the runtime entity applies the vanilla `0.8` scale exactly once
 - QA: 0 non-manifold edges, 0 degenerate faces, no negative scale objects
 - Topology gate: the final working generation geometry has 0 loose boundary edges, 0 non-manifold edges, and 0 degenerate faces; raw `io_pdx_mesh` reimport exposes 6,772 UV/normal seam edges, but its position-welded audit returns 0 loose boundary edges and 0 non-manifold edges
 - Provider-only `Icosphere` and `Icosphere.001` objects are explicitly excluded from working/render/export collections; the source remains preserved for audit
@@ -48,8 +48,8 @@ Status: needs_user_review
 - Vanilla calibration reference: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh`
 - Vanilla entity reference only: `gfx/entities/units_infantry.asset#infantry_rifle_entity`, vanilla runtime `scale = 0.8`; the pilot uses the vanilla mesh only as a read-only measurement reference
 - Reference measurement: main imported `polySurface106` height `7.3518248` source units, collision geometry excluded, `-Y` forward and `+Z` up; effective runtime height `5.8814594` units
-- Corrected pilot calibration: Blender mesh target `1.8379560709` source units, neutral entity `scale = 1.0`, expected effective runtime height `1.8379560709`, and final evaluated reimport height `1.8376898766`
-- Transform mismatch repair: the mesh data absorbed the `94.7711071693` mesh-to-armature scale ratio before parenting, and the exporter now bakes the remaining uniform armature object scale `0.0102108670` into armature data while preserving the calibrated mesh world transform.
+- Corrected pilot calibration: Blender mesh target `7.3518242835` source units, entity `scale = 0.8`, expected effective runtime height `5.8814594268`, and final evaluated export height `7.3507595062` source units (`5.8806076049` effective runtime units)
+- Transform mismatch repair: the mesh data absorbed the `94.7711071693` mesh-to-armature scale ratio before parenting, and the exporter now bakes the remaining uniform armature object scale `0.0408434682` into armature data while preserving the calibrated mesh world transform.
 - Animation sanitation: the provider working actions had 72 root/bone scale F-curves removed, non-unit `Hips` pose scale reset to `(1, 1, 1)`, the authored move action was created without scale channels, and the exporter emits unit-scale armature bind data with mesh-unit translations without applying a second translation multiplier.
 
 ## Textures and PDX exports
@@ -61,13 +61,14 @@ Status: needs_user_review
 - PDX material shader: `PdxMeshAdvanced`, with explicit diffuse, normal, and specular bindings
 - PDX normal packing: red `0`, green source tangent X, blue `0`, alpha source tangent Y; source maps and checksums are recorded in `blender/reports/pdx_normal_pack.json`
 - PDX specular packing: red `0`, green `32` specular level, blue metallic, alpha roughness; final generation source maps are recorded in `blender/reports/pdx_generation_specular_pack.json`
-- Mesh: `export/mesh/chaosx_anomaly_recon_trooper.mesh`, 1,844,376 bytes, SHA-256 `8B95A61E34A0A0351A3F2A083D0BE3A42724793ED0B6A51E8DE5E283ABC1F300`
-- Runtime DDS: `textures/dds/texture_0.dds`, 4,194,432 bytes, SHA-256 `9566E784975C50215A947953385F77B3C393B2A7953FA1C83F2DF52C8AA4FC6B`
+- Mesh: `export/mesh/chaosx_anomaly_recon_trooper.mesh`, 1,844,376 bytes, SHA-256 `E3B41F716DD90E8AFE4C91E8CA6E7D2F0B7240C9A66F8F657B686D4A05C06C07`
+- Runtime DDS: `textures/dds/texture_0.dds`, 4,194,432 bytes, SHA-256 `2D6FD21238FAEA55EA678C9AD56EA3FAF7DCA8163E88ECB395E6F897BF13F617`
 - Runtime normal DDS: `textures/dds/texture_normal.dds`, 4,194,432 bytes, SHA-256 `7C69F76A312AA1A581B8399D6C9104CCC74B6742B62255041DEACAE3A0D16607`
-- Runtime specular DDS: `textures/dds/texture_specular.dds`, 4,194,432 bytes, SHA-256 `33E91684976EE5B502CF6A60E43273AA22696A3D9915E3305999584258C0786C`
-- Idle action: `export/anim/chaosx_anomaly_recon_trooper_idle.anim`, 77,395 bytes, SHA-256 `307F846C30EA94322A1A8CDEEB969EB40BEC3FD74F5B8D35E119622DE238DDE5`, frames `0-97`, 24 fps, loop, no scale channels
-- Attack action: `export/anim/chaosx_anomaly_recon_trooper_attack.anim`, 55,123 bytes, SHA-256 `4A812559E170AAB411BB45430E0005177703ECABF1F282ABDF01BA9E08D73F7B`, frames `0-68`, 24 fps, non-loop, unit root scale
-- Move action: `export/anim/chaosx_anomaly_recon_trooper_move.anim`, 21,331 bytes, SHA-256 `3BF7981688259779C84A6608A05C1445072CD18D004B76C10AE96994DEAAF2E5`, frames `0-24`, 24 fps, loop, Blender-authored in place with a root translation channel and no scale channels
+- Runtime specular DDS: `textures/dds/texture_specular.dds`, 4,194,432 bytes, SHA-256 `0813EB032ACA9889869B78AE5FAB0D1990FEBD5A7121E011072938E292736886`
+- Runtime diffuse grade: provider `base_color.png` remains immutable; runtime `texture_0.dds` is rebuilt with gamma `0.72` to keep the dark uniform readable without compounding repeated runs
+- Idle action: `export/anim/chaosx_anomaly_recon_trooper_idle.anim`, 76,218 bytes, SHA-256 `2AF9F21F061EDD715371B0D102F73EC4930BBE2FA940F5CA2FA10ED8D765F35F`, frames `0-97`, 24 fps, loop, no scale channels
+- Attack action: `export/anim/chaosx_anomaly_recon_trooper_attack.anim`, 54,294 bytes, SHA-256 `A02FF262A6BE54E6436587F1027971728C972691F52753608CA8D72A49A8717A`, frames `0-68`, 24 fps, non-loop, unit root scale
+- Move action: `export/anim/chaosx_anomaly_recon_trooper_move.anim`, 21,331 bytes, SHA-256 `6B75B2EA2C8BF63A6E0CD53E65CC2A52CBA02BB0FF02A182483D3C828C660500`, frames `0-24`, 24 fps, loop, Blender-authored in place with a root translation channel and no scale channels
 - Mesh reimport: current proof files are `validation/reimport_chaosx_anomaly_recon_trooper_attack.json`, `validation/reimport_chaosx_anomaly_recon_trooper_idle.json`, and `validation/reimport_chaosx_anomaly_recon_trooper_move.json`; archived dual-source reports remain historical evidence
 - Corrected reimport bounds: `validation/reimport_evaluated_bounds_corrected.json` records bounded Blender depsgraph measurements for idle, attack, and move proof scenes after `io_pdx_mesh` reimport
 - Action export reports: provider idle and attack reports plus `blender/reports/author_locomotion_action.json` and the move export report
@@ -81,7 +82,7 @@ Status: needs_user_review
 - Runtime artifacts: `gfx/models/chaosx_3d_model_pilots/chaosx_anomaly_recon_trooper.mesh`, `gfx/models/chaosx_3d_model_pilots/texture_0.dds`, `gfx/models/chaosx_3d_model_pilots/texture_normal.dds`, `gfx/models/chaosx_3d_model_pilots/texture_specular.dds`, and `gfx/models/units/chaosx_3d_model_pilots/*.anim`
 - Proposed entity: `chaosx_anomaly_recon_trooper_entity`
 - Live consumer evidence: prepared isolated showcase consumer; the offline repair also removes the prior move-scale collapse, material-channel mismatch, and stale building placement.
-- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, the export-time armature bind transform is unit-stable, explicit diffuse/normal/specular maps are installed, the watertight geometry source is bound to the provider rig, the pilot mesh carries its calibrated runtime height with neutral entity scale `1.0`, and a real move action is registered.
+- The source/runtime defects are corrected offline: the final mesh uses the vanilla-supported `PdxMeshAdvanced` material route, the GFX object name matches the exported mesh, the PDX packed material channels are installed, the export-time armature bind transform is unit-stable, explicit diffuse/normal/specular maps are installed, the watertight geometry source is bound to the provider rig, the pilot mesh carries the vanilla-calibrated source height with entity scale `0.8`, the dark diffuse is lifted once into the runtime derivative, and a real move action is registered.
 - Crosswalk: `runtime/crosswalk.md`
 - Parent handoff: `runtime/handoff.md`
 
@@ -92,6 +93,6 @@ The pilot remains `needs_user_review` until the corrected unit is visibly confir
 
 - `MAX_TEXTURE_SIZE`: fixed by rebuilding `texture_0.dds`, `texture_normal.dds`, and `texture_specular.dds` at `1024 x 1024`.
 - Missing `unit_chaosx_anomaly_recon_trooper_icon_small`: fixed by registering the custom texticon in `interface/chaosx_3d_model_pilots.gfx`.
-- Unit-size mismatch: the vanilla infantry mesh remains a read-only reference at `7.351824` source units, while the pilot mesh is baked to `1.8379560709` source units and uses neutral entity scale `1.0` for the same expected effective height.
-- White/black material and missing-surface symptom: fixed offline by packing Meshy metallic and roughness maps into the PDX `spec` channel layout, binding the generated diffuse/normal/specular maps, and matching `meshsettings.name` to the exported `Mesh_0.001` object.
+- Unit-size mismatch: the vanilla infantry mesh remains a read-only reference at `7.351824` source units, while the pilot mesh is authored at `7.3518242835` source units and uses entity scale `0.8` for the same expected effective height.
+- White/black material and missing-surface symptom: fixed offline by applying the reproducible `0.72` diffuse gamma grade, packing Meshy metallic and roughness maps into the PDX `spec` channel layout, binding the generated diffuse/normal/specular maps, and matching `meshsettings.name` to the exported `Mesh_0.001` object.
 - Moving disappearance: fixed offline by baking the uniform armature object scale into armature data, preserving mesh-unit animation translations, and exporting a dedicated 24-frame in-place move action with no scale channels; live confirmation remains pending.
