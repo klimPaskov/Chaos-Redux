@@ -417,16 +417,20 @@ def prepare_pdx_export_transforms() -> Dict[str, Any]:
     }
     if abs(source_scale - 1.0) > 1e-6:
         rig.data.transform(Matrix.Scale(source_scale, 4))
+        animation_translations = scale_action_location_channels(rig, source_scale)
         rig.scale = (1.0, 1.0, 1.0)
         bpy.context.view_layer.update()
         for obj in mesh_objects():
             obj.matrix_world = mesh_world_matrices[obj.name]
         bpy.context.view_layer.update()
+    else:
+        animation_translations = scale_action_location_channels(rig, 1.0)
     return {
         "policy": "bake_uniform_armature_object_scale_into_armature_data_and_preserve_mesh_world_transform",
         "armature": rig.name,
         "armature_world_scale_before": list(rig_scale),
         "armature_data_scale_factor": source_scale,
+        "animation_translation_channels": animation_translations,
         "armature_world_scale_after": list(rig.matrix_world.to_scale()),
         "mesh_world_scales_after": {
             obj.name: list(obj.matrix_world.to_scale())
@@ -621,25 +625,153 @@ def tag_pdx_materials(pdx: Dict[str, Any]) -> Dict[str, Any]:
     return {"materials": material_names, "shader": "PdxMeshAdvanced"}
 
 
+def action_fcurves(action: bpy.types.Action) -> Iterable[Tuple[Any, Any]]:
+    """Yield action F-curves from both legacy and Blender 5 layered actions."""
+
+    legacy = getattr(action, "fcurves", None)
+    if legacy is not None:
+        for fcurve in legacy:
+            yield fcurve, legacy
+        return
+    for layer in getattr(action, "layers", []):
+        for strip in getattr(layer, "strips", []):
+            for channelbag in getattr(strip, "channelbags", []):
+                fcurves = getattr(channelbag, "fcurves", None)
+                if fcurves is None:
+                    continue
+                for fcurve in fcurves:
+                    yield fcurve, fcurves
+
+
+def scale_action_location_channels(rig: bpy.types.Object, factor: float) -> Dict[str, Any]:
+    """Scale keyed local bone translations when armature data is rescaled."""
+
+    action = rig.animation_data.action if rig.animation_data else None
+    if action is None or abs(factor - 1.0) <= 1e-6:
+        return {
+            "action": action.name if action is not None else None,
+            "factor": factor,
+            "location_fcurves": 0,
+            "keyframes": 0,
+            "policy": "no_action_scale_required",
+        }
+    changed_curves = 0
+    changed_keyframes = 0
+    for fcurve, _ in action_fcurves(action):
+        if "pose.bones[" not in fcurve.data_path or ".location" not in fcurve.data_path:
+            continue
+        changed_curves += 1
+        for keyframe in fcurve.keyframe_points:
+            keyframe.co[1] *= factor
+            keyframe.handle_left[1] *= factor
+            keyframe.handle_right[1] *= factor
+            changed_keyframes += 1
+        fcurve.update()
+    return {
+        "action": action.name,
+        "factor": factor,
+        "location_fcurves": changed_curves,
+        "keyframes": changed_keyframes,
+        "policy": "scale_local_bone_translation_channels_with_armature_data_bake",
+    }
+
+
+def sanitize_root_translation_channels() -> Dict[str, Any]:
+    """Keep the active humanoid action in place by locking Hips location."""
+
+    records: List[Dict[str, Any]] = []
+    for rig in armatures():
+        action = rig.animation_data.action if rig.animation_data else None
+        if action is None:
+            continue
+        root_curves = [
+            fcurve
+            for fcurve, _ in action_fcurves(action)
+            if fcurve.data_path == 'pose.bones["Hips"].location'
+        ]
+        if not root_curves:
+            records.append(
+                {
+                    "armature": rig.name,
+                    "action": action.name,
+                    "location_fcurves": 0,
+                    "changed_keyframes": 0,
+                    "policy": "no_hips_location_channels_found",
+                }
+            )
+            continue
+        fixed_values: Dict[int, float] = {}
+        changed_keyframes = 0
+        for fcurve in root_curves:
+            if not fcurve.keyframe_points:
+                continue
+            first = min(fcurve.keyframe_points, key=lambda point: point.co[0])
+            fixed_values[fcurve.array_index] = float(first.co[1])
+            for keyframe in fcurve.keyframe_points:
+                if abs(keyframe.co[1] - first.co[1]) > 1e-8:
+                    changed_keyframes += 1
+                keyframe.co[1] = first.co[1]
+                keyframe.handle_left[1] = first.co[1]
+                keyframe.handle_right[1] = first.co[1]
+            fcurve.update()
+        first_frame = int(math.floor(float(action.frame_range[0])))
+        bpy.context.scene.frame_set(first_frame)
+        bpy.context.view_layer.update()
+        before_minimum, _ = evaluated_world_bounds(mesh_objects())
+        ground_correction = 0.0
+        armature_scale = float(rig.matrix_world.to_scale().z)
+        z_curve = next(
+            (fcurve for fcurve in root_curves if fcurve.array_index == 2),
+            None,
+        )
+        if z_curve is not None and armature_scale > 1e-8:
+            test_step = 1.0
+            for keyframe in z_curve.keyframe_points:
+                keyframe.co[1] += test_step
+                keyframe.handle_left[1] += test_step
+                keyframe.handle_right[1] += test_step
+            z_curve.update()
+            bpy.context.view_layer.update()
+            test_minimum, _ = evaluated_world_bounds(mesh_objects())
+            for keyframe in z_curve.keyframe_points:
+                keyframe.co[1] -= test_step
+                keyframe.handle_left[1] -= test_step
+                keyframe.handle_right[1] -= test_step
+            z_curve.update()
+            bpy.context.view_layer.update()
+            derivative = float(test_minimum.z - before_minimum.z) / test_step
+            if abs(derivative) > 1e-8:
+                ground_correction = -float(before_minimum.z) / derivative
+                for keyframe in z_curve.keyframe_points:
+                    keyframe.co[1] += ground_correction
+                    keyframe.handle_left[1] += ground_correction
+                    keyframe.handle_right[1] += ground_correction
+                z_curve.update()
+                bpy.context.view_layer.update()
+        after_minimum, _ = evaluated_world_bounds(mesh_objects())
+        records.append(
+            {
+                "armature": rig.name,
+                "action": action.name,
+                "location_fcurves": len(root_curves),
+                "changed_keyframes": changed_keyframes,
+                "fixed_values": fixed_values,
+                "ground_correction_source_units": ground_correction,
+                "ground_contact_before": float(before_minimum.z),
+                "ground_contact_after": float(after_minimum.z),
+                "policy": "in_place_root_translation_locked_to_first_keyframe",
+            }
+        )
+    return {
+        "policy": "remove_provider_root_motion_for_in_place_unit_actions",
+        "actions": records,
+    }
+
+
 def sanitize_action_scale_channels() -> Dict[str, Any]:
     """Remove provider scale channels that rescale the whole unit in HOI4."""
 
     records: List[Dict[str, Any]] = []
-
-    def action_fcurves(action: bpy.types.Action) -> Iterable[Tuple[Any, Any]]:
-        legacy = getattr(action, "fcurves", None)
-        if legacy is not None:
-            for fcurve in legacy:
-                yield fcurve, legacy
-            return
-        for layer in getattr(action, "layers", []):
-            for strip in getattr(layer, "strips", []):
-                for channelbag in getattr(strip, "channelbags", []):
-                    fcurves = getattr(channelbag, "fcurves", None)
-                    if fcurves is None:
-                        continue
-                    for fcurve in fcurves:
-                        yield fcurve, fcurves
 
     for rig in armatures():
         action = rig.animation_data.action if rig.animation_data else None
@@ -691,6 +823,27 @@ def world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector, Vector]:
         # is triangulated or decimated. Measure the actual mesh vertices so
         # normalization and preview framing cannot silently use old extents.
         corners.extend(obj.matrix_world @ vertex.co for vertex in obj.data.vertices)
+    if not corners:
+        return Vector((0, 0, 0)), Vector((0, 0, 0))
+    minimum = Vector((min(item.x for item in corners), min(item.y for item in corners), min(item.z for item in corners)))
+    maximum = Vector((max(item.x for item in corners), max(item.y for item in corners), max(item.z for item in corners)))
+    return minimum, maximum
+
+
+def evaluated_world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector, Vector]:
+    """Measure evaluated, armature-deformed mesh vertices at the current frame."""
+
+    corners: List[Vector] = []
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    for obj in objects:
+        if obj.type != "MESH":
+            continue
+        evaluated = obj.evaluated_get(depsgraph)
+        mesh = evaluated.to_mesh()
+        try:
+            corners.extend(evaluated.matrix_world @ vertex.co for vertex in mesh.vertices)
+        finally:
+            evaluated.to_mesh_clear()
     if not corners:
         return Vector((0, 0, 0)), Vector((0, 0, 0))
     minimum = Vector((min(item.x for item in corners), min(item.y for item in corners), min(item.z for item in corners)))
@@ -1710,6 +1863,11 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     )
     actions = action_metrics()
     actions["scale_sanitization"] = scale_sanitization
+    actions["root_translation_sanitization"] = (
+        sanitize_root_translation_channels()
+        if payload["asset_kind"] == "humanoid"
+        else {"policy": "not_applicable", "actions": []}
+    )
     if payload["asset_kind"] == "humanoid" and scale_sanitization["remaining_scale_fcurves"]:
         raise RuntimeError("Humanoid action export still contains scale channels after sanitization.")
     rig_checkpoint = None
@@ -1742,7 +1900,7 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             "mesh_target_height_m": target_height,
             "entity_scale": runtime_entity_scale,
             "effective_runtime_height_m": target_height * runtime_entity_scale,
-            "policy": "bake the calibrated pilot runtime height into mesh coordinates and keep the entity scale neutral",
+            "policy": "bake the calibrated pilot source height into mesh coordinates and preserve the specified vanilla entity scale",
         },
         "triangulation": triangulation,
         "controlled_reduction": reduction,
@@ -2201,9 +2359,45 @@ def author_locomotion_action(req: Dict[str, Any]) -> Dict[str, Any]:
     scene.frame_start = 0
     scene.frame_end = 24
     scene.frame_set(0)
-    for fcurve in getattr(action, "fcurves", []):
+    for fcurve, _ in action_fcurves(action):
         for keyframe in fcurve.keyframe_points:
             keyframe.interpolation = "LINEAR"
+    move_ground_before, _ = evaluated_world_bounds(mesh_objects())
+    move_ground_correction = 0.0
+    move_root_curves = [
+        fcurve
+        for fcurve, _ in action_fcurves(action)
+        if fcurve.data_path == 'pose.bones["Hips"].location'
+    ]
+    move_z_curve = next(
+        (fcurve for fcurve in move_root_curves if fcurve.array_index == 2),
+        None,
+    )
+    if move_z_curve is not None:
+        test_step = 1.0
+        for keyframe in move_z_curve.keyframe_points:
+            keyframe.co[1] += test_step
+            keyframe.handle_left[1] += test_step
+            keyframe.handle_right[1] += test_step
+        move_z_curve.update()
+        bpy.context.view_layer.update()
+        move_test_minimum, _ = evaluated_world_bounds(mesh_objects())
+        for keyframe in move_z_curve.keyframe_points:
+            keyframe.co[1] -= test_step
+            keyframe.handle_left[1] -= test_step
+            keyframe.handle_right[1] -= test_step
+        move_z_curve.update()
+        bpy.context.view_layer.update()
+        derivative = float(move_test_minimum.z - move_ground_before.z) / test_step
+        if abs(derivative) > 1e-8:
+            move_ground_correction = -float(move_ground_before.z) / derivative
+            for keyframe in move_z_curve.keyframe_points:
+                keyframe.co[1] += move_ground_correction
+                keyframe.handle_left[1] += move_ground_correction
+                keyframe.handle_right[1] += move_ground_correction
+            move_z_curve.update()
+            bpy.context.view_layer.update()
+    move_ground_after, _ = evaluated_world_bounds(mesh_objects())
     save_blend(checkpoint)
     metrics = action_metrics()
     report = {
@@ -2218,6 +2412,9 @@ def author_locomotion_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "keyed_channels": keyed_bones * 2,
         "root_translation_channel": "forced_with_submillimeter_in_place_bob",
         "root_bob_amplitude": root_bob_amplitude,
+        "ground_contact_before": float(move_ground_before.z),
+        "ground_contact_after": float(move_ground_after.z),
+        "ground_correction_source_units": move_ground_correction,
         "policy": "blender_authored_in_place_walk_no_scale_channels",
         "rig_and_actions": metrics,
     }
@@ -2231,6 +2428,34 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     mesh = within(job, payload["mesh_rel"])
     anim = within(job, payload["anim_rel"]) if payload.get("anim_rel") else None
+    texture_staging = []
+    for texture_name in (
+        "texture_0.dds",
+        "texture_specular.dds",
+        "texture_normal.dds",
+        "Image_0.dds",
+        "Image_1.dds",
+        "Image_2.dds",
+    ):
+        source = job / "textures" / "dds" / texture_name
+        if not source.is_file():
+            continue
+        destination = mesh.parent / texture_name
+        already_staged = (
+            destination.is_file()
+            and destination.stat().st_size == source.stat().st_size
+            and destination.read_bytes() == source.read_bytes()
+        )
+        if not already_staged:
+            shutil.copy2(source, destination)
+        texture_staging.append(
+            {
+                "source": str(source.relative_to(job)).replace("\\", "/"),
+                "staged": str(destination.relative_to(job)).replace("\\", "/"),
+                "bytes": destination.stat().st_size,
+                "copied": not already_staged,
+            }
+        )
     clear_scene()
     pdx = load_pdx(req["io_pdx_root"])
     pdx["import_meshfile"](
@@ -2243,6 +2468,29 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     )
     if anim is not None:
         pdx["import_animfile"](str(anim), frame_start=1)
+    animation_bounds = []
+    if anim is not None:
+        actions = [action for action in bpy.data.actions if action.frame_range[1] >= action.frame_range[0]]
+        if actions:
+            action = max(actions, key=lambda candidate: candidate.frame_range[1] - candidate.frame_range[0])
+            first = int(math.floor(float(action.frame_range[0])))
+            last = int(math.ceil(float(action.frame_range[1])))
+            sample_frames = sorted({first, int(round((first + last) / 2.0)), last})
+            for frame in sample_frames:
+                bpy.context.scene.frame_set(frame)
+                bpy.context.view_layer.update()
+                minimum, maximum = evaluated_world_bounds(mesh_objects(working_only=False))
+                animation_bounds.append(
+                    {
+                        "frame": frame,
+                        "bounds_min": list(minimum),
+                        "bounds_max": list(maximum),
+                        "ground_contact_z": float(minimum.z),
+                        "dimensions": list(maximum - minimum),
+                    }
+                )
+            bpy.context.scene.frame_set(first)
+            bpy.context.view_layer.update()
     proof_name = safe_name(
         payload.get("proof_name")
         or f"{mesh.stem}_{Path(payload['anim_rel']).stem if payload.get('anim_rel') else 'mesh'}"
@@ -2252,6 +2500,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     report = {
         "mesh": str(mesh.relative_to(job)).replace("\\", "/"),
         "anim": str(anim.relative_to(job)).replace("\\", "/") if anim else None,
+        "runtime_texture_staging": texture_staging,
         "proof_blend": str(proof.relative_to(job)).replace("\\", "/"),
         "objects": [
             {"name": obj.name, "type": obj.type}
@@ -2268,6 +2517,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             if obj.type == "MESH"
         ],
         "geometry": geometry_metrics(working_only=False, position_weld_distance=1e-6),
+        "animation_bounds": animation_bounds,
         "armatures": [
             {"name": obj.name, "bones": len(obj.data.bones)}
             for obj in bpy.context.scene.objects
