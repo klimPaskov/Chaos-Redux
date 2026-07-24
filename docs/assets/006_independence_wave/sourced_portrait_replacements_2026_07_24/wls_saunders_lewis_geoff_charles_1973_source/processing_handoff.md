@@ -17,6 +17,6 @@ This handoff deliberately stops before ImageGen and runtime processing. The pack
 - No DDS conversion.
 - No `.gfx`, character, localisation, or gameplay edit.
 
-## Next gate if the user approves the date/licensing exception
+## Runtime disposition
 
 Do not use this crop as a runtime ImageGen base. Preserving the 1973 sitter would retain the wrong period age, while aging him toward 1936 would reconstruct source-hidden facial geometry and violate the source-locked identity gate. Retain the master and crop as attributed comparison evidence only. A different rights-clear, age-appropriate Saunders Lewis photograph must start a fresh source chain.
