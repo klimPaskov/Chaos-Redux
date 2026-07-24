@@ -25,6 +25,7 @@ Before producing a portrait:
 4. For a grounded real person, follow the fail-closed sequence exactly: unchanged attributed archival male photograph -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted style -> deterministic `156x210` processing -> independent likeness, style, and provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after every gate passes.
 5. Retain the unchanged master, exact crop and crop-equality JSON, raw ImageGen result, processed `156x210` candidate, prompt, attribution, rights evidence, and independent audit record.
 6. Reject raw-photo finishes, generic oil filters, reconstructed or substituted faces, weak likenesses, beautification, symmetrization, invented hidden detail, unsupported clothing or insignia, and style treatments that materially change the person.
+7. Recompute processor `decoded_rgba_sha256` values with the domain-separated scheme documented in `../../tools/README.md`; do not compare them with a plain SHA-256 of raw RGBA bytes.
 
 Reference PNGs may be viewed and supplied as style-only inputs.
 Do not recolour, trace, wire, copy into runtime folders, or ship them as final Chaos Redux art.

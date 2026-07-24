@@ -18,6 +18,8 @@ Commanders must pass `--role-family commander` on the full-size command. That se
 
 The review sheet's first panel is labelled `processor input crop`; it is the crop of the supplied processed source or ImageGen result, not the immutable archival crop. Use the role-family references for style review only. An independent auditor must separately compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references; the processor sheet cannot replace provenance evidence or the independent likeness/style/provenance audit.
 
+The processor's `decoded_rgba_sha256` fields are domain-separated evidence hashes, not plain hashes of `RGBA.tobytes()`. Recompute them exactly as SHA-256 over the ASCII prefix `chaos-redux-decoded-rgba-v1` followed by one NUL byte, the width and height as four-byte little-endian unsigned integers, and the decoded RGBA bytes. A plain pixel-payload hash is useful only when it is labelled separately and must not be compared directly with `decoded_rgba_sha256`.
+
 The commander boundary is explicit in the full-size invocation:
 
 ```powershell
