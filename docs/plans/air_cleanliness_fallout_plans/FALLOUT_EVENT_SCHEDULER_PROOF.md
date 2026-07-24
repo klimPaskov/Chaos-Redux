@@ -440,6 +440,16 @@ The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.366` used help
 It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23102`, `maximum: 20000`, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.
 The exact result is recorded in `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md`.
 
+## Old Weather Station scheduler correction
+
+The reviewed ordinary producer now carries twenty-seven rows and the defined living-world event range reaches `379`, with `261` defined blocks.
+The Old Weather Station is candidate `373`, transaction `710027`, route `7127`, and history `9132`.
+Its country row follows the closed Reactor Without a Country memory and requires durable resources, campaign-day and exposure gates, one current-generation native radar-station state, and instability from reclamation or supply access.
+The deterministic state score is radar-station level times `4` plus infrastructure and industrial capacity, with the lowest native state id resolving ties.
+The four branches fund observers, militarize the forecast, share the records, or abandon the tower and each has separate costs, thresholds, state memory, climate ledgers, dynamic modifier, callback payload, and Deaths-backed failure route.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.373` uses the same helper expansion and graph bounds as the adjacent pilot proofs. It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23137`, and `maximum: 20000`, with no files scanned, diagnostics, proposed files, changed files, or artifacts and `validation.passed: false`. The exact result is recorded in `FALLOUT_OLD_WEATHER_STATION_CHAIN_PROOF.md`.
+
 ## The Working Machine scheduler correction
 
 The reviewed ordinary producer now carries twenty-four rows and the defined living-world event range reaches `358`, with `240` defined blocks.
