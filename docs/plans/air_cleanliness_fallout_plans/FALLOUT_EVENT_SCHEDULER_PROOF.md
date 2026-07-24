@@ -428,6 +428,18 @@ It remains dormant and contributes zero countable blocks to the `0 of 660` relea
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.345` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,025 issues against a fixed ceiling of 20,000 and no artifact.
 Delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
 
+## Reactor Without a Country scheduler correction
+
+The reviewed ordinary producer now carries twenty-six rows and the defined living-world event range reaches `372`, with `254` defined blocks.
+The Reactor Without a Country is candidate `366`, transaction `710026`, route `7126`, and history `9131`.
+Its country row requires the closed Working Machine memory, durable resources, campaign-day and exposure gates, one current-generation native nuclear-reactor state, and unstable-ownership evidence from reclamation or supply access.
+The deterministic state score is nuclear reactor level times `5` plus infrastructure and industrial capacity, with the lowest native state id resolving ties.
+The four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown and each has separate costs, thresholds, state memory, dynamic modifier, callback payload, and Deaths-backed failure route.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges.
+It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, `count: 23102`, `maximum: 20000`, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.
+The exact result is recorded in `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md`.
+
 ## The Working Machine scheduler correction
 
 The reviewed ordinary producer now carries twenty-four rows and the defined living-world event range reaches `358`, with `240` defined blocks.
