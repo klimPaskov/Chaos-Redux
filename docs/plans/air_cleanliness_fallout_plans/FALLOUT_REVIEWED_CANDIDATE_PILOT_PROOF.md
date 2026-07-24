@@ -324,3 +324,13 @@ The chain freezes Food, Scrap, Medicine, Recognition, Cohesion, and price, merch
 The four policies license the market, tax the stalls, police the exchange, or tolerate barter, with supply-node-first failure damage, separate market ledgers, branch memories, modifiers, and Event Log payloads.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The dedicated report art and the bounded inspector proof are recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.
+
+## The Counterfeit Antibiotics correction
+
+Counterfeit Antibiotics is the twenty-ninth reviewed ordinary candidate.
+It uses country candidate id `387`, transaction `710029`, route `7129`, event tokens `387` through `393`, and history `9134`.
+Its gate selects the lowest valid native state id with current Air Winter exposure, a surviving population, an accepted Fallout state grade, and medicine-market pressure in the reviewed band.
+The chain freezes Medicine, Food, Recognition, Cohesion, and three medicine provenance ledgers before a 42-day result and a 330-day supplier review callback.
+The four policies expose a public trial, a quiet purchase, an apothecary guild charter, or a military seizure. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The dedicated proof is recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.

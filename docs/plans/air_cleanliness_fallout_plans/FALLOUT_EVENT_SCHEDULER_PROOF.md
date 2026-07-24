@@ -479,3 +479,11 @@ The deterministic state score is supply-node level times `4` plus railway level 
 The four branches license, tax, police, or tolerate barter and each has separate costs, thresholds, state memory, market ledgers, dynamic modifier, callback payload, and Deaths-backed failure route.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
 The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.380` uses helper expansion disabled, depth one, twenty nodes, and forty edges. It timed out after 180 seconds while awaiting the tool and returned no files scanned, diagnostics, proposed files, changed files, artifacts, or validation result. The exact boundary is recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.
+
+## Counterfeit Antibiotics scheduler correction
+
+The reviewed ordinary producer now carries twenty-nine rows and the defined living-world event range reaches `393`, with `275` defined blocks.
+Counterfeit Antibiotics is candidate `387`, transaction `710029`, route `7129`, and history `9134`.
+Its country row requires medicine pressure below the reviewed ceiling, a current-generation native state with Air Winter exposure, surviving population, and current Fallout ownership. The lowest native state id resolves ties.
+The four branches use separate medicine, food, scrap, recognition, and cohesion costs. The chain freezes medicine, food, recognition, cohesion, adulteration, trust, and supplier ledgers before a 42-day result and a 330-day supplier review callback.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.

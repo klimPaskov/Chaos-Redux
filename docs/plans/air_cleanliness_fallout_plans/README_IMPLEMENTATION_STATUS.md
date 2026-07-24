@@ -623,3 +623,15 @@ Human and hidden-AI lanes share the delayed transaction, Deaths-backed failure, 
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `268`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` request timed out after 180 seconds while awaiting the tool and returned no files scanned, diagnostics, proposed files, changed files, artifacts, or validation result. The exact boundary is recorded in `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md`.
+
+## The Counterfeit Antibiotics medicine-provenance tranche
+
+Counterfeit Antibiotics is implemented as a dormant country-level chain at `chaosx.fallout.387` through `.393`.
+It uses candidate `387`, transaction key `710029`, route `7129`, and Event Log history `9134`.
+The gate selects one deterministic native state with current Air Winter data, surviving population, medicine exposure, and accepted Fallout grading.
+Four authored policies put the shipment on a public trial, buy it quietly, charter an apothecary guild, or seize it for the garrison.
+The chain freezes Medicine, Food, Recognition, Cohesion, adulteration, trust, and supplier ledgers before a 42-day result and a 330-day supplier review callback.
+Human and hidden-AI lanes share the delayed transaction, Deaths-backed failure, dedicated modifiers, Event Log payloads, report art, and authenticated cleanup wrappers.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `275`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded inspector boundary, if attempted, will be recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.

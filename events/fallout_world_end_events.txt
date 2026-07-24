@@ -14661,3 +14661,116 @@ country_event = {
 	trigger = { fallout_event_380_cleanup_can_enter = yes }
 	immediate = { fallout_event_380_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.387
+	title = chaosx.fallout.387.t
+	desc = chaosx.fallout.387.d
+	picture = GFX_report_event_fallout_counterfeit_antibiotics
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_387_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.387.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_387_cost.public_trial_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_387_cost.public_trial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_387_cost.public_trial_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_387_requested_branch = constant:fallout_event_387_branch.public_trial } fallout_event_387_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.387.a.tt
+	}
+	option = {
+		name = chaosx.fallout.387.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_387_cost.quiet_purchase_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_387_cost.quiet_purchase_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_387_requested_branch = constant:fallout_event_387_branch.quiet_purchase } fallout_event_387_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.387.b.tt
+	}
+	option = {
+		name = chaosx.fallout.387.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_387_cost.guild_regulation_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_387_cost.guild_regulation_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_387_cost.guild_regulation_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_387_requested_branch = constant:fallout_event_387_branch.guild_regulation } fallout_event_387_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.387.c.tt
+	}
+	option = {
+		name = chaosx.fallout.387.d
+		trigger = {
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_387_cost.military_seizure_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_387_cost.military_seizure_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_387_cost.military_seizure_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_387_requested_branch = constant:fallout_event_387_branch.military_seizure } fallout_event_387_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.387.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.388
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_387_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_387_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.389
+	title = chaosx.fallout.389.t
+	desc = { text = chaosx.fallout.389.public_trial.success.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.public_trial } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.389.public_trial.partial.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.public_trial } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.389.public_trial.failure.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.public_trial } } }
+	desc = { text = chaosx.fallout.389.quiet_purchase.success.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.quiet_purchase } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.389.quiet_purchase.partial.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.quiet_purchase } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.389.quiet_purchase.failure.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.quiet_purchase } } }
+	desc = { text = chaosx.fallout.389.guild_regulation.success.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.guild_regulation } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.389.guild_regulation.partial.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.guild_regulation } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.389.guild_regulation.failure.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.guild_regulation } } }
+	desc = { text = chaosx.fallout.389.military_seizure.success.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.military_seizure } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.389.military_seizure.partial.d trigger = { check_variable = { fallout_event_387_selected_branch = constant:fallout_event_387_branch.military_seizure } check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.389.military_seizure.failure.d
+	picture = GFX_report_event_fallout_counterfeit_antibiotics
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_387_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.counterfeit_antibiotics_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.389.a hidden_effect = { fallout_event_387_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.389.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.390
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_387_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.counterfeit_antibiotics_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_387_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.391
+	title = chaosx.fallout.391.t
+	desc = { text = chaosx.fallout.391.success.d trigger = { check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.391.partial.d trigger = { check_variable = { fallout_event_387_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.391.failure.d
+	picture = GFX_report_event_fallout_counterfeit_antibiotics
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_387_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.counterfeit_antibiotics_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_387_registry_is_current = yes }
+	option = { name = chaosx.fallout.391.a hidden_effect = { fallout_event_387_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.391.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.392
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_387_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.counterfeit_antibiotics_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_387_registry_is_current = yes }
+	immediate = { fallout_event_387_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.393
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_387_cleanup_can_enter = yes }
+	immediate = { fallout_event_387_cleanup = yes }
+}
