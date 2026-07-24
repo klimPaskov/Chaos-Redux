@@ -70,6 +70,8 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | units | templates, OOB, and dynamic spawns | give every fighting successor a real starting package and growth path | 6 onward |
 | assets | `docs/assets/fallout_world_end/`, dedicated Fallout GFX folders, and engine-required root flag folders | create Fallout-owned flags, portraits, icons, UI, report images, and animations | 6 onward |
 
+| Thaw Water ordinary chain | `events/fallout_world_end_events.txt`, `common/scripted_effects/fallout_world_end_thaw_water_event_effects.txt`, `common/scripted_triggers/fallout_world_end_thaw_water_event_triggers.txt`, `common/script_constants/fallout_world_end_thaw_water_constants.txt`, `common/dynamic_modifiers/fallout_world_end_thaw_water_dynamic_modifiers.txt`, `localisation/english/fallout_world_end_thaw_water_l_english.yml` | Four thaw policies, deterministic result and callback, Air Winter water and disease updates, Deaths-backed failure, and authenticated cleanup | reviewed tranche |
+
 ## Manual scenario
 
 | Surface | Existing file | Planned action | Tranche |

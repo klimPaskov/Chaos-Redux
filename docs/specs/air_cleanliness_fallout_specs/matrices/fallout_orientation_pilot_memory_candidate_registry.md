@@ -205,3 +205,13 @@ The future asset package needs twenty-four fictional character portraits and twe
 The typed candidate ids, exact twelve-memory candidate mapper, country-owned candidate fields, and candidate request authenticator are implemented. The immediate resource pilot has an idempotent twelve-memory mapper, exact supporting-resource and AI-preference fields, country-specific text, and events `70` through `73`. The government pilot has an idempotent twelve-memory mapper, exact material-effect and AI-preference fields, country-specific text, and events `74` through `77`. None of these mappers has a caller. No candidate package receipt setter or resource capital-asset receipt setter exists.
 
 Until the candidate assets, installation effects, final candidate localisation, and installed-package producers exist, `fallout_orientation_character_install_surface_status` remains blocked. The regional, archetype, memory, and government row approval surfaces also remain blocked. The immediate-resource and government events remain unreachable and uncounted while those approval surfaces, the resource capital-asset receipt, and the orientation caller have no producer.
+
+## Implemented Fallout ordinary candidate rows
+
+These rows are separate from the 99-successor orientation pool. They document the reviewed ordinary-event candidates that already have dedicated state or country gates, delayed transactions, and cleanup receipts.
+
+| Candidate id | Ordinary chain | State or country gate | Transaction | Runtime status |
+| ---: | --- | --- | ---: | --- |
+| 443 | Empty Village Offer | Current Air Winter snapshot, low-population native state, surviving infrastructure, and current-generation ownership | `710037` | Dormant, not countable until activation proof |
+| 450 | Ash Wolves | Current Air Winter snapshot, altered-biosphere receipt, surviving population, and reclamation | `710038` | Dormant, not countable until activation proof |
+| 457 | Thaw Water | Current Air Winter snapshot with `air_winter_visual_thaw_is_eligible`, surviving population, reclamation, low water security, and high disease pressure | `710039` | Dormant, not countable until activation proof |
