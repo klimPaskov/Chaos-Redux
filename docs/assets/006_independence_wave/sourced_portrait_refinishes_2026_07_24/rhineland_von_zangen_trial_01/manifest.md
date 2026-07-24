@@ -41,7 +41,7 @@ Zangen was alive in 1936, entered Wehrmacht service that year, had earlier servi
 The alternate role is a Rhenish emergency river-corridor commandant, not a claim that he historically led the fictional RHI government.
 The source is late-war evidence and its explicit political and award symbolism was deliberately neutralized; the person's face and uniform geometry remain the archival identity anchor.
 The prior source research found no exact or variant owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved references `2265420196` and `1458561226`.
-Ownership must be rechecked by the independent auditor before any runtime admission.
+The independent audit and transfer re-audit rechecked those roots and passed exclusive ownership for the stable Event 006 consumer.
 
 `identity_transfer.md` records the parent-owned transfer of the stable generated Event 006 token from its prior Josef Harpe display identity to Gustav-Adolf von Zangen.
 The English localisation implements that transfer while IW-008 remains fail-closed outside runtime content attestation.
