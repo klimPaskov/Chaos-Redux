@@ -54,3 +54,20 @@ Date: 2026-07-24
 - Review sheets: `docs/assets/016_brilliant_scientist/contact_sheets/focus_icon_sources_041_060_contact_sheet.png`, `focus_icon_processed_041_060_contact_sheet.png`, and `focus_icon_dds_decoded_041_060_contact_sheet.png`.
 
 No `.gfx`, focus, localisation, gameplay, GUI, event, spreadsheet, or unrelated asset file was edited for this focus-icon tranche.
+
+## Achievement icon triplets
+
+Date: 2026-07-24
+
+- Final DDS folder: `gfx/achievements/` (achievement root exception).
+- Runtime size and encoding: exact `64x64`, one-level uncompressed BGRA DDS with real alpha.
+- Sprite registry: `interface/chaosx_achievements.gfx`, using the already-registered `GFX_achievement_<achievement_id>`, `_grey`, and `_not_eligible` names.
+- Source masters: `docs/assets/016_brilliant_scientist/source_png/016_brilliant_scientist_*.png` (17 generated 1254x1254 RGB masters).
+- Alpha evidence: `docs/assets/016_brilliant_scientist/alpha_png/016_brilliant_scientist_*.png` (17 1254x1254 RGBA chroma-key extractions).
+- Processed previews: `docs/assets/016_brilliant_scientist/processed_png/` (51 exact 64x64 RGBA PNGs).
+- Prompt/provenance record: `docs/assets/016_brilliant_scientist/prompts/achievement_icon_generation_record.md` and the identity prompts in `achievement_icon_prompts.md`.
+- Dimension and SHA-256 ledger: `docs/assets/016_brilliant_scientist/package_records/achievement_icon_hashes.json`.
+- Review sheet: `docs/assets/016_brilliant_scientist/contact_sheets/016_brilliant_scientist_achievement_icons_contact_sheet.png`.
+- Ineligibility treatment: each `_not_eligible` PNG and DDS is an alpha composite of its mechanically grayscale-derived sibling with `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`; silhouettes and composition remain identical.
+
+All seventeen identities have complete completed, grey, and not-eligible triplets. No `.gfx`, achievement, localisation, gameplay, GUI, event, focus, idea, decision, or spreadsheet file was edited in this icon-production tranche.
