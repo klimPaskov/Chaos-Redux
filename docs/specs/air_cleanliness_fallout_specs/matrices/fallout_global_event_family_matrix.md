@@ -65,6 +65,8 @@ Working labels are not final localisation. Each row describes a family or anchor
 
 ## Pilot disposition
 
+The First Unmasked Day is a reviewed recovery exposure tranche at candidate `471` with four government-aware branches, a 35-day result, a 365-day callback, Air Winter state effects, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup. It remains dormant until the Fallout scheduler and host presentation surfaces are proven.
+
 Counterfeit Antibiotics is implemented as dormant candidate 387 with four medicine-provenance policies, a delayed result, supplier review callback, cleanup, Event Log history, and dedicated report art.
 
 The Ration Thief Election is implemented as dormant candidate 394 with four government-aware legitimacy policies, a delayed result, second-count callback, cleanup, Event Log history, and dedicated report art.

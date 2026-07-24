@@ -16078,3 +16078,121 @@ country_event = {
 	trigger = { fallout_event_464_cleanup_can_enter = yes }
 	immediate = { fallout_event_464_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.471
+	title = chaosx.fallout.471.t
+	desc = chaosx.fallout.471.intro
+	picture = GFX_report_event_fallout_first_unmasked_day
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_471_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.471.a
+		trigger = {
+			OR = { has_government = fascism has_government = communism has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_471_cost.open_schoolyard_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_471_cost.open_schoolyard_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_471_cost.open_schoolyard_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_471_requested_branch = constant:fallout_event_471_branch.open_schoolyard } fallout_event_471_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.471.a.tt
+	}
+	option = {
+		name = chaosx.fallout.471.b
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_471_cost.masked_work_shift_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_471_cost.masked_work_shift_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_471_cost.masked_work_shift_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_471_requested_branch = constant:fallout_event_471_branch.masked_work_shift } fallout_event_471_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.471.b.tt
+	}
+	option = {
+		name = chaosx.fallout.471.c
+		trigger = {
+			OR = { has_government = democratic has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_471_cost.daylight_medical_trial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_471_cost.daylight_medical_trial_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_471_cost.daylight_medical_trial_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_471_requested_branch = constant:fallout_event_471_branch.daylight_medical_trial } fallout_event_471_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.471.c.tt
+	}
+	option = {
+		name = chaosx.fallout.471.d
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_471_cost.sealed_until_clear_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_471_cost.sealed_until_clear_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_471_cost.sealed_until_clear_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_471_requested_branch = constant:fallout_event_471_branch.sealed_until_clear } fallout_event_471_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.471.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.472
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_471_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_471_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.473
+	title = chaosx.fallout.473.t
+	desc = { text = chaosx.fallout.473.open_schoolyard.success.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.open_schoolyard } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.473.open_schoolyard.partial.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.open_schoolyard } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.473.open_schoolyard.failure.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.open_schoolyard } } }
+	desc = { text = chaosx.fallout.473.masked_work_shift.success.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.masked_work_shift } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.473.masked_work_shift.partial.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.masked_work_shift } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.473.masked_work_shift.failure.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.masked_work_shift } } }
+	desc = { text = chaosx.fallout.473.daylight_medical_trial.success.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.daylight_medical_trial } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.473.daylight_medical_trial.partial.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.daylight_medical_trial } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.473.daylight_medical_trial.failure.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.daylight_medical_trial } } }
+	desc = { text = chaosx.fallout.473.sealed_until_clear.success.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.sealed_until_clear } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.473.sealed_until_clear.partial.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.sealed_until_clear } check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.473.sealed_until_clear.failure.d trigger = { check_variable = { fallout_event_471_selected_branch = constant:fallout_event_471_branch.sealed_until_clear } } }
+	picture = GFX_report_event_fallout_first_unmasked_day
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_471_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_unmasked_day_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.473.a hidden_effect = { fallout_event_471_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.473.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.474
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_471_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_unmasked_day_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_471_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.475
+	title = chaosx.fallout.475.t
+	desc = { text = chaosx.fallout.475.success.d trigger = { check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.475.partial.d trigger = { check_variable = { fallout_event_471_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.475.failure.d
+	picture = GFX_report_event_fallout_first_unmasked_day
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_471_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_unmasked_day_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_471_registry_is_current = yes }
+	option = { name = chaosx.fallout.475.a hidden_effect = { fallout_event_471_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.475.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.476
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_471_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.first_unmasked_day_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_471_registry_is_current = yes }
+	immediate = { fallout_event_471_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.477
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_471_cleanup_can_enter = yes }
+	immediate = { fallout_event_471_cleanup = yes }
+}
