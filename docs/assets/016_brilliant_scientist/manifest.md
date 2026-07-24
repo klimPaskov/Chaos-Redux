@@ -4,7 +4,7 @@ Date: 2026-07-14
 
 ## Status
 
-This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced, registered, and assigned to the fixed character in `common/characters/016_brilliant_scientist_characters.txt`. The opening appointment report card is produced, converted, registered, and used by both visible opening events. Stage I through IV static and animated sprite contracts are pre-registered, but all referenced later assets remain unproduced. All remaining Event 016 visual assets remain unproduced and unwired.
+This is a planning and reconciliation manifest. The Doctor Warren Kruger stage-0 source package, shared scientist or leader portrait, and advisor portrait are produced, registered, and assigned to the fixed character in `common/characters/016_brilliant_scientist_characters.txt`. The opening appointment report card and the six-image report and super-event tranche below are produced and converted. Stage I through IV static and animated sprite contracts are pre-registered, while the other later visual families remain unproduced and unwired.
 
 Super-event text and audio research are complete for all six packages. Six final Event 016-owned OGG files are ready under `music/016_brilliant_scientist/` at visible IDs 90 through 95. Commit `0e8c6f8e` performed the role-preserving rename to those IDs. Shared music definitions, sound wrappers, settings-aware playback, event triggers, GUI, and localisation remain parent-owned and unwired.
 
@@ -12,7 +12,7 @@ Super-event text and audio research are complete for all six packages. Six final
 
 | Family | Required count | Current final count | Wiring status |
 | --- | ---: | ---: | --- |
-| Super-event images | 6 | 0 | Unwired |
+| Super-event images | 6 | 6 | Runtime DDS present; parent-owned wiring pending |
 | Achievement completed icons | 17 | 0 | Unwired |
 | Achievement grey icons | 17 | 0 | Unwired |
 | Achievement not-eligible icons | 17 | 0 | Unwired |
@@ -23,7 +23,7 @@ Super-event text and audio research are complete for all six packages. Six final
 | Kruger stages I through III portrait states | Specification-defined | 0 | Sprite contracts registered, assets and state wiring missing |
 | Kruger State base and route flag triplets | Specification-defined | 0 | Unwired |
 | Directorate UI art | Specification-defined | 0 | Unwired |
-| Report and news images | Specification-defined | 1 report / 0 news | Opening appointment report wired; all remaining images unwired |
+| Report and news images | Specification-defined | 7 reports / 0 news | Opening appointment plus six report-event tranche DDS present; parent-owned event references pending |
 | Focus, idea, decision, category, project, technology, unit, and equipment icons | Specification-defined | 0 | Unwired |
 
 ## Doctor Warren Kruger stage-0 source package
@@ -92,12 +92,12 @@ Sprite registration and event-reference instructions are in `docs/assets/016_bri
 
 | Visible ID | Role | Text status | Image status | Audio status | Live wiring |
 | ---: | --- | --- | --- | --- | --- |
-| 90 | International recognition | Selected and sourced | Missing | Final OGG ready | Missing |
-| 91 | Kruger State formation | Selected and sourced | Missing | Final OGG ready | Missing |
-| 92 | Global Kruger threat | Selected and sourced | Missing | Final OGG ready | Missing |
-| 93 | Laboratory World | Selected and sourced | Missing | Final OGG ready | Missing |
-| 94 | Strategic Singularity | Selected and sourced | Missing | Final OGG ready | Missing |
-| 95 | Qualifying defeat aftermath | Selected and sourced | Missing | Final OGG ready | Missing |
+| 90 | International recognition | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
+| 91 | Kruger State formation | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
+| 92 | Global Kruger threat | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
+| 93 | Laboratory World | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
+| 94 | Strategic Singularity | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
+| 95 | Qualifying defeat aftermath | Selected and sourced | Complete DDS present | Final OGG ready | Parent-owned live wiring pending |
 
 Text evidence: `docs/super_events/016_brilliant_scientist_super_event_research.md`.
 
@@ -152,7 +152,33 @@ Every final audio package needs source URL, author or performer, work and record
 ## Blockers
 
 - Visible super-event IDs 90 to 95 and world-end scenario IDs 11 and 12 are reserved. Their live shared-registry entries are not implemented.
-- The opening appointment report is wired. All later report and news images, super-event images, Stage I through IV portrait art, and animation packages remain unproduced.
+- The opening appointment report and the six-image report and super-event tranche are produced. News images, Stage I through IV portrait art, and animation packages remain unproduced.
 - Final OGGs are ready, but parent-owned shared music and optional sound-channel wiring remain absent.
 - Stage-0 GFX registration and character assignment are complete, and later portrait contracts are pre-registered. Later portrait files, GUI state wiring, achievement wiring, shared music and sound wiring, localisation, and gameplay wiring remain absent.
 - External redistribution rights for the copied stage-0 base remain unresolved. Internal Event 016 use is explicitly user-authorized.
+
+## 2026-07-24 report and super-event image tranche
+
+All rows in this tranche use source mode `$imagegen` for fictional alternate-history period documentary art. Report rows received the repository report-card processor and super-event rows received deterministic cover crop and resize. Full prompts and reference provenance are recorded in `docs/assets/016_brilliant_scientist/prompts/016_reports_and_super_event_prompts.md`. Row-level hashes, dimensions, alpha, DDS header, and exact-length checks are in `docs/assets/016_brilliant_scientist/validation/016_reports_and_super_technical_validation.md`. Source, processed, and decoded-DDS contact sheets are in `docs/assets/016_brilliant_scientist/contact_sheets/`.
+
+### Report-event images
+
+| Asset | Narrative use | Source PNG | Processed PNG | Final DDS | Target size | Sprite | Target GFX | Status |
+| --- | --- | --- | --- | --- | ---: | --- | --- | --- |
+| `report_event_016_brilliant_scientist_evolution_1` | National scientific ascendancy demonstration. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_evolution_1_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_evolution_1.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_evolution_1.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_evolution_1` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+| `report_event_016_brilliant_scientist_evolution_2` | International scientific contest and recognition. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_evolution_2_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_evolution_2.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_evolution_2.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_evolution_2` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+| `report_event_016_brilliant_scientist_evolution_3` | Forbidden-science chamber opening. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_evolution_3_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_evolution_3.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_evolution_3.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_evolution_3` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+| `report_event_016_brilliant_scientist_evolution_4` | Sovereign laboratory district takeover. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_evolution_4_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_evolution_4.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_evolution_4.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_evolution_4` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+| `report_event_016_brilliant_scientist_directorate_dossier` | People-free directorate portfolio and intelligence dossier. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_directorate_dossier_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_directorate_dossier.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_directorate_dossier.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_directorate_dossier` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+| `report_event_016_brilliant_scientist_sovereignty_confrontation` | State and private laboratory perimeter confrontation. | `docs/assets/016_brilliant_scientist/source_png/report_events/report_event_016_brilliant_scientist_sovereignty_confrontation_source.png` | `docs/assets/016_brilliant_scientist/processed_png/report_events/report_event_016_brilliant_scientist_sovereignty_confrontation.png` | `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_sovereignty_confrontation.dds` | `210x176` | `GFX_report_event_016_brilliant_scientist_sovereignty_confrontation` | `interface/016_brilliant_scientist.gfx` | `complete; parent wiring pending` |
+
+### Super-event images
+
+| Visible ID | Asset | Narrative role | Source PNG | Processed PNG | Final DDS | Target size | Sprite | Target GFX | Status |
+| ---: | --- | --- | --- | --- | --- | ---: | --- | --- | --- |
+| 90 | `super_event_016_international_recognition` | The Endless Frontier, global scientific recognition. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_international_recognition_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_international_recognition.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_international_recognition.dds` | `457x328` | `GFX_super_event_016_international_recognition` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
+| 91 | `super_event_016_kruger_state_formation` | A New Order of Things, sovereign state formation. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_kruger_state_formation_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_kruger_state_formation.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_kruger_state_formation.dds` | `457x328` | `GFX_super_event_016_kruger_state_formation` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
+| 92 | `super_event_016_global_kruger_threat` | The Empire of Method, organized global project threat. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_global_kruger_threat_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_global_kruger_threat.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_global_kruger_threat.dds` | `457x328` | `GFX_super_event_016_global_kruger_threat` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
+| 93 | `super_event_016_laboratory_world` | All Things Possible, terminal administrative laboratory order. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_laboratory_world_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_laboratory_world.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_laboratory_world.dds` | `457x328` | `GFX_super_event_016_laboratory_world` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
+| 94 | `super_event_016_strategic_singularity` | The World Set Free, strategic-singularity terminal firing. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_strategic_singularity_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_strategic_singularity.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_strategic_singularity.dds` | `457x328` | `GFX_super_event_016_strategic_singularity` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
+| 95 | `super_event_016_qualifying_defeat` | Trustees of the Ruins, qualifying global defeat aftermath. | `docs/assets/016_brilliant_scientist/source_png/super_events/super_event_016_qualifying_defeat_source.png` | `docs/assets/016_brilliant_scientist/processed_png/super_events/super_event_016_qualifying_defeat.png` | `gfx/super_events/016_brilliant_scientist/super_event_016_qualifying_defeat.dds` | `457x328` | `GFX_super_event_016_qualifying_defeat` | `interface/016_brilliant_scientist_super_events.gfx` | `complete; parent wiring pending` |
