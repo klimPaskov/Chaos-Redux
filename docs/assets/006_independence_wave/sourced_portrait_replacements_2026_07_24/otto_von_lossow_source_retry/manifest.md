@@ -10,11 +10,13 @@ No gameplay, character, history, GFX, interface, localisation, workbook, process
 
 Otto Hermann von Lossow (15 January 1868 – 25 November 1938) is a grounded historical Bavarian/German general and a source-ready replacement candidate for the safety-blocked Friedrich Dollmann input in the Bavaria IW-009 package.
 
-Status: `source_ready_needs_user_review`.
+Status: `blocked_imagegen_safety_no_runtime_asset`.
 
 Source mode: `grounded_source_only` / `sourced_real_person`.
 
-The candidate is suitable as identity evidence for a later source-locked HOI4 commander-family repaint. It is not runtime-ready until the parent-owned ImageGen repaint and an independent likeness, style, provenance, and ownership audit pass.
+The candidate remains suitable archival identity evidence, but the required ImageGen repaint is blocked by the safety system.
+
+No generated image was returned, and no processed PNG, DDS, or runtime wiring may be created from this source package.
 
 ## Immutable archival source
 
@@ -48,7 +50,7 @@ Commons API metadata snapshot used for verification: <https://commons.wikimedia.
 
 Library of Congress Bain collection background and rights page: <https://www.loc.gov/pictures/collection/ggbain/> and <https://www.loc.gov/rr/print/res/274_bain.html>. These establish the Bain collection context only; they do not establish an LOC accession for this exact 1923 scan.
 
-## Explicit identity crop
+## Rejected first identity crop
 
 The unchanged source was cropped directly in source pixels with Pillow and no resampling, retouching, recolouring, denoising, or identity alteration.
 
@@ -60,9 +62,39 @@ Crop SHA-1 is `DF8F6D459F3C70B85D51FBD2307D99874C1ECA24`.
 
 Crop SHA-256 is `A47246879AA1B7E51444C95B3E29F3A128203334F0CABF8966B01076CEF691EE`.
 
-The crop keeps the full bald head, both eyes behind the source glasses, nose, moustache, jaw, neck, and upper shoulder framing. It excludes the chest medals, ribbon bar, and readable shoulder/collar decorations so that the identity reference contains no visible swastika, SS, party, or other politically charged symbol. The glasses and moustache are source-visible identity features and must not be removed or replaced by a generic face.
+The crop keeps the full bald head, both eyes behind the source glasses, nose, moustache, jaw, and neck, but independent parent inspection rejected it because it does not show both shoulders.
 
-Independent visual inspection found the face unobstructed enough for identity-preserving repaint: both eyes, facial asymmetry, nose, moustache, mouth, jawline, ears, and age are readable. The source has archival dust, scratches, sepia/grayscale toning, and uneven exposure; these are source artifacts, not a reason to alter the master.
+It is retained as rejected evidence only and is not an authorized ImageGen or runtime input.
+
+## Corrected explicit head-and-shoulders crop
+
+The corrected source-pixel crop is [OTTO_von_lossow_bain_1923_head_shoulders_1300_0_7763_8700.png](source_crops/OTTO_von_lossow_bain_1923_head_shoulders_1300_0_7763_8700.png).
+
+Its half-open rectangle is `(left=1300, top=0, right=7763, bottom=8700)` in the unchanged `8980x13470` master.
+
+The corrected crop is `6463x8700` RGB PNG, `56,686,053` bytes.
+
+Its SHA-1 is `A6FE96C9D0945D23692394D69A50AA555EF62DA7`.
+
+Its SHA-256 is `0083F0F78CD1606A1FD87A2D42614F68A163C7D7DBFB544543DE1202A6A1D22A`.
+
+It visibly retains the full head, face, neck, and both shoulders at the source aspect needed for a leader portrait.
+
+It also necessarily retains parts of the source military collar and shoulder decoration.
+
+The source has archival dust, scratches, sepia/grayscale toning, and uneven exposure; these are source artifacts, not a reason to alter the immutable master or crop.
+
+## ImageGen safety disposition
+
+The corrected head-and-shoulders crop was submitted as the sole identity source, with canonical male HOI4 commander portraits supplied as style-only references.
+
+The prompt explicitly required preservation of Lossow's bald head, glasses, moustache, age, ears, facial asymmetry, three-quarter pose, and expression while replacing the visible uniform with a plain field-gray tunic without medals, badges, collar patches, epaulettes, political symbols, flags, text, or readable insignia.
+
+ImageGen rejected the request through the safety system and returned no generated output.
+
+The block is treated as final for this archival photograph.
+
+The raw photograph will not be resized, filtered, directly converted, manually composited, or promoted as a runtime substitute.
 
 ## Historical fit for the Bavaria role
 
@@ -97,12 +129,16 @@ Full search notes are in [ownership_scan.md](ownership_scan.md).
 
 ## Proposed consumer boundary
 
-This candidate is proposed as a replacement source for the existing Bavaria IW-009 commander token `BAY_independence_wave_mountain_commandant`, with sprite `GFX_portrait_BAY_independence_wave_mountain_commandant` and reserved runtime texture `gfx/leaders/006_independence_wave/portrait_BAY_independence_wave_mountain_commandant.dds`. These are handoff facts from the existing Dollmann retry package, not edits made here; the parent must confirm the target before wiring.
+This blocked candidate was proposed as a replacement source for the existing Bavaria IW-009 commander token `BAY_independence_wave_mountain_commandant`, with sprite `GFX_portrait_BAY_independence_wave_mountain_commandant` and reserved runtime texture `gfx/leaders/006_independence_wave/portrait_BAY_independence_wave_mountain_commandant.dds`.
 
-The role is male and commander-family. If accepted, the final runtime texture must be a full `156x210` commander portrait. No advisor/dossier, `_small`, operative, female, or alternate-country derivative is authorized by this package.
+The role is male and commander-family, but the source is not authorized for runtime use after the safety block.
+
+No advisor/dossier, `_small`, operative, female, alternate-country, or fallback derivative is authorized by this package.
 
 ## Blockers and simplifications
 
 No substitute, generated portrait, processed portrait, DDS, or gameplay fallback was used.
 
-The only open source blocker is provenance jurisdiction: the exact 1923 image has a clear Commons `PD-US` record and high resolution, but no LOC catalog/LCCN is exposed on its source page and worldwide public-domain status is not established. Keep the package at `source_ready_needs_user_review` until the parent accepts that caveat and the later independent provenance gate passes.
+The runtime blocker is the ImageGen safety rejection.
+
+The provenance caveat also remains: the exact 1923 image has a clear Commons `PD-US` record and high resolution, but no LOC catalog/LCCN is exposed on its source page and worldwide public-domain status is not established.
