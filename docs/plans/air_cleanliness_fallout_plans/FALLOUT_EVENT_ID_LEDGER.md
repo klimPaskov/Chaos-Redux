@@ -490,3 +490,9 @@ It owns candidate `387`, transaction `710029`, route `7129`, and Event Log histo
 The row selects one deterministic native medical-exposure state and freezes medicine pressure before a 42-day result and a 330-day supplier review callback.
 Its four branches expose a public trial, a quiet purchase, an apothecary guild charter, or a military seizure. Each branch has separate costs, outcome thresholds, state memory, medicine provenance ledgers, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
 The documented living-world block total is now `275`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Ration Thief Election count correction
+
+The Ration Thief Election adds seven dormant country-level event blocks at suffixes `394` through `400`. It uses candidate `394`, transaction `710030`, route `7130`, and history `9135`.
+
+The documented living-world block total is now `282`, while the countable Fallout living-world release-floor total remains `0 of 660`.
