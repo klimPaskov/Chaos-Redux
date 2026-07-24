@@ -1,6 +1,7 @@
 # IW-002 Wales Lewis Pugh Evans portrait trial 02
 
-Status: `candidate_pending_independent_audit`.
+Status: `blocked`.
+Independent audit verdict: **FAIL** — residual likeness drift remains in the source-locked repaint and processed commander candidate; keep this trial unwired.
 
 This trial is a source-only identity retry after trial 01 failed exact likeness and commander-family evidence.
 
