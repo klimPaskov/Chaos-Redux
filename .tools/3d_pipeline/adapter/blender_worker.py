@@ -550,7 +550,10 @@ def world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector, Vector]:
     for obj in objects:
         if obj.type != "MESH":
             continue
-        corners.extend(obj.matrix_world @ Vector(corner) for corner in obj.bound_box)
+        # Blender's Object.bound_box can remain stale after provider geometry
+        # is triangulated or decimated. Measure the actual mesh vertices so
+        # normalization and preview framing cannot silently use old extents.
+        corners.extend(obj.matrix_world @ vertex.co for vertex in obj.data.vertices)
     if not corners:
         return Vector((0, 0, 0)), Vector((0, 0, 0))
     minimum = Vector((min(item.x for item in corners), min(item.y for item in corners), min(item.z for item in corners)))
@@ -761,8 +764,8 @@ def geometry_metrics_for_object(obj: bpy.types.Object) -> Dict[str, Any]:
     }
 
 
-def geometry_metrics() -> Dict[str, Any]:
-    meshes = mesh_objects()
+def geometry_metrics(working_only: bool = True) -> Dict[str, Any]:
+    meshes = mesh_objects(working_only=working_only)
     vertices = sum(len(obj.data.vertices) for obj in meshes)
     polygons = sum(len(obj.data.polygons) for obj in meshes)
     triangles = sum(sum(max(0, len(poly.vertices) - 2) for poly in obj.data.polygons) for obj in meshes)
@@ -790,7 +793,7 @@ def geometry_metrics() -> Dict[str, Any]:
         "dimensions": list(maximum - minimum),
         "negative_scale_objects": [
             obj.name for obj in bpy.context.scene.objects
-            if obj.get("chaosx_working", False) and any(value < 0 for value in obj.scale)
+            if (not working_only or obj.get("chaosx_working", False)) and any(value < 0 for value in obj.scale)
         ],
         "uv_layers": {
             obj.name: [layer.name for layer in obj.data.uv_layers]
@@ -834,6 +837,271 @@ def action_metrics() -> Dict[str, Any]:
         ],
         "actions": values,
     }
+
+
+def evaluated_action_metrics() -> List[Dict[str, Any]]:
+    """Measure evaluated bounds at representative frames for deformation QA."""
+
+    meshes = mesh_objects()
+    rigs = armatures()
+    if not meshes or not rigs:
+        return []
+    scene = bpy.context.scene
+    original_frame = scene.frame_current
+    records: List[Dict[str, Any]] = []
+    for rig in rigs:
+        rig.animation_data_create()
+        original_action = rig.animation_data.action
+        actions = [
+            action
+            for action in bpy.data.actions
+            if "WORKING" in action.name and action.name.startswith("Armature|")
+        ]
+        for action in actions:
+            rig.animation_data.action = action
+            start, end = action.frame_range
+            frames = sorted({int(math.floor(start)), int(math.ceil((start + end) * 0.5)), int(math.ceil(end))})
+            frame_records = []
+            for frame in frames:
+                scene.frame_set(frame)
+                depsgraph = bpy.context.evaluated_depsgraph_get()
+                corners: List[Vector] = []
+                for obj in meshes:
+                    evaluated = obj.evaluated_get(depsgraph)
+                    evaluated_mesh = evaluated.to_mesh()
+                    try:
+                        corners.extend(
+                            evaluated.matrix_world @ vertex.co
+                            for vertex in evaluated_mesh.vertices
+                        )
+                    finally:
+                        evaluated.to_mesh_clear()
+                if corners:
+                    minimum = Vector((min(point.x for point in corners), min(point.y for point in corners), min(point.z for point in corners)))
+                    maximum = Vector((max(point.x for point in corners), max(point.y for point in corners), max(point.z for point in corners)))
+                    frame_records.append(
+                        {
+                            "frame": frame,
+                            "bounds_min": list(minimum),
+                            "bounds_max": list(maximum),
+                            "dimensions": list(maximum - minimum),
+                        }
+                    )
+            records.append(
+                {
+                    "armature": rig.name,
+                    "action": action.name,
+                    "frames": frame_records,
+                }
+            )
+        rig.animation_data.action = original_action
+    scene.frame_set(original_frame)
+    return records
+
+
+def weight_metrics() -> List[Dict[str, Any]]:
+    """Report skinning coverage before a runtime export is trusted."""
+
+    records: List[Dict[str, Any]] = []
+    for obj in bpy.context.scene.objects:
+        if obj.type != "MESH":
+            continue
+        armature_modifiers = [
+            modifier
+            for modifier in obj.modifiers
+            if modifier.type == "ARMATURE" and modifier.object is not None
+        ]
+        bone_names = set()
+        armature_names = []
+        for modifier in armature_modifiers:
+            armature = modifier.object
+            armature_names.append(armature.name)
+            bone_names.update(bone.name for bone in armature.data.bones)
+
+        group_names = {group.index: group.name for group in obj.vertex_groups}
+        influence_histogram: Dict[str, int] = {}
+        zero_weight_vertices = 0
+        vertices_over_four = 0
+        vertices_with_non_bone_groups = 0
+        min_weight_sum = None
+        max_weight_sum = None
+        for vertex in obj.data.vertices:
+            weights = []
+            has_non_bone_group = False
+            for assignment in vertex.groups:
+                group_name = group_names.get(assignment.group)
+                if group_name is None:
+                    continue
+                weights.append(float(assignment.weight))
+                if bone_names and group_name not in bone_names:
+                    has_non_bone_group = True
+            influence_count = len(weights)
+            influence_key = str(influence_count)
+            influence_histogram[influence_key] = influence_histogram.get(influence_key, 0) + 1
+            if influence_count > 4:
+                vertices_over_four += 1
+            if has_non_bone_group:
+                vertices_with_non_bone_groups += 1
+            weight_sum = sum(weights)
+            if weight_sum <= 1e-8:
+                zero_weight_vertices += 1
+            min_weight_sum = weight_sum if min_weight_sum is None else min(min_weight_sum, weight_sum)
+            max_weight_sum = weight_sum if max_weight_sum is None else max(max_weight_sum, weight_sum)
+
+        records.append(
+            {
+                "object": obj.name,
+                "vertices": len(obj.data.vertices),
+                "armature_modifiers": armature_names,
+                "vertex_groups": len(obj.vertex_groups),
+                "influence_histogram": dict(sorted(influence_histogram.items(), key=lambda item: int(item[0]))),
+                "vertices_over_four_influences": vertices_over_four,
+                "zero_weight_vertices": zero_weight_vertices,
+                "vertices_with_non_bone_groups": vertices_with_non_bone_groups,
+                "weight_sum_min": min_weight_sum,
+                "weight_sum_max": max_weight_sum,
+            }
+        )
+    return records
+
+
+def sanitize_working_weights() -> Dict[str, Any]:
+    """Keep PDX-compatible skinning influences without altering provider geometry."""
+
+    records: List[Dict[str, Any]] = []
+    for obj in mesh_objects():
+        armature_modifier = next(
+            (
+                modifier
+                for modifier in obj.modifiers
+                if modifier.type == "ARMATURE" and modifier.object is not None
+            ),
+            None,
+        )
+        if armature_modifier is None:
+            continue
+        armature = armature_modifier.object
+        bone_names = {bone.name for bone in armature.data.bones}
+        root_bone = next(
+            (bone for bone in armature.data.bones if bone.parent is None),
+            None,
+        )
+        if root_bone is None:
+            raise RuntimeError(f"Armature {armature.name} has no root bone for zero-weight repair.")
+        root_group = obj.vertex_groups.get(root_bone.name)
+        if root_group is None:
+            root_group = obj.vertex_groups.new(name=root_bone.name)
+
+        over_four_before = 0
+        zero_before = 0
+        removed_influences = 0
+        normalized_vertices = 0
+        zero_weight_repaired = 0
+        for vertex in obj.data.vertices:
+            assignments = []
+            for assignment in list(vertex.groups):
+                group = obj.vertex_groups.get(obj.vertex_groups[assignment.group].name)
+                if group is None or group.name not in bone_names:
+                    if group is not None:
+                        group.remove([vertex.index])
+                    removed_influences += 1
+                    continue
+                weight = max(0.0, float(assignment.weight))
+                if weight > 0.0:
+                    assignments.append((group, weight))
+
+            if len(assignments) > 4:
+                over_four_before += 1
+                kept = sorted(assignments, key=lambda item: (-item[1], item[0].name))[:4]
+                kept_names = {group.name for group, _ in kept}
+                removed = [
+                    (group, weight)
+                    for group, weight in assignments
+                    if group.name not in kept_names
+                ]
+                for group, _ in removed:
+                    group.remove([vertex.index])
+                removed_influences += len(removed)
+                assignments = kept
+
+            total = sum(weight for _, weight in assignments)
+            if total <= 1e-8:
+                zero_before += 1
+                root_group.add([vertex.index], 1.0, "REPLACE")
+                zero_weight_repaired += 1
+                continue
+
+            for group, weight in assignments:
+                group.add([vertex.index], weight / total, "REPLACE")
+            normalized_vertices += 1
+
+        records.append(
+            {
+                "object": obj.name,
+                "armature": armature.name,
+                "root_bone": root_bone.name,
+                "vertices_over_four_before": over_four_before,
+                "zero_weight_vertices_before": zero_before,
+                "removed_influences": removed_influences,
+                "normalized_vertices": normalized_vertices,
+                "zero_weight_vertices_repaired": zero_weight_repaired,
+            }
+        )
+    return {
+        "policy": "keep_four_strongest_bone_influences_and_renormalize",
+        "objects": records,
+        "weights_after": weight_metrics(),
+    }
+
+
+def sanitize_working_materials() -> Dict[str, Any]:
+    """Remove glTF-only emission and metallic state from PDX runtime materials."""
+
+    allowed_nodes = {
+        "CHAOSX_DIFFUSE_TEXTURE",
+        "CHAOSX_SPECULAR_TEXTURE",
+        "CHAOSX_NORMAL_TEXTURE",
+        "CHAOSX_NORMAL_MAP",
+    }
+    records: List[Dict[str, Any]] = []
+    for obj in mesh_objects():
+        for material in obj.data.materials:
+            if material is None or not material.get("chaosx_pdx_shader"):
+                continue
+            ensure_material_nodes(material)
+            changed = []
+            for node in material.node_tree.nodes:
+                if node.bl_idname != "ShaderNodeBsdfPrincipled":
+                    continue
+                for input_name in ("Metallic", "Emission", "Emission Color", "Emission Strength", "Alpha"):
+                    socket = node.inputs.get(input_name)
+                    if socket is None:
+                        continue
+                    for link in list(socket.links):
+                        material.node_tree.links.remove(link)
+                    if input_name == "Metallic":
+                        socket.default_value = 0.0
+                    elif input_name in {"Emission", "Emission Color"}:
+                        socket.default_value = (0.0, 0.0, 0.0, 1.0)
+                    elif input_name == "Emission Strength":
+                        socket.default_value = 0.0
+                    elif input_name == "Alpha":
+                        socket.default_value = 1.0
+                    changed.append(input_name)
+            removed_nodes = []
+            for node in list(material.node_tree.nodes):
+                if node.bl_idname == "ShaderNodeTexImage" and node.name not in allowed_nodes:
+                    removed_nodes.append(node.name)
+                    material.node_tree.nodes.remove(node)
+            records.append(
+                {
+                    "material": material.name,
+                    "object": obj.name,
+                    "changed_inputs": sorted(set(changed)),
+                    "removed_nodes": sorted(removed_nodes),
+                }
+            )
+    return {"policy": "pdx_mesh_advanced_opaque_non_emissive", "materials": records}
 
 
 def image_nodes() -> List[Tuple[bpy.types.Material, bpy.types.Image]]:
@@ -1156,6 +1424,8 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "geometry": geometry_metrics(),
         "rig_and_actions": action_metrics(),
+        "evaluated_actions": evaluated_action_metrics(),
+        "weights": weight_metrics(),
         "materials": materials,
     }
 
@@ -1285,15 +1555,18 @@ def select_armature_and_action(action_name: str) -> Tuple[bpy.types.Object, bpy.
     return rig, action, int(math.floor(start)), int(math.ceil(end))
 
 
-def normalize_exported_animation_scales(output: Path, pdx: Dict[str, Any]) -> Dict[str, Any]:
+def normalize_exported_animation_scales(
+    output: Path,
+    pdx: Dict[str, Any],
+    translation_scale: float,
+) -> Dict[str, Any]:
     """Keep animation samples from changing the authored unit scale at runtime.
 
     The pinned Blender exporter can emit a root-bone scale sample even when the
-    working Blender action has no scale F-curves.  For the pilot rig that sample
-    was 0.036851..., so HOI4 reduced the whole unit to roughly four percent of
-    its idle size as soon as the move state became active.  The unit scale is
-    owned by the entity/GFX definition; animation only supplies translation and
-    rotation for this pilot.
+    working Blender action has no scale F-curves. The exporter also writes bone
+    translations in the armature's raw local units while the PDX mesh exporter
+    applies the armature object scale to the mesh and skeleton. Both channels
+    must be normalized before HOI4 consumes the pair.
     """
 
     from io_pdx_mesh import pdx_data  # type: ignore
@@ -1303,6 +1576,8 @@ def normalize_exported_animation_scales(output: Path, pdx: Dict[str, Any]) -> Di
     samples_xml = root_xml.find("samples")
     initial_values_changed = 0
     sample_values_changed = 0
+    initial_translation_values_changed = 0
+    sample_translation_values_changed = 0
 
     if info_xml is not None:
         for bone_xml in info_xml:
@@ -1311,22 +1586,41 @@ def normalize_exported_animation_scales(output: Path, pdx: Dict[str, Any]) -> Di
                 continue
             initial_values_changed += sum(1 for value in values if abs(float(value) - 1.0) > 1e-6)
             bone_xml.set("s", [1.0 for _ in values])
+        if abs(translation_scale - 1.0) > 1e-6:
+            for bone_xml in info_xml:
+                values = bone_xml.get("t")
+                if values is None:
+                    continue
+                initial_translation_values_changed += len(values)
+                bone_xml.set("t", [float(value) * translation_scale for value in values])
 
     if samples_xml is not None:
         values = samples_xml.get("s")
         if values:
             sample_values_changed = sum(1 for value in values if abs(float(value) - 1.0) > 1e-6)
             samples_xml.set("s", [1.0 for _ in values])
+        values = samples_xml.get("t")
+        if values and abs(translation_scale - 1.0) > 1e-6:
+            sample_translation_values_changed = len(values)
+            samples_xml.set("t", [float(value) * translation_scale for value in values])
 
-    if initial_values_changed or sample_values_changed:
+    if (
+        initial_values_changed
+        or sample_values_changed
+        or initial_translation_values_changed
+        or sample_translation_values_changed
+    ):
         pdx_data.write_animfile(str(output), root_xml)
         text_path = output.with_suffix(".txt")
         text_path.write_text(f"{pdx_data.PDXData(root_xml)}\n", encoding="utf-8")
 
     return {
-        "policy": "normalize_all_exported_bone_scales_to_unit_scale",
+        "policy": "normalize_exported_bone_scales_and_translations_to_mesh_units",
+        "translation_scale": translation_scale,
         "initial_scale_values_changed": initial_values_changed,
         "sample_scale_values_changed": sample_values_changed,
+        "initial_translation_values_changed": initial_translation_values_changed,
+        "sample_translation_values_changed": sample_translation_values_changed,
         "remaining_non_unit_initial_scales": 0,
         "remaining_non_unit_sample_scales": 0,
     }
@@ -1341,6 +1635,12 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     pdx = load_pdx(req["io_pdx_root"])
     rig, action, start, end = select_armature_and_action(payload["action_name"])
+    rig_scale = rig.matrix_world.to_scale()
+    if max(rig_scale) - min(rig_scale) > 1e-5 or min(rig_scale) <= 0.0:
+        raise RuntimeError(
+            f"Animation export requires a positive uniform armature world scale, got {tuple(rig_scale)}."
+        )
+    translation_scale = float(sum(rig_scale) / 3.0)
     bpy.context.scene.frame_start = start
     bpy.context.scene.frame_end = end
     for old_output in (output, output.with_suffix(".txt")):
@@ -1355,7 +1655,7 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         uniform_scale=True,
         plain_txt=True,
     )
-    scale_normalization = normalize_exported_animation_scales(output, pdx)
+    scale_normalization = normalize_exported_animation_scales(output, pdx, translation_scale)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "action": action.name,
@@ -1363,6 +1663,7 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         "frame_start": start,
         "frame_end": end,
         "fps": bpy.context.scene.render.fps,
+        "armature_world_scale": list(rig_scale),
         "anim": str(output.relative_to(job)).replace("\\", "/"),
         "anim_bytes": output.stat().st_size,
         "anim_text": str(output.with_suffix(".txt").relative_to(job)).replace("\\", "/")
@@ -1518,6 +1819,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
             for obj in bpy.context.scene.objects
             if obj.type == "MESH"
         ],
+        "geometry": geometry_metrics(working_only=False),
         "armatures": [
             {"name": obj.name, "bones": len(obj.data.bones)}
             for obj in bpy.context.scene.objects
@@ -1526,6 +1828,44 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "actions": [action.name for action in bpy.data.actions],
     }
     report_path = job / "validation" / f"reimport_{proof_name}.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def sanitize_runtime_candidate(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a reviewable runtime checkpoint with bounded skin/material cleanup."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    output = within(
+        job,
+        payload.get("output_blend_rel", "blender/checkpoints/07_runtime_candidate_sanitized.blend"),
+        allow_missing=True,
+    )
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    geometry_normalization = (
+        normalize_geometry(float(payload["target_height_m"]))
+        if payload.get("target_height_m") is not None
+        else {"policy": "preserve_checkpoint_geometry"}
+    )
+    weights_before = weight_metrics()
+    weights = sanitize_working_weights()
+    materials = sanitize_working_materials()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    save_blend(output)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(output.relative_to(job)).replace("\\", "/"),
+        "geometry_normalization": geometry_normalization,
+        "weights_before": weights_before,
+        "weights": weights,
+        "materials": materials,
+        "geometry": geometry_metrics(),
+        "rig_and_actions": action_metrics(),
+    }
+    report_path = job / "blender" / "reports" / "weights_sanitized.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return report
@@ -1569,7 +1909,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -1587,6 +1927,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return author_locomotion_action(req)
     if operation == "reimport_export":
         return reimport_export(req, pdx)
+    if operation == "sanitize_runtime_candidate":
+        return sanitize_runtime_candidate(req)
     if operation == "save_checkpoint":
         return save_checkpoint_operation(req)
     raise ValueError(f"Unknown worker operation: {operation}")
