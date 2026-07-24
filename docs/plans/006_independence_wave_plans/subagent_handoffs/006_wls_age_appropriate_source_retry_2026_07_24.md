@@ -1,0 +1,18 @@
+# IW-002 Wales Saunders Lewis age-appropriate source retry
+
+Research date: 2026-07-24.
+
+Disposition: `blocked` / fail closed.
+
+The bounded source sweep found no actual 1920s-1940s rights-clear archival photograph of Saunders Lewis that can safely anchor the 1936 Wales civic-leader portrait. The strongest age-matched lead is Dr Gwent Jones's October 1936 photograph of Lewis writing his Caernarfon jury address, identified in [*The Story of Plaid Cymru*](https://bibliotheque.idbe.bzh/data/cle_203/the__story__o__plaid__cymru.pdf). Only a later book reproduction was accessible; no direct archival original or photographer/estate reuse permission was located, so no source bytes were retained.
+
+Checked and rejected leads include the public-domain-basis [*Y Drych* source from 3 February 1916](https://commons.wikimedia.org/wiki/File:Saunders-lewis-y-drych-1916.jpg) (too young and both prior likeness trials failed), the rights-clear [Geoff Charles/NLW photograph from 4 October 1973](https://commons.wikimedia.org/wiki/File:Saunders_Lewis_(1520393).jpg) (Lewis approximately 79-80, unusable as a 1936 base), the 1960 [People's Collection Wales group image](https://www.peoplescollection.wales/items/14040) (too old, group composition, and non-commercial/permission terms), the c.1973 [Swansea University image](https://collections.swansea.ac.uk/s/history-of-computing-collection/item/1521) (postwar and rights held by University of Wales Press), the [National Library of Wales page image](https://famouspeople.wales/famous-people/saunders-lewis/) (undated underlying source and ©2024 all-rights-reserved page), the 2007 [Geograph memorial/plaque photograph](https://commons.wikimedia.org/wiki/File:Llosgi%27r_Ysgol_Fomio_-_The_Burning_of_the_Bombing_School_-_geograph.org.uk_-_356846.jpg), and a c.1920s [photograph of a drawing](https://archives.swansea.ac.uk/Record.aspx?id=UNI%2FSU%2FPC%2F9%2F1%2F2&src=CalmView.Catalog), which is not a photograph of Lewis.
+
+Exact/variant owner searches covered `Saunders Lewis`, `John Saunders Lewis`, `J. Saunders Lewis`, `Lewis Saunders`, `saunders_lewis`, `WLS_saunders_lewis`, and `WLS_independence_wave_national_council` across the installed vanilla character, country-history, portrait, interface, and localisation roots and the current project. Vanilla has no owner. Chaos Redux's sole live owner is the male dynamic token `WLS_independence_wave_national_council` in `common/scripted_effects/006_independence_wave_scotland_wales_package_effects.txt:257-272`, consumed by `interface/006_independence_wave_region_01_portraits.gfx:63-64` and `localisation/english/006_independence_wave_scotland_wales_l_english.yml:5-6`. Kaiserreich has a same-person Wales owner in `common/characters/WLS characters.txt:97-120`, `history/countries/WLS - Wales.txt:36`, `interface/kaiserreich/portraits/WLS_portraits.gfx:31-40`, and `localisation/english/KR_country_specific/WLS - Wales l_english.yml:208-210`; this is disclosure-only and no transfer guard or art reuse is authorized.
+
+Owned files:
+
+- `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_24/wls_saunders_lewis_age_gate/manifest.md`
+- `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_24/wls_saunders_lewis_age_gate/gfx_handoff.md`
+
+No image, crop, ImageGen result, DDS, GFX, gameplay, or localisation file was created or changed. Reopen only after acquiring an unchanged, identifiable 1920s-1940s archival photograph with a defensible public-domain or reuse licence, then run the exact-pixel crop utility and retain its JSON evidence before any later portrait pipeline step.
