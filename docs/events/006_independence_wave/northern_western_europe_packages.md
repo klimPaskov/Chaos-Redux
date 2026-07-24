@@ -14,7 +14,7 @@ Current portrait authority is the sourced-only gate in the accepted specificatio
 The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
 IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, and IW-008 Rhineland have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
 IW-009 has a partially approved sourced roster but remains outside runtime attestation until every stable consumer, rights record, and full package audit passes.
-IW-002 retains sourced archival identities for Saunders Lewis and Lewis Pugh Evans, but both Saunders trials and Evans trial 01 failed the separate likeness gate and remain unwired; Evans trial 02 is a source-only retry pending deterministic commander-family processing and independent audit. IW-006 retains its approved Jules Destrée civic portrait while its commander search continues, and IW-010 retains two unresolved grounded roles.
+IW-002 retains sourced archival identities for Saunders Lewis and Lewis Pugh Evans, but both Saunders trials and both Evans trials failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders photograph is comparison evidence only because preserving its elderly subject would preserve the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. IW-006 retains its approved Jules Destrée civic portrait; Herman Baltia trial 01 passed provenance, role, style, and framing but failed likeness and stable-consumer transfer, so the Walloon commander search continues. IW-010 retains two unresolved grounded roles.
 Route-owned Rupprecht and Matthes remain protected and byte-identical.
 Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
 Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
@@ -135,8 +135,8 @@ The unique package portraits are registered in `interface/006_independence_wave_
 | --- | --- | --- | --- |
 | Scotland | R. B. Cunninghame Graham | `portrait_SCO_independence_wave_civic_convention.dds` | attributed archival master, source-locked HOI4 repaint, independent likeness/style/provenance pass, and runtime wiring complete |
 | Scotland | Victor Morven Fortune | `portrait_SCO_independence_wave_territorial_commandant.dds` | IWM archival master, source-locked HOI4 commander repaint, independent likeness/style/provenance pass, and runtime wiring complete |
-| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | archival source retained; trials 01 and 02 passed painted style but failed the separate likeness gate and remain unwired; a stronger source search is active |
-| Wales | Lewis Pugh Evans | `portrait_WLS_independence_wave_mountain_commandant.dds` | IWM archival source retained; trial 01 failed likeness and commander-reference evidence and remains unwired; trial 02 is not runtime-authorized pending processing and independent audit |
+| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | archival source retained; trials 01 and 02 passed painted style but failed the separate likeness gate and remain unwired; the rights-clear 1973 source is rejected as a 1936 runtime base because of its age mismatch |
+| Wales | Lewis Pugh Evans | `portrait_WLS_independence_wave_mountain_commandant.dds` | IWM archival source retained; trials 01 and 02 passed broad provenance/style/framing gates but failed the non-compensable likeness gate and remain unwired |
 
 Scotland and Wales retain their installed vanilla flag triplets because these are reused vanilla countries, not newly created Event 006 tags. Any future royal Scottish cosmetic route must remain traditional-route-only. Wales receives no invented pre-1959 fallback.
 
@@ -469,7 +469,7 @@ Character recruitment remains in the dormant custom-tag history files, following
 | Character | Sprite | Final DDS | Registration |
 | --- | --- | --- | --- |
 | Jules Destrée | `GFX_portrait_AFX_walloon_provisional_assembly` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds` | sourced, processed, and wired; recorded in the 2026-07-22 treatment ledger |
-| Walloon reserve commander | `GFX_portrait_AFX_walloon_reserve_commander` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` | source-blocked; the package remains unattested and the old generated identity is not accepted |
+| Walloon reserve commander | `GFX_portrait_AFX_walloon_reserve_commander` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` | source-blocked; Herman Baltia trial 01 failed likeness and stable-consumer transfer, the stale Marcel Delcourt identity/DDS is not accepted, and a Jules-Joseph Pire source search is active |
 | Douwe Kalma | `GFX_portrait_AGX_friesland_coastal_council` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
 | Pieter Reenalda | `GFX_portrait_AGX_friesland_coastal_commander` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
 
