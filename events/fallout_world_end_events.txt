@@ -15126,6 +15126,123 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.478
+	title = chaosx.fallout.478.t
+	desc = chaosx.fallout.478.intro
+	picture = GFX_report_event_fallout_false_spring_losses
+	is_triggered_only = yes
+	trigger = { fallout_event_478_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.478.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_478_cost.emergency_replant_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_478_cost.emergency_replant_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_478_cost.emergency_replant_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_478_requested_branch = constant:fallout_event_478_branch.emergency_replant } fallout_event_478_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.478.a.tt
+	}
+	option = {
+		name = chaosx.fallout.478.b
+		trigger = {
+			OR = { has_government = communism has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_478_cost.import_seed_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_478_cost.import_seed_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_478_cost.import_seed_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_478_requested_branch = constant:fallout_event_478_branch.import_seed } fallout_event_478_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.478.b.tt
+	}
+	option = {
+		name = chaosx.fallout.478.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_478_cost.underground_reserve_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_478_cost.underground_reserve_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_478_cost.underground_reserve_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_478_requested_branch = constant:fallout_event_478_branch.underground_reserve } fallout_event_478_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.478.c.tt
+	}
+	option = {
+		name = chaosx.fallout.478.d
+		trigger = {
+			OR = { has_government = fascism has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_478_cost.accept_shortage_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_478_cost.accept_shortage_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_478_cost.accept_shortage_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_478_requested_branch = constant:fallout_event_478_branch.accept_shortage } fallout_event_478_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.478.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.479
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_478_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_478_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.480
+	title = chaosx.fallout.480.t
+	desc = { text = chaosx.fallout.480.emergency_replant.success.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.emergency_replant } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.480.emergency_replant.partial.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.emergency_replant } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.480.emergency_replant.failure.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.emergency_replant } } }
+	desc = { text = chaosx.fallout.480.import_seed.success.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.import_seed } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.480.import_seed.partial.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.import_seed } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.480.import_seed.failure.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.import_seed } } }
+	desc = { text = chaosx.fallout.480.underground_reserve.success.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.underground_reserve } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.480.underground_reserve.partial.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.underground_reserve } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.480.underground_reserve.failure.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.underground_reserve } } }
+	desc = { text = chaosx.fallout.480.accept_shortage.success.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.accept_shortage } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.480.accept_shortage.partial.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.accept_shortage } check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.480.accept_shortage.failure.d trigger = { check_variable = { fallout_event_478_selected_branch = constant:fallout_event_478_branch.accept_shortage } } }
+	picture = GFX_report_event_fallout_false_spring_losses
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_478_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.false_spring_losses_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.480.a hidden_effect = { fallout_event_478_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.480.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.481
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_478_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.false_spring_losses_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_478_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.482
+	title = chaosx.fallout.482.t
+	desc = { text = chaosx.fallout.482.success.d trigger = { check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.482.partial.d trigger = { check_variable = { fallout_event_478_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.482.failure.d
+	picture = GFX_report_event_fallout_false_spring_losses
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_478_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.false_spring_losses_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_478_registry_is_current = yes }
+	option = { name = chaosx.fallout.482.a hidden_effect = { fallout_event_478_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.482.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.483
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_478_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.false_spring_losses_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_478_registry_is_current = yes }
+	immediate = { fallout_event_478_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.484
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_478_cleanup_can_enter = yes }
+	immediate = { fallout_event_478_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.415
 	title = chaosx.fallout.415.t
 	desc = chaosx.fallout.415.d

@@ -342,3 +342,11 @@ The chain freezes Medicine, Food, Recognition, Cohesion, and three medicine prov
 The four policies expose a public trial, a quiet purchase, an apothecary guild charter, or a military seizure. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 The dedicated proof is recorded in `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md`.
+
+## False Spring Losses correction
+
+False Spring Losses is the forty-second reviewed ordinary candidate. It uses candidate id `478`, transaction `710042`, route `7142`, event tokens `478` through `484`, and history `9147`.
+Its gate selects the lowest valid native rural state with a produced current-generation Air Winter snapshot, a valid first-frost marker, thaw-eligible normal-map provenance, surviving population, food reserve, adaptation, reclamation, and low supply access.
+The chain freezes survival, seed, frost-memory, adaptation, and diplomatic-credit ledgers before a 35-day result and a 240-day second-sowing callback.
+The four policies replant, import seed, open an underground reserve, or accept a smaller harvest. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
