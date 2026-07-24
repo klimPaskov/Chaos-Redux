@@ -275,3 +275,12 @@ The Manual Nobody Read uses country candidate id `345`, transaction key `710023`
 Its gate follows the closed Dead City Permit memory and selects one deterministic owned technical facility with current Air Winter state data, exposure from 18 through 69, a surviving population, and a non-damaged industrial complex or arms factory.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the target state, then applies four policy lanes, a 35-day result, a 240-day maintenance callback, hidden-AI parity, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
 It remains dormant and uncounted while the scheduler activation and engine-sensitive receipt surfaces remain unproven.
+
+## The Working Machine correction
+
+The Working Machine is the twenty-fourth reviewed ordinary candidate.
+It uses candidate `352`, transaction `710024`, route `7124`, event tokens `352` through `358`, and history `9129`.
+Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
+The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.
