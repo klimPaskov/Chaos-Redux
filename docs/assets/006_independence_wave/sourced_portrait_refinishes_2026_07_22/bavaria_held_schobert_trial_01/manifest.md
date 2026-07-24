@@ -2,14 +2,11 @@
 
 Date: `2026-07-22`  
 Scope: exactly two grounded, real male identities for Event 006 IW-009 Bavaria.  
-Status: both candidates are `needs_independent_review`; no runtime DDS, GFX, gameplay, localisation, character, or protected-file wiring was changed.
+Status: Heinrich Held is independently approved and promoted to his existing runtime DDS consumer; Eugen Ritter von Schobert remains blocked on source rights and is not wired.
 
-This temporary evidence package keeps the two unchanged source masters, exact
-head-and-shoulders crops, raw built-in ImageGen edit masters, prompts, native
-`156x210` processed PNGs, docs-only DDS conversions, metadata, hashes, and
-source/crop/result/canonical contact sheets. The docs-only DDS files are not
-engine-facing assets and must not be copied into `gfx/leaders/` until an
-independent reviewer approves both identity and visual finish.
+This evidence package keeps the two unchanged source masters, explicit head-and-shoulders crops, raw built-in ImageGen edit masters, prompts, native `156x210` processed PNGs, evidence DDS conversions, metadata, hashes, and source/crop/result/canonical contact sheets.
+Only Heinrich Held's independently approved evidence DDS has been promoted to runtime.
+Schobert's evidence DDS remains non-runtime and must not be copied into `gfx/leaders/`.
 
 ## Current gate reconciliation
 
@@ -17,7 +14,9 @@ On `2026-07-24`, the current exact-pixel crop utility re-extracted Heinrich Held
 The re-extracted PNG is byte-identical to the reviewed crop at SHA-256 `11841151745e97e7398bef3c60481C0BFEEFABA2B2D8225F3E3466D78F75CF3A`.
 The new `crops/BAY_heinrich_held_crop_400_160_2070_2409.json` records `decoded_pixels_equal = true`, matching RGBA hashes for the decoded master rectangle and output, the normalized utility invocation, Pillow version, master hash, crop coordinates, and output hash.
 This closes the current explicit-crop evidence requirement without changing the ImageGen identity input or reviewed result.
-The independent audit passes Heinrich Held's likeness, HOI4 leader style, male grounded identity, period role, and provenance; only parent runtime promotion remains.
+The independent audit passes Heinrich Held's likeness, HOI4 leader style, male grounded identity, period role, and provenance.
+The approved evidence DDS was copied byte-for-byte to `gfx/leaders/006_independence_wave/portrait_BAY_independence_wave_state_council.dds`, whose SHA-256 is `999857d191f7b088e11daa78fb29eadd0b514dc6da494a0102423c635e736e95`.
+The existing stable sprite registration and character consumer required no source edit.
 Eugen Ritter von Schobert remains blocked on source rights and must not be promoted from this package.
 
 ## Source-mode and identity gate
@@ -78,11 +77,9 @@ face, edge, brush, clothing, and silhouette inspection. The final PNGs are
 native `156x210` RGB portraits; DDS conversion is legacy uncompressed BGRA32,
 one level, with exact byte/pixel equality to each processed PNG (see handoff).
 
-Both candidates remain `needs_independent_review`: the producing agent may not
-approve its own likeness or HOI4-style finish. A reviewer should explicitly
-check source-to-result identity, apparent age, face geometry, pose, clothing
-and source-visible details, canonical family fit, non-photographic painted
-finish, and the rights/role caveats above.
+The independent audit passes Held's source-to-result identity, apparent age, face geometry, source-visible details, HOI4 country-leader finish, role fit, and provenance.
+Schobert passes likeness and HOI4 commander style but fails the separate source-rights gate.
+The two candidates are not interchangeable, and Schobert's failed provenance cannot be compensated by his visual pass.
 
 ## Protected file check
 
@@ -94,10 +91,9 @@ gfx/leaders/006_independence_wave/portrait_BAY_rupprecht_of_bavaria.dds
 SHA-256 7F0AF64FDF4FECD49DF454D1198935BB3CE6A8F74AFC1AC82F8223704EAAAD2B
 ```
 
-## No wiring / no fallback
+## Bounded runtime promotion / no fallback
 
-No runtime DDS or `.gfx` file was edited. No localisation or gameplay file was
-edited. No fallback, generated substitute, generic identity, advisor/dossier
-art, `_small` texture, or flag was added. The main agent may wire only an
-independently approved processed PNG/DDS, preserving the existing stable sprite
-names and runtime target paths in `gfx_handoff.md`.
+The parent promoted only Held's independently approved full-size DDS to the existing stable runtime path.
+No `.gfx`, localisation, gameplay, character, protected Rupprecht, advisor, dossier, `_small`, or flag file was changed.
+No fallback, generic identity, reconstructed person, or generated substitute was added.
+The commander runtime DDS remains the prior withdrawn asset and does not count as IW-009 readiness evidence.

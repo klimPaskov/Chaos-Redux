@@ -25,6 +25,7 @@ No new ImageGen output or subjective portrait judgment was introduced by this me
 
 ## Runtime boundary
 
-No DDS, GFX, gameplay, localisation, character, protected Rupprecht portrait, advisor asset, dossier, or `_small` texture was changed.
-Heinrich Held may be promoted by the parent only as part of the final IW-009 portrait/runtime tranche.
+After the reconciliation closed the final mechanical crop-proof gap, the parent copied the independently approved evidence DDS byte-for-byte to `gfx/leaders/006_independence_wave/portrait_BAY_independence_wave_state_council.dds`.
+The runtime DDS SHA-256 is `999857d191f7b088e11daa78fb29eadd0b514dc6da494a0102423c635e736e95`, matching the approved evidence DDS exactly.
+The existing stable GFX and generated-character consumer already point to that runtime path, so no GFX, gameplay, localisation, character, protected Rupprecht portrait, advisor asset, dossier, or `_small` source was changed.
 The Bavaria commander remains separately blocked and the package remains fail-closed until a fully cleared sourced commander portrait passes the complete workflow and a fresh country-package audit.
