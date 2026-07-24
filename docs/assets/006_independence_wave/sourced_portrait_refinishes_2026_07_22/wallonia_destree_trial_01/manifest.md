@@ -1,6 +1,6 @@
 # Jules Destrée source-locked portrait trial 01
 
-Status: **candidate awaiting independent visual and provenance audit; not approved for runtime wiring**
+Status: **independently approved and wired to the existing full-size civic consumer**
 
 This package contains one sourced real-male civic portrait candidate for IW-006 Wallonia. It contains no advisor, dossier, `_small`, female, fictional, flag, focus, decision, localisation, gameplay, interface, or runtime asset.
 
@@ -35,8 +35,21 @@ This package contains one sourced real-male civic portrait candidate for IW-006 
 - Processor/style sheet: `contact_sheets/AFX_jules_destree_processor_style_comparison.png`.
 - Processor metadata: `metadata/AFX_jules_destree_processing.json`.
 
-The repaint intentionally preserves the source's strict left profile rather than reconstructing an unseen frontal face. Independent review must compare the long curved nose, eyelid, hair wave, ear, moustache, mouth, jowl, chin, age, collar, bow tie, and profile angle at full and native size. Reject if the nose/jowl are softened materially, the moustache is redesigned, or the result becomes a generic elderly statesman.
+The repaint intentionally preserves the source's strict left profile rather than reconstructing an unseen frontal face.
+
+Independent audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sco_wls_afx_civic_portrait_visual_provenance_audit_2026_07_22.md`.
+
+- Source, role, and date: `PASS_WITH_RIGHTS_CAVEAT`.
+- Identity and likeness at full and native size: `PASS`.
+- HOI4 painted style: `PASS`.
+- Ownership and consumer boundary: `PASS`.
+- Approved consumer: `AFX_walloon_provisional_assembly` through `GFX_portrait_AFX_walloon_provisional_assembly`.
+- Runtime DDS: `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds`.
+- Runtime DDS dimensions and format: `156x210`, one-level uncompressed 32-bit BGRA, opaque alpha.
+- Runtime DDS SHA-256: `7D8612CA9B6B82A1A4AE39156F9465891684345219BC3C7C8D84AB5A673DC75A`.
+- Pixel verification: the runtime DDS decodes pixel-identically to the approved processed PNG.
+- Rights caveat retained: the source is attributed to the 12 January 1936 issue of *Le Patriote Illustré*, author unknown, with the recorded Commons public-domain historical-press basis and unresolved territorial nuance.
 
 ## Runtime gate
 
-Do not copy, convert, register, or wire this candidate before an independent PASS. IW-006 remains closed until this portrait and a sourced real Walloon army commander both pass independent review, the fictional `Marcel Delcourt` commander identity is replaced with a role-correct researched man, exact runtime DDS files are pixel-verified, and a fresh full package audit passes. Albert Devèze is a civilian role mismatch; Émile Dossin de Saint-Georges remains rights/timing blocked; Victor van Strydonck de Burkel and Raoul Van Overstraeten are active vanilla-owned identities.
+This approved portrait is wired only to the existing full-size civic consumer. IW-006 remains closed until a sourced real Walloon army commander passes independent review, the fictional `Marcel Delcourt` commander identity is replaced with a role-correct researched man, exact runtime DDS files are pixel-verified, and a fresh full package audit passes. Albert Devèze is a civilian role mismatch; Émile Dossin de Saint-Georges remains rights/timing blocked; Victor van Strydonck de Burkel and Raoul Van Overstraeten are active vanilla-owned identities.
