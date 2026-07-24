@@ -568,3 +568,9 @@ The documented living-world block total is now `359`, while the countable Fallou
 The False Spring Losses reservation adds seven dormant state-level event blocks at suffixes `478` through `484`. It uses candidate `478`, transaction `710042`, route `7142`, and history `9147`. The chain requires a produced current-generation Air Winter snapshot, a valid first-frost marker, thaw-eligible normal-map provenance, rural native category, surviving population, food reserve, adaptation, reclamation, and low supply access. Four late-frost policies freeze survival, seed, frost-memory, adaptation, and diplomatic-credit ledgers before a 35-day result and a 240-day second-sowing callback. Results affect Food, Medicine, Cohesion, supply, Air Winter state values, native building condition, and Deaths-backed failure. Dedicated art, Event Log payloads, cleanup receipts, and hidden-AI parity are wired. Native scheduler activation, host authority, save recovery, multiplayer delivery, full-screen blackout, and runtime Event Log delivery remain unproven.
 
 The documented living-world block total is now `366`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Desalination Night Shift count correction
+
+The Desalination Night Shift reservation adds seven dormant Middle Eastern coastal state-level event blocks at suffixes `485` through `491`. It uses candidate `485`, transaction `710043`, route `7143`, and history `9148`. The chain carries four government-aware coastal water policies, deterministic naval-base state selection, Water, Power, Medicine, Cohesion, operation memory, water reserve, technical-credit, Air Winter, supply, and Deaths-system effects, a 42-day result, a 300-day second-shift callback, Event Log payloads, exact cleanup, and dedicated report art.
+
+The documented living-world block total is now `373`, while the countable Fallout living-world total remains `0 of 660`.

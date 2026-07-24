@@ -350,3 +350,11 @@ Its gate selects the lowest valid native rural state with a produced current-gen
 The chain freezes survival, seed, frost-memory, adaptation, and diplomatic-credit ledgers before a 35-day result and a 240-day second-sowing callback.
 The four policies replant, import seed, open an underground reserve, or accept a smaller harvest. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, Event Log payloads, dedicated report art, and authenticated cleanup.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Desalination Night Shift correction
+
+The Desalination Night Shift is the forty-third reviewed ordinary candidate. It uses candidate id `485`, transaction `710043`, route `7143`, event tokens `485` through `491`, and history `9148`.
+Its gate selects the lowest valid native Middle Eastern coastal state with a produced current-generation Air Winter snapshot, a naval-base port proxy, surviving population, supported urban category, water-security pressure, and low supply access.
+The chain freezes Water, Power, Medicine, Cohesion, Recognition, operation memory, water reserve, technical credit, Adaptation, Reclamation, and the selected state before a 42-day result and a 300-day second-shift callback.
+The four policies run the plant at full strain, call desert technicians, reserve power for the clinic, or lock the shore and ration water. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
