@@ -1,10 +1,15 @@
 # HAW David Kalakaua Kawananakoa source retry 02 GFX handoff
 
-Status: **BLOCKED / NO-PASS**  
-Runtime admission: **not authorized**  
-DDS: none  
-`.gfx`: none  
-Processed 156×210 portrait: none  
+Status: **BLOCKED / NO-PASS**
+
+Runtime admission: **not authorized**
+
+DDS: none
+
+`.gfx`: none
+
+Processed 156×210 portrait: none
+
 Sprite definition: none
 
 The package contains only the unchanged archival master, the exact head-and-shoulders source crop, crop-box JSON, and clearance research. The retained source is not a runtime portrait because the clipped facial planes caused the prior source-locked likeness trial to fail.

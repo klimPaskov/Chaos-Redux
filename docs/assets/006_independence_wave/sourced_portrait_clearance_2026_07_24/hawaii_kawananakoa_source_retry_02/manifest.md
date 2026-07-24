@@ -1,10 +1,14 @@
 # IW-173 HAW David Kalakaua Kawananakoa source-clearance retry 02
 
-Date: 2026-07-24  
-Asset owner: Chaos Redux sourced visual asset subagent  
-Subject: David Kalākaua Kawānanakoa (1904–1953), male-presenting historical country leader  
-Requested consumer: one guarded full-size country-leader portrait for the existing HAW leader token  
-Disposition: **BLOCKED / NO-PASS**  
+Date: 2026-07-24
+
+Asset owner: Chaos Redux sourced visual asset subagent
+
+Subject: David Kalākaua Kawānanakoa (1904–1953), male-presenting historical country leader
+
+Requested consumer: one guarded full-size country-leader portrait for the existing HAW leader token
+
+Disposition: **BLOCKED / NO-PASS**
 
 This package is export-only evidence. It contains no ImageGen result, no processed 156×210 portrait, no DDS, no `.gfx` edit, no gameplay edit, no localisation edit, and no `_small`, advisor, dossier, commander, or operative asset.
 

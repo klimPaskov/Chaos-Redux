@@ -1,7 +1,9 @@
 # HAW David Kalakaua Kawananakoa source-clearance research
 
-Date: 2026-07-24  
-Subject: David Kalākaua Kawānanakoa (1904–1953)  
+Date: 2026-07-24
+
+Subject: David Kalākaua Kawānanakoa (1904–1953)
+
 Research disposition: **No production-safe source found; package blocked.**
 
 ## Identity target
@@ -14,7 +16,8 @@ The Commons page for `File:David Kalakaua Kawananakoa.jpg` identifies the target
 
 The Commons source is the only candidate found with an attributable archival publication and an explicit United States public-domain basis. The current Commons statement uses the 1925 publication date and the pre-1-January-1930 publication rule. The unmodified master is preserved at `../source_masters/HAW_david_kalakaua_kawananakoa_1925_original.jpg` with SHA-256 `E23304AFA45091FA6B7FF0179CAA688BCD7EE0027306B22E853A14C1344DA909`.
 
-Source page: <https://commons.wikimedia.org/wiki/File:David_Kalakaua_Kawananakoa.jpg>  
+Source page: <https://commons.wikimedia.org/wiki/File:David_Kalakaua_Kawananakoa.jpg>
+
 Archived original: <https://upload.wikimedia.org/wikipedia/commons/archive/e/eb/20180819043404%21David_Kalakaua_Kawananakoa.jpg>
 
 The source has an adult male, formal high white collar, dark tie, swept dark hair, and readable mouth, nose edge, eye placement, and hairline cues. However, the forehead and most central facial modelling are clipped nearly white. Those missing planes cannot be restored without invention, so this source cannot support the mandatory exact-likeness gate.
