@@ -4882,6 +4882,85 @@ chaos_meter_apply_daily_contamination_and_outbreak_deaths = {
                 chaos_meter_register_state_civilian_deaths_percent = yes
             }
 
+            if = {
+                limit = {
+                    OR = {
+                        has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+                        has_dynamic_modifier = { modifier = plague_contaminated_state }
+                        has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+                        has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                    }
+                }
+                set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_anthrax_monthly }
+                if = {
+                    limit = {
+                        OR = {
+                            has_dynamic_modifier = { modifier = plague_contaminated_state }
+                            has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+                        }
+                    }
+                    set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_plague_monthly }
+                }
+                else_if = {
+                    limit = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
+                    set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_tularemia_monthly }
+                }
+
+                if = {
+                    limit = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
+                    set_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.outbreak_smallpox_monthly }
+                }
+
+                divide_temp_variable = { chaos_state_deaths_percent = constant:chaos_meter_contamination_deaths_percent.tick_days_divisor }
+                set_temp_variable = { chaos_state_deaths_mult = 1 }
+                chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+
+                set_temp_variable = { chaos_outbreak_death_mult = 1 }
+                CONTROLLER = {
+                    if = {
+                        limit = { has_bio_outbreak_prevention_tier_3 = yes }
+                        multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_3 }
+                    }
+                    else_if = {
+                        limit = { has_bio_outbreak_prevention_tier_2_only = yes }
+                        multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_2 }
+                    }
+                    else_if = {
+                        limit = { has_bio_outbreak_prevention_tier_1_only = yes }
+                        multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.tier_1 }
+                    }
+
+                    if = {
+                        limit = { has_country_flag = quarantine_protocols_active }
+                        multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.quarantine_protocols }
+                    }
+                    if = {
+                        limit = { has_idea = outbreak_prevention_borders_closed }
+                        multiply_temp_variable = { chaos_outbreak_death_mult = constant:chaos_meter_outbreak_death_mitigation.closed_borders }
+                    }
+                }
+
+                calculate_contamination_defense_effectiveness = yes
+                if = {
+                    limit = { has_variable = contamination_defense_effectiveness }
+                    set_temp_variable = { chaos_outbreak_state_effectiveness = contamination_defense_effectiveness }
+                    clamp_temp_variable = {
+                        var = chaos_outbreak_state_effectiveness
+                        min = 0
+                        max = constant:chaos_meter_outbreak_death_mitigation.state_effectiveness_cap
+                    }
+                    set_temp_variable = { chaos_outbreak_state_remaining = 1 }
+                    subtract_from_temp_variable = { chaos_outbreak_state_remaining = chaos_outbreak_state_effectiveness }
+                    multiply_temp_variable = { chaos_outbreak_death_mult = chaos_outbreak_state_remaining }
+                }
+
+                multiply_temp_variable = { chaos_state_deaths_mult = chaos_outbreak_death_mult }
+                set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.outbreak_cap_factor }
+                set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+                set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+                set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
+                chaos_meter_register_state_civilian_deaths_percent = yes
+            }
         }
     }
 }

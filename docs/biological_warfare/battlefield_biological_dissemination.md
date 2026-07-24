@@ -24,14 +24,14 @@ No state is inferred from the headquarters, no estimator or proxy launch hook is
 
 The values below are gameplay tuning for route identity and balance. They are not claims that historical battlefield biological doctrine used standardized HOI4-sized packages. The equipment quantities represent complete route packages within the mod's production scale.
 
-| Agent | Agent potency tier | Native payload reservation | Command Power | Route potency | Canonical lifecycle strength | Base AI weight | Base success factor |
+| Agent | Overall severity | Native payload reservation | Command Power | Route potency | Canonical lifecycle strength | Base AI weight | Base success factor |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Tularemia | low | 25 | 10 | 1.00 | 0.85 | 1.50 | 0.50 |
 | Anthrax | moderate | 50 | 10 | 1.00 | 1.00 | 1.00 | 0.50 |
 | Plague | serious | 25 | 12 | 1.00 | 1.15 | 0.60 | 0.50 |
 | Smallpox | severe | 10 | 15 | 1.00 | 1.30 | 0.40 | 0.50 |
 
-Overall weapon strength is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
+Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
 
 All four agents have the same native battlefield-delivery reliability. The different AI weights describe route preference and strategic willingness, not success probability.
 

@@ -22,8 +22,8 @@ The UWR focus tree is intentionally compact and single-purpose. It has:
 - a chemical facility branch
 - an experimentation camp merge point
 - a zombie-weapon branch
-- a field-release doctrine branch that expands stockpiles, prepares deliberate CBRN operations, and supports expansion
-- a final chaos warfare focus that combines special-project rolls, assault columns, reserves, claims, and neighbor conflict pressure without automatically releasing a biological agent
+- a field-release doctrine branch that contaminates neighboring fronts and prepares expansion
+- a final chaos warfare focus that combines special-project rolls, assault columns, contamination, claims, and neighbor conflict pressure
 
 ## Reusable Special-Project Helper
 
@@ -31,7 +31,7 @@ The UWR focus tree is intentionally compact and single-purpose. It has:
 
 Documented helper file:
 
-- `common/scripted_effects/cbrn_scripted_effects.md`
+- `common/scripted_effects/chaosx_dynamic_effects.md`
 
 ## Assets
 
@@ -54,7 +54,7 @@ The current UWR flags are placeholders copied from the existing Dead Soldiers' C
 
 ## Future Plans
 
-- Add route-aware UWR AI and target profiles for native exact-state biological raids, plus separate prisoner-intake and facility-overclocking decisions.
+- Add dedicated UWR decisions for targeted field releases, prisoner intake, and facility overclocking.
 - Add post-conquest contamination cleanup or integration choices for players fighting UWR.
 - Add final UWR flag and focus icon art.
 
@@ -62,5 +62,5 @@ The current UWR flags are placeholders copied from the existing Dead Soldiers' C
 
 UWR now has route AI overlays without adding focus nodes. After the Tver directorate, CW facility, or experiment-camp milestones, it prioritizes army, infantry, and support production; Field Release Doctrine or Chaos Warfare raises army commitment and force concentration. These overlays use the successor decision surface so terminal collapse does not switch the route off.
 
-The retired `soviet_collapse_uwr_contaminate_neighbor_front` hook is not part of the accepted CBRN design. Focus completion cannot choose a random neighboring state, fabricate a biological release, or bypass exact payload, actor, victim, route, result, and target-state authority. Any future UWR battlefield or strategic release must use the native exact-state raid routes and the shared ordinary-pathogen lifecycle. Older implementation handoffs that describe automatic focus contamination are superseded by this source-of-truth rule.
+Each state actually selected by `soviet_collapse_uwr_contaminate_neighbor_front` is marked once for later contamination aftermath. During the active Union crisis that state record raises Republic Confidence and Foreign Appetite and prioritizes Republic Settlement. It adds no release scheduler, recurring scan, cleanup decision, or claim that the later UWR completion tranche is finished.
 - Extend `grant_random_chaos_special_project_available_tech` whenever new bio/chemical chaos special projects are implemented.

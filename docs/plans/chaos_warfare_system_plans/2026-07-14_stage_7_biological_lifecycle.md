@@ -53,8 +53,6 @@ Implemented in the completed strategic-raid, operative-release, battlefield-diss
 - Ten unique final decision icons and two unique final idea icons are registered in `interface/biological_countermeasures.gfx`; existing field-hospital and Smallpox decision sprites are reused without overwriting any military-raid asset.
 - The current decision source exposes 25 timed mission AI surfaces and three immediate decision AI surfaces to the installed probability adapter, with zero unresolved inputs.
 - `docs/plans/chaos_warfare_system_plans/2026-07-24_stage_7_biological_countermeasure_validation.md` records the bounded source, asset, AI, cleanup, and migration evidence for this tranche.
-- Project field tests now remain at the exact active special-project facility. Every ordinary agent uses the same containment-accident probability, while the shared lifecycle applies the agent-specific potency and consequence profile after a real containment failure.
-- Unsupported legacy biological callers have been removed instead of translated into permissive adapters: UWR focus completion no longer selects and contaminates a random neighboring state, the Chaos Assault Battalion has no passive outbreak roll, and abstract camp killing methods no longer seed an ordinary outbreak episode.
 
 Still queued under this active plan:
 
@@ -132,7 +130,7 @@ The seed dispatcher performs this order:
 - Food, water, and medical-chain sabotage uses four exact-state covert timed decisions. Each consumes real agent payload, support equipment, and Command Power at commitment; partial and full releases use the private low-dose route with uncertain initial attribution and severe later discovery consequences. Invalid or cancelled ledgers cannot receive doctrine refunds or fabricate release history.
 - Doomsday release requires the explicit route, extreme policy, near-capitulation or world-end conditions, a real arsenal, and a domestic-risk warning. It consumes the arsenal, seeds own and nearby fronts, records maximum evidence, and harms allies and the user.
 
-Every valid caller of a legacy `apply_*_contamination` identifier is migrated to an exact route adapter, while invalid random, passive, or abstract callers are removed. The legacy identifiers are then removed and no permissive compatibility wrapper remains. A route adapter is valid only when it can supply every required actor, victim, agent, route, result, target-state, and route-specific debit authority directly from the current engine scope.
+Every caller of a legacy `apply_*_contamination` identifier is migrated to an exact route adapter and the legacy identifiers are then removed. No permissive compatibility wrapper remains. A route adapter is valid only when it can supply every required actor, victim, agent, route, result, target-state, and route-specific debit authority directly from the current engine scope.
 
 ## Program safety, facilities, and countermeasures
 

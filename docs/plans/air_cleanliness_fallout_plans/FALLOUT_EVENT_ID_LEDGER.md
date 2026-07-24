@@ -544,3 +544,9 @@ The documented living-world block total is now `331`, while the countable Fallou
 The Ash Wolves reservation adds seven dormant state-level event blocks at suffixes `450` through `456`. It uses candidate `450`, transaction `710038`, route `7138`, and history `9143`. The chain carries four altered-ecology policies, deterministic altered-biosphere state selection, pack, safety, research, corridor, and altered-pressure ledgers, military and food effects, a delayed result, a 480-day corridor callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset. Native wildlife simulation and mutant-country creation remain unproven.
 
 The documented living-world block total is now `338`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Thaw Water count correction
+
+The Thaw Water reservation adds seven dormant state-level event blocks at suffixes `457` through `463`. It uses candidate `457`, transaction `710039`, route `7139`, and history `9144`. The chain carries four water-management policies, deterministic thaw-eligible state selection, flood-pressure, water-safety, channel-trust, disease-control, thaw-memory, food, recognition, and cohesion ledgers, a 60-day result, a 480-day thaw review callback, Deaths-system failure accounting, Air Winter water-security and disease-pressure updates, supply and reclamation effects, Event Log payloads, exact cleanup, and a dedicated report asset. Native water simulation remains unproven.
+
+The documented living-world block total is now `345`, while the countable Fallout living-world total remains `0 of 660`.

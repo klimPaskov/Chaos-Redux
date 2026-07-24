@@ -52,9 +52,7 @@ Radicalized networks can develop abstract chemical and biological killing capaci
 
 Chemical methods cover chlorine, phosgene, mustard gas, lewisite, tabun, sarin, and soman. Biological methods cover anthrax, tularemia, plague, and smallpox. Availability follows existing technology, special-project, equipment, and site gates. Activation and upkeep consume the corresponding stockpile or program capacity.
 
-Biological method potency follows `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox is severe. This method is abstract camp killing and accountability pressure, not a battlefield or strategic release route, so activating it does not seed an ordinary biological lifecycle episode. Its stock use, deaths, evidence, resistance, discovery, tribunal, and responsible-country records remain owned by the camp system.
-
-Each method changes a site's resolved harm, supply burden, accident pressure, evidence depth, discovery severity, resistance, stability damage, and tribunal exposure. Shortages reduce controlled output while worsening administrative and accident pressure. Chemical accidents may use the existing contamination system when an exact accident route is implemented; biological accident pressure remains a camp safety and discovery record unless an exact state-scoped release supplies the complete ordinary-lifecycle contract. The monthly state processor still owns the single recurring harm tick.
+Each method changes a site's resolved harm, supply burden, contamination or outbreak risk, evidence depth, discovery severity, resistance, stability damage, and tribunal exposure. Shortages reduce controlled output while worsening administrative and accident pressure. Chemical accidents use the existing contamination system; biological accidents use the existing outbreak and biological Deaths helpers. The monthly state processor still owns the single recurring harm tick.
 
 AI use is capped separately for active, radicalized, experiment, contaminated, and concurrent-project sites. Reform, discovery, supply failure, excessive overextension, or loss of route validity stops expansion and can expose shutdown or dismantlement actions.
 

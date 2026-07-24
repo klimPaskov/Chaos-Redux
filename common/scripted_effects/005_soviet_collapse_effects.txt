@@ -21309,6 +21309,40 @@ soviet_collapse_uwr_build_experiment_camp = {
 	}
 }
 
+soviet_collapse_uwr_contaminate_neighbor_front = {
+	save_event_target_as = soviet_collapse_uwr_contamination_actor
+    every_neighbor_country = {
+        limit = {
+            exists = yes
+            NOT = { tag = ROOT }
+            NOT = { is_soviet_collapse_neutral_triggerable_scenario_launcher = yes }
+            NOT = { is_in_faction_with = ROOT }
+        }
+        random_owned_controlled_state = {
+            limit = { is_controlled_by = PREV }
+            set_temp_variable = { contamination_days = constant:soviet_collapse_uwr_balance.contamination_days }
+            random_list = {
+                60 = { apply_anthrax_contamination = yes }
+                40 = { apply_plague_contamination = yes }
+            }
+			soviet_collapse_mark_uwr_contaminated_state_for_aftermath = yes
+        }
+        ROOT = {
+            if = {
+                limit = {
+                    NOT = { has_war_with = PREV }
+                    can_declare_war_on = PREV
+                }
+                create_wargoal = { type = annex_everything target = PREV expire = 0 }
+                add_ai_strategy = { type = conquer id = PREV value = @soviet_collapse_chaos_expansion_neighbor_ai_strategy }
+                add_ai_strategy = { type = antagonize id = PREV value = @soviet_collapse_chaos_expansion_neighbor_ai_strategy }
+            }
+        }
+    }
+    set_temp_variable = { air_contamination_delta_bp = constant:soviet_collapse_uwr_balance.air_contamination_bp }
+    air_contamination_apply_delta_bp = yes
+}
+
 soviet_collapse_uwr_build_starting_blacksite_network = {
     soviet_collapse_uwr_build_biowarfare_facility = yes
     soviet_collapse_uwr_build_biowarfare_facility = yes
