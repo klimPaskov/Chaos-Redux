@@ -5,8 +5,82 @@ add_namespace = africa_priority_member
 # ============================================================================
 # Reserved Event 12 range: africa_priority_member.1200 through .1299.
 # .1200 politics, .1210 League bargaining, .1220 overlap settlement, and
-# .1230 departure. All relationship effects use the shared atomic state machine.
+# .1230 departure. .1240 is a hidden synchronous character-ownership handoff
+# for the nine accepted vanilla carriers. All relationship effects use the
+# shared atomic state machine.
 # ============================================================================
+
+# Internal synchronous character handoff for the nine accepted vanilla
+# carriers. The seven niche Event 006 shells already own their matching
+# institutional councils in country history, so this event never changes their
+# ownership path. The completion flag and per-character guards make repeated
+# package registration or recovery calls idempotent without touching vanilla
+# country histories.
+country_event = {
+	id = africa_priority_member.1240
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		africa_priority_member_has_package = yes
+		africa_priority_member_is_vanilla_council_carrier = yes
+		NOT = { has_country_flag = africa_priority_member_vanilla_council_recruitment_complete }
+	}
+
+	immediate = {
+		if = {
+			limit = { africa_priority_member_package_is_sokoto = yes NOT = { has_character = africa_priority_sokoto_institutional_council } }
+			recruit_character = africa_priority_sokoto_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_manden = yes NOT = { has_character = africa_priority_manden_institutional_council } }
+			recruit_character = africa_priority_manden_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_kongo = yes NOT = { has_character = africa_priority_kongo_institutional_council } }
+			recruit_character = africa_priority_kongo_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_buganda = yes NOT = { has_character = africa_priority_buganda_institutional_council } }
+			recruit_character = africa_priority_buganda_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_aksum = yes NOT = { has_character = africa_priority_aksum_institutional_council } }
+			recruit_character = africa_priority_aksum_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_harar = yes NOT = { has_character = africa_priority_harar_institutional_council } }
+			recruit_character = africa_priority_harar_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_nubia = yes NOT = { has_character = africa_priority_nubia_institutional_council } }
+			recruit_character = africa_priority_nubia_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_great_zimbabwe = yes NOT = { has_character = africa_priority_great_zimbabwe_institutional_council } }
+			recruit_character = africa_priority_great_zimbabwe_institutional_council
+		}
+		if = {
+			limit = { africa_priority_member_package_is_merina = yes NOT = { has_character = africa_priority_merina_institutional_council } }
+			recruit_character = africa_priority_merina_institutional_council
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = { africa_priority_member_package_is_sokoto = yes has_character = africa_priority_sokoto_institutional_council }
+					AND = { africa_priority_member_package_is_manden = yes has_character = africa_priority_manden_institutional_council }
+					AND = { africa_priority_member_package_is_kongo = yes has_character = africa_priority_kongo_institutional_council }
+					AND = { africa_priority_member_package_is_buganda = yes has_character = africa_priority_buganda_institutional_council }
+					AND = { africa_priority_member_package_is_aksum = yes has_character = africa_priority_aksum_institutional_council }
+					AND = { africa_priority_member_package_is_harar = yes has_character = africa_priority_harar_institutional_council }
+					AND = { africa_priority_member_package_is_nubia = yes has_character = africa_priority_nubia_institutional_council }
+					AND = { africa_priority_member_package_is_great_zimbabwe = yes has_character = africa_priority_great_zimbabwe_institutional_council }
+					AND = { africa_priority_member_package_is_merina = yes has_character = africa_priority_merina_institutional_council }
+				}
+			}
+			set_country_flag = africa_priority_member_vanilla_council_recruitment_complete
+		}
+	}
+}
 
 country_event = {
 	id = africa_priority_member.1200
