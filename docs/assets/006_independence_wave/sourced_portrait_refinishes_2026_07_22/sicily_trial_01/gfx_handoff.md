@@ -1,6 +1,6 @@
 # Event 006 Sicily portrait refinish — completed GFX/runtime handoff
 
-The independent visual/provenance audit accepted all three real male identities, and the approved DDS files are wired through `interface/006_independence_wave_mediterranean_portraits.gfx`.
+The independent visual/provenance audit accepted all three real male identities, the separate Luigi Rizzo consumer audit accepted his current civilian-large political/security-director use with disclosure, and the approved DDS files are wired through `interface/006_independence_wave_mediterranean_portraits.gfx`.
 
 ## Runtime handoff
 
@@ -23,5 +23,6 @@ The independent visual/provenance audit accepted all three real male identities,
 
 ## Completed audit gate
 
-The independent audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sicily_trial01_portrait_visual_provenance_audit_2026_07_22.md`.
+The package visual/provenance audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_sicily_trial01_portrait_visual_provenance_audit_2026_07_22.md`.
+The current Luigi Rizzo civilian political-consumer audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_luigi_rizzo_political_consumer_independent_audit_2026_07_24.md`.
 The runtime hashes are `4768E69316D2A03754BE052143C68A157902C6953D99CE9389472ED1ADA52E57` for Sturzo, `7D1201F05A7189001B88A9D7AA9B5E2ED565379CBD30F2FE170EF6AAA245475A` for Lanza di Scalea, and `659C819547559F50025FB3007CD5C60947A150CA4673238CC179DC2F0867D714` for Rizzo.
