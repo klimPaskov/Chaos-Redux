@@ -1,0 +1,136 @@
+# Event 006 IW-008 Rhineland country-package post-wiring re-audit
+
+Date: 2026-07-24.
+
+Audited repository HEAD: `23e9b464d` (`Add source-locked Hawaiian leader portrait`). The parent IW-008 ownership correction is included through `8deec098e` (`Close von Zangen ownership record`); commits after that correction only touch unrelated packages, except for the shared attestation-list addition for IW-019, and do not add IW-008 or alter its RHI mapping or runtime portraits.
+
+Scope: independent post-wiring audit of the reused vanilla `RHI` country package, its Event 006 setup and cleanup transaction, map and reservation safety, cross-event separation, gameplay surfaces, identity and portrait consumers, and the exact runtime DDS files. This handoff edits no gameplay, asset, localisation, readiness, or workbook files.
+
+## Verdict
+
+**PASS for the IW-008 country package and its wired runtime portraits; HOLD at the existing runtime admission gate.** The package is internally complete and the runtime portrait consumers are exact, but authoritative content attestation still omits package ID `iw_008` in `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:44-52`.
+
+The attestation omission is the sole execution blocker found in this audit. The adapter, exact `iw_008`/`RHI` mapping, origin safety, map reservations, setup proof, force package, formable dependency, and scenario preflight are present. Parent may promote `iw_008` into the content-attestation `OR` after reviewing this handoff; this subagent does not perform that promotion.
+
+One documentation-only stale statement remains in `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_24/rhineland_von_zangen_trial_01/identity_transfer.md:23-25`, which still says the runtime DDS is stale and the candidate has not yet been wired. The live DDS, manifest, GFX handoff, localisation, and current hash ledger contradict that historical wording and pass independently. This is a documentation reconciliation follow-up, not an additional gameplay, asset, identity, or runtime blocker.
+
+No live HOI4 save, SCN-008 runtime, or MCP renderer was available for this static audit. The installed package exposes no Technology Tree Viewer, so technology-tree runtime visualization remains an unresolved tooling limitation. The parent should perform the normal post-attestation game-load and SCN-008 checks before declaring live runtime admission.
+
+## Audit sources and evidence reviewed
+
+- Repository instructions: `AGENTS.md`.
+- Skills: `.agents/skills/chaos-redux-subagents/SKILL.md`, `.agents/skills/chaos-redux-events/SKILL.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, `.agents/skills/hoi4-focus-trees/SKILL.md`, and `.agents/skills/hoi4-decisions-missions/SKILL.md`.
+- Required offline wiki pages under `paradox_wiki/`: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, Country creation, National focus modding, Character modding, Portrait modding, Graphical asset modding, State modding, Map modding, Division modding, Equipment modding, and Technology modding.
+- Vanilla documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/`: `effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`, and the applicable country, character, focus, decision, state, and technology references.
+- Integrated package audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_rhi_bay_postportrait_admission_audit_2026_07_22.md`.
+- Independent Wilhelm Marx visual and ownership audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wilhelm_marx_trial01_visual_audit_2026_07_23.md`.
+- Independent Gustav-Adolf von Zangen provenance audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_von_zangen_trial01_independent_audit_2026_07_24.md`.
+- Independent von Zangen identity-transfer re-audit: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_von_zangen_trial01_transfer_reaudit_2026_07_24.md`.
+- Current source-locked portrait manifests, GFX handoffs, and SHA ledgers for Marx and von Zangen under `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/` and `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_24/`.
+- Vanilla RHI history, state, tag, character, and flag sources under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`.
+
+## Country-package coverage checklist
+
+| Surface | Result | Evidence |
+| --- | --- | --- |
+| Tag and identity | PASS | Vanilla `RHI = "countries/Rhineland.txt"` remains registered in `common/country_tags/00_countries.txt:273`; Event 006 reuses the registered tag and does not add a duplicate mod country definition or history. Package ID is `independence_wave_package_id.iw_008 = 8` in `common/script_constants/006_independence_wave_package_constants.txt:59`. |
+| Map, anchor, capital, cores, and host survival | PASS | IW-008 uses state `51` Moselland as anchor and capital, with state `42` Rhineland/Moselland as an optional extension. Vanilla state history retains GER ownership and RHI cores on states 42 and 51; GER retains protected capital state 64. Installed bindings and reservation data are in `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`, `006_current_map_reservation_groups.csv`, and `006_current_map_state_collisions.csv`. |
+| Reservation and IW-010 collision | PASS | IW-008 and IW-010 share reservation group `RG-RHINE-SAAR`; the group permits one automatic package per wave, and state 42 is explicitly treated as IW-008 extension versus IW-010 anchor/compact collision. Reservation effect `independence_wave_reserve_package_iw_008` reserves state 51 first and trims optional state 42 when the competing package owns the reservation. |
+| Event 005 separation | PASS | Event 005 candidates remain Soviet-republic-only with disjoint package IDs and reserved/protected-state checks. `is_soviet_collapse_state_free_of_independence_wave_origin` and Event 006 candidate-origin checks reject the other event's origin flags, reserved states, protected states, and liberation origins before mutation. |
+| Setup transaction | PASS | IW-008 loader, reservation, and readiness checks are in `common/scripted_effects/006_independence_wave_packages_region_01_effects.txt`, `common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt`, and `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`. RHI setup prepares all roster, route, focus, formable, force, AI, and incident prerequisites before activation. |
+| Cleanup transaction | PASS | `independence_wave_cleanup_iw_008` in `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt:1064-1137` reopens the vanilla Germany reunification decision, removes RHI decisions and ideas, restores protected Matthes portrait wiring, clears package variables and flags, and resets focus/AI/lifecycle state. Generated Event 006 characters remain dormant for repeatable generation by design, with no stale live consumer. |
+| Generated leader roster and gender | PASS | The generated directorate and river-commandant tokens are explicitly `gender = male` in `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt:228-282`; no opposite-gender pool, female metadata, or random-name pool is used. The three advisors are institutional offices, not personal random-name consumers. |
+| Leader identity ownership | PASS | The civic token `RHI_independence_wave_provisional_directorate` now displays Wilhelm Marx and the command token `RHI_independence_wave_river_commandant` now displays Gustav-Adolf von Zangen. The von Zangen transfer record authorizes one existing generated token and no second historical character. Exact live-root scans found no `Karl Jarres`, `Josef Harpe`, `Josef Friedrich Harpe`, `karl_jarres`, or `josef_harpe` identity. |
+| Portrait consumers and derivatives | PASS | `interface/006_independence_wave_region_01_portraits.gfx:28-33` has exactly the two full RHI Event 006 sprites; the package effects consume them only as `civilian.large`, with the river commandant also using `army.large`. The runtime directory contains only those two full portraits plus protected Matthes; no RHI `_small`, advisor, dossier, high-command, theorist, operative, female, navy, alternate, duplicate, generic, or fallback asset exists. |
+| Protected Matthes | PASS | `GFX_portrait_RHI_josef_friedrich_matthes` remains the protected vanilla identity in `interface/006_independence_wave.gfx:58` and `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt:276-280`. Runtime SHA-256 is the protected `AA61CC3A12FB6670B690C7685FEB9383383CE58599C9E6D6E7C14F20FAB3BCE2`. |
+| Politics and government routes | PASS | RHI starts democratic with the registered popularity table and baseline laws, then supports constitutional, labor, emergency, and patron routes in `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt:413-503`. Route flags, government ideology, party names, elections, and route ideas are mutually consistent and guarded by the RHI setup proof. |
+| Starting ideas and visible values | PASS | RHI has baseline `civilian_economy`, `export_focus`, and `volunteer_only`, starts with authority 25 and lifecycle refresh, and uses the visible corridor-authority category in `localisation/english/006_independence_wave_rhineland_bavaria_l_english.yml:2-3`. Six RHI ideas and their modifiers/icons are defined in `common/ideas/006_independence_wave_rhineland_bavaria_ideas.txt:44-94`; the divided compact lifecycle can be resolved through play. |
+| Focus framework and package lane | PASS | `independence_wave_focus_tree` in `common/national_focus/006_independence_wave_focus.txt` includes eight RHI package focuses from `independence_wave_rhi_establish_corridor_authority_focus` through `independence_wave_rhi_authorize_form04_delegation_focus` at lines 2452-2567. Full-framework assignment uses `load_focus_tree tree = independence_wave_focus_tree keep_completed = no` in `common/scripted_effects/006_independence_wave_focus_effects.txt`; prerequisites, route mutual exclusions, host checks, formable gating, AI weights, icons, and localisation are present. |
+| Decisions, mission, and incidents | PASS | RHI has a dedicated category, fourteen decision children, and a hidden mission in `common/decisions/006_independence_wave_rhineland_bavaria_decisions.txt` and `common/decisions/categories/006_independence_wave_rhineland_bavaria_categories.txt`. Costs, durations, route locks, former-host war cancellation, completion/removal effects, and AI weights are defined. Founding, route, and congress incidents `chaosx.nr6.11`, `.12`, and `.13` are scheduled once and have visible options/tooltips in `events/006_independence_wave_rhineland_bavaria.txt`. |
+| Force package, technology, industry, and supply | PASS | IW-008 maps to `regular_defectors` with military tradition p8 in `docs/plans/006_independence_wave_plans/006_force_package_mapping.csv`. The public force entry in `common/scripted_effects/006_independence_wave_force_effects.txt:871-889` gates application on the package proof, inherits opening technology and slots, defines templates, creates divisions, and budgets stockpiles from the shared dynamic force constants. No unsupported manual army/navy replacement was added. |
+| AI and playability | PASS | RHI AI profiles in `common/ai_strategy/006_independence_wave_rhineland_bavaria.txt:9-66` cover survival, founding restraint, host threat, civic policy, command, and high-chaos behavior with production, army, defense, infrastructure, artillery, support, and train priorities. The force package gives a playable opening while host-war and founding-restraint factors protect the small carrier. |
+| Diplomacy and former host | PASS | The former-host event target is captured during setup, must remain a living non-RHI country, and is consumed by host-ledger effects in `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt:203-215`. Transit-compact focus and customs-ledger decisions require a living former host and cancel safely if the host enters war. |
+| Formable access | PASS | RHI selects the Rhine Federation `FORM-04` family during setup. `is_independence_wave_form04_eligible_member` and strict connected-capital/proposal checks in `common/scripted_triggers/006_independence_wave_form01_02_04_triggers.txt` require the RHI anchor, controlled capital, delegation readiness, valid founders, and an undominated corridor before integration. |
+| Localisation, flags, and UI assets | PASS | RHI country, adjective, party, leader, advisor, idea, focus, decision, mission, incident, tooltip, and category keys are covered in UTF-8-BOM `localisation/english/006_independence_wave_rhineland_bavaria_l_english.yml`; the mechanical key scan found no missing RHI keys. Vanilla ideology flags for RHI exist at 82x52. All RHI focus/idea/report texture references in `interface/006_independence_wave_rhineland_bavaria_assets.gfx` resolve to the expected 94x86, 64x64, and 210x176 assets. |
+
+## File-surface checklist
+
+The following surfaces were inspected and found aligned with the RHI package contract:
+
+- Registry and constants: `common/script_constants/006_independence_wave_package_constants.txt`, `common/script_constants/006_independence_wave_rhineland_bavaria_constants.txt`, and `common/script_constants/006_independence_wave_force_constants.txt`.
+- Package loading and reservations: `common/scripted_effects/006_independence_wave_packages_region_01_effects.txt`, `common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt`, and `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`.
+- Country setup, routes, roster, lifecycle, cleanup, and host ledgers: `common/scripted_effects/006_independence_wave_rhineland_bavaria_package_effects.txt` and `common/scripted_triggers/006_independence_wave_rhineland_bavaria_package_triggers.txt`.
+- Focus framework and RHI lane: `common/national_focus/006_independence_wave_focus.txt` and `common/scripted_effects/006_independence_wave_focus_effects.txt`.
+- Decisions, category, and incidents: `common/decisions/006_independence_wave_rhineland_bavaria_decisions.txt`, `common/decisions/categories/006_independence_wave_rhineland_bavaria_categories.txt`, and `events/006_independence_wave_rhineland_bavaria.txt`.
+- Ideas, advisors, AI, and force: `common/ideas/006_independence_wave_rhineland_bavaria_ideas.txt`, `common/characters/006_independence_wave_nwe_advisors.txt`, `common/ai_strategy/006_independence_wave_rhineland_bavaria.txt`, and `common/scripted_effects/006_independence_wave_force_effects.txt`.
+- Formable dependency: `common/scripted_triggers/006_independence_wave_form01_02_04_triggers.txt`, `common/scripted_effects/006_independence_wave_form01_02_04_effects.txt`, and `common/decisions/006_independence_wave_form01_02_04_decisions.txt`.
+- Portrait and asset wiring: `interface/006_independence_wave_region_01_portraits.gfx`, `interface/006_independence_wave.gfx`, `interface/006_independence_wave_rhineland_bavaria_assets.gfx`, `gfx/leaders/006_independence_wave/`, and the two source-locked portrait packages under `docs/assets/006_independence_wave/`.
+- Localisation and package bindings: `localisation/english/006_independence_wave_rhineland_bavaria_l_english.yml`, `docs/specs/006_independence_wave_specs/matrices/006_candidate_country_registry.csv`, `docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv`, `006_current_map_reservation_groups.csv`, `006_current_map_state_collisions.csv`, and `006_force_package_mapping.csv`.
+- Vanilla reuse surfaces: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/country_tags/00_countries.txt`, `history/countries/RHI - Rhineland.txt`, states `42-Rhineland.txt`, `51-Moselland.txt`, `52-Wuttemberg.txt`, `53-Oberbayern.txt`, `54-Bayreuth.txt`, RHI ideology flags, and the vanilla RHI Matthes character/portrait.
+
+## Runtime portrait integrity
+
+The runtime checks decoded each DDS as a legacy one-level opaque BGRA surface and compared it with the independently approved processed PNG, including exact per-pixel equality.
+
+| Consumer | Runtime DDS | Approved PNG | Runtime/final DDS SHA-256 | Approved PNG file SHA-256 | Dimensions and decode result |
+| --- | --- | --- | --- | --- | --- |
+| `RHI_independence_wave_provisional_directorate` / Wilhelm Marx | `gfx/leaders/006_independence_wave/portrait_RHI_independence_wave_provisional_directorate.dds` | `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_22/rhineland_marx_trial_01/processed_png/portrait_RHI_independence_wave_provisional_directorate.png` | `080A1C3B3F6C7C3F01F7E380C8C6BFC064C238FCC44DB084F2C559F1C3436BCB` | `757A0DEAFF0A57595C6A87E3BFBC84E39D1187FA23871DA4EA85CEA6CD736839` | DDS `131168` bytes, `156x210`, masks R `0x00ff0000`, G `0x0000ff00`, B `0x000000ff`, A `0xff000000`, opaque alpha; decoded PNG pixels equal approved PNG with zero differing bytes. |
+| `RHI_independence_wave_river_commandant` / Gustav-Adolf von Zangen | `gfx/leaders/006_independence_wave/portrait_RHI_independence_wave_river_commandant.dds` | `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_24/rhineland_von_zangen_trial_01/processed_png/portrait_RHI_independence_wave_river_commandant.png` | `F8F99F0D3EF38601DA687B9A2CEA63EDBDE629017076E26E46B26B4B762E0DF2` | `27C0C9673DEEF2C982369D2455E1690B86DE793574E66A6972B29D3E5B51D05F` | DDS `131168` bytes, `156x210`, same legacy BGRA header/masks, opaque alpha; decoded PNG pixels equal approved PNG with zero differing bytes. |
+| Protected `RHI_josef_friedrich_matthes` | `gfx/leaders/006_independence_wave/portrait_RHI_josef_friedrich_matthes.dds` | Protected vanilla-derived runtime asset, not replaced | `AA61CC3A12FB6670B690C7685FEB9383383CE58599C9E6D6E7C14F20FAB3BCE2` | N/A | DDS `131168` bytes, `156x210`, same legacy BGRA header/masks and opaque alpha; exact protected SHA retained. |
+
+Both Marx and von Zangen package ledgers were rechecked against all listed files with no mismatches. The approved final DDS bytes are identical to the runtime DDS bytes for their stable consumers.
+
+## Identity, consumer, and stale-name findings
+
+- Marx audit `006_wilhelm_marx_trial01_visual_audit_2026_07_23.md` passes independent source provenance, exact identity, HOI4 leader styling, role fit, and ownership for the civic leader consumer.
+- Von Zangen audit `006_von_zangen_trial01_independent_audit_2026_07_24.md` and transfer re-audit `006_von_zangen_trial01_transfer_reaudit_2026_07_24.md` pass source provenance, exact identity, commander styling, role fit, and exclusive ownership for the existing command token.
+- The transfer record maps one generated token, `RHI_independence_wave_river_commandant`, from the prior Josef Harpe display identity to Gustav-Adolf von Zangen and explicitly creates no second historical character.
+- Live-root exact searches across `common`, `history`, `interface`, `localisation/english`, and `gfx/leaders` found no stale Karl Jarres or Josef Harpe display/token identity. Search noise from unrelated words containing `harpe` was excluded.
+- Installed vanilla roots contain no Wilhelm Marx or Gustav-Adolf von Zangen owner. Vanilla RHI still owns only the protected Matthes character, while unrelated vanilla Germany Adenauer ownership is not consumed by the current RHI package.
+- The exact consumer boundary is two full leader sprites: Marx on `civilian.large`, and von Zangen on `civilian.large` plus `army.large`. No RHI advisor, dossier, `_small`, female, high-command, theorist, operative, navy, alternate, duplicate, generic, or fallback portrait consumer is present.
+- Generated leader metadata is male for both one-person characters. Institutional advisor names remain office names and do not draw from personal name pools.
+
+## Map, setup, and transaction safety
+
+Vanilla `RHI` history keeps capital state 51. Event 006 binds IW-008 to anchor state 51, optional extension state 42, reservation group `RG-RHINE-SAAR`, and a former-host survival rule that preserves at least one GER 1936 state, including protected GER capital state 64. RHI cores are retained on states 42 and 51; Bavaria states 52-54 are outside the RHI package.
+
+The reservation group is intentionally shared with IW-010. IW-008 reserves state 51 and attempts optional state 42 only within the group lock, while IW-010 claims state 42 as its anchor/compact. The collision table requires one automatic package and trims the IW-008 extension before the competing compact or anchor; no state can be double-claimed.
+
+The Event 006 coordinator uses prepare, activate, validate, and commit passes. Package setup prepares roster, baseline laws, routes, focus assignment, ideas, formable family, force package, AI profile, and founding incident; activation occurs only after all prepared packages exist; complete-package validation precedes durable history/evolution commit; reservation metadata is cleared only after validation, with rollback acknowledgement before the finalizer. Event 005 Soviet-origin candidates and Event 006 RHI candidates are separated by package ID ranges, state reservations, origin flags, and protected-host checks before mutation.
+
+Cleanup restores the vanilla Germany reunification decision, removes RHI route decisions/ideas and event flags, clears formable and focus/AI/lifecycle state, restores Matthes, and clears package setup metadata. Dormant generated characters are intentionally retained for repeatable package generation and have no active consumer after cleanup.
+
+## Politics, focus, decisions, incidents, and playability
+
+RHI begins as a small democratic industrial breakaway with corridor authority 25 and a visible 0-100 authority category. Constitutional, labor, emergency, and patron routes each change ideology/elections/party naming and grant route-specific ideas; the setup proof requires the four route surfaces and excludes the traditional and radical sovereignty branches. Six RHI ideas provide a starting weakness and route lifecycle, while the compact idea and authority thresholds give a playable recovery path.
+
+The eight RHI focuses cover corridor authority, rail dispatch, customs guard, industrial belt, host transit or neutral corridor, network office, and FORM-04 delegation. Their prerequisites, route mutual exclusions, living-host checks, RHI availability, AI weights, icons, title/description/tooltips, and hidden effects are present.
+
+The RHI decision category includes fourteen durable decisions plus a hidden mission. Dynamic costs, durations, AI scoring, route locks, former-host war cancellation, completion effects, and cleanup/removal effects are defined. Founding, route, and congress incidents are scheduled once, have two visible options each, and change authority and shared package values through documented effects.
+
+The dynamic `regular_defectors` force profile uses population, factory, infrastructure, rail, port, supply, host, war, chaos, legitimacy, tradition, patron, and network inputs rather than a fixed large army. It inherits opening technology and research capacity, creates a bounded opening template and stockpile, and leaves the package able to pursue its corridor and Rhine Federation objectives. AI profiles restrain early wars, protect the host relationship, and shift toward army/defense when the host becomes threatening.
+
+## Validation run
+
+- Recomputed SHA-256 for both runtime DDS files, both approved final DDS files, both approved PNG files, protected Matthes DDS, and both complete asset ledgers.
+- Parsed all three DDS headers and decoded BGRA pixels; Marx and von Zangen runtime pixels matched their approved PNGs byte-for-byte, while Matthes retained the protected exact SHA.
+- Resolved every RHI portrait sprite path and confirmed the runtime directory contains exactly the two approved full Event 006 portraits plus protected Matthes.
+- Scanned live gameplay/asset roots for stale Jarres/Harpe names and exact RHI `_small`, advisor, dossier, female, alternate, duplicate, generic, or fallback references.
+- Checked RHI focus, decision, idea, advisor, incident, category, and tooltip localisation coverage; no missing RHI keys were found and the localisation file begins with a UTF-8 BOM.
+- Resolved all 26 Event 006 NWE focus/idea/report texture references, including all 13 RHI references, and confirmed expected dimensions for the focus icons, idea icons, and report images.
+- Parsed the candidate-country registry, installed map bindings, reservation-group table, state-collision table, and force-package mapping for IW-008 and IW-010.
+- Inspected package setup/cleanup, Event 005 collision guards, four-pass transaction, former-host effects, formable strict checks, force entry, and AI profiles against the required skill and vanilla precedents.
+- Confirmed `has_independence_wave_runtime_package_content_attestation_for_execution_id` currently lists IW-001, IW-004, IW-007, IW-017, and IW-019 but not IW-008; this is the only execution-gate failure.
+
+Skipped meaningful validation: no live HOI4 process/save or MCP event/focus/map render was available, and no Technology Tree Viewer is exposed by the installed package. No gameplay or asset edits were made in this audit, so no runtime reload or workbook export was applicable.
+
+## Blockers, omissions, and parent handoff
+
+- **Execution gate:** add `check_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_008 }` to the `OR` in `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:44-52` only after parent review. The same attestation then covers normal runtime and scenario preflight because both call the shared trigger.
+- **Documentation follow-up:** reconcile the stale pre-wiring statements at `docs/assets/006_independence_wave/sourced_portrait_refinishes_2026_07_24/rhineland_von_zangen_trial_01/identity_transfer.md:23-25` in a later documentation-only change. They do not describe the current runtime state and are not an execution blocker for the reviewed files.
+- **Live validation limitation:** perform normal parent-owned game-load and SCN-008 checks after attestation promotion; do not treat this static handoff as proof of live save behavior. Technology Tree Viewer remains unavailable.
+- **Simplifications:** none. No fallback portrait, generic identity, alternate consumer, copied country package, skipped route, missing localisation, missing AI behavior, or unapproved gameplay/asset mutation was used.
+
+Changed files in this audit: only this handoff, `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw008_rhineland_country_package_reaudit_2026_07_24.md`.
+
+The parent may promote `iw_008` after reviewing this evidence and then run the live preflight/SCN-008 validation. The commit containing this handoff is reported with the final status message.
