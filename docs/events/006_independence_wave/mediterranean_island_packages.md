@@ -17,20 +17,11 @@ only when it is not living and still owns the vanilla `generic_focus` tree.
 mod-provided meaningful COR tree fails the setup gate and rolls the release
 back instead of being overwritten.
 
-IW-017 Corsica is admitted after its current portrait and full post-wiring
-country-package audits. Adolphe Landry and Jean Chiappe have attributed source
-masters, explicit head-and-shoulders crops, independently reviewed
-identity-preserving HOI4 treatments, pixel-identical runtime DDS files, and no
-advisor or `_small` derivatives. IW-018 and IW-019 remain visually withdrawn.
-Sardinia still lacks sourced real male crown-route and command identities, and
-its Emilio Lussu treatment still needs a compliant painted finish. Sicily's
-Luigi Sturzo, Pietro Lanza di Scalea, and Luigi Rizzo trial refinishes pass
-independent source, identity, male-only, crop, and HOI4-painted-style review,
-but are not yet wired. Rizzo remains valid as the straits-security country
-leader and invalid as an army corps commander because his source and historical
-role are naval. Sicily therefore also requires a separate sourced real Sicilian
-army officer. Both packages stay outside runtime content attestation until every
-live role passes the same source, role, and style gates.
+IW-017 Corsica and IW-019 Sicily are admitted after their current portrait and full post-wiring country-package audits.
+Adolphe Landry, Jean Chiappe, Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto have attributed source masters, explicit head-and-shoulders crops, independently reviewed identity-preserving HOI4 treatments, and pixel-identical runtime DDS files.
+Rizzo is the civilian-large Straits Security Directorate political leader under a separately audited fictional-office disclosure, while Di Benedetto is the sole army-large corps commander.
+Neither package creates advisor, dossier, `_small`, female, or fallback portrait assets.
+IW-018 Sardinia remains visually withdrawn because it lacks sourced real male crown-route and command identities, and its Emilio Lussu treatment still needs a compliant painted finish.
 
 ## Release and host-survival contract
 
