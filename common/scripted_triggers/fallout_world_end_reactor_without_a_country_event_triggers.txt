@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT REACTOR WITHOUT A COUNTRY TRIGGERS
+# ============================================================================
+# State and receipt authentication for the dormant reactor and reactor chain.
+# Every target is a native state and every receipt is generation-bound.
+
+fallout_event_366_reactor_state_is_current = {
+	owner = {
+		fallout_event_timeline_phase_receipt_is_current = yes
+	}
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = fallout_pretransition_air_winter_exposure
+	has_variable = fallout_pretransition_air_winter_reclamation
+	check_variable = { state_population_k value = constant:fallout_event_runtime.zero compare = greater_than }
+	check_variable = { fallout_pretransition_air_winter_reclamation < constant:fallout_event_366_threshold.maximum_reclamation }
+	OR = {
+		NOT = { has_variable = fallout_state_supply_access_current }
+		check_variable = { fallout_state_supply_access_current < constant:fallout_event_366_threshold.maximum_supply_access }
+	}
+	check_variable = { fallout_pretransition_air_winter_exposure value = constant:fallout_event_366_threshold.minimum_reactor_exposure compare = greater_than_or_equals }
+	check_variable = { fallout_pretransition_air_winter_exposure value = constant:fallout_event_366_threshold.maximum_reactor_exposure compare = less_than }
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	check_variable = { var = non_damaged_building_level@nuclear_reactor value = constant:fallout_event_366_threshold.minimum_reactor compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_366_threshold.minimum_industry compare = greater_than_or_equals }
+		check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_366_threshold.minimum_infrastructure compare = greater_than_or_equals }
+	}
+	OR = {
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.remote_refuge }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city }
+	}
+}
+
+fallout_event_366_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	has_variable = fallout_event_366_candidate_state_id
+	has_variable = fallout_event_366_candidate_reactor_score
+	check_variable = { fallout_event_366_candidate_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_366_candidate_reactor_score value = constant:fallout_event_366_threshold.minimum_reactor_score compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_366_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_366_threshold.maximum_campaign_day compare = less_than }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_366_threshold.minimum_power compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_366_threshold.minimum_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_366_threshold.minimum_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_366_threshold.minimum_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_366_threshold.minimum_cohesion compare = greater_than_or_equals }
+	has_country_flag = fallout_event_359_memory_closed
+	NOT = { has_country_flag = fallout_event_366_chain_committed }
+	NOT = { has_country_flag = fallout_event_366_memory_closed }
+	OR = {
+		AND = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_366_cost.joint_authority_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_366_cost.joint_authority_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_366_cost.joint_authority_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_366_cost.military_occupation_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_366_cost.military_occupation_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_366_cost.military_occupation_cohesion compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_366_cost.engineer_protectorate_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_366_cost.engineer_protectorate_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_366_cost.engineer_protectorate_recognition compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_366_cost.permanent_shutdown_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_366_cost.permanent_shutdown_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_366_cost.permanent_shutdown_recognition compare = greater_than_or_equals }
+		}
+	}
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_366_candidate_state_id compare = equals }
+		fallout_event_366_reactor_state_is_current = yes
+	}
+}
+
+fallout_event_366_registry_is_current = {
+	has_variable = fallout_event_366_registry_generation
+	has_variable = fallout_event_366_registry_owner
+	has_variable = fallout_event_366_candidate_id
+	has_variable = fallout_event_366_registry_target_type
+	has_variable = fallout_event_366_registry_target
+	has_variable = fallout_event_366_target_state_id
+	has_variable = fallout_event_366_frozen_power
+	has_variable = fallout_event_366_frozen_fuel
+	has_variable = fallout_event_366_frozen_medicine
+	has_variable = fallout_event_366_frozen_cohesion
+	has_variable = fallout_event_366_frozen_recognition
+	check_variable = { fallout_event_366_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_366_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_366_candidate_id value = constant:fallout_event_candidate_pilot.reactor_without_a_country_candidate_id compare = equals }
+	check_variable = { fallout_event_366_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_366_registry_target value = fallout_event_366_target_state_id compare = equals }
+	has_country_flag = fallout_event_366_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = { check_variable = { var = THIS.id value = ROOT.fallout_event_366_target_state_id compare = equals } }
+}
+
+fallout_event_366_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_366_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_366_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_366_target_to_check = {
+		set_temp_variable = { fallout_event_366_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_366_reactor_state_is_current = yes
+	}
+	check_variable = { fallout_event_366_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_366_opening_event_can_enter = {
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.reactor_without_a_country_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_366_opening_target_is_current = yes
+}
+
+fallout_event_366_hidden_ai_opening_can_enter = {
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.reactor_without_a_country_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_366_opening_target_is_current = yes
+}
+
+fallout_event_366_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_366_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_366_branch.upper_bound }
+	fallout_event_366_registry_is_current = yes
+}
+
+fallout_event_366_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.reactor_without_a_country_cleanup }
+	fallout_event_366_registry_is_current = yes
+}

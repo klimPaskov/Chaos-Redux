@@ -458,3 +458,11 @@ It owns candidate `359`, transaction `710025`, route `7125`, and Event Log histo
 The row selects one native archive, radio, or data-center state using radar, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break.
 Its four branches preserve, curate, weaponize, or trade the recovered record and each branch has a human lane, hidden AI lane, delayed result, callback, Event Log payloads, dedicated report art, and authenticated cleanup.
 The documented living-world block total is now `247`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## Reactor Without a Country count correction
+
+The Reactor Without a Country adds seven dormant country-level event blocks at suffixes `366` through `372`.
+It owns candidate `366`, transaction `710026`, route `7126`, and Event Log history `9131`.
+The row selects one native nuclear-reactor state using reactor level, infrastructure, and industrial capacity with a deterministic lowest-state-id tie break and unstable-ownership gates.
+Its four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown, each with a human lane, hidden AI lane, delayed result, inspection callback, Event Log payloads, dedicated report art, Deaths-backed failure, and authenticated cleanup.
+The documented living-world block total is now `254`, while the countable Fallout living-world release-floor total remains `0 of 660`.

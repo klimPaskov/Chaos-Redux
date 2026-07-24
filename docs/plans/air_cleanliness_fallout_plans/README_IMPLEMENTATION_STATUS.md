@@ -588,3 +588,16 @@ Seven dedicated event blocks, six timed modifiers, fifteen Event Log payloads, l
 The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
 The defined living-world total is now `247`, while countable Fallout living-world blocks remain `0 of 660`.
 The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.359` used helper expansion disabled, depth one, twenty nodes, and forty edges. It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23,077 issues against a fixed ceiling of 20,000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`. The exact result is recorded in `FALLOUT_VAULT_OF_VOICES_CHAIN_PROOF.md`, so its delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.
+
+## The Reactor Without a Country governance tranche
+
+The Reactor Without a Country is implemented as a dormant country-level chain at `chaosx.fallout.366` through `.372`.
+It uses candidate `366`, transaction key `710026`, route `7126`, and Event Log history `9131`.
+The gate follows the closed Working Machine memory and selects one deterministic native nuclear-reactor state using reactor level, infrastructure, and industrial capacity, with reclamation or supply-access evidence that ownership is not stable.
+Four authored policies create joint authority, military occupation, engineer protectorate, or permanent shutdown.
+The result updates Power, Fuel, Medicine, Recognition, Cohesion, Stability, War Support, reclamation, local supply, exposure, branch-specific state memory, reactor damage risk, and Deaths-backed failure, then schedules a 240-day inspection callback.
+Human and hidden-AI lanes share the same delayed transaction, Event Log history, dedicated generated report art, and authenticated cleanup wrappers.
+Seven dedicated event blocks, six timed modifiers, fifteen Event Log payloads, localisation, a manifest, and a GFX handoff are wired.
+The chain remains dormant and earns no release-floor credit because scheduler activation, host authority, save recovery, multiplayer behavior, and runtime Event Log delivery remain unobserved.
+The defined living-world total is now `254`, while countable Fallout living-world blocks remain `0 of 660`.
+The bounded `hoi4.event_inspect` lint request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges. It returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23,102 issues against a fixed ceiling of 20,000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`. The exact result is recorded in `FALLOUT_REACTOR_WITHOUT_A_COUNTRY_CHAIN_PROOF.md`, so its delayed reachability, host authority, save recovery, multiplayer behavior, and Event Log delivery remain unproven.

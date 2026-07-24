@@ -294,3 +294,13 @@ The row carries four authored policy branches, hidden AI parity, a delayed resul
 The producer clears its candidate variables after row append and never sets a scheduler activation flag.
 The Vault of Voices remains dormant, simplified only by the unproven scheduler caller and engine-sensitive delivery surfaces, and contributes zero countable blocks.
 Its bounded `hoi4.event_inspect` lint returned `status: error`, `code: EVENT_ISSUE_LIMIT`, with 23077 issues against a fixed ceiling of 20000, no files scanned, no diagnostics, no proposed or changed files, no artifacts, and `validation.passed: false`.
+
+## The Reactor Without a Country correction
+
+The Reactor Without a Country is the twenty-sixth reviewed ordinary candidate.
+It uses country candidate id `366`, transaction `710026`, route `7126`, event tokens `366` through `372`, and history `9131`.
+Its gate follows the closed Working Machine memory and selects one deterministic native nuclear-reactor state with current Air Winter data, exposure from `16` through `71`, a surviving population, reactor level at least `1`, a repair route through infrastructure or industry, and reclamation or supply access below the stable-ownership thresholds.
+The chain freezes Power, Fuel, Medicine, Recognition, Cohesion, and the selected state before a 35-day reactor result and a 240-day inspection callback.
+The four policies create joint authority, military occupation, engineer protectorate, or permanent shutdown, with reactor-first failure damage and separate branch memories, modifiers, and Event Log payloads.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The bounded `hoi4.event_inspect` request for `chaosx.fallout.366` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,102 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.
