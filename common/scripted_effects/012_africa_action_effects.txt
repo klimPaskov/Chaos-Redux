@@ -2627,6 +2627,8 @@ africa_validate_action_specific_requirements = {
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_country_flag = africa_voluntary_return_registry_open
 			event_target:africa_action_target = { has_country_flag = africa_diaspora_return_consent }
+			check_variable = { africa_selected_diaspora_origin_group > constant:africa_achievement_origin_group.none }
+			NOT = { check_variable = { africa_selected_diaspora_origin_group > constant:africa_achievement_origin_group.indian_ocean } }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2648,6 +2650,8 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_country_flag = africa_voluntary_return_registry_open
+			check_variable = { africa_selected_diaspora_skill_programme > constant:africa_achievement_skill_programme.none }
+			NOT = { check_variable = { africa_selected_diaspora_skill_programme > constant:africa_achievement_skill_programme.administration } }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -3305,6 +3309,80 @@ africa_prepare_action_state_target = {
 	}
 }
 
+# COUNTRY scope on the host. Human choices are written by the Charter League
+# interface. AI hosts select a real bounded programme parameter before the
+# quote is validated, preferring an origin or skill not yet represented.
+africa_prepare_diaspora_action_parameters = {
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+		}
+		set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.none }
+		if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.north_america } }
+			}
+			set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.north_america }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.south_america_caribbean } }
+			}
+			set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.south_america_caribbean }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.europe } }
+			}
+			set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.europe }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_origin_groups value = constant:africa_achievement_origin_group.indian_ocean } }
+			}
+			set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.indian_ocean }
+		}
+		else = {
+			set_variable = { africa_selected_diaspora_origin_group = constant:africa_achievement_origin_group.north_america }
+		}
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			check_variable = { africa_requested_action_id = constant:africa_action.invite_afro_american_technical_mission }
+		}
+		set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.none }
+		if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_skill_programmes value = constant:africa_achievement_skill_programme.education } }
+			}
+			set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.education }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_skill_programmes value = constant:africa_achievement_skill_programme.medicine } }
+			}
+			set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.medicine }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_skill_programmes value = constant:africa_achievement_skill_programme.engineering } }
+			}
+			set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.engineering }
+		}
+		else_if = {
+			limit = {
+				NOT = { is_in_array = { array = global.africa_achievement_diaspora_skill_programmes value = constant:africa_achievement_skill_programme.administration } }
+			}
+			set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.administration }
+		}
+		else = {
+			set_variable = { africa_selected_diaspora_skill_programme = constant:africa_achievement_skill_programme.education }
+		}
+	}
+}
+
 # COUNTRY scope on the host after payment. Copies the immutable action snapshot
 # to the target and creates reverse links.
 africa_create_action_record = {
@@ -3383,6 +3461,8 @@ africa_create_action_record = {
 		set_variable = { africa_active_action_intelligence_reservation = ROOT.africa_quote_cost_intelligence }
 		set_variable = { africa_active_action_cost_stability = ROOT.africa_quote_cost_stability }
 		set_variable = { africa_active_action_cost_war_support = ROOT.africa_quote_cost_war_support }
+		set_variable = { africa_active_diaspora_origin_group = ROOT.africa_selected_diaspora_origin_group }
+		set_variable = { africa_active_diaspora_skill_programme = ROOT.africa_selected_diaspora_skill_programme }
 		clear_array = africa_action_state_targets
 	}
 	if = {
@@ -3440,6 +3520,7 @@ africa_begin_quoted_action_against_target = {
 	africa_requote_selected_action_against_action_target = yes
 	set_temp_variable = { africa_requested_action_id = africa_selected_action_id }
 	africa_prepare_action_profile = yes
+	africa_prepare_diaspora_action_parameters = yes
 	africa_prepare_action_state_target = yes
 	africa_prepare_first_proof_action_markers = yes
 	africa_prepare_first_proof_recovery_contract = yes
@@ -6249,6 +6330,7 @@ africa_apply_current_action_outcome = {
 		africa_apply_failed_action_family_values = yes
 		africa_apply_action_failure_semantics = yes
 	}
+	africa_achievement_record_action_outcome = yes
 }
 
 # COUNTRY scope on an active target. Removes the exact shared mission before
@@ -6338,6 +6420,8 @@ africa_cleanup_action = {
 		clear_variable = africa_active_action_cost_stability
 		clear_variable = africa_active_action_cost_war_support
 		clear_variable = africa_active_action_state_id
+		clear_variable = africa_active_diaspora_origin_group
+		clear_variable = africa_active_diaspora_skill_programme
 	}
 }
 

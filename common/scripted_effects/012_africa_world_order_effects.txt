@@ -1284,6 +1284,14 @@ africa_world_finalize_distinct_package_identity = {
 		else_if = { limit = { has_country_flag = africa_oceania_socialist_commonwealth_route } add_ideas = africa_world_oceania_maritime_commonwealth set_cosmetic_tag = OCEANIAN_MARITIME_COMMONWEALTH }
 		else_if = { limit = { has_country_flag = africa_oceania_deep_sea_covenant_route } add_ideas = africa_world_oceania_deep_sea_covenant set_cosmetic_tag = OCEANIAN_DEEP_SEA_COVENANT }
 	}
+	if = {
+		limit = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_sponsorship_obligation_fulfilled
+			NOT = { has_country_flag = africa_world_sponsorship_defaulted }
+		}
+		event_target:africa_host = { africa_achievement_record_sponsored_continent_identity = yes }
+	}
 	africa_world_complete_sovereign_package = yes
 }
 
@@ -1625,6 +1633,7 @@ africa_world_form_union_with_current_target = {
 			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } } } set_cosmetic_tag = AFRO_SOUTH_AMERICAN_UNION }
 			else_if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } } } set_cosmetic_tag = AFRO_OCEANIAN_UNION }
 			PREV = { africa_world_record_terminal_resolution = yes }
+			africa_achievement_record_two_continent_integration = yes
 		}
 	}
 }
@@ -1680,6 +1689,7 @@ africa_form_terminal_world_identity = {
 		clr_global_flag = africa_scramble_response_active
 		set_country_flag = africa_world_epilogue_open
 		set_variable = { africa_selected_action_family = constant:africa_action_family.world_order }
+		africa_achievement_record_africa_world_formation = yes
 	}
 }
 

@@ -311,6 +311,11 @@ africa_achievement_record_full_action = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.standardise_customs } }
 		set_country_flag = africa_achievement_fiscal_settlement_complete
 	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.connect_member_capitals } }
+		set_temp_variable = { africa_achievement_corridor_system_id = constant:africa_achievement_corridor_system.road }
+		africa_achievement_record_corridor_system = yes
+	}
 
 	# Infrastructure projects are counted once per state and per project family.
 	if = {
@@ -400,10 +405,15 @@ africa_achievement_record_full_action = {
 	if = {
 		limit = {
 			check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme }
-			NOT = { has_country_flag = africa_achievement_voluntary_return_wave_counted }
 		}
 		set_country_flag = africa_achievement_voluntary_return_wave_counted
-		add_to_variable = { global.africa_achievement_voluntary_return_waves = constant:africa_value.one }
+		set_temp_variable = { africa_achievement_origin_group_id = africa_active_diaspora_origin_group }
+		africa_achievement_record_voluntary_return_wave = yes
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.invite_afro_american_technical_mission } }
+		set_temp_variable = { africa_achievement_skill_programme_id = africa_active_diaspora_skill_programme }
+		africa_achievement_record_diaspora_skill_programme = yes
 	}
 	if = {
 		limit = {
@@ -582,8 +592,166 @@ africa_achievement_record_full_action = {
 		set_global_flag = africa_achievement_world_regions_administered
 	}
 
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.create_regional_charter } }
+		event_target:africa_host = { africa_achievement_record_congress_agenda_completed = yes }
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_id = constant:africa_action.offer_crown_charter }
+			OR = {
+				has_government = neutrality
+				has_country_flag = africa_restored_polity_member
+				has_country_flag = africa_priority_kongo_court_civic_congress_government
+				has_country_flag = africa_priority_harar_municipal_court_compact
+				has_country_flag = africa_priority_merina_crown_assembly_government
+				has_country_flag = africa_priority_zulu_crown_assembly_government
+			}
+		}
+		africa_achievement_record_recognised_court_member = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_id = constant:africa_action.form_regional_federation }
+			OR = {
+				check_variable = { africa_regional_overlay = constant:africa_overlay.swahili_indian_ocean }
+				check_variable = { africa_regional_overlay = constant:africa_overlay.madagascar_islands }
+				has_country_flag = africa_priority_kilwa_maritime_federal_government
+				has_country_flag = africa_priority_kilwa_peoples_maritime_union
+			}
+		}
+		africa_achievement_record_maritime_polity = yes
+	}
+	africa_achievement_record_archive_restoration = yes
+	africa_achievement_record_peaceful_reassociation = yes
 	africa_achievement_record_target_region_for_current_action = yes
 	event_target:africa_host = { africa_achievement_refresh_survival_windows = yes }
+}
+
+# COUNTRY scope on a resolved action target after its outcome semantics. This
+# binds achievement disqualifiers to real action results and audits the live
+# values that difficult achievements require to remain above their floor.
+africa_achievement_record_action_outcome = {
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+			check_variable = { africa_active_action_id = constant:africa_action.enforce_congress_settlement }
+		}
+		africa_achievement_record_congress_coerced_accession = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+			check_variable = { africa_active_action_id = constant:africa_action.suspend_disloyal_member }
+		}
+		africa_achievement_record_congress_expulsion = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+			check_variable = { africa_active_action_id = constant:africa_action.impose_emergency_administration }
+		}
+		africa_achievement_record_coercive_administration = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.guarantee_sovereignty }
+		}
+		africa_achievement_record_guarantee_broken = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			OR = {
+				check_variable = { africa_active_action_id = constant:africa_action.open_aid_corridor }
+				check_variable = { africa_active_action_id = constant:africa_action.connect_member_capitals }
+				check_variable = { africa_active_action_id = constant:africa_action.build_regional_rail_spine }
+				check_variable = { africa_active_action_id = constant:africa_action.expand_river_transport }
+				check_variable = { africa_active_action_id = constant:africa_action.modernise_continental_port }
+			}
+		}
+		africa_achievement_record_network_split = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.resource_sovereignty_review }
+		}
+		africa_achievement_record_foreign_concession_breach = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.bargain_with_the_green }
+		}
+		africa_achievement_record_ecological_bargain_broken = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.review_covenant_obligation }
+		}
+		africa_achievement_record_nonhuman_rights_violation = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.weaponise_fictional_pathogen }
+		}
+		africa_achievement_record_disease_outbreak = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.contain_regional_secession_war }
+		}
+		africa_achievement_record_member_cascade = yes
+	}
+	event_target:africa_host = {
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_integration_burden
+					value = constant:africa_measure.high
+					compare = greater_than
+				}
+			}
+			africa_achievement_record_integration_burden_breach = yes
+		}
+		if = {
+			limit = {
+				check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+				check_variable = {
+					var = africa_integration_burden
+					value = constant:africa_achievement_ratio.confederal_integration_ceiling
+					compare = greater_than
+				}
+			}
+			africa_achievement_record_confederal_ceiling_breach = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_diaspora_trust
+					value = constant:africa_measure.low
+					compare = less_than
+				}
+			}
+			africa_achievement_record_diaspora_trust_collapse = yes
+		}
+	}
+	if = {
+		limit = {
+			has_variable = africa_member_confidence
+			check_variable = {
+				var = africa_member_confidence
+				value = constant:africa_measure.low
+				compare = less_than
+			}
+		}
+		africa_achievement_record_region_confidence_collapse = yes
+	}
 }
 
 # COUNTRY scope on the resolved action target. Regional evidence comes from the
@@ -1843,7 +2011,14 @@ africa_achievement_record_world_terminal_super_event = {
 # Narrow disqualifier and reset hooks
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope on the affected member or partner.
+# COUNTRY scope on a country placed under coercive administration without a
+# territorial transfer. This disqualifies consent achievements without falsely
+# recording a direct annexation.
+africa_achievement_record_coercive_administration = {
+	set_global_flag = africa_achievement_coercive_integration_used
+}
+
+# COUNTRY scope on a country that is actually absorbed by a coercive transfer.
 africa_achievement_record_coercive_annexation = {
 	set_global_flag = africa_achievement_coercive_integration_used
 	set_global_flag = africa_achievement_member_directly_annexed

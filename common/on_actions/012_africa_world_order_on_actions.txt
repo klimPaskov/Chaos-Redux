@@ -48,6 +48,15 @@ on_actions = {
 				FROM = { set_country_flag = africa_continental_war_active }
 				ROOT = { set_country_flag = africa_continental_war_active }
 			}
+			if = {
+				limit = {
+					FROM = {
+						africa_relationship_is_protected = yes
+						has_country_flag = africa_achievement_counted_protected_partner
+					}
+				}
+				FROM = { africa_achievement_record_protection_war_started = yes }
+			}
 		}
 	}
 
@@ -74,6 +83,16 @@ on_actions = {
 				ROOT = {
 					set_country_flag = africa_scramble_expedition_defeated
 					clr_country_flag = africa_scramble_intervention_war_actor
+					if = {
+						limit = { NOT = { has_country_flag = africa_achievement_foreign_expedition_counted } }
+						set_country_flag = africa_achievement_foreign_expedition_counted
+						africa_achievement_record_foreign_expedition_defeated = yes
+					}
+					if = {
+						limit = { NOT = { has_country_flag = africa_achievement_major_intervention_counted } }
+						set_country_flag = africa_achievement_major_intervention_counted
+						africa_achievement_record_major_intervention_defeated = yes
+					}
 				}
 				FROM = {
 					set_country_flag = africa_scramble_defensive_war_won
@@ -95,7 +114,19 @@ on_actions = {
 					set_country_flag = africa_defeated_continent_power
 					clr_country_flag = africa_continental_war_active
 				}
-				FROM = { clr_country_flag = africa_continental_war_active }
+				FROM = {
+					clr_country_flag = africa_continental_war_active
+					africa_achievement_record_continental_war_victory = yes
+				}
+			}
+			if = {
+				limit = {
+					ROOT = {
+						africa_relationship_is_cooperative = yes
+						has_capitulated = yes
+					}
+				}
+				ROOT = { africa_achievement_record_member_capitulation = yes }
 			}
 		}
 	}
@@ -113,7 +144,19 @@ on_actions = {
 					clr_country_flag = africa_scramble_defensive_war_active
 					clr_global_flag = africa_scramble_intervention_war_active
 				}
-				FROM = { clr_country_flag = africa_scramble_intervention_war_actor }
+				FROM = {
+					clr_country_flag = africa_scramble_intervention_war_actor
+					if = {
+						limit = { NOT = { has_country_flag = africa_achievement_foreign_expedition_counted } }
+						set_country_flag = africa_achievement_foreign_expedition_counted
+						africa_achievement_record_foreign_expedition_defeated = yes
+					}
+					if = {
+						limit = { NOT = { has_country_flag = africa_achievement_major_intervention_counted } }
+						set_country_flag = africa_achievement_major_intervention_counted
+						africa_achievement_record_major_intervention_defeated = yes
+					}
+				}
 			}
 			else_if = {
 				limit = {
@@ -139,7 +182,11 @@ on_actions = {
 					set_country_flag = africa_defeated_continent_power
 					clr_country_flag = africa_continental_war_active
 				}
-				ROOT = { clr_country_flag = africa_continental_war_active }
+				ROOT = {
+					clr_country_flag = africa_continental_war_active
+					africa_achievement_record_continental_war_victory = yes
+					africa_achievement_record_continental_settlement = yes
+				}
 			}
 			else_if = {
 				limit = {
@@ -151,6 +198,24 @@ on_actions = {
 					set_country_flag = africa_continental_campaign_defeated
 					set_country_flag = africa_postwar_constitutional_review_pending
 					clr_country_flag = africa_continental_war_active
+				}
+			}
+			if = {
+				limit = {
+					ROOT = { has_country_flag = africa_achievement_protection_war_unresolved }
+				}
+				ROOT = {
+					africa_achievement_record_protection_war_settled = yes
+					africa_achievement_record_last_convoy_war_settlement = yes
+				}
+			}
+			if = {
+				limit = {
+					FROM = { has_country_flag = africa_achievement_protection_war_unresolved }
+				}
+				FROM = {
+					africa_achievement_record_protection_war_settled = yes
+					africa_achievement_record_last_convoy_war_settlement = yes
 				}
 			}
 		}
