@@ -1,12 +1,12 @@
 # IW-184 California William D. Stephens portrait trial 01
 
-Status: `candidate_requires_independent_audit`.
+Status: `independently_approved_and_runtime_wired`.
 
 This package applies the mandatory grounded-person portrait chain to William Dennison Stephens for the existing Event 6 California civic-convention consumer.
 
-It proposes a guarded player-facing identity transfer from the fictional working name `Daniel Mercer` to William D. Stephens while retaining the stable script character and sprite.
+It records the guarded player-facing identity transfer from the fictional working name `Daniel Mercer` to William D. Stephens while retaining the stable script character and sprite.
 
-No DDS is authorized or wired until an independent reviewer separately passes provenance, likeness, HOI4 leader style, role fit, male-only scope, ownership, and the no-advisor/no-`_small` boundary.
+The independent reviewer passed provenance, likeness, HOI4 leader style, role fit, male-only scope, ownership, and the no-advisor/no-`_small` boundary before the exact approved candidate was converted and wired.
 
 ## Stable consumer
 
@@ -74,7 +74,7 @@ The skill-local crop utility removed the negative's handwritten catalog marks wh
 | Field | Value |
 |---|---|
 | Identity input | The exact archival crop above |
-| Style-only references | `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png` and `ire_eamon_de_valera.png` |
+| ImageGen style-only references | `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png` and `ire_eamon_de_valera.png` |
 | Prompt | `identity_repaint_prompt.md` |
 | Raw repaint | `imagegen_results/HBX_william_stephens_identity_preserve_trial_01.png` |
 | Raw dimensions | `1080x1456` |
@@ -82,7 +82,7 @@ The skill-local crop utility removed the negative's handwritten catalog marks wh
 
 The archival crop remains the sole identity, anatomy, age, pose, clothing, and composition authority.
 
-The two HOI4 portraits are style-only references and may not transfer identity or clothing.
+The two HOI4 portraits in this section were supplied to ImageGen as provider-side style-only inputs and may not transfer identity or clothing.
 
 ## Deterministic 156x210 processing
 
@@ -101,8 +101,13 @@ The two HOI4 portraits are style-only references and may not transfer identity o
 | Metadata SHA-256 | `4BBE5BF4556EDEEE102C03477A8325B36B24D14EE2BEAC242E4999BAD2FA750C` |
 | Style sheet | `review/HBX_william_stephens_leader_style_sheet.png` |
 | Style-sheet SHA-256 | `DF014FC2965D688A4E3281CB5D1AEA1AFE3562BCB3C6E21D4D1FFA9C70B436CF` |
+| Processor review references | `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png` and `fin_carl_mannerheim.png` |
 
 The processor uses the canonical leader reference family and performs deterministic crop, grade, and export only.
+
+The processor comparison pair is a separate deterministic finishing and review stage from the provider-side ImageGen style inputs above.
+
+De Valera is an ImageGen style reference, Mannerheim is a processor-sheet reference, and neither is an identity input.
 
 The metadata's decoded hash uses the documented domain prefix and encoded dimensions.
 
@@ -112,18 +117,27 @@ Current project, vanilla, Kaiserreich `1521695605`, and approved references `226
 
 Hiram Johnson is not a fallback because Kaiserreich owns `ACC_hiram_johnson`.
 
-The stable Event 6 character and sprite may be rebound to William D. Stephens only after the independent portrait audit passes.
+The stable Event 6 character and sprite were rebound to William D. Stephens only after the independent portrait audit passed.
 
-The parent must then update the player-facing name and description in the same runtime promotion.
+The player-facing name and description were updated in the same runtime promotion.
 
-## Independent audit gate
+## Independent audit result and runtime promotion
 
-The reviewer must compare the unchanged master, exact crop and equality JSON, raw ImageGen repaint, native `156x210` candidate, prompt, metadata, and canonical leader references at native size and a disposable nearest-neighbour enlargement.
+The independent audit at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_california_william_stephens_trial01_independent_portrait_audit_2026_07_24.md` compared the unchanged master, exact crop and equality JSON, raw ImageGen repaint, native `156x210` candidate, prompt, metadata, and both explicitly separated reference sets.
 
-The reviewer must return separate verdicts for archive identity and rights, crop equality, historical and alternate-history role, likeness, HOI4 leader style, framing, male-only scope, ownership and guarded transfer, and absence of advisor, dossier, operative, commander, and `_small` derivatives.
+The audit returned `PASS / runtime authorized` for archival identity and rights, exact crop equality, historical and alternate-history role fit, likeness, HOI4 painted leader style, framing, male-only scope, ownership and guarded transfer, and absence of advisor, dossier, operative, commander, and `_small` derivatives.
 
-The likeness verdict must specifically test the high forehead and bald crown, sparse side hair, unequal heavy-lidded eyes, eyebrow geometry, nose, lips, cheek lines, ears, jaw, chin, apparent age, expression, head angle, neck, and stout shoulder proportions.
+The approved candidate was converted without further visual editing.
 
-If every gate passes, the parent may update localisation to William D. Stephens, convert this exact candidate to the stable DDS, prove decoded-pixel equality, and request a fresh IW-184 country-package audit.
+| Field | Value |
+|---|---|
+| Package DDS | `final_dds/portrait_HBX_independence_wave_civic_convention.dds` |
+| Runtime DDS | `gfx/leaders/006_independence_wave/portrait_HBX_independence_wave_civic_convention.dds` |
+| DDS SHA-256 | `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1` |
+| Approved PNG and DDS decoded RGBA SHA-256 | `8F7D6E405720873471A28D8D15445C5FA438373EE3F7C6B75366914E4DF6C3E6` |
+| Runtime sprite | `GFX_portrait_HBX_independence_wave_civic_convention` |
+| Localisation identity | `William D. Stephens` |
 
-Any failed gate leaves the candidate export-only.
+The package DDS and runtime DDS are byte-identical legacy uncompressed BGRA files at `156x210`, and both decode pixel-identically to the independently approved PNG.
+
+No advisor icon, advisor dossier, operative portrait, commander portrait, or `_small` derivative was created.
