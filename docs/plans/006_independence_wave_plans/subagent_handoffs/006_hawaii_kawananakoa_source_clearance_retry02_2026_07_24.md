@@ -1,8 +1,11 @@
 # Event 006 HAW David Kalakaua Kawananakoa source-clearance retry 02
 
-Date: 2026-07-24  
-Owner: sourced visual asset subagent  
-Parent scope: IW-173 Hawaii  
+Date: 2026-07-24
+
+Owner: sourced visual asset subagent
+
+Parent scope: IW-173 Hawaii
+
 Disposition: **BLOCKED / NO-PASS; no runtime promotion**
 
 ## Files added
