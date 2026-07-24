@@ -667,3 +667,7 @@ The Children From Elsewhere is implemented as a dormant country-level chain at `
 ## The Empty Village Offer settlement tranche
 
 The Empty Village Offer is implemented as a dormant state-level chain at `chaosx.fallout.443` through `.449`. It has four government-aware settlement policies, frozen Food, Medicine, Recognition, Cohesion, settlement, land, border, and integration ledgers, bounded migration and manpower effects, state-category consequences, a delayed result, a 540-day village review callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9142`, candidate row `443`, and a dedicated report-art package. Native state-population relocation is an explicit unproven engine surface. The defined living-world total is now `331`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Ash Wolves altered-ecology tranche
+
+The Ash Wolves is implemented as a dormant state-level chain at `chaosx.fallout.450` through `.456`. It has four fictional altered-ecology policies, frozen Food, Medicine, Recognition, Cohesion, pack, safety, research, corridor, and altered-pressure ledgers, food and military tradeoffs, a delayed result, a 480-day seasonal corridor callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9143`, candidate row `450`, and a dedicated report-art package. Native wildlife simulation and mutant-country creation remain explicit unproven engine surfaces. The defined living-world total is now `338`, while countable Fallout living-world blocks remain `0 of 660`.

@@ -35,6 +35,7 @@
 31. `specs/35_reviewed_global_survival_the_skilled_list.md`
 32. `specs/36_reviewed_global_survival_the_children_from_elsewhere.md`
 33. `specs/37_reviewed_global_survival_the_empty_village_offer.md`
+34. `specs/38_reviewed_global_survival_ash_wolves.md`
 
 
 ## Accepted baseline specs included here
@@ -89,6 +90,7 @@
 - `specs/35_reviewed_global_survival_the_skilled_list.md`
 - `specs/36_reviewed_global_survival_the_children_from_elsewhere.md`
 - `specs/37_reviewed_global_survival_the_empty_village_offer.md`
+- `specs/38_reviewed_global_survival_ash_wolves.md`
 
 ## Matrices
 

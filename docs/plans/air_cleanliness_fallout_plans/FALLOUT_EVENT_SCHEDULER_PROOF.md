@@ -437,6 +437,14 @@ The deterministic state score is nuclear reactor level times `5` plus infrastruc
 The four branches establish joint authority, military occupation, engineer protectorate, or permanent shutdown and each has separate costs, thresholds, state memory, dynamic modifier, callback payload, and Deaths-backed failure route.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.
 
+## The Ash Wolves scheduler correction
+
+The reviewed ordinary producer now carries thirty-eight rows and the defined living-world event range reaches `456`, with `338` defined blocks. The Ash Wolves is candidate `450`, transaction `710038`, route `7138`, and history `9143`.
+
+Its state row requires a current produced Air Winter snapshot, an explicit altered-biosphere state receipt, surviving population, usable reclamation, current-generation ownership, cause-memory provenance, campaign-day eligibility, and a deterministic lowest native state id. The four branches hunt the pack, fence the corridor, study the tracks, or leave a protected corridor. They freeze Food, Medicine, Recognition, Cohesion, pack pressure, safety, research, corridor memory, and altered pressure before a 60-day result and a 480-day seasonal callback. Failure routes through the Deaths system, building damage, exposure, supply, and military effects.
+
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. Native wildlife simulation and mutant-country creation are not claimed.
+
 ## Orchard Flowers scheduler correction
 
 The reviewed ordinary producer now carries thirty-two rows and the defined living-world event range reaches `414`, with `296` defined blocks. Orchard Flowers Once is candidate `408`, transaction `710032`, route `7132`, and history `9137`. Its state gate requires a produced Air Winter recovery snapshot, rural native category, surviving food reserve, and current-generation ownership. The four recovery branches freeze Food, Medicine, Cohesion, Recognition, Adaptation, Reclamation, and seed memory before a 42-day result and schedule a 210-day first-harvest callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven.

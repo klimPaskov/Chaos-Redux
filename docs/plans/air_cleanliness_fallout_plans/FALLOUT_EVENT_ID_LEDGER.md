@@ -538,3 +538,9 @@ The documented living-world block total is now `324`, while the countable Fallou
 The Empty Village Offer reservation adds seven dormant state-level event blocks at suffixes `443` through `449`. It uses candidate `443`, transaction `710037`, route `7137`, and history `9142`. The chain carries four settlement and border-buffer policies, deterministic low-population state selection, bounded migration and manpower movement, a delayed result, a 540-day village review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, state-category consequences, and a dedicated report asset. Native state-population relocation remains unproven.
 
 The documented living-world block total is now `331`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## The Ash Wolves count correction
+
+The Ash Wolves reservation adds seven dormant state-level event blocks at suffixes `450` through `456`. It uses candidate `450`, transaction `710038`, route `7138`, and history `9143`. The chain carries four altered-ecology policies, deterministic altered-biosphere state selection, pack, safety, research, corridor, and altered-pressure ledgers, military and food effects, a delayed result, a 480-day corridor callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset. Native wildlife simulation and mutant-country creation remain unproven.
+
+The documented living-world block total is now `338`, while the countable Fallout living-world total remains `0 of 660`.
