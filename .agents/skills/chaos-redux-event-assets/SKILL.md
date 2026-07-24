@@ -290,6 +290,8 @@ Do not generate, reconstruct, or substitute the identity of a real person. This 
 
 Use this mandatory fail-closed sequence for every real-person portrait: unchanged attributed archival source master (archival male source master for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
+Make the explicit crop boundary before ImageGen with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py`, passing required decoded-master `left top right bottom` coordinates and retaining its lossless PNG plus JSON evidence. The utility uses Pillow as the single decode/crop backend, reopens the PNG, and fails closed unless its decoded pixels exactly equal the same decoded master rectangle; it never resizes, enhances, recolours, retouches, or overwrites without `--force`. An `ffmpeg` or ImageMagick crop that cannot retain an equivalent exact decoded-pixel equality proof is not an accepted immutable source crop.
+
 Use the repository web research tools when a source image is needed, and prefer public domain, archival, official, or clearly licensed images. If the person belongs to the World War II setting, prefer contemporary portraits, wartime photographs, news photographs, official portraits, military archive images, passport or identity photos, or archival illustrations. Do not use modern actors, reenactors, statues, cosplay, later fictional depictions, postwar images, or modern images that do not fit the era unless the user explicitly approves them as placeholders.
 
 Preserve the unchanged master as immutable evidence and use the exact crop as the ImageGen identity reference; role-specific canonical references may guide style only and may not supply, replace, or invent the person's face.
@@ -529,14 +531,14 @@ For every asset package:
    leader, commander, operative, or named officeholder, apply the portrait subject
    ownership gate above and record its evidence. Missing or contradictory source-mode
    or ownership evidence fails closed.
-11. For every real-person leader, commander, operative, or named-officeholder portrait, run the section 3 sequence exactly and stop before conversion or wiring for the independent audit.
+11. For every real-person leader, commander, operative, or named-officeholder portrait, create the explicit archival crop and JSON equality evidence with the section 3 utility before ImageGen, then run the remaining section 3 sequence exactly and stop before conversion or wiring for the independent audit.
 12. Compare the unchanged master, crop, raw ImageGen result, processed 156x210 candidate, and role-specific references at native and enlarged sizes, and record independent likeness, style, and provenance verdicts; a pending or failed identity gate is `needs_user_review` or `blocked`, never converted or wired.
 13. If the asset is animated, follow `chaos-redux-frame-animation` before ordinary static processing. Write the animation brief and frame plan, create or approve the static fallback, generate or source every frame, then normalize the frame sequence.
 14. For `$imagegen` assets, write a specific image generation prompt and create the base artwork by following the official `$imagegen` skill.
 15. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 16. For user-provided assets, record that the image was provided by the user.
 17. Save the original generated, sourced, or provided image as a source PNG.
-18. Crop and resize non-portrait assets to the target size; real-person portraits require the explicit crop and deterministic 156x210 candidate from section 3.
+18. Crop and resize non-portrait assets to the target size; real-person portraits require the exact lossless source crop and JSON equality evidence before ImageGen, followed by the deterministic 156x210 candidate from section 3. Do not treat an `ffmpeg` or ImageMagick crop as immutable unless its decoded pixels are independently proven equal to the same decoded master rectangle.
 19. Save a processed PNG preview.
 20. Convert a real-person portrait to DDS only after an independent audit PASS; convert other processed assets to DDS 32 bit unsigned BGRB 8.8.8.8.
 21. Move the DDS into the correct mod folder.
@@ -614,7 +616,7 @@ Each asset entry should include:
 - frame count, frame timing, loop behavior, and anchor point for animated assets
 - static fallback path and animated sheet or frame-sequence path for animated assets
 - source mode and source note for every animation frame when animated
-- for real-person portraits, immutable source-master path and hash, attribution, explicit crop coordinates, raw ImageGen result path and hash, deterministic processor/version with normalized arguments and hash, deterministic 156x210 candidate path and hash, role-specific reference folder and hashes, and native/enlarged comparison-sheet path
+- for real-person portraits, immutable source-master path and hash, attribution, explicit crop coordinates, exact-crop PNG and JSON evidence paths and hashes, raw ImageGen result path and hash, deterministic processor/version with normalized arguments and hash, deterministic 156x210 candidate path and hash, role-specific reference folder and hashes, and native/enlarged comparison-sheet path
 - for real-person portraits, independent reviewer identity and date, proof that the reviewer is not the producer, separate likeness/style/provenance verdicts, and the portrait gate state
 - portrait subject-ownership search terms, roots/files and ids checked, matched owner or
   consumer (or explicit no-match evidence), disposition, and any guarded transfer/
@@ -1055,6 +1057,17 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 For real country-leader, commander, operative, and named-officeholder portraits, apply the section 3 sequence exactly: unchanged attributed archival source master (archival male source master for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
 The full-size processor keeps positional mode `leader` for backward compatibility and defaults `--role-family leader`. Commanders must pass `--role-family commander`; this selects the canonical commander directory and commander-only style references (Montgomery and Witzleben) for the processor review sheet and evidence. The review sheet's first panel is the `processor input crop`, meaning the crop of the supplied processed source or ImageGen result; it is not the immutable archival crop. The independent auditor must still compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references separately, because the processor sheet cannot replace provenance evidence.
+
+Before the full-size invocation, create the immutable source crop with the exact decoded-master boundary and retain the utility's JSON equality evidence:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py `
+	<archival_master.jpg> <archival_crop.png> `
+	--crop <left> <top> <right> <bottom> `
+	--metadata <archival_crop.json>
+```
+
+The metadata must record the Pillow/tool version and hash, master/output hashes and dimensions, decode modes, crop rectangle, equality result and hashes, and normalized command. Do not accept an `ffmpeg` or ImageMagick crop as immutable source evidence when it cannot prove exact decoded-pixel equality against the same master rectangle.
 
 Use this full-size commander boundary exactly:
 
@@ -1497,7 +1510,7 @@ Before finishing, confirm:
 16. Every icon family in section 5.2 was treated as its own asset type, and no UI surface was satisfied by resizing, cropping, recoloring, padding, relabeling, or lightly editing an icon made for another surface.
 17. Every animated asset used `chaos-redux-frame-animation`, has real source frames, has a static fallback, has no transform-only final motion, and proves its animation family's purpose and direction or state semantics rather than only its frame count.
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
-19. Every real country-leader, commander, operative, and named-officeholder portrait follows the fail-closed sequence of unchanged attributed archival source master (archival male master for male subjects), explicit head-and-shoulders crop, source-locked identity-preserving ImageGen repaint in the matching HOI4 family, deterministic `156x210` processing, and independent likeness/style/provenance audit by someone other than the producer before DDS conversion or runtime wiring. The audit compares the unchanged master, crop, raw ImageGen result, processed candidate, and role-specific references at native and enlarged sizes, keeps identity as a separate non-compensable gate, records subject-ownership evidence and a guarded transfer contract when reused, and rejects genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, and raw or merely resized sourced images; commander textures are full `156x210` portraits, never fabricated `50x67` sources.
+19. Every real country-leader, commander, operative, and named-officeholder portrait follows the fail-closed sequence of unchanged attributed archival source master (archival male master for male subjects), explicit head-and-shoulders crop created with the exact-pixel Pillow utility and retained JSON equality evidence, source-locked identity-preserving ImageGen repaint in the matching HOI4 family, deterministic `156x210` processing, and independent likeness/style/provenance audit by someone other than the producer before DDS conversion or runtime wiring. The audit compares the unchanged master, crop, raw ImageGen result, processed candidate, and role-specific references at native and enlarged sizes, keeps identity as a separate non-compensable gate, records subject-ownership evidence and a guarded transfer contract when reused, and rejects genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, and raw or merely resized sourced images; commander textures are full `156x210` portraits, never fabricated `50x67` sources. An ffmpeg or ImageMagick crop without exact decoded-pixel equality evidence fails this checklist.
 20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
 22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.

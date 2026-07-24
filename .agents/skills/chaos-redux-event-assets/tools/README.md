@@ -26,6 +26,21 @@ python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.
 	--source-kind real --crop <left> <top> <right> <bottom> --review-sheet <review.png>
 ```
 
+## `extract_portrait_source_crop.py`
+
+This is the only accepted immutable crop stage for a real-person archival portrait. It decodes the master and crops it with Pillow, preserves the decoded source mode in a lossless PNG, reopens that PNG, and proves exact decoded-pixel equality against the same master rectangle in RGBA form before committing the PNG and JSON evidence together. It never resizes, enhances, recolours, retouches, or replaces an existing artifact without `--force`.
+
+Run it before ImageGen with the measured boundary in decoded master pixels:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py `
+	<archival_master.jpg> <archival_crop.png> `
+	--crop <left> <top> <right> <bottom> `
+	--metadata <archival_crop.json>
+```
+
+Keep the PNG and JSON together. The JSON records the Pillow/tool versions and hash, master/output hashes and dimensions, decode modes, crop rectangle, equality hashes/result, and a normalized command. `ffmpeg` or ImageMagick crops are not immutable source crops unless an independent check proves exact equality of their decoded output pixels against the same decoded master rectangle and retains equivalent evidence; when that proof is unavailable, reject the crop and return to this utility.
+
 ## `convert_to_dds.py`
 
 Converts an approved PNG to the legacy one-level uncompressed BGRA DDS layout
