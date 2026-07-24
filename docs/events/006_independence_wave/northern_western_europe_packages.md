@@ -469,7 +469,7 @@ Character recruitment remains in the dormant custom-tag history files, following
 | Character | Sprite | Final DDS | Registration |
 | --- | --- | --- | --- |
 | Jules Destrée | `GFX_portrait_AFX_walloon_provisional_assembly` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_provisional_assembly.dds` | sourced, processed, and wired; recorded in the 2026-07-22 treatment ledger |
-| Walloon reserve commander | `GFX_portrait_AFX_walloon_reserve_commander` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` | source-blocked; Herman Baltia trial 01 failed likeness and stable-consumer transfer, the stale Marcel Delcourt identity/DDS is not accepted, and a Jules-Joseph Pire source search is active |
+| Walloon reserve commander | `GFX_portrait_AFX_walloon_reserve_commander` | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` | source-blocked; Herman Baltia trial 01 failed likeness and stable-consumer transfer, the stale Marcel Delcourt identity/DDS is not accepted, and Jules-Joseph Pire is disallowed because vanilla actively recruits `BEL_jules_pire`; a different sourced commander is required |
 | Douwe Kalma | `GFX_portrait_AGX_friesland_coastal_council` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_council.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
 | Pieter Reenalda | `GFX_portrait_AGX_friesland_coastal_commander` | `gfx/leaders/006_independence_wave/portrait_AGX_friesland_coastal_commander.dds` | `interface/006_independence_wave_region_01_portraits.gfx` |
 

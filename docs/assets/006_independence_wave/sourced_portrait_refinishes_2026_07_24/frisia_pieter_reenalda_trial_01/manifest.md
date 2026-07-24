@@ -1,10 +1,12 @@
 # AGX Pieter Reenalda identity-preserving portrait trial 01
 
-Status: `candidate_pending_independent_audit`.
+Status: `rejected_identity_runtime_hold`.
 
 This package applies the mandatory sourced-person portrait chain to Pieter Reenalda for the existing Event 006 Frisia coastal-commander consumer.
 
 No DDS was created or wired.
+
+The 2026-07-24 independent audit rejected this trial on the non-compensable identity gate and retained it only as failed comparison evidence. The candidate must not be converted to DDS or wired to the stable consumer; no fallback or generic substitute is authorized.
 
 ## Stable consumer
 
@@ -58,6 +60,8 @@ The 1915 garden photograph and 1911 uniform photograph remain comparison evidenc
 | Method | Direct source-pixel crop exported to PNG without identity retouching, repainting, synthesis, or colourisation |
 
 The crop preserves the complete head, neck, both shoulders, high maritime collar, and Reenalda's exceptionally long waxed moustache.
+
+Independent crop review confirms the declared geometry and source identity. A decoded Pillow comparison against `master.crop((203, 130, 1003, 1207))` found only +/-1 grayscale-level decoder deltas in 16,430 of 861,600 pixels, with no offset, rescale, or visible identity retouching; a literal zero-delta re-export is still recommended if the source-pixel gate is enforced byte-for-byte.
 
 ### 3. Identity-preserving ImageGen repaint
 
@@ -122,4 +126,3 @@ Only a complete independent pass permits deterministic DDS conversion and sprite
 - Localisation edited: no.
 - Advisor asset created: no.
 - Fallback used: no.
-
