@@ -19,6 +19,13 @@
 @CHAOS_BATTALION_FRIENDLY_ORG_DAMAGE_MAX = 0.12
 @CHAOS_BATTALION_FRIENDLY_STR_DAMAGE_MAX = 0.05
 
+@CHAOS_BATTALION_BIO_OUTBREAK_BASE_CHANCE = 2
+@CHAOS_BATTALION_BIO_OUTBREAK_DENSITY_CHANCE = 3
+@CHAOS_BATTALION_BIO_OUTBREAK_TERMINAL_CHANCE = 4
+@CHAOS_BATTALION_BIO_OUTBREAK_TULAREMIA_DAYS = 30
+@CHAOS_BATTALION_BIO_OUTBREAK_ANTHRAX_DAYS = 45
+@CHAOS_BATTALION_BIO_OUTBREAK_PLAGUE_DAYS = 90
+
 @CHAOS_BATTALION_CONDEMNATION_BASE_WON = 3
 @CHAOS_BATTALION_CONDEMNATION_BASE_LOST = 1
 @CHAOS_BATTALION_CONDEMNATION_PER_UNIT = 0.5
@@ -119,6 +126,75 @@ chaos_battalion_apply_state_dispersal = {
     }
 }
 
+chaos_battalion_try_trigger_bio_outbreak = {
+    if = {
+        limit = {
+            NOT = { has_state_flag = bioweapon_contaminated }
+            event_target:chem_state_dispersal_owner_country = {
+                OR = {
+                    has_tech = anthrax_bomb_delivery_systems
+                    has_tech = plague_bomb_delivery_systems
+                    has_tech = tularemia_bomb_delivery_systems
+                }
+            }
+        }
+
+        set_temp_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+
+        random = {
+            chance = @CHAOS_BATTALION_BIO_OUTBREAK_BASE_CHANCE
+            set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+        }
+
+        if = {
+            limit = {
+                check_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+                check_variable = { var = chaos_battalion_units_in_enemy_state value = 2 compare = greater_than }
+            }
+            random = {
+                chance = @CHAOS_BATTALION_BIO_OUTBREAK_DENSITY_CHANCE
+                set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+            }
+        }
+
+        if = {
+            limit = {
+                check_variable = { var = chaos_bio_outbreak_triggered value = 0 }
+                event_target:chem_state_dispersal_owner_country = { has_country_flag = chaos_battalion_terminal_contagion_unlocked }
+            }
+            random = {
+                chance = @CHAOS_BATTALION_BIO_OUTBREAK_TERMINAL_CHANCE
+                set_temp_variable = { var = chaos_bio_outbreak_triggered value = 1 }
+            }
+        }
+
+        if = {
+            limit = { check_variable = { var = chaos_bio_outbreak_triggered value = 1 } }
+            if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = tularemia_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_TULAREMIA_DAYS }
+                apply_tularemia_contamination = yes
+            }
+            else_if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = anthrax_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_ANTHRAX_DAYS }
+                apply_anthrax_contamination = yes
+            }
+            else_if = {
+                limit = {
+                    event_target:chem_state_dispersal_owner_country = { has_tech = plague_bomb_delivery_systems }
+                }
+                set_temp_variable = { contamination_days = @CHAOS_BATTALION_BIO_OUTBREAK_PLAGUE_DAYS }
+                apply_plague_contamination = yes
+            }
+        }
+    }
+}
+
 chaos_battalion_set_owner_count_in_state = {
     set_temp_variable = { var = chaos_state_count_low value = 0 }
     set_temp_variable = { var = chaos_state_count_high value = @CHAOS_BATTALION_STATE_COUNT_MAX }
@@ -195,6 +271,7 @@ chaos_battalion_apply_enemy_casualties_from_controlled_states = {
                 multiply_temp_variable = { var = chem_dose_each value = chem_state_dose_per_div }
                 add_to_temp_variable = { var = chem_state_scan_states_applied value = 1 }
                 chem_apply_state_contamination = yes
+                chaos_battalion_try_trigger_bio_outbreak = yes
 
                 set_temp_variable = { var = chaos_battalion_enemy_org_damage value = chaos_battalion_enemy_org_damage_per_unit }
                 multiply_temp_variable = { var = chaos_battalion_enemy_org_damage value = chaos_battalion_units_in_enemy_state }

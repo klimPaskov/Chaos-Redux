@@ -4306,12 +4306,12 @@ camp_rework_resolve_restricted_method_tiers = {
 		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.plague }
 	}
 	else_if = {
-		limit = { camp_rework_country_has_biological_anthrax_activation_capacity = yes }
-		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax }
-	}
-	else_if = {
 		limit = { camp_rework_country_has_biological_tularemia_activation_capacity = yes }
 		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_biological_anthrax_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax }
 	}
 
 	set_variable = { display_camp_chemical_killing_efficiency = camp_chemical_killing_efficiency }
@@ -4497,18 +4497,18 @@ camp_rework_prepare_biological_method_outcome = {
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_plague }
 	}
 	else_if = {
-		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
-		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.anthrax_deaths }
-		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.anthrax_evidence }
-		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.anthrax_accident }
-		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_anthrax }
-	}
-	else_if = {
 		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
 		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.tularemia_deaths }
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.tularemia_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.tularemia_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_tularemia }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.anthrax_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.anthrax_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.anthrax_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_anthrax }
 	}
 }
 
@@ -4576,6 +4576,22 @@ camp_rework_apply_biological_escalation_in_action_state = {
 			if = {
 				limit = { ROOT = { original_tag = JAP } }
 				set_state_flag = genocide_japanese_biowarfare_atrocity_site
+			}
+			if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
+				apply_smallpox_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
+				apply_plague_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+				apply_tularemia_contamination = yes
+			}
+			else_if = {
+				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
+				apply_anthrax_contamination = yes
 			}
 			camp_rework_record_latest_state_deaths = yes
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
