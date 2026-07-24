@@ -29,6 +29,8 @@
 25. `specs/29_reviewed_global_survival_counterfeit_antibiotics.md`
 26. `specs/30_reviewed_global_survival_ration_thief_election.md`
 27. `specs/31_reviewed_global_survival_year_zero.md`
+28. `specs/32_reviewed_global_survival_orchard_flowers.md`
+29. `specs/33_reviewed_global_survival_refugee_train.md`
 
 
 ## Accepted baseline specs included here
@@ -77,6 +79,8 @@
 - `specs/29_reviewed_global_survival_counterfeit_antibiotics.md`
 - `specs/30_reviewed_global_survival_ration_thief_election.md`
 - `specs/31_reviewed_global_survival_year_zero.md`
+- `specs/32_reviewed_global_survival_orchard_flowers.md`
+- `specs/33_reviewed_global_survival_refugee_train.md`
 
 ## Matrices
 
