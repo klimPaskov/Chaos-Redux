@@ -4,7 +4,7 @@ Date: 2026-07-24.
 Event/package: IW-008 Rhineland.
 Stable consumer: `RHI_independence_wave_river_commandant`.
 Source mode: `grounded_source_only`.
-Status: `candidate_requires_independent_review`.
+Status: `identity_transfer_recorded_reaudit_required`.
 
 ## Mandatory transformation chain
 
@@ -43,10 +43,13 @@ The source is late-war evidence and its explicit political and award symbolism w
 The prior source research found no exact or variant owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved references `2265420196` and `1458561226`.
 Ownership must be rechecked by the independent auditor before any runtime admission.
 
+`identity_transfer.md` records the parent-owned transfer of the stable generated Event 006 token from its prior Josef Harpe display identity to Gustav-Adolf von Zangen.
+The English localisation implements that transfer while IW-008 remains fail-closed outside runtime content attestation.
+The transfer creates no second historical character and authorizes only the token's existing full `civilian.large` and `army.large` consumers.
+
 ## Runtime hold
 
-No DDS was created.
-No GFX, character, gameplay, localisation, history, readiness, or runtime portrait file was changed.
-The candidate must receive separate PASS verdicts for provenance and rights, exact likeness and identity, HOI4 commander style, role fit, and ownership/exclusivity before conversion or wiring.
-Failure or uncertainty in any verdict keeps the stable RHI consumer unwired to this trial.
+No Trial 01 DDS was created, and no GFX, character, history, readiness, or runtime portrait file was changed.
+The stable token's English display identity is now Gustav-Adolf von Zangen, but the candidate still requires a fresh independent ownership-transfer PASS before conversion or wiring.
+Failure or uncertainty in that verdict keeps the stable RHI consumer unwired to this trial and keeps IW-008 outside runtime content attestation.
 No advisor, dossier, `_small`, high-command, theorist, operative, female, navy, alternate, or fallback asset is authorized.
