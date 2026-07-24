@@ -38,3 +38,19 @@ Both events use the dedicated sepia dossier or report-card presentation while pr
 - The DDS is a one-level legacy uncompressed `210x176` BGRA texture with real `0..255` alpha and fully transparent corners and outer edges.
 
 No `.gfx`, event, localisation, gameplay, GUI, spreadsheet, or later-stage art file was edited in this asset tranche.
+
+## Kruger State focus icons 041-060
+
+Date: 2026-07-24
+
+- Final DDS folder: `gfx/interface/goals/016_brilliant_scientist/`.
+- Sprite naming: `GFX_goal_<exact focus id>` for normal sprites; each registered `_shine` sprite reuses the same DDS through `GFX_focustree_goal_effect`.
+- Runtime size and encoding: exact `94x86`, one-level uncompressed BGRA DDS, with transparent corners.
+- Source masters: `docs/assets/016_brilliant_scientist/source_png/focus_icons/goal_KRG_*_source.png` for rows 041-060.
+- Alpha evidence: `docs/assets/016_brilliant_scientist/alpha_png/focus_icons/goal_KRG_*_alpha.png` for rows 041-060.
+- Processed previews: `docs/assets/016_brilliant_scientist/processed_png/focus_icons/goal_KRG_*.png` for rows 041-060.
+- Prompt/provenance ledger: `docs/assets/016_brilliant_scientist/package_records/focus_icon_generation_041_060_provenance.json`.
+- Validation: `docs/assets/016_brilliant_scientist/validation/focus_icon_validation_041_060.tsv`; all 20 rows decode pixel-identically from DDS and report zero visible key-color pixels.
+- Review sheets: `docs/assets/016_brilliant_scientist/contact_sheets/focus_icon_sources_041_060_contact_sheet.png`, `focus_icon_processed_041_060_contact_sheet.png`, and `focus_icon_dds_decoded_041_060_contact_sheet.png`.
+
+No `.gfx`, focus, localisation, gameplay, GUI, event, spreadsheet, or unrelated asset file was edited for this focus-icon tranche.
