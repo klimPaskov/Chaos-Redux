@@ -520,3 +520,9 @@ The documented living-world block total is now `303`, while the countable Fallou
 The Ship That Will Not Dock reservation adds seven dormant coastal state-level event blocks at suffixes `422` through `428`. It uses candidate `422`, transaction `710034`, route `7134`, and history `9139`. The chain carries four maritime policies, deterministic coastal naval-base selection, branch-specific passenger movement, a delayed result, a first-harbour review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset.
 
 The documented living-world block total is now `310`, while the countable Fallout living-world release-floor total remains `0 of 660`.
+
+## The Skilled List count correction
+
+The Skilled List reservation adds seven dormant country-level event blocks at suffixes `429` through `435`. It uses candidate `429`, transaction `710035`, route `7135`, and history `9140`. The chain carries four specialist-roster policies, durable role ledgers, a delayed result, a 240-day review callback, Deaths-system failure accounting, Event Log payloads, exact cleanup, and a dedicated report asset. Native character installation remains unproven.
+
+The documented living-world block total is now `317`, while the countable Fallout living-world release-floor total remains `0 of 660`.

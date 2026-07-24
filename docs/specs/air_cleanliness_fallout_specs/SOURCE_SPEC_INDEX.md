@@ -32,6 +32,7 @@
 28. `specs/32_reviewed_global_survival_orchard_flowers.md`
 29. `specs/33_reviewed_global_survival_refugee_train.md`
 30. `specs/34_reviewed_global_survival_ship_that_will_not_dock.md`
+31. `specs/35_reviewed_global_survival_the_skilled_list.md`
 
 
 ## Accepted baseline specs included here
@@ -83,6 +84,7 @@
 - `specs/32_reviewed_global_survival_orchard_flowers.md`
 - `specs/33_reviewed_global_survival_refugee_train.md`
 - `specs/34_reviewed_global_survival_ship_that_will_not_dock.md`
+- `specs/35_reviewed_global_survival_the_skilled_list.md`
 
 ## Matrices
 

@@ -243,3 +243,7 @@ The raw 1254x1254 RGB chroma-key sources remain editable evidence under `source_
 The review artifact is decoded from the final runtime DDS files, not assembled from source PNGs: `contact_sheets/air_winter_decision_icons_dds_decoded_contact_sheet.png`. It presents each asset enlarged for inspection beside its native 52x40 or 32x32 decode.
 
 Package validation confirmed the exact nineteen expected sprite payloads, one image level per uncompressed 32-bit BGRA DDS, pixel-identical DDS decodes and processed PNGs, transparent corners, visible alpha, centered native-size silhouettes, absence of chroma-key residue, and unique SHA-256 content at the raw source, transparent-master, processed-PNG, and DDS stages. The approved converter was `texconv-may2026.exe` with SHA-256 `dcfdec10244e02cf5037fba089c55fb7e1326b1c8181742d77d15fa5cb5eef06`. The decoded contact sheet SHA-256 is `162b5d6771c2cb02dff191595dba18d302301d0fec0482311d6fea1133bef146`. No zombie asset, filename, directory, sprite ID, or visual motif was used.
+
+## The Skilled List report-event asset
+
+The Skilled List uses a dedicated generated report image of a census clerk and four surviving specialists in an ash-frosted school boiler room. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_skilled_list/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_skilled_list` in `interface/fallout_world_end.gfx`.

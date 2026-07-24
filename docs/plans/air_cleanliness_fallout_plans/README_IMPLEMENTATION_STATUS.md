@@ -655,3 +655,7 @@ The Refugee Train is implemented as a dormant state-level chain at `chaosx.fallo
 ## The Ship That Will Not Dock maritime tranche
 
 The Ship That Will Not Dock is implemented as a dormant coastal state-level chain at `chaosx.fallout.422` through `.428`. It has four authored maritime policies, frozen Food, Recognition, Cohesion, diaspora-memory, port-legitimacy, quarantine-cohesion, and maritime-trust ledgers, branch-specific passenger transfer, a delayed result, a first-harbour review callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9139`, candidate row `422`, and a dedicated report-art package. The defined living-world total is now `310`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Skilled List character-memory tranche
+
+The Skilled List is implemented as a dormant country-level chain at `chaosx.fallout.429` through `.435`. It has four government-aware specialist-roster policies, frozen Food, Medicine, Recognition, Cohesion, roster, guild, service, and charter ledgers, durable engineer, doctor, officer, and agronomist role ledgers, a delayed result, a 240-day generation review callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9140`, candidate row `429`, and a dedicated report-art package. Native character installation is an explicit unproven engine surface. The defined living-world total is now `317`, while countable Fallout living-world blocks remain `0 of 660`.
