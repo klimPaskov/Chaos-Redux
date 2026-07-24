@@ -671,3 +671,7 @@ The Empty Village Offer is implemented as a dormant state-level chain at `chaosx
 ## The Ash Wolves altered-ecology tranche
 
 The Ash Wolves is implemented as a dormant state-level chain at `chaosx.fallout.450` through `.456`. It has four fictional altered-ecology policies, frozen Food, Medicine, Recognition, Cohesion, pack, safety, research, corridor, and altered-pressure ledgers, food and military tradeoffs, a delayed result, a 480-day seasonal corridor callback, Deaths-system failure accounting, cleanup receipts, Event Log history `9143`, candidate row `450`, and a dedicated report-art package. Native wildlife simulation and mutant-country creation remain explicit unproven engine surfaces. The defined living-world total is now `338`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Thaw Water recovery tranche
+
+The Thaw Water chain is implemented as a dormant state-level chain at `chaosx.fallout.457` through `.463`. It has four thaw-water policies, frozen Food, Medicine, Recognition, Cohesion, flood-pressure, water-safety, channel-trust, disease-control, and thaw-memory ledgers, a 60-day result, a 480-day thaw callback, Deaths-system failure accounting, Air Winter water-security and disease-pressure updates, cleanup receipts, Event Log history `9144`, candidate row `457`, and a dedicated report-art package. Its gate requires the existing Air Winter thaw visual trigger. The defined living-world total is now `345`, while countable Fallout living-world blocks remain `0 of 660`.

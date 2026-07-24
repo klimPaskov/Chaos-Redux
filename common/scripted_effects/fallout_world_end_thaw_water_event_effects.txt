@@ -1,0 +1,570 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THAW WATER EFFECTS
+# ============================================================================
+# This chain uses a state-owned thaw-water receipt. The watercourse and its
+# disease risks are fictional Fallout survival content. The effects never
+# claim that ordinary radiation creates real hydrology or disease science.
+
+fallout_event_457_apply_failure_deaths = {
+	var:fallout_event_457_target_state_id = {
+		if = {
+			limit = { check_variable = { state_population_k value = constant:fallout_event_runtime.zero compare = greater_than } }
+			set_temp_variable = { fallout_event_457_death_request = state_population_k }
+			multiply_temp_variable = { fallout_event_457_death_request = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { fallout_event_457_death_request = constant:fallout_event_457_threshold.result_failure_death_percent }
+			round_temp_variable = fallout_event_457_death_request
+			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_requested = fallout_event_457_death_request }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_event_457_threshold.minimum_remaining_people }
+			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
+			apply_exact_state_civilian_population_loss = yes
+			clear_temp_variable = fallout_event_457_death_request
+		}
+	}
+}
+
+fallout_event_457_apply_callback_failure_deaths = {
+	var:fallout_event_457_target_state_id = {
+		if = {
+			limit = { check_variable = { state_population_k value = constant:fallout_event_runtime.zero compare = greater_than } }
+			set_temp_variable = { fallout_event_457_death_request = state_population_k }
+			multiply_temp_variable = { fallout_event_457_death_request = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { fallout_event_457_death_request = constant:fallout_event_457_threshold.callback_failure_death_percent }
+			round_temp_variable = fallout_event_457_death_request
+
+			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_requested = fallout_event_457_death_request }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:fallout_event_457_threshold.minimum_remaining_people }
+			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
+			set_temp_variable = { state_civilian_population_loss_log_deaths = constant:fallout_event_runtime.one }
+			set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+			set_temp_variable = { state_civilian_population_loss_has_target_country = constant:fallout_event_runtime.one }
+			apply_exact_state_civilian_population_loss = yes
+			clear_temp_variable = fallout_event_457_death_request
+		}
+	}
+}
+
+fallout_event_457_record_history = {
+	set_temp_variable = { fallout_event_457_history_should_record = constant:fallout_event_runtime.zero }
+	if = { limit = { check_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.one } NOT = { has_country_flag = fallout_event_457_result_history_recorded } } set_temp_variable = { fallout_event_457_history_should_record = constant:fallout_event_runtime.one } }
+	else_if = { limit = { check_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.two } NOT = { has_country_flag = fallout_event_457_callback_history_recorded } } set_temp_variable = { fallout_event_457_history_should_record = constant:fallout_event_runtime.one } }
+	if = {
+		limit = { check_variable = { fallout_event_457_history_should_record = constant:fallout_event_runtime.one } }
+		if = {
+			limit = { check_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.one } }
+			if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.drain_settlement_success } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.drain_settlement_partial } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.drain_settlement_failure } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.evacuate_low_ground_success } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.evacuate_low_ground_partial } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.evacuate_low_ground_failure } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.rebuild_channels_success } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.rebuild_channels_partial } }
+			else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.rebuild_channels_failure } }
+			else_if = { limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.use_floodwater_fields_success } }
+			else_if = { limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.use_floodwater_fields_partial } }
+			else = { set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.use_floodwater_fields_failure } }
+		}
+		else_if = { limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.callback_success } }
+		else_if = { limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.callback_partial } }
+
+		else = { set_temp_variable = { fallout_event_457_history_payload = constant:fallout_event_457_log.callback_failure } }
+		set_temp_variable = { events_log_system_event_id = constant:fallout_event_457_log.history_id }
+		set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.fallout_country_memory }
+		set_temp_variable = { events_log_system_payload = fallout_event_457_history_payload }
+		set_temp_variable = { events_log_system_actor = ROOT.id }
+		set_temp_variable = { events_log_system_has_actor = constant:fallout_event_runtime.one }
+		set_temp_variable = { events_log_system_secondary_actor = constant:fallout_event_runtime.zero }
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:fallout_event_runtime.zero }
+		record_events_log_system_history_entry = yes
+		refresh_events_log_system_history_views = yes
+		if = { limit = { check_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_457_result_history_recorded }
+		else = { set_country_flag = fallout_event_457_callback_history_recorded }
+		clear_temp_variable = fallout_event_457_history_payload
+		clear_temp_variable = events_log_system_event_id
+		clear_temp_variable = events_log_system_event_type
+		clear_temp_variable = events_log_system_payload
+		clear_temp_variable = events_log_system_actor
+		clear_temp_variable = events_log_system_has_actor
+		clear_temp_variable = events_log_system_secondary_actor
+		clear_temp_variable = events_log_system_has_secondary_actor
+	}
+	clear_temp_variable = fallout_event_457_history_should_record
+}
+
+fallout_event_457_calculate_outcome = {
+	set_temp_variable = { fallout_event_457_viability = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_water_safety }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.water_safety_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_channel_trust }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.channel_trust_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_disease_control }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.disease_control_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_thaw_memory }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.thaw_memory_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.ledger_maximum }
+	subtract_from_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_flood_pressure }
+
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.flood_pressure_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_food }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.food_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_recognition }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.recognition_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	set_temp_variable = { fallout_event_457_component = fallout_event_457_frozen_cohesion }
+	multiply_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.cohesion_weight }
+	divide_temp_variable = { fallout_event_457_component = constant:fallout_event_457_threshold.weight_divisor }
+	add_to_temp_variable = { fallout_event_457_viability = fallout_event_457_component }
+	clamp_temp_variable = { var = fallout_event_457_viability min = constant:fallout_event_457_threshold.minimum_viability max = constant:fallout_event_457_threshold.maximum_viability }
+	set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.failure }
+	if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } }
+		if = {
+			limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_drain_success compare = greater_than_or_equals } check_variable = { fallout_event_457_frozen_flood_pressure value = constant:fallout_event_457_threshold.drain_flood_pressure_cap compare = less_than } }
+			set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.success }
+		}
+		else_if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_drain_partial compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } }
+		if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_evacuate_success compare = greater_than_or_equals } check_variable = { fallout_event_457_frozen_water_safety value = constant:fallout_event_457_threshold.evacuate_water_safety_floor compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.success } }
+		else_if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_evacuate_partial compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } }
+		if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_rebuild_success compare = greater_than_or_equals } check_variable = { fallout_event_457_frozen_channel_trust value = constant:fallout_event_457_threshold.rebuild_channel_trust_cap compare = less_than } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.success } }
+		else_if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_rebuild_partial compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	else = {
+
+		if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_use_success compare = greater_than_or_equals } check_variable = { fallout_event_457_frozen_recognition value = constant:fallout_event_457_threshold.use_floodwater_fields_recognition_floor compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.success } }
+		else_if = { limit = { check_variable = { fallout_event_457_viability value = constant:fallout_event_457_threshold.branch_use_partial compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_calculated_outcome = constant:fallout_event_outcome_type.partial } }
+	}
+	clear_temp_variable = fallout_event_457_component
+	clear_temp_variable = fallout_event_457_viability
+}
+
+fallout_event_457_pay_branch_cost = {
+	if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } }
+		subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_cost.drain_settlement_food }
+		subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_cost.drain_settlement_medicine }
+		subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_cost.drain_settlement_recognition }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } }
+		subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_cost.evacuate_low_ground_food }
+		subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_cost.evacuate_low_ground_medicine }
+		subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_cost.evacuate_low_ground_recognition }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } }
+		subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_cost.rebuild_channels_food }
+		subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_cost.rebuild_channels_medicine }
+		subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_cost.rebuild_channels_recognition }
+	}
+	else = {
+		subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_cost.use_floodwater_fields_food }
+		subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_cost.use_floodwater_fields_medicine }
+		subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_cost.use_floodwater_fields_recognition }
+	}
+	set_country_flag = fallout_event_457_cost_paid
+	fallout_orientation_clamp_resources = yes
+}
+
+fallout_event_457_clear_frozen = {
+
+	clear_variable = fallout_event_457_frozen_food
+	clear_variable = fallout_event_457_frozen_medicine
+	clear_variable = fallout_event_457_frozen_recognition
+	clear_variable = fallout_event_457_frozen_cohesion
+	clear_variable = fallout_event_457_frozen_flood_pressure
+	clear_variable = fallout_event_457_frozen_water_safety
+	clear_variable = fallout_event_457_frozen_channel_trust
+	clear_variable = fallout_event_457_frozen_disease_control
+	clear_variable = fallout_event_457_frozen_thaw_memory
+}
+
+fallout_event_457_schedule_result = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { fallout_event_issued_ordinary_receipt_is_current = yes NOT = { has_country_flag = fallout_event_457_chain_committed } check_variable = { fallout_event_457_requested_branch > constant:fallout_event_457_branch.none } check_variable = { fallout_event_457_requested_branch < constant:fallout_event_457_branch.upper_bound } fallout_event_457_target_is_current = yes }
+		set_temp_variable = { fallout_event_457_opening_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_457_opening_mode = fallout_event_dispatch_issued_mode }
+	set_temp_variable = { fallout_event_457_opening_event_token = fallout_event_dispatch_issued_event_token }
+	set_variable = { fallout_event_457_frozen_food = fallout_survival_current_entries^1 }
+	set_variable = { fallout_event_457_frozen_medicine = fallout_survival_current_entries^3 }
+	set_variable = { fallout_event_457_frozen_recognition = fallout_survival_current_entries^9 }
+	set_variable = { fallout_event_457_frozen_cohesion = fallout_survival_cohesion_current }
+	if = { limit = { NOT = { has_variable = fallout_thaw_water_flood_pressure_current } } set_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.initial_flood_pressure } }
+	if = { limit = { NOT = { has_variable = fallout_thaw_water_water_safety_current } } set_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.initial_water_safety } }
+	if = { limit = { NOT = { has_variable = fallout_thaw_water_channel_trust_current } } set_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.initial_channel_trust } }
+	if = { limit = { NOT = { has_variable = fallout_thaw_water_disease_control_current } } set_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.initial_disease_control } }
+	if = { limit = { NOT = { has_variable = fallout_thaw_water_thaw_memory_current } } set_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.initial_thaw_memory } }
+	set_variable = { fallout_event_457_frozen_flood_pressure = fallout_thaw_water_flood_pressure_current }
+	set_variable = { fallout_event_457_frozen_water_safety = fallout_thaw_water_water_safety_current }
+	set_variable = { fallout_event_457_frozen_channel_trust = fallout_thaw_water_channel_trust_current }
+	set_variable = { fallout_event_457_frozen_disease_control = fallout_thaw_water_disease_control_current }
+	set_variable = { fallout_event_457_frozen_thaw_memory = fallout_thaw_water_thaw_memory_current }
+	set_variable = { fallout_event_457_target_state_id = fallout_event_dispatch_issued_target }
+	set_variable = { fallout_event_457_selected_branch = fallout_event_457_requested_branch }
+	fallout_event_457_calculate_outcome = yes
+	set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_457_opening_ticket }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_457_transaction.result_transaction_key_offset }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_457_requested_branch }
+	set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.thaw_water_result }
+
+	set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.thaw_water_result_ai }
+	set_temp_variable = { fallout_event_requested_branch = fallout_event_457_requested_branch }
+	set_temp_variable = { fallout_event_requested_due_day = global.num_days }
+	add_to_temp_variable = { fallout_event_requested_due_day = constant:fallout_event_457_timing.result_delay_days }
+	set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_457_transaction.visible_budget_cost }
+	if = { limit = { check_variable = { fallout_event_457_opening_mode = constant:fallout_event_dispatch_mode.hidden_ai } } set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_runtime.zero } }
+	set_temp_variable = { fallout_event_requested_control_mode = fallout_event_457_opening_mode }
+	set_temp_variable = { fallout_event_requested_queue_status = constant:fallout_event_queue_status.result_scheduled }
+	set_temp_variable = { fallout_event_requested_target_type = constant:fallout_event_subject_type.none }
+	set_temp_variable = { fallout_event_requested_target = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.thaw_water_cleanup }
+	fallout_event_schedule_delayed_result = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		set_temp_variable = { fallout_event_requested_event_token = fallout_event_457_opening_event_token }
+		fallout_event_consume_issued_ordinary_receipt = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_variable = { fallout_event_457_result_cleanup_ticket = fallout_event_transaction_ticket }
+			set_variable = { fallout_event_457_result_outcome = fallout_event_457_calculated_outcome }
+			set_variable = { fallout_event_457_result_generation = fallout_event_runtime_generation }
+			set_variable = { fallout_event_457_result_day = global.num_days }
+			set_variable = { fallout_event_457_registry_generation = fallout_event_runtime_generation }
+			set_variable = { fallout_event_457_registry_owner = ROOT }
+			set_variable = { fallout_event_457_candidate_id = constant:fallout_event_candidate_pilot.thaw_water_candidate_id }
+			set_variable = { fallout_event_457_registry_target_type = constant:fallout_event_subject_type.state }
+			set_variable = { fallout_event_457_registry_target = fallout_event_457_target_state_id }
+			set_country_flag = fallout_event_457_chain_committed
+			set_country_flag = fallout_event_457_memory_opened
+			var:fallout_event_457_target_state_id = { set_state_flag = fallout_event_457_registry_committed }
+		}
+		else = { set_temp_variable = { fallout_event_requested_ticket = fallout_event_transaction_ticket } set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice } fallout_event_cancel_delayed_result = yes fallout_event_457_clear_frozen = yes }
+	}
+	else = { fallout_event_457_clear_frozen = yes }
+	clear_temp_variable = fallout_event_457_calculated_outcome
+	clear_temp_variable = fallout_event_457_opening_ticket
+
+	clear_temp_variable = fallout_event_457_opening_mode
+	clear_temp_variable = fallout_event_457_opening_event_token
+}
+}
+
+fallout_event_457_choose_branch = {
+	fallout_event_457_schedule_result = yes
+	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_457_pay_branch_cost = yes }
+}
+
+fallout_event_457_choose_ai_branch_and_schedule_result = {
+	set_temp_variable = { fallout_event_457_requested_branch = constant:fallout_event_457_branch.evacuate_low_ground }
+	if = { limit = { has_government = democratic check_variable = { fallout_thaw_water_channel_trust_current value = constant:fallout_event_457_threshold.ai_channel_trust_threshold compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_requested_branch = constant:fallout_event_457_branch.rebuild_channels } }
+	else_if = { limit = { OR = { has_government = fascism has_government = communism } check_variable = { fallout_thaw_water_water_safety_current value = constant:fallout_event_457_threshold.ai_water_safety_threshold compare = less_than } } set_temp_variable = { fallout_event_457_requested_branch = constant:fallout_event_457_branch.drain_settlement } }
+	else_if = { limit = { has_government = neutrality check_variable = { fallout_thaw_water_thaw_memory_current value = constant:fallout_event_457_threshold.ai_thaw_memory_threshold compare = greater_than_or_equals } } set_temp_variable = { fallout_event_457_requested_branch = constant:fallout_event_457_branch.use_floodwater_fields } }
+	fallout_event_457_schedule_result = yes
+	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_457_pay_branch_cost = yes }
+}
+
+fallout_event_457_apply_result_effects = {
+	if = {
+		limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } }
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.result_flood_success }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.result_water_safety_success }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.result_channel_trust_success }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.result_disease_success }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.result_thaw_memory_success }
+		add_stability = constant:fallout_event_457_threshold.result_stability_success
+		add_war_support = constant:fallout_event_457_threshold.result_war_support_success
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_drain_success }
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_evacuate_success } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_rebuild_success } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.use_floodwater_fields } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_use_success } }
+		fallout_survival_apply_cohesion_delta = yes
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_drain_success } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_drain_success } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_drain_success } add_manpower = constant:fallout_event_457_threshold.result_manpower_drain_success }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_evacuate_success } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_evacuate_success } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_evacuate_success } add_manpower = constant:fallout_event_457_threshold.result_manpower_evacuate_success }
+
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_rebuild_success } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_rebuild_success } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_rebuild_success } add_manpower = constant:fallout_event_457_threshold.result_manpower_rebuild_success }
+		else = { add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_use_success } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_use_success } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_use_success } add_manpower = constant:fallout_event_457_threshold.result_manpower_use_success }
+		set_temp_variable = { fallout_event_457_state_modifier_days = constant:fallout_event_457_timing.result_modifier_days }
+		var:fallout_event_457_target_state_id = {
+			add_to_variable = { air_winter_adaptation = constant:fallout_event_457_threshold.result_adaptation_success }
+			add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.result_reclamation_success }
+			add_to_variable = { air_winter_water_security = constant:fallout_event_457_threshold.result_state_water_success }
+			subtract_from_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.result_state_disease_success }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.result_supply_success } }
+			subtract_from_variable = { air_winter_exposure = constant:fallout_event_457_threshold.result_exposure_success }
+			if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } set_state_flag = fallout_event_457_drained_settlement add_dynamic_modifier = { modifier = fallout_thaw_water_drain_settlement days = fallout_event_457_state_modifier_days } }
+			else_if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_state_flag = fallout_event_457_evacuated_low_ground add_dynamic_modifier = { modifier = fallout_thaw_water_evacuated_low_ground days = fallout_event_457_state_modifier_days } }
+			else_if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_state_flag = fallout_event_457_channel_rebuild_station add_dynamic_modifier = { modifier = fallout_thaw_water_channel_rebuild_station days = fallout_event_457_state_modifier_days } }
+			else = { set_state_flag = fallout_event_457_floodwater_fields add_dynamic_modifier = { modifier = fallout_thaw_water_floodwater_fields days = fallout_event_457_state_modifier_days } }
+		}
+		clear_temp_variable = fallout_event_457_state_modifier_days
+	}
+	else_if = {
+		limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } }
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.result_flood_partial }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.result_water_safety_partial }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.result_channel_trust_partial }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.result_disease_partial }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.result_thaw_memory_partial }
+		add_stability = constant:fallout_event_457_threshold.result_stability_partial
+		add_war_support = constant:fallout_event_457_threshold.result_war_support_partial
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_drain_partial }
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_evacuate_partial } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_rebuild_partial } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.use_floodwater_fields } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_use_partial } }
+		fallout_survival_apply_cohesion_delta = yes
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_drain_partial } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_drain_partial } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_drain_partial } add_manpower = constant:fallout_event_457_threshold.result_manpower_drain_partial }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_evacuate_partial } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_evacuate_partial } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_evacuate_partial } add_manpower = constant:fallout_event_457_threshold.result_manpower_evacuate_partial }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_rebuild_partial } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_rebuild_partial } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_rebuild_partial } add_manpower = constant:fallout_event_457_threshold.result_manpower_rebuild_partial }
+		else = { add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_use_partial } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_use_partial } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_use_partial } add_manpower = constant:fallout_event_457_threshold.result_manpower_use_partial }
+		set_temp_variable = { fallout_event_457_state_modifier_days = constant:fallout_event_457_timing.result_modifier_days }
+		var:fallout_event_457_target_state_id = {
+			add_to_variable = { air_winter_adaptation = constant:fallout_event_457_threshold.result_adaptation_partial }
+
+			add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.result_reclamation_partial }
+			add_to_variable = { air_winter_water_security = constant:fallout_event_457_threshold.result_state_water_partial }
+			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.result_state_disease_partial }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.result_supply_partial } }
+			add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.result_exposure_partial }
+			if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } set_state_flag = fallout_event_457_drained_settlement add_dynamic_modifier = { modifier = fallout_thaw_water_drain_settlement days = fallout_event_457_state_modifier_days } }
+			else_if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_state_flag = fallout_event_457_evacuated_low_ground add_dynamic_modifier = { modifier = fallout_thaw_water_evacuated_low_ground days = fallout_event_457_state_modifier_days } }
+			else_if = { limit = { check_variable = { ROOT.fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_state_flag = fallout_event_457_channel_rebuild_station add_dynamic_modifier = { modifier = fallout_thaw_water_channel_rebuild_station days = fallout_event_457_state_modifier_days } }
+			else = { set_state_flag = fallout_event_457_floodwater_fields add_dynamic_modifier = { modifier = fallout_thaw_water_floodwater_fields days = fallout_event_457_state_modifier_days } }
+		}
+		clear_temp_variable = fallout_event_457_state_modifier_days
+	}
+	else = {
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.result_flood_failure }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.result_water_safety_failure }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.result_channel_trust_failure }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.result_disease_failure }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.result_thaw_memory_failure }
+		add_stability = constant:fallout_event_457_threshold.result_stability_failure
+		add_war_support = constant:fallout_event_457_threshold.result_war_support_failure
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_drain_failure }
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_evacuate_failure } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_rebuild_failure } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.use_floodwater_fields } } set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.result_cohesion_use_failure } }
+		fallout_survival_apply_cohesion_delta = yes
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_drain_failure } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_drain_failure } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_drain_failure } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_evacuate_failure } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_evacuate_failure } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_evacuate_failure } }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_rebuild_failure } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_rebuild_failure } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_rebuild_failure } }
+		else = { add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.result_food_use_failure } add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.result_medicine_use_failure } add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.result_recognition_use_failure } }
+		var:fallout_event_457_target_state_id = {
+			add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.result_exposure_failure }
+			subtract_from_variable = { air_winter_water_security = constant:fallout_event_457_threshold.result_state_water_failure }
+			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.result_state_disease_failure }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.result_supply_failure } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = constant:fallout_event_457_threshold.result_building_damage } }
+			else = { damage_building = { type = industrial_complex damage = constant:fallout_event_457_threshold.result_building_damage } }
+			set_state_flag = fallout_event_457_flood_breach
+		}
+		fallout_event_457_apply_failure_deaths = yes
+	}
+
+	clamp_variable = { var = fallout_thaw_water_flood_pressure_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_water_safety_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_channel_trust_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_disease_control_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_thaw_memory_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	fallout_orientation_clamp_resources = yes
+	clear_temp_variable = fallout_event_457_cohesion_delta
+}
+
+fallout_event_457_schedule_callback = {
+	set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_457_result_cleanup_ticket }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_457_transaction.callback_transaction_key_offset }
+	add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_457_selected_branch }
+	set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.thaw_water_callback }
+	set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.thaw_water_callback_ai }
+	set_temp_variable = { fallout_event_requested_branch = fallout_event_457_selected_branch }
+	set_temp_variable = { fallout_event_requested_due_day = global.num_days }
+	add_to_temp_variable = { fallout_event_requested_due_day = constant:fallout_event_457_timing.callback_delay_days }
+	set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_457_transaction.visible_budget_cost }
+	if = { limit = { check_variable = { fallout_event_457_result_mode = constant:fallout_event_dispatch_mode.hidden_ai } } set_temp_variable = { fallout_event_requested_visible_budget_cost = constant:fallout_event_runtime.zero } }
+	set_temp_variable = { fallout_event_requested_control_mode = fallout_event_457_result_mode }
+	set_temp_variable = { fallout_event_requested_queue_status = constant:fallout_event_queue_status.callback_scheduled }
+	set_temp_variable = { fallout_event_requested_target_type = constant:fallout_event_subject_type.state }
+	set_temp_variable = { fallout_event_requested_target = fallout_event_457_target_state_id }
+	set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.thaw_water_cleanup }
+	fallout_event_schedule_delayed_result = yes
+}
+
+fallout_event_457_resolve_result_and_schedule_callback = {
+	set_temp_variable = { fallout_event_457_result_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_457_result_mode = fallout_event_dispatch_issued_mode }
+	set_temp_variable = { fallout_event_457_result_state_id = fallout_event_457_target_state_id }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	set_temp_variable = { fallout_event_requested_outcome = fallout_event_457_result_outcome }
+	fallout_event_resolve_issued_delayed_result = yes
+
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		fallout_event_457_apply_result_effects = yes
+		set_temp_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.one }
+		fallout_event_457_record_history = yes
+		set_variable = { fallout_event_457_result_cleanup_ticket = fallout_event_457_result_ticket }
+		fallout_event_457_schedule_callback = yes
+		if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_457_callback_scheduled set_variable = { fallout_event_457_callback_cleanup_ticket = fallout_event_transaction_ticket } }
+		else = { set_temp_variable = { fallout_event_requested_ticket = fallout_event_457_result_ticket } fallout_event_prepare_delayed_cleanup = yes }
+	}
+	clear_temp_variable = fallout_event_457_result_ticket
+	clear_temp_variable = fallout_event_457_result_mode
+	clear_temp_variable = fallout_event_457_result_state_id
+}
+
+fallout_event_457_apply_callback_effects = {
+	if = {
+		limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.success } }
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.callback_flood_success }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.callback_water_safety_success }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.callback_channel_trust_success }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.callback_disease_success }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.callback_thaw_memory_success }
+		add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.callback_food_success }
+		add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.callback_medicine_success }
+		add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.callback_recognition_success }
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.callback_cohesion_success }
+		fallout_survival_apply_cohesion_delta = yes
+		add_stability = constant:fallout_event_457_threshold.callback_stability_success
+		add_war_support = constant:fallout_event_457_threshold.callback_war_support_success
+		if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.drain_settlement } } add_manpower = constant:fallout_event_457_threshold.callback_manpower_drain_success }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.evacuate_low_ground } } add_manpower = constant:fallout_event_457_threshold.callback_manpower_evacuate_success }
+		else_if = { limit = { check_variable = { fallout_event_457_selected_branch = constant:fallout_event_457_branch.rebuild_channels } } add_manpower = constant:fallout_event_457_threshold.callback_manpower_rebuild_success }
+		else = { add_manpower = constant:fallout_event_457_threshold.callback_manpower_use_success }
+		var:fallout_event_457_target_state_id = { add_to_variable = { air_winter_adaptation = constant:fallout_event_457_threshold.callback_adaptation_success } add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.callback_reclamation_success } add_to_variable = { air_winter_water_security = constant:fallout_event_457_threshold.callback_state_water_success } subtract_from_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.callback_state_disease_success } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.callback_supply_success } } subtract_from_variable = { air_winter_exposure = constant:fallout_event_457_threshold.callback_exposure_success } }
+	}
+
+	else_if = {
+		limit = { check_variable = { fallout_event_457_result_outcome = constant:fallout_event_outcome_type.partial } }
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.callback_flood_partial }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.callback_water_safety_partial }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.callback_channel_trust_partial }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.callback_disease_partial }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.callback_thaw_memory_partial }
+		add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_457_threshold.callback_food_partial }
+		add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_event_457_threshold.callback_medicine_partial }
+		add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.callback_recognition_partial }
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.callback_cohesion_partial }
+		fallout_survival_apply_cohesion_delta = yes
+		add_stability = constant:fallout_event_457_threshold.callback_stability_partial
+		add_war_support = constant:fallout_event_457_threshold.callback_war_support_partial
+		var:fallout_event_457_target_state_id = { add_to_variable = { air_winter_adaptation = constant:fallout_event_457_threshold.callback_adaptation_partial } add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.callback_reclamation_partial } add_to_variable = { air_winter_water_security = constant:fallout_event_457_threshold.callback_state_water_partial } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.callback_state_disease_partial } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.callback_supply_partial } } add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.callback_exposure_partial } }
+	}
+	else = {
+		add_to_variable = { fallout_thaw_water_flood_pressure_current = constant:fallout_event_457_threshold.callback_flood_failure }
+		add_to_variable = { fallout_thaw_water_water_safety_current = constant:fallout_event_457_threshold.callback_water_safety_failure }
+		add_to_variable = { fallout_thaw_water_channel_trust_current = constant:fallout_event_457_threshold.callback_channel_trust_failure }
+		add_to_variable = { fallout_thaw_water_disease_control_current = constant:fallout_event_457_threshold.callback_disease_failure }
+		add_to_variable = { fallout_thaw_water_thaw_memory_current = constant:fallout_event_457_threshold.callback_thaw_memory_failure }
+		add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_457_threshold.callback_recognition_failure }
+		set_temp_variable = { fallout_event_457_cohesion_delta = constant:fallout_event_457_threshold.callback_cohesion_failure }
+		fallout_survival_apply_cohesion_delta = yes
+		add_stability = constant:fallout_event_457_threshold.callback_stability_failure
+		add_war_support = constant:fallout_event_457_threshold.callback_war_support_failure
+		var:fallout_event_457_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_457_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.callback_exposure_failure } damage_building = { type = infrastructure damage = constant:fallout_event_457_threshold.callback_building_damage } }
+		fallout_event_457_apply_callback_failure_deaths = yes
+	}
+	clamp_variable = { var = fallout_thaw_water_flood_pressure_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_water_safety_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_channel_trust_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_disease_control_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	clamp_variable = { var = fallout_thaw_water_thaw_memory_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
+	fallout_orientation_clamp_resources = yes
+
+	clear_temp_variable = fallout_event_457_cohesion_delta
+}
+
+fallout_event_457_resolve_callback_and_prepare_cleanup = {
+	set_temp_variable = { fallout_event_457_callback_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	set_temp_variable = { fallout_event_requested_outcome = fallout_event_457_result_outcome }
+	fallout_event_resolve_issued_delayed_result = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		fallout_event_457_apply_callback_effects = yes
+		set_variable = { fallout_event_457_callback_cleanup_ticket = fallout_event_457_callback_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_457_callback_ticket }
+		fallout_event_prepare_delayed_cleanup = yes
+		set_temp_variable = { fallout_event_457_history_stage = constant:fallout_event_runtime.two }
+		fallout_event_457_record_history = yes
+		set_country_flag = fallout_event_457_callback_resolved
+	}
+	clear_temp_variable = fallout_event_457_callback_ticket
+}
+
+fallout_event_457_cleanup = {
+	set_temp_variable = { fallout_event_457_cleanup_ticket = fallout_event_dispatch_issued_ticket }
+	set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+	fallout_event_release_issued_delayed_cleanup = yes
+	if = {
+		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+		if = { limit = { check_variable = { fallout_event_457_cleanup_ticket value = fallout_event_457_result_cleanup_ticket compare = equals } } set_country_flag = fallout_event_457_result_cleanup_released }
+		else_if = { limit = { check_variable = { fallout_event_457_cleanup_ticket value = fallout_event_457_callback_cleanup_ticket compare = equals } } set_country_flag = fallout_event_457_callback_cleanup_released }
+		if = {
+			limit = { check_variable = { fallout_event_457_cleanup_ticket value = fallout_event_457_callback_cleanup_ticket compare = equals } has_country_flag = fallout_event_457_callback_cleanup_released }
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_457_result_cleanup_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } clr_country_flag = fallout_event_457_callback_scheduled }
+		}
+		if = {
+
+			limit = { OR = { AND = { has_country_flag = fallout_event_457_result_cleanup_released has_country_flag = fallout_event_457_callback_cleanup_released } AND = { has_country_flag = fallout_event_457_result_cleanup_released NOT = { has_country_flag = fallout_event_457_callback_scheduled } } } }
+			set_country_flag = fallout_event_457_memory_closed
+			clr_country_flag = fallout_event_457_chain_committed
+			clr_country_flag = fallout_event_457_callback_scheduled
+			clr_country_flag = fallout_event_457_callback_resolved
+			clr_country_flag = fallout_event_457_cost_paid
+			clr_country_flag = fallout_event_457_result_history_recorded
+			clr_country_flag = fallout_event_457_callback_history_recorded
+			clr_country_flag = fallout_event_457_result_cleanup_released
+			clr_country_flag = fallout_event_457_callback_cleanup_released
+			clr_country_flag = fallout_event_457_memory_opened
+			clear_variable = fallout_event_457_selected_branch
+			clear_variable = fallout_event_457_result_outcome
+			clear_variable = fallout_event_457_result_generation
+			clear_variable = fallout_event_457_result_day
+			clear_variable = fallout_event_457_result_cleanup_ticket
+			clear_variable = fallout_event_457_callback_cleanup_ticket
+			if = { limit = { has_variable = fallout_event_457_target_state_id } var:fallout_event_457_target_state_id = { clr_state_flag = fallout_event_457_registry_committed } }
+			clear_variable = fallout_event_457_target_state_id
+			clear_variable = fallout_event_457_registry_generation
+			clear_variable = fallout_event_457_registry_owner
+			clear_variable = fallout_event_457_candidate_id
+			clear_variable = fallout_event_457_registry_target_type
+			clear_variable = fallout_event_457_registry_target
+			clear_variable = fallout_thaw_water_flood_pressure_current
+			clear_variable = fallout_thaw_water_water_safety_current
+			clear_variable = fallout_thaw_water_channel_trust_current
+			clear_variable = fallout_thaw_water_disease_control_current
+			clear_variable = fallout_thaw_water_thaw_memory_current
+			fallout_event_457_clear_frozen = yes
+		}
+	}
+	clear_temp_variable = fallout_event_457_cleanup_ticket
+}

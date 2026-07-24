@@ -1,0 +1,139 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THAW WATER TRIGGERS
+# ============================================================================
+# The candidate is a thaw-year recovery chain. It requires a produced Air
+# Winter row, a current Fallout state, and water or disease pressure that makes
+# the first melt dangerous.
+
+fallout_event_pilot_thaw_water_state_is_current = {
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	air_winter_visual_thaw_is_eligible = yes
+	has_variable = air_winter_water_security
+	has_variable = air_winter_disease_pressure
+	has_variable = fallout_pretransition_air_winter_exposure
+	check_variable = { fallout_pretransition_air_winter_exposure > constant:fallout_event_457_threshold.minimum_exposure }
+	check_variable = { fallout_pretransition_air_winter_exposure < constant:fallout_event_457_threshold.maximum_exposure }
+	check_variable = { state_population_k value = constant:fallout_event_457_threshold.minimum_population_k compare = greater_than }
+	check_variable = { fallout_pretransition_air_winter_reclamation value = constant:fallout_event_457_threshold.minimum_reclamation compare = greater_than_or_equals }
+	check_variable = { air_winter_water_security value = constant:fallout_event_457_threshold.maximum_water_security_for_chain compare = less_than }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_457_threshold.minimum_disease_pressure_for_chain compare = greater_than_or_equals }
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	OR = {
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.remote_refuge }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.dead_city }
+	}
+	owner = {
+		check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_457_threshold.minimum_food compare = greater_than_or_equals }
+		check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_457_threshold.minimum_medicine compare = greater_than_or_equals }
+		check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_457_threshold.minimum_recognition compare = greater_than_or_equals }
+		check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_457_threshold.minimum_cohesion compare = greater_than_or_equals }
+	}
+	NOT = { has_state_flag = fallout_event_457_registry_committed }
+}
+
+fallout_event_457_country_is_current = {
+	fallout_event_country_can_receive_ordinary_event = yes
+	check_variable = { global.num_days value = constant:fallout_event_457_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { global.num_days value = constant:fallout_event_457_threshold.maximum_campaign_day compare = less_than }
+	has_variable = fallout_event_457_candidate_state_id
+	check_variable = { fallout_event_457_candidate_state_id > constant:fallout_event_runtime.zero }
+	NOT = { has_country_flag = fallout_event_457_chain_committed }
+	NOT = { has_country_flag = fallout_event_457_memory_closed }
+	has_variable = global.fallout_cause_memory_source
+	OR = {
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.manual_thermonuclear }
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.gradual_air_collapse }
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.final_silence }
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.chemical_saturation }
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.biological_follow_through }
+		check_variable = { global.fallout_cause_memory_source = constant:fallout_request_source.mixed_terminal }
+	}
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_457_threshold.minimum_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_457_threshold.minimum_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_457_threshold.minimum_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_457_threshold.minimum_cohesion compare = greater_than_or_equals }
+}
+
+fallout_event_457_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_457_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_457_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_457_target_to_check = {
+		set_temp_variable = { fallout_event_457_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_thaw_water_state_is_current = yes
+	}
+	check_variable = { fallout_event_457_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_457_registry_is_current = {
+	has_variable = fallout_event_457_registry_generation
+	has_variable = fallout_event_457_registry_owner
+	has_variable = fallout_event_457_candidate_id
+	has_variable = fallout_event_457_registry_target_type
+	has_variable = fallout_event_457_registry_target
+	has_variable = fallout_event_457_target_state_id
+	has_variable = fallout_event_457_frozen_food
+	has_variable = fallout_event_457_frozen_medicine
+	has_variable = fallout_event_457_frozen_recognition
+	has_variable = fallout_event_457_frozen_cohesion
+	has_variable = fallout_event_457_frozen_flood_pressure
+	has_variable = fallout_event_457_frozen_water_safety
+	has_variable = fallout_event_457_frozen_channel_trust
+	has_variable = fallout_event_457_frozen_disease_control
+	has_variable = fallout_event_457_frozen_thaw_memory
+	has_variable = fallout_event_457_registry_target_type
+	check_variable = { fallout_event_457_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_457_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_457_candidate_id value = constant:fallout_event_candidate_pilot.thaw_water_candidate_id compare = equals }
+	check_variable = { fallout_event_457_registry_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_457_registry_target value = fallout_event_457_target_state_id compare = equals }
+	has_country_flag = fallout_event_457_chain_committed
+	set_temp_variable = { fallout_event_457_registry_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_457_target_state_id = {
+		set_temp_variable = { fallout_event_457_registry_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		has_state_flag = fallout_event_457_registry_committed
+		fallout_survival_state_identity_row_is_current = yes
+		fallout_survival_state_resource_row_is_durable = yes
+	}
+	check_variable = { fallout_event_457_registry_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_457_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.thaw_water_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_457_target_is_current = yes
+}
+
+fallout_event_457_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.thaw_water_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_457_target_is_current = yes
+}
+
+fallout_event_457_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_457_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_457_branch.upper_bound }
+	fallout_event_457_registry_is_current = yes
+}
+
+fallout_event_457_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.thaw_water_cleanup }
+	fallout_event_457_registry_is_current = yes
+}

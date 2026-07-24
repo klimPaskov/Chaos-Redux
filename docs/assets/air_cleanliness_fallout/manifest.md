@@ -259,3 +259,7 @@ The Empty Village Offer uses a dedicated generated report image of an ash-froste
 ## The Ash Wolves report-event asset
 
 The Ash Wolves uses a dedicated generated report image of a ranger and field biologist watching a fictional ash-wolf corridor beside a ruined rail cut. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_ash_wolves/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_ash_wolves` in `interface/fallout_world_end.gfx`.
+
+## The Thaw Water report-event asset
+
+The Thaw Water chain uses a dedicated generated report image of settlement workers marking thaw channels and reinforcing a muddy flood line beside broken river ice. The source, processed card, runtime DDS, prompt, manifest, and GFX handoff are under `fallout_thaw_water/`. The runtime texture is 210 by 176, one-level uncompressed 32-bit BGRA with an 840-byte row pitch, and is registered as `GFX_report_event_fallout_thaw_water` in `interface/fallout_world_end.gfx`.
