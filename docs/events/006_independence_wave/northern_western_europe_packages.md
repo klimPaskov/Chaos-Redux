@@ -14,7 +14,7 @@ Current portrait authority is the sourced-only gate in the accepted specificatio
 The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
 IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, and IW-008 Rhineland have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
 IW-009 has a partially approved sourced roster but remains outside runtime attestation until every stable consumer, rights record, and full package audit passes.
-IW-002 has a source-cleared civic leader but a blocked commander, while IW-006 and IW-010 retain unresolved grounded roles.
+IW-002 has a correct sourced civic identity, but Saunders Lewis trial 01 failed independent likeness review and its commander remains source-blocked. IW-006 and IW-010 retain unresolved grounded roles.
 Route-owned Rupprecht and Matthes remain protected and byte-identical.
 Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
 Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
@@ -135,7 +135,7 @@ The unique package portraits are registered in `interface/006_independence_wave_
 | --- | --- | --- | --- |
 | Scotland | R. B. Cunninghame Graham | `portrait_SCO_independence_wave_civic_convention.dds` | attributed archival master retained; current treatment rejected on painted style |
 | Scotland | Victor Morven Fortune | `portrait_SCO_independence_wave_territorial_commandant.dds` | IWM source-ready replacement master retained; runtime treatment not approved |
-| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | attributed archival master retained; current treatment rejected on painted style |
+| Wales | Saunders Lewis | `portrait_WLS_independence_wave_national_council.dds` | attributed archival master retained; trial 01 passed painted style but failed the separate likeness gate and remains unwired |
 | Wales | Mountain/territorial commander | `portrait_WLS_independence_wave_mountain_commandant.dds` | blocked; generated file is not accepted evidence |
 
 Scotland and Wales retain their installed vanilla flag triplets because these are reused vanilla countries, not newly created Event 006 tags. Any future royal Scottish cosmetic route must remain traditional-route-only. Wales receives no invented pre-1959 fallback.
