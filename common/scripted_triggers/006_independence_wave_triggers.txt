@@ -503,6 +503,15 @@ is_independence_wave_runtime_automatic_package_iw_019_ready = {
 	115 = { is_independence_wave_candidate_anchor_available = yes }
 }
 
+is_independence_wave_runtime_automatic_package_iw_184_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_184 }
+	HBX = {
+		is_independence_wave_exact_package_iw_184_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	378 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
 # COUNTRY scope. These are the only tags the current Event 005 joint opening
 # allocator can freeze. Event 006 capacity never claims a colliding tag.
 is_independence_wave_liberations_capacity_country_clear_of_event5 = {
@@ -889,6 +898,34 @@ independence_wave_liberations_capacity_try_iw_019 = {
 	}
 }
 
+independence_wave_liberations_capacity_try_iw_184 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p184 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p184 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_184_ready = yes
+			HBX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = HBX } }
+			}
+			378 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_378 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_184 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = HBX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 378 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_378 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
 is_independence_wave_liberations_cluster_member_capacity_available = {
 	check_variable = { event_cluster_liberations_member_availability_context > 0 }
 	check_variable = { event_cluster_id = constant:event_cluster_id.liberations }
@@ -912,6 +949,7 @@ is_independence_wave_liberations_cluster_member_capacity_available = {
 	independence_wave_liberations_capacity_try_iw_017 = yes
 	independence_wave_liberations_capacity_try_iw_018 = yes
 	independence_wave_liberations_capacity_try_iw_019 = yes
+	independence_wave_liberations_capacity_try_iw_184 = yes
 	check_variable = { independence_wave_capacity_selected_count = independence_wave_capacity_target_count }
 	check_variable = { var = independence_wave_capacity_selected_packages^num value = independence_wave_capacity_selected_count compare = equals }
 	check_variable = { var = independence_wave_capacity_selected_countries^num value = independence_wave_capacity_selected_count compare = equals }
