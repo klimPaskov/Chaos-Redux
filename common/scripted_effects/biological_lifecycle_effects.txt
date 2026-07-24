@@ -220,6 +220,14 @@ bio_lifecycle_prepare_route_profile = {
 		set_temp_variable = { bio_seed_condemnation = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.condemnation }
 		set_temp_variable = { bio_seed_friendly_spread_risk = constant:bio_lifecycle_route_profile.strategic_raid_attacker_accident.friendly_spread_risk }
 	}
+	else_if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.japan_china_campaign compare = equals } }
+		set_temp_variable = { bio_seed_intensity = constant:bio_lifecycle_route_profile.japan_china_campaign.seed_intensity }
+		set_temp_variable = { bio_seed_exposed_share = constant:bio_lifecycle_route_profile.japan_china_campaign.exposed_share }
+		set_temp_variable = { bio_seed_evidence = constant:bio_lifecycle_route_profile.japan_china_campaign.evidence }
+		set_temp_variable = { bio_seed_condemnation = constant:bio_lifecycle_route_profile.japan_china_campaign.condemnation }
+		set_temp_variable = { bio_seed_friendly_spread_risk = constant:bio_lifecycle_route_profile.japan_china_campaign.friendly_spread_risk }
+	}
 
 	if = {
 		limit = { check_variable = { bio_seed_intensity_override > constant:bio_lifecycle_math.zero } }
@@ -1155,6 +1163,7 @@ bio_lifecycle_prepare_condemnation_release = {
 			OR = {
 				check_variable = { var = bio_current_route value = constant:bio_lifecycle_route.strategic_raid compare = equals }
 				check_variable = { var = bio_current_route value = constant:bio_lifecycle_route.battlefield_dissemination compare = equals }
+				check_variable = { var = bio_current_route value = constant:bio_lifecycle_route.japan_china_campaign compare = equals }
 			}
 		}
 		set_temp_variable = { bio_condemnation_context = constant:condemnation_context.biological_strike }
