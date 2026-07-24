@@ -9,11 +9,11 @@ and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`. Earlier
 generated grounded-polity portrait packages are provenance evidence only.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains
-outside the selectable pool. IW-004 Brittany and IW-007 Frisia are the runtime
-content-attested release packages after their current package and sourced
-real-male portrait audits. Every other formerly admitted grounded package is
-withdrawn until all live personal, command, and institutional portraits use
-compliant sourced material and its package is re-audited.
+outside the selectable pool. The canonical runtime content-attestation set is
+IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-017
+Corsica, and IW-019 Sicily after their current package and sourced real-male
+portrait audits. Every other package remains closed until its complete current
+admission contract is implemented and independently re-audited.
 
 The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
@@ -98,12 +98,10 @@ they are not current routing documents.
   sourced portrait of the person. Trial 01 used the correct 1925 archival source and passed HOI4 style review, but failed the separate independent likeness gate because the source clips identity-bearing facial highlights. It produced no DDS or runtime wiring.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but their
   carriers cannot execute while their owning package admission is withdrawn.
-- The six attested packages can satisfy the three-, four-, and five-country
-  automatic waves only when the required number pass their live host, anchor,
-  reservation, Event-5 collision, chaos-band, force, and transaction gates.
-  The seven- and ten-country bands remain fail-closed until enough additional
-  packages are admitted. The exact 3/4/5/7/10 ladder and World Collapse count
-  of ten remain unchanged. FORM-48's
+- The six attested packages can satisfy the three-, four-, and five-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
+  Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction.
+  The seven- and ten-country bands remain fail-closed until enough additional packages are admitted.
+  The exact 3/4/5/7/10 ladder and World Collapse count of ten remain unchanged. FORM-48's
   proof writers own `independence_wave_form48_registry_surface_registered` and
   `independence_wave_form48_readiness_attested`; no annexation or integration
   fallback is used.
@@ -258,14 +256,16 @@ satisfy the synchronized frozen plan.
 3. Preserve and re-audit the implemented Event 006 slot-24/`6002` package as
    later league, scenario, formable, sponsorship, and achievement work lands.
    Keep `6001` absent.
-4. Preserve the promoted FORM-48 plan with HBX as carrier, autonomous HAW/FSM
-   members, and collision-cleared PFX identity. Keep FORM-42 and FORM-06 through
-   FORM-47 fail-closed. Then continue the remaining packages with bespoke
-   gameplay, AI, localisation, assets, and audits.
+4. Preserve the implemented FORM-48 plan with HBX as carrier, autonomous
+   HAW/FSM members, and collision-cleared PFX identity, but keep it unreachable
+   until all required packages pass current admission. Keep FORM-42 and FORM-06
+   through FORM-47 fail-closed. Then continue the remaining packages with
+   bespoke gameplay, AI, localisation, assets, and audits.
 5. Preserve the audited vanilla-formable compatibility adapter and the exact
    CHU/ASY signature tranche. Keep FORM-12/13/18 transactions, paid 180-day
    consent and anchor ledgers, staged integration, and sole proof writers
-   scoped to their admitted carriers. Preserve the sovereign-autonomy
+   scoped to their implemented carriers while runtime admission remains closed.
+   Preserve the sovereign-autonomy
    former-host-or-regional-partner transaction, its locked counterpart, five
    treaty records, permanent terminal-choice lock, and terminal `.5810`
    presentation ordering; rerun the scoped
@@ -323,7 +323,7 @@ satisfy the synchronized frozen plan.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The sixteen exact package attestations remain binding runtime gates; a broad
+- The six exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
