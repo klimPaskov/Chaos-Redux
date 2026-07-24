@@ -1,6 +1,6 @@
 # AFX Herman Baltia identity-preserving portrait trial 01
 
-Status: `candidate_pending_independent_audit`.
+Status: `rejected_identity_runtime_hold`.
 
 This package applies the mandatory sourced-person portrait chain to Baron Herman Baltia for the existing Event 006 Wallonia commander consumer.
 
@@ -121,6 +121,26 @@ Any failed identity or style verdict keeps the candidate rejected and unwired.
 
 Only a complete independent pass permits deterministic DDS conversion and sprite wiring.
 
+## Independent audit result
+
+Audit date: 2026-07-24. Reviewer: independent sourced-visual audit subagent. Full evidence and the exact source-only retry requirements are recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_baltia_trial01_independent_audit_2026_07_24.md`.
+
+| Gate | Verdict | Evidence summary |
+|---|---|---|
+| Provenance and rights | **PASS** | The unchanged `389 x 473` Commons upload hash matches `73597E...A1B66`; the page records Public Domain Mark 1.0 / `PD-old`; the prompt, raw result, crop, metadata, and review hashes all match the package ledger. |
+| Male-subject compliance | **PASS** | The master, crop, raw repaint, and candidate show one male subject; the stable character is `gender = male`; no female metadata or opposite-gender name pool is used. |
+| Historical role fit | **PASS** | Baltia's Arlon-based 10th Line and Chasseurs Ardennais lineage supports the parent-approved alternate-history territorial/reserve abstraction; the retirement-at-1936 and 1909-uniform caveats remain explicit. |
+| Head-and-shoulders crop | **PASS** | Independent pixel comparison proves `master.crop((20,12,373,473))` equals the `353 x 461` crop exactly with no differing pixels. |
+| Identity and likeness preservation | **FAIL (non-compensable)** | At native and disposable 4x nearest-neighbour review, the repaint regularizes the source's unequal deep-set eyes, broadens/softens the long narrow facial planes, shortens/broadens the straight nose, changes the asymmetric handlebar-moustache curls, fills the receding wavy hairline, and rounds the long jaw/chin. These are immutable source-visible identity traits. |
+| HOI4 commander style | **PASS** | The candidate is a restrained painted `156 x 210` commander portrait with modeled planes, a period plain tunic, quiet background, and no raw-photo finish, text, watermark, UI, modern prop, emblem, or unsupported insignia. Its darker brown grade is still readable and within the subdued commander family. |
+| `156 x 210` framing | **PASS** | Candidate is an opaque RGBA `156 x 210` PNG with one full head-and-shoulders subject, safe head/shoulder margins, and no border or dossier frame. |
+| Ownership / stable-consumer fit | **FAIL (runtime transfer not cleared)** | No exact or variant Baltia owner was found in current Chaos Redux, vanilla, or the approved reference roots, but the existing `AFX_walloon_reserve_commander` token still localizes as `Marcel Delcourt` and an older DDS remains at the stable path. Parent-owned identity-transfer localisation and replacement of that stale runtime asset are required before wiring. |
+| Advisor / dossier / `_small` absence | **PASS** | This trial contains no advisor, dossier, high-command, operative, or `_small` file; the character definition exposes only the full `civilian.large` and `army.large` slots. |
+
+The independent result is **rejected and unwired** because the identity gate and runtime-transfer consumer gate fail. The style pass does not compensate for either failure. The processor sheet is a `1344 x 464` 2x style sheet whose first panel is a crop of the processor input (the raw ImageGen result), not the immutable archival crop; the archival master and crop were inspected separately, and no processor sheet is treated as automatic approval.
+
+For a source-only retry, use the unchanged master and exact crop as the sole identity authority and preserve the narrow forehead, receding wavy side-parted hair, long lean face, unequal deep-set eyes and heavy lids, long straight narrow nose, asymmetric upward-curled handlebar moustache, unequal ears, long jaw and rounded-pointed chin, stern reserved expression, head angle, neck length, and shoulder slope. Do not use this failed repaint or any generated substitute as an identity source. Keep the commander role, male-only metadata, and full-size `156 x 210` surface; do not create a DDS, `_small`, advisor, or fallback asset until a fresh independent identity audit passes and the parent clears the name transfer.
+
 ## Current runtime state
 
 - DDS created: no.
@@ -128,5 +148,6 @@ Only a complete independent pass permits deterministic DDS conversion and sprite
 - Gameplay edited: no.
 - Localisation edited: no.
 - Advisor asset created: no.
+- Independent audit: rejected; identity and runtime-transfer gates failed.
+- Existing stale runtime DDS at the stable path is not this candidate and is not approved by this trial.
 - Fallback used: no.
-
