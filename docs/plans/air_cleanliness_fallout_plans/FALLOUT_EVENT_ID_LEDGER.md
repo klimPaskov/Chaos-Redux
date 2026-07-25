@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After The Missing Patrol tranche, the living-world pilot contains `415`
+After the Ashline Firebreak tranche, the living-world pilot contains `446`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `533`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `564`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -604,3 +604,8 @@ The Captain Refuses adds seven dormant state-level event blocks at suffixes `520
 The Missing Patrol adds seven dormant state-level event blocks at suffixes `527` through `533`. It uses candidate `527`, transaction `710049`, route `7149`, and history `9154`. The chain selects a deterministic exposed Air Winter state, offers search, limited border retaliation, cover-up, or waiting for contact, and carries intelligence, fear, reputation, contact, cause memory, Supply Access, military, building, and Deaths-system effects through a 60-day result and 180-day command review callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired. Native patrol creation, live neighbor selection, automatic war declaration, and dynamic tag allocation remain unproven.
 
 The documented living-world block total is now `415`, while the countable Fallout living-world total remains `0 of 660`.
+
+
+## Ashline Firebreak correction
+
+Ashline Firebreak adds dormant suffixes `554` through `564` with candidate id `554`, transaction key `710052`, route `7152`, and history `9157`. The human opening is `554`, the hidden-AI opening is `555`, the three human and hidden-AI delayed result lanes are `556` through `561`, the human and hidden-AI callbacks are `562` and `563`, and cleanup is `564`. The state selector requires a current owner-controlled wildfire or ash-heavy natural-disaster aftermath card and uses the lowest eligible native state id. The chain remains uncounted and does not open scheduler activation. The documented living-world total is now `446`, including the committed Ammunition Winter and A New Funeral ranges.
