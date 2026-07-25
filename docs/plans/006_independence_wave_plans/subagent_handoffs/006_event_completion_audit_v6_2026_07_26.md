@@ -1,5 +1,7 @@
 # Event 006 final completion audit v6
 
+> Current-authority note (2026-07-26): This v6 audit remains the whole-event **HOLD** baseline. Later commits `5dcb2c8de`, `d7fa9015b`, and `c8ca78e9c` are reconciled by `006_event_completion_audit_v7_addendum_2026_07_26.md`, which records the bounded DM-58 scope repair without changing the whole-event verdict.
+
 Audit date: 2026-07-26.
 
 Audit mode: read-only final-state audit of the current repository after commits `d8cc2ec996b8d6fa4ceb4d156ecae4dec123765f`, `f51bddb6905eb27a6a3eac582c39dfd65e26d4fe`, `717df0df7cb9f7d161f7e41c3fee2307a57291de`, and `0ee9ed1ccc59993786c99bbc2c21b3bfa739100a`.

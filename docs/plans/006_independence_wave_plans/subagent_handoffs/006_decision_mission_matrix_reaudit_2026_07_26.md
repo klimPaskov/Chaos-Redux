@@ -1,5 +1,7 @@
 # Event 006 decision and mission matrix re-audit — 2026-07-26
 
+> Supersession notice (2026-07-26): This pre-repair matrix remains historical. The high-severity DM-58 candidate-scope finding below was repaired by `5dcb2c8de` and passed `006_dm58_preflight_scope_post_repair_2026_07_26.md`; `006_event_completion_audit_v7_addendum_2026_07_26.md` records the same bounded PASS. Distinct-owner feasibility and the broader decision/mission acceptance matrix remain **HOLD**.
+
 ## Verdict
 
 **HOLD — one high-severity DM-58 availability/preflight defect remains.**
