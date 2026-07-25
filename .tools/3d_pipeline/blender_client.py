@@ -152,6 +152,25 @@ class BlenderAdapterClient:
             },
         )
 
+    def correct_action_grounding(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_name: str,
+        root_bone: str = "Hips",
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_correct_action_grounding",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_name": action_name,
+                "root_bone": root_bone,
+            },
+        )
+
     def reimport_export(
         self,
         job_id: str,

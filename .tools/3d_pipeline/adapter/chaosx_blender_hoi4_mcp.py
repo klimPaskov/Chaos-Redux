@@ -29,6 +29,10 @@ CONFIG_PATH = Path(
 ).resolve()
 CONFIG = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 JOB_ROOT = Path(CONFIG["job_root"]).resolve()
+JOB_OVERRIDES = {
+    job_id: Path(path).resolve()
+    for job_id, path in CONFIG.get("job_overrides", {}).items()
+}
 BLENDER = Path(CONFIG["blender_executable"]).resolve()
 ADAPTER_VERSION = CONFIG["adapter_version"]
 ALLOWED_OPERATIONS = set(CONFIG["operations"])
@@ -40,11 +44,14 @@ mcp = FastMCP("chaosx-blender-hoi4")
 def _job(job_id: str) -> Path:
     if not job_id or Path(job_id).name != job_id or "/" in job_id or "\\" in job_id:
         raise ValueError("job_id must be a single asset slug.")
-    candidate = (JOB_ROOT / job_id).resolve()
-    try:
-        candidate.relative_to(JOB_ROOT)
-    except ValueError as exc:
-        raise ValueError("job_id escaped the configured job root.") from exc
+    if job_id in JOB_OVERRIDES:
+        candidate = JOB_OVERRIDES[job_id]
+    else:
+        candidate = (JOB_ROOT / job_id).resolve()
+        try:
+            candidate.relative_to(JOB_ROOT)
+        except ValueError as exc:
+            raise ValueError("job_id escaped the configured job root.") from exc
     if not candidate.exists():
         raise FileNotFoundError(candidate)
     return candidate
@@ -380,6 +387,28 @@ def chaosx_blender_hoi4_author_locomotion_action(
             "blend_rel": blend_rel,
             "checkpoint_rel": checkpoint_rel,
             "action_name": action_name,
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_correct_action_grounding(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+    root_bone: str = "Hips",
+) -> Dict[str, Any]:
+    """Correct per-frame ground contact on one existing skeletal action."""
+
+    return _run(
+        job_id,
+        "correct_action_grounding",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+            "root_bone": root_bone,
         },
     )
 
