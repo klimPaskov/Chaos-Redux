@@ -109,7 +109,7 @@ they are not current routing documents.
   anchor, reservation, and wave-size gates remain binding.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
   HBX, and the audited flat ImageGen PFX flag. Exactly zero custom Event 006
-  advisor icons/assets/sprites/portrait blocks are present; the accepted male
+  advisor icons or advisor portrait/sprite blocks are present; the accepted male
   large portraits are separate country-leader assets and protected BAY/RHI
   hashes are unchanged.
 - Commit `a2c274d1e` contains the independently audited living-BEL IW-005
@@ -237,7 +237,7 @@ synchronized frozen plan.
   Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
   HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS.
   HAW/FSM remain sovereign autonomous members and HBX remains the PFX carrier contract.
-  No custom Event 006 advisor icons, assets, sprites, or portrait blocks were created.
+  No custom Event 006 advisor icons or advisor portrait/sprite blocks were created; the separate Statehood Ledger status-panel and animation assets are documented in the current asset manifest.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
   `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
   and distinct standard versus major focus rewards.
