@@ -1,6 +1,6 @@
 # Zombies 3D model package
 
-Status: complete asset package; parent-owned runtime registration and user-owned live HOI4 verification remain pending.
+Status: complete asset package and runtime registration; user-owned live HOI4 verification remains pending.
 
 ## Identity and source
 
@@ -70,10 +70,18 @@ Initial balance was `1031`; the post-death read-only balance was `979`. The exac
 
 ## Runtime boundary
 
-- No gameplay, entity, `.asset`, `.gfx`, localisation, event, or unit wiring file was edited by this package work.
-- Proposed stable identifiers and the vanilla infantry state crosswalk are in `runtime/crosswalk.md` and `runtime/handoff.md`.
-- Parent-owned runtime registration remains pending.
+- The base `zombies` sub-unit now resolves `sprite = zombies` in `common/units/zombies.txt`; all named zombie variants remain on their existing vanilla infantry sprite.
+- Runtime registration is present in `gfx/entities/chaosx_zombies.gfx`, `gfx/entities/chaosx_zombies.asset`, and `gfx/models/units/chaosx_zombies/animation_chaosx_zombies.asset`.
+- Runtime copies of the selected mesh, four animations, and three DDS maps are synchronized under `gfx/models/units/chaosx_zombies/` and match the selected export hashes.
+- The runtime entity preserves scale `0.8` exactly once and maps attack, defend, support_attack, move, retreat, death, idle, and training states.
 - User-owned live HOI4 verification remains pending; Hearts of Iron IV was not launched.
+
+## Runtime registration evidence
+
+- Runtime copy and reference proof: `validation/runtime_wiring.json`
+- Runtime entity: `zombies_entity`
+- Runtime PDX mesh: `chaosx_zombies_mesh` with exported object `Mesh_0.001`
+- Runtime state actions: `idle`, `move`, `attack`, and `death`; training uses the idle action and retreat uses the move action
 
 ## Evidence index
 
@@ -83,4 +91,5 @@ Initial balance was `1031`; the post-death read-only balance was `979`. The exac
 - Attack correction: `blender/reports/correct_action_grounding.json`
 - Material and texture proof: `blender/reports/final_working_material_inspect.json`, `blender/reports/pdx_runtime_texture_processing.json`, `blender/reports/textures_dds.json`
 - Export/reimport proof: `validation/export_byte_parse.json`
+- Runtime registration and source-to-runtime hash proof: `validation/runtime_wiring.json`
 - Deterministic file ledger: `evidence/file_manifest.json`
