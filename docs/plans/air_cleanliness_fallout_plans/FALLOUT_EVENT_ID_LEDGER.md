@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the Ice Melt Rations tranche, the living-world pilot contains `380`
+After the Ravine Water Chemist tranche, the living-world pilot contains `387`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `498`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `505`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -580,3 +580,9 @@ The documented living-world block total is now `373`, while the countable Fallou
 The Ice Melt Rations reservation adds seven dormant boreal or highland state-level event blocks at suffixes `492` through `498`. It uses candidate `492`, transaction `710044`, route `7144`, and history `9149`. The chain carries four frozen-water policies, deterministic regional frozen-water selection, separate public Filters and station filter ledgers, Water, Fuel, Medicine, Cohesion, operation memory, water reserve, expedition credit, Air Winter, supply, and Deaths-system effects, a 42-day result, a 300-day ice-ledger callback, Event Log payloads, exact cleanup, and dedicated report art.
 
 The documented living-world block total is now `380`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Ravine Water Chemist count correction
+
+The Ravine Water Chemist adds seven dormant country-level event blocks at suffixes `499` through `505`. It uses candidate `499`, transaction `710045`, route `7145`, and history `9150`. The chain follows an Ice Melt success or partial memory, names Dr. Mara Vey, selects a deterministic migration origin, applies disease and refugee pressure, uses four authored choices, and records result and callback payloads.
+
+The documented living-world block total is now `387`, while the countable Fallout living-world total remains `0 of 660`.

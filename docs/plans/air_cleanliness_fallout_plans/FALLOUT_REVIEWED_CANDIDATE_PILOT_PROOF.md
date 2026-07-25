@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-four
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-five
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -283,6 +283,13 @@ It uses country candidate id `352`, transaction key `710024`, route `7124`, and 
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Ravine Water Chemist correction
+
+The Ravine Water Chemist is the forty-fifth reviewed ordinary candidate. It uses candidate id `499`, transaction `710045`, route `7145`, event tokens `499` through `505`, and history `9150`.
+Its gate follows Ice Melt success or partial memory and selects one deterministic current Air Winter clinic state plus a separate lowest-id migration origin. The chain freezes Food, Water, Medicine, Filters, Recognition, Cohesion, disease, refugee, adaptation, reclamation, service, and migration ledgers before a 49-day result and a 210-day callback.
+The four policies install Dr. Mara Vey, escort clean-ice families, quarantine the ravine ward, or share the filter method with districts. Each lane has human and hidden-AI delivery, disease and refugee effects, branch memory, dynamic modifiers, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total. The dedicated proof is recorded in `FALLOUT_RAVINE_WATER_CHEMIST_CHAIN_PROOF.md`.
 
 ## Ice Melt Rations correction
 
