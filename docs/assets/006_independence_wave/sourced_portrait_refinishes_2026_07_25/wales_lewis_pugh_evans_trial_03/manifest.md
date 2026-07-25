@@ -1,8 +1,10 @@
 # IW-002 Wales Lewis Pugh Evans portrait trial 03
 
-Status: `candidate_requires_independent_audit`.
+Status: `rejected_and_unwired`.
 
-No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized unless an independent reviewer passes every provenance, crop-equality, identity, style, framing, role, ownership, and consumer-boundary gate.
+Independent audit verdict: `FAIL / blocked`.
+
+No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized for this rejected candidate.
 
 This package contains no advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback portrait.
 
@@ -81,6 +83,16 @@ The raw repaint was generated directly from the canonical exact crop and does no
 The processor performs deterministic crop, grade, resize, and export only.
 
 ## Independent audit gate
+
+The independent audit is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wales_lewis_pugh_evans_trial03_independent_portrait_audit_2026_07_25.md` and committed as `f5a744b3e`.
+
+The candidate passed provenance, exact crop equality, male role fit, HOI4 commander style, framing, ownership, metadata integrity, stable-consumer declaration, and forbidden-derivative absence.
+
+It failed the non-compensable likeness gate: the repaint regularized the unequal eyes and ears, frontalized the gaze and head, thickened the pencil moustache, rounded the nose tip, softened the hollow cheeks and narrow pointed jaw, and smoothed source age texture.
+
+The candidate is retained only as rejected process evidence. No fallback or unrelated runtime portrait is approved.
+
+## Gate requirements retained for any later retry
 
 The independent auditor must compare the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, prior rejected trials, and commander-family references at native size and at least `4x` nearest-neighbour enlargement.
 
