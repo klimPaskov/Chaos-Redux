@@ -620,6 +620,18 @@ natural_disaster_state_has_displayable_activity = {
 natural_disaster_country_has_display_family_activity = {
 	has_variable = natural_disaster_category_display_family
 	has_variable = natural_disaster_category_display_state
+	check_variable = {
+		var = natural_disaster_category_display_family
+		value = constant:natural_disaster_family.random
+		compare = greater_than
+	}
+	NOT = {
+		check_variable = {
+			var = natural_disaster_category_display_family
+			value = constant:natural_disaster_family.max
+			compare = greater_than
+		}
+	}
 	var:natural_disaster_category_display_state = {
 		natural_disaster_state_has_displayable_activity = yes
 		is_controlled_by = ROOT
