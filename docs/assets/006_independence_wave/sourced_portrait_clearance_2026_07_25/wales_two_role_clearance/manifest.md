@@ -1,6 +1,6 @@
 # IW-002 Wales alternative sourced portrait clearance - 2026-07-25
 
-Status: two materially different archival candidates are complete through source master and exact crop and remain `needs_user_review` before downstream portrait treatment. J. H. Thomas is the civic candidate and Major-General Robert Ross is the commander candidate. Lewis Valentine is retained as rejected active Kaiserreich ownership evidence, Thomas Wynford Rees is rejected for scene scale and Kaiserreich ownership, W. J. Gruffydd is blocked as postwar, and Lewis Pugh Evans is retained only as duplicate failed-source evidence.
+Status: J. H. Thomas is source-ready through immutable source master and exact crop. The IWM HU 126780 image is retained only as blocked namesake evidence because it depicts Second Lieutenant Gervase Thorpe Spendlove, who died in 1914, rather than the requested Major-General Gervase Thorpe (1877-1962). Robert Ross is retained as blocked research evidence because his exact crop leaves insufficient facial resolution. Lewis Valentine is retained as rejected active Kaiserreich ownership evidence, Thomas Wynford Rees is rejected for scene scale and Kaiserreich ownership, W. J. Gruffydd is blocked as postwar, and Lewis Pugh Evans is retained only as duplicate failed-source evidence.
 
 This package stops at immutable source masters, decoded PNG masters and exact decoded-pixel crops. It contains no ImageGen result, processed `156x210` portrait, DDS, `.gfx` edit, localisation edit, gameplay edit, advisor asset, dossier asset, `_small` derivative or fallback.
 
@@ -8,8 +8,8 @@ This package stops at immutable source masters, decoded PNG masters and exact de
 
 | Requirement | New candidate | Reserved consumer | Status | Downstream boundary |
 | --- | --- | --- | --- | --- |
-| WLS civic or national leader | James Henry J. H. Thomas | `GFX_portrait_WLS_independence_wave_national_council` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` | `needs_user_review` | Parent owns identity/localisation reconciliation, source-locked repaint, independent review and DDS conversion. |
-| WLS military, territorial or mountain commander | Major-General Robert Knox Ross | `GFX_portrait_WLS_independence_wave_mountain_commandant` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds` | `needs_user_review` | Parent owns the alternate-history appointment decision, source-locked repaint, independent review and DDS conversion. |
+| WLS civic or national leader | James Henry J. H. Thomas | `GFX_portrait_WLS_independence_wave_national_council` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` | `source_ready_for_parent_pipeline` | Parent owns identity/localisation reconciliation, source-locked repaint, independent review and DDS conversion. Preserve the circa-1920 source-visible age exactly. |
+| WLS military, territorial or mountain commander | Requested Major-General Gervase Thorpe; IWM HU 126780 is a different Second Lieutenant Gervase Thorpe Spendlove | `GFX_portrait_WLS_independence_wave_mountain_commandant` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds` | `blocked_identity_mismatch` | Do not pass HU 126780 to ImageGen, processing, DDS conversion or runtime wiring. The source remains provenance evidence only; a correctly identified Major-General Gervase Thorpe photograph is required. |
 
 ## Candidate A - James Henry Thomas (J. H. Thomas) (civic)
 
@@ -24,12 +24,31 @@ This package stops at immutable source masters, decoded PNG masters and exact de
 - Photograph date: Commons records circa 1920, before the 1936 scenario start date and within Thomas's adult public life.
 - License: Commons `PD-Bain` and Library of Congress no-known-copyright-restrictions records; no attribution is required by the Commons record, but retain the LOC digital ID in provenance.
 - Role fit: Thomas's Welsh birth, Newport connection, trade-union leadership and 1935-1936 Colonial Secretary service give the existing WLS national-council role a direct Welsh institutional and interwar political connection.
-- Era fit: The source predates the 1936 start date. Any downstream treatment must age the face only while preserving source geometry and must not be described as a 1936 photograph.
+- Era fit: The source predates the 1936 start date. Preserve the source-visible age and identity exactly; downstream treatment must not invent age progression or describe the image as a 1936 photograph.
 - Visual notes: The high-resolution archival portrait has clear eyes, ears, brow, nose, moustache, mouth, jaw, bow tie and both shoulders. The exact crop removes source margins while retaining the full head-and-shoulders identity geometry; no hidden facial detail needs reconstruction.
 - Ownership: The exact and variant terms `James Henry Thomas`, `J. H. Thomas`, `James_Henry_Thomas` and `JH Thomas` found no meaningful identity or portrait owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226`.
 - Comparison source: `source_masters/j_h_thomas_underwood_1924_rejected.jpg` is retained only as a comparison record. Its circular halftone/newspaper reproduction is softer and less crop-grade than the Bain photograph despite the closer date.
 
-## Candidate B - Major-General Robert Knox Ross (commander)
+## Candidate B - IWM HU 126780 namesake (commander source blocked)
+
+- Requested identity: Major-General Gervase Thorpe (1877-1962), GOC of the 53rd (Welsh) Infantry Division from 1935 to 1939 and alive in 1936.
+- IWM source identity: Second Lieutenant Gervase Thorpe Spendlove, 2nd Battalion The Prince of Wales' Volunteers (South Lancashire Regiment), killed 17 November 1914.
+- Identity evidence: [Gervase Thorpe biography](https://en.wikipedia.org/wiki/Gervase_Thorpe) and the [IWM object 205388980](https://www.iwm.org.uk/collections/item/object/205388980), whose page title and object description identify the distinct 1914 namesake.
+- Source page: [IWM HU 126780 object record](https://www.iwm.org.uk/collections/item/object/205388980).
+- Direct unchanged source: `source_masters/gervase_thorpe_spendlove_iwm_hu126780.jpg`, `612x800` RGB JPEG, SHA-256 `7cdb3a70f983105f579c5f141cecc631c665eae16cdb71e2ee7266b924d7041d`.
+- Lossless decoded master: `source_master_png/gervase_thorpe_commander_master.png`, `612x800`, SHA-256 `cb76ddba4dba74304db6a1fd16933bc6d712c85de6b16f287f6feae572487bbe`.
+- Exact identity crop: `source_crops/gervase_thorpe_commander_crop.png`, rectangle `(left=10, top=80, right=602, bottom=720)`, `592x640`, SHA-256 `016c1d5977507b01ba96e2326152ddd0f8517f813f7a85e70348b13867919f01`.
+- Crop proof: `source_crops/gervase_thorpe_commander_crop.json` reports `decoded_pixels_equal: true` and matching RGBA SHA-256 `3f4666b6918993d3d2b2634cd24c9f6a3cad575f5f18301c7ec1134c45370fbf` for the decoded master rectangle and output PNG.
+- Source attribution: Imperial War Museums Bond of Sacrifice - First World War Portraits Collection, object `205388980`, collection `HU 126780`; the metadata snapshot is `source_page_snapshots/gervase_thorpe_iwm_hu126780_page.md`. Required attribution for permitted use is `Image: IWM (HU 126780)`.
+- Photograph date: IWM does not state an exact date and classifies the source as First World War production/content. The object record records the namesake's death on 17 November 1914. Do not describe the source as a 1936 photograph or as the requested major-general.
+- License: IWM Non-Commercial licence, https://www.iwm.org.uk/corporate/policies/non-commercial-licence. The licence permits low-resolution downloads/embeds for listed non-commercial uses and requires the stated attribution; commercial use, high-resolution copies or other uses require a separate IWM licence. No public-domain claim is made.
+- Role fit: The crop is a clear adult male head-and-shoulders image, but the subject is the wrong person. It is not usable for a 1936 WLS mountain commandant identity master. The previous Welsh-formation role statement was a conflation of two distinct people and is withdrawn.
+- Era fit: The source subject died in 1914, so the source cannot support a commander alive in 1936. Preserve the source-visible age and identity exactly and do not invent an age progression or identity substitution.
+- Identity disposition: `blocked_identity_mismatch`. Retain master, decoded PNG, exact crop and crop JSON for provenance evidence only; do not send them downstream.
+- Visual notes: The single-person archival portrait has clear eyes, ears, brow, nose, mouth, jaw, hairline, cap, collar and both shoulder tops. The exact crop removes the lower-right IWM watermark while retaining head-and-shoulders geometry; the source halftone pattern is inherent and must be disclosed.
+- Ownership: The exact and variant terms `Gervase Thorpe`, `Gervase Thorpe Spendlove`, `Major-General Gervase Thorpe`, `Thorpe Spendlove`, `Gervase_Thorpe`, `gervase_thorpe` and `Spendlove` found no meaningful identity or portrait owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226`.
+
+## Blocked research evidence - Major-General Robert Knox Ross (commander)
 
 - Identity: Major-General Robert Knox Ross CB DSO MC (1893-1951), commander of the 160th Infantry Brigade and the 53rd (Welsh) Infantry Division in the Second World War.
 - Identity evidence: [Robert Ross biography](https://en.wikipedia.org/wiki/Robert_Ross_(British_Army_officer,_born_1893)) and Imperial War Museums object `205497134`.
@@ -44,6 +63,7 @@ This package stops at immutable source masters, decoded PNG masters and exact de
 - Era fit: The official source is directly within the WWII setting. Ross was alive and serving in the 53rd (Welsh) Division at the time; the uniform, rank details and facial geometry are period-valid for the requested grounded military role.
 - Visual notes: The single-person official portrait has clear eyes, ears, nose, jaw, cap, tunic, medal bars and both shoulders. The unchanged master retains the IWM frame and watermark; the tight exact crop removes the frame, hands and waist while preserving head, neck and shoulder geometry.
 - Ownership: The exact and variant terms `Robert Ross`, `Robert Knox Ross`, `Major-General Robert Ross`, `R. L. Ross` and `53rd Welsh Division` found no meaningful identity or portrait owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226`.
+- Blocked reason: The exact crop is only `310x300` and leaves roughly `60-80 px` of usable facial geometry. Retain the master and crop for provenance evidence only; do not send this source downstream.
 - Uncertainty: The Commons record identifies the IWM object and War Office collection but does not name a photographer. Preserve IWM object `205497134` and the Commons PD-UKGov record rather than inferring a personal author. Ross was not Welsh-born, so the role fit rests on documented command of the 53rd (Welsh) Division and 160th Welsh Brigade.
 
 ## Rejected and blocked comparison leads
@@ -56,11 +76,14 @@ This package stops at immutable source masters, decoded PNG masters and exact de
 - Aneurin Bevan remains excluded because Kaiserreich `1521695605` actively owns `ENG_aneurin_bevan` and its portrait consumers.
 - William Ambrose Bebb remains excluded because Kaiserreich `1521695605` owns `WLS_ambrose_bebb` and its portrait/localisation consumers.
 - Saunders Lewis remains excluded because the only defensible prewar Commons photograph is the 1916 `Y Drych` image already rejected by the existing Saunders age gate, and Kaiserreich `1521695605` owns the same identity.
+- Field Marshal Sir Archibald Montgomery-Massingberd was not admitted despite a clear 14 December 1927 Bassano/National Portrait Gallery portrait and a documented 53rd (Welsh) Division command connection. The Commons page combines a public-domain tag with an NPG copyright claim and unauthorised-reproduction notice, so the source is rights-uncertain.
 
 ## Contact sheet
 
-The comparison sheet is `contact_sheets/wales_two_role_clearance_contact_sheet_v5.png`, SHA-256 `d25308ecd1f20696b423f0770b436b4fdcef920d2c39d228912b12108dfb87f8`. It shows the J. H. Thomas and Robert Ross source masters beside their exact crops.
+The comparison sheet is `contact_sheets/wales_two_role_clearance_contact_sheet_v7.png` and labels the IWM HU 126780 namesake as blocked for identity mismatch. It shows the J. H. Thomas source-ready master beside its exact crop, the blocked HU 126780 namesake master beside its exact crop, and the blocked Ross master/crop. Its SHA-256 is `7f8ff4ef015e234324a4bd22a44d140f8d6621567793159d3e3ae3e22870273a`.
+
+The older `contact_sheets/wales_two_role_clearance_contact_sheet_v6.png` is retained only as superseded evidence because it labelled the namesake as source-ready before the identity mismatch was resolved. Use v7 for all review and wiring decisions.
 
 ## Exact crop and downstream boundary
 
-Both accepted review candidates were cropped with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` using Pillow as the only decode and crop backend. The crop JSON files are committed beside the PNGs and prove exact decoded-pixel equality. The parent may use either candidate only after accepting the era, provenance and ownership notes, then must use the exact crop as the sole identity input for source-locked identity-preserving ImageGen, compare the raw result and deterministic `156x210` portrait against canonical vanilla references, obtain an independent likeness/style/provenance audit, and convert to DDS only after PASS.
+The source-ready Thomas crop and the blocked IWM HU 126780 namesake crop were made with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` using Pillow as the only decode and crop backend. The crop JSON files are committed beside the PNGs and prove exact decoded-pixel equality. Only the Thomas candidate may proceed to the parent-owned identity-preserving pipeline; HU 126780 is blocked and must not be used to depict Major-General Gervase Thorpe. Ross is blocked and must not enter the pipeline.

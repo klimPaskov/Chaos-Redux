@@ -17,6 +17,7 @@ Within each root, the search covered `common/characters/`, `history/countries/`,
 | Candidate | Exact and variant forms |
 | --- | --- |
 | James Henry Thomas (J. H. Thomas) | `James Henry Thomas`; `J. H. Thomas`; `James_Henry_Thomas`; `JH Thomas` |
+| Requested Major-General Gervase Thorpe / IWM namesake Gervase Thorpe Spendlove | `Gervase Thorpe`; `Gervase Thorpe Spendlove`; `Major-General Gervase Thorpe`; `Thorpe Spendlove`; `Gervase_Thorpe`; `gervase_thorpe`; `Spendlove`; `53rd Welsh Division` |
 | Major-General Robert Knox Ross | `Robert Ross`; `Robert Knox Ross`; `Major-General Robert Ross`; `R. L. Ross`; `53rd Welsh Division` |
 | Lewis Edward Valentine | `Lewis Valentine`; `Lewis Edward Valentine`; `Parch Lewis Valentine`; `Valentine` |
 | Thomas Wynford Rees | `Thomas Wynford Rees`; `T. W. Rees`; `RAJ_thomas_wynford_rees`; `SE3459` |
@@ -29,7 +30,8 @@ Within each root, the search covered `common/characters/`, `history/countries/`,
 | Candidate | Current Chaos Redux | Vanilla | Kaiserreich 1521695605 | 2265420196 | 1458561226 | Disposition |
 | --- | --- | --- | --- | --- | --- | --- |
 | James Henry Thomas (J. H. Thomas) | No match | No match | No match | No match | No match | Clear additive source candidate; no transfer guard found. |
-| Major-General Robert Knox Ross | No match | No match | No match | No match | No match | Clear additive source candidate; no transfer guard found. |
+| Requested Major-General Gervase Thorpe / IWM namesake Gervase Thorpe Spendlove | No match for requested identity | No match | No match | No match | No match | Ownership scan is not a clearance: IWM HU 126780 identifies a distinct Second Lieutenant Gervase Thorpe Spendlove killed in 1914, so the source is blocked for identity mismatch. |
+| Major-General Robert Knox Ross | No match | No match | No match | No match | No match | Ownership clear, but blocked because the exact crop leaves insufficient facial resolution. |
 | Lewis Edward Valentine | No meaningful current owner | No match | Active WLS identity, recruitment, portraits and localisation | No match | No match | Rejected active Kaiserreich owner. |
 | Thomas Wynford Rees | No match | No match | Active `RAJ_thomas_wynford_rees` identity and portrait/localisation consumers | No match | No match | Rejected active Kaiserreich owner; source also fails crop scale. |
 | W. J. Gruffydd | No match | No match | No match | No match | No match | Ownership clear, but source is `blocked_postwar_source` because it is dated 1946. |
@@ -56,4 +58,4 @@ Within each root, the search covered `common/characters/`, `history/countries/`,
 
 ## Interpretation
 
-J. H. Thomas and Robert Ross pass the subject-ownership gate as additive source candidates. The no-match result does not authorize generated portraits or runtime reuse; the parent still owns identity reconciliation, source-locked treatment, independent likeness/style/provenance review, deterministic `156x210` processing and DDS conversion. Valentine, Rees and Saunders must not be cloned without an explicit guarded transfer decision, while Gruffydd and Evans remain blocked or rejected for their separate source reasons.
+J. H. Thomas passes the subject-ownership gate as an additive source candidate. The HU 126780 namesake source does not pass identity clearance: the IWM page identifies a different person who died in 1914, and no ownership no-match can bridge that identity mismatch to the requested Major-General Gervase Thorpe. The source, decoded master and crop remain blocked provenance evidence only; they must not enter ImageGen or runtime reuse. The parent still owns identity reconciliation, source-locked treatment, independent likeness/style/provenance review, deterministic `156x210` processing and DDS conversion for any correctly identified replacement. Robert Ross is retained only as blocked research evidence because the exact crop is too small for reliable downstream likeness work. Valentine, Rees and Saunders must not be cloned without an explicit guarded transfer decision, while Gruffydd and Evans remain blocked or rejected for their separate source reasons.
