@@ -4,7 +4,9 @@ Date: 2026-07-12
 
 ## Verdict
 
-**Static implementation gate passed. Overall completion remains conditional on the queued live-engine scenario matrix and the repository-wide source-asset archive decision.**
+**Static implementation gate passed. Overall completion remains conditional on the queued live-engine scenario matrix.**
+
+2026-07-26 closure addendum: the previously removed 1,035-file Event 013 source and provenance archive was restored under `docs/assets/013_natural_disasters/`. The current retention manifest and event documentation now record the archive as present. This removes the prior repository-retention blocker without changing runtime-facing files or the shared super-event UI.
 
 The final pass found and corrected seven functional defect classes after the previous audit: one missing Event 013 script constant that could break trigger loading, normal-versus-temporary random variable writes that could leave preflight and scheduling values stale, exclusive random upper bounds that omitted documented endpoints, a forecast notification lifecycle that could leave a successful hidden firing with no immediately available player action, nested scripted-effect outputs that were not initialized by their consuming caller, bounded-only Disaster Barrage family draws that could silently miss compatible geography, and train costs tied to one model instead of the full train archetype. It also corrected scheduled-card cleanup/transfer handling, abnormal history status priority, cluster random ranges and actor selection, foreign-relief priority selection, type-specific scenario launch proof, explicit rejection feedback, and the cluster eligibility/runtime/history/UI caller graph. Independent final call-graph and scenario traces found no remaining concrete temporary-output propagation or bounded-family false-negative defect. No P0-P2 static gameplay defect remains after those corrections.
 
@@ -34,7 +36,7 @@ Final frozen-tree verification checked the Event 013 core and shared integration
 | Ten achievements | Pass structurally | Exact accepted set, sequence-bound tracking/disqualifiers, localisation, hooks, and 30 live icon variants. |
 | Localisation and scripted localisation | Pass | 1,103 unique Event 013 English keys, distinct report/news prose, full group/driver/relief selector coverage, no missing references, and BOM retained. |
 | Assets and registrations | Pass for live assets | 197 texture routes resolve and open; no GIF is a gameplay asset. |
-| Docs, prompts, and workbook | Pass with archival note | Specs incorporate accepted clarifications; mechanic/cluster/audio docs and the Event 013, Cluster 5, Event 099, and SCN-007 workbook rows align; those live-tested rows remain `Needs Testing`. |
+| Docs, prompts, and workbook | Pass | Specs incorporate accepted clarifications; mechanic/cluster/audio docs, the retained source archive, and the Event 013, Cluster 5, Event 099, and SCN-007 workbook rows align; those live-tested rows remain `Needs Testing`. |
 
 ## Improvement-loop disposition
 
@@ -62,7 +64,7 @@ The Event Details premise and evolution wording did not change, so no workbook c
 Catalog export shape is now normalized by `.tools/export_event_catalog_csv.py`; the remaining overflow cells belong to unrelated Fallout rows.
 
 - Live-engine execution evidence is not available for the scenario matrix listed in `013_implementation_validation_notes.md`. This is why Event 013, Cluster 5, Event 099, and SCN-007 remain `Needs Testing`, and why this audit does not state unconditional completion.
-- All 1,035 tracked files in the binary Event 013 source-asset archive under `docs/assets/` are removed by a broader concurrent cleanup. Registered live assets remain, and the current `docs/assets/013_natural_disasters/manifest.md` is an explicit retention record, but the former GFX handoff, animation provenance/build records, and source/processed archive are not restored, so complete provenance does not remain. Restoration or explicit acceptance of removal is queued for the repository-wide retention decision.
+- The 1,035-file Event 013 source-asset archive was restored under `docs/assets/013_natural_disasters/`, including source and processed masters, animation provenance/build records, audio analysis, prompts, previews, and the GFX handoff. The retention manifest records the restored disposition.
 - The port-lifeline cooperation leg uses positive opinion as an engine-constrained relationship proxy because the supported country-trigger interface does not expose a bilateral live resource-trade relationship trigger. Player-facing text does not describe it as exact live-trade detection.
 - No other gameplay fallback, generic disaster popup, duplicate disaster controller, unresearched super-event, placeholder audio, or transform-only final animation remains.
 

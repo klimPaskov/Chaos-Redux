@@ -1,6 +1,6 @@
 # Event 013 Natural Disasters visual asset audit
 
-> Disposition, 2026-07-12: superseded as a historical gap inventory after implementation. At the time of the completion tranche, every accepted static, animated, achievement, report/news, abnormal-GUI, and six-role super-event identity had source, processed, final DDS, manifest, registration, and live-reference evidence. The current working tree retains the registered live assets but deletes the tracked `docs/assets/013_natural_disasters/` source archive as part of a concurrent repository-wide retention cleanup. Current closure therefore remains blocked on that external retention decision; use the implementation validation notes for the live-runtime evidence and this file only for historical discovery context.
+> Disposition, 2026-07-26: superseded as a historical gap inventory after implementation. The tracked `docs/assets/013_natural_disasters/` source archive has been restored from the pre-cleanup Event 013 tree, while this file remains useful for its dated discovery notes and earlier coverage observations. Use the retention manifest and implementation validation notes for current runtime and provenance evidence.
 
 Audit date: 2026-07-09
 
@@ -26,7 +26,7 @@ The accepted source-of-truth map says Parts 1 through 10 remain authoritative. W
 
 ## Executive conclusion
 
-The repository contains a substantial and mostly usable static-art library, but the Event 013 visual package is **not accepted-spec complete**.
+The repository contained a substantial but incomplete static-art library at the time of this historical audit. Later implementation passes produced and wired the accepted live package, and the source archive is now retained again.
 
 Measured current package:
 

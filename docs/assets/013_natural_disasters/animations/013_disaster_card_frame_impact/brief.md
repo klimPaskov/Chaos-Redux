@@ -1,0 +1,27 @@
+# 013 disaster card frame impact animation brief
+
+- Asset name: `013_disaster_card_frame_impact`.
+- In-game use: impact-pending and immediate-aftermath border for an abnormal-disaster card.
+- Gameplay surface: Event 013 abnormal scripted GUI, left hazard stack and selected-card detail state.
+- State: `impact_pending` or the first impact-resolved refresh; decorative/state-driven and non-interactive.
+- Target frame size: `540x88`.
+- Frame count: `10`.
+- Horizontal sheet size: `5400x88`.
+- Static sprite: `GFX_013_disaster_card_frame_impact_static`.
+- Animated sprite: `GFX_013_disaster_card_frame_impact_animated`.
+- Animation rate: `11 fps`.
+- Looping: `yes` while impact state remains active.
+- `play_on_show`: `yes`.
+- Anchor: center.
+- Static fallback frame: processed frame `005`, immediate aftermath with a strong but readable damaged rim.
+- Subject type: symbolic UI-only scorched industrial frame.
+- Source mode: built-in `image_gen`; frames `000`-`003`, `004`-`007`, and `008`-`009` are distinct cells from atlases A, B, and C. Exact prompts and cell provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9 abnormal GUI spec; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla `interface/alerts.gfx` and `interface/alerts.gui`; existing Event 013 auxiliary animation contact sheets.
+- Reference-pack note: the skill-listed decision reference directory is absent in this checkout; available Event 013 and vanilla UI art were used instead.
+- Package sheet PNG/DDS: `sheets/013_disaster_card_frame_impact_sheet.png` and `sheets/013_disaster_card_frame_impact_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_disaster_card_frame_impact_static.png` and `sheets/013_disaster_card_frame_impact_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_impact_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_impact_static.dds`.
+- Review-only GIF/contact: `previews/013_disaster_card_frame_impact_preview.gif` and `previews/013_disaster_card_frame_impact_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_card_frame_impact`.

@@ -1,0 +1,27 @@
+# 013 disaster card frame warning animation brief
+
+- Asset name: `013_disaster_card_frame_warning`
+- In-game use: warning-window border for an active abnormal-disaster card.
+- Gameplay surface: Event 013 abnormal scripted GUI, left hazard stack and selected-card detail state.
+- State: `warning_window`; decorative/state-driven and non-interactive.
+- Target frame size: `540x88`.
+- Frame count: `8`.
+- Horizontal sheet size: `4320x88`.
+- Static sprite: `GFX_013_disaster_card_frame_warning_static`.
+- Animated sprite: `GFX_013_disaster_card_frame_warning_animated`.
+- Animation rate: `10 fps`.
+- Looping: `yes`.
+- `play_on_show`: `yes`.
+- Anchor: center.
+- Static fallback frame: processed frame `003`, the fully readable warning rim.
+- Subject type: symbolic UI-only period civil-defense frame.
+- Source mode: built-in `image_gen`; frames `000`-`003` are distinct atlas-A cells and frames `004`-`007` are distinct atlas-B cells. Exact prompts and cell provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9 abnormal GUI spec; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla `interface/alerts.gfx` and `interface/alerts.gui`; existing Event 013 auxiliary animation contact sheets.
+- Reference-pack note: the skill-listed `.agents/skills/chaos-redux-event-assets/assets/decisions` directory is not present in this checkout, so existing Event 013 and vanilla UI art were used as the closest available references.
+- Package sheet PNG/DDS: `sheets/013_disaster_card_frame_warning_sheet.png` and `sheets/013_disaster_card_frame_warning_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_disaster_card_frame_warning_static.png` and `sheets/013_disaster_card_frame_warning_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_warning_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_disaster_card_frame_warning_static.dds`.
+- Review-only GIF/contact: `previews/013_disaster_card_frame_warning_preview.gif` and `previews/013_disaster_card_frame_warning_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_card_frame_warning`.

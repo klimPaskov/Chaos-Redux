@@ -1,0 +1,26 @@
+# 013 rupture wave overlay animation brief
+
+- Asset name: `013_rupture_wave_overlay`.
+- In-game use: uneven seismic ring pulse across the abnormal map plate.
+- Gameplay surface: `rupture_wave_layer` in the Event 013 abnormal scripted GUI.
+- State: whole-earth rupture active; decorative/state-driven and non-interactive.
+- Target frame size: `560x130`.
+- Frame count: `12`.
+- Horizontal sheet size: `6720x130`.
+- Static sprite: `GFX_013_rupture_wave_static`.
+- Animated sprite: `GFX_013_rupture_wave_sheet` (accepted Part 9 name; define it as `frameAnimatedSpriteType`).
+- Animation rate: `8 fps`.
+- Looping: `yes` for the persistent active layer.
+- `play_on_show`: `yes`.
+- Anchor: center.
+- Static fallback frame: processed frame `005`, peak readable rupture wave.
+- Subject type: symbolic UI-only scientific hazard overlay.
+- Source mode: built-in `image_gen`; frames are distinct rows across three generated four-row atlases. Exact prompts and row provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla `interface/mapicons.gfx`; existing Event 013 abnormal auxiliary contacts.
+- Package sheet PNG/DDS: `sheets/013_rupture_wave_overlay_sheet.png` and `sheets/013_rupture_wave_overlay_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_rupture_wave_overlay_static.png` and `sheets/013_rupture_wave_overlay_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_rupture_wave_overlay_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_rupture_wave_overlay_static.dds`.
+- Review-only GIF/contact: `previews/013_rupture_wave_overlay_preview.gif` and `previews/013_rupture_wave_overlay_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_rupture_wave_layer`.

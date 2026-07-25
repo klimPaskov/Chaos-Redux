@@ -1,0 +1,26 @@
+# 013 tsunami path ribbon animation brief
+
+- Asset name: `013_tsunami_path_ribbon`.
+- In-game use: coastward wave-train and arrival-order ribbon.
+- Gameplay surface: `tsunami_train_layer` in the Event 013 abnormal scripted GUI.
+- State: tsunami arrival pending; decorative/state-driven and non-interactive.
+- Target frame size: `520x24`.
+- Frame count: `10`.
+- Horizontal sheet size: `5200x24`.
+- Static sprite: `GFX_013_tsunami_train_static`.
+- Animated sprite: `GFX_013_tsunami_train_sheet` (accepted Part 9 name; define it as `frameAnimatedSpriteType`).
+- Animation rate: `8 fps`.
+- Looping: `yes` while arrival is pending.
+- `play_on_show`: `yes`.
+- Anchor: center; coastline marker remains fixed at far right.
+- Static fallback frame: processed frame `005`, first coast arrival.
+- Subject type: symbolic UI-only naval-chart ribbon.
+- Source mode: built-in `image_gen`; frames `000`-`004` and `005`-`009` are distinct rows from atlases A and B. Exact prompts and row provenance are in `notes/generation_provenance.md`.
+- References inspected: Event 013 Part 9; Event 013 asset audit; offline Graphical Asset, Interface, and Scripted GUI wiki pages; vanilla map-icon sprite example; existing Event 013 tsunami countdown contact.
+- Package sheet PNG/DDS: `sheets/013_tsunami_path_ribbon_sheet.png` and `sheets/013_tsunami_path_ribbon_sheet.dds`.
+- Package static PNG/DDS: `sheets/013_tsunami_path_ribbon_static.png` and `sheets/013_tsunami_path_ribbon_static.dds`.
+- Final sheet DDS: `gfx/interface/animated/013_natural_disasters/013_tsunami_path_ribbon_sheet.dds`.
+- Final static DDS: `gfx/interface/animated/013_natural_disasters/013_tsunami_path_ribbon_static.dds`.
+- Review-only GIF/contact: `previews/013_tsunami_path_ribbon_preview.gif` and `previews/013_tsunami_path_ribbon_contact.png`.
+- Target `.gfx`: `interface/013_natural_disasters.gfx`.
+- Target `.gui`: `interface/013_natural_disasters.gui`, proposed element `natural_disaster_tsunami_train_layer`.

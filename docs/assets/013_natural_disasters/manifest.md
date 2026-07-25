@@ -1,10 +1,10 @@
 # Event 013 Natural Disasters asset retention manifest
 
-Status: runtime package verified; source archive incomplete.
+Status: runtime package and source archive verified.
 
 Audit date: 2026-07-26.
 
-This manifest records the authoritative live files and the remaining provenance gap for Event 013. It does not claim that deleted source masters have been restored.
+This manifest records the authoritative live files and the retained source and provenance package for Event 013.
 
 ## Retention state
 
@@ -19,7 +19,7 @@ This manifest records the authoritative live files and the remaining provenance 
 | Super-event images | Present | `gfx/super_events/013_natural_disasters/` | Six slots are registered in `interface/chaosx_super_events.gfx`. |
 | Achievement icons | Present | `gfx/achievements/` | Event 013 achievement states are registered in `interface/chaosx_achievements.gfx`. |
 | Super-event audio | Present | `music/013_natural_disasters/`, `sound/013_natural_disasters/` | Six OGG/WAV pairs are registered for slots 67-72; provenance and uniqueness are documented in `docs/super_events/013_natural_disasters_super_event_audio_production.md`. |
-| Source and processed masters | Missing | `docs/assets/013_natural_disasters/` | The former 1,035-file archive was removed by commit `60853561d`; source frames, source PNGs, previews, build metadata, and the former GFX handoff are not present in the current tree. |
+| Source and processed masters | Present | `docs/assets/013_natural_disasters/` | The retained archive contains 1,035 files covering source frames, processed frames, source and processed PNGs, DDS packages, previews, build metadata, prompts, audio analysis, and the GFX handoff. |
 
 ## Live animation pairs
 
@@ -42,11 +42,11 @@ The accepted Event 013 GUI uses frame-sheet animation with static fallbacks. The
 ## Provenance and handoff references
 
 - `docs/events/013_natural_disasters.md` — runtime wiring and player-facing asset ownership.
-- `docs/plans/013_natural_disasters_plans/013_asset_audit.md` — accepted package audit and unresolved archive note.
+- `docs/plans/013_natural_disasters_plans/013_asset_audit.md` — accepted package audit and restored archive disposition.
 - `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-10_event013_static_asset_completion_handoff.md` — static identity and registration handoff.
 - `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-10_event013_abnormal_animation_asset_handoff.md` — frame-sheet/static fallback handoff.
 - `docs/super_events/013_natural_disasters_super_event_audio_production.md` — source, rights, edit, hash, and uniqueness evidence for the six audio tracks.
 
-## Required closure action
+## Retention verification
 
-The source archive remains an explicit blocker for full asset-provenance completion. Restore the deleted archive or obtain an approved repository-wide retention decision before changing this manifest's source-master status to `Present`.
+The source archive was restored from the pre-cleanup Event 013 tree at commit `60853561d^` without overwriting this retention manifest. Runtime-facing DDS, GFX, GUI, localisation, and gameplay files remain unchanged by the restoration.

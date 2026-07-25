@@ -53,6 +53,6 @@ Part 10's port-lifeline cooperation leg has one explicit engine constraint: the 
 
 ## Simplifications, omissions, and blockers
 
-None within the original bounded deadline/transfer re-audit. In the broader relief surface, the port-lifeline cooperation leg uses positive opinion because no supported bilateral live resource-trade relationship trigger is available. This verdict does not replace the broader Event 013 completion audit or its queued live-engine scenario matrix and source-archive blocker.
+None within the original bounded deadline/transfer re-audit. In the broader relief surface, the port-lifeline cooperation leg uses positive opinion because no supported bilateral live resource-trade relationship trigger is available. This verdict does not replace the broader Event 013 completion audit or its queued live-engine scenario matrix.
 
 Skills used: `chaos-redux-subagents`, `chaos-redux-events`, `hoi4-decisions-missions`, and `chaos-redux-improvement-loop`. No skill was created or changed.
