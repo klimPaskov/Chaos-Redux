@@ -205,7 +205,7 @@ SCN-007 `Disaster Barrage` calls the same API once from the selected country. It
 
 ## Icon and sprite wiring
 
-All Event 013 art uses stable sprite names. Runtime DDS files and registrations are the authoritative live wiring. The former source-art package under `docs/assets/013_natural_disasters/` is absent from this working tree as part of the broader concurrent documentation-asset cleanup; restoring that archival package is explicitly queued rather than silently treating runtime files as source provenance.
+All Event 013 art uses stable sprite names. Runtime DDS files and registrations are the authoritative live wiring. The former source-art package under `docs/assets/013_natural_disasters/` was removed by the broader concurrent documentation-asset cleanup; the current `manifest.md` records the retained runtime package and the missing source/processed provenance, and restoring that archival package remains explicitly queued.
 
 Gameplay registrations are grouped as follows:
 

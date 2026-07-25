@@ -17,7 +17,7 @@ This architecture follows:
 
 The design has four hard guarantees:
 
-1. Every accepted top-level public call creates exactly one disaster sequence. An accepted child call joins exactly one live parent sequence.
+1. Every accepted top-level public call creates exactly one disaster sequence. Internal physical continuation may join exactly one live parent sequence, but that continuation is not a public caller contract.
 2. Every top-level sequence is associated with exactly one history row. Event 013-owned sequences write exactly one Event 013 row. A verified bridge may attach to its one existing source-event row, but it never writes a second row.
 3. An affected country receives its requested report and aftermath activation even when another event calls the API and returns before delayed work runs.
 4. No Event 013 maintenance path uses `on_daily`, `on_weekly`, `on_monthly`, or another whole-world periodic country iteration.
@@ -113,7 +113,7 @@ All scalar inputs are temporary variables and are therefore unscoped. Callers mu
 | `natural_disaster_call_damage_override_mode` | proposed `natural_disaster_override_mode.*` | `default` | Default, multiply, replace, or suppress building damage calculation |
 | `natural_disaster_call_damage_scale` | fixed point | `1.0` | Multiplier or replacement input according to override mode |
 | `natural_disaster_call_log_mode` | `natural_disaster_log_mode.*` | `event_013_history` | Event system, direct Event 013 history, scenario history, or an internal no-write mode |
-| `natural_disaster_call_parent_sequence_id` | sequence id | `0` | Optional Event 013 parent. Nonzero joins the existing sequence and never opens a new history row |
+| `natural_disaster_call_parent_sequence_id` | sequence id | `0` | Rejected public input. The live wrapper does not accept a generic parent-sequence input; internal continuation uses a separately validated private override. |
 
 The wrapper must normalize omitted inputs explicitly. It must not depend on a temporary variable accidentally surviving a prior scripted effect call.
 
@@ -581,7 +581,7 @@ News cooldown is tracked by family, not by report. It must not suppress the affe
 
 ### Follow-ups
 
-Family follow-up jobs join the parent sequence using `natural_disaster_call_parent_sequence_id`. They increment and decrement the parent's pending follow-up counter and never write another Event 013 history row.
+Family follow-up jobs join the parent sequence through a separately validated internal continuation override. They increment and decrement the parent's pending follow-up counter and never write another Event 013 history row. A generic caller-supplied `natural_disaster_call_parent_sequence_id` is not part of the live API.
 
 Family chain examples include aftershock, tsunami, famine, disease, wildfire spread, refugee pressure, supply collapse, lahar, and political shock. A follow-up may call another event only through an explicit bridge contract. If that receiving event has no live implementation, keep the follow-up inside Event 013 rather than invoking a placeholder.
 
@@ -920,11 +920,13 @@ call_natural_disaster = yes
 
 This is only the scripted bridge shape. It is not permission to edit Event 099 during the Event 013 core implementation tranche.
 
-### Child follow-up joining one history row
+### Historical child-follow-up sketch
 
 ```text
 set_temp_variable = {
-	natural_disaster_call_parent_sequence_id = natural_disaster_current_sequence_id
+	# Rejected public shape; live code uses a private continuation override.
+	natural_disaster_call_sequence_id_override_supplied = 1
+	natural_disaster_call_sequence_id_override = natural_disaster_current_sequence_id
 }
 set_temp_variable = {
 	natural_disaster_call_family = constant:natural_disaster_family.tsunami
@@ -938,7 +940,7 @@ set_temp_variable = {
 call_natural_disaster = yes
 ```
 
-The parent id must refer to a live sequence. A stale id rejects the child and decrements no parent counter.
+The private continuation id must refer to a live sequence. A stale id rejects the continuation and decrements no parent counter. External callers must not set this override.
 
 ## Event namespace allocation
 
