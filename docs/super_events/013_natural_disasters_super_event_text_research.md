@@ -2,7 +2,7 @@
 
 > Implementation closure, 2026-07-10: this file preserves the first four-role research snapshot. The accepted Part 6 six-role package governs the implementation. Slots 67-72 now have sourced quotes, cultural remarks, distinct images, unique audio, strict trigger gates, and final localisation. The earlier recommendation against a delayed-tsunami super-event and the blocker lists below are historical; `docs/super_events/013_natural_disasters_super_event_research_addendum.md` supplies the accepted two-role correction, and the live package only admits a delayed multi-coast major chain.
 
-> Asset archive note, 2026-07-11: source/package paths under `docs/assets/013_natural_disasters/` below describe the committed production archive, which is absent from this working tree under the broader concurrent `docs/assets/` cleanup. The six final 457×328 DDS files remain live under `gfx/super_events/013_natural_disasters/` and registered in `interface/chaosx_super_events.gfx`; audio provenance is preserved in `013_natural_disasters_super_event_audio_production.md`.
+> Asset archive note, 2026-07-26: source/package paths under `docs/assets/013_natural_disasters/` below describe the retained production archive. The six final 457×328 DDS files remain live under `gfx/super_events/013_natural_disasters/` and registered in `interface/chaosx_super_events.gfx`; audio provenance is preserved in `013_natural_disasters_super_event_audio_production.md`.
 
 ## Scope and status
 

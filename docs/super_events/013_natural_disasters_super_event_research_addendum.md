@@ -2,7 +2,7 @@
 
 > Implementation closure, 2026-07-10: both accepted addendum roles are implemented. Slot 71 is the once-only natural Evolution III reveal, and slot 72 requires a delayed major tsunami arrival with a qualifying origin, at least two coastal country groups, and a large path. Their unique images, audio, quotations, cultural remarks, registrations, and provenance records are complete. Production blockers below describe the pre-implementation research snapshot.
 
-> Asset archive note, 2026-07-11: source/package paths under `docs/assets/013_natural_disasters/` below refer to the committed production archive removed from this working tree by the broader concurrent `docs/assets/` cleanup. The live slot 71-72 DDS, OGG, WAV, registrations, localisation, triggers, and text/audio provenance remain present.
+> Asset archive note, 2026-07-26: source/package paths under `docs/assets/013_natural_disasters/` below refer to the retained production archive. The live slot 71-72 DDS, OGG, WAV, registrations, localisation, triggers, and text/audio provenance remain present.
 
 Research date: 2026-07-10
 
@@ -106,7 +106,7 @@ gfx/super_events/013_natural_disasters/super_event_nd_abnormal_disaster_age.dds
 
 Proposed sprite: `GFX_super_event_nd_abnormal_disaster_age` in `interface/chaosx_super_events.gfx` after a slot is assigned. The eventual manifest must record the exact prompt, generated source, processed preview, 32-bit DDS conversion, and status. No third-party image license or public-domain claim should be attached to generated art.
 
-The reference folder named by the current asset skill, `.agents/skills/chaos-redux-event-assets/assets/super_event_images`, is not present in this checkout. That does not justify a fallback. The producing asset pass should compare against the current Event 013 `457x328` super-event images and the active Chaos Redux super-event UI before generation.
+The canonical reference folder `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event` is available in this checkout. The producing asset pass should compare against its per-type contact sheet, the current Event 013 `457x328` super-event images, and the active Chaos Redux super-event UI before generation.
 
 ### Audio candidate and rights
 

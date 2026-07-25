@@ -29,4 +29,4 @@ Unused Soviet Collapse audio IDs 16 and 19-27 and their OGG/WAV files, registrat
 
 ## Archival note
 
-The untouched source recordings and analysis artifacts were committed with the production record in commit `453f9d2f`. The broader concurrent `docs/assets/` cleanup currently removes that binary source archive from the working tree. This document preserves canonical source pages, rights, hashes, edits, loudness, final paths, and collision evidence; restoring the binary source archive remains explicitly queued pending the repository-wide asset-retention decision.
+The untouched source recordings and analysis artifacts were committed with the production record in commit `453f9d2f` and are retained under `docs/assets/013_natural_disasters/`. The 1,035-file source/provenance archive was restored on 2026-07-26 without changing runtime-facing audio or shared super-event UI files. This document preserves canonical source pages, rights, hashes, edits, loudness, final paths, and collision evidence.
