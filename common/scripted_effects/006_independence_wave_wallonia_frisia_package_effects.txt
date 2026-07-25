@@ -532,6 +532,168 @@ independence_wave_afx_focus_prepare_low_countries_dossier = {
 }
 
 # ---------------------------------------------------------------------------
+# IW-007 Level 2 focus rewards
+# ---------------------------------------------------------------------------
+
+independence_wave_agx_focus_chart_waterline_authority = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			NOT = { has_country_flag = independence_wave_agx_focus_waterline_authority_charted }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_agx_waterline_security = yes
+		independence_wave_focus_reward_founding_step = yes
+		set_country_flag = independence_wave_agx_focus_waterline_authority_charted
+	}
+}
+
+independence_wave_agx_focus_bind_dikes_pumps_harbors = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			NOT = { has_country_flag = independence_wave_agx_focus_dikes_pumps_harbors_bound }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_agx_waterline_security = yes
+		if = {
+			limit = { has_variable = independence_wave_anchor_state }
+			var:independence_wave_anchor_state = {
+				add_building_construction = {
+					type = infrastructure
+					level = constant:independence_wave_focus_reward.building_level
+					instant_build = yes
+				}
+			}
+		}
+		independence_wave_nwe_apply_administrative_progress = yes
+		set_country_flag = independence_wave_agx_focus_dikes_pumps_harbors_bound
+	}
+}
+
+independence_wave_agx_focus_integrate_coastal_guard = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			NOT = { has_country_flag = independence_wave_agx_focus_coastal_guard_integrated }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+		independence_wave_change_agx_waterline_security = yes
+		army_experience = constant:independence_wave_focus_reward.army_experience
+		add_command_power = constant:independence_wave_focus_reward.command_power
+		independence_wave_nwe_apply_security_progress = yes
+		set_country_flag = independence_wave_agx_focus_coastal_guard_integrated
+	}
+}
+
+independence_wave_agx_focus_codify_water_board_government = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			has_independence_wave_agx_route_government = yes
+			NOT = { has_country_flag = independence_wave_agx_focus_water_board_government_codified }
+		}
+		if = {
+			limit = { has_independence_wave_constitutional_route = yes }
+			set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+			set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+			independence_wave_change_agx_waterline_security = yes
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		else_if = {
+			limit = { has_independence_wave_popular_council_route = yes }
+			set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			independence_wave_change_agx_waterline_security = yes
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		else_if = {
+			limit = { has_independence_wave_patron_client_route = yes }
+			set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.standard_gain }
+			independence_wave_change_agx_waterline_security = yes
+			add_stability = constant:independence_wave_nwe_package_focus.stability_loss
+			independence_wave_nwe_apply_diplomatic_progress = yes
+		}
+		set_country_flag = independence_wave_agx_focus_water_board_government_codified
+	}
+}
+
+independence_wave_agx_focus_settle_water_board_succession = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			NOT = { has_country_flag = independence_wave_agx_focus_water_board_succession_settled }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_agx_waterline_security = yes
+		if = {
+			limit = {
+				has_independence_wave_living_former_host = yes
+				has_country_flag = independence_wave_agx_host_records_settled
+			}
+			add_war_support = constant:independence_wave_nwe_package_focus.war_support_loss
+			independence_wave_focus_reward_public_settlement = yes
+		}
+		else = {
+			independence_wave_nwe_apply_administrative_progress = yes
+		}
+		set_country_flag = independence_wave_agx_focus_water_board_succession_settled
+	}
+}
+
+independence_wave_agx_focus_open_north_sea_network_office = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			has_country_flag = independence_wave_network_member
+			NOT = { has_country_flag = independence_wave_agx_focus_north_sea_network_office_open }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_agx_waterline_security = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_nwe_apply_diplomatic_progress = yes
+		set_country_flag = independence_wave_agx_focus_north_sea_network_office_open
+	}
+}
+
+independence_wave_agx_focus_mandate_north_sea_coastal_conference = {
+	if = {
+		limit = {
+			has_independence_wave_agx_north_sea_conference_foundation = yes
+			NOT = { has_country_flag = independence_wave_agx_north_sea_conference_authorized }
+		}
+		set_country_flag = independence_wave_agx_north_sea_conference_authorized
+		independence_wave_nwe_apply_diplomatic_progress = yes
+		set_country_flag = independence_wave_agx_focus_north_sea_conference_mandated
+	}
+}
+
+independence_wave_agx_focus_prepare_low_countries_dossier = {
+	if = {
+		limit = {
+			is_independence_wave_agx_package = yes
+			has_country_flag = independence_wave_agx_north_sea_conference_complete
+			NOT = { has_country_flag = independence_wave_agx_form03_delegation_prepared }
+		}
+		set_temp_variable = { independence_wave_agx_waterline_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		set_temp_variable = { independence_wave_agx_coastal_security_delta = constant:independence_wave_nwe_package_pressure.minor_gain }
+		independence_wave_change_agx_waterline_security = yes
+		set_country_flag = independence_wave_agx_form03_delegation_prepared
+		set_country_flag = independence_wave_unlock_formable_discovery
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
 # IW-006 player-facing country incident scheduling
 # ---------------------------------------------------------------------------
 
@@ -816,6 +978,15 @@ independence_wave_cleanup_iw_007_frisia = {
 		clr_country_flag = independence_wave_agx_dike_guards_trained
 		clr_country_flag = independence_wave_agx_host_records_settled
 		clr_country_flag = independence_wave_agx_north_sea_conference_complete
+		clr_country_flag = independence_wave_agx_focus_waterline_authority_charted
+		clr_country_flag = independence_wave_agx_focus_dikes_pumps_harbors_bound
+		clr_country_flag = independence_wave_agx_focus_coastal_guard_integrated
+		clr_country_flag = independence_wave_agx_focus_water_board_government_codified
+		clr_country_flag = independence_wave_agx_focus_water_board_succession_settled
+		clr_country_flag = independence_wave_agx_focus_north_sea_network_office_open
+		clr_country_flag = independence_wave_agx_focus_north_sea_conference_mandated
+		clr_country_flag = independence_wave_agx_north_sea_conference_authorized
+		clr_country_flag = independence_wave_agx_form03_delegation_prepared
 		clr_country_flag = independence_wave_agx_ai_profile
 		clr_country_flag = independence_wave_low_countries_federation_candidate
 		clr_country_flag = independence_wave_north_sea_coastal_link
