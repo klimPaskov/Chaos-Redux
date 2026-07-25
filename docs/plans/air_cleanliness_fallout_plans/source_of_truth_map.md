@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout source of truth map
 
-Status: current implementation map, reconciled 2026-07-25. Fallout remains incomplete and dormant where the proof ledger says so.
+Status: current implementation map, reconciled 2026-07-26. Fallout remains incomplete and dormant where the proof ledger says so.
 
 ## Authority order
 
@@ -65,8 +65,8 @@ The current reviewed ordinary pilot extends through Ashline Firebreak at candida
 - `FALLOUT_MARKET_UNDER_VIADUCT_CHAIN_PROOF.md` records the twenty-eighth Market Under the Viaduct candidate, four transport-market policies, deterministic state selection, delayed result, civic review callback, Deaths route, Event Log payloads, dedicated report art, and its bounded engine-inspector result.
 - `FALLOUT_COUNTERFEIT_ANTIBIOTICS_CHAIN_PROOF.md` records the twenty-ninth Counterfeit Antibiotics candidate, four medicine-provenance policies, deterministic state selection, delayed result, supplier review callback, Deaths route, Event Log payloads, dedicated report art, and its dormant runtime boundary.
 
-The historical pilot-count wording above is superseded by the Dead City Permit, Manual Nobody Read, and Working Machine corrections.
-The current reviewed total is thirty-one rows and 289 defined blocks, all dormant and outside release-floor credit.
+The historical pilot-count wording above is superseded by the Dead City Permit, Manual Nobody Read, Working Machine, and later reviewed-chain corrections.
+The current reviewed total is fifty-two rows and 446 defined blocks, all dormant and outside release-floor credit.
 
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.

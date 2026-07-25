@@ -8,10 +8,10 @@ The activation flags `fallout_event_scheduler_activation_approved` and `fallout_
 
 ## Accepted numerical-contract tranche
 
-The current count supersedes the historical opening paragraph: forty-eight
-reviewed global-survival rows cover event blocks through `526`, with `408`
-defined blocks and `0 of 660` countable release-floor blocks. Black Start is
-the latest dormant row and has no activation setter.
+The current count supersedes this historical tranche paragraph: fifty-two
+reviewed global-survival rows cover event blocks through `564`, with `446`
+defined blocks and `0 of 660` countable release-floor blocks. Ashline Firebreak
+is the latest dormant row and has no activation setter.
 
 The user approved `FALLOUT_EVENT_SCHEDULER_NUMERICAL_CONTRACT_PROPOSAL.md` on 2026-07-18. The accepted values are promoted into the source specs and implemented as typed script constants and dormant scheduler receipts.
 
