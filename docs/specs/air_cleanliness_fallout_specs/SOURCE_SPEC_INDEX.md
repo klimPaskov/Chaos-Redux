@@ -43,6 +43,7 @@
 39. `specs/43_reviewed_global_survival_desalination_night_shift.md`
 40. `specs/44_reviewed_global_survival_ice_melt_rations.md`
 41. `specs/45_reviewed_global_survival_ravine_water_chemist.md`
+42. `specs/46_reviewed_global_survival_men_at_km12.md`
 
 
 ## Accepted baseline specs included here
@@ -105,6 +106,7 @@
 - `specs/43_reviewed_global_survival_desalination_night_shift.md`
 - `specs/44_reviewed_global_survival_ice_melt_rations.md`
 - `specs/45_reviewed_global_survival_ravine_water_chemist.md`
+- `specs/46_reviewed_global_survival_men_at_km12.md`
 
 ## Matrices
 

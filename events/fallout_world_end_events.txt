@@ -16693,3 +16693,119 @@ country_event = {
 	trigger = { fallout_event_499_cleanup_can_enter = yes }
 	immediate = { fallout_event_499_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.506
+	title = chaosx.fallout.506.t
+	desc = chaosx.fallout.506.intro
+	picture = GFX_report_event_fallout_men_at_km12
+	is_triggered_only = yes
+	trigger = { fallout_event_506_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.506.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_506_cost.pay_checkpoint_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_506_cost.pay_checkpoint_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_506_cost.pay_checkpoint_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.pay_checkpoint } fallout_event_506_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.506.a.tt
+	}
+	option = {
+		name = chaosx.fallout.506.b
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_506_cost.negotiate_water_pass_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_506_cost.negotiate_water_pass_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.negotiate_water_pass } fallout_event_506_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.506.b.tt
+	}
+	option = {
+		name = chaosx.fallout.506.c
+		trigger = {
+			OR = { has_government = communism has_government = fascism }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_506_cost.attack_checkpoint_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_506_cost.attack_checkpoint_equipment compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.attack_checkpoint } fallout_event_506_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.506.c.tt
+	}
+	option = {
+		name = chaosx.fallout.506.d
+		trigger = {
+			OR = { has_government = neutrality has_government = fascism has_government = democratic }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_506_cost.hire_guard_band_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_506_cost.hire_guard_band_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_506_cost.hire_guard_band_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.hire_guard_band } fallout_event_506_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.506.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.507
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_506_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_506_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.508
+	title = chaosx.fallout.506.t
+	desc = { text = chaosx.fallout.508.pay_checkpoint.success.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.pay_checkpoint } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.508.pay_checkpoint.partial.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.pay_checkpoint } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.508.pay_checkpoint.failure.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.pay_checkpoint } } }
+	desc = { text = chaosx.fallout.508.negotiate_water_pass.success.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.negotiate_water_pass } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.508.negotiate_water_pass.partial.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.negotiate_water_pass } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.508.negotiate_water_pass.failure.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.negotiate_water_pass } } }
+	desc = { text = chaosx.fallout.508.attack_checkpoint.success.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.attack_checkpoint } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.508.attack_checkpoint.partial.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.attack_checkpoint } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.508.attack_checkpoint.failure.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.attack_checkpoint } } }
+	desc = { text = chaosx.fallout.508.hire_guard_band.success.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.hire_guard_band } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.508.hire_guard_band.partial.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.hire_guard_band } check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.508.hire_guard_band.failure.d trigger = { check_variable = { fallout_event_506_selected_branch = constant:fallout_event_506_branch.hire_guard_band } } }
+	picture = GFX_report_event_fallout_men_at_km12
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_506_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.men_at_km12_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.508.a hidden_effect = { fallout_event_506_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.508.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.509
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_506_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.men_at_km12_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_506_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.510
+	title = chaosx.fallout.510.t
+	desc = { text = chaosx.fallout.510.success.d trigger = { check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.510.partial.d trigger = { check_variable = { fallout_event_506_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.510.failure.d
+	picture = GFX_report_event_fallout_men_at_km12
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_506_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.men_at_km12_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_506_registry_is_current = yes }
+	option = { name = chaosx.fallout.510.a hidden_effect = { fallout_event_506_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.510.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.511
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_506_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.men_at_km12_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_506_registry_is_current = yes }
+	immediate = { fallout_event_506_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.512
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_506_cleanup_can_enter = yes }
+	immediate = { fallout_event_506_cleanup = yes }
+}

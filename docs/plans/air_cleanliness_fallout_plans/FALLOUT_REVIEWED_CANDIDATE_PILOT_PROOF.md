@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-five
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-six
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -283,6 +283,12 @@ It uses country candidate id `352`, transaction key `710024`, route `7124`, and 
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Men at Kilometer Twelve correction
+
+The Men at Kilometer Twelve is the forty-sixth reviewed ordinary candidate. It uses candidate id `506`, transaction `710046`, route `7146`, event tokens `506` through `512`, and history `9151`.
+
+Its producer initializes durable checkpoint trust, raider strength, and corridor memory, then selects the lowest owned state with a current produced Air Winter receipt, surviving population, exposed grade, and valid identity and resource rows. The row carries four government-aware branches, state Supply Access, military readiness, Deaths-backed failure, delayed result and callback receipts, dedicated art, Event Log payloads, and exact cleanup. It remains dormant until both scheduler activation flags are intentionally set after the full activation audit.
 
 ## The Ravine Water Chemist correction
 
