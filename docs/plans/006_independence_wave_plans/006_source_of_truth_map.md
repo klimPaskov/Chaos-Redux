@@ -272,9 +272,12 @@ treatment family. Processing or pixel equality does not override either gate.
   Its production record preserves the exclusion of the post-1968/1973 modern
   Assyrian flag. Art completion does not open the hidden achievement or its
   proof writer.
-- ASSET-040 through ASSET-043 are real animation tasks. They require authored
-  source frames, static fallbacks, manifests, contact sheets, previews, and GUI
-  handoff. Transform-only animation is not acceptable.
+- ASSET-040 through ASSET-043 now have authored source frames, static fallbacks,
+  manifests, contact sheets, previews, runtime DDS files, and parent-owned GUI
+  handoff under `docs/assets/006_independence_wave/animations/`. The persistent
+  Statehood Ledger selects semantic state frames through the centralized mapping;
+  the free-running animated siblings remain transition-only and do not drive the
+  persistent readout.
 - FORM-06 through FORM-47 flags and emblems remain blocked on final identities,
   tags, motifs, palettes, routes, and consumers. FORM-48's HBX/PFX flag package
   is audited and promoted; HAW/FSM intentionally retain vanilla flags.
