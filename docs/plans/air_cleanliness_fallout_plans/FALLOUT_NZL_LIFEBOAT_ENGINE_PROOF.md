@@ -2,13 +2,13 @@
 
 ## Status
 
-This record covers the dormant New Zealand Lifeboat State pilot. It does not authorize package activation. A generation-bound producer now exists for the Samoa and Aotearoa conflict dispositions, but the live Fallout allocator still has no approved caller or materializer that can authenticate the exact state transfer. Vanilla New Zealand AI plan retirement is also unresolved.
+This record covers the dormant New Zealand Lifeboat State pilot. It does not authorize global allocation or scheduler activation. A generation-bound disposition producer and a B7-only existing-tag conversion caller now exist. The caller is fail-closed to an AI NZL tag that already owns and controls the exact five-state footprint, so it does not create a tag or transfer states. The active Fallout allocator still has no approved general materializer, and vanilla New Zealand AI plan retirement is unresolved.
 
 HOI4 was not run. Runtime persistence and multiplayer observation remain unobserved. A read-only offline GUI inspection was attempted for `events_log_popup_window`, but the installed inspection service closed its transport before returning a result. No GUI artifact is claimed for that surface.
 
 ## Dormant activation boundary
 
-`fallout_nzl_activate_lifeboat_package` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. A repository search outside documentation returns that definition and no caller.
+`fallout_nzl_activate_lifeboat_package` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. The only caller is the dormant B7 vertical slice in `common/scripted_effects/fallout_successor_b7_effects.txt`, after the existing-tag assignment and receipt checks pass. No on action, event, decision, scheduler activation, or public scenario calls it.
 
 The entry effect requires all of these current-generation receipts:
 
@@ -24,11 +24,11 @@ Activation resets only Fallout NZL-owned runtime state. It does not write assign
 
 ## Conflict-disposition producer boundary
 
-`fallout_nzl_record_conflict_dispositions` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. It is a country-scope producer with no caller outside its definition. The producer can write only after the global phase is `survivor_allocation`, the successor conflict ledger is current, the NZL assignment owns and controls states 284, 1079, 723, 1080, and 1081, and state 726 is neither owned nor controlled by NZL.
+`fallout_nzl_record_conflict_dispositions` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. The only caller is the guarded B7 existing-tag assignment producer. It can write only after the global phase is `survivor_allocation`, the successor conflict ledger is current, the NZL assignment owns and controls states 284, 1079, 723, 1080, and 1081, and state 726 is neither owned nor controlled by NZL.
 
 The Samoa input passes only when Samoa is absent from the current live conflict array or its resolution receipt is current for the active generation. Every live conflict country is then checked through the array. An Independence Wave package holder must have a current conflict resolution and must not own Wellington or Canterbury. The producer writes the two typed dispositions and their transition-generation receipts atomically inside one guarded block. `fallout_nzl_clear_conflict_dispositions` is a separate allocator reset helper and is not called by package runtime reset.
 
-This producer closes the former missing-definition gap, but it does not prove the live allocator order. No effect currently transfers the exact NZL footprint, authenticates the conflict ledger, calls the producer, or calls `fallout_nzl_activate_lifeboat_package`. The disposition receipts therefore remain dormant and cannot certify NZL readiness.
+The B7 producer authenticates the current inventory, records `converted_existing`, commits one capital and origin row, appends NZL to the assignment arrays, and then calls the existing package loader. This proves only the existing-tag path. It does not prove a general allocator, dynamic materialization, state transfer from other owners, player handoff, native host authority, or runtime save and multiplayer behavior. The disposition receipts remain dormant unless the B7 vertical slice itself is explicitly invoked.
 
 ## State and carrier proof
 
@@ -147,7 +147,7 @@ Event Details reloads by exact history sequence. It does not read later live NZL
 
 The installed official `effects_documentation.md` documents `add_to_array`, `clear_array`, `for_loop_effect`, and `while_loop_effect`. Its `add_to_array` contract states that `index = 0` inserts and shifts older values, which matches shared History ordering. The installed `dynamic_variables_documentation.md` documents the comparable and localisable `date` variable used for exact row dates and `GetDateStringNoHour` display. Repository actor-array precedents prove the established numeric country-scope storage pattern.
 
-Static review confirmed equal append counts across the NZL parallel arrays, balanced script blocks, unique history ids, durable same-generation deduplication, cross-viewer NZL scope, and the separate ordinary-event boundary. No Event 2 mapping, SCN-014 row, manual dispatch, recurring on action, activation caller, or Zombie-owned path was added. Player-facing memory text names Wellington, Auckland, Canterbury, Marlborough, and Otago and contains no implementation-history wording. The final focused audit found no unresolved sea-road or Event Log regression and is recorded in `subagent_handoffs/2026-07-22_fallout_nzl_sea_road_event_log_completion_audit.md`. Numeric scope persistence, save recovery, and multiplayer observation remain unproved without a runtime pass. The attempted offline GUI inspection returned no artifact because the service transport closed.
+Static review confirmed equal append counts across the NZL parallel arrays, balanced script blocks, unique history ids, durable same-generation deduplication, cross-viewer NZL scope, and the separate ordinary-event boundary. No Event 2 mapping, SCN-014 row, manual dispatch, recurring on action, public activation, or Zombie-owned path was added. The dormant B7 vertical slice is the sole static activation caller. Player-facing memory text names Wellington, Auckland, Canterbury, Marlborough, and Otago and contains no implementation-history wording. The final focused audit found no unresolved sea-road or Event Log regression and is recorded in `subagent_handoffs/2026-07-22_fallout_nzl_sea_road_event_log_completion_audit.md`. Numeric scope persistence, save recovery, and multiplayer observation remain unproved without a runtime pass. The attempted offline GUI inspection returned no artifact because the service transport closed.
 
 ## Focus structure proof
 
@@ -189,14 +189,14 @@ Foreign basing is a real bilateral choice. The human external result can grant t
 
 The package has seventy-five NZL Fallout sprite definitions in `interface/fallout_world_end.gfx`. Every defined texture path resolves to a dedicated runtime file. These definitions cover four event reports, three fictional leaders, two completed advisors, twenty-four focus icons, fourteen idea icons, eighteen decision or mission icons, one decision category icon, and nine achievement states. The three cosmetic identities each have large, medium, and small dedicated flags.
 
-The Radio Service Coordinator remains an explicit asset blocker. Its version 10 source passed neither the frozen paper-mean gate nor the frozen bottom-variation gate after ninety-six final candidates. No candidate PNG, review sheet, metadata record, DDS, or sprite definition was accepted. The dormant generated-character block therefore retains one unresolved portrait reference and cannot be reached because the package activation helper has no caller. No fallback portrait is used.
+The Radio Service Coordinator remains an explicit asset blocker. Its version 10 source passed neither the frozen paper-mean gate nor the frozen bottom-variation gate after ninety-six final candidates. No candidate PNG, review sheet, metadata record, DDS, or sprite definition was accepted. The generated-character block retains one unresolved portrait reference. The B7 caller remains dormant and no fallback portrait is used.
 
 The event catalog workbook no longer assigns Fallout to Zombie Event 2. Its Event 2 detail contains only Zombie Apocalypse material. No Fallout event or scenario row was added. SCN-014 remains reserved in design documentation and absent from the live scenario catalog. The export was regenerated after the workbook correction. Dedicated NZL country-memory history and package details are implemented on the shared Event Log surfaces without creating an ordinary Fallout event row.
 
 ## Remaining activation blockers
 
-1. The live conflict ledger does not yet produce the Samoa and Aotearoa disposition receipts.
-2. The live allocator does not yet call the package activation effect.
+1. No active transition caller invokes the dormant B7 vertical slice, and no general allocator materializer transfers an NZL footprint from other owners.
+2. The existing-tag path requires an AI NZL tag with the exact five-state footprint. It does not cover a missing or fragmented NZL tag.
 3. Vanilla NZL alternate AI plans have empty abort blocks. No engine-safe additive override has yet been proved that retires those plans without replacing their pre-Fallout definitions.
 4. The Radio Service Coordinator portrait has no accepted final asset or sprite definition.
 

@@ -105,6 +105,47 @@ fallout_nzl_conflict_dispositions_can_record = {
 	NOT = { fallout_nzl_conflict_dispositions_are_current = yes }
 }
 
+fallout_nzl_existing_tag_conversion_can_commit = {
+	tag = NZL
+	is_ai = yes
+	NOT = { fallout_country_has_live_event_package_ownership = yes }
+	has_country_flag = fallout_live_tag_conflict_recorded
+	has_country_flag = fallout_live_tag_conflict_allocation_pending
+	NOT = { has_country_flag = fallout_live_tag_conflict_resolved }
+	NOT = { has_country_flag = fallout_successor_assignment_committed }
+	NOT = { has_country_flag = fallout_existing_tag_conversion_committed }
+	NOT = { has_country_flag = fallout_nzl_lifeboat_package_active }
+	fallout_successor_allocation_source_inventory_is_current = yes
+	fallout_successor_conflict_ledger_is_current = yes
+	fallout_nzl_has_exact_state_package = yes
+	NOT = { any_owned_state = { fallout_state_has_current_player_reservation = yes } }
+	has_country_flag = fallout_live_tag_conflict_capital_valid
+	has_variable = fallout_live_tag_conflict_capital_state
+	OR = {
+		check_variable = { fallout_live_tag_conflict_capital_state = constant:fallout_nzl_state.wellington }
+		check_variable = { fallout_live_tag_conflict_capital_state = constant:fallout_nzl_state.auckland }
+	}
+	fallout_nzl_conflict_disposition_inputs_are_current = yes
+}
+
+fallout_nzl_existing_tag_conversion_is_current = {
+	tag = NZL
+	has_country_flag = fallout_existing_tag_conversion_committed
+	has_variable = fallout_existing_tag_conversion_generation
+	check_variable = {
+		var = fallout_existing_tag_conversion_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_live_tag_conflict_resolution
+		value = constant:fallout_tag_conflict_resolution.converted_existing
+		compare = equals
+	}
+	fallout_nzl_assignment_identity_is_current = yes
+	fallout_nzl_conflict_dispositions_are_current = yes
+}
+
 fallout_nzl_lifeboat_package_can_activate = {
 	fallout_nzl_assignment_identity_is_current = yes
 	fallout_nzl_has_exact_state_package = yes

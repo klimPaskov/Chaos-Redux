@@ -2,7 +2,7 @@
 
 ## Status
 
-This handoff records a bounded implementation tranche for the dormant New Zealand Lifeboat State pilot. It does not authorize NZL activation and it does not change the Fallout release floor.
+This handoff records a bounded implementation tranche for the dormant New Zealand Lifeboat State pilot. It does not authorize NZL activation and it does not change the Fallout release floor. The producer-only boundary described here is superseded by `fallout_nzl_existing_tag_conversion_2026-07-26.md`, which adds the dormant B7-only existing-tag caller.
 
 ## Changed files
 
