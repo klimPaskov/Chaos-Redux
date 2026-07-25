@@ -384,7 +384,7 @@ No historical independent-Saar commission is claimed, and no advisor, dossier, o
 
 Both IW-010 portrait consumers now satisfy the sourced real-male workflow.
 
-IW-010 remains fail-closed until a fresh country-package audit passes.
+The fresh post-portrait country-package audit passes the completed static wiring and package evidence, but IW-010 remains fail-closed at runtime because `iw_010` is not yet in exact compile-time content attestation.
 
 ## Historical 2026-07-18 BRI portrait disposition
 
