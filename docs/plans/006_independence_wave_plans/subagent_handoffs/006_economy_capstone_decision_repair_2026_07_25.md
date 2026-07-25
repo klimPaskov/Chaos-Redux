@@ -30,7 +30,7 @@ The decision has a 365-day re-enable period and becomes unavailable once capacit
 
 It cancels if the origin becomes inactive, the capstone flag is removed, or the owner loses its capital.
 
-The existing origin reset cleanup explicitly removes the active or cooling decision, so a later origin cannot inherit an in-flight programme or cooldown.
+The existing origin reset cleanup explicitly removes both the active decision and any cooldown, so a later origin cannot inherit an in-flight programme or cooldown.
 
 ## Audit findings
 
@@ -80,7 +80,7 @@ It has no country target and all origin, capital, and resource checks are in `vi
 
 All player-facing name, description, requirement, and effect strings were added in the Event 006 English decision file.
 
-The cancellation and cleanup paths clear the active or cooling decision without firing completion effects.
+The cancellation and cleanup paths clear the active decision; the origin reset also removes any cooldown without firing completion effects.
 
 The material cost, civilian-factory reservation, major cooldown, and saturation requirement prevent a free unit, equipment, factory, core, or unlimited capacity loop.
 
