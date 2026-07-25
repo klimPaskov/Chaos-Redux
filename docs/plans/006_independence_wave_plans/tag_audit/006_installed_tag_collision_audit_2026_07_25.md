@@ -202,6 +202,6 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Parsed sibling-mod tag-surface inventory SHA-256: `d82e4100adcae69dd712a5b57394e63daa364b0f79f16170ab6e07c8b73ab7b4`
 - Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `ea4a29550dfa8794970bb03b781e2e5c7c57c849a08e507423d0934d8bcaa927`
 - ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `1dc7522d871ddd07d255484b62a3956521fdbe68a0555a011bd5924c278380ea`
-- Package-origin wrapper source inventory SHA-256: `17836c9f2c61267a9803b008c9ee5753df0a3b3782d72307ce2f0d7110b83af7`
+- Runtime attestation source SHA-256: `2b4d94f57a1261fd4d2a54103ee3268d5146cd8e15d0900681c52a228c8712ff`
+- Package-origin wrapper source inventory SHA-256: `b4f993197b9bf9f8ecb506a5a5ef3b25968ce071470dfd8d05bf85378b61e776`
 - Scenario block source SHA-256: `c2e52e993305e4bd9220cef7f58edb418ff6479d707afbae988579ab2db8229f`
