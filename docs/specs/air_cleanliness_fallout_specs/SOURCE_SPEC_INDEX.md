@@ -44,6 +44,7 @@
 40. `specs/44_reviewed_global_survival_ice_melt_rations.md`
 41. `specs/45_reviewed_global_survival_ravine_water_chemist.md`
 42. `specs/46_reviewed_global_survival_men_at_km12.md`
+43. `specs/50_reviewed_global_survival_the_ammunition_winter.md`
 
 
 ## Accepted baseline specs included here
@@ -110,6 +111,7 @@
 - `specs/47_reviewed_global_survival_weapons_in_nursery.md`
 - `specs/48_reviewed_global_survival_the_captain_refuses.md`
 - `specs/49_reviewed_global_survival_the_missing_patrol.md`
+- `specs/50_reviewed_global_survival_the_ammunition_winter.md`
 
 ## Matrices
 

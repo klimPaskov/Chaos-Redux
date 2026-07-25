@@ -17155,3 +17155,118 @@ country_event = {
 	trigger = { fallout_event_527_cleanup_can_enter = yes }
 	immediate = { fallout_event_527_cleanup = yes }
 }
+
+# ---------------------------------------------------------------------------
+# The Ammunition Winter
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.534
+	title = chaosx.fallout.534.t
+	desc = chaosx.fallout.534.intro
+	picture = GFX_report_event_fallout_ammunition_winter
+	is_triggered_only = yes
+	trigger = { fallout_event_534_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.534.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_534_cost.reduce_patrols_fuel compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.reduce_patrols } fallout_event_534_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.534.a.tt
+	}
+	option = {
+		name = chaosx.fallout.534.b
+		trigger = {
+			OR = { has_government = communism has_government = fascism }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_534_cost.melt_civilian_metal_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_534_cost.melt_civilian_metal_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.melt_civilian_metal } fallout_event_534_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.534.b.tt
+	}
+	option = {
+		name = chaosx.fallout.534.c
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_534_cost.trade_food_food compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.trade_food } fallout_event_534_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.534.c.tt
+	}
+	option = {
+		name = chaosx.fallout.534.d
+		trigger = {
+			OR = { has_government = fascism has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_534_cost.seize_private_arms_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.seize_private_arms } fallout_event_534_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.534.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.535
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_534_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_534_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.536
+	title = chaosx.fallout.536.t
+	desc = { text = chaosx.fallout.536.reduce_patrols.success.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.reduce_patrols } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.536.reduce_patrols.partial.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.reduce_patrols } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.536.reduce_patrols.failure.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.reduce_patrols } } }
+	desc = { text = chaosx.fallout.536.melt_civilian_metal.success.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.melt_civilian_metal } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.536.melt_civilian_metal.partial.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.melt_civilian_metal } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.536.melt_civilian_metal.failure.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.melt_civilian_metal } } }
+	desc = { text = chaosx.fallout.536.trade_food.success.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.trade_food } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.536.trade_food.partial.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.trade_food } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.536.trade_food.failure.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.trade_food } } }
+	desc = { text = chaosx.fallout.536.seize_private_arms.success.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.seize_private_arms } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.536.seize_private_arms.partial.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.seize_private_arms } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.536.seize_private_arms.failure.d trigger = { check_variable = { fallout_event_534_selected_branch = constant:fallout_event_534_branch.seize_private_arms } check_variable = { fallout_event_534_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_ammunition_winter
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_534_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ammunition_winter_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.536.a hidden_effect = { fallout_event_534_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.536.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.537
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_534_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ammunition_winter_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_534_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.538
+	title = chaosx.fallout.538.t
+	desc = { text = chaosx.fallout.538.success.d trigger = { check_variable = { fallout_event_534_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.538.partial.d trigger = { check_variable = { fallout_event_534_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.538.failure.d
+	picture = GFX_report_event_fallout_ammunition_winter
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_534_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ammunition_winter_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_534_registry_is_current = yes }
+	option = { name = chaosx.fallout.538.a hidden_effect = { fallout_event_534_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.538.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.539
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_534_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ammunition_winter_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_534_registry_is_current = yes }
+	immediate = { fallout_event_534_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.540
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_534_cleanup_can_enter = yes }
+	immediate = { fallout_event_534_cleanup = yes }
+}
