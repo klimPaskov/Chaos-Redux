@@ -339,10 +339,10 @@ The two user-approved historical portraits remain unchanged and hash-locked:
 - `portrait_BAY_rupprecht_of_bavaria.dds`;
 - `portrait_RHI_josef_friedrich_matthes.dds`.
 
-The authoritative runtime checksum ledger is
-`portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`;
-the package's merged visual review and final independent audit record its former
-acceptance under the superseded source mode. Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
+The historical generated-runtime checksum ledger is `portrait_refresh_male_hoi4_2026_07_18/hashes/runtime_sha256_inventory.sha256`.
+It is not authority for the source-locked replacements listed below.
+The package's merged visual review and final independent audit record its former acceptance under the superseded source mode.
+Every 2026-07-15 fictional portrait, BRI portrait, mixed NWE
 portrait, and army-small package is historical and superseded for portrait
 files, hashes, and approval. `generated_nwe_hashes.sha256` is not portrait
 authority. Custom Event 006 advisor icons remain withdrawn: gameplay advisor
@@ -353,8 +353,7 @@ runtime DDS files.
 
 The current IW-010 Saar focus source of truth is
 `ajx_asset_completion_2026_07_15/manifest.md`. It contains one original
-`94x86` Municipal Neutral Commission focus icon without changing Friedrich
-Hoffmann, Karl Becker, or either approved RHI/BAY historical leader portrait.
+`94x86` Municipal Neutral Commission focus icon without changing any portrait consumer or either approved RHI/BAY historical leader portrait.
 
 The installed runtime file is
 `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds`.
@@ -362,6 +361,18 @@ Its exact prompt, source, processing, contact-sheet, decoded-DDS, metadata, and
 SHA-256 contracts remain in the focus-only package. Custom Event 006 advisor
 icons and their sprite registrations were removed by explicit user direction;
 the gameplay offices remain asset-neutral.
+
+## 2026-07-25 AJX Friedrich von Rabenau portrait promotion
+
+The source-locked portrait package is `sourced_portrait_refinishes_2026_07_25/saar_friedrich_von_rabenau_trial_01/manifest.md`.
+
+It records the unchanged attributed Bundesarchiv master, explicit head-and-shoulders crop, identity-preserving ImageGen repaint, deterministic `156x210` processing, independent likeness and HOI4-style audit, package DDS, runtime DDS, and decoded-pixel equality proof.
+
+The stable `AJX_karl_becker` internal consumer and `GFX_portrait_AJX_karl_becker` sprite remain unchanged, while the player-facing identity is Friedrich von Rabenau.
+
+No historical Saar posting is claimed, and no advisor, dossier, operative, commander-small, or `_small` derivative was created.
+
+IW-010 remains fail-closed until its civic Walter Simons portrait and fresh country-package audit pass.
 
 ## Historical 2026-07-18 BRI portrait disposition
 

@@ -789,14 +789,13 @@ reservation group `RG-RHINE-SAAR`, so IW-010 and IW-008 cannot be selected in
 the same Event 006 incident. A later repeatable wave may release the other
 package, allowing living AJX and RHI countries to coexist.
 
-The country is led by two fictional humans:
+The country uses two stable character consumers:
 
-- Friedrich Hoffmann, a municipal jurist and neutral-commission chair;
-- Karl Becker, an industrial-security commissioner and corps commander.
+- the civic consumer, still fail-closed pending final sourced Walter Simons portrait approval;
+- Friedrich von Rabenau, a sourced real German Army officer used as an alternate-history corps commander without claiming a historical Saar posting.
 
-The Municipal Neutral Commission is civilian. Karl Becker has no country-
-leader role, and neither script nor localisation describes the neutral route as
-military, traditional, restorationist, or emergency government.
+The Municipal Neutral Commission is civilian.
+Rabenau has no country-leader role, and neither script nor localisation describes the neutral route as military, traditional, restorationist, or emergency government.
 
 ### Runtime sequence
 
@@ -808,10 +807,8 @@ military, traditional, restorationist, or emergency government.
    living former host, and host-owned protected remnant. Same-incident
    exclusion is enforced earlier by the shared `RG-RHINE-SAAR` plan
    reservation, not by testing whether RHI already exists in the world.
-3. The dormant history supplies the baseline laws and recruits Friedrich
-   Hoffmann and Karl Becker. Runtime setup installs provisional politics,
-   localized parties, the full shared focus framework, package routes, the
-   power struggle, ambition family, AI profile, and lifecycle values.
+3. The dormant history supplies the baseline laws and recruits the stable civic consumer and Friedrich von Rabenau.
+   Runtime setup installs provisional politics, localized parties, the full shared focus framework, package routes, the power struggle, ambition family, AI profile, and lifecycle values.
 4. The shared p10 force table supplies the `industrial_security` profile,
    military tradition `50`, no naval or air inheritance, and exactly five
    reinforcement pathways: integrated militias, secure depots, factory and rail
@@ -948,15 +945,14 @@ and bunker priority without assuming a fixed host tag.
 | National flag | `gfx/flags/AJX.tga` | HOI4 flag path discovery |
 | Medium flag | `gfx/flags/medium/AJX.tga` | HOI4 flag path discovery |
 | Small flag | `gfx/flags/small/AJX.tga` | HOI4 flag path discovery |
-| Friedrich Hoffmann | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_region_01_portraits.gfx` |
-| Karl Becker | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
+| Civic leader consumer, sourced identity pending | `gfx/leaders/006_independence_wave/portrait_AJX_saar_municipal_neutral_commission.dds` | `GFX_portrait_AJX_friedrich_hoffmann` in `interface/006_independence_wave_region_01_portraits.gfx` |
+| Friedrich von Rabenau | `gfx/leaders/006_independence_wave/portrait_AJX_saar_industrial_security_commissioner.dds` | stable `GFX_portrait_AJX_karl_becker` in the same `.gfx` file |
 | Municipal Neutral Commission focus | `gfx/interface/goals/006_independence_wave/goal_independence_wave_ajx_neutral_commission.dds` | base and shine in `interface/006_independence_wave.gfx`; base consumed by `independence_wave_ajx_appoint_neutral_commission_focus` |
 
-The character sprites are consumed by
-`common/characters/006_independence_wave_saar_characters.txt`. Event 006 defines
-no Saar commander miniature, advisor card, dossier, or `_small` portrait. The
-two current full portraits are legacy generated assets and are not source-cleared;
-Saar remains fail-closed until attributed, reusable archival masters replace both.
+The character sprites are consumed by `common/characters/006_independence_wave_saar_characters.txt`.
+Event 006 defines no Saar commander miniature, advisor card, dossier, or `_small` portrait.
+Rabenau's full portrait has passed the archival-source, exact-crop, ImageGen identity-preservation, HOI4-style, independent-audit, and DDS-equality gates.
+The civic portrait remains a legacy generated asset; Saar remains fail-closed until the Walter Simons candidate passes the same complete workflow and a fresh country-package audit accepts the result.
 The flag hashes remain checked against `generated_nwe_hashes.sha256`.
 
 #### Reused Event 006 icons
