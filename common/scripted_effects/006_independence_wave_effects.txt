@@ -66,6 +66,80 @@ independence_wave_refresh_founding_phase = {
 	}
 }
 
+# Refreshes the state-strip frame indices used by the Statehood Ledger. The
+# sheets are not free-running semantic animations: each frame is selected from
+# the live ledger state so recognition, dependency, league, and formable art
+# cannot display a contradictory phase.
+independence_wave_refresh_status_frame_state = {
+	if = {
+		limit = { is_independence_wave_active_country = yes }
+		set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_unrecognized }
+		set_variable = { independence_wave_gui_dependency_frame = constant:independence_wave_gui_frame.dependency_calm }
+		set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_rest }
+		set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_hidden }
+		if = {
+			limit = { check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.observed compare = greater_than_or_equals } }
+			set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_observed }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.de_facto compare = greater_than_or_equals } }
+			set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_de_facto }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.treaty_backed compare = greater_than_or_equals } }
+			set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_treaty_backed }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.internationally_entrenched compare = greater_than_or_equals } }
+			set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_entrenched }
+		}
+		if = {
+			limit = { has_independence_wave_patron_warning = yes }
+			set_variable = { independence_wave_gui_dependency_frame = constant:independence_wave_gui_frame.dependency_watch }
+		}
+		if = {
+			limit = { has_independence_wave_severe_instability = yes }
+			set_variable = { independence_wave_gui_dependency_frame = constant:independence_wave_gui_frame.dependency_danger }
+		}
+		if = {
+			limit = {
+				has_variable = global.independence_wave_league_phase
+				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.regional_conferences compare = greater_than_or_equals }
+			}
+			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_drafting }
+		}
+		if = {
+			limit = {
+				has_variable = global.independence_wave_league_phase
+				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.charter_vote compare = greater_than_or_equals }
+			}
+			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_vote }
+		}
+		if = {
+			limit = {
+				has_variable = global.independence_wave_league_phase
+				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.formal_league compare = greater_than_or_equals }
+			}
+			set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_activated }
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_formable_discovered }
+			set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_discovered }
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_formable_all_required_initial_integration_complete }
+			set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_eligible }
+		}
+		if = {
+			limit = {
+				has_variable = independence_wave_formable_transaction_state
+				check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+			}
+			set_variable = { independence_wave_gui_formable_frame = constant:independence_wave_gui_frame.formable_proclaimed }
+		}
+	}
+}
+
 independence_wave_refresh_country_state = {
 	if = {
 		limit = { is_independence_wave_active_country = yes }
@@ -73,6 +147,7 @@ independence_wave_refresh_country_state = {
 		independence_wave_refresh_founding_phase = yes
 		independence_wave_refresh_strongest_patron = yes
 		independence_wave_refresh_idea_lifecycles = yes
+		independence_wave_refresh_status_frame_state = yes
 		independence_wave_achievement_refresh_country_state = yes
 	}
 }
@@ -474,6 +549,15 @@ independence_wave_reset_current_generation = {
 	clear_variable = independence_wave_strongest_patron_influence
 	clear_variable = independence_wave_active_patron_count
 	clear_variable = independence_wave_last_relationship_cleanup_reason
+	clear_variable = independence_wave_gui_recognition_frame
+	clear_variable = independence_wave_gui_dependency_frame
+	clear_variable = independence_wave_gui_league_frame
+	clear_variable = independence_wave_gui_formable_frame
+	clr_country_flag = independence_wave_status_tab_government
+	clr_country_flag = independence_wave_status_tab_recognition
+	clr_country_flag = independence_wave_status_tab_security
+	clr_country_flag = independence_wave_status_tab_league
+	clr_country_flag = independence_wave_status_tab_ambitions
 }
 
 # Inputs:
