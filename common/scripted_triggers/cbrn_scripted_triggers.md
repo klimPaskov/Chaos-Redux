@@ -12,6 +12,7 @@ Biological lifecycle, biological raid, and biological operative-release helpers 
 
 - `common/scripted_triggers/cbrn_chemical_raid_triggers.txt`
 - `common/scripted_triggers/cbrn_designer_triggers.txt`
+- `common/scripted_triggers/cbrn_diplomacy_triggers.txt`
 - `common/scripted_triggers/cbrn_doctrine_triggers.txt`
 - `common/scripted_triggers/cbrn_hq_triggers.txt`
 - `common/scripted_triggers/cbrn_payload_triggers.txt`
@@ -68,7 +69,7 @@ Country-scope, side-effect-free triggers:
 - `cbrn_policy_allows_strategic_use`
 - `cbrn_policy_allows_extreme_use`
 
-Inputs: persistent `cbrn_use_policy`; retaliation also requires temporary authorization flag `cbrn_retaliation_authorized`. Defaults: an absent or unset policy allows no offensive use. Outputs: boolean trigger result only.
+Inputs: persistent `cbrn_use_policy`; the broad battlefield and strategic helpers also require the temporary authorization flag when the policy is Retaliation Authority. Exact offensive actions must use the target-aware diplomacy helpers below instead of treating that broad flag as proof against a selected opponent. Defaults: an absent or unset policy allows no offensive use. Outputs: boolean trigger result only.
 
 Example:
 
@@ -77,6 +78,18 @@ available = {
 	cbrn_policy_allows_battlefield_use = yes
 }
 ```
+
+## CBRN diplomacy and retaliation triggers
+
+Source: `common/scripted_triggers/cbrn_diplomacy_triggers.txt`.
+
+- `cbrn_country_has_active_retaliation_right_against_target_id` is country-scoped and requires the caller to supply `cbrn_retaliation_target_id`. It proves an unexpired country-ID-keyed right against that exact opponent, Retaliation Authority policy, and an active war with the saved offender.
+- `cbrn_policy_allows_battlefield_use_against_from` and `cbrn_policy_allows_strategic_use_against_from` validate a live `FROM` country. Their target-ID variants perform the same policy check after another exact scope has supplied the ID.
+- `cbrn_chemical_action_policy_allows_exact_target` validates the temporary chemical action's exact victim before payload debit. Retaliation Authority accepts only the bilateral offender proved above; broader first-use policies retain their own institution and readiness gates.
+- `cbrn_state_has_observable_chemical_evidence` is state-scoped and requires an exact recorded actor, action date, evidence value, and unpaid action liability. It does not infer an actor or derive the action amount from an aggregate Chemical bucket.
+- The forensic-publication triggers require a recorded state action or ordinary-pathogen episode whose publication date differs from its action or seed date. They fail closed for missing actors, missing dates, exhausted exact liability, or ineligible evidence.
+
+The bilateral right lasts 365 days from confirmation. The record compares the earliest exact action date in both directions; same-day ties are contested because current script exposes day precision only. None of these triggers modifies Condemnation, evidence, harm, stock, or history, and none scans all countries periodically.
 
 ## CBRN state triggers
 

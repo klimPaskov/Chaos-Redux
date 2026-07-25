@@ -167,7 +167,7 @@ bio_operative_release_can_prepare_against_from = {
 	OR = {
 		AND = {
 			has_war_with = FROM
-			cbrn_policy_allows_strategic_use = yes
+			cbrn_policy_allows_strategic_use_against_from = yes
 		}
 		AND = {
 			NOT = { has_war_with = FROM }
@@ -252,8 +252,7 @@ bio_operative_release_ai_may_target_from = {
 		bio_operative_release_ai_is_desperate_route = yes
 	}
 	OR = {
-		has_country_flag = cbrn_retaliation_authorized
-		FROM = { has_country_flag = used_bioweapon }
+		bio_operative_release_ai_has_retaliation_right_against_from = yes
 		cbrn_ai_route_allows_first_use = yes
 		bio_operative_release_ai_is_desperate_route = yes
 	}
@@ -291,7 +290,10 @@ bio_operative_release_native_context_is_valid = {
 		OR = {
 			AND = {
 				has_war_with = event_target:bio_operation_victim
-				cbrn_policy_allows_strategic_use = yes
+				event_target:bio_operation_victim = {
+					set_temp_variable = { cbrn_retaliation_target_id = id }
+				}
+				cbrn_policy_allows_strategic_use_against_target_id = yes
 			}
 			AND = {
 				NOT = { has_war_with = event_target:bio_operation_victim }

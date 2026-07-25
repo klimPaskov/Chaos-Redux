@@ -85,6 +85,9 @@ condemnation_initialize_country = {
 	if = { limit = { NOT = { has_variable = condemnation_candidate_trade_weight } } set_variable = { condemnation_candidate_trade_weight = 0 } }
 	if = { limit = { NOT = { has_variable = condemnation_recent_civilian_deaths } } set_variable = { condemnation_recent_civilian_deaths = 0 } }
 	if = { limit = { NOT = { has_variable = condemnation_contamination_pressure } } set_variable = { condemnation_contamination_pressure = 0 } }
+	if = { limit = { NOT = { has_variable = condemnation_retaliation_pressure_relief } } set_variable = { condemnation_retaliation_pressure_relief = constant:cbrn_math.zero } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_chemical_retaliation_relief } } set_variable = { condemnation_hidden_chemical_retaliation_relief = constant:cbrn_math.zero } }
+	if = { limit = { NOT = { has_variable = condemnation_hidden_biological_retaliation_relief } } set_variable = { condemnation_hidden_biological_retaliation_relief = constant:cbrn_math.zero } }
 	if = { limit = { NOT = { has_variable = condemnation_compensation_convoy_requirement } } set_variable = { condemnation_compensation_convoy_requirement = constant:condemnation_cost.compensation_convoys_base } }
 	if = { limit = { NOT = { has_variable = condemnation_military_import_vulnerability } } set_variable = { condemnation_military_import_vulnerability = 0 } }
 	if = { limit = { NOT = { has_variable = condemnation_faction_shield_strength } } set_variable = { condemnation_faction_shield_strength = 0 } }
@@ -154,16 +157,104 @@ condemnation_append_public_source_log = {
 	}
 }
 
+# Transfers one exact, caller-proven amount from a latent source bucket into
+# its public bucket. It never derives the amount from the actor's aggregate
+# bucket and returns the actually transferred value in
+# condemnation_exact_hidden_exposed_gain.
+condemnation_expose_exact_hidden_source_amount = {
+	set_temp_variable = { condemnation_exact_hidden_exposed_gain = constant:cbrn_math.zero }
+	set_temp_variable = { condemnation_exact_hidden_retaliation_relief_exposed = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			check_variable = { condemnation_exact_hidden_exposure_amount > constant:cbrn_math.zero }
+			check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals }
+		}
+		set_temp_variable = { condemnation_exact_hidden_exposed_gain = condemnation_exact_hidden_exposure_amount }
+		clamp_temp_variable = {
+			var = condemnation_exact_hidden_exposed_gain
+			min = constant:cbrn_math.zero
+			max = condemnation_hidden_chemical
+		}
+		subtract_from_variable = { condemnation_hidden_chemical = condemnation_exact_hidden_exposed_gain }
+		add_to_variable = { condemnation_chemical = condemnation_exact_hidden_exposed_gain }
+		if = {
+			limit = { check_variable = { condemnation_exact_hidden_retaliation_relief_amount > constant:cbrn_math.zero } }
+			set_temp_variable = { condemnation_exact_hidden_retaliation_relief_exposed = condemnation_exact_hidden_retaliation_relief_amount }
+			clamp_temp_variable = {
+				var = condemnation_exact_hidden_retaliation_relief_exposed
+				min = constant:cbrn_math.zero
+				max = condemnation_hidden_chemical_retaliation_relief
+			}
+			subtract_from_variable = { condemnation_hidden_chemical_retaliation_relief = condemnation_exact_hidden_retaliation_relief_exposed }
+			add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_exact_hidden_retaliation_relief_exposed }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { condemnation_exact_hidden_exposure_amount > constant:cbrn_math.zero }
+			check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals }
+		}
+		set_temp_variable = { condemnation_exact_hidden_exposed_gain = condemnation_exact_hidden_exposure_amount }
+		clamp_temp_variable = {
+			var = condemnation_exact_hidden_exposed_gain
+			min = constant:cbrn_math.zero
+			max = condemnation_hidden_biological
+		}
+		subtract_from_variable = { condemnation_hidden_biological = condemnation_exact_hidden_exposed_gain }
+		add_to_variable = { condemnation_biological = condemnation_exact_hidden_exposed_gain }
+		if = {
+			limit = { check_variable = { condemnation_exact_hidden_retaliation_relief_amount > constant:cbrn_math.zero } }
+			set_temp_variable = { condemnation_exact_hidden_retaliation_relief_exposed = condemnation_exact_hidden_retaliation_relief_amount }
+			clamp_temp_variable = {
+				var = condemnation_exact_hidden_retaliation_relief_exposed
+				min = constant:cbrn_math.zero
+				max = condemnation_hidden_biological_retaliation_relief
+			}
+			subtract_from_variable = { condemnation_hidden_biological_retaliation_relief = condemnation_exact_hidden_retaliation_relief_exposed }
+			add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_exact_hidden_retaliation_relief_exposed }
+		}
+	}
+	clamp_variable = {
+		var = condemnation_retaliation_pressure_relief
+		min = constant:cbrn_math.zero
+		max = constant:cbrn_retaliation_pressure.relief_cap
+	}
+	if = {
+		limit = { check_variable = { condemnation_exact_hidden_exposed_gain > constant:condemnation_gain.minimum_visible_gain } }
+		set_temp_variable = { condemnation_gain_final = condemnation_exact_hidden_exposed_gain }
+		add_to_variable = { condemnation_recent_gain = condemnation_exact_hidden_exposed_gain }
+		set_temp_variable = { condemnation_exact_participant_gain = condemnation_exact_hidden_exposed_gain }
+		subtract_from_temp_variable = { condemnation_exact_participant_gain = condemnation_exact_hidden_retaliation_relief_exposed }
+		clamp_temp_variable = {
+			var = condemnation_exact_participant_gain
+			min = constant:cbrn_math.zero
+			max = condemnation_exact_hidden_exposed_gain
+		}
+		add_to_variable = { condemnation_participant_refresh_credit = condemnation_exact_participant_gain }
+		set_variable = { condemnation_last_source_type = condemnation_source_type }
+		set_variable = { condemnation_last_source_context = condemnation_context_type }
+		set_variable = { condemnation_last_source_gain = condemnation_exact_hidden_exposed_gain }
+		set_variable = { condemnation_last_source_severity = constant:condemnation_severity.major }
+		set_variable = { condemnation_last_gain_date = global.date }
+		condemnation_append_public_source_log = yes
+	}
+}
+
 condemnation_expose_hidden_bucket = {
 	# Inputs: condemnation_source_type, condemnation_hidden_exposure_fraction,
 	# condemnation_context_type.
 	set_temp_variable = { condemnation_hidden_exposed_gain = 0 }
+	set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = constant:cbrn_math.zero }
 	if = {
 		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals } }
 		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_chemical }
 		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
 		subtract_from_variable = { condemnation_hidden_chemical = condemnation_hidden_exposed_gain }
 		add_to_variable = { condemnation_chemical = condemnation_hidden_exposed_gain }
+		set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_chemical_retaliation_relief }
+		multiply_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_chemical_retaliation_relief = condemnation_hidden_retaliation_relief_exposed }
+		add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_hidden_retaliation_relief_exposed }
 	}
 	else_if = {
 		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals } }
@@ -171,6 +262,10 @@ condemnation_expose_hidden_bucket = {
 		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
 		subtract_from_variable = { condemnation_hidden_biological = condemnation_hidden_exposed_gain }
 		add_to_variable = { condemnation_biological = condemnation_hidden_exposed_gain }
+		set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_biological_retaliation_relief }
+		multiply_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_exposure_fraction }
+		subtract_from_variable = { condemnation_hidden_biological_retaliation_relief = condemnation_hidden_retaliation_relief_exposed }
+		add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_hidden_retaliation_relief_exposed }
 	}
 	else_if = {
 		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.nuclear compare = equals } }
@@ -193,11 +288,23 @@ condemnation_expose_hidden_bucket = {
 		subtract_from_variable = { condemnation_hidden_coverup = condemnation_hidden_exposed_gain }
 		add_to_variable = { condemnation_coverup = condemnation_hidden_exposed_gain }
 	}
+	clamp_variable = {
+		var = condemnation_retaliation_pressure_relief
+		min = constant:cbrn_math.zero
+		max = constant:cbrn_retaliation_pressure.relief_cap
+	}
 	if = {
 		limit = { check_variable = { condemnation_hidden_exposed_gain > constant:condemnation_gain.minimum_visible_gain } }
 		set_temp_variable = { condemnation_gain_final = condemnation_hidden_exposed_gain }
 		add_to_variable = { condemnation_recent_gain = condemnation_hidden_exposed_gain }
-		add_to_variable = { condemnation_participant_refresh_credit = condemnation_hidden_exposed_gain }
+		set_temp_variable = { condemnation_hidden_participant_gain = condemnation_hidden_exposed_gain }
+		subtract_from_temp_variable = { condemnation_hidden_participant_gain = condemnation_hidden_retaliation_relief_exposed }
+		clamp_temp_variable = {
+			var = condemnation_hidden_participant_gain
+			min = constant:cbrn_math.zero
+			max = condemnation_hidden_exposed_gain
+		}
+		add_to_variable = { condemnation_participant_refresh_credit = condemnation_hidden_participant_gain }
 		set_variable = { condemnation_last_source_type = condemnation_source_type }
 		set_variable = { condemnation_last_source_context = condemnation_context_type }
 		set_variable = { condemnation_last_source_gain = condemnation_hidden_exposed_gain }
@@ -260,6 +367,14 @@ condemnation_add_source = {
 	if = { limit = { NOT = { has_variable = condemnation_civilian_deaths } } set_temp_variable = { condemnation_civilian_deaths = 0 } }
 	if = { limit = { NOT = { has_variable = condemnation_contamination_value } } set_temp_variable = { condemnation_contamination_value = 0 } }
 	if = { limit = { NOT = { has_variable = condemnation_context_type } } set_temp_variable = { condemnation_context_type = constant:condemnation_context.unspecified } }
+	if = { limit = { NOT = { has_variable = condemnation_participant_pressure_mult } } set_temp_variable = { condemnation_participant_pressure_mult = constant:cbrn_math.one } }
+	set_temp_variable = { condemnation_participant_relief_fraction = constant:cbrn_math.one }
+	subtract_from_temp_variable = { condemnation_participant_relief_fraction = condemnation_participant_pressure_mult }
+	clamp_temp_variable = {
+		var = condemnation_participant_relief_fraction
+		min = constant:cbrn_math.zero
+		max = constant:cbrn_math.one
+	}
 	set_temp_variable = { condemnation_source_is_weapon_use = constant:condemnation_tier.normal }
 	if = {
 		limit = {
@@ -348,6 +463,44 @@ condemnation_add_source = {
 		set_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
 		divide_temp_variable = { condemnation_gain_hidden = constant:condemnation_gain.visibility_discovered }
 		subtract_from_temp_variable = { condemnation_gain_hidden = condemnation_gain_final }
+	}
+
+	set_temp_variable = { condemnation_public_retaliation_relief_add = condemnation_gain_final }
+	multiply_temp_variable = { condemnation_public_retaliation_relief_add = condemnation_participant_relief_fraction }
+	set_temp_variable = { condemnation_hidden_retaliation_relief_add = condemnation_gain_hidden }
+	multiply_temp_variable = { condemnation_hidden_retaliation_relief_add = condemnation_participant_relief_fraction }
+	if = {
+		limit = { check_variable = { condemnation_public_retaliation_relief_add > constant:cbrn_math.zero } }
+		add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_public_retaliation_relief_add }
+		clamp_variable = {
+			var = condemnation_retaliation_pressure_relief
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_retaliation_pressure.relief_cap
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { condemnation_hidden_retaliation_relief_add > constant:cbrn_math.zero }
+			check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals }
+		}
+		add_to_variable = { condemnation_hidden_chemical_retaliation_relief = condemnation_hidden_retaliation_relief_add }
+		clamp_variable = {
+			var = condemnation_hidden_chemical_retaliation_relief
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_retaliation_pressure.relief_cap
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { condemnation_hidden_retaliation_relief_add > constant:cbrn_math.zero }
+			check_variable = { var = condemnation_source_type value = constant:condemnation_source.biological compare = equals }
+		}
+		add_to_variable = { condemnation_hidden_biological_retaliation_relief = condemnation_hidden_retaliation_relief_add }
+		clamp_variable = {
+			var = condemnation_hidden_biological_retaliation_relief
+			min = constant:cbrn_math.zero
+			max = constant:cbrn_retaliation_pressure.relief_cap
+		}
 	}
 
 	if = {
@@ -470,7 +623,9 @@ condemnation_add_source = {
 		}
 
 		add_to_variable = { condemnation_recent_gain = condemnation_gain_final }
-		add_to_variable = { condemnation_participant_refresh_credit = condemnation_gain_final }
+		set_temp_variable = { condemnation_participant_gain = condemnation_gain_final }
+		multiply_temp_variable = { condemnation_participant_gain = condemnation_participant_pressure_mult }
+		add_to_variable = { condemnation_participant_refresh_credit = condemnation_participant_gain }
 		add_to_variable = { condemnation_recent_civilian_deaths = condemnation_civilian_deaths }
 		add_to_variable = { condemnation_contamination_pressure = condemnation_contamination_value }
 		clamp_variable = { var = condemnation_contamination_pressure min = 0 max = constant:condemnation_threshold.contamination_cap }
@@ -524,6 +679,7 @@ condemnation_add_source = {
 		refresh_chaos_meter_condemnation_view_if_open = yes
 	}
 	set_temp_variable = { condemnation_source_is_no_release_attempt = constant:condemnation_tier.normal }
+	set_temp_variable = { condemnation_participant_pressure_mult = constant:cbrn_math.one }
 }
 
 condemnation_refresh_tier = {
@@ -867,6 +1023,12 @@ condemnation_calculate_pair_score = {
 	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.mass_death compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_mass_death_source } }
 	else_if = { limit = { check_variable = { var = condemnation_last_source_severity value = constant:condemnation_severity.doomsday compare = equals } } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.recent_doomsday_source } }
 	if = { limit = { has_country_flag = condemnation_domestic_propaganda_active } add_to_temp_variable = { condemnation_pair_moral_pressure = constant:condemnation_participant_score.defiant_propaganda } }
+	subtract_from_temp_variable = { condemnation_pair_moral_pressure = condemnation_retaliation_pressure_relief }
+	clamp_temp_variable = {
+		var = condemnation_pair_moral_pressure
+		min = constant:cbrn_math.zero
+		max = constant:condemnation_threshold.total_cap
+	}
 	set_temp_variable = { condemnation_pair_score = condemnation_pair_moral_pressure }
 	set_temp_variable = { condemnation_score_has_victim = 0 }
 	if = {
@@ -2180,10 +2342,12 @@ condemnation_monthly_pulse = {
 	subtract_from_variable = { condemnation_recent_gain = constant:condemnation_decay.recent_gain_fade }
 	multiply_variable = { condemnation_recent_civilian_deaths = constant:condemnation_decay.civilian_deaths_fade }
 	multiply_variable = { condemnation_contamination_pressure = constant:condemnation_decay.contamination_fade }
+	multiply_variable = { condemnation_retaliation_pressure_relief = constant:cbrn_retaliation_pressure.monthly_relief_fade }
 	multiply_variable = { condemnation_black_market_exposure = constant:condemnation_decay.exposure_fade }
 	multiply_variable = { condemnation_evasion_pressure = constant:condemnation_route.strength_fade }
 	clamp_variable = { var = condemnation_repeat_use min = 0 max = constant:condemnation_threshold.repeat_use_cap }
 	clamp_variable = { var = condemnation_recent_gain min = 0 max = constant:condemnation_threshold.recent_gain_cap }
+	clamp_variable = { var = condemnation_retaliation_pressure_relief min = constant:cbrn_math.zero max = constant:cbrn_retaliation_pressure.relief_cap }
 	clamp_variable = { var = condemnation_black_market_exposure min = 0 max = constant:condemnation_route.exposure_cap }
 	clamp_variable = { var = condemnation_evasion_pressure min = 0 max = constant:condemnation_route.exposure_cap }
 	if = { limit = { check_variable = { condemnation_black_market_exposure < constant:condemnation_gain.minimum_visible_gain } } set_variable = { condemnation_black_market_exposure = 0 } }

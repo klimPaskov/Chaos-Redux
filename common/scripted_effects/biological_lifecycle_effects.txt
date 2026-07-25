@@ -38,6 +38,7 @@ bio_lifecycle_reset_seed_record = {
 	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_retaliation_status = constant:cbrn_retaliation_status.none }
 }
 
 # Input: bio_seed_agent. Outputs the current agent profile to temporary values.
@@ -394,6 +395,8 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 				set_variable = { bio_agent_[BIO_AGENT]_friendly_spread_risk = bio_seed_friendly_spread_risk }
 				set_variable = { bio_agent_[BIO_AGENT]_lead_payload_required = bio_seed_payload_required }
 				set_variable = { bio_agent_[BIO_AGENT]_lead_payload_consumed = bio_seed_payload_consumed }
+				set_variable = { bio_agent_[BIO_AGENT]_retaliation_status = bio_seed_retaliation_status }
+				set_variable = { bio_agent_[BIO_AGENT]_action_date = global.num_days }
 				set_variable = { bio_agent_[BIO_AGENT]_initial_population_k = state_population_k }
 				set_variable = { bio_agent_[BIO_AGENT]_episode_deaths = constant:bio_lifecycle_math.zero }
 				set_variable = { bio_agent_[BIO_AGENT]_medical_saturation = constant:bio_lifecycle_math.zero }
@@ -483,6 +486,8 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 					set_variable = { bio_agent_[BIO_AGENT]_friendly_spread_risk = bio_seed_friendly_spread_risk }
 					set_variable = { bio_agent_[BIO_AGENT]_lead_payload_required = bio_seed_payload_required }
 					set_variable = { bio_agent_[BIO_AGENT]_lead_payload_consumed = bio_seed_payload_consumed }
+					set_variable = { bio_agent_[BIO_AGENT]_retaliation_status = bio_seed_retaliation_status }
+					set_variable = { bio_agent_[BIO_AGENT]_action_date = global.num_days }
 					set_variable = { bio_agent_[BIO_AGENT]_doctrine_potency_mult = bio_seed_doctrine_potency_mult }
 					set_variable = { bio_agent_[BIO_AGENT]_doctrine_growth_mult = bio_seed_doctrine_growth_mult }
 					set_variable = { bio_agent_[BIO_AGENT]_doctrine_spread_mult = bio_seed_doctrine_spread_mult }
@@ -692,6 +697,7 @@ bio_lifecycle_dispatch_seed = {
 	set_temp_variable = { bio_seed_evidence = bio_seed_evidence_final }
 	if = {
 		limit = { bio_lifecycle_seed_record_is_valid = yes }
+		cbrn_diplomacy_classify_biological_seed_retaliation = yes
 		bio_lifecycle_store_seed_in_current_agent_record = yes
 		if = {
 			limit = {
@@ -792,6 +798,8 @@ bio_lifecycle_load_current_agent_record = {
 	set_temp_variable = { bio_current_doctrine_duration_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_current_doctrine_medical_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_current_doctrine_condemnation_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_current_retaliation_status = constant:cbrn_retaliation_status.none }
+	set_temp_variable = { bio_current_action_date = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_current_detected_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_seed_agent = bio_active_agent }
 
@@ -819,6 +827,14 @@ bio_lifecycle_load_current_agent_record = {
 			set_temp_variable = { bio_current_doctrine_duration_mult = bio_agent_[BIO_AGENT]_doctrine_duration_mult }
 			set_temp_variable = { bio_current_doctrine_medical_mult = bio_agent_[BIO_AGENT]_doctrine_medical_mult }
 			set_temp_variable = { bio_current_doctrine_condemnation_mult = bio_agent_[BIO_AGENT]_doctrine_condemnation_mult }
+			if = {
+				limit = { has_variable = bio_agent_[BIO_AGENT]_retaliation_status }
+				set_temp_variable = { bio_current_retaliation_status = bio_agent_[BIO_AGENT]_retaliation_status }
+			}
+			if = {
+				limit = { has_variable = bio_agent_[BIO_AGENT]_action_date }
+				set_temp_variable = { bio_current_action_date = bio_agent_[BIO_AGENT]_action_date }
+			}
 			if = {
 				limit = { has_state_flag = bio_agent_[BIO_AGENT]_detected }
 				set_temp_variable = { bio_current_detected_status = constant:bio_lifecycle_proof.supplied }
@@ -1143,6 +1159,16 @@ bio_lifecycle_register_attribution_condemnation = {
 		limit = { check_variable = { var = bio_condemnation_has_victim value = constant:bio_lifecycle_proof.supplied compare = equals } }
 		set_temp_variable = { condemnation_victim_country = bio_condemnation_victim_country }
 	}
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_current_retaliation_status
+				value = constant:cbrn_retaliation_status.proportionate
+				compare = equals
+			}
+		}
+		set_temp_variable = { condemnation_participant_pressure_mult = constant:cbrn_retaliation_pressure.proportionate_participant_mult }
+	}
 	condemnation_add_source = yes
 
 	if = {
@@ -1260,6 +1286,15 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 						has_variable = bio_agent_[BIO_AGENT]_actor
 						var:bio_agent_[BIO_AGENT]_actor = { exists = yes }
 					}
+					if = {
+						limit = {
+							has_variable = bio_agent_[BIO_AGENT]_victim
+							var:bio_agent_[BIO_AGENT]_victim = { exists = yes }
+						}
+						var:bio_agent_[BIO_AGENT]_victim = {
+							save_event_target_as = cbrn_retaliation_target_country
+						}
+					}
 					var:bio_agent_[BIO_AGENT]_actor = {
 						bio_lifecycle_register_attribution_condemnation = yes
 						set_country_flag = used_bioweapon
@@ -1282,6 +1317,13 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 							set_country_flag = used_smallpox_weapon
 						}
 						air_cleanliness_treaty_on_unconventional_use = yes
+						if = {
+							limit = { has_event_target = cbrn_retaliation_target_country }
+							set_temp_variable = { cbrn_confirmed_use_action_date = bio_current_action_date }
+							set_temp_variable = { cbrn_confirmed_use_retaliation_status = bio_current_retaliation_status }
+							set_temp_variable = { cbrn_retaliation_source_type = constant:cbrn_diplomacy_source.biological }
+							cbrn_diplomacy_record_confirmed_cbrn_use = yes
+						}
 					}
 				}
 				set_state_flag = bio_agent_[BIO_AGENT]_confirmed_condemnation_released

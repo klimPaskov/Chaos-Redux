@@ -1,0 +1,262 @@
+# ============================================================================
+# CHAOS REDUX - CBRN INTERNATIONAL RESPONSE DECISIONS
+# ============================================================================
+# Overview:
+# - Demand inspections targets one exact condemned country and opens a timed
+#   answer mission for that country.
+# - Forensic publication targets one controlled state with one exact unshared
+#   chemical action or detected ordinary-pathogen episode.
+# - International decontamination targets one consenting foreign-controlled
+#   contaminated state and consumes a real relief package.
+# ============================================================================
+
+cbrn_international_response_category = {
+	cbrn_demand_inspections = {
+		icon = GFX_decision_cbrn_demand_inspections
+		target_array = global.enabled_countries_list
+		cost = 0
+		target_root_trigger = {
+			NOT = { is_actual_nonhuman_country = yes }
+			cbrn_country_can_pay_inspection_demand_cost = yes
+		}
+		target_trigger = {
+			FROM = { cbrn_target_can_receive_inspection_demand_from_root = yes }
+		}
+		visible = { always = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_demand_inspections_requirements_tt
+				cbrn_country_can_pay_inspection_demand_cost = yes
+				FROM = { cbrn_target_can_receive_inspection_demand_from_root = yes }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { cbrn_country_can_pay_inspection_demand_cost = yes }
+		}
+		custom_cost_text = cbrn_demand_inspections_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_demand_inspections_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cbrn_diplomacy_target_country }
+				cbrn_diplomacy_send_inspection_demand = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_diplomacy_ai.base
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.very_high
+				FROM = { condemnation_is_arms_embargo_tier = yes }
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.high
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.low
+				FROM = { is_in_faction_with = ROOT }
+			}
+		}
+	}
+
+	cbrn_answer_inspection_demand_mission = {
+		icon = GFX_decision_cbrn_demand_inspections
+		is_good = no
+		days_mission_timeout = constant:cbrn_diplomacy_duration.inspection_response_days
+		visible = { has_country_flag = cbrn_inspection_demand_active }
+		activation = { has_country_flag = cbrn_inspection_demand_active }
+		available = { always = no }
+		timeout_effect = {
+			custom_effect_tooltip = cbrn_answer_inspection_demand_timeout_tt
+			hidden_effect = { cbrn_diplomacy_resolve_inspection_demand_timeout = yes }
+		}
+	}
+
+	cbrn_share_forensic_evidence = {
+		icon = GFX_decision_cbrn_share_forensic_evidence
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = 0
+		days_remove = constant:cbrn_diplomacy_duration.forensic_publication_days
+		modifier = {
+			civilian_factory_use = constant:cbrn_diplomacy_factory_use.forensic_publication
+		}
+		target_root_trigger = {
+			NOT = { is_actual_nonhuman_country = yes }
+			cbrn_country_can_pay_forensic_publication_cost = yes
+			OR = {
+				has_intelligence_agency = yes
+				has_tech = chemical_detection_paper
+				has_tech = field_epidemiology_teams
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				cbrn_state_has_shareable_forensic_evidence = yes
+			}
+		}
+		visible = { always = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_share_forensic_evidence_requirements_tt
+				cbrn_country_can_pay_forensic_publication_cost = yes
+				FROM = {
+					is_controlled_by = ROOT
+					cbrn_state_has_shareable_forensic_evidence = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { cbrn_country_can_pay_forensic_publication_cost = yes }
+		}
+		custom_cost_text = cbrn_share_forensic_evidence_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_share_forensic_evidence_begin_tt
+			hidden_effect = {
+				cbrn_diplomacy_pay_forensic_publication_cost = yes
+				FROM = { set_state_flag = cbrn_forensic_publication_active }
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_share_forensic_evidence_complete_tt
+			hidden_effect = {
+				FROM = { cbrn_diplomacy_publish_best_forensic_record = yes }
+			}
+		}
+		cancel_trigger = {
+			FROM = {
+				OR = {
+					NOT = { is_controlled_by = ROOT }
+					NOT = { has_state_flag = cbrn_forensic_publication_active }
+				}
+			}
+		}
+		cancel_effect = {
+			hidden_effect = {
+				FROM = { cbrn_diplomacy_cancel_forensic_publication = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_diplomacy_ai.base
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.very_high
+				FROM = {
+					OR = {
+						check_variable = {
+							var = cbrn_evidence_quality
+							value = constant:cbrn_evidence_threshold.confirmed
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = bio_agent_1_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_threshold
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = bio_agent_2_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_threshold
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = bio_agent_3_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_threshold
+							compare = greater_than_or_equals
+						}
+						check_variable = {
+							var = bio_agent_4_evidence
+							value = constant:bio_lifecycle_evidence.confirmed_threshold
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.high
+				has_government = democratic
+			}
+		}
+	}
+
+	cbrn_sponsor_decontamination_mission = {
+		icon = GFX_decision_cbrn_sponsor_decontamination_mission
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = 0
+		days_remove = constant:cbrn_diplomacy_duration.decon_mission_days
+		modifier = {
+			civilian_factory_use = constant:cbrn_diplomacy_factory_use.decon_mission
+		}
+		target_root_trigger = {
+			NOT = { is_actual_nonhuman_country = yes }
+			has_tech = field_decontamination_kits
+			cbrn_country_can_pay_international_decon_cost = yes
+		}
+		target_trigger = {
+			FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+		}
+		visible = { always = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_sponsor_decontamination_mission_requirements_tt
+				cbrn_country_can_pay_international_decon_cost = yes
+				FROM = { cbrn_state_can_receive_international_decontamination_from_root = yes }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = { cbrn_country_can_pay_international_decon_cost = yes }
+		}
+		custom_cost_text = cbrn_sponsor_decontamination_mission_cost
+		complete_effect = {
+			custom_effect_tooltip = cbrn_sponsor_decontamination_mission_begin_tt
+			hidden_effect = {
+				cbrn_diplomacy_pay_international_decon_cost = yes
+				FROM = { cbrn_diplomacy_begin_international_decon_mission = yes }
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = cbrn_sponsor_decontamination_mission_complete_tt
+			hidden_effect = {
+				FROM = { cbrn_diplomacy_complete_international_decon_mission = yes }
+			}
+		}
+		cancel_trigger = {
+			FROM = {
+				OR = {
+					NOT = { has_state_flag = cbrn_international_decon_mission_active }
+					NOT = { has_variable = cbrn_international_decon_recipient }
+					CONTROLLER = {
+						OR = {
+							NOT = { tag = var:PREV.cbrn_international_decon_recipient }
+							has_war_with = ROOT
+						}
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_sponsor_decontamination_mission_cancel_tt
+			hidden_effect = {
+				FROM = { cbrn_diplomacy_cancel_international_decon_mission = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:cbrn_diplomacy_ai.base
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.very_high
+				FROM = { cbrn_state_has_serious_chemical_contamination = yes }
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.high
+				cbrn_ai_has_defensive_cbrn_profile = yes
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.high
+				FROM = { CONTROLLER = { is_in_faction_with = ROOT } }
+			}
+			modifier = {
+				factor = constant:cbrn_diplomacy_ai.low
+				has_war = yes
+			}
+		}
+	}
+}
