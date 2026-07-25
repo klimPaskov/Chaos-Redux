@@ -11,6 +11,7 @@ It does not add a government route family, formable family, advisor, leader, or 
 - `common/national_focus/006_independence_wave_focus.txt`
 - `common/scripted_effects/006_independence_wave_wallonia_frisia_package_effects.txt`
 - `common/scripted_triggers/006_independence_wave_wallonia_frisia_package_triggers.txt`
+- `common/decisions/006_independence_wave_wallonia_frisia_decisions.txt`
 - `localisation/english/006_independence_wave_wallonia_frisia_l_english.yml`
 
 ## Route coverage
@@ -32,7 +33,7 @@ The former-host path requires either no living former host or the existing `inde
 
 The conference focus requires stable AGX waterline values, recognition, network membership, the existing Low Countries candidate flag, and no client-route lock.
 
-The paid `independence_wave_agx_convene_north_sea_coastal_conference` decision remains responsible for its strategic cost and 300-day duration.
+The paid `independence_wave_agx_convene_north_sea_coastal_conference` decision now also requires the focus-set `independence_wave_agx_north_sea_conference_authorized` flag and remains responsible for its strategic cost and 300-day duration.
 
 ## Icons and localisation
 
