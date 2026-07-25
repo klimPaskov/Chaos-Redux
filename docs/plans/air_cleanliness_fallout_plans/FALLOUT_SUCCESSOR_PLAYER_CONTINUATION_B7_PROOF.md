@@ -13,6 +13,7 @@ Status: implemented as a dormant static pilot on 2026-07-25. This is not a relea
 - `docs/assets/fallout_successor_b7_usa/manifest.md`
 - `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`
 - `docs/plans/air_cleanliness_fallout_plans/subagent_handoffs/fallout_fragmentation_nzl_candidate_2026-07-25.md`
+- `docs/plans/air_cleanliness_fallout_plans/subagent_handoffs/fallout_b7_usa_focus_effect_correction_2026-07-26.md`
 
 ## Continuity evidence
 
@@ -20,7 +21,7 @@ The USA continuity trigger requires the snapshotted human country, surviving-tag
 
 The focus layer has seven authored focuses with centralized 35-day, 70-day, and 105-day pacing bands. Shelter Registry adds a bunker to the surviving capital. Inland Corridors repairs infrastructure and rail. Guard Compacts changes army readiness. Regional Partners and Continental Radio Net open bilateral and communications routes. Federal Reconstruction closes the layer by replacing the temporary branch ideas with a reconstruction idea.
 
-The latest offline focus inspector parsed the tree with seven focuses, seven resolved localisation titles, no connector crossings, no node intersections, and no long connectors. It returned 29 total blocking diagnostics, of which nine belong to this tree. Its source scan does not load vanilla interface sprite definitions and therefore reports the seven vanilla `GFX_goal_generic_*` references as missing. A direct vanilla scan confirms the six focus sprites used here and both idea sprites in the installed interface files. The inspector also reports the two `add_army_experience` uses as unresolved helpers even though the repository and vanilla precedents use that effect. These are inspector-scope diagnostics, not a runtime claim. Dedicated B7 focus and idea art remains a final asset gate.
+The latest offline focus inspector parsed the tree with seven focuses, seven resolved localisation titles, no connector crossings, no node intersections, and no long connectors. It returned 27 total blocking diagnostics, of which seven belong to this tree. Its source scan does not load vanilla interface sprite definitions and therefore reports the seven vanilla `GFX_goal_generic_*` references as missing. A direct vanilla scan confirms the six focus sprites used here and both idea sprites in the installed interface files. The two USA focus rewards now use the documented `army_experience` effect. Dedicated B7 focus and idea art remains a final asset gate.
 
 ## Fragmentation evidence
 
