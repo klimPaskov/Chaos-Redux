@@ -412,7 +412,16 @@ is_independence_wave_reclamation_front_member_candidate = {
 	any_state = {
 		owner = {
 			exists = yes
+			NOT = { tag = PREV }
 			NOT = { has_country_flag = independence_wave_league_member }
+			NOT = { has_war_with = ROOT }
+			# Keep the availability probe aligned with the paid resolver.  ROOT is
+			# the candidate member and PREV remains the candidate state while this
+			# owner block is evaluated.
+			ROOT = {
+				can_declare_war_on = PREV
+				NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+			}
 		}
 		controller = { exists = yes }
 		is_claimed_by = PREV
