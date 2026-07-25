@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After The Men at Kilometer Twelve tranche, the living-world pilot contains `394`
+After The Weapons in the Nursery tranche, the living-world pilot contains `401`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `512`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `519`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -592,3 +592,9 @@ The documented living-world block total is now `387`, while the countable Fallou
 The Men at Kilometer Twelve adds seven dormant state-level event blocks at suffixes `506` through `512`. It uses candidate `506`, transaction `710046`, route `7146`, and history `9151`. The chain selects a deterministic exposed Air Winter state, offers tribute, water-pass negotiation, an armed attack, or a guard contract, and carries route supply, military readiness, checkpoint trust, raider strength, Deaths-backed failure, a delayed callback, dedicated art, Event Log payloads, and authenticated cleanup.
 
 The documented living-world block total is now `394`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Weapons in the Nursery custody tranche
+
+The Weapons in the Nursery adds seven dormant state-level event blocks at suffixes `513` through `519`. It uses candidate `513`, transaction `710047`, route `7147`, and history `9152`. The chain selects a deterministic occupied urban shelter state, offers a central armory, household registry, supervised militia, or disarmament, and carries Power, Fuel, shelter, Supply Access, civic trust, arms discipline, accident risk, building, and Deaths-system effects through a delayed result and safety callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired.
+
+The documented living-world block total is now `401`, while the countable Fallout living-world total remains `0 of 660`.

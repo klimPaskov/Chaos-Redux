@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout Implementation Status
 
-Overall system status reviewed against the live working tree on 2026-07-22. The numerical approval gate was reconciled on 2026-07-18.
+Overall system status reviewed against the live working tree on 2026-07-25. The numerical approval gate was reconciled on 2026-07-18.
 
 Overall status: partial implementation with hard release blockers. This document does not claim that Fallout, the manual scenario, the world rewrite, or the player handoff is complete.
 
@@ -85,7 +85,7 @@ The live Fallout package includes:
 - schema-2 country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, one fixed ordinary opening, compact arc, delayed-result, reciprocal bilateral, cancellation, cleanup, and routing receipts
 - a generation-bound monotonic ticket allocator, three independent compact-ledger reconciliation cursors, an ordinary receipt reconciler, exact dispatch envelopes, and mirrored issuance receipts
 - exact token-authenticated issued bilateral response, orphan cancellation, and cleanup terminalizers with no detached acknowledgement path
-- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for seventeen ordinary global-survival rows
+- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for forty-seven ordinary global-survival rows
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 
@@ -703,3 +703,7 @@ The Ravine Water Chemist is implemented as a dormant country-level chain at `cha
 ## The Men at Kilometer Twelve checkpoint tranche
 
 The Men at Kilometer Twelve is implemented as a dormant state-level chain at `chaosx.fallout.506` through `.512`. It uses candidate `506`, transaction key `710046`, route `7146`, and Event Log history `9151`. It selects a deterministic exposed Air Winter state and offers tribute, water-pass negotiation, an armed attack, or a guard contract. The chain freezes supplies, Cohesion, War Support, checkpoint trust, raider strength, Supply Access, exposure, and reclamation, applies route and military modifiers, sends failures through Deaths, schedules a 120-day result and 210-day callback, carries hidden-AI parity, and uses dedicated report art and Event Log payloads. Scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The defined living-world total is now `394`, while countable Fallout living-world blocks remain `0 of 660`.
+
+## The Weapons in the Nursery custody tranche
+
+The Weapons in the Nursery is implemented as a dormant state-level chain at `chaosx.fallout.513` through `.519`. It uses candidate `513`, transaction `710047`, route `7147`, and Event Log history `9152`. It selects a deterministic occupied urban Air Winter shelter state and offers a central armory, household registry, supervised militia, or disarmament. The chain freezes Shelter, Power, Fuel, Scrap, Medicine, Food, Recognition, Cohesion, War Support, Supply Access, exposure, reclamation, arms discipline, accident risk, and civic trust, applies shelter, supply, military, building, and Deaths effects, schedules a 90-day result and 180-day safety callback, carries hidden-AI parity, and uses dedicated report art and Event Log payloads. Scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The defined living-world total is now `401`, while countable Fallout living-world blocks remain `0 of 660`.
