@@ -381,30 +381,24 @@ is_valid_independence_wave_ambition_state = {
 is_valid_independence_wave_reclamation_front_state = {
 	owner = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = event_target:independence_wave_reclamation_front_member }
 		NOT = { has_country_flag = independence_wave_league_member }
-		NOT = { has_war_with = ROOT }
+		NOT = { has_war_with = event_target:independence_wave_reclamation_front_member }
 		# The paid operation may only be charged after this exact member/owner
 		# pair is already war-legal.  This is evaluated while the state is still
 		# frozen, before any costs or wargoal effects are applied.
-		ROOT = { can_declare_war_on = PREV }
+		event_target:independence_wave_reclamation_front_member = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
 		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
 	}
 	controller = { exists = yes }
 	OR = {
-		is_claimed_by = ROOT
-		any_neighbor_state = { is_owned_by = ROOT }
+		is_claimed_by = event_target:independence_wave_reclamation_front_member
+		any_neighbor_state = { is_owned_by = event_target:independence_wave_reclamation_front_member }
 	}
-	NOT = {
-		AND = {
-			has_state_flag = independence_wave_dm58_reclamation_front_used_by@ROOT
-			check_variable = {
-				var = independence_wave_dm58_reclamation_front_generation@ROOT
-				value = ROOT.independence_wave_generation_id
-				compare = equals
-			}
-		}
-	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
 	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
 }
 
