@@ -12,9 +12,8 @@ Package sections:
 
 Current portrait authority is the sourced-only gate in the accepted specification and event-asset skill.
 The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
-IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, and IW-008 Rhineland have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
-IW-009 has a partially approved sourced roster but remains outside runtime attestation until every stable consumer, rights record, and full package audit passes. Friedrich Dollmann trial 02 reached an exact pixel-proven archival crop but ImageGen remained safety-blocked. Otto von Lossow trial 02 passed the independent likeness and HOI4 commander-style gates, but its Bain/Commons scan establishes only `PD-US` without an exact object-level archive identifier, so provenance failed and no DDS or runtime wiring was allowed.
-IW-002 retains sourced archival identities for Saunders Lewis and Lewis Pugh Evans, but both Saunders trials and both Evans trials failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders photograph is comparison evidence only because preserving its elderly subject would preserve the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936; the October 1936 Dr Gwent Jones lead remains inaccessible through a later reproduction with unresolved rights. IW-006 retains its approved Jules Destrée civic portrait; Herman Baltia trial 01 passed provenance, role, style, and framing but failed likeness and stable-consumer transfer. The alternative Walloon commander sweep rejected active vanilla owners and every unlicensed repost or text-only lead, so the consumer remains source-blocked. IW-010 now has independently approved, byte-matched Walter Simons and Friedrich von Rabenau full-size portraits and a passing post-portrait country-package audit, but remains outside exact runtime content attestation until the parent promotes `iw_010`.
+IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, and IW-010 Saar have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
+IW-002 retains sourced archival identities for Saunders Lewis and Lewis Pugh Evans, but both Saunders trials and both Evans trials failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders photograph is comparison evidence only because preserving its elderly subject would preserve the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936; the October 1936 Dr Gwent Jones lead remains inaccessible through a later reproduction with unresolved rights. IW-006 retains its approved Jules Destrée civic portrait; Herman Baltia trial 01 passed provenance, role, style, and framing but failed likeness and stable-consumer transfer. The alternative Walloon commander sweep rejected active vanilla owners and every unlicensed repost or text-only lead, so the consumer remains source-blocked. IW-010 has independently approved, byte-matched Walter Simons and Friedrich von Rabenau full-size portraits, a passing post-portrait country-package audit, and exact compile-time content attestation.
 Route-owned Rupprecht and Matthes remain protected and byte-identical.
 Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
 Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
@@ -923,8 +922,8 @@ integration adapters. It also has a network coal-transit project.
 The shared reservation blocks AJX and RHI only inside one incident, so later
 repeatable waves can establish both founders for the approved Rhenish League
 direction. FORM-04 passed its post-transaction operational re-audit and exact
-readiness promotion. That family result does not admit IW-010 to automatic waves
-or SCN-008; country-package admission remains a separate fail-closed gate.
+readiness promotion. IW-010 country-package admission is independently proven;
+automatic waves and SCN-008 still require its live package preflight.
 
 ### AI behavior
 
@@ -951,7 +950,7 @@ and bunker priority without assuming a fixed host tag.
 The character sprites are consumed by `common/characters/006_independence_wave_saar_characters.txt`.
 Event 006 defines no Saar commander miniature, advisor card, dossier, or `_small` portrait.
 Both Simons's civic portrait and Rabenau's commander portrait have passed the archival-source, exact-crop, ImageGen identity-preservation, HOI4-style, independent-audit, and DDS-equality gates.
-Saar remains fail-closed at runtime because `iw_010` is not yet in exact compile-time content attestation; this fresh country-package audit accepts the completed static wiring and package evidence, but does not claim live execution.
+Saar has exact `iw_010` compile-time content attestation after its fresh country-package audit. This admits the package to live preflight without claiming that any particular host, anchor, reservation, Event 5, chaos-band, force, or synchronized transaction will pass.
 The flag hashes remain checked against `generated_nwe_hashes.sha256`.
 
 #### Reused Event 006 icons
@@ -1015,14 +1014,7 @@ branches, and Argentina's origin-gated AI strategy.
 
 ### Readiness and future plans
 
-- A fresh independent IW-010 package audit passed the complete Level 1 package,
-  exact AJX identity, state-42 anchor, host-survival proof, Event 5 collision
-  gates, shared focus and regional overlay, routes, decisions, forces, AI,
-  assets, localisation, and FORM-04 dependency. The SCN-008 preflight, exact
-  automatic wrapper, P10 capacity witness, and region-one planner gate are
-  registered, but runtime remains fail-closed because `iw_010` is absent from
-  exact compile-time content attestation. The parent must review the audit
-  handoff before promoting that package ID; no live execution proof is claimed.
+- A fresh independent IW-010 package audit passed the complete Level 1 package, exact AJX identity, state-42 anchor, host-survival proof, Event 5 collision gates, shared focus and regional overlay, routes, decisions, forces, AI, assets, localisation, and FORM-04 dependency. The SCN-008 preflight, exact automatic wrapper, P10 capacity witness, region-one planner gate, and exact `iw_010` compile-time content attestation are registered. Every live preflight and synchronized transaction proof remains mandatory.
 - IW-010 and IW-008 retain the shared `RG-RHINE-SAAR` reservation. They cannot
   collide inside one frozen incident, while a later wave may admit the other
   package if its own readiness and host-survival checks pass.
