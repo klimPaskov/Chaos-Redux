@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After The Weapons in the Nursery tranche, the living-world pilot contains `401`
+After The Captain Refuses tranche, the living-world pilot contains `408`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `519`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `526`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -597,4 +597,8 @@ The documented living-world block total is now `394`, while the countable Fallou
 
 The Weapons in the Nursery adds seven dormant state-level event blocks at suffixes `513` through `519`. It uses candidate `513`, transaction `710047`, route `7147`, and history `9152`. The chain selects a deterministic occupied urban shelter state, offers a central armory, household registry, supervised militia, or disarmament, and carries Power, Fuel, shelter, Supply Access, civic trust, arms discipline, accident risk, building, and Deaths-system effects through a delayed result and safety callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired.
 
-The documented living-world block total is now `401`, while the countable Fallout living-world total remains `0 of 660`.
+## The Captain Refuses command-fracture tranche
+
+The Captain Refuses adds seven dormant state-level event blocks at suffixes `520` through `526`. It uses candidate `520`, transaction `710048`, route `7148`, and history `9153`. The chain selects a deterministic exposed Air Winter state, offers negotiated mission duty, captain replacement, military custody, or bounded field autonomy, and carries command ledgers, military modifiers, state Supply Access, building, and Deaths-system effects through a delayed result and command review callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired. Native character replacement remains unproven.
+
+The documented living-world block total is now `408`, while the countable Fallout living-world total remains `0 of 660`.

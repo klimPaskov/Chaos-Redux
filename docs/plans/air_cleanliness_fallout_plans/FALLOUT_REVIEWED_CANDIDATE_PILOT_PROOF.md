@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-seven
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-eight
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -283,6 +283,22 @@ It uses country candidate id `352`, transaction key `710024`, route `7124`, and 
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Weapons in the Nursery correction
+
+The Weapons in the Nursery is the forty-seventh reviewed ordinary candidate. It uses candidate id `513`, transaction `710047`, route `7147`, event tokens `513` through `519`, and history `9152`.
+Its gate selects the lowest owned urban state with a produced current-generation Air Winter shelter receipt, surviving population, and durable arms-custody ledgers. The chain freezes Shelter, Power, Fuel, Scrap, Medicine, Food, Recognition, Cohesion, War Support, state Supply Access, exposure, reclamation, arms discipline, accident risk, and civic trust before a 90-day result and a 180-day safety callback.
+The four policies centralize the armory, register households, place the stock with a supervised militia, or disarm the room and reopen shelter space. Each lane has human and hidden-AI delivery, branch-specific effects, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The dedicated proof is recorded in `FALLOUT_WEAPONS_IN_NURSERY_CHAIN_PROOF.md`.
+
+## The Captain Refuses correction
+
+The Captain Refuses is the forty-eighth reviewed ordinary candidate. It uses candidate id `520`, transaction `710048`, route `7148`, event tokens `520` through `526`, and history `9153`.
+Its gate selects the lowest owned exposed state with a produced current-generation Air Winter receipt, surviving population, current Supply Access, and low durable captain loyalty. The chain freezes Food, Water, Fuel, Equipment, Scrap, Recognition, Cohesion, War Support, Command Power, captain loyalty, mission mandate, field autonomy, state Supply Access, exposure, and reclamation before a 135-day result and a 240-day command review callback.
+The four policies negotiate the mission, replace the captain, arrest the captain, or grant bounded field autonomy. Each lane has human and hidden-AI delivery, military modifiers, branch memory, building and Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup. Native character replacement remains unproven.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+The dedicated proof is recorded in `FALLOUT_CAPTAIN_REFUSES_CHAIN_PROOF.md`.
 
 ## The Men at Kilometer Twelve correction
 
