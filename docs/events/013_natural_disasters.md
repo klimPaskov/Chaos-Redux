@@ -147,6 +147,8 @@ The selected-record panel keeps its severity, hazard, path, state, death, warnin
 
 Six researched, non-terminal super-event packages are reserved for rare abnormal milestones:
 
+These packages feed the shared, general super-event presentation; they are not part of the Event 013 aftermath or abnormal-map UI surfaces.
+
 - slot 67, `NO FIRM GROUND`, whole-earth rupture;
 - slot 68, `ASH AT NOON`, massive eruption;
 - slot 69, `THE BURNING FIRMAMENT`, meteor shower;
