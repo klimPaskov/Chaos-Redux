@@ -19,7 +19,7 @@ The 3D worker may create source files, Blender checkpoints, textures, `.mesh`, `
 
 ## Hard start gates
 
-Before any workflow action, verify that `MESHY_API_KEY` exists and is non-blank, and verify that the selected Meshy route is reachable. If the key is missing, stop immediately and tell the user to set it, then restart the shell or Codex:
+The first process check is `MESHY_API_KEY`, which must be a non-blank process environment variable before any path discovery, job intake read, reference inspection or generation, route discovery, balance check, provider call, or downstream work. If the key is missing or blank, stop immediately, print this exact PowerShell command, and tell the user to restart the shell or Codex:
 
 ```powershell
 [Environment]::SetEnvironmentVariable(
@@ -29,9 +29,11 @@ Before any workflow action, verify that `MESHY_API_KEY` exists and is non-blank,
 )
 ```
 
-Do not generate a reference image, discover paths, make a provider call, or begin downstream work before this gate passes.
+Do not resolve the repository root or job root, read a job or brief, inspect or generate a reference, discover a route, call balance, make a provider call, invoke Blender, or begin downstream work before this gate passes.
 
-Treat the intended official Meshy MCP integration through a version-pinned wrapper, the official Blender Lab MCP development route, the repository-owned allowlisted Blender adapter, the Blender version, and the checksum-locked `io_pdx_mesh` extension as dependencies that require installation and verification. These are capability labels, not callable tool names. This skill does not assume they are installed or callable. If any required capability is missing, its live schema is unavailable, or its lock does not match, stop and report `required installation/verification` or `blocked`; do not install packages, substitute an unapproved route, or invent a live MCP/tool name. Record the actual discovered server/tool identifiers and arguments only after live verification.
+After the key gate passes, resolve the repository and job roots from repository-owned files, then run the repository-owned bootstrap before any balance or paid/provider call. The bootstrap must resolve the latest official Meshy package, latest Blender Lab MCP release or default-branch head, the discovered Blender executable/build, and the latest io_pdx_mesh release, then write the exact observed resolution and checksums to `.tools/3d_pipeline/config/dependencies.lock.json`. It must also install and enable the matching Blender MCP add-on in the discovered Blender extension repository, configure the add-on's resolved bridge endpoint, start Blender when needed, and verify that the bridge is reachable. Treat that file as generated evidence with `resolution_policy = latest_at_bootstrap`, not as a permanent version pin. Verify the selected Meshy route, the narrow repository-owned `chaosx_blender_hoi4` adapter route when the repository provides one, the resolved Blender server and add-on route, the reachable bridge, and the latest io_pdx_mesh installation. If latest resolution, live schema, add-on installation, bridge reachability, compatibility, or checksum verification fails, stop and report `required installation/verification` or `blocked`; do not substitute an older dependency or invent a live MCP/tool name.
+
+Record the exact verified server package, version, git head, route or wrapper, schema version, actual tool identifiers, paid flags, input exclusivity, required arguments, adapter operation names and arguments, Blender build, extension manifest, archive checksum, dependency-lock checksums, provider task IDs, response IDs, and output checksums. The current verified Meshy tool identifiers include `meshy_check_balance`, `meshy_image_to_3d`, `meshy_get_task_status`, `meshy_download_model`, `meshy_remesh`, `meshy_rig`, `meshy_convert`, and `meshy_animate`; use only names returned by the live locked route and record the exact arguments used. If a required route, schema, package, version, checksum, or capability is missing or mismatched, stop and report `required installation/verification` or `blocked`; do not install packages, substitute an unapproved route, or invent a live MCP/tool name.
 
 Keep provider and Blender integration guidance in this skill and the job's dependency lock. Do not create a central MCP router or tool-specific wrapper. Any viewer, inspector, renderer, or comparison route used for QA must be read-only. This package does not provide unrelated viewers, including a Technology Tree Viewer; record such a capability as absent when requested.
 
@@ -50,7 +52,7 @@ Before 3D work, read:
 - Relevant documentation under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`.
 - Local vanilla `.mesh`, `.anim`, `.asset`, entity, material, texture, and model precedents for the exact domain, plus existing Chaos Redux model precedents.
 
-Use existing Chaos Redux paths under `gfx/models/` and `gfx/entities/` as local precedents where applicable, but confirm the final path, shader, material channels, scale, axes, skeleton, action names, and entity structure against the installed vanilla version. Do not lock tutorial values or assume that a nearby asset belongs to the same runtime surface.
+Use existing Chaos Redux paths under `gfx/models/` and `gfx/entities/` as local precedents where applicable, but confirm the final path, shader, material channels, scale, axes, skeleton, action names, and entity structure against the installed vanilla version. Do not lock tutorial values or assume that a nearby asset belongs to the same runtime surface. Treat tutorial polygon counts, texture dimensions, and provider defaults as starting heuristics only; the installed game and latest verified toolchain decide acceptance.
 
 For a humanoid land-unit pilot, this is a hard calibration gate, not a suggestion: import the installed vanilla infantry `.mesh` into the Blender reference collection read-only, identify the exact entity and runtime `scale`, exclude collision-only geometry, and record the measured source-mesh height, effective runtime height, forward axis, ground contact, and the comparison result in the job and manifest. When the custom entity retains the vanilla entity scale, normalize the exported mesh to the measured source-mesh height so the engine applies that scale exactly once; do not normalize to the effective runtime height and then multiply it by the entity scale again. Do not use a generic real-world height or an arbitrary entity `scale` as a substitute. Keep the provider/animation height and the Blender source-mesh calibration height as separate fields when the provider and HOI4 coordinate spaces differ.
 
@@ -68,40 +70,55 @@ Validate the job before any paid work. The parent must provide:
 - the locked provider, Blender, adapter, and `io_pdx_mesh` dependencies
 - the deterministic job root and exact handoff path
 
-When the parent does not supply a root, derive it from the repository root and stable owner/asset slugs:
+When the parent does not supply a root, derive it from the resolved repository root, a normalized stable owner id, and a normalized asset slug:
 
 ```text
-docs/assets/<owner_id>_<owner_slug>/models_3d/<asset_slug>/
-  job.json
+docs/assets/<owner_id>/models_3d/<asset_slug>/
+  job.yaml
+  manifest.md
   history.jsonl
-  reference/
-    source.png
-    derived/                 # optional, approved clarification only
-    meshy_input.png          # the only image sent to Meshy
+  refs/
+    original/
+      meshy_input.png        # the only image sent to Meshy
+      input_manifest.json
+    derived/                  # optional, approved clarification only
+    briefs/
   provider/
     requests/
+    responses/
+    tasks/
+    credits/
     downloads/
+    rejected/
   blender/
     source/
+    reference/
     working/
     checkpoints/
+    previews/
+    reports/
   textures/
     source/
     processed/
+    dds/
   export/
-  previews/
-  reports/
+    mesh/
+    anim/
+  validation/
+  evidence/
+  logs/
   runtime/
     handoff.md
+    crosswalk.md
 ```
 
-Use the same derived path every time. Do not put timestamps, random IDs, pilot names, or workstation paths into the primary layout. Keep append-only task history, checksums, and dependency records inside the job root; never archive secrets. Final runtime files must not remain runtime-referenced from `docs/assets/`.
+Use the same derived path every time and pass job-relative paths to provider and adapter calls after root-containment checks. Do not use chat assumptions, timestamps, random IDs, pilot names, or workstation paths as the primary path. Keep append-only task history, manifest state, checksums, copy provenance, and dependency records inside the job root; never archive secrets. Final runtime files must not remain runtime-referenced from `docs/assets/`.
 
 ## Exactly one Meshy reference image
 
-Meshy receives exactly one clean final reference image. If the parent supplies one, preserve it and use it only after checksum and rights preflight. If no image is supplied, generate one production reference through the approved image-generation route, save it as `reference/meshy_input.png`, and retain its prompt, source mode, checksum, and approval note. If that route is unavailable, mark the job as `required installation/verification` or `blocked` rather than substituting.
+Meshy receives exactly one clean final reference image. If the parent supplies one, preserve it and use it only after checksum and rights preflight. If no image is supplied, generate exactly one production reference through the approved image-generation route, save it as `refs/original/meshy_input.png`, and retain its prompt, source mode, checksum, and approval note. If that route is unavailable, mark the job as `required installation/verification` or `blocked` rather than substituting.
 
-Do not create or submit a turnaround sheet, multi-view board, collage, side-profile set, or separate front/rear images. Vanilla references may be imported into Blender read-only for calibration, but they are not additional Meshy inputs.
+Do not create or submit a turnaround sheet, multi-view board, collage, side-profile set, or separate front/rear images. Vanilla references may be imported into Blender read-only for calibration, and Blender may render front, rear, side, top, underside, wireframe, or material QA views after generation, but none of those views is a Meshy input or may be sent back to the provider.
 
 Preflight the one input for silhouette, cropped parts, limb/component separation, dark gaps, strong shadows, background complexity, thin structures, painted details that may be mistaken for geometry, symmetry/asymmetry, unseen-side ambiguity, and source rights. An approved derived image may clarify exposure, background, or an accidental seam; it may not silently redesign the subject. Keep the original and both checksums.
 
@@ -117,7 +134,7 @@ verified balance -> image-to-3D -> status -> immediate download
 
 Before every paid tranche, check the live balance through the verified provider route and record the estimate, hard limit, attempt number, and consumed credits. Inspect the live schema before paid calls; do not promise a general geometry prompt when the current Image-to-3D surface exposes only texture-direction text. Record the exact verified arguments and response/task IDs without exposing the API key.
 
-Prefer smart topology when suitable, triangular output, PBR maps when textures are required, removal of baked lighting when supported, and A/T pose for a riggable humanoid. Use the suitable provider pose or `none` for static or mechanical assets. Download every successful artifact immediately, retain the GLB as the canonical provider archive, retain FBX when a rig/action route needs it, and record checksums, provider version, task IDs, request/response lineage, and local download paths. Remote URLs are never the only accepted copy.
+Prefer smart topology when suitable, triangular output, PBR maps when textures are required, removal of baked lighting when supported, and A/T pose for a riggable humanoid. Use the suitable provider pose or `none` for static or mechanical assets. Download every successful artifact immediately, retain the GLB as the canonical provider archive, retain FBX when a rig/action route needs it, and record exact arguments, checksums, provider version, task IDs, request/response lineage, credits, and local download paths. Remote URLs are never the only accepted copy.
 
 Treat every provider result as a candidate. Review front, rear, sides, top, and underside where relevant, plus wireframe, untextured shading, and textured views. Block or retry within the approved budget for missing major components, floating critical parts, fused limbs/weapons/turrets/wings, open holes, identity mismatch, broken thin structures, or unacceptable unseen-side invention. Do not spend retexture, rig, or animation credits on rejected geometry. High-detail generation followed by controlled reduction is allowed only when the job explicitly permits it and the lineage records both candidates.
 
@@ -146,9 +163,9 @@ Save stable checkpoint stages in `blender/checkpoints/` (source import, normaliz
 
 ## Geometry, materials, rigging, and actions
 
-Record triangles, vertices, objects, material slots, loose components, non-manifold and boundary edges, degenerates, normals, UV layers and relevant overlap, transforms, negative scale, bounds, origin, ground/water contact, reference comparison, and profile semantic checks. Final topology is triangular unless a verified local engine path says otherwise.
+Record triangles, vertices, objects, material slots, loose components, non-manifold and boundary edges, holes, degenerates, normals, UV layers and relevant overlap, transforms, negative scale, bounds, origin, ground/water contact, reference comparison, and profile semantic checks. Repair or reject holes, loose components, non-manifold edges, and degenerate geometry before acceptance; any intentional open surface must be named by the profile and marked for review. Final topology is triangular unless a verified local engine path says otherwise.
 
-Retain provider source maps. Convert through the exact local PDX material precedent and record channel mapping, color space, alpha behavior, texture dimensions, DDS paths, and unsupported maps. Use the repository converter at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` for final PNG to DDS conversion and follow that skill's complete DDS-header and alpha validation. For HOI4 model textures, enforce the profile's verified maximum dimension (1024 pixels for the current vanilla model surface) and record any resize. Do not pass materials QA with missing, black, magenta, invisible, accidentally transparent, or implausibly reflective surfaces.
+Retain provider source maps unchanged. Convert through the exact local PDX material precedent and record shader, channel mapping, color space, alpha behavior, texture dimensions, DDS paths, and unsupported maps. For the latest installed PDX packed specular route, use the recorded layout of red unused or mask zero, green specular level, blue metallic, and alpha roughness; never use a raw grayscale roughness map as the PDX specular map. Use the repository converter at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` for final PNG to DDS conversion and follow that skill's complete DDS-header and alpha validation. For HOI4 model textures, enforce the profile's verified maximum dimension, currently 1024 pixels for the local vanilla model surface unless fresh installed references prove otherwise, and record any resize. If the provider diffuse is too dark, derive a documented deterministic grade from the immutable provider base and rebuild the runtime derivative from that base on every run; never compound a grade from an older processed or runtime texture. Do not pass materials QA with missing, black, magenta, invisible, accidentally transparent, or implausibly reflective surfaces.
 
 Use one profile's calibrated axes, scale, triangle range, material/texture limits, rig route, action roles, root policy, instance density, semantic checks, export preset, and runtime pattern. A profile must be calibrated before paid or export work begins.
 
@@ -158,13 +175,13 @@ If a custom `common/units` subunit identifier is introduced, the parent runtime 
 
 Require no zero-weight deforming vertices, normalized weights, influence counts within local precedent, no unapproved opposite-side stretch, rigid assignment for rigid parts, and deformation tests in representative poses. Automatic weights are only a seed where the profile allows them.
 
-Every requested action must have a semantic role, final name, source route, FPS, frame range, loop state, root policy, preview, exported `.anim`, proposed runtime binding, and validation result. Provider animations are source candidates: clean, retarget, bake, and validate them in Blender. Author missing creature or mechanism actions in Blender when the job allows it. Do not replace a requested action with a static pose. For loops, compare first and last evaluated poses, root/contact drift, and the result at normal HOI4 map zoom. A skeleton change invalidates weights, actions, exports, and downstream evidence.
+Every requested action must have a semantic role, final name, source route, FPS, frame range, loop state, root policy, preview, exported `.anim`, proposed runtime binding, and validation result. For humanoid animation candidates, clean, retarget, and bake the action in Blender, normalize armature object and pose transforms deliberately, inspect and sanitize scale F-curves, and scale keyed location channels deliberately when the provider and calibrated mesh units differ. Define in-place or root-motion policy before editing keys, apply any location conversion exactly once, and record the factor and before/after channels. Check foot and ground contacts at representative frames and validate the required idle, move, and attack roles as real skeletal actions. Provider animations are source candidates and missing actions must be authored in Blender when the job allows it. Do not replace a requested action with a static pose. For loops, compare first and last evaluated poses, root/contact drift, and the result at normal HOI4 map zoom. A skeleton change invalidates weights, actions, exports, and downstream evidence.
 
 ## PDX export and reimport evidence
 
 Before export, ensure the export collection contains only approved objects and that transforms, topology, materials, armature, actions, exporter version, and preset pass. Export `.mesh` and required `.anim` files using the checksum-locked verified `io_pdx_mesh` route. Capture every warning, output path, byte size, and checksum.
 
-For every output, retain the export log and either a successful re-import/parse report or an explicit `required installation/verification`/`blocked` record when the verified stack cannot re-import or parse that format. A Blender viewport, provider preview, file existence, or plausible filename is not reimport evidence. Do not silently ignore exporter warnings, missing actions, unsupported material channels, or an absent parser.
+For every output, retain the export log and reimport or parse the actual `.mesh` or `.anim` bytes through the locked stack, saving the proof scene or parser report, measured geometry/action facts, output checksum, and any warnings. If the verified stack cannot re-import or parse that format, record an explicit `required installation/verification` or `blocked` result. A Blender viewport, provider preview, file existence, or plausible filename is not reimport evidence. Do not silently ignore exporter warnings, missing actions, unsupported material channels, or an absent parser.
 
 ## Evidence package and handoff
 
@@ -182,6 +199,10 @@ The job package must contain, as applicable:
 Each model manifest entry records the asset ID/slug, profile, source reference and checksum, provider lineage, selected candidate, checkpoint, geometry counts, objects/materials, armature/bones, actions/frame data, source/final textures, exports/checksums, exporter version/settings, proposed runtime identifiers, actual runtime registration only after parent wiring, live consumer, in-game evidence only after parent validation, and status. Use `complete`, `needs_user_review`, `blocked`, or `canceled`; never create a fallback completion state.
 
 When the event/system owner and slug are known, place the subagent handoff under the parent-provided `docs/plans/<owner_id>_<owner_slug>_plans/subagent_handoffs/` path. The parent must review every artifact and either wire it, queue it with a reason, reject it with a reason, or carry its blocker forward.
+
+## Runtime copy synchronization
+
+Treat the selected source exports, staged runtime copies, and active consumer files as separate surfaces. A runtime file can be stale or be overwritten by an older mapped texture even when the current source export is correct. Select the final geometry, material maps, and actions first, then lock the selected source paths in the manifest before synchronizing any runtime copy. Record each source and destination path, source and destination SHA-256, copy tool or actor, copy time, and provenance link, then compare destination hashes after synchronization. Never synchronize from an older provider or processed path, never let a filename alone choose the source, and never synchronize before final source selection. The parent owns active runtime copies, `.asset`, entity, `.gfx`, gameplay wiring, live consumers, and in-game screenshots; the worker owns the evidence and exact handoff needed to perform that work.
 
 ## Bounded subagent route
 
