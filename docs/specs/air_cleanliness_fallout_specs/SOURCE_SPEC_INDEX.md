@@ -113,6 +113,7 @@
 - `specs/49_reviewed_global_survival_the_missing_patrol.md`
 - `specs/50_reviewed_global_survival_the_ammunition_winter.md`
 - `specs/51_reviewed_global_survival_a_new_funeral.md`
+- `specs/52_reviewed_regional_ashline_firebreak.md`
 
 ## Matrices
 

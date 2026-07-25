@@ -13111,6 +13111,146 @@ country_event = {
 	immediate = { fallout_event_541_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival chain: Ashline Firebreak
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.554
+	title = chaosx.fallout.554.t
+	desc = chaosx.fallout.554.d
+	picture = GFX_report_event_fallout_ashline_firebreak
+	is_triggered_only = yes
+	trigger = { fallout_event_554_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.554.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_554_cost.cut_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_554_cost.cut_fuel compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_554_requested_branch = constant:fallout_event_554_branch.cut_firebreak } fallout_event_554_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.554.a.tt
+		ai_chance = { base = constant:fallout_event_554_ai.firebreak_priority }
+	}
+	option = {
+		name = chaosx.fallout.554.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_554_cost.seal_shelter compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_554_cost.seal_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_554_requested_branch = constant:fallout_event_554_branch.seal_roofs } fallout_event_554_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.554.b.tt
+		ai_chance = { base = constant:fallout_event_554_ai.seal_priority modifier = { factor = constant:fallout_event_554_ai.strong_modifier NOT = { has_war = yes } } }
+	}
+	option = {
+		name = chaosx.fallout.554.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_554_cost.cordon_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_554_cost.cordon_fuel compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_554_requested_branch = constant:fallout_event_554_branch.military_cordon } fallout_event_554_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.554.c.tt
+		ai_chance = { base = constant:fallout_event_554_ai.cordon_priority modifier = { factor = constant:fallout_event_554_ai.strong_modifier has_war = yes } }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.555
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_554_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_554_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.556
+	title = chaosx.fallout.556.t
+	desc = { text = chaosx.fallout.556.success.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.556.partial.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.556.failure.d
+	picture = GFX_report_event_fallout_ashline_firebreak
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_cut_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.cut_firebreak } }
+	option = { name = chaosx.fallout.556.a hidden_effect = { fallout_event_554_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.556.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.557
+	title = chaosx.fallout.557.t
+	desc = { text = chaosx.fallout.557.success.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.557.partial.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.557.failure.d
+	picture = GFX_report_event_fallout_ashline_firebreak
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_seal_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.seal_roofs } }
+	option = { name = chaosx.fallout.557.a hidden_effect = { fallout_event_554_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.557.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.558
+	title = chaosx.fallout.558.t
+	desc = { text = chaosx.fallout.558.success.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.558.partial.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.558.failure.d
+	picture = GFX_report_event_fallout_ashline_firebreak
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_cordon_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.military_cordon } }
+	option = { name = chaosx.fallout.558.a hidden_effect = { fallout_event_554_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.558.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.559
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_cut_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.cut_firebreak } }
+	immediate = { fallout_event_554_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.560
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_seal_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.seal_roofs } }
+	immediate = { fallout_event_554_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.561
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_554_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_cordon_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_554_branch.military_cordon } }
+	immediate = { fallout_event_554_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.562
+	title = chaosx.fallout.562.t
+	desc = { text = chaosx.fallout.562.success.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.562.partial.d trigger = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.562.failure.d
+	picture = GFX_report_event_fallout_ashline_firebreak
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_554_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_554_branch.upper_bound } fallout_event_554_registry_is_current = yes }
+	option = { name = chaosx.fallout.562.a hidden_effect = { fallout_event_554_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.562.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.563
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ashline_firebreak_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_554_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_554_branch.upper_bound } fallout_event_554_registry_is_current = yes }
+	immediate = { fallout_event_554_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.564
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_554_cleanup_can_enter = yes }
+	immediate = { fallout_event_554_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 
