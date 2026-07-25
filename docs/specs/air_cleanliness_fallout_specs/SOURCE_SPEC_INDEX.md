@@ -109,6 +109,7 @@
 - `specs/46_reviewed_global_survival_men_at_km12.md`
 - `specs/47_reviewed_global_survival_weapons_in_nursery.md`
 - `specs/48_reviewed_global_survival_the_captain_refuses.md`
+- `specs/49_reviewed_global_survival_the_missing_patrol.md`
 
 ## Matrices
 

@@ -2173,6 +2173,65 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_variable = fallout_event_520_candidate_state_id
 			clear_variable = fallout_event_520_operation_pressure
 
+			# The Missing Patrol selects the lowest owned exposed state whose
+			# current Air Winter receipt still carries a usable route and durable
+			# cause-memory ledgers. The response never creates a war or a tag.
+			if = { limit = { NOT = { has_variable = fallout_missing_patrol_intelligence_current } } set_variable = { fallout_missing_patrol_intelligence_current = constant:fallout_event_527_threshold.initial_intelligence } }
+			if = { limit = { NOT = { has_variable = fallout_missing_patrol_fear_current } } set_variable = { fallout_missing_patrol_fear_current = constant:fallout_event_527_threshold.initial_fear } }
+			if = { limit = { NOT = { has_variable = fallout_missing_patrol_reputation_current } } set_variable = { fallout_missing_patrol_reputation_current = constant:fallout_event_527_threshold.initial_reputation } }
+			if = { limit = { NOT = { has_variable = fallout_missing_patrol_contact_current } } set_variable = { fallout_missing_patrol_contact_current = constant:fallout_event_527_threshold.initial_contact } }
+			if = { limit = { NOT = { has_variable = fallout_missing_patrol_cause_memory_current } } set_variable = { fallout_missing_patrol_cause_memory_current = constant:fallout_event_527_threshold.initial_cause_memory } }
+			set_variable = { fallout_event_527_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_527_patrol_pressure = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_527_patrol_state_is_current = yes
+						OR = {
+							check_variable = { ROOT.fallout_event_527_candidate_state_id = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_527_candidate_state_id compare = less_than }
+						}
+					}
+					set_variable = { ROOT.fallout_event_527_candidate_state_id = fallout_event_pilot_state_candidate_id }
+					set_variable = { ROOT.fallout_event_527_patrol_pressure = fallout_pretransition_air_winter_exposure }
+				}
+			}
+			if = {
+				limit = { fallout_event_527_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.missing_patrol_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.missing_patrol_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.war }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.missing_patrol_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.missing_patrol_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_season }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_527_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_527_patrol_pressure }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_527_patrol_pressure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_527_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.equipment }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.equipment }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_three }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_527_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.missing_patrol_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_527_candidate_state_id
+			clear_variable = fallout_event_527_patrol_pressure
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }
