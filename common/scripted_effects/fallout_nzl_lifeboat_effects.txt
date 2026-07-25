@@ -4,6 +4,7 @@
 # Idempotent value, identity, force, bilateral, and event-chain helpers for the
 # dormant NZL successor pilot. The activation entry point has no caller until
 # the live Fallout allocator proves every required current-generation receipt.
+# Conflict-disposition helpers below remain allocator-owned and dormant.
 # ============================================================================
 
 @FALLOUT_NZL_PIRATE_WARGOAL_EXPIRY_DAYS = 180
@@ -516,6 +517,31 @@ fallout_nzl_create_extra_escort_formation = {
 	clear_temp_variable = fallout_nzl_unit_experience
 	clear_temp_variable = fallout_nzl_unit_equipment
 	clear_temp_variable = fallout_nzl_unit_manpower
+}
+
+# Supported scope: COUNTRY. These helpers own only the two conflict
+# dispositions required by the NZL package. They are deliberately uncalled
+# until a Fallout materializer has transferred the exact footprint and
+# authenticated the live conflict ledger.
+fallout_nzl_clear_conflict_dispositions = {
+	clr_country_flag = fallout_nzl_samoa_disposition_resolved
+	clr_country_flag = fallout_nzl_aotearoa_overlap_resolved
+	clear_variable = fallout_nzl_samoa_disposition
+	clear_variable = fallout_nzl_samoa_disposition_generation
+	clear_variable = fallout_nzl_aotearoa_overlap_disposition
+	clear_variable = fallout_nzl_aotearoa_overlap_generation
+}
+
+fallout_nzl_record_conflict_dispositions = {
+	if = {
+		limit = { fallout_nzl_conflict_dispositions_can_record = yes }
+		set_country_flag = fallout_nzl_samoa_disposition_resolved
+		set_variable = { fallout_nzl_samoa_disposition = constant:fallout_nzl_conflict_disposition.samoa_state_excluded }
+		set_variable = { fallout_nzl_samoa_disposition_generation = global.fallout_transition_generation }
+		set_country_flag = fallout_nzl_aotearoa_overlap_resolved
+		set_variable = { fallout_nzl_aotearoa_overlap_disposition = constant:fallout_nzl_conflict_disposition.aotearoa_overlap_inactive }
+		set_variable = { fallout_nzl_aotearoa_overlap_generation = global.fallout_transition_generation }
+	}
 }
 
 # Dormant entry point. No on action, event, decision, or startup effect calls it.

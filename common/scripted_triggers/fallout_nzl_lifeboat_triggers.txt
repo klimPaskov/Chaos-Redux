@@ -42,8 +42,12 @@ fallout_nzl_assignment_identity_is_current = {
 fallout_nzl_conflict_dispositions_are_current = {
 	has_country_flag = fallout_nzl_samoa_disposition_resolved
 	has_country_flag = fallout_nzl_aotearoa_overlap_resolved
+	has_variable = fallout_nzl_samoa_disposition
+	has_variable = fallout_nzl_aotearoa_overlap_disposition
 	has_variable = fallout_nzl_samoa_disposition_generation
 	has_variable = fallout_nzl_aotearoa_overlap_generation
+	check_variable = { fallout_nzl_samoa_disposition = constant:fallout_nzl_conflict_disposition.samoa_state_excluded }
+	check_variable = { fallout_nzl_aotearoa_overlap_disposition = constant:fallout_nzl_conflict_disposition.aotearoa_overlap_inactive }
 	check_variable = {
 		var = fallout_nzl_samoa_disposition_generation
 		value = global.fallout_transition_generation
@@ -54,6 +58,51 @@ fallout_nzl_conflict_dispositions_are_current = {
 		value = global.fallout_transition_generation
 		compare = equals
 	}
+}
+
+fallout_nzl_conflict_disposition_inputs_are_current = {
+	tag = NZL
+	check_variable = {
+		var = global.fallout_transition_phase
+		value = constant:fallout_transition_phase.survivor_allocation
+		compare = equals
+	}
+	has_global_flag = fallout_successor_conflict_ledger_built
+	fallout_successor_conflict_ledger_is_current = yes
+	fallout_nzl_has_exact_state_package = yes
+	726 = {
+		NOT = { is_owned_by = ROOT }
+		NOT = { is_controlled_by = ROOT }
+	}
+	SAM = {
+		OR = {
+			NOT = { is_in_array = { array = global.fallout_live_tag_conflict_countries value = THIS } }
+			fallout_live_tag_conflict_resolution_is_current = yes
+		}
+	}
+	all_of_scopes = {
+		array = global.fallout_live_tag_conflict_countries
+		OR = {
+			tag = NZL
+			NOT = { fallout_country_has_independence_package_ownership = yes }
+			AND = {
+				fallout_live_tag_conflict_resolution_is_current = yes
+				NOT = {
+					any_owned_state = {
+						OR = {
+							check_variable = { var = THIS.id value = constant:fallout_nzl_state.wellington compare = equals }
+							check_variable = { var = THIS.id value = constant:fallout_nzl_state.canterbury compare = equals }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+fallout_nzl_conflict_dispositions_can_record = {
+	fallout_nzl_conflict_disposition_inputs_are_current = yes
+	NOT = { fallout_nzl_conflict_dispositions_are_current = yes }
 }
 
 fallout_nzl_lifeboat_package_can_activate = {

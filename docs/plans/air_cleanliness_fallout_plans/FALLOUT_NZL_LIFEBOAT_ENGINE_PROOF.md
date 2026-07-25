@@ -2,7 +2,7 @@
 
 ## Status
 
-This record covers the dormant New Zealand Lifeboat State pilot. It does not authorize package activation. The live Fallout allocator still lacks accepted conflict dispositions for Samoa and the Aotearoa overlap. Vanilla New Zealand AI plan retirement is also unresolved.
+This record covers the dormant New Zealand Lifeboat State pilot. It does not authorize package activation. A generation-bound producer now exists for the Samoa and Aotearoa conflict dispositions, but the live Fallout allocator still has no approved caller or materializer that can authenticate the exact state transfer. Vanilla New Zealand AI plan retirement is also unresolved.
 
 HOI4 was not run. Runtime persistence and multiplayer observation remain unobserved. A read-only offline GUI inspection was attempted for `events_log_popup_window`, but the installed inspection service closed its transport before returning a result. No GUI artifact is claimed for that surface.
 
@@ -21,6 +21,14 @@ The entry effect requires all of these current-generation receipts:
 - current Samoa and Aotearoa conflict dispositions
 
 Activation resets only Fallout NZL-owned runtime state. It does not write assignment receipts or conflict dispositions.
+
+## Conflict-disposition producer boundary
+
+`fallout_nzl_record_conflict_dispositions` is defined once in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. It is a country-scope producer with no caller outside its definition. The producer can write only after the global phase is `survivor_allocation`, the successor conflict ledger is current, the NZL assignment owns and controls states 284, 1079, 723, 1080, and 1081, and state 726 is neither owned nor controlled by NZL.
+
+The Samoa input passes only when Samoa is absent from the current live conflict array or its resolution receipt is current for the active generation. Every live conflict country is then checked through the array. An Independence Wave package holder must have a current conflict resolution and must not own Wellington or Canterbury. The producer writes the two typed dispositions and their transition-generation receipts atomically inside one guarded block. `fallout_nzl_clear_conflict_dispositions` is a separate allocator reset helper and is not called by package runtime reset.
+
+This producer closes the former missing-definition gap, but it does not prove the live allocator order. No effect currently transfers the exact NZL footprint, authenticates the conflict ledger, calls the producer, or calls `fallout_nzl_activate_lifeboat_package`. The disposition receipts therefore remain dormant and cannot certify NZL readiness.
 
 ## State and carrier proof
 
