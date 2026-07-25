@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the Empty Ward tranche, the living-world pilot contains `184`
+After the Ice Melt Rations tranche, the living-world pilot contains `380`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and `204` through `302`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `498`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -574,3 +574,9 @@ The documented living-world block total is now `366`, while the countable Fallou
 The Desalination Night Shift reservation adds seven dormant Middle Eastern coastal state-level event blocks at suffixes `485` through `491`. It uses candidate `485`, transaction `710043`, route `7143`, and history `9148`. The chain carries four government-aware coastal water policies, deterministic naval-base state selection, Water, Power, Medicine, Cohesion, operation memory, water reserve, technical-credit, Air Winter, supply, and Deaths-system effects, a 42-day result, a 300-day second-shift callback, Event Log payloads, exact cleanup, and dedicated report art.
 
 The documented living-world block total is now `373`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Ice Melt Rations count correction
+
+The Ice Melt Rations reservation adds seven dormant boreal or highland state-level event blocks at suffixes `492` through `498`. It uses candidate `492`, transaction `710044`, route `7144`, and history `9149`. The chain carries four frozen-water policies, deterministic regional frozen-water selection, separate public Filters and station filter ledgers, Water, Fuel, Medicine, Cohesion, operation memory, water reserve, expedition credit, Air Winter, supply, and Deaths-system effects, a 42-day result, a 300-day ice-ledger callback, Event Log payloads, exact cleanup, and dedicated report art.
+
+The documented living-world block total is now `380`, while the countable Fallout living-world total remains `0 of 660`.

@@ -1,0 +1,140 @@
+﻿# ============================================================================
+# CHAOS REDUX - FALLOUT ICE MELT RATIONS TRIGGERS
+# ============================================================================
+# The first-year chain requires a produced Air Winter snapshot, a boreal or
+# highland frozen native state, and a frozen-water source proxy. Missing evidence
+# refuses the row.
+
+fallout_event_492_ice_melt_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	air_winter_visual_frozen_water_is_eligible = yes
+	air_winter_state_has_damageable_building = yes
+	has_variable = fallout_pretransition_air_winter_adaptation
+	has_variable = fallout_pretransition_air_winter_exposure
+	has_variable = fallout_pretransition_air_winter_reclamation
+	has_variable = fallout_pretransition_air_winter_water_security
+	check_variable = { state_population_k value = constant:fallout_event_runtime.zero compare = greater_than }
+	check_variable = { fallout_pretransition_air_winter_adaptation value = constant:fallout_event_492_threshold.minimum_adaptation compare = greater_than_or_equals }
+	check_variable = { fallout_pretransition_air_winter_exposure value = constant:fallout_event_492_threshold.minimum_exposure compare = greater_than_or_equals }
+	check_variable = { fallout_pretransition_air_winter_exposure value = constant:fallout_event_492_threshold.maximum_exposure compare = less_than }
+	check_variable = { fallout_pretransition_air_winter_reclamation value = constant:fallout_event_492_threshold.maximum_reclamation compare = less_than }
+	check_variable = { fallout_pretransition_air_winter_water_security value = constant:fallout_event_492_threshold.minimum_water_security compare = greater_than_or_equals }
+	OR = {
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.remote_refuge }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.scarred_province }
+		check_variable = { fallout_state_grade = constant:fallout_state_grade.ash_zone }
+	}
+	OR = {
+		has_state_category = town
+		has_state_category = large_town
+		has_state_category = city
+		has_state_category = large_city
+	}
+	OR = {
+		NOT = { has_variable = fallout_state_supply_access_current }
+		check_variable = { fallout_state_supply_access_current value = constant:fallout_event_492_threshold.maximum_supply_access compare = less_than }
+	}
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	NOT = { has_state_flag = fallout_event_492_ice_melt_registry_committed }
+}
+
+fallout_event_492_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	has_variable = fallout_event_492_candidate_state_id
+	has_variable = fallout_event_492_ice_melt_pressure
+	has_variable = fallout_ice_melt_filter_stock_current
+	check_variable = { fallout_event_492_candidate_state_id > constant:fallout_event_runtime.zero }
+	check_variable = { fallout_event_492_ice_melt_pressure value = constant:fallout_event_runtime.one compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_492_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_492_threshold.maximum_campaign_day compare = less_than }
+	check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_492_threshold.minimum_water compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_492_threshold.minimum_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_492_threshold.minimum_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_492_threshold.minimum_filters compare = greater_than_or_equals }
+	check_variable = { fallout_ice_melt_filter_stock_current value = constant:fallout_event_492_threshold.minimum_filters compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_492_threshold.minimum_cohesion compare = greater_than_or_equals }
+	NOT = { has_country_flag = fallout_event_492_chain_committed }
+	NOT = { has_country_flag = fallout_event_492_memory_closed }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_492_candidate_state_id compare = equals }
+		fallout_event_492_ice_melt_state_is_current = yes
+	}
+}
+
+fallout_event_492_registry_is_current = {
+	has_variable = fallout_event_492_registry_generation
+	has_variable = fallout_event_492_registry_owner
+	has_variable = fallout_event_492_candidate_id
+	has_variable = fallout_event_492_registry_target_type
+	has_variable = fallout_event_492_registry_target
+	has_variable = fallout_event_492_target_state_id
+	has_variable = fallout_event_492_frozen_water
+	has_variable = fallout_event_492_frozen_fuel
+	has_variable = fallout_event_492_frozen_filters
+	has_variable = fallout_event_492_frozen_station_filters
+	has_variable = fallout_event_492_frozen_medicine
+	has_variable = fallout_event_492_frozen_cohesion
+	has_variable = fallout_event_492_frozen_adaptation
+	has_variable = fallout_event_492_frozen_reclamation
+	has_variable = fallout_event_492_frozen_operation_memory
+	has_variable = fallout_event_492_frozen_recognition
+	check_variable = { fallout_event_492_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_492_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_492_candidate_id value = constant:fallout_event_candidate_pilot.ice_melt_rations_candidate_id compare = equals }
+	check_variable = { fallout_event_492_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_492_registry_target value = fallout_event_492_target_state_id compare = equals }
+	has_country_flag = fallout_event_492_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = { check_variable = { var = THIS.id value = ROOT.fallout_event_492_target_state_id compare = equals } }
+}
+
+fallout_event_492_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_492_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_492_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_492_target_to_check = {
+		set_temp_variable = { fallout_event_492_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_492_ice_melt_state_is_current = yes
+	}
+	check_variable = { fallout_event_492_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_492_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_492_opening_target_is_current = yes
+}
+
+fallout_event_492_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_492_opening_target_is_current = yes
+}
+
+fallout_event_492_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_492_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_492_branch.upper_bound }
+	fallout_event_492_registry_is_current = yes
+}
+
+fallout_event_492_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_cleanup }
+	fallout_event_492_registry_is_current = yes
+}

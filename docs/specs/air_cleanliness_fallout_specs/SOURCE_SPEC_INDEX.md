@@ -101,6 +101,7 @@
 - `specs/41_reviewed_global_survival_first_unmasked_day.md`
 - `specs/42_reviewed_global_survival_false_spring_losses.md`
 - `specs/43_reviewed_global_survival_desalination_night_shift.md`
+- `specs/44_reviewed_global_survival_ice_melt_rations.md`
 
 ## Matrices
 

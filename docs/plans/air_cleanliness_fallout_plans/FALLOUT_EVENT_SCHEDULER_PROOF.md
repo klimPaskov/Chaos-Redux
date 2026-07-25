@@ -2,14 +2,14 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Seventeen global-survival pilot rows now have a Fallout-owned generation-bound producer covering the food, produced-water, native-rail, Air Winter well, Animal Feed, Triage Wall, Seed Vault, Bad Batch, Filters Fail, Door List, Last Transformer, Fever Dormitory, Names for the Missing, First Safe Birth, School in the Vent Room, Empty Ward, and Shelter Marriage Law chains. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-four global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, and society chains through Ice Melt Rations. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and `204` through `309`. It has `191` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `498`. It has `380` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
-The current count supersedes the historical opening paragraph: eighteen
-reviewed global-survival rows cover event blocks through `316`, with `198`
+The current count supersedes the historical opening paragraph: forty-four
+reviewed global-survival rows cover event blocks through `498`, with `380`
 defined blocks and `0 of 660` countable release-floor blocks. Black Start is
 the latest dormant row and has no activation setter.
 
@@ -571,3 +571,11 @@ The Desalination Night Shift is candidate `485`, transaction `710043`, route `71
 Its country row requires durable resources, campaign-day and water-security gates, and one deterministic native Middle Eastern coastal state with a naval-base port proxy, surviving population, supported urban category, and low supply access. The selector chooses the lowest valid state id.
 The four branches run the plant, call desert technicians, reserve clinic power, or impose a guarded ration. Each branch has separate costs, viability thresholds, state memory, water and technical ledgers, dynamic modifiers, callback payloads, and Deaths-backed failure.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_DESALINATION_NIGHT_SHIFT_CHAIN_PROOF.md`.
+
+## The Ice Melt Rations scheduler correction
+
+The reviewed ordinary producer now carries forty-four rows and the defined living-world event range reaches `498`, with `380` defined blocks.
+Ice Melt Rations is candidate `492`, transaction `710044`, route `7144`, and history `9149`.
+Its country row requires durable resources, campaign-day and water-security gates, a station filter reserve, and one deterministic native boreal or highland state with regional frozen-water eligibility, surviving population, supported urban category, and low supply access. The selector chooses the lowest valid state id.
+The four branches boil and filter the ice, use untreated meltwater, send a clean-ice expedition, or ration fuel for a guarded boil. Each branch has separate public Filters and station-filter costs, viability thresholds, state memory, water, fuel, filter, and expedition ledgers, dynamic modifiers, callback payloads, and Deaths-backed failure.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_ICE_MELT_RATIONS_CHAIN_PROOF.md`.
