@@ -1,8 +1,10 @@
 # IW-006 Wallonia Fernand Jacquet portrait trial 01
 
-Status: `candidate_requires_independent_audit`.
+Status: `rejected_and_unwired_2026_07_25`.
 
-No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized unless an independent reviewer passes every provenance, crop-equality, identity, style, framing, role, ownership, and consumer-boundary gate.
+The independent audit failed both the non-compensable identity-likeness gate and the provenance gate.
+
+No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized from this trial.
 
 This package contains no advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback portrait.
 
@@ -99,16 +101,24 @@ The processor performs deterministic crop, grade, resize, and export only.
 
 Its selected style controls are the canonical Montgomery and Witzleben commander references recorded in the metadata.
 
-## Independent audit gate
+## Independent audit result
 
-The independent reviewer must compare the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, and role-specific canonical references at native size and at least `4x` nearest-neighbour enlargement.
+The independent reviewer compared the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, and role-specific canonical references at native size and at least `4x` nearest-neighbour enlargement.
 
 Identity is a non-compensable gate.
 
-The reviewer must explicitly test the narrow oval face, forehead and hair waves, brow height, eye spacing and direction, thin wire-rim glasses, nose bridge and length, moustache width and tips, closed mouth, cheek width, jaw and chin, visible ear, age, expression, head angle, neck, collar insignia, shoulder strap, tunic pockets, and aviator badge.
+The authoritative result is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wallonia_fernand_jacquet_trial01_independent_portrait_audit_2026_07_25.md`.
 
-The review must pay particular attention to whether the repaint broadens the lower face, thickens or curls the moustache, changes the glasses, enlarges the eyes, shifts the gaze, or invents insignia not visible in the source.
+Decision: **FAIL** / `rejected_and_unwired`.
+
+The exact crop, crop equality, male commander role, HOI4 painted commander style, `156x210` composition, ownership, stable-consumer declaration, and absence of forbidden derivatives passed.
+
+Identity likeness failed because the repaint broadened the lower face, cheeks, jaw, and chin; enlarged the eyes and shifted the gaze; made the glasses larger, brighter, and rounder; altered the nose; thickened, widened, and upturned the moustache; and softened source asymmetries.
+
+Provenance failed because the Commons public-domain statement relies on anonymous-author reasoning while the underlying Memorix/Heuvel record and local master identify neither the photographer nor a separate archive rights certificate.
 
 Style quality cannot compensate for identity drift or inadequate rights evidence.
 
-Only an all-gates `PASS` permits the parent to replace the rejected Marcel Delcourt player-facing identity in one atomic transfer, convert this exact candidate to DDS, prove runtime/package equality, and request a fresh IW-006 package audit.
+This candidate must not replace Marcel Delcourt or the existing runtime texture.
+
+A different sourced Walloon commander with explicit archive rights and sufficient facial geometry is required.
