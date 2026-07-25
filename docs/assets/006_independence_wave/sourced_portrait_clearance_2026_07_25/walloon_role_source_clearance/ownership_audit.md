@@ -8,10 +8,10 @@ The searched paths were `common/characters`, `history/countries`, `gfx/leaders`,
 
 | Candidate | Chaos Redux | Vanilla | Kaiserreich 1521695605 | Reference 2265420196 | Reference 1458561226 | Decision |
 | --- | --- | --- | --- | --- | --- | --- |
-| Fernand Jacquet | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | Safe additive candidate, subject to source-rights review |
-| Charles de Broqueville | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | Safe additive candidate |
+| Fernand Jacquet | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | Selected additive commander candidate, subject to source-rights review |
+| Charles de Broqueville | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | Alternate research only; not a selected civic replacement |
 | Albert Devèze | NO_MATCH | ACTIVE `BEL_albert_deveze` in `common/characters/BEL.txt` and `history/countries/BEL - Belgium.txt` | NO_MATCH | NO_MATCH | NO_MATCH | Blocked by vanilla owner |
-| Jules Destrée | ACTIVE AFX owner | NO_MATCH in audited vanilla owner paths | NO_MATCH in audited owner paths | NO_MATCH in audited owner paths | NO_MATCH in audited owner paths | Blocked by current Chaos Redux owner |
+| Jules Destrée | ACTIVE AFX owner | NO_MATCH in audited vanilla owner paths | NO_MATCH in audited owner paths | NO_MATCH in audited owner paths | NO_MATCH in audited owner paths | Approved existing runtime civic owner |
 | Gérard Leman | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | NO_MATCH | Rejected because deceased in 1920 |
 | Henri Denis | NO_MATCH in current package audit | NO_MATCH | ACTIVE Kaiserreich owner per parent audit | NO_MATCH | NO_MATCH | Blocked by Kaiserreich owner |
 
@@ -21,4 +21,4 @@ The search used case-insensitive word-boundary matching for each subject and key
 
 ## Interpretation
 
-No additive transfer is required for Jacquet or de Broqueville. Devèze cannot be selected without an explicit safe transfer decision, and Destrée cannot be cloned because Chaos Redux already assigns the identity to the AFX civic character. Historical viability was checked separately from ownership; a no-match does not by itself prove that a candidate is appropriate for every role.
+Jacquet is the only selected new source and is safe for additive commander review, subject to the documented unknown-photographer rights uncertainty. De Broqueville has no exact owner but remains alternate research only because Destrée is the approved current civic owner and the de Broqueville portrait is not a requested replacement. Devèze cannot be selected without an explicit safe transfer decision. Destrée is active in Chaos Redux and must not be cloned or replaced. Historical viability was checked separately from ownership; a no-match does not by itself prove that a candidate is appropriate for every role.
