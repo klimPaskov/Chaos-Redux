@@ -14,11 +14,13 @@ The mission snapshots `global.independence_wave_league_member_country_entries` a
 
 ## Target and state reservation
 
-`is_valid_independence_wave_reclamation_front_state` accepts only a living external owner that is not a league member, a state with a live controller, no current war, and a state that is adjacent to or claimed by the requesting member.
+`is_valid_independence_wave_reclamation_front_state` accepts only a living external owner that is not a league member, a state with a live controller, no current war, and a state that is adjacent to or claimed by the requesting member. The member target is saved at the start of each loop iteration, so the resolver does not depend on `ROOT` surviving a `for_each_scope_loop` scope change.
 
-The trigger rejects states already present in the synchronized state array and rejects generation-stamped state flags owned by the requesting member or by another front. Capital preference remains part of the package's state-selection rules where a capital is the valid anchor; DM-58 never manufactures a capital-only fallback.
+The trigger rejects states already present in the synchronized state array, rejects state markers left by an existing front, and rejects an existing `take_state_focus` wargoal against the same owner. Capital preference remains part of the package's state-selection rules where a capital is the valid anchor; DM-58 never manufactures a capital-only fallback.
 
-The resolver saves the state and owner as short-lived event targets, rechecks `can_declare_war_on`, stamps the state with the requesting generation, adds the member claim, and appends the state and owner to `global.independence_wave_reclamation_front_states` and `global.independence_wave_reclamation_front_targets`.
+The resolver saves the owner as a short-lived event target, rechecks the war legality through the saved member target, stamps the state with a generic used marker, and appends aligned entries to `global.independence_wave_reclamation_front_members`, `global.independence_wave_reclamation_front_states`, and `global.independence_wave_reclamation_front_targets`.
+
+Claims are provenance-aware. A claim is added only when the member did not already claim the state, and that state receives `independence_wave_dm58_reclamation_front_claim_added` only when the transaction created the claim.
 
 Each accepted state creates a `take_state_focus` wargoal with a 365-day expiry and a timed `independence_wave_reclamation_front_ready` flag for the member.
 
@@ -26,11 +28,11 @@ No member without a valid objective receives a generic target, a fallback state,
 
 ## Resolution and cleanup
 
-The mission completes only when the configured minimum number of members succeeds; a partial result is rolled back before payment and opens a league crisis with the failure deltas rather than silently converting a one-member action into a coordinated front.
+The mission completes only when the configured minimum number of members succeeds; a partial result is rolled back before payment and opens a league crisis with the failure deltas rather than silently converting a one-member action into a coordinated front. Rollback walks the aligned member/state/owner arrays, removes only claims marked as created by this transaction, removes the finite wargoal created for that member/owner pair, clears the staged marker, and then clears the arrays.
 
 The timeout path applies the existing major-loss deltas and enters the same league-crisis state without creating targets.
 
-League phase transitions, dissolution, and generation reset call the shared operation cleanup, which clears the coordination flag, generation-neutral state markers, member-ready flags, event arrays, and count variable while leaving finite war goals to their explicit expiry. Individual country cleanup clears only that country's readiness receipt, and a member departure revalidates the minimum surviving ledger before cancelling the shared operation.
+League phase transitions, dissolution, and generation reset call the shared operation cleanup, which clears the coordination flag, state markers, member-ready flags, aligned member/state/owner arrays, and count variable while leaving finite war goals to their explicit expiry. Individual country cleanup clears only that country's readiness receipt, and a member departure revalidates the minimum surviving ledger before cancelling the shared operation.
 
 The mission title, description, cost text, category, and icon are registered in the existing Event 006 decision localisation and interface files; no new advisor or portrait asset is required.
 
