@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for seventeen
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-four
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -282,6 +282,14 @@ The Working Machine is the twenty-fourth reviewed ordinary candidate.
 It uses country candidate id `352`, transaction key `710024`, route `7124`, and event tokens `352` through `358`.
 Its gate follows the closed Manual Nobody Read memory and selects one deterministic native automated facility state by industrial complex, synthetic refinery, and arms factory capacity, Air Winter exposure, population, timing, resource, Cohesion, and affordability thresholds.
 The chain freezes Power, Scrap, Medicine, Recognition, Cohesion, and the selected state before a 49-day machine result and a 300-day inspection callback.
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## Ice Melt Rations correction
+
+Ice Melt Rations is the forty-fourth reviewed ordinary candidate. It uses candidate id `492`, transaction `710044`, route `7144`, event tokens `492` through `498`, and history `9149`.
+Its gate selects the lowest valid native boreal or highland state with a produced current-generation Air Winter snapshot, regional frozen-water eligibility, surviving population, supported urban category, water-security pressure, public Filters, and a station filter reserve.
+The chain freezes Water, Fuel, Filters, Medicine, Cohesion, Recognition, operation memory, water reserve, station filter reserve, expedition credit, Adaptation, Reclamation, and the selected state before a 42-day result and a 300-day ice-ledger callback.
+The four policies boil and filter the ice, use untreated meltwater, send a clean-ice expedition, or ration fuel for a guarded boil. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 
 The bounded `hoi4.event_inspect` request for `chaosx.fallout.352` used helper expansion disabled, depth one, twenty nodes, and forty edges and returned `EVENT_ISSUE_LIMIT` with 23,053 issues against a fixed ceiling of 20,000, no artifact, and no files scanned.

@@ -16434,3 +16434,132 @@ country_event = {
 	trigger = { fallout_event_485_cleanup_can_enter = yes }
 	immediate = { fallout_event_485_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.492
+	title = chaosx.fallout.492.t
+	desc = chaosx.fallout.492.intro
+	picture = GFX_report_event_fallout_ice_melt_rations
+	is_triggered_only = yes
+	trigger = { fallout_event_492_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.492.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_492_cost.boil_and_filter_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_492_cost.boil_and_filter_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_492_cost.boil_and_filter_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_492_cost.boil_and_filter_filters compare = greater_than_or_equals }
+			check_variable = { fallout_ice_melt_filter_stock_current value = constant:fallout_event_492_cost.boil_and_filter_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_492_cost.boil_and_filter_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_492_requested_branch = constant:fallout_event_492_branch.boil_and_filter } fallout_event_492_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.492.a.tt
+	}
+	option = {
+		name = chaosx.fallout.492.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_492_cost.use_untreated_water_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_492_cost.use_untreated_water_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_492_cost.use_untreated_water_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_492_cost.use_untreated_water_filters compare = greater_than_or_equals }
+			check_variable = { fallout_ice_melt_filter_stock_current value = constant:fallout_event_492_cost.use_untreated_water_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_492_cost.use_untreated_water_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_492_requested_branch = constant:fallout_event_492_branch.use_untreated_water } fallout_event_492_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.492.b.tt
+	}
+	option = {
+		name = chaosx.fallout.492.c
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_492_cost.send_clean_ice_expedition_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_492_cost.send_clean_ice_expedition_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_492_cost.send_clean_ice_expedition_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_492_cost.send_clean_ice_expedition_filters compare = greater_than_or_equals }
+			check_variable = { fallout_ice_melt_filter_stock_current value = constant:fallout_event_492_cost.send_clean_ice_expedition_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_492_cost.send_clean_ice_expedition_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_492_requested_branch = constant:fallout_event_492_branch.send_clean_ice_expedition } fallout_event_492_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.492.c.tt
+	}
+	option = {
+		name = chaosx.fallout.492.d
+		trigger = {
+			OR = { has_government = fascism has_government = communism }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_492_cost.ration_fuel_for_boil_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_492_cost.ration_fuel_for_boil_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_492_cost.ration_fuel_for_boil_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_492_cost.ration_fuel_for_boil_filters compare = greater_than_or_equals }
+			check_variable = { fallout_ice_melt_filter_stock_current value = constant:fallout_event_492_cost.ration_fuel_for_boil_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_492_cost.ration_fuel_for_boil_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_492_requested_branch = constant:fallout_event_492_branch.ration_fuel_for_boil } fallout_event_492_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.492.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.493
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_492_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_492_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.494
+	title = chaosx.fallout.492.t
+	desc = { text = chaosx.fallout.494.boil_and_filter.success.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.boil_and_filter } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.494.boil_and_filter.partial.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.boil_and_filter } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.494.boil_and_filter.failure.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.boil_and_filter } } }
+	desc = { text = chaosx.fallout.494.use_untreated_water.success.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.use_untreated_water } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.494.use_untreated_water.partial.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.use_untreated_water } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.494.use_untreated_water.failure.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.use_untreated_water } } }
+	desc = { text = chaosx.fallout.494.send_clean_ice_expedition.success.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.send_clean_ice_expedition } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.494.send_clean_ice_expedition.partial.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.send_clean_ice_expedition } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.494.send_clean_ice_expedition.failure.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.send_clean_ice_expedition } } }
+	desc = { text = chaosx.fallout.494.ration_fuel_for_boil.success.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.ration_fuel_for_boil } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.494.ration_fuel_for_boil.partial.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.ration_fuel_for_boil } check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.494.ration_fuel_for_boil.failure.d trigger = { check_variable = { fallout_event_492_selected_branch = constant:fallout_event_492_branch.ration_fuel_for_boil } } }
+	picture = GFX_report_event_fallout_ice_melt_rations
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_492_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.494.a hidden_effect = { fallout_event_492_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.494.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.495
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_492_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_492_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.496
+	title = chaosx.fallout.496.t
+	desc = { text = chaosx.fallout.496.success.d trigger = { check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.496.partial.d trigger = { check_variable = { fallout_event_492_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.496.failure.d
+	picture = GFX_report_event_fallout_ice_melt_rations
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_492_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_492_registry_is_current = yes }
+	option = { name = chaosx.fallout.496.a hidden_effect = { fallout_event_492_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.496.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.497
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_492_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ice_melt_rations_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_492_registry_is_current = yes }
+	immediate = { fallout_event_492_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.498
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_492_cleanup_can_enter = yes }
+	immediate = { fallout_event_492_cleanup = yes }
+}
