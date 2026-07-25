@@ -491,6 +491,68 @@ independence_wave_government_category = {
 		fire_only_once = yes
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
 	}
+
+	# Economy-capstone continuing action. The treasury commits transport and
+	# civilian capacity to a public-works round rather than becoming a passive
+	# focus reward.
+	independence_wave_treasury_backed_public_works = {
+		name = independence_wave_treasury_backed_public_works
+		desc = independence_wave_treasury_backed_public_works_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_economy_capstone_complete
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_treasury_backed_public_works_requirements_tt
+				capital_scope = { is_controlled_by = ROOT }
+				NOT = { has_independence_wave_severe_instability = yes }
+				OR = {
+					check_variable = { var = independence_wave_capacity value = constant:independence_wave_value.maximum compare = less_than }
+					check_variable = { var = independence_wave_instability value = constant:independence_wave_value.minimum compare = greater_than }
+				}
+			}
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		modifier = { civilian_factory_use = constant:independence_wave_decision_cost.civilian_factory_standard }
+		days_remove = constant:independence_wave_decision_duration.extended
+		days_re_enable = constant:independence_wave_decision_cooldown.major
+		complete_effect = {
+			hidden_effect = { independence_wave_decision_pay_strategic = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_treasury_backed_public_works_effect_tt
+			hidden_effect = {
+				capital_scope = {
+					add_building_construction = {
+						type = infrastructure
+						level = constant:independence_wave_decision_effect.construction_infrastructure
+						instant_build = yes
+					}
+				}
+				set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+				set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_major }
+				set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+				set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+				independence_wave_decision_apply_country_deltas = yes
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { is_independence_wave_active_country = yes }
+				NOT = { has_country_flag = independence_wave_economy_capstone_complete }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
+	}
 }
 
 independence_wave_recognition_category = {
