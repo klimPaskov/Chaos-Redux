@@ -374,6 +374,74 @@ is_valid_independence_wave_ambition_state = {
 	}
 }
 
+# State scope. DM-58 can only freeze a current-generation, living external
+# objective that is already connected to the member by a claim or border.
+# The state and owner arrays are rebuilt by the paid reclamation transaction;
+# no generic state or fallback war target is manufactured here.
+is_valid_independence_wave_reclamation_front_state = {
+	owner = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = ROOT }
+		# The paid operation may only be charged after this exact member/owner
+		# pair is already war-legal.  This is evaluated while the state is still
+		# frozen, before any costs or wargoal effects are applied.
+		ROOT = { can_declare_war_on = PREV }
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = ROOT
+		any_neighbor_state = { is_owned_by = ROOT }
+	}
+	NOT = {
+		AND = {
+			has_state_flag = independence_wave_dm58_reclamation_front_used_by@ROOT
+			check_variable = {
+				var = independence_wave_dm58_reclamation_front_generation@ROOT
+				value = ROOT.independence_wave_generation_id
+				compare = equals
+			}
+		}
+	}
+	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
+}
+
+# Country scope used only by the on-demand DM-58 availability preflight. The
+# nested state scope uses PREV for this candidate member, so the trigger can
+# count several compatible members without mutating the frozen operation.
+is_independence_wave_reclamation_front_member_candidate = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	any_state = {
+		owner = {
+			exists = yes
+			NOT = { has_country_flag = independence_wave_league_member }
+		}
+		controller = { exists = yes }
+		is_claimed_by = PREV
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
+	}
+}
+
+# Country scope. DM-58 cannot charge its material costs until the frozen
+# ledger contains the required number of compliant members with at least one
+# compatible, claim-connected external state each.
+has_independence_wave_reclamation_front_preflight = {
+	check_variable = {
+		var = global.independence_wave_league_member_count
+		value = constant:independence_wave_decision_gate.formation_member_minimum
+		compare = greater_than_or_equals
+	}
+	any_country = {
+		count = constant:independence_wave_decision_gate.formation_member_minimum
+		is_independence_wave_reclamation_front_member_candidate = yes
+	}
+}
+
 is_valid_independence_wave_surveyed_state = {
 	is_valid_independence_wave_ambition_state = yes
 	has_state_flag = independence_wave_dm48_surveyed_by@ROOT

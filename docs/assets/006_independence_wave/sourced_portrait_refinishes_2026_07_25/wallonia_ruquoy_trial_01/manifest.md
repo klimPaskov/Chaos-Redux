@@ -11,7 +11,7 @@ This package contains no advisor, dossier, operative, commander-small, `_small`,
 | Field | Value |
 | --- | --- |
 | Package | IW-006 Wallonia, vanilla carrier `AFX` |
-| Existing dynamic character token | `AFX_independence_wave_walloon_reserve_commander` |
+| Existing dynamic character token | `AFX_walloon_reserve_commander` |
 | Existing sprite | `GFX_portrait_AFX_walloon_reserve_commander` |
 | Runtime path after approval | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` |
 | Proposed sourced identity | Lieutenant-General Louis Hubert baron Ruquoy (Rucquoy) |
@@ -68,7 +68,7 @@ The raw repaint was generated directly from the exact ROL crop and does not use 
 | Candidate | `processed_png/portrait_AFX_walloon_reserve_commander.png` |
 | Candidate dimensions | `156x210` |
 | Candidate SHA-256 | `FAFFBFE12921431353C962215C04F8E69FF40B8CAA083C61FC8F46719A477EC0` |
-| Candidate decoded RGBA SHA-256 | `594904EE285E9E360F0C488A48B8174BE45790807C4049E4BEF7D11950020FC9` |
+| Candidate decoded RGBA SHA-256 | `BEDF59BAA7F114D9446EE1AF9A5C245C44E78A3D68387EF615945E45BD115259` |
 | Metadata | `processed_png/portrait_AFX_walloon_reserve_commander.png.json` |
 | Metadata SHA-256 | `11744FC9D2653B18B9F022826B26ECB304529B9A265B4292EB5C5405CE7C1F57` |
 | Review sheet | `review/AFX_louis_ruquoy_commander_style_sheet.png` |
@@ -91,10 +91,14 @@ The source-only audit is an all-gates PASS. The candidate retains the male Haina
 | Runtime path | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` |
 | Runtime identity localisation | `AFX_walloon_reserve_commander: "Louis Hubert baron Ruquoy"` |
 
+## Current IW-006 package admission
+
+The 2026-07-25 post-wire country-package audit records a bounded runtime-package `PASS`, and IW-006 is exact compile-time content-attested with the other nine packages. Live host, anchor, reservation, Event 5 collision, chaos-band, force, and synchronized-transaction proofs remain mandatory. The former one-point force-tradition discrepancy is resolved: the current runtime p6 constant is 61 and matches the accepted mapping.
+
 ## Independent audit gate
 
 The independent auditor must compare the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, source comparison images, and commander-family references at native size and at least `4x` nearest-neighbour enlargement.
 
 Identity is a non-compensable gate. The review must separately record provenance/rights, source-crop equality, male and role fit, exact likeness, HOI4 commander style, framing, ownership, stable consumer, forbidden-derivative absence, and runtime readiness.
 
-Only an all-gates `PASS` permits the parent to convert this exact candidate to DDS, prove package/runtime byte equality, perform any player-facing identity update, and request a fresh IW-006 country-package audit.
+Only an all-gates `PASS` permits the parent to convert this exact candidate to DDS, prove package/runtime byte equality, perform any player-facing identity update, and record the resulting IW-006 country-package admission evidence.

@@ -3485,6 +3485,8 @@ independence_wave_high_chaos_category = {
 			NOT = { has_country_flag = independence_wave_dm58_reclamation_front_complete }
 			NOT = { has_country_flag = independence_wave_dm58_reclamation_front_failed }
 			NOT = { has_independence_wave_active_league_crisis = yes }
+			has_country_flag = independence_wave_focus_reclamation_fronts_authorized
+			has_independence_wave_reclamation_front_preflight = yes
 			check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
 			check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_decision_gate.formation_member_minimum compare = greater_than_or_equals }
 		}
@@ -3503,21 +3505,57 @@ independence_wave_high_chaos_category = {
 		complete_effect = {
 			if = {
 				limit = { NOT = { has_global_flag = independence_wave_reclamation_fronts_coordinated } }
-				independence_wave_decision_pay_strategic = yes
-				independence_wave_decision_pay_security_major = yes
-				set_country_flag = independence_wave_dm58_reclamation_front_complete
-				set_global_flag = independence_wave_reclamation_fronts_coordinated
-				independence_wave_record_revisionist_action = yes
+				for_each_scope_loop = {
+					array = global.independence_wave_reclamation_front_states
+					clr_state_flag = independence_wave_dm58_reclamation_front_used
+				}
+				clear_array = global.independence_wave_reclamation_front_states
+				clear_array = global.independence_wave_reclamation_front_targets
+				set_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_value.minimum }
 				for_each_scope_loop = {
 					array = global.independence_wave_league_member_country_entries
-					set_country_flag = independence_wave_reclamation_front_ready
+					independence_wave_execute_reclamation_front = yes
 				}
-				set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_standard_loss }
-				set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_major }
-				set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_decision_effect.league_minor }
-				set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_major_loss }
-				set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_minor_loss }
-				independence_wave_decision_apply_league_deltas = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = global.independence_wave_reclamation_front_count
+							value = constant:independence_wave_decision_gate.formation_member_minimum
+							compare = greater_than_or_equals
+						}
+					}
+					set_country_flag = independence_wave_dm58_reclamation_front_complete
+					# Costs are paid only after the synchronized member loop has
+					# frozen the minimum number of distinct, war-legal pairs.
+					independence_wave_decision_pay_strategic = yes
+					independence_wave_decision_pay_security_major = yes
+					for_each_scope_loop = {
+						array = global.independence_wave_league_member_country_entries
+						clr_country_flag = independence_wave_dm58_reclamation_front_staged
+					}
+					set_temp_variable = { independence_wave_reclamation_front_days = constant:independence_wave_decision_duration.reclamation_front }
+					set_global_flag = { flag = independence_wave_reclamation_fronts_coordinated days = independence_wave_reclamation_front_days }
+					independence_wave_record_revisionist_action = yes
+					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_major }
+					set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_decision_effect.league_minor }
+					set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_major_loss }
+					set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_minor_loss }
+					independence_wave_decision_apply_league_deltas = yes
+					custom_effect_tooltip = independence_wave_coordinate_reclamation_fronts_complete_tt
+				}
+				else = {
+					independence_wave_rollback_reclamation_front_staging = yes
+					set_country_flag = independence_wave_dm58_reclamation_front_failed
+					set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major_loss }
+					set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_decision_effect.league_standard }
+					set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_decision_effect.league_standard_loss }
+					set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_major_loss }
+					independence_wave_decision_apply_league_deltas = yes
+					independence_wave_enter_league_crisis = yes
+					custom_effect_tooltip = independence_wave_coordinate_reclamation_fronts_failed_tt
+				}
 			}
 		}
 		timeout_effect = {
@@ -3529,6 +3567,7 @@ independence_wave_high_chaos_category = {
 			set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_decision_effect.league_major_loss }
 			independence_wave_decision_apply_league_deltas = yes
 			independence_wave_enter_league_crisis = yes
+			custom_effect_tooltip = independence_wave_coordinate_reclamation_fronts_timeout_tt
 		}
 		cancel_trigger = {
 			OR = {

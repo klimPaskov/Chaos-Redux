@@ -1,6 +1,8 @@
 # Event 006 source-of-truth map
 
-Curated: 2026-07-24 after the IW-184 California post-wire country-package PASS and canonical admission review
+<!-- Documentation reconciliation: IW-006 is part of the current ten-package attestation set; global completion remains open. -->
+
+Curated: 2026-07-25 after the IW-006 Wallonia post-wire country-package PASS and canonical admission review
 
 Completion state: **incomplete and active; country gameplay tranches exist, but
 grounded portrait sourcing and the resulting package re-audits remain open**.
@@ -109,7 +111,8 @@ achievements remain hidden by their intended route and survival conditions.
 | IW-001 SCO | Admitted after current package and portrait audits | Robert Bontine Cunninghame Graham and Victor Morven Fortune are sourced real male figures with identity-preserving HOI4 repaints wired to the exact full-size civilian and army consumers. The post-wiring audit passes the exact SCO tag reuse, state-121 anchor, ENG-survival, setup, force, focus, decision, idea, AI, formable, localisation, flag, and cleanup surfaces. IW-001 is exact compile-time attested; every live host, anchor, reservation, Event-5 collision, chaos-band, and transaction proof remains mandatory |
 | IW-008 RHI | Admitted after current package, portrait, and ownership audits | Wilhelm Marx and Gustav-Adolf von Zangen are sourced real male figures with independently approved identity-preserving HOI4 repaints wired to the exact full-size civilian and army consumers. Protected Josef Friedrich Matthes remains byte-identical. The post-wiring audit passes dormant-vanilla identity safety, state-51 anchor, RG-RHINE-SAAR collision handling, GER survival, Event-5 separation, setup, force, focus, decisions, incidents, ideas, AI, FORM-04, localisation, flags, cleanup, and forbidden-asset checks. IW-008 is exact compile-time attested; every live allocation proof remains mandatory |
 | IW-009 BAY | Admitted after current portrait, ownership, and full post-wiring package audits | Protected Rupprecht remains byte-identical. Heinrich Held and Friedrich Dollmann use attributed archival male photographs, explicit head-and-shoulders pixel-equality crops, source-locked identity-preserving ImageGen repaints, deterministic `156x210` processing, independent likeness/style/provenance PASS results, and byte-matched evidence/runtime DDS files. The fresh package audit passes dormant-vanilla identity safety, state-52/RG-52-53-54, GER survival, Event-5 separation, p9 one-time forces, focus, decisions, mission, ideas, AI, incidents, localisation, flags, cleanup, SCN-008, and forbidden-asset checks. IW-009 is exact compile-time attested; every live allocation proof remains mandatory |
-| IW-002/006 | IW-002 visual admission withdrawn; IW-006 commander promoted pending package audit | Ironside and Epp remain rejected because vanilla recruits them as active ENG/GER characters. IW-002 Saunders Lewis trials 01 and 02 and Lewis Pugh Evans trials 01 and 02 passed broad provenance/style/framing gates but failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders source is comparison evidence only: preserving it would retain the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936 and leaves the October 1936 Gwent Jones lead blocked by reproduction access and rights. IW-006 retains its independently approved and wired Jules Destrée civic portrait and now has the independently approved Louis Hubert baron Ruquoy/Rucquoy source-locked commander repaint wired to the stable AFX consumer with byte-matched `156x210` DDS evidence. The retired Hainaut-born general is documented as an alternate-history reserve appointment. A fresh post-wire IW-006 country-package audit remains required before exact content attestation. |
+| IW-002 WLS | Gameplay retained; visual admission withdrawn | Ironside and Epp remain rejected because vanilla recruits them as active ENG/GER characters. IW-002 Saunders Lewis trials 01 and 02 and Lewis Pugh Evans trials 01 and 02 passed broad provenance/style/framing gates but failed the separate likeness gate and remain unwired. The rights-clear 1973 Saunders source is comparison evidence only: preserving it would retain the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. The fresh age-gate sweep found no rights-clear photograph near 1936 and leaves the October 1936 Gwent Jones lead blocked by reproduction access and rights. |
+| IW-006 AFX | Admitted after current package, portrait, and post-wire package audits | The 2026-07-25 post-wire country-package audit records a bounded runtime-package PASS; IW-006 is exact compile-time content-attested with the other nine packages. The wired sourced real-male civic and commander portraits remain current. Every live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction proof remains mandatory. The audit records a one-point force-tradition source/spec discrepancy (accepted mapping 61 versus runtime 60) for parent resolution |
 | IW-010 AJX | Admitted after current portrait and post-wiring package audits | Walter Simons and Friedrich von Rabenau use attributed archival male photographs, explicit head-and-shoulders crops, source-locked identity-preserving ImageGen repaints, deterministic `156x210` processing, independent likeness/style/provenance PASS results, and byte-matched evidence/runtime DDS files. The fresh package audit passes AJX identity, state-42/RG-RHINE-SAAR, GER survival, Event-5 separation, p10 one-time forces, focus, decisions, mission, ideas, AI, FORM-04, localisation, historical flag, cleanup, and forbidden-asset checks. IW-010 is exact compile-time attested; every live allocation proof remains mandatory. |
 | IW-017 COR | Admitted after current portrait and full post-wiring package audits | Adolphe Landry and Jean Chiappe are sourced real male figures with independently approved identity-preserving HOI4 repaints. The exact runtime DDS files are pixel-identical to the approved PNGs. The bounded package audit passes dormant-vanilla identity safety, state-1/RG-1, FRA survival, Event-5 collision guards, setup, force, focus, decisions, events, AI, cleanup, localisation, historical flag, and FORM-05 access. IW-017 is exact compile-time attested; every live allocation proof remains mandatory |
 | IW-019 ASX | Admitted after current package, portrait, and consumer-role audits | Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto are sourced real male figures with independently approved identity-preserving HOI4 repaints wired to role-correct full-size consumers. Rizzo is the civilian-large Straits Security Directorate political leader under the recorded fictional-office disclosure, and Di Benedetto is the sole army-large corps commander. The final package audit passes state-115/ITA-survival setup, force, focus, decisions, ideas, AI, FORM-05, localisation, flags, cleanup, runtime DDS hashes, and forbidden-asset checks. IW-019 is exact compile-time attested; every live allocation proof remains mandatory |
@@ -180,8 +183,8 @@ The committed compile-time content-attestation set is currently:
 
 | Package | Identity | Admission state | Remaining runtime boundary |
 | --- | --- | --- | --- |
-The exact compile-time set contains IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California.
-IW-002, IW-006, IW-018, IW-043,
+The exact compile-time set contains IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California.
+IW-002, IW-018, IW-043,
 IW-058, IW-173, and IW-179 retain adapters and implemented content but
 remain outside runtime content attestation pending sourced portrait replacement
 or complete package admission. IW-005 is a living-BEL route overlay and remains outside
@@ -190,10 +193,9 @@ implemented, but it lacks a complete currently admitted carrier/member set. No
 unlisted package or formable family should be described as automatically
 selectable.
 
-Nine attested IDs can supply the three-, four-, five-, and seven-country automatic waves only when the required number independently pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
+Ten attested IDs can supply the three-, four-, five-, seven-, and ten-country automatic waves only when the required number independently pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
 The candidate-weight calculation now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but visually unadmitted packages remain at zero weight and cannot poison a frozen automatic transaction.
-The ten-country automatic bands remain unavailable until at least one additional package is admitted.
-The allocator therefore fails closed before release while sourced replacement work and package re-audits are incomplete.
+The ten-country automatic band is structurally available through the current attested registry, but it remains fail-closed until a live disjoint reservation, host-survival, and synchronized-transaction proof succeeds.
 The exact 3/4/5/7/10 targets and World Collapse count of ten are unchanged.
 World Collapse remains exactly ten; it does not increase the release count.
 Static source audits do not prove an in-engine release, scenario load, or every
@@ -367,7 +369,7 @@ Parent decisions still required:
 
 1. Preserve IW-005 as a living-BEL `BEL_flanders` overlay. Do not add it to the
    selectable release registry.
-2. Preserve the canonical nine-package content-attestation set consisting of IW-001, IW-004, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184. Preserve the allocator's
+2. Preserve the canonical ten-package content-attestation set consisting of IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184. Preserve the allocator's
    exact 3/4/5/7/10 reservation contract and keep World Collapse at exactly ten;
    the ten-country bands must remain fail-closed below capacity.
 3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
