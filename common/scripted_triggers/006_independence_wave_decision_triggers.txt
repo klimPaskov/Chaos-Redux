@@ -403,8 +403,9 @@ is_valid_independence_wave_reclamation_front_state = {
 }
 
 # Country scope used only by the on-demand DM-58 availability preflight. The
-# nested state scope uses PREV for this candidate member, so the trigger can
-# count several compatible members without mutating the frozen operation.
+# nested state scope uses PREV for this candidate member, while the owner scope
+# reaches that same member through PREV.PREV. ROOT remains the activating
+# decision country and must not be used for candidate legality.
 is_independence_wave_reclamation_front_member_candidate = {
 	is_independence_wave_active_country = yes
 	has_country_flag = independence_wave_league_member
@@ -412,13 +413,12 @@ is_independence_wave_reclamation_front_member_candidate = {
 	any_state = {
 		owner = {
 			exists = yes
-			NOT = { tag = PREV }
+			NOT = { tag = PREV.PREV }
 			NOT = { has_country_flag = independence_wave_league_member }
-			NOT = { has_war_with = ROOT }
-			# Keep the availability probe aligned with the paid resolver.  ROOT is
-			# the candidate member and PREV remains the candidate state while this
-			# owner block is evaluated.
-			ROOT = {
+			NOT = { has_war_with = PREV.PREV }
+			# PREV is the candidate state in this owner block and PREV.PREV is
+			# the candidate member selected by the enclosing any_country scope.
+			PREV.PREV = {
 				can_declare_war_on = PREV
 				NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
 			}
