@@ -137,14 +137,14 @@ The wrapper leaves these temporary variables for the caller:
 
 | Output | Meaning |
 | --- | --- |
-| `natural_disaster_call_result` | Proposed enum `accepted`, `joined`, or `rejected` |
+| `natural_disaster_call_result` | Result enum `accepted` or `rejected`; generic sequence joining is not part of the public contract |
 | `natural_disaster_call_reject_reason` | Proposed enum identifying invalid family, invalid severity, missing target, invalid target, no eligible target, invalid region, heat exclusion, abnormal lock, or invalid parent |
 | `natural_disaster_call_sequence_id` | Allocated or joined sequence id, `0` on rejection |
 | `natural_disaster_call_primary_job_count` | Number of accepted primary impact jobs |
 
 The caller must initialize all four output temporary variables before invoking the scripted effect. The offline variable documentation warns that a temporary first created inside a scripted effect may not reliably exist outside it, while a temporary created before the call is carried into the effect and can be modified safely. Inputs are reset to their documented defaults before the wrapper returns. Outputs are not reset. Regular input event targets cannot be manually cleared, so no internal logic may read them after normalization.
 
-### Result and rejection constants to add
+### Result and rejection constants
 
 Add these categories to `common/script_constants/013_natural_disasters_constants.txt`:
 
@@ -157,8 +157,9 @@ natural_disaster_call_result = {
 
 	rejected = 0
 	accepted = 1
-	joined = 2
 }
+
+The accepted implementation deliberately does not expose a generic `joined` result or parent-sequence input. Internal physical follow-ups use a separately validated continuation override and never broaden the public API.
 
 natural_disaster_call_reject_reason = {
 	schema = {

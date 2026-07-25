@@ -25,7 +25,7 @@ This file is a closure follow-up for the expanded second-pass package. It does n
 | File | Disposition | How to use it |
 | --- | --- | --- |
 | `research/003_manual_improvement_loop_pass.md` | Superseded by second-pass expansion and final closure. | Keep for history only. Do not use its remaining-depth notes as open tasks. |
-| `prompts/natural_disasters_continuation_prompt.md` | Superseded as a continuation entry point. | It may remain in the package as a note, but implementation should start from the closure and resume prompt instead. |
+| `prompts/natural_disasters_continuation_prompt.md` | Superseded and removed from the package manifest. | Use the closure and resume prompts instead; no continuation prompt is required for the accepted implementation. |
 | `research/000_source_reading_log.md` | Support evidence from first pass. | Use with the second and third-pass reading notes to understand what was available. |
 | `research/006_second_pass_source_reading_log.md` | Support evidence from second pass. | Use with this file and the closure follow-up when checking source coverage. |
 | Public research notes | Support evidence only. | They ground hazard grouping, warnings, vulnerability, and recovery. They do not provide final localisation or final super-event quote choices. |

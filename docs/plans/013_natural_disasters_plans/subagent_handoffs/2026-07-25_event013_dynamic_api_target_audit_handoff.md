@@ -94,10 +94,8 @@ The GUI inspector reported an unknown `player_context` vocabulary and a missing 
 
 The map inspector also reported unrelated existing building-position and port-adjacency diagnostics outside Event 013.
 
-The public result enum contains `natural_disaster_call_result.joined`, but no live implementation currently uses it and no generic parent-sequence ID input exists.
-
 The draft architecture's separate death or damage override mode names are not live API fields; the implementation uses validated death, building, compatibility damage, warning, recovery, and supply multipliers.
 
-`natural_disaster_gui_selected_record_exists` does not explicitly reject a negative persisted selected index, although current rebuild and click paths only write indices `0` through `4`; this remains a low-priority stale-save hardening item.
+`natural_disaster_gui_selected_record_exists` now rejects negative persisted selected indices before any selected-array dereference.
 
 No fallback or mechanic simplification was introduced in this audit scope.

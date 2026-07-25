@@ -26,7 +26,6 @@ Expanded closure-ready package for Event 013 Natural Disasters.
 - `prompts/natural_disasters_achievement_prompt.md`
 - `prompts/natural_disasters_asset_prompt.md`
 - `prompts/natural_disasters_coding_prompt.md`
-- `prompts/natural_disasters_continuation_prompt.md`
 - `prompts/natural_disasters_decision_mission_prompt.md`
 - `prompts/natural_disasters_goal_prompt.md`
 - `prompts/natural_disasters_implementation_resume_prompt.md`
