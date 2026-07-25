@@ -2,14 +2,14 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-six global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, checkpoint, and society chains through The Men at Kilometer Twelve. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-seven global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, checkpoint, society, and custody chains through The Weapons in the Nursery. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `512`. It has `394` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `519`. It has `401` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
-The current count supersedes the historical opening paragraph: forty-six
-reviewed global-survival rows cover event blocks through `512`, with `394`
+The current count supersedes the historical opening paragraph: forty-seven
+reviewed global-survival rows cover event blocks through `519`, with `401`
 defined blocks and `0 of 660` countable release-floor blocks. Black Start is
 the latest dormant row and has no activation setter.
 
@@ -590,3 +590,7 @@ The row remains dormant and contributes zero countable blocks because scheduler 
 ## The Men at Kilometer Twelve scheduler correction
 
 The reviewed ordinary producer now carries forty-six rows and the defined living-world event range reaches `512`, with `394` defined blocks. The Men at Kilometer Twelve is candidate `506`, transaction `710046`, route `7146`, and history `9151`. Its state row selects the lowest eligible exposed Air Winter state and freezes supplies, trust, raider strength, state Supply Access, exposure, and reclamation. Four government-aware branches resolve after 120 days and return through a 210-day checkpoint ledger callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_MEN_AT_KM12_CHAIN_PROOF.md`.
+
+## The Weapons in the Nursery scheduler correction
+
+The reviewed ordinary producer now carries forty-seven rows and the defined living-world event range reaches `519`, with `401` defined blocks. The Weapons in the Nursery is candidate `513`, transaction `710047`, route `7147`, and history `9152`. Its state row selects the lowest eligible occupied urban shelter state and freezes Shelter, Power, Fuel, Scrap, Medicine, Food, Recognition, Cohesion, War Support, state Supply Access, exposure, reclamation, arms discipline, accident risk, and civic trust. Four government-aware branches resolve after 90 days and return through a 180-day safety callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_WEAPONS_IN_NURSERY_CHAIN_PROOF.md`.

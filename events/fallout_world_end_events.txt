@@ -16809,3 +16809,119 @@ country_event = {
 	trigger = { fallout_event_506_cleanup_can_enter = yes }
 	immediate = { fallout_event_506_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.513
+	title = chaosx.fallout.513.t
+	desc = chaosx.fallout.513.intro
+	picture = GFX_report_event_fallout_weapons_in_nursery
+	is_triggered_only = yes
+	trigger = { fallout_event_513_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.513.a
+		trigger = {
+			OR = { has_government = democratic has_government = communism }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_513_cost.central_armory_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_513_cost.central_armory_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.central_armory } fallout_event_513_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.513.a.tt
+	}
+	option = {
+		name = chaosx.fallout.513.b
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_513_cost.family_registry_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_513_cost.family_registry_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_513_cost.family_registry_food compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.family_registry } fallout_event_513_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.513.b.tt
+	}
+	option = {
+		name = chaosx.fallout.513.c
+		trigger = {
+			OR = { has_government = neutrality has_government = communism has_government = fascism }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_513_cost.militia_custody_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_513_cost.militia_custody_fuel compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.militia_custody } fallout_event_513_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.513.c.tt
+	}
+	option = {
+		name = chaosx.fallout.513.d
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality has_government = fascism }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_513_cost.disarm_nursery_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_513_cost.disarm_nursery_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_513_cost.disarm_nursery_food compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.disarm_nursery } fallout_event_513_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.513.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.514
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_513_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_513_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.515
+	title = chaosx.fallout.515.t
+	desc = { text = chaosx.fallout.515.central_armory.success.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.central_armory } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.515.central_armory.partial.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.central_armory } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.515.central_armory.failure.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.central_armory } } }
+	desc = { text = chaosx.fallout.515.family_registry.success.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.family_registry } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.515.family_registry.partial.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.family_registry } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.515.family_registry.failure.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.family_registry } } }
+	desc = { text = chaosx.fallout.515.militia_custody.success.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.militia_custody } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.515.militia_custody.partial.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.militia_custody } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.515.militia_custody.failure.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.militia_custody } } }
+	desc = { text = chaosx.fallout.515.disarm_nursery.success.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.disarm_nursery } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.515.disarm_nursery.partial.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.disarm_nursery } check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.515.disarm_nursery.failure.d trigger = { check_variable = { fallout_event_513_selected_branch = constant:fallout_event_513_branch.disarm_nursery } } }
+	picture = GFX_report_event_fallout_weapons_in_nursery
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_513_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.weapons_in_nursery_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.515.a hidden_effect = { fallout_event_513_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.515.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.516
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_513_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.weapons_in_nursery_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_513_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.517
+	title = chaosx.fallout.517.t
+	desc = { text = chaosx.fallout.517.success.d trigger = { check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.517.partial.d trigger = { check_variable = { fallout_event_513_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.517.failure.d
+	picture = GFX_report_event_fallout_weapons_in_nursery
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_513_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.weapons_in_nursery_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_513_registry_is_current = yes }
+	option = { name = chaosx.fallout.517.a hidden_effect = { fallout_event_513_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.517.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.518
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_513_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.weapons_in_nursery_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_513_registry_is_current = yes }
+	immediate = { fallout_event_513_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.519
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_513_cleanup_can_enter = yes }
+	immediate = { fallout_event_513_cleanup = yes }
+}
