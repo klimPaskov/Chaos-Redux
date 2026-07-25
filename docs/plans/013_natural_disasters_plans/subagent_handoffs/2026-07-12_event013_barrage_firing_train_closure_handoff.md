@@ -1,5 +1,7 @@
 # Event 013 final firing, Barrage, and train closure handoff
 
+> Historical closure snapshot, 2026-07-12. The live-engine matrix remains queued, but the Event 013 source/provenance archive mentioned below was restored on 2026-07-26 under `docs/assets/013_natural_disasters/`. Use the current manifest and final completion audit for present retention status.
+
 Date: 2026-07-12
 
 ## Scope
@@ -25,4 +27,4 @@ Event 099 remains a narrow, fail-closed call into Event 013's Dust and Sandstorm
 
 ## Meaningful validation and remaining risks
 
-Static review covers balanced effect/trigger/event blocks, type-preserving pool membership, exact initiating predicates, all 49 train substitutions, localisation keys and BOMs, workbook readback, and direct/scenario output initialization. The live-engine matrix remains required for dynamic array-index state scoping, same-chain UI repaint, due-job execution, full warning/mission affordability, and concurrent abnormal/relief behavior. All 1,035 tracked Event 013 source-archive files remain absent pending the repository-wide retention decision. The port-lifeline positive-opinion relationship proxy remains an explicit engine-constrained simplification.
+Static review covers balanced effect/trigger/event blocks, type-preserving pool membership, exact initiating predicates, all 49 train substitutions, localisation keys and BOMs, workbook readback, and direct/scenario output initialization. The live-engine matrix remains required for dynamic array-index state scoping, same-chain UI repaint, due-job execution, full warning/mission affordability, and concurrent abnormal/relief behavior. The 1,035-file Event 013 source/provenance archive was later restored under `docs/assets/013_natural_disasters/`; the port-lifeline positive-opinion relationship proxy remains an explicit engine-constrained simplification.

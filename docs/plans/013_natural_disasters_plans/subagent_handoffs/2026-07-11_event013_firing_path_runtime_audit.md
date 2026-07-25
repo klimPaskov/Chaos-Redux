@@ -2,7 +2,7 @@
 
 Date: 2026-07-11
 
-Closure note, 2026-07-12: this is the preserved pre-fix audit. The complete group/type-preserving family pass, selected-type Disaster Barrage launch proof, explicit direct/scenario rejection notice, direct-entry history ownership, immediate exact forecast card, cluster context arrays, hard geography registry, temporary random draws, inclusive documented endpoints, and caller-side initialization for nested temporary outputs were implemented afterward. The authoritative current verdict is `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md`; its queued live-engine scenario matrix and repository-wide source-asset retention decision remain open.
+Closure note, 2026-07-12: this is the preserved pre-fix audit. The complete group/type-preserving family pass, selected-type Disaster Barrage launch proof, explicit direct/scenario rejection notice, direct-entry history ownership, immediate exact forecast card, cluster context arrays, hard geography registry, temporary random draws, inclusive documented endpoints, and caller-side initialization for nested temporary outputs were implemented afterward. The authoritative current verdict is `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md`; its queued live-engine scenario matrix remains open, while the Event 013 source/provenance archive was restored on 2026-07-26.
 
 Mode: read-only gameplay audit. This handoff is the audit's only repository edit. No gameplay, localisation, GUI, asset, workbook, or existing documentation file was changed.
 
