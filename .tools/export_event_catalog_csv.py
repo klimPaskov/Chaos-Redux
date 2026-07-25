@@ -32,6 +32,14 @@ SHEET_EXPORTS = {
 	"Clusters": "chaos_redux_clusters_catalog.csv",
 	"Scenarios": "chaos_redux_scenarios_catalog.csv",
 }
+# The workbook can retain formatting or stray notes outside the catalog table.
+# Keep exports limited to the declared player-facing columns so those cells do
+# not turn into phantom CSV fields or blank records.
+SHEET_WIDTHS = {
+	"Events": 13,
+	"Clusters": 7,
+	"Scenarios": 6,
+}
 
 
 def _csv_value(value: object) -> str:
@@ -78,6 +86,10 @@ def _check_formula_cache(workbook_path: Path) -> None:
 def _stage_sheet_export(sheet, target: Path) -> Dict[str, object]:
 	temporary_path: Optional[Path] = None
 	try:
+		width = SHEET_WIDTHS[sheet.title]
+		rows = list(sheet.iter_rows(min_col=1, max_col=width, values_only=True))
+		while rows and not any(value is not None and str(value) != "" for value in rows[-1]):
+			rows.pop()
 		with tempfile.NamedTemporaryFile(
 			mode="w",
 			encoding="utf-8-sig",
@@ -90,7 +102,7 @@ def _stage_sheet_export(sheet, target: Path) -> Dict[str, object]:
 			temporary_path = Path(stream.name)
 			writer = csv.writer(stream, lineterminator="\n")
 			row_count = 0
-			for row in sheet.iter_rows(values_only=True):
+			for row in rows:
 				writer.writerow([_csv_value(value) for value in row])
 				row_count += 1
 			stream.flush()
@@ -100,7 +112,7 @@ def _stage_sheet_export(sheet, target: Path) -> Dict[str, object]:
 			"target": target,
 			"temporary": temporary_path,
 			"rows": row_count,
-			"columns": sheet.max_column or 0,
+			"columns": width,
 		}
 	except Exception:
 		if temporary_path is not None:

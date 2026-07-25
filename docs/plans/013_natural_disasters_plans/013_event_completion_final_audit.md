@@ -34,7 +34,7 @@ Final frozen-tree verification checked the Event 013 core and shared integration
 | Ten achievements | Pass structurally | Exact accepted set, sequence-bound tracking/disqualifiers, localisation, hooks, and 30 live icon variants. |
 | Localisation and scripted localisation | Pass | 1,103 unique Event 013 English keys, distinct report/news prose, full group/driver/relief selector coverage, no missing references, and BOM retained. |
 | Assets and registrations | Pass for live assets | 197 texture routes resolve and open; no GIF is a gameplay asset. |
-| Docs, prompts, and workbook | Pass with archival note | Specs incorporate accepted clarifications; mechanic/cluster/audio docs and Event/Cluster/Scenario workbook rows align; rows remain `Needs Testing`. |
+| Docs, prompts, and workbook | Pass with archival note | Specs incorporate accepted clarifications; mechanic/cluster/audio docs and the Event 013, Cluster 5, Event 099, and SCN-007 workbook rows align; those live-tested rows remain `Needs Testing`. |
 
 ## Improvement-loop disposition
 
@@ -59,7 +59,9 @@ The Event Details premise and evolution wording did not change, so no workbook c
 
 ## Remaining blockers and simplifications
 
-- Live-engine execution evidence is not available for the scenario matrix listed in `013_implementation_validation_notes.md`. This is why Event 013 and SCN-007 remain `Needs Testing`, and why this audit does not state unconditional completion.
+Catalog export shape is now normalized by `.tools/export_event_catalog_csv.py`; the remaining overflow cells belong to unrelated Fallout rows.
+
+- Live-engine execution evidence is not available for the scenario matrix listed in `013_implementation_validation_notes.md`. This is why Event 013, Cluster 5, Event 099, and SCN-007 remain `Needs Testing`, and why this audit does not state unconditional completion.
 - All 1,035 tracked files in the binary Event 013 source-asset archive under `docs/assets/` are removed by a broader concurrent cleanup. Registered live assets remain, but the deleted manifest, GFX handoff, animation provenance/build records, and source/processed archive mean complete provenance does not remain. Restoration or explicit acceptance of removal is queued for the repository-wide retention decision.
 - The port-lifeline cooperation leg uses positive opinion as an engine-constrained relationship proxy because the supported country-trigger interface does not expose a bilateral live resource-trade relationship trigger. Player-facing text does not describe it as exact live-trade detection.
 - No other gameplay fallback, generic disaster popup, duplicate disaster controller, unresearched super-event, placeholder audio, or transform-only final animation remains.

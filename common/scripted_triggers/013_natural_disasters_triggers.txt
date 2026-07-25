@@ -39,6 +39,31 @@ natural_disaster_is_valid_repeat_impact_state = {
 	}
 }
 
+# State-scope target-domain proof for an ocean-impact proxy. The proxy uses a
+# coastal state as an observation anchor, but it must retain the caller's
+# random, coast, nearby-enemy, or dense-state domain while finding that coast.
+natural_disaster_ocean_proxy_target_matches_mode = {
+	OR = {
+		OR = {
+			check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+			check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.coast }
+		}
+		AND = {
+			check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.nearby_enemy }
+			any_neighbor_state = {
+				OR = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+				}
+			}
+		}
+		AND = {
+			check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.dense_state }
+			natural_disaster_state_has_dense_population = yes
+		}
+	}
+}
+
 natural_disaster_is_valid_coastal_impact_state = {
 	natural_disaster_is_valid_impact_state = yes
 	is_coastal = yes
