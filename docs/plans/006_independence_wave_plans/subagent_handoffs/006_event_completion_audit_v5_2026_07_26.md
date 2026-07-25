@@ -116,6 +116,8 @@ Grounded polities require attributed sourced real male people or authentic insti
 
 Generated, generic, identity-soft, age-inappropriate, ownership-conflicted, or merely photographic portraits do not grant content attestation.
 
+The latest HAW retry is also blocked. Digital Archives record `ark:70111/47Nx` is an exact adult high-resolution visual match, but the Star-Bulletin negative has no capture date, photographer, or reuse licence and the archive terms state all rights reserved. No crop, ImageGen repaint, processed PNG, DDS, or runtime override was created.
+
 Protected BAY Rupprecht and RHI Matthes remain approved and unchanged.
 
 This gate currently admits ten exact packages and deliberately keeps other gameplay packages fail-closed.

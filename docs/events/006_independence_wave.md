@@ -40,6 +40,11 @@ remains implemented with HBX as carrier and HAW/FSM as sovereign autonomous
 members, but HBX/FSM withdrawal prevents a complete currently admitted
 carrier/member set.
 
+The latest HAW source retry found an exact adult match in Digital Archives record
+`ark:70111/47Nx`, but the Star-Bulletin negative has no capture date, photographer,
+or reuse licence and the archive terms state all rights reserved. No crop, repaint,
+DDS, or runtime override was created from it.
+
 Later package admission remains subject to the normal live host, anchor,
 reservation, Event 005 collision, force, chaos-band, and transaction proofs.
 FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
