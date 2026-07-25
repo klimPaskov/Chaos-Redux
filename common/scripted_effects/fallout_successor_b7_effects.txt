@@ -3,9 +3,9 @@
 # ============================================================================
 # B7 is a dormant, idempotent allocator pilot. It preserves one USA human
 # continuation in place, applies a country-specific package receipt, records
-# one exact capital, and names one deterministic fragmentation candidate.
-# It never switches the player, creates a tag, or marks the global successor
-# matrix complete.
+# one exact capital, names one deterministic fragmentation candidate, and can
+# run the reviewed five-state NZL transfer pilot. It never switches the
+# player, creates a tag, or marks the global successor matrix complete.
 # ============================================================================
 
 # Supported scope: COUNTRY. Clears only the B7 fragmentation probe on this
@@ -270,18 +270,41 @@ fallout_successor_b7_run_vertical_slice = {
 			if = {
 				limit = {
 					fallout_successor_b7_transaction_is_current = yes
-					NZL = { fallout_nzl_existing_tag_conversion_can_commit = yes }
+					NZL = {
+						OR = {
+							fallout_nzl_existing_tag_conversion_can_commit = yes
+							fallout_nzl_fragmented_transfer_can_commit = yes
+						}
+					}
 				}
 				NZL = {
-					fallout_nzl_commit_existing_tag_assignment = yes
 					if = {
-						limit = { fallout_nzl_existing_tag_conversion_is_current = yes }
+						limit = { fallout_nzl_fragmented_transfer_can_commit = yes }
+						fallout_nzl_commit_fragmented_exact_footprint = yes
+					}
+					if = {
+						limit = { NOT = { has_global_flag = fallout_transition_error } }
+						fallout_nzl_commit_existing_tag_assignment = yes
+					}
+					if = {
+						limit = {
+							NOT = { has_global_flag = fallout_transition_error }
+							fallout_nzl_existing_tag_conversion_is_current = yes
+						}
 						fallout_nzl_activate_lifeboat_package = yes
 					}
 				}
 			}
-			set_global_flag = fallout_b7_vertical_slice_ran
-			set_variable = { global.fallout_b7_vertical_slice_generation = global.fallout_transition_generation }
+			if = {
+				limit = {
+					OR = {
+						NOT = { NZL = { has_country_flag = fallout_nzl_fragmented_transfer_started } }
+						NZL = { fallout_nzl_existing_tag_conversion_is_current = yes }
+					}
+				}
+				set_global_flag = fallout_b7_vertical_slice_ran
+				set_variable = { global.fallout_b7_vertical_slice_generation = global.fallout_transition_generation }
+			}
 		}
 	}
 }

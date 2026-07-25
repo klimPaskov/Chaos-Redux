@@ -128,6 +128,108 @@ fallout_nzl_existing_tag_conversion_can_commit = {
 	fallout_nzl_conflict_disposition_inputs_are_current = yes
 }
 
+# Supported scope: COUNTRY. This is the reviewed fragmented-footprint pilot.
+# It may consume only five exact, hostable candidate states whose current AI
+# owners each hold one state and whose controllers match those owners. That
+# restriction makes source retirement deterministic and prevents this pilot
+# from silently stripping a larger living country.
+fallout_nzl_fragmented_transfer_can_commit = {
+	tag = NZL
+	is_ai = yes
+	NOT = { has_country_flag = fallout_nzl_lifeboat_package_active }
+	NOT = { has_country_flag = fallout_existing_tag_conversion_committed }
+	NOT = { has_country_flag = fallout_successor_assignment_committed }
+	NOT = { has_country_flag = fallout_nzl_fragmented_transfer_started }
+	NOT = { has_country_flag = fallout_nzl_fragmented_transfer_committed }
+	NOT = { has_country_flag = fallout_nzl_fragmented_transfer_error }
+	has_country_flag = fallout_live_tag_conflict_recorded
+	has_country_flag = fallout_live_tag_conflict_allocation_pending
+	NOT = { has_country_flag = fallout_live_tag_conflict_resolved }
+	fallout_successor_allocation_source_inventory_is_current = yes
+	fallout_successor_conflict_ledger_is_current = yes
+	NOT = { fallout_nzl_has_exact_state_package = yes }
+	284 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1079 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	723 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1080 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1081 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+}
+
+fallout_nzl_transfer_source_row_is_current = {
+	has_country_flag = fallout_nzl_transfer_source_retired
+	has_variable = fallout_nzl_transfer_source_generation
+	check_variable = {
+		var = fallout_nzl_transfer_source_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	NOT = { any_owned_state = { always = yes } }
+	fallout_live_tag_conflict_resolution_is_current = yes
+	check_variable = {
+		var = fallout_live_tag_conflict_resolution
+		value = constant:fallout_tag_conflict_resolution.retired_landless
+		compare = equals
+	}
+}
+
+fallout_nzl_fragmented_transfer_is_current = {
+	tag = NZL
+	NOT = { has_global_flag = fallout_transition_error }
+	has_country_flag = fallout_nzl_fragmented_transfer_committed
+	has_variable = fallout_nzl_fragmented_transfer_generation
+	has_variable = fallout_nzl_fragmented_transfer_count
+	check_variable = {
+		var = fallout_nzl_fragmented_transfer_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_nzl_fragmented_transfer_count
+		value = constant:fallout_nzl_schema.package_state_count
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_nzl_transfer_source_count
+		value = constant:fallout_nzl_schema.package_state_count
+		compare = equals
+	}
+	fallout_nzl_has_exact_state_package = yes
+	all_of_scopes = {
+		array = global.fallout_nzl_transfer_source_countries
+		fallout_nzl_transfer_source_row_is_current = yes
+	}
+}
+
 fallout_nzl_existing_tag_conversion_is_current = {
 	tag = NZL
 	has_country_flag = fallout_existing_tag_conversion_committed
@@ -144,6 +246,10 @@ fallout_nzl_existing_tag_conversion_is_current = {
 	}
 	fallout_nzl_assignment_identity_is_current = yes
 	fallout_nzl_conflict_dispositions_are_current = yes
+	OR = {
+		NOT = { has_country_flag = fallout_nzl_fragmented_transfer_started }
+		fallout_nzl_fragmented_transfer_is_current = yes
+	}
 }
 
 fallout_nzl_lifeboat_package_can_activate = {

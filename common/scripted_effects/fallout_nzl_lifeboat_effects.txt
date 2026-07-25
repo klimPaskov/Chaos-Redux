@@ -531,6 +531,23 @@ fallout_nzl_clear_conflict_dispositions = {
 	clear_variable = fallout_nzl_samoa_disposition_generation
 	clear_variable = fallout_nzl_aotearoa_overlap_disposition
 	clear_variable = fallout_nzl_aotearoa_overlap_generation
+	clr_country_flag = fallout_nzl_fragmented_transfer_started
+	clr_country_flag = fallout_nzl_fragmented_transfer_committed
+	clr_country_flag = fallout_nzl_fragmented_transfer_error
+	clear_variable = fallout_nzl_fragmented_transfer_generation
+	clear_variable = fallout_nzl_fragmented_transfer_count
+	clear_variable = fallout_nzl_fragmented_transfer_status
+	clear_variable = fallout_live_tag_conflict_capital_state
+	clr_country_flag = fallout_live_tag_conflict_capital_valid
+	clear_array = global.fallout_nzl_transfer_source_countries
+	clear_variable = global.fallout_nzl_transfer_source_count
+}
+
+fallout_nzl_clear_fragmented_transfer_source_receipt = {
+	clr_country_flag = fallout_nzl_transfer_source_pending
+	clr_country_flag = fallout_nzl_transfer_source_retired
+	clear_variable = fallout_nzl_transfer_source_generation
+	clear_variable = fallout_nzl_transfer_source_state
 }
 
 fallout_nzl_record_conflict_dispositions = {
@@ -542,6 +559,135 @@ fallout_nzl_record_conflict_dispositions = {
 		set_country_flag = fallout_nzl_aotearoa_overlap_resolved
 		set_variable = { fallout_nzl_aotearoa_overlap_disposition = constant:fallout_nzl_conflict_disposition.aotearoa_overlap_inactive }
 		set_variable = { fallout_nzl_aotearoa_overlap_generation = global.fallout_transition_generation }
+	}
+}
+
+# Supported scope: COUNTRY. Records one landless source after its sole state
+# has moved to NZL. The source row is retired only after the transfer effect
+# proves that the former country owns no state. No output country is written.
+fallout_nzl_retire_fragmented_transfer_source = {
+	if = {
+		limit = {
+			has_country_flag = fallout_nzl_transfer_source_pending
+			has_variable = fallout_nzl_transfer_source_generation
+			check_variable = {
+				var = fallout_nzl_transfer_source_generation
+				value = global.fallout_transition_generation
+				compare = equals
+			}
+			NOT = { any_owned_state = { always = yes } }
+			has_country_flag = fallout_live_tag_conflict_recorded
+			has_country_flag = fallout_live_tag_conflict_allocation_pending
+			NOT = { has_country_flag = fallout_live_tag_conflict_resolved }
+		}
+		set_variable = { fallout_live_tag_conflict_resolution = constant:fallout_tag_conflict_resolution.retired_landless }
+		set_variable = { fallout_live_tag_conflict_resolution_generation = global.fallout_transition_generation }
+		set_variable = { fallout_live_tag_conflict_cleanup_owner = THIS }
+		set_variable = { fallout_live_tag_conflict_cleanup_generation = global.fallout_transition_generation }
+		clear_variable = fallout_live_tag_conflict_output_country
+		set_country_flag = fallout_live_tag_conflict_resolved
+		clr_country_flag = fallout_live_tag_conflict_allocation_pending
+		set_country_flag = fallout_nzl_transfer_source_retired
+		clear_variable = fallout_nzl_transfer_source_state
+	}
+}
+
+# Supported scope: NZL. Transfers one exact reviewed five-state footprint from
+# five distinct one-state AI sources. This is a dormant B7 pilot. It writes a
+# generation-bound source array, retires each emptied source, and then leaves
+# the existing-tag package commit to the established NZL path.
+fallout_nzl_commit_fragmented_exact_footprint = {
+	if = {
+		limit = { fallout_nzl_fragmented_transfer_can_commit = yes }
+		set_country_flag = fallout_nzl_fragmented_transfer_started
+		set_variable = { fallout_nzl_fragmented_transfer_generation = global.fallout_transition_generation }
+		set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_nzl_allocation_status.transfer_started }
+		clear_array = global.fallout_nzl_transfer_source_countries
+		set_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.zero }
+		284 = {
+			save_event_target_as = fallout_nzl_fragmented_transfer_capital
+			OWNER = {
+				add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+				add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+				set_country_flag = fallout_nzl_transfer_source_pending
+				set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_transfer_source_state = PREV }
+			}
+			transfer_state_to = ROOT
+		}
+		1079 = {
+			OWNER = {
+				add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+				add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+				set_country_flag = fallout_nzl_transfer_source_pending
+				set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_transfer_source_state = PREV }
+			}
+			transfer_state_to = ROOT
+		}
+		723 = {
+			OWNER = {
+				add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+				add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+				set_country_flag = fallout_nzl_transfer_source_pending
+				set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_transfer_source_state = PREV }
+			}
+			transfer_state_to = ROOT
+		}
+		1080 = {
+			OWNER = {
+				add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+				add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+				set_country_flag = fallout_nzl_transfer_source_pending
+				set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_transfer_source_state = PREV }
+			}
+			transfer_state_to = ROOT
+		}
+		1081 = {
+			OWNER = {
+				add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+				add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+				set_country_flag = fallout_nzl_transfer_source_pending
+				set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_transfer_source_state = PREV }
+			}
+			transfer_state_to = ROOT
+		}
+		for_each_scope_loop = {
+			array = global.fallout_nzl_transfer_source_countries
+			fallout_nzl_retire_fragmented_transfer_source = yes
+		}
+		set_variable = { fallout_nzl_fragmented_transfer_count = constant:fallout_nzl_schema.package_state_count }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.fallout_nzl_transfer_source_count
+					value = constant:fallout_nzl_schema.package_state_count
+					compare = equals
+				}
+				fallout_nzl_has_exact_state_package = yes
+				all_of_scopes = {
+					array = global.fallout_nzl_transfer_source_countries
+					fallout_nzl_transfer_source_row_is_current = yes
+				}
+			}
+			set_country_flag = fallout_nzl_fragmented_transfer_committed
+			set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_nzl_allocation_status.transfer_committed }
+			set_country_flag = fallout_live_tag_conflict_capital_valid
+			set_variable = { fallout_live_tag_conflict_capital_state = event_target:fallout_nzl_fragmented_transfer_capital }
+		}
+		else = {
+			set_country_flag = fallout_nzl_fragmented_transfer_error
+			set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_nzl_allocation_status.transfer_error }
+			if = {
+				limit = { NOT = { has_global_flag = fallout_transition_error } }
+				set_global_flag = fallout_transition_error
+				set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.successor_allocation_incomplete }
+				add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+			}
+		}
 	}
 }
 

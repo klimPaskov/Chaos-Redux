@@ -28,7 +28,7 @@ Activation resets only Fallout NZL-owned runtime state. It does not write assign
 
 The Samoa input passes only when Samoa is absent from the current live conflict array or its resolution receipt is current for the active generation. Every live conflict country is then checked through the array. An Independence Wave package holder must have a current conflict resolution and must not own Wellington or Canterbury. The producer writes the two typed dispositions and their transition-generation receipts atomically inside one guarded block. `fallout_nzl_clear_conflict_dispositions` is a separate allocator reset helper and is not called by package runtime reset.
 
-The B7 producer authenticates the current inventory, records `converted_existing`, commits one capital and origin row, appends NZL to the assignment arrays, and then calls the existing package loader. This proves only the existing-tag path. It does not prove a general allocator, dynamic materialization, state transfer from other owners, player handoff, native host authority, or runtime save and multiplayer behavior. The disposition receipts remain dormant unless the B7 vertical slice itself is explicitly invoked.
+The B7 producer authenticates the current inventory, records `converted_existing`, commits one capital and origin row, appends NZL to the assignment arrays, and then calls the existing package loader. The follow-up also defines a dormant fragmented-footprint path that accepts five exact candidate states, transfers them with state-scope `transfer_state_to = ROOT`, retires each one-state source as `retired_landless`, and then reuses the same package loader. These are static pilots only. They do not prove a general allocator, dynamic materialization, player handoff, native host authority, or runtime save and multiplayer behavior. The disposition receipts remain dormant unless the B7 vertical slice itself is explicitly invoked.
 
 ## State and carrier proof
 
@@ -196,7 +196,7 @@ The event catalog workbook no longer assigns Fallout to Zombie Event 2. Its Even
 ## Remaining activation blockers
 
 1. No active transition caller invokes the dormant B7 vertical slice, and no general allocator materializer transfers an NZL footprint from other owners.
-2. The existing-tag path requires an AI NZL tag with the exact five-state footprint. It does not cover a missing or fragmented NZL tag.
+2. The existing-tag path requires an AI NZL tag with the exact five-state footprint. The fragmented-footprint pilot covers only five one-state AI sources and does not cover a missing NZL tag or a larger fragmented source.
 3. Vanilla NZL alternate AI plans have empty abort blocks. No engine-safe additive override has yet been proved that retires those plans without replacing their pre-Fallout definitions.
 4. The Radio Service Coordinator portrait has no accepted final asset or sprite definition.
 
