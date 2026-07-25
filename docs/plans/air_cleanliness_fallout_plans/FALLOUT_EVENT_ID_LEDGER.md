@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After The Captain Refuses tranche, the living-world pilot contains `408`
+After The Missing Patrol tranche, the living-world pilot contains `415`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `526`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `533`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -601,4 +601,6 @@ The Weapons in the Nursery adds seven dormant state-level event blocks at suffix
 
 The Captain Refuses adds seven dormant state-level event blocks at suffixes `520` through `526`. It uses candidate `520`, transaction `710048`, route `7148`, and history `9153`. The chain selects a deterministic exposed Air Winter state, offers negotiated mission duty, captain replacement, military custody, or bounded field autonomy, and carries command ledgers, military modifiers, state Supply Access, building, and Deaths-system effects through a delayed result and command review callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired. Native character replacement remains unproven.
 
-The documented living-world block total is now `408`, while the countable Fallout living-world total remains `0 of 660`.
+The Missing Patrol adds seven dormant state-level event blocks at suffixes `527` through `533`. It uses candidate `527`, transaction `710049`, route `7149`, and history `9154`. The chain selects a deterministic exposed Air Winter state, offers search, limited border retaliation, cover-up, or waiting for contact, and carries intelligence, fear, reputation, contact, cause memory, Supply Access, military, building, and Deaths-system effects through a 60-day result and 180-day command review callback. Dedicated art, Event Log payloads, hidden-AI parity, and authenticated cleanup are wired. Native patrol creation, live neighbor selection, automatic war declaration, and dynamic tag allocation remain unproven.
+
+The documented living-world block total is now `415`, while the countable Fallout living-world total remains `0 of 660`.

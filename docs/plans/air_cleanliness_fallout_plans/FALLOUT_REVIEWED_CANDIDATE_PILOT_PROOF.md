@@ -395,3 +395,13 @@ Its gate selects the lowest valid native Middle Eastern coastal state with a pro
 The chain freezes Water, Power, Medicine, Cohesion, Recognition, operation memory, water reserve, technical credit, Adaptation, Reclamation, and the selected state before a 42-day result and a 300-day second-shift callback.
 The four policies run the plant at full strain, call desert technicians, reserve power for the clinic, or lock the shore and ration water. Each lane has human and hidden-AI delivery, delayed outcomes, branch memory, dynamic modifiers, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+## The Missing Patrol correction
+
+The Missing Patrol is the forty-ninth reviewed ordinary candidate. It uses candidate id `527`, transaction `710049`, route `7149`, event tokens `527` through `533`, and history `9154`.
+
+Its gate selects the lowest owned exposed state with a produced current-generation Air Winter receipt, surviving population, current Supply Access, and durable patrol ledgers. The chain freezes Food, Fuel, Equipment, Scrap, Recognition, Cohesion, War Support, Command Power, Army Experience, intelligence, fear, reputation, contact, cause memory, state Supply Access, exposure, and reclamation before a 60-day result and a 180-day command review callback.
+
+The four policies search the ruins, retaliate at the border without an automatic war declaration, cover up the disappearance, or wait for contact. Each lane has human and hidden-AI delivery, deterministic viability, state and military effects, building and Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup. Native patrol creation, live neighbor selection, automatic war declaration, and dynamic tag allocation remain unproven.
+
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total. The dedicated proof is recorded in `FALLOUT_MISSING_PATROL_CHAIN_PROOF.md`.
