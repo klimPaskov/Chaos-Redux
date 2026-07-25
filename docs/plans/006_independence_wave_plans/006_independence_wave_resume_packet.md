@@ -150,7 +150,7 @@ they are not current routing documents.
 
 | Package | Current state | Resume rule |
 | --- | --- | --- |
-| IW-006 AFX | Commander portrait promoted; package audit pending | Jules Destrée remains sourced, processed, and wired. Louis Hubert baron Ruquoy/Rucquoy now has an independently approved source-locked HOI4 commander repaint wired to the stable AFX consumer with byte-matched runtime DDS evidence; the retired Hainaut-born general is documented as an alternate-history reserve appointment. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, and keep exact execution/attestation closed until the fresh post-wire IW-006 package audit passes |
+| IW-006 AFX | Admitted after current package, portrait, and post-wire package audits | Jules Destrée remains sourced, processed, and wired. Louis Hubert baron Ruquoy/Rucquoy now has an independently approved source-locked HOI4 commander repaint wired to the stable AFX consumer with byte-matched runtime DDS evidence; the retired Hainaut-born general is documented as an alternate-history reserve appointment. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, exact IW-006 compile-time attestation, and every live allocation proof. The runtime force-tradition value is 61 and matches the accepted mapping |
 | IW-007 AGX | Admitted after current package and portrait audits | The retry-02 Douwe Kalma and Pieter Reenalda candidate-02 portraits pass independent source-likeness and HOI4-style review and are wired to the existing sprites; candidate 01 remains rejected. The fresh package audit passes state-36/RG-36, HOL survival, Event-5 collision, setup, p7 force, focus, decisions, AI, localisation, flag, and cleanup. Preserve exact-ID compile-time attestation and every live allocation proof |
 | IW-001 SCO | Admitted after current package and portrait audits | Robert Bontine Cunninghame Graham and Victor Morven Fortune have independently approved sourced real-male HOI4 repaints wired to the stable full-size consumers. The post-wiring package audit passes tag reuse, state-121/ENG-survival setup, force, focus, decisions, ideas, AI, formables, localisation, flags, and cleanup. Preserve exact-ID content attestation and every live allocation proof |
 | IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis has the correct attributed 1916 source, but trial 01 failed independent likeness review and remains unwired. Preserve the package logic, but keep execution closed until a stronger or tighter source-locked civic portrait and the mountain commander both pass the real-person workflow and the full roster is re-audited |
@@ -174,10 +174,13 @@ they are not current routing documents.
 
 An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
-chaos-band, and wave-size gates. Ten disjoint reservation groups can
-structurally supply every 3-, 4-, 5-, 7-, and 10-country band. World Collapse
-remains exactly ten and still fails closed when runtime availability cannot
-satisfy the synchronized frozen plan.
+chaos-band, and wave-size gates. The current ten-ID set has only nine compatible
+reservation groups because RHI and AJX share RG-RHINE-SAAR, so the 3-, 4-, 5-,
+and 7-country bands remain conditionally viable while the exact ten-country
+Totalen Chaos and World Collapse bands fail closed until a tenth unique-group
+package is admitted or a valid map rebinding is approved. World Collapse remains
+exactly ten and still fails closed when runtime availability cannot satisfy the
+synchronized frozen plan.
 
 ## Completed tranches not to repeat
 
@@ -221,10 +224,11 @@ satisfy the synchronized frozen plan.
   and sovereign charter-driven FORM-05 remain implemented. Corsica's Landry and
   Chiappe roster now passes source, crop, ownership, identity, and HOI4 painted-
   style review and is wired to pixel-identical runtime DDS files; its fresh package
-  audit passes and exact IW-017 is admitted. Sicily's Sturzo/Lanza/Rizzo trial
-  refinishes pass independent source, identity, male-only, crop, and HOI4-style
-  review, but remain unwired while the separate real Sicilian army commander is
-  sourced; naval admiral Rizzo is not valid for the current corps-command slot.
+  audit passes and exact IW-017 is admitted. Sicily's Sturzo, Lanza, Rizzo, and Di
+  Benedetto refinishes pass independent source, identity, male-only, crop, and
+  HOI4-style review and are wired to role-correct full-size consumers. Rizzo is
+  the civilian-large Straits Security Directorate political leader; Di Benedetto
+  is the sole army-large corps commander. Exact IW-019 is admitted.
   Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
   created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon, architecture, decision/mission, localisation, flags, and postformation logic remain implemented.
@@ -288,8 +292,8 @@ satisfy the synchronized frozen plan.
   complete its full containment-survival proof.
 - ASSET-040 through ASSET-043 have no authored frame packages.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
-  specifically blocked. FORM-48 is promoted, but its hidden-high-chaos route
-  remains conditional on the live league/action predicates.
+  specifically blocked. FORM-48 remains implemented but unreachable through its
+  complete required HAW/FSM member set because those two packages are not admitted.
 - The parent Event 006 completion audit is still pending; no overall completion
   claim is authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
