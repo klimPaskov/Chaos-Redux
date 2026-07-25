@@ -46,7 +46,7 @@ No gameplay, asset, workbook, or localisation file was edited. The current workb
 3. The shared focus tree still has fourteen blocking diagnostics and AGX still lacks the accepted narrow Frisia module. No focus or localisation implementation was inferred from the handoff.
 4. HAW retry 03 has an exact adult visual match but no defensible reuse rights. No crop, repaint, DDS, or runtime override is authorized.
 5. The bounded localisation surface is PASS, while missing future package localisation and live runtime evidence keep whole-event completion on HOLD.
-6. The resume packet and source map retain one historical FORM-48 parent-decision sentence using “completion audit remains pending” inside a preserved decision list. The surrounding current-authority notes supersede that wording; rewrite is optional and must not change the accepted FORM-48 HOLD boundary.
+6. The source map's retained FORM-48 parent-decision sentence was updated to the current v6/v7 **HOLD** wording; the accepted FORM-48 boundary is unchanged.
 
 ## Duplicate, superseded, and stale-document list
 
@@ -65,6 +65,6 @@ No gameplay, asset, workbook, or localisation file was edited. The current workb
 
 - Keep the accepted specification, exact attestation set, FORM-48 sovereign-member contract, no-fallback rules, and overall **HOLD** status unchanged.
 - Treat v6 as the whole-event authority and v7/post-repair handoffs as the latest DM-58 tranche evidence.
-- Decide later whether to rewrite the single retained historical “completion audit remains pending” sentence in the FORM-48 parent-decision list; the current surrounding notes already make the active HOLD status explicit.
+- No further wording decision is required for the FORM-48 parent-decision list; its current v6/v7 **HOLD** wording is explicit and preserves the accepted boundary.
 
 No gameplay completion claim is made by this handoff.
