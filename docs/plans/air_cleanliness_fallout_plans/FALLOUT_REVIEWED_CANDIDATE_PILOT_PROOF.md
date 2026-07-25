@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for forty-eight
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -405,3 +405,21 @@ Its gate selects the lowest owned exposed state with a produced current-generati
 The four policies search the ruins, retaliate at the border without an automatic war declaration, cover up the disappearance, or wait for contact. Each lane has human and hidden-AI delivery, deterministic viability, state and military effects, building and Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup. Native patrol creation, live neighbor selection, automatic war declaration, and dynamic tag allocation remain unproven.
 
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total. The dedicated proof is recorded in `FALLOUT_MISSING_PATROL_CHAIN_PROOF.md`.
+
+## The Ammunition Winter correction
+
+The Ammunition Winter is the fiftieth reviewed ordinary candidate. It uses candidate id `534`, transaction `710050`, route `7150`, event tokens `534` through `540`, and history `9155`.
+
+Its gate selects the lowest owned Air Winter state with a produced current-generation receipt, surviving population, current Supply Access, and a country equipment stockpile below `14` while the country is at war or crime pressure is at the authored threat threshold. The chain freezes Food, Fuel, Equipment, Scrap, Recognition, Cohesion, War Support, Command Power, Army Experience, arms readiness, crime pressure, civic trust, militia alignment, state Supply Access, exposure, and reclamation before a 60-day result and a 180-day thaw callback.
+
+The four policies shorten patrols, melt civilian metal, trade food for cartridges, or seize private arms. Each lane has human and hidden-AI delivery, deterministic viability, military and supply effects, building and Deaths-backed failure, durable cause memory, dedicated report art, Event Log payloads, and authenticated cleanup. It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total. The dedicated proof is recorded in `AMMUNITION_WINTER_CHAIN_PROOF.md`.
+
+## The A New Funeral correction
+
+A New Funeral is the fifty-first reviewed ordinary candidate. It uses candidate id `541`, transaction `710051`, route `7151`, event tokens `541` through `553`, and history `9156`.
+
+Its country gate requires a current Fallout registry row, material Deaths, incomplete Recognition, winter disease pressure or low Cohesion, and one authored cost route. The chain freezes disease pressure, family trust, religious tension, public health, Deaths, Recognition, Cohesion, and exposure before a 21-day result and a 180-day memorial callback. Four choices govern a common civic rite, separate rites, a state ceremony, or a rapid burial law. Each lane has human and hidden-AI delivery, branch-specific disease and memory effects, Deaths-backed failure, dedicated report art, Event Log payloads, and authenticated cleanup.
+
+It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
+
+No scheduler activation flag or public release-floor credit is set by this correction.

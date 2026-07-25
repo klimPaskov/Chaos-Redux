@@ -83,6 +83,15 @@ fallout_queue_request_envelope = {
 # Supported scope: COUNTRY. This clears an uncommitted request without touching
 # a completed cause-memory ledger or any active Fallout transition.
 fallout_clear_pending_request_envelope = {
+	if = {
+		limit = {
+			fallout_request_source_is_strategic_singularity = yes
+			has_event_target = fallout_request_actor
+		}
+		event_target:fallout_request_actor = {
+			brilliant_scientist_recover_rejected_singularity_fallout_request = yes
+		}
+	}
 	clr_global_flag = fallout_request_pending
 	clear_variable = global.fallout_request_source
 	clear_variable = global.fallout_request_intensity
@@ -177,6 +186,15 @@ fallout_lock_transition = {
 		fallout_mark_blackout_gui_dirty = yes
 		fallout_dispatch_blackout_audio = yes
 		fallout_schedule_current_transition_phase = yes
+		if = {
+			limit = {
+				fallout_request_source_is_strategic_singularity = yes
+				has_event_target = fallout_request_actor
+			}
+			event_target:fallout_request_actor = {
+				brilliant_scientist_finalize_singularity_after_fallout_lock = yes
+			}
+		}
 	}
 	else_if = {
 		limit = { fallout_request_source_is_manual = yes }
@@ -1219,6 +1237,7 @@ fallout_calculate_expected_grade_score = {
 	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.chemical_saturation } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.chemical_saturation } }
 	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.biological_follow_through } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.biological_follow_through } }
 	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.mixed_terminal } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.mixed_terminal } }
+	else_if = { limit = { check_variable = { global.fallout_pretransition_request_source = constant:fallout_request_source.strategic_singularity } } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.strategic_singularity } }
 
 	if = { limit = { has_state_flag = fallout_pretransition_direct_manual_target } add_to_temp_variable = { fallout_expected_grade_score = constant:fallout_grade_weight.manual_native_strike } }
 	if = {

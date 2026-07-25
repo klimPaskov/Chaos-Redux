@@ -221,6 +221,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Fallout postcondition triggers: `common/scripted_triggers/fallout_world_end_triggers.txt`
 - Fallout event tokens and phase events: `events/fallout_world_end_events.txt`
 - Dormant scheduler proof: `FALLOUT_EVENT_SCHEDULER_PROOF.md`
+- Strategic-singularity request proof: `FALLOUT_STRATEGIC_SINGULARITY_REQUEST_PROOF.md`
 - Survival numerical proof: `FALLOUT_SURVIVAL_NUMERICAL_TRANSACTION_PROOF.md`
 - Living-world suffix reservations: `FALLOUT_EVENT_ID_LEDGER.md`
 - Accepted Ash-week orientation contract and implementation boundary: `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md`
