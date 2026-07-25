@@ -1,8 +1,10 @@
 # IW-002 Wales J. H. Thomas portrait trial 03
 
-Status: `candidate_requires_independent_audit`.
+Status: `wired_after_independent_pass`.
 
-No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized unless an independent reviewer passes every provenance, crop-equality, identity, style, framing, role, ownership, and consumer-boundary gate.
+Independent audit verdict: `PASS`.
+
+The exact candidate was converted to DDS and wired to the existing civilian-large WLS consumer after the independent pass.
 
 This package contains no advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback portrait.
 
@@ -13,9 +15,8 @@ This package contains no advisor, dossier, operative, commander-small, `_small`,
 | Package | IW-002 Wales, vanilla carrier `WLS` |
 | Existing dynamic character token | `WLS_independence_wave_national_council` |
 | Existing sprite | `GFX_portrait_WLS_independence_wave_national_council` |
-| Runtime path after approval | `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` |
-| Current unwired working identity | Saunders Lewis |
-| Proposed sourced identity | James Henry Thomas, commonly J. H. Thomas |
+| Runtime path | `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` |
+| Wired player-facing identity | James Henry Thomas, commonly J. H. Thomas |
 | Role family | Full-size civilian country leader |
 | Authorized portrait surface | Existing `civilian.large` consumer through the same sprite |
 
@@ -107,9 +108,27 @@ The independent audit must be recorded in `docs/plans/006_independence_wave_plan
 
 The candidate remains pending an independent likeness/style/provenance audit.
 
-The existing runtime DDS remains an unrelated pre-existing portrait and is not a fallback or evidence for this attempt.
+The prior runtime texture was replaced only after the independent PASS; no alternate or fallback portrait was used.
 
-## Gate requirements
+## Independent PASS and runtime proof
+
+The dedicated independent audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wales_jh_thomas_trial03_independent_portrait_audit_2026_07_25.md`, committed as `d5fe2e5380a31815541190344250516317bf32d4`.
+
+The auditor passed source attribution and rights, exact crop equality, source-only lineage, male civic role, HOI4 country-leader style, `156x210` framing, ownership spot checks, and all strict likeness locks.
+
+| Field | Value |
+| --- | --- |
+| Final DDS | `final_dds/portrait_WLS_independence_wave_national_council.dds` |
+| Final DDS SHA-256 | `96182456575918740C343DF44E582673AE5500FB7940710EA4E18A2C8BA6ED8D` |
+| Runtime DDS SHA-256 | `96182456575918740C343DF44E582673AE5500FB7940710EA4E18A2C8BA6ED8D` |
+| DDS dimensions/mode | `156x210`, opaque BGRA DDS |
+| DDS decoded RGBA SHA-256 | `2C6B6440554376B9429D565578E88D0BD0A205BFA99EBDA7D55E62EA064AC5FA` |
+| PNG/DDS decoded pixel equality | `true` |
+| Stable sprite | `GFX_portrait_WLS_independence_wave_national_council` |
+| Stable character token | `WLS_independence_wave_national_council` |
+| Localisation transfer | `J. H. Thomas` with historically bounded description |
+
+## Gate requirements retained for later sourced portraits
 
 The independent reviewer must compare the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, rejected trial-01 evidence, and role-specific canonical references at native size and at least `4x` nearest-neighbour enlargement.
 
