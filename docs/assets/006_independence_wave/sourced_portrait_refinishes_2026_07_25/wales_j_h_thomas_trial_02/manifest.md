@@ -1,8 +1,10 @@
 # IW-002 Wales J. H. Thomas portrait trial 02
 
-Status: `candidate_requires_independent_audit`.
+Status: `rejected_and_unwired`.
 
-No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized unless an independent reviewer passes every provenance, crop-equality, identity, style, framing, role, ownership, and consumer-boundary gate.
+Independent audit verdict: `FAIL`.
+
+No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized for this rejected candidate.
 
 This package contains no advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback portrait.
 
@@ -102,6 +104,20 @@ The processor performs deterministic crop, grade, resize, and export only.
 Its selected style controls are the canonical Stauning and Mannerheim leader references recorded in the metadata.
 
 ## Independent audit gate
+
+The independent audit is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wales_jh_thomas_trial02_independent_portrait_audit_2026_07_25.md`.
+
+The candidate passed source attribution, rights, exact-crop equality, source-only lineage, male and role fit, HOI4 country-leader style, `156x210` framing, ownership, stable-consumer declaration, and forbidden-derivative absence.
+
+It failed the non-compensable likeness gate.
+
+Relative to the archival crop, the repaint still raised and centered the gaze, regularized brow and moustache asymmetry, filled and smoothed the cheek planes, softened the jaw and chin, reduced age texture, weakened the stern expression, and made the slight head offset more frontal.
+
+The candidate is retained only as rejected process evidence.
+
+The existing runtime DDS remains an unrelated pre-existing portrait and is not a fallback or evidence for this attempt.
+
+## Gate requirements retained for any later retry
 
 The independent reviewer must compare the unchanged master, exact crop and equality JSON, raw repaint, native `156x210` candidate, processing metadata, review sheet, rejected trial-01 evidence, and role-specific canonical references at native size and at least `4x` nearest-neighbour enlargement.
 
