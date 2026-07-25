@@ -82,7 +82,7 @@ definitions.
 
 ## Dormant activation and Year 10 clock
 
-`fallout_nzl_activate_lifeboat_package` remains an uncalled allocator entry point. After its current-generation receipt gate passes, it resets NZL-owned package state and writes a timed `fallout_nzl_before_year_ten` country flag for 3,650 days. The duration field uses the file-scoped literal `@FALLOUT_NZL_YEAR_TEN_DAYS`, mirrored by `constant:fallout_nzl_duration.year_ten` for shared tuning and documentation surfaces. `fallout_nzl_year_ten_values_are_ready` requires the timed flag to have expired. Reset clears the old flag before any later valid activation writes a fresh one.
+`fallout_nzl_activate_lifeboat_package` remains dormant outside the B7 vertical slice. The B7 caller reaches it only after the guarded existing-tag assignment commits its current-generation receipts. After the receipt gate passes, it resets NZL-owned package state and writes a timed `fallout_nzl_before_year_ten` country flag for 3,650 days. The duration field uses the file-scoped literal `@FALLOUT_NZL_YEAR_TEN_DAYS`, mirrored by `constant:fallout_nzl_duration.year_ten` for shared tuning and documentation surfaces. `fallout_nzl_year_ten_values_are_ready` requires the timed flag to have expired. Reset clears the old flag before any later valid activation writes a fresh one.
 
 ## Bounded formation placement
 

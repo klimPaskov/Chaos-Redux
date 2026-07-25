@@ -267,6 +267,19 @@ fallout_successor_b7_run_vertical_slice = {
 					fallout_successor_b7_probe_fragmentation_candidate = yes
 				}
 			}
+			if = {
+				limit = {
+					fallout_successor_b7_transaction_is_current = yes
+					NZL = { fallout_nzl_existing_tag_conversion_can_commit = yes }
+				}
+				NZL = {
+					fallout_nzl_commit_existing_tag_assignment = yes
+					if = {
+						limit = { fallout_nzl_existing_tag_conversion_is_current = yes }
+						fallout_nzl_activate_lifeboat_package = yes
+					}
+				}
+			}
 			set_global_flag = fallout_b7_vertical_slice_ran
 			set_variable = { global.fallout_b7_vertical_slice_generation = global.fallout_transition_generation }
 		}
