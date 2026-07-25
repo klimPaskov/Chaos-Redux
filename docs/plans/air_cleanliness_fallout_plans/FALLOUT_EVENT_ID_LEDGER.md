@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the Ravine Water Chemist tranche, the living-world pilot contains `387`
+After The Men at Kilometer Twelve tranche, the living-world pilot contains `394`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `505`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `512`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -586,3 +586,9 @@ The documented living-world block total is now `380`, while the countable Fallou
 The Ravine Water Chemist adds seven dormant country-level event blocks at suffixes `499` through `505`. It uses candidate `499`, transaction `710045`, route `7145`, and history `9150`. The chain follows an Ice Melt success or partial memory, names Dr. Mara Vey, selects a deterministic migration origin, applies disease and refugee pressure, uses four authored choices, and records result and callback payloads.
 
 The documented living-world block total is now `387`, while the countable Fallout living-world total remains `0 of 660`.
+
+## The Men at Kilometer Twelve checkpoint tranche
+
+The Men at Kilometer Twelve adds seven dormant state-level event blocks at suffixes `506` through `512`. It uses candidate `506`, transaction `710046`, route `7146`, and history `9151`. The chain selects a deterministic exposed Air Winter state, offers tribute, water-pass negotiation, an armed attack, or a guard contract, and carries route supply, military readiness, checkpoint trust, raider strength, Deaths-backed failure, a delayed callback, dedicated art, Event Log payloads, and authenticated cleanup.
+
+The documented living-world block total is now `394`, while the countable Fallout living-world total remains `0 of 660`.

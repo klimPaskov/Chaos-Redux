@@ -2,14 +2,14 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-five global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, and society chains through the Ravine Water Chemist. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-six global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, checkpoint, and society chains through The Men at Kilometer Twelve. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `505`. It has `387` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `512`. It has `394` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
-The current count supersedes the historical opening paragraph: forty-five
-reviewed global-survival rows cover event blocks through `505`, with `387`
+The current count supersedes the historical opening paragraph: forty-six
+reviewed global-survival rows cover event blocks through `512`, with `394`
 defined blocks and `0 of 660` countable release-floor blocks. Black Start is
 the latest dormant row and has no activation setter.
 
@@ -586,3 +586,7 @@ The reviewed ordinary producer now carries forty-five rows and the defined livin
 The Ravine Water Chemist is candidate `499`, transaction `710045`, route `7145`, and history `9150`.
 Its country row follows Ice Melt success or partial memory and selects one current Air Winter clinic state plus a separate lowest-id migration origin. The four branches establish Dr. Mara Vey's service, escort clean-ice families, quarantine the ravine ward, or share the filter method with districts. Each branch has separate costs, deterministic viability thresholds, disease and refugee pressure effects, a `49`-day result, a `210`-day callback, hidden-AI parity, Event Log payloads, and authenticated cleanup.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_RAVINE_WATER_CHEMIST_CHAIN_PROOF.md`.
+
+## The Men at Kilometer Twelve scheduler correction
+
+The reviewed ordinary producer now carries forty-six rows and the defined living-world event range reaches `512`, with `394` defined blocks. The Men at Kilometer Twelve is candidate `506`, transaction `710046`, route `7146`, and history `9151`. Its state row selects the lowest eligible exposed Air Winter state and freezes supplies, trust, raider strength, state Supply Access, exposure, and reclamation. Four government-aware branches resolve after 120 days and return through a 210-day checkpoint ledger callback. The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_MEN_AT_KM12_CHAIN_PROOF.md`.
