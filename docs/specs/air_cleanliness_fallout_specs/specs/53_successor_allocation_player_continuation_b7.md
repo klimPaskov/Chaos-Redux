@@ -20,7 +20,7 @@ For a snapshotted human source that requires a successor choice, the probe scans
 
 The probe exposes a named country and state to the player-continuation ledger. It does not release, create, transfer, or rename anything. It records an explicit blocked status when either pool is empty. There is no generic successor fallback.
 
-The next package-aware candidate is NZL, the New Zealand Lifeboat State. Its loader requires the exact states 284, 1079, 723, 1080, and 1081, excludes state 726, permits capital 284 or 1079, and requires current-generation assignment identity plus Samoa and Aotearoa conflict-disposition receipts. Those disposition receipts have no producer, and the Fallout allocator has no materialization producer. NZL is therefore a reviewed candidate and a documented blocker, not an activation target for B7.
+The next package-aware candidate is NZL, the New Zealand Lifeboat State. Its loader requires the exact states 284, 1079, 723, 1080, and 1081, excludes state 726, permits capital 284 or 1079, and requires current-generation assignment identity plus Samoa and Aotearoa conflict-disposition receipts. A guarded generation-bound producer now defines those two receipts, but the Fallout allocator still has no approved materialization producer or caller. NZL is therefore a reviewed candidate and a documented blocker, not an activation target for B7.
 
 ## Coordinator and idempotence
 
