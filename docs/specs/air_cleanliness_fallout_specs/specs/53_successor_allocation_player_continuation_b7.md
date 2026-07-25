@@ -20,6 +20,8 @@ For a snapshotted human source that requires a successor choice, the probe scans
 
 The probe exposes a named country and state to the player-continuation ledger. It does not release, create, transfer, or rename anything. It records an explicit blocked status when either pool is empty. There is no generic successor fallback.
 
+The next package-aware candidate is NZL, the New Zealand Lifeboat State. Its loader requires the exact states 284, 1079, 723, 1080, and 1081, excludes state 726, permits capital 284 or 1079, and requires current-generation assignment identity plus Samoa and Aotearoa conflict-disposition receipts. Those disposition receipts have no producer, and the Fallout allocator has no materialization producer. NZL is therefore a reviewed candidate and a documented blocker, not an activation target for B7.
+
 ## Coordinator and idempotence
 
 `fallout_successor_b7_run_vertical_slice` is the only B7 entry point. It is dormant and is not called by an on action, decision, ordinary event, scheduler activation flag, or public scenario. It first repairs the player reservation and conflict inventory prerequisites, begins the existing successor transaction once, applies the USA receipt, assigns the continuity row, and probes fragmentation sources. A current generation marker makes repeated calls no-ops.
@@ -38,4 +40,4 @@ The final icon handoff must place seven focus sprites under `gfx/interface/goals
 
 ## Follow-up
 
-The next tranche must materialize one reviewed fragmentation successor from the named pool, apply its existing country and focus package, transfer its exact state footprint, prove player candidate assignment, and record tag-conflict cleanup. The global allocator must remain fail-closed until that package and the remaining successor matrix are complete.
+The next tranche must first add package-aware NZL selection and authenticated conflict-disposition receipts. Only after those receipts are produced can it materialize one reviewed fragmentation successor, apply its existing country and focus package, transfer its exact state footprint, prove player candidate assignment, and record tag-conflict cleanup. The global allocator must remain fail-closed until that package and the remaining successor matrix are complete.
