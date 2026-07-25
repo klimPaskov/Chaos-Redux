@@ -2,6 +2,8 @@
 
 Date: 2026-07-12
 
+> Historical handoff snapshot. The source-asset retention decision mentioned in the original validation note was outside this tranche at the time; the 1,035-file Event 013 source/provenance archive is now retained under `docs/assets/013_natural_disasters/`. Current retention and completion status live in the manifest and final completion audit.
+
 ## Scope
 
 This tranche closes accepted improvement-loop Parts 7 and 8 for casualty vulnerability and shared aftermath presentation. It adds gameplay-significant, family-aware casualty exposure, preserves one explanation of the strongest observed driver, and exposes the same stable facts on live aftermath cards and abnormal-history records.
@@ -49,6 +51,6 @@ The Event Details premise and evolution wording did not change. No spreadsheet c
 
 ## Validation status and remaining risk
 
-Static validation covers constant references, aligned abnormal arrays, live and GUI selector coverage, localisation references, brace balance, and UTF-8 BOM retention. The repository has no deterministic headless HOI4 scenario harness, so representative driver selection and cap behavior, repeated-card cumulative deaths, warning timing, and all relief lifecycle labels remain in the queued live-engine matrix. The broader source-asset archive decision is outside this tranche and remains documented in the final audit.
+Static validation covers constant references, aligned abnormal arrays, live and GUI selector coverage, localisation references, brace balance, and UTF-8 BOM retention. The repository has no deterministic headless HOI4 scenario harness, so representative driver selection and cap behavior, repeated-card cumulative deaths, warning timing, and all relief lifecycle labels remain in the queued live-engine matrix. The source-asset archive note above is historical; current retention is verified by the manifest and final audit.
 
 No fallback or gameplay-surface simplification was used.
