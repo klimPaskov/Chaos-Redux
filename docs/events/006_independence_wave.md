@@ -230,11 +230,11 @@ dedicated FORM-03 package recorded under
 `docs/assets/006_independence_wave/low_countries_form03_progression/`.
 Progression attestation is restored after the independent operational and
 promotion audits. Commit `2912e0a46` promotes AGX's exact automatic/scenario
-wrappers. AFX was later held fail-closed until its Level 2 Sambre-Meuse lane,
-three incidents, and unique art passed a fresh exact-ID admission audit. Live
-host, anchor, reservation, Event 5 collision, and transaction preflight checks
-still apply. The promotion evidence is static and does not claim an in-engine
-release execution.
+wrappers. AFX's Level 2 Sambre-Meuse lane, three incidents, unique art, and
+fresh post-wire country-package audit now pass the exact-ID admission surface.
+Live host, anchor, reservation, Event 5 collision, and transaction preflight
+checks still apply. The promotion evidence is static and does not claim an
+in-engine release execution.
 
 ## Implementation surfaces
 

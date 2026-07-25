@@ -267,8 +267,10 @@ synchronized frozen plan.
    presentation ordering; rerun the scoped
    closeout audits without promoting wider Event 006 formable families from
    this tranche.
-6. Produce the remaining real frame-sequence assets ASSET-040 through ASSET-043
-   only after their GUI sizes, states, frame plans, and consumers are locked.
+6. Preserve ASSET-040 through ASSET-043 as the current authored frame packages
+   with static fallbacks, runtime DDS files, manifests, and semantic Statehood
+   Ledger frame mapping. Their free-running animated siblings remain reserved
+   for transition surfaces and must not replace the persistent state readout.
 7. Preserve the verified Event Details, five evolution mirrors, Liberations
    cluster wording, SCN-008 wording, and workbook alignment while later package
    tranches land. The generic catalog surface must not enumerate hidden package
@@ -290,7 +292,9 @@ synchronized frozen plan.
   achievements remain unreachable while their country portrait admission
   gates are closed, and Radical Bloc has no currently admitted route that can
   complete its full containment-survival proof.
-- ASSET-040 through ASSET-043 have no authored frame packages.
+- ASSET-040 through ASSET-043 are produced and wired for the persistent semantic
+  readout. A separate transition-only animation consumer is still absent; this
+  is a scoped runtime boundary, not a missing asset package.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
   complete required HAW/FSM member set because those two packages are not admitted.
