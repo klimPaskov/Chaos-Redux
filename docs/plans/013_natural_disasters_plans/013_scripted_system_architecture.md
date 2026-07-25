@@ -113,7 +113,7 @@ All scalar inputs are temporary variables and are therefore unscoped. Callers mu
 | `natural_disaster_call_damage_override_mode` | proposed `natural_disaster_override_mode.*` | `default` | Default, multiply, replace, or suppress building damage calculation |
 | `natural_disaster_call_damage_scale` | fixed point | `1.0` | Multiplier or replacement input according to override mode |
 | `natural_disaster_call_log_mode` | `natural_disaster_log_mode.*` | `event_013_history` | Event system, direct Event 013 history, scenario history, or an internal no-write mode |
-| `natural_disaster_call_parent_sequence_id` | sequence id | `0` | Rejected public input. The live wrapper does not accept a generic parent-sequence input; internal continuation uses a separately validated private override. |
+| `natural_disaster_call_parent_sequence_id` | sequence id | `0` | Historical proposal only. The live wrapper rejects this public shape; internal continuation uses a separately validated private override. |
 
 The wrapper must normalize omitted inputs explicitly. It must not depend on a temporary variable accidentally surviving a prior scripted effect call.
 
@@ -138,8 +138,8 @@ The wrapper leaves these temporary variables for the caller:
 | Output | Meaning |
 | --- | --- |
 | `natural_disaster_call_result` | Result enum `accepted` or `rejected`; generic sequence joining is not part of the public contract |
-| `natural_disaster_call_reject_reason` | Proposed enum identifying invalid family, invalid severity, missing target, invalid target, no eligible target, invalid region, heat exclusion, abnormal lock, or invalid parent |
-| `natural_disaster_call_sequence_id` | Allocated or joined sequence id, `0` on rejection |
+| `natural_disaster_call_reject_reason` | Live enum identifying invalid family, severity, sequence, target, region, heat exclusion, abnormal access, policy, scale, caller proof, or scenario context |
+| `natural_disaster_call_sequence_id` | Allocated sequence id, `0` on rejection |
 | `natural_disaster_call_primary_job_count` | Number of accepted primary impact jobs |
 
 The caller must initialize all four output temporary variables before invoking the scripted effect. The offline variable documentation warns that a temporary first created inside a scripted effect may not reliably exist outside it, while a temporary created before the call is carried into the effect and can be modified safely. Inputs are reset to their documented defaults before the wrapper returns. Outputs are not reset. Regular input event targets cannot be manually cleared, so no internal logic may read them after normalization.
