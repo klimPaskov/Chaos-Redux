@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-25 after the IW-006 Wallonia post-wire country-package PASS and canonical admission review
+Updated: 2026-07-26 after the Event 006 v6/v7 completion audits, DM-58 scope repair, current localisation PASS, focus/decision handoffs, and HAW retry-03 review
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
@@ -16,6 +16,10 @@ Every other package remains closed until its complete current admission contract
 The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
 This packet and `006_source_of_truth_map.md` carry the current runtime state.
+
+The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v6_2026_07_26.md` and remains **HOLD**. The latest bounded tranche is `subagent_handoffs/006_event_completion_audit_v7_addendum_2026_07_26.md`, which records the `5dcb2c8de` DM-58 candidate-scope repair as a source-level PASS while leaving distinct-owner feasibility and whole-event acceptance open. The v5 audit remains historical where its localisation findings and pre-repair DM-58 verdict differ from these later records.
+
+Current bounded handoffs: `006_focus_readonly_handoff_2026_07_26.md` remains **HOLD** for fourteen layout blockers and the missing AGX/Frisia module; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` remains a rights-blocked research result with no runtime authorization.
 
 ## Read first
 
@@ -298,8 +302,7 @@ synchronized frozen plan.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
   complete required HAW/FSM member set because those two packages are not admitted.
-- The parent Event 006 completion audit is still pending; no overall completion
-  claim is authorized.
+- The current v6/v7 completion authorities retain **HOLD** for whole-event completion; no overall completion claim is authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
   is **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY signature tranche:
   package identity, centralized politics and institutional leaders,

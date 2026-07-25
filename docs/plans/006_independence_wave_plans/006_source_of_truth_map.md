@@ -2,7 +2,7 @@
 
 <!-- Documentation reconciliation: IW-006 is part of the current ten-package attestation set; global completion remains open. -->
 
-Curated: 2026-07-25 after the IW-006 Wallonia post-wire country-package PASS and canonical admission review
+Curated: 2026-07-26 after the Event 006 v6/v7 completion audits, DM-58 scope repair, current localisation PASS, focus/decision handoffs, and HAW retry-03 review
 
 Completion state: **incomplete and active; country gameplay tranches exist, but
 grounded portrait sourcing and the resulting package re-audits remain open**.
@@ -13,6 +13,8 @@ gate in the accepted specification and the reusable event-asset skill. Earlier
 generated portrait packages remain provenance evidence, not visual acceptance.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
+
+The whole-event audit authority is `subagent_handoffs/006_event_completion_audit_v6_2026_07_26.md`, which retains **HOLD** for Event 006 completion. `subagent_handoffs/006_event_completion_audit_v7_addendum_2026_07_26.md` is the latest bounded tranche authority: the `5dcb2c8de` DM-58 candidate-scope repair is a source-level PASS, while distinct-owner feasibility and all whole-event acceptance matrices remain open. The v5 audit is historical where its localisation findings and pre-repair DM-58 verdict differ from these later records.
 
 The later 2026-07-22 user review also rejects the current sourced-treatment
 family: it preserves identities but still reads as archival photography rather
@@ -104,6 +106,11 @@ achievements remain hidden by their intended route and survival conditions.
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
 | Allocator and joint reservation | Audited and current after content-gate repair | 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering remain implemented. `006_automatic_content_attestation_weight_gate_2026_07_24.md` records the centralized repair: an unadmitted package receives zero automatic weight and a direct or stale anchor-phase dispatch receives `package_unready` before any host, country, or state reservation. Capacity, scenario preflight, reservation, and execution all reuse the same exact compile-time attestation authority. Runtime host, anchor, reservation, Event 5 collision, chaos-band, force, and wave-size gates remain mandatory |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
+| DM-58 decision preflight | Bounded source repair PASS; broader decision/mission HOLD | `006_dm58_preflight_scope_repair_2026_07_26.md` and `006_dm58_preflight_scope_post_repair_2026_07_26.md` record the `5dcb2c8de` scope correction; distinct-owner feasibility and runtime matrices remain unproved |
+| Shared focus framework and AGX depth | HOLD | See `006_focus_readonly_handoff_2026_07_26.md`: fourteen blocking diagnostics and the AGX/Frisia module gap remain unresolved |
+| Event 006 bounded localisation | PASS for the audited scope; whole-event coverage HOLD | See `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md`; scoped key/reference/BOM/punctuation checks and mirror alignment pass |
+| Whole-event completion audit | HOLD / incomplete | `006_event_completion_audit_v6_2026_07_26.md` remains the whole-event authority; `006_event_completion_audit_v7_addendum_2026_07_26.md` records the latest narrow repair without changing the verdict |
+| IW-173 HAW retry 03 | Blocked research evidence only | `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` records an exact adult visual match with unresolved rights and no runtime authorization |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
 | IW-004 BRI | Admitted after current package and portrait audits | The complete Brittany package passes the bounded identity, state-14/RG-14, FRA-survival, Event-5 collision, setup, force, focus, decision, AI, cleanup, localisation, flag, and portrait audits. Régis de l'Estourbeillon and Henri-Léon Devin are sourced real male figures with independently approved source-preserving HOI4 repaints. IW-004 is exact compile-time attested; every allocation still has to pass live host, anchor, reservation, collision, chaos-band, force, and transaction gates |
@@ -296,7 +303,7 @@ The audio registry, slot-24 dispatch, Event Log payload, and settings-aware FIFO
 submission are complete. The hidden-formable and ten-country qualification paths
 remain blocked by the current ten-ID, nine-compatible-group admission surface, and no full
 runtime reachability proof exists for the remaining predicates. FORM-42 remains
-fail-closed. The parent Event 006 completion audit is still pending.
+fail-closed. The current v6/v7 completion authorities retain **HOLD** for whole-event completion; no completion claim is authorized.
 
 Super-event `6001` remains absent from runtime dispatch, localisation, audio,
 and firing. ASSET-005's static DDS exists and its sprite is registered, but it

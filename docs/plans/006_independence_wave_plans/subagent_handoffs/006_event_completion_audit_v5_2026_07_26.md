@@ -1,5 +1,7 @@
 # Event 006 final completion audit v5
 
+> Supersession notice (2026-07-26): This is the pre-closeout v5 snapshot. `006_event_completion_audit_v6_2026_07_26.md` is the current whole-event **HOLD** authority, and `006_event_completion_audit_v7_addendum_2026_07_26.md` is the latest bounded tranche authority. The v5 localisation findings are superseded by `006_localisation_closeout_2026-07-26.md` and `006_localisation_audit_current_2026-07-26.md`; its pre-repair DM-58 wording is superseded by the `5dcb2c8de` repair and post-repair PASS. Preserve this body as historical evidence.
+
 Audit date: 2026-07-26.
 
 Audit mode: read-only completion audit against committed `HEAD` `0eb40b1234c0dbcba0531fab20ca0cd8c453cb69`.

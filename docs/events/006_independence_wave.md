@@ -8,7 +8,7 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](006_independence_wave/pacific_country_packages.md).
 
-## Current runtime admission and documentation supersession (2026-07-25)
+## Current runtime admission and documentation supersession (2026-07-26)
 
 The exact compile-time content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California. These ten packages have the current sourced real-male portrait and package-audit approvals required by the runtime gate.
 
@@ -16,13 +16,21 @@ Grounded Event 006 packages require sourced real-male, head-and-shoulders, ident
 
 The canonical content gate now gives unadmitted automatic candidates zero weight and rejects a direct or stale reservation before anchor allocation. With ten attested IDs but only nine mutually compatible reservation groups because IW-008 RHI and IW-010 AJX share `RG-RHINE-SAAR`, the 3/4/5/7 bands are conditionally viable when their live host, anchor, reservation, Event 005 collision, force, chaos-band, and transaction checks pass. The ten-country Totalen Krieg and World Collapse bands remain fail-closed pending a tenth unique-group admitted package or valid map rebinding. The exact wave ladder remains 3/4/5/7/10, and World Collapse remains a ten-country count.
 
-FORM-48 gameplay and its HBX carrier plus sovereign HAW/FSM member contract remain implemented, but IW-173 HAW and IW-179 FSM are not admitted, so FORM-48 is currently unreachable through a compliant carrier/member set despite IW-184 HBX admission. FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event 006 completion audit remains pending.
+FORM-48 gameplay and its HBX carrier plus sovereign HAW/FSM member contract remain implemented, but IW-173 HAW and IW-179 FSM are not admitted, so FORM-48 is currently unreachable through a compliant carrier/member set despite IW-184 HBX admission. FORM-06 through FORM-47 remain fail-closed, including FORM-42. The current whole-event completion authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v6_2026_07_26.md`, with the latest DM-58 tranche recorded by `006_event_completion_audit_v7_addendum_2026_07_26.md`; both preserve the overall **HOLD** disposition.
 
 The current allocator audit records 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, and Event 005-first joint reservation ordering. Exactly zero custom Event 006 advisor icons or advisor portrait/sprite blocks are authorized or present; the separate Statehood Ledger UI and status animations are documented in the asset manifest. ASSET040-ASSET043 now have authored frame packages, static fallbacks, runtime DDS, and parent-owned status-panel wiring; their package evidence remains under `docs/assets/006_independence_wave/animations/`.
 
 Super-event 6002 is implemented at source level but only partly reachable while the hidden-formable and ten-country predicates lack an admitted carrier or sufficient current capacity. Super-event 6001 remains blocked by exact-recording rights, with no fallback or substitute authorized. The Radical Bloc achievement definition and trigger scaffolding exist, but no currently admitted route can complete its containment-survival proof.
 
 The former 2026-07-22 admission paragraph below is retained as historical evidence and is superseded by this current gate.
+
+## Current bounded audit handoffs (2026-07-26)
+
+The v6 completion audit remains the whole-event source-of-truth for the incomplete **HOLD** state. The v7 addendum records the bounded DM-58 candidate-scope repair as a source-level PASS while leaving distinct-owner feasibility and whole-event acceptance open.
+
+The pre-repair decision-mission matrix's high-severity DM-58 scope finding is historical and is superseded by `006_dm58_preflight_scope_post_repair_2026_07_26.md`; the broader decision/mission matrix remains on HOLD. The focus handoff remains on HOLD with fourteen layout blockers and the missing narrow AGX/Frisia module.
+
+The current bounded localisation audit is **PASS** for the scoped Event 006 English surfaces and mirror wording; this does not close missing future package localisation or whole-event runtime validation. HAW retry 03 remains a documentation-only **blocked** rights result with no crop, repaint, DDS, or runtime override.
 
 ## Historical portrait-gated admission (2026-07-22, superseded)
 
@@ -47,9 +55,7 @@ DDS, or runtime override was created from it.
 
 Later package admission remains subject to the normal live host, anchor,
 reservation, Event 005 collision, force, chaos-band, and transaction proofs.
-FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
-006 completion audit is still pending, so this promotion does not close the
-overall event.
+FORM-06 through FORM-47 remain fail-closed, including FORM-42. The v6/v7 completion authorities retain the overall **HOLD** state, so this promotion does not close the overall event.
 
 The current allocator audit records 149 publishers, 126 automatic/high-chaos
 selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
