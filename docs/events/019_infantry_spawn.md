@@ -591,6 +591,8 @@ Overview can open the shared audit, begin shared standardization, or close every
 eligible resolved generation. Selected-lot and selected-family buttons likewise
 call the same effects as decisions, and AI uses equivalent affordability,
 cooldown, state, lot, and family gates.
+The Overview surface uses the previously open left-side dossier space as a live ledger rail showing active lots, unresolved records, claimant demands, anomalous saturation, pending requests, and active divisions.
+The values are read directly from the shared Event 19 counters rather than decorative placeholders.
 
 Three real frame-sheet animations provide the muster seal, critical claimant
 border, and anomalous registry emblem. Each has a player-selectable static
