@@ -6,6 +6,18 @@ Status: proposed implementation addendum, not yet accepted design truth and not 
 
 All event titles, option labels, asset identifiers, and catalogue wording in this addendum are working directions rather than final localisation.
 
+## Disposition update: 2026-07-26
+
+This proposal is explicitly queued behind the parent-selected European `The River Ration League` tranche.
+
+It remains a useful North American design, but it is not the next implementation owner because the regional matrix already exposes a distinct uncovered European river-governance gap and the parent selected that gap for the current tranche.
+
+The provisional events `565` through `571`, transaction `710053`, route `7153`, Event Log history `9158`, and catalogue identity `FALLOUT-565` are no longer reserved by this County Fair proposal.
+
+Before County Fair implementation, rescan and remap its entire ownership row together.
+
+This disposition resolves the addendum for improvement-loop cadence without promoting or rejecting its design.
+
 ## Recommendation
 
 Implement the existing North American regional-matrix row `The County Fair Returns` as the next manually reviewed ordinary Fallout chain after Ashline Firebreak.
