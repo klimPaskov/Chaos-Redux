@@ -10,7 +10,7 @@ The planning output was not shortened or reduced to a quick outline. It contains
 
 The accepted specification includes the later sourced-portrait decision.
 This section is the current implementation ledger rather than a rewrite of the planning baseline.
-IW-001 Scotland, IW-004 Brittany, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-017 Corsica, IW-019 Sicily, and IW-184 California are the runtime content-attested packages after their full package and sourced real-male portrait audits. IW-006 Wallonia now has an independently approved and runtime-wired Louis Hubert baron Ruquoy/Rucquoy commander repaint, but remains outside the exact attestation set until its fresh post-wire country-package audit passes.
+IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California are the runtime content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
 Every other formerly admitted grounded package whose live country leader, route leader, commander, or institutional portrait uses generated art remains withdrawn until sourced real male replacements pass review.
 FORM-48 remains implemented without an annexation fallback, but HAW/FSM package withdrawal prevents a complete currently admitted carrier/member set.
 IW-184 `HBX` is admitted after the full post-wire package audit for William D. Stephens, while IW-173 `HAW` remains withdrawn because its vanilla David Kalakaua Kawananakoa sprite resolves to generic `Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
@@ -19,7 +19,7 @@ It remains unwired and supplies no DDS.
 
 The 2026-07-25 installed scan covers 108 Event 006-owned identifiers, 122
 Workshop directories, eight archives, four sibling local mods, vanilla, and
-non-Event 006 Chaos Redux definitions. It reports zero collisions and 446 safe
+non-Event 006 Chaos Redux definitions. It reports zero collisions and 445 safe
 X tags. The allocator passes 149 publishers, 126 automatic/high-chaos
 selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
 and Event 005-first joint reservation ordering. Those structural counts do not

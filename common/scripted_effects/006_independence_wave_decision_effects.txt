@@ -658,11 +658,112 @@ independence_wave_decision_request_selected_formable_commit = {
 	independence_wave_formable_commit_selected_family = yes
 }
 
+# DM-58 resolver. Supported scope: the current Event 006 league member. The
+# paid mission calls this once for every member in the frozen league ledger.
+# Each member receives one generation-stamped, claim-connected state target and
+# a finite take-state wargoal against that state's living external owner. The
+# target and state arrays make the synchronized front unique; no generic target
+# or unconditional war is created when a member has no valid objective.
+independence_wave_execute_reclamation_front = {
+	clear_event_target = independence_wave_reclamation_front_state
+	clear_event_target = independence_wave_reclamation_front_target
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_league_member
+			NOT = { has_country_flag = independence_wave_client_route_locked }
+		}
+		random_state = {
+			limit = { is_valid_independence_wave_reclamation_front_state = yes }
+			save_event_target_as = independence_wave_reclamation_front_state
+			owner = { save_event_target_as = independence_wave_reclamation_front_target }
+		}
+		if = {
+			limit = {
+				has_event_target = independence_wave_reclamation_front_state
+				has_event_target = independence_wave_reclamation_front_target
+			}
+			event_target:independence_wave_reclamation_front_state = {
+				if = {
+					limit = { ROOT = { can_declare_war_on = event_target:independence_wave_reclamation_front_target } }
+					set_state_flag = independence_wave_dm58_reclamation_front_used_by@ROOT
+					set_state_flag = independence_wave_dm58_reclamation_front_used
+					set_variable = { independence_wave_dm58_reclamation_front_generation@ROOT = ROOT.independence_wave_generation_id }
+					add_to_array = { array = global.independence_wave_reclamation_front_states value = THIS }
+					add_claim_by = ROOT
+					owner = { add_to_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+					ROOT = {
+						set_country_flag = independence_wave_dm58_reclamation_front_staged
+						set_temp_variable = { independence_wave_reclamation_front_expire_days = constant:independence_wave_decision_duration.reclamation_front }
+						meta_effect = {
+							text = {
+								create_wargoal = {
+									type = take_state_focus
+									target = event_target:independence_wave_reclamation_front_target
+									generator = { [IW_RECLAMATION_STATE] }
+									expire = [IW_RECLAMATION_EXPIRE]
+								}
+							}
+							IW_RECLAMATION_STATE = "[PREV.GetID]"
+							IW_RECLAMATION_EXPIRE = "[?independence_wave_reclamation_front_expire_days|.0]"
+						}
+						set_temp_variable = { independence_wave_reclamation_front_days = constant:independence_wave_decision_duration.reclamation_front }
+						set_country_flag = { flag = independence_wave_reclamation_front_ready days = independence_wave_reclamation_front_days }
+						add_to_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_plan.loop_increment }
+					}
+				}
+			}
+		}
+	}
+}
+
+# The resolver is called before DM-58 charges any strategic or security cost.
+# If the exact member loop cannot freeze the minimum number of distinct,
+# war-legal state/owner pairs, this effect removes the staged claims and finite
+# wargoals and restores the operation ledger without charging the player.
+independence_wave_rollback_reclamation_front_staging = {
+	for_each_scope_loop = {
+		array = global.independence_wave_league_member_country_entries
+		independence_wave_rollback_reclamation_front_member = yes
+	}
+	clear_array = global.independence_wave_reclamation_front_states
+	clear_array = global.independence_wave_reclamation_front_targets
+	set_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_value.minimum }
+}
+
+# Country scope.  A member can stage at most one objective in the resolver;
+# use the member-specific state flag to remove exactly that staged claim and
+# finite wargoal on a pre-cost failure.
+independence_wave_rollback_reclamation_front_member = {
+	clear_event_target = independence_wave_reclamation_front_rollback_target
+	if = {
+		limit = { has_country_flag = independence_wave_dm58_reclamation_front_staged }
+		every_state = {
+			limit = { has_state_flag = independence_wave_dm58_reclamation_front_used_by@ROOT }
+			remove_claim_by = ROOT
+			owner = { save_event_target_as = independence_wave_reclamation_front_rollback_target }
+			clr_state_flag = independence_wave_dm58_reclamation_front_used_by@ROOT
+			clr_state_flag = independence_wave_dm58_reclamation_front_used
+			clear_variable = independence_wave_dm58_reclamation_front_generation@ROOT
+		}
+		if = {
+			limit = { has_event_target = independence_wave_reclamation_front_rollback_target }
+			remove_wargoal = {
+				type = take_state_focus
+				target = event_target:independence_wave_reclamation_front_rollback_target
+			}
+		}
+		clr_country_flag = independence_wave_dm58_reclamation_front_staged
+	}
+}
+
 # Parent integration hook: call before or from `independence_wave_end_active_origin`.
 independence_wave_cleanup_decision_layer = {
 	independence_wave_formable_cleanup_runtime = yes
 	independence_wave_decision_clear_active_league_target = yes
 	independence_wave_decision_clear_charter_war_mandate = yes
+	clr_country_flag = independence_wave_reclamation_front_ready
+	clear_variable = independence_wave_reclamation_front_days
 	if = {
 		limit = { has_country_flag = independence_wave_emergency_formations_active }
 		independence_wave_decision_demobilize_emergency_formations = yes

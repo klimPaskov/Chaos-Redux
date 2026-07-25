@@ -307,6 +307,7 @@ independence_wave_select_government_route = {
 independence_wave_reset_current_generation = {
 	independence_wave_dispatch_package_cleanup = yes
 	independence_wave_clear_force_package_mapping_runtime = yes
+	independence_wave_cleanup_reclamation_front_operation = yes
 	independence_wave_cleanup_decision_layer = yes
 	independence_wave_clear_focus_runtime = yes
 	independence_wave_unregister_league_member = yes
@@ -2172,10 +2173,13 @@ independence_wave_unregister_league_member = {
 			}
 		}
 		clr_country_flag = independence_wave_league_member
+		clr_country_flag = independence_wave_reclamation_front_ready
+		clear_variable = independence_wave_reclamation_front_days
 		clr_country_flag = independence_wave_achievement_cross_regional_clock_active
 		clear_variable = independence_wave_achievement_cross_regional_start_date
 	}
 	independence_wave_reconcile_league_member_registry = yes
+	independence_wave_revalidate_reclamation_front_operation = yes
 	independence_wave_refresh_idea_lifecycles = yes
 }
 
@@ -2282,10 +2286,47 @@ independence_wave_change_own_league_record = {
 	}
 }
 
+# DM-58 shared-operation cleanup. Individual country cleanup removes only that
+# country's receipt. This operation-level cleanup is called at league phase
+# transitions, dissolution, reset, or an explicit member-count failure; finite
+# war goals are left to their own 365-day expiry.
+independence_wave_cleanup_reclamation_front_operation = {
+	clr_global_flag = independence_wave_reclamation_fronts_coordinated
+	for_each_scope_loop = {
+		array = global.independence_wave_reclamation_front_states
+		clr_state_flag = independence_wave_dm58_reclamation_front_used
+	}
+	for_each_scope_loop = {
+		array = global.independence_wave_league_member_country_entries
+		clr_country_flag = independence_wave_reclamation_front_ready
+		clear_variable = independence_wave_reclamation_front_days
+	}
+	clear_array = global.independence_wave_reclamation_front_states
+	clear_array = global.independence_wave_reclamation_front_targets
+	clear_variable = global.independence_wave_reclamation_front_count
+}
+
+independence_wave_revalidate_reclamation_front_operation = {
+	if = {
+		limit = {
+			has_global_flag = independence_wave_reclamation_fronts_coordinated
+			NOT = {
+				check_variable = {
+					var = global.independence_wave_league_member_count
+					value = constant:independence_wave_decision_gate.formation_member_minimum
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		independence_wave_cleanup_reclamation_front_operation = yes
+	}
+}
+
 # League state-machine transitions. Decisions and missions own their material
 # costs and timers; these effects only commit a transition after their trigger
 # contract has been satisfied.
 independence_wave_clear_league_phase_flags = {
+	independence_wave_cleanup_reclamation_front_operation = yes
 	clr_global_flag = independence_wave_charter_vote_open
 	clr_global_flag = independence_wave_consultative_league_active
 	clr_global_flag = independence_wave_formal_league_active
