@@ -215,23 +215,38 @@ variants stay readiness-controlled and require their package-specific scene,
 consumer list, and provenance before production; the FORM-03 scene is not a
 substitute for those rows.
 
-## ASSET-040 through ASSET-043: outside the static tranche
+## ASSET-039 scripted GUI panel
 
-These assets require real frame sequences plus static fallbacks and are routed to
-`chaos-redux-frame-animation`. They were deliberately not represented by a moved,
-scaled, rotated, blurred, recolored, or filtered still image.
+The compact Event 006 Statehood Ledger is implemented at 700x500. The generated
+panel source and deterministic 700x500 processed master are recorded at
+`source_png/gui/independence_wave_status_panel_source.png` and
+`processed_png/gui/independence_wave_status_panel.png`; the runtime DDS is
+`gfx/interface/006_independence_wave/independence_wave_status_panel.dds` and is
+registered as `GFX_independence_wave_status_panel`. Functional geometry is
+defined in `interface/006_independence_wave.gui`, with live ledger text and
+tab state in `common/scripted_guis/006_independence_wave_scripted_gui.txt`.
+The surface is attached to `independence_wave_founding_category`; ordinary
+decisions and missions remain the only action layer.
 
-| Asset | Reserved static sprite | Reserved animated sprite | Missing production inputs |
-|---|---|---|---|
-| ASSET-040 recognition seal | `GFX_independence_wave_recognition_seal_static` | `GFX_independence_wave_recognition_seal_animated` | locked GUI size, frame count/rate, state sequence for recognition feedback, authored source frames |
-| ASSET-041 dependency warning | `GFX_independence_wave_dependency_warning_static` | `GFX_independence_wave_dependency_warning_animated` | locked GUI size, warning states, frame count/rate, authored source frames |
-| ASSET-042 league charter activation | `GFX_independence_wave_league_charter_activation_static` | `GFX_independence_wave_league_charter_activation_animated` | locked GUI size, charter activation beats, frame count/rate, authored source frames |
-| ASSET-043 formable eligibility seal | `GFX_independence_wave_formable_eligibility_seal_static` | `GFX_independence_wave_formable_eligibility_seal_animated` | locked GUI size, discovery/eligibility states, frame count/rate, authored source frames |
+## ASSET-040 through ASSET-043: frame-by-frame status animations
 
-Each animation handoff must include separate generated, sourced, or provided
-source frames; processed frames or sheet; static fallback; manifest; contact
-sheet; preview; and `.gfx`/`.gui` wiring notes. Implementation-defined target
-sizes in the accepted registry must be resolved before production.
+All four status families were produced through `chaos-redux-frame-animation` with
+separate ImageGen-authored source frames, deterministic chroma-key removal and
+normalization, a real horizontal frame sheet, a static fallback, contact sheet,
+GIF preview, and runtime DDS files. No final motion is a transform-only edit of a
+single still image. The implementation-defined target is 64x64 per frame at 5 FPS.
+
+| Asset | States / frames | Static sprite | Animated sprite | Runtime DDS |
+|---|---|---|---|---|
+| ASSET-040 recognition seal | hidden, weak, rising, strong, entrenched / 5 | `GFX_independence_wave_recognition_seal_static` | `GFX_independence_wave_recognition_seal_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_recognition_seal_{static,sheet}.dds` |
+| ASSET-041 dependency warning | calm, watch, danger / 3 | `GFX_independence_wave_dependency_warning_static` | `GFX_independence_wave_dependency_warning_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_dependency_warning_{static,sheet}.dds` |
+| ASSET-042 league charter activation | rest, drafting, vote, activated / 4 | `GFX_independence_wave_league_charter_activation_static` | `GFX_independence_wave_league_charter_activation_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_league_charter_activation_{static,sheet}.dds` |
+| ASSET-043 formable eligibility seal | hidden, discovered, eligible, proclaimed / 4 | `GFX_independence_wave_formable_eligibility_seal_static` | `GFX_independence_wave_formable_eligibility_seal_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_formable_eligibility_seal_{static,sheet}.dds` |
+
+Per-family briefs, frame plans, source notes, processed frames, sheets, fallbacks,
+contact sheets, previews, and the build/hash report are retained under
+`animations/`. Parent-owned `.gfx` and `.gui` wiring is recorded in the Event 006
+handoff; the four sprite registrations use the exact frame counts and 5 FPS rate.
 
 ## Review artifacts
 

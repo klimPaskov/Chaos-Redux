@@ -18,7 +18,7 @@ The canonical content gate now gives unadmitted automatic candidates zero weight
 
 FORM-48 gameplay and its HBX carrier plus sovereign HAW/FSM member contract remain implemented, but IW-173 HAW and IW-179 FSM are not admitted, so FORM-48 is currently unreachable through a compliant carrier/member set despite IW-184 HBX admission. FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event 006 completion audit remains pending.
 
-The current allocator audit records 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, and Event 005-first joint reservation ordering. Exactly zero custom Event 006 advisor icons, assets, sprites, or portrait blocks are authorized or present. ASSET040-ASSET043 remain missing and unwired, with no authored frames, static fallback, or runtime consumer handoff.
+The current allocator audit records 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, and Event 005-first joint reservation ordering. Exactly zero custom Event 006 advisor icons, assets, sprites, or portrait blocks are authorized or present. ASSET040-ASSET043 now have authored frame packages, static fallbacks, runtime DDS, and parent-owned status-panel wiring; their package evidence remains under `docs/assets/006_independence_wave/animations/`.
 
 Super-event 6002 is implemented at source level but only partly reachable while the hidden-formable and ten-country predicates lack an admitted carrier or sufficient current capacity. Super-event 6001 remains blocked by exact-recording rights, with no fallback or substitute authorized. The Radical Bloc achievement definition and trigger scaffolding exist, but no currently admitted route can complete its containment-survival proof.
 
@@ -180,7 +180,7 @@ used by the mechanics foundation are:
 
 Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
-Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. ASSET040-ASSET043 are still missing and unwired. They require authored source frames, static fallbacks, manifests, contact sheets, previews, accepted GUI dimensions, and runtime consumer handoffs before they can be treated as implemented animation assets.
+Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. ASSET040-ASSET043 use 64x64 authored frames at 5 FPS with static fallbacks and runtime DDS under `gfx/interface/006_independence_wave/animations/`; their four sprite families are registered in `interface/006_independence_wave.gfx` and consumed by the Statehood Ledger scripted GUI.
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
