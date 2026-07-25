@@ -150,7 +150,7 @@ they are not current routing documents.
 
 | Package | Current state | Resume rule |
 | --- | --- | --- |
-| IW-006 AFX | Gameplay retained; visual admission withdrawn | Jules Destrée is sourced, processed, and wired. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, but keep execution closed until the commander is replaced by a sourced real military identity and the package is re-audited |
+| IW-006 AFX | Commander portrait promoted; package audit pending | Jules Destrée remains sourced, processed, and wired. Louis Hubert baron Ruquoy/Rucquoy now has an independently approved source-locked HOI4 commander repaint wired to the stable AFX consumer with byte-matched runtime DDS evidence; the retired Hainaut-born general is documented as an alternate-history reserve appointment. Preserve the audited Level 2 Sambre-Meuse lane and three incidents, and keep exact execution/attestation closed until the fresh post-wire IW-006 package audit passes |
 | IW-007 AGX | Admitted after current package and portrait audits | The retry-02 Douwe Kalma and Pieter Reenalda candidate-02 portraits pass independent source-likeness and HOI4-style review and are wired to the existing sprites; candidate 01 remains rejected. The fresh package audit passes state-36/RG-36, HOL survival, Event-5 collision, setup, p7 force, focus, decisions, AI, localisation, flag, and cleanup. Preserve exact-ID compile-time attestation and every live allocation proof |
 | IW-001 SCO | Admitted after current package and portrait audits | Robert Bontine Cunninghame Graham and Victor Morven Fortune have independently approved sourced real-male HOI4 repaints wired to the stable full-size consumers. The post-wiring package audit passes tag reuse, state-121/ENG-survival setup, force, focus, decisions, ideas, AI, formables, localisation, flags, and cleanup. Preserve exact-ID content attestation and every live allocation proof |
 | IW-002 WLS | Gameplay retained; visual admission withdrawn | Saunders Lewis has the correct attributed 1916 source, but trial 01 failed independent likeness review and remains unwired. Preserve the package logic, but keep execution closed until a stronger or tighter source-locked civic portrait and the mountain commander both pass the real-person workflow and the full roster is re-audited |
@@ -188,7 +188,7 @@ satisfy the synchronized frozen plan.
 - Durable sponsorship transaction.
 - All-countries scenario framework.
 - Liberations cluster integration.
-- Installed-map binding and installed-mod tag audits.
+- Installed-map binding and installed-mod tag audits; the 2026-07-25 snapshot scans 122 Workshop directories, four sibling local mods, and 108 Event 006-owned identifiers with zero reserved/custom-cosmetic collisions.
 - FORM-01 through FORM-05 implementation, tags, flags, identity aliases, and
   readiness promotion.
 - The 2026-07-18 male portrait regeneration remains historical production
@@ -197,9 +197,11 @@ satisfy the synchronized frozen plan.
   advisor-icon withdrawal remains final.
 - IW-003 Cornwall feasibility audit and no-fallback blocker.
 - AGX gameplay and AFX's Level 2 Sambre-Meuse lane, three incidents, and exact-ID
-  audit remain implemented. AGX's two-person roster is source-cleared; AFX has
-  sourced Jules Destrée but still needs a real commander. Both await fresh
-  package audits before any exact admission is restored.
+  audit remain implemented. AGX's two-person roster is source-cleared; AFX now
+  has sourced Jules Destrée and the independently approved Louis Hubert baron
+  Ruquoy/Rucquoy commander repaint wired to the stable full-size consumer. AFX
+  remains behind its fresh post-wire package audit before exact admission is
+  restored.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical

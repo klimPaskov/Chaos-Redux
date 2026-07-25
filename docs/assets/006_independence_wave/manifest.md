@@ -386,6 +386,14 @@ Both IW-010 portrait consumers now satisfy the sourced real-male workflow.
 
 The fresh post-portrait country-package audit passes the completed static wiring and package evidence, and exact `iw_010` compile-time content attestation is registered. Live host, anchor, reservation, Event 5, chaos-band, force, and synchronized-transaction proofs remain mandatory.
 
+## 2026-07-25 IW-006 Louis Ruquoy portrait promotion
+
+The source-locked portrait package is `sourced_portrait_refinishes_2026_07_25/wallonia_ruquoy_trial_01/manifest.md`.
+
+It records the unchanged attributed Agence Rol/BnF Gallica master, explicit head-and-shoulders crop with decoded-pixel equality, identity-preserving ImageGen repaint, deterministic `156x210` processing, independent likeness/style/provenance PASS, package DDS, runtime DDS, and exact decoded-pixel equality proof. The stable `AFX_walloon_reserve_commander` consumer remains unchanged while its player-facing identity is now Louis Hubert baron Ruquoy/Rucquoy, documented as a retired Hainaut-born general recalled to an alternate-history Walloon reserve command.
+
+No advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback derivative was created. The fresh post-wire IW-006 country-package audit remains required before exact content attestation or live allocation admission.
+
 ## Historical 2026-07-18 BRI portrait disposition
 
 IW-004 Brittany's generated civic and commander evidence remains historical in

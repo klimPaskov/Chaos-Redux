@@ -1,8 +1,8 @@
 # IW-006 Wallonia Louis Ruquoy portrait trial 01
 
-Status: `candidate_requires_independent_audit`.
+Status: `wired_after_independent_pass`.
 
-No DDS conversion, character transfer, localisation change, GFX edit, package attestation, or runtime wiring is authorized unless an independent reviewer passes every provenance, crop-equality, identity, style, framing, role, ownership, and consumer-boundary gate.
+Independent reviewer `/root/event6_wallonia_ruquoy_trial01_audit` passed every provenance, crop-equality, identity, style, framing, role, ownership, forbidden-derivative, and consumer-boundary gate in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_wallonia_ruquoy_trial01_independent_portrait_audit_2026_07_25.md` (commit `1a7fd6e58`). Parent integration then reconciled the stable AFX localisation identity, converted this exact candidate to DDS, proved decoded pixel equality, and replaced the runtime texture.
 
 This package contains no advisor, dossier, operative, commander-small, `_small`, female, generic, or fallback portrait.
 
@@ -75,6 +75,21 @@ The raw repaint was generated directly from the exact ROL crop and does not use 
 | Review-sheet SHA-256 | `D835EAE207E0294A77FE0411E4FC7BF126F8AFB2B0685A28FBCA3DC7C7C7DCCC` |
 
 The processor performs deterministic crop, grade, resize, and export only.
+
+## Independent audit and runtime promotion
+
+The source-only audit is an all-gates PASS. The candidate retains the male Hainaut-born Walloon general's broad square head, heavy brows, hooded gaze, broad nose, handlebar moustache, jowls, cap, collar, shoulders, and period uniform while using the restrained HOI4 commander-painted treatment. The audit rejects no identity or style gate and authorizes parent-owned promotion after consumer reconciliation.
+
+| Field | Value |
+| --- | --- |
+| Final DDS | `final_dds/portrait_AFX_walloon_reserve_commander.dds` |
+| Final DDS SHA-256 | `0AD247810F8E98AFADE0362CFAC275A68DB401DC4BEBF18B8343B8F77067DFFF` |
+| DDS dimensions | `156x210` |
+| Decoded DDS RGBA SHA-256 | `BEDF59BAA7F114D9446EE1AF9A5C245C44E78A3D68387EF615945E45BD115259` |
+| Candidate PNG SHA-256 | `FAFFBFE12921431353C962215C04F8E69FF40B8CAA083C61FC8F46719A477EC0` |
+| Candidate/runtime decoded equality | `true`; runtime DDS is byte-identical to the final package DDS and decodes pixel-identically to the candidate PNG |
+| Runtime path | `gfx/leaders/006_independence_wave/portrait_AFX_walloon_reserve_commander.dds` |
+| Runtime identity localisation | `AFX_walloon_reserve_commander: "Louis Hubert baron Ruquoy"` |
 
 ## Independent audit gate
 
