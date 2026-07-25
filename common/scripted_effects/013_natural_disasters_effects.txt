@@ -426,6 +426,14 @@ natural_disaster_validate_call = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.none }
+			check_variable = { natural_disaster_call_internal_chain_override < 1 }
+		}
+		set_temp_variable = { natural_disaster_call_valid = 0 }
+		set_temp_variable = { natural_disaster_call_reject_reason = constant:natural_disaster_call_reject_reason.invalid_log_mode }
+	}
+	else_if = {
+		limit = {
 			OR = {
 				check_variable = { natural_disaster_call_scenario_type < constant:natural_disaster_scenario_type.random_barrage }
 				check_variable = { natural_disaster_call_scenario_type > constant:natural_disaster_scenario_type.full_catalogue }
@@ -576,6 +584,32 @@ natural_disaster_validate_call = {
 		}
 		set_temp_variable = { natural_disaster_call_valid = 0 }
 		set_temp_variable = { natural_disaster_call_reject_reason = constant:natural_disaster_call_reject_reason.invalid_scale }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_call_target_state_supplied < 0 }
+				check_variable = { natural_disaster_call_target_state_supplied > 1 }
+				check_variable = { natural_disaster_call_target_country_supplied < 0 }
+				check_variable = { natural_disaster_call_target_country_supplied > 1 }
+			}
+		}
+		set_temp_variable = { natural_disaster_call_valid = 0 }
+		set_temp_variable = { natural_disaster_call_reject_reason = constant:natural_disaster_call_reject_reason.invalid_target }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_call_caller_cost_checked < 0 }
+				check_variable = { natural_disaster_call_caller_cost_checked > 1 }
+				check_variable = { natural_disaster_call_caller_cooldown_checked < 0 }
+				check_variable = { natural_disaster_call_caller_cooldown_checked > 1 }
+				check_variable = { natural_disaster_call_target_legitimacy_checked < 0 }
+				check_variable = { natural_disaster_call_target_legitimacy_checked > 1 }
+			}
+		}
+		set_temp_variable = { natural_disaster_call_valid = 0 }
+		set_temp_variable = { natural_disaster_call_reject_reason = constant:natural_disaster_call_reject_reason.invalid_scenario }
 	}
 	else_if = {
 		limit = {
@@ -2972,7 +3006,10 @@ natural_disaster_select_ocean_impact_proxy = {
 		limit = {
 			OR = {
 				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
-				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.caller_provided }
+				AND = {
+					check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.caller_provided }
+					check_variable = { natural_disaster_call_target_state_supplied < 1 }
+				}
 			}
 			check_variable = { natural_disaster_call_target_country_supplied > 0 }
 			has_event_target = natural_disaster_call_target_country
@@ -3028,14 +3065,32 @@ natural_disaster_select_ocean_impact_proxy = {
 			REGION_ID = "[?natural_disaster_call_target_region|.0]"
 		}
 	}
-	else = {
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.coast }
+				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.nearby_enemy }
+				check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.dense_state }
+			}
+		}
 		random_country = {
 			limit = {
 				exists = yes
+				OR = {
+					check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+					check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.coast }
+					AND = {
+						check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.nearby_enemy }
+						has_war_with = ROOT
+					}
+					check_variable = { ROOT.natural_disaster_call_target_mode = constant:natural_disaster_target_mode.dense_state }
+				}
 				any_owned_state = {
 					is_controlled_by = PREV
 					natural_disaster_is_valid_family_target = yes
 					natural_disaster_state_is_ocean_exposed_coast = yes
+					natural_disaster_ocean_proxy_target_matches_mode = yes
 				}
 			}
 			save_event_target_as = natural_disaster_target_country
@@ -3044,6 +3099,7 @@ natural_disaster_select_ocean_impact_proxy = {
 				limit = {
 					natural_disaster_is_valid_family_target = yes
 					natural_disaster_state_is_ocean_exposed_coast = yes
+					natural_disaster_ocean_proxy_target_matches_mode = yes
 				}
 				save_event_target_as = natural_disaster_impact_state
 				set_temp_variable = { natural_disaster_target_candidate_saved = 1 }
@@ -3279,7 +3335,20 @@ natural_disaster_resolve_target = {
 		}
 	}
 	else_if = {
-		limit = { check_variable = { natural_disaster_path_target_required < 1 } }
+		limit = {
+			check_variable = { natural_disaster_path_target_required < 1 }
+			# A caller-pinned state must never fall through to random-country
+			# resolution after its first planned hit. If the state cannot accept
+			# another segment, the sequence records that segment as skipped rather
+			# than widening the requested target domain.
+			NOT = { check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_state } }
+			NOT = {
+				AND = {
+					check_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.caller_provided }
+					check_variable = { natural_disaster_call_target_state_supplied > 0 }
+				}
+			}
+		}
 		random_country = {
 			limit = {
 				exists = yes

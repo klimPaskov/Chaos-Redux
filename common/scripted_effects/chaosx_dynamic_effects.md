@@ -111,6 +111,8 @@ Inputs are temporary variables set immediately before the call:
 - `natural_disaster_call_target_state_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_state`
 - `natural_disaster_call_target_country_supplied`: set to `1` in the same effect chain after saving `natural_disaster_call_target_country`
 
+Target proof inputs and weaponized-caller proof inputs are binary. Values other than `0` or `1` are rejected instead of being treated as an implicit proof.
+
 Optional regular event targets:
 
 - `natural_disaster_call_target_state` plus `natural_disaster_call_target_state_supplied = 1` for `selected_state`
@@ -119,6 +121,8 @@ Optional regular event targets:
 - either or both target/proof pairs for `caller_provided`
 
 `natural_disaster_call_causal_context_*`, sequence-id and segment overrides, and `natural_disaster_call_internal_chain_override` are reserved for Event 013's own persisted physical-chain continuation. Their proof is validated against the live source card, sequence, evolution, family, and target; other callers cannot use them to bypass evolution or abnormal locks.
+
+`natural_disaster_log_mode.none` is likewise reserved for that validated internal continuation. Standalone external, scenario, cluster, or debug calls must choose a history-bearing log mode so an accepted top-level sequence cannot become an unlogged disaster.
 
 Outputs are temporary variables. A caller that needs to read them after the
 scripted effect should initialize them in its outer effect block first:
@@ -377,7 +381,7 @@ Inputs:
 Outputs and side effects:
 
 - rebuilds aligned \`natural_disaster_gui_*_entries\` view arrays
-- sorts by pending impact, warning state, open recovery, chain risk, severity, date, and path segment
+- selects the highest-priority sequence by pending impact, warning state, open recovery, chain risk, severity, and date, then orders that sequence's focused records by physical path segment
 - preserves a dormant zero-row history view without dereferencing a missing selected record
 
 The companion \`natural_disaster_gui_selected_record_exists\` trigger guards every
