@@ -13,6 +13,7 @@ Biological lifecycle, biological raid, and biological operative-release helpers 
 - `common/scripted_effects/cbrn_chemical_raid_effects.txt`
 - `common/scripted_effects/cbrn_consequence_effects.txt`
 - `common/scripted_effects/cbrn_designer_effects.txt`
+- `common/scripted_effects/cbrn_diplomacy_effects.txt`
 - `common/scripted_effects/cbrn_doctrine_effects.txt`
 - `common/scripted_effects/cbrn_exposure_effects.txt`
 - `common/scripted_effects/cbrn_hq_effects.txt`
@@ -39,6 +40,49 @@ Character-scope entry point called only from the current-version `on_operative_c
 The engine exposes no operation-instance identifier for deduplicating multiple captured operatives from the same operation. The ledger counts actual captured operatives, not inferred operation attempts, and each actual capture callback is consequential; this is not a timer or inferred duplicate. Defaults: any missing, mismatched, stale, zombie, or unsupported operation context fails closed. It performs no periodic search, target estimation, scope substitution, or fallback resolution.
 
 Internal helpers calculate the three outcome weights, derive readiness weaponization and attribution-control concealment, record the exact attempt result, dispatch the exact seed, refund bounded doctrine Command Power, and distinguish a captured seeded episode from a captured no-release attempt. They are private implementation details of the two interfaces above.
+
+## CBRN diplomacy and bilateral retaliation effects
+
+Source: `common/scripted_effects/cbrn_diplomacy_effects.txt`.
+
+### `cbrn_diplomacy_classify_retaliation_action`
+
+Country-scope classifier for one exact chemical or deliberate biological action. The caller supplies `event_target:cbrn_retaliation_target_country` and may supply `cbrn_retaliation_action_proportionate_proof` only after proving a military target. Nerve suppression, doomsday delivery, and doomsday-severity actions are excluded.
+
+The effect returns temporary `cbrn_action_retaliation_status` as none, authorized, or proportionate. It records last-retaliation history only when the current Retaliation Authority policy, live war, and country-ID-keyed bilateral right all match the exact target. It does not change payload, harm, evidence, attribution, Condemnation, or the first-use ledger.
+
+### `cbrn_diplomacy_classify_biological_seed_retaliation`
+
+State-scope biological adapter. It accepts only a deliberate ordinary-pathogen seed with exact actor and victim proof. Battlefield dissemination can supply proportionate proof only when the selected state still belongs to the exact victim and contains that controller's divisions. Strategic, covert, and civilian-target routes may be authorized but receive no participant-pressure mitigation. Accidents, spread, field tests, captured-facility releases, and doomsday batches remain unclassified.
+
+### `cbrn_diplomacy_record_confirmed_cbrn_use`
+
+Country-scope bilateral ledger entry for an exact confirmed offender. The caller supplies `event_target:cbrn_retaliation_target_country`, `cbrn_confirmed_use_action_date`, and `cbrn_retaliation_source_type`. It stores the earliest exact action date against the target's country ID and compares the reciprocal record.
+
+The first victim receives a 365-day right keyed to the offender ID. A later strike cannot grant the original first user mitigation. Same-day ties revoke both directions because current script exposes day precision only. Existing death, evidence, attribution, contamination, medical, domestic, and weapon-use history is untouched.
+
+Example:
+
+```txt
+event_target:cbrn_action_victim_country = {
+	save_event_target_as = cbrn_retaliation_target_country
+}
+set_temp_variable = { cbrn_confirmed_use_action_date = cbrn_dispatch_current_day }
+set_temp_variable = { cbrn_retaliation_source_type = constant:cbrn_diplomacy_source.chemical }
+cbrn_diplomacy_record_confirmed_cbrn_use = yes
+```
+
+### Exact forensic liability effects
+
+`cbrn_diplomacy_expose_recorded_chemical_responsibility` is state-scoped. The caller supplies the attribution band produced from that state's exact action record. The effect calculates the desired paid share from the action's own recorded total, paid, and unpaid Chemical liability, then asks `condemnation_expose_exact_hidden_source_amount` to settle only that delta. The actor's aggregate hidden Chemical bucket is a ceiling, never the source of the amount. Repeating the same evidence band exposes nothing twice.
+
+`cbrn_diplomacy_register_newly_confirmed_chemical_record` records bilateral first use when later state evidence first reaches confirmed attribution. `cbrn_diplomacy_publish_best_forensic_record` selects the eligible chemical action or ordinary-pathogen episode with the greatest evidence, adds exact-state evidence, marks its action or seed date as published, and reruns only that record's attribution and liability path.
+
+### Material diplomacy actions
+
+`cbrn_diplomacy_send_inspection_demand` and its timeout helpers consume exact equipment, preserve the demanding country, and resolve one native mission without duplicate refusal consequences. `cbrn_diplomacy_begin_international_decon_mission` and `cbrn_diplomacy_complete_international_decon_mission` preserve the exact state, sponsor, and initial recipient, consume the full material bill, reduce only live contamination and medical saturation, and allow only evidence-band progression from the recorded chemical action. Controller changes or war cancel without refund.
+
+These helpers do not scan all countries or states periodically, infer a target, substitute another state, fabricate material, or use a generic dynamic-effect registry.
 
 
 ## grant_random_chaos_special_project_available_tech
@@ -101,7 +145,7 @@ Defaults: invalid or absent requests change nothing.
 
 Output: temporary proof `cbrn_policy_change_accepted` and persistent `cbrn_use_policy` on success.
 
-Side effects: leaving retaliation policy clears `cbrn_retaliation_authorized`. Decision costs, cooldowns, institutions, and stockpile gates remain caller responsibilities.
+Side effects: none beyond the accepted policy variable and proof. A live bilateral retaliation window is historical authorization evidence and is not erased by temporarily choosing another policy; every release still has to prove its exact target after Retaliation Authority is selected again. Decision costs, cooldowns, institutions, and stockpile gates remain caller responsibilities.
 
 Example:
 

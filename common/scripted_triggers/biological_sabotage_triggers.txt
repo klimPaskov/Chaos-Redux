@@ -111,10 +111,11 @@ bio_sabotage_state_relationship_is_valid = {
 		ROOT = {
 			NOT = { is_in_faction_with = PREV }
 			NOT = { is_subject_of = PREV }
+			PREV = { set_temp_variable = { cbrn_retaliation_target_id = id } }
 			OR = {
 				AND = {
 					has_war_with = PREV
-					cbrn_policy_allows_strategic_use = yes
+					cbrn_policy_allows_strategic_use_against_target_id = yes
 				}
 				AND = {
 					NOT = { has_war_with = PREV }
@@ -372,10 +373,13 @@ bio_sabotage_decision_record_is_valid = {
 		has_variable = cbrn_attribution_control
 		NOT = { is_in_faction_with = var:PREV.bio_sabotage_victim }
 		NOT = { is_subject_of = var:PREV.bio_sabotage_victim }
+		var:PREV.bio_sabotage_victim = {
+			set_temp_variable = { cbrn_retaliation_target_id = id }
+		}
 		OR = {
 			AND = {
 				has_war_with = var:PREV.bio_sabotage_victim
-				cbrn_policy_allows_strategic_use = yes
+				cbrn_policy_allows_strategic_use_against_target_id = yes
 			}
 			AND = {
 				NOT = { has_war_with = var:PREV.bio_sabotage_victim }
@@ -423,10 +427,13 @@ bio_sabotage_active_record_is_valid = {
 		has_variable = cbrn_attribution_control
 		NOT = { is_in_faction_with = event_target:bio_sabotage_victim_target }
 		NOT = { is_subject_of = event_target:bio_sabotage_victim_target }
+		event_target:bio_sabotage_victim_target = {
+			set_temp_variable = { cbrn_retaliation_target_id = id }
+		}
 		OR = {
 			AND = {
 				has_war_with = event_target:bio_sabotage_victim_target
-				cbrn_policy_allows_strategic_use = yes
+				cbrn_policy_allows_strategic_use_against_target_id = yes
 			}
 			AND = {
 				NOT = { has_war_with = event_target:bio_sabotage_victim_target }
@@ -498,10 +505,21 @@ bio_sabotage_ai_may_target_state = {
 			bio_sabotage_ai_is_desperate_route = yes
 		}
 	}
+	CONTROLLER = {
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
 	OR = {
-		ROOT = { has_country_flag = cbrn_retaliation_authorized }
+		ROOT = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
 		ROOT = { cbrn_ai_route_allows_first_use = yes }
 		ROOT = { bio_sabotage_ai_is_desperate_route = yes }
-		CONTROLLER = { has_country_flag = used_bioweapon }
 	}
+}
+
+# State scope with ROOT as the acting country.
+bio_sabotage_ai_is_exact_retaliation_target = {
+	CONTROLLER = {
+		exists = yes
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	ROOT = { cbrn_country_has_active_retaliation_right_against_target_id = yes }
 }

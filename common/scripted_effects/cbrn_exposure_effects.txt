@@ -642,6 +642,35 @@ cbrn_prepare_chemical_action_record = {
 		if = {
 			limit = { has_event_target = cbrn_action_victim_country }
 			set_temp_variable = { cbrn_action_victim_country_supplied = constant:cbrn_proof.supplied }
+			event_target:cbrn_action_victim_country = {
+				save_event_target_as = cbrn_retaliation_target_country
+			}
+			set_temp_variable = { cbrn_retaliation_action_proportionate_proof = constant:cbrn_proof.missing }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+					}
+					check_variable = {
+						var = cbrn_action_severity
+						value = constant:cbrn_operation_severity.strategic
+						compare = less_than
+					}
+					event_target:cbrn_action_target_state = {
+						CONTROLLER = {
+							divisions_in_state = {
+								state = PREV
+								size > constant:cbrn_math.zero
+							}
+						}
+					}
+				}
+				set_temp_variable = { cbrn_retaliation_action_proportionate_proof = constant:cbrn_proof.supplied }
+			}
+			cbrn_diplomacy_classify_retaliation_action = yes
 		}
 		# Doctrine mitigation is owned here so every accepted delivery route uses
 		# the same Condemnation-only multiplier. Adapters still provide a positive
@@ -786,6 +815,8 @@ cbrn_reset_action_context = {
 	set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.none }
 	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.none }
 	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.none }
+	set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
+	set_temp_variable = { cbrn_retaliation_action_proportionate_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }

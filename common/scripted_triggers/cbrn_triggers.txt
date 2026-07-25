@@ -82,10 +82,16 @@ cbrn_policy_allows_battlefield_use = {
 }
 
 cbrn_policy_allows_strategic_use = {
-	check_variable = {
-		var = cbrn_use_policy
-		value = constant:cbrn_use_policy.strategic_release_authority
-		compare = greater_than_or_equals
+	OR = {
+		check_variable = {
+			var = cbrn_use_policy
+			value = constant:cbrn_use_policy.strategic_release_authority
+			compare = greater_than_or_equals
+		}
+		AND = {
+			cbrn_policy_is_retaliation_authority = yes
+			has_country_flag = cbrn_retaliation_authorized
+		}
 	}
 }
 
@@ -388,6 +394,7 @@ cbrn_action_conditions_are_resolved = {
 cbrn_chemical_action_static_metadata_is_valid = {
 	cbrn_action_actor_is_valid = yes
 	cbrn_action_target_state_is_valid = yes
+	cbrn_chemical_action_policy_allows_exact_target = yes
 	cbrn_action_weapon_class_is_chemical = yes
 	cbrn_action_agent_class_is_chemical = yes
 	cbrn_action_agent_is_valid_chemical = yes

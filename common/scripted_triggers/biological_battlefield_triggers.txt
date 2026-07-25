@@ -60,6 +60,15 @@ bio_battlefield_country_has_any_agent_project = {
 	}
 }
 
+# Country scope with FROM as the exact proposed victim.
+bio_battlefield_ai_has_retaliation_right_against_from = {
+	FROM = {
+		exists = yes
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	cbrn_country_has_active_retaliation_right_against_target_id = yes
+}
+
 # Country scope. Used only before headquarters activation and AI template
 # selection. Native raid creation performs the exact essential-equipment debit.
 bio_battlefield_country_has_any_agent_reserve = {
@@ -140,6 +149,7 @@ bio_battlefield_target_from_is_valid = {
 bio_battlefield_can_prepare_against_from = {
 	bio_battlefield_country_can_operate = yes
 	bio_battlefield_target_from_is_valid = yes
+	cbrn_policy_allows_battlefield_use_against_from = yes
 }
 
 # Raid-instance scope after resolver event targets have been saved.
@@ -156,6 +166,10 @@ bio_battlefield_native_context_is_valid = {
 		NOT = { is_subject_of = event_target:bio_battlefield_victim }
 		bio_battlefield_actor_has_agent_project = yes
 		bio_battlefield_country_can_operate = yes
+		event_target:bio_battlefield_victim = {
+			set_temp_variable = { cbrn_retaliation_target_id = id }
+		}
+		cbrn_policy_allows_battlefield_use_against_target_id = yes
 	}
 	event_target:bio_battlefield_victim = {
 		exists = yes
@@ -275,8 +289,10 @@ bio_battlefield_ai_may_target_from = {
 		bio_battlefield_ai_is_desperate_route = yes
 	}
 	OR = {
-		has_country_flag = cbrn_retaliation_authorized
-		FROM = { has_country_flag = used_bioweapon }
+		AND = {
+			FROM = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+			cbrn_country_has_active_retaliation_right_against_target_id = yes
+		}
 		cbrn_ai_route_allows_first_use = yes
 		bio_battlefield_ai_is_desperate_route = yes
 	}
