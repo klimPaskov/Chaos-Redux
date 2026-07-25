@@ -34,6 +34,18 @@ Nine packages are now exact compile-time attested.
 
 The ten-country chaos bands remain fail-closed until one additional disjoint package is admitted and all ten live candidates pass the complete frozen-allocation transaction.
 
+## Post-admission validation
+
+`.tools/audit_event6_allocator.py` passes with 149 publishers, 126 automatic or high-chaos selectable packages, 138 SCN-008 ranked packages, exact automatic counts `3 / 4 / 5 / 7 / 10`, World Collapse fixed at `10`, anchor-before-optional-territory locking, and Event 005 anchors reserved before Event 006 anchors during joint firing.
+
+The central content-attestation trigger contains exactly these nine immutable IDs: IW-001, IW-004, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184.
+
+The HOI4 probability adapter inspected the complete nine-entry Region 01 `random_list`.
+
+Under an equal-weight scenario that assigns weight one to the six admitted Region 01 packages and zero to IW-002, IW-006, and IW-012, IW-010 receives the exact probability `1/6`, the other five admitted entries each receive `1/6`, and all three unadmitted entries remain at zero.
+
+The zero-weight warnings are expected evidence of the fail-closed content gate, not reachable fallback outcomes.
+
 ## Simplifications, omissions, and blockers
 
 No fallback or gameplay simplification was introduced.
