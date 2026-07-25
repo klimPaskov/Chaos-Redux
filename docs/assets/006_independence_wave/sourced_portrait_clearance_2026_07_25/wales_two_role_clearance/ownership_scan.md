@@ -1,6 +1,6 @@
-# IW-002 Wales portrait ownership scan — 2026-07-25
+# IW-002 Wales portrait ownership scan - 2026-07-25
 
-This scan covers the two alternative grounded male identities in this package before any downstream portrait treatment. It is source-clearance evidence only and does not edit character definitions, country histories, interface/GFX, localisation, or gameplay.
+This scan covers the alternative grounded male identities considered for the WLS civic and mountain-commandant portrait consumers before any downstream portrait treatment. It is source-clearance evidence only and does not edit character definitions, country histories, interface/GFX, localisation or gameplay.
 
 ## Roots checked
 
@@ -10,39 +10,50 @@ This scan covers the two alternative grounded male identities in this package be
 - Approved reference mod: `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/2265420196`
 - Approved reference mod: `C:/Program Files (x86)/Steam/steamapps/workshop/content/394360/1458561226`
 
-Within each root, the search covered `common/characters/`, `history/countries/`, `interface/`, `localisation/`, and `gfx/leaders/`. Text matching used case-insensitive exact and variant forms and excluded binary textures and unrelated build artefacts.
+Within each root, the search covered `common/characters/`, `history/countries/`, `interface/`, `localisation/` and `gfx/leaders/`. Text matching used case-insensitive exact and variant forms and excluded binary textures and unrelated build artefacts.
 
 ## Terms checked
 
 | Candidate | Exact and variant forms |
 | --- | --- |
+| James Henry Thomas (J. H. Thomas) | `James Henry Thomas`; `J. H. Thomas`; `James_Henry_Thomas`; `JH Thomas` |
+| Major-General Robert Knox Ross | `Robert Ross`; `Robert Knox Ross`; `Major-General Robert Ross`; `R. L. Ross`; `53rd Welsh Division` |
+| Lewis Edward Valentine | `Lewis Valentine`; `Lewis Edward Valentine`; `Parch Lewis Valentine`; `Valentine` |
+| Thomas Wynford Rees | `Thomas Wynford Rees`; `T. W. Rees`; `RAJ_thomas_wynford_rees`; `SE3459` |
 | W. J. Gruffydd | `Gruffydd`; `William John Gruffydd`; `W. J. Gruffydd`; `WJ Gruffydd` |
 | Lewis Pugh Evans | `Lewis Pugh Evans`; `Pugh Evans` |
+| Saunders Lewis | `Saunders Lewis`; `WLS_saunders_lewis` |
 
-## Results for selected candidates
+## Results
 
 | Candidate | Current Chaos Redux | Vanilla | Kaiserreich 1521695605 | 2265420196 | 1458561226 | Disposition |
 | --- | --- | --- | --- | --- | --- | --- |
-| W. J. Gruffydd | No matching character, recruitment, portrait, GFX, or localisation owner found | No match | No match | No match | No match | Clear for additive source treatment; no transfer guard required |
-| Lewis Pugh Evans | No matching character, recruitment, portrait, GFX, or localisation owner found | No match | No match | No match | No match | Clear for additive source treatment; no transfer guard required |
+| James Henry Thomas (J. H. Thomas) | No match | No match | No match | No match | No match | Clear additive source candidate; no transfer guard found. |
+| Major-General Robert Knox Ross | No match | No match | No match | No match | No match | Clear additive source candidate; no transfer guard found. |
+| Lewis Edward Valentine | No meaningful current owner | No match | Active WLS identity, recruitment, portraits and localisation | No match | No match | Rejected active Kaiserreich owner. |
+| Thomas Wynford Rees | No match | No match | Active `RAJ_thomas_wynford_rees` identity and portrait/localisation consumers | No match | No match | Rejected active Kaiserreich owner; source also fails crop scale. |
+| W. J. Gruffydd | No match | No match | No match | No match | No match | Ownership clear, but source is `blocked_postwar_source` because it is dated 1946. |
+| Lewis Pugh Evans | No match | No match | No match | No match | No match | Ownership clear, but source is `rejected_duplicate_failed_source` because HU 93411 was used by two failed trials. |
+| Saunders Lewis | Current WLS localisation/consumer exists | No match | Active WLS identity and portrait/localisation consumers | No match | No match | Excluded by the existing age gate and active Kaiserreich ownership. |
 
-No match means no text owner was found in the checked role-bearing roots. It does not imply that a generic incidental surname or an unrelated historical person is an ownership collision. Literal prose, ship names, equipment, streets, and unrelated credits were not treated as character ownership.
+## Active ownership evidence
+
+- Lewis Valentine: Kaiserreich `common/characters/WLS characters.txt:62-71`, `history/countries/WLS - Wales.txt:35`, `interface/kaiserreich/portraits/WLS_portraits.gfx:15-20` and `localisation/english/KR_country_specific/WLS - Wales l_english.yml:201-202`.
+- Thomas Wynford Rees: Kaiserreich `common/characters/RAJ characters.txt:183-192`, `history/countries/RAJ - Dominion of India.txt:166,242`, `interface/kaiserreich/portraits/RAJ_portraits.gfx:95-100` and the corresponding localisation entries at lines 878-879.
+- Saunders Lewis: the existing age-gate package records Kaiserreich WLS character, portrait and localisation ownership; this clearance package does not reuse that identity.
 
 ## Existing WLS consumer evidence
 
-The current project already reserves the following parent-owned consumers:
-
-- `interface/006_independence_wave_region_01_portraits.gfx:63-64`: `GFX_portrait_WLS_independence_wave_national_council` → `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds`.
-- `interface/006_independence_wave_region_01_portraits.gfx:67-68`: `GFX_portrait_WLS_independence_wave_mountain_commandant` → `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds`.
+- `interface/006_independence_wave_region_01_portraits.gfx:63-64`: `GFX_portrait_WLS_independence_wave_national_council` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds`.
+- `interface/006_independence_wave_region_01_portraits.gfx:67-68`: `GFX_portrait_WLS_independence_wave_mountain_commandant` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds`.
 - `localisation/english/006_independence_wave_scotland_wales_l_english.yml:5-7`: the current civic label names Saunders Lewis and the commandant remains a role label. This package does not alter either surface.
 
 ## Collision examples excluded from this package
 
-- Aneurin Bevan was considered because the 1943 National Portrait Gallery photograph has strong face geometry. Kaiserreich `1521695605` actively defines `ENG_aneurin_bevan` in `common/characters/ENG characters.txt`, recruits him in `history/countries/ENG - Union of Britain.txt`, defines `GFX_portrait_ENG_aneurin_bevan_army_small` in `interface/kaiserreich/portraits/ENG_portraits.gfx`, and localises `ENG_aneurin_bevan`. This is a meaningful live owner; no clone is allowed without a guarded transfer contract.
-- William Ambrose Bebb remains excluded under the earlier Event 6 scan because Kaiserreich `1521695605` owns `WLS_ambrose_bebb`, its WLS portrait consumers and localisation.
+- Aneurin Bevan was excluded because Kaiserreich `1521695605` actively defines `ENG_aneurin_bevan`, recruits him in `history/countries/ENG - Union of Britain.txt`, defines an army-small portrait consumer and localises the identity.
+- William Ambrose Bebb was excluded under the earlier Event 6 scan because Kaiserreich `1521695605` owns `WLS_ambrose_bebb`, its WLS portrait consumers and localisation.
 - David Rhys Grenfell and George Cornwallis-West are not ownership collisions in the checked roots, but their earlier source photographs were not retried because the parent reported failed likeness passes.
 
 ## Interpretation
 
-Both selected candidates pass the subject-ownership gate as additive source candidates. They still require parent-owned identity reconciliation, source-locked ImageGen, independent likeness/style/provenance review, deterministic `156x210` processing, and DDS conversion. The ownership result does not authorize generated portraits or simultaneous reuse of any already-owned identity.
-
+J. H. Thomas and Robert Ross pass the subject-ownership gate as additive source candidates. The no-match result does not authorize generated portraits or runtime reuse; the parent still owns identity reconciliation, source-locked treatment, independent likeness/style/provenance review, deterministic `156x210` processing and DDS conversion. Valentine, Rees and Saunders must not be cloned without an explicit guarded transfer decision, while Gruffydd and Evans remain blocked or rejected for their separate source reasons.

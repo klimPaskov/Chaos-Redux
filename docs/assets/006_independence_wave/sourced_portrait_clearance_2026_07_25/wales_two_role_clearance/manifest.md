@@ -1,56 +1,66 @@
-# IW-002 Wales alternative sourced portrait clearance — 2026-07-25
+# IW-002 Wales alternative sourced portrait clearance - 2026-07-25
 
-This package contains two newly cleared, attributed male source candidates for the existing WLS Event 6 civic and mountain-commandant portrait consumers. It stops at immutable source masters and exact decoded-pixel crops. It does not contain ImageGen results, processed `156x210` portraits, DDS files, advisor or dossier assets, `.gfx` edits, localisation edits, or gameplay edits.
+Status: two materially different archival candidates are complete through source master and exact crop and remain `needs_user_review` before downstream portrait treatment. J. H. Thomas is the civic candidate and Major-General Robert Ross is the commander candidate. Lewis Valentine is retained as rejected active Kaiserreich ownership evidence, Thomas Wynford Rees is rejected for scene scale and Kaiserreich ownership, W. J. Gruffydd is blocked as postwar, and Lewis Pugh Evans is retained only as duplicate failed-source evidence.
+
+This package stops at immutable source masters, decoded PNG masters and exact decoded-pixel crops. It contains no ImageGen result, processed `156x210` portrait, DDS, `.gfx` edit, localisation edit, gameplay edit, advisor asset, dossier asset, `_small` derivative or fallback.
 
 ## Requirement and runtime crosswalk
 
-| Requirement | Candidate | Reserved consumer | Status | Downstream boundary |
+| Requirement | New candidate | Reserved consumer | Status | Downstream boundary |
 | --- | --- | --- | --- | --- |
-| WLS civic or national leader | W. J. Gruffydd | `GFX_portrait_WLS_independence_wave_national_council` → `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` | `needs_user_review` | Parent must reconcile the current `Saunders Lewis` localisation with any accepted identity before wiring. |
-| WLS military, territorial, or mountain commander | Brigadier Lewis Pugh Evans VC | `GFX_portrait_WLS_independence_wave_mountain_commandant` → `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds` | `needs_user_review` | Parent owns character identity, localisation, source-locked repaint, independent review, and DDS conversion. |
+| WLS civic or national leader | James Henry J. H. Thomas | `GFX_portrait_WLS_independence_wave_national_council` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_national_council.dds` | `needs_user_review` | Parent owns identity/localisation reconciliation, source-locked repaint, independent review and DDS conversion. |
+| WLS military, territorial or mountain commander | Major-General Robert Knox Ross | `GFX_portrait_WLS_independence_wave_mountain_commandant` -> `gfx/leaders/006_independence_wave/portrait_WLS_independence_wave_mountain_commandant.dds` | `needs_user_review` | Parent owns the alternate-history appointment decision, source-locked repaint, independent review and DDS conversion. |
 
-## Candidate A — W. J. Gruffydd (civic)
+## Candidate A - James Henry Thomas (J. H. Thomas) (civic)
 
-- Identity: William John Gruffydd (1881–1954), Welsh scholar, poet and political figure.
-- Source page: [W. J. Gruffydd.jpg](https://commons.wikimedia.org/wiki/File:W._J._Gruffydd.jpg).
-- Direct unchanged master: `source_masters/w_j_gruffydd_original.jpg` (`3070x3962`, SHA-256 `b484a6e364adb0b006a8d67a5cdb8d5bc5beaddfc1f8582d3073a2aa87bbb313`).
-- Archive and attribution: Cardiff University, archive item [CUA00764](https://archive.org/details/CUA00764), credited on Commons to Cardiff University.
-- Photograph date: 1946.
-- License: CC BY-SA 4.0, with attribution and ShareAlike obligations; preserve the source credit in every downstream provenance record.
-- Lossless decoded master: `source_master_png/w_j_gruffydd_civic_master.png` (`3070x3962`, SHA-256 `46f597bb57013b01f10570d3d11670f664791ee490b4e0a8d97548dce24e3f13`).
-- Exact crop: `source_crops/w_j_gruffydd_civic_crop.png`, rectangle `(left=0, top=190, right=2874, bottom=3590)`, `2874x3400`, SHA-256 `45a690657916cd18932dd1a525b8746f26f99a0a3f601fe2595027269081554b`.
-- Crop evidence: `source_crops/w_j_gruffydd_civic_crop.json` records `decoded_pixels_equal: true`; the decoded master rectangle and crop output share RGBA SHA-256 `bc2c84041eab0636b7f78579997d65a760ea09f91fd36e6d10e897a437702a5c`.
-- Visual fit: very high-resolution, evenly readable face with distinctive round glasses, bald crown, pronounced brow and nose, visible shoulders and period civilian jacket.
-- Era note: the source is postwar (1946), not a 1936 photograph. It is a strong identity geometry candidate but remains `needs_user_review` until the parent accepts a period-adjusted, identity-preserving treatment.
-- Ownership: no meaningful owner found in the current repository, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226` for `Gruffydd`, `William John Gruffydd`, `W. J. Gruffydd`, or `WJ Gruffydd`.
+- Identity: James Henry Thomas (1874-1949), Welsh-born Newport trade-union leader and Labour politician who served as Secretary of State for the Colonies from 1935 to 1936.
+- Identity evidence: [J. H. Thomas biography](https://en.wikipedia.org/wiki/J._H._Thomas) and the [Commons source record](https://commons.wikimedia.org/wiki/File:James_Henry_Thomas_(1874-1949)_portrait.jpg).
+- Source page: [James Henry Thomas (1874-1949) portrait.jpg](https://commons.wikimedia.org/wiki/File:James_Henry_Thomas_(1874-1949)_portrait.jpg).
+- Direct unchanged source: `source_masters/j_h_thomas_bain_ggbain_29625_circa_1920.jpg`, `3674x4977` grayscale JPEG, SHA-256 `4f70ef8f6f2f970f5cd9216e15f65348dd92330be390389f2e2e717d0cec8cf5`.
+- Lossless decoded master: `source_master_png/j_h_thomas_civic_master.png`, `3674x4977`, SHA-256 `14e085120d40257ce06f8f0abe4c8c9bbf4f20d0a1092636e3d9958d5e5581bc`.
+- Exact identity crop: `source_crops/j_h_thomas_civic_crop.png`, rectangle `(left=350, top=200, right=3350, bottom=4200)`, `3000x4000`, SHA-256 `0b0b8e8ca7807939391a29c64a04f241c56e47e84ba649060f418fe71ef087be`.
+- Crop proof: `source_crops/j_h_thomas_civic_crop.json` reports `decoded_pixels_equal: true` and matching RGBA SHA-256 `58acbfea5a056c43490682a10cca063828dfa0268a092092a346c307c67368f6` for the decoded master rectangle and output PNG.
+- Source attribution: Commons records Bain as author and the Library of Congress George Grantham Bain Collection digital ID `ggbain.29625`; the source-page snapshot is `source_page_snapshots/j_h_thomas_commons_file_page.html`.
+- Photograph date: Commons records circa 1920, before the 1936 scenario start date and within Thomas's adult public life.
+- License: Commons `PD-Bain` and Library of Congress no-known-copyright-restrictions records; no attribution is required by the Commons record, but retain the LOC digital ID in provenance.
+- Role fit: Thomas's Welsh birth, Newport connection, trade-union leadership and 1935-1936 Colonial Secretary service give the existing WLS national-council role a direct Welsh institutional and interwar political connection.
+- Era fit: The source predates the 1936 start date. Any downstream treatment must age the face only while preserving source geometry and must not be described as a 1936 photograph.
+- Visual notes: The high-resolution archival portrait has clear eyes, ears, brow, nose, moustache, mouth, jaw, bow tie and both shoulders. The exact crop removes source margins while retaining the full head-and-shoulders identity geometry; no hidden facial detail needs reconstruction.
+- Ownership: The exact and variant terms `James Henry Thomas`, `J. H. Thomas`, `James_Henry_Thomas` and `JH Thomas` found no meaningful identity or portrait owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226`.
+- Comparison source: `source_masters/j_h_thomas_underwood_1924_rejected.jpg` is retained only as a comparison record. Its circular halftone/newspaper reproduction is softer and less crop-grade than the Bain photograph despite the closer date.
 
-## Candidate B — Brigadier Lewis Pugh Evans VC (commander)
+## Candidate B - Major-General Robert Knox Ross (commander)
 
-- Identity: Lewis Pugh Evans VC (1881–1962), Welsh-born British Army officer and later brigadier.
-- Identity evidence: [biographical record](https://en.wikipedia.org/wiki/Lewis_Pugh_Evans) identifies his birth at Abermad, Cardiganshire, Wales, and later service as Military Liaison Officer at the Headquarters of the Wales Region during the Second World War.
-- Source page: [Lewis Pugh Evans VC IWM HU 93411.jpg](https://commons.wikimedia.org/wiki/File:Lewis_Pugh_Evans_VC_IWM_HU_93411.jpg).
-- Direct unchanged master: `source_masters/lewis_pugh_evans_iwm_hu93411.jpg` (`605x800`, SHA-256 `fdfde87660f50eb9a2112186878fb8ee93b7c1f0e2cb9f533ca9b2c41c26012c`).
-- Archive and attribution: Imperial War Museums, collection no. 2500-02, HU 93411; Commons attributes the photograph to H. Walter Barnett.
-- Photograph date: circa 1918.
-- License: Public domain under the Commons `PD-Old` record; retain the Commons and IWM provenance even though attribution is not required.
-- Lossless decoded master: `source_master_png/lewis_pugh_evans_commander_master.png` (`605x800`, SHA-256 `e63102da467856b28a7e14659b100f870b2897bb5cd1232aceac6e54fd19a1f7`).
-- Exact crop: `source_crops/lewis_pugh_evans_commander_crop.png`, rectangle `(left=60, top=20, right=580, bottom=730)`, `520x710`, SHA-256 `7c12c4c993cba694c495267c1bd9bc285151fd9ce88c01c53d1b83d789d2ebb4`.
-- Crop evidence: `source_crops/lewis_pugh_evans_commander_crop.json` records `decoded_pixels_equal: true`; the decoded master rectangle and crop output share RGBA SHA-256 `c3ee9bee1d58e2a84edc7afb56446a390ee9efbf3b7be0b68ab1cc849de1fd38`.
-- Visual fit: single-person portrait with clear eyes, ears, jaw, moustache, cap, tunic, rank/medal bars and shoulders. The geometry is strong enough for source-locked commander repainting without reconstructing hidden detail.
-- Era note: the source is a circa-1918 uniform portrait; Evans was alive at 55 in 1936. Downstream aging or period adjustment must preserve the facial geometry, moustache, asymmetry, and source-visible clothing constraints.
-- Ownership: no meaningful owner found in the current repository, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226` for `Lewis Pugh Evans` or `Pugh Evans`.
+- Identity: Major-General Robert Knox Ross CB DSO MC (1893-1951), commander of the 160th Infantry Brigade and the 53rd (Welsh) Infantry Division in the Second World War.
+- Identity evidence: [Robert Ross biography](https://en.wikipedia.org/wiki/Robert_Ross_(British_Army_officer,_born_1893)) and Imperial War Museums object `205497134`.
+- Source page: [Negative H24742.jpg](https://commons.wikimedia.org/wiki/File:Negative_H24742.jpg).
+- Direct unchanged source: `source_masters/robert_ross_iwm_negative_h24742_1942.jpg`, `800x582` RGB JPEG, SHA-256 `1d05da1867e3b31e431f9a3d7e512d44eab1d5ea14d6c10c3ea00de109161621`.
+- Lossless decoded master: `source_master_png/robert_ross_commander_master.png`, `800x582`, SHA-256 `941efc477dfe904ee93bd1f2950a1aa1757536b10ad717edd6108b84e78b4ae2`.
+- Exact identity crop: `source_crops/robert_ross_commander_crop.png`, rectangle `(left=220, top=85, right=530, bottom=385)`, `310x300`, SHA-256 `de218e083de97c54fa0b250a22d2c62fe8810fab000c5b7dfca602bf5d10273e`.
+- Crop proof: `source_crops/robert_ross_commander_crop.json` reports `decoded_pixels_equal: true` and matching RGBA SHA-256 `6db001ff152d9bd894b8d6e6d8d83ed0e08b954e0f4dae03f7b66245b69b1a87` for the decoded master rectangle and output PNG.
+- Source attribution: Imperial War Museums object `205497134`, War Office Second World War Official Collection, dated 20 October 1942; the source-page snapshot is `source_page_snapshots/robert_ross_commons_file_page.html`.
+- License: Commons `PD-UKGov` public-domain record for the IWM/War Office source. The Commons page does not name a separate photographer, so no personal author is inferred.
+- Role fit: Ross is not Welsh-born, but he directly commanded the 160th Brigade and the 53rd (Welsh) Infantry Division. That documented Welsh-formation command supports the existing WLS territorial-commandant abstraction without claiming a historical Welsh mountain command.
+- Era fit: The official source is directly within the WWII setting. Ross was alive and serving in the 53rd (Welsh) Division at the time; the uniform, rank details and facial geometry are period-valid for the requested grounded military role.
+- Visual notes: The single-person official portrait has clear eyes, ears, nose, jaw, cap, tunic, medal bars and both shoulders. The unchanged master retains the IWM frame and watermark; the tight exact crop removes the frame, hands and waist while preserving head, neck and shoulder geometry.
+- Ownership: The exact and variant terms `Robert Ross`, `Robert Knox Ross`, `Major-General Robert Ross`, `R. L. Ross` and `53rd Welsh Division` found no meaningful identity or portrait owner in current Chaos Redux, installed vanilla, Kaiserreich `1521695605`, or approved mods `2265420196` and `1458561226`.
+- Uncertainty: The Commons record identifies the IWM object and War Office collection but does not name a photographer. Preserve IWM object `205497134` and the Commons PD-UKGov record rather than inferring a personal author. Ross was not Welsh-born, so the role fit rests on documented command of the 53rd (Welsh) Division and 160th Welsh Brigade.
 
-## Comparison exclusions
+## Rejected and blocked comparison leads
 
-- David Rhys Grenfell and George Cornwallis-West were not retried. Their earlier source photographs remain excluded because the parent reported repeated ImageGen likeness failures: enlarged or regularized eyes, broadened or frontalized faces, and altered moustaches.
-- Aneurin Bevan was visually strong and period-matching, but Kaiserreich `1521695605` actively owns `ENG_aneurin_bevan`, recruits him, and supplies an army-small portrait consumer and localisation. He is not safe to clone without a guarded transfer contract.
-- William Ambrose Bebb was visually clear and circa 1930, but Kaiserreich `1521695605` owns `WLS_ambrose_bebb` and its portrait/localisation consumers.
+- Lewis Valentine is retained in the package as a complete source and crop, but Kaiserreich `1521695605` actively defines `WLS_lewis_valentine`, recruits him and owns civilian portrait/localisation consumers. It is `rejected_subject_owned` and must not be cloned without an explicit guarded transfer contract.
+- Thomas Wynford Rees SE3459 was rejected because the 19 March 1945 source is a wide scene with a small face rather than a crop-grade portrait, and Kaiserreich `1521695605` owns `RAJ_thomas_wynford_rees` and its portrait/localisation consumers.
+- W. J. Gruffydd remains as source evidence, but the attributed photograph is postwar (1946) and is `blocked_postwar_source` for a WWII-setting identity master unless the user explicitly reopens it.
+- Lewis Pugh Evans HU 93411 remains for provenance traceability only. It is the same source already used by the two failed Evans repaint trials in `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_24/wls_lewis_pugh_evans_source_retry/` and is `rejected_duplicate_failed_source`.
+- David Rhys Grenfell and George Cornwallis-West remain excluded because the parent reported repeated likeness failures on their earlier photographs, including enlarged or regularised eyes, broadened or frontalised faces and altered moustaches.
+- Aneurin Bevan remains excluded because Kaiserreich `1521695605` actively owns `ENG_aneurin_bevan` and its portrait consumers.
+- William Ambrose Bebb remains excluded because Kaiserreich `1521695605` owns `WLS_ambrose_bebb` and its portrait/localisation consumers.
+- Saunders Lewis remains excluded because the only defensible prewar Commons photograph is the 1916 `Y Drych` image already rejected by the existing Saunders age gate, and Kaiserreich `1521695605` owns the same identity.
 
-## Exact crop and provenance rule
+## Contact sheet
 
-Both crops were created with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` using Pillow as the only decode/crop backend. The crop JSON files are retained beside the PNGs and prove exact decoded-pixel equality. The JPEG masters, decoded PNG masters, crop PNGs, metadata JSON, source page snapshots and contact sheet are distinct files; no source master was overwritten.
+The comparison sheet is `contact_sheets/wales_two_role_clearance_contact_sheet_v5.png`, SHA-256 `d25308ecd1f20696b423f0770b436b4fdcef920d2c39d228912b12108dfb87f8`. It shows the J. H. Thomas and Robert Ross source masters beside their exact crops.
 
-## Downstream handoff boundary
+## Exact crop and downstream boundary
 
-The parent may use either candidate only after accepting the era and license notes. The next stage must use the exact crop as the sole identity input for source-locked identity-preserving ImageGen, compare the raw result and deterministic `156x210` candidate against the unchanged source and the role-specific canonical references, obtain an independent likeness/style/provenance audit, and convert to DDS only after PASS. Raw source photos and merely resized crops are not runtime portraits.
-
+Both accepted review candidates were cropped with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` using Pillow as the only decode and crop backend. The crop JSON files are committed beside the PNGs and prove exact decoded-pixel equality. The parent may use either candidate only after accepting the era, provenance and ownership notes, then must use the exact crop as the sole identity input for source-locked identity-preserving ImageGen, compare the raw result and deterministic `156x210` portrait against canonical vanilla references, obtain an independent likeness/style/provenance audit, and convert to DDS only after PASS.
