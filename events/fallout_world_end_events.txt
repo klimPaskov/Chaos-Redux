@@ -12941,6 +12941,176 @@ country_event = {
 	immediate = { fallout_event_269_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout global-survival chain: A New Funeral
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.541
+	title = chaosx.fallout.541.t
+	desc = chaosx.fallout.541.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { fallout_event_541_opening_event_can_enter = yes }
+
+	option = {
+		name = chaosx.fallout.541.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_541_cost.civic_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_541_cost.civic_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_541_requested_branch = constant:fallout_event_541_branch.common_civic_rite } fallout_event_541_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.541.a.tt
+		ai_chance = { base = constant:fallout_event_541_ai.civic_priority }
+	}
+	option = {
+		name = chaosx.fallout.541.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_541_cost.separate_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_541_cost.separate_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_541_requested_branch = constant:fallout_event_541_branch.separate_rites } fallout_event_541_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.541.b.tt
+		ai_chance = { base = constant:fallout_event_541_ai.separate_priority modifier = { factor = constant:fallout_event_541_ai.strong_modifier OR = { has_government = fascism has_government = neutrality } } }
+	}
+	option = {
+		name = chaosx.fallout.541.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_541_cost.ceremony_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_541_cost.ceremony_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_541_requested_branch = constant:fallout_event_541_branch.state_ceremony } fallout_event_541_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.541.c.tt
+		ai_chance = { base = constant:fallout_event_541_ai.ceremony_priority modifier = { factor = constant:fallout_event_541_ai.strong_modifier NOT = { has_war = yes } } }
+	}
+	option = {
+		name = chaosx.fallout.541.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_541_cost.burial_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_541_cost.burial_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_541_requested_branch = constant:fallout_event_541_branch.rapid_burial } fallout_event_541_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.541.d_option.tt
+		ai_chance = { base = constant:fallout_event_541_ai.burial_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.542
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_541_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_541_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.543
+	title = chaosx.fallout.543.t
+	desc = { text = chaosx.fallout.543.success.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.543.partial.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.543.failure.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_civic_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.common_civic_rite } }
+	option = { name = chaosx.fallout.543.a hidden_effect = { fallout_event_541_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.543.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.544
+	title = chaosx.fallout.544.t
+	desc = { text = chaosx.fallout.544.success.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.544.partial.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.544.failure.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_separate_rites_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.separate_rites } }
+	option = { name = chaosx.fallout.544.a hidden_effect = { fallout_event_541_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.544.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.545
+	title = chaosx.fallout.545.t
+	desc = { text = chaosx.fallout.545.success.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.545.partial.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.545.failure.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_state_ceremony_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.state_ceremony } }
+	option = { name = chaosx.fallout.545.a hidden_effect = { fallout_event_541_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.545.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.546
+	title = chaosx.fallout.546.t
+	desc = { text = chaosx.fallout.546.success.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.546.partial.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.546.failure.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_rapid_burial_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.rapid_burial } }
+	option = { name = chaosx.fallout.546.a hidden_effect = { fallout_event_541_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.546.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.547
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_civic_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.common_civic_rite } }
+	immediate = { fallout_event_541_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.548
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_separate_rites_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.separate_rites } }
+	immediate = { fallout_event_541_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.549
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_state_ceremony_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.state_ceremony } }
+	immediate = { fallout_event_541_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.550
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_541_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_rapid_burial_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch = constant:fallout_event_541_branch.rapid_burial } }
+	immediate = { fallout_event_541_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.551
+	title = chaosx.fallout.551.t
+	desc = { text = chaosx.fallout.551.success.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.551.partial.d trigger = { check_variable = { fallout_event_541_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.551.failure.d
+	picture = GFX_report_event_fallout_new_funeral
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_541_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_541_branch.upper_bound } fallout_event_541_registry_is_current = yes }
+	option = { name = chaosx.fallout.551.a hidden_effect = { fallout_event_541_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.551.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.552
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_funeral_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_541_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_541_branch.upper_bound } fallout_event_541_registry_is_current = yes }
+	immediate = { fallout_event_541_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.553
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_541_cleanup_can_enter = yes }
+	immediate = { fallout_event_541_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 
