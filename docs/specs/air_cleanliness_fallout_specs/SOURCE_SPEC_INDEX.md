@@ -41,6 +41,8 @@
 37. `specs/41_reviewed_global_survival_first_unmasked_day.md`
 38. `specs/42_reviewed_global_survival_false_spring_losses.md`
 39. `specs/43_reviewed_global_survival_desalination_night_shift.md`
+40. `specs/44_reviewed_global_survival_ice_melt_rations.md`
+41. `specs/45_reviewed_global_survival_ravine_water_chemist.md`
 
 
 ## Accepted baseline specs included here
@@ -102,6 +104,7 @@
 - `specs/42_reviewed_global_survival_false_spring_losses.md`
 - `specs/43_reviewed_global_survival_desalination_night_shift.md`
 - `specs/44_reviewed_global_survival_ice_melt_rations.md`
+- `specs/45_reviewed_global_survival_ravine_water_chemist.md`
 
 ## Matrices
 

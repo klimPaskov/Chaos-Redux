@@ -16563,3 +16563,133 @@ country_event = {
 	trigger = { fallout_event_492_cleanup_can_enter = yes }
 	immediate = { fallout_event_492_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.499
+	title = chaosx.fallout.499.t
+	desc = chaosx.fallout.499.intro
+	picture = GFX_report_event_fallout_ravine_water_chemist
+	is_triggered_only = yes
+	trigger = { fallout_event_499_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.499.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_499_threshold.register_chemist_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_499_threshold.register_chemist_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_499_threshold.register_chemist_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_499_threshold.register_chemist_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_499_threshold.register_chemist_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_499_threshold.register_chemist_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_499_requested_branch = constant:fallout_event_499_branch.register_chemist } fallout_event_499_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.499.a.tt
+	}
+	option = {
+		name = chaosx.fallout.499.b
+		trigger = {
+			OR = { has_government = neutrality has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_499_threshold.escort_clean_ice_families_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_499_threshold.escort_clean_ice_families_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_499_threshold.escort_clean_ice_families_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_499_threshold.escort_clean_ice_families_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_499_threshold.escort_clean_ice_families_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_499_threshold.escort_clean_ice_families_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_499_requested_branch = constant:fallout_event_499_branch.escort_clean_ice_families } fallout_event_499_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.499.b.tt
+	}
+	option = {
+		name = chaosx.fallout.499.c
+		trigger = {
+			OR = { has_government = communism has_government = fascism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_499_threshold.quarantine_ravine_ward_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_499_threshold.quarantine_ravine_ward_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_499_threshold.quarantine_ravine_ward_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_499_threshold.quarantine_ravine_ward_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_499_threshold.quarantine_ravine_ward_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_499_threshold.quarantine_ravine_ward_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_499_requested_branch = constant:fallout_event_499_branch.quarantine_ravine_ward } fallout_event_499_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.499.c.tt
+	}
+	option = {
+		name = chaosx.fallout.499.d
+		trigger = {
+			OR = { has_government = fascism has_government = democratic }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_499_threshold.share_method_with_districts_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_499_threshold.share_method_with_districts_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_499_threshold.share_method_with_districts_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_499_threshold.share_method_with_districts_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_499_threshold.share_method_with_districts_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_499_threshold.share_method_with_districts_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_499_requested_branch = constant:fallout_event_499_branch.share_method_with_districts } fallout_event_499_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.499.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.500
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_499_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_499_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.501
+	title = chaosx.fallout.499.t
+	desc = { text = chaosx.fallout.501.register_chemist.success.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.register_chemist } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.501.register_chemist.partial.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.register_chemist } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.501.register_chemist.failure.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.register_chemist } } }
+	desc = { text = chaosx.fallout.501.escort_clean_ice_families.success.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.escort_clean_ice_families } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.501.escort_clean_ice_families.partial.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.escort_clean_ice_families } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.501.escort_clean_ice_families.failure.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.escort_clean_ice_families } } }
+	desc = { text = chaosx.fallout.501.quarantine_ravine_ward.success.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.quarantine_ravine_ward } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.501.quarantine_ravine_ward.partial.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.quarantine_ravine_ward } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.501.quarantine_ravine_ward.failure.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.quarantine_ravine_ward } } }
+	desc = { text = chaosx.fallout.501.share_method_with_districts.success.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.share_method_with_districts } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.501.share_method_with_districts.partial.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.share_method_with_districts } check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.501.share_method_with_districts.failure.d trigger = { check_variable = { fallout_event_499_selected_branch = constant:fallout_event_499_branch.share_method_with_districts } } }
+	picture = GFX_report_event_fallout_ravine_water_chemist
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_499_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ravine_water_chemist_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.501.a hidden_effect = { fallout_event_499_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.501.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.502
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_499_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ravine_water_chemist_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_499_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.503
+	title = chaosx.fallout.503.t
+	desc = { text = chaosx.fallout.503.success.d trigger = { check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.503.partial.d trigger = { check_variable = { fallout_event_499_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.503.failure.d
+	picture = GFX_report_event_fallout_ravine_water_chemist
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_499_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ravine_water_chemist_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_499_registry_is_current = yes }
+	option = { name = chaosx.fallout.503.a hidden_effect = { fallout_event_499_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.503.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.504
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_499_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.ravine_water_chemist_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_499_registry_is_current = yes }
+	immediate = { fallout_event_499_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.505
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_499_cleanup_can_enter = yes }
+	immediate = { fallout_event_499_cleanup = yes }
+}

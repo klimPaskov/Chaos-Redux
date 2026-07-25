@@ -2,14 +2,14 @@
 
 ## Status
 
-The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-four global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, and society chains through Ice Melt Rations. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
+The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, and broadcast openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Forty-five global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, and society chains through the Ravine Water Chemist. Major-arc and relationship candidates fail closed because their reviewed rows do not yet freeze the complete atomic class-reservation payload. The pilot producer remains dormant and is not a living-world caller.
 
-The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `498`. It has `380` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
+The activation flags `fallout_event_scheduler_activation_approved` and `fallout_event_scheduler_active` have no setter. The current reviewed Fallout pilot covers dormant typed reservations at `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `505`. It has `387` defined event blocks. Countable blocks toward the 660-block release floor: `0`.
 
 ## Accepted numerical-contract tranche
 
-The current count supersedes the historical opening paragraph: forty-four
-reviewed global-survival rows cover event blocks through `498`, with `380`
+The current count supersedes the historical opening paragraph: forty-five
+reviewed global-survival rows cover event blocks through `505`, with `387`
 defined blocks and `0 of 660` countable release-floor blocks. Black Start is
 the latest dormant row and has no activation setter.
 
@@ -579,3 +579,10 @@ Ice Melt Rations is candidate `492`, transaction `710044`, route `7144`, and his
 Its country row requires durable resources, campaign-day and water-security gates, a station filter reserve, and one deterministic native boreal or highland state with regional frozen-water eligibility, surviving population, supported urban category, and low supply access. The selector chooses the lowest valid state id.
 The four branches boil and filter the ice, use untreated meltwater, send a clean-ice expedition, or ration fuel for a guarded boil. Each branch has separate public Filters and station-filter costs, viability thresholds, state memory, water, fuel, filter, and expedition ledgers, dynamic modifiers, callback payloads, and Deaths-backed failure.
 The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_ICE_MELT_RATIONS_CHAIN_PROOF.md`.
+
+## The Ravine Water Chemist scheduler correction
+
+The reviewed ordinary producer now carries forty-five rows and the defined living-world event range reaches `505`, with `387` defined blocks.
+The Ravine Water Chemist is candidate `499`, transaction `710045`, route `7145`, and history `9150`.
+Its country row follows Ice Melt success or partial memory and selects one current Air Winter clinic state plus a separate lowest-id migration origin. The four branches establish Dr. Mara Vey's service, escort clean-ice families, quarantine the ravine ward, or share the filter method with districts. Each branch has separate costs, deterministic viability thresholds, disease and refugee pressure effects, a `49`-day result, a `210`-day callback, hidden-AI parity, Event Log payloads, and authenticated cleanup.
+The row remains dormant and contributes zero countable blocks because scheduler activation, host authority, save recovery, multiplayer delivery, full-screen Fallout blackout, and runtime Event Log delivery remain unproven. The exact chain proof is recorded in `FALLOUT_RAVINE_WATER_CHEMIST_CHAIN_PROOF.md`.
