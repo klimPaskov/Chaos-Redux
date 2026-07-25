@@ -140,6 +140,10 @@ The current Air Winter pilot contains 52 event blocks, 191 options, 190 effect-b
 
 Suffixes `6` and `49` are allocated to implemented Air Winter results and are no longer free.
 
+## Ammunition Winter correction
+
+The Ammunition Winter tranche adds dormant suffixes `534` through `540` with candidate id `534`, transaction key `710050`, route `7150`, and history `9155`. The human opening is `534`, the hidden-AI opening is `535`, the human and hidden-AI delayed results are `536` and `537`, the human and hidden-AI callbacks are `538` and `539`, and cleanup is `540`. The dedicated sprite is `GFX_report_event_fallout_ammunition_winter`. These seven blocks remain uncounted and do not open scheduler activation.
+
 ## Collision boundary
 
 The scan found existing Fallout suffixes in the request, transition, manual strike, and rewrite ranges. This ledger does not reuse those identifiers. Suffixes `62` through `84` remain reserved for Ash-week orientation. Suffixes `100` through `126`, `1009` through `1018`, `153` through `200`, and `204` through `281` remain reserved for the living-world pilot even if implementation order changes.
@@ -605,6 +609,13 @@ The Missing Patrol adds seven dormant state-level event blocks at suffixes `527`
 
 The documented living-world block total is now `415`, while the countable Fallout living-world total remains `0 of 660`.
 
+## A New Funeral reservation
+
+| Candidate | Transaction | Route | Event ids | Event Log history | Status |
+| --- | --- | --- | --- | --- | --- |
+| 541 | 710051 | 7151 | 541 to 553 | 9156 | Dormant, not release-floor credit |
+
+The chain uses a country subject with target zero and a dedicated report sprite. The exact native manual sweep remains separate and unproven.
 
 ## Ashline Firebreak correction
 
