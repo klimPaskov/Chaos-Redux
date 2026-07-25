@@ -1,0 +1,116 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 STATEHOOD LEDGER SCRIPTED GUI
+# ============================================================================
+# Presentation surface for the live Event 006 ledgers. Normal decisions and
+# missions remain the only action layer; this panel only changes its local tab
+# flags and exposes state-driven visual cues.
+# ============================================================================
+
+scripted_gui = {
+	independence_wave_status_scripted_gui = {
+		context_type = decision_category
+		window_name = "independence_wave_status_window"
+		ai_enabled = { always = no }
+		visible = { is_independence_wave_active_country = yes }
+
+		effects = {
+			independence_wave_status_refresh_click = {
+				independence_wave_refresh_country_state = yes
+			}
+			independence_wave_status_tab_government_click = {
+				set_country_flag = independence_wave_status_tab_government
+				clr_country_flag = independence_wave_status_tab_recognition
+				clr_country_flag = independence_wave_status_tab_security
+				clr_country_flag = independence_wave_status_tab_league
+				clr_country_flag = independence_wave_status_tab_ambitions
+			}
+			independence_wave_status_tab_recognition_click = {
+				clr_country_flag = independence_wave_status_tab_government
+				set_country_flag = independence_wave_status_tab_recognition
+				clr_country_flag = independence_wave_status_tab_security
+				clr_country_flag = independence_wave_status_tab_league
+				clr_country_flag = independence_wave_status_tab_ambitions
+			}
+			independence_wave_status_tab_security_click = {
+				clr_country_flag = independence_wave_status_tab_government
+				clr_country_flag = independence_wave_status_tab_recognition
+				set_country_flag = independence_wave_status_tab_security
+				clr_country_flag = independence_wave_status_tab_league
+				clr_country_flag = independence_wave_status_tab_ambitions
+			}
+			independence_wave_status_tab_league_click = {
+				clr_country_flag = independence_wave_status_tab_government
+				clr_country_flag = independence_wave_status_tab_recognition
+				clr_country_flag = independence_wave_status_tab_security
+				set_country_flag = independence_wave_status_tab_league
+				clr_country_flag = independence_wave_status_tab_ambitions
+			}
+			independence_wave_status_tab_ambitions_click = {
+				clr_country_flag = independence_wave_status_tab_government
+				clr_country_flag = independence_wave_status_tab_recognition
+				clr_country_flag = independence_wave_status_tab_security
+				clr_country_flag = independence_wave_status_tab_league
+				set_country_flag = independence_wave_status_tab_ambitions
+			}
+		}
+
+		triggers = {
+			independence_wave_status_refresh_click_enabled = { always = yes }
+			independence_wave_status_tab_government_click_enabled = { always = yes }
+			independence_wave_status_tab_recognition_click_enabled = { always = yes }
+			independence_wave_status_tab_security_click_enabled = { always = yes }
+			independence_wave_status_tab_league_click_enabled = { always = yes }
+			independence_wave_status_tab_ambitions_click_enabled = { always = yes }
+
+			independence_wave_status_government_panel_visible = {
+				OR = {
+					has_country_flag = independence_wave_status_tab_government
+					AND = {
+						NOT = { has_country_flag = independence_wave_status_tab_recognition }
+						NOT = { has_country_flag = independence_wave_status_tab_security }
+						NOT = { has_country_flag = independence_wave_status_tab_league }
+						NOT = { has_country_flag = independence_wave_status_tab_ambitions }
+					}
+				}
+			}
+			independence_wave_status_recognition_panel_visible = { has_country_flag = independence_wave_status_tab_recognition }
+			independence_wave_status_security_panel_visible = { has_country_flag = independence_wave_status_tab_security }
+			independence_wave_status_league_panel_visible = { has_country_flag = independence_wave_status_tab_league }
+			independence_wave_status_ambitions_panel_visible = { has_country_flag = independence_wave_status_tab_ambitions }
+
+			independence_wave_status_recognition_seal_animated_visible = { has_independence_wave_de_facto_recognition = yes }
+			independence_wave_status_recognition_seal_static_visible = { NOT = { has_independence_wave_de_facto_recognition = yes } }
+			independence_wave_status_dependency_warning_animated_visible = {
+				OR = {
+					has_independence_wave_patron_warning = yes
+					has_independence_wave_severe_instability = yes
+				}
+			}
+			independence_wave_status_dependency_warning_static_visible = {
+				NOR = {
+					has_independence_wave_patron_warning = yes
+					has_independence_wave_severe_instability = yes
+				}
+			}
+			independence_wave_status_league_charter_animated_visible = {
+				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.formal_league compare = greater_than_or_equals }
+			}
+			independence_wave_status_league_charter_static_visible = {
+				check_variable = { global.independence_wave_league_phase value = constant:independence_wave_league_phase.formal_league compare = less_than }
+			}
+			independence_wave_status_formable_seal_animated_visible = {
+				OR = {
+					has_country_flag = independence_wave_formable_discovered
+					has_country_flag = independence_wave_formable_all_required_initial_integration_complete
+				}
+			}
+			independence_wave_status_formable_seal_static_visible = {
+				NOR = {
+					has_country_flag = independence_wave_formable_discovered
+					has_country_flag = independence_wave_formable_all_required_initial_integration_complete
+				}
+			}
+			independence_wave_status_instability_warning_visible = { has_independence_wave_severe_instability = yes }
+		}
+	}
+}
