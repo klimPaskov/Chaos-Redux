@@ -2,9 +2,11 @@
 
 > Disposition, 2026-07-10: implemented and folded into the live Event 013 package. The gaps and blockers below describe the pre-closure snapshot. Current evidence and residual validation boundaries are recorded in `013_implementation_validation_notes.md`; this addendum is retained as the accepted improvement-loop design record. The earlier B-001 wording that required the warning action to choose the fine follow-up route is superseded by `013_full_improvement_loop_2026-07-11.md`, which explicitly requires preparation to mitigate an independently resolved hazard and records warning-route independence as an acceptance case.
 
-Status: implementation planning only
+> Historical snapshot: the incomplete state and blocker tables below describe the pre-closure audit only. They remain useful as improvement-loop provenance but must not be read as current missing implementation. Use `013_event_completion_final_audit.md` and `013_implementation_validation_notes.md` for current status.
+
+Status at snapshot: implementation planning only
 Date: 2026-07-10
-Implementation state: incomplete
+Implementation state at snapshot: incomplete
 Scope owner: main Event 013 implementation agent
 
 This addendum audits the accepted Event 013 source pack against the live implementation and converts the remaining depth gaps into bounded implementation tranches. It does not authorize a new disaster family, another event family, a focus tree, a country package, a generic global disaster agency, a terminal world-end branch, or a second large UI system.

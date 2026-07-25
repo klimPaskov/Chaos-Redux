@@ -2,11 +2,13 @@
 
 > Disposition, 2026-07-10: superseded by `013_localisation_final_reaudit_2026-07-10.md`, which records the corrected package at 0 P0, 0 P1, and 0 P2. The findings below are retained as the pre-correction audit trail.
 
+> Historical audit only: the non-final verdict and findings below are superseded. Do not use this file as the current localisation status; use `013_localisation_final_reaudit_2026-07-10.md` and the final Event 013 completion audit.
+
 Audit date: 2026-07-10
 
 Audit mode: read-only static review of the accepted Event 013 specification, live script references, English localisation, scripted localisation, event-log routing, scenario and cluster text, achievements, scripted GUI text, and custom decision costs.
 
-## Verdict
+## Historical verdict
 
 Event 013 is not localisation-final.
 

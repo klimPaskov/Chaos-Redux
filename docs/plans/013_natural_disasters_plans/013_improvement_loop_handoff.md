@@ -2,12 +2,14 @@
 
 > Parent disposition, 2026-07-10: implemented and folded into the live Event 013 package. The blockers and prioritized work below describe the pre-closure audit snapshot; `013_implementation_validation_notes.md` and the final specialist audits contain the current closure evidence. This handoff remains as the improvement-loop provenance record.
 
+> Historical snapshot: the incomplete verdicts and blocker lists below are retained for provenance and are not current implementation instructions. Use `013_event_completion_final_audit.md` and `013_implementation_validation_notes.md` for the current disposition.
+
 Date: 2026-07-10
 Mode: plan-only audit
 Parent owner: main Event 013 implementation agent
-Completion verdict: incomplete
+Historical completion verdict at snapshot: incomplete
 
-## Outcome
+## Historical outcome
 
 The Event 013 implementation has a strong reusable engine, but the accepted source pack is not complete. The detailed closure plan is `docs/plans/013_natural_disasters_plans/013_implementation_depth_addendum.md`.
 
