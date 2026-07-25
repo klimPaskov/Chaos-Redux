@@ -1,0 +1,210 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT SUCCESSOR B7 VERTICAL SLICE TRIGGERS
+# ============================================================================
+# These triggers validate one generation-bound continuity pilot and one
+# fail-closed fragmentation reservation probe. They never certify the full
+# successor matrix.
+# ============================================================================
+
+fallout_successor_b7_transition_owner_is_current = {
+	check_variable = {
+		var = global.fallout_transition_phase
+		value = constant:fallout_transition_phase.survivor_allocation
+		compare = equals
+	}
+	NOT = { has_global_flag = fallout_transition_error }
+	NOT = { has_global_flag = fallout_successor_allocation_complete }
+	OR = {
+		NOT = { has_global_flag = fallout_successor_conflict_ledger_built }
+		fallout_successor_conflict_ledger_is_current = yes
+	}
+	OR = {
+		NOT = { has_global_flag = fallout_successor_allocation_initialized }
+		fallout_successor_allocation_source_inventory_is_current = yes
+	}
+}
+
+fallout_successor_b7_transaction_is_current = {
+	has_global_flag = fallout_successor_allocation_initialized
+	has_global_flag = fallout_successor_preallocation_consumed
+	has_global_flag = fallout_player_allocation_reservation_ledger_complete
+	has_variable = global.fallout_successor_allocation_generation
+	check_variable = {
+		var = global.fallout_successor_allocation_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	fallout_successor_conflict_ledger_is_current = yes
+	fallout_player_allocation_reservation_ledger_is_current = yes
+	NOT = { has_global_flag = fallout_successor_allocation_complete }
+}
+
+fallout_successor_allocation_source_inventory_is_current = {
+	has_global_flag = fallout_successor_preallocation_consumed
+	has_variable = global.fallout_successor_allocation_source_inventory_generation
+	has_variable = global.fallout_successor_allocation_source_inventory_schema
+	check_variable = {
+		var = global.fallout_successor_allocation_source_inventory_generation
+		value = global.fallout_successor_conflict_ledger_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_successor_allocation_source_inventory_schema
+		value = constant:fallout_successor_inventory_schema.version
+		compare = equals
+	}
+}
+
+fallout_successor_b7_usa_continuity_source_is_ready = {
+	fallout_successor_b7_transaction_is_current = yes
+	tag = USA
+	has_country_flag = fallout_pretransition_player_country
+	has_country_flag = fallout_player_continues_old_country
+	has_country_flag = fallout_player_continuation_planned
+	has_country_flag = fallout_player_primary_capital_reserved
+	has_variable = fallout_player_primary_target
+	has_variable = fallout_player_primary_capital_state
+	var:fallout_player_primary_target = {
+		tag = PREV
+		is_ai = no
+	}
+	fallout_player_allocation_reservation_row_is_current = yes
+	NOT = { has_country_flag = fallout_successor_assignment_committed }
+	var:fallout_player_primary_capital_state = {
+		is_owned_and_controlled_by = PREV
+		fallout_state_can_host_government = yes
+		has_state_flag = fallout_player_primary_capital_reserved
+	}
+}
+
+fallout_successor_b7_usa_package_receipts_are_current = {
+	tag = USA
+	has_country_flag = fallout_b7_usa_package_current
+	has_country_flag = fallout_country_package_applied
+	has_country_flag = fallout_focus_package_applied
+	has_country_flag = fallout_archetype_package_applied
+	has_country_flag = fallout_regional_package_applied
+	has_country_flag = fallout_country_memory_package_applied
+	has_country_flag = fallout_b7_usa_focus_tree_loaded
+	has_idea = fallout_usa_federal_continuity_ledger_idea
+	has_variable = fallout_country_package_generation
+	has_variable = fallout_focus_package_generation
+	has_variable = fallout_archetype_package_generation
+	has_variable = fallout_regional_package_generation
+	has_variable = fallout_country_memory_package_generation
+	has_variable = fallout_government_archetype
+	has_variable = fallout_government_archetype_generation
+	has_variable = fallout_region_id
+	has_variable = fallout_country_memory_id
+	check_variable = {
+		var = fallout_country_package_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_focus_package_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_archetype_package_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_regional_package_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_country_memory_package_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_government_archetype
+		value = constant:fallout_government_archetype.continuity_government
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_region_id
+		value = constant:fallout_region.north_america
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_country_memory_id
+		value = constant:fallout_country_memory.federal_continuity_zone
+		compare = equals
+	}
+}
+
+fallout_successor_b7_usa_assignment_is_current = {
+	is_ai = no
+	fallout_successor_b7_usa_package_receipts_are_current = yes
+	fallout_successor_assignment_country_row_is_current = yes
+	check_variable = {
+		var = fallout_successor_assignment_capital_state
+		value = fallout_player_primary_capital_state
+		compare = equals
+	}
+}
+
+fallout_successor_b7_usa_human_control_receipt_is_current = {
+	tag = USA
+	is_ai = no
+	has_country_flag = fallout_b7_usa_human_control_receipt
+	has_variable = fallout_b7_human_control_generation
+	check_variable = {
+		var = fallout_b7_human_control_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+}
+
+fallout_successor_b7_fragmentation_source_is_ready = {
+	fallout_successor_b7_transaction_is_current = yes
+	has_country_flag = fallout_pretransition_player_country
+	has_country_flag = fallout_player_successor_choice_required
+	NOT = { has_country_flag = fallout_player_continuation_planned }
+	NOT = { has_country_flag = fallout_player_continuation_committed }
+	has_variable = fallout_player_continuation_branch
+	has_variable = fallout_player_continuation_status
+	check_variable = {
+		var = fallout_player_continuation_status
+		value = constant:fallout_player_continuation_status.choice_pending
+		compare = equals
+	}
+	check_variable = {
+		var = fallout_player_continuation_branch
+		value = constant:fallout_player_continuation_branch.surviving_tag
+		compare = greater_than
+	}
+	check_variable = {
+		var = fallout_player_continuation_branch
+		value = constant:fallout_player_continuation_branch.emergency_council
+		compare = less_than_or_equals
+	}
+	fallout_player_allocation_reservation_row_is_current = yes
+}
+
+fallout_successor_b7_fragmentation_candidate_is_available = {
+	exists = yes
+	is_in_array = { array = global.fallout_all_possible_country_scopes value = THIS }
+	NOT = { is_in_array = { array = global.fallout_live_tag_conflict_countries value = THIS } }
+	NOT = { has_country_flag = fallout_successor_assignment_committed }
+	NOT = { has_country_flag = fallout_dynamic_country_materialization_committed }
+	NOT = { has_country_flag = fallout_releasable_release_committed }
+	NOT = { has_country_flag = fallout_live_tag_conflict_recorded }
+	NOT = { any_owned_state = { always = yes } }
+}
+
+fallout_successor_b7_vertical_slice_is_current = {
+	has_global_flag = fallout_b7_vertical_slice_ran
+	has_variable = global.fallout_b7_vertical_slice_generation
+	check_variable = {
+		var = global.fallout_b7_vertical_slice_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	NOT = { has_global_flag = fallout_transition_error }
+}
