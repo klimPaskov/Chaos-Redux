@@ -372,7 +372,19 @@ The stable `AJX_karl_becker` internal consumer and `GFX_portrait_AJX_karl_becker
 
 No historical Saar posting is claimed, and no advisor, dossier, operative, commander-small, or `_small` derivative was created.
 
-IW-010 remains fail-closed until its civic Walter Simons portrait and fresh country-package audit pass.
+## 2026-07-25 AJX Walter Simons portrait promotion
+
+The source-locked portrait package is `sourced_portrait_refinishes_2026_07_25/saar_walter_simons_trial_01/manifest.md`.
+
+It records the unchanged attributed Bundesarchiv master, explicit head-and-shoulders crop, identity-preserving ImageGen repaint, deterministic `156x210` processing, independent likeness and HOI4-style audit, package DDS, runtime DDS, and decoded-pixel equality proof.
+
+The stable `AJX_friedrich_hoffmann` internal consumer and `GFX_portrait_AJX_friedrich_hoffmann` sprite remain unchanged, while the player-facing identity is Walter Simons.
+
+No historical independent-Saar commission is claimed, and no advisor, dossier, operative, commander-small, or `_small` derivative was created.
+
+Both IW-010 portrait consumers now satisfy the sourced real-male workflow.
+
+IW-010 remains fail-closed until a fresh country-package audit passes.
 
 ## Historical 2026-07-18 BRI portrait disposition
 
