@@ -2423,6 +2423,156 @@ def author_locomotion_action(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+def correct_action_grounding(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Correct only the existing attack action's root contact, preserving body keys."""
+
+    job = Path(req["job_root"]).resolve()
+    payload = req["payload"]
+    blend = within(job, payload["blend_rel"])
+    checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
+    action_name = str(payload.get("action_name") or "")
+    root_bone_name = str(payload.get("root_bone") or "Hips")
+    if "attack" not in action_name.casefold():
+        raise ValueError("Grounding correction is restricted to an attack action.")
+    if root_bone_name != "Hips":
+        raise ValueError("Grounding correction is restricted to the Hips root bone.")
+
+    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    rigs = armatures()
+    if len(rigs) != 1:
+        raise RuntimeError(f"Grounding correction requires exactly one working armature, found {len(rigs)}.")
+    rig = rigs[0]
+    rig.animation_data_create()
+    action = bpy.data.actions.get(action_name)
+    if action is None:
+        action = next(
+            (
+                candidate
+                for candidate in bpy.data.actions
+                if candidate.name.casefold() == action_name.casefold()
+            ),
+            None,
+        )
+    if action is None:
+        raise RuntimeError(f"Requested attack action was not found: {action_name}")
+    rig.animation_data.action = action
+    root = rig.pose.bones.get(root_bone_name)
+    if root is None:
+        raise RuntimeError(f"Grounding correction root bone was not found: {root_bone_name}")
+    meshes = mesh_objects()
+    if not meshes:
+        raise RuntimeError("Grounding correction found no working mesh objects.")
+
+    start = int(math.floor(float(action.frame_range[0])))
+    end = int(math.ceil(float(action.frame_range[1])))
+    if end < start:
+        raise RuntimeError("Grounding correction requires a non-empty action frame range.")
+    scene = bpy.context.scene
+    scene.frame_start = start
+    scene.frame_end = end
+
+    # Add one Hips-Z key per integer frame so the correction cannot introduce
+    # an unmeasured Bezier overshoot between sparse provider keys.
+    for frame in range(start, end + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        root.keyframe_insert(data_path="location", index=2, frame=frame, group=root_bone_name)
+
+    z_path = f'pose.bones["{root_bone_name}"].location'
+    z_curve = next(
+        (
+            fcurve
+            for fcurve, _ in action_fcurves(action)
+            if fcurve.data_path == z_path and fcurve.array_index == 2
+        ),
+        None,
+    )
+    if z_curve is None or len(z_curve.keyframe_points) < end - start + 1:
+        raise RuntimeError("Grounding correction could not create the Hips Z action channel.")
+    for keyframe in z_curve.keyframe_points:
+        keyframe.interpolation = "LINEAR"
+    z_curve.update()
+
+    frame_records: List[Dict[str, Any]] = []
+    max_correction = 0.0
+    before_values: List[float] = []
+    after_values: List[float] = []
+
+    def write_root_z(frame: int, value: float) -> None:
+        root.location.z = value
+        root.keyframe_insert(data_path="location", index=2, frame=frame, group=root_bone_name)
+        z_curve.update()
+        bpy.context.view_layer.update()
+
+    for frame in range(start, end + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        before_minimum, _ = evaluated_world_bounds(meshes)
+        original_value = float(root.location.z)
+        test_step = 1.0
+        write_root_z(frame, original_value + test_step)
+        test_minimum, _ = evaluated_world_bounds(meshes)
+        write_root_z(frame, original_value)
+        derivative = float(test_minimum.z - before_minimum.z) / test_step
+        if abs(derivative) <= 1e-8:
+            raise RuntimeError(f"Grounding correction found no usable Hips-Z response at frame {frame}.")
+        correction = -float(before_minimum.z) / derivative
+        write_root_z(frame, original_value + correction)
+        after_minimum, _ = evaluated_world_bounds(meshes)
+        before_values.append(float(before_minimum.z))
+        after_values.append(float(after_minimum.z))
+        max_correction = max(max_correction, abs(correction))
+        frame_records.append(
+            {
+                "frame": frame,
+                "ground_contact_before": float(before_minimum.z),
+                "ground_contact_after": float(after_minimum.z),
+                "derivative": derivative,
+                "correction_source_units": correction,
+            }
+        )
+
+    scene.frame_set(start)
+    bpy.context.view_layer.update()
+    save_blend(checkpoint)
+    report = {
+        "blend": str(blend.relative_to(job)).replace("\\", "/"),
+        "checkpoint": str(checkpoint.relative_to(job)).replace("\\", "/"),
+        "action": action.name,
+        "root_bone": root_bone_name,
+        "frame_start": start,
+        "frame_end": end,
+        "fps": scene.render.fps,
+        "corrected_frames": len(frame_records),
+        "max_absolute_correction_source_units": max_correction,
+        "ground_contact_before": {
+            "minimum": min(before_values),
+            "maximum": max(before_values),
+        },
+        "ground_contact_after": {
+            "minimum": min(after_values),
+            "maximum": max(after_values),
+        },
+        "action_preservation": {
+            "policy": "existing_attack_action_root_z_only",
+            "body_motion_replaced": False,
+            "new_model_created": False,
+            "new_rig_created": False,
+            "new_provider_call": False,
+        },
+        "frames": frame_records,
+        "status": "pass" if max(after_values) <= 0.001 and min(after_values) >= -0.001 else "fail",
+    }
+    report_path = job / "blender" / "reports" / "correct_action_grounding.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if report["status"] != "pass":
+        raise RuntimeError(
+            "Grounding correction did not satisfy the per-frame contact tolerance: "
+            f"{report['ground_contact_after']}"
+        )
+    return report
+
+
 def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -2623,6 +2773,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return export_animation(req, pdx)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
+    if operation == "correct_action_grounding":
+        return correct_action_grounding(req)
     if operation == "reimport_export":
         return reimport_export(req, pdx)
     if operation == "sanitize_runtime_candidate":
