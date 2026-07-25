@@ -14,7 +14,7 @@ Parent implementation repair applied after the post-`972037edd` audit. This hand
   - Each member iteration overwrites the saved member target and appends aligned member, state, and owner entries.
   - Claims are added only when absent and are marked with `independence_wave_dm58_reclamation_front_claim_added` only when this transaction created them.
   - The resolver contains no `clear_event_target` call.
-  - Pre-cost rollback walks the aligned arrays by index, removes only transaction-created claims, removes the finite wargoal created for the aligned member/owner pair, clears staged markers, and clears the arrays.
+  - Pre-cost rollback walks the aligned arrays by index, uses the frozen owner entry rather than re-resolving a state's current owner, removes only transaction-created claims, removes the finite wargoal created for the aligned member/owner pair, clears staged markers, and clears the arrays.
 - `common/decisions/006_independence_wave_decisions.txt`
   - Success cleanup clears the aligned member array and state provenance marker alongside the state array.
 - `common/scripted_effects/006_independence_wave_effects.txt`
