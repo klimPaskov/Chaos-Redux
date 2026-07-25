@@ -151,7 +151,7 @@ Meaningful validation completed: final `hoi4.focus_inspect` and `hoi4.focus_rend
 
 The final MCP inspect and render still report 14 blocking diagnostics, so the result is intentionally handed off as unresolved geometry.
 
-`hoi4.focus_rewrite` was not used because no narrow candidate reduced the blocking count without introducing a different blocking/layout regression, and the task forbids a broad semantic redesign.
+The additional pass attempted `hoi4.focus_rewrite` with `layoutMode = compact`, but its quality gate returned `FOCUS_COMPACT_QUALITY_BLOCKED` and applied no source rewrite; the manual candidates likewise failed to reduce blockers without introducing a different layout regression.
 
 `hoi4.focus_raster` was not used because the rendered SVG/HTML and MCP diagnostics were sufficient for this source-layout audit.
 
@@ -164,3 +164,29 @@ No gameplay simplification, route omission, localisation fallback, icon fallback
 The remaining blocker is the 14-diagnostic planar layout cluster, which cannot be safely resolved by the tested local coordinate edits without a broader coupled reflow review.
 
 No additional improvement plan was written because this handoff itself records the bounded blocker and the parent owns any broader layout redesign decision.
+
+## Additional coupled reflow pass
+
+The parent requested one further coordinated pass over the founding/economy/officer/regional roots and the military capstone fan-in.
+
+The source was returned to the committed baseline after every trial, and the final baseline inspect confirms the original layout hash and 14 blocking diagnostics.
+
+| Trial | Temporary geometry | MCP result | Decision |
+| --- | --- | --- | --- |
+| Root-only reflow | `independence_wave_ajx_appoint_neutral_commission_focus` 87 -> 30, `independence_wave_define_former_host_policy` 50 -> 34, and `independence_wave_recognize_fellow_new_states` 62 -> 36 | 84 crossings, 18 node intersections, 34 long connectors, 225 diagnostics, 14 blockers | Reverted; descendant connectors created a much denser crossing field. |
+| Capstone compression | Compressed civilian/autonomy, arsenal, and border/reclamation pairs toward the military center while preserving all prerequisites | 57 crossings, 35 node intersections, 26 long connectors, 180 diagnostics, 14 blockers | Reverted; node intersections increased and blockers did not fall. |
+| Capstone ordering variant | Reordered the same side branches to 40/42, 39/41, and 37/39 across rows 7-9 | 48 crossings, 21 node intersections, 26 long connectors, 148 diagnostics, 14 blockers | Reverted; one aggregate crossing fell but blocking count and diagnostic total were unchanged. |
+| Central root/economy reflow | Moved the founding root to x24, economy lane to x22, and three regional roots to x26/30/34 | 86 crossings, 15 node intersections, 32 long connectors, 225 diagnostics, 14 blockers | Reverted; new crossings moved into the founding/economy parent fan-in. |
+| Far-right economy lane | Moved the economy lane to x90 to clear the regional-root fan-out | 62 crossings, 36 node intersections, 26 long connectors, 210 diagnostics, 26 blockers, plus duplicate-coordinate/visible-overlap errors with RHI package focuses | Reverted immediately; introduced parser/layout errors and a higher blocker count. |
+| Shifted lane group | Moved inventory/economy to x40, officer lane/capstone to x48, and regional roots to x30/34/38 | 137 crossings, 28 node intersections, 50 long connectors, 358 diagnostics, 14 blockers | Reverted; broad connector length and crossing regressions were unacceptable. |
+| MCP compact rewrite | Existing tree with `layoutMode = compact` | `FOCUS_COMPACT_QUALITY_BLOCKED`; no files changed and no artifacts applied | Not retained; the quality gate rejected the automatic reflow. |
+
+Final post-pass inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e40f19880aa4a7009a6d12927902ba7327c08d5f4396a716b3a8a0ea624031cc/d4c47dc200caa65ff5cfe55094bdc3b115a2f488248d82dcb5ce5c5e5962e407/focus-inspect.c4bfab849eef5d9e.json`.
+
+The final post-pass revision is `c4bfab849eef5d9e045f18c4a6da5d9b42e7df7a995b5c54dca6923f4bbf44b8`, with layout hash `3e5996acbdbed97ab085d52cd058861f2fbd21acc896f859268b204a9c81a5a2`, 49 crossings, 18 node intersections, 26 long connectors, 148 diagnostics, and 14 blocking diagnostics.
+
+No safe coupled reflow was found within the permitted source scope.
+
+The remaining blocker is therefore explicit: the connector clusters are globally coupled to package-owned branches and the capstone fan-in, so local or compact coordinate rewrites either preserve the 14 blockers or produce materially worse crossings, overlaps, or duplicate coordinates.
+
+The focus source remains unchanged relative to the prior handoff commit; only this handoff received the additional evidence.
