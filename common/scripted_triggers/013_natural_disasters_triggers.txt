@@ -1422,6 +1422,116 @@ natural_disaster_can_offer_medical_relief = {
 	has_fuel > constant:natural_disaster_cost_gate.foreign_medical_fuel
 }
 
+# Country scope. The foreign-relief category is visible only when inbound aid
+# is active or at least one outbound variant has both a payable donor route and
+# a currently registered recipient matching that variant's target filter. The
+# four candidate checks intentionally mirror the target decisions below so the
+# category cannot open as an empty donor shell. The recipient ledger is bounded
+# and updated on card/control changes; this trigger never performs a periodic
+# whole-world maintenance pass.
+natural_disaster_foreign_relief_category_visible = {
+	OR = {
+		has_country_flag = natural_disaster_inbound_relief_active
+		AND = {
+			natural_disaster_can_offer_neighbor_relief = yes
+			any_country = {
+				exists = yes
+				is_in_array = {
+					array = global.natural_disaster_relief_recipient_countries
+					value = THIS
+				}
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				OR = {
+					is_neighbor_of = ROOT
+					is_in_faction_with = ROOT
+					is_subject_of = ROOT
+					AND = {
+						ROOT = { is_major = yes }
+						is_on_same_continent_as = ROOT
+					}
+				}
+				natural_disaster_country_has_open_aftermath = yes
+				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+				any_controlled_state = {
+					natural_disaster_state_has_recovery_card = yes
+				}
+			}
+		}
+		AND = {
+			natural_disaster_can_offer_port_lifeline = yes
+			any_country = {
+				exists = yes
+				is_in_array = {
+					array = global.natural_disaster_relief_recipient_countries
+					value = THIS
+				}
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				OR = {
+					is_in_faction_with = ROOT
+					has_opinion = { target = ROOT value > 0 }
+					is_subject_of = ROOT
+				}
+				natural_disaster_country_has_open_aftermath = yes
+				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+				any_controlled_state = {
+					natural_disaster_state_has_recovery_card = yes
+					is_coastal = yes
+				}
+			}
+		}
+		AND = {
+			natural_disaster_can_offer_engineer_relief = yes
+			any_country = {
+				exists = yes
+				is_in_array = {
+					array = global.natural_disaster_relief_recipient_countries
+					value = THIS
+				}
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				natural_disaster_country_has_open_aftermath = yes
+				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+				any_controlled_state = {
+					natural_disaster_state_has_recovery_card = yes
+					OR = {
+						natural_disaster_state_has_strategic_transport = yes
+						natural_disaster_state_has_industry = yes
+					}
+				}
+			}
+		}
+		AND = {
+			natural_disaster_can_offer_medical_relief = yes
+			any_country = {
+				exists = yes
+				is_in_array = {
+					array = global.natural_disaster_relief_recipient_countries
+					value = THIS
+				}
+				NOT = { tag = ROOT }
+				NOT = { has_war_with = ROOT }
+				OR = {
+					is_neighbor_of = ROOT
+					is_in_faction_with = ROOT
+					has_opinion = { target = ROOT value > 0 }
+					is_subject_of = ROOT
+				}
+				natural_disaster_country_has_open_aftermath = yes
+				NOT = { has_country_flag = natural_disaster_inbound_relief_active }
+				any_controlled_state = {
+					natural_disaster_state_has_recovery_card = yes
+					OR = {
+						natural_disaster_state_has_dense_population = yes
+						has_state_flag = natural_disaster_disease_pressure
+					}
+				}
+			}
+		}
+	}
+}
+
 natural_disaster_can_route_inbound_relief = {
 	has_variable = natural_disaster_inbound_relief_state
 	has_manpower > constant:natural_disaster_cost_gate.warning_manpower
