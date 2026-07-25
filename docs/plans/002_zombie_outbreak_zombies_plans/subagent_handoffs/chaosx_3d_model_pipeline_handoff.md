@@ -1,6 +1,6 @@
 # Zombies 3D model pipeline handoff
 
-Status: complete asset package. Parent-owned runtime wiring and user-owned live HOI4 verification remain pending.
+Status: complete asset package and runtime registration. User-owned live HOI4 verification remains pending.
 
 ## Package and gates
 
@@ -41,10 +41,13 @@ The original attack action failed at frame `35` with minimum Z `0.62034225463867
 - Actual-byte parse and Blender reimport proof is `validation/export_byte_parse.json`, with per-action proof blends under `validation/` and `blender/checkpoints/`.
 - Textures and material proof are in `textures/processed/`, `textures/dds/`, `blender/reports/pdx_runtime_texture_processing.json`, `blender/reports/textures_dds.json`, and `blender/reports/final_working_material_inspect.json`.
 
-## Runtime boundary and remaining owner actions
+## Runtime registration
 
-- No gameplay, entity, `.asset`, `.gfx`, localisation, event, or runtime registration file was edited.
-- Proposed identifiers and the infantry state crosswalk are in `runtime/handoff.md` and `runtime/crosswalk.md`.
-- Parent owns the final entity/material/action registration.
+- The base `zombies` sub-unit now uses `sprite = zombies` in `common/units/zombies.txt`; all named variants remain on `sprite = infantry`.
+- `gfx/entities/chaosx_zombies.gfx` registers `chaosx_zombies_mesh` and its four PDX animation IDs.
+- `gfx/entities/chaosx_zombies.asset` registers `zombies_entity` at scale `0.8` with attack, defend, support_attack, move, retreat, death, idle, and training states.
+- `gfx/models/units/chaosx_zombies/animation_chaosx_zombies.asset` registers the four `.anim` files.
+- The mesh, four animations, and three DDS maps are synchronized under `gfx/models/units/chaosx_zombies/`; hash proof is `docs/assets/002_zombie_outbreak/models_3d/zombies/validation/runtime_wiring.json`.
+- Runtime state and file crosswalks are in `runtime/handoff.md` and `runtime/crosswalk.md`.
 - User owns live HOI4 verification; Hearts of Iron IV was not launched.
 - The move action's sampled mid-cycle sole penetration of `0.087125` source units remains the only recorded simplification/risk. No other requested simplification or omission was made.
