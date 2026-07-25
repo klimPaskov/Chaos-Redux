@@ -180,7 +180,7 @@ used by the mechanics foundation are:
 
 Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
-Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. ASSET040-ASSET043 use 64x64 authored frames at 5 FPS with static fallbacks and runtime DDS under `gfx/interface/006_independence_wave/animations/`; their four sprite families are registered in `interface/006_independence_wave.gfx` and consumed by the Statehood Ledger scripted GUI.
+Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. ASSET040-ASSET043 use 64x64 authored frames at 5 FPS with static fallbacks and runtime DDS under `gfx/interface/006_independence_wave/animations/`. The persistent Statehood Ledger readout selects the matching semantic frame from each authored strip through the centralized frame constants and refresh effect; the free-running animated siblings remain registered for future transition surfaces and are not used to cycle contradictory gameplay states.
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 

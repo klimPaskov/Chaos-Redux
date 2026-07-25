@@ -238,15 +238,19 @@ single still image. The implementation-defined target is 64x64 per frame at 5 FP
 
 | Asset | States / frames | Static sprite | Animated sprite | Runtime DDS |
 |---|---|---|---|---|
-| ASSET-040 recognition seal | hidden, weak, rising, strong, entrenched / 5 | `GFX_independence_wave_recognition_seal_static` | `GFX_independence_wave_recognition_seal_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_recognition_seal_{static,sheet}.dds` |
-| ASSET-041 dependency warning | calm, watch, danger / 3 | `GFX_independence_wave_dependency_warning_static` | `GFX_independence_wave_dependency_warning_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_dependency_warning_{static,sheet}.dds` |
-| ASSET-042 league charter activation | rest, drafting, vote, activated / 4 | `GFX_independence_wave_league_charter_activation_static` | `GFX_independence_wave_league_charter_activation_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_league_charter_activation_{static,sheet}.dds` |
-| ASSET-043 formable eligibility seal | hidden, discovered, eligible, proclaimed / 4 | `GFX_independence_wave_formable_eligibility_seal_static` | `GFX_independence_wave_formable_eligibility_seal_animated` | `gfx/interface/006_independence_wave/animations/independence_wave_formable_eligibility_seal_{static,sheet}.dds` |
+| ASSET-040 recognition seal | hidden, weak, rising, strong, entrenched / 5 | `GFX_independence_wave_recognition_seal_static` | `GFX_independence_wave_recognition_seal_animated` (transition-only) / `GFX_independence_wave_recognition_seal_states` (live frame strip) | `gfx/interface/006_independence_wave/animations/independence_wave_recognition_seal_{static,sheet}.dds` |
+| ASSET-041 dependency warning | calm, watch, danger / 3 | `GFX_independence_wave_dependency_warning_static` | `GFX_independence_wave_dependency_warning_animated` (transition-only) / `GFX_independence_wave_dependency_warning_states` (live frame strip) | `gfx/interface/006_independence_wave/animations/independence_wave_dependency_warning_{static,sheet}.dds` |
+| ASSET-042 league charter activation | rest, drafting, vote, activated / 4 | `GFX_independence_wave_league_charter_activation_static` | `GFX_independence_wave_league_charter_activation_animated` (transition-only) / `GFX_independence_wave_league_charter_activation_states` (live frame strip) | `gfx/interface/006_independence_wave/animations/independence_wave_league_charter_activation_{static,sheet}.dds` |
+| ASSET-043 formable eligibility seal | hidden, discovered, eligible, proclaimed / 4 | `GFX_independence_wave_formable_eligibility_seal_static` | `GFX_independence_wave_formable_eligibility_seal_animated` (transition-only) / `GFX_independence_wave_formable_eligibility_seal_states` (live frame strip) | `gfx/interface/006_independence_wave/animations/independence_wave_formable_eligibility_seal_{static,sheet}.dds` |
 
 Per-family briefs, frame plans, source notes, processed frames, sheets, fallbacks,
 contact sheets, previews, and the build/hash report are retained under
 `animations/`. Parent-owned `.gfx` and `.gui` wiring is recorded in the Event 006
-handoff; the four sprite registrations use the exact frame counts and 5 FPS rate.
+handoff. `common/script_constants/006_independence_wave_gui_constants.txt` and
+`independence_wave_refresh_status_frame_state` select the live semantic frame;
+the persistent ledger therefore never loops through unrelated states. The
+free-running animation registrations remain separate transition-surface hooks
+and are not the persistent readout consumer.
 
 ## Review artifacts
 
