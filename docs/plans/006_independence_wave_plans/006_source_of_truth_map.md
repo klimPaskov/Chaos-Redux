@@ -387,7 +387,7 @@ Parent decisions still required:
 3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
    and settings-aware queued `6002` playback. Keep `6001` blocked unless its
    exact recording rights are cleared.
-4. Preserve the implemented FORM-48 HBX/HAW/FSM/PFX design tranche and its exact sovereign-autonomous membership contract, but keep it runtime-unreachable until HAW and FSM are independently admitted. IW-184 attestation and its Event 005-aware capacity witness are implemented. Keep FORM-42 and FORM-06 through FORM-47 fail-closed; use no generic flags, emblems, portraits, or regional-report substitutes. The parent Event 006 completion audit remains pending.
+4. Preserve the implemented FORM-48 HBX/HAW/FSM/PFX design tranche and its exact sovereign-autonomous membership contract, but keep it runtime-unreachable until HAW and FSM are independently admitted. IW-184 attestation and its Event 005-aware capacity witness are implemented. Keep FORM-42 and FORM-06 through FORM-47 fail-closed; use no generic flags, emblems, portraits, or regional-report substitutes. The current v6/v7 completion authorities retain **HOLD** for whole-event completion.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
 6. Keep the exact vanilla-formable compatibility PASS. Preserve the implemented
