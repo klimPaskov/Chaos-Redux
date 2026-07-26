@@ -729,6 +729,18 @@ The bounded chain intentionally causes no population loss and remains dormant un
 
 The documented living-world block total is now `453`, while the countable Fallout release-floor total remains `0 of 660`.
 
+## County Fair Returns tranche
+
+The County Fair Returns is implemented as a dormant ordinary Fallout regional chain at `chaosx.fallout.572` through `chaosx.fallout.578` with candidate `572`, transaction `710054`, route `7154`, and Event Log history `9159`.
+
+It counts at least three eligible current-generation native North American rural states, chooses the lowest eligible native state id as one host, freezes Air Winter and survival ledgers, offers civic exhibition, seasonal exchange, militia muster, and memorial gathering, and schedules a 35-day result followed by a 365-day first seasonal callback.
+
+The chain applies deterministic branch outcomes, local state effects, building damage on failure, Deaths-backed failure accounting, durable country and host-state memories, hidden-AI parity, Event Log payloads, dedicated report art, and authenticated cleanup.
+
+The documented living-world block total is now `460`, while the countable Fallout release-floor total remains `0 of 660`.
+
+The chain remains dormant because no scheduler activation flag is set and the live event, probability, save recovery, multiplayer, and host-authority surfaces remain user-owned runtime checks.
+
 ## Successor allocation and player continuation B7 tranche
 
 The B7 tranche adds a dormant USA federal-continuity package and additive focus layer plus a fail-closed fragmentation candidate probe. The continuity path requires a current human reservation, frozen USA primary target, hostable primary capital, live conflict ledger, and current transaction. It records source, output, capital, cleanup, government, regional, memory, focus, and human-control receipts without switching the player. The fragmentation path names the lowest conflict-free possible country and lowest candidate state. NZL is the only reviewed package-aware candidate. Its assignment identity and generation-bound Samoa/Aotearoa conflict receipts now have guarded existing-tag and exact fragmented-transfer producers and a dormant B7-only caller. The transfer path accepts only five current candidate states with one-state AI owners, transfers that exact footprint, retires the emptied sources, and then reuses the NZL package loader. Missing-tag and general fragmented-footprint materialization remain blockers. Eleven dedicated B7 focus and idea DDS assets are present and parent-registered, while prompt provenance, shelter-icon review, and runtime loading remain open. The B7 helper does not set global successor allocation completion or scheduler activation. The exact transition caller, tag switch, runtime focus surface, save recovery, and multiplayer behavior remain unproven. See `FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`, `FALLOUT_NZL_FRAGMENTED_TRANSFER_PROOF.md`, and `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`.

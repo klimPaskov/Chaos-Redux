@@ -2,21 +2,21 @@
 
 Date: 2026-07-25
 
-Status: proposed implementation addendum, not yet accepted design truth and not release-floor credit.
+Status: accepted implementation addendum, promoted to source spec 55, and not release-floor credit while scheduler activation remains closed.
 
 All event titles, option labels, asset identifiers, and catalogue wording in this addendum are working directions rather than final localisation.
 
 ## Disposition update: 2026-07-26
 
-This proposal is explicitly queued behind the parent-selected European `The River Ration League` tranche.
+The parent-selected European `The River Ration League` tranche is complete.
 
-It remains a useful North American design, but it is not the next implementation owner because the regional matrix already exposes a distinct uncovered European river-governance gap and the parent selected that gap for the current tranche.
+This County Fair design is now the next implementation owner and is promoted to `docs/specs/air_cleanliness_fallout_specs/specs/55_reviewed_regional_county_fair_returns.md`.
 
-The provisional events `565` through `571`, transaction `710053`, route `7153`, Event Log history `9158`, and catalogue identity `FALLOUT-565` are no longer reserved by this County Fair proposal.
+The provisional events `565` through `571`, transaction `710053`, route `7153`, Event Log history `9158`, and catalogue identity `FALLOUT-565` remain owned by River Ration League.
 
-Before County Fair implementation, rescan and remap its entire ownership row together.
+County Fair is remapped to events `572` through `578`, transaction `710054`, route `7154`, Event Log history `9159`, and catalogue identity `FALLOUT-572`.
 
-This disposition resolves the addendum for improvement-loop cadence without promoting or rejecting its design.
+This disposition resolves the improvement-loop queue and preserves the accepted design as source spec 55.
 
 ## Recommendation
 
@@ -34,7 +34,7 @@ The prior Ashline Firebreak tranche is implemented and reconciled in `specs/52_r
 
 There is therefore no unresolved Ashline expansion layer blocking this pass.
 
-`The County Fair Returns` remains an unimplemented candidate row in `matrices/fallout_regional_event_matrix.md`.
+`The County Fair Returns` remains a dormant candidate row in `matrices/fallout_regional_event_matrix.md` and is now implemented outside release-floor credit.
 
 Repository searches found no gameplay, localisation, or reviewed-spec implementation under the county-fair working label.
 
@@ -86,29 +86,29 @@ If any value has been claimed in the shared worktree, remap the entire row toget
 | --- | --- |
 | Working chain title | The County Fair Returns |
 | Namespace | `chaosx.fallout` |
-| Candidate id and opening token | `565` |
-| Scheduler transaction key | `710053` |
-| Route identity | `7153` |
-| Event Log history identity | `9158` |
+| Candidate id and opening token | `572` |
+| Scheduler transaction key | `710054` |
+| Route identity | `7154` |
+| Event Log history identity | `9159` |
 | Primary family | `constant:fallout_event_primary_family.regional_and_biome` |
 | Cooldown family | `constant:fallout_event_cooldown_family.recovery` |
 | Event class | ordinary routine incident, followed by delayed result and callback |
 | Required region | `constant:fallout_region.north_america` |
 | Earliest phase | `constant:fallout_event_phase.rival_orders`, equivalent to Years 3 onward |
 | Subject | one deterministic current-generation native rural state |
-| Catalogue row direction | `FALLOUT-565`, subject to the collision rescan |
+| Catalogue row direction | `FALLOUT-572` |
 
 Proposed event allocation:
 
 | Event | Role |
 | --- | --- |
-| `chaosx.fallout.565` | Human opening with four visible choices |
-| `chaosx.fallout.566` | Hidden-AI opening using the same costs, branch reservation, and effects |
-| `chaosx.fallout.567` | Human delayed result with branch-specific success, partial, and failure descriptions |
-| `chaosx.fallout.568` | Hidden-AI delayed result using the same grading and effects |
-| `chaosx.fallout.569` | Human one-season-later fair review |
-| `chaosx.fallout.570` | Hidden-AI one-season-later fair review |
-| `chaosx.fallout.571` | Exact cancellation and cleanup terminal |
+| `chaosx.fallout.572` | Human opening with four visible choices |
+| `chaosx.fallout.573` | Hidden-AI opening using the same costs, branch reservation, and effects |
+| `chaosx.fallout.574` | Human delayed result with branch-specific success, partial, and failure descriptions |
+| `chaosx.fallout.575` | Hidden-AI delayed result using the same grading and effects |
+| `chaosx.fallout.576` | Human one-season-later fair review |
+| `chaosx.fallout.577` | Hidden-AI one-season-later fair review |
+| `chaosx.fallout.578` | Exact cancellation and cleanup terminal |
 
 One result event per presentation mode is sufficient because the selected branch and graded outcome can select triggered descriptions and effects.
 
@@ -307,7 +307,7 @@ Do not invent exact probability percentages in advance.
 
 ## Event Log, localisation, and catalogue directions
 
-The Event Log should use history `9158` if the collision rescan confirms it.
+The Event Log uses history `9159` after the collision rescan.
 
 The primary actor is the country.
 
@@ -335,7 +335,7 @@ Catalogue direction for `docs/spreadsheets/chaos_redux_events_catalog.xlsx`:
 
 | Field | Direction |
 | --- | --- |
-| Event id | `FALLOUT-565`, subject to collision rescan |
+| Event id | `FALLOUT-572` |
 | Event name | Final title should evoke the return of a county or agricultural fair without treating the working label as locked localisation. |
 | Type | Routine or recovery regional incident, aligned with the workbook’s existing vocabulary. |
 | Details | Several stable rural districts gather produce, repairs, livestock, volunteers, and remembered names at one host ground. |
@@ -401,8 +401,8 @@ No technology or doctrine change is proposed, so that limitation does not block 
 
 The chain is not implementation-complete until the parent has evidence for all of the following:
 
-1. The shared-worktree collision rescan confirms or remaps events `565` through `571`, candidate `565`, transaction `710053`, route `7153`, and history `9158` as one ownership set.
-2. The event-token table gains the seven named county-fair tokens, the candidate identity table gains the candidate, transaction, and route names, and the current route `upper_bound = 7153` advances to the correct exclusive value after route `7153` is added.
+1. The shared-worktree collision rescan confirms events `572` through `578`, candidate `572`, transaction `710054`, route `7154`, and history `9159` as one ownership set.
+2. The event-token table contains the seven named County Fair tokens, the candidate identity table contains the candidate, transaction, and route names, and the route upper bound is `7155`.
 3. The candidate proves the exact runtime region `constant:fallout_region.north_america` rather than using an older thematic regional label.
 4. The rural admission sweep counts the required eligible states and the deterministic host selector chooses the lowest eligible native state id.
 5. The candidate freezes only one host state and does not pretend that a multi-state transaction exists.

@@ -116,6 +116,7 @@
 - `specs/52_reviewed_regional_ashline_firebreak.md`
 - `specs/53_successor_allocation_player_continuation_b7.md`
 - `specs/54_reviewed_regional_river_ration_league.md`
+- `specs/55_reviewed_regional_county_fair_returns.md`
 
 ## Matrices
 
