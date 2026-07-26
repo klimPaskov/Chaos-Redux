@@ -646,3 +646,11 @@ The chain carries four authored branch costs, frozen Air Winter and survival led
 The chain remains dormant and uncounted until a later reviewed scheduler activation decision and runtime receipt proof are available.
 
 The documented living-world total is now `460` and the countable Fallout living-world total remains `0 of 660`.
+
+## Refugee Train bilateral Event Log history
+
+The dormant Refugee Train bilateral consumer uses dedicated Event Log history `9160` for its four opening choices and twelve resolved branch outcomes.
+
+History `9160` is outside the ordinary candidate ledger and does not add event blocks or release-floor credit.
+
+The writer records the current participant and authenticated paired country as the two actors, while shared Event Log routing resolves the dedicated name and payload detail.

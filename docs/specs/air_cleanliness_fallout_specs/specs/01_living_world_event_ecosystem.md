@@ -472,6 +472,8 @@ The opening transition is token authenticated and commits both rows to `response
 
 The response side provides human and hidden AI paths with deterministic success, partial, and failure outcomes, durable country and state memory, Air Winter and Supply Access effects, and existing bilateral cleanup.
 
-This pilot remains outside the ordinary reviewed-row count and contributes zero countable blocks until the Fallout scheduler activation and runtime receipt surfaces are proven.
+The dormant pilot writes dedicated Event Log history `9160` with four opening-choice payloads and twelve branch-outcome payloads. The current participant is the primary actor and the authenticated paired country is the secondary actor, while shared Event Log routing supplies the compact title and detail text.
+
+This pilot remains outside the ordinary reviewed-row count and contributes zero countable blocks until the Fallout scheduler activation and runtime receipt surfaces are proven. Event Log rendering, save recovery, multiplayer host authority, and cleanup timing remain unobserved.
 
 The implementation addendum is `docs/plans/air_cleanliness_fallout_plans/2026-07-26_refugee_train_bilateral_consumer_addendum.md`.

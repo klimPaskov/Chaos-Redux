@@ -533,6 +533,82 @@ fallout_event_415_cleanup = {
 # Dormant bilateral Refugee Train consumer
 # ---------------------------------------------------------------------------
 
+fallout_event_415_record_bilateral_history = {
+	set_temp_variable = { fallout_event_415_bilateral_history_should_record = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			check_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.zero }
+			NOT = { has_country_flag = fallout_event_415_bilateral_opening_history_recorded }
+		}
+		set_temp_variable = { fallout_event_415_bilateral_history_should_record = constant:fallout_event_runtime.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.one }
+			NOT = { has_country_flag = fallout_event_415_bilateral_result_history_recorded }
+		}
+		set_temp_variable = { fallout_event_415_bilateral_history_should_record = constant:fallout_event_runtime.one }
+	}
+	if = {
+		limit = {
+			check_variable = { fallout_event_415_bilateral_history_should_record = constant:fallout_event_runtime.one }
+			check_variable = { fallout_event_415_bilateral_history_branch_value > constant:fallout_event_415_branch.none }
+			check_variable = { fallout_event_415_bilateral_history_branch_value < constant:fallout_event_415_branch.upper_bound }
+			check_variable = { fallout_event_415_bilateral_partner_id > constant:fallout_event_runtime.zero }
+		}
+		set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.choice_admit_families }
+		if = {
+			limit = { check_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.zero } }
+			if = { limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.redirect_column } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.choice_redirect_column } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.quarantine_train } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.choice_quarantine_train } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.recruit_specialists } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.choice_recruit_specialists } }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.admit_families } }
+			if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.admit_families_success } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.admit_families_partial } }
+			else = { set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.admit_families_failure } }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.redirect_column } }
+			if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.redirect_column_success } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.redirect_column_partial } }
+			else = { set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.redirect_column_failure } }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_event_415_bilateral_history_branch_value = constant:fallout_event_415_branch.quarantine_train } }
+			if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.quarantine_train_success } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.quarantine_train_partial } }
+			else = { set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.quarantine_train_failure } }
+		}
+		else = {
+			if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.recruit_specialists_success } }
+			else_if = { limit = { check_variable = { fallout_event_415_bilateral_history_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.recruit_specialists_partial } }
+			else = { set_temp_variable = { fallout_event_415_bilateral_history_payload = constant:fallout_event_415_bilateral_log.recruit_specialists_failure } }
+		}
+		set_temp_variable = { events_log_system_event_id = constant:fallout_event_415_bilateral_log.history_id }
+		set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.fallout_country_memory }
+		set_temp_variable = { events_log_system_payload = fallout_event_415_bilateral_history_payload }
+		set_temp_variable = { events_log_system_actor = ROOT.id }
+		set_temp_variable = { events_log_system_has_actor = constant:fallout_event_runtime.one }
+		set_temp_variable = { events_log_system_secondary_actor = fallout_event_415_bilateral_partner_id }
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:fallout_event_runtime.one }
+		record_events_log_system_history_entry = yes
+		refresh_events_log_system_history_views = yes
+		if = { limit = { check_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.zero } } set_country_flag = fallout_event_415_bilateral_opening_history_recorded }
+		else = { set_country_flag = fallout_event_415_bilateral_result_history_recorded }
+	}
+	clear_temp_variable = fallout_event_415_bilateral_history_should_record
+	clear_temp_variable = fallout_event_415_bilateral_history_payload
+	clear_temp_variable = events_log_system_event_id
+	clear_temp_variable = events_log_system_event_type
+	clear_temp_variable = events_log_system_payload
+	clear_temp_variable = events_log_system_actor
+	clear_temp_variable = events_log_system_has_actor
+	clear_temp_variable = events_log_system_secondary_actor
+	clear_temp_variable = events_log_system_has_secondary_actor
+}
+
 # Supported scope: COUNTRY. Finds the reviewed Refugee Train target owned by
 # this participant without relying on a mutable last-selection variable.
 fallout_event_415_find_bilateral_candidate_state = {
@@ -624,17 +700,26 @@ fallout_event_415_choose_bilateral_opening = {
 		set_variable = { fallout_event_415_bilateral_selected_branch = fallout_event_415_bilateral_requested_branch }
 		set_variable = { fallout_event_415_bilateral_ticket = fallout_event_dispatch_issued_ticket }
 		set_variable = { fallout_event_415_bilateral_generation = fallout_event_dispatch_issued_generation }
+		var:fallout_event_dispatch_issued_target = {
+			set_variable = { ROOT.fallout_event_415_bilateral_partner_id = id }
+		}
 		set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 		fallout_event_mark_issued_bilateral_opening_response_pending = yes
 		if = {
 			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
 			fallout_event_415_pay_bilateral_initiator_cost = yes
 			set_country_flag = fallout_event_415_bilateral_memory_opened
+			set_temp_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_415_bilateral_history_branch_value = fallout_event_415_bilateral_selected_branch }
+			fallout_event_415_record_bilateral_history = yes
+			clear_temp_variable = fallout_event_415_bilateral_history_stage
+			clear_temp_variable = fallout_event_415_bilateral_history_branch_value
 		}
 		else = {
 			clear_variable = fallout_event_415_bilateral_selected_branch
 			clear_variable = fallout_event_415_bilateral_ticket
 			clear_variable = fallout_event_415_bilateral_generation
+			clear_variable = fallout_event_415_bilateral_partner_id
 		}
 	}
 }
@@ -798,6 +883,9 @@ fallout_event_415_resolve_bilateral_response = {
 		}
 		set_temp_variable = { fallout_event_415_bilateral_response_ticket = fallout_event_dispatch_issued_ticket }
 		var:fallout_event_dispatch_issued_target = { save_event_target_as = fallout_event_415_bilateral_initiator }
+		var:fallout_event_dispatch_issued_target = {
+			set_variable = { ROOT.fallout_event_415_bilateral_partner_id = id }
+		}
 		set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 		set_temp_variable = { fallout_event_requested_outcome = fallout_event_415_bilateral_requested_outcome }
 		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
@@ -822,12 +910,23 @@ fallout_event_415_resolve_bilateral_response = {
 					set_temp_variable = { fallout_event_415_bilateral_outcome_to_apply = fallout_event_bilateral_outcome_entries^fallout_event_bilateral_origin_row_index }
 					fallout_event_415_apply_bilateral_country_outcome = yes
 				}
+				set_variable = { ROOT.fallout_event_415_bilateral_history_branch = fallout_event_415_bilateral_selected_branch }
 				clear_variable = fallout_event_415_bilateral_selected_branch
 				clear_variable = fallout_event_415_bilateral_ticket
 				clear_variable = fallout_event_415_bilateral_generation
 				clr_country_flag = fallout_event_415_bilateral_opening_cost_paid
 				clr_country_flag = fallout_event_415_bilateral_memory_opened
+				clear_variable = fallout_event_415_bilateral_partner_id
 			}
+			set_temp_variable = { fallout_event_415_bilateral_history_stage = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_415_bilateral_history_branch_value = fallout_event_415_bilateral_history_branch }
+		set_temp_variable = { fallout_event_415_bilateral_history_outcome = fallout_event_415_bilateral_requested_outcome }
+		fallout_event_415_record_bilateral_history = yes
+		clear_temp_variable = fallout_event_415_bilateral_history_stage
+		clear_temp_variable = fallout_event_415_bilateral_history_branch_value
+		clear_temp_variable = fallout_event_415_bilateral_history_outcome
+		clear_variable = fallout_event_415_bilateral_history_branch
+		clear_variable = fallout_event_415_bilateral_partner_id
 		}
 	}
 }

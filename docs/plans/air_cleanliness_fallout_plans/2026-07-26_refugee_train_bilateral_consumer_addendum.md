@@ -30,6 +30,14 @@ The state target is recovered from each participant's current reviewed candidate
 
 Resolved rows remain visible to the existing bilateral cleanup reconciler.
 
+The bilateral pilot records its opening and resolved outcome in dedicated Event Log history `9160`.
+
+Opening payloads identify the selected rail policy, while result payloads identify the success, partial, or failure outcome for that policy.
+
+The writer uses the current participant as the primary actor and the authenticated paired country as the secondary actor, with stage flags preventing duplicate rows.
+
+The shared Event Log name and detail routes use dedicated Refugee Train Compact localisation.
+
 No new tag, diplomacy relation, province sweep, asset, sprite, audio path, or scheduler activation flag is introduced.
 
 ## Owned files
@@ -41,6 +49,9 @@ No new tag, diplomacy relation, province sweep, asset, sprite, audio path, or sc
 - `common/scripted_triggers/fallout_world_end_refugee_train_event_triggers.txt`
 - `events/fallout_world_end_events.txt`
 - `localisation/english/fallout_world_end_refugee_train_l_english.yml`
+- `common/scripted_localisation/fallout_world_end_refugee_train_bilateral_event_log_scripted_localisation.txt`
+- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
+- `common/scripted_effects/chaosx_events_log_effects.txt`
 
 ## Boundaries
 
@@ -50,6 +61,6 @@ The scheduler activation flags remain unset.
 
 The exact engine behavior of dynamic array scope selection, native country-event issuance, save recovery, multiplayer host authority, and bilateral cleanup remains unobserved because HOI4 was not launched.
 
-The four event blocks are outside the fifty-four reviewed ordinary candidate rows and do not increase the `0 of 660` countable release-floor total.
+The four event blocks and history `9160` are outside the fifty-four reviewed ordinary candidate rows and do not increase the `0 of 660` countable release-floor total.
 
-Separate Event Log payloads for this bilateral pilot are not claimed because the consumer remains dormant and the existing candidate identity remains the ordinary Refugee Train row.
+Static Event Log wiring is complete for this dormant pilot, but runtime Event Log rendering, save recovery, multiplayer host authority, and cleanup timing remain unobserved because HOI4 was not launched.

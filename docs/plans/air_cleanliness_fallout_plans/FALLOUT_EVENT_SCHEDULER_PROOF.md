@@ -37,7 +37,7 @@ The numerical substrate does not define or call living-world event blocks. It do
 
 The relationship-class candidate path now has a separate reciprocal payload proof, detailed in `2026-07-26_relationship_candidate_reservation_addendum.md`. A row must name a current distinct partner, carry bilateral opportunity evidence, and match a partner row with the same candidate id, transaction key, class, event-token pair, visible cost, and back-reference to the source registry index. The selected relationship branch calls `fallout_event_reserve_bilateral_transaction` only after that proof. Ordinary receipt reconciliation and ordinary dispatch are skipped for the accepted relationship reservation. The existing bilateral API remains the only ledger writer and retains its both-or-neither rollback, exact retry, participant capacity, control-mode, visible-budget, and reciprocal cleanup contracts.
 
-Refugee Train candidate `415` now has a dormant pairing pass recorded in `FALLOUT_REFUGEE_TRAIN_RELATIONSHIP_PAIRING_PROOF.md`. The pass selects the two lowest reviewed registries carrying that exact row and writes reciprocal registry indices. The other three relationship rows still carry the typed no-partner sentinel. No relationship row is countable because the later consumer must still mark the reserved pair `response_pending`, issue the bilateral response envelope, and authenticate both participants. The pass does not set either scheduler activation flag, issue an event, or add release-floor credit.
+Refugee Train candidate `415` now has a dormant pairing pass recorded in `FALLOUT_REFUGEE_TRAIN_RELATIONSHIP_PAIRING_PROOF.md` and a separate authored opening or response consumer recorded in `FALLOUT_REFUGEE_TRAIN_BILATERAL_CONSUMER_PROOF.md`. The pass selects the two lowest reviewed registries carrying that exact row and writes reciprocal registry indices. The consumer marks the reserved pair `response_pending`, issues the bilateral response envelope, authenticates both participants, and records Event Log history `9160`. The other three relationship rows still carry the typed no-partner sentinel. No relationship row is countable because scheduler activation and runtime receipt surfaces remain unproven. The pass and consumer do not set either scheduler activation flag or add release-floor credit.
 
 ## Major-arc reservation substrate
 
@@ -644,6 +644,8 @@ The opening uses the existing `bilateral_response` dispatch source and moves an 
 
 Human and hidden AI paths have separate opening and response tokens, branch costs, deterministic response outcomes, durable refugee memory, Air Winter state effects, and existing bilateral cleanup handoff.
 
+The dormant consumer writes dedicated Event Log history `9160` with opening-choice and resolved-outcome payloads, using the paired country as the secondary actor through the shared Event Log routes.
+
 These four consumer blocks remain outside the fifty-four reviewed ordinary candidate rows and contribute zero countable blocks to the `0 of 660` release-floor total.
 
-The activation flags remain unset, and native country-event issuance, save recovery, multiplayer host authority, Event Log presentation, and cleanup timing remain unproven because HOI4 was not launched.
+The activation flags remain unset, and native country-event issuance, save recovery, multiplayer host authority, Event Log rendering, and cleanup timing remain unproven because HOI4 was not launched.
