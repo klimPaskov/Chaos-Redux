@@ -68,6 +68,9 @@ fallout_accept_request_envelope = {
 fallout_queue_request_envelope = {
 	clear_global_event_target = fallout_request_actor
 	clear_global_event_target = fallout_request_state
+	# A new request is admitted only while the ledger is free. Clear any stale
+	# coordinator pointer before the host pulse claims this envelope.
+	clear_global_event_target = fallout_transition_coordinator
 	set_global_flag = fallout_request_pending
 	set_variable = { global.fallout_request_date = global.date }
 	if = {

@@ -19,6 +19,8 @@ The surface is not a super-event. The ordinary super-event GUI and event picture
 
 `fallout_lock_transition` is the only entry path that sets the transition active flag and it saves `fallout_transition_coordinator` before scheduling phase event `chaosx.fallout.1001`. Every phase event requires the current coordinator country and the active generation-bound phase. The coordinator advances one phase after its current receipts are durable, marks the GUI dirty, and schedules the next phase after the documented three-hour beat interval.
 
+New request intake clears any stale `fallout_transition_coordinator` target before writing the pending envelope. The host reconciliation pulse then claims the single request target, so a previous owner cannot block a fresh request for one date.
+
 The host coordinator also owns request validation, snapshot reconstruction, state grading, population loss, physical collapse, diplomacy reset, successor allocation, numerical survival commit, player continuation, and map return. Save reconciliation calls `fallout_world_end_migrate_save`, reschedules an unissued current phase, and never creates a second transition generation.
 
 Dedicated Fallout blackout audio is dispatched separately from the GUI. It uses the existing super-event audio setting only as a volume and playback preference. No super-event event, quote, button, or picture slot is used.
