@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-four
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-five
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -464,6 +464,14 @@ Four authored policies cover a civic exhibition, seasonal exchange, militia must
 The callback records annual institution, partial tradition, or interrupted memories, records Event Log payloads with the authenticated host state as secondary actor, and releases both delayed cleanup receipts.
 
 The candidate remains dormant and contributes zero countable blocks until a Fallout-owned scheduler activation setter and runtime receipt proof exist. The dedicated proof is recorded in `FALLOUT_COUNTY_FAIR_RETURNS_CHAIN_PROOF.md`.
+
+## The Nile Pump Congress correction
+
+The Nile Pump Congress is the fifty-fifth reviewed ordinary candidate.
+
+It uses candidate id `579`, transaction `710055`, route `7155`, event blocks `579` through `585`, and Event Log history `9161`.
+
+Its state selector requires a current-generation owner-controlled sub-Saharan African rural state with durable clean-water, Air Winter, survival, population, and infrastructure evidence. Four authored branches produce river compact, contested compact, or basin war memory outcomes with callback re-evaluation and invalid-target cleanup guards. It remains dormant and outside release-floor credit. The dedicated chain proof is `FALLOUT_NILE_PUMP_CONGRESS_CHAIN_PROOF.md`.
 
 ## Refugee Train bilateral consumer
 

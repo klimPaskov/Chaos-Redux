@@ -13505,6 +13505,134 @@ country_event = {
 	immediate = { fallout_event_572_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout regional chain: The Nile Pump Congress
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.579
+	title = chaosx.fallout.579.t
+	desc = chaosx.fallout.579.desc
+	picture = GFX_report_event_fallout_nile_pump_congress
+	is_triggered_only = yes
+	trigger = { fallout_event_579_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.579.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_579_cost.public_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_579_cost.public_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_579_cost.public_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_579_cost.public_water compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.public_pump_board } fallout_event_579_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.579.a.tt
+		ai_chance = { base = constant:fallout_event_579_threshold.ai_public_priority }
+	}
+	option = {
+		name = chaosx.fallout.579.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_579_cost.command_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_579_cost.command_equipment compare = greater_than_or_equals }
+			check_variable = { command_power value = constant:fallout_event_579_cost.command_command_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.upstream_command } fallout_event_579_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.579.b.tt
+		ai_chance = { base = constant:fallout_event_579_threshold.ai_command_priority }
+	}
+	option = {
+		name = chaosx.fallout.579.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_579_cost.cooperative_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_579_cost.cooperative_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_579_cost.cooperative_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_579_cost.cooperative_water compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.river_cooperatives } fallout_event_579_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.579.c.tt
+		ai_chance = { base = constant:fallout_event_579_threshold.ai_cooperative_priority }
+	}
+	option = {
+		name = chaosx.fallout.579.d
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_579_cost.hold_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_579_cost.hold_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_579_cost.hold_water compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.emergency_hold } fallout_event_579_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.579.d.tt
+		ai_chance = { base = constant:fallout_event_579_threshold.ai_hold_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.580
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_579_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_579_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.581
+	title = chaosx.fallout.581.t
+	desc = { text = chaosx.fallout.581.invalid.d trigger = { has_country_flag = fallout_event_579_target_invalidated } }
+	desc = { text = chaosx.fallout.581.public.success.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.public_pump_board } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.581.public.partial.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.public_pump_board } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.581.public.failure.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.public_pump_board } } }
+	desc = { text = chaosx.fallout.581.command.success.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.upstream_command } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.581.command.partial.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.upstream_command } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.581.command.failure.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.upstream_command } } }
+	desc = { text = chaosx.fallout.581.cooperative.success.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.river_cooperatives } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.581.cooperative.partial.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.river_cooperatives } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.581.cooperative.failure.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.river_cooperatives } } }
+	desc = { text = chaosx.fallout.581.hold.success.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.emergency_hold } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.581.hold.partial.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.emergency_hold } check_variable = { fallout_event_579_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.581.hold.failure.d trigger = { check_variable = { fallout_event_579_selected_branch = constant:fallout_event_579_branch.emergency_hold } } }
+	picture = GFX_report_event_fallout_nile_pump_congress
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_579_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	immediate = { if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated } }
+	option = { name = chaosx.fallout.581.a hidden_effect = { fallout_event_579_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.581.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.582
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_579_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_579_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.583
+	title = chaosx.fallout.583.t
+	desc = { text = chaosx.fallout.583.invalid.d trigger = { has_country_flag = fallout_event_579_target_invalidated } }
+	desc = { text = chaosx.fallout.583.success.d trigger = { check_variable = { fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.583.partial.d trigger = { check_variable = { fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.583.failure.d trigger = { check_variable = { fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_nile_pump_congress
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_579_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_579_branch.upper_bound } fallout_event_579_registry_metadata_is_current = yes }
+	immediate = { if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated } fallout_event_579_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.583.a hidden_effect = { fallout_event_579_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.583.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.584
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_579_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_579_branch.upper_bound } fallout_event_579_registry_metadata_is_current = yes }
+	immediate = { if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated } fallout_event_579_calculate_callback_outcome = yes fallout_event_579_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.585
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_579_cleanup_can_enter = yes }
+	immediate = { fallout_event_579_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 
