@@ -131,8 +131,9 @@ they are not current routing documents.
   manifests; candidates remain evidence only until independent review. The
   2026-07-26 ARX Vernè commander candidate is explicitly candidate-only and
   has no DDS or runtime wiring; the companion Pinna crown candidate is also
-  evidence-only and is blocked by the exact Kaiserreich character-owner
-  collision recorded in its source handoff.
+  evidence-only. Its source and independent visual handoffs record bounded
+  style/identity passes, but the exact Kaiserreich character-owner collision
+  and unresolved strict crown-role fit remain blockers.
   The historical `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/`
   family:
   twenty-four attributed real-male treatments preserve their source identities,
