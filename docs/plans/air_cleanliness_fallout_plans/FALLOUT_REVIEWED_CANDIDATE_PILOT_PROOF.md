@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-five
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-seven
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -61,8 +61,7 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define seventeen candidate ids, seventeen transaction
-  keys, and seventeen route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define fifty-seven candidate ids, fifty-seven transaction keys, and fifty-seven route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
@@ -482,6 +481,16 @@ It uses candidate id `586`, transaction `710056`, route `7156`, event blocks `58
 Its country gate requires the Latin America and Caribbean region, current-generation Fallout identity, durable Survival resources, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled state with a produced Air Winter snapshot, surviving population, Supply Access, Reclamation, infrastructure, and a non-damaged air base below the vanilla cap.
 
 Four authored branches cover civil air service, military network, private couriers, and international consortium. The result and callback use frozen ledgers, deterministic equal-weight grading, bounded Deaths effects, branch-specific state and country memories, hidden-AI parity, Event Log history `9162`, and authenticated cleanup. The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_OLD_AIRFIELD_CHAIN_PROOF.md`.
+
+## The Radio Island Chain correction
+
+The Radio Island Chain is the fifty-seventh reviewed ordinary candidate.
+
+It uses candidate id `600`, transaction `710057`, route `7157`, event blocks `600` through `606`, and Event Log history `9163`.
+
+Its country gate requires the Oceania and Remote Islands region, current-generation Fallout identity, durable Survival resources, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled state with a produced Air Winter snapshot, surviving population, Supply Access, Reclamation, radio or radar capacity, and infrastructure.
+
+Four authored branches cover public relay, maritime defense, harbor subscription, and island federation. The result and callback use frozen ledgers, deterministic equal-weight grading, native Command Power and War Support gates, bounded Deaths effects, branch-specific state and country memories, hidden-AI parity, Event Log history `9163`, dedicated report art, generation-reset refunds, and authenticated cleanup. The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_RADIO_ISLAND_CHAIN_PROOF.md`.
 
 ## Refugee Train bilateral consumer
 
