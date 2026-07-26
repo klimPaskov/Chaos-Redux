@@ -130,7 +130,7 @@ they are not current routing documents.
 - IW-184 HBX is admitted after the full post-wire country-package audit. William D. Stephens is the sourced real-male civic leader with the exact identity-preserving HOI4 repaint wired to the stable civilian-large consumer. The package/runtime DDS is byte-identical at SHA-256 `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor, dossier, operative, commander, or `_small` derivative is authorized. Exact content attestation, automatic readiness, and the Event 005-aware capacity witness are implemented; live execution evidence remains pending.
 - The ten attested packages can satisfy the three-, four-, five-, and seven-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
   Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction.
-  The ten-country bands now have a source-level pair-capacity path: IW-008 RHI and IW-010 AJX share RG-RHINE-SAAR but reserve distinct anchors (51 and 42) and independent host remnants. The central reservation effect admits only that exact counterpart pair; every other group remains one-package-only. Live ten-country disjoint-reservation, host-survival, and synchronized-transaction proof is still required.
+  The ten-country bands now have a source-level pair-capacity path: IW-008 RHI and IW-010 AJX share RG-RHINE-SAAR but reserve distinct anchors (51 and 42). The central reservation effect admits only that exact counterpart pair; host protection remains per affected host and may share GER's protected-remnant row when both anchors have the same owner. Every other group remains one-package-only. Live ten-country disjoint-reservation, host-survival, and synchronized-transaction proof is still required.
   The exact 3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
   FORM-48's proof writers own `independence_wave_form48_registry_surface_registered` and `independence_wave_form48_readiness_attested`; no annexation or integration fallback is used.
 - The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
@@ -194,6 +194,8 @@ they are not current routing documents.
   FORM-42 remains fail-closed.
 - `6001` remains blocked on exact recording rights and the accepted brass-and-organ tone. v22 research identifies same-composition Candidates A, B, and C, but none is selected, downloaded, or wired; no fallback is authorized without explicit user approval.
 
+The bounded RG-RHINE-SAAR re-audit `006_rhine_saar_shared_group_capacity_reaudit_v22_2026_07_27.md` is source-level PASS / runtime HOLD: the exact IW-008/IW-010 pair is admitted only with distinct anchors, while same-host protected-remnant, both-order, Event 005 collision, rollback/save-load, and exact-ten execution evidence remain open.
+
 ## Current package gates
 
 | Package | Current state | Resume rule |
@@ -224,8 +226,9 @@ An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
 chaos-band, and wave-size gates. The current ten-ID set has only nine compatible
 reservation groups because RHI and AJX share RG-RHINE-SAAR, but that pair now
-has a narrow two-package capacity rule because anchors 51 and 42 and their
-host remnants are distinct. The 3-, 4-, 5-, 7-, and 10-country bands remain
+has a narrow two-package capacity rule because anchors 51 and 42 are distinct
+and each row still passes the ordinary per-host protected-remnant check. The
+3-, 4-, 5-, 7-, and 10-country bands remain
 conditionally viable pending live disjoint reservation and synchronized
 transaction proof. World Collapse remains exactly ten and still fails closed
 when runtime availability cannot satisfy the synchronized frozen plan.
