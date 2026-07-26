@@ -461,3 +461,17 @@ Completion requires:
 - AI resolves the same systems
 - the visible event budget prevents spam
 - event effects connect to the survival, climate, focus, decision, state, population, building, and diplomatic systems
+
+## Refugee Train bilateral consumer pilot
+
+The Refugee Train relationship row has a dormant authored bilateral opening and response consumer at event ids `1019` through `1022`.
+
+The existing reciprocal reservation stores the initiator and responder tokens, and the reconciler emits the opening envelope only for a current reserved initiator row.
+
+The opening transition is token authenticated and commits both rows to `response_pending` atomically.
+
+The response side provides human and hidden AI paths with deterministic success, partial, and failure outcomes, durable country and state memory, Air Winter and Supply Access effects, and existing bilateral cleanup.
+
+This pilot remains outside the ordinary reviewed-row count and contributes zero countable blocks until the Fallout scheduler activation and runtime receipt surfaces are proven.
+
+The implementation addendum is `docs/plans/air_cleanliness_fallout_plans/2026-07-26_refugee_train_bilateral_consumer_addendum.md`.

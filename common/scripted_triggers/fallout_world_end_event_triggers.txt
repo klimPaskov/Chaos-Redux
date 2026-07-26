@@ -1701,6 +1701,22 @@ fallout_event_dispatch_envelope_matches_transaction = {
 						check_variable = { var = fallout_event_bilateral_ai_response_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }
 					}
 					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+						check_variable = { var = fallout_event_bilateral_control_mode_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_mode compare = equals }
+						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.reserved }
+						check_variable = { fallout_event_bilateral_role_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_role.initiator }
+						check_variable = { fallout_event_bilateral_response_token_entries^fallout_event_dispatch_stored_index = constant:fallout_event_id.refugee_train_bilateral_opening_human }
+						check_variable = { var = fallout_event_dispatch_event_token value = constant:fallout_event_id.refugee_train_bilateral_opening_human compare = equals }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+						check_variable = { var = fallout_event_bilateral_control_mode_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_mode compare = equals }
+						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.reserved }
+						check_variable = { fallout_event_bilateral_role_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_role.initiator }
+						check_variable = { fallout_event_bilateral_ai_response_token_entries^fallout_event_dispatch_stored_index = constant:fallout_event_id.refugee_train_bilateral_opening_ai }
+						check_variable = { var = fallout_event_dispatch_event_token value = constant:fallout_event_id.refugee_train_bilateral_opening_ai compare = equals }
+					}
+					AND = {
 						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_cleanup }
 						check_variable = { fallout_event_bilateral_status_entries^fallout_event_dispatch_stored_index = constant:fallout_event_bilateral_status.cleanup_pending }
 						check_variable = { var = fallout_event_bilateral_cleanup_token_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_event_token compare = equals }

@@ -15924,6 +15924,108 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.1019
+	title = chaosx.fallout.1019.t
+	desc = chaosx.fallout.1019.d
+	picture = GFX_report_event_fallout_refugee_train
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_415_bilateral_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1019.a
+		trigger = {
+			OR = { has_government = democratic has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.admit_families_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.admit_families_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.admit_families_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_branch = constant:fallout_event_415_branch.admit_families } fallout_event_415_choose_bilateral_opening = yes }
+		custom_effect_tooltip = chaosx.fallout.1019.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1019.b
+		trigger = {
+			OR = { has_government = fascism has_government = communism }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.redirect_column_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.redirect_column_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.redirect_column_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_branch = constant:fallout_event_415_branch.redirect_column } fallout_event_415_choose_bilateral_opening = yes }
+		custom_effect_tooltip = chaosx.fallout.1019.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1019.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.quarantine_train_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.quarantine_train_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.quarantine_train_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_branch = constant:fallout_event_415_branch.quarantine_train } fallout_event_415_choose_bilateral_opening = yes }
+		custom_effect_tooltip = chaosx.fallout.1019.c.tt
+	}
+	option = {
+		name = chaosx.fallout.1019.d
+		trigger = {
+			OR = { has_government = democratic has_government = communism has_government = neutrality }
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.recruit_specialists_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.recruit_specialists_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.recruit_specialists_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_branch = constant:fallout_event_415_branch.recruit_specialists } fallout_event_415_choose_bilateral_opening = yes }
+		custom_effect_tooltip = chaosx.fallout.1019.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1020
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_415_bilateral_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_415_choose_bilateral_ai_opening = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1021
+	title = chaosx.fallout.1021.t
+	desc = chaosx.fallout.1021.d
+	picture = GFX_report_event_fallout_refugee_train
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_415_bilateral_response_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1021.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.admit_families_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.admit_families_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.admit_families_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_outcome = constant:fallout_event_outcome_type.success } fallout_event_415_resolve_bilateral_response = yes }
+		custom_effect_tooltip = chaosx.fallout.1021.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1021.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_415_cost.quarantine_train_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_415_cost.quarantine_train_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_415_cost.quarantine_train_cohesion compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_outcome = constant:fallout_event_outcome_type.partial } fallout_event_415_resolve_bilateral_response = yes }
+		custom_effect_tooltip = chaosx.fallout.1021.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1021.c
+		hidden_effect = { set_temp_variable = { fallout_event_415_bilateral_requested_outcome = constant:fallout_event_outcome_type.failure } fallout_event_415_resolve_bilateral_response = yes }
+		custom_effect_tooltip = chaosx.fallout.1021.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1022
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_415_bilateral_hidden_ai_response_can_enter = yes }
+	immediate = { fallout_event_415_choose_bilateral_ai_response = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.422
 	title = chaosx.fallout.422.t
 	desc = chaosx.fallout.422.d

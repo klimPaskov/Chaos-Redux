@@ -463,3 +463,13 @@ Four authored policies cover a civic exhibition, seasonal exchange, militia must
 The callback records annual institution, partial tradition, or interrupted memories, records Event Log payloads with the authenticated host state as secondary actor, and releases both delayed cleanup receipts.
 
 The candidate remains dormant and contributes zero countable blocks until a Fallout-owned scheduler activation setter and runtime receipt proof exist. The dedicated proof is recorded in `FALLOUT_COUNTY_FAIR_RETURNS_CHAIN_PROOF.md`.
+
+## Refugee Train bilateral consumer
+
+The Refugee Train candidate `415` retains its ordinary reviewed row and now has a separate dormant bilateral consumer at event ids `1019` through `1022`.
+
+The consumer authenticates reciprocal reservation rows, uses separate opening and response tokens, commits `reserved` to `response_pending` atomically, applies deterministic bilateral outcomes, and hands resolved rows to the existing cleanup path.
+
+The four consumer blocks are not part of the reviewed ordinary-row total and do not increase the `0 of 660` countable release-floor total.
+
+The dedicated implementation proof is `FALLOUT_REFUGEE_TRAIN_BILATERAL_CONSUMER_PROOF.md`.

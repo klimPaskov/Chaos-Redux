@@ -2390,6 +2390,42 @@ fallout_event_reconcile_one_bilateral_row = {
 			}
 			else_if = {
 				limit = {
+					check_variable = { fallout_event_reconciled_bilateral_status = constant:fallout_event_bilateral_status.reserved }
+					check_variable = { fallout_event_reconciled_bilateral_has_reciprocal = constant:fallout_event_runtime.one }
+					check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_role.initiator }
+					exists = yes
+					NOT = { has_country_flag = fallout_event_dispatch_ready }
+					check_variable = { var = fallout_event_bilateral_due_date_entries^fallout_event_bilateral_reconcile_cursor value = global.num_days compare = less_than_or_equals }
+				}
+				set_temp_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.bilateral_response }
+				set_temp_variable = { fallout_event_requested_dispatch_ticket = fallout_event_requested_ticket }
+				if = {
+					limit = { check_variable = { fallout_event_bilateral_control_mode_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_dispatch_mode.hidden_ai } }
+					set_temp_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+					set_temp_variable = { fallout_event_requested_dispatch_event_token = fallout_event_bilateral_ai_response_token_entries^fallout_event_bilateral_reconcile_cursor }
+				}
+				else_if = {
+					limit = { check_variable = { fallout_event_bilateral_control_mode_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_dispatch_mode.human_visible } }
+					set_temp_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+					set_temp_variable = { fallout_event_requested_dispatch_event_token = fallout_event_bilateral_response_token_entries^fallout_event_bilateral_reconcile_cursor }
+				}
+				else = {
+					set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.bilateral_reciprocal_mismatch }
+					fallout_event_register_scheduler_error_if_unowned = yes
+				}
+				set_temp_variable = { fallout_event_requested_dispatch_branch = fallout_event_bilateral_role_entries^fallout_event_bilateral_reconcile_cursor }
+				set_temp_variable = { fallout_event_requested_dispatch_target_type = constant:fallout_event_subject_type.country }
+				set_temp_variable = { fallout_event_requested_dispatch_target = fallout_event_bilateral_partner_entries^fallout_event_bilateral_reconcile_cursor }
+				set_temp_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero }
+				fallout_event_write_dispatch_envelope = yes
+				if = {
+					limit = { check_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero } }
+					set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.bilateral_reciprocal_mismatch }
+					fallout_event_register_scheduler_error_if_unowned = yes
+				}
+			}
+			else_if = {
+				limit = {
 					check_variable = { fallout_event_reconciled_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
 					check_variable = { fallout_event_reconciled_bilateral_has_reciprocal = constant:fallout_event_runtime.one }
 					check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_reconcile_cursor = constant:fallout_event_bilateral_role.responder }
@@ -3186,6 +3222,13 @@ fallout_event_schedule_selected_relationship_candidate = {
 		}
 		if = {
 			limit = { check_variable = { fallout_event_relationship_payload_found = constant:fallout_event_runtime.one } }
+			if = {
+				limit = { check_variable = { fallout_event_requested_candidate_id = constant:fallout_event_candidate_pilot.refugee_train_candidate_id } }
+				set_temp_variable = { fallout_event_requested_initiator_response_token = constant:fallout_event_id.refugee_train_bilateral_opening_human }
+				set_temp_variable = { fallout_event_requested_initiator_ai_response_token = constant:fallout_event_id.refugee_train_bilateral_opening_ai }
+				set_temp_variable = { fallout_event_requested_responder_response_token = constant:fallout_event_id.refugee_train_bilateral_response_human }
+				set_temp_variable = { fallout_event_requested_responder_ai_response_token = constant:fallout_event_id.refugee_train_bilateral_response_ai }
+			}
 			fallout_event_reserve_bilateral_transaction = yes
 		}
 	}
@@ -4579,6 +4622,14 @@ fallout_event_update_bilateral_pair_internal = {
 					fallout_event_issued_bilateral_response_is_current = yes
 					check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
 					OR = {
+						AND = {
+							check_variable = { fallout_event_bilateral_opening_transition_authorized = constant:fallout_event_runtime.one }
+							check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_origin_row_index = constant:fallout_event_bilateral_status.reserved }
+							check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_origin_row_index = constant:fallout_event_bilateral_role.initiator }
+							check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
+							check_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
+							check_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+						}
 						check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.resolved }
 						check_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.cancelled }
 					}
@@ -4761,6 +4812,32 @@ fallout_event_mark_bilateral_response_pending = {
 		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
 		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
 		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+		fallout_event_update_bilateral_pair_internal = yes
+	}
+}
+
+# Supported scope: COUNTRY. The opening consumer may advance only the issued
+# initiator row from reserved to response_pending. The exact opening token and
+# reciprocal pair remain authenticated by the shared bilateral terminalizer.
+fallout_event_mark_issued_bilateral_opening_response_pending = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_bilateral_response_is_current = yes
+			OR = {
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_human }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_ai }
+			}
+		}
+		set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_dispatch_issued_ticket }
+		set_temp_variable = { fallout_event_requested_bilateral_status = constant:fallout_event_bilateral_status.response_pending }
+		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
+		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.none }
+		set_temp_variable = { fallout_event_bilateral_issued_transition_authorized = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_bilateral_opening_transition_authorized = constant:fallout_event_runtime.one }
 		fallout_event_update_bilateral_pair_internal = yes
 	}
 }

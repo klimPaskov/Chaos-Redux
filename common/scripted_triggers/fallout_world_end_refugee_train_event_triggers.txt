@@ -101,6 +101,91 @@ fallout_event_415_hidden_ai_opening_can_enter = {
 	fallout_event_415_opening_target_is_current = yes
 }
 
+# The bilateral pilot uses the shared bilateral response source for both sides.
+# The row index comes from the immutable dispatch matcher, not from a mutable
+# last-selection hint.
+fallout_event_415_bilateral_opening_event_can_enter = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.reserved }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.initiator }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
+fallout_event_415_bilateral_hidden_ai_opening_can_enter = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.reserved }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.initiator }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
+fallout_event_415_bilateral_opening_dispatch_is_current = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	OR = {
+		AND = {
+			check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_human }
+			check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		}
+		AND = {
+			check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_opening_ai }
+			check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		}
+	}
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.reserved }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.initiator }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
+fallout_event_415_bilateral_response_event_can_enter = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_response_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.response_pending }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.responder }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
+fallout_event_415_bilateral_hidden_ai_response_can_enter = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_response_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.response_pending }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.responder }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
+fallout_event_415_bilateral_response_dispatch_is_current = {
+	fallout_event_issued_bilateral_response_is_current = yes
+	OR = {
+		AND = {
+			check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_response_human }
+			check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		}
+		AND = {
+			check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.refugee_train_bilateral_response_ai }
+			check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		}
+	}
+	set_temp_variable = { fallout_event_bilateral_validation_index = fallout_event_dispatch_match_index }
+	fallout_event_bilateral_row_at_index_is_structurally_current = yes
+	check_variable = { fallout_event_bilateral_status_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_status.response_pending }
+	check_variable = { fallout_event_bilateral_role_entries^fallout_event_bilateral_validation_index = constant:fallout_event_bilateral_role.responder }
+	check_variable = { fallout_event_bilateral_key_entries^fallout_event_bilateral_validation_index = constant:fallout_event_candidate_pilot.refugee_train_transaction_key }
+}
+
 fallout_event_415_delayed_result_can_enter = {
 	fallout_event_issued_delayed_result_is_current = yes
 	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_415_branch.none }

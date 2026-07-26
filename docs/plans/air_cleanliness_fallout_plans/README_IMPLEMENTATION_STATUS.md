@@ -744,3 +744,13 @@ The chain remains dormant because no scheduler activation flag is set and the li
 ## Successor allocation and player continuation B7 tranche
 
 The B7 tranche adds a dormant USA federal-continuity package and additive focus layer plus a fail-closed fragmentation candidate probe. The continuity path requires a current human reservation, frozen USA primary target, hostable primary capital, live conflict ledger, and current transaction. It records source, output, capital, cleanup, government, regional, memory, focus, and human-control receipts without switching the player. The fragmentation path names the lowest conflict-free possible country and lowest candidate state. NZL is the only reviewed package-aware candidate. Its assignment identity and generation-bound Samoa/Aotearoa conflict receipts now have guarded existing-tag and exact fragmented-transfer producers and a dormant B7-only caller. The transfer path accepts only five current candidate states with one-state AI owners, transfers that exact footprint, retires the emptied sources, and then reuses the NZL package loader. Missing-tag and general fragmented-footprint materialization remain blockers. Eleven dedicated B7 focus and idea DDS assets are present and parent-registered, while prompt provenance, shelter-icon review, and runtime loading remain open. The B7 helper does not set global successor allocation completion or scheduler activation. The exact transition caller, tag switch, runtime focus surface, save recovery, and multiplayer behavior remain unproven. See `FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`, `FALLOUT_NZL_FRAGMENTED_TRANSFER_PROOF.md`, and `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`.
+
+## Refugee Train bilateral consumer tranche
+
+The Refugee Train candidate `415` now has a dormant authored bilateral opening and response consumer at event ids `1019` through `1022`.
+
+The pair uses the existing bilateral reservation arrays, token-authenticated opening transition, deterministic response outcomes, durable country and state effects, and the existing bilateral cleanup reconciler.
+
+The four blocks remain outside the fifty-four reviewed ordinary candidates and do not change the `0 of 660` countable release-floor total.
+
+Scheduler activation, native event issuance, save recovery, multiplayer host authority, Event Log presentation, and cleanup timing remain unproven because HOI4 was not launched.
