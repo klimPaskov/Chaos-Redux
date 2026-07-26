@@ -39,6 +39,12 @@ The relationship-class candidate path now has a separate reciprocal payload proo
 
 The current four relationship rows still carry the typed no-partner sentinel, so the new branch has no live caller and no row reaches bilateral reservation. It does not set either scheduler activation flag, issue an event, or add release-floor credit. The later relationship event consumer must mark the reserved pair `response_pending` before bilateral dispatch.
 
+## Major-arc reservation substrate
+
+The four top-level major-arc candidates now have a separate payload proof, detailed in `2026-07-26_major_arc_candidate_reservation_addendum.md`. The candidate id becomes the arc identity and cleanup token. A selected row calls `fallout_event_reserve_major_arc` only after its parent ticket is empty, its actor shape is valid, and its current target or actor proof passes. Ordinary receipt reconciliation and dispatch are skipped for the accepted opening. The existing arc ledger retains its three-slot cap, actor and identity uniqueness, exact retry, and cleanup contracts.
+
+The current arc rows remain dormant behind the unset activation flags. No stage event consumer, new event id, transaction key, route, Event Log history, or release-floor credit is added. A later authored arc consumer must map the arc identity and stage to a human or hidden-AI event before the reserved opening can be presented.
+
 ## Owned files in this tranche
 
 - `common/script_constants/fallout_world_end_event_constants.txt`

@@ -4086,20 +4086,39 @@ fallout_event_candidate_relationship_payload_is_current = {
 }
 
 # Supported scope: COUNTRY. Input: fallout_event_candidate_validation_index.
+# A top-level major row can enter the capped arc ledger only after its
+# candidate identity and actor or target shape are current. Stage dispatch is
+# intentionally owned by a later authored arc consumer.
+fallout_event_candidate_major_arc_payload_is_current = {
+	check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.major_arc }
+	check_variable = { fallout_event_candidate_parent_arc_ticket_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.no_ticket }
+	check_variable = { fallout_event_candidate_id_entries^fallout_event_candidate_validation_index > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_subject_type_to_check = fallout_event_candidate_actor_type_entries^fallout_event_candidate_validation_index }
+	set_temp_variable = { fallout_event_subject_value_to_check = fallout_event_candidate_actor_entries^fallout_event_candidate_validation_index }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.none }
+			check_variable = { fallout_event_subject_value_to_check = constant:fallout_event_runtime.zero }
+		}
+		fallout_event_subject_is_current = yes
+	}
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_candidate_validation_index.
 # This adds live scope checks and scheduler occupancy gates to the immutable
 # reviewed-row proof. Any failure rejects only this candidate.
 fallout_event_candidate_row_is_eligible = {
 	fallout_event_candidate_row_is_current = yes
 	fallout_event_candidate_parent_arc_is_current = yes
 	fallout_event_candidate_completion_is_compatible = yes
-	# Major-arc openings remain fail-closed until their reviewed rows freeze the
-	# exact atomic arc reservation payload. Relationship rows use the reciprocal
-	# bilateral payload proof above.
+	# Major-arc openings enter only through the top-level arc payload proof.
+	# Relationship rows use the reciprocal bilateral payload proof above.
 	OR = {
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.crisis_incident }
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.routine_incident }
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.broadcast }
 		fallout_event_candidate_relationship_payload_is_current = yes
+		fallout_event_candidate_major_arc_payload_is_current = yes
 	}
 	OR = {
 		check_variable = { fallout_event_candidate_phase_mode_entries^fallout_event_candidate_validation_index = constant:fallout_event_review_phase_mode.neutral }
