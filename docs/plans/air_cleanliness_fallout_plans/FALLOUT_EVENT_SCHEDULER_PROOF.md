@@ -635,3 +635,15 @@ At the County Fair Returns tranche, the reviewed ordinary producer carried fifty
 ## Successor allocation and player-continuation B7 tranche
 
 The B7 transition pilot is a separate dormant allocator surface rather than an ordinary living-world event row. It keeps the current event producer at fifty-four rows and `460` defined blocks, with `0 of 660` countable release-floor blocks. Its one idempotent coordinator first reconciles the player reservation and live conflict inventory, begins the existing generation-bound allocation transaction, records one USA federal-continuity package and player-reserved capital row, and names one deterministic fragmentation candidate when the frozen candidate pools are usable. It does not materialize a tag, transfer ownership, switch the player, set the global assignment ledger, or activate the scheduler. Eleven dedicated B7 focus and idea DDS assets are now parent-registered, but prompt provenance, shelter-icon review, runtime focus loading, exact transition caller, host authority, save recovery, and multiplayer timing remain unproven. The B7 proof is recorded in `FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md`.
+
+## Refugee Train bilateral consumer
+
+The Refugee Train reciprocal reservation now has a dormant authored opening and response consumer at event ids `1019` through `1022`.
+
+The opening uses the existing `bilateral_response` dispatch source and moves an authenticated initiator and responder pair from `reserved` to `response_pending` through one atomic terminalizer.
+
+Human and hidden AI paths have separate opening and response tokens, branch costs, deterministic response outcomes, durable refugee memory, Air Winter state effects, and existing bilateral cleanup handoff.
+
+These four consumer blocks remain outside the fifty-four reviewed ordinary candidate rows and contribute zero countable blocks to the `0 of 660` release-floor total.
+
+The activation flags remain unset, and native country-event issuance, save recovery, multiplayer host authority, Event Log presentation, and cleanup timing remain unproven because HOI4 was not launched.
