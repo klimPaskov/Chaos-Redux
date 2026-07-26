@@ -34,6 +34,8 @@ The AGX North Sea Coastal Conference lifecycle and three-factory cost surface re
 
 The AGX portrait refresh dated 2026-07-26 passed independent provenance, likeness, role, framing, ownership, and HOI4-style audits before and after promotion. It contains unchanged source masters, exact head-and-shoulders crops with equality metadata, source-locked ImageGen repaints, deterministic 156x210 candidates, and promoted uncompressed BGRA DDS files for the existing Kalma and Reenalda consumers. Stable `.gfx` and character references were preserved; no advisor, dossier, `_small`, female, or alternate-person derivative was created. The post-wire handoff is `006_agx_postwire_portrait_package_audit_2026_07_26.md`.
 
+The player-facing SCN-008, evolution, and formable-readiness wording is kept separate from registry, planner, and transaction terminology; the workbook mirror is refreshed whenever these visible strings change.
+
 ## Historical portrait-gated admission (2026-07-22, superseded)
 
 IW-004 Brittany, IW-007 Frisia, and IW-017 Corsica are the packages currently present in
