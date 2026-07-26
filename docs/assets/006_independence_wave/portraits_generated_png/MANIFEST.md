@@ -1,10 +1,10 @@
 # Event 006 normalized pre-DDS source portrait inventory
 
-This table covers the 82 normalized 156x210 copies. The 45 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+This table covers the 83 normalized 156x210 copies. The 48 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
 
 This manifest indexes every source-driven processed PNG copied into this shelf. Every file is a byte-for-byte copy of its original and decodes as a 156x210 PNG; the SHA-256 column guards against drift.
 
-Inventory counts: 82 total; 2 protected approved, 2 current approved, 46 source candidates/replacement attempts, 27 rejected-style treatments, 2 withdrawn historical attempts, and 3 candidates requiring visual approval.
+Inventory counts: 83 total; 2 protected approved, 2 current approved, 45 source candidates/replacement attempts, 27 rejected-style treatments, 2 withdrawn historical attempts, and 5 candidates requiring visual approval.
 
 | Status | Kind | Copied PNG | Original processed PNG | SHA-256 | Size | Notes |
 |---|---|---|---|---|---:|---|
@@ -91,5 +91,6 @@ Inventory counts: 82 total; 2 protected approved, 2 current approved, 46 source 
 | source_candidate_rejected_visual_style | sourced_treatment_rejected_style | `source_candidates/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `d16d9d2603ac9566eb3b5402be701895e2c4a3d4d8fdfc6a2497e7a66f5991dc` | 156x210 | Sourced archival treatment retained for provenance; package manifest records the rejected photographic HOI4-style gate. |
 
 | source_candidate_requires_visual_approval | sourced_replacement_candidate | `source_candidates/sourced_portrait_replacements_2026_07_26/hawaii_samuel_wilder_king/portrait_HAW_samuel_wilder_king_156x210.png` | `docs/assets/006_independence_wave/hawaii_samuel_wilder_king_source_clearance_2026_07_26/processed_png/portrait_HAW_samuel_wilder_king.png` | `7eaec0ac8a6c8d5a9c3e623c1e56aa97b1b25ec1adc71070ab02c407e4539ad4` | 156x210 | Source-locked HOI4 repaint candidate for a HAW territorial-delegate/civic consumer; independent likeness/style/provenance audit and package-level leadership decision remain open. |
+| source_candidate_requires_visual_approval | sourced_replacement_candidate | `source_candidates/2026_07_27/fiji_ratu_sir_lala_sukuna/portrait_FIJ_ratu_sir_lala_sukuna_156x210.png` | `docs/assets/006_independence_wave/fiji_source_clearance_2026_07_27/processed_png/ratu_sir_lala_sukuna_hoi4.png` | `71062c2efe0e98d3de1de5e7d5600e2bc746b92f6560c44d62242c107b26951d` | 156x210 | Source-locked HOI4 repaint candidate for IW-177 Fiji; the circa-1940s source date requires parent acceptance against the 1936-centered event, and independent likeness/style/provenance review remains open. |
 
 The copied PNGs are documentation/reference assets only. Runtime consumers must continue to use the reviewed DDS files under `gfx/leaders/006_independence_wave/`; no DDS, `.gfx`, character definition, advisor, dossier, or small-portrait consumer is created by this shelf.

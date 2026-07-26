@@ -1,11 +1,11 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 PACIFIC COUNTRY PACKAGE EFFECTS
 # ============================================================================
-# Setup, lifecycle, host settlement, bespoke HBX/HAW focus rewards, delegation
-# preparation, final validation, and cleanup for IW-184/IW-173/IW-179. Exact
-# dormant HBX and HAW packages may load the full Event 006 framework after a
-# generic-tree preflight; FSM remains additive. No effect performs a world-
-# country scan or creates repeatable free formations.
+# Setup, lifecycle, host settlement, bespoke HBX/HAW/FIJ focus rewards,
+# delegation preparation, final validation, and cleanup for IW-184/IW-173/
+# IW-177/IW-179. Exact dormant HBX, HAW, and FIJ packages may load the full
+# Event 006 framework after a generic-tree preflight; FSM remains additive.
+# No effect performs a world-country scan or creates repeatable free formations.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -49,6 +49,27 @@ independence_wave_prepare_fsm_origin_leadership = {
 	}
 }
 
+independence_wave_prepare_fij_origin_leadership = {
+	if = {
+		limit = { NOT = { has_character = FIJ_independence_wave_founding_congress_chair } }
+		recruit_character = FIJ_independence_wave_founding_congress_chair
+	}
+	if = {
+		limit = {
+			NOT = {
+				has_country_leader = {
+					ruling_only = yes
+					character = FIJ_independence_wave_founding_congress_chair
+				}
+			}
+		}
+		promote_character = {
+			character = FIJ_independence_wave_founding_congress_chair
+			ideology = centrism
+		}
+	}
+}
+
 independence_wave_initialize_hbx_politics = {
 	set_politics = { ruling_party = democratic elections_allowed = yes }
 	set_popularities = {
@@ -66,6 +87,25 @@ independence_wave_initialize_hbx_politics = {
 		ideology = centrism
 	}
 	set_country_flag = independence_wave_hbx_provisional_authority
+}
+
+independence_wave_initialize_fij_politics = {
+	set_politics = { ruling_party = democratic elections_allowed = yes }
+	set_popularities = {
+		democratic = constant:independence_wave_pacific_politics.fij_start_democratic
+		communism = constant:independence_wave_pacific_politics.fij_start_communism
+		neutrality = constant:independence_wave_pacific_politics.fij_start_neutrality
+		fascism = constant:independence_wave_pacific_politics.fij_start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = FIJ_independence_wave_democratic_party_long name = FIJ_independence_wave_democratic_party }
+	set_party_name = { ideology = communism long_name = FIJ_independence_wave_communism_party_long name = FIJ_independence_wave_communism_party }
+	set_party_name = { ideology = neutrality long_name = FIJ_independence_wave_neutrality_party_long name = FIJ_independence_wave_neutrality_party }
+	set_party_name = { ideology = fascism long_name = FIJ_independence_wave_fascism_party_long name = FIJ_independence_wave_fascism_party }
+	promote_character = {
+		character = FIJ_independence_wave_founding_congress_chair
+		ideology = centrism
+	}
+	set_country_flag = independence_wave_fij_provisional_authority
 }
 
 independence_wave_pacific_apply_former_host_settlement = {
@@ -129,6 +169,7 @@ independence_wave_pacific_apply_project_failure = {
 	if = { limit = { is_independence_wave_hbx_package = yes } set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_loss } independence_wave_change_hbx_coastal_command = yes }
 	else_if = { limit = { is_independence_wave_haw_package = yes } set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_loss } independence_wave_change_haw_shipping_security = yes }
 	else_if = { limit = { is_independence_wave_fsm_package = yes } set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_loss } independence_wave_change_fsm_inter_island_authority = yes }
+	else_if = { limit = { is_independence_wave_fij_package = yes } set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_loss } independence_wave_change_fij_congress_pressure = yes }
 }
 
 independence_wave_pacific_pay_island_strategic_cost = {
@@ -149,6 +190,7 @@ independence_wave_pacific_pay_island_strategic_cost = {
 independence_wave_remove_hbx_package_ideas = { remove_ideas = { hbx_divided_federal_arsenals hbx_californian_ports_and_works_board } }
 independence_wave_remove_haw_package_ideas = { remove_ideas = { haw_exposed_island_supply haw_island_shipping_compact } }
 independence_wave_remove_fsm_package_ideas = { remove_ideas = { fsm_scattered_island_authority fsm_federal_patrol_compact } }
+independence_wave_remove_fij_package_ideas = { remove_ideas = { fij_unsettled_congress fij_communal_charter fij_coastal_guard_compact } }
 
 independence_wave_refresh_hbx_lifecycle = {
 	if = {
@@ -198,6 +240,27 @@ independence_wave_refresh_fsm_lifecycle = {
 	}
 }
 
+independence_wave_refresh_fij_lifecycle = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes }
+		independence_wave_remove_fij_package_ideas = yes
+		if = {
+			limit = { has_stable_independence_wave_fij_congress = yes has_country_flag = independence_wave_fij_coastal_guard_chartered }
+			add_ideas = fij_coastal_guard_compact
+			set_country_flag = independence_wave_fij_congress_stable
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_fij_communal_charter_registered }
+			add_ideas = fij_communal_charter
+			clr_country_flag = independence_wave_fij_congress_stable
+		}
+		else = {
+			add_ideas = fij_unsettled_congress
+			clr_country_flag = independence_wave_fij_congress_stable
+		}
+	}
+}
+
 independence_wave_change_hbx_coastal_command = {
 	if = {
 		limit = { is_independence_wave_hbx_package = yes }
@@ -222,6 +285,29 @@ independence_wave_change_fsm_inter_island_authority = {
 		add_to_variable = { independence_wave_fsm_inter_island_authority = independence_wave_pacific_pressure_delta }
 		clamp_variable = { var = independence_wave_fsm_inter_island_authority min = constant:independence_wave_pacific_pressure.minimum max = constant:independence_wave_pacific_pressure.maximum }
 		independence_wave_refresh_fsm_lifecycle = yes
+	}
+}
+
+independence_wave_change_fij_congress_pressure = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes }
+		add_to_variable = { independence_wave_fij_congress_pressure = independence_wave_pacific_pressure_delta }
+		clamp_variable = { var = independence_wave_fij_congress_pressure min = constant:independence_wave_pacific_pressure.minimum max = constant:independence_wave_pacific_pressure.maximum }
+		independence_wave_refresh_fij_lifecycle = yes
+	}
+}
+
+independence_wave_fij_apply_ledger_deltas = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes }
+		add_to_variable = { independence_wave_fij_communal_authority = independence_wave_fij_communal_authority_delta }
+		add_to_variable = { independence_wave_fij_shipping_access = independence_wave_fij_shipping_access_delta }
+		add_to_variable = { independence_wave_fij_colonial_accounts = independence_wave_fij_colonial_accounts_delta }
+		add_to_variable = { independence_wave_fij_defense_readiness = independence_wave_fij_defense_readiness_delta }
+		clamp_variable = { var = independence_wave_fij_communal_authority min = constant:independence_wave_fij_ledger.minimum max = constant:independence_wave_fij_ledger.maximum }
+		clamp_variable = { var = independence_wave_fij_shipping_access min = constant:independence_wave_fij_ledger.minimum max = constant:independence_wave_fij_ledger.maximum }
+		clamp_variable = { var = independence_wave_fij_colonial_accounts min = constant:independence_wave_fij_ledger.minimum max = constant:independence_wave_fij_ledger.maximum }
+		clamp_variable = { var = independence_wave_fij_defense_readiness min = constant:independence_wave_fij_ledger.minimum max = constant:independence_wave_fij_ledger.maximum }
 	}
 }
 
@@ -453,6 +539,96 @@ independence_wave_fsm_select_patron_government = {
 	}
 }
 
+independence_wave_fij_focus_convene_constituent_congress = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_constituent_congress_convened } }
+		set_country_flag = independence_wave_fij_constituent_congress_convened
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_fij_ledger.minor_gain }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_fij_ledger.minor_loss }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_allocation_factor.zero }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_focus_reward_public_settlement = yes
+	}
+}
+
+independence_wave_fij_focus_register_communal_veto = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_communal_charter_registered } }
+		set_country_flag = independence_wave_fij_communal_charter_registered
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.minor_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_fij_ledger.standard_gain }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_allocation_factor.zero }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_focus_reward_administration = yes
+	}
+}
+
+independence_wave_fij_focus_open_labor_shipping_board = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_labor_shipping_board_opened } }
+		set_country_flag = independence_wave_fij_labor_shipping_board_opened
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_fij_ledger.minor_gain }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_fij_ledger.standard_gain }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_allocation_factor.zero }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_focus_reward_administration = yes
+	}
+}
+
+independence_wave_fij_focus_settle_colonial_accounts = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_colonial_accounts_settled } }
+		set_country_flag = independence_wave_fij_colonial_accounts_settled
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.standard_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_fij_ledger.standard_loss }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_allocation_factor.zero }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_pacific_apply_former_host_settlement = yes
+	}
+}
+
+independence_wave_fij_focus_charter_coastal_guard = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_coastal_guard_chartered } }
+		set_country_flag = independence_wave_fij_coastal_guard_chartered
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.major_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_fij_ledger.minor_gain }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_allocation_factor.zero }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_fij_ledger.major_gain }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_focus_reward_security_reform = yes
+	}
+}
+
+independence_wave_fij_focus_ratify_island_compact = {
+	if = {
+		limit = { is_independence_wave_fij_package = yes NOT = { has_country_flag = independence_wave_fij_island_compact_ratified } }
+		set_country_flag = independence_wave_fij_island_compact_ratified
+		set_temp_variable = { independence_wave_pacific_pressure_delta = constant:independence_wave_pacific_pressure.decisive_gain }
+		set_temp_variable = { independence_wave_fij_communal_authority_delta = constant:independence_wave_fij_ledger.minor_gain }
+		set_temp_variable = { independence_wave_fij_shipping_access_delta = constant:independence_wave_fij_ledger.standard_gain }
+		set_temp_variable = { independence_wave_fij_colonial_accounts_delta = constant:independence_wave_fij_ledger.standard_loss }
+		set_temp_variable = { independence_wave_fij_defense_readiness_delta = constant:independence_wave_fij_ledger.major_gain }
+		independence_wave_change_fij_congress_pressure = yes
+		independence_wave_fij_apply_ledger_deltas = yes
+		independence_wave_pacific_apply_major_settlement = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Exact package setup and dispatch
 # ---------------------------------------------------------------------------
@@ -603,9 +779,61 @@ independence_wave_setup_iw_179_micronesia = {
 	}
 }
 
+independence_wave_setup_iw_177_fiji = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_177_setup_complete
+	if = {
+		limit = { can_initialize_independence_wave_iw_177_package = yes }
+		independence_wave_ensure_pacific_baseline_laws = yes
+		independence_wave_prepare_fij_origin_leadership = yes
+		independence_wave_initialize_fij_politics = yes
+		set_variable = { independence_wave_fij_congress_pressure = constant:independence_wave_pacific_pressure.fij_start }
+		set_variable = { independence_wave_fij_communal_authority = constant:independence_wave_fij_ledger.communal_start }
+		set_variable = { independence_wave_fij_shipping_access = constant:independence_wave_fij_ledger.shipping_start }
+		set_variable = { independence_wave_fij_colonial_accounts = constant:independence_wave_fij_ledger.colonial_start }
+		set_variable = { independence_wave_fij_defense_readiness = constant:independence_wave_fij_ledger.defense_start }
+		independence_wave_refresh_fij_lifecycle = yes
+		set_country_flag = independence_wave_pacific_provisional_command_established
+		if = { limit = { has_independence_wave_pacific_command_structure = yes } set_country_flag = independence_wave_command_roster_ready }
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_emergency_military_route_excluded
+		clr_country_flag = independence_wave_route_emergency_military_available
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		clr_country_flag = independence_wave_route_radical_sovereignty_available
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.melanesian_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+		if = {
+			limit = { has_country_flag = independence_wave_command_roster_ready has_independence_wave_pacific_command_structure = yes }
+			independence_wave_load_force_package_mapping = yes
+			independence_wave_apply_dynamic_starting_force = yes
+		}
+		set_country_flag = independence_wave_fij_ai_profile
+		set_country_flag = independence_wave_iw_177_lifecycle_ready
+		if = {
+			limit = { has_prepared_independence_wave_iw_177_package_setup = yes }
+			set_country_flag = independence_wave_iw_177_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
 independence_wave_dispatch_pacific_package_setup = {
 	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_184 } } independence_wave_setup_iw_184_california = yes }
 	else_if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_173 } } independence_wave_setup_iw_173_hawaii = yes }
+	else_if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_177 } } independence_wave_setup_iw_177_fiji = yes }
 	else_if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_179 } } independence_wave_setup_iw_179_micronesia = yes }
 }
 
@@ -616,6 +844,10 @@ independence_wave_dispatch_pacific_package_final_validation = {
 	}
 	else_if = {
 		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_173 } has_complete_independence_wave_iw_173_package_setup = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_177 } has_complete_independence_wave_iw_177_package_setup = yes }
 		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
 	}
 	else_if = {
@@ -747,6 +979,52 @@ independence_wave_cleanup_iw_179_micronesia = {
 	}
 }
 
+independence_wave_cleanup_iw_177_fiji = {
+	if = {
+		limit = { original_tag = FIJ check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_177 } }
+		remove_mission = independence_wave_fij_hold_constituent_congress_together
+		remove_decision = independence_wave_fij_convene_constituent_congress
+		remove_decision = independence_wave_fij_register_communal_veto
+		remove_decision = independence_wave_fij_open_labor_shipping_board
+		remove_decision = independence_wave_fij_settle_colonial_accounts
+		remove_decision = independence_wave_fij_charter_coastal_guard
+		remove_decision = independence_wave_fij_ratify_island_compact
+		independence_wave_remove_fij_package_ideas = yes
+		clear_variable = independence_wave_fij_congress_pressure
+		clear_variable = independence_wave_fij_communal_authority
+		clear_variable = independence_wave_fij_shipping_access
+		clear_variable = independence_wave_fij_colonial_accounts
+		clear_variable = independence_wave_fij_defense_readiness
+		clear_variable = independence_wave_formable_family
+		clr_country_flag = independence_wave_package_setup_complete
+		clr_country_flag = independence_wave_iw_177_setup_complete
+		clr_country_flag = independence_wave_iw_177_lifecycle_ready
+		clr_country_flag = independence_wave_fij_ai_profile
+		clr_country_flag = independence_wave_fij_congress_stable
+		clr_country_flag = independence_wave_fij_provisional_authority
+		clr_country_flag = independence_wave_fij_constituent_congress_convened
+		clr_country_flag = independence_wave_fij_communal_charter_registered
+		clr_country_flag = independence_wave_fij_labor_shipping_board_opened
+		clr_country_flag = independence_wave_fij_colonial_accounts_settled
+		clr_country_flag = independence_wave_fij_coastal_guard_chartered
+		clr_country_flag = independence_wave_fij_island_compact_ratified
+		clr_country_flag = independence_wave_fij_founding_crisis_resolved
+		clr_country_flag = independence_wave_fij_founding_crisis_failed
+		clr_country_flag = independence_wave_formable_family_selected
+		clr_country_flag = independence_wave_fij_melanesian_route_adapter_complete
+		clr_country_flag = independence_wave_emergency_military_route_excluded
+		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
+		if = {
+			limit = { has_character = FIJ_independence_wave_founding_congress_chair }
+			retire_character = FIJ_independence_wave_founding_congress_chair
+		}
+	}
+}
+
 independence_wave_dispatch_pacific_package_cleanup = {
 	if = {
 		limit = {
@@ -760,6 +1038,7 @@ independence_wave_dispatch_pacific_package_cleanup = {
 	}
 	independence_wave_cleanup_iw_184_california = yes
 	independence_wave_cleanup_iw_173_hawaii = yes
+	independence_wave_cleanup_iw_177_fiji = yes
 	independence_wave_cleanup_iw_179_micronesia = yes
 	clr_country_flag = independence_wave_pacific_provisional_command_established
 }

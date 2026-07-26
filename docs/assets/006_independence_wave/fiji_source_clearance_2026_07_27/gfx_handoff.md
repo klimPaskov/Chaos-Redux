@@ -1,6 +1,6 @@
 # IW-177 Fiji source-only visual handoff
 
-This handoff is source research only. No `.gfx` file, gameplay file, localisation file, ImageGen repaint, or DDS was created or edited in this clearance pass.
+This handoff began as source research and now also contains one identity-preserving ImageGen repaint, deterministic 156x210 processing result, and a provisional runtime DDS/GFX consumer. The consumer is not runtime-admitted until the source-date, independent audit, and FORM-39 route gates pass.
 
 ## Recommended source master
 
@@ -30,16 +30,20 @@ The side-by-side review sheet is `docs/assets/006_independence_wave/fiji_source_
 
 The source manifest is `docs/assets/006_independence_wave/fiji_source_clearance_2026_07_27/source_manifest.json`.
 
-## Proposed future sprite handoff
+## Evidence-only HOI4 repaint
 
-The following names are suggestions only and are not registered:
+The exact crop was repainted with the identity-preserving prompt in `prompts/ratu_sir_lala_sukuna_identity_preserve_imagegen.md`, then processed through the canonical leader pipeline. The raw repaint is `imagegen_results/ratu_sir_lala_sukuna_identity_preserve.png`; the normalized review candidate is `processed_png/ratu_sir_lala_sukuna_hoi4.png`; processor metadata and the side-by-side review sheet are under `metadata/` and `review_sheets/`. The output is a strong male HOI4-style candidate, but it remains evidence-only because the source is dated circa 1940s against the 1936-centered event and still needs an independent likeness/style/provenance audit. Do not convert it to DDS or wire it to `.gfx` until that gate is resolved.
+
+## Sprite handoff
+
+The following consumer is registered provisionally by the parent package tranche:
 
 ```text
-sprite name: GFX_event6_fij_sukuna
-future texture path: gfx/leaders/006_independence_wave/iw177_fiji_sukuna.dds
+sprite name: GFX_portrait_FIJ_independence_wave_founding_congress_chair
+texture path: gfx/leaders/006_independence_wave/portrait_FIJ_independence_wave_founding_congress_chair.dds
 ```
 
-The final DDS path is intentionally absent because the parent prompt forbids DDS conversion in this source-clearance pass. The main agent owns final `.gfx` wiring after source/date approval, source-locked repaint, and independent likeness/style/provenance audit.
+The provisional DDS is 156x210, 131168 bytes, and SHA-256 `31fea5eb5c7c4b6f34ec138ed6a3168a7c6c39755a992bd6abf0296c5838d2c6`. The main agent owns final admission after source/date approval, independent likeness/style/provenance audit, and the named FORM-39 FIJ/PNG/WPG route adapter. No advisor or small-portrait consumer exists.
 
 ## Clearance state
 

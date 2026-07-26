@@ -12,6 +12,20 @@ Country-package implementation references are grouped by region. See the [Northe
 
 The exact compile-time content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California. These ten packages have the current sourced real-male portrait and package-audit approvals required by the runtime gate.
 
+IW-177 Fiji is the current accepted alternative package tranche, not an
+attested package. It reuses the vanilla `FIJ` tag and flag/history baseline at
+state 636, reserves `RG-PACIFIC-ISLANDS`, and adds a sourced male Ratu Sir Lala
+Sukuna country-leader consumer, founding-congress ledger, six paid/timed
+decisions, six connected focuses, lifecycle ideas, coastal-maritime force and
+AI surfaces, and fail-safe cleanup. Its portrait passed the bounded
+likeness/style/provenance audit but remains gated by the circa-1940s source date
+against the 1936-centered event baseline. FIJ selects the separate FORM-39
+Melanesian Federation family; the named FIJ/PNG/WPG consent-led adapter, X-tag
+route, and collision tests are not implemented, so FIJ stays outside runtime
+attestation. The durable Event 006 portrait shelf now records 48 pre-resize
+masters and 83 normalized 156x210 PNGs, with no advisor or small/dossier
+derivatives.
+
 Grounded Event 006 packages require sourced real-male, head-and-shoulders, identity-preserving HOI4 portrait treatments. Protected BAY Rupprecht and RHI Matthes remain unchanged. IW-009 BAY uses independently approved and runtime-promoted Heinrich Held and Friedrich Dollmann portraits; Dollmann's stable consumer retains a full-size commander portrait only, with no advisor or `_small` derivative.
 
 The canonical content gate now gives unadmitted automatic candidates zero weight and rejects a direct or stale reservation before anchor allocation. With ten attested IDs but only nine mutually compatible reservation groups because IW-008 RHI and IW-010 AJX share `RG-RHINE-SAAR`, the 3/4/5/7 bands are conditionally viable when their live host, anchor, reservation, Event 005 collision, force, chaos-band, and transaction checks pass. The ten-country Totalen Krieg and World Collapse bands remain fail-closed pending a tenth unique-group admitted package or valid map rebinding. The exact wave ladder remains 3/4/5/7/10, and World Collapse remains a ten-country count.

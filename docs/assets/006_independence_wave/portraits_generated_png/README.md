@@ -4,10 +4,10 @@ This folder is the central, reference-only shelf for source-based Independence W
 
 ## Scope
 
-The shelf contains 127 byte-copied PNGs:
+The shelf contains 131 byte-copied PNGs:
 
-- 45 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
-- 81 normalized PNGs at the native HOI4 large-portrait size of 156x210:
+- 48 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md). This includes the two protected BAY Rupprecht and RHI Matthes source repaints.
+- 83 normalized PNGs at the native HOI4 large-portrait size of 156x210:
 
 - 44 source-refinish attempts from the dated `sourced_portrait_refinishes_*` packages.
 - 3 grounded source-replacement outputs from the `sourced_portrait_replacements_*` packages.
@@ -18,6 +18,7 @@ The shelf contains 127 byte-copied PNGs:
 - 1 IW-018 Sardinia Vittorio Vernè source-locked commander repaint candidate retained pending rights, role, and independent likeness/style/provenance gates.
 - 1 IW-018 Sardinia Pietro Pinna Parpaglia source-locked crown-route repaint candidate retained pending role, ownership, and independent likeness/style/provenance gates.
 - 1 IW-173 Hawai'i Samuel Wilder King source-locked territorial-delegate repaint candidate retained pending independent likeness/style/provenance gates and the package's no-leader-replacement contract.
+- 1 IW-177 Fiji Ratu Sir Lala Sukuna source-locked constitutional-statesman repaint candidate retained pending the circa-1940s date decision and independent likeness/style/provenance gates.
 
 Purely generated fictional or institutional portrait packages, raw source photographs, exact source crops, review sheets, contact sheets, DDS files, advisor icons, dossier/small derivatives, and runtime-only decoded DDS previews are intentionally excluded.
 

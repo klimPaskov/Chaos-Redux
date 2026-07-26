@@ -16,6 +16,19 @@ runtime-admitted, does not replace the vanilla HAW roster, and still requires
 an independent likeness/style/provenance audit plus an explicit no-replacement
 package decision before any DDS or `.gfx` work.
 
+The 2026-07-27 IW-177 Fiji tranche is implemented but fail-closed. It reuses
+vanilla `FIJ` at state 636 with `RG-PACIFIC-ISLANDS`, retains the vanilla flag
+and history baseline, and adds a sourced male Ratu Sir Lala Sukuna
+country-leader consumer, founding-congress ledger, six paid/timed decisions,
+six connected focuses, lifecycle ideas, coastal-maritime force mapping, AI,
+cleanup, and a generic-tree protection guard. The source-derived portrait has a
+bounded likeness/style/provenance PASS, but its circa-1940s archive date is
+still gated against the 1936-centered event baseline. FIJ selects FORM-39
+Melanesian Federation; the named FIJ/PNG/WPG consent-led adapter, X-tag route,
+and collision tests are not implemented, so FIJ is not in runtime attestation.
+The durable pre-DDS portrait shelf now contains 48 source-derived masters and
+83 normalized 156x210 PNGs, with no advisor or small/dossier derivatives.
+
 IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
 The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
 The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.
@@ -135,8 +148,8 @@ they are not current routing documents.
   and 977.
 - The current portrait authority is the sourced-only workflow in the event-asset
   skill. The reference shelf at
-  `docs/assets/006_independence_wave/portraits_generated_png/` now preserves 44
-  larger pre-resize masters and 81 normalized pre-DDS PNGs with byte/hash
+   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves 48
+   larger pre-resize masters and 83 normalized pre-DDS PNGs with byte/hash
   manifests; candidates remain evidence only until independent review. The
   2026-07-26 ARX Vernè commander candidate is explicitly candidate-only and
   has no DDS or runtime wiring; the companion Pinna crown candidate is also
