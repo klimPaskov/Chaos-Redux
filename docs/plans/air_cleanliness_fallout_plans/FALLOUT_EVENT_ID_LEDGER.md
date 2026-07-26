@@ -632,3 +632,17 @@ The row selects the first and last eligible current-generation states in the fix
 The chain remains dormant and uncounted until the Fallout scheduler activation setter and runtime receipt proof are available.
 
 The documented living-world total is now `453` and the countable Fallout living-world total remains `0 of 660`.
+
+## County Fair Returns correction
+
+The County Fair Returns adds dormant suffixes `572` through `578` with candidate id `572`, transaction key `710054`, route `7154`, and history `9159`.
+
+The human opening is `572`, the hidden-AI opening is `573`, the human and hidden-AI delayed results are `574` and `575`, the human and hidden-AI callbacks are `576` and `577`, and cleanup is `578`.
+
+The row requires at least three eligible North American native rural states and chooses the lowest eligible native state id as one authenticated host state.
+
+The chain carries four authored branch costs, frozen Air Winter and survival ledgers, deterministic result and callback outcomes, local Deaths effects, state and country memories, dedicated report art, Event Log payloads, hidden-AI parity, and delayed cleanup.
+
+The chain remains dormant and uncounted until a later reviewed scheduler activation setter and runtime receipt proof are available.
+
+The documented living-world total is now `460` and the countable Fallout living-world total remains `0 of 660`.

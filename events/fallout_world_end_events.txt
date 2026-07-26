@@ -13382,6 +13382,129 @@ country_event = {
 	immediate = { fallout_event_565_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout regional chain: The County Fair Returns
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.572
+	title = chaosx.fallout.572.t
+	desc = chaosx.fallout.572.desc
+	picture = GFX_report_event_fallout_county_fair_returns
+	is_triggered_only = yes
+	trigger = { fallout_event_572_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.572.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_572_cost.civic_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_572_cost.civic_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_572_cost.civic_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_572_requested_branch = constant:fallout_event_572_branch.civic_exhibition } fallout_event_572_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.572.a.tt
+		ai_chance = { base = constant:fallout_event_572_threshold.ai_civic_priority }
+	}
+	option = {
+		name = chaosx.fallout.572.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_572_cost.exchange_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_572_cost.exchange_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_572_cost.exchange_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_572_cost.exchange_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_572_requested_branch = constant:fallout_event_572_branch.seasonal_exchange } fallout_event_572_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.572.b.tt
+		ai_chance = { base = constant:fallout_event_572_threshold.ai_exchange_priority }
+	}
+	option = {
+		name = chaosx.fallout.572.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_572_cost.muster_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_572_cost.muster_equipment compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_572_cost.muster_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_572_requested_branch = constant:fallout_event_572_branch.militia_muster } fallout_event_572_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.572.c.tt
+		ai_chance = { base = constant:fallout_event_572_threshold.ai_muster_priority }
+	}
+	option = {
+		name = chaosx.fallout.572.d
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_572_cost.memorial_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_572_cost.memorial_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_572_cost.memorial_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_572_requested_branch = constant:fallout_event_572_branch.memorial_gathering } fallout_event_572_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.572.d.tt
+		ai_chance = { base = constant:fallout_event_572_threshold.ai_memorial_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.573
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_572_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_572_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.574
+	title = chaosx.fallout.574.t
+	desc = { text = chaosx.fallout.574.civic.success.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.civic_exhibition } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.574.civic.partial.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.civic_exhibition } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.574.civic.failure.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.civic_exhibition } } }
+	desc = { text = chaosx.fallout.574.exchange.success.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.seasonal_exchange } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.574.exchange.partial.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.seasonal_exchange } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.574.exchange.failure.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.seasonal_exchange } } }
+	desc = { text = chaosx.fallout.574.muster.success.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.militia_muster } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.574.muster.partial.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.militia_muster } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.574.muster.failure.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.militia_muster } } }
+	desc = { text = chaosx.fallout.574.memorial.success.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.memorial_gathering } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.574.memorial.partial.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.memorial_gathering } check_variable = { fallout_event_572_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.574.memorial.failure.d trigger = { check_variable = { fallout_event_572_selected_branch = constant:fallout_event_572_branch.memorial_gathering } } }
+	picture = GFX_report_event_fallout_county_fair_returns
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_572_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.county_fair_returns_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.574.a hidden_effect = { fallout_event_572_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.574.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.575
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_572_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.county_fair_returns_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_572_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.576
+	title = chaosx.fallout.576.t
+	desc = { text = chaosx.fallout.576.success.d trigger = { check_variable = { fallout_event_572_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.576.partial.d trigger = { check_variable = { fallout_event_572_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.576.failure.d trigger = { check_variable = { fallout_event_572_callback_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_county_fair_returns
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.county_fair_returns_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_572_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_572_branch.upper_bound } fallout_event_572_registry_is_current = yes }
+	option = { name = chaosx.fallout.576.a hidden_effect = { fallout_event_572_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.576.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.577
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.county_fair_returns_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_572_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_572_branch.upper_bound } fallout_event_572_registry_is_current = yes }
+	immediate = { fallout_event_572_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.578
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_572_cleanup_can_enter = yes }
+	immediate = { fallout_event_572_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 

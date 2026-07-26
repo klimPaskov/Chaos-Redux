@@ -441,3 +441,21 @@ The result updates resources, cohesion, Supply Access, trust, and border tension
 The callback records branch and grade memories, seeds the accepted federation or barge-war continuation thresholds, records Event Log payloads, and releases authenticated cleanup receipts.
 
 The candidate remains dormant and contributes zero countable blocks until a Fallout-owned scheduler activation setter and runtime receipt proof exist. The dedicated proof is recorded in `FALLOUT_RIVER_RATION_LEAGUE_CHAIN_PROOF.md`.
+
+## The County Fair Returns correction
+
+The County Fair Returns is the fifty-fourth reviewed ordinary candidate.
+
+It uses candidate id `572`, transaction `710054`, route `7154`, event blocks `572` through `578`, and Event Log history `9159`.
+
+Its country gate requires the North American region, a current generation, recovery Food, Cohesion, and Recognition, at least one affordable branch, and at least three eligible native rural states.
+
+The producer counts eligible states and stores the lowest native state id as the single host target. Only that host state is frozen into the ordinary transaction.
+
+The chain freezes survival, Air Winter, state supply, civic, trade, militia, family, public-health, and cause-memory ledgers before a 35-day result and a 365-day first seasonal callback.
+
+Four authored policies cover a civic exhibition, seasonal exchange, militia muster, and memorial gathering with branch-specific costs, deterministic result bands, local state effects, and Deaths-backed failure.
+
+The callback records annual institution, partial tradition, or interrupted memories, records Event Log payloads with the authenticated host state as secondary actor, and releases both delayed cleanup receipts.
+
+The candidate remains dormant and contributes zero countable blocks until a Fallout-owned scheduler activation setter and runtime receipt proof exist. The dedicated proof is recorded in `FALLOUT_COUNTY_FAIR_RETURNS_CHAIN_PROOF.md`.
