@@ -145,19 +145,12 @@ Do not wire placeholder textures for the following names:
 - `GFX_independence_wave_formable_form_01` through
   `GFX_independence_wave_formable_form_48`;
 - `GFX_independence_wave_league_emblem`;
-- `GFX_independence_wave_recognition_seal_static` and
-  `GFX_independence_wave_recognition_seal_animated`;
-- `GFX_independence_wave_dependency_warning_static` and
-  `GFX_independence_wave_dependency_warning_animated`;
-- `GFX_independence_wave_league_charter_activation_static` and
-  `GFX_independence_wave_league_charter_activation_animated`;
-- `GFX_independence_wave_formable_eligibility_seal_static` and
-  `GFX_independence_wave_formable_eligibility_seal_animated`.
 
 The formable/league identities require final tags and approved motifs. The four
-animated pairs require GUI dimensions and real authored frame sequences with
-static fallbacks. `manifest.md` records the exact missing inputs and naming
-contract.
+animated status families are no longer blocked: their authored sheets and static
+fallbacks are consumed by the Statehood Ledger's explicit `Animate` toggle in
+`interface/006_independence_wave.gui` and
+`common/scripted_guis/006_independence_wave_scripted_gui.txt`.
 
 ## Northern and western Europe portrait handoff
 
