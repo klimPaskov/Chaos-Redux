@@ -1,5 +1,9 @@
 # Fallout Living-World Scheduler Proof
 
+## Current reconciliation after Tunnel Ward Committees
+
+The dormant reviewed producer now covers `58` ordinary Fallout rows and `488` defined event blocks through `chaosx.fallout.613`. Tunnel Ward Committees is the East Asia row with candidate `607`, transaction `710058`, route `7158`, and history `9164`. It is admitted only from a current-generation urban shelter state with a produced Air Winter shelter snapshot and remains behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+
 ## Status
 
 The living-world scheduler has a dormant numerical and transaction-integrity substrate. It records the reveal timeline, freezes a stable post-allocation country registry and pacing size, initializes country runtime rows, and implements activation-gated deterministic candidate review for crisis, routine, broadcast, major-arc, and relationship openings. It also exposes five-part orientation, anti-repetition, ordinary-opening, arc, delayed-result, bilateral, cancellation, cleanup, routing, exact dispatch-issuance, and issued reciprocal terminalization contracts. Fifty-seven global-survival pilot rows now have a Fallout-owned generation-bound producer covering the reviewed resource, government, recovery, altered-ecology, migration, frozen-water, disease, checkpoint, society, custody, command-fracture, ammunition, missing-patrol, ritual, ash-response, river, county-fair, Nile Pump Congress, Old Airfield, and Radio Island chains. The Year Zero, Orchard Flowers, Skilled List, and False Spring Losses major-arc stage consumers are dormant and relationship rows remain fail-closed behind their reciprocal payload proof. The pilot producer remains dormant and is not a living-world caller.

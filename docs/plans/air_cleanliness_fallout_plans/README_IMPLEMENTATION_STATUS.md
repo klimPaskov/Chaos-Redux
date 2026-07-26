@@ -1,5 +1,9 @@
 # Air Cleanliness and Fallout Implementation Status
 
+## Current reconciliation after Tunnel Ward Committees
+
+The latest dormant regional tranche is Tunnel Ward Committees at `chaosx.fallout.607` through `chaosx.fallout.613`, candidate `607`, transaction `710058`, route `7158`, and Event Log history `9164`. It adds one East Asia shelter-governance row with four human and hidden-AI-parity branches, deterministic result and callback grading, Deaths-backed failure, durable memories, cleanup, dedicated localisation, and dedicated report art. The reviewed ordinary pilot now has `58` rows and `488` defined blocks. Countable release-floor credit remains `0 of 660` while scheduler activation is unset.
+
 Overall system status reviewed against the live working tree on 2026-07-26. The numerical approval gate was reconciled on 2026-07-18.
 
 Overall status: partial implementation with hard release blockers. This document does not claim that Fallout, the manual scenario, the world rewrite, or the player handoff is complete.

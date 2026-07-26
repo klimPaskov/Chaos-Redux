@@ -15481,6 +15481,104 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.607
+	title = chaosx.fallout.607.t
+	desc = chaosx.fallout.607.d
+	picture = GFX_report_event_fallout_tunnel_ward_committees
+	is_triggered_only = yes
+	trigger = { fallout_event_607_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.607.a
+		trigger = { fallout_event_607_recognize_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_607_requested_branch = constant:fallout_event_607_branch.recognize_councils } fallout_event_607_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.607.a.tt
+	}
+	option = {
+		name = chaosx.fallout.607.b
+		trigger = { fallout_event_607_centralize_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_607_requested_branch = constant:fallout_event_607_branch.centralize_appointments } fallout_event_607_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.607.b.tt
+	}
+	option = {
+		name = chaosx.fallout.607.c
+		trigger = { fallout_event_607_military_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_607_requested_branch = constant:fallout_event_607_branch.military_wards } fallout_event_607_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.607.c.tt
+	}
+	option = {
+		name = chaosx.fallout.607.option_rotate
+		trigger = { fallout_event_607_rotate_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_607_requested_branch = constant:fallout_event_607_branch.rotate_leadership } fallout_event_607_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.607.option_rotate.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.608
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_607_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_607_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.609
+	title = chaosx.fallout.609.t
+	desc = { text = chaosx.fallout.609.recognize.success.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.recognize_councils } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.609.recognize.partial.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.recognize_councils } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.609.recognize.failure.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.recognize_councils } } }
+	desc = { text = chaosx.fallout.609.centralize.success.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.centralize_appointments } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.609.centralize.partial.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.centralize_appointments } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.609.centralize.failure.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.centralize_appointments } } }
+	desc = { text = chaosx.fallout.609.military.success.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.military_wards } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.609.military.partial.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.military_wards } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.609.military.failure.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.military_wards } } }
+	desc = { text = chaosx.fallout.609.rotate.success.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.rotate_leadership } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.609.rotate.partial.d trigger = { check_variable = { fallout_event_607_selected_branch = constant:fallout_event_607_branch.rotate_leadership } check_variable = { fallout_event_607_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.609.rotate.failure.d
+	picture = GFX_report_event_fallout_tunnel_ward_committees
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_607_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.tunnel_ward_committees_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.609.a hidden_effect = { fallout_event_607_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.609.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.610
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_607_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.tunnel_ward_committees_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_607_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.611
+	title = chaosx.fallout.611.t
+	desc = { text = chaosx.fallout.611.success.d trigger = { check_variable = { fallout_event_607_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.611.partial.d trigger = { check_variable = { fallout_event_607_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.611.failure.d
+	picture = GFX_report_event_fallout_tunnel_ward_committees
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_607_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.tunnel_ward_committees_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_607_registry_is_current = yes }
+	option = { name = chaosx.fallout.611.a hidden_effect = { fallout_event_607_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.611.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.612
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_607_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.tunnel_ward_committees_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_607_registry_is_current = yes }
+	immediate = { fallout_event_607_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.613
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_607_cleanup_can_enter = yes }
+	immediate = { fallout_event_607_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
