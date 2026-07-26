@@ -1,11 +1,13 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 PACIFIC COUNTRY PACKAGE TRIGGERS
 # ============================================================================
-# Exact IW-184 California, IW-173 Hawaii, and IW-179 Micronesia identity,
+# Exact IW-184 California, IW-173 Hawaii, IW-177 Fiji, and IW-179 Micronesia identity,
 # setup, project, lifecycle, and final-publication proofs. Exact dormant HBX
 # and HAW packages require the generic tree before loading the full Event 006
-# framework; FSM keeps its owning tree. No trigger performs a world-country
-# scan.
+# framework; FSM keeps its owning tree. FIJ selects the FORM-39 Melanesian
+# family, but its named consent-led member/route adapter remains fail-closed
+# until the researched PNG/WPG member packages and X-tag identity are wired.
+# No trigger performs a world-country scan.
 # ============================================================================
 
 is_independence_wave_hbx_package = {
@@ -24,6 +26,12 @@ is_independence_wave_fsm_package = {
 	original_tag = FSM
 	is_independence_wave_active_country = yes
 	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_179 }
+}
+
+is_independence_wave_fij_package = {
+	original_tag = FIJ
+	is_independence_wave_active_country = yes
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_177 }
 }
 
 has_independence_wave_hbx_origin_leadership = {
@@ -51,12 +59,21 @@ has_independence_wave_fsm_origin_leadership = {
 	}
 }
 
+has_independence_wave_fij_origin_leadership = {
+	has_character = FIJ_independence_wave_founding_congress_chair
+	has_country_leader = {
+		ruling_only = yes
+		character = FIJ_independence_wave_founding_congress_chair
+	}
+}
+
 has_independence_wave_pacific_command_structure = {
 	has_country_flag = independence_wave_pacific_provisional_command_established
 	OR = {
 		AND = { is_independence_wave_hbx_package = yes OR = { has_idea = hbx_divided_federal_arsenals has_idea = hbx_californian_ports_and_works_board } }
 		AND = { is_independence_wave_haw_package = yes OR = { has_idea = haw_exposed_island_supply has_idea = haw_island_shipping_compact } }
 		AND = { is_independence_wave_fsm_package = yes OR = { has_idea = fsm_scattered_island_authority has_idea = fsm_federal_patrol_compact } }
+		AND = { is_independence_wave_fij_package = yes OR = { has_idea = fij_unsettled_congress has_idea = fij_communal_charter has_idea = fij_coastal_guard_compact } }
 	}
 }
 
@@ -73,6 +90,11 @@ has_stable_independence_wave_haw_shipping_security = {
 has_stable_independence_wave_fsm_inter_island_authority = {
 	is_independence_wave_fsm_package = yes
 	check_variable = { var = independence_wave_fsm_inter_island_authority value = constant:independence_wave_pacific_pressure.fsm_stable compare = greater_than_or_equals }
+}
+
+has_stable_independence_wave_fij_congress = {
+	is_independence_wave_fij_package = yes
+	check_variable = { var = independence_wave_fij_congress_pressure value = constant:independence_wave_pacific_pressure.fij_stable compare = greater_than_or_equals }
 }
 
 has_independence_wave_fsm_route_government = {
@@ -123,6 +145,17 @@ has_independence_wave_fsm_active_project = {
 		has_decision = independence_wave_fsm_confirm_traditional_leaders_council
 		has_decision = independence_wave_fsm_adopt_inter_island_constitution
 		has_decision = independence_wave_fsm_accept_protected_ocean_mandate
+	}
+}
+
+has_independence_wave_fij_active_project = {
+	OR = {
+		has_decision = independence_wave_fij_convene_constituent_congress
+		has_decision = independence_wave_fij_register_communal_veto
+		has_decision = independence_wave_fij_open_labor_shipping_board
+		has_decision = independence_wave_fij_settle_colonial_accounts
+		has_decision = independence_wave_fij_charter_coastal_guard
+		has_decision = independence_wave_fij_ratify_island_compact
 	}
 }
 
@@ -192,6 +225,22 @@ can_initialize_independence_wave_iw_179_package = {
 	event_target:independence_wave_setup_anchor_state = { state = 684 is_owned_and_controlled_by = ROOT }
 	event_target:independence_wave_setup_former_host = { exists = yes NOT = { tag = ROOT } }
 	capital_scope = { state = 684 }
+}
+
+can_initialize_independence_wave_iw_177_package = {
+	is_independence_wave_fij_package = yes
+	# Fiji uses the full Event 006 framework only from the vanilla generic tree;
+	# never replace a meaningful tree supplied by another mod or route.
+	has_focus_tree = generic_focus
+	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_177 }
+	check_variable = { independence_wave_region = constant:independence_wave_region.southeast_east_asia_oceania }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.regional }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.port_or_island }
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = { state = 636 is_owned_and_controlled_by = ROOT }
+	event_target:independence_wave_setup_former_host = { exists = yes NOT = { tag = ROOT } }
+	capital_scope = { state = 636 }
 }
 
 has_prepared_independence_wave_iw_184_package_setup = {
@@ -367,6 +416,62 @@ has_prepared_independence_wave_iw_179_package_setup = {
 	capital_scope = { state = 684 }
 }
 
+has_prepared_independence_wave_iw_177_package_setup = {
+	is_independence_wave_fij_package = yes
+	has_country_flag = independence_wave_origin_prepared
+	check_variable = { independence_wave_region = constant:independence_wave_region.southeast_east_asia_oceania }
+	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.regional }
+	check_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.port_or_island }
+	has_variable = independence_wave_anchor_state
+	check_variable = { independence_wave_anchor_state = 636 }
+	var:independence_wave_anchor_state = { state = 636 is_owned_and_controlled_by = ROOT }
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = ROOT }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	has_idea = civilian_economy
+	has_idea = export_focus
+	has_idea = volunteer_only
+	has_independence_wave_fij_origin_leadership = yes
+	has_independence_wave_pacific_command_structure = yes
+	has_country_flag = independence_wave_command_roster_ready
+	has_country_flag = independence_wave_full_focus_framework
+	NOT = { has_country_flag = independence_wave_additive_focus_overlay }
+	has_focus_tree = independence_wave_focus_tree
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_country_flag = independence_wave_route_constitutional_available
+	has_country_flag = independence_wave_route_popular_council_available
+	has_country_flag = independence_wave_route_traditional_available
+	has_country_flag = independence_wave_route_patron_client_available
+	has_country_flag = independence_wave_emergency_military_route_excluded
+	NOT = { has_country_flag = independence_wave_route_emergency_military_available }
+	has_country_flag = independence_wave_radical_sovereignty_route_excluded
+	NOT = { has_country_flag = independence_wave_route_radical_sovereignty_available }
+	has_country_flag = independence_wave_host_negotiation_route_available
+	has_country_flag = independence_wave_host_guarded_frontier_route_available
+	has_country_flag = independence_wave_host_association_route_available
+	has_country_flag = independence_wave_host_reclamation_route_available
+	has_country_flag = independence_wave_ambition_family_registered
+	has_country_flag = independence_wave_league_route_available
+	has_country_flag = independence_wave_formable_family_registered
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.melanesian_federation }
+	has_country_flag = independence_wave_fij_melanesian_route_adapter_complete
+	has_country_flag = independence_wave_force_mapping_loaded
+	check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_177 }
+	check_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
+	check_variable = { independence_wave_military_tradition = constant:independence_wave_force_package_military_tradition.p177 }
+	has_independence_wave_force_package_for_current_generation = yes
+	has_country_flag = independence_wave_force_package_applied
+	has_country_flag = independence_wave_fij_ai_profile
+	has_country_flag = independence_wave_iw_177_lifecycle_ready
+	OR = { has_idea = fij_unsettled_congress has_idea = fij_communal_charter has_idea = fij_coastal_guard_compact }
+	capital_scope = { state = 636 }
+}
+
 has_complete_independence_wave_iw_184_package_setup = {
 	has_prepared_independence_wave_iw_184_package_setup = yes
 	has_country_flag = independence_wave_package_setup_complete
@@ -395,6 +500,18 @@ has_complete_independence_wave_iw_179_package_setup = {
 	has_prepared_independence_wave_iw_179_package_setup = yes
 	has_country_flag = independence_wave_package_setup_complete
 	has_country_flag = independence_wave_iw_179_setup_complete
+	has_country_flag = independence_wave_origin_activation_ready
+	independence_wave_active_country_arrays_are_aligned = yes
+	independence_wave_network_member_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_active_countries value = THIS }
+	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+	has_country_flag = independence_wave_network_member
+}
+
+has_complete_independence_wave_iw_177_package_setup = {
+	has_prepared_independence_wave_iw_177_package_setup = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_iw_177_setup_complete
 	has_country_flag = independence_wave_origin_activation_ready
 	independence_wave_active_country_arrays_are_aligned = yes
 	independence_wave_network_member_arrays_are_aligned = yes
