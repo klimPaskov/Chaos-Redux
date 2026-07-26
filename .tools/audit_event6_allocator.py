@@ -299,6 +299,34 @@ def main() -> int:
 		"attested package anchors are not pairwise unique: " + repr(attested_anchors),
 		errors,
 	)
+		reservation_effects = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
+		reservation_triggers = read("common/scripted_triggers/006_independence_wave_packages_region_01_triggers.txt")
+		capacity_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
+		require(
+			"independence_wave_reservation_group_id.rg_rhine_saar" in reservation_effects
+			and "independence_wave_package_id.iw_008" in reservation_effects
+			and "independence_wave_package_id.iw_010" in reservation_effects,
+			"RG-RHINE-SAAR pair-capacity exception is missing from the central reservation effect",
+			errors,
+		)
+		require(
+			"can_plan_independence_wave_package_iw_008" in reservation_triggers
+			and "can_plan_independence_wave_package_iw_010" in reservation_triggers,
+			"RG-RHINE-SAAR pair-capacity package triggers are missing",
+			errors,
+		)
+		require(
+			capacity_triggers.count("independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_010") >= 1
+			and capacity_triggers.count("independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_008") >= 1,
+			"RG-RHINE-SAAR pair-capacity witness does not admit both sibling packages",
+			errors,
+		)
+		require(
+			"liberation_validation_row_package = constant:independence_wave_package_id.iw_008" in reservation_effects
+			and "liberation_validation_inner_package = constant:independence_wave_package_id.iw_010" in reservation_effects,
+			"RG-RHINE-SAAR pair-capacity lock invariant exception is missing",
+			errors,
+		)
 	expected_automatic_ids = {
 		int(row["package_id"].split("-")[1])
 		for row in binding_rows
@@ -499,6 +527,7 @@ def main() -> int:
 	print(f"- automatic/high-chaos selectable packages: {len(automatic_ids)}")
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
 	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
+	print("- RG-RHINE-SAAR pair capacity: 2 distinct packages (IW-008 anchor 51; IW-010 anchor 42)")
 	print("- automatic counts: 3 / 4 / 5 / 7 / 10 (World Collapse 10)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
 	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
