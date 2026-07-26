@@ -67,10 +67,11 @@ and generation markers instead of selecting a fallback.
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
-- The ordinary candidate eligibility trigger still rejects major-arc rows until
-  their complete atomic reservations are reviewed. Relationship rows now use a
-  reciprocal bilateral proof, but the current rows keep the no-partner sentinel
-  and therefore remain ineligible.
+- The ordinary candidate eligibility trigger admits major-arc rows only through
+  the top-level arc payload proof. No authored stage event consumer exists yet,
+  so those rows remain dormant. Relationship rows now use a reciprocal bilateral
+  proof, but the current rows keep the no-partner sentinel and therefore remain
+  ineligible.
 - The Well Queue cost is paid only after its delayed row and ordinary receipt
   both commit, with a cleanup-owned payment flag preventing a second charge.
 - The Animal Feed cost is paid only after its delayed row and ordinary receipt

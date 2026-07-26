@@ -445,6 +445,10 @@ fallout_event_commit_selected_candidate = {
 					limit = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship } }
 					fallout_event_schedule_selected_relationship_candidate = yes
 				}
+				else_if = {
+					limit = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.major_arc } }
+					fallout_event_schedule_selected_major_arc_candidate = yes
+				}
 				else = {
 					fallout_event_schedule_ordinary_receipt = yes
 				}
@@ -494,12 +498,17 @@ fallout_event_commit_selected_candidate = {
 						set_global_flag = fallout_event_global_broadcast_receipt_initialized
 						fallout_event_extend_broadcast_player_cooldowns = yes
 					}
-					# Ordinary openings are issued on the commit day. A relationship
-					# reservation starts as a bilateral reserved pair and waits for its
-					# exact relationship consumer to mark response_pending.
+					# Ordinary openings are issued on the commit day. Major and
+					# relationship reservations wait for their authored stage or
+					# relationship consumers before any dispatch is issued.
 					if = {
 						limit = {
-							NOT = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship } }
+							NOT = {
+								OR = {
+									check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship }
+									check_variable = { fallout_event_requested_class = constant:fallout_event_class.major_arc }
+								}
+							}
 							NOT = { has_global_flag = fallout_event_scheduler_error }
 						}
 						fallout_event_reconcile_ordinary_receipt = yes
@@ -2915,6 +2924,23 @@ fallout_event_remove_bilateral_row_at_index = {
 # ---------------------------------------------------------------------------
 # Ordinary opening reservation, cancellation, and atomic consumption
 # ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. Inputs are the selected candidate request fields
+# plus fallout_event_candidate_validation_index. The major branch reserves the
+# existing capped arc row and waits for an authored stage consumer.
+fallout_event_schedule_selected_major_arc_candidate = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_ticket = constant:fallout_event_runtime.no_ticket }
+	if = {
+		limit = {
+			check_variable = { fallout_event_requested_class = constant:fallout_event_class.major_arc }
+			fallout_event_candidate_major_arc_payload_is_current = yes
+		}
+		set_temp_variable = { fallout_event_requested_arc_identity = fallout_event_requested_candidate_id }
+		set_temp_variable = { fallout_event_requested_cleanup_token = fallout_event_requested_candidate_id }
+		fallout_event_reserve_major_arc = yes
+	}
+}
 
 # Supported scope: COUNTRY. Inputs are the selected candidate request fields
 # plus fallout_event_candidate_validation_index. The relationship branch is
