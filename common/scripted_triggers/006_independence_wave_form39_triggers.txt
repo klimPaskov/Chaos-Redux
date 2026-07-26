@@ -1,0 +1,240 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-39 TRIGGERS
+# ============================================================================
+# Exact Fiji/PNG/WPG member, consent, identity, territory, project, and AI
+# contracts for the Melanesian Federation. The family remains fail-closed until
+# all three researched member packages and the reviewed MFX identity package
+# are explicitly attested.
+# ============================================================================
+
+@FORM39_FIJ_ANCHOR = 636
+@FORM39_PNG_ANCHOR = 523
+@FORM39_WPG_ANCHOR = 669
+
+is_independence_wave_form39_eligible_member = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.melanesian_federation }
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_form39_autonomous_member }
+	OR = {
+		AND = {
+			original_tag = FIJ
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_177 }
+			check_variable = { independence_wave_anchor_state = @FORM39_FIJ_ANCHOR }
+			owns_state = @FORM39_FIJ_ANCHOR
+			controls_state = @FORM39_FIJ_ANCHOR
+			capital_scope = { state = @FORM39_FIJ_ANCHOR }
+			has_country_flag = independence_wave_fij_melanesian_route_adapter_complete
+			has_country_flag = independence_wave_fij_melanesian_member_research_complete
+		}
+		AND = {
+			original_tag = PNG
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_178 }
+			check_variable = { independence_wave_anchor_state = @FORM39_PNG_ANCHOR }
+			owns_state = @FORM39_PNG_ANCHOR
+			controls_state = @FORM39_PNG_ANCHOR
+			capital_scope = { state = @FORM39_PNG_ANCHOR }
+			has_country_flag = independence_wave_png_melanesian_member_research_complete
+		}
+		AND = {
+			original_tag = WPG
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_157 }
+			check_variable = { independence_wave_anchor_state = @FORM39_WPG_ANCHOR }
+			owns_state = @FORM39_WPG_ANCHOR
+			controls_state = @FORM39_WPG_ANCHOR
+			capital_scope = { state = @FORM39_WPG_ANCHOR }
+			has_country_flag = independence_wave_wpg_melanesian_member_research_complete
+		}
+	}
+}
+
+has_independence_wave_form39_exact_carrier_anchor = {
+	is_independence_wave_form39_eligible_member = yes
+	original_tag = FIJ
+	NOT = { has_cosmetic_tag = MFX }
+	NOT = { has_global_flag = independence_wave_form39_mfx_identity_in_use }
+	NOT = { has_country_flag = independence_wave_form39_dissolved }
+}
+
+has_independence_wave_form39_researched_member_packages = {
+	has_independence_wave_form39_exact_carrier_anchor = yes
+	PNG = {
+		is_independence_wave_form39_eligible_member = yes
+		has_country_flag = independence_wave_png_melanesian_member_research_complete
+	}
+	WPG = {
+		is_independence_wave_form39_eligible_member = yes
+		has_country_flag = independence_wave_wpg_melanesian_member_research_complete
+	}
+}
+
+# The member and invitation arrays are frozen before mutation. No geographic
+# scan or generic Papuan substitute can satisfy this contract.
+has_independence_wave_form39_exact_founding_ledger = {
+	independence_wave_formable_member_arrays_are_aligned = yes
+	independence_wave_formable_invitation_arrays_are_aligned = yes
+	check_variable = { var = independence_wave_formable_member_country_entries^num value = constant:independence_wave_form39.minimum_members compare = equals }
+	check_variable = { var = independence_wave_formable_invited_country_entries^num value = constant:independence_wave_form39.minimum_members compare = equals }
+	check_variable = { var = independence_wave_formable_member_anchor_entries^num value = constant:independence_wave_form39.minimum_integration_anchors compare = greater_than_or_equals }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = FIJ }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = PNG }
+	is_in_array = { array = independence_wave_formable_member_country_entries value = WPG }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = FIJ }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = PNG }
+	is_in_array = { array = independence_wave_formable_invited_country_entries value = WPG }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM39_FIJ_ANCHOR }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM39_PNG_ANCHOR }
+	is_in_array = { array = independence_wave_formable_member_anchor_entries value = @FORM39_WPG_ANCHOR }
+	FIJ = {
+		is_independence_wave_form39_eligible_member = yes
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+	}
+	PNG = {
+		is_independence_wave_form39_eligible_member = yes
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+		NOT = { has_war_with = ROOT }
+	}
+	WPG = {
+		is_independence_wave_form39_eligible_member = yes
+		has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+can_independence_wave_form39_register_readiness = {
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.melanesian_federation }
+	has_country_flag = independence_wave_fij_melanesian_route_adapter_complete
+	has_country_flag = independence_wave_form39_x_tag_reserved
+	has_country_flag = independence_wave_form39_flag_package_ready
+	has_country_flag = independence_wave_form39_identity_review_complete
+	has_independence_wave_form39_researched_member_packages = yes
+}
+
+has_independence_wave_form39_strict_mutation_preconditions = {
+	has_independence_wave_form39_exact_carrier_anchor = yes
+	independence_wave_formable_profile_matches_selected_family = yes
+	check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
+	has_country_flag = independence_wave_formable_discovered
+	has_country_flag = independence_wave_fij_melanesian_route_adapter_complete
+	has_independence_wave_form39_researched_member_packages = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	check_variable = { independence_wave_formable_method = constant:independence_wave_formable_method.negotiated_federation }
+	OR = {
+		check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.voluntary_membership }
+		check_variable = { independence_wave_formable_consent_rule = constant:independence_wave_formable_consent_rule.unanimous_compact }
+	}
+	has_independence_wave_form39_exact_founding_ledger = yes
+}
+
+has_independence_wave_form39_runtime_commit_proof = {
+	has_independence_wave_form39_strict_mutation_preconditions = yes
+	has_independence_wave_formable_commit_readiness = yes
+}
+
+has_independence_wave_form39_pending_human_invitation = {
+	is_ai = no
+	has_pending_independence_wave_formable_founding_invitation = yes
+	check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.melanesian_federation }
+	is_independence_wave_form39_eligible_member = yes
+	OR = {
+		original_tag = PNG
+		original_tag = WPG
+	}
+	var:independence_wave_formable_inviting_carrier = {
+		has_independence_wave_form39_exact_carrier_anchor = yes
+	}
+}
+
+is_independence_wave_form39_postformation_carrier = {
+	is_independence_wave_active_country = yes
+	original_tag = FIJ
+	has_cosmetic_tag = MFX
+	has_country_flag = independence_wave_form39_federal_carrier
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_formable_committed
+	has_country_flag = independence_wave_formable_identity_committed
+	has_country_flag = independence_wave_formable_integration_committed
+	has_variable = independence_wave_formable_family
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.melanesian_federation }
+	check_variable = { independence_wave_formable_transaction_state = constant:independence_wave_formable_transaction.committed }
+	check_variable = { independence_wave_anchor_state = @FORM39_FIJ_ANCHOR }
+	owns_state = @FORM39_FIJ_ANCHOR
+	controls_state = @FORM39_FIJ_ANCHOR
+	capital_scope = { state = @FORM39_FIJ_ANCHOR }
+}
+
+is_independence_wave_form39_active_autonomous_member = {
+	is_independence_wave_active_country = yes
+	is_subject = no
+	has_country_flag = independence_wave_form39_autonomous_member
+	has_variable = independence_wave_form39_autonomous_carrier
+	has_variable = independence_wave_form39_autonomous_carrier_generation
+	has_variable = independence_wave_form39_autonomous_family
+	check_variable = { independence_wave_form39_autonomous_family = constant:independence_wave_formable_family.melanesian_federation }
+	var:independence_wave_form39_autonomous_carrier = { tag = ROOT }
+	check_variable = { var = independence_wave_form39_autonomous_carrier_generation value = ROOT.independence_wave_generation_id compare = equals }
+}
+
+has_independence_wave_form39_bound_members = {
+	is_independence_wave_form39_postformation_carrier = yes
+	PNG = { is_independence_wave_form39_active_autonomous_member = yes }
+	WPG = { is_independence_wave_form39_active_autonomous_member = yes }
+}
+
+has_independence_wave_form39_project_active = {
+	OR = {
+		has_country_flag = independence_wave_form39_shipping_project_active
+		has_country_flag = independence_wave_form39_civil_service_project_active
+		has_country_flag = independence_wave_form39_plebiscite_project_active
+	}
+}
+
+can_pay_independence_wave_form39_shipping_cost = {
+	is_independence_wave_form39_postformation_carrier = yes
+	has_independence_wave_form39_bound_members = yes
+	command_power > constant:independence_wave_formable_cost.civic_command_power
+	can_pay_independence_wave_strategic_cost = yes
+	can_pay_independence_wave_administration_standard_cost = yes
+	NOT = { has_independence_wave_form39_project_active = yes }
+}
+
+can_pay_independence_wave_form39_civil_service_cost = {
+	is_independence_wave_form39_postformation_carrier = yes
+	has_independence_wave_form39_bound_members = yes
+	command_power > constant:independence_wave_formable_cost.civic_command_power
+	can_pay_independence_wave_strategic_cost = yes
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	NOT = { has_independence_wave_form39_project_active = yes }
+}
+
+can_pay_independence_wave_form39_plebiscite_cost = {
+	is_independence_wave_form39_postformation_carrier = yes
+	has_independence_wave_form39_bound_members = yes
+	command_power > constant:independence_wave_decision_cost.command_power_standard
+	can_pay_independence_wave_strategic_cost = yes
+	can_pay_independence_wave_security_standard_cost = yes
+	NOT = { has_independence_wave_form39_project_active = yes }
+}
+
+should_independence_wave_form39_ai_pursue = {
+	is_ai = yes
+	has_independence_wave_form39_runtime_commit_proof = yes
+	check_variable = { independence_wave_formable_ai_willingness = constant:independence_wave_formable_ai_willingness.low }
+	NOT = { has_independence_wave_severe_instability = yes }
+	PNG = { should_independence_wave_form39_ai_consent_to_root = yes }
+	WPG = { should_independence_wave_form39_ai_consent_to_root = yes }
+}
+
+should_independence_wave_form39_ai_consent_to_root = {
+	is_ai = yes
+	is_independence_wave_form39_eligible_member = yes
+	is_independence_wave_recognized_or_later = yes
+	NOT = { has_independence_wave_severe_instability = yes }
+	NOT = { has_war_with = ROOT }
+	ROOT = {
+		has_independence_wave_form39_exact_carrier_anchor = yes
+		has_independence_wave_form39_runtime_commit_proof = yes
+	}
+}
