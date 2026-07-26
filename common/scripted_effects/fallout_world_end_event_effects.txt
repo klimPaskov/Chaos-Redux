@@ -2011,6 +2011,47 @@ fallout_event_schedule_skilled_list_arc_opening_dispatch = {
 	}
 }
 
+# Supported scope: COUNTRY. False Spring Losses uses the same host-owned
+# opening envelope contract with its own identity, state target, and tokens.
+fallout_event_schedule_false_spring_losses_arc_opening_dispatch = {
+	set_temp_variable = { fallout_event_major_arc_stage_dispatch_attempted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_transaction_production_is_approved = yes
+			NOT = { has_country_flag = fallout_event_dispatch_ready }
+			check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_arc_stage.opening }
+			check_variable = { fallout_event_arc_identity_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_candidate_pilot.false_spring_losses_candidate_id }
+			OR = {
+				check_variable = { fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_dispatch_mode.human_visible }
+				check_variable = { fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_dispatch_mode.hidden_ai }
+			}
+			has_variable = fallout_event_478_candidate_state_id
+			fallout_event_478_country_is_current = yes
+		}
+		set_temp_variable = { fallout_event_major_arc_stage_dispatch_attempted = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.major_arc_stage }
+		set_temp_variable = { fallout_event_requested_dispatch_ticket = fallout_event_arc_ticket_entries^fallout_event_arc_reconcile_cursor }
+		set_temp_variable = { fallout_event_requested_dispatch_mode = fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor }
+		if = {
+			limit = { check_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible } }
+			set_temp_variable = { fallout_event_requested_dispatch_event_token = constant:fallout_event_id.false_spring_losses_human }
+		}
+		else = {
+			set_temp_variable = { fallout_event_requested_dispatch_event_token = constant:fallout_event_id.false_spring_losses_ai }
+		}
+		set_temp_variable = { fallout_event_requested_dispatch_branch = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_requested_dispatch_target_type = constant:fallout_event_subject_type.state }
+		set_temp_variable = { fallout_event_requested_dispatch_target = fallout_event_478_candidate_state_id }
+		set_temp_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero }
+		fallout_event_write_dispatch_envelope = yes
+		if = {
+			limit = { check_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero } }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.arc_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+}
+
 # Supported scope: COUNTRY. One compact arc row is selected. Its identity proof
 # scans the capped local arc ledger for duplicate tickets, identities, or actors.
 fallout_event_reconcile_one_arc_row = {
@@ -2048,6 +2089,10 @@ fallout_event_reconcile_one_arc_row = {
 				else_if = {
 					limit = { check_variable = { fallout_event_arc_identity_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_candidate_pilot.skilled_list_candidate_id } }
 					fallout_event_schedule_skilled_list_arc_opening_dispatch = yes
+				}
+				else_if = {
+					limit = { check_variable = { fallout_event_arc_identity_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_candidate_pilot.false_spring_losses_candidate_id } }
+					fallout_event_schedule_false_spring_losses_arc_opening_dispatch = yes
 				}
 			}
 			else_if = {
