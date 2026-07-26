@@ -1,6 +1,6 @@
 # Event 006 pre-resize source repaint inventory
 
-This manifest indexes the 41 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding `imagegen_results` PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
+This manifest indexes the 42 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding ImageGen PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
 
 | Date | Trial | Shelf copy | Original ImageGen output | SHA-256 | Dimensions | Mode | Bytes |
 |---|---|---|---|---|---:|---|---:|
@@ -45,5 +45,6 @@ This manifest indexes the 41 source-derived HOI4-style repaint masters copied be
 | `2026_07_25` | `wallonia_ruquoy_trial_01` | `pre_resize_source_repaints/2026_07_25/wallonia_ruquoy_trial_01/AFX_louis_ruquoy_identity_preserve_trial_01.png` | `sourced_portrait_refinishes_2026_07_25/wallonia_ruquoy_trial_01/imagegen_results/AFX_louis_ruquoy_identity_preserve_trial_01.png` | `332b6ac29cb09ecb9d339b18914b5e6cc60006a9a17df371de57e898c4b2b624` | `1080x1456` | `RGB` | 2281035 |
 | `2026_07_26` | `frisia_douwe_kalma_trial_02` | `pre_resize_source_repaints/2026_07_26/frisia_douwe_kalma_trial_02/AGX_douwe_kalma_identity_preserve_trial_02.png` | `sourced_portrait_refinishes_2026_07_26/frisia_douwe_kalma_trial_02/imagegen_results/AGX_douwe_kalma_identity_preserve_trial_02.png` | `c6a4419f7604d939548831fcab520039c6440b9f964592b9de8fa08ec5192ea1` | `1080x1456` | `RGB` | 2269561 |
 | `2026_07_26` | `frisia_pieter_reenalda_trial_02` | `pre_resize_source_repaints/2026_07_26/frisia_pieter_reenalda_trial_02/AGX_pieter_reenalda_identity_preserve_trial_02.png` | `sourced_portrait_refinishes_2026_07_26/frisia_pieter_reenalda_trial_02/imagegen_results/AGX_pieter_reenalda_identity_preserve_trial_02.png` | `3c9d6d44410d9001c791ac6a700689a94fc61fc6b62e7de06947ff1e67145e4d` | `1082x1454` | `RGB` | 2461468 |
+| `2026_07_26` | `iw093_iw098_asset_clearance_v1` | `pre_resize_source_repaints/2026_07_26/iw093_iw098_asset_clearance_v1/DOX_prempeh_ii_identity_preserve_imagegen.png` | `iw093_iw098_asset_clearance_2026_07_26/repaints/DOX/DOX_prempeh_ii_identity_preserve_imagegen.png` | `4e2c3c22380aa52eda941169381403e126baed938fb6646c99b475d022f2bd8a` | `1083x1453` | `RGB` | 2420431 |
 
-Inventory count: **41** pre-resize masters. These files are reference-only and have no runtime GFX references.
+Inventory count: **42** pre-resize masters. These files are reference-only and have no runtime GFX references. The IW-093 Asante candidate is explicitly retained as `candidate_requires_visual_approval`; it is not a runtime admission or DDS promotion.

@@ -4,16 +4,17 @@ This folder is the central, reference-only shelf for source-based Independence W
 
 ## Scope
 
-The shelf contains 119 byte-copied PNGs:
+The shelf contains 121 byte-copied PNGs:
 
-- 41 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
-- 78 normalized PNGs at the native HOI4 large-portrait size of 156x210:
+- 42 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+- 79 normalized PNGs at the native HOI4 large-portrait size of 156x210:
 
 - 44 source-refinish attempts from the dated `sourced_portrait_refinishes_*` packages.
 - 3 grounded source-replacement outputs from the `sourced_portrait_replacements_*` packages.
 - 27 archival source treatments from `sourced_portrait_treatments_2026_07_22`, retained because they are useful provenance even though that package's visual gate rejected the photographic finish.
 - 2 protected approved portraits (BAY Rupprecht and RHI Matthes), copied unchanged.
 - 2 withdrawn historical source attempts for IW-093 Asante.
+- 1 IW-093 Asante source-locked repaint candidate retained pending the independent likeness/style/provenance gate.
 
 Purely generated fictional or institutional portrait packages, raw source photographs, exact source crops, review sheets, contact sheets, DDS files, advisor icons, dossier/small derivatives, and runtime-only decoded DDS previews are intentionally excluded.
 
@@ -25,7 +26,7 @@ The subfolders are an evidence boundary, not an automatic runtime approval:
 - `source_candidates/` contains sourced refinishes, replacement attempts, and the rejected-style treatment ledger.
 - `historical_withdrawn/` contains source-based attempts withdrawn from runtime.
 
-Use [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md) for the larger repaint-master provenance and [MANIFEST.md](MANIFEST.md) for the exact original path, SHA-256, dimensions, package kind, and status of every normalized copy. The original package manifests, source masters, crops, prompts, clearance notes, and independent audits remain authoritative for rights, identity, and admission decisions.
+Use [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md) for the larger repaint-master provenance and [MANIFEST.md](MANIFEST.md) for the exact original path, SHA-256, dimensions, package kind, and status of every normalized copy. The IW-093 candidate's source/crop/repaint/processor evidence remains under `../iw093_iw098_asset_clearance_2026_07_26/`; its candidate status is not runtime admission. The original package manifests, source masters, crops, prompts, clearance notes, and independent audits remain authoritative for rights, identity, and admission decisions.
 
 When creating another grounded portrait, follow the asset skill's pipeline: attributed archival male source, explicit head-and-shoulders crop, identity-preserving HOI4-style repaint, deterministic 156x210 processing, independent likeness/style/provenance audit, then DDS conversion and wiring. Do not treat a candidate in this shelf as a license to skip those gates.
 
