@@ -7,6 +7,15 @@ Status: **Event 006 is incomplete and the goal remains active.**
 Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`.
 Earlier generated grounded-polity portrait packages are provenance evidence only.
 
+The 2026-07-26 HAW source tranche adds a rights-documented Samuel Wilder King
+candidate for parent review. Its unchanged Hawai'i State Archives source, exact
+head-and-shoulders crop proof, source-locked ImageGen repaint, deterministic
+156x210 candidate, prompt, and processing metadata are preserved in the HAW
+source-clearance folder and `portraits_generated_png/`. The candidate is not
+runtime-admitted, does not replace the vanilla HAW roster, and still requires
+an independent likeness/style/provenance audit plus an explicit no-replacement
+package decision before any DDS or `.gfx` work.
+
 IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
 The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
 The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.

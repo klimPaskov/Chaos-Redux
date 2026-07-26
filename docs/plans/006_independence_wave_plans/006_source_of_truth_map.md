@@ -10,6 +10,17 @@ This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The current portrait authority is the sourced-only
 gate in the accepted specification and the reusable event-asset skill. Earlier
 generated portrait packages remain provenance evidence, not visual acceptance.
+
+Post-snapshot asset update (2026-07-26): IW-173 HAW now has a source-ready
+Samuel Wilder King candidate from the Hawai'i State Archives / U.S. House
+delegate record. The immutable source, exact crop proof, source-locked HOI4
+repaint, deterministic 156x210 PNG, prompt, and processing metadata are stored
+under `docs/assets/006_independence_wave/hawaii_samuel_wilder_king_source_clearance_2026_07_26/`
+and in the durable pre-DDS portrait shelf. HAW remains outside runtime
+attestation pending an independent likeness/style/provenance audit and an
+explicit package decision that does not replace or silently duplicate the
+accepted vanilla leadership contract. No DDS, `.gfx`, character, advisor, or
+runtime consumer has been added.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
 
