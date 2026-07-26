@@ -235,6 +235,18 @@ def main() -> int:
 		"canonical RG-RHINE-SAAR matrix row must document the exact two-package 51/42 exception",
 		errors,
 	)
+	installed_matrix_path = ROOT / "docs/plans/006_independence_wave_plans/package_bindings/006_current_map_reservation_groups.csv"
+	with installed_matrix_path.open(encoding="utf-8-sig", newline="") as handle:
+		installed_reservation_rows = list(csv.DictReader(handle))
+	installed_rhine_rows = [row for row in installed_reservation_rows if row["reservation_group"] == "RG-RHINE-SAAR"]
+	require(
+		len(installed_rhine_rows) == 1
+		and installed_rhine_rows[0]["maximum_automatic_packages_per_wave"] == "2"
+		and installed_rhine_rows[0]["package_ids"] == "IW-008|IW-010"
+		and installed_rhine_rows[0]["current_claimed_state_ids"] == "42|51",
+		"installed RG-RHINE-SAAR matrix row must mirror the exact two-package 42/51 exception",
+		errors,
+	)
 
 	# The accepted closure keeps the RHI/AJX reservation group intact and admits
 	# exactly that pair through a documented two-slot exception. Keep the
