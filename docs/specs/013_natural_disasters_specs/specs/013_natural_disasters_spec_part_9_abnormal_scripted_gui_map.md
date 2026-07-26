@@ -10,7 +10,7 @@ The normal aftermath category should stay readable without this map. The abnorma
 | --- | --- | --- |
 | Aftermath category button | A country has at least one active abnormal disaster card or a severe delayed chain in its states. | Lets the affected player choose recovery and warning priorities. |
 | Event Details abnormal tab | Event 013 has reached Evolution III and at least one abnormal season exists in history. | Lets the player review the current abnormal system without exposing hidden formulas. |
-| Disaster Barrage confirmation follow-up | Manual scenario launched High or Maximum intensity and abnormal access is active. | Shows the player what the scenario has started and what can be prioritized. |
+| Disaster Barrage confirmation follow-up | Manual scenario launched Maximum intensity and abnormal access is active. High intensity may open severe chained recovery without the abnormal map. | Shows the player what the scenario has started and what can be prioritized. |
 
 The player should receive a visible notification when the map first becomes relevant. The notification should identify the affected disaster family and the most threatened place by direction, not through final copy.
 
@@ -126,3 +126,11 @@ All five physical layers are authored against one normalized five-anchor layout.
 The bottom timeline has six selectable state-driven milestones: warning, schedule, impact, report, follow-up, and reassessment. A milestone is visible only when its fact exists and changes the scoped detail text rather than applying gameplay.
 
 The return control stores the selected state, closes the GUI, and routes a controlled live record back to the ordinary warning, recovery, relief, or chain decisions. Archived and foreign records remain read-only. No warning or recovery effect is duplicated in scripted GUI code.
+
+The implemented header uses the existing mapped family category pictures as a compact active-family icon, and adds the selected severity band and scheduled impact date beside the sequence summary. A dormant monitor keeps the header readable without inventing a family when no record is selected.
+
+The implemented legend consumes eight passive icon and label pairs for impact, warning, report, aftermath, chain risk, closed state, foreign relief, and blocked action. The foreign-relief badge is therefore a live direct-window consumer as well as a registered recovery asset.
+
+Manual Disaster Barrage abnormal map access is Maximum-only. High intensity can create severe chained disasters and recovery pressure, but does not imply access to the Evolution III abnormal path map.
+
+The Event Details abnormal entry intentionally becomes a dormant read-only monitor once Evolution III has been logged. It can show the abnormal surface before a currently active record exists, while active records still drive the selected header, markers, and recovery details.

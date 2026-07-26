@@ -43,13 +43,12 @@ Event 013 must support individually triggerable disaster families.
 
 | Family group | Families |
 | --- | --- |
-| Ground and mass movement | Earthquake, dry mass movement, wet mass movement, sinkhole and subsidence, whole-earth rupture |
-| Water and coast | Flood, tsunami, storm surge, glacial lake outburst, coastal erosion |
-| Weather and storm | Tropical cyclone, extreme wind, tornado outbreak, thunderstorm, hailstorm, blizzard, cold wave |
-| Heat, drought, and dust | Drought, extreme heat wave, sandstorm and dust storm |
-| Fire | Wildfire, lightning fire outbreak, urban fire after disaster |
-| Volcanic | Volcanic eruption, ashfall, lahar, pyroclastic devastation, massive eruption crisis |
-| Extra-terrestrial and abnormal | Meteor impact, meteor shower, skyfire hail, abnormal storm corridor |
+| Ground and mass movement | Earthquake, dry mass movement, wet mass movement, whole-earth rupture |
+| Water and coast | Flood, tsunami, storm surge |
+| Weather and storm | Tropical cyclone, extreme wind, tornado outbreak, thunderstorm, hailstorm, blizzard, cold wave, moving storm corridor |
+| Heat, drought, and dust | Heat wave, drought, dust and sandstorm |
+| Fire and volcanic ash | Wildfire, volcanic eruption, ashfall, lahar, massive eruption |
+| Extra-terrestrial and abnormal | Meteor impact, meteor shower |
 
 Every family needs unique target scoring, warning odds, impact distribution, death math, building damage, state modifiers, recovery tasks, follow-up chain options, news direction, report direction, asset direction, and AI response priorities.
 
