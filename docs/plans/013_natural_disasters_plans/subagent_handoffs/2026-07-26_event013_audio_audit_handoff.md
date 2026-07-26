@@ -8,7 +8,9 @@ Skill used: `chaos-redux-super-events` (audio research and validation sections)
 
 ## Scope and disposition
 
-This audit covered the Event 013 audio source archive, six event-scoped OGG/WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. No shared sound or music definition, event script, gameplay file, localisation file, GFX file, GUI file, or UI file was edited. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
+This audit covered the Event 013 audio source archive, six event-scoped OGG/WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. The original audit did not edit shared sound or music definitions, event scripts, gameplay files, localisation, GFX, GUI, or UI. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
+
+Follow-up cleanup on 2026-07-26 removed the 60 unnamed sound-effect blocks that still pointed at the deleted Soviet Collapse IDs 16 and 19-27. This touched only `sound/chaosx_sound.asset`; the shared super-event presentation files remain baseline-exact, and unrelated Event 016 sound additions in the worktree were preserved outside the cleanup commit.
 
 ## Final Event 013 media
 
