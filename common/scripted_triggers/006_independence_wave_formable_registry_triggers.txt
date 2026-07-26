@@ -516,6 +516,8 @@ has_independence_wave_formable_commit_readiness = {
 		has_country_flag = independence_wave_formable_identity_adapter_ready
 		has_country_flag = independence_wave_formable_integration_adapter_ready
 		has_country_flag = independence_wave_formable_member_policy_audited
+		# Only families with an explicit, reviewed adapter may pass this gate.
+		# New registry rows stay fail-closed until their family branch is added.
 		OR = {
 			AND = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
@@ -554,19 +556,6 @@ has_independence_wave_formable_commit_readiness = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
 				can_independence_wave_form18_iw058_commit = yes
 			}
-			NOT = {
-				OR = {
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mediterranean_island_league }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
-					check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
-				}
-			}
 		}
 	}
 }
@@ -574,6 +563,8 @@ has_independence_wave_formable_commit_readiness = {
 can_independence_wave_commit_selected_formable = {
 	is_independence_wave_regional_power = yes
 	independence_wave_formable_profile_matches_selected_family = yes
+	# Keep the commit allowlist explicit so generic receipts cannot promote an
+	# unresearched family or silently become a fallback adapter.
 	OR = {
 		AND = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
@@ -606,19 +597,6 @@ can_independence_wave_commit_selected_formable = {
 		AND = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
 			can_independence_wave_form18_iw058_commit = yes
-		}
-		NOT = {
-			OR = {
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.celtic_cooperation_state }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mediterranean_island_league }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural }
-				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mesopotamian_federation }
-			}
 		}
 	}
 	has_country_flag = independence_wave_formable_transaction_ready
