@@ -3580,6 +3580,7 @@ independence_wave_high_chaos_category = {
 				clear_array = global.independence_wave_reclamation_front_targets
 				clear_array = global.independence_wave_reclamation_front_members
 				set_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_value.minimum }
+				clr_country_flag = independence_wave_dm58_reclamation_front_success_temp
 				# The resolver freezes one exact witness before the cost effects
 				# below. It is intentionally called once, not once per member, so
 				# the effect-side backtracking search remains the authoritative
@@ -3588,16 +3589,31 @@ independence_wave_high_chaos_category = {
 				if = {
 					limit = {
 						check_variable = {
-							var = global.independence_wave_reclamation_front_count
-							value = constant:independence_wave_decision_gate.formation_member_minimum
-							compare = greater_than_or_equals
+							independence_wave_reclamation_front_witness_valid = constant:independence_wave_plan.loop_increment
 						}
 					}
-					set_country_flag = independence_wave_dm58_reclamation_front_complete
 					# Costs are paid only after the synchronized member loop has
 					# frozen the minimum number of distinct, war-legal pairs.
 					independence_wave_decision_pay_strategic = yes
 					independence_wave_decision_pay_security_major = yes
+					# Claims and finite wargoals are the final mutation, after both
+					# the validation pass and the explicit resource spend.
+					independence_wave_apply_reclamation_front_witness = yes
+					if = {
+						limit = {
+							check_variable = {
+								var = global.independence_wave_reclamation_front_count
+								value = constant:independence_wave_decision_gate.formation_member_minimum
+								compare = greater_than_or_equals
+							}
+						}
+						set_country_flag = independence_wave_dm58_reclamation_front_success_temp
+					}
+				}
+				if = {
+					limit = { has_country_flag = independence_wave_dm58_reclamation_front_success_temp }
+					set_country_flag = independence_wave_dm58_reclamation_front_complete
+					clr_country_flag = independence_wave_dm58_reclamation_front_success_temp
 					for_each_scope_loop = {
 						array = global.independence_wave_league_member_country_entries
 						clr_country_flag = independence_wave_dm58_reclamation_front_staged
