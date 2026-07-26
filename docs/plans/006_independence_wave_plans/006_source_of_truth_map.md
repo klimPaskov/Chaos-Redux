@@ -36,13 +36,17 @@ autonomous-member cleanup, staged anchor integration, and paid post-formation
 projects are now implemented and documented in `docs/events/006_form39_melanesian_federation.md`.
 FORM-39 remains outside runtime attestation until the IW-157/IW-178 member
 research flags, MFX collision reservation, flat-flag review, and source/date
-decision are independently accepted. The durable portrait shelf now contains
+decision are independently accepted. The bounded source handoff
+`006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps both New Guinea
+rows HOLD/fail-closed because exact district containment, rights-cleared
+period leadership or institutional evidence, and community-specific symbols
+are not yet all proven. The durable portrait shelf now contains
 48 pre-resize masters and 83 normalized 156x210 PNGs; no Event 006 advisor or
 small/dossier portrait derivative is authorized.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
 
-The whole-event audit authority is `subagent_handoffs/006_event_completion_audit_v10_post_cf2316a9a_f8ca54d24_2026_07_26.md`, which retains **HOLD** for Event 006 completion. It supersedes v9 only for its bounded DM-58, focus-validation, and ARX findings, while `0b6289c4b` and `006_dm58_witness_resolver_2026_07_26.md` supersede the DM-58 execution finding. Commit `cf2316a9a` proves a non-mutating three-member, three-distinct-owner preflight, and the current resolver binds that exact witness before mutation; live success, invalidation, save/load, and no-witness performance evidence remain open. Commit `f8ca54d24` was a failed coordinate-only shared-tree candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the fresh restored-baseline MCP inspection: 184 focuses, 223 connectors, 49 crossings, 18 node intersections, 27 long connectors, and 14 blocking diagnostics. The v5-v9 audits remain historical where their bounded findings differ from these records. The AGX overlay wording is current through `006_agx_focus_overlay_handoff_2026_07_26.md`; the narrow module is present, while shared-tree geometry and live allocation evidence remain open.
+The whole-event audit authority is `subagent_handoffs/006_event_completion_audit_v10_post_cf2316a9a_f8ca54d24_2026_07_26.md`, which retains **HOLD** for Event 006 completion. It supersedes v9 only for its bounded DM-58, focus-validation, and ARX findings, while `0b6289c4b`, `006_dm58_witness_resolver_2026_07_26.md`, and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` supersede the DM-58 execution finding. Commit `cf2316a9a` proves a non-mutating three-member, three-distinct-owner preflight, commit `61d059841` adds effect-chain-only validation before costs and coordinator-origin cleanup, and the current resolver binds that exact witness before claim/wargoal mutation; live success, invalidation, save/load, and no-witness performance evidence remain open. Commit `f8ca54d24` was a failed coordinate-only shared-tree candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the fresh restored-baseline MCP inspection: 184 focuses, 223 connectors, 49 crossings, 18 node intersections, 27 long connectors, and 14 blocking diagnostics. The v5-v9 audits remain historical where their bounded findings differ from these records. The AGX overlay wording is current through `006_agx_focus_overlay_handoff_2026_07_26.md`; the narrow module is present, while shared-tree geometry and live allocation evidence remain open.
 
 The later 2026-07-22 user review also rejects the current sourced-treatment
 family: it preserves identities but still reads as archival photography rather

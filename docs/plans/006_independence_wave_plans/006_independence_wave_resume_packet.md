@@ -33,6 +33,8 @@ reservation and flat-flag review, and the source/date decision are accepted.
 The durable pre-DDS portrait shelf now contains 48 source-derived masters and
 83 normalized 156x210 PNGs, with no advisor or small/dossier derivatives.
 
+The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
+
 IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
 The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
 The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.
