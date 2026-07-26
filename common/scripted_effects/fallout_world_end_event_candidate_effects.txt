@@ -3098,3 +3098,86 @@ fallout_event_build_pilot_candidate_registries = {
 		}
 	}
 }
+
+# Supported scope: COUNTRY coordinator. This dormant pass pairs the two lowest
+# current Refugee Train rows through the existing registry index ledger. It
+# writes no tags, no diplomacy relation, and no scheduler activation flag.
+# Every side must already have a reviewed candidate row before either partner
+# index is written, so a missing or stale country leaves both rows unpaired.
+fallout_event_pair_refugee_train_candidate_rows = {
+	set_variable = { global.fallout_event_refugee_pair_first_registry_index = constant:fallout_event_runtime.no_registry_index }
+	set_variable = { global.fallout_event_refugee_pair_second_registry_index = constant:fallout_event_runtime.no_registry_index }
+	for_each_scope_loop = {
+		array = global.fallout_event_registry_countries
+		if = {
+			limit = {
+				fallout_event_candidate_registry_is_reviewed = yes
+				any_of = {
+					array = fallout_event_candidate_id_entries
+					value = fallout_event_refugee_pair_candidate_id
+					check_variable = { var = fallout_event_refugee_pair_candidate_id value = constant:fallout_event_candidate_pilot.refugee_train_candidate_id compare = equals }
+				}
+			}
+			if = {
+				limit = { check_variable = { global.fallout_event_refugee_pair_first_registry_index = constant:fallout_event_runtime.no_registry_index } }
+				set_variable = { global.fallout_event_refugee_pair_first_registry_index = fallout_event_registry_index }
+			}
+			else_if = {
+				limit = {
+					check_variable = { var = fallout_event_registry_index value = global.fallout_event_refugee_pair_first_registry_index compare = less_than }
+				}
+				set_variable = { global.fallout_event_refugee_pair_second_registry_index = global.fallout_event_refugee_pair_first_registry_index }
+				set_variable = { global.fallout_event_refugee_pair_first_registry_index = fallout_event_registry_index }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { global.fallout_event_refugee_pair_second_registry_index = constant:fallout_event_runtime.no_registry_index }
+						check_variable = { var = fallout_event_registry_index value = global.fallout_event_refugee_pair_second_registry_index compare = less_than }
+					}
+				}
+				set_variable = { global.fallout_event_refugee_pair_second_registry_index = fallout_event_registry_index }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { global.fallout_event_refugee_pair_first_registry_index > constant:fallout_event_runtime.no_registry_index }
+			check_variable = { global.fallout_event_refugee_pair_second_registry_index > constant:fallout_event_runtime.no_registry_index }
+		}
+	set_temp_variable = { fallout_event_refugee_pair_first_index = global.fallout_event_refugee_pair_first_registry_index }
+	set_temp_variable = { fallout_event_refugee_pair_second_index = global.fallout_event_refugee_pair_second_registry_index }
+	set_temp_variable = { fallout_event_refugee_pair_mutation_found = constant:fallout_event_runtime.zero }
+	var:global.fallout_event_registry_countries^fallout_event_refugee_pair_first_index = {
+		for_each_loop = {
+			array = fallout_event_candidate_id_entries
+			value = fallout_event_refugee_candidate_id
+			index = fallout_event_refugee_candidate_row_index
+			if = {
+				limit = { check_variable = { var = fallout_event_refugee_candidate_id value = constant:fallout_event_candidate_pilot.refugee_train_candidate_id compare = equals } }
+				set_variable = { fallout_event_candidate_partner_registry_index_entries^fallout_event_refugee_candidate_row_index = fallout_event_refugee_pair_second_index }
+				set_temp_variable = { fallout_event_refugee_pair_mutation_found = constant:fallout_event_runtime.one }
+			}
+		}
+	}
+	var:global.fallout_event_registry_countries^fallout_event_refugee_pair_second_index = {
+		for_each_loop = {
+			array = fallout_event_candidate_id_entries
+			value = fallout_event_refugee_candidate_id
+			index = fallout_event_refugee_candidate_row_index
+			if = {
+				limit = { check_variable = { var = fallout_event_refugee_candidate_id value = constant:fallout_event_candidate_pilot.refugee_train_candidate_id compare = equals } }
+				set_variable = { fallout_event_candidate_partner_registry_index_entries^fallout_event_refugee_candidate_row_index = fallout_event_refugee_pair_first_index }
+				set_temp_variable = { fallout_event_refugee_pair_mutation_found = constant:fallout_event_runtime.one }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { fallout_event_refugee_pair_mutation_found = constant:fallout_event_runtime.zero } }
+		set_variable = { global.fallout_event_refugee_pair_first_registry_index = constant:fallout_event_runtime.no_registry_index }
+		set_variable = { global.fallout_event_refugee_pair_second_registry_index = constant:fallout_event_runtime.no_registry_index }
+	}
+	}
+	clear_variable = global.fallout_event_refugee_pair_first_registry_index
+	clear_variable = global.fallout_event_refugee_pair_second_registry_index
+}

@@ -70,8 +70,9 @@ and generation markers instead of selecting a fallback.
 - The ordinary candidate eligibility trigger admits major-arc rows only through
   the top-level arc payload proof. Year Zero, Orchard Flowers, Skilled List, and False Spring Losses have dormant
   major-stage consumers using their existing human and hidden-AI event tokens.
-  Relationship rows now use a reciprocal bilateral proof, but the current rows keep the
-  no-partner sentinel and therefore remain ineligible.
+  Relationship rows now use a reciprocal bilateral proof. Refugee Train candidate `415`
+  has a dormant two-country pairing pass, while the other relationship rows keep the
+  no-partner sentinel and remain ineligible.
 - The Well Queue cost is paid only after its delayed row and ordinary receipt
   both commit, with a cleanup-owned payment flag preventing a second charge.
 - The Animal Feed cost is paid only after its delayed row and ordinary receipt
