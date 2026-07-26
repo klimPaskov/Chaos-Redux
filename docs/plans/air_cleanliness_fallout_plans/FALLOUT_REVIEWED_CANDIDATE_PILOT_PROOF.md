@@ -1,5 +1,9 @@
 # Fallout Reviewed Candidate Pilot Proof
 
+## Current reconciliation after Tunnel Ward Committees
+
+The reviewed candidate producer now covers `58` ordinary dormant rows through candidate `607`, with `488` defined event blocks and `0 of 660` countable release-floor blocks. The Tunnel Ward Committees row uses route `7158`, so the reviewed route upper bound is now `7159`. Its current-generation East Asia shelter admission stores the pretransition Air Winter shelter snapshot, not an unproven building proxy.
+
 Status: dormant, statically reconciled, not release-floor credit.
 
 The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-seven

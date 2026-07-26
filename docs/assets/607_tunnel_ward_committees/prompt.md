@@ -1,0 +1,3 @@
+# Tunnel Ward Committees image prompt
+
+Create a fictional post-fallout documentary report photograph for a strategy game event. Show a crowded East Asian underground metro shelter with ward delegates gathered around a ration and ventilation board, utility workers beside industrial pipes, families on bunks, and quiet shelter guards. Include frost on intake grilles, dim emergency lamps, repaired conduits, and a restrained slate-blue and umber archival palette. Use a realistic editorial composition with no readable text, logos, real flags, real people, zombies, or gore. Frame the image for a 210 by 176 event report card.

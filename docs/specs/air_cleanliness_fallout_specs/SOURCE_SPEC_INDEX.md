@@ -120,6 +120,7 @@
 - `specs/56_reviewed_regional_nile_pump_congress.md`
 - `specs/57_reviewed_regional_old_airfield_chain.md`
 - `specs/58_reviewed_regional_radio_island_chain.md`
+- `specs/59_reviewed_regional_tunnel_ward_committees.md`
 
 ## Matrices
 

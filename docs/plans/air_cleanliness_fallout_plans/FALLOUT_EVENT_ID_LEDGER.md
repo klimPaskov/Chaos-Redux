@@ -1,5 +1,11 @@
 # Fallout Event ID Ledger
 
+## Current reconciliation after Tunnel Ward Committees
+
+The living-world pilot now contains `488` defined event blocks across the reviewed ordinary range through `613`, including the dormant Tunnel Ward Committees tranche at `607` through `613`. The current reviewed ordinary row count is `58`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+
+Tunnel Ward Committees reserves candidate `607`, transaction `710058`, route `7158`, and Event Log history `9164`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
+
 ## Purpose
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
