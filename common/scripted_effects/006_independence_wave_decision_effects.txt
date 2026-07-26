@@ -666,6 +666,7 @@ independence_wave_decision_request_selected_formable_commit = {
 # already-selected rows. This keeps activation feasibility and paid execution
 # on the same witness instead of drawing a new random state for each member.
 independence_wave_execute_reclamation_front = {
+	set_temp_variable = { independence_wave_reclamation_front_witness_valid = constant:independence_wave_value.minimum }
 	clear_array = global.independence_wave_reclamation_front_states
 	clear_array = global.independence_wave_reclamation_front_targets
 	clear_array = global.independence_wave_reclamation_front_members
@@ -831,7 +832,46 @@ independence_wave_execute_reclamation_front = {
 				independence_wave_reclamation_front_witness_complete = constant:independence_wave_plan.loop_increment
 			}
 		}
-		independence_wave_apply_reclamation_front_witness = yes
+		independence_wave_validate_reclamation_front_witness = yes
+	}
+}
+
+# Validates the exact aligned witness without changing claims, wargoals, state
+# flags, or costs. The caller pays only after this pass sets the effect-chain
+# validation marker, then applies the same frozen rows in a separate effect.
+independence_wave_validate_reclamation_front_witness = {
+	set_temp_variable = { independence_wave_reclamation_front_validation_index = global.independence_wave_reclamation_front_states^num }
+	set_temp_variable = { independence_wave_reclamation_front_validation_count = constant:independence_wave_value.minimum }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				independence_wave_reclamation_front_validation_index = constant:independence_wave_value.minimum
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { independence_wave_reclamation_front_validation_index = constant:independence_wave_plan.loop_increment }
+		var:global.independence_wave_reclamation_front_members^independence_wave_reclamation_front_validation_index = {
+			save_event_target_as = independence_wave_reclamation_front_member
+		}
+		var:global.independence_wave_reclamation_front_targets^independence_wave_reclamation_front_validation_index = {
+			save_event_target_as = independence_wave_reclamation_front_target
+		}
+		var:global.independence_wave_reclamation_front_states^independence_wave_reclamation_front_validation_index = {
+			if = {
+				limit = { is_valid_independence_wave_reclamation_front_witness_slot = yes }
+				add_to_temp_variable = { independence_wave_reclamation_front_validation_count = constant:independence_wave_plan.loop_increment }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_reclamation_front_validation_count
+				value = constant:independence_wave_decision_gate.formation_member_minimum
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { independence_wave_reclamation_front_witness_valid = constant:independence_wave_plan.loop_increment }
 	}
 }
 

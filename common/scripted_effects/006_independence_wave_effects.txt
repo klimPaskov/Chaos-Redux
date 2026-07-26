@@ -2793,6 +2793,17 @@ independence_wave_end_active_origin = {
 		}
 		set_variable = { independence_wave_origin_end_reason = independence_wave_cleanup_reason }
 		set_variable = { independence_wave_origin_end_date = global.date }
+		# The coordinator owns the delayed DM-58 expiry callback. If that origin
+		# exits before the callback, dismantle the shared operation while its
+		# member/state receipts and the coordinator target are still addressable.
+		if = {
+			limit = {
+				has_global_flag = independence_wave_reclamation_fronts_coordinated
+				has_event_target = independence_wave_reclamation_front_coordinator
+				event_target:independence_wave_reclamation_front_coordinator = { tag = ROOT }
+			}
+			independence_wave_cleanup_reclamation_front_operation = yes
+		}
 		independence_wave_achievement_handle_origin_end = yes
 		independence_wave_dispatch_package_cleanup = yes
 		independence_wave_cleanup_decision_layer = yes
