@@ -223,6 +223,82 @@ def main() -> int:
 	binding_path = ROOT / "docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv"
 	with binding_path.open(encoding="utf-8-sig", newline="") as handle:
 		binding_rows = list(csv.DictReader(handle))
+
+	# The accepted v10 closure keeps the RHI/AJX reservation group intact and
+	# requires one distinct grounded package before the ten-country band can
+	# open. Keep that disposition source-audited so a tempting map rebind cannot
+	# silently manufacture capacity.
+	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
+	attestation = extract_script_block(
+		dispatch,
+		"has_independence_wave_runtime_package_content_attestation_for_execution_id",
+	)
+	attested_ids = sorted(
+		{
+			int(value)
+			for value in re.findall(
+				r"constant:independence_wave_package_id\.iw_(\d{3})", attestation
+			)
+		}
+	)
+	expected_attested_ids = {1, 4, 6, 7, 8, 9, 10, 17, 19, 184}
+	require(
+		set(attested_ids) == expected_attested_ids,
+		"content-attestation set changed without updating the accepted Event 006 closure: "
+		+ f"expected={sorted(expected_attested_ids)} found={attested_ids}",
+		errors,
+	)
+	loaders: dict[int, str] = {}
+	for path in sorted((ROOT / "common/scripted_effects").glob(PUBLISHER_GLOB)):
+		try:
+			blocks = extract_named_blocks(path.read_text(encoding="utf-8-sig"), "independence_wave_load_package_iw_")
+		except ValueError as exc:
+			errors.append(f"{path.name}: {exc}")
+			continue
+		for package_id, block in blocks.items():
+			if package_id in loaders:
+				errors.append(f"IW{package_id:03d} has more than one package loader")
+			loaders[package_id] = block
+	attested_groups: dict[int, str] = {}
+	attested_anchors: dict[int, int] = {}
+	for package_id in attested_ids:
+		block = loaders.get(package_id)
+		require(block is not None, f"IW{package_id:03d} is attested but has no package loader", errors)
+		if block is None:
+			continue
+		group_match = re.search(
+			r"independence_wave_candidate_reservation_group\s*=\s*constant:"
+			r"independence_wave_reservation_group_id\.([a-z0-9_]+)",
+			block,
+		)
+		anchor_match = re.search(
+			r"(?ms)^\s*(\d+)\s*=\s*\{.*?save_event_target_as\s*=\s*liberation_candidate_anchor",
+			block,
+		)
+		require(group_match is not None, f"IW{package_id:03d} loader has no reservation group", errors)
+		require(anchor_match is not None, f"IW{package_id:03d} loader has no anchor", errors)
+		if group_match:
+			attested_groups[package_id] = group_match.group(1)
+		if anchor_match:
+			attested_anchors[package_id] = int(anchor_match.group(1))
+	if len(attested_groups) == len(expected_attested_ids):
+		require(
+		len(set(attested_groups.values())) == 9,
+		"accepted ten-package closure no longer exposes exactly nine compatible reservation groups: "
+		+ repr(attested_groups),
+		errors,
+		)
+		require(
+		attested_groups.get(8) == "rg_rhine_saar" and attested_groups.get(10) == "rg_rhine_saar",
+		"accepted RHI/AJX shared RG-RHINE-SAAR disposition changed without a new closure: "
+		+ repr({8: attested_groups.get(8), 10: attested_groups.get(10)}),
+		errors,
+		)
+		require(
+		len(set(attested_anchors.values())) == 10,
+		"attested package anchors are not pairwise unique: " + repr(attested_anchors),
+		errors,
+	)
 	expected_automatic_ids = {
 		int(row["package_id"].split("-")[1])
 		for row in binding_rows
@@ -422,6 +498,7 @@ def main() -> int:
 	print(f"- publishers: {len(publishers)}")
 	print(f"- automatic/high-chaos selectable packages: {len(automatic_ids)}")
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
+	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
 	print("- automatic counts: 3 / 4 / 5 / 7 / 10 (World Collapse 10)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
 	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
