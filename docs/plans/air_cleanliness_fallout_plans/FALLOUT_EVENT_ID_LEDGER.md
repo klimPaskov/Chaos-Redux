@@ -647,6 +647,18 @@ The chain remains dormant and uncounted until a later reviewed scheduler activat
 
 The documented living-world total is now `460` and the countable Fallout living-world total remains `0 of 660`.
 
+## Nile Pump Congress correction
+
+The Nile Pump Congress adds dormant suffixes `579` through `585` with candidate id `579`, transaction key `710055`, route `7155`, and history `9161`.
+
+The human opening is `579`, the hidden-AI opening is `580`, the human and hidden-AI delayed results are `581` and `582`, the human and hidden-AI callbacks are `583` and `584`, and cleanup is `585`.
+
+The row requires a current owner-controlled rural state in sub-Saharan Africa with durable water, Air Winter, supply, food, adaptation, reclamation, exposure, disease, population, and infrastructure evidence. It chooses the lowest eligible native state id.
+
+The chain carries four authored water-governance choices, snapshot-first deterministic grading, river compact, contested compact, and basin war memory outcomes, state survival effects, infrastructure failure damage, bounded Deaths effects, callback re-evaluation, hidden-AI parity, dedicated report art, Event Log payloads, and authenticated cleanup.
+
+The documented living-world total is now `467` and the countable Fallout living-world total remains `0 of 660`.
+
 ## Refugee Train bilateral Event Log history
 
 The dormant Refugee Train bilateral consumer uses dedicated Event Log history `9160` for its four opening choices and twelve resolved branch outcomes.
