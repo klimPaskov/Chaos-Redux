@@ -24,8 +24,12 @@ six connected focuses, lifecycle ideas, coastal-maritime force mapping, AI,
 cleanup, and a generic-tree protection guard. The source-derived portrait has a
 bounded likeness/style/provenance PASS, but its circa-1940s archive date is
 still gated against the 1936-centered event baseline. FIJ selects FORM-39
-Melanesian Federation; the named FIJ/PNG/WPG consent-led adapter, X-tag route,
-and collision tests are not implemented, so FIJ is not in runtime attestation.
+Melanesian Federation. The named FIJ/PNG/WPG consent-led adapter, exact member
+and anchor arrays, MFX X-tag identity surface, autonomous-member cleanup,
+staged anchor integration, and paid post-formation projects are implemented
+and documented in `docs/events/006_form39_melanesian_federation.md`. FIJ is not
+in runtime attestation until the IW-157/IW-178 research flags, MFX collision
+reservation and flat-flag review, and the source/date decision are accepted.
 The durable pre-DDS portrait shelf now contains 48 source-derived masters and
 83 normalized 156x210 PNGs, with no advisor or small/dossier derivatives.
 
@@ -107,7 +111,7 @@ they are not current routing documents.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
   point-of-no-return, sponsorship transaction, and Liberations cluster capacity
   surface are implemented.
-- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed; FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
+- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with a bounded FORM-39 FIJ/PNG/WPG adapter surface implemented but not promoted. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
 - IW-002/006, IW-018, IW-043/058, IW-173/179, IW-093, and IW-098 retain implemented gameplay adapters, but their generated, generic, or incomplete grounded-polity portrait rosters withdraw visual readiness and runtime content attestation.
   The compile-time package content-attestation set contains IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
@@ -136,7 +140,9 @@ they are not current routing documents.
   ladder, and Event 005-first joint reservation ordering. Runtime host,
   anchor, reservation, and wave-size gates remain binding.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
-  HBX, and the audited flat ImageGen PFX flag. Exactly zero custom Event 006
+  HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX
+  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`.
+  Exactly zero custom Event 006
   advisor icons or advisor portrait/sprite blocks are present; the accepted male
   large portraits are separate country-leader assets and protected BAY/RHI
   hashes are unchanged.
