@@ -18,9 +18,11 @@ County Fair is remapped to events `572` through `578`, transaction `710054`, rou
 
 This disposition resolves the improvement-loop queue and preserves the accepted design as source spec 55.
 
-## Recommendation
+The County Fair Returns implementation is complete at the authored dormant source level. Its ordinary candidate, event chain, Event Log mapping, report art, localisation, catalogue row, and proof are the current implementation evidence. Runtime scheduler delivery and release-floor credit remain closed by the scheduler proof.
 
-Implement the existing North American regional-matrix row `The County Fair Returns` as the next manually reviewed ordinary Fallout chain after Ashline Firebreak.
+## Historical recommendation
+
+The historical recommendation was to implement the existing North American regional-matrix row `The County Fair Returns` as the next manually reviewed ordinary Fallout chain after Ashline Firebreak. That recommendation is fulfilled by the promoted spec and dormant implementation.
 
 This is a bounded seven-block recovery chain about rural communities turning stable food, local security, repair work, and public memory into a seasonal institution.
 
@@ -373,9 +375,9 @@ A static image is preferable because this is a routine report popup whose value 
 
 Animation, an icon family, audio, a portrait, and a GUI surface would add scope without improving this bounded chain.
 
-## Implementation surfaces
+## Historical implementation surfaces
 
-If accepted, the parent implementation should touch only the normal Fallout chain surfaces:
+At acceptance, the parent implementation touched only the normal Fallout chain surfaces:
 
 - `events/fallout_world_end_events.txt`
 - Dedicated county-fair script constants
@@ -451,24 +453,12 @@ They remain explicit incomplete surfaces outside this bounded plan.
 
 ## Promotion and parent handoff
 
-Keep this file in `docs/plans/air_cleanliness_fallout_plans/` until the parent accepts the candidate and locks the collision-checked identifiers.
+The design was accepted and promoted into `docs/specs/air_cleanliness_fallout_specs/specs/55_reviewed_regional_county_fair_returns.md`. Collision-checked identifiers, final admission thresholds, modifier names, Event Log wording, asset consumers, catalogue identity, and implementation proofs are recorded by the promoted spec and its linked evidence.
 
-If accepted, promote the design into `docs/specs/air_cleanliness_fallout_specs/specs/53_reviewed_regional_county_fair_returns.md`, or the next available numbered filename, and add it to `SOURCE_SPEC_INDEX.md`.
+The working regional-matrix row is implemented as dormant. It remains outside release-floor credit until the scheduler activation, runtime delivery, save recovery, multiplayer, host-authority, Event Log presentation, and exact engine-surface gates are proven.
 
-The accepted spec should absorb the final title, exact constants, final admission thresholds, final modifier names, final Event Log wording direction, and final asset consumer names.
-
-The working regional-matrix row should then be marked implemented as dormant rather than deleted.
-
-Design problem: the reviewed Fallout library lacks a positive North American recovery institution connecting rural surplus, repair, public gathering, recruitment, and remembrance.
-
-Proposed expansion: one seven-block state-targeted county-fair chain with four distinct policies, a 35-day deterministic result, a 365-day institution review, durable memory, human and AI parity, authenticated cleanup, one static report asset, Event Log coverage, and catalogue directions.
-
-Research basis: North American agricultural fairs, agricultural societies, county extension, youth agricultural clubs, livestock and crop judging, repair and machinery display, and community gathering.
-
-Implementation surfaces affected: the ordinary Fallout event, candidate, constants, triggers, effects, modifiers, localisation, Event Log, GFX, asset, documentation, ledger, proofs, and catalogue surfaces listed above.
-
-Open questions for parent resolution are limited to the collision rescan, whether three rural states remain reachable enough to preserve the matrix premise, exact centralised costs and thresholds, and whether an unsafe callback should use an authored interrupted-tradition payload or exact cancellation.
+The design problem, research basis, and implementation-surface inventory below are retained as historical design evidence. They are not an open implementation queue.
 
 Prior-addendum status: Ashline Firebreak is implemented and documented, so no prior addendum for the same event remains unresolved.
 
-This county-fair addendum remains queued until accepted, implemented, folded into the reviewed specs, or rejected with a recorded reason.
+This county-fair addendum is superseded as a source design document by spec 55 and `FALLOUT_COUNTY_FAIR_RETURNS_CHAIN_PROOF.md`.
