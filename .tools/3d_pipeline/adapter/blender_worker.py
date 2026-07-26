@@ -396,6 +396,19 @@ def prepare_pdx_export_transforms() -> Dict[str, Any]:
     """Bake the rig object scale into armature data before io_pdx_mesh export."""
 
     rigs = armatures()
+    if not rigs:
+        return {
+            "policy": "static_mesh_export_without_armature",
+            "armature": None,
+            "armature_world_scale_before": None,
+            "armature_data_scale_factor": None,
+            "animation_translation_channels": None,
+            "armature_world_scale_after": None,
+            "mesh_world_scales_after": {
+                obj.name: list(obj.matrix_world.to_scale())
+                for obj in mesh_objects()
+            },
+        }
     if len(rigs) != 1:
         raise RuntimeError(
             f"PDX export requires exactly one working armature, found {len(rigs)}."

@@ -44,9 +44,7 @@ Repository and reference review also covered:
   `documentation/effects_documentation.md`; the installed documentation folder
   has no dedicated Meshy, Blender, or `io_pdx_mesh` guide.
 - Existing Chaos Redux model precedents:
-  `gfx/models/buildings/chaosx_mesh.gfx`,
-  `gfx/models/buildings/cw_facility.asset`,
-  `gfx/entities/chaosx_buildings.gfx`, and
+  `gfx/entities/chaosx_buildings.gfx` and
   `gfx/entities/chaosx_buildings.asset`.
 - The committed legacy `.agents/skills/blender-pdx-modeling/SKILL.md` and its
   `references/blender-pdx-modeling.md` and
