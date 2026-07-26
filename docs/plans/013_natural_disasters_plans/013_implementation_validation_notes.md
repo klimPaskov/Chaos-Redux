@@ -40,7 +40,7 @@ The final audit loaded the workbook and images and parsed the Event 013 script s
 | Warning decisions | 75, exactly three per family |
 | Family reports | 25, IDs 101-125 |
 | Family news events | 25, IDs 201-225 |
-| Unique Event 013 English localisation keys | 1,103 |
+| Unique Event 013 English localisation keys | 1,113 |
 | Event 013 script-constant references reviewed | 4,551 references covering 847 unique constants, zero unresolved |
 | Disaster-specific category family mappings | 25, each mutually exclusive |
 | Event 013 texture routes opened successfully | 197 |

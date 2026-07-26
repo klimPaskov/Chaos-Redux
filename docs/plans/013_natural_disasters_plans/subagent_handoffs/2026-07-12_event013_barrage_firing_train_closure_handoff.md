@@ -23,7 +23,7 @@ All 49 Event 013 train references use `train_equipment`: 24 affordability gates 
 
 ## Event 099 and catalog alignment
 
-Event 099 remains a narrow, fail-closed call into Event 013's Dust and Sandstorm family. It owns no damage logic and writes no separate history row. The event name and workbook row identify it as `Dust and Sandstorm Front`, type `Bridge`, status `Implemented`; the three Event 070 comments identify the same bridge rather than an inactive placeholder.
+Event 099 remains a narrow, fail-closed call into Event 013's Dust and Sandstorm family. It owns no damage logic and writes no separate history row. At the time of this historical handoff, the event name and workbook row identified it as `Dust and Sandstorm Front`, type `Bridge`, status `Implemented`; the three Event 070 comments identified the same bridge rather than an inactive placeholder. The current workbook deliberately supersedes that status with `Needs Testing` until the user-owned live-engine matrix is run.
 
 ## Meaningful validation and remaining risks
 

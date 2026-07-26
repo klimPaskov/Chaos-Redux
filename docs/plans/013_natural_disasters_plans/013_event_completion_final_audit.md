@@ -36,7 +36,7 @@ Final frozen-tree verification checked the Event 013 core and shared integration
 | Audio uniqueness | Pass | Confirmed duplicate ID 37 was replaced; final Event 013 fingerprint maxima remain below 0.597 against the full registered corpus. |
 | Soviet audio cleanup | Pass | Unused IDs 16 and 19-27 are absent; live IDs 14, 15, 17, and 18 remain. |
 | Ten achievements | Pass structurally | Exact accepted set, sequence-bound tracking/disqualifiers, localisation, hooks, and 30 live icon variants. |
-| Localisation and scripted localisation | Pass | 1,103 unique Event 013 English keys, distinct report/news prose, full group/driver/relief selector coverage, no missing references, and BOM retained. |
+| Localisation and scripted localisation | Pass | 1,113 unique Event 013 English keys, distinct report/news prose, full group/driver/relief selector coverage, no missing references, and BOM retained. |
 | Assets and registrations | Pass for live assets | 197 texture routes resolve and open; no GIF is a gameplay asset. |
 | Docs, prompts, and workbook | Pass | Specs incorporate accepted clarifications; mechanic/cluster/audio docs, the retained source archive, and the Event 013, Cluster 5, Event 099, and SCN-007 workbook rows align; those live-tested rows remain `Needs Testing`. |
 
