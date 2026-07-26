@@ -4041,18 +4041,65 @@ fallout_event_numerical_registry_header_is_current = {
 }
 
 # Supported scope: COUNTRY. Input: fallout_event_candidate_validation_index.
+# This reciprocal proof is intentionally separate from the general row proof.
+# It never rewrites a candidate partner index and remains false until both
+# candidate registries carry the same generation-bound relationship payload.
+fallout_event_candidate_relationship_payload_is_current = {
+	check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.relationship }
+	check_variable = { fallout_event_candidate_bilateral_opportunity_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.one }
+	set_temp_variable = { fallout_event_relationship_source_candidate_id = fallout_event_candidate_id_entries^fallout_event_candidate_validation_index }
+	set_temp_variable = { fallout_event_relationship_source_transaction_key = fallout_event_candidate_transaction_key_entries^fallout_event_candidate_validation_index }
+	set_temp_variable = { fallout_event_relationship_source_registry_index = fallout_event_registry_index }
+	set_temp_variable = { fallout_event_partner_index_to_check = fallout_event_candidate_partner_registry_index_entries^fallout_event_candidate_validation_index }
+	fallout_event_partner_registry_index_is_current = yes
+	var:global.fallout_event_registry_countries^fallout_event_partner_index_to_check = {
+		has_country_flag = fallout_event_candidate_registry_reviewed
+		has_variable = fallout_event_candidate_registry_generation
+		has_variable = fallout_event_candidate_registry_day
+		check_variable = { var = fallout_event_candidate_registry_generation value = fallout_event_runtime_generation compare = equals }
+		NOT = { check_variable = { var = fallout_event_candidate_registry_day value = global.num_days compare = greater_than } }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_transaction_key_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_class_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_human_event_token_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_ai_event_token_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_visible_budget_cost_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_bilateral_opportunity_entries^num compare = equals }
+		check_variable = { var = fallout_event_candidate_id_entries^num value = fallout_event_candidate_partner_registry_index_entries^num compare = equals }
+		any_of = {
+			array = fallout_event_candidate_id_entries
+			value = fallout_event_relationship_partner_candidate_id
+			index = fallout_event_relationship_partner_candidate_index
+			AND = {
+				check_variable = { var = fallout_event_relationship_partner_candidate_id value = fallout_event_relationship_source_candidate_id compare = equals }
+				check_variable = { var = fallout_event_candidate_transaction_key_entries^fallout_event_relationship_partner_candidate_index value = fallout_event_relationship_source_transaction_key compare = equals }
+				check_variable = { fallout_event_candidate_class_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_class.relationship }
+				check_variable = { fallout_event_candidate_bilateral_opportunity_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_runtime.one }
+				check_variable = { fallout_event_candidate_human_event_token_entries^fallout_event_relationship_partner_candidate_index > constant:fallout_event_runtime.zero }
+				check_variable = { fallout_event_candidate_ai_event_token_entries^fallout_event_relationship_partner_candidate_index > constant:fallout_event_runtime.zero }
+				NOT = { check_variable = { var = fallout_event_candidate_human_event_token_entries^fallout_event_relationship_partner_candidate_index value = fallout_event_candidate_ai_event_token_entries^fallout_event_relationship_partner_candidate_index compare = equals } }
+				check_variable = { fallout_event_candidate_visible_budget_cost_entries^fallout_event_relationship_partner_candidate_index > constant:fallout_event_runtime.zero }
+				NOT = { check_variable = { fallout_event_candidate_visible_budget_cost_entries^fallout_event_relationship_partner_candidate_index > constant:fallout_event_runtime.maximum_visible_budget_cost } }
+				check_variable = { var = fallout_event_candidate_partner_registry_index_entries^fallout_event_relationship_partner_candidate_index value = fallout_event_relationship_source_registry_index compare = equals }
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Input: fallout_event_candidate_validation_index.
 # This adds live scope checks and scheduler occupancy gates to the immutable
 # reviewed-row proof. Any failure rejects only this candidate.
 fallout_event_candidate_row_is_eligible = {
 	fallout_event_candidate_row_is_current = yes
 	fallout_event_candidate_parent_arc_is_current = yes
 	fallout_event_candidate_completion_is_compatible = yes
-	# Major-arc and relationship openings remain fail-closed until their reviewed
-	# rows freeze the exact atomic arc or reciprocal bilateral reservation payload.
+	# Major-arc openings remain fail-closed until their reviewed rows freeze the
+	# exact atomic arc reservation payload. Relationship rows use the reciprocal
+	# bilateral payload proof above.
 	OR = {
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.crisis_incident }
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.routine_incident }
 		check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.broadcast }
+		fallout_event_candidate_relationship_payload_is_current = yes
 	}
 	OR = {
 		check_variable = { fallout_event_candidate_phase_mode_entries^fallout_event_candidate_validation_index = constant:fallout_event_review_phase_mode.neutral }

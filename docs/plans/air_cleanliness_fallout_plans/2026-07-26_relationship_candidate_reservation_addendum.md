@@ -1,0 +1,39 @@
+# Fallout relationship candidate reservation addendum
+
+Date: 2026-07-26
+
+Status: accepted for dormant reservation-substrate implementation. This addendum does not authorize scheduler activation, a new event range, or release-floor credit.
+
+## Scope
+
+The reviewed candidate producer already carries four relationship-class rows, but the selector rejects them because their complete reciprocal payload is not proven. This tranche adds the fail-closed reservation path without activating any row. It uses only existing candidate ids, transaction keys, event tokens, and bilateral ledger APIs.
+
+The path is deliberately structural. It does not claim that the existing relationship event blocks are wired to bilateral response envelopes. Relationship event consumers remain a later content tranche with their own accepted addendum.
+
+## Ownership
+
+`common/scripted_effects/fallout_world_end_event_candidate_effects.txt` owns the relationship-row no-partner sentinel and the authored payload handoff point.
+
+`common/scripted_triggers/fallout_world_end_event_triggers.txt` owns the generation-bound reciprocal candidate proof. A relationship row is eligible only when its partner index is current, both candidate registries are current and aligned, and the partner carries the exact reciprocal candidate identity, transaction key, class, bilateral opportunity, event-token pair, visible cost, and back-reference to the source registry index.
+
+`common/scripted_effects/fallout_world_end_event_effects.txt` owns the selected relationship wrapper and partner-row lookup. It freezes the initiator and responder response tokens, control modes, visible costs, shared due day, parent arc ticket, and cleanup token, then calls the existing `fallout_event_reserve_bilateral_transaction` API.
+
+`docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`, `README_IMPLEMENTATION_STATUS.md`, and `source_of_truth_map.md` own the proof and status reconciliation.
+
+## Atomic contract
+
+The wrapper loads `event_target:fallout_event_requested_bilateral_partner` from the candidate's frozen partner registry index. It finds the exact same candidate id on the partner row and copies that row's human token and AI token into temporary request fields. The authored visible cost is used for a human-visible participant and is normalized to zero for a hidden-AI participant. The initiator uses the selected country's human or hidden-AI lane. The responder mode is derived from the partner's live AI state. A human-visible lane must carry a positive cost. A hidden-AI lane must carry zero visible cost. Both costs remain bounded by the shared scheduler maximum.
+
+The cleanup token is the candidate identity and the parent arc ticket is the candidate's frozen parent ticket. The wrapper never invents a target, actor, or event id. A missing partner, a mismatched reciprocal row, a duplicate token pair, a stale generation, a full participant ledger, a conflicting issued pair, or a control-mode and cost mismatch returns `fallout_event_transaction_accepted = 0` without mutation.
+
+The existing bilateral API remains the only writer. It allocates one ticket, appends both reciprocal rows, proves both rows, and rolls both rows back when the second commit fails. Exact retries match the complete immutable payload before capacity checks. Human cooldown is applied symmetrically by the existing API. The pair starts in `reserved` status and is not issued by this tranche. The later relationship event consumer must mark the exact pair `response_pending` before any bilateral dispatch.
+
+## Selection integration
+
+`fallout_event_candidate_row_is_eligible` admits a relationship row only through the reciprocal candidate proof. `fallout_event_commit_selected_candidate` routes relationship rows to the bilateral wrapper and all other classes to the ordinary receipt wrapper. The ordinary receipt reconciliation and ordinary dispatch envelope are skipped for an accepted relationship reservation. The pair is left for the existing bilateral reconciler and an authored relationship consumer.
+
+The current four relationship rows remain ineligible because their partner index is the typed no-partner sentinel. No current candidate row therefore reaches the new wrapper, no scheduler activation flag is touched, and the reviewed count remains 460 defined blocks and 0 of 660 countable blocks.
+
+## Validation evidence
+
+Static review must confirm balanced Clausewitz blocks, aligned candidate arrays, no new ids, no new scheduler activation setter, no ordinary wrapper call on the relationship branch, and no mutation when the reciprocal proof is false. The bilateral API remains the only ledger writer. This addendum does not claim runtime save, multiplayer, host-authority, or event-consumer proof.
