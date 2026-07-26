@@ -1,10 +1,10 @@
 # Event 006 normalized pre-DDS source portrait inventory
 
-This table covers the 81 normalized 156x210 copies. The 44 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+This table covers the 82 normalized 156x210 copies. The 45 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
 
 This manifest indexes every source-driven processed PNG copied into this shelf. Every file is a byte-for-byte copy of its original and decodes as a 156x210 PNG; the SHA-256 column guards against drift.
 
-Inventory counts: 81 total; 2 protected approved, 2 current approved, 45 source candidates/replacement attempts, 27 rejected-style treatments, 2 withdrawn historical attempts, and 3 candidates requiring visual approval.
+Inventory counts: 82 total; 2 protected approved, 2 current approved, 46 source candidates/replacement attempts, 27 rejected-style treatments, 2 withdrawn historical attempts, and 3 candidates requiring visual approval.
 
 | Status | Kind | Copied PNG | Original processed PNG | SHA-256 | Size | Notes |
 |---|---|---|---|---|---:|---|
@@ -89,5 +89,7 @@ Inventory counts: 81 total; 2 protected approved, 2 current approved, 45 source 
 | source_candidate_rejected_visual_style | sourced_treatment_rejected_style | `source_candidates/sourced_portrait_treatments_2026_07_22/processed_png/SCO_edmund_ironside.png` | `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/processed_png/SCO_edmund_ironside.png` | `a5cdf520950033d3f5774d8085e2faec74b6e2b6816d57365eaec96987a4a8f2` | 156x210 | Sourced archival treatment retained for provenance; package manifest records the rejected photographic HOI4-style gate. |
 | source_candidate_rejected_visual_style | sourced_treatment_rejected_style | `source_candidates/sourced_portrait_treatments_2026_07_22/processed_png/SOK_muhammad_dikko.png` | `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/processed_png/SOK_muhammad_dikko.png` | `21acb96858790ea87d29a860e474dd74aa276ff2f2a13c2d631df37f4c42c710` | 156x210 | Sourced archival treatment retained for provenance; package manifest records the rejected photographic HOI4-style gate. |
 | source_candidate_rejected_visual_style | sourced_treatment_rejected_style | `source_candidates/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `d16d9d2603ac9566eb3b5402be701895e2c4a3d4d8fdfc6a2497e7a66f5991dc` | 156x210 | Sourced archival treatment retained for provenance; package manifest records the rejected photographic HOI4-style gate. |
+
+| source_candidate_requires_visual_approval | sourced_replacement_candidate | `source_candidates/sourced_portrait_replacements_2026_07_26/hawaii_samuel_wilder_king/portrait_HAW_samuel_wilder_king_156x210.png` | `docs/assets/006_independence_wave/hawaii_samuel_wilder_king_source_clearance_2026_07_26/processed_png/portrait_HAW_samuel_wilder_king.png` | `7eaec0ac8a6c8d5a9c3e623c1e56aa97b1b25ec1adc71070ab02c407e4539ad4` | 156x210 | Source-locked HOI4 repaint candidate for a HAW territorial-delegate/civic consumer; independent likeness/style/provenance audit and package-level leadership decision remain open. |
 
 The copied PNGs are documentation/reference assets only. Runtime consumers must continue to use the reviewed DDS files under `gfx/leaders/006_independence_wave/`; no DDS, `.gfx`, character definition, advisor, dossier, or small-portrait consumer is created by this shelf.

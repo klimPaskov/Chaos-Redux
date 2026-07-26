@@ -2,7 +2,7 @@
 
 ## Status
 
-`source_ready_pending_portrait_pipeline` / `not_runtime_promoted`.
+`portrait_pipeline_complete_pending_independent_audit` / `not_runtime_promoted`.
 
 This is a grounded real-person source package for Event 006 IW-173 HAW only.
 No gameplay, character, localisation, `.gfx`, advisor, commander, operative, dossier, DDS, or runtime file was changed.
@@ -45,6 +45,11 @@ No gameplay, character, localisation, `.gfx`, advisor, commander, operative, dos
 | `source_png/HAW_samuel_wilder_king_PP-74-9-002_original.jpg` | Unchanged research master downloaded from the canonical Wikimedia image via the i0 proxy | 826x1206 RGB JPEG | `cba16c7d7b3e0efdd36240ec945663947ad727e0536757ea7cbd72156b0dcde3` |
 | `crop/HAW_samuel_wilder_king_head_shoulders.png` | Exact lossless head-and-shoulders source crop | 693x1055 RGB PNG | `f36cc6c4a02b44605dd01412a25b2e50996006239eeb3f95f162ce6e6e0130ea` |
 | `crop/HAW_samuel_wilder_king_head_shoulders_crop.json` | Crop command and decoded-pixel equality proof | JSON | `a763a27886e1a835269c8a0e02f8ce126bec56e51ce22043649137b25c099615` |
+| `imagegen_results/HAW_samuel_wilder_king_identity_preserve.png` | Source-locked HOI4-style ImageGen repaint master retained before deterministic normalization | 1018x1545 RGB PNG | `1e4c62368cb92103d1666991b8dcc087051aa19008ca45bec756a6d99ba76da6` |
+| `processed_png/portrait_HAW_samuel_wilder_king.png` | Deterministic full-size HOI4 leader portrait candidate | 156x210 RGB PNG | `7eaec0ac8a6c8d5a9c3e623c1e56aa97b1b25ec1adc71070ab02c407e4539ad4` |
+| `metadata/HAW_samuel_wilder_king_processing.json` | Processor command, reference hashes, decoded-pixel and determinism evidence | JSON | recorded by the processor |
+| `review_sheets/HAW_samuel_wilder_king_processor_style_comparison.png` | Native-size comparison against canonical HOI4 leader references | review PNG | recorded by the processor |
+| `prompts/HAW_samuel_wilder_king_identity_preserve_imagegen.md` | Identity-preserving ImageGen prompt and generation record | Markdown | evidence record |
 
 The crop was created with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` version 1.0, using half-open source coordinates `[105, 80, 798, 1135]`.
 
@@ -72,9 +77,9 @@ No runtime ownership or transfer guard exists because no current consumer owns S
 
 ## Downstream gates still required
 
-The parent must preserve the unchanged master and exact crop, perform a source-locked identity-preserving ImageGen repaint, process a full `156x210` candidate, and obtain an independent likeness/style/provenance audit before any DDS conversion or runtime wiring.
+The parent must preserve the unchanged master and exact crop, keep the raw repaint and normalized candidate in the durable pre-DDS portrait shelf, and obtain an independent likeness/style/provenance audit before any DDS conversion or runtime wiring.
 
-No final processed PNG, DDS, contact sheet, or `.gfx` definition is claimed in this research-only tranche.
+The processed PNG is a candidate only. No DDS, contact sheet, or `.gfx` definition is claimed in this research-only tranche.
 
 ## Alternatives and rejected paths
 
