@@ -441,7 +441,13 @@ fallout_event_commit_selected_candidate = {
 				set_temp_variable = { fallout_event_requested_control_mode = fallout_event_review_control_mode }
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 				set_temp_variable = { fallout_event_transaction_ticket = constant:fallout_event_runtime.no_ticket }
-				fallout_event_schedule_ordinary_receipt = yes
+				if = {
+					limit = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship } }
+					fallout_event_schedule_selected_relationship_candidate = yes
+				}
+				else = {
+					fallout_event_schedule_ordinary_receipt = yes
+				}
 				if = {
 					limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
 					set_variable = { fallout_event_last_selection_generation = fallout_event_runtime_generation }
@@ -464,8 +470,11 @@ fallout_event_commit_selected_candidate = {
 						}
 						set_variable = { fallout_event_last_crisis_break_day = fallout_event_requested_issue_day }
 					}
-					set_temp_variable = { fallout_event_requested_cooldown_days = fallout_event_selected_due_delay }
-					fallout_event_apply_requested_ordinary_cooldown = yes
+					if = {
+						limit = { NOT = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship } } }
+						set_temp_variable = { fallout_event_requested_cooldown_days = fallout_event_selected_due_delay }
+						fallout_event_apply_requested_ordinary_cooldown = yes
+					}
 					if = {
 						limit = {
 							check_variable = { fallout_event_candidate_class_entries^fallout_event_candidate_validation_index = constant:fallout_event_class.broadcast }
@@ -485,11 +494,14 @@ fallout_event_commit_selected_candidate = {
 						set_global_flag = fallout_event_global_broadcast_receipt_initialized
 						fallout_event_extend_broadcast_player_cooldowns = yes
 					}
-					# The opening is due today. Service only this newly committed receipt
-					# in the same country scope. The durable issue receipt makes retries
-					# after a save between these calls idempotent.
+					# Ordinary openings are issued on the commit day. A relationship
+					# reservation starts as a bilateral reserved pair and waits for its
+					# exact relationship consumer to mark response_pending.
 					if = {
-						limit = { NOT = { has_global_flag = fallout_event_scheduler_error } }
+						limit = {
+							NOT = { check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship } }
+							NOT = { has_global_flag = fallout_event_scheduler_error }
+						}
 						fallout_event_reconcile_ordinary_receipt = yes
 						if = {
 							limit = { has_country_flag = fallout_event_dispatch_ready }
@@ -2903,6 +2915,70 @@ fallout_event_remove_bilateral_row_at_index = {
 # ---------------------------------------------------------------------------
 # Ordinary opening reservation, cancellation, and atomic consumption
 # ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. Inputs are the selected candidate request fields
+# plus fallout_event_candidate_validation_index. The relationship branch is
+# intentionally dormant until the reciprocal candidate trigger proves every
+# participant field. It writes only through the bilateral reservation API.
+fallout_event_schedule_selected_relationship_candidate = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_transaction_ticket = constant:fallout_event_runtime.no_ticket }
+	set_temp_variable = { fallout_event_relationship_payload_found = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			check_variable = { fallout_event_requested_class = constant:fallout_event_class.relationship }
+			fallout_event_candidate_relationship_payload_is_current = yes
+		}
+		set_temp_variable = { fallout_event_partner_index_to_check = fallout_event_requested_partner_registry_index }
+		var:global.fallout_event_registry_countries^fallout_event_partner_index_to_check = {
+			ROOT = {
+				save_event_target_as = fallout_event_requested_bilateral_partner
+				set_temp_variable = { fallout_event_requested_initiator_response_token = fallout_event_requested_human_event_token }
+				set_temp_variable = { fallout_event_requested_initiator_ai_response_token = fallout_event_requested_ai_event_token }
+				set_temp_variable = { fallout_event_requested_initiator_visible_budget_cost = fallout_event_requested_visible_budget_cost }
+				set_temp_variable = { fallout_event_requested_initiator_control_mode = fallout_event_requested_control_mode }
+				set_temp_variable = { fallout_event_requested_cleanup_token = fallout_event_requested_candidate_id }
+				if = {
+					limit = { check_variable = { fallout_event_requested_initiator_control_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+					set_temp_variable = { fallout_event_requested_initiator_visible_budget_cost = constant:fallout_event_runtime.zero }
+				}
+			}
+			for_each_loop = {
+				array = fallout_event_candidate_id_entries
+				value = fallout_event_relationship_partner_candidate_id
+				index = fallout_event_relationship_partner_candidate_index
+				if = {
+					limit = {
+						check_variable = { var = fallout_event_relationship_partner_candidate_id value = ROOT.fallout_event_requested_candidate_id compare = equals }
+						check_variable = { var = fallout_event_candidate_transaction_key_entries^fallout_event_relationship_partner_candidate_index value = ROOT.fallout_event_requested_transaction_key compare = equals }
+						check_variable = { fallout_event_candidate_class_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_class.relationship }
+						check_variable = { fallout_event_candidate_bilateral_opportunity_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_runtime.one }
+					}
+					ROOT = {
+						set_temp_variable = { fallout_event_relationship_payload_found = constant:fallout_event_runtime.one }
+						set_temp_variable = { fallout_event_requested_responder_response_token = fallout_event_candidate_human_event_token_entries^fallout_event_relationship_partner_candidate_index }
+						set_temp_variable = { fallout_event_requested_responder_ai_response_token = fallout_event_candidate_ai_event_token_entries^fallout_event_relationship_partner_candidate_index }
+						set_temp_variable = { fallout_event_requested_responder_visible_budget_cost = fallout_event_candidate_visible_budget_cost_entries^fallout_event_relationship_partner_candidate_index }
+					}
+					if = {
+						limit = { is_ai = yes }
+						ROOT = {
+							set_temp_variable = { fallout_event_requested_responder_control_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+							set_temp_variable = { fallout_event_requested_responder_visible_budget_cost = constant:fallout_event_runtime.zero }
+						}
+					}
+					else = {
+						ROOT = { set_temp_variable = { fallout_event_requested_responder_control_mode = constant:fallout_event_dispatch_mode.human_visible } }
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { fallout_event_relationship_payload_found = constant:fallout_event_runtime.one } }
+			fallout_event_reserve_bilateral_transaction = yes
+		}
+	}
+}
 
 # Supported scope: COUNTRY. Inputs: transaction key, distinct human and AI
 # event tokens, opening branch, due day, primary family, cooldown family, and
