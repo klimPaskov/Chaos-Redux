@@ -1,5 +1,7 @@
 # Event 006 documentation cleanup handoff — 2026-07-26
 
+> Supersession notice (2026-07-26): This earlier cleanup index is retained as historical evidence. The dated reconciliation handoff `006_documentation_reconciliation_post_cf2316a9a_f8ca54d24_2026_07_26.md` supersedes its v6/v7, pre-injective-DM-58, and pre-reflow focus statements; the whole-event **HOLD** remains current.
+
 ## Scope and disposition
 
 This documentation-only reconciliation covers the Event 006 documentation surfaces after commits `0ee9ed1cc`, `4cb93d410`, `843b83a6b`, `45bb092db`, `5dcb2c8de`, `d7fa9015b`, and the v7 completion-audit addendum `c8ca78e9c`. The accepted seven-part specification remains unchanged. The overall event remains **HOLD / incomplete**.

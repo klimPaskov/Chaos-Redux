@@ -1,5 +1,7 @@
 # Event 006 final completion audit v9
 
+> Post-audit notice (2026-07-26): This matrix was audited against pre-commit `51369b2ea`. Commit `cf2316a9a` now supplies the bounded DM-58 injective preflight, and `f8ca54d24` supplies a coordinate-only focus reflow. Their handoffs supersede only the corresponding bounded rows; the whole-event **HOLD** and all unresolved package, capacity, runtime, and acceptance requirements remain current.
+
 Audit date: 2026-07-26.
 
 Audit mode: concise read-only reconciliation of the current Event 006 authority set and targeted current-file evidence.

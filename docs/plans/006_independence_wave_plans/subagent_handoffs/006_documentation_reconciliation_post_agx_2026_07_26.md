@@ -1,5 +1,7 @@
 # Event 006 documentation reconciliation after AGX tranche — 2026-07-26
 
+> Supersession notice (2026-07-26): This AGX-era reconciliation is retained as historical evidence. The dated reconciliation handoff `006_documentation_reconciliation_post_cf2316a9a_f8ca54d24_2026_07_26.md` supersedes its pre-`cf2316a9a` DM-58 and pre-`f8ca54d24` focus geometry statements; the AGX overlay evidence remains current.
+
 ## Current truth promoted
 
 The implementation-facing Event 006 map, source-of-truth map, and resume packet now describe the committed IW-007 Frisia/AGX overlay and the repaired North Sea Coastal Conference instead of retaining the stale claim that the narrow AGX/Frisia module is absent.
@@ -23,4 +25,3 @@ Exact 10-country coverage is still structurally blocked by nine compatible admit
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - this handoff
-
