@@ -11,11 +11,11 @@ The Nile Pump Congress is a sub-Saharan African state chain about the first shar
 The opening presents four materially different choices:
 
 - a public pump board that spends food, scrap, and recognition to improve water access and civic cohesion
-- an upstream command that spends fuel, equipment, and command power to protect flow at the cost of cohesion
+- an upstream command that spends fuel, Power, and command power to protect flow at a branch-specific cohesion cost
 - river cooperatives that spend medicine, food, and recognition to reduce disease and improve reclamation while accepting weaker military readiness
 - an emergency hold that spends power and medicine to preserve a minimal flow, damages infrastructure, and carries a bounded Deaths result when the frozen state cannot sustain the hold
 
-Each choice freezes the country ledger and target-state snapshot, pays its resources once, resolves after 42 days, records a choice and a varied result in the Event Log, schedules a 240-day callback, applies state survival and government-facing effects, and releases both delayed rows through the Fallout-owned cleanup event. AI uses affordability, water pressure, government, War Support, and winter exposure to select a branch rather than receiving a generic default. If the target loses its owner or controller, the delayed row is cancelled and cleaned up without applying the stored state effects.
+Each choice freezes the country ledger and target-state snapshot, pays its resources once after a second affordability and target check, resolves after 42 days, records a choice and a varied result in the Event Log, schedules a 240-day callback, applies state survival and government-facing effects, and releases both delayed rows through the Fallout-owned cleanup event. AI uses affordability, water pressure, government, War Support, and winter exposure to select a branch rather than receiving a generic default. If no branch remains affordable or the target loses its owner or controller, the exact receipt or delayed row is cancelled, the cancellation payload is recorded, and cleanup proceeds without applying stored state effects. Human callback outcomes are locked at delivery so the text and applied outcome remain aligned.
 
 ## Engine-sensitive proof
 

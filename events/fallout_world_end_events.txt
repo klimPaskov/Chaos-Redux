@@ -13613,7 +13613,14 @@ country_event = {
 	picture = GFX_report_event_fallout_nile_pump_congress
 	is_triggered_only = yes
 	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_579_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_579_branch.upper_bound } fallout_event_579_registry_metadata_is_current = yes }
-	immediate = { if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated } fallout_event_579_calculate_callback_outcome = yes }
+	immediate = {
+		if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated }
+		if = {
+			limit = { NOT = { has_country_flag = fallout_event_579_target_invalidated } }
+			fallout_event_579_calculate_callback_outcome = yes
+			set_country_flag = fallout_event_579_callback_outcome_locked
+		}
+	}
 	option = { name = chaosx.fallout.583.a hidden_effect = { fallout_event_579_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.583.a.tt }
 }
 
@@ -13622,7 +13629,10 @@ country_event = {
 	hidden = yes
 	is_triggered_only = yes
 	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.nile_pump_congress_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_579_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_579_branch.upper_bound } fallout_event_579_registry_metadata_is_current = yes }
-	immediate = { if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated } fallout_event_579_calculate_callback_outcome = yes fallout_event_579_resolve_callback_and_prepare_cleanup = yes }
+	immediate = {
+		if = { limit = { NOT = { fallout_event_579_registry_is_current = yes } } set_country_flag = fallout_event_579_target_invalidated }
+		fallout_event_579_resolve_callback_and_prepare_cleanup = yes
+	}
 }
 
 country_event = {

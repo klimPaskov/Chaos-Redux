@@ -101,6 +101,15 @@ fallout_event_579_hold_branch_affordable = {
 	check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_579_cost.hold_water compare = greater_than_or_equals }
 }
 
+fallout_event_579_requested_branch_affordable = {
+	OR = {
+		AND = { check_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.public_pump_board } fallout_event_579_public_branch_affordable = yes }
+		AND = { check_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.upstream_command } fallout_event_579_command_branch_affordable = yes }
+		AND = { check_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.river_cooperatives } fallout_event_579_cooperative_branch_affordable = yes }
+		AND = { check_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.emergency_hold } fallout_event_579_hold_branch_affordable = yes }
+	}
+}
+
 fallout_event_579_ai_winter_pressure = {
 	var:fallout_event_579_candidate_state_id = {
 		check_variable = { air_winter_exposure value = constant:fallout_event_579_threshold.ai_winter_exposure_threshold compare = greater_than_or_equals }
