@@ -620,3 +620,15 @@ The chain uses a country subject with target zero and a dedicated report sprite.
 ## Ashline Firebreak correction
 
 Ashline Firebreak adds dormant suffixes `554` through `564` with candidate id `554`, transaction key `710052`, route `7152`, and history `9157`. The human opening is `554`, the hidden-AI opening is `555`, the three human and hidden-AI delayed result lanes are `556` through `561`, the human and hidden-AI callbacks are `562` and `563`, and cleanup is `564`. The state selector requires a current owner-controlled wildfire or ash-heavy natural-disaster aftermath card and uses the lowest eligible native state id. The chain remains uncounted and does not open scheduler activation. The documented living-world total is now `446`, including the committed Ammunition Winter and A New Funeral ranges.
+
+## River Ration League correction
+
+The River Ration League adds dormant suffixes `565` through `571` with candidate id `565`, transaction key `710053`, route `7153`, and history `9158`.
+
+The human opening is `565`, the hidden-AI opening is `566`, the human and hidden-AI delayed results are `567` and `568`, the human and hidden-AI callbacks are `569` and `570`, and cleanup is `571`.
+
+The row selects the first and last eligible current-generation states in the fixed Danube corridor and remains ordinary Fallout content rather than a super-event.
+
+The chain remains dormant and uncounted until the Fallout scheduler activation setter and runtime receipt proof are available.
+
+The documented living-world total is now `453` and the countable Fallout living-world total remains `0 of 660`.

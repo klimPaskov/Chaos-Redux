@@ -423,3 +423,21 @@ Its country gate requires a current Fallout registry row, material Deaths, incom
 It remains dormant and contributes zero countable blocks to the `0 of 660` release-floor total.
 
 No scheduler activation flag or public release-floor credit is set by this correction.
+
+## The River Ration League correction
+
+The River Ration League is the fifty-third reviewed ordinary candidate.
+
+It uses candidate id `565`, transaction `710053`, route `7153`, event blocks `565` through `571`, and Event Log history `9158`.
+
+Its country gate selects the first and last eligible current-generation states from the fixed Danube corridor and rejects the row unless two distinct states pass ownership, controller, population, Air Winter, Supply Access, and exclusive-transaction checks.
+
+The chain freezes both state snapshots, the country survival ledger, trust, tension, branch, and generation before a 42-day result and a 180-day institutional callback.
+
+Four authored policies cover a joint barge law, upstream priority, armed customs, and flood authority with exact costs and deterministic grading.
+
+The result updates resources, cohesion, Supply Access, trust, and border tension without population loss.
+
+The callback records branch and grade memories, seeds the accepted federation or barge-war continuation thresholds, records Event Log payloads, and releases authenticated cleanup receipts.
+
+The candidate remains dormant and contributes zero countable blocks until a Fallout-owned scheduler activation setter and runtime receipt proof exist. The dedicated proof is recorded in `FALLOUT_RIVER_RATION_LEAGUE_CHAIN_PROOF.md`.

@@ -115,6 +115,7 @@
 - `specs/51_reviewed_global_survival_a_new_funeral.md`
 - `specs/52_reviewed_regional_ashline_firebreak.md`
 - `specs/53_successor_allocation_player_continuation_b7.md`
+- `specs/54_reviewed_regional_river_ration_league.md`
 
 ## Matrices
 

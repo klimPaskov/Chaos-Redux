@@ -13251,6 +13251,137 @@ country_event = {
 	immediate = { fallout_event_554_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout regional chain: The River Ration League
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.565
+	title = chaosx.fallout.565.t
+	desc = chaosx.fallout.565.desc
+	picture = GFX_report_event_fallout_river_ration_league
+	is_triggered_only = yes
+	trigger = { fallout_event_565_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.565.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_565_cost.barge_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_565_cost.barge_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_565_cost.barge_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_565_requested_branch = constant:fallout_event_565_branch.joint_barge_law } fallout_event_565_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.565.a.tt
+		ai_chance = { base = constant:fallout_event_565_ai.barge_priority }
+	}
+	option = {
+		name = chaosx.fallout.565.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_565_cost.upstream_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_565_cost.upstream_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_565_cost.upstream_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_565_requested_branch = constant:fallout_event_565_branch.upstream_priority } fallout_event_565_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.565.b.tt
+		ai_chance = { base = constant:fallout_event_565_ai.upstream_priority }
+	}
+	option = {
+		name = chaosx.fallout.565.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_565_cost.customs_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_565_cost.customs_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_565_cost.customs_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_565_requested_branch = constant:fallout_event_565_branch.armed_customs } fallout_event_565_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.565.c.tt
+		ai_chance = { base = constant:fallout_event_565_ai.customs_priority }
+	}
+	option = {
+		name = chaosx.fallout.565.d
+		trigger = {
+			check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_565_cost.flood_clean_water compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_565_cost.flood_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_565_cost.flood_power compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_565_requested_branch = constant:fallout_event_565_branch.flood_authority } fallout_event_565_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.565.d.tt
+		ai_chance = { base = constant:fallout_event_565_ai.flood_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.566
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_565_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_565_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.567
+	title = chaosx.fallout.567.t
+	desc = { text = chaosx.fallout.567.barge.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.567.barge.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.567.barge.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } } }
+	desc = { text = chaosx.fallout.567.upstream.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.567.upstream.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.567.upstream.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } } }
+	desc = { text = chaosx.fallout.567.customs.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.567.customs.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.567.customs.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } } }
+	desc = { text = chaosx.fallout.567.flood.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.567.flood.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.567.flood.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } } }
+	picture = GFX_report_event_fallout_river_ration_league
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_565_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_ration_league_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.567.a hidden_effect = { fallout_event_565_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.567.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.568
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_565_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_ration_league_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_565_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.569
+	title = chaosx.fallout.569.t
+	desc = { text = chaosx.fallout.569.barge.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.569.barge.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.569.barge.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.joint_barge_law } } }
+	desc = { text = chaosx.fallout.569.upstream.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.569.upstream.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.569.upstream.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.upstream_priority } } }
+	desc = { text = chaosx.fallout.569.customs.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.569.customs.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.569.customs.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.armed_customs } } }
+	desc = { text = chaosx.fallout.569.flood.success.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.success } } }
+	desc = { text = chaosx.fallout.569.flood.partial.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } check_variable = { fallout_event_565_result_grade = constant:fallout_event_565_grade.partial } } }
+	desc = { text = chaosx.fallout.569.flood.failure.d trigger = { check_variable = { fallout_event_565_selected_branch = constant:fallout_event_565_branch.flood_authority } } }
+	picture = GFX_report_event_fallout_river_ration_league
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_ration_league_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_565_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_565_branch.upper_bound } fallout_event_565_registry_is_current = yes }
+	option = { name = chaosx.fallout.569.a hidden_effect = { fallout_event_565_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.569.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.570
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.river_ration_league_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_565_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_565_branch.upper_bound } fallout_event_565_registry_is_current = yes }
+	immediate = { fallout_event_565_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.571
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_565_cleanup_can_enter = yes }
+	immediate = { fallout_event_565_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 
