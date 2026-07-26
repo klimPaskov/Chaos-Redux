@@ -19,7 +19,7 @@ An independent bounded source-coordinate parser enumerated 25 button regions and
 
 ## MCP status
 
-The earlier MCP render and inspect artifact remains the evidence for the pre-correction visual states and resolutions. A post-correction `hoi4.gui_inspect`/`hoi4.gui_render` retry returned `Transport closed`, so no fresh MCP artifact is claimed after this patch. The live engine scenario matrix remains separately queued, and no GUI or gameplay fallback was introduced.
+A fresh `hoi4.gui_inspect`/`hoi4.gui_render` pass completed at 1280x720, 1920x1080, and 2560x1440/1.25 across twelve states at source revision `2452b17255026c63b7d59f61594eec80bbea9fc3fcc8374acc3e06c2e890063`. The offline renderer reports four card-3/milestone intersections only because it multiplies source offsets by each control's `scale`; the offline wiki contract and vanilla `airselectionview.gui` precedent define scale as button-size scaling with unscaled screen positions. The independent raw-source parser reports zero overlaps, and the fresh direct scene reports no element-level long-text overflow or clipping; close-button shader and DDS decoding warnings are renderer limitations. The live engine scenario matrix remains separately queued, and no GUI or gameplay fallback was introduced.
 
 ## Boundary confirmation
 
@@ -27,4 +27,4 @@ This audit did not modify `interface/chaosx_super_events.gui`, `common/scripted_
 
 ## Validation and remaining risk
 
-The direct source graph still resolves the Event 013 family header, state-driven marker cards, animation/static pairs, footer controls, and legend assets without GIF gameplay references. The remaining validation risk is limited to the unavailable post-correction MCP transport and the user-owned live HOI4 matrix; the current source patch is not described as an unconditional engine proof.
+The direct source graph still resolves the Event 013 family header, state-driven marker cards, animation/static pairs, footer controls, and legend assets without GIF gameplay references. The remaining validation risk is the offline renderer's documented scale-offset false positive and the user-owned live HOI4 matrix; the current source patch is not described as an unconditional engine proof.
