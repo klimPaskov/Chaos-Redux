@@ -319,7 +319,7 @@ Incomplete and not claimed:
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
 - The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.
 - The dormant manual scenario substrate has an exact province manifest and seven-day ledger, but the native every-valid-province sweep is not proven and the scenario is not live.
-- The Fallout scheduler contracts exist without living-world event content or progress toward the 660-block release floor.
+- The Fallout scheduler contracts include fifty-four dormant reviewed rows and 460 defined living-world blocks, but the countable release-floor total remains 0 of 660 and activation is not authorized.
 - Survivor focus content, decisions, leaders, units, diplomacy, AI layers, and their remaining dedicated assets are incomplete.
 
 ## Future plans and extension suggestions

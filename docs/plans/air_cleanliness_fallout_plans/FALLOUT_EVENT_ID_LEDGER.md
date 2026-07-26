@@ -6,9 +6,9 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the Ashline Firebreak tranche, the living-world pilot contains `446`
+After the County Fair Returns tranche, the living-world pilot contains `460`
 defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `564`. All remain dormant and uncounted, so
+through `200`, and the reviewed ordinary range through `578`. All remain dormant and uncounted, so
 the release-floor total is `0 of 660`. Historical count snapshots below are
 retained as corrections and are superseded by the later correction sections.
 
@@ -643,6 +643,6 @@ The row requires at least three eligible North American native rural states and 
 
 The chain carries four authored branch costs, frozen Air Winter and survival ledgers, deterministic result and callback outcomes, local Deaths effects, state and country memories, dedicated report art, Event Log payloads, hidden-AI parity, and delayed cleanup.
 
-The chain remains dormant and uncounted until a later reviewed scheduler activation setter and runtime receipt proof are available.
+The chain remains dormant and uncounted until a later reviewed scheduler activation decision and runtime receipt proof are available.
 
 The documented living-world total is now `460` and the countable Fallout living-world total remains `0 of 660`.
