@@ -402,6 +402,34 @@ is_valid_independence_wave_reclamation_front_state = {
 	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
 }
 
+# State scope. This is the second, mutation-time validation for a witness
+# row. The state and owner are already present in the aligned witness arrays,
+# so the reservation-array exclusions used by the availability probe are not
+# repeated here. The saved owner must still be the state's current owner and
+# the saved member must still be able to declare the finite reclamation war.
+is_valid_independence_wave_reclamation_front_witness_slot = {
+	event_target:independence_wave_reclamation_front_member = {
+		is_independence_wave_reclamation_front_member_eligible = yes
+	}
+	owner = {
+		exists = yes
+		tag = event_target:independence_wave_reclamation_front_target
+		NOT = { tag = event_target:independence_wave_reclamation_front_member }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = event_target:independence_wave_reclamation_front_member }
+		event_target:independence_wave_reclamation_front_member = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = event_target:independence_wave_reclamation_front_member
+		any_neighbor_state = { is_owned_by = event_target:independence_wave_reclamation_front_member }
+	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
+}
+
 # Country scope. This centralizes the DM-58 preflight's member validity and
 # intentionally mirrors the paid resolver without relying on the activating
 # decision country.

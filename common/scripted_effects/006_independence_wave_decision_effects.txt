@@ -658,53 +658,233 @@ independence_wave_decision_request_selected_formable_commit = {
 	independence_wave_formable_commit_selected_family = yes
 }
 
-# DM-58 resolver. Supported scope: the current Event 006 league member. The
-# paid mission calls this once for every member in the frozen league ledger.
-# Each member receives one generation-stamped, claim-connected state target and
-# a finite take-state wargoal against that state's living external owner. The
-# target and state arrays make the synchronized front unique; no generic target
-# or unconditional war is created when a member has no valid objective.
+# DM-58 resolver. Supported scope: the activating Event 006 country. The
+# resolver first enumerates the frozen member ledger without changing claims,
+# flags, wargoals, or costs. It keeps searching until one exact three-member,
+# three-distinct-owner witness is found, then writes that witness to the
+# aligned member/state/owner arrays. A second pass revalidates and applies the
+# already-selected rows. This keeps activation feasibility and paid execution
+# on the same witness instead of drawing a new random state for each member.
 independence_wave_execute_reclamation_front = {
-	# The member target is overwritten on every loop iteration.  This avoids
-	# relying on ROOT after for_each_scope_loop changes the current scope.
-	save_event_target_as = independence_wave_reclamation_front_member
-	if = {
-		limit = {
-			is_independence_wave_active_country = yes
-			has_country_flag = independence_wave_league_member
-			NOT = { has_country_flag = independence_wave_client_route_locked }
-		}
-		random_state = {
-			limit = { is_valid_independence_wave_reclamation_front_state = yes }
-			owner = {
-				save_event_target_as = independence_wave_reclamation_front_target
-				add_to_array = { array = global.independence_wave_reclamation_front_targets value = THIS }
+	clear_array = global.independence_wave_reclamation_front_states
+	clear_array = global.independence_wave_reclamation_front_targets
+	clear_array = global.independence_wave_reclamation_front_members
+	set_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_reclamation_front_witness_member_one_break = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_reclamation_front_witness_member_two_break = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_reclamation_front_witness_member_three_break = constant:independence_wave_value.minimum }
+
+	# The three nested member/state searches are the effect-side equivalent of
+	# the activation trigger's existential matcher. Every state search is guarded
+	# by the completion variable, so a found witness stops all later mutation-
+	# free scans through the same effect chain.
+	for_each_scope_loop = {
+		array = global.independence_wave_league_member_country_entries
+		break = independence_wave_reclamation_front_witness_member_one_break
+		if = {
+			limit = {
+				check_variable = {
+					independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+				}
+				is_independence_wave_reclamation_front_member_eligible = yes
 			}
-			set_state_flag = independence_wave_dm58_reclamation_front_used
-			if = {
-				limit = { NOT = { is_claimed_by = event_target:independence_wave_reclamation_front_member } }
-				add_claim_by = event_target:independence_wave_reclamation_front_member
-				set_state_flag = independence_wave_dm58_reclamation_front_claim_added
+			save_event_target_as = independence_wave_reclamation_front_witness_member_one
+			event_target:independence_wave_reclamation_front_witness_member_one = {
+				save_event_target_as = independence_wave_reclamation_front_member
 			}
-			add_to_array = { array = global.independence_wave_reclamation_front_states value = THIS }
-			event_target:independence_wave_reclamation_front_member = {
-				set_country_flag = independence_wave_dm58_reclamation_front_staged
-				add_to_array = { array = global.independence_wave_reclamation_front_members value = THIS }
-				set_temp_variable = { independence_wave_reclamation_front_expire_days = constant:independence_wave_decision_duration.reclamation_front }
-				meta_effect = {
-					text = {
-						create_wargoal = {
-							type = take_state_focus
-							target = event_target:independence_wave_reclamation_front_target
-							generator = { [IW_RECLAMATION_STATE] }
-							expire = [IW_RECLAMATION_EXPIRE]
+			every_state = {
+				limit = {
+					check_variable = {
+						independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+					}
+					is_valid_independence_wave_reclamation_front_state = yes
+				}
+				save_event_target_as = independence_wave_reclamation_front_witness_state_one
+				owner = {
+					save_event_target_as = independence_wave_reclamation_front_witness_owner_one
+				}
+
+				for_each_scope_loop = {
+					array = global.independence_wave_league_member_country_entries
+					break = independence_wave_reclamation_front_witness_member_two_break
+					if = {
+						limit = {
+							check_variable = {
+								independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+							}
+							is_independence_wave_reclamation_front_member_eligible = yes
+							NOT = { tag = event_target:independence_wave_reclamation_front_witness_member_one }
+						}
+						save_event_target_as = independence_wave_reclamation_front_witness_member_two
+						event_target:independence_wave_reclamation_front_witness_member_two = {
+							save_event_target_as = independence_wave_reclamation_front_member
+						}
+						every_state = {
+							limit = {
+								check_variable = {
+									independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+								}
+								is_valid_independence_wave_reclamation_front_state = yes
+								owner = {
+									NOT = { tag = event_target:independence_wave_reclamation_front_witness_owner_one }
+								}
+							}
+							save_event_target_as = independence_wave_reclamation_front_witness_state_two
+							owner = {
+								save_event_target_as = independence_wave_reclamation_front_witness_owner_two
+							}
+
+							for_each_scope_loop = {
+								array = global.independence_wave_league_member_country_entries
+								break = independence_wave_reclamation_front_witness_member_three_break
+								if = {
+									limit = {
+										check_variable = {
+											independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+										}
+										is_independence_wave_reclamation_front_member_eligible = yes
+										NOT = { tag = event_target:independence_wave_reclamation_front_witness_member_one }
+										NOT = { tag = event_target:independence_wave_reclamation_front_witness_member_two }
+									}
+									save_event_target_as = independence_wave_reclamation_front_witness_member_three
+									event_target:independence_wave_reclamation_front_witness_member_three = {
+										save_event_target_as = independence_wave_reclamation_front_member
+									}
+									every_state = {
+										limit = {
+											check_variable = {
+												independence_wave_reclamation_front_witness_complete = constant:independence_wave_value.minimum
+											}
+											is_valid_independence_wave_reclamation_front_state = yes
+											owner = {
+												NOT = { tag = event_target:independence_wave_reclamation_front_witness_owner_one }
+												NOT = { tag = event_target:independence_wave_reclamation_front_witness_owner_two }
+											}
+										}
+										save_event_target_as = independence_wave_reclamation_front_witness_state_three
+										owner = {
+											save_event_target_as = independence_wave_reclamation_front_witness_owner_three
+										}
+
+										# Write the complete witness only after all six
+										# member/owner inequality checks have passed.
+										event_target:independence_wave_reclamation_front_witness_member_one = {
+											add_to_array = { array = global.independence_wave_reclamation_front_members value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_member_two = {
+											add_to_array = { array = global.independence_wave_reclamation_front_members value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_member_three = {
+											add_to_array = { array = global.independence_wave_reclamation_front_members value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_state_one = {
+											add_to_array = { array = global.independence_wave_reclamation_front_states value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_state_two = {
+											add_to_array = { array = global.independence_wave_reclamation_front_states value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_state_three = {
+											add_to_array = { array = global.independence_wave_reclamation_front_states value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_owner_one = {
+											add_to_array = { array = global.independence_wave_reclamation_front_targets value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_owner_two = {
+											add_to_array = { array = global.independence_wave_reclamation_front_targets value = THIS }
+										}
+										event_target:independence_wave_reclamation_front_witness_owner_three = {
+											add_to_array = { array = global.independence_wave_reclamation_front_targets value = THIS }
+										}
+										set_temp_variable = { independence_wave_reclamation_front_witness_complete = constant:independence_wave_plan.loop_increment }
+										set_temp_variable = { independence_wave_reclamation_front_witness_member_one_break = constant:independence_wave_plan.loop_increment }
+										set_temp_variable = { independence_wave_reclamation_front_witness_member_two_break = constant:independence_wave_plan.loop_increment }
+										set_temp_variable = { independence_wave_reclamation_front_witness_member_three_break = constant:independence_wave_plan.loop_increment }
+									}
+								}
+							}
+							# The inner member loop leaves the generic target on
+							# its last probe. Restore member two before the next
+							# state-two iteration reuses the shared state trigger.
+							event_target:independence_wave_reclamation_front_witness_member_two = {
+								save_event_target_as = independence_wave_reclamation_front_member
+							}
 						}
 					}
-					IW_RECLAMATION_STATE = "[PREV.GetID]"
-					IW_RECLAMATION_EXPIRE = "[?independence_wave_reclamation_front_expire_days|.0]"
 				}
-				set_temp_variable = { independence_wave_reclamation_front_days = constant:independence_wave_decision_duration.reclamation_front }
-				set_country_flag = { flag = independence_wave_reclamation_front_ready days = independence_wave_reclamation_front_days }
+				# The member-two loop likewise leaves the generic target
+				# on its last probe. Restore member one before the next
+				# state-one iteration.
+				event_target:independence_wave_reclamation_front_witness_member_one = {
+					save_event_target_as = independence_wave_reclamation_front_member
+				}
+			}
+		}
+	}
+
+	# The arrays are still only a witness until this second pass succeeds. Any
+	# live-state change between activation and this effect fails closed and the
+	# caller invokes the same provenance-aware pre-cost rollback as before.
+	if = {
+		limit = {
+			check_variable = {
+				independence_wave_reclamation_front_witness_complete = constant:independence_wave_plan.loop_increment
+			}
+		}
+		independence_wave_apply_reclamation_front_witness = yes
+	}
+}
+
+# Applies the exact three aligned rows written by
+# independence_wave_execute_reclamation_front. The saved owner is checked
+# against the state's current owner before any claim or wargoal effect runs.
+independence_wave_apply_reclamation_front_witness = {
+	set_temp_variable = { independence_wave_reclamation_front_witness_index = global.independence_wave_reclamation_front_states^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				independence_wave_reclamation_front_witness_index = constant:independence_wave_value.minimum
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { independence_wave_reclamation_front_witness_index = constant:independence_wave_plan.loop_increment }
+		var:global.independence_wave_reclamation_front_members^independence_wave_reclamation_front_witness_index = {
+			save_event_target_as = independence_wave_reclamation_front_member
+		}
+		var:global.independence_wave_reclamation_front_targets^independence_wave_reclamation_front_witness_index = {
+			save_event_target_as = independence_wave_reclamation_front_target
+		}
+		var:global.independence_wave_reclamation_front_states^independence_wave_reclamation_front_witness_index = {
+			save_event_target_as = independence_wave_reclamation_front_state
+			if = {
+				limit = { is_valid_independence_wave_reclamation_front_witness_slot = yes }
+				set_state_flag = independence_wave_dm58_reclamation_front_used
+				if = {
+					limit = { NOT = { is_claimed_by = event_target:independence_wave_reclamation_front_member } }
+					add_claim_by = event_target:independence_wave_reclamation_front_member
+					set_state_flag = independence_wave_dm58_reclamation_front_claim_added
+				}
+				event_target:independence_wave_reclamation_front_member = {
+					set_temp_variable = { independence_wave_reclamation_front_expire_days = constant:independence_wave_decision_duration.reclamation_front }
+					meta_effect = {
+						text = {
+							create_wargoal = {
+								type = take_state_focus
+								target = event_target:independence_wave_reclamation_front_target
+								generator = { [IW_RECLAMATION_STATE] }
+								expire = [IW_RECLAMATION_EXPIRE]
+							}
+						}
+						IW_RECLAMATION_STATE = "[independence_wave_reclamation_front_state.GetID]"
+						IW_RECLAMATION_EXPIRE = "[?independence_wave_reclamation_front_expire_days|.0]"
+					}
+					set_country_flag = independence_wave_dm58_reclamation_front_staged
+					set_temp_variable = { independence_wave_reclamation_front_days = constant:independence_wave_decision_duration.reclamation_front }
+					set_country_flag = { flag = independence_wave_reclamation_front_ready days = independence_wave_reclamation_front_days }
+				}
+				event_target:independence_wave_reclamation_front_state = {
+					set_state_flag = independence_wave_dm58_reclamation_front_wargoal_added
+				}
 				add_to_variable = { global.independence_wave_reclamation_front_count = constant:independence_wave_plan.loop_increment }
 			}
 		}
@@ -712,9 +892,10 @@ independence_wave_execute_reclamation_front = {
 }
 
 # The resolver is called before DM-58 charges any strategic or security cost.
-# If the exact member loop cannot freeze the minimum number of distinct,
-# war-legal state/owner pairs, this effect removes the staged claims and finite
-# wargoals and restores the operation ledger without charging the player.
+# If witness application cannot freeze the minimum number of distinct, war-legal
+# state/owner pairs, this effect removes only transaction-marked claims and
+# finite wargoals, clears all staging receipts, and restores the operation
+# ledger without charging the player.
 independence_wave_rollback_reclamation_front_staging = {
 	set_temp_variable = { independence_wave_reclamation_front_rollback_index = global.independence_wave_reclamation_front_states^num }
 	while_loop_effect = {
@@ -737,14 +918,22 @@ independence_wave_rollback_reclamation_front_staging = {
 				remove_claim_by = event_target:independence_wave_reclamation_front_rollback_member
 			}
 			clr_state_flag = independence_wave_dm58_reclamation_front_claim_added
+			if = {
+				limit = { has_state_flag = independence_wave_dm58_reclamation_front_wargoal_added }
+				event_target:independence_wave_reclamation_front_rollback_member = {
+					remove_wargoal = {
+						type = take_state_focus
+						target = event_target:independence_wave_reclamation_front_rollback_target
+					}
+				}
+			}
+			clr_state_flag = independence_wave_dm58_reclamation_front_wargoal_added
 			clr_state_flag = independence_wave_dm58_reclamation_front_used
 		}
 		event_target:independence_wave_reclamation_front_rollback_member = {
-			remove_wargoal = {
-				type = take_state_focus
-				target = event_target:independence_wave_reclamation_front_rollback_target
-			}
 			clr_country_flag = independence_wave_dm58_reclamation_front_staged
+			clr_country_flag = independence_wave_reclamation_front_ready
+			clear_variable = independence_wave_reclamation_front_days
 		}
 	}
 	clear_array = global.independence_wave_reclamation_front_states
