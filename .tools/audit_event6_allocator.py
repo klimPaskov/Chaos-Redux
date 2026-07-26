@@ -223,11 +223,23 @@ def main() -> int:
 	binding_path = ROOT / "docs/plans/006_independence_wave_plans/package_bindings/006_current_installed_map_package_bindings.csv"
 	with binding_path.open(encoding="utf-8-sig", newline="") as handle:
 		binding_rows = list(csv.DictReader(handle))
+	matrix_path = ROOT / "docs/specs/006_independence_wave_specs/research/006_state_anchor_and_reservation_groups.csv"
+	with matrix_path.open(encoding="utf-8-sig", newline="") as handle:
+		reservation_rows = list(csv.DictReader(handle))
+	rhine_rows = [row for row in reservation_rows if row["reservation_group"] == "RG-RHINE-SAAR"]
+	require(
+		len(rhine_rows) == 1
+		and rhine_rows[0]["maximum_automatic_packages_per_wave"] == "2"
+		and rhine_rows[0]["package_ids"] == "IW-008 | IW-010"
+		and rhine_rows[0]["baseline_state_ids"] == "51 | 42",
+		"canonical RG-RHINE-SAAR matrix row must document the exact two-package 51/42 exception",
+		errors,
+	)
 
-	# The accepted v10 closure keeps the RHI/AJX reservation group intact and
-	# requires one distinct grounded package before the ten-country band can
-	# open. Keep that disposition source-audited so a tempting map rebind cannot
-	# silently manufacture capacity.
+	# The accepted closure keeps the RHI/AJX reservation group intact and admits
+	# exactly that pair through a documented two-slot exception. Keep the
+	# canonical matrix and runtime consumers source-audited so a tempting map
+	# rebind cannot silently manufacture capacity.
 	dispatch = read("common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt")
 	attestation = extract_script_block(
 		dispatch,

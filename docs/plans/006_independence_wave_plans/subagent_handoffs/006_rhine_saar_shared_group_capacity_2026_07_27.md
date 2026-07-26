@@ -2,11 +2,11 @@
 
 Date: 2026-07-27
 
-Status: implemented; targeted static review pending the next whole-event audit.
+Status: implemented; bounded re-audit v22 is source-level PASS / runtime HOLD.
 
 ## Decision
 
-IW-008 Rhineland and IW-010 Saar remain two separate accepted Event 006 packages. They share the coarse `RG-RHINE-SAAR` reservation group in the research matrix, but their accepted anchor states are distinct (`51` and `42`) and their host-survival reservations are independent. The group therefore admits this exact pair, while every other reservation group keeps the one-package rule.
+IW-008 Rhineland and IW-010 Saar remain two separate accepted Event 006 packages. They share the coarse `RG-RHINE-SAAR` reservation group in the research matrix, but their accepted anchor states are distinct (`51` and `42`). The pair still uses the ordinary per-host protected-state selector: both rows may share GER's host-protection row when the map gives them the same host, and the plan fails closed if no safe remnant remains. The group therefore admits this exact pair, while every other reservation group keeps the one-package rule.
 
 ## Implementation
 
@@ -20,4 +20,4 @@ This is a narrow capacity rule, not a general group relaxation. It does not perm
 
 ## Validation target
 
-The next completion audit must replace the previous “ten attested IDs / nine compatible groups fail exact-ten” finding with a pair-capacity proof: the ten attested packages can reserve ten countries because `RG-RHINE-SAAR` has two admitted package slots, the capacity witness counts both siblings, the lock invariant accepts only that reciprocal pair, and anchors `51` and `42` remain unique.
+The bounded re-audit `006_rhine_saar_shared_group_capacity_reaudit_v22_2026_07_27.md` replaces the previous “ten attested IDs / nine compatible groups fail exact-ten” finding with a source-level pair-capacity PASS. Runtime proof remains open for both package orders, shared-host protected-remnant cases, Event 005 collisions, rollback/save-load, exact-ten execution, and World Collapse.
