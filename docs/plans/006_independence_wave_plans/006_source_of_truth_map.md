@@ -2,9 +2,9 @@
 
 <!-- Documentation reconciliation: IW-006 is part of the current ten-package attestation set; global completion remains open. -->
 
-Curated: 2026-07-26 after the Event 006 v10 completion audit, the DM-58 injective preflight commit `cf2316a9a`, and the rejected/reverted shared-focus candidate `f8ca54d24`
+Curated: 2026-07-26 after the Event 006 v10 completion audit, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the expiry cleanup repair `37c4f6036`, and the rejected/reverted shared-focus candidate `f8ca54d24`
 
-Completion state: **incomplete and active; ten package attestations still expose only nine compatible reservation groups, DM-58 now binds its exact witness before mutation but lacks live execution/save-load/no-witness evidence, and the restored focus baseline still has fourteen blocking MCP diagnostics**.
+Completion state: **incomplete and active; ten package attestations still expose only nine compatible reservation groups, DM-58 now binds its exact witness before mutation and clears shared receipts on the coordinator-bound expiry callback but lacks live execution/save-load/no-witness evidence, and the restored focus baseline still has fourteen blocking MCP diagnostics**.
 
 This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The current portrait authority is the sourced-only
