@@ -1,10 +1,13 @@
 # Event 006 pre-DDS portrait PNG reference shelf
 
-This folder is the central, reference-only shelf for source-based Independence Wave portraits after HOI4-style processing and before any DDS conversion or runtime wiring.
+This folder is the central, reference-only shelf for source-based Independence Wave portraits after HOI4-style processing and before runtime wiring. It preserves both the larger repaint masters and the normalized PNGs used for DDS conversion.
 
 ## Scope
 
-The shelf contains 78 byte-copied PNGs at the native HOI4 large-portrait size of 156x210:
+The shelf contains 119 byte-copied PNGs:
+
+- 41 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+- 78 normalized PNGs at the native HOI4 large-portrait size of 156x210:
 
 - 44 source-refinish attempts from the dated `sourced_portrait_refinishes_*` packages.
 - 3 grounded source-replacement outputs from the `sourced_portrait_replacements_*` packages.
@@ -22,9 +25,8 @@ The subfolders are an evidence boundary, not an automatic runtime approval:
 - `source_candidates/` contains sourced refinishes, replacement attempts, and the rejected-style treatment ledger.
 - `historical_withdrawn/` contains source-based attempts withdrawn from runtime.
 
-Use [MANIFEST.md](MANIFEST.md) for the exact original path, SHA-256, dimensions, package kind, and status of every copy. The original package manifests, source masters, crops, prompts, clearance notes, and independent audits remain authoritative for rights, identity, and admission decisions.
+Use [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md) for the larger repaint-master provenance and [MANIFEST.md](MANIFEST.md) for the exact original path, SHA-256, dimensions, package kind, and status of every normalized copy. The original package manifests, source masters, crops, prompts, clearance notes, and independent audits remain authoritative for rights, identity, and admission decisions.
 
 When creating another grounded portrait, follow the asset skill's pipeline: attributed archival male source, explicit head-and-shoulders crop, identity-preserving HOI4-style repaint, deterministic 156x210 processing, independent likeness/style/provenance audit, then DDS conversion and wiring. Do not treat a candidate in this shelf as a license to skip those gates.
 
 This shelf has no runtime references and does not authorize advisor or dossier portrait derivatives.
-

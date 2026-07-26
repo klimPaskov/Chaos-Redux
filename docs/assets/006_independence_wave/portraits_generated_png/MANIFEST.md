@@ -1,4 +1,6 @@
-# Event 006 pre-DDS source portrait inventory
+# Event 006 normalized pre-DDS source portrait inventory
+
+This table covers the 78 normalized 156x210 copies. The 41 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
 
 This manifest indexes every source-driven processed PNG copied into this shelf. Every file is a byte-for-byte copy of its original and decodes as a 156x210 PNG; the SHA-256 column guards against drift.
 
@@ -86,4 +88,3 @@ Inventory counts: 78 total; 2 protected approved, 2 current approved, 45 source 
 | source_candidate_rejected_visual_style | sourced_treatment_rejected_style | `source_candidates/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/processed_png/WLS_saunders_lewis.png` | `d16d9d2603ac9566eb3b5402be701895e2c4a3d4d8fdfc6a2497e7a66f5991dc` | 156x210 | Sourced archival treatment retained for provenance; package manifest records the rejected photographic HOI4-style gate. |
 
 The copied PNGs are documentation/reference assets only. Runtime consumers must continue to use the reviewed DDS files under `gfx/leaders/006_independence_wave/`; no DDS, `.gfx`, character definition, advisor, dossier, or small-portrait consumer is created by this shelf.
-
