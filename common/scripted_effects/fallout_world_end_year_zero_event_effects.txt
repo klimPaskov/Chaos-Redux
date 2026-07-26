@@ -523,11 +523,16 @@ fallout_event_401_resolve_result_and_schedule_callback = {
 			limit = { check_variable = { fallout_event_401_arc_stage_transition_accepted = constant:fallout_event_runtime.one } }
 			fallout_event_401_schedule_callback = yes
 			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_401_callback_scheduled set_variable = { fallout_event_401_callback_cleanup_ticket = fallout_event_transaction_ticket } }
-			else = { set_temp_variable = { fallout_event_requested_ticket = fallout_event_401_result_ticket } fallout_event_prepare_delayed_cleanup = yes }
+			else = {
+				set_temp_variable = { fallout_event_requested_ticket = fallout_event_401_result_ticket }
+				fallout_event_prepare_delayed_cleanup = yes
+				fallout_event_401_cancel_major_arc = yes
+			}
 		}
 		else = {
 			set_temp_variable = { fallout_event_requested_ticket = fallout_event_401_result_ticket }
 			fallout_event_prepare_delayed_cleanup = yes
+			fallout_event_401_cancel_major_arc = yes
 		}
 	}
 	clear_temp_variable = fallout_event_401_result_ticket
@@ -626,6 +631,7 @@ fallout_event_401_resolve_callback_and_prepare_cleanup = {
 		set_temp_variable = { fallout_event_401_history_stage = constant:fallout_event_runtime.two }
 		fallout_event_401_record_history = yes
 		fallout_event_401_advance_arc_to_callback = yes
+		if = { limit = { check_variable = { fallout_event_401_arc_stage_transition_accepted = constant:fallout_event_runtime.zero } } fallout_event_401_cancel_major_arc = yes }
 		set_temp_variable = { fallout_event_requested_ticket = fallout_event_401_callback_ticket }
 		fallout_event_prepare_delayed_cleanup = yes
 	}
