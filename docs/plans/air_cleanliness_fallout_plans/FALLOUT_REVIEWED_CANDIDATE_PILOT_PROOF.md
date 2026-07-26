@@ -2,7 +2,7 @@
 
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-four
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
