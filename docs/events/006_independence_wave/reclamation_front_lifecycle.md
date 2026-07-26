@@ -6,7 +6,7 @@ DM-58, `independence_wave_coordinate_reclamation_fronts`, is the paid high-chaos
 
 The country must be an active Event 006 carrier, a compliant league member, on the radical-revisionist league route, outside a league crisis, and backed by the minimum shared reserve.
 
-The completed `independence_wave_focus_coordinate_reclamation_fronts` focus sets the explicit `independence_wave_focus_reclamation_fronts_authorized` gate, and the availability preflight counts the minimum number of compliant members that each have at least one compatible external objective. Completion then runs the same member loop, freezes one unique state and owner per member, and checks `can_declare_war_on` before any material cost is paid.
+The completed `independence_wave_focus_coordinate_reclamation_fronts` focus sets the explicit `independence_wave_focus_reclamation_fronts_authorized` gate, and the availability preflight proves the accepted three-member contract before selection. It finds three distinct compliant members, each paired with a legal claim-connected or bordering state whose external owner differs from the other two. Completion then runs the existing member loop, freezes one unique state and owner per member, and checks `can_declare_war_on` before any material cost is paid.
 
 The mission pays the strategic and major security costs defined by the existing decision cost layer and applies the standard revisionist league deltas only after the exact minimum member/target set has been frozen. A pre-cost shortfall removes staged claims and finite wargoals, opens the failure branch, and charges no material cost.
 
@@ -14,9 +14,11 @@ The mission snapshots `global.independence_wave_league_member_country_entries` a
 
 ## Target and state reservation
 
-`is_valid_independence_wave_reclamation_front_state` accepts only a living external owner that is not a league member, a state with a live controller, no current war, and a state that is adjacent to or claimed by the requesting member. The member target is saved at the start of each loop iteration, so the resolver does not depend on `ROOT` surviving a `for_each_scope_loop` scope change.
+`is_valid_independence_wave_reclamation_front_state` accepts only a living external owner that is not a league member, a state with a live controller, no current war, and a state that is adjacent to or claimed by the requesting member. The non-mutating preflight mirrors those member, owner, controller, state-reservation, claim-or-border, war-legality, and finite-wargoal guards. It explicitly excludes the first two selected members and owners before testing the third slot, so three isolated candidates sharing one owner do not expose DM-58. The member target is saved at the start of each paid loop iteration, so the resolver does not depend on `ROOT` surviving a `for_each_scope_loop` scope change.
 
 The trigger rejects states already present in the synchronized state array, rejects state markers left by an existing front, and rejects an existing `take_state_focus` wargoal against the same owner. Capital preference remains part of the package's state-selection rules where a capital is the valid anchor; DM-58 never manufactures a capital-only fallback.
+
+The scope proof uses `any_of_scopes` over the frozen member ledger, which evaluates each ledger country as a scope. Its nested path is member one, state one, owner one, member two, state two, owner two, member three, state three, owner three. The member comparison in member two and owner comparison in owner two each take three `PREV` hops. Member three and owner three each take three hops to their immediate predecessor and six hops to the first member or first owner respectively. The member checks execute in member scopes, while the owner checks execute in owner scopes, so every `tag` exclusion compares members only with members and owners only with owners.
 
 The resolver saves the owner as a short-lived event target, rechecks the war legality through the saved member target, stamps the state with a generic used marker, and appends aligned entries to `global.independence_wave_reclamation_front_members`, `global.independence_wave_reclamation_front_states`, and `global.independence_wave_reclamation_front_targets`.
 
@@ -28,7 +30,7 @@ No member without a valid objective receives a generic target, a fallback state,
 
 ## Resolution and cleanup
 
-The mission completes only when the configured minimum number of members succeeds; a partial result is rolled back before payment and opens a league crisis with the failure deltas rather than silently converting a one-member action into a coordinated front. Rollback walks the aligned member/state/owner arrays, removes only claims marked as created by this transaction, removes the finite wargoal created for that member/owner pair, clears the staged marker, and then clears the arrays.
+The mission completes only when the configured minimum number of members succeeds; a partial result is rolled back before payment and opens a league crisis with the failure deltas rather than silently converting a one-member action into a coordinated front. The preflight rejects a known owner collision before the mission can begin, while a legal front that disappears after the check still follows this existing pre-cost rollback. Rollback walks the aligned member/state/owner arrays, removes only claims marked as created by this transaction, removes the finite wargoal created for that member/owner pair, clears the staged marker, and then clears the arrays.
 
 The timeout path applies the existing major-loss deltas and enters the same league-crisis state without creating targets.
 

@@ -402,46 +402,99 @@ is_valid_independence_wave_reclamation_front_state = {
 	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
 }
 
-# Country scope used only by the on-demand DM-58 availability preflight. The
-# nested state scope uses PREV for this candidate member, while the owner scope
-# reaches that same member through PREV.PREV. ROOT remains the activating
-# decision country and must not be used for candidate legality.
-is_independence_wave_reclamation_front_member_candidate = {
+# Country scope. This centralizes the DM-58 preflight's member validity and
+# intentionally mirrors the paid resolver without relying on the activating
+# decision country.
+is_independence_wave_reclamation_front_member_eligible = {
 	is_independence_wave_active_country = yes
 	has_country_flag = independence_wave_league_member
 	NOT = { has_country_flag = independence_wave_client_route_locked }
-	any_state = {
-		owner = {
-			exists = yes
-			NOT = { tag = PREV.PREV }
-			NOT = { has_country_flag = independence_wave_league_member }
-			NOT = { has_war_with = PREV.PREV }
-			# PREV is the candidate state in this owner block and PREV.PREV is
-			# the candidate member selected by the enclosing any_country scope.
-			PREV.PREV = {
-				can_declare_war_on = PREV
-				NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
-			}
-		}
-		controller = { exists = yes }
-		is_claimed_by = PREV
-		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
-		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
-	}
 }
 
-# Country scope. DM-58 cannot charge its material costs until the frozen
-# ledger contains the required number of compliant members with at least one
-# compatible, claim-connected external state each.
+# State scope. The calling scope must be the candidate league member. The
+# owner block therefore reaches that member through PREV.PREV, while the
+# claim and border checks reach it through PREV and PREV.PREV respectively.
+# This mirrors the paid resolver's state predicate without reserving anything.
+is_independence_wave_reclamation_front_preflight_state = {
+	owner = {
+		exists = yes
+		NOT = { tag = PREV.PREV }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = PREV.PREV }
+		PREV.PREV = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = PREV
+		any_neighbor_state = { is_owned_by = PREV.PREV }
+	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
+	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
+}
+
+# Country scope. DM-58 cannot start until this non-mutating proof finds three
+# distinct league members, each matched to a legal state under a different
+# external owner. Owner uniqueness also makes the selected state slots unique.
+# This exact three-slot matcher is coupled to the accepted DM-58 minimum of
+# three members. Keep it aligned with formation_member_minimum if that contract
+# changes.
 has_independence_wave_reclamation_front_preflight = {
 	check_variable = {
 		var = global.independence_wave_league_member_count
 		value = constant:independence_wave_decision_gate.formation_member_minimum
 		compare = greater_than_or_equals
 	}
-	any_country = {
-		count = constant:independence_wave_decision_gate.formation_member_minimum
-		is_independence_wave_reclamation_front_member_candidate = yes
+	# The frozen member ledger is far smaller than every country in the world.
+	# Each nested any_of_scopes branch stops as soon as it proves one legal slot.
+	any_of_scopes = {
+		array = global.independence_wave_league_member_country_entries
+		# Member one -> state one -> owner one.
+		is_independence_wave_reclamation_front_member_eligible = yes
+		any_state = {
+			is_independence_wave_reclamation_front_preflight_state = yes
+			owner = {
+				any_of_scopes = {
+					array = global.independence_wave_league_member_country_entries
+					# Member two cannot repeat member one. In this scope chain,
+					# PREV.PREV.PREV is member one.
+					NOT = { tag = PREV.PREV.PREV }
+					is_independence_wave_reclamation_front_member_eligible = yes
+					any_state = {
+						is_independence_wave_reclamation_front_preflight_state = yes
+						owner = {
+							# PREV.PREV.PREV is owner one. Reject it before
+							# evaluating the third member's state search.
+							NOT = { tag = PREV.PREV.PREV }
+							any_of_scopes = {
+								array = global.independence_wave_league_member_country_entries
+								# Member three cannot repeat member two or member one.
+								# In this scope chain member two is PREV.PREV.PREV,
+								# while member one is six PREV hops away: owner two, state two,
+								# member two, owner one, state one, then member one.
+								NOT = { tag = PREV.PREV.PREV }
+								NOT = { tag = PREV.PREV.PREV.PREV.PREV.PREV }
+								is_independence_wave_reclamation_front_member_eligible = yes
+								any_state = {
+									is_independence_wave_reclamation_front_preflight_state = yes
+									owner = {
+										# Owner three cannot repeat owner two or owner one.
+										# The current scope is owner three. Owner one is six PREV hops
+										# away: state three, member three, owner two, state two, member two,
+										# then owner one.
+										NOT = { tag = PREV.PREV.PREV }
+										NOT = { tag = PREV.PREV.PREV.PREV.PREV.PREV }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
