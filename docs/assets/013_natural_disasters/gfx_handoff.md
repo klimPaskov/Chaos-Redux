@@ -392,7 +392,7 @@ Specific family headline sprites:
 
 These are the large left-side decision-category pictures. They are not decision icons. They use generated family-specific disaster scene sources resized to vanilla `114x101` category-picture canvases. Source-art completion is documented in `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-01_event013_category_picture_source_art_handoff.md`.
 
-`natural_disaster_response_recovery_overview` keeps `GFX_decision_cat_picture_nd_recovery_overview` as its static category picture. `interface/013_natural_disasters.gui` also overlays the same picture family through scripted GUI elements named `natural_disaster_category_picture_*`, so the left side of the category reflects the most recent open disaster family without changing the static decision-category definition.
+`natural_disaster_response_recovery_overview` keeps `GFX_decision_cat_picture_nd_recovery_overview` as its static category picture. The abnormal Event 013 window reuses the same mapped family picture sprites through the `natural_disaster_gui_header_family_*` icon elements, so the header identifies the selected abnormal family without changing the static decision-category definition.
 
 | Sprite | Final DDS path |
 | --- | --- |
