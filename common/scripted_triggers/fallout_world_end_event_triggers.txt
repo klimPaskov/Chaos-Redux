@@ -1551,22 +1551,41 @@ fallout_event_dispatch_envelope_matches_transaction = {
 				check_variable = { var = fallout_event_dispatch_stored_ticket value = fallout_event_dispatch_ticket compare = equals }
 				check_variable = { var = fallout_event_arc_generation_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_generation compare = equals }
 				check_variable = { fallout_event_arc_stage_entries^fallout_event_dispatch_stored_index = constant:fallout_event_arc_stage.opening }
-				check_variable = { fallout_event_arc_identity_entries^fallout_event_dispatch_stored_index = constant:fallout_event_candidate_pilot.year_zero_candidate_id }
 				OR = {
 					AND = {
-						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
-						check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_human }
+						check_variable = { fallout_event_arc_identity_entries^fallout_event_dispatch_stored_index = constant:fallout_event_candidate_pilot.year_zero_candidate_id }
+						OR = {
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_human }
+							}
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_ai }
+							}
+						}
+						has_variable = fallout_event_401_candidate_state_id
+						check_variable = { var = fallout_event_dispatch_target value = fallout_event_401_candidate_state_id compare = equals }
 					}
 					AND = {
-						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
-						check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_ai }
+						check_variable = { fallout_event_arc_identity_entries^fallout_event_dispatch_stored_index = constant:fallout_event_candidate_pilot.orchard_flowers_candidate_id }
+						OR = {
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.orchard_flowers_human }
+							}
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.orchard_flowers_ai }
+							}
+						}
+						has_variable = fallout_event_408_candidate_state_id
+						check_variable = { var = fallout_event_dispatch_target value = fallout_event_408_candidate_state_id compare = equals }
 					}
 				}
 				check_variable = { fallout_event_dispatch_branch = constant:fallout_event_runtime.one }
 				check_variable = { fallout_event_dispatch_target_type = constant:fallout_event_subject_type.state }
 				check_variable = { fallout_event_dispatch_target > constant:fallout_event_runtime.zero }
-				has_variable = fallout_event_401_candidate_state_id
-				check_variable = { var = fallout_event_dispatch_target value = fallout_event_401_candidate_state_id compare = equals }
 				set_temp_variable = { fallout_event_dispatch_match_index = fallout_event_dispatch_stored_index }
 				set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
 			}
