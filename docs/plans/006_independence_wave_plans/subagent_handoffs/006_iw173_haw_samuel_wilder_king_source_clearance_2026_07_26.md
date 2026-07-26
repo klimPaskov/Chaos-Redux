@@ -29,6 +29,7 @@ The candidate supports the accepted HAW tension between Hawaiian institutional c
 | Field | Evidence |
 | --- | --- |
 | Archive/object | Hawaiʻi State Archives, call number PP-74-9-002, as credited by the Commons record |
+| Legacy archive record | <http://gallery.hawaii.gov/gallery2/main.php?g2_itemId=56613> (unavailable during retrieval; call number and Commons record retained) |
 | Canonical source page | <https://commons.wikimedia.org/wiki/File:Samuel_Wilder_King_(PP-74-9-002).jpg> |
 | Canonical media | <https://upload.wikimedia.org/wikipedia/commons/b/b5/Samuel_Wilder_King_%28PP-74-9-002%29.jpg> |
 | Retrieval path | `i0.wp.com` Wikimedia image proxy used because the upload host rate-limited direct requests during retrieval |
