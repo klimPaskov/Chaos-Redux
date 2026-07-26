@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-27 after the Event 006 v10 completion audit, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, and the DM-58 cost/coordinator reconciliation `006_dm58_cost_cleanup_reconciliation_2026_07_27.md`
+Updated: 2026-07-27 after the Event 006 v21 completion audit at `de36a366e`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 reconciliation, the New Guinea source HOLD, the v22 `6001` audio research, and the Statehood Ledger animation-toggle wiring.
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
@@ -35,6 +35,8 @@ The durable pre-DDS portrait shelf now contains 48 source-derived masters and
 
 The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
 
+The FORM-39 v17 reconciliation and MFX identity handoff confirm that the FIJ/PNG/WPG adapter corrections are source-implemented but runtime admission remains fail-closed. The three member-research gates, MFX reservation, flat-flag readiness, and identity-review inputs remain unset; the current installed-mod tag audit rejects unreviewed MFX, and the `needs_user_review` flag package is not a fallback. No generic Papuan package, flag, or portrait is authorized.
+
 IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
 The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
 The current IW-184 authority is `subagent_handoffs/006_iw184_california_postwire_country_package_audit_2026_07_24.md`, which records William D. Stephens, the byte-identical runtime/package DDS hash `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor/dossier derivative.
@@ -45,11 +47,11 @@ The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
 This packet and `006_source_of_truth_map.md` carry the current runtime state.
 
-The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v10_post_cf2316a9a_f8ca54d24_2026_07_26.md` and remains **HOLD**. It supersedes v9 only for its bounded DM-58, focus-validation, and ARX findings, while `0b6289c4b`, `37c4f6036`, `subagent_handoffs/006_dm58_witness_resolver_2026_07_26.md`, and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` supersede its DM-58 execution finding. The resolver now validates an exact three-member/three-state/three-distinct-owner witness before costs, applies claims and finite war goals only after payment, and cleans the shared operation when its coordinator origin exits; the coordinator-bound `chaosx.nr6.309` callback still clears shared receipts after natural expiry. Live success, invalidation, save/load, and no-witness performance matrices remain open. `f8ca54d24` was a failed coordinate-only shared-focus candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the fresh restored-baseline MCP inspection of 184 focuses, 223 connectors, 49 crossings, 18 node intersections, 27 long connectors, and 14 blocking diagnostics. The v5-v9 audits remain historical where their bounded findings differ from these later records.
+The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v21_2026_07_27.md` at `de36a366e` and remains **HOLD / PARTIAL**. It supersedes v10 for the bounded DM-58 and Statehood Ledger animation-consumer findings while carrying forward the exact-ten, package, focus, runtime-matrix, asset, AI, balance, and whole-event gaps. Commit `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` now prove source-level validation-before-cost, payment-before-claim/wargoal mutation, and coordinator-origin cleanup; live witness, invalidation, save/load, dense/no-witness performance, and AI evidence remain open. The v21 audit also confirms FORM-39 remains fail-closed around six writerless inputs, IW-157/IW-178 remain research HOLDs, MFX remains unreviewed, and `6001` remains blocked after v22 research. `f8ca54d24` was a failed coordinate-only shared-focus candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the restored baseline of 184 focuses, 223 connectors, 49 crossings, 18 node intersections, 27 long connectors, and 14 blocking diagnostics. The v5-v10 audits remain historical where their bounded findings differ from v21.
 
-Current bounded handoffs: `006_dm58_injective_owner_preflight_repair_2026_07_26.md` records the injective three-slot source PASS, and `006_dm58_witness_resolver_2026_07_26.md` records the deterministic effect-side witness binding; live success, invalidation, save/load, and no-witness performance evidence remain open. `006_shared_focus_geometry_reversion_2026_07_26.md` records the failed candidate, reversion, and restored-baseline MCP evidence; `006_shared_focus_geometry_repair_2026_07_26.md` remains historical candidate evidence; `006_focus_readonly_handoff_2026_07_26.md` is a pre-reflow baseline whose AGX-missing-module wording is superseded by `006_agx_focus_overlay_handoff_2026_07_26.md`; the AGX overlay remains **PASS**; `006_agx_conference_post_repair_reaudit_2026_07_26.md`, `006_agx_conference_cost_localisation_reaudit_2026-07-26.md`, and `006_agx_decision_reaudit_v12_2026_07_26.md` record bounded lifecycle, three-factory cost, and readable availability-tooltip **PASS** findings; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026-07-26.md` remains a rights-blocked research result with no runtime authorization.
+Current bounded handoffs: `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` and `006_event_completion_audit_v21_2026_07_27.md` record the committed DM-58 source PASS with runtime cases open; `006_form39_completion_reconciliation_v17_2026_07_27.md` and `006_form39_mfx_tag_collision_handoff_2026_07_27.md` record the fail-closed MFX and six-input admission boundary; `006_iw157_iw178_new_guinea_source_research_2026_07_26.md` records the two named-community research HOLDs; `006_super_event_audio_research_v22_2026_07_27.md` records the unselected `6001` candidates and continuing rights/tone blocker; and commit `de36a366e` records the Statehood Ledger source consumer. The static semantic strips remain the default readout, the explicit `Animate` control swaps to the four frame-animated siblings, and the static DDS files remain the non-animated fallback; focused interaction, threshold, return-to-state, and click-region evidence remains open. `006_shared_focus_geometry_reversion_2026_07_26.md` records the failed candidate, reversion, and restored-baseline MCP evidence; `006_shared_focus_geometry_repair_2026_07_26.md` remains historical candidate evidence; `006_focus_readonly_handoff_2026_07_26.md` is a pre-reflow baseline whose AGX-missing-module wording is superseded by `006_agx_focus_overlay_handoff_2026_07_26.md`; the AGX overlay remains **PASS**; `006_agx_conference_post_repair_reaudit_2026_07_26.md`, `006_agx_conference_cost_localisation_reaudit_2026-07-26.md`, and `006_agx_decision_reaudit_v12_2026_07_26.md` record bounded lifecycle, three-factory cost, and readable availability-tooltip **PASS** findings; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026-07-26.md` remains a rights-blocked research result with no runtime authorization.
 
-Commit `37c4f6036` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` supersede the earlier DM-58 expiry-gap wording: the activating coordinator schedules `chaosx.nr6.309` for the finite operation duration, the callback clears shared receipts only when its coordinator target is still current, and coordinator-origin exit now performs the same operation cleanup before unregistering. Live execution and save/load evidence remain open.
+Commit `61d059841`, commit `37c4f6036`, and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` supersede the earlier DM-58 cost and expiry-gap wording: the activating coordinator validates the frozen witness before payment, applies claims and finite wargoals only after both costs, schedules `chaosx.nr6.309` for the finite operation duration, clears shared receipts only when its coordinator target is still current, and performs the same cleanup on coordinator-origin exit before unregistering. Live execution and save/load evidence remain open.
 
 ## Read first
 
@@ -113,7 +115,7 @@ they are not current routing documents.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
   point-of-no-return, sponsorship transaction, and Liberations cluster capacity
   surface are implemented.
-- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with a bounded FORM-39 FIJ/PNG/WPG adapter surface implemented but not promoted. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
+- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with the bounded FORM-39 FIJ/PNG/WPG adapter source and v17 cancellation, cost-gate, and threshold repairs implemented but not promoted. FORM-39 still has six writerless admission inputs, the current tag audit rejects unreviewed MFX, and the flat MFX package remains `needs_user_review`; no flag or identity fallback is authorized. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
 - IW-002/006, IW-018, IW-043/058, IW-173/179, IW-093, and IW-098 retain implemented gameplay adapters, but their generated, generic, or incomplete grounded-polity portrait rosters withdraw visual readiness and runtime content attestation.
   The compile-time package content-attestation set contains IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
@@ -143,7 +145,7 @@ they are not current routing documents.
   anchor, reservation, and wave-size gates remain binding.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
   HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX
-  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`.
+  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the current installed-mod tag audit rejects the unreviewed Event 006 identity; the runtime TGAs are not a readiness fallback.
   Exactly zero custom Event 006
   advisor icons or advisor portrait/sprite blocks are present; the accepted male
   large portraits are separate country-leader assets and protected BAY/RHI
@@ -190,7 +192,7 @@ they are not current routing documents.
   2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted
   FORM-48 carrier but remains conditional on its high-chaos league/action proof.
   FORM-42 remains fail-closed.
-- `6001` remains blocked on exact recording rights. No fallback is authorized.
+- `6001` remains blocked on exact recording rights and the accepted brass-and-organ tone. v22 research identifies same-composition Candidates A, B, and C, but none is selected, downloaded, or wired; no fallback is authorized without explicit user approval.
 
 ## Current package gates
 
@@ -283,7 +285,7 @@ synchronized frozen plan.
   Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
   HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. Retry 03 remains rejected on archive rights despite its strong adult visual match and supplies no crop, repaint, or DDS.
   HAW/FSM remain sovereign autonomous members and HBX remains the PFX carrier contract.
-  No custom Event 006 advisor icons or advisor portrait/sprite blocks were created; the separate Statehood Ledger status-panel and animation assets are documented in the current asset manifest.
+  No custom Event 006 advisor icons or advisor portrait/sprite blocks were created; the Statehood Ledger status-panel and animation assets are source-wired by `de36a366e`. The live semantic strips remain the default readout, the explicit `Animate` toggle selects the frame-animated siblings, and the static DDS files remain the non-animated fallback; focused interaction and return-to-state evidence remain open.
 - Round-number progression, force, scenario, evolution, idea, and AI tuning in
   `879e511cc`, including the corrected negative Wallonia/Frisia war restraint
   and distinct standard versus major focus rewards.
@@ -315,8 +317,11 @@ synchronized frozen plan.
    this tranche.
 6. Preserve ASSET-040 through ASSET-043 as the current authored frame packages
    with static fallbacks, runtime DDS files, manifests, and semantic Statehood
-   Ledger frame mapping. Their free-running animated siblings remain reserved
-   for transition surfaces and must not replace the persistent state readout.
+   Ledger frame mapping. The persistent readout uses the semantic strips by
+   default; `de36a366e` wires an explicit `Animate` toggle to the four looping
+   animated siblings, while the static DDS files remain the non-animated
+   fallback. Focused interaction, threshold, click-region, and return-to-state
+   runtime evidence remains queued.
 7. Preserve the verified Event Details, five evolution mirrors, Liberations
    cluster wording, SCN-008 wording, and workbook alignment while later package
    tranches land. The generic catalog surface must not enumerate hidden package
@@ -327,7 +332,10 @@ synchronized frozen plan.
 ## Hard blockers and missing completion evidence
 
 - IW-003 has no legal current-map state binding.
-- `6001` lacks verified redistribution rights for the specified recording.
+- `6001` lacks verified redistribution rights for the specified recording and
+  no v22 candidate preserves the accepted brass-and-organ tone. No candidate
+  was downloaded, processed, selected, or wired; explicit user approval or a
+  United States rights waiver is required before any replacement work.
 - The parent-wide achievement definition, proof, localisation, visibility, and
   icon audit is complete in
   `subagent_handoffs/006_parent_achievement_system_audit_2026_07_22.md`.
@@ -339,12 +347,16 @@ synchronized frozen plan.
   gates are closed, and Radical Bloc has no currently admitted route that can
   complete its full containment-survival proof.
 - ASSET-040 through ASSET-043 are produced and wired for the persistent semantic
-  readout. A separate transition-only animation consumer is still absent; this
-  is a scoped runtime boundary, not a missing asset package.
+  readout and the explicit `Animate` toggle by `de36a366e`. Static DDS files are
+  the non-animated fallback. Focused toggle interaction, semantic threshold
+  playback, and return-to-current-state runtime proof remain open; the earlier
+  “no animation consumer” wording is superseded by the v21 audit.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
   complete required HAW/FSM member set because those two packages are not admitted.
-- The current v10 completion authority and bounded post-v10 handoffs retain **HOLD** for whole-event completion; no overall completion claim is authorized.
+- The current v21 completion authority and bounded post-v21 handoffs retain
+  **HOLD / PARTIAL** for whole-event completion; no overall completion claim is
+  authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
   is **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY signature tranche:
   package identity, centralized politics and institutional leaders,
