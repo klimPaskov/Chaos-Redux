@@ -4,6 +4,10 @@ Date: 2026-07-12
 
 This ledger records the final static, data, asset, workbook, balance, and regression checks for the fresh Event 013 implementation. It does not claim that the live HOI4 engine scenarios were executed.
 
+## Direct Event 013 interface audit
+
+The Event 013 abnormal-path window was rendered through the HOI4 MCP at 1280x720, 1920x1080, and 2560x1440 with the normal, hover, selected, locked, disabled, warning, active, completed, empty-list, full-list, long-text, and missing-localisation states. The source-coordinate proof reports zero overlaps across the sequence controls, five family cards, six milestones, three path controls, and three footer controls after aligning their clickboxes to the scaled sprite dimensions. The offline analyzer still reports whole-project overlap and context findings; its `player_context` warning is a false positive against the vanilla scripted-GUI documentation, and no direct Event 013 font or GIF reference remains. The general shared super-event window was not changed and remains at its pre-Event 013 baseline.
+
 ## User-reported firing failure
 
 The hidden root event is intentionally non-popup and every impact must remain delayed. Six concrete defect classes could therefore make a manual firing appear inert, distort its timing, or prevent the system from loading correctly:
