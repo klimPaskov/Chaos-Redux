@@ -467,6 +467,23 @@ liberation_release_add_country_reservation = {
 			OR = {
 				check_variable = { liberation_candidate_reservation_group = constant:liberation_release_limit.minimum }
 				NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = liberation_candidate_reservation_group } }
+				# The accepted Event 006 Rhineland/Saar pair shares a coarse
+				# reservation group but has distinct anchors and hosts. Allow the
+				# counterpart only after its sibling package is already reserved;
+				# all other groups retain the one-package rule.
+				AND = {
+					check_variable = { liberation_candidate_reservation_group = constant:independence_wave_reservation_group_id.rg_rhine_saar }
+					OR = {
+						AND = {
+							check_variable = { liberation_candidate_package_id = constant:independence_wave_package_id.iw_008 }
+							is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_010 }
+						}
+						AND = {
+							check_variable = { liberation_candidate_package_id = constant:independence_wave_package_id.iw_010 }
+							is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_008 }
+						}
+					}
+				}
 			}
 		}
 		add_to_array = { array = global.liberation_plan_package_ids value = liberation_candidate_package_id }
@@ -885,6 +902,21 @@ liberation_release_validate_set_invariants = {
 					check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 					NOT = { check_variable = { liberation_validation_row_group = constant:liberation_release_limit.minimum } }
 					check_variable = { var = liberation_validation_inner_group value = liberation_validation_row_group compare = equals }
+					NOT = {
+						AND = {
+							check_variable = { liberation_validation_row_group = constant:independence_wave_reservation_group_id.rg_rhine_saar }
+							OR = {
+								AND = {
+									check_variable = { liberation_validation_row_package = constant:independence_wave_package_id.iw_008 }
+									check_variable = { liberation_validation_inner_package = constant:independence_wave_package_id.iw_010 }
+								}
+								AND = {
+									check_variable = { liberation_validation_row_package = constant:independence_wave_package_id.iw_010 }
+									check_variable = { liberation_validation_inner_package = constant:independence_wave_package_id.iw_008 }
+								}
+							}
+						}
+					}
 				}
 				set_temp_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.reservation_group_taken }
 			}

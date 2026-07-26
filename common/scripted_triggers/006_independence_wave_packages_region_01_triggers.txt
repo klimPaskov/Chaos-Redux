@@ -57,7 +57,16 @@ can_plan_independence_wave_package_iw_008 = {
 	is_liberation_release_plan_open = yes
 	has_independence_wave_remaining_plan_slot = yes
 	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_008 } }
-	NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar } }
+	# RG-RHINE-SAAR contains two distinct accepted anchors. Permit the
+	# counterpart only when the shared group is already occupied by this
+	# accepted pair; the central reservation effect remains the final gate.
+	OR = {
+		NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar } }
+		AND = {
+			is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar }
+			is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_010 }
+		}
+	}
 	is_independence_wave_runtime_automatic_package_iw_008_ready = yes
 }
 
@@ -73,7 +82,16 @@ can_plan_independence_wave_package_iw_010 = {
 	is_liberation_release_plan_open = yes
 	has_independence_wave_remaining_plan_slot = yes
 	NOT = { is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_010 } }
-	NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar } }
+	# See IW-008 above. The shared reservation group is safe here because the
+	# two loaders reserve different anchors (51 and 42) and each host retains
+	# a protected state before the package is admitted.
+	OR = {
+		NOT = { is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar } }
+		AND = {
+			is_in_array = { array = global.liberation_plan_reservation_groups value = constant:independence_wave_reservation_group_id.rg_rhine_saar }
+			is_in_array = { array = global.liberation_plan_package_ids value = constant:independence_wave_package_id.iw_008 }
+		}
+	}
 	is_independence_wave_runtime_automatic_package_iw_010_ready = yes
 }
 
