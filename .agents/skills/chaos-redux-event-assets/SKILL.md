@@ -152,6 +152,17 @@ Before declaring the event goal fully complete:
 
 An absent event-scoped `docs/assets/` folder is expected after a fully complete goal and is not an asset blocker. If the event is incomplete or blocked, retain the workspace and report the blocker. Never delete skill-local `assets/` reference libraries or an unrelated event workspace.
 
+When the user requests a durable pre-DDS portrait reference shelf, retain a
+byte-for-byte copy of every source-derived HOI4 repaint master before
+deterministic normalization under
+`docs/assets/<event_id>_<event_slug>/portraits_generated_png/pre_resize_source_repaints/`.
+Retain the normalized 156x210 PNG in the same shelf with its source path,
+SHA-256, dimensions, generation record, crop evidence, processing metadata,
+independent audit state, and runtime status. This shelf is evidence only: it
+does not authorize DDS conversion, `.gfx` wiring, a character consumer, or a
+leader replacement. Update the shelf manifests whenever a new source-derived
+portrait is produced, including candidates that are later rejected or blocked.
+
 ## 3. Asset source rules
 
 Choose the source mode based on asset type.
@@ -682,6 +693,24 @@ Treat every unit visual as a domain-and-surface-specific pipeline. Inspect the m
 - `units/models_3d/land_materials/`, `units/models_3d/air_materials/`, and `units/models_3d/naval_materials/` contain UV model materials paired with cataloged `.mesh`, `.asset`, and entity definitions. They are not 2D icons, finished renders, or concept sheets.
 
 Classify the requested deliverable before creating art: equipment/technology illustration, large land counter, land/air/naval map counter, division-template emblem, or land/air/naval 3D model package. Give each class its own brief, source art, native canvas or UV layout, frame metadata, final path, and handoff. A 3D task must keep model geometry, materials, entity wiring, and any separately produced concept reference distinct. Do not derive one unit pipeline by resizing, relabeling, or recoloring another.
+
+### 3D model package handoff
+
+Route 3D model production to `chaos-redux-3d-model-pipeline` and `chaosx_3d_model_pipeline`. This is a separate pipeline from 2D equipment art, map counters, division emblems, and frame-sheet animation.
+
+Before any provider or paid work, the 3D route must verify a nonblank `MESHY_API_KEY`, the selected pinned Meshy MCP route, the narrow Blender HOI4 adapter, the installed Blender version, and the checksum-locked `io_pdx_mesh` setup.
+
+When a ready reference is absent, the route creates exactly one clean `meshy_input.png` for the asset. Never create or send side-profile sheets, turnaround boards, collages, or multi-view boards to Meshy. Contact sheets and Blender renders are QA evidence only.
+
+Every 3D asset brief must identify the asset profile, deterministic job root, provider task lineage, reference checksum, named vanilla mesh and entity precedent, source geometry height, entity scale, effective runtime height, axes, origin, contact plane, required actions, root-motion policy, PDX material channels, texture dimensions, `.mesh` and `.anim` outputs, reimport proof, runtime hashes, and live consumer.
+
+For humanoid units, calibrate against the installed vanilla infantry source mesh and entity rather than an assumed real-world height or arbitrary entity scale. Apply the entity scale exactly once and record the source-height-to-runtime-height crosswalk.
+
+Provider source files are immutable evidence. Working geometry must be repaired so it has no holes, loose or non-manifold geometry, degenerate triangles, missing components, or zero-weight deforming vertices. Use the verified PDX shader and packed specular map convention; never route raw grayscale roughness into the PDX specular channel because that creates chrome-black surfaces.
+
+For animated units, provider actions are candidates that must be cleaned, retargeted or authored, baked, checked for root policy, grounded contacts, deformation, FPS, frame range, and loop behavior, then exported and reimported as real `.anim` files. A static image or still mesh is not an acceptable substitute for a requested skeletal action.
+
+The asset worker owns source files, checkpoints, processed textures, previews, exports, manifests, reports, reimport evidence, and a runtime handoff. The main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, final runtime synchronization, and in-game screenshots.
 
 ## 10. Naming rules
 
@@ -1512,6 +1541,6 @@ Before finishing, confirm:
 18. Every uncompressed one-level BGRA DDS passes the complete legacy-header, exact-length, declared-dimension, actual-alpha, and `.gfx` path checks from section 24.
 19. Every real country-leader, commander, operative, and named-officeholder portrait follows the fail-closed sequence of unchanged attributed archival photograph (archival male photograph for male subjects), explicit head-and-shoulders crop created with the exact-pixel Pillow utility and retained JSON equality evidence, source-locked identity-preserving ImageGen repaint in the matching HOI4 family, deterministic `156x210` processing, and independent likeness/style/provenance audit by someone other than the producer before DDS conversion or runtime wiring. The audit compares the unchanged photograph, crop, raw ImageGen result, processed candidate, and role-specific references at native and enlarged sizes, keeps identity as a separate non-compensable gate, records subject-ownership evidence and a guarded transfer contract when reused, and rejects genericization, beautification, symmetrization, face substitution, invented hidden detail, unsupported clothing or insignia, weak likeness, and raw or merely resized sourced images; commander textures are full `156x210` portraits, never fabricated `50x67` sources. An illustration cannot serve as the identity master, and an ffmpeg or ImageMagick crop without exact decoded-pixel equality evidence fails this checklist.
 20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
-21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another.
+21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
 22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
 23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead.
