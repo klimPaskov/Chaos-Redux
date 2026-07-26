@@ -1887,6 +1887,48 @@ fallout_event_advance_bilateral_reconcile_cursor = {
 	}
 }
 
+# Supported scope: COUNTRY. The Year Zero pilot is the first authored major-arc
+# stage consumer. It writes only after production approval and leaves ordinary
+# receipt ownership untouched.
+fallout_event_schedule_year_zero_arc_opening_dispatch = {
+	set_temp_variable = { fallout_event_major_arc_stage_dispatch_attempted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_transaction_production_is_approved = yes
+			NOT = { has_country_flag = fallout_event_dispatch_ready }
+			check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_arc_stage.opening }
+			check_variable = { fallout_event_arc_identity_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_candidate_pilot.year_zero_candidate_id }
+			OR = {
+				check_variable = { fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_dispatch_mode.human_visible }
+				check_variable = { fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_dispatch_mode.hidden_ai }
+			}
+			has_variable = fallout_event_401_candidate_state_id
+			fallout_event_401_country_is_current = yes
+		}
+		set_temp_variable = { fallout_event_major_arc_stage_dispatch_attempted = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_requested_dispatch_source = constant:fallout_event_dispatch_source.major_arc_stage }
+		set_temp_variable = { fallout_event_requested_dispatch_ticket = fallout_event_arc_ticket_entries^fallout_event_arc_reconcile_cursor }
+		set_temp_variable = { fallout_event_requested_dispatch_mode = fallout_event_arc_control_mode_entries^fallout_event_arc_reconcile_cursor }
+		if = {
+			limit = { check_variable = { fallout_event_requested_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible } }
+			set_temp_variable = { fallout_event_requested_dispatch_event_token = constant:fallout_event_id.year_zero_human }
+		}
+		else = {
+			set_temp_variable = { fallout_event_requested_dispatch_event_token = constant:fallout_event_id.year_zero_ai }
+		}
+		set_temp_variable = { fallout_event_requested_dispatch_branch = constant:fallout_event_runtime.one }
+		set_temp_variable = { fallout_event_requested_dispatch_target_type = constant:fallout_event_subject_type.state }
+		set_temp_variable = { fallout_event_requested_dispatch_target = fallout_event_401_candidate_state_id }
+		set_temp_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero }
+		fallout_event_write_dispatch_envelope = yes
+		if = {
+			limit = { check_variable = { fallout_event_dispatch_write_accepted = constant:fallout_event_runtime.zero } }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.arc_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+}
+
 # Supported scope: COUNTRY. One compact arc row is selected. Its identity proof
 # scans the capped local arc ledger for duplicate tickets, identities, or actors.
 fallout_event_reconcile_one_arc_row = {
@@ -1910,6 +1952,10 @@ fallout_event_reconcile_one_arc_row = {
 				set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.actor_lost }
 				set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 				fallout_event_cancel_major_arc = yes
+			}
+			else_if = {
+				limit = { check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_arc_stage.opening } }
+				fallout_event_schedule_year_zero_arc_opening_dispatch = yes
 			}
 			else_if = {
 				limit = { check_variable = { fallout_event_arc_stage_entries^fallout_event_arc_reconcile_cursor = constant:fallout_event_arc_stage.cleanup } }
@@ -3287,6 +3333,25 @@ fallout_event_consume_issued_ordinary_receipt = {
 		fallout_event_clear_ordinary_receipt = yes
 		if = {
 			limit = { fallout_event_ordinary_receipt_is_consistent = yes }
+			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. This consumes the exact major-arc opening
+# envelope while retaining the capped arc row for stage advancement and
+# content-owned cleanup.
+fallout_event_consume_issued_major_arc_stage = {
+	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			fallout_event_registry_country_row_is_current = yes
+			fallout_event_issued_major_arc_stage_is_current = yes
+			check_variable = { var = fallout_event_dispatch_issued_event_token value = fallout_event_requested_event_token compare = equals }
+		}
+		fallout_event_clear_dispatch_envelope = yes
+		if = {
+			limit = { fallout_event_dispatch_envelope_is_consistent = yes }
 			set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one }
 		}
 	}

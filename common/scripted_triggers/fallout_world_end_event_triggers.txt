@@ -1541,6 +1541,41 @@ fallout_event_dispatch_envelope_matches_transaction = {
 		}
 		AND = {
 			has_country_flag = fallout_event_dispatch_ready
+			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.major_arc_stage }
+			set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_dispatch_match_index = constant:fallout_event_runtime.first_array_index }
+			any_of = {
+				array = fallout_event_arc_ticket_entries
+				value = fallout_event_dispatch_stored_ticket
+				index = fallout_event_dispatch_stored_index
+				check_variable = { var = fallout_event_dispatch_stored_ticket value = fallout_event_dispatch_ticket compare = equals }
+				check_variable = { var = fallout_event_arc_generation_entries^fallout_event_dispatch_stored_index value = fallout_event_dispatch_generation compare = equals }
+				check_variable = { fallout_event_arc_stage_entries^fallout_event_dispatch_stored_index = constant:fallout_event_arc_stage.opening }
+				check_variable = { fallout_event_arc_identity_entries^fallout_event_dispatch_stored_index = constant:fallout_event_candidate_pilot.year_zero_candidate_id }
+				OR = {
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+						check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_human }
+					}
+					AND = {
+						check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+						check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.year_zero_ai }
+					}
+				}
+				check_variable = { fallout_event_dispatch_branch = constant:fallout_event_runtime.one }
+				check_variable = { fallout_event_dispatch_target_type = constant:fallout_event_subject_type.state }
+				check_variable = { fallout_event_dispatch_target > constant:fallout_event_runtime.zero }
+				has_variable = fallout_event_401_candidate_state_id
+				check_variable = { var = fallout_event_dispatch_target value = fallout_event_401_candidate_state_id compare = equals }
+				set_temp_variable = { fallout_event_dispatch_match_index = fallout_event_dispatch_stored_index }
+				set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			}
+			check_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_arc_validation_index = fallout_event_dispatch_match_index }
+			fallout_event_arc_row_at_index_is_structurally_current = yes
+		}
+		AND = {
+			has_country_flag = fallout_event_dispatch_ready
 			check_variable = { fallout_event_dispatch_source = constant:fallout_event_dispatch_source.delayed_ticket }
 			set_temp_variable = { fallout_event_dispatch_match_found = constant:fallout_event_runtime.zero }
 			set_temp_variable = { fallout_event_dispatch_match_index = constant:fallout_event_runtime.first_array_index }
@@ -1640,6 +1675,18 @@ fallout_event_issued_ordinary_receipt_is_current = {
 	fallout_event_dispatch_issue_receipt_is_current = yes
 	fallout_event_dispatch_envelope_matches_transaction = yes
 	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.ordinary_event }
+	OR = {
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	}
+}
+
+# Supported scope: COUNTRY. A major-arc opening authenticates the capped arc
+# row and its stage envelope without creating an ordinary receipt row.
+fallout_event_issued_major_arc_stage_is_current = {
+	fallout_event_dispatch_issue_receipt_is_current = yes
+	fallout_event_dispatch_envelope_matches_transaction = yes
+	check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.major_arc_stage }
 	OR = {
 		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
 		check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
