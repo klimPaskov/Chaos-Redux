@@ -659,6 +659,18 @@ The chain carries four authored water-governance choices, snapshot-first determi
 
 The documented living-world total is now `467` and the countable Fallout living-world total remains `0 of 660`.
 
+## Old Airfield Chain correction
+
+The Old Airfield Chain adds dormant suffixes `586` through `592` with candidate id `586`, transaction key `710056`, route `7156`, and history `9162`.
+
+The human opening is `586`, the hidden-AI opening is `587`, the human and hidden-AI delayed results are `588` and `589`, the human and hidden-AI callbacks are `590` and `591`, and cleanup is `592`.
+
+The row requires a current-generation owner-controlled Latin American or Caribbean state with a produced Air Winter snapshot, surviving population, supply and reclamation access, infrastructure, and a non-damaged air base below the vanilla cap. It chooses the lowest eligible native state id.
+
+The chain carries civil air service, military network, private couriers, and international consortium branches with deterministic grading, branch ledgers, bounded Deaths effects, state and country modifiers, callback terminal memories, Event Log payloads, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The documented living-world total is now `474` and the countable Fallout living-world total remains `0 of 660`.
+
 ## Refugee Train bilateral Event Log history
 
 The dormant Refugee Train bilateral consumer uses dedicated Event Log history `9160` for its four opening choices and twelve resolved branch outcomes.

@@ -81,6 +81,8 @@ The reviewed-candidate proof index above retains its historical fifty-four-row w
 The historical pilot-count wording above is superseded by the Dead City Permit, Manual Nobody Read, Working Machine, and later reviewed-chain corrections.
 The current reviewed total is fifty-five rows and 467 defined blocks, all dormant and outside release-floor credit.
 
+The current reviewed total extends through Old Airfield Chain at fifty-six rows and 474 defined blocks, all dormant and outside release-floor credit. Old Airfield Chain is candidate `586`, events `586` through `592`, transaction `710056`, route `7156`, and history `9162`. Its source spec is `docs/specs/air_cleanliness_fallout_specs/specs/57_reviewed_regional_old_airfield_chain.md`, its runtime proof is `FALLOUT_OLD_AIRFIELD_CHAIN_PROOF.md`, and its dedicated report workspace is `docs/assets/586_old_airfield_chain/`.
+
 - `FALLOUT_CALLBACK_CLEANUP_ORDER_PROOF.md` records authenticated result and callback cleanup ordering for the food, water, and rail pilots.
 - `FALLOUT_ASH_WEEK_CAPITAL_CHARACTER_EVENT_PROOF.md` records the dormant capital-condition and character-or-institution event surfaces at `chaosx.fallout.66` through `.81`.
 - `FALLOUT_ASH_WEEK_ORIENTATION_EVENT_LOG_PROOF.md` records history `9110`, the 45-payload orientation matrix, and its dormant idempotent Event Log writer.

@@ -473,6 +473,16 @@ It uses candidate id `579`, transaction `710055`, route `7155`, event blocks `57
 
 Its state selector requires a current-generation owner-controlled sub-Saharan African rural state with durable clean-water, Air Winter, survival, population, and infrastructure evidence. Four authored branches produce river compact, contested compact, or basin war memory outcomes with callback re-evaluation and invalid-target cleanup guards. It remains dormant and outside release-floor credit. The dedicated chain proof is `FALLOUT_NILE_PUMP_CONGRESS_CHAIN_PROOF.md`.
 
+## The Old Airfield Chain correction
+
+The Old Airfield Chain is the fifty-sixth reviewed ordinary candidate.
+
+It uses candidate id `586`, transaction `710056`, route `7156`, event blocks `586` through `592`, and Event Log history `9162`.
+
+Its country gate requires the Latin America and Caribbean region, current-generation Fallout identity, durable Survival resources, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled state with a produced Air Winter snapshot, surviving population, Supply Access, Reclamation, infrastructure, and a non-damaged air base below the vanilla cap.
+
+Four authored branches cover civil air service, military network, private couriers, and international consortium. The result and callback use frozen ledgers, deterministic equal-weight grading, bounded Deaths effects, branch-specific state and country memories, hidden-AI parity, Event Log history `9162`, and authenticated cleanup. The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_OLD_AIRFIELD_CHAIN_PROOF.md`.
+
 ## Refugee Train bilateral consumer
 
 The Refugee Train candidate `415` retains its ordinary reviewed row and now has a separate dormant bilateral consumer at event ids `1019` through `1022`.

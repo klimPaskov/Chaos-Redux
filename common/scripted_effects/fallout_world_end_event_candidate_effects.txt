@@ -2611,6 +2611,56 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 
+			# The Old Airfield row selects the lowest eligible Latin America and
+			# Caribbean state with a surviving runway, infrastructure, and Air Winter
+			# recovery receipt. The scheduler remains the sole owner of issuance.
+			set_variable = { fallout_event_586_candidate_state_id = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				if = {
+					limit = { fallout_event_586_state_is_current = yes }
+					if = {
+						limit = {
+							OR = {
+								check_variable = { ROOT.fallout_event_586_candidate_state_id = constant:fallout_event_runtime.zero }
+								check_variable = { var = THIS.id value = ROOT.fallout_event_586_candidate_state_id compare = less_than }
+							}
+						}
+						set_variable = { ROOT.fallout_event_586_candidate_state_id = THIS.id }
+					}
+				}
+			}
+			if = {
+				limit = { fallout_event_586_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.old_airfield_chain_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.old_airfield_chain_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.regional_and_biome }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.transport_recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.old_airfield_chain_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.old_airfield_chain_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.rival_orders }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_586_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_survival_current_entries^5 }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_survival_resource.fuel }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_586_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_586_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.fuel }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.fuel }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_four }
+				set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_region.latin_america_caribbean }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_586_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.old_airfield_chain_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

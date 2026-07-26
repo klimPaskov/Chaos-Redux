@@ -118,6 +118,7 @@
 - `specs/54_reviewed_regional_river_ration_league.md`
 - `specs/55_reviewed_regional_county_fair_returns.md`
 - `specs/56_reviewed_regional_nile_pump_congress.md`
+- `specs/57_reviewed_regional_old_airfield_chain.md`
 
 ## Matrices
 

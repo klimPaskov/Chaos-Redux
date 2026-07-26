@@ -13643,6 +13643,119 @@ country_event = {
 	immediate = { fallout_event_579_cleanup = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Dormant Fallout regional chain: The Old Airfield
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.586
+	title = chaosx.fallout.586.t
+	desc = chaosx.fallout.586.desc
+	picture = GFX_report_event_fallout_old_airfield_chain
+	is_triggered_only = yes
+	trigger = { fallout_event_586_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.586.a
+		trigger = { fallout_event_586_civil_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_586_requested_branch = constant:fallout_event_586_branch.civil_air_service } fallout_event_586_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.586.a.tt
+		ai_chance = { base = constant:fallout_event_586_threshold.ai_civil_priority }
+	}
+	option = {
+		name = chaosx.fallout.586.b
+		trigger = { fallout_event_586_military_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_586_requested_branch = constant:fallout_event_586_branch.military_network } fallout_event_586_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.586.b.tt
+		ai_chance = { base = constant:fallout_event_586_threshold.ai_military_priority }
+	}
+	option = {
+		name = chaosx.fallout.586.c
+		trigger = { fallout_event_586_courier_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_586_requested_branch = constant:fallout_event_586_branch.private_couriers } fallout_event_586_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.586.c.tt
+		ai_chance = { base = constant:fallout_event_586_threshold.ai_courier_priority }
+	}
+	option = {
+		name = chaosx.fallout.586.d
+		trigger = { fallout_event_586_consortium_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_586_requested_branch = constant:fallout_event_586_branch.international_consortium } fallout_event_586_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.586.d.tt
+		ai_chance = { base = constant:fallout_event_586_threshold.ai_consortium_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.587
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_586_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_586_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.588
+	title = chaosx.fallout.588.t
+	desc = { text = chaosx.fallout.588.invalid.d trigger = { has_country_flag = fallout_event_586_target_invalidated } }
+	desc = { text = chaosx.fallout.588.civil.success.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.civil_air_service } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.588.civil.partial.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.civil_air_service } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.588.civil.failure.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.civil_air_service } } }
+	desc = { text = chaosx.fallout.588.military.success.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.military_network } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.588.military.partial.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.military_network } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.588.military.failure.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.military_network } } }
+	desc = { text = chaosx.fallout.588.courier.success.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.private_couriers } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.588.courier.partial.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.private_couriers } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.588.courier.failure.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.private_couriers } } }
+	desc = { text = chaosx.fallout.588.consortium.success.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.international_consortium } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.588.consortium.partial.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.international_consortium } check_variable = { fallout_event_586_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.588.consortium.failure.d trigger = { check_variable = { fallout_event_586_selected_branch = constant:fallout_event_586_branch.international_consortium } } }
+	picture = GFX_report_event_fallout_old_airfield_chain
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_586_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_airfield_chain_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { if = { limit = { NOT = { fallout_event_586_registry_is_current = yes } } set_country_flag = fallout_event_586_target_invalidated } }
+	option = { name = chaosx.fallout.588.a hidden_effect = { fallout_event_586_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.588.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.589
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_586_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_airfield_chain_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_586_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.590
+	title = chaosx.fallout.590.t
+	desc = { text = chaosx.fallout.590.invalid.d trigger = { has_country_flag = fallout_event_586_target_invalidated } }
+	desc = { text = chaosx.fallout.590.success.d trigger = { check_variable = { fallout_event_586_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.590.partial.d trigger = { check_variable = { fallout_event_586_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.590.failure.d trigger = { check_variable = { fallout_event_586_callback_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_old_airfield_chain
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_airfield_chain_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible compare = equals } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_586_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_586_branch.upper_bound } fallout_event_586_registry_metadata_is_current = yes }
+	immediate = {
+		if = { limit = { NOT = { fallout_event_586_registry_is_current = yes } } set_country_flag = fallout_event_586_target_invalidated }
+		if = { limit = { NOT = { has_country_flag = fallout_event_586_target_invalidated } } fallout_event_586_calculate_callback_outcome = yes set_country_flag = fallout_event_586_callback_outcome_locked }
+	}
+	option = { name = chaosx.fallout.590.a hidden_effect = { fallout_event_586_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.590.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.591
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.old_airfield_chain_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_586_branch.none } check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_586_branch.upper_bound } fallout_event_586_registry_metadata_is_current = yes }
+	immediate = { if = { limit = { NOT = { fallout_event_586_registry_is_current = yes } } set_country_flag = fallout_event_586_target_invalidated } fallout_event_586_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.592
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_586_cleanup_can_enter = yes }
+	immediate = { fallout_event_586_cleanup = yes }
+}
+
 # Dormant Fallout global-survival chain: The First Safe Birth
 # ---------------------------------------------------------------------------
 
