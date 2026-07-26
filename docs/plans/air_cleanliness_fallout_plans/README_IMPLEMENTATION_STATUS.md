@@ -85,7 +85,7 @@ The live Fallout package includes:
 - schema-2 country runtime rows for five-part orientation, fatigue slots, ordinary cooldown, one fixed ordinary opening, compact arc, delayed-result, reciprocal bilateral, cancellation, cleanup, and routing receipts
 - a generation-bound monotonic ticket allocator, three independent compact-ledger reconciliation cursors, an ordinary receipt reconciler, exact dispatch envelopes, and mirrored issuance receipts
 - exact token-authenticated issued bilateral response, orphan cancellation, and cleanup terminalizers with no detached acknowledgement path
-- a scheduler activation gate with no setter and a dormant reviewed-candidate pilot producer for fifty-four ordinary global-survival rows
+- a scheduler activation gate with no setter, a dormant release audit receipt, and a reviewed-candidate pilot producer for fifty-four ordinary global-survival rows
 
 These are foundations. The phase chain cannot yet produce a valid complete post-Fallout world.
 

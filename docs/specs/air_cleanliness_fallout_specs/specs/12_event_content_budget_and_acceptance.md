@@ -399,3 +399,15 @@ The player should remember:
 - what old identity was kept or rejected
 - how altered and machine societies were treated
 - what world order began to form
+
+## Release audit receipt
+
+The living-world scheduler may activate only after a generation-bound audit receipt proves at least 660 manually reviewed event blocks and the engine-sensitive sweep, blackout, host authority, save recovery, and multiplayer surfaces.
+
+The receipt also requires current map return postconditions, successor allocation, the survival transition barrier, player continuation, orientation rows, and reviewed candidate registries.
+
+The receipt is evidence, not content credit for reservations or generated drafts.
+
+The audit receipt must remain generation-bound and fail closed when any receipt is missing.
+
+The accepted scheduler numerical contract does not authorize an activation setter.

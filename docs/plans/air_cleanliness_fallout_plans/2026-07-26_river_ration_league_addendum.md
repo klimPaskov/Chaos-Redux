@@ -2,7 +2,7 @@
 
 Date: 2026-07-26
 
-Status: implementation-ready improvement-loop addendum, pending parent acceptance and promotion into the accepted Fallout specs.
+Status: implemented and superseded by `docs/specs/air_cleanliness_fallout_specs/specs/54_reviewed_regional_river_ration_league.md` and `FALLOUT_RIVER_RATION_LEAGUE_CHAIN_PROOF.md`.
 
 All event titles, option labels, and prose directions below are working copy directions rather than final localisation.
 
@@ -24,13 +24,13 @@ Those additions would exceed one reviewed ordinary tranche and would duplicate s
 
 Ashline Firebreak is implemented and reconciled in the accepted spec and chain proof.
 
-The River Ration League remains an uncovered Europe row in `matrices/fallout_regional_event_matrix.md`.
+The River Ration League was an uncovered Europe row in `matrices/fallout_regional_event_matrix.md` when this addendum was written.
 
-The older County Fair addendum was proposed but not accepted or implemented.
+The older County Fair addendum was later accepted and implemented as spec 55.
 
 It is explicitly queued behind this parent-selected Europe tranche and its provisional next-slot identifiers are revoked in `2026-07-25_next_reviewed_fallout_tranche_addendum.md`.
 
-No earlier River Ration League addendum remains unresolved.
+This addendum is retained as historical design evidence and is not an unresolved implementation queue.
 
 ## Exact ownership
 
@@ -561,9 +561,9 @@ The full Fallout living-world release floor, scheduler activation authority, bil
 
 ## Promotion and parent handoff
 
-Keep this addendum under `docs/plans/air_cleanliness_fallout_plans/` until the parent accepts it and locks the identifiers after the collision rescan.
+Keep this addendum under `docs/plans/air_cleanliness_fallout_plans/` as historical design evidence.
 
-If accepted, promote it into `docs/specs/air_cleanliness_fallout_specs/specs/53_reviewed_regional_river_ration_league.md`, or the next available numbered filename, and add it to `SOURCE_SPEC_INDEX.md`.
+The implementation facts are promoted into `docs/specs/air_cleanliness_fallout_specs/specs/54_reviewed_regional_river_ration_league.md` and the current source index.
 
 The accepted spec should absorb the exact ids, constants, corridor table, costs, formulas, result deltas, callback deltas, memories, Event Log codes, localisation contract, asset consumer names, and authentication rules.
 

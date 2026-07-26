@@ -1,0 +1,133 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT LIVING-WORLD RELEASE AUDIT TRIGGERS
+# ============================================================================
+# Read-only contracts for the reviewed block floor, engine-sensitive delivery
+# receipts and transition barriers for a future activation review.
+# These triggers never activate the scheduler by themselves.
+# ============================================================================
+
+# Supported scope: COUNTRY coordinator. The count is a human-reviewed receipt,
+# not a count inferred from authored reservations or generated drafts.
+fallout_event_release_floor_receipt_is_current = {
+	has_global_flag = fallout_event_release_floor_review_complete
+	has_variable = global.fallout_event_release_audit_schema_version
+	has_variable = global.fallout_event_release_reviewed_block_count
+	has_variable = global.fallout_event_release_review_generation
+	has_variable = global.fallout_event_release_review_date
+	has_variable = global.fallout_event_release_review_day
+	check_variable = {
+		global.fallout_event_release_audit_schema_version = constant:fallout_event_release_audit_schema.version
+	}
+	check_variable = {
+		var = global.fallout_event_release_review_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	check_variable = {
+		var = global.fallout_event_release_reviewed_block_count
+		value = constant:fallout_event_release_floor.minimum_reviewed_blocks
+		compare = greater_than_or_equals
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_release_review_date
+			value = global.date
+			compare = greater_than
+		}
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_release_review_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+}
+
+# Supported scope: COUNTRY coordinator. These flags are individually attested
+# by the engine-sensitive handoff. Missing any one keeps activation closed.
+fallout_event_release_engine_surface_receipts_are_current = {
+	has_global_flag = fallout_event_release_manual_sweep_review_complete
+	has_global_flag = fallout_event_release_blackout_review_complete
+	has_global_flag = fallout_event_release_host_authority_review_complete
+	has_global_flag = fallout_event_release_save_recovery_review_complete
+	has_global_flag = fallout_event_release_multiplayer_review_complete
+	has_variable = global.fallout_event_release_engine_review_generation
+	check_variable = {
+		var = global.fallout_event_release_engine_review_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY coordinator. This is the static world and scheduler
+# barrier. It deliberately requires every current registry row to carry an
+# orientation receipt and a reviewed candidate array.
+fallout_event_release_world_barrier_is_current = {
+	fallout_current_country_is_coordinator = yes
+	fallout_map_return_postconditions_are_met = yes
+	fallout_event_map_return_receipts_are_current = yes
+	fallout_event_timeline_phase_receipt_is_current = yes
+	fallout_successor_allocation_is_current = yes
+	fallout_survival_ledger_transition_barrier_is_current = yes
+	has_global_flag = fallout_player_continuation_commit_complete
+	has_global_flag = fallout_player_assignment_uniqueness_verified
+	has_global_flag = fallout_event_scheduler_registry_ready
+	has_global_flag = fallout_event_ordinary_receipt_registry_ready
+	has_global_flag = fallout_event_numerical_receipt_registry_ready
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+	all_of_scopes = {
+		array = global.fallout_event_registry_countries
+		fallout_event_registry_country_row_is_current = yes
+		fallout_event_orientation_is_complete = yes
+		fallout_event_orientation_receipts_are_consistent = yes
+		fallout_event_candidate_registry_is_reviewed = yes
+	}
+}
+
+# Supported scope: COUNTRY coordinator. The release receipt is deliberately
+# separate from the active flag. This permits a save to prove the reviewed
+# floor while the scheduler remains dormant.
+fallout_event_release_audit_receipt_is_current = {
+	has_global_flag = fallout_event_release_audit_accepted
+	has_variable = global.fallout_event_release_audit_schema_version
+	has_variable = global.fallout_event_release_audit_status
+	has_variable = global.fallout_event_release_audit_generation
+	has_variable = global.fallout_event_release_audit_day
+	check_variable = {
+		global.fallout_event_release_audit_schema_version = constant:fallout_event_release_audit_schema.version
+	}
+	check_variable = {
+		global.fallout_event_release_audit_status = constant:fallout_event_release_audit_status.accepted
+	}
+	check_variable = {
+		var = global.fallout_event_release_audit_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	NOT = {
+		check_variable = {
+			var = global.fallout_event_release_audit_day
+			value = global.num_days
+			compare = greater_than
+		}
+	}
+	fallout_event_release_floor_receipt_is_current = yes
+	fallout_event_release_engine_surface_receipts_are_current = yes
+	fallout_event_release_world_barrier_is_current = yes
+}
+
+# Supported scope: COUNTRY coordinator. This is an inspection gate for a
+# future activation review. It never sets or authorizes either activation flag.
+fallout_event_release_activation_gate_is_current = {
+	fallout_current_country_is_coordinator = yes
+	has_global_flag = fallout_active
+	has_global_flag = fallout_transition_complete
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
+	NOT = { has_global_flag = fallout_event_scheduler_active }
+	NOT = { has_global_flag = fallout_event_scheduler_error }
+	fallout_event_release_floor_receipt_is_current = yes
+	fallout_event_release_engine_surface_receipts_are_current = yes
+	fallout_event_release_world_barrier_is_current = yes
+}
