@@ -1,6 +1,6 @@
 # Event 006 pre-resize source repaint inventory
 
-This manifest indexes the 42 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding ImageGen PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
+This manifest indexes the 44 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding ImageGen PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
 
 | Date | Trial | Shelf copy | Original ImageGen output | SHA-256 | Dimensions | Mode | Bytes |
 |---|---|---|---|---|---:|---|---:|
@@ -47,5 +47,6 @@ This manifest indexes the 42 source-derived HOI4-style repaint masters copied be
 | `2026_07_26` | `frisia_pieter_reenalda_trial_02` | `pre_resize_source_repaints/2026_07_26/frisia_pieter_reenalda_trial_02/AGX_pieter_reenalda_identity_preserve_trial_02.png` | `sourced_portrait_refinishes_2026_07_26/frisia_pieter_reenalda_trial_02/imagegen_results/AGX_pieter_reenalda_identity_preserve_trial_02.png` | `3c9d6d44410d9001c791ac6a700689a94fc61fc6b62e7de06947ff1e67145e4d` | `1082x1454` | `RGB` | 2461468 |
 | `2026_07_26` | `iw093_iw098_asset_clearance_v1` | `pre_resize_source_repaints/2026_07_26/iw093_iw098_asset_clearance_v1/DOX_prempeh_ii_identity_preserve_imagegen.png` | `iw093_iw098_asset_clearance_2026_07_26/repaints/DOX/DOX_prempeh_ii_identity_preserve_imagegen.png` | `4e2c3c22380aa52eda941169381403e126baed938fb6646c99b475d022f2bd8a` | `1083x1453` | `RGB` | 2420431 |
 | `2026_07_26` | `arx_verne_commander_v1` | `pre_resize_source_repaints/2026_07_26/arx_verne_commander_v1/ARX_Vittorio_Verne_identity_preserve_imagegen.png` | `sourced_portrait_replacements_2026_07_26/arx_verne_commander_v1/repaints/ARX/Vittorio_Verne_identity_preserve_imagegen.png` | `dfd8d452b41f92ba56f685deb3c982eda0c89503a2ddeeb96508d1f6c5ff0569` | `1081x1455` | `RGB` | 2301111 |
+| `2026_07_26` | `arx_pinna_crown_v1` | `pre_resize_source_repaints/2026_07_26/arx_pinna_crown_v1/ARX_Pietro_Pinna_Parpaglia_identity_preserve_imagegen.png` | `sourced_portrait_replacements_2026_07_26/arx_pinna_crown_v1/repaints/ARX/Pietro_Pinna_Parpaglia_identity_preserve_imagegen.png` | `194c2938f5f2772954347a8dd26f5962eb4bcdfe8f5f2dfdd70e11f20cfaec50` | `1082x1454` | `RGB` | 2325151 |
 
-Inventory count: **43** pre-resize masters. These files are reference-only and have no runtime GFX references. The IW-093 Asante and IW-018 Vernè candidates are explicitly retained as `candidate_requires_visual_approval`; neither is a runtime admission or DDS promotion.
+Inventory count: **44** pre-resize masters. These files are reference-only and have no runtime GFX references. The IW-093 Asante and IW-018 Vernè/Pinna candidates are explicitly retained as `candidate_requires_visual_approval`; neither is a runtime admission or DDS promotion.
