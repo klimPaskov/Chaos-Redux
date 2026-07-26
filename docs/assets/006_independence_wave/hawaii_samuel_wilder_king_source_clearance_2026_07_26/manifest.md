@@ -23,6 +23,7 @@ No gameplay, character, localisation, `.gfx`, advisor, commander, operative, dos
 - **Canonical media URL:** <https://upload.wikimedia.org/wikipedia/commons/b/b5/Samuel_Wilder_King_%28PP-74-9-002%29.jpg>.
 - **Retrieval URL used:** <https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/b/b5/Samuel_Wilder_King_%28PP-74-9-002%29.jpg>.
 - **Archive source and call number:** Hawaiʻi State Archives, PP-74-9-002, credited by the Commons record.
+- **Historical archive record URL:** <http://gallery.hawaii.gov/gallery2/main.php?g2_itemId=56613> (the legacy gallery endpoint was unavailable during retrieval, so the Commons record and call number are retained as the stable citation).
 - **Author:** unknown.
 - **Source date:** Commons records `between 1935 and 1943`; this brackets 1936 and is the best available date range.
 - **Rights evidence:** the Commons record applies `PD-US-no notice` and states that the work was published in the United States between 1931 and 1977 without a copyright notice.
