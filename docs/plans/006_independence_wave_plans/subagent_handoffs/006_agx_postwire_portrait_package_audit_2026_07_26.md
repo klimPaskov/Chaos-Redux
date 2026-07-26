@@ -93,9 +93,9 @@ The processed metadata invokes the shared `advisor_icon_processing.py` implement
 
 The runtime source search finds only the two intended full-size AGX portrait sprites and their two `large` character consumers.
 
-The older 2022-07-22 `frisia_retry_02/gfx_handoff.md` still contains historical wording that says conversion was deferred, while the 2026-07-26 manifests, promoted review copies, runtime hashes, and `.gfx` paths show the current state.
-
-That stale handoff is documentation debt only and does not invalidate the promoted runtime tranche.
+The older 2022-07-22 `frisia_retry_02/gfx_handoff.md` is now explicitly marked
+historical and superseded, while the 2026-07-26 manifests, promoted review
+copies, runtime hashes, and `.gfx` paths show the current state.
 
 ## Existing AGX package gates and non-portrait surfaces
 
