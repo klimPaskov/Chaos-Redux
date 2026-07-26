@@ -6,11 +6,7 @@ This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` 
 
 ## Current reconciliation
 
-After the County Fair Returns tranche, the living-world pilot contains `460`
-defined event blocks across `100` through `126`, `1009` through `1018`, `153`
-through `200`, and the reviewed ordinary range through `578`. All remain dormant and uncounted, so
-the release-floor total is `0 of 660`. Historical count snapshots below are
-retained as corrections and are superseded by the later correction sections.
+After the Radio Island Chain tranche, the living-world pilot contains `481` defined event blocks across `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `606`. All remain dormant and uncounted, so the release-floor total is `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by the later correction sections.
 
 ## Reserved Ash-week orientation tranche
 
@@ -669,7 +665,19 @@ The row requires a current-generation owner-controlled Latin American or Caribbe
 
 The chain carries civil air service, military network, private couriers, and international consortium branches with deterministic grading, branch ledgers, bounded Deaths effects, state and country modifiers, callback terminal memories, Event Log payloads, hidden-AI parity, dedicated report art, and authenticated cleanup.
 
-The documented living-world total is now `474` and the countable Fallout living-world total remains `0 of 660`.
+The documented living-world total is now 474 and the countable Fallout living-world total remains 0 of 660.
+
+## Radio Island Chain tranche
+
+The Radio Island Chain adds dormant suffixes 600 through 606 with candidate id 600, transaction key 710057, route 7157, and history 9163.
+
+The human opening is 600, the hidden-AI opening is 601, the human and hidden-AI delayed results are 602 and 603, the human and hidden-AI callbacks are 604 and 605, and cleanup is 606.
+
+The row requires a current owner-controlled Oceania remote island state with a produced Air Winter snapshot, surviving population, coastal or air-base access, radar station, infrastructure or industry, supply, reclamation, exposure, disease, and native generation evidence. It chooses the highest radio station score and breaks ties on the lowest native state id.
+
+The chain carries public relay, maritime defense net, harbor subscription, and island federation branches with ten equal grading components, native Command Power and War Support gates, deterministic result and callback outcomes, state Supply Access and reclamation effects, bounded Deaths effects, durable country memory, Event Log payloads, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The chain remains dormant and uncounted until the Fallout scheduler activation and host authority proof are available. The documented living-world total is now 481 and the countable Fallout living-world total remains 0 of 660.
 
 ## Refugee Train bilateral Event Log history
 

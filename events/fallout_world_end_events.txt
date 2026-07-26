@@ -15363,6 +15363,124 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.600
+	title = chaosx.fallout.600.t
+	desc = chaosx.fallout.600.d
+	picture = GFX_report_event_fallout_radio_island_chain
+	is_triggered_only = yes
+	trigger = { fallout_event_600_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.600.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_600_cost.public_relay_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_600_cost.public_relay_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_600_cost.public_relay_filters compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_600_cost.public_relay_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_600_requested_branch = constant:fallout_event_600_branch.public_relay } fallout_event_600_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.600.a.tt
+	}
+	option = {
+		name = chaosx.fallout.600.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_600_cost.maritime_defense_net_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_600_cost.maritime_defense_net_fuel compare = greater_than_or_equals }
+			command_power > constant:fallout_event_600_cost.maritime_defense_net_command_power
+			NOT = { has_war_support < constant:fallout_event_600_threshold.maritime_defense_net_war_support_threshold }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_600_requested_branch = constant:fallout_event_600_branch.maritime_defense_net } fallout_event_600_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.600.b.tt
+	}
+	option = {
+		name = chaosx.fallout.600.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_600_cost.harbor_subscription_fuel compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_600_cost.harbor_subscription_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_600_cost.harbor_subscription_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_600_threshold.harbor_subscription_power_threshold compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_600_requested_branch = constant:fallout_event_600_branch.harbor_subscription } fallout_event_600_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.600.c.tt
+	}
+	option = {
+		name = chaosx.fallout.600.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_600_cost.island_federation_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_600_cost.island_federation_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_600_cost.island_federation_recognition compare = greater_than_or_equals }
+			check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_600_threshold.island_federation_cohesion_threshold compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_600_requested_branch = constant:fallout_event_600_branch.island_federation } fallout_event_600_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.600.d_option.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.601
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_600_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_600_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.602
+	title = chaosx.fallout.602.t
+	desc = { text = chaosx.fallout.602.public_relay.success.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.public_relay } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.602.public_relay.partial.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.public_relay } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.602.public_relay.failure.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.public_relay } } }
+	desc = { text = chaosx.fallout.602.maritime_defense_net.success.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.maritime_defense_net } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.602.maritime_defense_net.partial.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.maritime_defense_net } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.602.maritime_defense_net.failure.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.maritime_defense_net } } }
+	desc = { text = chaosx.fallout.602.harbor_subscription.success.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.harbor_subscription } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.602.harbor_subscription.partial.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.harbor_subscription } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.602.harbor_subscription.failure.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.harbor_subscription } } }
+	desc = { text = chaosx.fallout.602.island_federation.success.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.island_federation } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.602.island_federation.partial.d trigger = { check_variable = { fallout_event_600_selected_branch = constant:fallout_event_600_branch.island_federation } check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.602.island_federation.failure.d
+	picture = GFX_report_event_fallout_radio_island_chain
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_600_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.radio_island_chain_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.602.a hidden_effect = { fallout_event_600_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.602.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.603
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_600_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.radio_island_chain_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_600_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.604
+	title = chaosx.fallout.604.t
+	desc = { text = chaosx.fallout.604.success.d trigger = { check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.604.partial.d trigger = { check_variable = { fallout_event_600_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.604.failure.d
+	picture = GFX_report_event_fallout_radio_island_chain
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_600_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.radio_island_chain_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_600_registry_is_current = yes }
+	option = { name = chaosx.fallout.604.a hidden_effect = { fallout_event_600_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.604.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.605
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_600_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.radio_island_chain_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_600_registry_is_current = yes }
+	immediate = { fallout_event_600_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.606
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_600_cleanup_can_enter = yes }
+	immediate = { fallout_event_600_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d

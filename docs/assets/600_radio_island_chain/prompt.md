@@ -1,0 +1,3 @@
+# Radio Island Chain image prompt
+
+Create a fictional post-fallout documentary report photograph for a strategy game event. Show a remote Pacific island radio station on a rocky harbor under a pale cold sky, one repaired radio mast, a small generator shed, fishing boats pulled above the tide, two bundled island technicians, and a clinic volunteer checking a weather ledger. Add light ash on roofs and windblown frost across the dock. Use a restrained sepia and slate-blue archival palette with a realistic editorial composition. Do not include readable text, logos, real flags, real people, zombies, or gore. Frame the image for a 210 by 176 event report card.
