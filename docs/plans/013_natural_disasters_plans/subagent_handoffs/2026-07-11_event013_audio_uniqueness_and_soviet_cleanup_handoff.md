@@ -2,6 +2,8 @@
 
 Closure note, 2026-07-12: the parent implementation replaced Event 013 audio ID 37 at its stable paths, updated its source/rights/catalogue records, and removed unused Soviet Collapse IDs 16 and 19-27 from media, registration, localisation, and catalogue surfaces. Soviet IDs 14, 15, 17, and 18 remain live. The authoritative final production record is `docs/super_events/013_natural_disasters_super_event_audio_production.md`.
 
+> **Historical audio audit snapshot — closed and superseded.** The candidate/deletion language below records the 2026-07-11 pre-closure state. Use the closure note, the final production record, and the 2026-07-26 audio audit handoff for current paths, durations, reachability, and retained Soviet IDs.
+
 Date: 2026-07-11
 
 Subagent: `chaosx_super_event_audio_researcher`
