@@ -1,5 +1,7 @@
 # Event 013 warning cost-profile mapping handoff
 
+> **Historical mapping handoff — implementation closed.** The eight warning cost profiles and their 75 family-specific decisions are implemented and reaudited. The “remaining risks” below preserve the pre-implementation review context; current runtime caveats are tracked only in the final Event 013 audit and live scenario matrix.
+
 Date: 2026-07-11
 
 Mode: bounded read-only analysis. No gameplay, localisation, GUI, GFX, asset, or spreadsheet file was edited.

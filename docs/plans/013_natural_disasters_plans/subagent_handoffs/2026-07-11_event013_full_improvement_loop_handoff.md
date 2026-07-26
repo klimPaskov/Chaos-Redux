@@ -1,5 +1,7 @@
 # Event 013 full improvement-loop planning handoff, 2026-07-11
 
+> **Historical planning handoff — superseded by the completed improvement tranches.** The plan below lists the accepted blockers that drove implementation; it is retained for design provenance. Do not interpret its “remaining” sections as an active queue without checking the current final audit and dated implementation handoffs.
+
 ## Mode and scope
 
 Documentation-only planning handoff. No gameplay, localisation, UI, spreadsheet, asset, or audio file was edited.

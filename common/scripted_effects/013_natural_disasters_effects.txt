@@ -1588,6 +1588,28 @@ natural_disaster_select_priority_open_card = {
 			natural_disaster_state_has_recovery_card = yes
 			NOT = { has_state_flag = natural_disaster_recovery_unresolved_territory }
 			natural_disaster_state_matches_priority_phase = yes
+			OR = {
+				check_variable = { natural_disaster_priority_variant = 0 }
+				check_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.neighbor_convoy }
+				AND = {
+					check_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.port_lifeline }
+					is_coastal = yes
+				}
+				AND = {
+					check_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.engineer }
+					OR = {
+						natural_disaster_state_has_strategic_transport = yes
+						natural_disaster_state_has_industry = yes
+					}
+				}
+				AND = {
+					check_variable = { natural_disaster_priority_variant = constant:natural_disaster_relief_variant.medical }
+					OR = {
+						natural_disaster_state_has_dense_population = yes
+						has_state_flag = natural_disaster_disease_pressure
+					}
+				}
+			}
 		}
 		set_temp_variable = { natural_disaster_priority_score = 0 }
 		natural_disaster_score_priority_state = yes
