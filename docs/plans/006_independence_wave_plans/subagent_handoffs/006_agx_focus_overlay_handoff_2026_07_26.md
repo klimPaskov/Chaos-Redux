@@ -47,7 +47,7 @@ No new asset request is required for this narrow overlay.
 
 `hoi4.focus_inspect` now reports 184 focuses and 184 resolved titles for `independence_wave_focus_tree`.
 
-The post-patch inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f80a38fcb08f6deb2ca2aba5755f50cc7d2732b5cd41083a0a4986ae5d0604a5/b224766d325339e19fdf072b317d7cded9b9b9bff17eb470ca27eabd692dbc9b/focus-inspect.956a02f6d24f6ddb.json`.
+The post-patch inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9ba28e16f63def3e42ecb2c5dd07256fca1840b43e21d4dbfa9a149e6be4dedb/4015d6bb9eabeedafee0e52b8b4ad23c517d43389f3e7129462cc6031d26b0e6/focus-inspect.7cea59ca5881c7db.json`.
 
 `hoi4.focus_render` produced the post-patch HTML, SVG, JSON, source-map, and plan artifacts under the `6278773fb4e35ecc1332b0b434162c78261c01c0a2ef086a38c2baa1c046e2c6` render artifact.
 
