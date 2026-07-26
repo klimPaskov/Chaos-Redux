@@ -1,10 +1,10 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Tunnel Ward Committees
+## Current reconciliation after Metro Republic Below
 
-The living-world pilot now contains `488` defined event blocks across the reviewed ordinary range through `613`, including the dormant Tunnel Ward Committees tranche at `607` through `613`. The current reviewed ordinary row count is `58`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `495` defined event blocks across the reviewed ordinary range through `620`, including the dormant Metro Republic Below tranche at `614` through `620`. The current reviewed ordinary row count is `59`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
-Tunnel Ward Committees reserves candidate `607`, transaction `710058`, route `7158`, and Event Log history `9164`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
+Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
 ## Purpose
 
@@ -684,6 +684,18 @@ The row requires a current owner-controlled Oceania remote island state with a p
 The chain carries public relay, maritime defense net, harbor subscription, and island federation branches with ten equal grading components, native Command Power and War Support gates, deterministic result and callback outcomes, state Supply Access and reclamation effects, bounded Deaths effects, durable country memory, Event Log payloads, hidden-AI parity, dedicated report art, and authenticated cleanup.
 
 The chain remains dormant and uncounted until the Fallout scheduler activation and host authority proof are available. The documented living-world total is now 481 and the countable Fallout living-world total remains 0 of 660.
+
+## Metro Republic Below tranche
+
+The Metro Republic Below adds dormant suffixes `614` through `620` with candidate id `614`, transaction key `710059`, route `7159`, and history `9165`.
+
+The human opening is `614`, the hidden-AI opening is `615`, the human and hidden-AI delayed results are `616` and `617`, the human and hidden-AI callbacks are `618` and `619`, and cleanup is `620`.
+
+The row requires a current owner-controlled European city or large-city state with a produced Air Winter shelter snapshot, surviving population, Supply Access, Reclamation, infrastructure, low exposure, and bounded disease pressure.
+
+The chain carries four authored shelter-governance branches, deterministic result and callback outcomes, state Supply Access and Air Winter effects, bounded Deaths effects, durable country and state memories, Event Log payloads, hidden-AI parity, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and uncounted until Fallout scheduler activation, host authority, save recovery, multiplayer delivery, and runtime Event Log proof are available. The documented living-world total is now `495` and the countable Fallout living-world total remains `0 of 660`.
 
 ## Refugee Train bilateral Event Log history
 
