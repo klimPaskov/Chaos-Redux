@@ -105,9 +105,9 @@ The replacement matches its preserved source at `0.923771` over 931 aligned Chro
 
 For each Event 013 ID, six unique music-volume definitions point only to its OGG, one representative music-station entry exists, one unique raw sound wrapper points to its WAV, and six unique sound-effect-volume definitions exist. No duplicate music definition name, sound-effect definition name, sound-wrapper name, or cross-ID Event 013 OGG path was found.
 
-## Event 013 parent documentation changes still required
+## Event 013 parent documentation changes — closed
 
-No registry path or identifier change is needed because ID 37 retained its stable filenames and wrapper IDs. The parent should update `music/chaosx_music_track_list.html` as follows:
+No registry path or identifier change was needed because ID 37 retained its stable filenames and wrapper IDs. The parent updated `music/chaosx_music_track_list.html` as follows:
 
 - ID 37 row around lines 485–493:
   - track: `Peer Gynt Suite No. 1, Op. 46: IV. In the Hall of the Mountain King`
@@ -137,7 +137,7 @@ All IDs 14–27 have OGG and WAV files, full music and sound registration, a rep
 | 14 | OGG, WAV, music/sound variants, station, labels, catalogue | Union Unmade setter at `common/scripted_effects/005_soviet_collapse_effects.txt:2689–2706`; invoked by normal evaluation and the triggerable scenario | keep |
 | 15 | fully registered | Black Banner setter at `:3727–3732`; called by `soviet_collapse_complete_black_banner_endgame` at `:18804` | keep conservatively |
 | 16 | fully registered; presentation localisation/selectors remain | no setter or emitter call | strong deletion candidate |
-| 17 | fully registered; presentation localisation/selectors remain | setter helper at `:3736–3741`, but zero callers in the permitted roots | conditional deletion candidate; exact-name check outside the permitted roots required before deletion |
+| 17 | fully registered | setter helper at `common/scripted_effects/005_soviet_collapse_effects.txt:3736–3741`, called by the factory-successor focus at `common/national_focus/005_soviet_collapse_factory_successors.txt:2831` | retain; it has a live gameplay caller |
 | 18 | fully registered | Every Port setter at `:3745–3750`; called by `soviet_collapse_complete_port_council_endgame` at `:18779` | keep conservatively |
 | 19–22 | fully registered; presentation localisation/selectors remain | gameplay equivalents use ordinary news events `.140–.143` at `:3754–3783`; no audio setter | strong deletion candidates |
 | 23 | fully registered | registry, catalogue, and music-label localisation only; no super-event selectors or event text | strong deletion candidate |

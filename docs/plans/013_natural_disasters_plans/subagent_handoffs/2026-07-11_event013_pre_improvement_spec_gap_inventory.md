@@ -1,5 +1,7 @@
 # Event 013 pre-improvement accepted-spec gap inventory
 
+> **Historical snapshot — superseded by the implemented Event 013 source package and the final audit.** This document records the gaps observed before the improvement tranche; its findings are not current claims of missing implementation. Use `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md` and the dated re-audit handoffs for current status.
+
 Date: 2026-07-11
 Mode: read-only implementation/specification audit
 Gameplay, GUI, localisation, asset, workbook, and source-spec edits by this subagent: none

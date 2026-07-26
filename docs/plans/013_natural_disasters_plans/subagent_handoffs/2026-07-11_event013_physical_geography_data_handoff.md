@@ -1,5 +1,7 @@
 # Event 013 physical-geography data handoff
 
+> **Historical source handoff — superseded as an implementation gap.** The reviewed state and region registry supplied here is now wired into the Event 013 geography triggers and is covered by the final audit. Treat the cautions and “parent implementation required” language below as the 2026-07-11 review state, not as a current missing-feature report.
+
 Date: 2026-07-11
 Mode: read-only geography and data audit
 Implementation owner: parent agent

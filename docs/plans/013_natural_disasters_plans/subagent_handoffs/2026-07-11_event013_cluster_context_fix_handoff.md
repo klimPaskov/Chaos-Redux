@@ -1,5 +1,7 @@
 # Event 013 pending cluster context fix handoff
 
+> **Historical patch handoff — superseded by the integrated Event 013 API.** The cluster context patch described here is present, and the parent-owned API inputs are now consumed by the live reusable call path. The integration-dependency and “runtime proof pending” wording below records the state at handoff time; current validation status is in the final Event 013 audit and live scenario matrix.
+
 Date: 2026-07-11
 
 Mode: bounded gameplay patch. No commit was created.
