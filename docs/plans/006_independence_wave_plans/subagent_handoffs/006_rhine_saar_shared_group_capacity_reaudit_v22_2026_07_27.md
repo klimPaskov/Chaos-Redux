@@ -27,10 +27,9 @@ The current Event 006 source-of-truth mapping remains:
 The pair therefore uses distinct package IDs, target countries, and mandatory anchor states.
 This audit preserves the accepted numeric mapping.
 
-The installed vanilla state names expose a separate source-of-truth discrepancy: `history/states/42-Rhineland.txt:15` and `history/states/51-Moselland.txt:14` both start under GER, while the Event 006 research labels IW-008 anchor 51 as Rhineland and IW-010 anchor 42 as Moselland/Saar.
-The mod does not replace these two state-history files.
-Do not silently swap the gameplay anchors as part of the capacity repair.
-Rebind or explicitly confirm the package geography in the canonical research before final package promotion.
+The installed vanilla state-history filenames are misleadingly paired with the neighboring IDs, but the authoritative state localisation confirms `STATE_42` is Moselland and `STATE_51` is Rhineland (`localisation/english/state_names_l_english.yml`).
+The Event 006 research therefore already matches the installed geography: IW-008 uses Rhineland state 51 and IW-010 uses Moselland/Saar state 42.
+The mod does not replace these two state-history files, and no anchor swap is required.
 
 ## Completion status by capacity surface
 
