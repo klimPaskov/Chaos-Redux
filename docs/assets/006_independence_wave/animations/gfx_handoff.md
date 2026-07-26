@@ -23,7 +23,7 @@ spriteTypes = {
 		noOfFrames = <frame_count>
 		animation_rate_fps = 5
 		looping = yes
-		play_on_show = no
+		play_on_show = yes
 	}
 }
 ```
