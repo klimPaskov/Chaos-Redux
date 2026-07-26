@@ -1,12 +1,14 @@
 # IW-007 Frisia (AGX) country-package re-audit - 2026-07-26
 
+> Supersession notice (2026-07-26): This package re-audit remains current for bounded AGX package evidence, but its pre-reflow and pre-map-reconciliation documentation-drift notes are historical. `006_documentation_reconciliation_post_cf2316a9a_f8ca54d24_2026_07_26.md` records the current map, v9 authority, DM-58 injective preflight, and focus reflow limitations.
+
 ## Scope and disposition
 
 This is a fresh bounded, read-only audit after commits `8c15baa17`, `c9337fd94`, `79663734e`, and the documentation refresh `032d36550`. It covers the AGX/Frisia tag, state 36 and RG-36 setup, origin purity, host survival, Event-005 collision protection, starting force and technology inheritance, politics, leaders, portraits, flags, ideas, all visible waterline/coastal/host/network/league/formable values, focus assignment and the eight-focus overlay, decisions and mission lifecycle, AI, formable integration, cleanup, localisation, and exact runtime attestation.
 
 **Bounded package disposition: PARTIAL.** AGX identity, map binding, origin/setup proof, force mapping, politics, portraits, flags, ideas, focus overlay, formable hooks, cleanup, AI, localisation, and static runtime admission all pass their package checks. The AGX decision lane remains **HOLD** because the North Sea conference timer has one high lifecycle/route-lock defect and its visible strategic cost understates the reserved civilian-factory commitment. A low player-facing trigger-tooltip gap also remains.
 
-The eight-focus AGX overlay is **PASS for package wiring** and **PARTIAL for the shared tree**: all eight IDs, effects, prerequisites, bypasses, AI weights, icons, and localisation are present, while the pre-existing shared focus layout still has fourteen blocking geometry diagnostics. The source-of-truth map and v7 completion addendum still describe the pre-overlay AGX module gap; those statements are stale for the narrow overlay but remain correct that whole-tree completion is HOLD.
+The eight-focus AGX overlay is **PASS for package wiring** and **PARTIAL for the shared tree**: all eight IDs, effects, prerequisites, bypasses, AI weights, icons, and localisation are present, while the pre-reflow shared focus layout had fourteen blocking geometry diagnostics. The narrow-module gap statement is superseded by the AGX overlay handoff and current map; the shared-tree completion remains HOLD pending post-reflow MCP validation.
 
 The exact IW-007 runtime content attestation is **PASS at compile-time source level**. Static attestation does not prove that a live automatic or scenario allocation has passed its host, anchor, reservation, chaos-band, force, and transaction witnesses, and no live game or save-load run was performed in this subagent scope.
 
@@ -116,7 +118,7 @@ The eight package focuses are:
 
 Each focus has a title, description, effect tooltip, hidden effect, registered generic icon, package gate, and AI block. The route sequence reaches existing AGX effects/decisions/Form-03 hooks, and the mandate focus sets `independence_wave_agx_north_sea_conference_authorized` without paying or completing the conference. Commit `c9337fd94` then gates the paid conference decision on that authorization flag, and commit `79663734e` corrected the AGX reward tooltip wording.
 
-The AGX lane itself has no duplicate focus ID or missing static title/description/tooltip/effect key. The shared tree still carries the recorded fourteen geometry blockers, and the current source-of-truth map, v7 addendum, documentation-curator handoff, and old focus handoff should be reconciled so they no longer say that the AGX narrow module is absent.
+The AGX lane itself has no duplicate focus ID or missing static title/description/tooltip/effect key. The shared tree's pre-reflow fourteen-blocker baseline remains historical engine evidence; the current coordinate reflow has only offline segment evidence because post-edit MCP transport closed.
 
 ## Starting military, technology, industry, supply, production, and AI
 
@@ -143,8 +145,8 @@ The installed HOI4 agent package exposes no Technology Tree Viewer. Technology c
 - **High gameplay defect:** Extend the conference cancel trigger to cover continuing recognition, network membership, Low Countries candidacy, authorization, and client-route lock conditions, then define the intended no-reward cancellation result.
 - **Medium player-facing defect:** Reconcile the conference cost text with the three-factory major commitment, or deliberately change the modifier and gate to the standard two-factory contract.
 - **Low UI quality gap:** Add named trigger tooltips for the AGX route, capital, former-host peace, active-project, recognition, network, candidacy, and authorization requirements.
-- **Shared focus HOLD:** Keep the fourteen geometry diagnostics in the global completion ledger and schedule a coordinated layout repair; do not treat the eight-focus package lane as a substitute for that shared repair.
-- **Documentation drift:** Reconcile the source-of-truth map, v7 addendum, and old focus handoffs that still state that the AGX/Frisia narrow module is missing; reconcile the stale p7=44 planning row; and correct the retry-02 `gfx_handoff.md` wording that says DDS conversion was deferred even though the approved DDS files are wired.
+- **Shared focus HOLD:** Keep the pre-reflow fourteen-blocker engine baseline as unresolved historical evidence and schedule post-transport MCP validation of the `f8ca54d24` coordinate reflow; do not treat the eight-focus package lane as a substitute for that shared repair.
+- **Documentation drift:** The AGX narrow-module wording is reconciled by the current map, event doc, and overlay handoff. The stale p7=44 planning row and retry-02 `gfx_handoff.md` wording remain separate documentation debt and are outside this bounded cleanup.
 - **Runtime evidence boundary:** Static exact attestation is present, but no live automatic/scenario allocation or save-load proof was run in this subagent scope.
 
 No fallback, alternate country identity, generated replacement portrait, new advisor, new focus route family, map mutation, or gameplay simplification was introduced. The AGX package remains suitable for parent review after the two decision-lane defects and the documented global/stale-evidence limitations are handled.

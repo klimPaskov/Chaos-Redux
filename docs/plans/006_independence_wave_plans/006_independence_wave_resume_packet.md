@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-26 after the Event 006 v6/v7 completion audits, DM-58 scope repair, current localisation PASS, focus/decision handoffs, and HAW retry-03 review
+Updated: 2026-07-26 after the Event 006 v9 completion audit and commits `cf2316a9a` (DM-58 injective preflight) and `f8ca54d24` (shared-focus coordinate reflow)
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
@@ -17,9 +17,9 @@ The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
 This packet and `006_source_of_truth_map.md` carry the current runtime state.
 
-The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v6_2026_07_26.md` and remains **HOLD**. `subagent_handoffs/006_event_completion_audit_v7_addendum_2026_07_26.md` records the `5dcb2c8de` DM-58 candidate-scope repair, and `subagent_handoffs/006_event_completion_audit_v8_agx_tranche_2026_07_26.md` records the current AGX tranche; distinct-owner feasibility and whole-event acceptance remain open. The v5 audit remains historical where its localisation findings and pre-repair DM-58 verdict differ from these later records.
+The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v9_final_2026_07_26.md` and remains **HOLD**. It audited pre-commit `51369b2ea`; `cf2316a9a` now supplies a bounded source-level injective three-member/three-distinct-owner preflight PASS, while the paid resolver still chooses legal states randomly after activation and can miss the proven witness. `f8ca54d24` supplies a coordinate-only shared-focus reflow with offline segment evidence, but post-edit `hoi4.focus_inspect` and `hoi4.focus_render` returned `Transport closed`; the prior fourteen-blocker engine baseline therefore remains unresolved. The v5-v8 audits remain historical where their bounded findings differ from these later records.
 
-Current bounded handoffs: `006_focus_readonly_handoff_2026_07_26.md` remains **HOLD** for fourteen shared-tree geometry blockers, while `006_agx_focus_overlay_handoff_2026_07_26.md` records the eight-focus IW-007 Frisia/AGX package overlay **PASS**; `006_agx_conference_post_repair_reaudit_2026_07_26.md` and `006_agx_conference_cost_localisation_reaudit_2026-07-26.md` record bounded lifecycle and three-factory cost **PASS** findings; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` remains a rights-blocked research result with no runtime authorization.
+Current bounded handoffs: `006_dm58_injective_owner_preflight_repair_2026_07_26.md` records the injective three-slot source PASS but keeps execution HOLD for the random post-activation resolver; `006_shared_focus_geometry_repair_2026_07_26.md` records the `f8ca54d24` coordinate-only reflow, offline parser evidence, and post-edit MCP `Transport closed`; `006_focus_readonly_handoff_2026_07_26.md` is a pre-reflow baseline whose AGX-missing-module wording is superseded by `006_agx_focus_overlay_handoff_2026_07_26.md`; the AGX overlay remains **PASS**; `006_agx_conference_post_repair_reaudit_2026_07_26.md` and `006_agx_conference_cost_localisation_reaudit_2026-07-26.md` record bounded lifecycle and three-factory cost **PASS** findings; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` remains a rights-blocked research result with no runtime authorization.
 
 ## Read first
 
@@ -207,8 +207,8 @@ synchronized frozen plan.
   audit remain implemented. AGX's two-person roster is source-cleared; AFX now
   has sourced Jules Destrée and the independently approved Louis Hubert baron
   Ruquoy/Rucquoy commander repaint wired to the stable full-size consumer. AFX
-  remains behind its fresh post-wire package audit before exact admission is
-  restored.
+  has passed its fresh post-wire package audit for exact admission; every live
+  allocation proof remains pending.
 - Living-BEL IW-005 Flanders overlay implementation and independent re-audit in
   `a2c274d1e`.
 - Five-line army-small checksum alignment in `45bee09d2` remains historical
@@ -302,7 +302,7 @@ synchronized frozen plan.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
   complete required HAW/FSM member set because those two packages are not admitted.
-- The current v6/v7 completion authorities retain **HOLD** for whole-event completion; no overall completion claim is authorized.
+- The current v9 completion authority and bounded post-v9 handoffs retain **HOLD** for whole-event completion; no overall completion claim is authorized.
 - The `006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`
   is **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY signature tranche:
   package identity, centralized politics and institutional leaders,

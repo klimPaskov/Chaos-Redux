@@ -1,5 +1,7 @@
 # Event 006 completion audit v8 — AGX tranche addendum — 2026-07-26
 
+> Supersession notice (2026-07-26): This v8 addendum is retained as historical AGX-tranche evidence. Commit `cf2316a9a` and `006_dm58_injective_owner_preflight_repair_2026_07_26.md` supersede its statement that injective DM-58 feasibility was unproved; commit `f8ca54d24` supersedes only the shared-focus source coordinates. The v9 whole-event **HOLD** remains current, and post-reflow MCP validation is unavailable.
+
 ## Verdict
 
 **HOLD.** This addendum records the current source-level evidence after the IW-007 Frisia/AGX overlay, conference lifecycle repair, cost/localisation repair, and documentation reconciliation. It does not claim a whole-event completion, live-game validation, or a fallback implementation.

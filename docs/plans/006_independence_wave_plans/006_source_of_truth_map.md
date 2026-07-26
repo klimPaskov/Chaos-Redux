@@ -2,10 +2,9 @@
 
 <!-- Documentation reconciliation: IW-006 is part of the current ten-package attestation set; global completion remains open. -->
 
-Curated: 2026-07-26 after the Event 006 v6/v7 completion audits, DM-58 scope repair, current localisation PASS, focus/decision handoffs, and HAW retry-03 review
+Curated: 2026-07-26 after the Event 006 v9 completion audit and commits `cf2316a9a` (DM-58 injective preflight) and `f8ca54d24` (shared-focus coordinate reflow)
 
-Completion state: **incomplete and active; country gameplay tranches exist, but
-grounded portrait sourcing and the resulting package re-audits remain open**.
+Completion state: **incomplete and active; ten package attestations still expose only nine compatible reservation groups, DM-58 execution can still diverge from its proven witness, and post-reflow focus MCP validation is unavailable**.
 
 This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The current portrait authority is the sourced-only
@@ -14,7 +13,7 @@ generated portrait packages remain provenance evidence, not visual acceptance.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
 
-The whole-event audit authority is `subagent_handoffs/006_event_completion_audit_v6_2026_07_26.md`, which retains **HOLD** for Event 006 completion. `subagent_handoffs/006_event_completion_audit_v7_addendum_2026_07_26.md` records the `5dcb2c8de` DM-58 candidate-scope repair and `subagent_handoffs/006_event_completion_audit_v8_agx_tranche_2026_07_26.md` records the latest AGX tranche; distinct-owner feasibility and all whole-event acceptance matrices remain open. The v5 audit is historical where its localisation findings and pre-repair DM-58 verdict differ from these later records. The 2026-07-26 AGX overlay tranche supersedes only the v6/v7 wording that the narrow Frisia module is absent: `006_agx_focus_overlay_handoff_2026_07_26.md` records the eight-focus package-wiring PASS, `006_agx_country_package_reaudit_2026_07_26.md` retains a PARTIAL package disposition, `006_agx_postwire_portrait_package_audit_2026_07_26.md` records the current portrait/runtime PASS, and the shared focus HOLD with fourteen geometry blockers remains current.
+The whole-event audit authority is `subagent_handoffs/006_event_completion_audit_v9_final_2026_07_26.md`, which retains **HOLD** for Event 006 completion. That audit reviewed pre-commit `51369b2ea`; its bounded DM-58 and focus statements are superseded by `006_dm58_injective_owner_preflight_repair_2026_07_26.md` and `006_shared_focus_geometry_repair_2026_07_26.md`. Commit `cf2316a9a` proves a non-mutating three-member, three-distinct-owner preflight, while the paid resolver still chooses targets randomly after activation. Commit `f8ca54d24` applies a coordinate-only shared-tree reflow; its offline segment audit is evidence only because both post-edit `hoi4.focus_inspect` and `hoi4.focus_render` calls returned `Transport closed`, so the prior fourteen-blocker engine baseline remains unresolved. The v5-v8 audits remain historical where their bounded findings differ from these records. The AGX overlay wording is current through `006_agx_focus_overlay_handoff_2026_07_26.md`; the narrow module is present, while shared-tree geometry and live allocation evidence remain open.
 
 The later 2026-07-22 user review also rejects the current sourced-treatment
 family: it preserves identities but still reads as archival photography rather
@@ -106,11 +105,11 @@ achievements remain hidden by their intended route and survival conditions.
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
 | Allocator and joint reservation | Audited and current after content-gate repair | 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering remain implemented. `006_automatic_content_attestation_weight_gate_2026_07_24.md` records the centralized repair: an unadmitted package receives zero automatic weight and a direct or stale anchor-phase dispatch receives `package_unready` before any host, country, or state reservation. Capacity, scenario preflight, reservation, and execution all reuse the same exact compile-time attestation authority. Runtime host, anchor, reservation, Event 5 collision, chaos-band, force, and wave-size gates remain mandatory |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
-| DM-58 decision preflight | Bounded source repair PASS; broader decision/mission HOLD | `006_dm58_preflight_scope_repair_2026_07_26.md` and `006_dm58_preflight_scope_post_repair_2026_07_26.md` record the `5dcb2c8de` scope correction; distinct-owner feasibility and runtime matrices remain unproved |
-| Shared focus framework and AGX depth | HOLD with bounded AGX overlay PASS | `006_agx_focus_overlay_handoff_2026_07_26.md` records eight package-named focuses with effects, prerequisites, bypasses, AI weights, icons, localisation, and downstream hooks; the shared tree still has fourteen blocking geometry diagnostics |
+| DM-58 decision preflight | Injective source repair PASS; execution and broader decision/mission HOLD | Commit `cf2316a9a` and `006_dm58_injective_owner_preflight_repair_2026_07_26.md` prove the accepted three-slot matcher requires distinct members, states, and owners. The paid resolver still randomly selects legal states after activation, so it can miss the proven witness; deterministic witness binding and live success/collision/rollback/AI/save-load matrices remain open |
+| Shared focus framework and AGX depth | Coordinate-only reflow committed; MCP validation HOLD with bounded AGX overlay PASS | Commit `f8ca54d24` moves thirteen shared focus nodes without changing IDs, prerequisites, rewards, icons, localisation, or AI. The offline parser reports zero of thirteen prior blocker pairs as proper crossings, but post-edit `hoi4.focus_inspect` and `hoi4.focus_render` returned `Transport closed`; the previous fourteen blocking engine diagnostics therefore remain unresolved. `006_agx_focus_overlay_handoff_2026_07_26.md` still records the eight-focus package-wiring PASS |
 | AGX conference lifecycle and cost/gate wording | Bounded PASS | `006_agx_conference_post_repair_reaudit_2026_07_26.md`, `006_agx_conference_cost_localisation_reaudit_2026-07-26.md`, and `006_agx_conference_description_clarity_repair_2026_07_26.md` record the lifecycle gate, three-factory cost text, and five-prerequisite wording repairs; live execution remains unproved |
 | Event 006 bounded localisation | PASS for the audited scope; whole-event coverage HOLD | See `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md`; scoped key/reference/BOM/punctuation checks and mirror alignment pass |
-| Whole-event completion audit | HOLD / incomplete | `006_event_completion_audit_v6_2026_07_26.md` remains the whole-event authority; v7 records the DM-58 repair and `006_event_completion_audit_v8_agx_tranche_2026_07_26.md` records the latest AGX tranche without changing the verdict |
+| Whole-event completion audit | HOLD / incomplete | `006_event_completion_audit_v9_final_2026_07_26.md` is the current completion matrix, audited against pre-commit `51369b2ea`; `cf2316a9a` and `f8ca54d24` update only bounded DM-58/focus surfaces and do not change the verdict |
 | IW-173 HAW retry 03 | Blocked research evidence only | `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` records an exact adult visual match with unresolved rights and no runtime authorization |
 | Sponsorship transaction | Implemented | `f4ee90497` and `006_dm57_sponsorship_transaction_handoff_2026_07_15.md` cover frozen metadata, exact consumption, abort preservation, and cleanup |
 | Liberations cluster integration | Implemented, runtime conditional | `62e937dcc` supplies cluster context and capacity calculation. Runtime selection still depends on exact package attestations, hosts, anchors, reservation conflicts, chaos band, and the requested wave size |
@@ -304,7 +303,7 @@ The audio registry, slot-24 dispatch, Event Log payload, and settings-aware FIFO
 submission are complete. The hidden-formable and ten-country qualification paths
 remain blocked by the current ten-ID, nine-compatible-group admission surface, and no full
 runtime reachability proof exists for the remaining predicates. FORM-42 remains
-fail-closed. The current v6/v7 completion authorities retain **HOLD** for whole-event completion; no completion claim is authorized.
+fail-closed. The current v9 completion authority and bounded post-v9 handoffs retain **HOLD** for whole-event completion; no completion claim is authorized.
 
 Super-event `6001` remains absent from runtime dispatch, localisation, audio,
 and firing. ASSET-005's static DDS exists and its sprite is registered, but it
@@ -388,7 +387,7 @@ Parent decisions still required:
 3. Preserve the implemented Event 006 slot-24 presentation, Event Log payload,
    and settings-aware queued `6002` playback. Keep `6001` blocked unless its
    exact recording rights are cleared.
-4. Preserve the implemented FORM-48 HBX/HAW/FSM/PFX design tranche and its exact sovereign-autonomous membership contract, but keep it runtime-unreachable until HAW and FSM are independently admitted. IW-184 attestation and its Event 005-aware capacity witness are implemented. Keep FORM-42 and FORM-06 through FORM-47 fail-closed; use no generic flags, emblems, portraits, or regional-report substitutes. The current v6/v7 completion authorities retain **HOLD** for whole-event completion.
+4. Preserve the implemented FORM-48 HBX/HAW/FSM/PFX design tranche and its exact sovereign-autonomous membership contract, but keep it runtime-unreachable until HAW and FSM are independently admitted. IW-184 attestation and its Event 005-aware capacity witness are implemented. Keep FORM-42 and FORM-06 through FORM-47 fail-closed; use no generic flags, emblems, portraits, or regional-report substitutes. The current v9 completion authority and bounded post-v9 handoffs retain **HOLD** for whole-event completion.
 5. Reconcile event log, event details, documentation, and workbook wording
    against the committed gameplay baseline.
 6. Keep the exact vanilla-formable compatibility PASS. Preserve the implemented

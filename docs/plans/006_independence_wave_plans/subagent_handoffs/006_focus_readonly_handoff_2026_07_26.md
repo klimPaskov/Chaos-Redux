@@ -1,8 +1,10 @@
 # Event 006 focus-tree read-only handoff — 2026-07-26
 
+> Supersession notice (2026-07-26): This pre-reflow baseline is retained for its original MCP diagnostics. Commit `f8ca54d24` and `006_shared_focus_geometry_repair_2026_07_26.md` supersede its coordinate state, while `006_agx_focus_overlay_handoff_2026_07_26.md` supersedes the AGX-missing-module wording. Post-edit `hoi4.focus_inspect` and `hoi4.focus_render` returned `Transport closed`, so the shared layout remains **HOLD** and no post-edit engine metric is claimed.
+
 ## Scope and verdict
 
-This is a bounded, read-only audit of the shared Event 006 focus tree and the admitted IW-007 Frisia/AGX package. No focus source, localisation, icon, AI, or runtime-attestation file was changed in this pass. The current verdict remains **HOLD**: the shared layout has fourteen blocking diagnostics, and the admitted AGX package has no accepted narrow package-named focus module.
+This is a bounded, pre-reflow read-only audit of the shared Event 006 focus tree and the admitted IW-007 Frisia/AGX package. No focus source, localisation, icon, AI, or runtime-attestation file was changed in this pass. Its historical verdict remains **HOLD** for the fourteen-blocker baseline; the AGX package-module absence statement is superseded by `006_agx_focus_overlay_handoff_2026_07_26.md`.
 
 The evidence below is carried forward from the latest completion and layout audits, especially `006_event_completion_audit_v6_2026_07_26.md`, `006_focus_tree_completion_audit_2026_07_25.md`, and `006_focus_layout_repair_v3_2026_07_25.md`.
 
