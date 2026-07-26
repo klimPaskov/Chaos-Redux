@@ -32,7 +32,7 @@ The existing bilateral API remains the only writer. It allocates one ticket, app
 
 `fallout_event_candidate_row_is_eligible` admits a relationship row only through the reciprocal candidate proof. `fallout_event_commit_selected_candidate` routes relationship rows to the bilateral wrapper and all other classes to the ordinary receipt wrapper. The ordinary receipt reconciliation and ordinary dispatch envelope are skipped for an accepted relationship reservation. The pair is left for the existing bilateral reconciler and an authored relationship consumer.
 
-The current four relationship rows remain ineligible because their partner index is the typed no-partner sentinel. No current candidate row therefore reaches the new wrapper, no scheduler activation flag is touched, and the reviewed count remains 460 defined blocks and 0 of 660 countable blocks.
+The Refugee Train row now has a dormant reciprocal pairing pass recorded in `2026-07-26_refugee_train_relationship_pairing_addendum.md`. The pass selects the two lowest reviewed registries that carry candidate `415` and writes each registry index into the other row. The other three relationship rows retain the typed no-partner sentinel. No current relationship row reaches the new wrapper until the reciprocal proof, pair-family memory, current participant state, and bilateral capacity gates all pass. No scheduler activation flag is touched, and the reviewed count remains 460 defined blocks and 0 of 660 countable blocks.
 
 ## Validation evidence
 
