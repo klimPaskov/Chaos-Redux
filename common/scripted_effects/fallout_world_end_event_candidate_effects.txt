@@ -78,6 +78,10 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_534_arms_shortage_pressure
 	clear_variable = fallout_event_554_candidate_state_id
 	clear_variable = fallout_event_554_ash_pressure
+	clear_variable = fallout_event_565_candidate_state_id
+	clear_variable = fallout_event_565_downstream_state_id
+	clear_variable = fallout_event_565_upstream_rank
+	clear_variable = fallout_event_565_downstream_rank
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -2395,6 +2399,109 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_temp_variable = fallout_event_pilot_state_candidate_id
 			clear_variable = fallout_event_554_candidate_state_id
 			clear_variable = fallout_event_554_ash_pressure
+
+			# The River Ration League selects two distinct native states from the
+			# reviewed Danube corridor. The first eligible corridor rank is the
+			# upstream receipt and the highest later eligible rank is downstream.
+			set_variable = { fallout_event_565_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_565_downstream_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_565_upstream_rank = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_565_downstream_rank = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				if = {
+					limit = { fallout_event_565_corridor_state_is_current = yes }
+					set_temp_variable = { fallout_event_565_state_rank = constant:fallout_event_runtime.zero }
+					if = { limit = { check_variable = { var = THIS.id value = 152 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 1 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 4 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 2 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 664 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 3 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 155 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 4 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 43 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 5 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 109 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 6 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 82 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 7 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 45 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 8 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 108 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 9 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 46 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 10 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 48 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 11 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 77 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 12 } }
+					if = {
+						limit = {
+							OR = {
+								check_variable = { fallout_event_565_upstream_rank = constant:fallout_event_runtime.zero }
+								check_variable = { var = fallout_event_565_state_rank value = ROOT.fallout_event_565_upstream_rank compare = less_than }
+							}
+						}
+						set_variable = { ROOT.fallout_event_565_candidate_state_id = THIS.id }
+						set_variable = { ROOT.fallout_event_565_upstream_rank = fallout_event_565_state_rank }
+					}
+					clear_temp_variable = fallout_event_565_state_rank
+				}
+			}
+			every_owned_state = {
+				if = {
+					limit = { fallout_event_565_corridor_state_is_current = yes }
+					set_temp_variable = { fallout_event_565_state_rank = constant:fallout_event_runtime.zero }
+					if = { limit = { check_variable = { var = THIS.id value = 152 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 1 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 4 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 2 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 664 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 3 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 155 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 4 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 43 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 5 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 109 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 6 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 82 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 7 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 45 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 8 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 108 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 9 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 46 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 10 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 48 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 11 } }
+					else_if = { limit = { check_variable = { var = THIS.id value = 77 compare = equals } } set_temp_variable = { fallout_event_565_state_rank = 12 } }
+					if = {
+						limit = {
+							check_variable = { ROOT.fallout_event_565_upstream_rank > constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_565_state_rank value = ROOT.fallout_event_565_upstream_rank compare = greater_than }
+							OR = {
+								check_variable = { ROOT.fallout_event_565_downstream_rank = constant:fallout_event_runtime.zero }
+								check_variable = { var = fallout_event_565_state_rank value = ROOT.fallout_event_565_downstream_rank compare = greater_than }
+							}
+						}
+						set_variable = { ROOT.fallout_event_565_downstream_state_id = THIS.id }
+						set_variable = { ROOT.fallout_event_565_downstream_rank = fallout_event_565_state_rank }
+					}
+					clear_temp_variable = fallout_event_565_state_rank
+				}
+			}
+			if = {
+				limit = { fallout_event_565_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.river_ration_league_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.river_ration_league_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.regional_and_biome }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.recovery }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.river_ration_league_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.river_ration_league_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_565_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_565_upstream_rank }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_565_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_state_value_source = fallout_event_565_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.clean_water }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.clean_water }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_four }
+				set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_region.europe }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_565_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.river_ration_league_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			# Keep the selected downstream receipt available until the ordinary
+			# scheduler has copied it into the opening registry. The next rebuild
+			# clears it at the top of this effect.
 
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
