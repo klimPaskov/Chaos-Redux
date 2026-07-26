@@ -248,7 +248,12 @@ approved PNGs were converted to the existing Event 006 AGX texture paths with
 stable sprite names; both DDS files are 131168-byte one-level BGRA textures and
 decode pixel-identically to their approved PNGs. The fresh post-wiring
 country-package audit passes, and IW-007 is compile-time attested beside
-IW-004; every live allocation and transaction proof remains mandatory.
+IW-004; every live allocation and transaction proof remains mandatory. Those
+2022-07-22 runtime bytes are retained as superseded review evidence. The
+current runtime authority is the independently audited and promoted
+`sourced_portrait_refinishes_2026_07_26/frisia_douwe_kalma_trial_02/` and
+`frisia_pieter_reenalda_trial_02/` packages, with current hashes recorded in
+the root Event 006 asset manifest.
 
 ## Admission boundary
 

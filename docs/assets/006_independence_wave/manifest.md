@@ -314,10 +314,15 @@ ship-production lines, not a character or portrait. Protected Rupprecht and
 Matthes remain approved and byte-locked. Brittany's Régis de l'Estourbeillon
 civic leader and Henri-Léon Devin coastal commander also have independently
 approved, source-preserving full-color HOI4 repaint packages and byte-matched
-runtime DDS files. Frisia's retry-02 Douwe Kalma civic leader and Pieter
-Reenalda coastal commander likewise pass independent same-person and HOI4-style
-review; their approved `156x210` PNGs are converted and wired to the existing
-AGX sprites, while rejected Reenalda candidate 01 remains evidence only. IW-007
+runtime DDS files. Frisia's dated 2026-07-26 trial-02 Douwe Kalma civic leader
+and Pieter Reenalda coastal commander likewise pass independent same-person and
+HOI4-style review; their approved `156x210` PNGs are converted and wired to the
+existing AGX sprites. The current runtime DDS hashes are
+`85240ff6700bbebaed9eeba838f9b503d9d42a7e55cef6df2d8c71dc86c33d1e` for the
+civic leader and `e84d790ab245f5e14baadb71d0c66438dcb04586131f4b98893b0a4cbc8e8137`
+for the coastal commander. The full source/crop/ImageGen/processor/audit
+evidence is under `sourced_portrait_refinishes_2026_07_26/`, while rejected
+earlier candidates remain evidence only. IW-007
 passes its fresh post-wiring country-package audit and is compile-time attested
 beside IW-004; all live allocation and transaction gates remain mandatory.
 The IW-010 Willy Schmelcher trial is retained as rejected provenance only: its
