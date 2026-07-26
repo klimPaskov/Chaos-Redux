@@ -46,7 +46,7 @@ The mission completes only when the configured minimum number of members succeed
 
 The timeout path applies the existing major-loss deltas and enters the same league-crisis state without creating targets.
 
-League phase transitions, dissolution, and generation reset call the shared operation cleanup, which clears the coordination flag, state markers, claim and wargoal provenance receipts, member-ready flags, aligned member/state/owner arrays, and count variable while leaving successful finite war goals to their explicit expiry. Individual country cleanup clears only that country's readiness receipt, and a member departure revalidates the minimum surviving ledger before cancelling the shared operation.
+League phase transitions, dissolution, and generation reset call the shared operation cleanup, which clears the coordination flag, coordinator target, state markers, claim and wargoal provenance receipts, member-ready flags, aligned member/state/owner arrays, and count variable while leaving successful finite war goals to their explicit expiry. Successful completion also saves the activating country as the coordinator and schedules `chaosx.nr6.309` for the same 365-day duration as the coordination flag. That callback runs only for the still-current coordinator and clears the operation after natural expiry; an older callback cannot erase a later operation owned by another country. Individual country cleanup clears only that country's readiness receipt, and a member departure revalidates the minimum surviving ledger before cancelling the shared operation.
 
 The mission title, description, cost text, category, and icon are registered in the existing Event 006 decision localisation and interface files; no new advisor or portrait asset is required.
 

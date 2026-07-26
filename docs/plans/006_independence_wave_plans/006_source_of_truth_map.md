@@ -4,7 +4,7 @@
 
 Curated: 2026-07-26 after the Event 006 v10 completion audit, the DM-58 injective preflight commit `cf2316a9a`, and the rejected/reverted shared-focus candidate `f8ca54d24`
 
-Completion state: **incomplete and active; ten package attestations still expose only nine compatible reservation groups, DM-58 execution can still diverge from its proven witness, and the restored focus baseline still has fourteen blocking MCP diagnostics**.
+Completion state: **incomplete and active; ten package attestations still expose only nine compatible reservation groups, DM-58 now binds its exact witness before mutation but lacks live execution/save-load/no-witness evidence, and the restored focus baseline still has fourteen blocking MCP diagnostics**.
 
 This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The current portrait authority is the sourced-only
@@ -376,7 +376,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical implementation snapshots. Their collision, proof-writer, asset, and no-advisor findings remain useful; neither package is currently runtime-admitted |
 | Specification README still describes major implementation work as future | Preserve it as accepted-design context. Use this map for current implementation status |
 | Event documentation and workbook may lag current gameplay | Resolved for the shared Event Details, five evolutions, Liberations cluster, and SCN-008 mirror fields by the dated direct comparison. Recheck only when those player-facing localisation sources change |
-| v9 DM-58 and focus rows predate the post-v9 repairs | Superseded for bounded surfaces by `cf2316a9a`, `f8ca54d24`, and the reversion `8fddaeea3`; the current DM-58 and restored-focus rows above retain their unresolved execution and MCP validation limits |
+| v9 DM-58 and focus rows predate the post-v9 repairs | Superseded for bounded surfaces by `cf2316a9a`, `0b6289c4b`, `f8ca54d24`, and the reversion `8fddaeea3`; the current DM-58 row above records the effect-side witness binding and retains only its live execution, save/load, no-witness performance, and broader decision/mission evidence gaps, while the restored-focus rows retain their MCP geometry blockers |
 
 Parent decisions still required:
 

@@ -106,6 +106,28 @@ country_event = {
 	}
 }
 
+# Delayed expiry callback for the coordinator-bound DM-58 operation. The
+# coordinator target prevents an older scheduled callback from cleaning a
+# later operation started by another country after the timed global flag has
+# expired. Early league transitions still use the shared cleanup effect.
+country_event = {
+	id = chaosx.nr6.309
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = independence_wave_reclamation_front_coordinator
+		event_target:independence_wave_reclamation_front_coordinator = { tag = ROOT }
+		check_variable = {
+			var = global.independence_wave_reclamation_front_count
+			value = constant:independence_wave_value.minimum
+			compare = greater_than
+		}
+	}
+	immediate = {
+		independence_wave_cleanup_reclamation_front_operation = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # FORM-03 LCX post-charter constitutional and industrial progression
 # ---------------------------------------------------------------------------
