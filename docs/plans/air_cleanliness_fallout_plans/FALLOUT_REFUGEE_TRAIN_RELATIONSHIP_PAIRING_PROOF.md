@@ -18,4 +18,4 @@ The reciprocal candidate trigger remains the exact proof boundary. It authentica
 
 No HOI4 session was run. This proof does not claim that `any_of` candidate scans, dynamic array assignment, or `var:global.fallout_event_registry_countries^<index>` scope selection have been accepted by the live engine. It does not claim bilateral opening delivery, response dispatch, save recovery, multiplayer synchronization, host authority, runtime Event Log display, or release-floor credit.
 
-The pairing is intentionally dormant because no scheduler activation flag is set and no existing relationship consumer is wired to the bilateral response envelope.
+The pairing is intentionally dormant because no scheduler activation flag is set. The authored Refugee Train bilateral consumer is wired to the bilateral response envelope in static source, while engine issuance and runtime delivery remain unproven.

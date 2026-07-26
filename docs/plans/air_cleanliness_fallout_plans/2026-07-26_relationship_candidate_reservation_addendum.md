@@ -2,13 +2,13 @@
 
 Date: 2026-07-26
 
-Status: accepted for dormant reservation-substrate implementation. This addendum does not authorize scheduler activation, a new event range, or release-floor credit.
+Status: accepted for dormant reservation-substrate implementation. The Refugee Train consumer was added in the later `2026-07-26_refugee_train_bilateral_consumer_addendum.md`. This addendum does not authorize scheduler activation, a new event range, or release-floor credit.
 
 ## Scope
 
 The reviewed candidate producer already carries four relationship-class rows, but the selector rejects them because their complete reciprocal payload is not proven. This tranche adds the fail-closed reservation path without activating any row. It uses only existing candidate ids, transaction keys, event tokens, and bilateral ledger APIs.
 
-The path is deliberately structural. It does not claim that the existing relationship event blocks are wired to bilateral response envelopes. Relationship event consumers remain a later content tranche with their own accepted addendum.
+The path is deliberately structural. The Refugee Train row now has an authored bilateral response consumer at events `1019` through `1022`, while the other relationship event consumers remain later content tranches with their own accepted addenda.
 
 ## Ownership
 
@@ -26,13 +26,13 @@ The wrapper loads `event_target:fallout_event_requested_bilateral_partner` from 
 
 The cleanup token is the candidate identity and the parent arc ticket is the candidate's frozen parent ticket. The wrapper never invents a target, actor, or event id. A missing partner, a mismatched reciprocal row, a duplicate token pair, a stale generation, a full participant ledger, a conflicting issued pair, or a control-mode and cost mismatch returns `fallout_event_transaction_accepted = 0` without mutation.
 
-The existing bilateral API remains the only writer. It allocates one ticket, appends both reciprocal rows, proves both rows, and rolls both rows back when the second commit fails. Exact retries match the complete immutable payload before capacity checks. Human cooldown is applied symmetrically by the existing API. The pair starts in `reserved` status and is not issued by this tranche. The later relationship event consumer must mark the exact pair `response_pending` before any bilateral dispatch.
+The existing bilateral API remains the only writer. It allocates one ticket, appends both reciprocal rows, proves both rows, and rolls both rows back when the second commit fails. Exact retries match the complete immutable payload before capacity checks. Human cooldown is applied symmetrically by the existing API. The pair starts in `reserved` status and is not issued by this reservation tranche. The authored Refugee Train consumer marks the exact pair `response_pending` before bilateral dispatch. Other relationship rows remain without a consumer.
 
 ## Selection integration
 
 `fallout_event_candidate_row_is_eligible` admits a relationship row only through the reciprocal candidate proof. `fallout_event_commit_selected_candidate` routes relationship rows to the bilateral wrapper and all other classes to the ordinary receipt wrapper. The ordinary receipt reconciliation and ordinary dispatch envelope are skipped for an accepted relationship reservation. The pair is left for the existing bilateral reconciler and an authored relationship consumer.
 
-The Refugee Train row now has a dormant reciprocal pairing pass recorded in `2026-07-26_refugee_train_relationship_pairing_addendum.md`. The pass selects the two lowest reviewed registries that carry candidate `415` and writes each registry index into the other row. The other three relationship rows retain the typed no-partner sentinel. No current relationship row reaches the new wrapper until the reciprocal proof, pair-family memory, current participant state, and bilateral capacity gates all pass. No scheduler activation flag is touched, and the reviewed count remains 460 defined blocks and 0 of 660 countable blocks.
+The Refugee Train row now has a dormant reciprocal pairing pass recorded in `2026-07-26_refugee_train_relationship_pairing_addendum.md`. The pass selects the two lowest reviewed registries that carry candidate `415` and writes each registry index into the other row. The other three relationship rows retain the typed no-partner sentinel and have no authored consumer. No current relationship row reaches the new wrapper until the reciprocal proof, pair-family memory, current participant state, and bilateral capacity gates all pass. No scheduler activation flag is touched, and the reviewed count remains 460 defined blocks and 0 of 660 countable blocks.
 
 ## Validation evidence
 

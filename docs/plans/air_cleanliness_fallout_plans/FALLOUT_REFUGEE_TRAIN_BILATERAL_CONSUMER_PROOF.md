@@ -50,6 +50,18 @@ Partial resolution improves reclamation and Supply Access more slowly while addi
 
 Failure increases exposure, reduces Supply Access, records a failed state memory, and applies the broken-train modifier.
 
+## Event Log
+
+The bilateral pilot owns Event Log history `9160`, separate from the ordinary Refugee Train history `9133`.
+
+The opening writer records one of four branch-choice payloads after the authenticated pair transition.
+
+The response writer records one of twelve branch-outcome payloads after both countries receive the resolved effects.
+
+Each row uses the current country as the primary actor and the authenticated paired country as the secondary actor.
+
+Opening and result history flags make each stage idempotent, while the shared Event Log detail and name routes expose the dedicated bilateral title and concrete payload text.
+
 ## Static checks
 
 The touched Clausewitz files have balanced braces and quoted strings under a local parser.
@@ -62,7 +74,7 @@ No HOI4 process was launched.
 
 ## Unproven surfaces
 
-No runtime proof exists for event-token issuance, dynamic country scope selection, save recovery, multiplayer host authority, Event Log presentation, or cleanup timing.
+No runtime proof exists for event-token issuance, dynamic country scope selection, save recovery, multiplayer host authority, Event Log rendering, or cleanup timing.
 
 The Fallout scheduler activation flags remain unset.
 

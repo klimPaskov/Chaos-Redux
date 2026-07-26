@@ -1,5 +1,7 @@
 # Refugee Train relationship pairing addendum
 
+Status: implemented dormant pairing prerequisite. The later `2026-07-26_refugee_train_bilateral_consumer_addendum.md` supplies the opening and response consumer that this file originally left for a later tranche.
+
 This tranche adds the first generation-bound reciprocal candidate payload to the Fallout scheduler. It remains dormant and does not activate the scheduler or issue an engine event.
 
 ## Accepted scope
@@ -18,6 +20,6 @@ The general candidate eligibility trigger still requires the bilateral pair-fami
 
 ## Deliberate boundary
 
-The current Refugee Train chain has authored ordinary opening, result, callback, and cleanup events under `chaosx.fallout.415` through `.421`. Those consumers authenticate ordinary receipts and are not yet bilateral response consumers. The relationship pair therefore remains non-countable until a later tranche supplies the bilateral opening and response stage consumer, host delivery proof, save recovery proof, multiplayer proof, and Event Log proof.
+The current Refugee Train chain has authored ordinary opening, result, callback, and cleanup events under `chaosx.fallout.415` through `.421`. The separate bilateral consumer is now authored at events `1019` through `1022` and is documented in `FALLOUT_REFUGEE_TRAIN_BILATERAL_CONSUMER_PROOF.md`. The relationship pair remains dormant and outside the countable release floor because scheduler activation, host delivery, save recovery, multiplayer, and Event Log runtime proof remain open.
 
 No new asset, sprite, audio path, tag, or localisation key is introduced by this addendum.
