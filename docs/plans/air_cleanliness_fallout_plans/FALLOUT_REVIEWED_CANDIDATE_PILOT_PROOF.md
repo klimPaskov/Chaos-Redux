@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Tunnel Ward Committees
+## Current reconciliation after Metro Republic Below
 
-The reviewed candidate producer now covers `58` ordinary dormant rows through candidate `607`, with `488` defined event blocks and `0 of 660` countable release-floor blocks. The Tunnel Ward Committees row uses route `7158`, so the reviewed route upper bound is now `7159`. Its current-generation East Asia shelter admission stores the pretransition Air Winter shelter snapshot, not an unproven building proxy.
+The reviewed candidate producer now covers `59` ordinary dormant rows through candidate `614`, with `495` defined event blocks and `0 of 660` countable release-floor blocks. The Metro Republic Below row uses route `7159`, so the reviewed route upper bound is now `7160`. Its current-generation European city admission stores the pretransition Air Winter shelter and exposure snapshots, not an unproven building proxy.
+
+Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
 Status: dormant, statically reconciled, not release-floor credit.
 
@@ -505,3 +507,15 @@ The consumer authenticates reciprocal reservation rows, uses separate opening an
 The four consumer blocks are not part of the reviewed ordinary-row total and do not increase the `0 of 660` countable release-floor total.
 
 The dedicated implementation proof is `FALLOUT_REFUGEE_TRAIN_BILATERAL_CONSUMER_PROOF.md`.
+
+## The Metro Republic Below correction
+
+The Metro Republic Below is the fifty-ninth reviewed ordinary candidate.
+
+It uses candidate id `614`, transaction `710059`, route `7159`, event blocks `614` through `620`, and Event Log history `9165`.
+
+Its country gate requires the Europe region, current-generation Fallout identity, durable Survival resources, Cohesion, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled European city or large-city state with a produced Air Winter shelter snapshot, surviving population, Supply Access, Reclamation, infrastructure, low exposure, and bounded disease pressure.
+
+Four authored branches cover a surface council, autonomous wards, a military corridor, and evacuation of the lower districts. The result and callback use frozen ledgers, deterministic branch thresholds, bounded Deaths effects, state Supply Access and Air Winter changes, durable country and state memories, hidden-AI parity, Event Log history `9165`, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_METRO_REPUBLIC_BELOW_PROOF.md`.

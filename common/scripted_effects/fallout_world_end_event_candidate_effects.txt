@@ -43,6 +43,9 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_607_candidate_state_id
 	clear_variable = fallout_event_607_candidate_shelter_capacity
 	clear_variable = fallout_event_607_candidate_exposure
+	clear_variable = fallout_event_614_candidate_state_id
+	clear_variable = fallout_event_614_candidate_shelter_capacity
+	clear_variable = fallout_event_614_candidate_exposure
 	clear_variable = fallout_event_387_candidate_state_id
 	clear_variable = fallout_event_387_candidate_medical_pressure
 	clear_variable = fallout_event_394_candidate_state_id
@@ -2799,6 +2802,64 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_variable = fallout_event_607_candidate_state_id
 			clear_variable = fallout_event_607_candidate_shelter_capacity
 			clear_variable = fallout_event_607_candidate_exposure
+			# Metro Republic Below selects the lowest native European city or
+			# large-city state with a current shelter producer and safe recovery row.
+			set_variable = { fallout_event_614_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_614_candidate_shelter_capacity = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_614_candidate_exposure = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = { fallout_event_614_state_is_current = yes }
+					if = {
+						limit = {
+							OR = {
+								check_variable = { ROOT.fallout_event_614_candidate_state_id = constant:fallout_event_runtime.zero }
+								check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_614_candidate_state_id compare = less_than }
+							}
+						}
+						set_variable = { ROOT.fallout_event_614_candidate_state_id = fallout_event_pilot_state_candidate_id }
+						set_variable = { ROOT.fallout_event_614_candidate_shelter_capacity = fallout_pretransition_air_winter_shelter_capacity }
+						set_variable = { ROOT.fallout_event_614_candidate_exposure = fallout_pretransition_air_winter_exposure }
+					}
+				}
+			}
+			if = {
+				limit = { fallout_event_614_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.metro_republic_below_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.metro_republic_below_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.regional_and_biome }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.shelter }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.metro_republic_below_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.metro_republic_below_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.rival_orders }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_614_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_614_candidate_exposure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_614_candidate_shelter_capacity }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_614_candidate_shelter_capacity }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.shelter_capacity }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.shelter_capacity }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_four }
+				set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_region.europe }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_614_candidate_state_id }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.metro_republic_below_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_state_candidate_id
+			clear_variable = fallout_event_614_candidate_state_id
+			clear_variable = fallout_event_614_candidate_shelter_capacity
+			clear_variable = fallout_event_614_candidate_exposure
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

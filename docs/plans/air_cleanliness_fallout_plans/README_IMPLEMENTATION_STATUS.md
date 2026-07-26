@@ -1,8 +1,8 @@
 # Air Cleanliness and Fallout Implementation Status
 
-## Current reconciliation after Tunnel Ward Committees
+## Current reconciliation after Metro Republic Below
 
-The latest dormant regional tranche is Tunnel Ward Committees at `chaosx.fallout.607` through `chaosx.fallout.613`, candidate `607`, transaction `710058`, route `7158`, and Event Log history `9164`. It adds one East Asia shelter-governance row with four human and hidden-AI-parity branches, deterministic result and callback grading, Deaths-backed failure, durable memories, cleanup, dedicated localisation, and dedicated report art. The reviewed ordinary pilot now has `58` rows and `488` defined blocks. Countable release-floor credit remains `0 of 660` while scheduler activation is unset.
+The latest dormant regional tranche is Metro Republic Below at `chaosx.fallout.614` through `chaosx.fallout.620`, candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. It adds one European shelter-governance row with four human and hidden-AI-parity branches, deterministic result and callback grading, Deaths-backed failure, durable memories, cleanup, dedicated localisation, and dedicated report art. The reviewed ordinary pilot now has `59` rows and `495` defined blocks. Countable release-floor credit remains `0 of 660` while scheduler activation is unset.
 
 Overall system status reviewed against the live working tree on 2026-07-26. The numerical approval gate was reconciled on 2026-07-18.
 
@@ -794,3 +794,15 @@ The dormant consumer writes dedicated Event Log history `9160` with branch-choic
 The four blocks remain outside the fifty-seven reviewed ordinary candidates and do not change the `0 of 660` countable release-floor total.
 
 Scheduler activation, native event issuance, save recovery, multiplayer host authority, Event Log rendering, and cleanup timing remain unproven because HOI4 was not launched.
+
+## Metro Republic Below regional tranche
+
+Metro Republic Below is implemented as dormant ordinary Fallout events `chaosx.fallout.614` through `.620` with candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`.
+
+It selects the lowest eligible current-generation European city or large-city state with a produced Air Winter shelter snapshot, surviving population, Supply Access, Reclamation, infrastructure, low exposure, and bounded disease pressure.
+
+The four branches open a surface council, keep metro wards autonomous, integrate a military corridor, or evacuate lower districts. The chain freezes shelter, Supply Access, Reclamation, infrastructure, survival resources, Cohesion, exposure, disease, and population before payment, resolves after `35` days, then schedules a `270` day district review callback.
+
+Results apply state Supply Access and Air Winter changes, branch-specific country ledgers, durable state memory, bounded Deaths effects on failures, hidden-AI parity, Event Log payloads, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and contributes zero release-floor credit. Scheduler activation, blackout host authority, save recovery, multiplayer delivery, and runtime Event Log rendering remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_METRO_REPUBLIC_BELOW_PROOF.md`.
