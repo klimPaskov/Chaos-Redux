@@ -1582,6 +1582,21 @@ fallout_event_dispatch_envelope_matches_transaction = {
 						has_variable = fallout_event_408_candidate_state_id
 						check_variable = { var = fallout_event_dispatch_target value = fallout_event_408_candidate_state_id compare = equals }
 					}
+					AND = {
+						check_variable = { fallout_event_arc_identity_entries^fallout_event_dispatch_stored_index = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
+						OR = {
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.human_visible }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.skilled_list_human }
+							}
+							AND = {
+								check_variable = { fallout_event_dispatch_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+								check_variable = { fallout_event_dispatch_event_token = constant:fallout_event_id.skilled_list_ai }
+							}
+						}
+						has_variable = fallout_event_429_candidate_state_id
+						check_variable = { var = fallout_event_dispatch_target value = fallout_event_429_candidate_state_id compare = equals }
+					}
 				}
 				check_variable = { fallout_event_dispatch_branch = constant:fallout_event_runtime.one }
 				check_variable = { fallout_event_dispatch_target_type = constant:fallout_event_subject_type.state }

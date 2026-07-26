@@ -170,11 +170,128 @@ fallout_event_429_clear_frozen = {
 	clear_variable = fallout_event_429_frozen_charter
 }
 
+# Supported scope: COUNTRY. Capture the major ticket before the delayed result
+# is reserved. Ordinary callers do not create or retain this variable.
+fallout_event_429_open_major_arc_stages = {
+	set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one }
+	if = {
+		limit = { check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.major_arc_stage } }
+		set_variable = { fallout_event_429_major_arc_ticket = fallout_event_dispatch_issued_ticket }
+	}
+}
+
+# Supported scope: COUNTRY. Advance through conflict and choice after the
+# major opening envelope has been consumed.
+fallout_event_429_advance_arc_opening_to_choice = {
+	set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.conflict }
+		set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.none }
+		fallout_event_advance_major_arc = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.choice }
+			fallout_event_advance_major_arc = yes
+			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one } }
+		}
+	}
+	else = {
+		set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one }
+	}
+}
+
+# Supported scope: COUNTRY. The delayed result is the fourth authored arc
+# position after the opening, conflict, and choice stages.
+fallout_event_429_advance_arc_to_delayed_result = {
+	set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one }
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.delayed_result }
+		set_temp_variable = { fallout_event_requested_outcome = fallout_event_429_result_outcome }
+		fallout_event_advance_major_arc = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero } }
+			set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.arc_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. The callback occupies consequence and callback
+# stages before delayed cleanup is released.
+fallout_event_429_advance_arc_to_callback = {
+	set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one }
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.consequence }
+		set_temp_variable = { fallout_event_requested_outcome = fallout_event_429_result_outcome }
+		fallout_event_advance_major_arc = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.callback }
+			fallout_event_advance_major_arc = yes
+		}
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero } }
+			set_temp_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.arc_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Cleanup advances the authored arc to its terminal
+# stage and releases the exact identity and cleanup token.
+fallout_event_429_close_major_arc = {
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_arc_stage = constant:fallout_event_arc_stage.cleanup }
+		set_temp_variable = { fallout_event_requested_outcome = fallout_event_429_result_outcome }
+		fallout_event_advance_major_arc = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
+			fallout_event_release_major_arc = yes
+		}
+		else = {
+			set_temp_variable = { fallout_event_scheduler_error_to_register = constant:fallout_event_scheduler_error.arc_receipt_mismatch }
+			fallout_event_register_scheduler_error_if_unowned = yes
+		}
+		clear_variable = fallout_event_429_major_arc_ticket
+	}
+}
+
+# Supported scope: COUNTRY. A failed delayed-row reservation cancels and
+# releases the major identity instead of leaving an opening slot orphaned.
+fallout_event_429_cancel_major_arc = {
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.caller_cancelled }
+		fallout_event_cancel_major_arc = yes
+		if = {
+			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+			set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
+			fallout_event_release_major_arc = yes
+		}
+		clear_variable = fallout_event_429_major_arc_ticket
+	}
+}
+
 fallout_event_429_schedule_result = {
 	set_temp_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero }
 	if = {
 		limit = {
-			fallout_event_issued_ordinary_receipt_is_current = yes
+			OR = {
+				fallout_event_issued_ordinary_receipt_is_current = yes
+				fallout_event_issued_major_arc_stage_is_current = yes
+			}
 			NOT = { has_country_flag = fallout_event_429_chain_committed }
 			check_variable = { fallout_event_429_requested_branch > constant:fallout_event_429_branch.none }
 			check_variable = { fallout_event_429_requested_branch < constant:fallout_event_429_branch.upper_bound }
@@ -183,6 +300,7 @@ fallout_event_429_schedule_result = {
 		set_temp_variable = { fallout_event_429_opening_ticket = fallout_event_dispatch_issued_ticket }
 		set_temp_variable = { fallout_event_429_opening_mode = fallout_event_dispatch_issued_mode }
 		set_temp_variable = { fallout_event_429_opening_event_token = fallout_event_dispatch_issued_event_token }
+		fallout_event_429_open_major_arc_stages = yes
 		set_variable = { fallout_event_429_frozen_food = fallout_survival_current_entries^1 }
 		set_variable = { fallout_event_429_frozen_medicine = fallout_survival_current_entries^3 }
 		set_variable = { fallout_event_429_frozen_recognition = fallout_survival_current_entries^9 }
@@ -201,7 +319,13 @@ fallout_event_429_schedule_result = {
 		set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_429_opening_ticket }
 		add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_429_transaction.result_transaction_key_offset }
 		add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_429_requested_branch }
-		set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+		if = {
+			limit = { has_variable = fallout_event_429_major_arc_ticket }
+			set_temp_variable = { fallout_event_requested_parent_arc_ticket = fallout_event_429_major_arc_ticket }
+		}
+		else = {
+			set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+		}
 		set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.skilled_list_result }
 		set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.skilled_list_result_ai }
 		set_temp_variable = { fallout_event_requested_branch = fallout_event_429_requested_branch }
@@ -218,34 +342,57 @@ fallout_event_429_schedule_result = {
 		if = {
 			limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
 			set_temp_variable = { fallout_event_requested_event_token = fallout_event_429_opening_event_token }
-			fallout_event_consume_issued_ordinary_receipt = yes
+			if = {
+				limit = { check_variable = { fallout_event_dispatch_issued_source = constant:fallout_event_dispatch_source.major_arc_stage } }
+				fallout_event_consume_issued_major_arc_stage = yes
+			}
+			else = {
+				fallout_event_consume_issued_ordinary_receipt = yes
+			}
 			if = {
 				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
-				set_variable = { fallout_event_429_result_cleanup_ticket = fallout_event_transaction_ticket }
-				set_variable = { fallout_event_429_result_outcome = fallout_event_429_calculated_outcome }
-				set_variable = { fallout_event_429_result_generation = fallout_event_runtime_generation }
-				set_variable = { fallout_event_429_result_day = global.num_days }
-				set_variable = { fallout_event_429_registry_generation = fallout_event_runtime_generation }
-				set_variable = { fallout_event_429_registry_owner = ROOT }
-				set_variable = { fallout_event_429_candidate_id = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
-				set_variable = { fallout_event_429_registry_target_type = constant:fallout_event_subject_type.state }
-				set_variable = { fallout_event_429_registry_target = fallout_event_429_target_state_id }
-				set_country_flag = fallout_event_429_chain_committed
-				set_country_flag = fallout_event_429_memory_opened
+				fallout_event_429_advance_arc_opening_to_choice = yes
+				if = {
+					limit = { check_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one } }
+					set_variable = { fallout_event_429_result_cleanup_ticket = fallout_event_transaction_ticket }
+					set_variable = { fallout_event_429_result_outcome = fallout_event_429_calculated_outcome }
+					set_variable = { fallout_event_429_result_generation = fallout_event_runtime_generation }
+					set_variable = { fallout_event_429_result_day = global.num_days }
+					set_variable = { fallout_event_429_registry_generation = fallout_event_runtime_generation }
+					set_variable = { fallout_event_429_registry_owner = ROOT }
+					set_variable = { fallout_event_429_candidate_id = constant:fallout_event_candidate_pilot.skilled_list_candidate_id }
+					set_variable = { fallout_event_429_registry_target_type = constant:fallout_event_subject_type.state }
+					set_variable = { fallout_event_429_registry_target = fallout_event_429_target_state_id }
+					set_country_flag = fallout_event_429_chain_committed
+					set_country_flag = fallout_event_429_memory_opened
+				}
+				else = {
+					set_temp_variable = { fallout_event_requested_ticket = fallout_event_transaction_ticket }
+					set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.caller_cancelled }
+					set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
+					fallout_event_cancel_delayed_result = yes
+					fallout_event_429_cancel_major_arc = yes
+					fallout_event_429_clear_frozen = yes
+				}
 			}
 			else = {
 				set_temp_variable = { fallout_event_requested_ticket = fallout_event_transaction_ticket }
 				set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.cancelled_before_choice }
 				fallout_event_cancel_delayed_result = yes
+				fallout_event_429_cancel_major_arc = yes
 				fallout_event_429_clear_frozen = yes
 			}
 		}
-		else = { fallout_event_429_clear_frozen = yes }
+		else = {
+			fallout_event_429_cancel_major_arc = yes
+			fallout_event_429_clear_frozen = yes
+		}
 	}
 	clear_temp_variable = fallout_event_429_calculated_outcome
 	clear_temp_variable = fallout_event_429_opening_ticket
 	clear_temp_variable = fallout_event_429_opening_mode
 	clear_temp_variable = fallout_event_429_opening_event_token
+	clear_temp_variable = fallout_event_429_arc_stage_transition_accepted
 }
 
 fallout_event_429_choose_branch = {
@@ -359,7 +506,13 @@ fallout_event_429_schedule_callback = {
 	set_temp_variable = { fallout_event_requested_transaction_key = fallout_event_429_result_cleanup_ticket }
 	add_to_temp_variable = { fallout_event_requested_transaction_key = constant:fallout_event_429_transaction.result_transaction_key_offset }
 	add_to_temp_variable = { fallout_event_requested_transaction_key = fallout_event_429_selected_branch }
-	set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	if = {
+		limit = { has_variable = fallout_event_429_major_arc_ticket }
+		set_temp_variable = { fallout_event_requested_parent_arc_ticket = fallout_event_429_major_arc_ticket }
+	}
+	else = {
+		set_temp_variable = { fallout_event_requested_parent_arc_ticket = constant:fallout_event_runtime.no_ticket }
+	}
 	set_temp_variable = { fallout_event_requested_human_event_token = constant:fallout_event_id.skilled_list_callback }
 	set_temp_variable = { fallout_event_requested_ai_event_token = constant:fallout_event_id.skilled_list_callback_ai }
 	set_temp_variable = { fallout_event_requested_branch = fallout_event_429_selected_branch }
@@ -387,12 +540,26 @@ fallout_event_429_resolve_result_and_schedule_callback = {
 		set_temp_variable = { fallout_event_429_history_stage = constant:fallout_event_runtime.one }
 		fallout_event_429_record_history = yes
 		set_variable = { fallout_event_429_result_cleanup_ticket = fallout_event_429_result_ticket }
-		fallout_event_429_schedule_callback = yes
-		if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_429_callback_scheduled set_variable = { fallout_event_429_callback_cleanup_ticket = fallout_event_transaction_ticket } }
-		else = { set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_result_ticket } fallout_event_prepare_delayed_cleanup = yes }
+		fallout_event_429_advance_arc_to_delayed_result = yes
+		if = {
+			limit = { check_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.one } }
+			fallout_event_429_schedule_callback = yes
+			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } set_country_flag = fallout_event_429_callback_scheduled set_variable = { fallout_event_429_callback_cleanup_ticket = fallout_event_transaction_ticket } }
+			else = {
+				set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_result_ticket }
+				fallout_event_prepare_delayed_cleanup = yes
+				fallout_event_429_cancel_major_arc = yes
+			}
+		}
+		else = {
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_result_ticket }
+			fallout_event_prepare_delayed_cleanup = yes
+			fallout_event_429_cancel_major_arc = yes
+		}
 	}
 	clear_temp_variable = fallout_event_429_result_ticket
 	clear_temp_variable = fallout_event_429_result_mode
+	clear_temp_variable = fallout_event_429_arc_stage_transition_accepted
 }
 
 fallout_event_429_apply_callback_effects = {
@@ -469,10 +636,13 @@ fallout_event_429_resolve_callback_and_prepare_cleanup = {
 		set_variable = { fallout_event_429_callback_cleanup_ticket = fallout_event_429_callback_ticket }
 		set_temp_variable = { fallout_event_429_history_stage = constant:fallout_event_runtime.two }
 		fallout_event_429_record_history = yes
+		fallout_event_429_advance_arc_to_callback = yes
+		if = { limit = { check_variable = { fallout_event_429_arc_stage_transition_accepted = constant:fallout_event_runtime.zero } } fallout_event_429_cancel_major_arc = yes }
 		set_temp_variable = { fallout_event_requested_ticket = fallout_event_429_callback_ticket }
 		fallout_event_prepare_delayed_cleanup = yes
 	}
 	clear_temp_variable = fallout_event_429_callback_ticket
+	clear_temp_variable = fallout_event_429_arc_stage_transition_accepted
 }
 
 fallout_event_429_cleanup = {
@@ -492,6 +662,7 @@ fallout_event_429_cleanup = {
 		if = {
 			limit = { OR = { AND = { has_country_flag = fallout_event_429_result_cleanup_released has_country_flag = fallout_event_429_callback_cleanup_released } AND = { has_country_flag = fallout_event_429_result_cleanup_released NOT = { has_country_flag = fallout_event_429_callback_scheduled } } } }
 			set_country_flag = fallout_event_429_memory_closed
+			fallout_event_429_close_major_arc = yes
 			clr_country_flag = fallout_event_429_chain_committed
 			clr_country_flag = fallout_event_429_callback_scheduled
 			clr_country_flag = fallout_event_429_cost_paid
