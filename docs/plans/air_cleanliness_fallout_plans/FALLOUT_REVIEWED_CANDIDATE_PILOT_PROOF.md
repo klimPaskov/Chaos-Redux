@@ -68,9 +68,9 @@ and generation markers instead of selecting a fallback.
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger admits major-arc rows only through
-  the top-level arc payload proof. Year Zero and Orchard Flowers have dormant
+  the top-level arc payload proof. Year Zero, Orchard Flowers, and Skilled List have dormant
   major-stage consumers using their existing human and hidden-AI event tokens,
-  while Skilled List and False Spring Losses remain reservation-only. Relationship
+  while False Spring Losses remains reservation-only. Relationship
   rows now use a reciprocal bilateral proof, but the current rows keep the
   no-partner sentinel and therefore remain ineligible.
 - The Well Queue cost is paid only after its delayed row and ordinary receipt
