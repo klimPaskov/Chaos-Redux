@@ -117,3 +117,14 @@ Successor package production, player materialization, general allocation, countr
 | Mountain Pass Census constants and registry | `common/script_constants/fallout_world_end_mountain_pass_census_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
 | Mountain Pass Census localisation and Event Log | `localisation/english/fallout_world_end_mountain_pass_census_l_english.yml`, `common/scripted_localisation/fallout_world_end_mountain_pass_census_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | Mountain Pass Census art | `docs/assets/635_mountain_pass_census/manifest.json`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout_world_end/report_event_fallout_mountain_pass_census.dds` |
+
+## The New Year Without Fireworks source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The New Year Without Fireworks design | `docs/specs/air_cleanliness_fallout_specs/specs/65_reviewed_regional_new_year_without_fireworks.md` |
+| The New Year Without Fireworks runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md` |
+| The New Year Without Fireworks gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_new_year_without_fireworks_event_triggers.txt`, `common/scripted_effects/fallout_world_end_new_year_without_fireworks_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_new_year_without_fireworks_dynamic_modifiers.txt` |
+| The New Year Without Fireworks constants and registry | `common/script_constants/fallout_world_end_new_year_without_fireworks_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The New Year Without Fireworks localisation and Event Log | `localisation/english/fallout_world_end_new_year_without_fireworks_l_english.yml`, `common/scripted_localisation/fallout_world_end_new_year_without_fireworks_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The New Year Without Fireworks art and workbook | `docs/assets/649_new_year_without_fireworks/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout_world_end/report_event_fallout_new_year_without_fireworks.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and the exported evidence row at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` |
