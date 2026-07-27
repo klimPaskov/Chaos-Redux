@@ -55,7 +55,7 @@ IW-001 verifies the existing p1 territorial-defense package with military tradit
 
 Scotland uses the sourced R. B. Cunninghame Graham character token `SCO_independence_wave_civic_convention` for its civic routes and the sourced Victor Morven Fortune token `SCO_independence_wave_territorial_commandant` as its emergency head and corps commander. Wales uses the independently approved and runtime-wired J. H. Thomas token `WLS_independence_wave_national_council` as its civic leader. Its `WLS_independence_wave_mountain_commandant` remains source-blocked after the Evans trial-03 likeness failure.
 
-These are guarded runtime Event 6 characters, not replacements for vanilla characters. Setup retains stable `156x210` sprite consumers with `set_portraits`; Event 6 defines no commander miniature, advisor-card, dossier, or `_small` portrait. Their real-person masters are attributed archival sources, but the current non-protected treatments remain rejected because they do not meet the HOI4 painted-style gate. A package cannot pass content attestation while one of its required identities is source-blocked or its complete portrait set has not passed visual review.
+These are guarded runtime Event 6 characters, not replacements for vanilla characters. Setup retains stable `156x210` sprite consumers with `set_portraits`; Event 6 defines no commander miniature, advisor-card, dossier, or `_small` portrait. Scotland's two sourced real-male treatments and Wales's J. H. Thomas civic treatment are approved and wired; the Lewis Pugh Evans commandant remains source-blocked after the trial-03 likeness failure. A package cannot pass content attestation while one of its required identities is source-blocked or its complete portrait set has not passed visual review.
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
@@ -141,7 +141,7 @@ Scotland and Wales retain their installed vanilla flag triplets because these ar
 
 ### Readiness and future work
 
-Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, source-backed Scottish leaders, asset-neutral advisor boards, and FORM-01/02 integration are implemented. The compile-time runtime-content attestation remains fail-closed until the unresolved Welsh identities and the other package-specific source blockers are cleared; no portrait tranche alone admits a package. The runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
+Gameplay adapters, projects, focus hooks, ideas, AI, localisation, exact setup validation, source-backed Scottish leaders, asset-neutral advisor boards, and FORM-01/02 integration are implemented. IW-001 Scotland is admitted after its complete sourced roster and post-wiring package audit. IW-002 Wales remains outside compile-time content attestation because its mountain commandant remains source-blocked; no portrait tranche alone admits a package. The runtime allocator still enforces host survival, unique anchors, reservations, Event 5 separation, and wave capacity. Wales's installed vanilla flag retains its 1959-layout caveat in the asset audit. No dormant vanilla history file receives a content-readiness flag.
 
 Future depth can add bilateral Scottish-Welsh conference events and route-specific cabinet succession without bypassing the package gate or replacing living countries.
 
@@ -261,7 +261,7 @@ The custom congress replaces the shared preparation mission, not the final procl
 
 The cleanup adapter removes the founding mission, all package decisions, both lifecycle ideas, all route ideas, package values, package flags, focus handoff flags, AI profile, and FORM-01 candidate flags. Runtime characters are guarded for repeat initialization and remain harmless outside the exact active package gates.
 
-The narrow runtime dispatch adapter recognizes package ID 4 for setup, final validation, and cleanup. Its immutable package/tag helper and runtime preflight branch prove the exact `IW-004`/`BRI` identity. The automatic and scenario gates require BRI to be absent, state 14 to be a valid unique anchor, `RG-14` to be free, the former host to retain a state, and the candidate to be clear of Event 5 reservations. The earlier content-attestation promotion was withdrawn by the sourced-portrait gate; a fresh post-replacement package audit must explicitly reauthorize it. No dormant-history or legacy content-ready flag grants readiness.
+The narrow runtime dispatch adapter recognizes package ID 4 for setup, final validation, and cleanup. Its immutable package/tag helper and runtime preflight branch prove the exact `IW-004`/`BRI` identity. The automatic and scenario gates require BRI to be absent, state 14 to be a valid unique anchor, `RG-14` to be free, the former host to retain a state, and the candidate to be clear of Event 5 reservations. The current sourced portrait and post-wiring package audits authorize IW-004's exact compile-time attestation; live host, anchor, reservation, Event 5, chaos-band, force, and transaction checks remain mandatory. No dormant-history or legacy content-ready flag grants readiness.
 
 ### Visual assets and icon wiring
 
@@ -315,7 +315,7 @@ This package layer implements the playable country content for two accepted Even
 
 | Package | Tag | Anchor | Depth | Economy | Opening force |
 | --- | --- | ---: | --- | --- | --- |
-| IW-006 Wallonia | AFX | State 34 | Regional | Industrial breakaway | Industrial security, score 60 |
+| IW-006 Wallonia | AFX | State 34 | Regional | Industrial breakaway | Industrial security, score 61 |
 | IW-007 Frisia | AGX | State 36 | Standard | Port or island | Coastal maritime, score 45 |
 
 The implementation is isolated from the shared allocator and executor. Regional setup, final-validation, and cleanup adapters are registered through the parent-owned generic dispatchers. Readiness is a static exact-ID/tag attestation rather than a mutable dormant-history flag. The Low Countries formable identity, flag, territory, member policy, integration adapter, and post-charter progression passed their independent audits; the AFX and AGX automatic/scenario release wrappers remain separate package-level preflight gates.
@@ -550,24 +550,24 @@ The bounded dispatcher adapters are:
 - `independence_wave_dispatch_rhineland_bavaria_package_final_validation`
 - `independence_wave_dispatch_rhineland_bavaria_package_cleanup`
 
-The parent Event 006 transaction calls these adapters from its setup, final-validation, and cleanup dispatchers, and its immutable adapter registry recognizes the exact ID/tag pairs for package IDs 8 and 9. Readiness is not stored in dormant vanilla history. IW-008 carries exact static content attestation after its independent post-wiring package audit, while IW-009 retains its adapter and SCN-008 preflight branch but remains fail-closed at the shared attestation gate. Runtime admission still requires every dormant-tag, anchor, host-survival, reservation, Event 5 exclusion, chaos-band, and transaction-preflight gate. Rhineland additionally depends on the shared `FORM-04` identity transaction and flag package. Bavaria has a South German restoration ambition and no shared formable dependency.
+The parent Event 006 transaction calls these adapters from its setup, final-validation, and cleanup dispatchers, and its immutable adapter registry recognizes the exact ID/tag pairs for package IDs 8 and 9. Readiness is not stored in dormant vanilla history. IW-008 and IW-009 carry exact static content attestation after their independent post-wiring package audits. Runtime admission still requires every dormant-tag, anchor, host-survival, reservation, Event 5 exclusion, chaos-band, and transaction-preflight gate. Rhineland additionally depends on the shared `FORM-04` identity transaction and flag package. Bavaria has a South German restoration ambition and no shared formable dependency.
 
-Each prepared proof checks the exact tag, package ID, region, depth, archetype, anchor, former-host pointer, capital, laws, command roster, full focus assignment, allowed routes, power struggle, ambition policy, force mapping, applied starting force, lifecycle, and AI profile. Both proofs require `independence_wave_radical_sovereignty_route_excluded`, which keeps their accepted route matrices authoritative when Evolution 5 applies Open Sovereignty; other countries retain the shared evolution behavior. The frozen allocation planner owns the shared `RG-RHINE-SAAR` reservation and prevents the RHI and AJX package rows from competing for the same release slot while still allowing the two living states required by `FORM-04` to coexist.
+Each prepared proof checks the exact tag, package ID, region, depth, archetype, anchor, former-host pointer, capital, laws, command roster, full focus assignment, allowed routes, power struggle, ambition policy, force mapping, applied starting force, lifecycle, and AI profile. Both proofs require `independence_wave_radical_sovereignty_route_excluded`, which keeps their accepted route matrices authoritative when Evolution 5 applies Open Sovereignty; other countries retain the shared evolution behavior. The frozen allocation planner owns the shared `RG-RHINE-SAAR` reservation and admits only the reciprocal RHI/AJX pair at capacity two, with distinct anchors 51 and 42; per-host protected-remnant checks still apply when both rows share GER.
 
 ### Characters and portraits
 
 The package creates stable Event 6 character tokens with guarded `generate_character` calls and reapplies their exact portraits on every setup:
 
-- `RHI_independence_wave_provisional_directorate` — Karl Jarres
-- `RHI_independence_wave_river_commandant` — Josef Harpe
+- `RHI_independence_wave_provisional_directorate` — Wilhelm Marx
+- `RHI_independence_wave_river_commandant` — Gustav-Adolf von Zangen
 - `BAY_independence_wave_state_council` — Heinrich Held
-- `BAY_independence_wave_mountain_commandant` — Eugen Ritter von Schobert
+- `BAY_independence_wave_mountain_commandant` — Friedrich Dollmann
 
 The two commandants have distinct corps-commander roles. Every grounded identity in these packages must use an attributed, role-accurate real male source and a reviewed identity-preserving `156x210` HOI4 treatment; generated officeholders and generic reuse of unrelated vanilla figures are prohibited. Event 006 defines no commander thumbnails.
 
 `RHI_josef_friedrich_matthes` is used only when he remains recruited by Rhineland. Package setup applies protected `GFX_portrait_RHI_josef_friedrich_matthes` with `set_portraits`, while Wilhelm Marx leads the opening provisional directorate. Matthes becomes leader only for the labor settlement; when he is unavailable, the established directorate retains office as the designed institutional outcome. Gustav-Adolf von Zangen commands the armed river authority and may lead the emergency settlement through the same stable full-size consumer.
 
-`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while Heinrich Held provides the opening civic authority. Rupprecht becomes leader only for the traditional restoration settlement; Held's state administration retains the institutional regency if he is unavailable. Eugen Ritter von Schobert commands the mountain-region emergency forces; the role is a territorial command assignment, not a claim that he belonged to the Gebirgstruppe.
+`BAY_rupprecht_of_bavaria` is used only when Bavaria still has the character and Germany does not. Package setup applies `GFX_portrait_independence_wave_BAY_rupprecht_of_bavaria` with `set_portraits`, while Heinrich Held provides the opening civic authority. Rupprecht becomes leader only for the traditional restoration settlement; Held's state administration retains the institutional regency if he is unavailable. Friedrich Dollmann commands the mountain-region emergency forces through the stable full-size consumer.
 
 Cleanup restores both vanilla character portraits. No `.gfx` character sprite is globally replaced.
 
@@ -745,7 +745,7 @@ The Level 2 branches use a distinct installed visual package:
 - normal and shine focus sprites, idea sprites, and report sprites in `interface/006_independence_wave_rhineland_bavaria_assets.gfx`; and
 - source masters, processed PNGs, contact sheets, exact prompts, validation, and hashes under `docs/assets/006_independence_wave/rhi_bay_unique_assets_2026_07_16/`.
 
-All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The earlier gameplay and package audit remains implementation evidence, but the compile-time content attestation and SCN-008 admission stay closed until a fresh post-replacement audit authorizes them.
+All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The current post-wiring audits authorize exact IW-008 and IW-009 compile-time attestation and SCN-008 preflight; live host, anchor, reservation, Event 5, chaos-band, force, and transaction checks remain mandatory.
 
 The historical-character portraits are registered in `interface/006_independence_wave.gfx`:
 
@@ -761,11 +761,11 @@ The additional package portrait sprites are registered in `interface/006_indepen
 - `GFX_portrait_BAY_independence_wave_state_council`
 - `GFX_portrait_BAY_independence_wave_mountain_commandant`
 
-The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations, and Event 006 defines no commander miniatures or dossier portraits. Karl Jarres, Josef Harpe, Josef Friedrich Matthes, Heinrich Held, Eugen Ritter von Schobert, and Rupprecht of Bavaria are the grounded sourced identities in this pair. Rupprecht and Matthes are the two protected approved portraits. The other four retain attributed masters but still require an approved painted finish and visual review. Source and replacement authority lives in `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/` and `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
+The six gameplay advisor offices carry no custom Event 006 advisor cards or portrait-sprite registrations, and Event 006 defines no commander miniatures or dossier portraits. The current grounded roster is Wilhelm Marx, Gustav-Adolf von Zangen, Heinrich Held, and Friedrich Dollmann, with Josef Friedrich Matthes and Rupprecht of Bavaria retained as the two protected approved portraits. All four package-specific treatments are sourced, independently reviewed, and wired; the protected portraits remain byte-identical. Source and replacement authority lives in `docs/assets/006_independence_wave/sourced_portrait_treatments_2026_07_22/` and `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/active_vanilla_conflict_retry/`.
 
 ### Readiness boundary
 
-Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focus art, route-idea art, incident scenes, and stable portrait consumers are wired. IW-008 is admitted after its complete sourced roster, pixel-identical runtime DDS checks, and full post-wiring package audit. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. `IW-009` remains fail-closed for automatic waves and SCN-008 until a fresh package audit confirms the post-replacement portrait consumers together with the existing tag, anchor, host-survival, reservation, and Event 5 collision contracts. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
+Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focus art, route-idea art, incident scenes, and stable portrait consumers are wired. IW-008 and IW-009 are admitted after their complete sourced rosters, pixel-identical runtime DDS checks, and full post-wiring package audits. `FORM-04` has its separately promoted `RLX` identity, complete flag family, territory and consent transaction, and post-formation progression. Bavaria's South German ambition is package-owned and does not inherit a `FORM-01`, `FORM-02`, or `FORM-04` dependency. Neither package gains readiness through vanilla history.
 
 ### Future plans and suggestions
 
@@ -784,9 +784,7 @@ Gameplay, AI, localisation, asset-neutral advisor offices, package-specific focu
 IW-010 creates the Saar as `AJX` from state `42` in Northern and Western
 Europe. It is a one-state industrial-security package built around coal, rail,
 municipal administration, factory guards, and cross-border contracts. It uses
-reservation group `RG-RHINE-SAAR`, so IW-010 and IW-008 cannot be selected in
-the same Event 006 incident. A later repeatable wave may release the other
-package, allowing living AJX and RHI countries to coexist.
+reservation group `RG-RHINE-SAAR`, which is the one documented two-package exception: IW-010 and IW-008 may be selected together only with distinct anchors 42 and 51 and after every ordinary host-survival, reservation, and transaction gate passes. A later repeatable wave may release either package again only when its tag, anchor, host, and generation checks pass, allowing living AJX and RHI countries to coexist.
 
 The country uses two stable character consumers:
 
@@ -1015,9 +1013,7 @@ branches, and Argentina's origin-gated AI strategy.
 ### Readiness and future plans
 
 - A fresh independent IW-010 package audit passed the complete Level 1 package, exact AJX identity, state-42 anchor, host-survival proof, Event 5 collision gates, shared focus and regional overlay, routes, decisions, forces, AI, assets, localisation, and FORM-04 dependency. The SCN-008 preflight, exact automatic wrapper, P10 capacity witness, region-one planner gate, and exact `iw_010` compile-time content attestation are registered. Every live preflight and synchronized transaction proof remains mandatory.
-- IW-010 and IW-008 retain the shared `RG-RHINE-SAAR` reservation. They cannot
-  collide inside one frozen incident, while a later wave may admit the other
-  package if its own readiness and host-survival checks pass.
+- IW-010 and IW-008 retain the shared `RG-RHINE-SAAR` reservation. They are the only pair allowed to coexist inside one frozen incident, using distinct anchors 42 and 51; same-host protected-remnant, both-order, Event 005 collision, rollback, save/load, and synchronized execution evidence remains mandatory. A later wave may admit either package again if its own readiness and host-survival checks pass.
 - FORM-04 identity, consent, integration, rollback construction, and
   military-settlement adapters remain independently audited and ready. FORM-04
   still requires its living RHI partner and carrier-specific delegation proof;
