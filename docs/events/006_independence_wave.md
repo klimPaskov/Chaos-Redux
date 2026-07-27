@@ -8,7 +8,7 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](006_independence_wave/northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](006_independence_wave/pacific_country_packages.md).
 
-## Current runtime admission and documentation supersession (2026-07-26)
+## Current runtime admission and documentation supersession (2026-07-27)
 
 The exact compile-time content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California. These ten packages have the current sourced real-male portrait and package-audit approvals required by the runtime gate.
 
@@ -43,9 +43,9 @@ Super-event 6002 is implemented at source level but only partly reachable while 
 
 The former 2026-07-22 admission paragraph below is retained as historical evidence and is superseded by this current gate.
 
-## Current bounded audit handoffs (2026-07-26)
+## Current bounded audit handoffs (2026-07-27)
 
-The v10 completion audit remains the whole-event source-of-truth for the incomplete **HOLD** state, with its DM-58 execution finding superseded by `0b6289c4b`, `37c4f6036`, and `006_dm58_witness_resolver_2026_07_26.md`. The effect-side resolver now searches the frozen member ledger for one exact three-member, three-state, three-distinct-owner witness and applies it only after current-owner, member, controller, connectivity, war, and finite-wargoal revalidation; the coordinator-bound `chaosx.nr6.309` callback clears the shared operation after natural expiry, while live success, save/load, and no-witness performance proof remain open. Commit `f8ca54d24` was a failed coordinate-only shared-focus candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the authoritative restored-baseline MCP inspection. The current baseline still has fourteen blocking diagnostics, so the shared focus tree remains on HOLD.
+The v23 completion audit is the whole-event authority for the incomplete **HOLD** state and supersedes v21 for the current disposition; its bounded DM-58 execution findings are carried forward with the source repairs in `0b6289c4b`, `37c4f6036`, and `006_dm58_witness_resolver_2026_07_26.md`. The effect-side resolver now searches the frozen member ledger for one exact three-member, three-state, three-distinct-owner witness and applies it only after current-owner, member, controller, connectivity, war, and finite-wargoal revalidation; the coordinator-bound `chaosx.nr6.309` callback clears the shared operation after natural expiry, while live success, save/load, and no-witness performance proof remain open. Commit `f8ca54d24` was a failed coordinate-only shared-focus candidate and was reverted by `8fddaeea3`; `006_shared_focus_geometry_reversion_2026_07_26.md` records the authoritative restored-baseline MCP inspection. The current baseline still has fourteen blocking diagnostics, so the shared focus tree remains on HOLD.
 
 The pre-repair decision-mission matrix's high-severity DM-58 scope finding is historical and is superseded by `006_dm58_preflight_scope_post_repair_2026_07_26.md` and the injective repair handoff; the broader decision/mission matrix remains on HOLD. The narrow IW-007 Frisia/AGX overlay is now present and receives a bounded package-wiring **PASS** in `006_agx_focus_overlay_handoff_2026_07_26.md`: eight package-named focuses have their effects, prerequisites, bypasses, AI weights, icons, localisation, and downstream hooks. The shared focus tree remains on HOLD because the restored baseline still has fourteen authoritative MCP blocking diagnostics.
 
@@ -180,8 +180,12 @@ Fourteen regional identity ideas provide the base overlay. Package-specific iden
 
 AJX uses state `42`, the industrial-security force profile, a protected dynamic
 former-host remnant, and the shared `RG-RHINE-SAAR` reservation with IW-008 RHI.
-The reservation prevents both packages from being selected in one incident,
-but a later repeatable wave may release the other country. Its
+The central reservation path admits only the reciprocal IW-010/IW-008 pair at
+capacity two when anchors `42` and `51` are distinct and each row passes the
+ordinary host-survival and protected-remnant gates. In the installed map both
+anchors are GER-owned, so the pair may share GER's protected-remnant row; every
+other reservation group remains one-package-only. A later repeatable wave may
+release the other country. Its
 four permanent routes are constitutional, popular/labor, patron-client, and a
 distinct civilian Municipal Neutral Commission. Industrial Continuity,
 Neutrality Credibility, and a Municipal Commission versus Industrial Security

@@ -30,7 +30,7 @@ staged anchor integration, and paid post-formation projects are implemented
 and documented in `docs/events/006_form39_melanesian_federation.md`. FIJ is not
 in runtime attestation until the IW-157/IW-178 research flags, MFX collision
 reservation and flat-flag review, and the source/date decision are accepted.
-The durable pre-DDS portrait shelf now contains 48 source-derived masters and
+The durable pre-DDS portrait shelf now contains 49 source-derived masters and
 83 normalized 156x210 PNGs, with no advisor or small/dossier derivatives.
 
 The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
@@ -72,7 +72,7 @@ Commit `61d059841`, commit `37c4f6036`, and `006_dm58_cost_cleanup_reconciliatio
 15. `subagent_handoffs/006_mediterranean_focus_tree_audit_2026_07_16.md`
 16. `subagent_handoffs/006_mediterranean_form05_decision_mission_audit_2026_07_16.md`
 17. `subagent_handoffs/006_mediterranean_localisation_audit_2026_07_16.md`
-18. `subagent_handoffs/006_iw017_iw019_allocator_admission_audit_2026_07_16.md`
+18. `subagent_handoffs/006_iw017_iw019_allocator_admission_audit_2026_07_16.md` (historical admission snapshot; use the current COR/ASX package and post-wire audits in `006_source_of_truth_map.md`)
 19. `subagent_handoffs/006_mediterranean_tranche_admission_closeout_2026_07_16.md`
 20. `subagent_handoffs/006_pacific_country_package_admission_audit_2026_07_18.md`
 21. `subagent_handoffs/006_form48_system_architecture_audit_2026_07_18.md`
