@@ -19,7 +19,7 @@ The reconciliation preserves the accepted dormant spec, both unset scheduler act
 | Implementation status README | `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` | Current summary and New Year tranche reconciled | The latest tranche, scheduler foundation, current count, proof links, asset boundary, workbook row, and dormant blocker wording now include The New Year Without Fireworks. |
 | Candidate pilot proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md` | Current header, upper bound, constants count, and New Year tranche reconciled | The current header reports candidate `649`, route upper bound `7165`, `64` rows, and `530` blocks. The static evidence bullet reports `64` candidate ids, transaction keys, and route ids. |
 | Source-of-truth map | `docs/plans/air_cleanliness_fallout_plans/source_of_truth_map.md` | New Year row added | The map now links Spec 65, the tranche proof, gameplay surfaces, constants, localisation, Event Log, asset manifest, `.gfx`, DDS, workbook, and exported row. |
-| Asset manifest | `docs/assets/649_new_year_without_fireworks/manifest.md` | Unchanged, `handed_off` | The manifest records source and runtime hashes and keeps final runtime promotion parent-owned. |
+| Asset manifest | `docs/assets/649_new_year_without_fireworks/manifest.md` | Parent registration reconciled | The manifest records source and runtime hashes and now records the static `.gfx` registration while keeping live presentation unproven. |
 | Workbook source | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | Unchanged, spreadsheet-owned | The workbook remains the authoritative editable catalog source. Its exported row is checked without editing the workbook. |
 | Workbook export evidence | `docs/spreadsheets/chaos_redux_events_catalog.csv:612` | Existing evidence checked | The `FALLOUT-649` row contains events `649` through `655`, transaction `710064`, route `7164`, history `9170`, dormant and runtime-blocker wording, and `Needs Testing` status. |
 
@@ -46,8 +46,8 @@ The reconciliation preserves the accepted dormant spec, both unset scheduler act
 
 ## Contradictions still open
 
-- `docs/assets/649_new_year_without_fireworks/manifest.md` retains status `handed_off` and describes the sprite as proposed, while `interface/fallout_world_end.gfx:665-666` already contains the parent-owned static sprite registration. This is a static documentation mismatch, not proof of runtime presentation. The manifest was left unchanged because the asset and interface surfaces are outside this patch.
-- The exported workbook row at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` describes the Military Ceremony branch with flags, while Spec 65, the event localisation, and the asset brief use covered lamps, guards, and no flags. The spreadsheet worker or parent must decide whether the workbook wording should be corrected. No workbook file was edited here.
+- The asset manifest and `.gfx` registration now agree on static registration. Live presentation remains unproven.
+- The workbook row now uses covered ceremonial banners and distinguishes branch and callback Event Log payloads from authenticated cleanup. The exporter was rerun from the workbook source.
 - The read-only event-inspector response is workspace-wide rather than tranche-specific. It returned `EVENT_INSPECTED_PARTIAL`, `validation.passed=false`, `8939` events, `22905` issues, `6616` blocking diagnostics, and `MCP_INLINE_FILES_TRUNCATED` as the only listed diagnostic. This remains unresolved tooling evidence.
 
 ## Duplicate, superseded, and stale-document audit
@@ -95,4 +95,4 @@ No separate resume packet was created. This handoff is the current resume state 
 
 ## Remaining risks
 
-The New Year Without Fireworks remains dormant and contributes zero release-floor credit. The parent must resolve the workbook wording contradiction, decide whether to update the asset manifest status, and retain the runtime and tooling blockers in any completion report.
+The New Year Without Fireworks remains dormant and contributes zero release-floor credit. The parent must retain the stale-generation cleanup blocker, runtime boundary, and partial event-inspector result in any completion report.

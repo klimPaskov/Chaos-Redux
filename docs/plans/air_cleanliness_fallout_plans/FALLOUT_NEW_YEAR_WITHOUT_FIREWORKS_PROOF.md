@@ -1,6 +1,6 @@
 # Fallout New Year Without Fireworks Proof
 
-Status: dormant reviewed tranche with static wiring complete and live validation pending.
+Status: dormant reviewed tranche with static wiring present and known cleanup and runtime blockers.
 
 ## Identity
 
@@ -37,7 +37,7 @@ The Deaths surface is `apply_exact_state_civilian_population_loss` through `ever
 | Callback | Issued callback ticket, branch, callback transaction, callback mode, result commitment, callback outcome, callback cleanup ticket, and callback schedule receipt |
 | Cleanup | Hidden cleanup token, candidate, route, opening transaction, branch, issued ticket, payment receipt, result commitment or schedule-error receipt, and matching result or callback cleanup ticket |
 
-Cleanup deliberately does not require current generation, ownership, or region. A stale chain may release only its own delayed rows. It cannot clear a replacement transaction because the candidate, route, branch, token, ticket, and payment checks remain exact.
+Current-generation cleanup authenticates the candidate, route, branch, token, ticket, payment, and commitment receipts. The shared delayed dispatcher still requires current-generation envelopes, so stale-generation cleanup after a transition is an explicit implementation blocker. The tranche does not claim stale cleanup or save-recovery acceptance until that engine-sensitive path is repaired and reviewed.
 
 ## Branch and grading evidence
 
@@ -68,7 +68,7 @@ The asset depicts a fictional cold East Asian settlement with covered lamps, a r
 | Callback delivery to the human lane from an AI token | Mode and token checks block the event. |
 | Callback delivery after result commitment is absent | Callback trigger fails. |
 | Callback scheduling failure after committed result | Result cleanup still releases its own row and does not refund the committed result. |
-| Stale cleanup after ownership or region change | Candidate, route, branch, ticket, token, and payment checks release only the owned stale row. |
+| Stale cleanup after a generation change | Blocked by the shared dispatcher and delayed-row current-generation gates. No cleanup acceptance is claimed. |
 | Duplicate cleanup delivery | No matching cleanup row remains after the first release. |
 | Result failure | The Deaths contract requests `0.0015` of each owned state population. |
 | Callback failure | The Deaths contract requests `0.0007` of each owned state population. |
@@ -76,7 +76,7 @@ The asset depicts a fictional cold East Asian settlement with covered lamps, a r
 
 ## Validation boundary
 
-The candidate, event, scheduler, Event Log, workbook, and asset wiring have been reviewed statically. No HOI4 process was launched. Live event delivery, save recovery, multiplayer host authority, normal-map presentation, and the exact all-valid-province thermonuclear sweep remain runtime boundaries. The Fallout release-floor count does not claim this dormant tranche until activation review and user validation pass.
+The candidate, event, Event Log, workbook, and asset wiring have been reviewed statically. Exact branch affordability and normalized callback grading are implemented. Cleanup after a generation change remains blocked by shared dispatcher gates. No HOI4 process was launched. Live event delivery, save recovery, multiplayer host authority, normal-map presentation, and the exact all-valid-province thermonuclear sweep remain runtime boundaries. The Fallout release-floor count does not claim this dormant tranche until activation review and user validation pass.
 
 ## Read-only event-inspector evidence
 
