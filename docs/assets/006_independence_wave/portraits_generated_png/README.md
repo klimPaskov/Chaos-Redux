@@ -4,9 +4,9 @@ This folder is the central, reference-only shelf for source-based Independence W
 
 ## Scope
 
-The shelf contains 131 byte-copied PNGs:
+The shelf contains 132 byte-copied PNGs:
 
-- 48 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md). This includes the two protected BAY Rupprecht and RHI Matthes source repaints.
+- 49 larger source-locked HOI4 repaint masters in `pre_resize_source_repaints/`, copied from the ImageGen output before deterministic resizing and DDS conversion. Their dimensions remain the native generation dimensions and are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md). This includes the two protected BAY Rupprecht and RHI Matthes source repaints and the withdrawn IW-093 Prempeh II master.
 - 83 normalized PNGs at the native HOI4 large-portrait size of 156x210:
 
 - 44 source-refinish attempts from the dated `sourced_portrait_refinishes_*` packages.

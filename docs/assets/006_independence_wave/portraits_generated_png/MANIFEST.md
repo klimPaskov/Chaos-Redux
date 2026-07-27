@@ -1,6 +1,6 @@
 # Event 006 normalized pre-DDS source portrait inventory
 
-This table covers the 83 normalized 156x210 copies. The 48 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+This table covers the 83 normalized 156x210 copies. The 49 larger source-locked repaint masters preserved before resizing are indexed separately in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
 
 This manifest indexes every source-driven processed PNG copied into this shelf. Every file is a byte-for-byte copy of its original and decodes as a 156x210 PNG; the SHA-256 column guards against drift.
 
