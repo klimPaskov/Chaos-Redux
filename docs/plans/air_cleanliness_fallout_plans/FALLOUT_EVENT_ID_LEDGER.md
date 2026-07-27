@@ -1,10 +1,12 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Metro Republic Below
+## Current reconciliation after Rail Spine Vote
 
-The living-world pilot now contains `495` defined event blocks across the reviewed ordinary range through `620`, including the dormant Metro Republic Below tranche at `614` through `620`. The current reviewed ordinary row count is `59`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `502` defined event blocks across the reviewed ordinary range through `627`, including the dormant Rail Spine Vote tranche at `621` through `627`. The current reviewed ordinary row count is `60`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
+
+Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native Eurasian interior railway state and uses dedicated art and localisation.
 
 ## Purpose
 
@@ -696,6 +698,18 @@ The row requires a current owner-controlled European city or large-city state wi
 The chain carries four authored shelter-governance branches, deterministic result and callback outcomes, state Supply Access and Air Winter effects, bounded Deaths effects, durable country and state memories, Event Log payloads, hidden-AI parity, dedicated report art, generation-reset refunds, and authenticated cleanup.
 
 The chain remains dormant and uncounted until Fallout scheduler activation, host authority, save recovery, multiplayer delivery, and runtime Event Log proof are available. The documented living-world total is now `495` and the countable Fallout living-world total remains `0 of 660`.
+
+## Rail Spine Vote tranche
+
+The Rail Spine Vote adds dormant suffixes `621` through `627` with candidate id `621`, transaction key `710060`, route `7160`, and history `9166`.
+
+The human opening is `621`, the hidden-AI opening is `622`, the human and hidden-AI delayed results are `623` and `624`, the human and hidden-AI callbacks are `625` and `626`, and cleanup is `627`.
+
+The row requires a current owner-controlled Eurasian interior railway state with a produced Air Winter snapshot, native non-damaged railway and infrastructure, surviving population, workable Supply Access and Reclamation, shelter, low Exposure, and bounded Disease Pressure.
+
+The chain carries four authored rail governance branches, deterministic result and callback outcomes, native railway and infrastructure effects, bounded Deaths effects, durable country and state memories, Event Log payloads, hidden-AI parity, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_RAIL_SPINE_VOTE_PROOF.md`.
 
 ## Refugee Train bilateral Event Log history
 
