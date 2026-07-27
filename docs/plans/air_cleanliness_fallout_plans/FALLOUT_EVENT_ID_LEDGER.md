@@ -1,8 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Canal Schedule
+## Current reconciliation after Mine Generator
 
-The living-world pilot now contains `509` defined event blocks across the reviewed ordinary range through `634`, including the dormant Canal Schedule tranche at `628` through `634`. The current reviewed ordinary row count is `61`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `523` defined event blocks across the reviewed ordinary range through `648`, including the dormant Mine Generator tranche at `642` through `648`. The current reviewed ordinary row count is `63`. Mine Generator uses candidate `642`, transaction `710063`, route `7163`, and Event Log history `9169`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
@@ -14,7 +14,7 @@ Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
-## Current reconciliation
+## Historical reconciliation after Radio Island Chain
 
 After the Radio Island Chain tranche, the living-world pilot contains `481` defined event blocks across `100` through `126`, `1009` through `1018`, `153` through `200`, and the reviewed ordinary range through `606`. All remain dormant and uncounted, so the release-floor total is `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by the later correction sections.
 
@@ -732,3 +732,15 @@ The dormant Refugee Train bilateral consumer uses dedicated Event Log history `9
 History `9160` is outside the ordinary candidate ledger and does not add event blocks or release-floor credit.
 
 The writer records the current participant and authenticated paired country as the two actors, while shared Event Log routing resolves the dedicated name and payload detail.
+
+## Mine Generator tranche
+
+The Mine Generator adds dormant suffixes `642` through `648` with candidate id `642`, transaction key `710063`, route `7163`, and history `9169`.
+
+The human opening is `642`, the hidden-AI opening is `643`, the human and hidden-AI delayed results are `644` and `645`, the human and hidden-AI callbacks are `646` and `647`, and cleanup is `648`.
+
+The row requires a current-generation owner-controlled Sub-Saharan African state with a produced Air Winter snapshot, surviving population, native infrastructure, Supply Access, Reclamation, Food reserve, bounded Exposure and Disease Pressure, and a native steel, tungsten, chromium, aluminium, or coal deposit. It chooses the lowest eligible native state id and retains the admitted resource class as evidence only.
+
+The chain carries four authored resource-works branches with exact costs, deterministic result and callback grading, a 42-day result, a 270-day operating-season callback, native infrastructure or industrial damage on failure, bounded Deaths effects, durable country ledgers, Event Log history, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not create a mine or generator building, alter a native deposit, create a country, transfer population across states, or add a recurring scheduler.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven. The dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.

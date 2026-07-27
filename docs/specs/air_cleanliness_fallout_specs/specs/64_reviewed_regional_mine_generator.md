@@ -77,9 +77,9 @@ The producer scans owned states and selects the lowest native state id that sati
 - No Mine Generator completion memory or exclusive state reservation is present.
 - At least one native `steel`, `tungsten`, `chromium`, `aluminium`, or `coal` resource count is above zero.
 
-The installed `triggers_documentation.md` documents the resource-count trigger for both STATE and COUNTRY scopes and lists `oil`, `aluminium`, `rubber`, `tungsten`, `steel`, `chromium`, and `coal` as supported resource identities. This chain deliberately admits only the five mineral or coal identities above. Oil belongs to the separate fuel and pipeline design space, while rubber does not prove a mine.
+The installed `triggers_documentation.md` documents `has_resources_amount` for STATE scope with a native resource name and an integer comparison. This chain deliberately admits only the five mineral or coal identities above. Oil belongs to the separate fuel and pipeline design space, while rubber does not prove a mine.
 
-The implementation should isolate the direct resource comparison in `fallout_event_642_state_has_native_resource_work = yes` and reuse that trigger for admission, result reauthentication, callback reauthentication, and proof. The resource deposit is evidence for an operating resource settlement; the specification does not authorize adding or removing the deposit.
+The implementation should isolate the direct resource comparison in `fallout_event_642_state_has_native_resource_work = yes` and reuse that trigger for admission, result reauthentication, callback reauthentication, and proof. The resource deposit is evidence for an operating resource settlement. The specification does not authorize adding or removing the deposit.
 
 The state target is the only scoped target. The chain creates no partner country, receiving state, province target, route object, mine building, or generator building. Country Power, Scrap, and Fuel represent the surviving generator and machinery inputs.
 
@@ -135,7 +135,7 @@ Human tooltips must disclose each cost, the 42-day result timing, the affected s
 
 ## Grade contract
 
-The result combines frozen Food, Power, Scrap, Recognition, Cohesion, Supply Access, Reclamation, Exposure, Disease Pressure, infrastructure, the admitted native-resource receipt, and the branch ledger bonus into one clamped viability score.
+The result combines frozen country Food, Power, Scrap, Recognition, Cohesion, Stability, state Food, Adaptation, Supply Access, Reclamation, Exposure, Disease Pressure, infrastructure, the admitted native-resource receipt, and the branch ledger bonus into one clamped viability score.
 
 | Branch | Success threshold | Partial threshold |
 | --- | ---: | ---: |

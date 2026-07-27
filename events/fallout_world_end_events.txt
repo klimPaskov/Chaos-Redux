@@ -15972,6 +15972,105 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.642
+	title = chaosx.fallout.642.t
+	desc = chaosx.fallout.642.d
+	picture = GFX_report_event_fallout_mine_generator
+	is_triggered_only = yes
+	trigger = { fallout_event_642_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.642.a
+		trigger = { fallout_event_642_trade_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_642_requested_branch = constant:fallout_event_642_branch.trade_mineral_shares } fallout_event_642_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.642.a.tt
+	}
+	option = {
+		name = chaosx.fallout.642.b
+		trigger = { fallout_event_642_labor_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_642_requested_branch = constant:fallout_event_642_branch.conscript_labor_shift } fallout_event_642_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.642.b.tt
+	}
+	option = {
+		name = chaosx.fallout.642.c
+		trigger = { fallout_event_642_engineer_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_642_requested_branch = constant:fallout_event_642_branch.engineer_rule } fallout_event_642_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.642.c.tt
+	}
+	option = {
+		name = chaosx.fallout.642.e
+		trigger = { fallout_event_642_evacuation_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_642_requested_branch = constant:fallout_event_642_branch.evacuate_works } fallout_event_642_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.642.e.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.643
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_642_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_642_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.644
+	title = chaosx.fallout.644.t
+	desc = { text = chaosx.fallout.644.trade.success.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.trade_mineral_shares } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.644.trade.partial.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.trade_mineral_shares } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.644.trade.failure.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.trade_mineral_shares } } }
+	desc = { text = chaosx.fallout.644.labor.success.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.conscript_labor_shift } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.644.labor.partial.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.conscript_labor_shift } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.644.labor.failure.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.conscript_labor_shift } } }
+	desc = { text = chaosx.fallout.644.engineer.success.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.engineer_rule } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.644.engineer.partial.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.engineer_rule } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.644.engineer.failure.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.engineer_rule } } }
+	desc = { text = chaosx.fallout.644.evacuation.success.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.evacuate_works } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.644.evacuation.partial.d trigger = { check_variable = { fallout_event_642_selected_branch = constant:fallout_event_642_branch.evacuate_works } check_variable = { fallout_event_642_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.644.evacuation.failure.d
+	picture = GFX_report_event_fallout_mine_generator
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_642_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mine_generator_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.644.a hidden_effect = { fallout_event_642_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.644.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.645
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_642_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mine_generator_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_642_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.646
+	title = chaosx.fallout.646.t
+	desc = { text = chaosx.fallout.646.success.d trigger = { check_variable = { fallout_event_642_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.646.partial.d trigger = { check_variable = { fallout_event_642_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.646.failure.d
+	picture = GFX_report_event_fallout_mine_generator
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_642_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mine_generator_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_642_registry_is_current = yes }
+	immediate = { fallout_event_642_calculate_callback_outcome = yes set_country_flag = fallout_event_642_callback_outcome_frozen }
+	option = { name = chaosx.fallout.646.a hidden_effect = { fallout_event_642_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.646.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.647
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_642_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mine_generator_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_642_registry_is_current = yes }
+	immediate = { fallout_event_642_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.648
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_642_cleanup_can_enter = yes }
+	immediate = { fallout_event_642_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
