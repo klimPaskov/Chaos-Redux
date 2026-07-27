@@ -25,7 +25,7 @@ array, autonomous-member cleanup, and material post-formation projects; the
 adapter remains fail-closed because IW-157/WPG and IW-178/PNG are sensitive
 packages without accepted named-community research and the MFX flag is still
 `needs_user_review`. FIJ stays outside runtime attestation. The durable Event
-006 portrait shelf now records 48 pre-resize masters and 83 normalized 156x210
+006 portrait shelf now records 49 pre-resize masters and 83 normalized 156x210
 PNGs, with no advisor or small/dossier derivatives. Detailed FORM-39 wiring is
 in `docs/events/006_form39_melanesian_federation.md`.
 

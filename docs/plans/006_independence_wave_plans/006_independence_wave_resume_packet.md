@@ -158,7 +158,7 @@ they are not current routing documents.
   and 977.
 - The current portrait authority is the sourced-only workflow in the event-asset
   skill. The reference shelf at
-   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves 48
+   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves 49
    larger pre-resize masters and 83 normalized pre-DDS PNGs with byte/hash
   manifests; candidates remain evidence only until independent review. The
   2026-07-26 ARX Vernè commander candidate is explicitly candidate-only and
