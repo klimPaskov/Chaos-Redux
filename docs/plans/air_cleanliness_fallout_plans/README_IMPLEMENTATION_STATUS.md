@@ -1,8 +1,8 @@
 # Air Cleanliness and Fallout Implementation Status
 
-## Current reconciliation after Metro Republic Below
+## Current reconciliation after Rail Spine Vote
 
-The latest dormant regional tranche is Metro Republic Below at `chaosx.fallout.614` through `chaosx.fallout.620`, candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. It adds one European shelter-governance row with four human and hidden-AI-parity branches, deterministic result and callback grading, Deaths-backed failure, durable memories, cleanup, dedicated localisation, and dedicated report art. The reviewed ordinary pilot now has `59` rows and `495` defined blocks. Countable release-floor credit remains `0 of 660` while scheduler activation is unset.
+The latest dormant regional tranche is Rail Spine Vote at `chaosx.fallout.621` through `chaosx.fallout.627`, candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. It adds one Eurasian interior railway row with four human and hidden-AI-parity branches, deterministic result and callback grading, native railway and infrastructure effects, Deaths-backed failure, durable memories, cleanup, dedicated localisation, and dedicated report art. The reviewed ordinary pilot now has `60` rows and `502` defined blocks. Countable release-floor credit remains `0 of 660` while scheduler activation is unset.
 
 Overall system status reviewed against the live working tree on 2026-07-26. The numerical approval gate was reconciled on 2026-07-18.
 

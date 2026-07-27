@@ -1,10 +1,12 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Metro Republic Below
+## Current reconciliation after Rail Spine Vote
 
-The reviewed candidate producer now covers `59` ordinary dormant rows through candidate `614`, with `495` defined event blocks and `0 of 660` countable release-floor blocks. The Metro Republic Below row uses route `7159`, so the reviewed route upper bound is now `7160`. Its current-generation European city admission stores the pretransition Air Winter shelter and exposure snapshots, not an unproven building proxy.
+The reviewed candidate producer now covers `60` ordinary dormant rows through candidate `621`, with `502` defined event blocks and `0 of 660` countable release-floor blocks. The Rail Spine Vote row uses route `7160`, so the reviewed route upper bound is now `7161`. Its current-generation Eurasian interior admission stores the pretransition Air Winter shelter, exposure, reclamation, and native railway snapshots.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
+
+Rail Spine Vote is the Eurasian interior railway row with candidate `621`, transaction `710060`, event ids `621` through `627`, and Event Log history `9166`. It selects the lowest valid native railway state and remains dormant behind the scheduler activation gates. Its dedicated proof is `FALLOUT_RAIL_SPINE_VOTE_PROOF.md`.
 
 Status: dormant, statically reconciled, not release-floor credit.
 

@@ -122,6 +122,7 @@
 - `specs/58_reviewed_regional_radio_island_chain.md`
 - `specs/59_reviewed_regional_tunnel_ward_committees.md`
 - `specs/60_reviewed_regional_metro_republic_below.md`
+- `specs/61_reviewed_regional_rail_spine_vote.md`
 
 ## Matrices
 
