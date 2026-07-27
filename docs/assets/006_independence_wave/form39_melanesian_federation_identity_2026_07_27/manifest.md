@@ -2,7 +2,7 @@
 
 Status: `needs_user_review`.
 
-The visual package is complete, but runtime admission is intentionally pending the named FIJ/PNG/WPG consent-led FORM-39 adapter, final X-tag identity, member-package research gates, and collision tests. `MFX` is a proposed/reserved route tag candidate only; it is not an approved gameplay identity. The parent agent must not treat this asset as proof that the formable is runtime-ready.
+The visual package is complete and the FIJ/PNG/WPG consent-led FORM-39 adapter is source-implemented, but runtime admission remains intentionally fail-closed pending the six named research, reservation, flat-flag, and identity-review inputs plus collision tests. `MFX` is a proposed/reserved route tag candidate only and remains `needs_user_review`; it is not an approved gameplay identity. The parent agent must not treat this asset as proof that the formable is runtime-ready.
 
 ## Requirement-to-runtime crosswalk
 
