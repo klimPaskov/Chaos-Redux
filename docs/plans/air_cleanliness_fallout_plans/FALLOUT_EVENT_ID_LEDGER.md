@@ -1,12 +1,14 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Rail Spine Vote
+## Current reconciliation after Canal Schedule
 
-The living-world pilot now contains `502` defined event blocks across the reviewed ordinary range through `627`, including the dormant Rail Spine Vote tranche at `621` through `627`. The current reviewed ordinary row count is `60`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `509` defined event blocks across the reviewed ordinary range through `634`, including the dormant Canal Schedule tranche at `628` through `634`. The current reviewed ordinary row count is `61`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
 Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native Eurasian interior railway state and uses dedicated art and localisation.
+
+Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and Event Log history `9167`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native South Asian rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building.
 
 ## Purpose
 
