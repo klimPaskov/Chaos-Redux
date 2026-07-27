@@ -16071,6 +16071,105 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.649
+	title = chaosx.fallout.649.t
+	desc = chaosx.fallout.649.d
+	picture = GFX_report_event_fallout_new_year_without_fireworks
+	is_triggered_only = yes
+	trigger = { fallout_event_649_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.649.a
+		trigger = { fallout_event_649_quiet_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.quiet_remembrance } fallout_event_649_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.649.a.tt
+	}
+	option = {
+		name = chaosx.fallout.649.b
+		trigger = { fallout_event_649_feast_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast } fallout_event_649_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.649.b.tt
+	}
+	option = {
+		name = chaosx.fallout.649.c
+		trigger = { fallout_event_649_military_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony } fallout_event_649_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.649.c.tt
+	}
+	option = {
+		name = chaosx.fallout.649.d_option
+		trigger = { fallout_event_649_local_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals } fallout_event_649_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.649.d_option.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.650
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_649_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_649_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.651
+	title = chaosx.fallout.651.t
+	desc = { text = chaosx.fallout.651.quiet.success.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.quiet_remembrance } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.651.quiet.partial.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.quiet_remembrance } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.651.quiet.failure.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.quiet_remembrance } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.651.feast.success.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.ration_feast } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.651.feast.partial.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.ration_feast } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.651.feast.failure.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.ration_feast } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.651.military.success.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.military_ceremony } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.651.military.partial.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.military_ceremony } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.651.military.failure.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.military_ceremony } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.651.local.success.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.local_festivals } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.651.local.partial.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.local_festivals } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.651.local.failure.d trigger = { check_variable = { fallout_event_649_selected_branch = constant:fallout_event_649_branch.local_festivals } check_variable = { fallout_event_649_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_new_year_without_fireworks
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_649_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_year_without_fireworks_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.651.a hidden_effect = { fallout_event_649_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.651.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.652
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_649_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.new_year_without_fireworks_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_649_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.653
+	title = chaosx.fallout.653.t
+	desc = { text = chaosx.fallout.653.success.d trigger = { check_variable = { fallout_event_649_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.653.partial.d trigger = { check_variable = { fallout_event_649_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.653.failure.d
+	picture = GFX_report_event_fallout_new_year_without_fireworks
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_649_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	immediate = { fallout_event_649_calculate_callback_outcome = yes set_country_flag = fallout_event_649_callback_outcome_frozen }
+	option = { name = chaosx.fallout.653.a hidden_effect = { fallout_event_649_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.653.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.654
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_649_callback_ai_can_enter = yes }
+	immediate = { fallout_event_649_calculate_callback_outcome = yes fallout_event_649_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.655
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_649_cleanup_can_enter = yes }
+	immediate = { fallout_event_649_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
