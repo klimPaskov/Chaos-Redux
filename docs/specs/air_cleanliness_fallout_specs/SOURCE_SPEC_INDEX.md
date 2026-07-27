@@ -126,6 +126,8 @@
 - `specs/62_reviewed_regional_canal_schedule.md`
 - `specs/63_reviewed_regional_mountain_pass_census.md`
 - `specs/64_reviewed_regional_mine_generator.md`
+- `specs/65_reviewed_regional_new_year_without_fireworks.md`
+- `specs/66_reviewed_regional_second_dust_bowl.md`
 
 ## Matrices
 

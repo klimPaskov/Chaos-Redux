@@ -16170,6 +16170,105 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.656
+	title = chaosx.fallout.656.t
+	desc = chaosx.fallout.656.d
+	picture = GFX_report_event_fallout_second_dust_bowl
+	is_triggered_only = yes
+	trigger = { fallout_event_656_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.656.a
+		trigger = { fallout_event_656_shelter_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields } fallout_event_656_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.656.a.tt
+	}
+	option = {
+		name = chaosx.fallout.656.b
+		trigger = { fallout_event_656_move_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms } fallout_event_656_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.656.b.tt
+	}
+	option = {
+		name = chaosx.fallout.656.c
+		trigger = { fallout_event_656_seed_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.seed_cold_crops } fallout_event_656_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.656.c.tt
+	}
+	option = {
+		name = chaosx.fallout.656.d_option
+		trigger = { fallout_event_656_abandon_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.abandon_open_plains } fallout_event_656_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.656.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.657
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_656_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_656_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.658
+	title = chaosx.fallout.658.t
+	desc = { text = chaosx.fallout.658.shelter.success.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.shelter_fields } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.658.shelter.partial.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.shelter_fields } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.658.shelter.failure.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.shelter_fields } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.658.move.success.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.move_farms } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.658.move.partial.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.move_farms } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.658.move.failure.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.move_farms } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.658.seed.success.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.seed_cold_crops } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.658.seed.partial.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.seed_cold_crops } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.658.seed.failure.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.seed_cold_crops } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.658.abandon.success.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.abandon_open_plains } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.658.abandon.partial.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.abandon_open_plains } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.658.abandon.failure.d trigger = { check_variable = { fallout_event_656_selected_branch = constant:fallout_event_656_branch.abandon_open_plains } check_variable = { fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_second_dust_bowl
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_656_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.658.a hidden_effect = { fallout_event_656_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.658.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.659
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_656_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_656_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.660
+	title = chaosx.fallout.660.t
+	desc = { text = chaosx.fallout.660.success.d trigger = { check_variable = { fallout_event_656_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.660.partial.d trigger = { check_variable = { fallout_event_656_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.660.failure.d
+	picture = GFX_report_event_fallout_second_dust_bowl
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_656_callback_can_enter = yes }
+	immediate = { fallout_event_656_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.660.a hidden_effect = { fallout_event_656_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.660.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.661
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_656_callback_ai_can_enter = yes }
+	immediate = { fallout_event_656_calculate_callback_outcome = yes fallout_event_656_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.662
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_656_cleanup_can_enter = yes }
+	immediate = { fallout_event_656_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
