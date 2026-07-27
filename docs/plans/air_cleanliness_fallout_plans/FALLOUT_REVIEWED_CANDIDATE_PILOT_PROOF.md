@@ -1,8 +1,8 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Mine Generator
+## Current reconciliation after The New Year Without Fireworks
 
-The reviewed candidate producer now covers `63` ordinary dormant rows through candidate `642`, with `523` defined event blocks and `0 of 660` countable release-floor blocks. The Mine Generator row uses route `7163`, so the reviewed route upper bound is now `7164`. Its current-generation Sub-Saharan African admission stores the produced Air Winter snapshot, native resource evidence, surviving population, native infrastructure, Supply Access, Reclamation, Food reserve, Exposure, and Disease Pressure values.
+The reviewed candidate producer now covers `64` ordinary dormant rows through candidate `649`, with `530` defined event blocks and `0 of 660` countable release-floor blocks. The New Year Without Fireworks row uses route `7164`, so the reviewed route upper bound is now `7165`. Its current-generation East Asian admission stores the durable survival resource row, Food, Clean Water, Fuel, Medicine, Shelter Capacity, Recognition, Cohesion, Air Winter disease pressure, and seven New Year ledgers.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
@@ -14,9 +14,11 @@ Mountain Pass Census is the Middle East and North Africa highland census row wit
 
 Mine Generator is the Sub-Saharan African resource-works row with candidate `642`, transaction `710063`, event ids `642` through `648`, and Event Log history `9169`. It selects the lowest valid native resource state and records four authored operating branches without claiming a generic mine or generator building. Its dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.
 
+The New Year Without Fireworks is the East Asian country-only row with candidate `649`, transaction `710064`, event ids `649` through `655`, and Event Log history `9170`. It records four authored year-turning branches with subject type `none` and target `0`, without claiming a state or province target. Its dedicated proof is `FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md`.
+
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-three global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-four global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 
 ## Candidate rows
 
@@ -71,7 +73,7 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-three candidate ids, sixty-three transaction keys, and sixty-three route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-four candidate ids, sixty-four transaction keys, and sixty-four route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
@@ -547,3 +549,17 @@ Its country gate requires a current Fallout registry row, current-generation Sub
 Four authored branches cover Trade Mineral Shares, Conscript the Labor Shift, Establish Engineer Rule, and Evacuate the Works. The result and callback use frozen ledgers, deterministic grading, exact 42-day and 270-day delays, native infrastructure or industrial damage on failure, bounded Deaths effects, durable branch memories, hidden-AI parity, Event Log history `9169`, dedicated report art, generation-reset refunds, and authenticated cleanup.
 
 The chain remains dormant and outside release-floor credit. It does not create a mine or generator building, alter a native resource deposit, create a country, transfer population across states, or add a recurring scheduler. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven.
+
+## The New Year Without Fireworks correction
+
+The New Year Without Fireworks is the sixty-fourth reviewed ordinary candidate.
+
+It uses candidate id `649`, transaction `710064`, route `7164`, event blocks `649` through `655`, and Event Log history `9170`.
+
+Its country gate requires a current Fallout registry row, current-generation East Asian regional identity, durable Survival resources, campaign days from `300` through `2599`, minimum Food, Clean Water, Fuel, Medicine, Shelter Capacity, Recognition, and Cohesion, an affordable branch, and no conflicting ordinary receipt. Its target shape is subject type `none` with target `0`.
+
+Four authored branches cover Quiet Remembrance, Hold a Ration Feast, Stage a Military Ceremony, and Leave the Night to Local Festivals. The result and callback use frozen survival, Air Winter, Cohesion, Stability, War Support, and seven New Year ledgers, deterministic grading, exact 21-day and 330-day delays, bounded Deaths effects, durable branch memories, hidden-AI parity, Event Log history `9170`, dedicated report art, and authenticated cleanup. The chain does not schedule itself again.
+
+The asset package is `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_new_year_without_fireworks`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with candidate events `649` through `655`, transaction `710064`, route `7164`, history `9170`, dormant wording, and `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags, scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. The asset manifest remains `handed_off` even though the parent-owned `.gfx` file contains the static sprite registration. The read-only event-inspector result is unresolved tooling evidence and is not a validation pass.

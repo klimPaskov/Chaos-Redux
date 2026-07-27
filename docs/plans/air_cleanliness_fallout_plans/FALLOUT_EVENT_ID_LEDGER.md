@@ -1,8 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Mine Generator
+## Current reconciliation after The New Year Without Fireworks
 
-The living-world pilot now contains `523` defined event blocks across the reviewed ordinary range through `648`, including the dormant Mine Generator tranche at `642` through `648`. The current reviewed ordinary row count is `63`. Mine Generator uses candidate `642`, transaction `710063`, route `7163`, and Event Log history `9169`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `530` defined event blocks across the reviewed ordinary range through `655`, including the dormant New Year Without Fireworks tranche at `649` through `655`. The current reviewed ordinary row count is `64`. New Year Without Fireworks uses candidate `649`, transaction `710064`, route `7164`, and Event Log history `9170`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
@@ -744,3 +744,17 @@ The row requires a current-generation owner-controlled Sub-Saharan African state
 The chain carries four authored resource-works branches with exact costs, deterministic result and callback grading, a 42-day result, a 270-day operating-season callback, native infrastructure or industrial damage on failure, bounded Deaths effects, durable country ledgers, Event Log history, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not create a mine or generator building, alter a native deposit, create a country, transfer population across states, or add a recurring scheduler.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven. The dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.
+
+## The New Year Without Fireworks tranche
+
+The New Year Without Fireworks adds dormant suffixes `649` through `655` with candidate id `649`, transaction key `710064`, route `7164`, and history `9170`.
+
+The human opening is `649`, the hidden-AI opening is `650`, the human and hidden-AI delayed results are `651` and `652`, the human and hidden-AI callbacks are `653` and `654`, and cleanup is `655`.
+
+The row requires a current-generation East Asian Fallout country with durable survival resources, minimum Food, Clean Water, Fuel, Medicine, Shelter Capacity, Recognition, and Cohesion, campaign days from `300` through `2599`, and at least one affordable branch. Its authenticated target shape is subject type `none` with target `0`, so it does not fabricate a state or province target.
+
+The chain carries Quiet Remembrance, Hold a Ration Feast, Stage a Military Ceremony, and Leave the Night to Local Festivals branches with exact costs, deterministic result and callback grading, a 21-day result, a 330-day anniversary callback, bounded Deaths effects, durable country ledgers, Event Log history `9170`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not schedule itself again.
+
+The asset evidence is `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_new_year_without_fireworks`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and the exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with the candidate, event, transaction, route, history, dormant, and `Needs Testing` fields.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the read-only event-inspector result remain unproven. The dedicated proof is `FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md`.
