@@ -1,8 +1,8 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Mountain Pass Census
+## Current reconciliation after Mine Generator
 
-The reviewed candidate producer now covers `62` ordinary dormant rows through candidate `635`, with `516` defined event blocks and `0 of 660` countable release-floor blocks. The Mountain Pass Census row uses route `7162`, so the reviewed route upper bound is now `7163`. Its current-generation Middle East and North Africa admission stores the pretransition Air Winter shelter, refugee, adaptation, reclamation, exposure, disease, and native infrastructure snapshots.
+The reviewed candidate producer now covers `63` ordinary dormant rows through candidate `642`, with `523` defined event blocks and `0 of 660` countable release-floor blocks. The Mine Generator row uses route `7163`, so the reviewed route upper bound is now `7164`. Its current-generation Sub-Saharan African admission stores the produced Air Winter snapshot, native resource evidence, surviving population, native infrastructure, Supply Access, Reclamation, Food reserve, Exposure, and Disease Pressure values.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
@@ -12,13 +12,11 @@ Canal Schedule is the South Asian regional water row with candidate `628`, trans
 
 Mountain Pass Census is the Middle East and North Africa highland census row with candidate `635`, transaction `710062`, event ids `635` through `641`, and Event Log history `9168`. It selects the lowest valid native highland state and records four authored shelter, return, garrison, and open-pass branches without claiming a generic pass topology. Its dedicated proof is `FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`.
 
+Mine Generator is the Sub-Saharan African resource-works row with candidate `642`, transaction `710063`, event ids `642` through `648`, and Event Log history `9169`. It selects the lowest valid native resource state and records four authored operating branches without claiming a generic mine or generator building. Its dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.
+
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-two
-global-survival pilot chains. The producer is deliberately narrower than the
-future 660-block release surface. It exists to prove the candidate-array
-contract, target-shape contract, and deterministic state selection without
-opening either scheduler activation flag.
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-three global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 
 ## Candidate rows
 
@@ -73,7 +71,7 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-two candidate ids, sixty-two transaction keys, and sixty-two route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-three candidate ids, sixty-three transaction keys, and sixty-three route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
@@ -537,3 +535,15 @@ Its country row selects the lowest eligible current-generation Middle East and N
 Four authored branches cover Local Citizenship, Return Plan, Military Colony, and Open Pass Community. They use branch-specific Food, Shelter Capacity, Recognition, Fuel, Support Equipment, Command Power, Clean Water, and Medicine costs, consume the exact opening receipt after delayed-result allocation and before chain commitment, clear the snapshot reservation and refund and cancel on scheduling or receipt-consume failure, use deterministic result and callback grading, callback outcome freezing before the human popup, exact 35-day and 210-day delays, state Supply Access and Air Winter effects, native infrastructure damage, bounded Deaths effects, durable branch-aware country and state memories, hidden-AI parity, dedicated report art, Event Log history `9168`, generation and owner or controller drift cancellation, and authenticated cleanup.
 
 The chain remains dormant and outside release-floor credit. The dedicated proof is `FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`.
+
+## The Mine Generator correction
+
+The Mine Generator is the sixty-third reviewed ordinary candidate.
+
+It uses candidate id `642`, transaction `710063`, route `7163`, event blocks `642` through `648`, and Event Log history `9169`.
+
+Its country gate requires a current Fallout registry row, current-generation Sub-Saharan African regional identity, durable Survival resources, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled state with a produced Air Winter snapshot, surviving population, native infrastructure, Supply Access, Reclamation, Food reserve, bounded Exposure and Disease Pressure, and a native steel, tungsten, chromium, aluminium, or coal deposit.
+
+Four authored branches cover Trade Mineral Shares, Conscript the Labor Shift, Establish Engineer Rule, and Evacuate the Works. The result and callback use frozen ledgers, deterministic grading, exact 42-day and 270-day delays, native infrastructure or industrial damage on failure, bounded Deaths effects, durable branch memories, hidden-AI parity, Event Log history `9169`, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and outside release-floor credit. It does not create a mine or generator building, alter a native resource deposit, create a country, transfer population across states, or add a recurring scheduler. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven.
