@@ -8,8 +8,10 @@ The source image was generated with the official built-in ImageGen workflow beca
 
 Runtime output: `gfx/event_pictures/fallout_world_end/report_event_fallout_second_dust_bowl.dds`.
 
-Suggested sprite: `GFX_report_event_fallout_second_dust_bowl` in `interface/fallout_world_end.gfx`.
+Runtime sprite: `GFX_report_event_fallout_second_dust_bowl` registered in `interface/fallout_world_end.gfx`.
 
-No `.gfx` or gameplay files are edited by this asset package. The main agent owns runtime sprite registration and event wiring.
+The asset package does not own `.gfx` or gameplay edits. Parent wiring now consumes the sprite from events `chaosx.fallout.656`, `chaosx.fallout.658`, and `chaosx.fallout.660` in the dormant reviewed tranche.
+
+Live report-card presentation remains unverified because HOI4 was not launched.
 
 The source PNG, processed preview, prompt, manifest, validation notes, contact sheet, and handoff are retained here while the event remains active.

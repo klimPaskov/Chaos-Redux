@@ -164,6 +164,8 @@ The abandonment vote fires `chaosx.fallout.201`. Mass decontamination fires `cha
 
 `events/fallout_world_end_events.txt` owns the namespace `chaosx.fallout`. The current Air Winter pilot contains 52 manually authored event blocks, 191 options, 190 effect-bearing options, and 67 delayed-result schedules:
 
+These 52 blocks belong to the Air Winter pilot and are not the separate Fallout living-world scheduler count. The current Fallout scheduler has sixty-five dormant reviewed ordinary rows and 537 defined living-world blocks through the Second Dust Bowl source row at candidate `656`, event ids `656` through `662`, transaction `710065`, route `7165`, and history `9171`. Both Fallout scheduler activation flags remain unset and have no accepted setter or live caller in the current authoritative tranche, so the countable Fallout release-floor total remains `0 of 660`. The completion audit leaves stale cleanup and live option-competition priority unresolved in the Second Dust Bowl source package. See `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md` for the current Fallout scheduler ledger. The exact engine-native all-valid-province thermonuclear sweep remains blocked, the manual survival contract remains a direct `90` to `95` percent prestrike population-loss band, and Hearts of Iron IV was not launched.
+
 - 49 phase, regional, seasonal, crisis, delayed-result, government, and recovery blocks.
 - 2 terminal response result blocks for abandonment and decontamination.
 - 1 stale-choice recovery block.
@@ -319,7 +321,7 @@ Incomplete and not claimed:
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
 - The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.
 - The dormant manual scenario substrate has an exact province manifest and seven-day ledger, but the native every-valid-province sweep is not proven and the scenario is not live.
-- The Fallout scheduler contracts include fifty-four dormant reviewed rows and 460 defined living-world blocks, but the countable release-floor total remains 0 of 660 and activation is not authorized.
+- The Fallout scheduler contracts include sixty-five dormant reviewed rows and 537 defined living-world blocks through The Second Dust Bowl, but the countable release-floor total remains 0 of 660 and activation is not authorized. The Second Dust Bowl completion audit leaves pre-result stale cancellation, generation-drift cleanup, and live option-competition priority blocked by shared and dedicated identity gates.
 - Survivor focus content, decisions, leaders, units, diplomacy, AI layers, and their remaining dedicated assets are incomplete.
 
 ## Future plans and extension suggestions

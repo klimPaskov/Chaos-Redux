@@ -2,6 +2,8 @@
 
 Date: 2026-07-27
 
+Status note: The cancellation non-wiring finding below is a historical pre-parent-wiring observation. Parent gameplay now records the authenticated cancellation payload through the history recorder, as reflected in `FALLOUT_SECOND_DUST_BOWL_PROOF.md` and the current Second Dust Bowl effects. Runtime acceptance remains unproven.
+
 ## Files changed
 
 - `localisation/english/fallout_world_end_second_dust_bowl_l_english.yml`
@@ -23,13 +25,13 @@ Before the patch, player-facing text exposed the internal word authenticated for
 
 After the patch, popup text uses the live state name and result text uses the same-state or selected-state wording.
 
-The cancellation key is not wired because the current Second Dust Bowl effects do not emit the cancellation payload.
+Historical pre-wiring finding: the cancellation key was not wired because the then-current Second Dust Bowl effects did not emit the cancellation payload.
 
 ## Validation
 
 - Confirmed all event-localisation references in events 656, 658, and 660 resolve to keys in the dedicated yml.
 - Confirmed event names 656 through 662 are present.
-- Confirmed all fifteen dedicated scripted-localisation output keys resolve to dedicated yml keys.
+- Confirmed all twenty-one dedicated scripted-localisation output keys resolve to dedicated yml keys, including the explicit callback-failure and unknown-payload branches.
 - Confirmed the central Event Log file maps the 9171 history ID to the Second Dust Bowl name and detail keys exactly once.
 - Confirmed the yml retains its UTF-8 BOM.
 - Confirmed the dedicated yml parses with a standard YAML parser after the indentation repair.
@@ -38,10 +40,10 @@ The cancellation key is not wired because the current Second Dust Bowl effects d
 
 ## Remaining risks
 
-The dedicated scripted-localisation fallback still displays callback failure for an unrecognized or unassigned payload.
+The dedicated scripted-localisation fallback now displays a neutral unknown-payload line instead of mislabeling an unrecognized payload as callback failure.
 
-The existing cancellation constant has no gameplay assignment and the new cancellation key has no selector branch.
+The cancellation payload is now emitted by the opening receipt cancellation effect and selected by the dedicated scripted-localisation branch. Runtime cancellation reachability remains engine-sensitive and unproven.
 
-The human event options expose scripted affordability triggers without dedicated blocked-requirement custom tooltip keys.
+The human event options expose scripted affordability triggers without dedicated blocked-requirement custom tooltip keys. The four opening tooltips now name the issued target state and result timing.
 
 Runtime Event Log rendering and state-name fallback behavior remain engine-sensitive and were not run.

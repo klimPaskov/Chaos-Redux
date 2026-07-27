@@ -1,14 +1,16 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after The New Year Without Fireworks
+## Current reconciliation after The Second Dust Bowl
 
-The living-world pilot now contains `530` defined event blocks across the reviewed ordinary range through `655`, including the dormant New Year Without Fireworks tranche at `649` through `655`. The current reviewed ordinary row count is `64`. New Year Without Fireworks uses candidate `649`, transaction `710064`, route `7164`, and Event Log history `9170`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `537` defined event blocks across the reviewed ordinary range through `662`, including the dormant Second Dust Bowl tranche at `656` through `662`. The current reviewed ordinary row count is `65`. Second Dust Bowl uses candidate `656`, transaction `710065`, route `7165`, and Event Log history `9171`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
 Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native Eurasian interior railway state and uses dedicated art and localisation.
 
 Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and Event Log history `9167`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native South Asian rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building.
+
+Second Dust Bowl reserves candidate `656`, transaction `710065`, route `7165`, and Event Log history `9171`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native North American plains state and does not add Air Contamination, mutate the native state category, transfer population between states, or create a named historical district. Committed-row cleanup can release same-generation target drift through the generic country registry, while pre-result stale cancellation and generation drift remain blocked by the shared delayed dispatcher current-generation gate.
 
 ## Purpose
 
@@ -758,3 +760,17 @@ The chain carries Quiet Remembrance, Hold a Ration Feast, Stage a Military Cerem
 The asset evidence is `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_new_year_without_fireworks`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and the exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with the candidate, event, transaction, route, history, dormant, and `Needs Testing` fields.
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the read-only event-inspector result remain unproven. The dedicated proof is `FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md`.
+
+## The Second Dust Bowl tranche
+
+The Second Dust Bowl adds dormant suffixes `656` through `662` with candidate id `656`, transaction key `710065`, route `7165`, and history `9171`.
+
+The human opening is `656`, the hidden-AI opening is `657`, the human and hidden-AI delayed results are `658` and `659`, the human and hidden-AI callbacks are `660` and `661`, and cleanup is `662`.
+
+The row requires a current-generation North American Fallout country with durable survival resources, campaign days from `365` through `1599`, minimum Food, Clean Water, Scrap, Fuel, Power, Shelter Capacity, Recognition, and Cohesion, and at least one affordable branch. Its authenticated target is the lowest eligible owner-controlled native `plains` state with a rural, pastoral, or town pretransition category, produced Air Winter snapshot, surviving population, native infrastructure, Supply Access, Food, Adaptation, Reclamation, Exposure, and Disease Pressure.
+
+The source contract carries Shelter the Fields, Move the Farms, Seed Cold Crops, and Abandon the Open Plains branches with exact costs, deterministic result and callback grading, a 35-day result, a 240-day planting-season callback, bounded Deaths effects, seven durable soil ledgers, Event Log history `9171`, hidden-AI parity, dedicated report art, and cleanup. The static repair pass now carries the issued target through opening admission, applies branch-preparation grading, reauthenticates live state values before delayed effects, and localizes all dedicated modifiers. Stale cleanup, live option-competition priority, runtime delivery, and exact sweep evidence remain open. It does not add Air Contamination, mutate the native state category, transfer population between states, create a named historical district, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/656_second_dust_bowl/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_second_dust_bowl`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-656` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:613` with `Needs Testing` status. The export covers the four branch choices, twelve result outcomes, three callback outcomes, authenticated cancellation, and visible budget cost `3`. Catalog wording matches the current player-facing terms after the wording pass.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. Pre-result stale cancellation and generation-drift cleanup remain blocked by the shared delayed dispatcher current-generation gate. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker, and the manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. Hearts of Iron IV was not launched. The dedicated proof is `FALLOUT_SECOND_DUST_BOWL_PROOF.md`.

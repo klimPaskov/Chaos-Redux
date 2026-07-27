@@ -1,6 +1,6 @@
 # Air Cleanliness and Fallout source of truth map
 
-Status: current implementation map, reconciled 2026-07-26. Fallout remains incomplete and dormant where the proof ledger says so.
+Status: current implementation map, reconciled 2026-07-27 after The Second Dust Bowl. Fallout remains incomplete and dormant where the proof ledger says so.
 
 ## Authority order
 
@@ -35,13 +35,15 @@ The current documented ordinary pilot total is fifty-five rows and 467 defined b
 
 The current Fallout content boundary is dormant by design where the activation gates are unset. Defined blocks, reserved ids, and candidate rows are not release-floor credit until their callers, human and hidden AI paths, effects, memory, cleanup, localisation, assets, and audits are complete.
 
+The current reviewed ordinary pilot has `65` dormant rows and `537` defined event blocks through The Second Dust Bowl candidate `656`, event ids `656` through `662`, transaction `710065`, route `7165`, and Event Log history `9171`. The reviewed route upper bound is `7166`. Both scheduler activation flags remain unset. The completion audit found stale cleanup and live option-competition priority wiring unresolved after the static repair pass. The exact engine-native all-valid-province thermonuclear sweep remains blocked, the manual Fallout survival contract remains a direct `90` to `95` percent prestrike population-loss band, and Hearts of Iron IV was not launched.
+
 The B7 successor pilot is recorded in `FALLOUT_SUCCESSOR_PLAYER_CONTINUATION_B7_PROOF.md` and `docs/specs/air_cleanliness_fallout_specs/specs/53_successor_allocation_player_continuation_b7.md`. It adds a USA federal-continuity package, a deterministic fragmentation candidate probe, and a dormant NZL exact five-state fragmented-transfer pilot without setting the global allocation completion or scheduler activation flags. NZL is the only reviewed package-aware fragmentation candidate. Its generation-bound Samoa and Aotearoa conflict-disposition producer now has dormant existing-tag and exact-transfer callers. Dynamic materialization from a missing tag, general allocation, player candidate choice, and player handoff remain blocked.
 
-The current reviewed ordinary pilot extends through Nile Pump Congress at candidate `579`, events `579` through `585`, transaction `710055`, route `7155`, and history `9161`. The row selects the lowest deterministic current-generation sub-Saharan African rural state with durable clean-water and infrastructure evidence, carries Air Winter, survival, water-governance, river compact, basin war, Deaths, Event Log, and cleanup ledgers, and remains dormant with the scheduler activation flags unset. The preceding County Fair Returns row remains documented at candidate `572` through `578`.
+The Nile Pump Congress paragraph below is a historical snapshot. The current reviewed ordinary pilot extends through The Second Dust Bowl at candidate `656`, events `656` through `662`, transaction `710065`, route `7165`, and history `9171`. The source contract selects the lowest eligible current-generation North American native plains state, carries Air Winter, survival, soil, Deaths, Event Log, and cleanup ledgers, and remains dormant with the scheduler activation flags unset. The completion audit leaves stale cleanup, option-competition priority, runtime delivery, and exact sweep surfaces open. The preceding New Year Without Fireworks row remains documented at candidate `649` through `655`.
 
 ## Proof index
 
-The reviewed-candidate proof index above retains its historical fifty-four-row wording for the County Fair Returns snapshot. The current ordinary pilot is fifty-five rows and 467 defined blocks through Nile Pump Congress, with the additional chain proof recorded in `FALLOUT_NILE_PUMP_CONGRESS_CHAIN_PROOF.md`.
+The reviewed-candidate proof index above retains historical count wording for earlier snapshots. The current ordinary pilot is sixty-five rows and 537 defined blocks through The Second Dust Bowl, with the current chain proofs recorded in `FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md` and `FALLOUT_SECOND_DUST_BOWL_PROOF.md`.
 
 - `AIR_CONTAMINATION_NATURAL_SOURCE_PROOF.md` records low, capped wildfire, volcanic eruption, ashfall, massive-eruption, and settled-ash aftermath pressure.
 - `AIR_WINTER_NORMAL_MAP_PROOF.md` and `subagent_handoffs/air_winter_normal_map_static_reaudit_2026-07-22.md` record the ordinary-map visual route.
@@ -128,3 +130,16 @@ Successor package production, player materialization, general allocation, countr
 | The New Year Without Fireworks constants and registry | `common/script_constants/fallout_world_end_new_year_without_fireworks_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
 | The New Year Without Fireworks localisation and Event Log | `localisation/english/fallout_world_end_new_year_without_fireworks_l_english.yml`, `common/scripted_localisation/fallout_world_end_new_year_without_fireworks_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The New Year Without Fireworks art and workbook | `docs/assets/649_new_year_without_fireworks/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout_world_end/report_event_fallout_new_year_without_fireworks.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and the exported evidence row at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` |
+
+## The Second Dust Bowl source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Second Dust Bowl design | `docs/specs/air_cleanliness_fallout_specs/specs/66_reviewed_regional_second_dust_bowl.md` |
+| The Second Dust Bowl runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SECOND_DUST_BOWL_PROOF.md` |
+| The Second Dust Bowl gameplay evidence | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_second_dust_bowl_event_triggers.txt`, `common/scripted_effects/fallout_world_end_second_dust_bowl_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_second_dust_bowl_dynamic_modifiers.txt` |
+| The Second Dust Bowl constants and registry | `common/script_constants/fallout_world_end_second_dust_bowl_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Second Dust Bowl localisation and Event Log | `localisation/english/fallout_world_end_second_dust_bowl_l_english.yml`, `common/scripted_localisation/fallout_world_end_second_dust_bowl_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Second Dust Bowl art | `docs/assets/656_second_dust_bowl/manifest.md`, `docs/assets/656_second_dust_bowl/gfx_handoff.md`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout_world_end/report_event_fallout_second_dust_bowl.dds` |
+| The Second Dust Bowl workbook evidence | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and exported row `FALLOUT-656` at `docs/spreadsheets/chaos_redux_events_catalog.csv:613`. The row is `Needs Testing` and covers four branch choices, twelve result outcomes, three callback outcomes, authenticated cancellation, and visible budget cost `3`. Catalog wording matches the current player-facing text. |
+| The Second Dust Bowl status boundary | dormant source package with static consumers, no HOI4 runtime acceptance, same-generation committed-row cleanup route, pre-result stale and generation-drift cleanup blocked, exact thermonuclear sweep separate blocker, manual survival contract 90 to 95 percent |

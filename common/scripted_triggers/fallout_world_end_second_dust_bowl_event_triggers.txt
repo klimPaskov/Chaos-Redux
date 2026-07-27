@@ -1,0 +1,285 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THE SECOND DUST BOWL TRIGGERS
+# ============================================================================
+# Plains target admission and authenticated opening, result, callback, and
+# cleanup gates. The chain never writes contamination or changes state class.
+
+fallout_event_656_shelter_affordable = {
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_656_cost.shelter_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_656_cost.shelter_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_656_cost.shelter_capacity compare = greater_than_or_equals }
+}
+
+fallout_event_656_move_affordable = {
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_656_cost.move_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_656_cost.move_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_656_cost.move_capacity compare = greater_than_or_equals }
+}
+
+fallout_event_656_seed_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_656_cost.seed_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_656_cost.seed_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_656_cost.seed_power compare = greater_than_or_equals }
+}
+
+fallout_event_656_abandon_affordable = {
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_656_cost.abandon_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_656_cost.abandon_capacity compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_656_cost.abandon_medicine compare = greater_than_or_equals }
+}
+
+fallout_event_656_branch_is_affordable = {
+	OR = {
+		fallout_event_656_shelter_affordable = yes
+		fallout_event_656_move_affordable = yes
+		fallout_event_656_seed_affordable = yes
+		fallout_event_656_abandon_affordable = yes
+	}
+}
+
+fallout_event_656_requested_branch_is_affordable = {
+	OR = {
+		AND = {
+			check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields }
+			fallout_event_656_shelter_affordable = yes
+		}
+		AND = {
+			check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms }
+			fallout_event_656_move_affordable = yes
+		}
+		AND = {
+			check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.seed_cold_crops }
+			fallout_event_656_seed_affordable = yes
+		}
+		AND = {
+			check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.abandon_open_plains }
+			fallout_event_656_abandon_affordable = yes
+		}
+	}
+}
+
+fallout_event_656_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	has_variable = fallout_pretransition_air_winter_food_reserve
+	has_variable = fallout_pretransition_air_winter_adaptation
+	has_variable = fallout_pretransition_air_winter_reclamation
+	has_variable = fallout_pretransition_air_winter_exposure
+	has_variable = fallout_state_supply_access_current
+	has_variable = air_winter_disease_pressure
+	has_variable = fallout_pretransition_snapshot_generation
+	has_variable = fallout_pretransition_air_winter_source_kind
+	has_variable = fallout_pretransition_state_category
+	has_variable = air_winter_food_reserve
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	check_variable = { fallout_pretransition_snapshot_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_pretransition_air_winter_source_kind = constant:air_winter_fallout_snapshot_source_kind.produced }
+	terrain = plains
+	OR = {
+		check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.rural }
+		check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.pastoral }
+		check_variable = { fallout_pretransition_state_category = constant:air_winter_state_category.town }
+	}
+}
+
+fallout_event_656_state_is_eligible = {
+	fallout_event_656_state_is_current = yes
+	check_variable = { state_population_k value = constant:fallout_event_656_threshold.minimum_population_k compare = greater_than_or_equals }
+	check_variable = { non_damaged_building_level@infrastructure value = constant:fallout_event_656_threshold.minimum_infrastructure compare = greater_than_or_equals }
+	check_variable = { fallout_state_supply_access_current value = constant:fallout_event_656_threshold.minimum_state_supply compare = greater_than_or_equals }
+	check_variable = { air_winter_food_reserve value = constant:fallout_event_656_threshold.minimum_state_food compare = greater_than_or_equals }
+	check_variable = { air_winter_food_reserve value = constant:fallout_event_656_threshold.maximum_state_food compare = less_than_or_equals }
+	check_variable = { air_winter_adaptation value = constant:fallout_event_656_threshold.minimum_state_adaptation compare = greater_than_or_equals }
+	check_variable = { air_winter_adaptation value = constant:fallout_event_656_threshold.maximum_state_adaptation compare = less_than_or_equals }
+	check_variable = { air_winter_reclamation value = constant:fallout_event_656_threshold.maximum_state_reclamation compare = less_than }
+	check_variable = { air_winter_exposure value = constant:fallout_event_656_threshold.minimum_state_exposure compare = greater_than_or_equals }
+	check_variable = { air_winter_exposure value = constant:fallout_event_656_threshold.maximum_state_exposure compare = less_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_656_threshold.maximum_state_disease compare = less_than }
+	NOT = { has_state_flag = fallout_event_656_registry_reserved }
+	NOT = { has_state_flag = fallout_event_656_registry_committed }
+	NOT = { has_state_flag = fallout_event_656_memory_closed }
+}
+
+fallout_event_656_country_is_current = {
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	check_variable = { global.num_days value = constant:fallout_event_656_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { global.num_days value = constant:fallout_event_656_threshold.maximum_campaign_day compare = less_than_or_equals }
+	check_variable = { fallout_region_id = constant:fallout_region.north_america }
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_656_threshold.minimum_country_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^2 value = constant:fallout_event_656_threshold.minimum_country_water compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_656_threshold.minimum_country_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_656_threshold.minimum_country_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_656_threshold.minimum_country_power compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^8 value = constant:fallout_event_656_threshold.minimum_country_shelter compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_656_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_656_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	fallout_event_656_branch_is_affordable = yes
+	NOT = { has_country_flag = fallout_event_656_chain_committed }
+	NOT = { has_country_flag = fallout_event_656_memory_closed }
+}
+
+fallout_event_656_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type = constant:fallout_event_subject_type.state }
+	check_variable = { fallout_event_dispatch_issued_target > constant:fallout_event_runtime.zero }
+	set_temp_variable = { fallout_event_656_target_to_check = fallout_event_dispatch_issued_target }
+	set_temp_variable = { fallout_event_656_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_656_target_to_check = {
+		set_temp_variable = { fallout_event_656_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_656_state_is_eligible = yes
+	}
+	check_variable = { fallout_event_656_target_context_loaded = constant:fallout_event_runtime.one }
+}
+
+fallout_event_656_opening_target_is_current = {
+	fallout_event_656_target_is_current = yes
+	fallout_event_656_country_is_current = yes
+}
+
+fallout_event_656_state_pressure_is_high = {
+	var:fallout_event_dispatch_issued_target = {
+		OR = {
+			check_variable = { air_winter_exposure value = constant:fallout_event_656_threshold.ai_high_exposure compare = greater_than }
+			check_variable = { air_winter_disease_pressure value = constant:fallout_event_656_threshold.ai_high_disease compare = greater_than }
+		}
+	}
+}
+
+fallout_event_656_registry_is_current = {
+	has_variable = fallout_event_656_registry_generation
+	has_variable = fallout_event_656_registry_owner
+	has_variable = fallout_event_656_candidate_id
+	has_variable = fallout_event_656_registry_target
+	has_variable = fallout_event_656_registry_route
+	has_variable = fallout_event_656_registry_transaction_key
+	has_variable = fallout_event_656_target_state_id
+	has_variable = fallout_event_656_selected_branch
+	has_variable = fallout_event_656_result_outcome
+	has_variable = fallout_event_656_result_cleanup_ticket
+	has_variable = fallout_event_656_frozen_opening_ticket
+	has_variable = fallout_event_656_frozen_mode
+	has_variable = fallout_event_656_frozen_opening_event_token
+	has_variable = fallout_event_656_frozen_transaction_key
+	has_variable = fallout_event_656_frozen_target_owner
+	has_variable = fallout_event_656_frozen_target_controller
+	has_variable = fallout_event_656_result_generation
+	has_country_flag = fallout_event_656_cost_paid
+	has_country_flag = fallout_event_656_chain_committed
+	check_variable = { fallout_event_656_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_656_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_656_candidate_id value = constant:fallout_event_candidate_pilot.second_dust_bowl_candidate_id compare = equals }
+	check_variable = { fallout_event_656_registry_target value = fallout_event_656_target_state_id compare = equals }
+	check_variable = { fallout_event_656_registry_route value = constant:fallout_event_candidate_pilot.second_dust_bowl_route compare = equals }
+	check_variable = { fallout_event_656_registry_transaction_key value = constant:fallout_event_candidate_pilot.second_dust_bowl_transaction_key compare = equals }
+	check_variable = { fallout_event_656_frozen_transaction_key value = constant:fallout_event_656_transaction.transaction_key compare = equals }
+	check_variable = { fallout_event_656_result_generation value = global.fallout_transition_generation compare = equals }
+	set_temp_variable = { fallout_event_656_registry_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_656_target_state_id = {
+		set_temp_variable = { fallout_event_656_registry_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		is_controlled_by = ROOT
+		fallout_survival_state_identity_row_is_current = yes
+		fallout_survival_state_resource_row_is_durable = yes
+		has_variable = fallout_pretransition_state_category
+		check_variable = { fallout_pretransition_state_category value = ROOT.fallout_event_656_target_state_category compare = equals }
+		terrain = plains
+		check_variable = { var = ROOT.fallout_event_656_frozen_target_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_656_frozen_target_controller value = CONTROLLER compare = equals }
+	}
+	check_variable = { fallout_event_656_registry_context_loaded = constant:fallout_event_runtime.one }
+	var:fallout_event_656_target_state_id = { fallout_event_656_state_is_current = yes }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_656_frozen_mode = constant:fallout_event_dispatch_mode.human_visible }
+			check_variable = { fallout_event_656_frozen_opening_event_token = constant:fallout_event_id.second_dust_bowl_human }
+		}
+		AND = {
+			check_variable = { fallout_event_656_frozen_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+			check_variable = { fallout_event_656_frozen_opening_event_token = constant:fallout_event_id.second_dust_bowl_ai }
+		}
+	}
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+}
+
+fallout_event_656_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_human }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	fallout_event_656_opening_target_is_current = yes
+}
+
+fallout_event_656_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	fallout_event_656_opening_target_is_current = yes
+}
+
+fallout_event_656_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_656_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_656_branch.upper_bound }
+	check_variable = { fallout_event_dispatch_issued_branch value = fallout_event_656_selected_branch compare = equals }
+	fallout_event_registry_country_row_is_current = yes
+}
+
+fallout_event_656_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_656_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_656_branch.upper_bound }
+	check_variable = { fallout_event_dispatch_issued_branch value = fallout_event_656_selected_branch compare = equals }
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_callback }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible }
+	has_country_flag = fallout_event_656_result_effects_committed
+	fallout_event_656_registry_is_current = yes
+}
+
+fallout_event_656_callback_ai_can_enter = {
+	is_ai = yes
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch > constant:fallout_event_656_branch.none }
+	check_variable = { fallout_event_dispatch_issued_branch < constant:fallout_event_656_branch.upper_bound }
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_callback_ai }
+	check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+	has_country_flag = fallout_event_656_result_effects_committed
+	fallout_event_656_registry_is_current = yes
+}
+
+fallout_event_656_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.second_dust_bowl_cleanup }
+	has_country_flag = fallout_event_656_chain_committed
+	has_variable = fallout_event_656_candidate_id
+	has_variable = fallout_event_656_registry_owner
+	has_variable = fallout_event_656_registry_target
+	has_variable = fallout_event_656_registry_route
+	has_variable = fallout_event_656_registry_transaction_key
+	has_variable = fallout_event_656_frozen_opening_ticket
+	has_variable = fallout_event_656_frozen_mode
+	has_variable = fallout_event_656_frozen_opening_event_token
+	has_variable = fallout_event_656_frozen_transaction_key
+	has_variable = fallout_event_656_result_cleanup_ticket
+	check_variable = { fallout_event_656_candidate_id value = constant:fallout_event_candidate_pilot.second_dust_bowl_candidate_id compare = equals }
+	check_variable = { fallout_event_656_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_656_registry_target value = fallout_event_656_target_state_id compare = equals }
+	check_variable = { fallout_event_656_frozen_transaction_key value = constant:fallout_event_656_transaction.transaction_key compare = equals }
+	check_variable = { fallout_event_656_frozen_opening_ticket > constant:fallout_event_runtime.no_ticket }
+	OR = {
+		check_variable = { fallout_event_dispatch_issued_ticket value = fallout_event_656_result_cleanup_ticket compare = equals }
+		check_variable = { fallout_event_dispatch_issued_ticket value = fallout_event_656_callback_cleanup_ticket compare = equals }
+	}
+	fallout_event_registry_country_row_is_current = yes
+}
