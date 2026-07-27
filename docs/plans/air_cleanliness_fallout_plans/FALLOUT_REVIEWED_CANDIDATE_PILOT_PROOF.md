@@ -1,8 +1,8 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Canal Schedule
+## Current reconciliation after Mountain Pass Census
 
-The reviewed candidate producer now covers `61` ordinary dormant rows through candidate `628`, with `509` defined event blocks and `0 of 660` countable release-floor blocks. The Canal Schedule row uses route `7161`, so the reviewed route upper bound is now `7162`. Its current-generation South Asian admission stores the pretransition Air Winter food, adaptation, reclamation, exposure, and native infrastructure snapshots.
+The reviewed candidate producer now covers `62` ordinary dormant rows through candidate `635`, with `516` defined event blocks and `0 of 660` countable release-floor blocks. The Mountain Pass Census row uses route `7162`, so the reviewed route upper bound is now `7163`. Its current-generation Middle East and North Africa admission stores the pretransition Air Winter shelter, refugee, adaptation, reclamation, exposure, disease, and native infrastructure snapshots.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
@@ -10,9 +10,11 @@ Rail Spine Vote is the Eurasian interior railway row with candidate `621`, trans
 
 Canal Schedule is the South Asian regional water row with candidate `628`, transaction `710061`, event ids `628` through `634`, and Event Log history `9167`. It selects the lowest valid native rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building. Its dedicated proof is `FALLOUT_CANAL_SCHEDULE_PROOF.md`.
 
+Mountain Pass Census is the Middle East and North Africa highland census row with candidate `635`, transaction `710062`, event ids `635` through `641`, and Event Log history `9168`. It selects the lowest valid native highland state and records four authored shelter, return, garrison, and open-pass branches without claiming a generic pass topology. Its dedicated proof is `FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`.
+
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-one
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-two
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -71,7 +73,7 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-one candidate ids, sixty-one transaction keys, and sixty-one route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-two candidate ids, sixty-two transaction keys, and sixty-two route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
@@ -523,3 +525,15 @@ Its country gate requires the Europe region, current-generation Fallout identity
 Four authored branches cover a surface council, autonomous wards, a military corridor, and evacuation of the lower districts. The result and callback use frozen ledgers, deterministic branch thresholds, bounded Deaths effects, state Supply Access and Air Winter changes, durable country and state memories, hidden-AI parity, Event Log history `9165`, dedicated report art, generation-reset refunds, and authenticated cleanup.
 
 The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_METRO_REPUBLIC_BELOW_PROOF.md`.
+
+## The Mountain Pass Census correction
+
+The Mountain Pass Census is the sixty-second reviewed ordinary candidate.
+
+It uses candidate id `635`, transaction `710062`, route `7162`, event blocks `635` through `641`, and Event Log history `9168`.
+
+Its country row selects the lowest eligible current-generation Middle East and North Africa highland state with produced Air Winter shelter, Refugee Pressure, Supply Access, Adaptation, Reclamation, low Exposure, bounded Disease Pressure, surviving population, and native infrastructure.
+
+Four authored branches cover Local Citizenship, Return Plan, Military Colony, and Open Pass Community. They use branch-specific Food, Shelter Capacity, Recognition, Fuel, Support Equipment, Command Power, Clean Water, and Medicine costs, consume the exact opening receipt after delayed-result allocation and before chain commitment, clear the snapshot reservation and refund and cancel on scheduling or receipt-consume failure, use deterministic result and callback grading, callback outcome freezing before the human popup, exact 35-day and 210-day delays, state Supply Access and Air Winter effects, native infrastructure damage, bounded Deaths effects, durable branch-aware country and state memories, hidden-AI parity, dedicated report art, Event Log history `9168`, generation and owner or controller drift cancellation, and authenticated cleanup.
+
+The chain remains dormant and outside release-floor credit. The dedicated proof is `FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`.

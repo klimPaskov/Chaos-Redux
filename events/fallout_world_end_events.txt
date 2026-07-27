@@ -15873,6 +15873,105 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.635
+	title = chaosx.fallout.635.t
+	desc = chaosx.fallout.635.d
+	picture = GFX_report_event_fallout_mountain_pass_census
+	is_triggered_only = yes
+	trigger = { fallout_event_635_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.635.a
+		trigger = { fallout_event_635_local_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_635_requested_branch = constant:fallout_event_635_branch.local_citizenship } fallout_event_635_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.635.a.tt
+	}
+	option = {
+		name = chaosx.fallout.635.b
+		trigger = { fallout_event_635_return_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_635_requested_branch = constant:fallout_event_635_branch.return_plan } fallout_event_635_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.635.b.tt
+	}
+	option = {
+		name = chaosx.fallout.635.c
+		trigger = { fallout_event_635_military_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_635_requested_branch = constant:fallout_event_635_branch.military_colony } fallout_event_635_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.635.c.tt
+	}
+	option = {
+		name = chaosx.fallout.635.open.a
+		trigger = { fallout_event_635_open_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_635_requested_branch = constant:fallout_event_635_branch.open_pass_community } fallout_event_635_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.635.open.a.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.636
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_635_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_635_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.637
+	title = chaosx.fallout.637.t
+	desc = { text = chaosx.fallout.637.local.success.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.local_citizenship } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.637.local.partial.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.local_citizenship } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.637.local.failure.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.local_citizenship } } }
+	desc = { text = chaosx.fallout.637.return.success.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.return_plan } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.637.return.partial.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.return_plan } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.637.return.failure.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.return_plan } } }
+	desc = { text = chaosx.fallout.637.military.success.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.military_colony } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.637.military.partial.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.military_colony } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.637.military.failure.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.military_colony } } }
+	desc = { text = chaosx.fallout.637.open.success.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.open_pass_community } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.637.open.partial.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.open_pass_community } check_variable = { fallout_event_635_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.637.open.failure.d trigger = { check_variable = { fallout_event_635_selected_branch = constant:fallout_event_635_branch.open_pass_community } } }
+	picture = GFX_report_event_fallout_mountain_pass_census
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_635_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mountain_pass_census_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.637.a hidden_effect = { fallout_event_635_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.637.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.638
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_635_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mountain_pass_census_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_635_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.639
+	title = chaosx.fallout.639.t
+	desc = { text = chaosx.fallout.639.success.d trigger = { check_variable = { fallout_event_635_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.639.partial.d trigger = { check_variable = { fallout_event_635_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.639.failure.d
+	picture = GFX_report_event_fallout_mountain_pass_census
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_635_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mountain_pass_census_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_635_registry_is_current = yes }
+	immediate = { fallout_event_635_calculate_callback_outcome = yes set_country_flag = fallout_event_635_callback_outcome_frozen }
+	option = { name = chaosx.fallout.639.a hidden_effect = { fallout_event_635_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.639.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.640
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_635_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.mountain_pass_census_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_635_registry_is_current = yes }
+	immediate = { fallout_event_635_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.641
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_635_cleanup_can_enter = yes }
+	immediate = { fallout_event_635_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
