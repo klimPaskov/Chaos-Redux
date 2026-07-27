@@ -125,6 +125,7 @@
 - `specs/61_reviewed_regional_rail_spine_vote.md`
 - `specs/62_reviewed_regional_canal_schedule.md`
 - `specs/63_reviewed_regional_mountain_pass_census.md`
+- `specs/64_reviewed_regional_mine_generator.md`
 
 ## Matrices
 
