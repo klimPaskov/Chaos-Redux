@@ -106,3 +106,14 @@ Successor package production, player materialization, general allocation, countr
 | A New Funeral gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_new_funeral_event_triggers.txt`, `common/scripted_effects/fallout_world_end_new_funeral_event_effects.txt` |
 | A New Funeral constants | `common/script_constants/fallout_world_end_new_funeral_constants.txt` |
 | A New Funeral art | `docs/assets/air_cleanliness_fallout/fallout_new_funeral/manifest.md` and `gfx/event_pictures/fallout_world_end/report_event_fallout_new_funeral.dds` |
+
+## Mountain Pass Census source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| Mountain Pass Census design | `docs/specs/air_cleanliness_fallout_specs/specs/63_reviewed_regional_mountain_pass_census.md` and `docs/plans/air_cleanliness_fallout_plans/2026-07-27_mountain_pass_census_tranche_addendum.md` |
+| Mountain Pass Census runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md` |
+| Mountain Pass Census gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_mountain_pass_census_event_triggers.txt`, `common/scripted_effects/fallout_world_end_mountain_pass_census_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_mountain_pass_census_dynamic_modifiers.txt` |
+| Mountain Pass Census constants and registry | `common/script_constants/fallout_world_end_mountain_pass_census_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| Mountain Pass Census localisation and Event Log | `localisation/english/fallout_world_end_mountain_pass_census_l_english.yml`, `common/scripted_localisation/fallout_world_end_mountain_pass_census_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| Mountain Pass Census art | `docs/assets/635_mountain_pass_census/manifest.json`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout_world_end/report_event_fallout_mountain_pass_census.dds` |

@@ -653,6 +653,18 @@ The chain remains dormant and uncounted until a later reviewed scheduler activat
 
 The documented living-world total is now `460` and the countable Fallout living-world total remains `0 of 660`.
 
+## Mountain Pass Census tranche
+
+The Mountain Pass Census adds dormant suffixes `635` through `641` with candidate id `635`, transaction key `710062`, route `7162`, and history `9168`.
+
+The human opening is `635`, the hidden-AI opening is `636`, the human and hidden-AI delayed results are `637` and `638`, the human and hidden-AI callbacks are `639` and `640`, and cleanup is `641`.
+
+The row requires a current-generation owner-controlled Middle East and North Africa highland state with produced Air Winter shelter, Refugee Pressure, Supply Access, Adaptation, Reclamation, Exposure, Disease Pressure, population, and native infrastructure evidence. It chooses the lowest eligible native state id.
+
+The chain carries Local Citizenship, Return Plan, Military Colony, and Open Pass Community branches with branch-specific resource costs, deterministic grading, exact 35-day result timing, exact 210-day thaw callback timing, native infrastructure damage, bounded Deaths effects, durable country and state memories, Event Log history `9168`, hidden-AI parity, dedicated report art, generation-reset refunds, and authenticated cleanup.
+
+The chain remains dormant and outside release-floor credit. Its dedicated proof is `FALLOUT_MOUNTAIN_PASS_CENSUS_PROOF.md`.
+
 ## Nile Pump Congress correction
 
 The Nile Pump Congress adds dormant suffixes `579` through `585` with candidate id `579`, transaction key `710055`, route `7155`, and history `9161`.
