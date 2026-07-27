@@ -1,6 +1,6 @@
 # Event 006 pre-resize source repaint inventory
 
-This manifest indexes the 48 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding ImageGen PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
+This manifest indexes the 49 source-derived HOI4-style repaint masters copied before deterministic 156x210 normalization and DDS conversion. Every shelf file is a byte-for-byte copy of the corresponding ImageGen PNG; the source package manifest, source master, crop, prompt, and independent audit remain authoritative for rights and admission.
 
 | Date | Trial | Shelf copy | Original ImageGen output | SHA-256 | Dimensions | Mode | Bytes |
 |---|---|---|---|---|---:|---|---:|

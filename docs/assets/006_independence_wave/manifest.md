@@ -497,7 +497,7 @@ contain no advisor or dossier asset.
 ## Central pre-DDS source portrait shelf
 
 The reference-only shelf for source-based HOI4-style portrait PNGs is
-`portraits_generated_png/`. It contains 83 normalized 156x210 PNGs and 48
+`portraits_generated_png/`. It contains 83 normalized 156x210 PNGs and 49
 pre-resize source-locked repaint masters produced by the grounded source
 workflow, including current AGX trial-02 evidence, protected BAY/RHI portraits,
 sourced refinishes and replacement attempts, rejected-style treatment evidence,

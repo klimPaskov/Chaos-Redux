@@ -801,9 +801,11 @@ Rabenau has no country-leader role, and neither script nor localisation describe
    remnant state.
 2. `can_initialize_independence_wave_iw_010_package` proves the exact package,
    region, standard depth, industrial-breakaway archetype, anchor, capital,
-   living former host, and host-owned protected remnant. Same-incident
-   exclusion is enforced earlier by the shared `RG-RHINE-SAAR` plan
-   reservation, not by testing whether RHI already exists in the world.
+   living former host, and host-owned protected remnant. The shared
+   `RG-RHINE-SAAR` plan admits only the reciprocal IW-010/IW-008 pair at
+   capacity two with distinct anchors; in the installed map both anchors are
+   GER-owned, so same-host cases may share GER's protected-remnant row. Every
+   other reservation group retains the one-package rule.
 3. The dormant history supplies the baseline laws and recruits Walter Simons and Friedrich von Rabenau.
    Runtime setup installs provisional politics, localized parties, the full shared focus framework, package routes, the power struggle, ambition family, AI profile, and lifecycle values.
 4. The shared p10 force table supplies the `industrial_security` profile,
