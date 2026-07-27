@@ -1,16 +1,18 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Rail Spine Vote
+## Current reconciliation after Canal Schedule
 
-The reviewed candidate producer now covers `60` ordinary dormant rows through candidate `621`, with `502` defined event blocks and `0 of 660` countable release-floor blocks. The Rail Spine Vote row uses route `7160`, so the reviewed route upper bound is now `7161`. Its current-generation Eurasian interior admission stores the pretransition Air Winter shelter, exposure, reclamation, and native railway snapshots.
+The reviewed candidate producer now covers `61` ordinary dormant rows through candidate `628`, with `509` defined event blocks and `0 of 660` countable release-floor blocks. The Canal Schedule row uses route `7161`, so the reviewed route upper bound is now `7162`. Its current-generation South Asian admission stores the pretransition Air Winter food, adaptation, reclamation, exposure, and native infrastructure snapshots.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
 Rail Spine Vote is the Eurasian interior railway row with candidate `621`, transaction `710060`, event ids `621` through `627`, and Event Log history `9166`. It selects the lowest valid native railway state and remains dormant behind the scheduler activation gates. Its dedicated proof is `FALLOUT_RAIL_SPINE_VOTE_PROOF.md`.
 
+Canal Schedule is the South Asian regional water row with candidate `628`, transaction `710061`, event ids `628` through `634`, and Event Log history `9167`. It selects the lowest valid native rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building. Its dedicated proof is `FALLOUT_CANAL_SCHEDULE_PROOF.md`.
+
 Status: dormant, statically reconciled, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for fifty-seven
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-one
 global-survival pilot chains. The producer is deliberately narrower than the
 future 660-block release surface. It exists to prove the candidate-array
 contract, target-shape contract, and deterministic state selection without
@@ -69,7 +71,7 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define fifty-seven candidate ids, fifty-seven transaction keys, and fifty-seven route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-one candidate ids, sixty-one transaction keys, and sixty-one route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
   126, 153 through 200, 204 through 309, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or

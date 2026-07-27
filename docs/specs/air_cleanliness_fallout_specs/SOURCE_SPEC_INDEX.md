@@ -123,6 +123,7 @@
 - `specs/59_reviewed_regional_tunnel_ward_committees.md`
 - `specs/60_reviewed_regional_metro_republic_below.md`
 - `specs/61_reviewed_regional_rail_spine_vote.md`
+- `specs/62_reviewed_regional_canal_schedule.md`
 
 ## Matrices
 

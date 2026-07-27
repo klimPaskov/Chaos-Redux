@@ -15775,6 +15775,104 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.fallout.628
+	title = chaosx.fallout.628.t
+	desc = chaosx.fallout.628.d
+	picture = GFX_report_event_fallout_canal_schedule
+	is_triggered_only = yes
+	trigger = { fallout_event_628_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.628.a
+		trigger = { fallout_event_628_joint_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_628_requested_branch = constant:fallout_event_628_branch.joint_schedule } fallout_event_628_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.628.a.tt
+	}
+	option = {
+		name = chaosx.fallout.628.b
+		trigger = { fallout_event_628_upstream_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_628_requested_branch = constant:fallout_event_628_branch.upstream_priority } fallout_event_628_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.628.b.tt
+	}
+	option = {
+		name = chaosx.fallout.628.c
+		trigger = { fallout_event_628_guard_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_628_requested_branch = constant:fallout_event_628_branch.gate_guard } fallout_event_628_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.628.c.tt
+	}
+	option = {
+		name = chaosx.fallout.628.d
+		trigger = { fallout_event_628_council_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_628_requested_branch = constant:fallout_event_628_branch.local_water_councils } fallout_event_628_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.628.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.629
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_628_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_628_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.630
+	title = chaosx.fallout.630.t
+	desc = { text = chaosx.fallout.630.joint.success.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.joint_schedule } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.630.joint.partial.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.joint_schedule } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.630.joint.failure.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.joint_schedule } } }
+	desc = { text = chaosx.fallout.630.upstream.success.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.upstream_priority } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.630.upstream.partial.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.upstream_priority } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.630.upstream.failure.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.upstream_priority } } }
+	desc = { text = chaosx.fallout.630.guard.success.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.gate_guard } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.630.guard.partial.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.gate_guard } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.630.guard.failure.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.gate_guard } } }
+	desc = { text = chaosx.fallout.630.council.success.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.local_water_councils } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.630.council.partial.d trigger = { check_variable = { fallout_event_628_selected_branch = constant:fallout_event_628_branch.local_water_councils } check_variable = { fallout_event_628_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.630.council.failure.d
+	picture = GFX_report_event_fallout_canal_schedule
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_628_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.canal_schedule_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.630.a hidden_effect = { fallout_event_628_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.630.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.631
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_628_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.canal_schedule_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_628_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.632
+	title = chaosx.fallout.632.t
+	desc = { text = chaosx.fallout.632.success.d trigger = { check_variable = { fallout_event_628_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.632.partial.d trigger = { check_variable = { fallout_event_628_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.632.failure.d
+	picture = GFX_report_event_fallout_canal_schedule
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_628_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.canal_schedule_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_628_registry_is_current = yes }
+	option = { name = chaosx.fallout.632.a hidden_effect = { fallout_event_628_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.632.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.633
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_628_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.canal_schedule_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_628_registry_is_current = yes }
+	immediate = { fallout_event_628_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.634
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_628_cleanup_can_enter = yes }
+	immediate = { fallout_event_628_cleanup = yes }
+}
+
+country_event = {
 	id = chaosx.fallout.380
 	title = chaosx.fallout.380.t
 	desc = chaosx.fallout.380.d
