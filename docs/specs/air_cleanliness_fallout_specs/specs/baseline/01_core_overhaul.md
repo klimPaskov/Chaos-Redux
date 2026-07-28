@@ -161,4 +161,4 @@ Fallout should be a common terminal aftermath for multiple world-end sources. Th
 | Chemical saturation | Massive doomsday chemical releases | Toxic fog, gas-mask societies, chemical brigades, poisoned rivers. |
 | Biological follow-through | Extreme world disease plus air collapse | Quarantine city-states, sterilization regimes, mutant disease countries. |
 
-The core Fallout map rewrite stays shared. Cause memory changes flavour, state grades, successor identity pools, focus-route availability, achievements, and the first decade of content.
+The core Fallout map rewrite stays shared. Cause memory changes flavour, state grades, successor identity pools, focus-route availability, achievements, and the first decade of content. The chemical stockpile doomsday resolver and the complete biological doomsday release now submit their cause through the same Fallout request coordinator, as recorded in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_CBRN_TERMINAL_REQUEST_PROOF.md`.
