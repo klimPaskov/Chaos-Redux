@@ -434,15 +434,19 @@ fallout_event_649_choose_branch = {
 }
 
 fallout_event_649_set_ai_priority = {
-	set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.invalid_option }
-	if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.quiet_remembrance } } set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.quiet_priority } }
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals } } set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.local_priority } }
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast } } set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.feast_priority } }
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony } } set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.military_priority } }
+	set_temp_variable = { fallout_event_649_ai_priority = fallout_event_649_ai_best_score }
 }
 
 fallout_event_649_choose_ai_branch_and_schedule_result = {
 	fallout_event_649_initialize_ledgers = yes
+	set_temp_variable = { fallout_event_649_ai_quiet_score = constant:fallout_event_649_ai.invalid_option }
+	set_temp_variable = { fallout_event_649_ai_local_score = constant:fallout_event_649_ai.invalid_option }
+	set_temp_variable = { fallout_event_649_ai_feast_score = constant:fallout_event_649_ai.invalid_option }
+	set_temp_variable = { fallout_event_649_ai_military_score = constant:fallout_event_649_ai.invalid_option }
+	if = { limit = { fallout_event_649_quiet_affordable = yes } set_temp_variable = { fallout_event_649_ai_quiet_score = constant:fallout_event_649_ai.quiet_priority } }
+	if = { limit = { fallout_event_649_local_affordable = yes } set_temp_variable = { fallout_event_649_ai_local_score = constant:fallout_event_649_ai.local_priority } }
+	if = { limit = { fallout_event_649_feast_affordable = yes } set_temp_variable = { fallout_event_649_ai_feast_score = constant:fallout_event_649_ai.feast_priority } }
+	if = { limit = { fallout_event_649_military_affordable = yes } set_temp_variable = { fallout_event_649_ai_military_score = constant:fallout_event_649_ai.military_priority } }
 	set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.quiet_remembrance }
 	if = {
 		limit = {
@@ -453,14 +457,15 @@ fallout_event_649_choose_ai_branch_and_schedule_result = {
 				check_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant }
 				check_variable = { fallout_government_archetype = constant:fallout_government_archetype.mutant_polity }
 			}
+			fallout_event_649_local_affordable = yes
 		}
-		set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals }
+		add_to_temp_variable = { fallout_event_649_ai_local_score = constant:fallout_event_649_ai.local_government }
 	}
-	else_if = {
+	if = {
 		limit = { has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } has_war = yes }
-		set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony }
+		if = { limit = { fallout_event_649_military_affordable = yes } add_to_temp_variable = { fallout_event_649_ai_military_score = constant:fallout_event_649_ai.military_war } }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			OR = {
@@ -469,29 +474,22 @@ fallout_event_649_choose_ai_branch_and_schedule_result = {
 			}
 			fallout_event_649_feast_affordable = yes
 		}
-		set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast }
+		add_to_temp_variable = { fallout_event_649_ai_feast_score = constant:fallout_event_649_ai.food_compact_feast }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state }
 			fallout_event_649_quarantine_allows_feast = yes
 		}
-		set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast }
+		add_to_temp_variable = { fallout_event_649_ai_feast_score = constant:fallout_event_649_ai.quarantine_feast }
 	}
+	set_temp_variable = { fallout_event_649_ai_best_score = fallout_event_649_ai_quiet_score }
+	if = { limit = { fallout_event_649_local_affordable = yes check_variable = { fallout_event_649_ai_local_score value = fallout_event_649_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_649_ai_best_score = fallout_event_649_ai_local_score } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals } }
+	if = { limit = { fallout_event_649_feast_affordable = yes check_variable = { fallout_event_649_ai_feast_score value = fallout_event_649_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_649_ai_best_score = fallout_event_649_ai_feast_score } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast } }
+	if = { limit = { fallout_event_649_military_affordable = yes check_variable = { fallout_event_649_ai_military_score value = fallout_event_649_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_649_ai_best_score = fallout_event_649_ai_military_score } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony } }
 	if = {
-		limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.quiet_remembrance } fallout_event_649_quiet_affordable = yes }
-		fallout_event_649_set_ai_priority = yes
-		fallout_event_649_choose_branch = yes
-	}
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals } fallout_event_649_local_affordable = yes } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast } fallout_event_649_feast_affordable = yes } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { check_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony } fallout_event_649_military_affordable = yes } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { fallout_event_649_quiet_affordable = yes } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.quiet_remembrance } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { fallout_event_649_local_affordable = yes } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.local_festivals } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { fallout_event_649_feast_affordable = yes } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.ration_feast } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else_if = { limit = { fallout_event_649_military_affordable = yes } set_temp_variable = { fallout_event_649_requested_branch = constant:fallout_event_649_branch.military_ceremony } fallout_event_649_set_ai_priority = yes fallout_event_649_choose_branch = yes }
-	else = {
+		limit = { NOT = { fallout_event_649_requested_branch_is_affordable = yes } }
 		set_temp_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.invalid_option }
 		if = {
 			limit = { check_variable = { fallout_event_649_ai_priority = constant:fallout_event_649_ai.invalid_option } fallout_event_issued_ordinary_receipt_is_current = yes }
@@ -500,7 +498,16 @@ fallout_event_649_choose_ai_branch_and_schedule_result = {
 			fallout_event_cancel_issued_ordinary_receipt = yes
 		}
 	}
+	else = {
+		fallout_event_649_set_ai_priority = yes
+		fallout_event_649_choose_branch = yes
+	}
 	clear_temp_variable = fallout_event_649_ai_priority
+	clear_temp_variable = fallout_event_649_ai_quiet_score
+	clear_temp_variable = fallout_event_649_ai_local_score
+	clear_temp_variable = fallout_event_649_ai_feast_score
+	clear_temp_variable = fallout_event_649_ai_military_score
+	clear_temp_variable = fallout_event_649_ai_best_score
 }
 
 fallout_event_649_add_result_modifier = {

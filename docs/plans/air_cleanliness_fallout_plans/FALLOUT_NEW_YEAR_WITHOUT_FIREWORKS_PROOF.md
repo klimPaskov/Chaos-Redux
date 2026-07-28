@@ -26,6 +26,8 @@ The candidate is country-only. The producer appends target type `none` and targe
 
 The delayed scheduler uses the approved Fallout wrappers for ordinary receipt consumption, fixed transaction keys, result and callback tickets, hidden-AI dispatch, human-visible dispatch, cleanup dispatch, and token-authenticated release. The callback uses the same current country row and exact branch receipt.
 
+The hidden-AI lane scores all four affordable branches from the authored base priorities, then adds government, war, food-compact, religious, and quarantine factors before selecting the highest score with deterministic tie order. The selected score is retained in the temporary priority ledger, while the invalid-option value cancels the issued opening when no branch remains affordable.
+
 The Deaths surface is `apply_exact_state_civilian_population_loss` through `every_owned_state`. Result failure requests `0.0015` of each current state population. Callback failure requests `0.0007`. Each request supplies the owner country, Fallout aftermath reason, minimum remaining population, and Deaths logging inputs.
 
 ## Frozen receipt matrix
