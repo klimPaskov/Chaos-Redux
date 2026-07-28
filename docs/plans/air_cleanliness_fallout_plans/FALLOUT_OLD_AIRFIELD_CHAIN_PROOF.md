@@ -28,7 +28,7 @@ History `9162` has dedicated choice payloads `1` through `4`, result payloads `1
 
 `GetFalloutEvent586EventLogDetail` routes all twenty payloads to concrete Old Airfield detail strings. The shared Event Log detail and history-name routers include history `9162`. The central event-type resolver also recognizes the dedicated Fallout history constant.
 
-The durable country memory preserves the selected branch, deterministic result grade, callback grade, target route type, and final callback quality after transient registry cleanup. A generation reset calls the chain-owned abort effect before shared scheduler ledgers clear, refunds a paid but unresolved opening, releases state and country modifiers, clears state reservations, and removes the orphaned pending rows.
+The durable country memory preserves the selected branch, deterministic result grade, callback grade, target route type, and final callback quality after transient registry cleanup. A generation reset calls the chain-owned abort effect before shared scheduler ledgers clear, refunds a paid but unresolved opening, releases state and country modifiers, clears state reservations, and removes the orphaned pending rows. The same abort now authenticates an issued but uncommitted Old Airfield opening against its dispatch target, cancels it when the target is no longer current, records the cancellation history, releases the reservation, and clears the frozen snapshot before shared receipt cleanup.
 
 Human events use `GFX_report_event_fallout_old_airfield_chain`, registered in `interface/fallout_world_end.gfx`. The runtime DDS is `gfx/event_pictures/fallout_world_end/report_event_fallout_old_airfield_chain.dds`. Its source, prompt, processed `210x176` preview, manifest, hashes, and handoff are under `docs/assets/586_old_airfield_chain/`. The source is fictional generated report art showing a repaired Latin American highland runway, radio mast, weathered transport aircraft, mechanics, civilian handlers, and guarded cargo without readable signage or modern equipment.
 
@@ -42,7 +42,7 @@ The repository collision scan found only the intended definitions for event ids 
 
 Offline documentation and installed vanilla precedents support state-scoped `damage_building = { type = air_base ... }`, state-scoped `add_building_construction = { type = air_base level = 1 instant_build = yes }`, delayed country events, state flags, dynamic modifiers, and country or state Event Log actors.
 
-The read-only `hoi4.event_inspect` lint request for events `586` through `592` could not complete because the MCP transport closed. No HOI4 process was run, as required by the task. Live scheduler activation, host authority, multiplayer ordering, save recovery across both delays, Event Log rendering, ownership loss during a live transaction, and runtime air-base presentation therefore remain unproven. This tranche is not release-floor credit while the scheduler is dormant.
+The read-only `hoi4.event_inspect` lint request for events `586` through `592` could not complete because the MCP transport closed. Static source checks cover the new opening-target cancellation branch with balanced braces and no forbidden comparison operators. No HOI4 process was run, as required by the task. Live scheduler activation, host authority, multiplayer ordering, save recovery across both delays, Event Log rendering, ownership loss during a live transaction, and runtime air-base presentation therefore remain unproven. This tranche is not release-floor credit while the scheduler is dormant.
 
 ## Scope exclusions
 
