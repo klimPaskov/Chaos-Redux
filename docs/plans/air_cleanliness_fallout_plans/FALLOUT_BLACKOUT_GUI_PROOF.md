@@ -8,7 +8,7 @@ The surface is not a super-event. The ordinary super-event GUI and event picture
 
 ## Static presentation proof
 
-- `fallout_world_end_blackout_window` is an independent `windowType` with `fullscreen = yes` and a zero origin.
+- `fallout_world_end_blackout_window` is currently a parentless `windowType` with `fullscreen = yes` and a zero origin. This proves the declared geometry only. The offline Scripted GUI Modding page requires an independent `containerWindowType` for a scripted GUI binding, so the current root binding remains an engine-sensitive blocker until a live consumer or an approved structural rewrite proves it.
 - `GFX_fallout_blackout_tile` is a Fallout-owned opaque DDS under `gfx/interface/fallout_world_end/`.
 - `fallout_world_end_click_blocker` is a non-transparent `buttonType` scaled to the same full-screen coverage as the blackout tile. It has no scripted click effect, so it cannot advance a phase or alter the rewrite.
 - The centered text box reads `fallout_world_end_blackout_display`, which delegates to `GetFalloutWorldEndBlackoutText`.
@@ -19,7 +19,7 @@ The surface is not a super-event. The ordinary super-event GUI and event picture
 
 `fallout_lock_transition` is the only entry path that sets the transition active flag and it saves `fallout_transition_coordinator` before scheduling phase event `chaosx.fallout.1001`. Every phase event requires the current coordinator country and the active generation-bound phase. The coordinator advances one phase after its current receipts are durable, marks the GUI dirty, and schedules the next phase after the documented three-hour beat interval.
 
-New request intake clears any stale `fallout_transition_coordinator` target before writing the pending envelope. The host reconciliation pulse then claims the single request target, so a previous owner cannot block a fresh request for one date.
+New request intake clears any stale `fallout_transition_coordinator` target before writing the pending envelope and pauses Air Cleanliness immediately. The host reconciliation pulse then claims the single request target, so a previous owner cannot block a fresh request for one date. A rejected pending envelope releases the temporary Air pause before ordinary operation resumes.
 
 The host coordinator also owns request validation, snapshot reconstruction, state grading, population loss, physical collapse, diplomacy reset, successor allocation, numerical survival commit, player continuation, and map return. Save reconciliation calls `fallout_world_end_migrate_save`, reschedules an unissued current phase, and never creates a second transition generation.
 
@@ -27,7 +27,6 @@ Dedicated Fallout blackout audio is dispatched separately from the GUI. It uses 
 
 ## Engine references and boundary
 
-The offline Interface Modding page documents `fullscreen`, independent windows, `buttonType`, `alwaystransparent`, sprite scaling, and centered text. The offline Scripted GUI Modding page documents independent container assignment, `player_context`, visibility, and dirty updates. The installed vanilla `interface/frontend_friends_view.gui` uses an `event_trap` element for popup exclusivity. This Fallout surface uses a full-screen non-transparent button because it is independently owned by a scripted GUI rather than an internally controlled vanilla popup.
+The offline Interface Modding page documents `fullscreen`, independent windows, `buttonType`, `alwaystransparent`, sprite scaling, and centered text. The offline Scripted GUI Modding page documents independent container assignment, `player_context`, visibility, and dirty updates. The installed vanilla `interface/frontend_friends_view.gui` uses an `event_trap` element for popup exclusivity. This Fallout surface declares a full-screen non-transparent button, but its current `windowType` root is not yet proven as a valid scripted-GUI container binding.
 
 Static review can prove the declared full-screen geometry, the non-transparent input-consuming control, phase text mapping, host gate, generation checks, save-recovery calls, and dedicated audio path. It cannot prove click interception, z-order against every DLC window, pause behavior, save persistence, multiplayer presentation, or performance in a live session. HOI4 was not launched by request, so those remain explicit runtime blockers rather than passing claims.
-
