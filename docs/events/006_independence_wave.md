@@ -60,7 +60,7 @@ The AGX portrait refresh dated 2026-07-26 passed independent provenance, likenes
 
 The player-facing SCN-008, evolution, and formable-readiness wording is kept separate from registry, planner, and transaction terminology; the workbook mirror is refreshed whenever these visible strings change.
 
-The current SCN-008 mode authority is eight player-facing modes by four intensities, or 32 acceptance cells. Six numeric families remain in source, and Universal Belligerence contributes the three separately selectable rules named in localisation and the catalog mirror. The dated matrix reconciliation is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_documentation_curator_scn008_mode_cardinality_2026_07_28.md`.
+The current SCN-008 mode authority is eight player-facing modes by four intensities, or 32 acceptance cells. Six numeric families remain in source, and Universal Belligerence contributes the three separately selectable rules named in localisation and the catalog mirror. Formable completion now exposes the post-formation shared focus branch for carriers that already own the Event 006 framework without replacing a meaningful vanilla tree; the twelve remaining exact vanilla route-overlay hooks and live formation evidence remain open. The dated matrix reconciliation is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_documentation_curator_scn008_mode_cardinality_2026_07_28.md`.
 
 ## Historical portrait-gated admission (2026-07-22, superseded)
 
