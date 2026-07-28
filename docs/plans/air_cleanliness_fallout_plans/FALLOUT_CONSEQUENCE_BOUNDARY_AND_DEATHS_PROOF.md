@@ -30,7 +30,7 @@ Static consumers of the flag are:
 - `air_contamination_apply_delta_bp` and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
 - Natural wildfire, volcanic, and ashfall source registration in `common/scripted_effects/air_cleanliness_natural_source_effects.txt`.
 - Treaty membership, invitation, decision, and host lifecycle surfaces in the Air Cleanliness treaty files.
-- The Air Cleanliness settings checkbox and exported settings row.
+- The Air Cleanliness settings checkbox and exported settings row. The scripted GUI click trigger also rejects `fallout_air_cleanliness_disabled`, so the post-Fallout checkbox is visibly non-toggleable instead of merely being ignored by the effect.
 
 The monthly pass no longer starts or updates Air Winter after the flag. `air_winter_suspend_all_states_for_fallout` runs once at the lock, removes registered country operations, state phase, disease, railway, airbase, response-project, and pending-event effects, removes the Air-owned global, nuclear fallout, chemical contamination, and thermonuclear modifiers that could feed the daily contamination or deaths pulse, removes regional entities and the normal-map proof entity, preserves the last valid Air Winter phase and survival ledgers for the historical mapmode, then records `fallout_air_winter_shutdown_complete`. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause, late treaty violation callbacks fail closed, and new membership or invitation surfaces fail their eligibility checks.
 

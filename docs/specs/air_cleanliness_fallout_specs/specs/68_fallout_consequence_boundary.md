@@ -33,7 +33,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 - `air_contamination_apply_delta_bp` ignores later Air Cleanliness deltas. It does not rewrite the committed 100 percent contamination state.
 - State-wide Air Cleanliness modifiers and country pressure ideas are removed by `air_contamination_apply_state_modifier`.
 - Treaty membership eligibility, pending invitations, decision visibility, host lifecycle pulses, and late violation callbacks reject the flag and close operational routes.
-- The Air Cleanliness settings checkbox and exported settings row show the system as disabled. The settings toggle cannot re-enable it.
+- The Air Cleanliness settings checkbox and exported settings row show the system as disabled. The settings toggle cannot re-enable it, and the scripted GUI click trigger rejects `fallout_air_cleanliness_disabled` so the post-Fallout control is not presented as active.
 
 The shutdown is deliberately separate from the final-silence lock. Fallout is terminal for Air Cleanliness even if a previous settings state or final-silence branch would otherwise reopen a monthly pulse.
 
