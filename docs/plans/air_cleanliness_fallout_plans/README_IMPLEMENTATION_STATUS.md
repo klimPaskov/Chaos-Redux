@@ -148,7 +148,7 @@ Static control flow requires issued calls, observed callbacks, unique struck sta
 
 The standard transition grades each nonempty state at a 90 to 95 percent population loss band and registers the observed post-mutation delta through the Deaths system. The manual receipt records the full prestrike-to-poststrike loss after native callbacks and exact reconciliation, then aggregates that observed total once with state population mutation disabled. Native callback Deaths side effects and the exact all-valid-province sweep remain runtime blockers.
 
-The public scenario row and dispatch are absent. The live registry reaches SCN-013 with The Unbidden Muster. Event 20 still reserves raw id 12 for Black Plague without registering a live SCN-012 row. Fallout reserves SCN-014 as exactly one greater than the highest live assignment and does not renumber or reuse any existing id.
+The public scenario row and dispatch are intentionally absent. The live registry reaches SCN-013 with The Unbidden Muster. Event 20 still reserves raw id 12 for Black Plague without registering a live SCN-012 row. The Fallout-owned manual trigger keeps `fallout_manual_scenario_identity.triggerable_scenario_id = 14` as the next-live reservation without inserting it into public scenario, Event Details, evolution, ordinary event-log, or super-event registries. Existing ids remain unchanged.
 
 ## Runtime release boundary
 
@@ -194,7 +194,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 
 ## Hard release blockers
 
-1. Keep the reserved SCN-014 public Fallout row and dispatch absent because HOI4 exposes no documented engine-native all-valid-province enumerator. The current 10,154-target route proves exact coverage only for the pinned installed map.
+1. Keep the Fallout-owned SCN-014 reservation and public dispatch absent because HOI4 exposes no documented engine-native all-valid-province enumerator. The current 10,154-target route proves exact coverage only for the pinned installed map.
 2. Prove native strike acceptance, one callback per call, callback timing, performance, save behavior, and multiplayer behavior in a separately authorized runtime pass.
 3. Resolve the possible 121,848 vanilla news-event attempts without reducing the exact 10,154-target requirement.
 4. Prove that the all-provinces `set_building_level` route removes every supply node and railway edge and exposes the result to the receipt without issuing a family twice.
