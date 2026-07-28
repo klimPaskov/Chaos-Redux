@@ -1,5 +1,7 @@
 # Event 006 whole-event completion audit v28
 
+> Historical completion-audit snapshot. The v30 audit supersedes this document for the whole-event disposition and current shelf/runtime facts. Its 49-master and pre-Galimzhan-v2 statements remain bounded traceability only; retain **HOLD / PARTIAL**.
+
 Date: 2026-07-28
 
 Role: parent completion audit snapshot after the SCN-008 source audit and the user-directed portrait-shelf correction.

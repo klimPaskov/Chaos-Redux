@@ -2,6 +2,11 @@
 
 Date: 2026-07-28.
 
+> Superseded portrait snapshot. This v1 audit remains provenance and visual
+> traceability for the rejected v1 repaint. The current federal-presidium
+> consumer uses the independently audited v2 candidate and the parent-promoted
+> DDS recorded in `006_galimzhan_portrait_v2_runtime_promotion_2026_07_28.md`.
+
 Reviewer: independent sourced-visual audit subagent, separate from the repaint producer.
 
 Scope: archival source master, exact source crop and equality JSON, raw ImageGen repaint, flat-shelf raw copy, deterministic `156x210` candidate, processor metadata, review sheet, and canonical vanilla country-leader references. No source art, PNG, DDS, `.gfx`, gameplay, localisation, character, or runtime file was edited, staged, or replaced by this audit.

@@ -2,6 +2,12 @@
 
 Date: 2026-07-28.
 
+> Historical source-research snapshot. The initial no-DDS/no-runtime language in
+> this handoff predates the independent v2 audit and the parent-owned Galimzhan
+> promotion. It remains valid for the five other CHU/ASY rows and is superseded
+> for the federal-presidium row by the current promotion amendment at the end of
+> this file.
+
 Scope: six unresolved grounded route portraits for CHU Middle Volga and ASY Assyria. Research covered archival source provenance, identity and era fit, exact decoded-pixel head-and-shoulders crops, subject-ownership checks, and deferred source-locked repaint planning. No gameplay, character, localisation, `.gfx`, advisor, final DDS, or generated real-person portrait was created or edited.
 
 The full ledger is [`manifest.md`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/manifest.md), the deferred sprite mapping is [`gfx_handoff.md`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/gfx_handoff.md), the exact crop JSON and crops are under [`crop_metadata/`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/crop_metadata/) and [`source_crops/`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/source_crops/), and the repaint prompts are [`source_locked_repaint_plan.md`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/repaint_plans/source_locked_repaint_plan.md).
@@ -10,7 +16,7 @@ The full ledger is [`manifest.md`](../../../assets/006_independence_wave/iw043_i
 
 | Consumer route | Proposed source identity | Status | Proposed sprite / runtime path | Source and era summary |
 | --- | --- | --- | --- | --- |
-| `CHU_independence_wave_federal_presidium` | Galimzhan Ibrahimov | `source_ready`, deferred repaint | `GFX_portrait_CHU_independence_wave_federal_presidium` → `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_federal_presidium.dds` | 863x1272 1920s Kazan State University library portrait; photographer unknown; Commons PD-old/Public Domain Mark; Tatar politician/publicist alive to 1938. |
+| `CHU_independence_wave_federal_presidium` | Galimzhan Ibrahimov | `source_ready` (historical snapshot; superseded by v2 promotion) | `GFX_portrait_CHU_independence_wave_federal_presidium` → `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_federal_presidium.dds` | 863x1272 1920s Kazan State University library portrait; photographer unknown; Commons PD-old/Public Domain Mark; Tatar politician/publicist alive to 1938. |
 | `CHU_independence_wave_bolgar_civic_presidium` | Shamil Usmanov | `blocked` | `GFX_portrait_CHU_independence_wave_bolgar_civic_presidium` → `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_bolgar_civic_presidium.dds` | 187x250 1918–1920 Tatarstan archive portrait; Commons PD-Russia-1996/Public Domain; direct identity but below dependable leader quality gate. |
 | `CHU_independence_wave_river_security_directorate` | Ahmet Zeki Velidi Togan | `needs_user_review` | `GFX_portrait_CHU_independence_wave_river_security_directorate` → `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_river_security_directorate.dds` | 709x945 Bashkortostan State Assembly/Kurultai museum portrait; estimated 1920s, unknown photographer, Commons PD-old/Public Domain Mark; alive in 1936 but Bashkir rather than narrowly Tatar. |
 | `ASY_independence_wave_concordat_council` | Mar Benyamin Shimun XXI lead rejected; Mar Eshai Shimun XXIII and Malik Ismail II leads blocked | `blocked` | `GFX_portrait_ASY_independence_wave_concordat_council` → `gfx/leaders/006_independence_wave/portrait_ASY_independence_wave_concordat_council.dds` | LOC/Bain image is rights-clear but subject died in 1918; Mar Eshai Foundation imagery has no reuse grant; Malik Ismail family image is watermarked and rights-unclear. |
@@ -47,10 +53,16 @@ No generic, generated, modern, watermarked, group-only, female, invented, or re-
 
 The ownership scan covered exact and variant identity forms across current Chaos Redux and installed vanilla `common/characters/`, `history/countries/`, `gfx/leaders/`, `interface/`, and `localisation/`. No character, recruitment, portrait, leader, commander, operative, or officeholder owner was found for these subjects; the only vanilla hit is `TUR_zeki_velidi_togan` idea localisation. The six masters were reopened with Pillow and match the ledger dimensions, byte counts, and SHA-256 values. The six crops were created with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` and passed exact decoded-pixel equality validation. The review contact sheet is [`portrait_source_crops_contact_sheet.png`](../../../assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/review/portrait_source_crops_contact_sheet.png), SHA-256 `3a165a54cfebbd7603a5a95f2edd9645a086bd54d83f80616abdcfb06a7d3314`.
 
-## Handoff state
+## Handoff state at the research snapshot
 
 This tranche is research-only and not complete. Parent review is required for the Zeki Velidi Togan source, the pre-1936-death Naum Faiq and Agha Petros continuity choices, and any future living-1936 replacement search. Do not wire any source, crop, generated portrait, processed PNG, or DDS from this handoff until the mandatory source-locked repaint and independent likeness/style/provenance audit pass.
 
-## Parent follow-up amendment — Galimzhan repaint evidence (2026-07-28)
+## Historical parent follow-up amendment — Galimzhan repaint evidence (pre-audit, superseded)
 
 After this source-only handoff, the parent authorized one source-locked Galimzhan repaint. The raw original-size HOI4-style master is retained directly in the single flat shelf `docs/assets/006_independence_wave/portraits_generated_png/CHU_federal_presidium_galimzhan_ibrahimov_hoi4_repaint_v1.png`; the 156x210 candidate, processor metadata, and review sheet remain under `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/`. This does not change the original research statuses for the other five rows, does not create advisor art, and does not authorize DDS, `.gfx`, or character wiring. The candidate is `candidate_requires_visual_approval` pending a separate likeness/style/provenance audit and reconstruction of the exact ImageGen prompt record.
+
+## Current parent-promotion amendment — Galimzhan v2 (2026-07-28)
+
+The v2 source-locked repaint passed the independent visual and provenance audit in `006_galimzhan_portrait_v2_independent_audit_2026_07_28.md`. The parent then converted the approved deterministic `156x210` candidate to the existing CHU federal-presidium DDS consumer at `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_federal_presidium.dds`, SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`. The existing `.gfx` sprite and character consumer were retained without rename or duplicate registration.
+
+The flat shelf remains evidence-only and now contains exactly 51 original-size RGB masters directly under `docs/assets/006_independence_wave/portraits_generated_png/`, with no nested folders, no normalized `156x210` PNGs, and no advisor, small, or dossier derivatives. The normalized v2 candidate and conversion evidence remain in the originating package workspace. This promotion replaces one approved CHU portrait consumer and does not admit CHU or alter the other five source-only, blocked, or needs-review rows.

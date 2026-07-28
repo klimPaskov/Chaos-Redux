@@ -1,12 +1,19 @@
 # Event 006 portrait shelf completeness re-audit
 
+> Historical shelf audit. The 49-master/83-normalized count and no-runtime-
+> promotion result below are retained for traceability only. The current v30
+> shelf has 51 original-size masters in one flat directory, no normalized PNGs,
+> and no advisor/small/dossier derivatives. Galimzhan v2 is parent-promoted to
+> the existing CHU DDS consumer at SHA-256
+> `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`.
+
 Date: 2026-07-27
 
 Scope: durable pre-DDS source portrait shelf only.
 
 ## Result
 
-The shelf now contains **49** byte-copied pre-resize source-derived HOI4 repaint masters and **83** normalized `156x210` PNGs. The added master is the withdrawn IW-093 Asante/Prempeh II ImageGen repaint from `iw093_asante_prempeh_ii_2026_07_18/source_png/portrait_DOX_prempeh_ii_imagegen_master.png`.
+At this dated audit snapshot, the shelf contained **49** byte-copied pre-resize source-derived HOI4 repaint masters and **83** normalized `156x210` PNGs. The added master was the withdrawn IW-093 Asante/Prempeh II ImageGen repaint from `iw093_asante_prempeh_ii_2026_07_18/source_png/portrait_DOX_prempeh_ii_imagegen_master.png`.
 
 Shelf copy:
 
@@ -18,7 +25,7 @@ The source and shelf copy are byte-identical at SHA-256 `5f4769bb6a290a0399cd419
 
 The Event 006 asset metadata was scanned for every `source_kind: real` portrait source whose generated output is a large ImageGen/repaint/master PNG. The scan found 49 such masters, and all 49 hashes are now represented under `pre_resize_source_repaints/`. Raw archival photographs, exact crops, review/contact sheets, normalized PNGs, fictional/collective portraits, flags, icons, and DDS files remain outside the pre-resize master count by design.
 
-The normalized shelf remains `83` PNGs, all `156x210`; no advisor, dossier, commander-thumbnail, `_small`, or runtime-only derivative was added. `PRE_RESIZE_MANIFEST.md`, `MANIFEST.md`, and the shelf README are the current count and provenance authorities.
+At that snapshot, the normalized shelf held `83` PNGs, all `156x210`; no advisor, dossier, commander-thumbnail, `_small`, or runtime-only derivative was added. `PRE_RESIZE_MANIFEST.md`, `MANIFEST.md`, and the shelf README were the count and provenance authorities for that snapshot.
 
 ## Disposition
 
