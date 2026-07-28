@@ -85,6 +85,8 @@ The authoritative event catalog is updated in `docs/spreadsheets/chaos_redux_eve
 
 The generation reset calls `fallout_event_607_abort_on_generation_change` after the existing Radio Island reset hook.
 
+If an uncommitted opening receipt points at a state that is no longer current, the reset route snapshots `fallout_event_dispatch_issued_target` into `fallout_event_607_target_state_id` before cancelling the exact ordinary receipt. An accepted cancellation records payload `99`, refunds any unresolved paid branch, releases the state reservation and committed flag, and clears the frozen row. This keeps stale opening cleanup bound to the state that issued the receipt.
+
 Opening, result, callback, and cleanup each reauthenticate the current transaction and target before applying state effects.
 
 Target loss records Event Log cancellation payload `99`, applies no frozen result effects, releases the state reservation, and prepares the cleanup receipt.
