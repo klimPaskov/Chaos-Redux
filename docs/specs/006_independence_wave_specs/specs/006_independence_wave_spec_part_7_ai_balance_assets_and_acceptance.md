@@ -184,6 +184,22 @@ AI route selection must verify:
 
 Invalid routes are hidden, bypassed, or weighted to zero.
 
+### IW-012 two-stage route evaluation
+
+The registered ICE adapter uses two separate AI layers. Its six paid projects establish a founding posture from the five Iceland ledgers, war state, severe former-host threat, host survival, Compact readiness, Network Standing, and League membership. The four mutually exclusive government focuses then perform the formal route evaluation; no project may silently lock a government route.
+
+The intended all-routes-valid checks are:
+
+| Situation | Constitutional | Traditional | Emergency | Patron | Preferred route |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Stable civic peace and settled charter | 80 | 10 | 1 | 10 | Constitutional Republic |
+| Stable port and shipping administration with settled charter | 10 | 80 | 1 | 10 | Traditional Authority |
+| War, severe host threat, and mature Coastwatch | 0.625 | 2.5 | 320 | 2.5 | Emergency Military |
+| Treaty-backed Compact and peaceful severe host pressure | 2.5 | 2.5 | 40 | 80 | Patron-Client |
+| No distinguishing route signal | 10 | 10 | 10 | 10 | Controlled replayable tie |
+
+These are source-level design weights before engine normalization, not runtime completion evidence. Invalid routes must receive zero selectable probability through their existing availability gates. Armed Neutrality has zero AI willingness in stable peace without war or severe host threat, while the formal Emergency Military focus remains available when its Coastwatch or commitment gate is satisfied. Costs, durations, project caps, focus costs, route rewards, and the harbour survival deadline remain unchanged.
+
 ## AI resource safety
 
 AI should not spend the last usable equipment, trains, convoys, fuel, manpower, or civilian capacity on a prestige decision while the capital is threatened.

@@ -26,7 +26,7 @@ The timed `Hold the Harbour Together` mission is a real survival deadline. It ca
 - `Expand the Coastwatch` spends manpower, command power, army experience, rifles, and support equipment.
 - `Negotiate the North Atlantic Compact` spends diplomatic command attention and convoy or train stock.
 - `Settle the Former Host Charter` spends diplomatic materials and records a recognized-separation host outcome.
-- `Declare Armed Neutrality` spends the major security package and locks the emergency-military route.
+- `Declare Armed Neutrality` spends the major security package and strengthens the emergency-military route's security case; the formal government route remains a mutually exclusive focus choice.
 
 The host project writes all eight bilateral ledger dimensions through the shared transaction helper. The Compact project changes network standing and all five league values through their shared transaction helpers. Government-route locks use an ICE-specific additive adapter: constitutional, traditional, emergency, and patron routes each set the registered government's politics and visible route idea, while patron influence remains owned by the shared Event 006 patron system; no patron or advisor asset is invented.
 
@@ -37,6 +37,12 @@ IW-012 uses the existing p12 `coastal_maritime` dynamic force profile, p12 milit
 ## Formable and focus integration
 
 Setup selects FORM-02 North Atlantic Compact through the shared formable registry, including the existing ICE state-100 member adapter and NUX X-ending carrier identity. The package registers the North Atlantic ambition family and league route. The mod carries an exact vanilla `iceland_tree` snapshot at `common/national_focus/iceland.txt` with additive `shared_focus` imports, so the existing 89 vanilla focus blocks and Nordic shared focus remain intact while the complete Event 006 overlay becomes visible. Four ICE-specific route consumers hang from that shared root and lock the route through the package adapter. Vanilla Nordic League precedence is explicit: the FORM-02 member trigger refuses a country with `form_nordic_nation_flag` or the global `form_nordic_league_flag`; cleanup clears only Event 006 FORM-02 state and never vanilla Nordic identity flags.
+
+## Route arbitration
+
+The six visible IW-012 projects establish a founding posture through state-aware AI willingness, but they never write the formal government route. `Declare Armed Neutrality` is an emergency security commitment that raises Coastwatch and Shipping Security and gives the emergency route a material signal. The four mutually exclusive route focuses remain the sole formal route writers and re-evaluate Civic Cohesion, Port Authority, Shipping Security, Compact Support, Network Standing, former-host pressure, League membership, war, and instability before locking the route.
+
+The route weights are centralized in `independence_wave_focus_ai`. Constitutional Republic is preferred by stable civic peace and a settled charter; Traditional Authority by mature port and shipping administration; Emergency Military by war, severe former-host threat, Coastwatch readiness, or the armed-neutrality flag; and Patron-Client by a treaty-backed Compact, League membership, or peaceful severe host pressure. Invalid routes remain hidden through their existing package gates, and no project cost, duration, reward, focus cost, or route outcome changes in this arbitration layer.
 
 ## Assets
 

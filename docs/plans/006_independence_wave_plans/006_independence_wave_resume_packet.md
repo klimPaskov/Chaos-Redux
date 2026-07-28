@@ -10,6 +10,8 @@ Current routing authority is `subagent_handoffs/006_event_completion_audit_v31_2
 
 IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the complete Event 006 additive overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The current compile-time attestation set is eleven packages: IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, and IW-184. Live allocator, save/load, host-survival, force-materialization, and scenario transaction evidence remain open, so whole-event completion remains HOLD / PARTIAL.
 
+The IW-012 route-arbitration closure is source-implemented: Armed Neutrality no longer writes the government route, and the four formal route focuses use state-aware weights while preserving their package gates, costs, durations, route rewards, and mutual exclusions. The six project AI blocks use the same visible ledger and host/war signals. Static source checks pass; the probability matrix, live shared-focus visibility, AI timing, and runtime transaction evidence remain pending.
+
 Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`.
 Earlier generated grounded-polity portrait packages are provenance evidence only.
 
