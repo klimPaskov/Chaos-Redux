@@ -35,9 +35,10 @@ The manual Fallout scenario is a direct sandbox launch. It does not require Chao
 
 ## Event ownership
 
-The scenario registry and selection UI remain part of the generic triggerable-scenario system. Once the player confirms Fallout, the generic launch effect calls a `chaosx.fallout.*` event defined in `events/fallout_world_end_events.txt`.
+The generic manual-scenario framework may dispatch a Fallout-owned bootstrap callback after an authorized request. The callback owns confirmation follow-up and province-strike sequencing.
+It is not the Fallout consequence itself, and Fallout is not inserted into the public scenario, Event Details, evolution, or ordinary super-event registries.
 
-The Fallout file owns confirmation follow-up, province-strike sequencing, seven-day countdown completion, blackout entry, world rewrite, and post-transition orientation. No Fallout event block is added to `events/chaosx_triggerable_scenarios.txt`.
+The Fallout file owns the strike transaction, seven-day countdown completion, blackout entry, world rewrite, and post-transition orientation. No Fallout event block is added to `events/chaosx_triggerable_scenarios.txt`.
 
 On confirmation:
 
@@ -68,12 +69,12 @@ Allocation procedure:
 2. verify that existing assignments are unique
 3. find the highest assigned integer
 4. assign Fallout to that integer plus one
-5. use the same allocated value in all registry, sort, display, dispatch, event, documentation, and catalog surfaces
+5. use the same allocated value in Fallout-owned reservation, dispatch, event, and documentation surfaces while keeping public registry and catalog surfaces Fallout-free
 6. record the final id in the implementation handoff and source-of-truth map
 
 Do not move Africa Is One or any other existing scenario. Do not reuse a gap unless the user later asks for gap reuse. Do not copy the next value observed in an older repository snapshot.
 
-The public row will display `SCN-014` only after the native sweep release gate passes. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation until then.
+No public row will display `SCN-014`. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation for the dormant manual trigger and is never inserted into the public scenario or Event Details registries.
 
 ## Engine feasibility and runtime release gate
 
@@ -195,28 +196,17 @@ Do not add types during the first implementation if they delay the required scen
 
 ## Registry integration checklist
 
-Update all explicit scenario paths:
+Keep the public scenario, Event Details, evolution, and ordinary super-event registries Fallout-free. Audit the Fallout-owned surfaces instead:
 
-- id constants
-- sort value constants
-- registry arrays
-- name-sorted arrays in both directions
-- id-sorted arrays in both directions
-- selected name mapping
-- entry name mapping
-- entry id mapping
-- description mapping
-- type mapping
-- intensity impact mapping
-- launch gate
-- click enablement
+- reserved id constant
+- manual launch gate
 - confirmation action
-- launch dispatch
-- scenario event ids
-- documentation
-- catalog row
+- strike dispatch
+- countdown callback
+- blackout handoff
+- documentation and blocker records
 
-The scenario framework uses explicit text and sort branches. Missing one branch will create an incomplete row or wrong default text.
+The manual framework uses explicit launch and dispatch branches. Missing one Fallout-owned branch can strand the transaction or create a duplicate request. Adding a public registry row is out of scope.
 
 ## Launch gate
 
@@ -269,7 +259,7 @@ If the sweep needs batching, the seven-day countdown begins after the final batc
 
 ## Acceptance checks
 
-- public scenario row shows Fallout with the verified padded allocated id
+- no public scenario or Event Details row contains Fallout
 - allocated raw id is unique and equals the previous live maximum plus one
 - every existing scenario keeps its prior id and stored selection meaning
 - every valid province receives a verified thermonuclear strike

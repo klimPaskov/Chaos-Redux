@@ -93,7 +93,7 @@ For each case, the dedicated migration effect either clears stale presentation s
 
 ## Scenario registry extension
 
-Fallout receives a new id by appending it to the live registry. Do not renumber existing scenarios.
+Fallout reserves a new internal manual-trigger id from the live maximum without appending a public registry row. Do not renumber existing scenarios.
 
 Allocation procedure:
 
@@ -108,7 +108,7 @@ Compatibility behavior:
 
 - Existing stored scenario selections keep their current meaning.
 - No existing raw id is remapped.
-- No save migration is needed solely to add Fallout at the end of the registry.
+- No save migration is needed solely to reserve the Fallout-owned manual-trigger value because Fallout is not added to the public registry.
 - A registry version may still be bumped when the existing framework uses one, but the version update must not rewrite old ids.
 
 The inspected repository snapshot ended at id 8. That observation cannot be used as the final assigned value because later work may add more scenarios before implementation.

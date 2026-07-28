@@ -28,7 +28,7 @@ Fallout owns:
 - Fallout-specific scripted effects, scripted triggers, constants, on-actions, scripted GUI, scripted localisation, interface definitions, assets, audio, documentation, and event memory
 - every transition, orientation, survival, society, regional, diplomatic, war, recovery, and late-game Fallout event
 
-The generic manual-scenario framework may call a Fallout entry event. It does not own the Fallout chain.
+The generic manual-scenario framework may dispatch a Fallout-owned bootstrap callback. That callback starts the manual strike transaction and is not the Fallout consequence itself. The generic framework does not own the Fallout chain.
 
 Air Contamination may request Fallout through the shared request helper. It does not define Fallout events.
 
