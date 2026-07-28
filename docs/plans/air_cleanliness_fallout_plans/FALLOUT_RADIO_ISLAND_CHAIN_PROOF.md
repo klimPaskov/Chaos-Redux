@@ -56,7 +56,7 @@ The country is the primary actor and the authenticated host state is the seconda
 
 Cleanup releases the result and callback receipts, clears state reservation and transient transaction variables, removes every dedicated dynamic modifier, and preserves the completed flag, selected branch memory, result grade, callback grade, institution memory, and signal-quality memory.
 
-Generation invalidation refunds unresolved branch costs, releases the state reservation, removes dedicated modifiers, clears transient receipts, and preserves only durable route memories.
+Generation invalidation refunds unresolved branch costs, releases the state reservation, removes dedicated modifiers, clears transient receipts, and preserves only durable route memories. The chain-owned abort now also authenticates an issued but uncommitted human or hidden-AI opening against its dispatch target, records a cancellation when the radio station state is no longer current, releases both reservation markers, and clears the frozen snapshot before shared receipt cleanup.
 
 No scheduler activation flag is written by the candidate registry, opening, result, callback, or cleanup path.
 
@@ -76,7 +76,7 @@ The event catalogue workbook uses Events row 248 for `FALLOUT-600`, and the refr
 
 The dedicated effects, triggers, dynamic modifiers, scripted localisation, and event blocks are brace-balanced after the missing population-loss closure was corrected.
 
-The touched scripts contain no unsupported `<=` or `>=` operators, no zombie identifiers, no stale Weather Station or medicine branch names, and no em dashes or semicolons in player-facing localisation.
+The touched scripts contain no unsupported `<=` or `>=` operators, no zombie identifiers, no stale Weather Station or medicine branch names, and no em dashes or semicolons in player-facing localisation. The new opening-target cancellation branch is brace-balanced and uses the existing Radio Island tokens, cancellation history stage, reservation flags, dedicated modifiers, and frozen snapshot helper.
 
 No HOI4 runtime was launched, as requested. The read-only `hoi4.event_inspect` lint attempt also returned `Transport closed`. Event issuance, popup delivery, hidden-AI routing, save interruption recovery, multiplayer host authority, and Event Log rendering therefore remain engine-sensitive observations rather than claims.
 
