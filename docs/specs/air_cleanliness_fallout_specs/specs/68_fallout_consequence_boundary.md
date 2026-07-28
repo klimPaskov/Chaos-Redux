@@ -66,6 +66,8 @@ The effect computes the exact remaining-population target, supplies the state po
 
 The later standard population phase reuses the same frozen survivor target but reads live `state_population_k` after native and aggregate mutations. It requests only the remaining delta. When the aggregate already reached the target, the standard receipt records zero loss and does not issue another Deaths registration. The frozen pre-strike population is retained for provenance and target arithmetic only.
 
+Manual receipt validation uses the generation-bound preflight live-baseline value for the mutation's before-loss population. Ordinary Fallout rows retain the frozen pretransition-baseline check. A manual row therefore cannot pass by silently substituting a stale snapshot, and a correct zero-loss reconciliation remains durable.
+
 After each state records its synthetic Fallout intensity and expiry ledger, `fallout_manual_apply_state_aggregate_consequence` removes the ordinary `nuclear_fallout_state` modifier. A native strike therefore cannot leave a daily nuclear Air contamination or Deaths source behind after the durable Air shutdown.
 
 ## Engine-sensitive proof boundary

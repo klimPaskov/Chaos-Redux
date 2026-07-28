@@ -826,7 +826,21 @@ fallout_population_loss_receipt_is_durable = {
 	has_variable = fallout_population_reconciled_total_people
 	has_variable = fallout_population_loss_memory
 	fallout_population_deaths_accounting_receipt_is_durable = yes
-	check_variable = { var = fallout_population_before_loss_k value = fallout_pretransition_population_k compare = equals }
+	OR = {
+		AND = {
+			NOT = { fallout_manual_population_reconciliation_is_required = yes }
+			check_variable = { var = fallout_population_before_loss_k value = fallout_pretransition_population_k compare = equals }
+		}
+		AND = {
+			fallout_manual_population_reconciliation_is_required = yes
+			has_variable = fallout_manual_population_contract_preflight_frozen_current_people
+			check_variable = {
+				var = fallout_population_before_loss_people
+				value = fallout_manual_population_contract_preflight_frozen_current_people
+				compare = equals
+			}
+		}
+	}
 	check_variable = { var = fallout_population_before_loss_people_replay value = fallout_population_before_loss_people compare = equals }
 	check_variable = { var = fallout_population_reconciled_total_people value = fallout_population_before_loss_people compare = equals }
 	check_variable = { fallout_population_loss_requested_memory > constant:fallout_runtime.negative_one }
