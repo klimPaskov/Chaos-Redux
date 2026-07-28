@@ -78,8 +78,8 @@ transactions, is maintained in
 - [x] The current selectable country pool contains 138 bound and 55 unbound packages after all 13 overlay rows are excluded.
 - [x] All 14 collision rows were independently recomputed.
 - [ ] All thirteen registered-tag compatibility adapters are implemented and route-preservation audited, including the `IW-153 POK` preservation obligations.
-- [ ] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector.
+- [x] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector; the final IW-156/IW-196/IW-197/IW-204 adapters are source-validated but not package-admitted.
 
-IW-022 has a bounded CRO-origin `dalmatia` source adapter, IW-025 has a bounded HUN-origin `vojvodina` source adapter, IW-035 has a bounded living-LIT `LIVONIA` adapter, IW-059 has a bounded formed `neo_mesopotamia` adapter, IW-085 has a bounded Italian-autonomy `LBA` adapter, and IW-101/IW-102/IW-105 have bounded mutually exclusive COG cosmetic adapters, but their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; four other exact route-overlay hooks remain absent.
+IW-022 has a bounded CRO-origin `dalmatia` source adapter, IW-025 has a bounded HUN-origin `vojvodina` source adapter, IW-035 has a bounded living-LIT `LIVONIA` adapter, IW-059 has a bounded formed `neo_mesopotamia` adapter, IW-085 has a bounded Italian-autonomy `LBA` adapter, IW-101/IW-102/IW-105 have bounded mutually exclusive COG cosmetic adapters, and IW-156/IW-196/IW-197/IW-204 have bounded TNE, Antilles, and Chilean vanilla overlays. Their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; no exact route-overlay hook remains absent.
 - [ ] Parent chooses an explicit state-level mutual exclusion for the Trabzon cross-group automatic conflict.
 - [ ] Parent requires the Himalayan confederation route to consume or exclude the Kashmir reservation.
