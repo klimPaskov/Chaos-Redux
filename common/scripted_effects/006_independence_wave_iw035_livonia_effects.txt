@@ -1,0 +1,355 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-035 LIVONIA OVERLAY EFFECTS
+# ============================================================================
+# Additive mechanics for the living LIT Livonia cosmetic route. This adapter
+# does not transfer Baltic states, alter autonomy, create a tag, or replace the
+# Lithuanian focus tree that owns the route.
+# ============================================================================
+
+independence_wave_iw035_livonia_remove_overlay_ideas = {
+	remove_ideas = {
+		independence_wave_iw035_livonia_contested_baltic_administration
+		independence_wave_iw035_livonia_coordinated_rail_authority
+		independence_wave_iw035_livonia_municipal_baltic_charter
+		independence_wave_iw035_livonia_federal_coastal_compact
+	}
+}
+
+independence_wave_iw035_livonia_refresh_idea_lifecycle = {
+	if = {
+		limit = { is_independence_wave_iw035_livonia_overlay_active = yes }
+		independence_wave_iw035_livonia_remove_overlay_ideas = yes
+		if = {
+			limit = { has_country_flag = independence_wave_iw035_livonia_municipal_charter }
+			add_ideas = independence_wave_iw035_livonia_municipal_baltic_charter
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw035_livonia_federal_coastal_compact }
+			add_ideas = independence_wave_iw035_livonia_federal_coastal_compact
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_iw035_livonia_rail_coordination
+					value = constant:independence_wave_iw035_livonia_value.settlement_threshold
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = independence_wave_iw035_livonia_coastal_security
+					value = constant:independence_wave_iw035_livonia_value.settlement_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			add_ideas = independence_wave_iw035_livonia_coordinated_rail_authority
+		}
+		else = {
+			add_ideas = independence_wave_iw035_livonia_contested_baltic_administration
+		}
+	}
+}
+
+independence_wave_iw035_livonia_change_values = {
+	if = {
+		limit = { is_independence_wave_iw035_livonia_overlay_active = yes }
+		add_to_variable = { independence_wave_iw035_livonia_rail_coordination = independence_wave_iw035_livonia_coordination_delta }
+		add_to_variable = { independence_wave_iw035_livonia_civic_legitimacy = independence_wave_iw035_livonia_legitimacy_delta }
+		add_to_variable = { independence_wave_iw035_livonia_coastal_security = independence_wave_iw035_livonia_security_delta }
+		clamp_variable = {
+			var = independence_wave_iw035_livonia_rail_coordination
+			min = constant:independence_wave_iw035_livonia_value.minimum
+			max = constant:independence_wave_iw035_livonia_value.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_iw035_livonia_civic_legitimacy
+			min = constant:independence_wave_iw035_livonia_value.minimum
+			max = constant:independence_wave_iw035_livonia_value.maximum
+		}
+		clamp_variable = {
+			var = independence_wave_iw035_livonia_coastal_security
+			min = constant:independence_wave_iw035_livonia_value.minimum
+			max = constant:independence_wave_iw035_livonia_value.maximum
+		}
+		independence_wave_iw035_livonia_refresh_idea_lifecycle = yes
+	}
+}
+
+independence_wave_iw035_livonia_pay_depot_cost = {
+	add_command_power = constant:independence_wave_iw035_livonia_cost.depot_command_power_spend
+	add_manpower = constant:independence_wave_iw035_livonia_cost.depot_manpower_spend
+	add_equipment_to_stockpile = {
+		type = train_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.depot_trains_spend
+	}
+}
+
+independence_wave_iw035_livonia_pay_coastal_watch_cost = {
+	add_command_power = constant:independence_wave_iw035_livonia_cost.coastal_watch_command_power_spend
+	add_manpower = constant:independence_wave_iw035_livonia_cost.coastal_watch_manpower_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.coastal_watch_infantry_equipment_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.coastal_watch_support_equipment_spend
+	}
+}
+
+independence_wave_iw035_livonia_pay_guard_cost = {
+	add_command_power = constant:independence_wave_iw035_livonia_cost.guard_command_power_spend
+	add_manpower = constant:independence_wave_iw035_livonia_cost.guard_manpower_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.guard_infantry_equipment_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.guard_support_equipment_spend
+	}
+}
+
+independence_wave_iw035_livonia_pay_charter_cost = {
+	add_command_power = constant:independence_wave_iw035_livonia_cost.charter_command_power_spend
+	add_manpower = constant:independence_wave_iw035_livonia_cost.charter_manpower_spend
+	add_equipment_to_stockpile = {
+		type = train_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.charter_trains_spend
+	}
+}
+
+independence_wave_iw035_livonia_pay_federal_compact_cost = {
+	add_manpower = constant:independence_wave_iw035_livonia_cost.federal_compact_manpower_spend
+	army_experience = constant:independence_wave_iw035_livonia_cost.federal_compact_army_experience_spend
+	add_equipment_to_stockpile = {
+		type = infantry_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.federal_compact_infantry_equipment_spend
+	}
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = constant:independence_wave_iw035_livonia_cost.federal_compact_support_equipment_spend
+	}
+}
+
+independence_wave_iw035_livonia_complete_depot_survey = {
+	set_country_flag = independence_wave_iw035_livonia_depot_survey_complete
+	set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.depot_survey_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_value.depot_survey_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.depot_survey_security_gain }
+	independence_wave_iw035_livonia_change_values = yes
+}
+
+independence_wave_iw035_livonia_complete_coastal_watch = {
+	set_country_flag = independence_wave_iw035_livonia_coastal_watch_established
+	set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.coastal_watch_coordination_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_value.coastal_watch_legitimacy_loss }
+	set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.coastal_watch_security_gain }
+	independence_wave_iw035_livonia_change_values = yes
+}
+
+independence_wave_iw035_livonia_start_watch_mission = {
+	independence_wave_iw035_livonia_pay_guard_cost = yes
+	clr_country_flag = independence_wave_iw035_livonia_watch_failed
+	clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
+	set_country_flag = independence_wave_iw035_livonia_watch_running
+	set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+	activate_mission = independence_wave_iw035_hold_livonian_corridor_watch
+}
+
+independence_wave_iw035_livonia_complete_watch_mission = {
+	set_country_flag = independence_wave_iw035_livonia_watch_completed
+	clr_country_flag = independence_wave_iw035_livonia_watch_running
+	clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
+	clr_country_flag = independence_wave_iw035_livonia_watch_failed
+	set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.depot_survey_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_value.depot_survey_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.coastal_watch_security_gain }
+	independence_wave_iw035_livonia_change_values = yes
+}
+
+independence_wave_iw035_livonia_fail_watch_mission = {
+	if = {
+		limit = { is_independence_wave_iw035_livonia_overlay_active = yes }
+		set_country_flag = independence_wave_iw035_livonia_watch_failed
+		clr_country_flag = independence_wave_iw035_livonia_watch_running
+		clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
+		set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+		add_stability = constant:independence_wave_iw035_livonia_outcome.watch_failure_stability
+		set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.minimum }
+		set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_outcome.watch_failure_legitimacy }
+		set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.minimum }
+		independence_wave_iw035_livonia_change_values = yes
+	}
+}
+
+independence_wave_iw035_livonia_handle_watch_cancel = {
+	if = {
+		limit = {
+			is_independence_wave_iw035_livonia_route_active = yes
+			has_country_flag = independence_wave_iw035_livonia_watch_running
+		}
+		independence_wave_iw035_livonia_fail_watch_mission = yes
+	}
+}
+
+independence_wave_iw035_livonia_choose_municipal_charter = {
+	set_country_flag = independence_wave_iw035_livonia_municipal_charter
+	set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.municipal_charter_coordination_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_value.municipal_charter_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.municipal_charter_security_loss }
+	independence_wave_iw035_livonia_change_values = yes
+}
+
+independence_wave_iw035_livonia_choose_federal_compact = {
+	set_country_flag = independence_wave_iw035_livonia_federal_coastal_compact
+	set_temp_variable = { independence_wave_iw035_livonia_coordination_delta = constant:independence_wave_iw035_livonia_value.federal_compact_coordination_loss }
+	set_temp_variable = { independence_wave_iw035_livonia_legitimacy_delta = constant:independence_wave_iw035_livonia_value.federal_compact_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw035_livonia_security_delta = constant:independence_wave_iw035_livonia_value.federal_compact_security_gain }
+	independence_wave_iw035_livonia_change_values = yes
+}
+
+independence_wave_iw035_livonia_update_watch_hold = {
+	if = {
+		limit = {
+			is_independence_wave_iw035_livonia_overlay_active = yes
+			has_country_flag = independence_wave_iw035_livonia_watch_running
+			has_independence_wave_iw035_livonia_watch_objective = yes
+		}
+		add_to_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.watch_daily_gain }
+		clamp_variable = {
+			var = independence_wave_iw035_livonia_watch_hold_days
+			min = constant:independence_wave_iw035_livonia_value.minimum
+			max = constant:independence_wave_iw035_livonia_value.watch_required
+		}
+	}
+	else_if = {
+		limit = {
+			is_independence_wave_iw035_livonia_overlay_active = yes
+			has_country_flag = independence_wave_iw035_livonia_watch_running
+		}
+		set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+	}
+}
+
+independence_wave_iw035_livonia_initialize_overlay = {
+	if = {
+		limit = {
+			is_independence_wave_iw035_livonia_route_active = yes
+			NOT = { has_country_flag = independence_wave_iw035_livonia_overlay_ever_activated }
+		}
+		set_country_flag = independence_wave_iw035_livonia_overlay_ever_activated
+		set_country_flag = independence_wave_iw035_livonia_package_initialized
+		set_country_flag = independence_wave_iw035_livonia_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		clr_country_flag = independence_wave_iw035_livonia_overlay_suspended
+		set_variable = { independence_wave_iw035_livonia_rail_coordination = constant:independence_wave_iw035_livonia_value.rail_coordination_start }
+		set_variable = { independence_wave_iw035_livonia_civic_legitimacy = constant:independence_wave_iw035_livonia_value.civic_legitimacy_start }
+		set_variable = { independence_wave_iw035_livonia_coastal_security = constant:independence_wave_iw035_livonia_value.coastal_security_start }
+		set_variable = { independence_wave_iw035_livonia_watch_hold_days = constant:independence_wave_iw035_livonia_value.minimum }
+		set_variable = { independence_wave_anchor_state = 12 }
+		set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.river_or_corridor }
+		set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime }
+		independence_wave_iw035_livonia_refresh_idea_lifecycle = yes
+	}
+}
+
+independence_wave_iw035_livonia_suspend_overlay = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw035_livonia_overlay_active }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_iw035_livonia_watch_running
+				NOT = { has_country_flag = independence_wave_iw035_livonia_watch_completed }
+			}
+			set_country_flag = independence_wave_iw035_livonia_watch_interrupted
+		}
+		independence_wave_iw035_livonia_remove_overlay_ideas = yes
+		clr_country_flag = independence_wave_iw035_livonia_overlay_active
+		clr_country_flag = independence_wave_route_overlay_active
+		set_country_flag = independence_wave_iw035_livonia_overlay_suspended
+	}
+}
+
+independence_wave_iw035_livonia_pause_watch_mission = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_iw035_livonia_overlay_suspended
+			has_country_flag = independence_wave_iw035_livonia_watch_interrupted
+			has_country_flag = independence_wave_iw035_livonia_watch_running
+			has_active_mission = independence_wave_iw035_hold_livonian_corridor_watch
+		}
+		set_temp_variable = { independence_wave_iw035_livonia_pause_days = constant:independence_wave_iw035_livonia_duration.watch_pause_daily_extension }
+		add_days_mission_timeout = {
+			mission = independence_wave_iw035_hold_livonian_corridor_watch
+			days = independence_wave_iw035_livonia_pause_days
+		}
+	}
+}
+
+independence_wave_iw035_livonia_resume_overlay = {
+	if = {
+		limit = {
+			is_independence_wave_iw035_livonia_route_active = yes
+			has_country_flag = independence_wave_iw035_livonia_overlay_ever_activated
+			NOT = { has_country_flag = independence_wave_iw035_livonia_overlay_active }
+		}
+		set_country_flag = independence_wave_iw035_livonia_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		clr_country_flag = independence_wave_iw035_livonia_overlay_suspended
+		independence_wave_iw035_livonia_refresh_idea_lifecycle = yes
+	}
+}
+
+# Called only from the narrow on_daily_LIT hook. There is no global country
+# iteration and the exact cosmetic identity gates every state change.
+independence_wave_iw035_livonia_refresh_overlay = {
+	if = {
+		limit = { is_independence_wave_iw035_livonia_route_active = yes }
+		if = {
+			limit = { NOT = { has_country_flag = independence_wave_iw035_livonia_overlay_ever_activated } }
+			independence_wave_iw035_livonia_initialize_overlay = yes
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = independence_wave_iw035_livonia_overlay_active } }
+			independence_wave_iw035_livonia_resume_overlay = yes
+		}
+		else = {
+			clr_country_flag = independence_wave_iw035_livonia_overlay_suspended
+			if = {
+				limit = { has_country_flag = independence_wave_iw035_livonia_watch_interrupted }
+				if = {
+					limit = { has_country_flag = independence_wave_iw035_livonia_watch_running has_active_mission = independence_wave_iw035_hold_livonian_corridor_watch }
+					clr_country_flag = independence_wave_iw035_livonia_watch_interrupted
+				}
+				else = { independence_wave_iw035_livonia_fail_watch_mission = yes }
+			}
+			else_if = {
+				limit = {
+					has_country_flag = independence_wave_iw035_livonia_watch_running
+					NOT = { has_active_mission = independence_wave_iw035_hold_livonian_corridor_watch }
+				}
+				independence_wave_iw035_livonia_fail_watch_mission = yes
+			}
+			independence_wave_iw035_livonia_update_watch_hold = yes
+			if = {
+				limit = {
+					NOT = {
+						OR = {
+							has_idea = independence_wave_iw035_livonia_contested_baltic_administration
+							has_idea = independence_wave_iw035_livonia_coordinated_rail_authority
+							has_idea = independence_wave_iw035_livonia_municipal_baltic_charter
+							has_idea = independence_wave_iw035_livonia_federal_coastal_compact
+						}
+					}
+				}
+				independence_wave_iw035_livonia_refresh_idea_lifecycle = yes
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = { has_country_flag = independence_wave_iw035_livonia_overlay_active }
+			independence_wave_iw035_livonia_suspend_overlay = yes
+		}
+		independence_wave_iw035_livonia_pause_watch_mission = yes
+	}
+}
