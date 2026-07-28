@@ -29,7 +29,7 @@ Event Details should describe the premise, not raw effects. For Air Cleanliness,
 
 | Catalog | Row direction |
 | --- | --- |
-| Scenario catalog | Do not add Fallout to the public scenario catalog. Keep its reserved id and evidence status in the Fallout implementation proof until the exact native sweep is proven. |
+| Scenario catalog | Do not add Fallout to the public scenario catalog. Keep its Fallout-owned reserved id and evidence status in the implementation proof. The exact native sweep remains an activation gate, not a public-registration gate. |
 | Event catalog | Fallout world-end note for Air Cleanliness and any event that can bridge to Fallout. |
 | Cluster catalog | No cluster required unless later implementation creates a Fallout precursor cluster. |
 
