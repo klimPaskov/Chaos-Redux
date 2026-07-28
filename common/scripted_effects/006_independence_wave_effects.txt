@@ -2372,8 +2372,9 @@ independence_wave_change_own_league_record = {
 
 # DM-58 shared-operation cleanup. Individual country cleanup removes only that
 # country's receipt. This operation-level cleanup is called at league phase
-# transitions, dissolution, reset, or an explicit member-count failure; finite
-# war goals are left to their own 365-day expiry.
+# transitions, dissolution, reset, an explicit member-count failure, or when a
+# recorded witness member exits. Finite war goals are left to their own
+# 365-day expiry.
 independence_wave_cleanup_reclamation_front_operation = {
 	clr_global_flag = independence_wave_reclamation_fronts_coordinated
 	clear_global_event_target = independence_wave_reclamation_front_coordinator
@@ -2398,11 +2399,21 @@ independence_wave_revalidate_reclamation_front_operation = {
 	if = {
 		limit = {
 			has_global_flag = independence_wave_reclamation_fronts_coordinated
-			NOT = {
-				check_variable = {
-					var = global.independence_wave_league_member_count
-					value = constant:independence_wave_decision_gate.formation_member_minimum
-					compare = greater_than_or_equals
+			OR = {
+				NOT = {
+					check_variable = {
+						var = global.independence_wave_league_member_count
+						value = constant:independence_wave_decision_gate.formation_member_minimum
+						compare = greater_than_or_equals
+					}
+				}
+				# `unregister_league_member` calls this after removing the
+				# generation-matched league row. The frozen witness array still
+				# identifies the departing participant, so cancel the shared
+				# operation before stale rows can be consumed by the expiry event.
+				is_in_array = {
+					array = global.independence_wave_reclamation_front_members
+					value = THIS
 				}
 			}
 		}

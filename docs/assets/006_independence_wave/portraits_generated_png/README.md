@@ -2,7 +2,7 @@
 
 This directory is the flat, reference-only shelf for source-derived Independence Wave portraits after the HOI4-style repaint and before deterministic 156x210 normalization or DDS conversion.
 
-It contains exactly 49 original-size RGB PNG repaint masters directly in this directory. There are no nested folders and no 156x210 PNGs here. The filenames, source paths, SHA-256 values, dimensions, generation records, and review status are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
+It contains exactly 50 original-size RGB PNG repaint masters directly in this directory. There are no nested folders and no 156x210 PNGs here. The filenames, source paths, SHA-256 values, dimensions, generation records, and review status are recorded in [PRE_RESIZE_MANIFEST.md](PRE_RESIZE_MANIFEST.md).
 
 The shelf includes protected BAY Rupprecht and RHI Matthes masters, source-derived trial masters, and withdrawn or research-gated masters. A file's presence is provenance only; it does not grant runtime admission, replace a leader, authorize a DDS, or bypass rights, identity, date, and independent HOI4-style review gates.
 
