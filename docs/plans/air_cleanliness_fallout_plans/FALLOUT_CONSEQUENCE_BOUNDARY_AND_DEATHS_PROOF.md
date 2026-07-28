@@ -1,0 +1,50 @@
+# Fallout consequence boundary and Deaths proof
+
+## Scope
+
+This record covers the accepted correction that Fallout is a consequence transition rather than a normal event, Event Details row, evolution, or ordinary super-event. It also records the Air Cleanliness shutdown and the state population loss routing.
+
+## Public registration proof
+
+Static source inspection shows that `initialize_world_end_scenario_registry` in `common/scripted_effects/chaosx_events_log_effects.txt` registers the public world-end rows without `world_end_scenario_id.fallout`. No Fallout title, owner, or details branch remains in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`. The Fallout-specific Event Details card preparation hooks were removed from the registry refresh, detail open, and toggle paths.
+
+The stable `world_end_scenario_id.fallout = 2` entry remains in `common/script_constants/world_end_scenario_registry_constants.txt`. It is used by internal request and settings gates and is not inserted into the public registry. The dedicated super-event selector label is `fallout_world_end_blackout_title` in `localisation/english/fallout_world_end_l_english.yml`. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_world_end_effects.txt`.
+
+Fallout post-consequence survivor chains still use normal country events and their own event history. This is intentional. Those are ordinary survivor stories after the consequence and are not a registration of the consequence itself.
+
+## Air Cleanliness shutdown proof
+
+The standard path sets `fallout_air_cleanliness_disabled` in `fallout_lock_transition` after `fallout_snapshot_epoch_is_ready_to_lock` succeeds. `fallout_world_end_migrate_save` restores the flag for saves with `world_end_fallout`. The manual path sets the flag in `fallout_manual_initialize_sweep` after intensity validation and clears it only on a pre-Fallout sweep failure.
+
+Static consumers of the flag are:
+
+- `air_winter_system_enabled` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`.
+- `air_contamination_monthly_update` in `common/scripted_effects/chaos_meter_effects.txt`.
+- `air_contamination_apply_delta_bp` and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
+- Natural wildfire, volcanic, and ashfall source registration in `common/scripted_effects/air_cleanliness_natural_source_effects.txt`.
+- Treaty membership, invitation, decision, and host lifecycle surfaces in the Air Cleanliness treaty files.
+- The Air Cleanliness settings checkbox and exported settings row.
+
+The monthly pass no longer starts or updates Air Winter after the flag. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause and new membership or invitation surfaces fail their eligibility checks.
+
+## Standard state loss proof
+
+The approved loss ladder is `90`, `91`, `92`, `93`, `94`, and `95` in `fallout_population_loss_percent` under `common/script_constants/fallout_world_end_constants.txt`. `fallout_apply_transition_phase_population_loss` iterates every state row that is not current. Each row calls `fallout_apply_state_population_loss`, which calculates a grade-specific request from the frozen pre-transition population and mutates state population through `apply_state_population_loss_without_recruitable_manpower_gain`.
+
+`fallout_reconcile_population_loss_receipt` calculates the observed live loss after the state mutation. It calls `chaos_meter_register_deaths` with `chaos_deaths_reason = fallout_aftermath`, civilian mode enabled, state population application disabled, and the original-owner target. The generation-bound state receipt is the idempotency guard. This proves state deletion and Deaths registration are two parts of one transaction.
+
+## Manual state loss proof
+
+`fallout_manual_capture_population_baselines` records the pre-strike population for every state before native strike callbacks. `fallout_manual_apply_state_aggregate_consequence` clamps the aggregate direct loss between `fallout_manual_aggregate.death_percent_base = 0.900` and `fallout_manual_aggregate.death_percent_max = 0.950`. It computes the exact requested loss against the captured baseline and supplies the exact state population contract to `apply_exact_state_civilian_population_loss`.
+
+The effect records the applied state delta in `global.fallout_manual_total_civilian_deaths` and `chaos_state_civilian_deaths_total`. `fallout_manual_apply_aggregate_consequences` then calls `chaos_meter_register_deaths` with civilian mode enabled and state population application disabled. This prevents double deletion while retaining the complete manual loss in the Deaths system.
+
+## Engine-sensitive blocker
+
+The source contract proves the state population mutation, the 90 to 95 percent range, and the Deaths receipt. It does not prove the exact engine-native sweep across every valid installed-map province. The manual scenario remains dormant until a live runtime audit proves that native thermonuclear strike effects cover every valid province, complete the batch, and preserve the exact seven-day countdown before the standard blackout and rewrite. No fallback sweep is being claimed.
+
+## Static checks performed
+
+- Removed Fallout public Event Details references were searched in the registry effect, Event Details scripted localisation, and GUI localisation.
+- The new consequence boundary spec and this proof record contain no em dash or semicolon.
+- Braces were counted in the changed Fallout, Air Winter, treaty, natural-source, registry, and trigger files, including `chaos_meter_effects.txt`. The inspected worktree files are brace-balanced.

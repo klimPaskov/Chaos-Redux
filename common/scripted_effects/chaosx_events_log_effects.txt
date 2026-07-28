@@ -603,13 +603,6 @@ refresh_events_log_system_history_views = {
 			limit = { has_country_flag = events_log_event_details_open }
 			events_log_rebuild_open_event_details_view = yes
 		}
-		if = {
-			limit = {
-				has_country_flag = events_log_world_end_scenario_details_open
-				check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout }
-			}
-			fallout_nzl_prepare_event_log_card = yes
-		}
 	}
 }
 
@@ -1049,9 +1042,10 @@ record_events_log_evolution_entry = {
 # ============================================================================
 # EVENT LOG POPUP STATE
 # ============================================================================
-# Public Event Details rows are built from this aligned registry. Hidden
-# scenarios remain registered for internal identity/visibility checks, but the
-# rebuild helper filters them before any player-facing row or control exists.
+# Public Event Details rows are built from this aligned registry. Fallout is a
+# consequence transition rather than an Event Details or evolution entry, so it
+# intentionally has no row in this registry. Stable Fallout ids remain available
+# to internal request and settings gates without creating player-facing history.
 # Public visibility classifies a branch. Public-details readiness is a separate
 # implementation opt-in so registry identities can land before their complete
 # row, toggle, selector, and prose package is ready for players.
@@ -1078,19 +1072,6 @@ initialize_world_end_scenario_registry = {
 	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.zombie_apocalypse }
 	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.zombie_apocalypse }
 	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.zombie_apocalypse }
-	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
-	world_end_scenario_registry_add_entry = yes
-
-	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.fallout }
-	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.none }
-	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.secondary }
-	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
-	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
-	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
-	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.fallout }
-	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.none }
-	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.fallout }
-	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.fallout }
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 
@@ -1244,10 +1225,6 @@ events_log_evaluate_world_end_scenario_active = {
 	set_temp_variable = { events_log_world_end_scenario_active = 0 }
 	if = {
 		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.zombie_apocalypse } has_global_flag = world_end_zombies }
-		set_temp_variable = { events_log_world_end_scenario_active = 1 }
-	}
-	else_if = {
-		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.fallout } has_global_flag = world_end_fallout }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 	else_if = {
@@ -1424,10 +1401,6 @@ events_log_select_world_end_scenario_from_row = {
 
 events_log_open_selected_world_end_scenario_detail = {
 	events_log_select_world_end_scenario_from_row = yes
-	if = {
-		limit = { check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout } }
-		fallout_nzl_prepare_event_log_card = yes
-	}
 	set_country_flag = events_log_world_end_scenario_details_open
 }
 
@@ -1448,13 +1421,6 @@ events_log_toggle_selected_world_end_scenario_disabled = {
 	set_temp_variable = { event_id = events_log_selected_world_end_owner_event_id }
 	events_log_rebuild_event_detail_world_end_scenarios = yes
 	events_log_refresh_selected_world_end_scenario_state = yes
-	if = {
-		limit = {
-			check_variable = { events_log_selected_world_end_scenario_id = constant:world_end_scenario_id.fallout }
-			check_variable = { events_log_selected_world_end_enabled > 0 }
-		}
-		fallout_evaluate_air_contamination_request = yes
-	}
 }
 
 events_log_trigger_open_event_detail_entry = {

@@ -29,6 +29,10 @@ fallout_manual_fail_sweep = {
 		clr_global_flag = fallout_manual_countdown_active
 		clr_global_flag = fallout_manual_countdown_event_scheduled
 		clr_global_flag = fallout_manual_request_due
+		if = {
+			limit = { NOT = { has_global_flag = world_end_fallout } }
+			clr_global_flag = fallout_air_cleanliness_disabled
+		}
 		clear_variable = global.fallout_manual_scheduled_batch
 		clear_variable = global.fallout_manual_scheduled_batch_generation
 		clear_variable = global.fallout_manual_scheduled_verifier_attempt
@@ -126,6 +130,7 @@ fallout_manual_initialize_sweep = {
 		save_global_event_target_as = fallout_manual_sweep_coordinator
 		set_country_flag = fallout_manual_synthetic_launcher
 		set_global_flag = fallout_manual_scenario_active
+		set_global_flag = fallout_air_cleanliness_disabled
 		set_global_flag = fallout_manual_sweep_active
 		set_global_flag = fallout_synthetic_strike_batch
 		set_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }

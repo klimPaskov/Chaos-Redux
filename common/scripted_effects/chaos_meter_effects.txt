@@ -516,6 +516,11 @@ toggle_chaos_meter_deaths_details_sort_order = {
 
 toggle_air_cleanliness_system_disabled = {
 	if = {
+		limit = { has_global_flag = fallout_air_cleanliness_disabled }
+		set_global_flag = settings_air_cleanliness_disabled
+		air_contamination_apply_state_modifier = yes
+	}
+	else_if = {
 		limit = { has_global_flag = settings_air_cleanliness_disabled }
 		clr_global_flag = settings_air_cleanliness_disabled
 		air_contamination_refresh_values = yes
@@ -4565,6 +4570,11 @@ air_contamination_sync_chaos_from_delta = {
 }
 
 air_contamination_apply_delta_bp = {
+	if = {
+		limit = { has_global_flag = fallout_air_cleanliness_disabled }
+		set_variable = { global.air_contamination_last_delta_bp = constant:air_contamination_natural_source.zero }
+	}
+	else = {
     set_temp_variable = { air_contamination_previous_bp = global.air_contamination_bp }
     add_to_variable = { global.air_contamination_bp = air_contamination_delta_bp }
 
@@ -4599,6 +4609,7 @@ air_contamination_apply_delta_bp = {
     air_contamination_refresh_values = yes
     air_contamination_update_threshold_flags = yes
 	fallout_evaluate_air_contamination_request = yes
+	}
 }
 
 air_contamination_clear_country_pressure_ideas = {
@@ -4628,6 +4639,14 @@ air_contamination_clear_country_pressure_ideas = {
 
 air_contamination_apply_state_modifier = {
 	if = {
+		limit = { has_global_flag = fallout_air_cleanliness_disabled }
+		air_contamination_clear_country_pressure_ideas = yes
+		every_state = {
+			limit = { has_dynamic_modifier = air_contamination_global_state }
+			remove_dynamic_modifier = { modifier = air_contamination_global_state }
+		}
+	}
+	else_if = {
 		limit = {
 			has_global_flag = settings_air_cleanliness_disabled
 			NOT = { has_global_flag = air_contamination_final_silence_locked }
@@ -4979,7 +4998,10 @@ air_contamination_monthly_update = {
 	# Air Winter consumes the completed contamination-state counts from the
 	# previous monthly pass before this pass rebuilds them below.
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_active } }
+		limit = {
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		}
 		air_winter_begin_monthly_cycle = yes
 	}
 	air_cleanliness_treaty_pre_winter_pulse = yes
@@ -4998,11 +5020,19 @@ air_contamination_monthly_update = {
     set_temp_variable = { air_monthly_fallout_bp = 0 }
     set_temp_variable = { air_cleanliness_system_enabled = 1 }
 	if = {
-		limit = { has_global_flag = settings_air_cleanliness_disabled }
+		limit = {
+			OR = {
+				has_global_flag = settings_air_cleanliness_disabled
+				has_global_flag = fallout_air_cleanliness_disabled
+			}
+		}
 		set_temp_variable = { air_cleanliness_system_enabled = 0 }
 	}
 	if = {
-		limit = { has_global_flag = air_contamination_final_silence_locked }
+		limit = {
+			has_global_flag = air_contamination_final_silence_locked
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		}
 		set_temp_variable = { air_cleanliness_system_enabled = 1 }
 	}
 
@@ -5128,13 +5158,19 @@ air_contamination_monthly_update = {
 		# The frozen Fallout rewrite owns state climate and category inputs while
 		# its blackout transaction is active.
 		if = {
-			limit = { NOT = { has_global_flag = fallout_transition_active } }
+			limit = {
+				NOT = { has_global_flag = fallout_transition_active }
+				NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			}
 			air_winter_update_state = yes
 		}
 	}
 
 	if = {
-		limit = { NOT = { has_global_flag = fallout_transition_active } }
+		limit = {
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		}
 		air_winter_response_refresh_evacuation_cache_cycle = yes
 		air_winter_dispatch_phase_events = yes
 		air_winter_finalize_monthly_cycle = yes
@@ -5511,7 +5547,12 @@ chaos_meter_on_nuke_drop = {
     set_temp_variable = { chaos_fallout_duration_days = constant:chaos_meter_nuclear_fallout.normal_duration_days }
     set_temp_variable = { chaos_fallout_intensity_add = constant:chaos_meter_nuclear_fallout.normal_intensity_add }
     if = {
-        limit = { has_global_flag = settings_air_cleanliness_disabled }
+        limit = {
+            OR = {
+                has_global_flag = settings_air_cleanliness_disabled
+                has_global_flag = fallout_air_cleanliness_disabled
+            }
+        }
         set_temp_variable = { air_cleanliness_system_enabled = 0 }
     }
     set_temp_variable = { chaos_nuke_state_deaths_percent = constant:chaos_meter_state_death_dynamic.nuclear_percent }

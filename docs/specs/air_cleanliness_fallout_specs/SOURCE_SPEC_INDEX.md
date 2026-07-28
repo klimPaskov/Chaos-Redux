@@ -128,6 +128,8 @@
 - `specs/64_reviewed_regional_mine_generator.md`
 - `specs/65_reviewed_regional_new_year_without_fireworks.md`
 - `specs/66_reviewed_regional_second_dust_bowl.md`
+- `specs/67_reviewed_regional_great_lakes_lock_winter.md`
+- `specs/68_fallout_consequence_boundary.md`
 
 ## Matrices
 

@@ -2,15 +2,17 @@
 
 Canonical status: accepted baseline design, corrected for independent Fallout ownership and extended by the living-world specs in this package.
 
+Current consequence correction: `specs/68_fallout_consequence_boundary.md` supersedes any baseline wording that treats Fallout itself as an Event Details row, evolution, ordinary super-event, or public scenario-catalog entry. Fallout is a consequence transition. Post-consequence survivor events may keep their own event history.
+
 ## Documentation surfaces
 
 | Surface | Required update |
 | --- | --- |
 | Air Cleanliness mechanic doc | Replace simple threshold future plans with winter phase mapmode, state effects, treaty operations, and Fallout trigger rules. |
 | Fallout world-end doc | New canonical source doc for black-screen transition and post-Fallout overhaul. |
-| Triggerable scenarios doc | Add the manual Fallout scenario using the next free live id, with every-province thermonuclear launch and seven-day delay. |
+| Triggerable scenarios doc | Document the reserved manual Fallout id and the evidence gate. Keep the launch dormant until the exact every-province thermonuclear sweep is proven. |
 | Chaos mechanics guide | Update Air Cleanliness, world-end rules, Deaths integration, and triggerable scenario list. |
-| Event catalog spreadsheet | Add Fallout scenario row and align world-end notes for air contamination. |
+| Event catalog spreadsheet | Do not add a Fallout scenario row. Align only post-consequence survivor event rows and Air Cleanliness bridge notes. |
 | Asset manifests | Add mapmode, UI, icon, flag, portrait, report, news, and animated asset packages. |
 | Music and super-event docs | Mark Fallout as not a normal super-event. If blackout audio is later added, document outside super-event pattern. |
 | Subagent handoffs | Record every subagent patch or blocked report. |
@@ -21,13 +23,13 @@ The spreadsheet should not become a mechanics dump. The Fallout scenario details
 
 ## Event details direction
 
-Event Details should describe the premise, not raw effects. For Air Cleanliness, describe atmospheric contamination and visible winter spread. For Fallout, describe the world transition and survival premise. Do not expose secret route requirements.
+Event Details should describe the premise, not raw effects. For Air Cleanliness, describe atmospheric contamination and visible winter spread. Fallout itself has no Event Details row. Post-consequence survivor cards may describe their own survival premise without registering the consequence as an event. Do not expose secret route requirements.
 
 ## Catalog additions
 
 | Catalog | Row direction |
 | --- | --- |
-| Scenario catalog | Add the manual Fallout scenario with the verified live id, type `World-End Scenario`, and evidence-based implementation status. |
+| Scenario catalog | Do not add Fallout to the public scenario catalog. Keep its reserved id and evidence status in the Fallout implementation proof until the exact native sweep is proven. |
 | Event catalog | Fallout world-end note for Air Cleanliness and any event that can bridge to Fallout. |
 | Cluster catalog | No cluster required unless later implementation creates a Fallout precursor cluster. |
 
@@ -56,7 +58,7 @@ Event Details should describe the premise, not raw effects. For Air Cleanliness,
 
 ### Manual scenario
 
-- The manual Fallout scenario is registered with the next free live id and is directly launchable.
+- The manual Fallout id is reserved as the next free live id, but the scenario remains dormant and unregistered until the exact native sweep is proven.
 - Every valid province receives thermonuclear strike effects.
 - There is a one-week delay before Fallout rewrite.
 - If province-level strike is blocked, implementation reports blocker and does not silently downgrade.

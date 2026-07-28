@@ -4,13 +4,15 @@ Canonical status: accepted baseline design, corrected for independent Fallout ow
 
 Working scenario label, not final localisation: manual Fallout scenario. The public padded id is assigned only after the live registry is scanned.
 
+Current consequence correction: Fallout is not an Event Details row, evolution, ordinary super-event, or public scenario-catalog entry. The reserved id and launch contract remain design inputs, but public registration stays dormant until the exact native province sweep is proven.
+
 ## Scenario purpose
 
-The Fallout scenario is a manual sandbox trigger for a total world rewrite. It exists so the player can launch the end state directly from the Triggerable Scenarios menu without waiting for contamination, chaos, or another event.
+The Fallout scenario is designed as a manual sandbox trigger for a total world rewrite. Its public launch remains gated by the exact native province-sweep proof, so it is not exposed in the Triggerable Scenarios menu while that proof is missing.
 
 ## Manual scenario rules
 
-The scenario must be directly launchable unless a world-end scenario is already active. It must not require chaos value, previous nuclear use, air contamination level, date, country route, or event history.
+Once proven, the scenario must be directly launchable unless a world-end scenario is already active. It must not require chaos value, previous nuclear use, air contamination level, date, country route, or event history.
 
 ## Launch sequence
 
@@ -57,7 +59,7 @@ If keeping the slider creates confusion, set intensity to fixed and say the scen
 
 ## Event and catalog integration
 
-Scan the complete writable scenario registry, find the highest live integer, and assign Fallout that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Document the verified padded id in the scenario catalog, triggerable-scenario docs, and Fallout source map. The detail text should explain the one-week processing delay without revealing hidden altered-country routes.
+Scan the complete writable scenario registry, find the highest live integer, and reserve Fallout at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation, but do not add a public scenario-catalog row until the native sweep is verified. The eventual detail text should explain the one-week processing delay without revealing hidden altered-country routes.
 
 ## Compatibility with other world-end events
 
