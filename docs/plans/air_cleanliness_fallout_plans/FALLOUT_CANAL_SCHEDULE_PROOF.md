@@ -16,6 +16,8 @@ Population loss is requested through `apply_exact_state_civilian_population_loss
 
 The delayed result is exactly 42 days after an accepted branch. The seasonal callback is exactly 240 days after result settlement. Both use the shared receipt scheduler, exact branch and token checks, generation-bound registry, result and callback tickets, hidden AI parity, and explicit cleanup. Event Log payloads use history `9167` and the target state as secondary actor. The Event Log router has one narrow detail entry and one narrow name entry for this history.
 
+The generation-reset path is now statically wired before shared Fallout dispatch and runtime arrays are cleared. It authenticates the water state against owner, controller, Air Winter snapshot, native infrastructure, rural or pastoral category, and current generation, cancels an uncommitted opening when the target is stale, refunds only an unpaid branch, terminalizes issued result or callback rows, removes their cleanup tombstones, records one cancellation history row, clears the committed state flag, and releases the native-state reservation before clearing the frozen row. Runtime reset execution, save recovery, delayed delivery, and multiplayer behavior remain unobserved.
+
 ## Dedicated asset proof
 
 The report card source, preview, manifest, prompt, and handoff live under `docs/assets/628_canal_schedule/`. The runtime file is `gfx/event_pictures/fallout_world_end/report_event_fallout_canal_schedule.dds`. The sprite is `GFX_report_event_fallout_canal_schedule`.
@@ -32,7 +34,7 @@ The image is fictional and contains no real people, flags, attested symbols, rea
 
 ## Static review
 
-The new effects file has balanced braces `904/904`. The new trigger file has balanced braces `87/87`. The candidate registry remains balanced at `2816/2816`. The events file remains balanced at `11664/11664`. The new dynamic modifier file has balanced braces `9/9`.
+The effects file has balanced braces `1031/1031`. The trigger file has balanced braces `87/87`. The candidate registry remains balanced at `2816/2816`. The events file remains balanced at `11664/11664`. The dynamic modifier file has balanced braces `9/9`. The shared reset hook contains one Canal Schedule abort call in numeric order.
 
 The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 628, 630, and 632 resolve to the dedicated localisation file. The new effects, triggers, candidate row, and events reference Canal Schedule constants, all reviewed in `fallout_world_end_canal_schedule_constants.txt` or the shared Fallout event constants.
 
