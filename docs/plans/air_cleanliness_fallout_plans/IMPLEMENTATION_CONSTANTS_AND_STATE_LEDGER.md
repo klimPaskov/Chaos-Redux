@@ -195,10 +195,10 @@ Live destructive-phase receipt values:
 | `fallout_population_loss_generation` | transition generation | binds the Deaths receipt to the current rewrite |
 | `fallout_population_loss_mutation_issued` | state flag | prevents any retry from applying the state population mutation twice |
 | `fallout_population_loss_deaths_evaluated` | state flag | proves the exact observed result received one Deaths accounting decision |
-| `fallout_population_deaths_accounting_status` | accounting enum | distinguishes zero loss, registered loss, and user-disabled tracking |
-| `fallout_population_deaths_total_<before/after/delta>` | 0 and above | proves the global Deaths total moved by the observed loss when enabled |
-| `fallout_population_deaths_sequence_<before/after/delta>` | 0 and above | proves one Deaths log entry was written when enabled |
-| `fallout_population_state_deaths_<before/after/delta>` | 0 and above | proves the state Deaths map ledger moved by the observed loss when enabled |
+| `fallout_population_deaths_accounting_status` | accounting enum | distinguishes zero loss from the mandatory registered Fallout loss |
+| `fallout_population_deaths_total_<before/after/delta>` | 0 and above | proves the global Deaths total moved by the observed Fallout loss |
+| `fallout_population_deaths_sequence_<before/after/delta>` | 0 and above | proves one Deaths log entry was written for the observed Fallout loss |
+| `fallout_population_state_deaths_<before/after/delta>` | 0 and above | proves the state Deaths map ledger moved by the observed Fallout loss |
 | `fallout_population_loss_reconciled` | state flag | proves frozen intent, live bound, observed mutation, and Deaths accounting agree without applying population again |
 | `fallout_building_damage_levels_requested` | 0 and above | compatibility name recording total requested permanent building-level loss |
 | `fallout_building_damage_levels_observed` | 0 and above | compatibility name recording total observed permanent level loss |

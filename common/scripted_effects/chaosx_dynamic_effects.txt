@@ -705,7 +705,14 @@ apply_exact_state_civilian_population_loss = {
 		set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.one }
 		if = {
 			limit = {
-				NOT = { has_global_flag = settings_chaos_deaths_disabled }
+				OR = {
+					NOT = { has_global_flag = settings_chaos_deaths_disabled }
+					has_global_flag = fallout_transition_active
+					has_global_flag = fallout_active
+					has_global_flag = fallout_manual_scenario_active
+					has_global_flag = fallout_manual_sweep_active
+					has_global_flag = fallout_manual_countdown_active
+				}
 				check_variable = { state_civilian_population_loss_log_deaths > constant:chaos_meter_deaths.zero }
 			}
 			set_temp_variable = { chaos_deaths_change = state_civilian_population_loss_applied }
