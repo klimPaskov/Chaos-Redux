@@ -6,7 +6,7 @@ The Fallout living-world scheduler remains dormant until a reviewed release rece
 
 This contract keeps the activation flags fail-closed without inventing a runtime result that has not been observed.
 
-The current reviewed pilot contains 460 defined Fallout blocks through County Fair Returns.
+The current reviewed pilot contains 544 defined Fallout blocks through Great Lakes Lock Winter. Historical receipts may retain lower counts from earlier tranches, but they do not authorize activation.
 
 The countable release floor is 660 manually reviewed blocks, so the current count is 0 of 660 for release purposes.
 

@@ -52,7 +52,7 @@ The event system must not display several unrelated popups on one day. A dense l
 
 ## Event file and namespace
 
-All Fallout events belong in:
+Air Winter and post-consequence survivor events belong in:
 
 `events/fallout_world_end_events.txt`
 
@@ -60,7 +60,7 @@ The file uses:
 
 `add_namespace = chaosx.fallout`
 
-The file is organized into internal sections:
+The Fallout consequence transition is owned by the request coordinator. It is intentionally absent from public Event Details, evolution entries, and ordinary event-log rows. The file is organized into internal sections:
 
 1. request and transition
 2. player continuation and orientation

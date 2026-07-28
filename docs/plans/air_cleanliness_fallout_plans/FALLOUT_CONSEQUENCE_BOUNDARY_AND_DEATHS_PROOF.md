@@ -14,7 +14,7 @@ Fallout post-consequence survivor chains still use normal country events and the
 
 ## Air Cleanliness shutdown proof
 
-The standard path sets `fallout_air_cleanliness_disabled` in `fallout_lock_transition` after `fallout_snapshot_epoch_is_ready_to_lock` succeeds. `fallout_world_end_migrate_save` restores the flag for saves with `world_end_fallout`. The manual path sets the flag in `fallout_manual_initialize_sweep` after intensity validation and clears it only on a pre-Fallout sweep failure.
+The standard path sets `fallout_air_cleanliness_disabled` in `fallout_lock_transition` after `fallout_snapshot_epoch_is_ready_to_lock` succeeds. `fallout_world_end_migrate_save` restores the flag for saves with `world_end_fallout`. The manual path sets the flag in `fallout_manual_initialize_sweep` after intensity validation and clears it only on a pre-Fallout sweep failure, together with the temporary Air Winter shutdown receipt.
 
 Static consumers of the flag are:
 
@@ -25,7 +25,7 @@ Static consumers of the flag are:
 - Treaty membership, invitation, decision, and host lifecycle surfaces in the Air Cleanliness treaty files.
 - The Air Cleanliness settings checkbox and exported settings row.
 
-The monthly pass no longer starts or updates Air Winter after the flag. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause and new membership or invitation surfaces fail their eligibility checks.
+The monthly pass no longer starts or updates Air Winter after the flag. `air_winter_suspend_all_states_for_fallout` runs once at the lock, removes registered country operations, state phase and disease modifiers, regional entities, and the normal-map proof entity, then records `fallout_air_winter_shutdown_complete`. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause and new membership or invitation surfaces fail their eligibility checks.
 
 ## Standard state loss proof
 
