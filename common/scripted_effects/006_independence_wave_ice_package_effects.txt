@@ -263,6 +263,60 @@ independence_wave_ice_focus_lock_patron_client_route = {
 # Setup and synchronized-dispatch contract
 # ---------------------------------------------------------------------------
 
+# Adds the Event 006 diplomacy bias against the frozen former-host target.
+# The target is an execution event target rather than a country literal: a
+# later ICE release can be hosted by any valid surviving country. Each channel
+# is applied once per package generation and is reversed before cleanup.
+independence_wave_ice_apply_host_ai = {
+	if = {
+		limit = {
+			is_independence_wave_ice_package = yes
+			has_country_flag = independence_wave_ice_ai_profile
+			NOT = { has_country_flag = independence_wave_ice_host_ai_applied }
+			has_event_target = independence_wave_setup_former_host
+		}
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.trade }
+		set_country_flag = independence_wave_ice_host_ai_trade_applied
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.diplomacy }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.war_preparation }
+			set_country_flag = independence_wave_ice_host_ai_charter_applied
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_formable_family_registered }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_diplomacy }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_relations }
+			set_country_flag = independence_wave_ice_compact_ai_applied
+		}
+		set_country_flag = independence_wave_ice_host_ai_applied
+	}
+}
+
+# Reverses the target-specific strategies before the regular event target is
+# discarded. A missing/dead target is harmless; the static AI plan no longer
+# contains a Denmark-specific entry that could survive the cleanup.
+independence_wave_ice_clear_host_ai = {
+	if = {
+		limit = { has_country_flag = independence_wave_ice_host_ai_trade_applied has_event_target = independence_wave_setup_former_host }
+		add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.trade_cleanup }
+		if = {
+			limit = { has_country_flag = independence_wave_ice_host_ai_charter_applied }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.diplomacy_cleanup }
+			add_ai_strategy = { type = prepare_for_war id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.war_preparation_cleanup }
+		}
+		if = {
+			limit = { has_country_flag = independence_wave_ice_compact_ai_applied }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_diplomacy_cleanup }
+			add_ai_strategy = { type = befriend id = event_target:independence_wave_setup_former_host value = constant:independence_wave_ice_ai.compact_relations_cleanup }
+		}
+	}
+	clr_country_flag = independence_wave_ice_host_ai_applied
+	clr_country_flag = independence_wave_ice_host_ai_trade_applied
+	clr_country_flag = independence_wave_ice_host_ai_charter_applied
+	clr_country_flag = independence_wave_ice_compact_ai_applied
+}
+
 independence_wave_initialize_ice_politics = {
 	set_politics = { ruling_party = democratic elections_allowed = no }
 	set_popularities = {
@@ -278,6 +332,10 @@ independence_wave_initialize_ice_politics = {
 independence_wave_setup_iw_012_ice = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_012_setup_complete
+	clr_country_flag = independence_wave_ice_host_ai_applied
+	clr_country_flag = independence_wave_ice_host_ai_trade_applied
+	clr_country_flag = independence_wave_ice_host_ai_charter_applied
+	clr_country_flag = independence_wave_ice_compact_ai_applied
 	if = {
 		limit = { can_initialize_independence_wave_iw_012_package = yes }
 		independence_wave_initialize_ice_politics = yes
@@ -314,6 +372,7 @@ independence_wave_setup_iw_012_ice = {
 			independence_wave_apply_dynamic_starting_force = yes
 		}
 		set_country_flag = independence_wave_ice_ai_profile
+		independence_wave_ice_apply_host_ai = yes
 		if = {
 			limit = { has_prepared_independence_wave_iw_012_package_setup = yes }
 			set_country_flag = independence_wave_iw_012_setup_complete
@@ -347,6 +406,7 @@ independence_wave_dispatch_iw_012_ice_package_final_validation = {
 independence_wave_cleanup_iw_012_ice = {
 	if = {
 		limit = { original_tag = ICE check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_012 } }
+		independence_wave_ice_clear_host_ai = yes
 		remove_mission = independence_wave_ice_hold_the_harbour
 		remove_decision = independence_wave_ice_reconcile_shipping_registers
 		remove_decision = independence_wave_ice_charter_municipal_council

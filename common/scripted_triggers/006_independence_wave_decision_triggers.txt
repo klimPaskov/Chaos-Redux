@@ -36,6 +36,7 @@ is_independence_wave_regional_power = {
 has_independence_wave_active_founding_mission = {
 	OR = {
 		has_active_mission = independence_wave_secure_provisional_capital
+		has_active_mission = independence_wave_ice_hold_the_harbour
 		has_active_mission = independence_wave_establish_revenue_service
 		has_active_mission = independence_wave_register_population
 		has_active_mission = independence_wave_hold_first_assembly
@@ -523,6 +524,30 @@ has_independence_wave_reclamation_front_preflight = {
 						}
 					}
 				}
+			}
+		}
+	}
+}
+
+# DM-01's capital garrison is force-tier aware. Fragile releases can satisfy
+# the objective with two divisions; stronger releases retain the established
+# four-division requirement. The helper is evaluated only after package setup,
+# when `independence_wave_force_level` has been published.
+independence_wave_secure_provisional_capital_garrison_satisfied = {
+	OR = {
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			capital_scope = {
+				ROOT = { divisions_in_state = { state = PREV size > constant:independence_wave_decision_gate.secure_capital_fragile_divisions } }
+			}
+		}
+		AND = {
+			OR = {
+				NOT = { has_variable = independence_wave_force_level }
+				NOT = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
+			}
+			capital_scope = {
+				ROOT = { divisions_in_state = { state = PREV size > constant:independence_wave_decision_gate.secure_capital_divisions } }
 			}
 		}
 	}

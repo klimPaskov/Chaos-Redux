@@ -1,5 +1,7 @@
 # Event 006 documentation cleanup handoff
 
+> **Historical/superseded routing notice (2026-07-28):** This CHU/Galimzhan cleanup handoff records its at-time v30 and 51-master scope. Use `006_source_of_truth_map.md`, `006_independence_wave_resume_packet.md`, and `subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md` for current Event 006 counts and authority.
+
 Date: 2026-07-28.
 
 Scope: reconcile Event 006 documentation after parent promotion of the independently audited CHU Galimzhan Ibrahimov v2 country-leader DDS. Gameplay, localisation, GFX, spreadsheet, and runtime source files were outside this cleanup.

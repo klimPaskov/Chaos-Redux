@@ -1,5 +1,7 @@
 # Event 006 IW-012 Iceland country-package audit
 
+> **Superseded for current admission (2026-07-28):** This is the pre-implementation RG-100 candidate audit. The current static package admission is recorded in `006_iw012_ice_package_implementation_2026_07_28.md`, `006_iw012_ice_country_package_audit_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md`. Retain the findings below as historical design and risk evidence; live runtime proof remains open.
+
 ## Scope and verdict
 
 This audit covers the installed-map Iceland package (`IW-012`, resolved tag `ICE`, reservation group `RG-100`, anchor state `100`) and the smallest safe Event 006 integration that preserves vanilla Iceland content.
