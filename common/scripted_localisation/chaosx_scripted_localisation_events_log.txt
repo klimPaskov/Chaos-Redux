@@ -5352,6 +5352,20 @@ defined_text = {
 		localization_key = independence_wave.history.crisis.description
 	}
 	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:independence_wave_event.id compare = equals }
+			OR = {
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.queued compare = equals }
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.blocked compare = equals }
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.cancelled compare = equals }
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.committed compare = equals }
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.requester_lost compare = equals }
+				check_variable = { var = events_log_history_selected_payload value = constant:independence_wave_crisis_resolution_history.unknown compare = equals }
+			}
+		}
+		localization_key = independence_wave.history.crisis.outcome.description
+	}
+	text = {
 		trigger = { check_variable = { var = event_id value = constant:independence_wave_event.id compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.independence_wave
 	}
@@ -8519,6 +8533,48 @@ defined_text = {
 			}
 		}
 		localization_key = independence_wave.history.crisis.title
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = constant:independence_wave_event.id
+				compare = equals
+			}
+			OR = {
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.queued
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.blocked
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.cancelled
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.committed
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.requester_lost
+					compare = equals
+				}
+				check_variable = {
+					var = global.events_log_view_payload_entries^events_log_history_index
+					value = constant:independence_wave_crisis_resolution_history.unknown
+					compare = equals
+				}
+			}
+		}
+		localization_key = independence_wave.history.crisis.outcome.title
 	}
 	text = {
 		trigger = {
