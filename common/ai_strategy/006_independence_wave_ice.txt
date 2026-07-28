@@ -1,0 +1,61 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-012 ICELAND AI
+# ============================================================================
+# Additive AI priorities for the registered ICE carrier. Vanilla Iceland AI
+# plans remain active; these plans only bias Event 006's coastwatch, convoy,
+# harbour, host-charter, and North Atlantic Compact choices after setup.
+# ============================================================================
+
+independence_wave_ice_coastal_survival = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_country_flag = independence_wave_ice_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_ice_ai.army }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_ice_ai.infantry }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_ice_ai.support }
+	ai_strategy = { type = build_building id = naval_base value = constant:independence_wave_ice_ai.naval_base }
+	ai_strategy = { type = build_building id = dockyard value = constant:independence_wave_ice_ai.dockyard }
+	ai_strategy = { type = build_building id = coastal_bunker value = constant:independence_wave_ice_ai.coastal_defense }
+}
+
+independence_wave_ice_shipping_registers = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		NOT = { has_country_flag = independence_wave_ice_shipping_registers_reconciled }
+	}
+	abort_when_not_enabled = yes
+	# Convoy demand is represented by the documented equipment category, while
+	# the host relationship uses a documented diplomatic strategy.
+	ai_strategy = { type = equipment_production_factor id = convoy value = constant:independence_wave_ice_ai.convoy }
+	ai_strategy = { type = befriend id = DEN value = constant:independence_wave_ice_ai.trade }
+}
+
+independence_wave_ice_host_charter = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_independence_wave_living_former_host = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = befriend id = DEN value = constant:independence_wave_ice_ai.diplomacy }
+	ai_strategy = { type = prepare_for_war id = DEN value = constant:independence_wave_ice_ai.war_preparation }
+}
+
+independence_wave_ice_compact = {
+	allowed = { original_tag = ICE }
+	enable = {
+		is_independence_wave_ice_package = yes
+		has_country_flag = independence_wave_iw_012_setup_complete
+		has_country_flag = independence_wave_formable_family_registered
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = befriend id = DEN value = constant:independence_wave_ice_ai.compact_diplomacy }
+	ai_strategy = { type = befriend id = DEN value = constant:independence_wave_ice_ai.compact_relations }
+}
