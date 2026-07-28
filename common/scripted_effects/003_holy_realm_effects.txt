@@ -2317,7 +2317,10 @@ holy_realm_prepare_final_silence = {
 	set_temp_variable = { condemnation_victim_country = THIS }
 	set_temp_variable = { condemnation_context_type = constant:condemnation_context.final_silence }
 	condemnation_add_source = yes
-	air_contamination_lock_final_silence = yes
+	if = {
+		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+		air_contamination_lock_final_silence = yes
+	}
 	set_country_flag = used_unconventional_weapon
 	air_cleanliness_treaty_on_unconventional_use = yes
 	holy_realm_refresh_world_threat_source = yes
