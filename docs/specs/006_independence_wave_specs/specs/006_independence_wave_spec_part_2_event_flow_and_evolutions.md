@@ -32,6 +32,14 @@ Selection weight should fall when:
 
 The event does not require a historical petition, autonomy flag, or active resistance movement for every candidate. Those factors improve eligibility and influence opening legitimacy. The supernatural premise is that a wave can suddenly make dormant claims politically real.
 
+### Localized Independence Wave crisis
+
+The later crisis decision adds a country-facing pressure route before the next ordinary wave. A country exposes the crisis when it has low stability, when an enemy controls one of its owned states with severe resistance, or when it controls a foreign-owned state with severe resistance. The state trigger is evaluated in the country scope, so the system does not run a world-wide daily scan.
+
+The crisis is a timed, costed mission with a visible failure outcome. It consumes concrete military and administrative resources, increases domestic instability if abandoned, and records the host and crisis cause for the event log. On successful resolution it queues the ordinary Independence Wave entry only when the shared Liberations release coordinator can reset and accept a fresh plan. The ordinary allocator then uses the current fixed chaos-band count, reserves hosts and unique anchors, rerolls living or invalid tags, and executes one synchronized incident. A crisis never directly changes ownership, creates a tag, or bypasses the reservation and host-survival contract.
+
+If another Liberations plan is already collecting, locked, executing, finalizing, or rolling back, the crisis remains pending rather than firing a second transaction. The pending endpoint retries against the coordinator for the centralized bounded window, then records a blocked release if the barrier never reopens. If the candidate pool cannot meet the current band target, the allocator fails closed and the crisis records a blocked release rather than annexing territory or creating a shallow package.
+
 ### Phase 2: Wave planning
 
 The event builds and locks the release plan described in Part 1.

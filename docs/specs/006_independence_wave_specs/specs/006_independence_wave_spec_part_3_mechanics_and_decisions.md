@@ -6,6 +6,12 @@ All names in this file are working labels, not final localisation.
 
 Every country with active Independence Wave origin receives the same core survival system. Regional overlays, government routes, country ambitions, and package archetypes change how the values move and what they unlock.
 
+## Pre-wave crisis surface
+
+Countries with `has_stability` below the centralized crisis threshold, an enemy-controlled owned state whose resistance exceeds the severe-occupation threshold, or a controlled foreign-owned state above that threshold can see the Independence Wave crisis category. The category is not restricted to Event 006 countries, because the crisis belongs to the host and can be the pressure that creates a later Event 006 origin.
+
+The crisis mission uses a real equipment, manpower, command, and time commitment. Success records a crisis receipt and requests the normal synchronized wave entry. The release coordinator remains the only path that can reserve states, preserve one host remnant, resolve Event 005 collisions, and publish new countries. Failure leaves the host with an instability and resistance consequence but never releases a country directly.
+
 The system has five country values and three relationship layers.
 
 ### Country values
