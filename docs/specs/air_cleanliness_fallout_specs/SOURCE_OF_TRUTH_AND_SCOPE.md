@@ -34,7 +34,7 @@ Air Contamination may request Fallout through the shared request helper. It does
 
 No Fallout event, image, icon, sound, music file, sprite, quote slot, or GUI element may reuse zombie-owned content. Fallout is not a normal super-event.
 
-Fallout itself is a consequence transition, not a public Event Details row or evolution. Its stable internal scenario id is retained for request and settings ledgers, while the manual scenario remains dormant and absent from the public scenario catalog until the exact native thermonuclear sweep is proven. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
+Fallout itself is a consequence transition, not a public Event Details row or evolution. Its stable settings-ledger value is owned by `fallout_consequence_id` in `common/script_constants/fallout_world_end_constants.txt`, outside the public scenario registry. The manual scenario remains dormant and absent from the public scenario catalog until the exact native thermonuclear sweep is proven. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
 
 ## Manual scenario numbering
 
