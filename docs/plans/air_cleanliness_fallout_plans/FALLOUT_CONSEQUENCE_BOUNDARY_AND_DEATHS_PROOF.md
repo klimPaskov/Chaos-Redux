@@ -22,6 +22,7 @@ Static consumers of the flag are:
 
 - `air_winter_system_enabled` and `air_winter_event_targets_are_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`.
 - `air_winter_response_target_is_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`, which rejects already-open terminal response events after request-time shutdown.
+- `air_winter_response_mutation_is_allowed` in the same trigger file, consumed by every timed Air Winter decision removal callback so a same-day expiry releases rather than applies a result after request-time shutdown.
 - `air_winter_response_controlled_evacuation_project_is_valid` and `air_winter_response_final_evacuation_project_is_valid` in the same trigger file, which reject delayed population transfers after request-time shutdown.
 - `air_winter_event_apply_deaths` in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`.
 - `air_contamination_monthly_update` in `common/scripted_effects/chaos_meter_effects.txt`.
