@@ -818,6 +818,16 @@ Purpose:
 
 This type needs the strictest host-capital and overlap validation.
 
+## Source-driven mode cardinality
+
+The implementation retains six numeric scenario families: Sovereign Scatter, Common Congress, Wars of Separation, Universal Belligerence, Patron Worlds, and Great Partition.
+
+Universal Belligerence contains three independently selectable rules: Former Hosts, Neighboring Releases, and Nearby Nonleague States.
+
+The player-facing selector therefore exposes eight selectable modes backed by six numeric families. The runtime acceptance matrix is eight selectable modes by four intensities, or 32 cells.
+
+The three Universal Belligerence rules are separate acceptance rows and must never be collapsed into one family row. This clarification adds no scenario family or intensity beyond the accepted design.
+
 ## Scenario AI
 
 AI route seeds depend on type.

@@ -163,6 +163,15 @@ does not authorize DDS conversion, `.gfx` wiring, a character consumer, or a
 leader replacement. Update the shelf manifests whenever a new source-derived
 portrait is produced, including candidates that are later rejected or blocked.
 
+If the user explicitly requests a flat shelf, that request overrides the default
+evidence layout above: place every original-size repaint master directly in
+`docs/assets/<event_id>_<event_slug>/portraits_generated_png/`, use unique
+basenames, create no nested subfolders, and do not place normalized 156x210 PNGs
+in that directory. Keep any normalized evidence in a separate sibling archive or
+the originating package workspace, update the manifest to use the flat filenames,
+and preserve the same source, SHA-256, crop, processing, audit, and runtime-status
+records. The flat shelf remains evidence-only and never authorizes runtime use.
+
 ## 3. Asset source rules
 
 Choose the source mode based on asset type.

@@ -1,6 +1,6 @@
 # Event 006 resume packet
 
-Updated: 2026-07-27 after the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 reconciliation, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, and the RG-RHINE-SAAR pair-capacity repair.
+Updated: 2026-07-28 after the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 reconciliation, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, the RG-RHINE-SAAR pair-capacity repair, and the SCN-008 mode-cardinality reconciliation.
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
@@ -30,8 +30,9 @@ staged anchor integration, and paid post-formation projects are implemented
 and documented in `docs/events/006_form39_melanesian_federation.md`. FIJ is not
 in runtime attestation until the IW-157/IW-178 research flags, MFX collision
 reservation and flat-flag review, and the source/date decision are accepted.
-The durable pre-DDS portrait shelf now contains 49 source-derived masters and
-83 normalized 156x210 PNGs, with no advisor or small/dossier derivatives.
+The durable pre-DDS portrait shelf now contains exactly 49 original-size
+source-derived masters directly in one flat directory, with no nested folders,
+no normalized 156x210 PNGs, and no advisor or small/dossier derivatives.
 
 The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
 
@@ -143,6 +144,11 @@ they are not current routing documents.
   selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10
   ladder, and Event 005-first joint reservation ordering. Runtime host,
   anchor, reservation, and wave-size gates remain binding.
+- SCN-008's current acceptance cardinality is eight player-facing modes by four intensities, or 32 cells. The six numeric families remain the implementation enum, while Universal Belligerence contributes separate Former Hosts, Neighboring Releases, and Nearby Nonleague States rules. The current localisation and catalog mirror expose all eight modes. No runtime cell, bounded collision/selector sweep, rollback, persistence, or balance evidence is promoted, so SCN-008 remains `Needs Testing`.
+- The dated documentation-curator reconciliation at
+  `subagent_handoffs/006_documentation_curator_scn008_mode_cardinality_2026_07_28.md`
+  is the current bounded handoff for this matrix clarification. Historical
+  completion audits retain their older shorthand for traceability.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
   HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX
   candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the current installed-mod tag audit rejects the unreviewed Event 006 identity; the runtime TGAs are not a readiness fallback.
@@ -157,10 +163,11 @@ they are not current routing documents.
   completion still depends on opportunistic placement of garrisons in states 6
   and 977.
 - The current portrait authority is the sourced-only workflow in the event-asset
-  skill. The reference shelf at
-   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves 49
-   larger pre-resize masters and 83 normalized pre-DDS PNGs with byte/hash
-  manifests; candidates remain evidence only until independent review. The
+  skill. The flat reference shelf at
+  `docs/assets/006_independence_wave/portraits_generated_png/` now preserves exactly
+  49 original-size pre-resize masters directly in one directory, with no nested
+  folders or normalized 156x210 PNGs; `PRE_RESIZE_MANIFEST.md` records the byte/hash
+  inventory. Candidates remain evidence only until independent review. The
   2026-07-26 ARX Vernè commander candidate is explicitly candidate-only and
   has no DDS or runtime wiring; the companion Pinna crown candidate is also
   evidence-only. Its source and independent visual handoffs record bounded
