@@ -18,6 +18,61 @@ After this audit, the parent repaired the two narrow source defects and the cata
 
 The status table, remaining-source-defect list, accepted-plan table, and recommended actions below are the pre-closure audit snapshot. The parent closure addendum supersedes its requester-loss actor/title, Event Details/workbook, validator, and canonical-document findings. A subsequent parent patch also makes cancellation call the same host/cause history recorder before clearing its origin flags. The remaining current boundary is live mission timing, retry cleanup, requester-loss/non-annex removal, save/load, Event Log rendering, upper-band capacity, IW-012 timing, joint execution, focus geometry, scenario cells, asset/audio admission, and whole-event runtime evidence, which remain HOLD/PARTIAL.
 
+## Current-HEAD five-commit re-audit (2026-07-29)
+
+This addendum is the authoritative scoped disposition after `4f4e760cc`, `e354860a9`, `a0a5cfc45`, `d696f5b72`, and `f510eac06`; it was rechecked in the current shared working tree after later unrelated commits advanced HEAD.
+
+The older status table, source-defect list, accepted-plan table, and recommended actions below remain preserved as the pre-repair snapshot and must not be read as current for requester-loss actor/title attribution, cancellation host/cause history, Event Details workbook mirroring, validator commitment, or the IW-012 project-order and Network Standing findings.
+
+The whole-event status remains **HOLD / PARTIAL**.
+
+### Follow-up disposition by repaired seam
+
+| Surface | Current disposition | Current evidence | Remaining boundary |
+| --- | --- | --- | --- |
+| Requester-loss actor and title | **PASS static; runtime HOLD** | `common/scripted_effects/006_independence_wave_crisis_effects.txt:172-207` records payload `6006` with `events_log_system_actor = FROM.id`, so the row points at the annexed requester rather than the annexer. `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt:8566-8589` includes occupation, stability, combined, and requester-lost payloads in the crisis-title selector. | No live requester-annexation, Event Log actor/title rendering, persistence, or save/load receipt exists. Non-annex country removal remains outside the recovery hook. |
+| Queued and cancelled crisis history | **PASS static; runtime HOLD** | `independence_wave_record_crisis_history` persists host, cause, date, and the Event Log row before transient origin flags are cleared. `independence_wave_cancel_pre_wave_crisis` calls that recorder at line 162 before cooldown/runtime cleanup at lines 163-164. | The row is still queue/cause history rather than a separate rendered committed/blocked/cancelled outcome row, and no live cancellation/rendering evidence exists. |
+| Event Details workbook mirror | **PASS for the Event 006 cell** | The final static portion of `chaosx.events_log.window.event_details.independence_wave`, after resolving the four displayed constants, is exactly 1,190 characters and exactly matches workbook `Events!C7` and the Event 006 Events CSV field. The workbook remains the editable source and the CSV remains export-only. | The workbook and CSV currently contain concurrent unrelated dirty changes, so this is an exact Event 006 cell comparison rather than a repository-clean or whole-catalog claim. |
+| IW-012 project order | **PASS static; runtime HOLD** | The executable serialized order is Shipping Registers, Municipal Charter, Coastwatch Expansion, Former-host Charter, North Atlantic Compact, then Armed Neutrality. Compact Support reaches 45 before the Compact, Coastwatch reaches 55 after the Compact and 70 after Armed Neutrality, Shipping Security reaches 65, and all values remain within the shared clamp. The six projects consume 1,230 of the 1,440 harbour-mission days. | Live project availability, resource payment, AI ordering, cancellation, harbour resolution, and save/load remain unproved. |
+| IW-012 pre-Compact Network Standing | **PASS static through the imported carrier overlay; runtime HOLD** | `common/national_focus/iceland.txt:28-40` imports the overlay root, `independence_wave_overlay_integrate_release_forces`, `independence_wave_overlay_open_foreign_desk`, and `independence_wave_overlay_join_network`. The joined focus requires the two imported branch prerequisites and calls `independence_wave_focus_reward_network_cooperation`, which applies the centrally defined `aid_gain = 10` to the initialized standing of 10, producing 20 above the Compact's observed gate of 15. The required focus sequence costs 5+7+7+7 weeks, or 182 days, and can execute alongside decisions well before the Compact becomes project-eligible after the first four serialized projects consume 750 days. | Live focus rendering and completion order, AI focus timing, interruption, and save/load remain unproved. The stronger treaty-backed standing gate of 60 is not closed by this focus and remains a later transaction requirement. |
+| Current overview and resume wording | **PASS for the repaired seams** | `docs/events/006_independence_wave.md:126-130` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md:16-24` now describe the bounded retry, durable receipts, queued/cancelled host/cause rows, requester-loss attribution, final workbook mirror, corrected former-host-before-Compact order, and imported join-network path without claiming runtime completion. | Their historical sections remain dated traceability and the whole-event authority remains HOLD / PARTIAL. |
+| Source-of-truth and accepted-spec authority | **PARTIAL / stale** | `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:235` and its supersession rows record the repaired workbook, cancellation, and requester-loss facts. | The same map's current surface table at line 188 still says durable receipt/Event Log attribution, requester-loss recovery, consequence disclosure, and the bounded cutoff are open. The accepted crisis additions in specification Parts 2 and 3 also remain uncommitted in the working tree, so current HEAD does not yet contain their source-of-truth promotion. |
+
+### Accepted-plan disposition after the five commits
+
+| Accepted item | Disposition |
+| --- | --- |
+| Requester-loss actor/title repair | **Implemented and statically verified.** |
+| Cancellation preserves initiating host/cause history | **Implemented and statically verified.** |
+| Event Details consequence wording mirrored through workbook and export | **Implemented and exactly verified for Event 006.** |
+| Correct former-host-before-Compact project order | **Documented and statically reachable.** |
+| Network Standing prerequisite named through the imported `join_network` focus | **Implemented and statically reachable; live focus proof remains open.** |
+| Doubled 6/8/10/14/20 validator | **Committed and passing.** |
+| Crisis design promotion into accepted specification | **Present only as uncommitted working-tree additions; not accepted into current HEAD.** |
+| Whole-event runtime, capacity, package, focus, scenario, formable, asset, super-event, achievement, AI, and balance closure | **Not implemented or not evidenced to the completion standard; remains HOLD / PARTIAL.** |
+
+### Meaningful validation repeated at current HEAD
+
+- Ran `python -B .tools/audit_event6_allocator.py`; it passes with 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, eleven attestations across ten compatible reservation groups, the RHI/AJX capacity-two exception, 6/8/10/14/20 with World Collapse 20, anchor-before-territory order, and Event 005-before-Event 006 joint reservation order.
+- Traced requester-loss actor scope, payload dispatch, title selection, cancellation recording order, and transient cleanup directly through the current source.
+- Compared the resolved static Event Details text against workbook `Events!C7` and the Event 006 Events CSV field in read-only mode; all three are exactly equal at 1,190 characters.
+- Recalculated all five IW-012 ledgers through the corrected six-project order and checked the Compact Support, observed Network Standing, Armed Neutrality, and harbour-stability thresholds.
+- Traced the ICE carrier's imported focus prerequisites and reward path; the overlay root plus two branch prerequisites and `join_network` require 182 focus-days and raise Network Standing from 10 to 20.
+
+### Remaining whole-event blockers
+
+- No live six-, eight-, or ten-country ordinary wave proves exact selection, both RHI/AJX orderings, same-host protection, synchronized commit, rollback, or save/load.
+- Fourteen- and twenty-country automatic bands have no admitted-capacity route and remain intentionally fail-closed; the twenty-country `6002` predicate therefore lacks a reachable capacity path.
+- No Event 005-first and Event 006-first joint runtime matrix proves shared-host collisions, busy presentation, rollback, delivery, or persistence.
+- Crisis category visibility, exact affordability boundary, AI selection, 120-day timing, cancellation, retry exhaustion, requester annexation, non-annex removal, Event Log rendering, and save/load remain live-evidence gaps.
+- IW-012 still lacks live focus visibility, project/focus AI timing, material payment, harbour resolution, host variation, force materialization, FORM-02, cleanup, treaty-backed standing 60, rollback, and save/load evidence.
+- The shared Event 006 focus framework still carries fourteen blocking geometry diagnostics, while generic meaningful-tree insertion remains fail-closed outside reviewed carriers.
+- The 32 SCN-008 mode/intensity cells, whole-event AI and balance horizons, achievement persistence, package admissions, formable families, and country-package runtime matrices remain open.
+- FORM-48 remains unreachable through a compliant HBX/HAW/FSM admission set, FORM-06 through FORM-47 remain fail-closed where their adapters are incomplete, and `6001` audio remains rights-blocked without an approved fallback.
+- The source-of-truth map retains one stale current-table row, and the accepted crisis specification additions remain outside current HEAD.
+
+No gameplay, localisation, workbook, CSV, focus, decision, event, Soviet Collapse, asset, or shared release source was edited by this follow-up audit.
+
 ## Overall disposition
 
 **HOLD / PARTIAL remains the correct whole-event disposition.**
