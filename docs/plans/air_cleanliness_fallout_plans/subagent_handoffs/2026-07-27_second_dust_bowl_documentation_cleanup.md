@@ -65,7 +65,7 @@ No document was deleted.
 
 1. The localisation audit handoff recorded cancellation as unwired before parent gameplay wiring. Current effects and scripted localisation now record and select the authenticated cancellation payload. The handoff is marked historical and its remaining-risk text is current.
 
-2. The accepted spec requires stale receipts to cancel, refund uncommitted costs, release the exact reservation, and preserve newer transactions. The committed-row cleanup gate now uses the generic country registry so same-generation ownership, control, category, or terrain drift can release an already-scheduled cleanup row. Pre-result stale cancellation and generation drift still require a separate shared-dispatcher repair. This is an intentional design versus implementation boundary and is not resolved by documentation.
+2. The accepted spec requires stale receipts to cancel, refund uncommitted costs, release the exact reservation, and preserve newer transactions. The committed-row cleanup gate now uses the generic country registry so same-generation ownership, control, category, or terrain drift can release an already-scheduled cleanup row. The parent implementation has since added a dedicated generation-reset abort route for Second Dust Bowl openings and delayed rows, wired before country runtime arrays are rebuilt. Runtime execution and wider shared-dispatcher coverage remain open.
 
 3. The asset handoff and README previously described sprite registration as proposed or parent-owned. They now state that static registration and event consumption are present. Live presentation remains unverified, so no runtime contradiction is claimed.
 
@@ -73,7 +73,7 @@ No document was deleted.
 
 5. Older Fallout count paragraphs remain in historical proof sections. The current lead paragraphs and Second Dust Bowl sections label the live snapshot as `65` rows and `537` blocks, so those retained snapshots are not current status claims.
 
-6. The parent repair pass resolved candidate admission, result scope access, callback ledger coverage, AI state scope, branch-preparation scoring, and modifier localisation. Remaining source-level blockers are stale cleanup and actual option-competition priority wiring. These findings supersede any generic static-wiring language that could be read as completion evidence.
+6. The parent repair pass resolved candidate admission, result scope access, callback ledger coverage, AI state scope, branch-preparation scoring, modifier localisation, and the Second Dust Bowl generation-reset stale path. Remaining source-level blockers are actual option-competition priority wiring in the wider pilot, runtime dispatch, and save recovery. These findings supersede any generic static-wiring language that could be read as completion evidence.
 
 7. The exact engine-native all-valid-province thermonuclear sweep and the manual `90` to `95` percent survival contract remain separate evidence boundaries. They must not be folded into the dormant chain proof.
 
@@ -88,7 +88,7 @@ The 2026-07-27 Second Dust Bowl completion audit found the following implementat
 - High Exposure or Disease AI preference now enters the issued target state scope before reading pressure. The invalid-option `-1000` priority remains a policy constant rather than a separately rendered option-competition sweep.
 - Eighteen dedicated dynamic modifiers now have localisation keys, and opening tooltips name the issued target state and result timing.
 - The visible budget is now recorded as `3` in the source constant, accepted spec, workbook, and export. A focused search found no stale visible-budget value of `2` in the Second Dust Bowl source surfaces.
-- The proof and older handoffs contained overstatements about target reauthentication, payment and ticket authentication, branch-ledger grading, state effects, and fixed cleanup. Target reauthentication, exact payment, branch-preparation grading, scoped state effects, and modifier localisation now have static evidence. Runtime delivery, stale cleanup, and live option-competition priority remain blocked.
+- The proof and older handoffs contained overstatements about target reauthentication, payment and ticket authentication, branch-ledger grading, state effects, and fixed cleanup. Target reauthentication, exact payment, branch-preparation grading, scoped state effects, modifier localisation, and the generation-reset stale route now have static evidence. Runtime delivery, stale cleanup execution, save recovery, and live option-competition priority remain blocked.
 
 ## Duplicate and superseded documents
 
@@ -122,7 +122,7 @@ Skipped validation: no runtime event delivery, save recovery, multiplayer, host 
 
 ## Parent decisions and next actions
 
-1. Repair and review the shared current-generation stale cleanup path before any scheduler activation decision.
+1. Review the generation-reset stale cleanup route against the shared current-generation dispatcher before any scheduler activation decision.
 
 2. The spreadsheet worker completed the catalog wording pass and reran the exporter. Keep the row at `Needs Testing` until runtime presentation is reviewed.
 
