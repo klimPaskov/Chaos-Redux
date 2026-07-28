@@ -26,7 +26,7 @@ advisor icon, small portrait, or generated replacement was wired.
 - Exact crop: `crops/ARX/Pietro_Pinna_Parpaglia_archival_crop_final.png`,
   coordinates `(600,900,1450,2050)`, with equality JSON in `metadata/ARX/`.
 - ImageGen repaint: `repaints/ARX/Pietro_Pinna_Parpaglia_identity_preserve_imagegen.png`,
-  SHA-256 `194c2938f5f2772954347a8dd26f5962eb4bcdfe8f5f2dfdd70e11f20cfaec50`.
+  SHA-256 `194c2938f5d2772954347a8dd26f5962eb4bcdfe8f5f2dfdd70e11f20cfaec50`.
 - Deterministic candidate: `processed/ARX/Pietro_Pinna_Parpaglia_156x210.png`,
   SHA-256 `a0429c75ebf0b575668dbcdfb7aa45a2576b85e6aa4f6fb80e6c04ca11343b2f`,
   role family `leader`, processor status `candidate_requires_visual_approval`.

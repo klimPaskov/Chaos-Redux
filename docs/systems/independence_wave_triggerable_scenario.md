@@ -6,8 +6,8 @@
 
 Every intensity rebuilds and attempts the same installed-map registry:
 
-- 149 packages have an exact current-map anchor binding and enter the ranked attempt pass;
-- 57 packages have no unique accepted current-map binding and remain disabled;
+- 149 registry publishers are visible to the source-level allocator audit; 138 current-map-bound country packages enter the ranked attempt pass, while 13 vanilla route overlays remain non-selectable;
+- 55 selectable packages have no unique accepted current-map binding and remain disabled;
 - every rejection is frozen with its package ID, assigned tag, and transaction reason;
 - a scenario with no safe, content-ready release fails closed without changing ownership.
 
@@ -18,7 +18,7 @@ The scenario does not bypass living-tag protection, Event 005 origin ownership, 
 1. The generic scenario confirmation window freezes scenario ID, type, belligerence rule, and intensity.
 2. The delayed SCN-008 entry event revalidates terminal-state, presentation, and Liberation transaction barriers.
 3. Event 006 begins one `triggerable_scenario` Liberation plan.
-4. The scenario ranks all 149 bound registry rows and attempts every row in that order.
+4. The scenario ranks all 138 selectable bound registry rows and attempts every row in that order; the 13 vanilla route overlays are excluded from release selection and remain route-only.
 5. Unready packages are recorded as `package_unready`; all other failures use the shared allocator's exact reason.
 6. The allocator changes its expected release count to the number that actually passed every reservation proof.
 7. The ordinary Event 006 lock, host-capital preparation, country creation, state transfer, package initialization, history commit, and Liberation commit execute once.
@@ -29,7 +29,7 @@ The global plan arrays remain authoritative until the summary is frozen. Type-sp
 
 ## Intensity Contract
 
-Every intensity attempts all 149 bound packages. Intensity never changes candidate count.
+Every intensity attempts all 138 selectable bound packages. Intensity never changes candidate count.
 
 | Intensity | Territory | Force | Institutional pressure |
 |---|---|---|---|
@@ -57,7 +57,7 @@ The scenario writes an AI seed to every released country. Package and route AI s
 
 `chaosx.triggerable_scenarios.80` reports the frozen result. When allocation produced rejection rows, the launching player can open `independence_wave_scenario_ledger_category` and inspect every blocked registry row with zero-reward Previous, Next, and Close controls. A pre-allocation barrier failure exposes its transaction proof but does not invent candidate rows.
 
-The 57 disabled rows are appended after bound-package failures with reason `unbound_current_map`. Their registry tags and IDs remain visible even when the country has no runtime localisation because disabled identities are not silently replaced by nearby states.
+The 55 disabled selectable rows are appended after bound-package failures with reason `unbound_current_map`. The 13 non-selectable vanilla route overlays remain visible through their exact carrier routes, not as release candidates. Their registry tags and IDs remain visible even when the country has no runtime localisation because disabled identities are not silently replaced by nearby states.
 
 ## Files
 
@@ -79,7 +79,7 @@ The ledger uses the final Event 006 border-arbitration decision icon, `GFX_decis
 
 ## Validation Targets
 
-Completion testing must cover all 32 selectable type/rule and intensity combinations, all 149 bound attempts, all 57 disabled rows, zero-ready failure, mixed living/unready/anchor-collision failures, host-capital survival, Event 005 reserved-tag/state collisions, bounded-war uniqueness, patron reach, league counts, summary array alignment, and repeated launches after the transaction barrier resets.
+Completion testing must cover all 32 selectable type/rule and intensity combinations, all 138 bound attempts, all 55 disabled rows, the 13 route-only overlays, zero-ready failure, mixed living/unready/anchor-collision failures, host-capital survival, Event 005 reserved-tag/state collisions, bounded-war uniqueness, patron reach, league counts, summary array alignment, and repeated launches after the transaction barrier resets.
 
 ## Further Work
 
