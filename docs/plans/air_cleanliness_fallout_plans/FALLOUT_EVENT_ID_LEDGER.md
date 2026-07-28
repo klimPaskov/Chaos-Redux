@@ -781,7 +781,7 @@ Great Lakes Lock Winter adds dormant suffixes `663` through `669` with candidate
 
 The human opening is `663`, the hidden-AI opening is `664`, the human and hidden-AI delayed results are `665` and `666`, the human and hidden-AI callbacks are `667` and `668`, and cleanup is `669`.
 
-The row requires a current-generation owner-controlled Great Lakes state with a produced Air Winter snapshot, surviving population, native lock, port or inland-waterway access, Supply Access, Food, Shelter Capacity, Adaptation, Reclamation, bounded Exposure, and bounded Disease Pressure. It chooses the lowest eligible native state id and retains the lock and waterway evidence for result grading.
+The row requires a current-generation owner-controlled coastal Great Lakes state with a produced Air Winter snapshot, surviving population, native naval base, infrastructure, Supply Access, Food, Shelter Capacity, Adaptation, Reclamation, bounded Exposure, and bounded Disease Pressure. It chooses the lowest eligible native state id and retains the naval-base and lock evidence for result grading.
 
 The chain carries Joint Ice Authority, Unilateral Opening, Seasonal Closure, and Rival Lock Sabotage branches with exact costs, deterministic result and callback grading, a 35-day result, a 270-day thaw callback, bounded Deaths effects, durable water and shelter ledgers, Event Log history `9172`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not create a new state, transfer population between states, add a recurring scheduler, or register the Fallout consequence as an ordinary event.
 

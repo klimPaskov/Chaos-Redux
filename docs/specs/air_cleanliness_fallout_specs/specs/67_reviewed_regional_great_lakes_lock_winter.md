@@ -24,7 +24,7 @@ The chain is Fallout-owned under `add_namespace = chaosx.fallout`. It uses ordin
 | Catalogue identity | `FALLOUT-663` |
 | Report asset identity | `fallout_great_lakes_lock_winter` |
 
-These values are reserved as one ownership set. They must be rescanned against the shared worktree before implementation. The row remains dormant while the Fallout scheduler activation flags remain unset.
+These values are one ownership set. Static implementation recheck is recorded in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`. The row remains dormant while the Fallout scheduler activation flags remain unset.
 
 ## Scheduling identity
 
