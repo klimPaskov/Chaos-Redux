@@ -56,6 +56,8 @@ The other registry rows in the Volga/Urals/Siberia/Far East band (`IW-033`, `IW-
 
 The audit ran `git rev-parse --short HEAD` and received `81a3acb99`, read the current adapter and attestation blocks in `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`, searched the candidate registry for every ranked and Soviet-band row, and cross-checked the accepted resume/source-of-truth packets, package handoffs, and portrait manifest listed above.
 
+An additional exact-surface scan covered the 102 Event 006 tags plus 34 Soviet carriers across vanilla, 122 installed Workshop roots, and sibling local mods, with the Random Events root excluded. It found zero hits in external country definitions, alias or cosmetic blocks, English country-localisation keys, country-history filenames, or flag filenames. The scan was read-only and did not treat incidental prose or unit names as tag definitions.
+
 This audit changed no gameplay file, registry row, readiness flag, adapter, or `content_attestation` set. The parent commit records this handoff together with the narrow Africa API documentation comment; unrelated parent and user changes remain outside that commit.
 
 Live allocator/reservation behavior, event dispatch, save/load, focus visibility, force receipts, AI behavior, formable transactions, release/annexation cleanup, and post-settlement map safety remain parent-owned runtime validation. The installed HOI4 MCP has no Technology Tree Viewer, so technology-tree runtime evidence remains unresolved.
