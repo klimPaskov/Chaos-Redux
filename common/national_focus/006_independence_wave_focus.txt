@@ -3299,7 +3299,21 @@ shared_focus = {
 	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
 	available = { can_lock_independence_wave_ice_constitutional_route = yes }
 	completion_reward = { custom_effect_tooltip = independence_wave_ice_choose_constitutional_route_tt hidden_effect = { independence_wave_ice_focus_lock_constitutional_route = yes } }
-	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	ai_will_do = {
+		base = constant:independence_wave_focus_ai.standard
+		modifier = {
+			factor = constant:independence_wave_focus_ai.strong_preference_factor
+			check_variable = { var = independence_wave_ice_civic_cohesion value = constant:independence_wave_ice_value.stable_threshold compare = greater_than_or_equals }
+			NOT = { has_independence_wave_severe_host_threat = yes }
+			NOT = { has_war = yes }
+		}
+		modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_ice_former_host_charter_settled }
+		modifier = {
+			factor = constant:independence_wave_focus_ai.war_avoid_factor
+			OR = { has_war = yes has_independence_wave_severe_host_threat = yes }
+		}
+		modifier = { factor = constant:independence_wave_focus_ai.avoid_factor has_independence_wave_severe_instability = yes }
+	}
 }
 
 shared_focus = {
@@ -3319,7 +3333,24 @@ shared_focus = {
 	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
 	available = { can_lock_independence_wave_ice_traditional_route = yes }
 	completion_reward = { custom_effect_tooltip = independence_wave_ice_restore_traditional_authority_tt hidden_effect = { independence_wave_ice_focus_lock_traditional_route = yes } }
-	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	ai_will_do = {
+		base = constant:independence_wave_focus_ai.standard
+		modifier = {
+			factor = constant:independence_wave_focus_ai.strong_preference_factor
+			check_variable = { var = independence_wave_ice_port_authority value = constant:independence_wave_ice_value.stable_threshold compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_ice_shipping_security value = constant:independence_wave_ice_value.secure_threshold compare = greater_than_or_equals }
+			has_country_flag = independence_wave_ice_shipping_registers_reconciled
+		}
+		modifier = {
+			factor = constant:independence_wave_focus_ai.preferred_factor
+			has_country_flag = independence_wave_ice_former_host_charter_settled
+			has_independence_wave_living_former_host = yes
+		}
+		modifier = {
+			factor = constant:independence_wave_focus_ai.war_avoid_factor
+			OR = { has_war = yes has_independence_wave_severe_host_threat = yes }
+		}
+	}
 }
 
 shared_focus = {
@@ -3339,7 +3370,24 @@ shared_focus = {
 	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
 	available = { can_lock_independence_wave_ice_emergency_military_route = yes }
 	completion_reward = { custom_effect_tooltip = independence_wave_ice_establish_emergency_command_tt hidden_effect = { independence_wave_ice_focus_lock_emergency_military_route = yes } }
-	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	ai_will_do = {
+		base = constant:independence_wave_focus_ai.standard
+		modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_independence_wave_severe_host_threat = yes }
+		modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_war = yes }
+		modifier = {
+			factor = constant:independence_wave_focus_ai.preferred_factor
+			OR = {
+				has_country_flag = independence_wave_ice_armed_neutrality_declared
+				check_variable = { var = independence_wave_ice_coastwatch_readiness value = constant:independence_wave_ice_value.secure_threshold compare = greater_than_or_equals }
+			}
+		}
+		modifier = {
+			factor = constant:independence_wave_focus_ai.avoid_factor
+			has_stable_independence_wave_ice_state = yes
+			NOT = { has_war = yes }
+			NOT = { has_independence_wave_severe_host_threat = yes }
+		}
+	}
 }
 
 shared_focus = {
@@ -3359,7 +3407,20 @@ shared_focus = {
 	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
 	available = { can_lock_independence_wave_ice_patron_client_route = yes }
 	completion_reward = { custom_effect_tooltip = independence_wave_ice_accept_patron_mandate_tt hidden_effect = { independence_wave_ice_focus_lock_patron_client_route = yes } }
-	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+	ai_will_do = {
+		base = constant:independence_wave_focus_ai.standard
+		modifier = {
+			factor = constant:independence_wave_focus_ai.strong_preference_factor
+			has_independence_wave_ice_compact_ready = yes
+		}
+		modifier = {
+			factor = constant:independence_wave_focus_ai.preferred_factor
+			has_independence_wave_severe_host_threat = yes
+			NOT = { has_war = yes }
+		}
+		modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_league_member }
+		modifier = { factor = constant:independence_wave_focus_ai.war_avoid_factor has_war = yes }
+	}
 }
 
 # ---------------------------------------------------------------------------

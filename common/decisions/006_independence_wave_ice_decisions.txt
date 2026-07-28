@@ -78,7 +78,18 @@ independence_wave_ice_north_atlantic_category = {
 		}
 		cancel_trigger = { OR = { NOT = { is_independence_wave_ice_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				check_variable = { var = independence_wave_ice_shipping_security value = constant:independence_wave_ice_value.secure_threshold compare = less_than }
+			}
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				check_variable = { var = independence_wave_ice_port_authority value = constant:independence_wave_ice_value.traditional_route_threshold compare = less_than }
+			}
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
 	}
 
 	independence_wave_ice_charter_municipal_council = {
@@ -109,7 +120,15 @@ independence_wave_ice_north_atlantic_category = {
 		}
 		cancel_trigger = { OR = { NOT = { is_independence_wave_ice_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = constant:independence_wave_decision_ai.modifier_double
+				check_variable = { var = independence_wave_ice_civic_cohesion value = constant:independence_wave_ice_value.constitutional_route_threshold compare = less_than }
+			}
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_instability = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
 	}
 
 	independence_wave_ice_expand_coastwatch = {
@@ -140,7 +159,11 @@ independence_wave_ice_north_atlantic_category = {
 		}
 		cancel_trigger = { OR = { NOT = { is_independence_wave_ice_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
-		ai_will_do = { base = constant:independence_wave_decision_ai.urgent }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_severe_host_threat = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+		}
 	}
 
 	independence_wave_ice_negotiate_north_atlantic_compact = {
@@ -172,7 +195,11 @@ independence_wave_ice_north_atlantic_category = {
 		}
 		cancel_trigger = { OR = { NOT = { is_independence_wave_ice_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } } }
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_ice_compact_ai_posture = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_country_flag = independence_wave_league_member }
+		}
 	}
 
 	independence_wave_ice_settle_former_host_charter = {
@@ -211,7 +238,12 @@ independence_wave_ice_north_atlantic_category = {
 			}
 		}
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
-		ai_will_do = { base = constant:independence_wave_decision_ai.high modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_ice_former_host_charter_pressure = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double NOT = { has_independence_wave_severe_host_threat = yes } }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_war = yes }
+		}
 	}
 
 	independence_wave_ice_declare_armed_neutrality = {
@@ -232,8 +264,6 @@ independence_wave_ice_north_atlantic_category = {
 		complete_effect = { independence_wave_decision_pay_security_major = yes }
 		remove_effect = {
 			custom_effect_tooltip = independence_wave_ice_armed_neutrality_effect_tt
-			set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
-			independence_wave_select_government_route = yes
 			set_country_flag = independence_wave_ice_armed_neutrality_declared
 			set_temp_variable = { independence_wave_ice_port_authority_delta = constant:independence_wave_ice_value.standard_gain }
 			set_temp_variable = { independence_wave_ice_civic_cohesion_delta = constant:independence_wave_ice_value.minor_loss }
@@ -247,6 +277,15 @@ independence_wave_ice_north_atlantic_category = {
 		cancel_trigger = { OR = { NOT = { is_independence_wave_ice_package = yes } capital_scope = { NOT = { is_controlled_by = ROOT } } has_country_flag = independence_wave_government_route_locked } }
 		cancel_effect = { if = { limit = { is_independence_wave_ice_package = yes } independence_wave_ice_apply_project_failure = yes } }
 		fire_only_once = yes
-		ai_will_do = { base = constant:independence_wave_decision_ai.urgent modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.very_low
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_severe_host_threat = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_war = yes }
+			modifier = {
+				factor = constant:independence_wave_decision_ai.blocked
+				NOT = { has_independence_wave_severe_host_threat = yes }
+				NOT = { has_war = yes }
+			}
+		}
 	}
 }

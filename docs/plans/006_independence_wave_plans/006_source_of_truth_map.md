@@ -10,6 +10,8 @@ Completion state: **incomplete and active; v31 records the flat 54-master portra
 
 IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the complete Event 006 additive overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The current compile-time attestation set is eleven packages: IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, and IW-184. Live allocator, save/load, host-survival, force-materialization, and scenario transaction evidence remain open, so whole-event completion remains HOLD / PARTIAL.
 
+The subsequent IW-012 route-arbitration closure keeps Armed Neutrality as a paid security commitment and makes the four formal route focuses the sole government-route writers. The six project AI blocks and four route-focus AI blocks now read the current ICE ledgers, host threat, war, Compact standing, former-host charter, and League state. This is statically wired and documented; probability inspection and live focus visibility remain open.
+
 This is a documentation reconciliation snapshot. It does not change the
 accepted Event 006 design. The current portrait authority is the sourced-only
 gate in the accepted specification and the reusable event-asset skill. Earlier

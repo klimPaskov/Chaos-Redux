@@ -2,7 +2,9 @@
 
 Date: 2026-07-28
 
-Status: **BOUNDED SOURCE-DESIGN GAP CONFIRMED / QUEUED FOR PARENT IMPLEMENTATION**
+Status: **IMPLEMENTED / STATIC REVIEW PENDING**
+
+The plan-only design below remains the rationale and acceptance matrix. Gameplay is now wired in the two ICE decision/focus surfaces and the ICE-local trigger file; runtime probability, shared-focus visibility, and whole-event completion remain open.
 
 Event: `006`, Independence Wave
 

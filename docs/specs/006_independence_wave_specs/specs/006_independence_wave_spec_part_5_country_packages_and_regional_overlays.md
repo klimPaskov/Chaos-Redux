@@ -1029,6 +1029,18 @@ A package marked `specific_community_variant_only`, `formable_or_route_only`, or
 
 The current architecture records 9 automatic, 44 automatic if not living, 73 automatic if unique, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 vanilla-route-overlay-only packages. The dated 2026-07-14 all-row map audit under `../../../plans/006_independence_wave_plans/package_bindings/` recorded 149 bound and 57 unbound rows before overlay classification. Eleven overlays were bound and two were unbound in that ledger. The selectable country pool is therefore 138 bound and 55 unbound packages. An unbound row is unavailable, not permission to use nearby broad geography. An overlay row is also unavailable to the release selector because it activates only through its exact vanilla carrier or route.
 
+## IW-012 registered Iceland adapter route contract
+
+IW-012 reuses the dormant vanilla `ICE` tag and preserves its history, flag, character roster, and meaningful `iceland_tree`. Its Event 006 overlay owns five visible ledgers: Port Authority, Civic Cohesion, Coastwatch Readiness, Shipping Security, and Compact Support.
+
+The six costed founding projects are state-aware AI actions: Reconcile the Shipping Registers, Charter the Municipal Council, Expand the Coastwatch, Negotiate the North Atlantic Compact, Settle the Former Host Charter, and Declare Armed Neutrality. They use the existing administrative, security, and diplomatic costs and durations. Armed Neutrality is a security signal, not a second government-route writer.
+
+The four mutually exclusive route focuses are the only formal government selectors. Constitutional Republic weighs stable civic peace and a settled former-host charter; Traditional Authority weighs mature port and shipping administration plus a living settled host charter; Emergency Military weighs war, severe host threat, Coastwatch readiness, and the armed-neutrality commitment; Patron-Client weighs a ready North Atlantic Compact, treaty-backed standing, League membership, and peaceful severe host pressure. War, severe host threat, and severe instability suppress incompatible civilian routes through multiplicative AI factors, while route validity remains controlled by the existing package gates.
+
+No route arbitration branch may add a country, leader, advisor icon, portrait, flag, history file, focus, decision, formable family, or free reward. The vanilla carrier remains authoritative, and the Event 006 overlay must keep the route lock as a paid, visible, one-time focus completion.
+
+The IW-012 route contract is a bounded adapter obligation, not a generic permission to admit other registered vanilla tags. Each additional registered-tag adapter still needs its own research row, preservation proof, package attestation, and runtime evidence.
+
 ## Candidate selection equity
 
 The global candidate registry should not become Europe-heavy merely because European tags are easier to implement.
