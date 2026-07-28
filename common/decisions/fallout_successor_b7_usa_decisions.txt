@@ -1,0 +1,203 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT USA CONTINUITY PROJECTS
+# ============================================================================
+# These projects are visible only after the B7 USA continuity receipt is
+# current. They change the frozen federal capital, strategic stocks, or memory
+# ledger and therefore remain separate from the Fallout consequence itself.
+#
+
+fallout_usa_continuity_projects_category = {
+	visible = {
+		fallout_successor_b7_usa_package_receipts_are_current = yes
+	}
+	icon = GFX_decision_category_fallout_usa_continuity_projects
+	priority = 96
+
+	fallout_usa_repair_inland_depot = {
+		name = fallout_usa_repair_inland_depot
+		desc = fallout_usa_repair_inland_depot_desc
+		icon = GFX_decision_fallout_usa_depot_belt_repair
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_supply_corridors_complete
+			NOT = { has_country_flag = fallout_usa_depot_belt_repair_complete }
+		}
+		available = { fallout_successor_b7_usa_depot_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_depot_project_is_available = yes }
+		custom_cost_text = fallout_usa_repair_inland_depot_cost
+		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.depot_civilian_factories }
+		days_remove = constant:fallout_successor_b7_project.depot_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.depot_infantry_spend }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.depot_train_spend }
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_repair_inland_depot_effect_tt
+			fallout_successor_b7_usa_complete_depot_belt_repair = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.depot
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_muster_guard_compacts = {
+		name = fallout_usa_muster_guard_compacts
+		desc = fallout_usa_muster_guard_compacts_desc
+		icon = GFX_decision_fallout_usa_guard_muster
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_guard_compacts_complete
+			NOT = { has_country_flag = fallout_usa_guard_muster_complete }
+		}
+		available = { fallout_successor_b7_usa_guard_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_guard_project_is_available = yes }
+		custom_cost_text = fallout_usa_muster_guard_compacts_cost
+		days_remove = constant:fallout_successor_b7_project.guard_duration
+		complete_effect = {
+			add_manpower = constant:fallout_successor_b7_project.guard_manpower_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.guard_infantry_spend }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.guard_support_spend }
+			add_command_power = constant:fallout_successor_b7_project.guard_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_muster_guard_compacts_effect_tt
+			fallout_successor_b7_usa_complete_guard_muster = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.guard
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_ratify_lakes_charter = {
+		name = fallout_usa_ratify_lakes_charter
+		desc = fallout_usa_ratify_lakes_charter_desc
+		icon = GFX_decision_fallout_usa_lakes_charter
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_bilateral_reconstruction_open
+			NOT = { has_country_flag = fallout_usa_lakes_charter_complete }
+		}
+		available = { fallout_successor_b7_usa_charter_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_charter_project_is_available = yes }
+		custom_cost_text = fallout_usa_ratify_lakes_charter_cost
+		days_remove = constant:fallout_successor_b7_project.charter_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = convoy amount = constant:fallout_successor_b7_project.charter_convoy_spend }
+			add_command_power = constant:fallout_successor_b7_project.charter_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_ratify_lakes_charter_effect_tt
+			fallout_successor_b7_usa_complete_lakes_charter = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.charter
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_sweep_radio_dead_zones = {
+		name = fallout_usa_sweep_radio_dead_zones
+		desc = fallout_usa_sweep_radio_dead_zones_desc
+		icon = GFX_decision_fallout_usa_radio_sweep
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_continental_radio_net_complete
+			NOT = { has_country_flag = fallout_usa_radio_sweep_complete }
+		}
+		available = { fallout_successor_b7_usa_radio_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_radio_project_is_available = yes }
+		custom_cost_text = fallout_usa_sweep_radio_dead_zones_cost
+		days_remove = constant:fallout_successor_b7_project.radio_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.radio_support_spend }
+			add_command_power = constant:fallout_successor_b7_project.radio_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_sweep_radio_dead_zones_effect_tt
+			fallout_successor_b7_usa_complete_radio_sweep = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.radio
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_launch_federal_reconstruction_drive = {
+		name = fallout_usa_launch_federal_reconstruction_drive
+		desc = fallout_usa_launch_federal_reconstruction_drive_desc
+		icon = GFX_decision_fallout_usa_reconstruction_drive
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_federal_reconstruction_complete
+			NOT = { has_country_flag = fallout_usa_reconstruction_drive_complete }
+		}
+		available = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
+		custom_cost_text = fallout_usa_launch_federal_reconstruction_drive_cost
+		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.reconstruction_civilian_factories }
+		days_remove = constant:fallout_successor_b7_project.reconstruction_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.reconstruction_train_spend }
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_launch_federal_reconstruction_drive_effect_tt
+			fallout_successor_b7_usa_complete_reconstruction_drive = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.reconstruction
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+}

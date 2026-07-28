@@ -27,6 +27,21 @@ Canonical references inspected before generation: `.agents/skills/chaos-redux-ev
 | `GFX_idea_fallout_usa_guard_compact` | `source_png/idea_guard_compact_source.png` | `processed_png/idea_guard_compact.png` | `gfx/interface/ideas/fallout_successor_b7_usa/guard_compact.dds` | 60x68 RGBA/BGRA | candidate |
 | `GFX_idea_fallout_usa_federal_reconstruction` | `source_png/idea_federal_reconstruction_source.png` | `processed_png/idea_federal_reconstruction.png` | `gfx/interface/ideas/fallout_successor_b7_usa/federal_reconstruction.dds` | 60x68 RGBA/BGRA | candidate |
 
+## Continuity project decision sprites
+
+The decision layer uses aliases registered by the parent implementation. Each
+alias points to a dedicated USA continuity icon already listed above, so no
+Zombie Apocalypse sprite, file, or path enters the Fallout package.
+
+| Runtime sprite | Backing DDS | Decision surface | Status |
+| --- | --- | --- | --- |
+| `GFX_decision_category_fallout_usa_continuity_projects` | `gfx/interface/goals/fallout_successor_b7_usa/federal_continuity_ledger.dds` | Category | candidate |
+| `GFX_decision_fallout_usa_depot_belt_repair` | `gfx/interface/goals/fallout_successor_b7_usa/supply_corridors.dds` | Inland depot repair | candidate |
+| `GFX_decision_fallout_usa_guard_muster` | `gfx/interface/goals/fallout_successor_b7_usa/guard_compacts.dds` | Guard muster | candidate |
+| `GFX_decision_fallout_usa_lakes_charter` | `gfx/interface/goals/fallout_successor_b7_usa/bilateral_reconstruction.dds` | Great Lakes charter | candidate |
+| `GFX_decision_fallout_usa_radio_sweep` | `gfx/interface/goals/fallout_successor_b7_usa/continental_radio_net.dds` | Radio sweep | candidate |
+| `GFX_decision_fallout_usa_reconstruction_drive` | `gfx/interface/goals/fallout_successor_b7_usa/federal_reconstruction.dds` | Federal reconstruction | candidate |
+
 ## Processing and validation
 
 - All source masters are RGB PNGs with chroma-key backgrounds. All processed previews are RGBA with transparent corners and alpha range 0 through 255.
