@@ -35,6 +35,8 @@ The approved loss ladder is `90`, `91`, `92`, `93`, `94`, and `95` in `fallout_p
 
 `fallout_reconcile_population_loss_receipt` calculates the observed live loss after the state mutation. It calls `chaos_meter_register_deaths` with `chaos_deaths_reason = fallout_aftermath`, civilian mode enabled, state population application disabled, and the original-owner target. The generation-bound state receipt is the idempotency guard. This proves state deletion and Deaths registration are two parts of one transaction.
 
+The shared `air_contamination_update_threshold_flags` effect now refuses to rebuild Air Cleanliness threshold flags or fire ordinary contamination news while `fallout_air_cleanliness_disabled` is set. This closes the stale GUI, terminal-caller, and save-recovery paths after Fallout request intake. Fallout keeps its own blackout presentation and does not reopen the Air Cleanliness threshold surface.
+
 ## Manual state loss proof
 
 `fallout_manual_capture_population_baselines` records the pre-strike population for every state before native strike callbacks. `fallout_manual_apply_state_aggregate_consequence` clamps the aggregate direct loss between `fallout_manual_aggregate.death_percent_base = 0.900` and `fallout_manual_aggregate.death_percent_max = 0.950`. It computes the exact requested loss against the captured baseline and supplies the exact state population contract to `apply_exact_state_civilian_population_loss`.

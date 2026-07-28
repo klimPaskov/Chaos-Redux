@@ -42,6 +42,8 @@ The accepted state loss ladder is defined in `common/script_constants/fallout_wo
 
 `fallout_apply_transition_phase_population_loss` scans every valid state in the frozen world snapshot. `fallout_apply_state_population_loss` computes the grade-specific target from the captured pre-transition population. `fallout_reconcile_population_loss_receipt` records the live delta and calls `chaos_meter_register_deaths` with `chaos_deaths_reason = fallout_aftermath` after the state population mutation. The receipt is generation-bound and idempotent. The standard path therefore deletes 90 to 95 percent from each state and feeds the same loss into the Deaths ledger rather than applying a variable-only shortcut.
 
+The shared `air_contamination_update_threshold_flags` effect is also gated by `fallout_air_cleanliness_disabled`. A stale GUI, legacy terminal caller, or save-recovery pass cannot rebuild Air Cleanliness threshold flags or fire ordinary contamination news after Fallout request intake.
+
 ## Manual sweep population loss
 
 The manual scenario captures every state's pre-strike population before native strike callbacks. Each struck state is then processed by `fallout_manual_apply_state_aggregate_consequence`. The aggregate death percentage is clamped between `fallout_manual_aggregate.death_percent_base` and `fallout_manual_aggregate.death_percent_max`, which are the approved 90 and 95 percent endpoints.
