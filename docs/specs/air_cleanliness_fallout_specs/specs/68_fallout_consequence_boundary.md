@@ -6,7 +6,7 @@ This correction is accepted for implementation. Fallout is a world consequence t
 
 ## Public ownership
 
-`common/scripted_effects/chaosx_events_log_effects.txt` is the public Event Details registry. Its initialization intentionally omits `world_end_scenario_id.fallout`. The stable numeric id remains in `common/script_constants/world_end_scenario_registry_constants.txt` for request gates and settings ledgers. It is not a public event identity.
+`common/scripted_effects/chaosx_events_log_effects.txt` is the public Event Details registry. Fallout is absent from that registry and from `world_end_scenario_id`. Its stable settings-ledger value lives in `fallout_consequence_id` inside `common/script_constants/fallout_world_end_constants.txt`. It is not a public event identity.
 
 The public Event Details scripted localisation has no Fallout title, owner, or details branch. The Fallout-specific Event Details card preparation hook is absent. The New Zealand survivor card remains a post-consequence card and no longer embeds a world-end scenario description. The generic world-end selector returns the direct `chaos_tier_end_fallout` consequence label, while the blackout GUI and sound remain Fallout-owned.
 
