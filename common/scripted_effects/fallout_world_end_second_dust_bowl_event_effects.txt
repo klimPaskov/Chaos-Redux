@@ -625,16 +625,19 @@ fallout_event_656_choose_branch = {
 }
 
 fallout_event_656_set_ai_priority = {
-	set_variable = { fallout_event_656_ai_priority = constant:fallout_event_656_ai.invalid_option }
-	if = { limit = { check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields } fallout_event_656_shelter_affordable = yes } set_variable = { fallout_event_656_ai_priority = constant:fallout_event_656_ai.shelter_priority } }
-	else_if = { limit = { check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.seed_cold_crops } fallout_event_656_seed_affordable = yes } set_variable = { fallout_event_656_ai_priority = constant:fallout_event_656_ai.seed_priority } }
-	else_if = { limit = { check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms } fallout_event_656_move_affordable = yes } set_variable = { fallout_event_656_ai_priority = constant:fallout_event_656_ai.move_priority } }
-	else_if = { limit = { check_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.abandon_open_plains } fallout_event_656_abandon_affordable = yes } set_variable = { fallout_event_656_ai_priority = constant:fallout_event_656_ai.abandon_priority } }
+	set_variable = { fallout_event_656_ai_priority = fallout_event_656_ai_best_score }
 }
 
 fallout_event_656_choose_ai_branch_and_schedule_result = {
 	fallout_event_656_initialize_ledgers = yes
-	set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields }
+	set_temp_variable = { fallout_event_656_ai_shelter_score = constant:fallout_event_656_ai.invalid_option }
+	set_temp_variable = { fallout_event_656_ai_seed_score = constant:fallout_event_656_ai.invalid_option }
+	set_temp_variable = { fallout_event_656_ai_move_score = constant:fallout_event_656_ai.invalid_option }
+	set_temp_variable = { fallout_event_656_ai_abandon_score = constant:fallout_event_656_ai.invalid_option }
+	if = { limit = { fallout_event_656_shelter_affordable = yes } set_temp_variable = { fallout_event_656_ai_shelter_score = constant:fallout_event_656_ai.shelter_priority } }
+	if = { limit = { fallout_event_656_seed_affordable = yes } set_temp_variable = { fallout_event_656_ai_seed_score = constant:fallout_event_656_ai.seed_priority } }
+	if = { limit = { fallout_event_656_move_affordable = yes } set_temp_variable = { fallout_event_656_ai_move_score = constant:fallout_event_656_ai.move_priority } }
+	if = { limit = { fallout_event_656_abandon_affordable = yes } set_temp_variable = { fallout_event_656_ai_abandon_score = constant:fallout_event_656_ai.abandon_priority } }
 	if = {
 		limit = {
 			has_variable = fallout_government_archetype
@@ -646,9 +649,9 @@ fallout_event_656_choose_ai_branch_and_schedule_result = {
 			fallout_event_656_state_pressure_is_high = yes
 			fallout_event_656_abandon_affordable = yes
 		}
-		set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.abandon_open_plains }
+		add_to_temp_variable = { fallout_event_656_ai_abandon_score = constant:fallout_event_656_ai.high_pressure_abandon }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			OR = {
@@ -660,9 +663,9 @@ fallout_event_656_choose_ai_branch_and_schedule_result = {
 			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_656_threshold.ai_strong_food compare = greater_than_or_equals }
 			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_656_threshold.ai_strong_power compare = greater_than_or_equals }
 		}
-		set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.seed_cold_crops }
+		add_to_temp_variable = { fallout_event_656_ai_seed_score = constant:fallout_event_656_ai.food_power_seed }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			OR = {
@@ -671,12 +674,17 @@ fallout_event_656_choose_ai_branch_and_schedule_result = {
 			}
 			fallout_event_656_move_affordable = yes
 		}
-		set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms }
+		add_to_temp_variable = { fallout_event_656_ai_move_score = constant:fallout_event_656_ai.nomad_move }
 	}
-	else_if = {
+	if = {
 		limit = { has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } has_war = yes fallout_event_656_move_affordable = yes }
-		set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms }
+		add_to_temp_variable = { fallout_event_656_ai_move_score = constant:fallout_event_656_ai.warlord_move }
 	}
+	set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields }
+	set_temp_variable = { fallout_event_656_ai_best_score = fallout_event_656_ai_shelter_score }
+	if = { limit = { fallout_event_656_seed_affordable = yes check_variable = { fallout_event_656_ai_seed_score value = fallout_event_656_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_656_ai_best_score = fallout_event_656_ai_seed_score } set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.seed_cold_crops } }
+	if = { limit = { fallout_event_656_move_affordable = yes check_variable = { fallout_event_656_ai_move_score value = fallout_event_656_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_656_ai_best_score = fallout_event_656_ai_move_score } set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.move_farms } }
+	if = { limit = { fallout_event_656_abandon_affordable = yes check_variable = { fallout_event_656_ai_abandon_score value = fallout_event_656_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_656_ai_best_score = fallout_event_656_ai_abandon_score } set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.abandon_open_plains } }
 	if = {
 		limit = { NOT = { fallout_event_656_requested_branch_is_affordable = yes } }
 		if = { limit = { fallout_event_656_shelter_affordable = yes } } set_temp_variable = { fallout_event_656_requested_branch = constant:fallout_event_656_branch.shelter_fields }
@@ -687,6 +695,11 @@ fallout_event_656_choose_ai_branch_and_schedule_result = {
 	fallout_event_656_set_ai_priority = yes
 	fallout_event_656_choose_branch = yes
 	clear_variable = fallout_event_656_ai_priority
+	clear_temp_variable = fallout_event_656_ai_shelter_score
+	clear_temp_variable = fallout_event_656_ai_seed_score
+	clear_temp_variable = fallout_event_656_ai_move_score
+	clear_temp_variable = fallout_event_656_ai_abandon_score
+	clear_temp_variable = fallout_event_656_ai_best_score
 }
 
 fallout_event_656_calculate_callback_outcome = {
