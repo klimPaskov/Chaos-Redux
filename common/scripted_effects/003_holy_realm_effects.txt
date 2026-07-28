@@ -2489,7 +2489,10 @@ holy_realm_apply_final_silence_fallout_to_realm_state = {
 		set_state_flag = holy_realm_final_silence_realm_fallout
 		set_temp_variable = { chaos_fallout_duration_days = constant:holy_realm_final_silence.realm_fallout_days }
 		set_temp_variable = { chaos_fallout_intensity_add = constant:holy_realm_final_silence.realm_fallout_intensity }
-		chaos_meter_apply_nuclear_fallout_to_state = yes
+		if = {
+			limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+			chaos_meter_apply_nuclear_fallout_to_state = yes
+		}
 	}
 }
 
@@ -2520,7 +2523,10 @@ holy_realm_apply_final_silence_wave_to_state = {
 		set_temp_variable = { chaos_state_deaths_exact_percent = 1 }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.final_silence }
 		chaos_meter_register_state_civilian_deaths_percent = yes
-		chaos_meter_apply_nuclear_fallout_to_state = yes
+		if = {
+			limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+			chaos_meter_apply_nuclear_fallout_to_state = yes
+		}
 		holy_realm_delete_final_silence_state_buildings = yes
 		set_state_category = wasteland
 		set_state_flag = holy_realm_final_silence_wasteland

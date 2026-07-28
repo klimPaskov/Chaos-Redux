@@ -28,6 +28,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 - The monthly Air Cleanliness coordinator does not begin or update Air Winter, treaty pulses, or Air Winter dispatch after the flag is set.
 - Natural wildfire smoke, volcanic ash, and ashfall aftermath registration returns zero after the flag. The monthly natural source reservoir and pulse are cleared.
 - The Black Plague Air source refresh clears its disease-derived reservoir and previous contribution after the flag, so a later disease pulse cannot repopulate the disabled Air surface.
+- Ordinary nuke-drop handling, Final Silence fallout helpers, and the Air Winter reactor-failure helper reject the flag before adding `nuclear_fallout_state`. The ordinary nuke callback also removes a stale modifier before it can feed the disabled Air source.
 - `air_contamination_apply_delta_bp` ignores later Air Cleanliness deltas. It does not rewrite the committed 100 percent contamination state.
 - State-wide Air Cleanliness modifiers and country pressure ideas are removed by `air_contamination_apply_state_modifier`.
 - Treaty membership eligibility, pending invitations, decision visibility, host lifecycle pulses, and late violation callbacks reject the flag and close operational routes.
