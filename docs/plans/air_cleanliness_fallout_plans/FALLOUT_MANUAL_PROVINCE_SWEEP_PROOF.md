@@ -118,14 +118,18 @@ An invalid batch identity, invalid batch size, count mismatch, lost countdown co
 
 Each verified struck state first mutates its live population with the exact
 state-loss helper until the captured prestrike baseline reaches its approved
-90 to 95 percent loss band. The observed loss is accumulated once and sent to
-the shared Deaths ledger after the state mutations, with state mutation disabled
-on that accounting call so the population is not deleted twice. The Fallout
-exception keeps this receipt mandatory even when the general Deaths setting is
-disabled. Static control flow applies that aggregate Deaths receipt, fallout,
-Air Contamination, Chaos history, condemnation, and treaty consequences once,
-only after complete verification. It then invalidates the sweep and verifier
-scheduling state before the countdown begins.
+90 to 95 percent loss band. Its provenance receipt then measures the complete
+prestrike-to-post-strike loss after native callback effects and the exact
+reconciliation. The observed loss is accumulated once and sent to the shared
+Deaths ledger after the state mutations, with state mutation disabled on that
+accounting call so the population is not deleted twice. The Fallout exception
+keeps this receipt mandatory even when the general Deaths setting is disabled.
+Static control flow applies that aggregate Deaths receipt, fallout, Air
+Contamination, Chaos history, condemnation, and treaty consequences once, only
+after complete verification. It then invalidates the sweep and verifier
+scheduling state before the countdown begins. The vanilla references do not
+specify whether the native callback writes this mod's Deaths ledger, so runtime
+review must confirm that it does not create a duplicate receipt.
 
 The exact countdown stores its start day and an end day equal to start plus seven only after verification. Event `chaosx.fallout.903` is scheduled with a literal seven-day delay. It is the only path that may submit the standard Fallout request. The daily coordinator does not submit or reschedule the countdown because a calendar-day comparison cannot prove that 168 hours elapsed. Lost countdown ownership and an overdue callback fail closed. This is static proof, not runtime proof.
 

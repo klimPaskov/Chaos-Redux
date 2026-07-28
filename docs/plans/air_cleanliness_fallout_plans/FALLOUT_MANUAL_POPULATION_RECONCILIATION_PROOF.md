@@ -17,7 +17,7 @@ localisation, or asset is added by this proof. Assets: none.
 | Helper | Scope | Inputs | Outputs | Side effects | Call site |
 | --- | --- | --- | --- | --- | --- |
 | `fallout_manual_capture_population_baselines` | Country | current `state_population_k`, `global.fallout_manual_generation` | per-state prestrike population in `k` and people, plus generation and counted ledger receipt | sets `fallout_manual_prestrike_population_recorded` and the O(1) global completion receipt after 1,081 rows | manual sweep initialization |
-| `fallout_manual_record_state_population_loss_provenance` | State | prestrike receipt and live state population | first-week after-population, loss, reconciled total, and generation in people | sets `fallout_manual_first_week_population_loss_recorded`, does not write Deaths | manual aggregate state consequence |
+| `fallout_manual_record_state_population_loss_provenance` | State | prestrike receipt and live state population | first-week after-population, loss, reconciled total, and generation in people | sets `fallout_manual_first_week_population_loss_recorded`, accumulates the observed loss for the aggregate Deaths receipt and state map ledger | manual aggregate state consequence |
 | `fallout_manual_calculate_population_loss_intent` | State | authenticated baseline, frozen post-first-week population, standard grade | `fallout_state_loss_percent`, `fallout_expected_population_before_loss`, `fallout_expected_population_requested_loss` | none beyond temporary values | both standard population-loss receipt paths |
 | `fallout_manual_preflight_population_contract` | Country | all manual receipts, frozen snapshot, grade rows | one state-bound replay receipt per row and one global generation receipt | performs the sole all-state population-contract replay before mutation | population-loss phase gate |
 | `fallout_manual_population_contract_preflight_is_current` | Country trigger | manual source, preflight count and generation | true only after all 1,081 rows replay successfully | none, failure becomes terminal `manual_population_contract_unproven` | population-loss phase gate |
@@ -40,10 +40,11 @@ direct_loss_percent = clamp(
 
 The aggregate state mutation derives the direct survivor target from `B`,
 converts the current live population to people, and requests only
-`max(0, current - direct_target)` through the exact state-population Deaths
-contract. Native nuclear deaths therefore remain visible without allowing the
-aggregate row to remove more than its approved baseline band. The reconciliation
-helper then computes:
+`max(0, current - direct_target)` through the exact state-population mutation
+contract. Native population changes therefore remain visible without allowing
+the aggregate row to remove more than its approved baseline band. The
+provenance receipt then measures the complete baseline-to-live loss and adds it
+to the one aggregate Deaths receipt. The reconciliation helper then computes:
 
 1. `target_loss = round(B * 0.01 * G)`.
 2. If `B > 0`, `target_survivors = max(1, B - target_loss)`. If `B = 0`, the target is zero.
@@ -59,10 +60,11 @@ population row mutates. The system neither adds population nor silently accepts
 loss above the grade contract.
 
 The existing population transaction still clamps the request to the current
-live amount above the one-person floor, performs exactly one mutation, observes
-the resulting live delta, and registers that observed delta through Deaths with
-state-population application disabled. A state already below its target blocks
-the complete transaction and is never raised.
+live amount above the one-person floor and performs exactly one mutation. The
+manual provenance receipt observes the resulting live delta and the aggregate
+Deaths call registers that total with state-population application disabled. A
+state already below its target blocks the complete transaction and is never
+raised.
 
 | Original `B` | Native strikes | Direct loss | Grade | Live `C` before rewrite | Additional request | Final loss from `B` |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -109,16 +111,20 @@ matching manual preflight row and requested-loss value.
 ## Deaths and transition integration
 
 The first-week manual aggregate continues to mutate each struck state with
-`apply_exact_state_civilian_population_loss` and then sends one aggregate
-thermonuclear Deaths entry, preserving the existing event-log volume and map
-accounting. The seven-day request still enters the normal Fallout transition.
+`apply_exact_state_civilian_population_loss`, records the complete observed
+baseline-to-live loss for each state, and then sends one aggregate thermonuclear
+Deaths entry, preserving the existing event-log volume and map accounting. The
+seven-day request still enters the normal Fallout transition.
 Only the two standard population-intent call sites branch to the manual helper.
 The manual preflight is a terminal source-integrity gate, while successful rows
 continue through the shared receipt, one-person-floor, owner, controller, and
 ordinary transaction logic.
 
 The standard grade constants and the seven-day countdown are unchanged. The
-manual source is still unregistered and no runtime activation is implied.
+vanilla references do not specify whether the native strike callback writes
+this mod's Deaths ledger, so runtime review must confirm that the aggregate
+receipt is not duplicated by an undocumented native callback. The manual source
+is still unregistered and no runtime activation is implied.
 
 ## Validation and limitations
 
