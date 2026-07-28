@@ -343,6 +343,14 @@ bio_doomsday_register_batch_consequence = {
 	add_war_support = constant:bio_lifecycle_political.doomsday_domestic_war_support
 	brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
 	air_cleanliness_treaty_on_unconventional_use = yes
+
+	# The complete doomsday release is a terminal biological caller. It uses the
+	# shared Fallout coordinator and does not register the consequence as an
+	# Event Details row, evolution, or ordinary super-event.
+	save_event_target_as = fallout_request_actor_input
+	set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.biological_follow_through }
+	set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.terminal }
+	fallout_request_aftermath = yes
 }
 
 # Public country-scoped resolver used by the stable legacy decision wrapper.

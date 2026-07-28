@@ -731,6 +731,14 @@ chem_unleash_stockpile_doomsday = {
     set_temp_variable = { var = chem_doom_remove value = chem_doom_stock_lewisite }
     multiply_temp_variable = { var = chem_doom_remove value = -1 }
     add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = chem_doom_remove }
+
+	# A doomsday stockpile release is a terminal chemical caller. It hands the
+	# cause and actor to the single Fallout coordinator without creating an event
+	# log row or a second transition path.
+	save_event_target_as = fallout_request_actor_input
+	set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.chemical_saturation }
+	set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.terminal }
+	fallout_request_aftermath = yes
 }
 
 chem_apply_current_ability_state_dispersal = {
