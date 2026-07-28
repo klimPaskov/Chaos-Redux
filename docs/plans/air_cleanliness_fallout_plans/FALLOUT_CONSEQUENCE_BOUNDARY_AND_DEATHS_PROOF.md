@@ -19,6 +19,7 @@ The standard path sets `fallout_air_cleanliness_disabled` in `fallout_queue_requ
 Static consumers of the flag are:
 
 - `air_winter_system_enabled` and `air_winter_event_targets_are_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`.
+- `air_winter_event_apply_deaths` in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`.
 - `air_contamination_monthly_update` in `common/scripted_effects/chaos_meter_effects.txt`.
 - `air_contamination_apply_delta_bp` and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
 - Natural wildfire, volcanic, and ashfall source registration in `common/scripted_effects/air_cleanliness_natural_source_effects.txt`.
