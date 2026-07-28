@@ -593,6 +593,7 @@ call the same effects as decisions, and AI uses equivalent affordability,
 cooldown, state, lot, and family gates.
 The Overview surface uses the previously open left-side dossier space as a live ledger rail showing active lots, unresolved records, claimant demands, anomalous saturation, pending requests, and active divisions.
 The values are read directly from the shared Event 19 counters rather than decorative placeholders.
+The board is authored around the regenerated `GFX_infantry_spawn_muster_board_background` at 1120 by 760: its title plaque and tab band carry the header controls, the shared rail occupies the six left wells, the transparent functional panels sit over the central map, formation grid, request/history plates, and the command or anomalous registry well, and the lower action controls sit on the two paper action bays. The focused source, processed review, and runtime handoff are retained under `docs/assets/019_infantry_spawn/gui_background_rebuild_2026_07/`.
 
 Three real frame-sheet animations provide the muster seal, critical claimant
 border, and anomalous registry emblem. Each has a player-selectable static
