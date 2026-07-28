@@ -14,6 +14,9 @@
 
 # Supported scope: COUNTRY
 # Input: fallout_manual_failure_code
+# A failure after a valid sweep has been admitted keeps the durable Air
+# shutdown. Only the pre-admission invalid-intensity branch can fail without
+# owning Air Cleanliness.
 fallout_manual_fail_sweep = {
 	if = {
 		limit = { NOT = { has_global_flag = fallout_manual_sweep_error } }
@@ -29,12 +32,6 @@ fallout_manual_fail_sweep = {
 		clr_global_flag = fallout_manual_countdown_active
 		clr_global_flag = fallout_manual_countdown_event_scheduled
 		clr_global_flag = fallout_manual_request_due
-		if = {
-			limit = { NOT = { has_global_flag = world_end_fallout } }
-			clr_global_flag = fallout_air_cleanliness_disabled
-			clr_global_flag = fallout_air_winter_shutdown_complete
-			air_contamination_apply_state_modifier = yes
-		}
 		clear_variable = global.fallout_manual_scheduled_batch
 		clear_variable = global.fallout_manual_scheduled_batch_generation
 		clear_variable = global.fallout_manual_scheduled_verifier_attempt
