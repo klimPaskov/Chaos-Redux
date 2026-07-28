@@ -81,6 +81,8 @@ Failure damage targets infrastructure first and industrial complex second withou
 
 `fallout_event_642_abort_on_generation_change` reauthenticates generation, owner, controller, current Air Winter snapshot, the selected native resource class, and the issued event token.
 
+For an uncommitted opening whose dispatched state is no longer current, the abort route snapshots `fallout_event_dispatch_issued_target` into `fallout_event_642_target_state_id` before cancelling the ordinary receipt. Only an accepted cancellation records the Mine Generator cancellation history, reverses branch settlement, refunds the paid branch cost, clears the state reservation and committed state flag, and clears the frozen row. This keeps stale reservation release bound to the state that issued the receipt instead of whichever state happens to be inspected after reset.
+
 The delayed cleanup gate separately authenticates the frozen transaction key, opening receipt ticket, result ticket, route, mode, branch, opening token, selected resource class, cost-paid receipt, and either the committed-chain or result-commitment receipt. It does not require current ownership, control, generation, or native-resource presence, so a stale chain can clean itself without touching a replacement transaction.
 
 It cancels stale opening receipts, result tickets, callback tickets, and cleanup tickets only when they belong to Mine Generator identity tokens.
