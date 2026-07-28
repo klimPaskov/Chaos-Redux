@@ -5,7 +5,9 @@ Only engine country definitions under ``common/country_tags`` are considered.
 Event text, localisation, flags, portraits, and other incidental mentions are
 not competing country tags. The Random Events Mod is deliberately excluded
 because it is an event-only compatibility surface, not part of the installed
-country-tag namespace this audit protects.
+country-tag namespace this audit protects. Existing Chaos Redux carriers
+``REV``, ``ZIN``, and ``ZZZ`` are intentionally outside the Event 006/Soviet
+protected set and are never remapped by this scoped audit.
 """
 
 from __future__ import annotations
@@ -24,6 +26,7 @@ EVENT6_TAG_RE = re.compile(r'^\s*([A-Z0-9]{3})\s*=\s*["\']', re.MULTILINE)
 
 RANDOM_EVENTS_WORKSHOP_ID = "3199436992"
 RANDOM_EVENTS_NAMES = {"random events mod", "random_events_mod"}
+EXISTING_CHAOSX_CARRIERS = ("REV", "ZIN", "ZZZ")
 
 # Event 005's registered custom tags. Existing registered carriers are kept;
 # only the seven colliding tags were remapped to the X-suffixed IDs below.
@@ -193,6 +196,7 @@ def write_report(path: Path, data: dict[str, object]) -> None:
 		f"- Protected tags: **{len(data['protected_tags'])}**.",
 		f"- External country-definition collisions: **{len(data['collisions'])}**.",
 		"- Random Events Mod definitions skipped by policy: **" + str(len(data["skipped_random_events"])) + "**.",
+		"- Existing Chaos Redux carriers kept outside this scoped set: **" + ", ".join(EXISTING_CHAOSX_CARRIERS) + "**.",
 		"",
 	]
 	if data["collisions"]:
