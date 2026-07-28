@@ -1,6 +1,6 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after The Second Dust Bowl
+## Current reconciliation after Great Lakes Lock Winter
 
 The reviewed candidate producer now covers `65` ordinary dormant rows through Great Lakes Lock Winter candidate `663`, with `544` defined event blocks through `chaosx.fallout.669` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7166`. The Second Dust Bowl source admission contract stores the durable survival resource row, Food, Clean Water, Scrap, Fuel, Power, Shelter Capacity, Recognition, Cohesion, Air Winter Dust Load, Supply Access, Adaptation, Reclamation, Exposure, Disease Pressure, and the native plains target. The producer now preserves the selected state in the dispatch envelope, and the opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
 
@@ -18,7 +18,7 @@ The New Year Without Fireworks is the East Asian country-only row with candidate
 
 The Second Dust Bowl is the North American plains row with candidate `656`, transaction `710065`, event ids `656` through `662`, and Event Log history `9171`. Its source contract selects the lowest eligible native plains state and records four authored branches with a 35-day result and a 240-day planting-season callback. Result and callback grading include infrastructure and all seven durable ledgers, and same-generation committed cleanup uses the generic country registry. A generation-reset abort effect now has static wiring for pre-result stale cancellation, uncommitted refunds, issued delayed-row terminalization, and cleanup-tombstone removal before runtime rebuild. The chain does not add Air Contamination, mutate the native state category, transfer population between states, or create a named historical district. Its dedicated proof is `FALLOUT_SECOND_DUST_BOWL_PROOF.md`.
 
-Great Lakes Lock Winter is the North American coastal row with candidate `663`, transaction `710066`, event ids `663` through `669`, and Event Log history `9172`. It requires a native coastal state with a non-damaged naval base and infrastructure, uses four authored branches, resolves after exactly `35` days, and schedules a `270`-day thaw callback. Its hidden-AI lane scores all affordable branches with deterministic tie order, and its cleanup gate accepts a result-only schedule-error receipt without a callback ticket. Its dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
+Great Lakes Lock Winter is the North American coastal row with candidate `663`, transaction `710066`, event ids `663` through `669`, and Event Log history `9172`. It requires a native coastal state with a non-damaged naval base and infrastructure, uses four authored branches, resolves after exactly `35` days, and schedules a `270`-day thaw callback. Its hidden-AI lane scores all affordable branches with deterministic tie order, and its cleanup gate accepts a result-only schedule-error receipt without a callback ticket. Its generation-reset abort path statically cancels stale openings and delayed receipts before runtime teardown. Its dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
 
 Status: dormant, statically reconciled, completion blocked by the current audit, not release-floor credit.
 
