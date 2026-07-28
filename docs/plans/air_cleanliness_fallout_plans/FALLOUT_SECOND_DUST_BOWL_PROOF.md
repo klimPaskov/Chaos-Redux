@@ -1,6 +1,6 @@
 # Fallout Second Dust Bowl Proof
 
-Status: dormant reviewed tranche with source surfaces present, static opening and result repairs applied, and completion blockers in stale cleanup and runtime acceptance.
+Status: dormant reviewed tranche with source surfaces present, static opening, result, and generation-reset stale-path repairs applied, and completion blockers in runtime acceptance and wider scheduler review.
 
 ## Identity
 
@@ -38,7 +38,7 @@ The Deaths surface is `apply_exact_state_civilian_population_loss` through the a
 | Callback | Issued callback ticket, branch, callback transaction, callback mode, result commitment, callback outcome, callback cleanup ticket, and callback schedule receipt |
 | Cleanup | Hidden cleanup token, candidate, route, opening transaction, target state, payment receipt, result commitment or schedule-error receipt, and matching result or callback cleanup ticket |
 
-The registry reauthenticates the target state against the frozen category, current produced snapshot, live Air Winter values, owner, controller, and plains terrain before result or callback effects. The shared delayed dispatcher still requires current generation for terminal cleanup, and result or callback delivery still requires current target identity. The dedicated cleanup gate now uses only the generic country registry after a committed result or callback, so same-generation ownership, control, category, or terrain drift can release an already-scheduled cleanup row. Pre-result stale cancellation, generation drift, and save-recovery acceptance remain unproven.
+The registry reauthenticates the target state against the frozen category, current produced snapshot, live Air Winter values, owner, controller, and plains terrain before result or callback effects. The shared delayed dispatcher still requires current generation for terminal cleanup, and result or callback delivery still requires current target identity. The dedicated cleanup gate now uses only the generic country registry after a committed result or callback, so same-generation ownership, control, category, or terrain drift can release an already-scheduled cleanup row. A dedicated generation-reset abort effect now cancels stale opening receipts, refunds uncommitted costs, terminalizes issued result or callback rows, and removes their cleanup tombstones before the country runtime arrays are rebuilt. Save-recovery acceptance remains unproven.
 
 ## Branch and grading evidence
 
@@ -73,7 +73,7 @@ The 2026-07-27 completion audit found that this proof must remain a blocked stat
 
 - Candidate selection now carries the issued state target into the opening gate, which rechecks the live state rather than relying on the cleared producer scratch variable.
 - Result state deltas and timed state-modifier duration now use unscoped temporary variables inside the state block.
-- Result and callback delivery require current generation and mutable owner, controller, category, and terrain gates. Cleanup after a committed result or callback uses the generic country registry so same-generation target drift can release its already-scheduled row. Pre-result stale cancellation and generation drift remain open.
+- Result and callback delivery require current generation and mutable owner, controller, category, and terrain gates. Cleanup after a committed result or callback uses the generic country registry so same-generation target drift can release its already-scheduled row. The generation-reset abort path is wired from `fallout_event_clear_country_runtime`, so pre-result stale cancellation and generation drift have a static source route that refunds uncommitted costs and removes delayed rows before runtime rebuild.
 - Callback grading now includes infrastructure and all seven durable ledgers. The result grade also includes all seven ledgers, with a branch-preparation delta applied to the frozen score before the result is locked and the settled outcome delta applied afterward.
 - High Exposure or Disease AI preference now enters the issued target state scope before reading live pressure. The hidden-AI lane scores every affordable branch, adds the authored archetype and pressure factors, selects the highest score in the documented tie order, and records the selected score in the priority ledger. The invalid-option `-1000` value remains the score floor for unaffordable branches.
 - Eighteen dedicated dynamic modifiers now have localisation keys, and opening tooltips name the issued target state and result timing.
@@ -92,7 +92,7 @@ These findings supersede generic wording that could be read as proof of runtime 
 | Callback delivery to the human lane from an AI token | Mode and token checks block the event. |
 | Callback delivery after result commitment is absent | Callback trigger fails. |
 | Callback scheduling failure after committed result | Result cleanup keeps its own commitment and does not refund a settled result. |
-| Stale cleanup after a generation, ownership, control, category, or terrain change | Same-generation drift after a committed result or callback has a generic-country cleanup route. Pre-result drift and generation changes remain blocked and have no runtime acceptance. |
+| Stale cleanup after a generation, ownership, control, category, or terrain change | Same-generation drift after a committed result or callback has a generic-country cleanup route. The generation-reset abort path cancels pre-result and stale delayed rows before runtime rebuild. Runtime dispatch and save recovery remain unproven. |
 | Duplicate cleanup delivery | No matching cleanup row remains after the first release. |
 | Result failure | The Deaths contract requests `0.0014` of the authenticated state population. |
 | Callback failure | The Deaths contract requests `0.0006` of the authenticated state population. |
@@ -100,7 +100,7 @@ These findings supersede generic wording that could be read as proof of runtime 
 
 ## Validation boundary
 
-The candidate producer, event chain, Event Log, localisation, constants, dynamic modifiers, documentation, and asset wiring have been reviewed statically. Dedicated scripts have balanced braces and no em dashes, semicolons, or unsupported comparison operators. The localisation file is UTF 8 with BOM. No HOI4 process was launched. Live candidate delivery, save recovery, multiplayer host authority, normal-map presentation, terrain trigger acceptance, stale cleanup, and exact all-valid-province thermonuclear sweep remain runtime boundaries. The Fallout release-floor count does not claim this dormant tranche until activation review and user validation pass.
+The candidate producer, event chain, Event Log, localisation, constants, dynamic modifiers, documentation, asset wiring, and generation-reset stale cleanup route have been reviewed statically. Dedicated scripts have balanced braces and no em dashes, semicolons, or unsupported comparison operators. The localisation file is UTF 8 with BOM. No HOI4 process was launched. Live candidate delivery, save recovery, multiplayer host authority, normal-map presentation, terrain trigger acceptance, stale cleanup execution, and exact all-valid-province thermonuclear sweep remain runtime boundaries. The Fallout release-floor count does not claim this dormant tranche until activation review and user validation pass.
 
 ## Read-only event-inspector evidence
 
