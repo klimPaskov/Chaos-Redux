@@ -177,12 +177,12 @@ def main() -> int:
 
 	constants = strip_comments(read("common/script_constants/006_independence_wave_constants.txt"))
 	for key, expected in {
-		"calm_world": 3,
-		"gathering_storm": 4,
-		"rising_chaos": 5,
-		"chaos_tier": 7,
-		"totalen_chaos": 10,
-		"world_collapse": 10,
+		"calm_world": 6,
+		"gathering_storm": 8,
+		"rising_chaos": 10,
+		"chaos_tier": 14,
+		"totalen_chaos": 20,
+		"world_collapse": 20,
 	}.items():
 		require(
 			bool(re.search(rf"(?m)^\s*{key}\s*=\s*{expected}\s*$", constants)),
@@ -552,7 +552,7 @@ def main() -> int:
 	print(f"- SCN-008 ranked selectable packages: {len(ranked_ids)}")
 	print(f"- attested packages: {len(attested_ids)}; compatible reservation groups: {len(set(attested_groups.values()))}")
 	print("- RG-RHINE-SAAR pair capacity: 2 distinct packages (IW-008 anchor 51; IW-010 anchor 42)")
-	print("- automatic counts: 3 / 4 / 5 / 7 / 10 (World Collapse 10)")
+	print("- automatic counts: 6 / 8 / 10 / 14 / 20 (World Collapse 20)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
 	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
 	print("- order: all anchors -> compact -> extended -> lock")
