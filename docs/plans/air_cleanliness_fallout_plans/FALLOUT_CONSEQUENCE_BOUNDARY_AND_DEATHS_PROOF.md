@@ -56,6 +56,8 @@ The Black Plague source refresh now follows the same durable boundary. Once Fall
 
 Late nuclear callbacks also consume the boundary. Ordinary nuke-drop handling, Final Silence fallout helpers, and the Air Winter reactor-failure helper do not add `nuclear_fallout_state` after `fallout_air_cleanliness_disabled`. The ordinary nuke callback removes a stale modifier before it could feed the disabled Air source.
 
+The daily contamination and outbreak Deaths pulse now rejects `nuclear_fallout_state` while the durable Air shutdown is set and removes a stale copy instead of registering another nuclear loss. Chemical contamination remains an independent CBRN surface and is not disabled by this Air-only guard.
+
 ## Manual state loss proof
 
 `fallout_manual_capture_population_baselines` records the pre-strike population for every state before native strike callbacks. `fallout_manual_apply_state_aggregate_consequence` clamps the aggregate direct loss between `fallout_manual_aggregate.death_percent_base = 0.900` and `fallout_manual_aggregate.death_percent_max = 0.950`. It computes the exact requested loss against the captured baseline and supplies the exact state population contract to `apply_exact_state_civilian_population_loss`.
