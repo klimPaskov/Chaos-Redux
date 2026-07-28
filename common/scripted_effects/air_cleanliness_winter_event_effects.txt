@@ -540,7 +540,10 @@ air_winter_event_clear_state_memory = {
 # Input: temporary variable air_winter_event_death_percent
 air_winter_event_apply_deaths = {
 	if = {
-		limit = { NOT = { has_global_flag = settings_chaos_deaths_disabled } }
+		limit = {
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		}
 		set_temp_variable = { air_winter_event_death_request = state_population_k }
 		multiply_temp_variable = { air_winter_event_death_request = constant:air_winter_event_deaths.population_scale }
 		multiply_temp_variable = { air_winter_event_death_request = air_winter_event_death_percent }
