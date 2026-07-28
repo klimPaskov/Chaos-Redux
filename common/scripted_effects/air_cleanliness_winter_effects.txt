@@ -1797,9 +1797,34 @@ air_winter_suspend_all_states_for_fallout = {
 		limit = { NOT = { has_global_flag = fallout_air_winter_shutdown_complete } }
 		air_winter_clear_all_country_air_operations_modifiers = yes
 		every_state = {
-			limit = { has_state_flag = air_winter_initialized }
+			limit = {
+				OR = {
+					has_state_flag = air_winter_initialized
+					has_state_flag = air_winter_visual_ground_present
+					has_state_flag = air_winter_visual_primary_particle_present
+					has_state_flag = air_winter_visual_secondary_particle_present
+					has_state_flag = air_winter_visual_dead_vegetation_present
+					has_state_flag = air_winter_visual_hydrology_present
+					has_dynamic_modifier = { modifier = air_winter_phase_1 }
+					has_dynamic_modifier = { modifier = air_winter_phase_2 }
+					has_dynamic_modifier = { modifier = air_winter_phase_3 }
+					has_dynamic_modifier = { modifier = air_winter_phase_4 }
+					has_dynamic_modifier = { modifier = air_winter_phase_5 }
+					has_dynamic_modifier = { modifier = air_winter_phase_6 }
+					has_dynamic_modifier = { modifier = air_winter_disease_pressure_state }
+					has_dynamic_modifier = { modifier = air_winter_rail_protection_state }
+					has_dynamic_modifier = { modifier = air_winter_airbase_closure_state }
+				}
+			}
 			air_winter_destroy_regional_visuals = yes
-			air_winter_suspend_state = yes
+			air_winter_event_cancel_pending_chain = yes
+			air_winter_response_cancel_state_project = yes
+			air_winter_clear_runtime_modifiers = yes
+			set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero }
+			set_variable = { air_winter_expected_monthly_death_percent = constant:air_winter_runtime.zero }
+			set_variable = { air_winter_disease_attrition_factor = constant:air_winter_runtime.zero }
+			set_variable = { air_winter_disease_local_manpower_factor = constant:air_winter_runtime.zero }
+			set_state_flag = air_winter_suspended
 		}
 		air_winter_destroy_normal_map_proof_entity = yes
 		clr_global_flag = air_winter_active
