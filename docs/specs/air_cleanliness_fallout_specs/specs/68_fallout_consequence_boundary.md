@@ -20,6 +20,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 
 - `air_winter_system_enabled` rejects all future Air Winter updates and decisions, while `air_winter_event_targets_are_valid` rejects already-scheduled openings and delayed results after request-time shutdown. The mapmode remains a historical view of the last valid Air Winter receipts and receives no further updates.
 - `air_winter_response_target_is_valid` rejects pending terminal response events after request-time shutdown, so an abandonment or decontamination choice that was already open cannot mutate a state, add a country effect, or register a stale death after Fallout owns the Air boundary.
+- `air_winter_response_mutation_is_allowed` gates every timed Air Winter decision removal callback. A same-day expiry after Fallout admission releases the project without applying its result, while the ordinary expiry path still calls the reviewed result effect.
 - Controlled and final evacuation project validators reject the same flag before a delayed project can transfer population or refugee pressure after Fallout request admission.
 - The shared `air_winter_event_apply_deaths` helper rejects the same durable flag, so a stale open Air Winter choice cannot register a new winter population loss after Fallout request admission.
 - `air_winter_suspend_all_states_for_fallout` removes active phase, disease, railway, airbase, response-project, and pending-event effects while preserving the last valid Air Winter phase and survival ledgers for that historical map view.

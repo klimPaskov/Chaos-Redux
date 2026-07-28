@@ -600,6 +600,15 @@ air_winter_response_category_is_visible = {
 	}
 }
 
+# Supported scope: any. Timed decision removal is a separate engine callback
+# from the category and cancel triggers. This gate is checked immediately
+# before a result effect is called so Fallout ownership wins same-day races.
+air_winter_response_mutation_is_allowed = {
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+}
+
 # Supported scope: STATE. Ownership remains in the calling decision so this
 # query can also be reused by event and AI selection code.
 air_winter_response_state_is_available = {
