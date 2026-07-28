@@ -89,7 +89,7 @@ Local resistance factors:
 - suitable climate and geography where supported
 - route-specific country mechanics
 
-The installed engine exposes recent strategic bombing as a state fact, but it does not expose the state of an active ordinary land battle through a documented state predicate or callback. Direct active-combat pressure has no exact state input. A strategic-bombing winter multiplier requires a balance decision that accounts for the existing strategic-bombing Deaths tick.
+The installed engine exposes recent strategic bombing as a state fact, but it does not expose the state of an active ordinary land battle through a documented state predicate or callback. Air Winter uses a small capped strategic-bombing pressure receipt through the exact state fact and leaves active-combat pressure absent. The receipt does not call Deaths, so the existing strategic-bombing casualty tick remains the only bombing mortality path.
 
 The state pressure score determines the target phase. The current phase moves by at most one step per monthly update unless a direct terminal caller sets an emergency jump.
 
