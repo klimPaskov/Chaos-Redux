@@ -27,6 +27,8 @@ Static consumers of the flag are:
 
 The monthly pass no longer starts or updates Air Winter after the flag. `air_winter_suspend_all_states_for_fallout` runs once at the lock, removes registered country operations, state phase, disease, railway, airbase, response-project, and pending-event effects, removes regional entities and the normal-map proof entity, preserves the last valid Air Winter phase and survival ledgers for the historical mapmode, then records `fallout_air_winter_shutdown_complete`. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause and new membership or invitation surfaces fail their eligibility checks.
 
+Cleaning Day start and delayed-project validity now also check `fallout_air_cleanliness_disabled` directly. A project that was opened before a Fallout request cannot reduce Air Contamination after request-time shutdown, even before the transition lock or host pause pulse is observed.
+
 ## Standard state loss proof
 
 The approved loss ladder is `90`, `91`, `92`, `93`, `94`, and `95` in `fallout_population_loss_percent` under `common/script_constants/fallout_world_end_constants.txt`. `fallout_apply_transition_phase_population_loss` iterates every state row that is not current. Each row calls `fallout_apply_state_population_loss`, which calculates a grade-specific request from the frozen pre-transition population and mutates state population through `apply_state_population_loss_without_recruitable_manpower_gain`.
