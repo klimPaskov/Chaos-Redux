@@ -6,6 +6,8 @@ This record covers the accepted correction that Fallout is a consequence transit
 
 ## Public registration proof
 
+The ordinary super-event GUI now rejects `world_end_fallout` in its visibility trigger. A prior generic overlay therefore cannot remain visible over the Fallout-owned full-screen blackout. The dedicated blackout GUI and dramatic audio are the only transition presentation surfaces.
+
 Static source inspection shows that `initialize_world_end_scenario_registry` in `common/scripted_effects/chaosx_events_log_effects.txt` registers the public world-end rows without Fallout. No Fallout title, owner, or details branch remains in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`. The Fallout-specific Event Details card preparation hooks were removed from the registry refresh, detail open, and toggle paths.
 
 The stable settings-ledger value `fallout_consequence_id.settings_ledger = 2` lives in `common/script_constants/fallout_world_end_constants.txt`. It is used only by internal request and settings gates and is not inserted into the public registry. The generic `GetWorldEndScenario` selector resolves Fallout to `chaos_tier_end_fallout` without exposing a Fallout title. The Chaos Meter uses consequence-neutral terminal wording, while the world-end tooltip selects the same consequence label. The dedicated blackout GUI uses its own sequential display text. Fallout blackout audio remains owned by `fallout_dispatch_blackout_audio` in `common/scripted_effects/fallout_world_end_effects.txt`.
