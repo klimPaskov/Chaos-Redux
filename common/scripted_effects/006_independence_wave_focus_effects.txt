@@ -42,6 +42,7 @@ independence_wave_assign_focus_framework = {
 		}
 		clr_country_flag = independence_wave_additive_focus_overlay
 		clr_country_flag = independence_wave_post_formation_focus_overlay
+		clr_country_flag = independence_wave_focus_overlay_carrier_missing
 		set_variable = { independence_wave_focus_assignment = independence_wave_focus_assignment_input }
 		if = {
 			limit = { check_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework } }
@@ -53,7 +54,16 @@ independence_wave_assign_focus_framework = {
 		}
 		else_if = {
 			limit = { check_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.additive_overlay } }
-			set_country_flag = independence_wave_additive_focus_overlay
+			if = {
+				limit = { can_attach_independence_wave_additive_focus_carrier = yes }
+				set_country_flag = independence_wave_additive_focus_overlay
+			}
+			else = {
+				# Do not expose an overlay flag when the owning tree was not
+				# explicitly reviewed. This leaves the package fail-closed and
+				# makes the missing carrier visible to the admission audit.
+				set_country_flag = independence_wave_focus_overlay_carrier_missing
+			}
 		}
 		else_if = {
 			limit = { check_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.post_formation_overlay } }
@@ -71,6 +81,8 @@ independence_wave_clear_focus_runtime = {
 	clr_country_flag = independence_wave_full_focus_framework
 	clr_country_flag = independence_wave_additive_focus_overlay
 	clr_country_flag = independence_wave_post_formation_focus_overlay
+	clr_country_flag = independence_wave_focus_carrier_registered
+	clr_country_flag = independence_wave_focus_overlay_carrier_missing
 	clr_country_flag = independence_wave_route_constitutional_available
 	clr_country_flag = independence_wave_route_popular_council_available
 	clr_country_flag = independence_wave_route_traditional_available

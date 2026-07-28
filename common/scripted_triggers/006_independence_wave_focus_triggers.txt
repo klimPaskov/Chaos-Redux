@@ -47,6 +47,22 @@ can_use_independence_wave_additive_focus_overlay = {
 	}
 }
 
+# A shared-focus flag is not an engine-supported insertion mechanism. An
+# additive assignment is therefore valid only after a package has registered
+# a reviewed owning-tree carrier and the active country still has that tree.
+# Package adapters that have no carrier must fail closed instead of claiming
+# that the overlay is visible on a meaningful vanilla tree.
+can_attach_independence_wave_additive_focus_carrier = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_focus_carrier_registered
+	OR = {
+		AND = {
+			has_country_flag = independence_wave_ice_lifecycle_initialized
+			has_focus_tree = iceland_tree
+		}
+	}
+}
+
 has_valid_independence_wave_focus_assignment_input = {
 	check_variable = {
 		var = independence_wave_focus_assignment_input
