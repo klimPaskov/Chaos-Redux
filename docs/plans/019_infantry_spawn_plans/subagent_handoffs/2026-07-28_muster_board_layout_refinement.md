@@ -1,0 +1,9 @@
+# Event 019 Muster Board Layout Refinement Handoff
+
+The regenerated 1120 by 760 board background is wired through the existing `GFX_infantry_spawn_muster_board_background` identifier and remains the only runtime background asset. The authored zones are the title plaque and tab band, six-well shared ledger rail, central map and formation grid, lower records and anomalous plates, right registry well, and two lower paper action bays.
+
+Parent-owned layout changes are in `interface/019_infantry_spawn_muster_board.gui`. The ledger rail now lives at the window layer so it remains visible on every direct Event 19 tab. Formation-lot and anomalous-family cards are constrained to the central surface with three-column action rows; command art remains in the right registry well, and the title/subtitle share an aligned inset.
+
+Review evidence was rendered with the HOI4 MCP fixture at 1280 by 720, 1366 by 768, 1920 by 1080, and 2560 by 1440 at uiScale 1 and 1.25 across normal, hover, selected, warning, and long-text states. Direct surface screenshots are retained in the local review workspace as `event19_overview_review_updated.png`, `event19_lots_review_updated.png`, `event19_command_review_updated.png`, `event19_anomalous_review_updated.png`, and `event19_history_review_updated.png`. Visual review found no text overflow, child-outside clipping, click-region mismatch, conflicting click region, invalid size, missing localisation, or direct-surface overlap; the authored background overlap is intentional.
+
+The MCP source graph still reports its known offline limitations: valid `player_context` scripted GUIs are classified as unknown, vanilla font metrics and some sprite aliases are not modelled, and the fixture includes unrelated Event Log diagnostics. These are tool limitations, not runtime fallbacks. No simplification, replacement art, or gameplay fallback was introduced by this tranche.
