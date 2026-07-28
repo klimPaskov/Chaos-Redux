@@ -1,0 +1,356 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 COG COSMETIC OVERLAY EFFECTS
+# ============================================================================
+# Three route-specific additive overlays share one COG carrier hook. No route
+# creates a country, transfers state 538, grants free units, or replaces COG's
+# meaningful vanilla focus tree.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-101 KONGO
+# ---------------------------------------------------------------------------
+
+independence_wave_iw101_kongo_remove_ideas = {
+	remove_ideas = {
+		independence_wave_iw101_kongo_contested_river_regency
+		independence_wave_iw101_kongo_integrated_river_authority
+		independence_wave_iw101_kongo_assembly_compact
+		independence_wave_iw101_kongo_veteran_charter
+	}
+}
+
+independence_wave_iw101_kongo_refresh_ideas = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_overlay_active = yes }
+		independence_wave_iw101_kongo_remove_ideas = yes
+		if = { limit = { has_country_flag = independence_wave_iw101_kongo_veteran_charter } add_ideas = independence_wave_iw101_kongo_veteran_charter }
+		else_if = { limit = { has_country_flag = independence_wave_iw101_kongo_assembly_compact } add_ideas = independence_wave_iw101_kongo_assembly_compact }
+		else_if = {
+			limit = {
+				check_variable = { var = independence_wave_iw101_kongo_river_logistics value = constant:independence_wave_iw101_kongo_value.settlement_threshold compare = greater_than_or_equals }
+				check_variable = { var = independence_wave_iw101_kongo_veteran_integration value = constant:independence_wave_iw101_kongo_value.settlement_threshold compare = greater_than_or_equals }
+			}
+			add_ideas = independence_wave_iw101_kongo_integrated_river_authority
+		}
+		else = { add_ideas = independence_wave_iw101_kongo_contested_river_regency }
+	}
+}
+
+independence_wave_iw101_kongo_change_values = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_overlay_active = yes }
+		add_to_variable = { independence_wave_iw101_kongo_river_logistics = independence_wave_iw101_kongo_river_delta }
+		add_to_variable = { independence_wave_iw101_kongo_regency_legitimacy = independence_wave_iw101_kongo_legitimacy_delta }
+		add_to_variable = { independence_wave_iw101_kongo_veteran_integration = independence_wave_iw101_kongo_veteran_delta }
+		clamp_variable = { var = independence_wave_iw101_kongo_river_logistics min = constant:independence_wave_iw101_kongo_value.minimum max = constant:independence_wave_iw101_kongo_value.maximum }
+		clamp_variable = { var = independence_wave_iw101_kongo_regency_legitimacy min = constant:independence_wave_iw101_kongo_value.minimum max = constant:independence_wave_iw101_kongo_value.maximum }
+		clamp_variable = { var = independence_wave_iw101_kongo_veteran_integration min = constant:independence_wave_iw101_kongo_value.minimum max = constant:independence_wave_iw101_kongo_value.maximum }
+		independence_wave_iw101_kongo_refresh_ideas = yes
+	}
+}
+
+independence_wave_iw101_kongo_pay_cabinet = {
+	add_command_power = constant:independence_wave_iw_cog_overlay_cost.cabinet_command_power_spend
+	add_manpower = constant:independence_wave_iw_cog_overlay_cost.cabinet_manpower_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.cabinet_trains_spend }
+}
+
+independence_wave_iw101_kongo_pay_depot = {
+	add_command_power = constant:independence_wave_iw_cog_overlay_cost.depot_command_power_spend
+	add_manpower = constant:independence_wave_iw_cog_overlay_cost.depot_manpower_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_trains_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_support_equipment_spend }
+}
+
+independence_wave_iw101_kongo_pay_force = {
+	add_command_power = constant:independence_wave_iw_cog_overlay_cost.force_command_power_spend
+	add_manpower = constant:independence_wave_iw_cog_overlay_cost.force_manpower_spend
+	army_experience = constant:independence_wave_iw_cog_overlay_cost.force_army_experience_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.force_infantry_equipment_spend }
+}
+
+independence_wave_iw101_kongo_pay_guard = {
+	add_command_power = constant:independence_wave_iw_cog_overlay_cost.guard_command_power_spend
+	add_manpower = constant:independence_wave_iw_cog_overlay_cost.guard_manpower_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_support_equipment_spend }
+}
+
+independence_wave_iw101_kongo_pay_charter = {
+	add_manpower = constant:independence_wave_iw_cog_overlay_cost.charter_manpower_spend
+	army_experience = constant:independence_wave_iw_cog_overlay_cost.charter_army_experience_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_support_equipment_spend }
+}
+
+independence_wave_iw101_kongo_complete_cabinet = {
+	set_country_flag = independence_wave_iw101_kongo_cabinet_convened
+	set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.cabinet_river_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw101_kongo_value.cabinet_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.cabinet_veteran_loss }
+	independence_wave_iw101_kongo_change_values = yes
+}
+
+independence_wave_iw101_kongo_complete_depot = {
+	set_country_flag = independence_wave_iw101_kongo_depots_secured
+	set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.depot_river_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw101_kongo_value.depot_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.depot_veteran_loss }
+	independence_wave_iw101_kongo_change_values = yes
+}
+
+independence_wave_iw101_kongo_complete_force = {
+	set_country_flag = independence_wave_iw101_kongo_veterans_integrated
+	set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.veteran_river_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw101_kongo_value.veteran_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.veteran_integration_gain }
+	independence_wave_iw101_kongo_change_values = yes
+	independence_wave_iw101_kongo_start_guard = yes
+}
+
+independence_wave_iw101_kongo_start_guard = {
+	independence_wave_iw101_kongo_pay_guard = yes
+	clr_country_flag = independence_wave_iw101_kongo_guard_failed
+	clr_country_flag = independence_wave_iw101_kongo_guard_interrupted
+	set_country_flag = independence_wave_iw101_kongo_guard_running
+	set_variable = { independence_wave_iw101_kongo_guard_hold_days = constant:independence_wave_iw101_kongo_value.minimum }
+	activate_mission = independence_wave_iw101_hold_kongo_river_corridor
+}
+
+independence_wave_iw101_kongo_complete_guard = {
+	set_country_flag = independence_wave_iw101_kongo_guard_completed
+	clr_country_flag = independence_wave_iw101_kongo_guard_running
+	clr_country_flag = independence_wave_iw101_kongo_guard_interrupted
+	clr_country_flag = independence_wave_iw101_kongo_guard_failed
+	set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.guard_river_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw101_kongo_value.guard_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.guard_veteran_loss }
+	independence_wave_iw101_kongo_change_values = yes
+}
+
+independence_wave_iw101_kongo_fail_guard = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_overlay_active = yes }
+		set_country_flag = independence_wave_iw101_kongo_guard_failed
+		clr_country_flag = independence_wave_iw101_kongo_guard_running
+		clr_country_flag = independence_wave_iw101_kongo_guard_interrupted
+		set_variable = { independence_wave_iw101_kongo_guard_hold_days = constant:independence_wave_iw101_kongo_value.minimum }
+		add_stability = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_stability
+		set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.minimum }
+		set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_legitimacy }
+		set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.minimum }
+		independence_wave_iw101_kongo_change_values = yes
+	}
+}
+
+independence_wave_iw101_kongo_handle_cancel = {
+	if = { limit = { is_independence_wave_iw101_kongo_route_active = yes has_country_flag = independence_wave_iw101_kongo_guard_running } independence_wave_iw101_kongo_fail_guard = yes }
+}
+
+independence_wave_iw101_kongo_choose_charter = {
+	set_country_flag = independence_wave_iw101_kongo_assembly_compact
+	set_country_flag = independence_wave_iw101_kongo_veteran_charter
+	set_temp_variable = { independence_wave_iw101_kongo_river_delta = constant:independence_wave_iw101_kongo_value.assembly_river_loss }
+	set_temp_variable = { independence_wave_iw101_kongo_legitimacy_delta = constant:independence_wave_iw101_kongo_value.assembly_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw101_kongo_veteran_delta = constant:independence_wave_iw101_kongo_value.assembly_veteran_gain }
+	independence_wave_iw101_kongo_change_values = yes
+}
+
+independence_wave_iw101_kongo_update_guard = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_overlay_active = yes has_country_flag = independence_wave_iw101_kongo_guard_running has_independence_wave_iw101_kongo_guard_objective = yes }
+		add_to_variable = { independence_wave_iw101_kongo_guard_hold_days = constant:independence_wave_iw101_kongo_value.guard_daily_gain }
+		clamp_variable = { var = independence_wave_iw101_kongo_guard_hold_days min = constant:independence_wave_iw101_kongo_value.minimum max = constant:independence_wave_iw101_kongo_value.guard_required }
+	}
+	else_if = { limit = { is_independence_wave_iw101_kongo_overlay_active = yes has_country_flag = independence_wave_iw101_kongo_guard_running } set_variable = { independence_wave_iw101_kongo_guard_hold_days = constant:independence_wave_iw101_kongo_value.minimum } }
+}
+
+independence_wave_iw101_kongo_initialize = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_route_active = yes NOT = { has_country_flag = independence_wave_iw101_kongo_overlay_ever_activated } }
+		set_country_flag = independence_wave_iw101_kongo_overlay_ever_activated
+		set_country_flag = independence_wave_iw101_kongo_package_initialized
+		set_country_flag = independence_wave_iw101_kongo_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		set_variable = { independence_wave_iw101_kongo_river_logistics = constant:independence_wave_iw101_kongo_value.river_logistics_start }
+		set_variable = { independence_wave_iw101_kongo_regency_legitimacy = constant:independence_wave_iw101_kongo_value.regency_legitimacy_start }
+		set_variable = { independence_wave_iw101_kongo_veteran_integration = constant:independence_wave_iw101_kongo_value.veteran_integration_start }
+		set_variable = { independence_wave_iw101_kongo_guard_hold_days = constant:independence_wave_iw101_kongo_value.minimum }
+		set_variable = { independence_wave_anchor_state = 538 }
+		set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.river_or_corridor }
+		set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle }
+		independence_wave_iw101_kongo_refresh_ideas = yes
+	}
+}
+
+independence_wave_iw101_kongo_suspend = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw101_kongo_overlay_active }
+		if = { limit = { has_country_flag = independence_wave_iw101_kongo_guard_running NOT = { has_country_flag = independence_wave_iw101_kongo_guard_completed } } set_country_flag = independence_wave_iw101_kongo_guard_interrupted }
+		independence_wave_iw101_kongo_remove_ideas = yes
+		clr_country_flag = independence_wave_iw101_kongo_overlay_active
+		clr_country_flag = independence_wave_route_overlay_active
+		set_country_flag = independence_wave_iw101_kongo_overlay_suspended
+	}
+}
+
+independence_wave_iw101_kongo_pause = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw101_kongo_overlay_suspended has_country_flag = independence_wave_iw101_kongo_guard_interrupted has_country_flag = independence_wave_iw101_kongo_guard_running has_active_mission = independence_wave_iw101_hold_kongo_river_corridor }
+		set_temp_variable = { independence_wave_iw101_kongo_pause_days = constant:independence_wave_iw_cog_overlay_duration.guard_pause_daily_extension }
+		add_days_mission_timeout = { mission = independence_wave_iw101_hold_kongo_river_corridor days = independence_wave_iw101_kongo_pause_days }
+	}
+}
+
+independence_wave_iw101_kongo_resume = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_route_active = yes has_country_flag = independence_wave_iw101_kongo_overlay_ever_activated NOT = { has_country_flag = independence_wave_iw101_kongo_overlay_active } }
+		set_country_flag = independence_wave_iw101_kongo_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		clr_country_flag = independence_wave_iw101_kongo_overlay_suspended
+		independence_wave_iw101_kongo_refresh_ideas = yes
+	}
+}
+
+independence_wave_iw101_kongo_refresh_overlay = {
+	if = {
+		limit = { is_independence_wave_iw101_kongo_route_active = yes }
+		if = { limit = { NOT = { has_country_flag = independence_wave_iw101_kongo_overlay_ever_activated } } independence_wave_iw101_kongo_initialize = yes }
+		else_if = { limit = { NOT = { has_country_flag = independence_wave_iw101_kongo_overlay_active } } independence_wave_iw101_kongo_resume = yes }
+		else = {
+			if = { limit = { has_country_flag = independence_wave_iw101_kongo_guard_interrupted } if = { limit = { has_country_flag = independence_wave_iw101_kongo_guard_running has_active_mission = independence_wave_iw101_hold_kongo_river_corridor } clr_country_flag = independence_wave_iw101_kongo_guard_interrupted } else = { independence_wave_iw101_kongo_fail_guard = yes } }
+			else_if = { limit = { has_country_flag = independence_wave_iw101_kongo_guard_running NOT = { has_active_mission = independence_wave_iw101_hold_kongo_river_corridor } } independence_wave_iw101_kongo_fail_guard = yes }
+			independence_wave_iw101_kongo_update_guard = yes
+			if = { limit = { NOT = { OR = { has_idea = independence_wave_iw101_kongo_contested_river_regency has_idea = independence_wave_iw101_kongo_integrated_river_authority has_idea = independence_wave_iw101_kongo_assembly_compact has_idea = independence_wave_iw101_kongo_veteran_charter } } } independence_wave_iw101_kongo_refresh_ideas = yes }
+		}
+	}
+	else = { if = { limit = { has_country_flag = independence_wave_iw101_kongo_overlay_active } independence_wave_iw101_kongo_suspend = yes } independence_wave_iw101_kongo_pause = yes }
+}
+
+# ---------------------------------------------------------------------------
+# IW-102 KUBA
+# ---------------------------------------------------------------------------
+
+independence_wave_iw102_kuba_remove_ideas = {
+	remove_ideas = {
+		independence_wave_iw102_kuba_contested_royal_council
+		independence_wave_iw102_kuba_integrated_forest_guard
+		independence_wave_iw102_kuba_council_charter
+		independence_wave_iw102_kuba_territorial_compact
+	}
+}
+
+independence_wave_iw102_kuba_refresh_ideas = {
+	if = {
+		limit = { is_independence_wave_iw102_kuba_overlay_active = yes }
+		independence_wave_iw102_kuba_remove_ideas = yes
+		if = { limit = { has_country_flag = independence_wave_iw102_kuba_territorial_compact } add_ideas = independence_wave_iw102_kuba_territorial_compact }
+		else_if = { limit = { has_country_flag = independence_wave_iw102_kuba_council_charter } add_ideas = independence_wave_iw102_kuba_council_charter }
+		else_if = {
+			limit = {
+				check_variable = { var = independence_wave_iw102_kuba_forest_mobility value = constant:independence_wave_iw102_kuba_value.settlement_threshold compare = greater_than_or_equals }
+				check_variable = { var = independence_wave_iw102_kuba_territorial_stewardship value = constant:independence_wave_iw102_kuba_value.settlement_threshold compare = greater_than_or_equals }
+			}
+			add_ideas = independence_wave_iw102_kuba_integrated_forest_guard
+		}
+		else = { add_ideas = independence_wave_iw102_kuba_contested_royal_council }
+	}
+}
+
+independence_wave_iw102_kuba_change_values = {
+	if = {
+		limit = { is_independence_wave_iw102_kuba_overlay_active = yes }
+		add_to_variable = { independence_wave_iw102_kuba_forest_mobility = independence_wave_iw102_kuba_forest_delta }
+		add_to_variable = { independence_wave_iw102_kuba_royal_council_legitimacy = independence_wave_iw102_kuba_legitimacy_delta }
+		add_to_variable = { independence_wave_iw102_kuba_territorial_stewardship = independence_wave_iw102_kuba_stewardship_delta }
+		clamp_variable = { var = independence_wave_iw102_kuba_forest_mobility min = constant:independence_wave_iw102_kuba_value.minimum max = constant:independence_wave_iw102_kuba_value.maximum }
+		clamp_variable = { var = independence_wave_iw102_kuba_royal_council_legitimacy min = constant:independence_wave_iw102_kuba_value.minimum max = constant:independence_wave_iw102_kuba_value.maximum }
+		clamp_variable = { var = independence_wave_iw102_kuba_territorial_stewardship min = constant:independence_wave_iw102_kuba_value.minimum max = constant:independence_wave_iw102_kuba_value.maximum }
+		independence_wave_iw102_kuba_refresh_ideas = yes
+	}
+}
+
+independence_wave_iw102_kuba_pay_cabinet = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.cabinet_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.cabinet_manpower_spend add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.cabinet_trains_spend } }
+independence_wave_iw102_kuba_pay_depot = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.depot_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.depot_manpower_spend add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_trains_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_support_equipment_spend } }
+independence_wave_iw102_kuba_pay_force = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.force_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.force_manpower_spend army_experience = constant:independence_wave_iw_cog_overlay_cost.force_army_experience_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.force_infantry_equipment_spend } }
+independence_wave_iw102_kuba_pay_guard = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.guard_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.guard_manpower_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_infantry_equipment_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_support_equipment_spend } }
+independence_wave_iw102_kuba_pay_charter = { add_manpower = constant:independence_wave_iw_cog_overlay_cost.charter_manpower_spend army_experience = constant:independence_wave_iw_cog_overlay_cost.charter_army_experience_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_infantry_equipment_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_support_equipment_spend } }
+
+independence_wave_iw102_kuba_complete_cabinet = { set_country_flag = independence_wave_iw102_kuba_council_convened set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.council_forest_gain } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw102_kuba_value.council_legitimacy_gain } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.council_stewardship_loss } independence_wave_iw102_kuba_change_values = yes }
+independence_wave_iw102_kuba_complete_depot = { set_country_flag = independence_wave_iw102_kuba_depots_secured set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.depot_forest_gain } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw102_kuba_value.depot_legitimacy_gain } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.depot_stewardship_loss } independence_wave_iw102_kuba_change_values = yes }
+independence_wave_iw102_kuba_start_guard = { independence_wave_iw102_kuba_pay_guard = yes clr_country_flag = independence_wave_iw102_kuba_guard_failed clr_country_flag = independence_wave_iw102_kuba_guard_interrupted set_country_flag = independence_wave_iw102_kuba_guard_running set_variable = { independence_wave_iw102_kuba_guard_hold_days = constant:independence_wave_iw102_kuba_value.minimum } activate_mission = independence_wave_iw102_hold_kuba_forest_anchor }
+independence_wave_iw102_kuba_complete_guard = { set_country_flag = independence_wave_iw102_kuba_guard_completed clr_country_flag = independence_wave_iw102_kuba_guard_running clr_country_flag = independence_wave_iw102_kuba_guard_interrupted clr_country_flag = independence_wave_iw102_kuba_guard_failed set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.guard_forest_gain } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw102_kuba_value.guard_legitimacy_gain } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.guard_stewardship_gain } independence_wave_iw102_kuba_change_values = yes }
+independence_wave_iw102_kuba_fail_guard = { if = { limit = { is_independence_wave_iw102_kuba_overlay_active = yes } set_country_flag = independence_wave_iw102_kuba_guard_failed clr_country_flag = independence_wave_iw102_kuba_guard_running clr_country_flag = independence_wave_iw102_kuba_guard_interrupted set_variable = { independence_wave_iw102_kuba_guard_hold_days = constant:independence_wave_iw102_kuba_value.minimum } add_stability = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_stability set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.minimum } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_legitimacy } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.minimum } independence_wave_iw102_kuba_change_values = yes } }
+independence_wave_iw102_kuba_handle_cancel = { if = { limit = { is_independence_wave_iw102_kuba_route_active = yes has_country_flag = independence_wave_iw102_kuba_guard_running } independence_wave_iw102_kuba_fail_guard = yes } }
+independence_wave_iw102_kuba_complete_force = { set_country_flag = independence_wave_iw102_kuba_forest_guard_integrated set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.mission_forest_gain } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw102_kuba_value.mission_legitimacy_gain } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.mission_stewardship_loss } independence_wave_iw102_kuba_change_values = yes independence_wave_iw102_kuba_start_guard = yes }
+independence_wave_iw102_kuba_choose_charter = { set_country_flag = independence_wave_iw102_kuba_council_charter set_country_flag = independence_wave_iw102_kuba_territorial_compact set_temp_variable = { independence_wave_iw102_kuba_forest_delta = constant:independence_wave_iw102_kuba_value.charter_forest_loss } set_temp_variable = { independence_wave_iw102_kuba_legitimacy_delta = constant:independence_wave_iw102_kuba_value.charter_legitimacy_gain } set_temp_variable = { independence_wave_iw102_kuba_stewardship_delta = constant:independence_wave_iw102_kuba_value.charter_stewardship_gain } independence_wave_iw102_kuba_change_values = yes }
+independence_wave_iw102_kuba_update_guard = { if = { limit = { is_independence_wave_iw102_kuba_overlay_active = yes has_country_flag = independence_wave_iw102_kuba_guard_running has_independence_wave_iw102_kuba_guard_objective = yes } add_to_variable = { independence_wave_iw102_kuba_guard_hold_days = constant:independence_wave_iw102_kuba_value.guard_daily_gain } clamp_variable = { var = independence_wave_iw102_kuba_guard_hold_days min = constant:independence_wave_iw102_kuba_value.minimum max = constant:independence_wave_iw102_kuba_value.guard_required } } else_if = { limit = { is_independence_wave_iw102_kuba_overlay_active = yes has_country_flag = independence_wave_iw102_kuba_guard_running } set_variable = { independence_wave_iw102_kuba_guard_hold_days = constant:independence_wave_iw102_kuba_value.minimum } } }
+independence_wave_iw102_kuba_initialize = { if = { limit = { is_independence_wave_iw102_kuba_route_active = yes NOT = { has_country_flag = independence_wave_iw102_kuba_overlay_ever_activated } } set_country_flag = independence_wave_iw102_kuba_overlay_ever_activated set_country_flag = independence_wave_iw102_kuba_package_initialized set_country_flag = independence_wave_iw102_kuba_overlay_active set_country_flag = independence_wave_route_overlay_active set_variable = { independence_wave_iw102_kuba_forest_mobility = constant:independence_wave_iw102_kuba_value.forest_mobility_start } set_variable = { independence_wave_iw102_kuba_royal_council_legitimacy = constant:independence_wave_iw102_kuba_value.royal_council_legitimacy_start } set_variable = { independence_wave_iw102_kuba_territorial_stewardship = constant:independence_wave_iw102_kuba_value.territorial_stewardship_start } set_variable = { independence_wave_iw102_kuba_guard_hold_days = constant:independence_wave_iw102_kuba_value.minimum } set_variable = { independence_wave_anchor_state = 538 } set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.river_or_corridor } set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.river_jungle } independence_wave_iw102_kuba_refresh_ideas = yes } }
+independence_wave_iw102_kuba_suspend = { if = { limit = { has_country_flag = independence_wave_iw102_kuba_overlay_active } if = { limit = { has_country_flag = independence_wave_iw102_kuba_guard_running NOT = { has_country_flag = independence_wave_iw102_kuba_guard_completed } } set_country_flag = independence_wave_iw102_kuba_guard_interrupted } independence_wave_iw102_kuba_remove_ideas = yes clr_country_flag = independence_wave_iw102_kuba_overlay_active clr_country_flag = independence_wave_route_overlay_active set_country_flag = independence_wave_iw102_kuba_overlay_suspended } }
+independence_wave_iw102_kuba_pause = { if = { limit = { has_country_flag = independence_wave_iw102_kuba_overlay_suspended has_country_flag = independence_wave_iw102_kuba_guard_interrupted has_country_flag = independence_wave_iw102_kuba_guard_running has_active_mission = independence_wave_iw102_hold_kuba_forest_anchor } set_temp_variable = { independence_wave_iw102_kuba_pause_days = constant:independence_wave_iw_cog_overlay_duration.guard_pause_daily_extension } add_days_mission_timeout = { mission = independence_wave_iw102_hold_kuba_forest_anchor days = independence_wave_iw102_kuba_pause_days } } }
+independence_wave_iw102_kuba_resume = { if = { limit = { is_independence_wave_iw102_kuba_route_active = yes has_country_flag = independence_wave_iw102_kuba_overlay_ever_activated NOT = { has_country_flag = independence_wave_iw102_kuba_overlay_active } } set_country_flag = independence_wave_iw102_kuba_overlay_active set_country_flag = independence_wave_route_overlay_active clr_country_flag = independence_wave_iw102_kuba_overlay_suspended independence_wave_iw102_kuba_refresh_ideas = yes } }
+independence_wave_iw102_kuba_refresh_overlay = { if = { limit = { is_independence_wave_iw102_kuba_route_active = yes } if = { limit = { NOT = { has_country_flag = independence_wave_iw102_kuba_overlay_ever_activated } } independence_wave_iw102_kuba_initialize = yes } else_if = { limit = { NOT = { has_country_flag = independence_wave_iw102_kuba_overlay_active } } independence_wave_iw102_kuba_resume = yes } else = { if = { limit = { has_country_flag = independence_wave_iw102_kuba_guard_interrupted } if = { limit = { has_country_flag = independence_wave_iw102_kuba_guard_running has_active_mission = independence_wave_iw102_hold_kuba_forest_anchor } clr_country_flag = independence_wave_iw102_kuba_guard_interrupted } else = { independence_wave_iw102_kuba_fail_guard = yes } } else_if = { limit = { has_country_flag = independence_wave_iw102_kuba_guard_running NOT = { has_active_mission = independence_wave_iw102_hold_kuba_forest_anchor } } independence_wave_iw102_kuba_fail_guard = yes } independence_wave_iw102_kuba_update_guard = yes if = { limit = { NOT = { OR = { has_idea = independence_wave_iw102_kuba_contested_royal_council has_idea = independence_wave_iw102_kuba_integrated_forest_guard has_idea = independence_wave_iw102_kuba_council_charter has_idea = independence_wave_iw102_kuba_territorial_compact } } } independence_wave_iw102_kuba_refresh_ideas = yes } } } else = { if = { limit = { has_country_flag = independence_wave_iw102_kuba_overlay_active } independence_wave_iw102_kuba_suspend = yes } independence_wave_iw102_kuba_pause = yes } }
+
+# ---------------------------------------------------------------------------
+# IW-105 LOANGO
+# ---------------------------------------------------------------------------
+
+independence_wave_iw105_loango_remove_ideas = {
+	remove_ideas = {
+		independence_wave_iw105_loango_contested_coastal_regency
+		independence_wave_iw105_loango_integrated_port_authority
+		independence_wave_iw105_loango_assembly_compact
+		independence_wave_iw105_loango_coastal_charter
+	}
+}
+
+independence_wave_iw105_loango_refresh_ideas = {
+	if = {
+		limit = { is_independence_wave_iw105_loango_overlay_active = yes }
+		independence_wave_iw105_loango_remove_ideas = yes
+		if = { limit = { has_country_flag = independence_wave_iw105_loango_coastal_charter } add_ideas = independence_wave_iw105_loango_coastal_charter }
+		else_if = { limit = { has_country_flag = independence_wave_iw105_loango_assembly_compact } add_ideas = independence_wave_iw105_loango_assembly_compact }
+		else_if = {
+			limit = {
+				check_variable = { var = independence_wave_iw105_loango_coastal_logistics value = constant:independence_wave_iw105_loango_value.settlement_threshold compare = greater_than_or_equals }
+				check_variable = { var = independence_wave_iw105_loango_port_security value = constant:independence_wave_iw105_loango_value.settlement_threshold compare = greater_than_or_equals }
+			}
+			add_ideas = independence_wave_iw105_loango_integrated_port_authority
+		}
+		else = { add_ideas = independence_wave_iw105_loango_contested_coastal_regency }
+	}
+}
+
+independence_wave_iw105_loango_change_values = {
+	if = {
+		limit = { is_independence_wave_iw105_loango_overlay_active = yes }
+		add_to_variable = { independence_wave_iw105_loango_coastal_logistics = independence_wave_iw105_loango_coastal_delta }
+		add_to_variable = { independence_wave_iw105_loango_regency_legitimacy = independence_wave_iw105_loango_legitimacy_delta }
+		add_to_variable = { independence_wave_iw105_loango_port_security = independence_wave_iw105_loango_security_delta }
+		clamp_variable = { var = independence_wave_iw105_loango_coastal_logistics min = constant:independence_wave_iw105_loango_value.minimum max = constant:independence_wave_iw105_loango_value.maximum }
+		clamp_variable = { var = independence_wave_iw105_loango_regency_legitimacy min = constant:independence_wave_iw105_loango_value.minimum max = constant:independence_wave_iw105_loango_value.maximum }
+		clamp_variable = { var = independence_wave_iw105_loango_port_security min = constant:independence_wave_iw105_loango_value.minimum max = constant:independence_wave_iw105_loango_value.maximum }
+		independence_wave_iw105_loango_refresh_ideas = yes
+	}
+}
+
+independence_wave_iw105_loango_pay_cabinet = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.cabinet_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.cabinet_manpower_spend add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.cabinet_trains_spend } }
+independence_wave_iw105_loango_pay_depot = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.depot_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.depot_manpower_spend add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_trains_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.depot_support_equipment_spend } }
+independence_wave_iw105_loango_pay_force = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.force_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.force_manpower_spend army_experience = constant:independence_wave_iw_cog_overlay_cost.force_army_experience_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.force_infantry_equipment_spend } }
+independence_wave_iw105_loango_pay_guard = { add_command_power = constant:independence_wave_iw_cog_overlay_cost.guard_command_power_spend add_manpower = constant:independence_wave_iw_cog_overlay_cost.guard_manpower_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_infantry_equipment_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.guard_support_equipment_spend } }
+independence_wave_iw105_loango_pay_charter = { add_manpower = constant:independence_wave_iw_cog_overlay_cost.charter_manpower_spend army_experience = constant:independence_wave_iw_cog_overlay_cost.charter_army_experience_spend add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_infantry_equipment_spend } add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw_cog_overlay_cost.charter_support_equipment_spend } }
+
+independence_wave_iw105_loango_complete_cabinet = { set_country_flag = independence_wave_iw105_loango_cabinet_convened set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.cabinet_coastal_gain } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw105_loango_value.cabinet_legitimacy_gain } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.cabinet_security_loss } independence_wave_iw105_loango_change_values = yes }
+independence_wave_iw105_loango_complete_depot = { set_country_flag = independence_wave_iw105_loango_depots_secured set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.depot_coastal_gain } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw105_loango_value.depot_legitimacy_gain } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.depot_security_loss } independence_wave_iw105_loango_change_values = yes }
+independence_wave_iw105_loango_start_guard = { independence_wave_iw105_loango_pay_guard = yes clr_country_flag = independence_wave_iw105_loango_guard_failed clr_country_flag = independence_wave_iw105_loango_guard_interrupted set_country_flag = independence_wave_iw105_loango_guard_running set_variable = { independence_wave_iw105_loango_guard_hold_days = constant:independence_wave_iw105_loango_value.minimum } activate_mission = independence_wave_iw105_hold_loango_port_guard }
+independence_wave_iw105_loango_complete_guard = { set_country_flag = independence_wave_iw105_loango_guard_completed clr_country_flag = independence_wave_iw105_loango_guard_running clr_country_flag = independence_wave_iw105_loango_guard_interrupted clr_country_flag = independence_wave_iw105_loango_guard_failed set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.guard_coastal_gain } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw105_loango_value.guard_legitimacy_gain } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.guard_security_gain } independence_wave_iw105_loango_change_values = yes }
+independence_wave_iw105_loango_fail_guard = { if = { limit = { is_independence_wave_iw105_loango_overlay_active = yes } set_country_flag = independence_wave_iw105_loango_guard_failed clr_country_flag = independence_wave_iw105_loango_guard_running clr_country_flag = independence_wave_iw105_loango_guard_interrupted set_variable = { independence_wave_iw105_loango_guard_hold_days = constant:independence_wave_iw105_loango_value.minimum } add_stability = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_stability set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.minimum } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw_cog_overlay_outcome.guard_failure_legitimacy } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.minimum } independence_wave_iw105_loango_change_values = yes } }
+independence_wave_iw105_loango_handle_cancel = { if = { limit = { is_independence_wave_iw105_loango_route_active = yes has_country_flag = independence_wave_iw105_loango_guard_running } independence_wave_iw105_loango_fail_guard = yes } }
+independence_wave_iw105_loango_complete_force = { set_country_flag = independence_wave_iw105_loango_guards_integrated set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.mission_coastal_gain } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw105_loango_value.mission_legitimacy_gain } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.mission_security_loss } independence_wave_iw105_loango_change_values = yes independence_wave_iw105_loango_start_guard = yes }
+independence_wave_iw105_loango_choose_charter = { set_country_flag = independence_wave_iw105_loango_assembly_compact set_country_flag = independence_wave_iw105_loango_coastal_charter set_temp_variable = { independence_wave_iw105_loango_coastal_delta = constant:independence_wave_iw105_loango_value.charter_coastal_loss } set_temp_variable = { independence_wave_iw105_loango_legitimacy_delta = constant:independence_wave_iw105_loango_value.charter_legitimacy_gain } set_temp_variable = { independence_wave_iw105_loango_security_delta = constant:independence_wave_iw105_loango_value.charter_security_gain } independence_wave_iw105_loango_change_values = yes }
+independence_wave_iw105_loango_update_guard = { if = { limit = { is_independence_wave_iw105_loango_overlay_active = yes has_country_flag = independence_wave_iw105_loango_guard_running has_independence_wave_iw105_loango_guard_objective = yes } add_to_variable = { independence_wave_iw105_loango_guard_hold_days = constant:independence_wave_iw105_loango_value.guard_daily_gain } clamp_variable = { var = independence_wave_iw105_loango_guard_hold_days min = constant:independence_wave_iw105_loango_value.minimum max = constant:independence_wave_iw105_loango_value.guard_required } } else_if = { limit = { is_independence_wave_iw105_loango_overlay_active = yes has_country_flag = independence_wave_iw105_loango_guard_running } set_variable = { independence_wave_iw105_loango_guard_hold_days = constant:independence_wave_iw105_loango_value.minimum } } }
+independence_wave_iw105_loango_initialize = { if = { limit = { is_independence_wave_iw105_loango_route_active = yes NOT = { has_country_flag = independence_wave_iw105_loango_overlay_ever_activated } } set_country_flag = independence_wave_iw105_loango_overlay_ever_activated set_country_flag = independence_wave_iw105_loango_package_initialized set_country_flag = independence_wave_iw105_loango_overlay_active set_country_flag = independence_wave_route_overlay_active set_variable = { independence_wave_iw105_loango_coastal_logistics = constant:independence_wave_iw105_loango_value.coastal_logistics_start } set_variable = { independence_wave_iw105_loango_regency_legitimacy = constant:independence_wave_iw105_loango_value.regency_legitimacy_start } set_variable = { independence_wave_iw105_loango_port_security = constant:independence_wave_iw105_loango_value.port_security_start } set_variable = { independence_wave_iw105_loango_guard_hold_days = constant:independence_wave_iw105_loango_value.minimum } set_variable = { independence_wave_anchor_state = 538 } set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.coastal_maritime } set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.coastal_maritime } independence_wave_iw105_loango_refresh_ideas = yes } }
+independence_wave_iw105_loango_suspend = { if = { limit = { has_country_flag = independence_wave_iw105_loango_overlay_active } if = { limit = { has_country_flag = independence_wave_iw105_loango_guard_running NOT = { has_country_flag = independence_wave_iw105_loango_guard_completed } } set_country_flag = independence_wave_iw105_loango_guard_interrupted } independence_wave_iw105_loango_remove_ideas = yes clr_country_flag = independence_wave_iw105_loango_overlay_active clr_country_flag = independence_wave_route_overlay_active set_country_flag = independence_wave_iw105_loango_overlay_suspended } }
+independence_wave_iw105_loango_pause = { if = { limit = { has_country_flag = independence_wave_iw105_loango_overlay_suspended has_country_flag = independence_wave_iw105_loango_guard_interrupted has_country_flag = independence_wave_iw105_loango_guard_running has_active_mission = independence_wave_iw105_hold_loango_port_guard } set_temp_variable = { independence_wave_iw105_loango_pause_days = constant:independence_wave_iw_cog_overlay_duration.guard_pause_daily_extension } add_days_mission_timeout = { mission = independence_wave_iw105_hold_loango_port_guard days = independence_wave_iw105_loango_pause_days } } }
+independence_wave_iw105_loango_resume = { if = { limit = { is_independence_wave_iw105_loango_route_active = yes has_country_flag = independence_wave_iw105_loango_overlay_ever_activated NOT = { has_country_flag = independence_wave_iw105_loango_overlay_active } } set_country_flag = independence_wave_iw105_loango_overlay_active set_country_flag = independence_wave_route_overlay_active clr_country_flag = independence_wave_iw105_loango_overlay_suspended independence_wave_iw105_loango_refresh_ideas = yes } }
+independence_wave_iw105_loango_refresh_overlay = { if = { limit = { is_independence_wave_iw105_loango_route_active = yes } if = { limit = { NOT = { has_country_flag = independence_wave_iw105_loango_overlay_ever_activated } } independence_wave_iw105_loango_initialize = yes } else_if = { limit = { NOT = { has_country_flag = independence_wave_iw105_loango_overlay_active } } independence_wave_iw105_loango_resume = yes } else = { if = { limit = { has_country_flag = independence_wave_iw105_loango_guard_interrupted } if = { limit = { has_country_flag = independence_wave_iw105_loango_guard_running has_active_mission = independence_wave_iw105_hold_loango_port_guard } clr_country_flag = independence_wave_iw105_loango_guard_interrupted } else = { independence_wave_iw105_loango_fail_guard = yes } } else_if = { limit = { has_country_flag = independence_wave_iw105_loango_guard_running NOT = { has_active_mission = independence_wave_iw105_hold_loango_port_guard } } independence_wave_iw105_loango_fail_guard = yes } independence_wave_iw105_loango_update_guard = yes if = { limit = { NOT = { OR = { has_idea = independence_wave_iw105_loango_contested_coastal_regency has_idea = independence_wave_iw105_loango_integrated_port_authority has_idea = independence_wave_iw105_loango_assembly_compact has_idea = independence_wave_iw105_loango_coastal_charter } } } independence_wave_iw105_loango_refresh_ideas = yes } } } else = { if = { limit = { has_country_flag = independence_wave_iw105_loango_overlay_active } independence_wave_iw105_loango_suspend = yes } independence_wave_iw105_loango_pause = yes } }
