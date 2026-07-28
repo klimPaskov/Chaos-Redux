@@ -66,6 +66,7 @@ EVENT6_FORMABLE_COSMETIC_IDENTITIES = {
 	"RLX": ("FORM-04", "Rhenish League"),
 	"MIX": ("FORM-05", "Mediterranean Island League"),
 	"PFX": ("FORM-48", "Pacific Regional Federation"),
+	"MFX": ("FORM-39", "Melanesian Federation"),
 }
 REQUIRED_MANUAL_IDENTITY_PACKAGES = {
 	"IW-011",
