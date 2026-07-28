@@ -1161,32 +1161,50 @@ air_winter_apply_phase_modifier = {
 	air_winter_clear_phase_modifiers = yes
 	set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero }
 	if = {
-		limit = { air_winter_is_phase_1 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_1 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_1_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_1 }
 	}
 	else_if = {
-		limit = { air_winter_is_phase_2 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_2 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_2_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_2 }
 	}
 	else_if = {
-		limit = { air_winter_is_phase_3 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_3 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_3_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_3 }
 	}
 	else_if = {
-		limit = { air_winter_is_phase_4 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_4 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_4_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_4 }
 	}
 	else_if = {
-		limit = { air_winter_is_phase_5 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_5 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_5_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_5 }
 	}
 	else_if = {
-		limit = { air_winter_is_phase_6 = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_is_phase_6 = yes
+		}
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_phase_6_modifier.local_supplies }
 		add_dynamic_modifier = { modifier = air_winter_phase_6 }
 	}
@@ -1411,13 +1429,17 @@ air_winter_update_building_damage = {
 	multiply_temp_variable = { air_winter_building_reclamation = constant:air_winter_building_damage.reclamation_reduction }
 
 	if = {
-		limit = { check_variable = { air_winter_building_pressure_delta > constant:air_winter_runtime.zero } }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			check_variable = { air_winter_building_pressure_delta > constant:air_winter_runtime.zero }
+		}
 		subtract_from_temp_variable = { air_winter_building_pressure_delta = air_winter_building_adaptation }
 		subtract_from_temp_variable = { air_winter_building_pressure_delta = air_winter_building_reclamation }
 		clamp_temp_variable = { var = air_winter_building_pressure_delta min = constant:air_winter_runtime.zero }
 		add_to_variable = { air_winter_building_damage_pressure = air_winter_building_pressure_delta }
 	}
-	else = {
+	else_if = {
+		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
 		set_temp_variable = { air_winter_building_recovery = air_winter_building_reclamation }
 		add_to_temp_variable = { air_winter_building_recovery = air_winter_building_adaptation }
 		subtract_from_variable = { air_winter_building_damage_pressure = air_winter_building_recovery }
@@ -1429,7 +1451,10 @@ air_winter_update_building_damage = {
 	}
 
 	if = {
-		limit = { air_winter_building_damage_is_ready = yes }
+		limit = {
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			air_winter_building_damage_is_ready = yes
+		}
 		set_temp_variable = { air_winter_building_damage_amount = constant:air_winter_building_damage.damage_phase_3 }
 		if = { limit = { air_winter_is_phase_4 = yes } set_temp_variable = { air_winter_building_damage_amount = constant:air_winter_building_damage.damage_phase_4 } }
 		else_if = { limit = { air_winter_is_phase_5 = yes } set_temp_variable = { air_winter_building_damage_amount = constant:air_winter_building_damage.damage_phase_5 } }
