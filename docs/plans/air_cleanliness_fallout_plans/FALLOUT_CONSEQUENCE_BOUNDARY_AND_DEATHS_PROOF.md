@@ -19,6 +19,7 @@ The standard path sets `fallout_air_cleanliness_disabled` in `fallout_queue_requ
 Static consumers of the flag are:
 
 - `air_winter_system_enabled` and `air_winter_event_targets_are_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`.
+- `air_winter_response_target_is_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`, which rejects already-open terminal response events after request-time shutdown.
 - `air_winter_event_apply_deaths` in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`.
 - `air_contamination_monthly_update` in `common/scripted_effects/chaos_meter_effects.txt`.
 - `air_contamination_apply_delta_bp` and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
@@ -29,6 +30,8 @@ Static consumers of the flag are:
 The monthly pass no longer starts or updates Air Winter after the flag. `air_winter_suspend_all_states_for_fallout` runs once at the lock, removes registered country operations, state phase, disease, railway, airbase, response-project, and pending-event effects, removes regional entities and the normal-map proof entity, preserves the last valid Air Winter phase and survival ledgers for the historical mapmode, then records `fallout_air_winter_shutdown_complete`. Natural source reservoir and pulse are zeroed. Later contamination deltas are ignored. Existing global Air Cleanliness state modifiers and country pressure ideas are cleared. Treaty operations pause and new membership or invitation surfaces fail their eligibility checks.
 
 Cleaning Day start and delayed-project validity now also check `fallout_air_cleanliness_disabled` directly. A project that was opened before a Fallout request cannot reduce Air Contamination after request-time shutdown, even before the transition lock or host pause pulse is observed.
+
+Pending Air Winter terminal responses use the same durable guard. Abandonment and decontamination result events therefore fall into their stale-choice recovery path after request admission instead of changing state ledgers, country effects, or population loss.
 
 The Final Silence handoff trigger rejects the same durable flag, so a predecessor cannot reopen the Air coordinator after Fallout request admission.
 
