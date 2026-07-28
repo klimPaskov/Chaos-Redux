@@ -1,0 +1,254 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-085 CYRENAICA OVERLAY EFFECTS
+# ============================================================================
+# Additive mechanics for the vanilla LBA Italian-autonomy identity. The route
+# preserves Libyan history, cores, leaders, and the existing focus tree.
+# ============================================================================
+
+independence_wave_iw085_cyrenaica_remove_overlay_ideas = {
+	remove_ideas = {
+		independence_wave_iw085_cyrenaica_contested_regency
+		independence_wave_iw085_cyrenaica_desert_regency
+		independence_wave_iw085_cyrenaica_assembly_compact
+		independence_wave_iw085_cyrenaica_coastal_defense_charter
+	}
+}
+
+independence_wave_iw085_cyrenaica_refresh_idea_lifecycle = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_overlay_active = yes }
+		independence_wave_iw085_cyrenaica_remove_overlay_ideas = yes
+		if = {
+			limit = { has_country_flag = independence_wave_iw085_cyrenaica_assembly_compact }
+			add_ideas = independence_wave_iw085_cyrenaica_assembly_compact
+		}
+		else_if = {
+			limit = { has_country_flag = independence_wave_iw085_cyrenaica_coastal_defense_charter }
+			add_ideas = independence_wave_iw085_cyrenaica_coastal_defense_charter
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_iw085_cyrenaica_desert_mobility
+					value = constant:independence_wave_iw085_cyrenaica_value.settlement_threshold
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = independence_wave_iw085_cyrenaica_regency_legitimacy
+					value = constant:independence_wave_iw085_cyrenaica_value.settlement_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			add_ideas = independence_wave_iw085_cyrenaica_desert_regency
+		}
+		else = { add_ideas = independence_wave_iw085_cyrenaica_contested_regency }
+	}
+}
+
+independence_wave_iw085_cyrenaica_change_values = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_overlay_active = yes }
+		add_to_variable = { independence_wave_iw085_cyrenaica_desert_mobility = independence_wave_iw085_cyrenaica_mobility_delta }
+		add_to_variable = { independence_wave_iw085_cyrenaica_regency_legitimacy = independence_wave_iw085_cyrenaica_legitimacy_delta }
+		add_to_variable = { independence_wave_iw085_cyrenaica_coastal_security = independence_wave_iw085_cyrenaica_security_delta }
+		clamp_variable = { var = independence_wave_iw085_cyrenaica_desert_mobility min = constant:independence_wave_iw085_cyrenaica_value.minimum max = constant:independence_wave_iw085_cyrenaica_value.maximum }
+		clamp_variable = { var = independence_wave_iw085_cyrenaica_regency_legitimacy min = constant:independence_wave_iw085_cyrenaica_value.minimum max = constant:independence_wave_iw085_cyrenaica_value.maximum }
+		clamp_variable = { var = independence_wave_iw085_cyrenaica_coastal_security min = constant:independence_wave_iw085_cyrenaica_value.minimum max = constant:independence_wave_iw085_cyrenaica_value.maximum }
+		independence_wave_iw085_cyrenaica_refresh_idea_lifecycle = yes
+	}
+}
+
+independence_wave_iw085_cyrenaica_pay_regency_cost = {
+	add_command_power = constant:independence_wave_iw085_cyrenaica_cost.regency_command_power_spend
+	add_manpower = constant:independence_wave_iw085_cyrenaica_cost.regency_manpower_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.regency_trains_spend }
+}
+
+independence_wave_iw085_cyrenaica_pay_oasis_cost = {
+	add_command_power = constant:independence_wave_iw085_cyrenaica_cost.oasis_command_power_spend
+	add_manpower = constant:independence_wave_iw085_cyrenaica_cost.oasis_manpower_spend
+	add_equipment_to_stockpile = { type = motorized_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.oasis_trucks_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.oasis_support_equipment_spend }
+}
+
+independence_wave_iw085_cyrenaica_pay_cavalry_cost = {
+	add_command_power = constant:independence_wave_iw085_cyrenaica_cost.cavalry_command_power_spend
+	add_manpower = constant:independence_wave_iw085_cyrenaica_cost.cavalry_manpower_spend
+	army_experience = constant:independence_wave_iw085_cyrenaica_cost.cavalry_army_experience_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.cavalry_infantry_equipment_spend }
+}
+
+independence_wave_iw085_cyrenaica_pay_guard_cost = {
+	add_command_power = constant:independence_wave_iw085_cyrenaica_cost.guard_command_power_spend
+	add_manpower = constant:independence_wave_iw085_cyrenaica_cost.guard_manpower_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.guard_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.guard_support_equipment_spend }
+}
+
+independence_wave_iw085_cyrenaica_pay_assembly_cost = {
+	add_manpower = constant:independence_wave_iw085_cyrenaica_cost.assembly_manpower_spend
+	army_experience = constant:independence_wave_iw085_cyrenaica_cost.assembly_army_experience_spend
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.assembly_infantry_equipment_spend }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:independence_wave_iw085_cyrenaica_cost.assembly_support_equipment_spend }
+}
+
+independence_wave_iw085_cyrenaica_complete_regency = {
+	set_country_flag = independence_wave_iw085_cyrenaica_regency_cabinet_convened
+	set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.regency_mobility_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_value.regency_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.regency_security_loss }
+	independence_wave_iw085_cyrenaica_change_values = yes
+}
+
+independence_wave_iw085_cyrenaica_complete_oasis = {
+	set_country_flag = independence_wave_iw085_cyrenaica_oasis_depots_secured
+	set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.oasis_mobility_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_value.oasis_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.oasis_security_loss }
+	independence_wave_iw085_cyrenaica_change_values = yes
+}
+
+independence_wave_iw085_cyrenaica_complete_cavalry = {
+	set_country_flag = independence_wave_iw085_cyrenaica_cavalry_integrated
+	set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.cavalry_mobility_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_value.cavalry_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.cavalry_security_loss }
+	independence_wave_iw085_cyrenaica_change_values = yes
+}
+
+independence_wave_iw085_cyrenaica_start_guard_mission = {
+	independence_wave_iw085_cyrenaica_pay_guard_cost = yes
+	clr_country_flag = independence_wave_iw085_cyrenaica_guard_failed
+	clr_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted
+	set_country_flag = independence_wave_iw085_cyrenaica_guard_running
+	set_variable = { independence_wave_iw085_cyrenaica_guard_hold_days = constant:independence_wave_iw085_cyrenaica_value.minimum }
+	activate_mission = independence_wave_iw085_hold_cyrenaica_coastal_guard
+}
+
+independence_wave_iw085_cyrenaica_complete_guard_mission = {
+	set_country_flag = independence_wave_iw085_cyrenaica_guard_completed
+	clr_country_flag = independence_wave_iw085_cyrenaica_guard_running
+	clr_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted
+	clr_country_flag = independence_wave_iw085_cyrenaica_guard_failed
+	set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.guard_mobility_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_value.guard_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.guard_security_gain }
+	independence_wave_iw085_cyrenaica_change_values = yes
+}
+
+independence_wave_iw085_cyrenaica_fail_guard_mission = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_overlay_active = yes }
+		set_country_flag = independence_wave_iw085_cyrenaica_guard_failed
+		clr_country_flag = independence_wave_iw085_cyrenaica_guard_running
+		clr_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted
+		set_variable = { independence_wave_iw085_cyrenaica_guard_hold_days = constant:independence_wave_iw085_cyrenaica_value.minimum }
+		add_stability = constant:independence_wave_iw085_cyrenaica_outcome.guard_failure_stability
+		set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.minimum }
+		set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_outcome.guard_failure_legitimacy }
+		set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.minimum }
+		independence_wave_iw085_cyrenaica_change_values = yes
+	}
+}
+
+independence_wave_iw085_cyrenaica_handle_guard_cancel = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_route_active = yes has_country_flag = independence_wave_iw085_cyrenaica_guard_running }
+		independence_wave_iw085_cyrenaica_fail_guard_mission = yes
+	}
+}
+
+independence_wave_iw085_cyrenaica_choose_assembly = {
+	set_country_flag = independence_wave_iw085_cyrenaica_assembly_compact
+	set_country_flag = independence_wave_iw085_cyrenaica_coastal_defense_charter
+	set_temp_variable = { independence_wave_iw085_cyrenaica_mobility_delta = constant:independence_wave_iw085_cyrenaica_value.assembly_mobility_loss }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_legitimacy_delta = constant:independence_wave_iw085_cyrenaica_value.assembly_legitimacy_gain }
+	set_temp_variable = { independence_wave_iw085_cyrenaica_security_delta = constant:independence_wave_iw085_cyrenaica_value.assembly_security_gain }
+	independence_wave_iw085_cyrenaica_change_values = yes
+}
+
+independence_wave_iw085_cyrenaica_update_guard_hold = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_overlay_active = yes has_country_flag = independence_wave_iw085_cyrenaica_guard_running has_independence_wave_iw085_cyrenaica_guard_objective = yes }
+		add_to_variable = { independence_wave_iw085_cyrenaica_guard_hold_days = constant:independence_wave_iw085_cyrenaica_value.guard_daily_gain }
+		clamp_variable = { var = independence_wave_iw085_cyrenaica_guard_hold_days min = constant:independence_wave_iw085_cyrenaica_value.minimum max = constant:independence_wave_iw085_cyrenaica_value.guard_required }
+	}
+	else_if = {
+		limit = { is_independence_wave_iw085_cyrenaica_overlay_active = yes has_country_flag = independence_wave_iw085_cyrenaica_guard_running }
+		set_variable = { independence_wave_iw085_cyrenaica_guard_hold_days = constant:independence_wave_iw085_cyrenaica_value.minimum }
+	}
+}
+
+independence_wave_iw085_cyrenaica_initialize_overlay = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_route_active = yes NOT = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_ever_activated } }
+		set_country_flag = independence_wave_iw085_cyrenaica_overlay_ever_activated
+		set_country_flag = independence_wave_iw085_cyrenaica_package_initialized
+		set_country_flag = independence_wave_iw085_cyrenaica_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		set_variable = { independence_wave_iw085_cyrenaica_desert_mobility = constant:independence_wave_iw085_cyrenaica_value.desert_mobility_start }
+		set_variable = { independence_wave_iw085_cyrenaica_regency_legitimacy = constant:independence_wave_iw085_cyrenaica_value.regency_legitimacy_start }
+		set_variable = { independence_wave_iw085_cyrenaica_coastal_security = constant:independence_wave_iw085_cyrenaica_value.coastal_security_start }
+		set_variable = { independence_wave_iw085_cyrenaica_guard_hold_days = constant:independence_wave_iw085_cyrenaica_value.minimum }
+		set_variable = { independence_wave_anchor_state = 663 }
+		set_variable = { independence_wave_package_archetype = constant:independence_wave_package_archetype.port_or_island }
+		set_variable = { independence_wave_force_profile = constant:independence_wave_force_profile.desert_nomadic }
+		independence_wave_iw085_cyrenaica_refresh_idea_lifecycle = yes
+	}
+}
+
+independence_wave_iw085_cyrenaica_suspend_overlay = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_active }
+		if = { limit = { has_country_flag = independence_wave_iw085_cyrenaica_guard_running NOT = { has_country_flag = independence_wave_iw085_cyrenaica_guard_completed } } set_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted }
+		independence_wave_iw085_cyrenaica_remove_overlay_ideas = yes
+		clr_country_flag = independence_wave_iw085_cyrenaica_overlay_active
+		clr_country_flag = independence_wave_route_overlay_active
+		set_country_flag = independence_wave_iw085_cyrenaica_overlay_suspended
+	}
+}
+
+independence_wave_iw085_cyrenaica_pause_guard_mission = {
+	if = {
+		limit = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_suspended has_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted has_country_flag = independence_wave_iw085_cyrenaica_guard_running has_active_mission = independence_wave_iw085_hold_cyrenaica_coastal_guard }
+		set_temp_variable = { independence_wave_iw085_cyrenaica_pause_days = constant:independence_wave_iw085_cyrenaica_duration.guard_pause_daily_extension }
+		add_days_mission_timeout = { mission = independence_wave_iw085_hold_cyrenaica_coastal_guard days = independence_wave_iw085_cyrenaica_pause_days }
+	}
+}
+
+independence_wave_iw085_cyrenaica_resume_overlay = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_route_active = yes has_country_flag = independence_wave_iw085_cyrenaica_overlay_ever_activated NOT = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_active } }
+		set_country_flag = independence_wave_iw085_cyrenaica_overlay_active
+		set_country_flag = independence_wave_route_overlay_active
+		clr_country_flag = independence_wave_iw085_cyrenaica_overlay_suspended
+		independence_wave_iw085_cyrenaica_refresh_idea_lifecycle = yes
+	}
+}
+
+# Called only from on_daily_LBA. The exact LBA autonomy gate prevents a global
+# loop and prevents an independent Cyrenaica package from being fabricated.
+independence_wave_iw085_cyrenaica_refresh_overlay = {
+	if = {
+		limit = { is_independence_wave_iw085_cyrenaica_route_active = yes }
+		if = { limit = { NOT = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_ever_activated } } independence_wave_iw085_cyrenaica_initialize_overlay = yes }
+		else_if = { limit = { NOT = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_active } } independence_wave_iw085_cyrenaica_resume_overlay = yes }
+		else = {
+			if = {
+				limit = { has_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted }
+				if = { limit = { has_country_flag = independence_wave_iw085_cyrenaica_guard_running has_active_mission = independence_wave_iw085_hold_cyrenaica_coastal_guard } clr_country_flag = independence_wave_iw085_cyrenaica_guard_interrupted }
+				else = { independence_wave_iw085_cyrenaica_fail_guard_mission = yes }
+			}
+			else_if = { limit = { has_country_flag = independence_wave_iw085_cyrenaica_guard_running NOT = { has_active_mission = independence_wave_iw085_hold_cyrenaica_coastal_guard } } independence_wave_iw085_cyrenaica_fail_guard_mission = yes }
+			independence_wave_iw085_cyrenaica_update_guard_hold = yes
+			if = {
+				limit = { NOT = { OR = { has_idea = independence_wave_iw085_cyrenaica_contested_regency has_idea = independence_wave_iw085_cyrenaica_desert_regency has_idea = independence_wave_iw085_cyrenaica_assembly_compact has_idea = independence_wave_iw085_cyrenaica_coastal_defense_charter } } }
+				independence_wave_iw085_cyrenaica_refresh_idea_lifecycle = yes
+			}
+		}
+	}
+	else = {
+		if = { limit = { has_country_flag = independence_wave_iw085_cyrenaica_overlay_active } independence_wave_iw085_cyrenaica_suspend_overlay = yes }
+		independence_wave_iw085_cyrenaica_pause_guard_mission = yes
+	}
+}
