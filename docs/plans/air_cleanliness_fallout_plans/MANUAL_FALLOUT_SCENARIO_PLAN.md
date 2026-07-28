@@ -12,7 +12,13 @@ The exact installed-map sweep substrate exists but is dormant.
 - Forty-one generated batch effects issue 10,154 native thermonuclear province calls across all 1,081 installed states. Batches 0 through 39 contain 250 targets and batch 40 contains 154.
 - The ledger excludes 118 assigned non-land provinces and includes 126 assigned land targets in impassable states because no official exclusion was found.
 - The native observer and state-sum verifier must pass before the countdown begins.
-- Static control flow runs aggregate Deaths, nuclear fallout, Air Contamination, Chaos history, condemnation, and treaty consequences once after complete verification.
+- Each verified struck state applies exact population loss against its frozen
+  prestrike baseline until 90 to 95 percent is gone. The observed total is then
+  written once to the shared Deaths ledger with state mutation disabled on the
+  accounting call, and the Fallout exception keeps that receipt mandatory even
+  when the general Deaths setting is disabled. Aggregate nuclear fallout, Air
+  Contamination, Chaos history, condemnation, and treaty consequences run only
+  after complete verification.
 - Save recovery extends the existing host daily coordinator for hourly sweep and verifier callbacks and never adds a second recurring world iterator. The seven-day callback remains engine-owned and cannot be reconstructed from a calendar-day value.
 
 The public row and dispatch remain absent. The live registry reaches SCN-013 with The Unbidden Muster while the unfinished Black Plague package separately reserves raw id 12. Fallout reserves SCN-014 as the live maximum plus one. Existing ids, including the unused public gap at 12, remain unchanged.
@@ -44,7 +50,9 @@ On confirmation:
 The thermonuclear aggregate consequence removes 90 to 95 percent of each
 state's prestrike population during the verified strike resolution. The first
 strike uses the 90 percent floor and additional province strikes provide only
-a small capped increment. The later rewrite reconciles the original baseline
+a small capped increment. Each state mutation is recorded through the shared
+Deaths ledger after the exact loss is observed, even if the general Deaths
+setting is disabled. The later rewrite reconciles the original baseline
 against the grade-specific survivor target and never applies a second full
 population percentage to the already reduced state.
 
