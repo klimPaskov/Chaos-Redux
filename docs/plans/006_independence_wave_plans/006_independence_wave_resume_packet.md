@@ -1,16 +1,27 @@
 # Event 006 resume packet
 
-Updated: 2026-07-28 after the Event 006 v31 completion audit, the IW-012 ICE package admission, the SCN-008 stale-ledger reset commit `8169ab330`, the Pinna hash-evidence correction `d96075560`, the flat portrait-shelf commit `a2c0a007c`, the SCN-008 mode-cardinality commits `ad863f72d` and `383724ee9`, the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 reconciliation, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, and the RG-RHINE-SAAR pair-capacity repair.
+Updated: 2026-07-28 after the Event 006 v31 completion audit, the IW-012 ICE package admission, the post-commit route-arbitration commits `3570ed8ff` and `72d8549e3`, the SCN-008 stale-ledger reset commit `8169ab330`, the Pinna hash-evidence correction `d96075560`, the flat portrait-shelf commit `a2c0a007c`, the SCN-008 mode-cardinality commits `ad863f72` and `383724ee9`, the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the coordinator-bound expiry cleanup `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 reconciliation, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, and the RG-RHINE-SAAR pair-capacity repair.
 
 Status: **Event 006 is incomplete and the goal remains active.**
+
+The 2026-07-28 doubled-ladder and pre-wave crisis evidence is bounded by
+`subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md` and the
+focused completion audit
+`subagent_handoffs/006_automatic_ladder_host_crisis_completion_audit_2026_07_28.md`.
 
 Current routing authority is `subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md`; older v30 references below are retained only as dated traceability. The current shelf is 54 original-size masters in one flat directory.
 
 ## 2026-07-28 IW-012 implementation addendum
 
-IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the complete Event 006 additive overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The current compile-time attestation set is eleven packages: IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, and IW-184. Live allocator, save/load, host-survival, force-materialization, and scenario transaction evidence remain open, so whole-event completion remains HOLD / PARTIAL.
+IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the complete Event 006 additive overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The current compile-time attestation set is eleven packages: IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, and IW-184. The post-commit route-arbitration closure in `3570ed8ff` and `72d8549e3` is recorded by `006_iw012_decision_ai_reaudit_2026_07_28.md` and `006_iw012_formal_route_ai_closure_implementation_2026_07_28.md`; it closes source-level route-writer and state-aware AI arbitration while probability inspection, live focus visibility, route-AI timing, and runtime transaction evidence remain open. Live allocator, save/load, host-survival, force-materialization, and scenario transaction evidence remain open, so whole-event completion remains HOLD / PARTIAL.
 
 The IW-012 route-arbitration closure is source-implemented: Armed Neutrality no longer writes the government route, and the four formal route focuses use state-aware weights while preserving their package gates, costs, durations, route rewards, and mutual exclusions. The six project AI blocks use the same visible ledger and host/war signals. Static source checks pass; the probability matrix, live shared-focus visibility, AI timing, and runtime transaction evidence remain pending.
+
+## 2026-07-28 doubled ladder and pre-wave crisis addendum
+
+The later user decision supersedes the earlier 3/4/5/7/10 automatic ladder. Automatic waves now target 6, 8, 10, 14, and 20 countries, with World Collapse also targeting 20 while increasing force, instability, rarity, and ambition. The eleven attested packages across ten compatible reservation groups remain the current static pool; the 14- and 20-country targets stay fail-closed until complete package and reservation capacity grows.
+
+The host-facing crisis surface is source-implemented under `006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md`. It opens below 35% stability, for an enemy-controlled owned state above 50 resistance, or for a controlled foreign-owned state above 50 resistance, spends the standard security commitment over 120 days, and queues `chaosx.nr6.3` for the ordinary current-band wave. The focused completion audit records the Command Power affordability gate and active-mission visibility as source-level repairs. A busy coordinator receives up to fourteen daily retries, while invalid, cancelled, or exhausted resolution changes pressure and cooldown without changing ownership; the source uses the bounded fourteen-day cutoff and records its resolution state. Queue-time host/cause history, durable resolution receipts, requester-loss `on_annex` recovery, requester-loss actor/title attribution, and explicit player-facing failure consequences are now implemented at source level. Cancellation still lacks a host/cause history row, and live mission timing, AI choice, retry cleanup, save/load, host-survival, allocator execution, and scenario evidence remain open, so this addendum does not alter the whole-event **HOLD / PARTIAL** status.
 
 Current portrait authority is the sourced-only gate in the accepted specification and `../../../.agents/skills/chaos-redux-event-assets/SKILL.md`.
 Earlier generated grounded-polity portrait packages are provenance evidence only.
@@ -56,7 +67,7 @@ The 2026-07-22 source-mode decision supersedes the admission disposition, but
 not the gameplay findings, in earlier country-package and portrait handoffs.
 This packet and `006_source_of_truth_map.md` carry the current runtime state.
 
-The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md` and remains **HOLD / PARTIAL**. It carries forward the bounded DM-58, Statehood Ledger, focus, package, runtime-matrix, asset, AI, balance, formable, super-event, and achievement gaps while recording the static IW-012 admission, flat 54-master shelf, corrected Pinna hash, 138/55 selectable-pool distinction with 13 route-only overlays, SCN-008 stale-ledger reset, four deadline-mission availability repairs, the participant-exit cleanup policy, and the Galimzhan v2 visual and provenance audit PASS. Commit `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` prove source-level validation-before-cost, payment-before-claim/wargoal mutation, coordinator-origin cleanup, and the new recorded-participant invalidation cleanup; live witness, invalidation, save/load, dense/no-witness performance, and AI evidence remain open. FORM-39 remains fail-closed around six writerless inputs and an unadmitted MFX package; the current installed-mod audit reports zero reserved/custom-cosmetic collisions for MFX. IW-157/IW-178 remain research HOLDs, and `6001` remains blocked after v22 research. Historical v5-v30 audits remain preserved where their bounded findings differ from v31.
+The current whole-event completion authority is `subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md` and remains **HOLD / PARTIAL**. It carries forward the bounded DM-58, Statehood Ledger, focus, package, runtime-matrix, asset, AI, balance, formable, super-event, and achievement gaps while recording the static IW-012 admission, 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, eleven exact attestations across ten compatible reservation groups, flat 54-master shelf, corrected Pinna hash, 138/55 selectable-pool distinction with 13 route-only overlays, SCN-008 stale-ledger reset, four deadline-mission availability repairs, the participant-exit cleanup policy, and the Galimzhan v2 visual and provenance audit PASS. Commit `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` prove source-level validation-before-cost, payment-before-claim/wargoal mutation, coordinator-origin cleanup, and the new recorded-participant invalidation cleanup; live witness, invalidation, save/load, dense/no-witness performance, and AI evidence remain open. FORM-39 remains fail-closed around six writerless inputs and an unadmitted MFX package; the current installed-mod audit reports zero reserved/custom-cosmetic collisions for MFX. IW-157/IW-178 remain research HOLDs, and `6001` remains blocked after v22 research. Historical v5-v30 audits remain preserved where their bounded findings differ from v31.
 
 Historical bounded handoffs: `006_portrait_shelf_completeness_reaudit_2026_07_27.md` records the earlier 49-master/83-normalized evidence shelf with no runtime promotion; `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` and `006_event_completion_audit_v23_2026_07_27.md` record the earlier DM-58 source PASS with runtime cases open; `006_form39_completion_reconciliation_v17_2026_07_27.md` and `006_form39_mfx_tag_collision_handoff_2026_07_27.md` record the fail-closed MFX and six-input admission boundary; `006_iw157_iw178_new_guinea_source_research_2026_07_26.md` records the two named-community research HOLDs; `006_iw012_ice_package_audit_2026_07_26.md` records the pre-implementation RG-100 candidate and is superseded for current IW-012 status by the 2026-07-28 implementation and audit handoffs; `006_rhine_saar_shared_group_capacity_2026_07_27.md` records the narrow two-package capacity rule for distinct RHI/AJX anchors; `006_super_event_audio_research_v22_2026_07_27.md` records the unselected `6001` candidates and continuing rights/tone blocker; and commit `de36a366e` records the Statehood Ledger source consumer. The static semantic strips remain the default readout, the explicit `Animate` control swaps to the four frame-animated siblings, and the static DDS files remain the non-animated fallback; focused interaction, threshold, return-to-state, and click-region evidence remains open. `006_shared_focus_geometry_reflow_2026-07-26.md` records the failed coupled reflow, full reversion, and restored-baseline MCP evidence; `006_shared_focus_geometry_reversion_2026_07_26.md` remains the earlier candidate-reversion record; `006_shared_focus_geometry_repair_2026_07_26.md` remains historical candidate evidence; `006_focus_readonly_handoff_2026_07_26.md` is a pre-reflow baseline whose AGX-missing-module wording is superseded by `006_agx_focus_overlay_handoff_2026_07_26.md`; the AGX overlay remains **PASS**; `006_agx_conference_post_repair_reaudit_2026_07_26.md`, `006_agx_conference_cost_localisation_reaudit_2026-07-26.md`, and `006_agx_decision_reaudit_v12_2026_07_26.md` record bounded lifecycle, three-factory cost, and readable availability-tooltip **PASS** findings; `006_decision_mission_matrix_reaudit_2026_07_26.md` is superseded for its repaired high-severity DM-58 finding; `006_localisation_audit_current_2026-07-26.md` and `006_localisation_closeout_2026-07-26.md` record a scoped localisation **PASS**; and `006_hawaii_kawananakoa_source_clearance_retry03_2026_07_26.md` remains a rights-blocked research result with no runtime authorization.
 
@@ -68,7 +79,7 @@ Commit `61d059841`, commit `37c4f6036`, and `006_dm58_cost_cleanup_reconciliatio
 
 The current flat shelf check is `root_pngs=54`, `child_dirs=0`, and `normalized=0`; the manifests and README now describe 54 original-size masters, including the CHU Galimzhan v2 repaint and the WLS Cornwallis-West source master. The normalized Galimzhan v2 candidate remains in `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/` and has an independent likeness/style/crop/provenance audit PASS with recorded source uncertainty. The approved candidate is parent-promoted to the existing CHU federal-presidium DDS/GFX consumer at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; no `.gfx` rename or duplicate consumer was introduced. The other five CHU/ASY grounded rows retain their source-only, blocked, or needs-review statuses. No Event 006 advisor icons were created.
 
-`006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v30_2026_07_28.md` supersede their older bounded surfaces; none supplies live runtime evidence, and the whole goal remains HOLD / PARTIAL.
+`006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` supersede their older bounded surfaces; v30 remains historical traceability only. The post-commit IW-012 route-arbitration handoffs are static source evidence and none supplies live runtime evidence, so the whole goal remains HOLD / PARTIAL.
 
 Any remaining v23/v28/v30, 49/50/51-master, or pre-repair wording later in this packet is
 historical traceability rather than current authority. Use the v31 completion
@@ -152,10 +163,10 @@ they are not current routing documents.
   sourced portrait of the person. Trial 01 used the correct 1925 archival source and passed HOI4 style review, but failed the separate independent likeness gate because the source clips identity-bearing facial highlights. Retry 03 found an exact adult high-resolution match in Digital Archives record `ark:70111/47Nx`, but the Star-Bulletin negative has no capture date, photographer, or reuse licence and the archive terms state all rights reserved. It produced no crop, ImageGen repaint, DDS, or runtime wiring.
 - FORM-12/13/18 and FORM-48 remain implemented system contracts, but the FORM-48 carrier cannot execute while the HAW/FSM member admissions are withdrawn.
 - IW-184 HBX is admitted after the full post-wire country-package audit. William D. Stephens is the sourced real-male civic leader with the exact identity-preserving HOI4 repaint wired to the stable civilian-large consumer. The package/runtime DDS is byte-identical at SHA-256 `A158A968A1E67F2F83720D1B9201369542C3AAF7318A8C6332D659D91382CAD1`, and no advisor, dossier, operative, commander, or `_small` derivative is authorized. Exact content attestation, automatic readiness, and the Event 005-aware capacity witness are implemented; live execution evidence remains pending.
-- The eleven attested packages can satisfy the three-, four-, five-, seven-, and ten-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates.
+- The eleven attested packages can conditionally supply the six-, eight-, and ten-country automatic waves only when the required number pass their live host, anchor, reservation, Event-5 collision, chaos-band, force, and transaction gates; the fourteen- and twenty-country bands are design targets with no currently admitted capacity route and remain fail-closed until the pool grows.
   Candidate weight now requires the same exact compile-time content-attestation trigger used by execution and scenario preflight, so registered but unadmitted IDs stay at zero weight instead of invalidating the later synchronized transaction.
   The ten-country bands now have a source-level pair-capacity path: IW-008 RHI and IW-010 AJX share RG-RHINE-SAAR but reserve distinct anchors (51 and 42). The central reservation effect admits only that exact counterpart pair; host protection remains per affected host and may share GER's protected-remnant row when both anchors have the same owner. Every other group remains one-package-only. Live ten-country disjoint-reservation, host-survival, and synchronized-transaction proof is still required.
-  The exact 3/4/5/7/10 ladder and World Collapse count of ten remain unchanged.
+  The later user decision supersedes the earlier ladder: automatic waves target 6/8/10/14/20, including a twenty-country World Collapse band. The current attested pool remains far below the doubled upper-band capacity, so those bands stay fail-closed until additional complete packages and compatible reservation groups are admitted.
   FORM-48's proof writers own `independence_wave_form48_registry_surface_registered` and `independence_wave_form48_readiness_attested`; no annexation or integration fallback is used.
 - The IW-043/IW-058 package manifests record final reviewed non-portrait assets:
   27 static icons including the three-state Assyria survival triplet, ten flat
@@ -169,7 +180,7 @@ they are not current routing documents.
   portraits remain source-gated or invalid. No custom Event 006 advisor asset
   exists. The post-1968/1973 modern Assyrian flag is explicitly excluded.
 - The allocator audit passes 149 publishers, 126 automatic/high-chaos
-  selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10
+  selectable packages, 138 SCN-008 ranked packages, the doubled 6/8/10/14/20
   ladder, and Event 005-first joint reservation ordering. Runtime host,
   anchor, reservation, and wave-size gates remain binding.
 - SCN-008's current acceptance cardinality is eight player-facing modes by four intensities, or 32 cells. The six numeric families remain the implementation enum, while Universal Belligerence contributes separate Former Hosts, Neighboring Releases, and Nearby Nonleague States rules. The current localisation and catalog mirror expose all eight modes. No runtime cell, bounded collision/selector sweep, rollback, persistence, or balance evidence is promoted, so SCN-008 remains `Needs Testing`.
@@ -264,12 +275,13 @@ The bounded RG-RHINE-SAAR re-audit `006_rhine_saar_shared_group_capacity_reaudit
 
 An exact compile-time attestation never guarantees a valid wave. The allocator
 must still satisfy exact host, anchor, reservation, Event 005 collision,
-chaos-band, and wave-size gates. The current eleven-ID set exposes ten reservation-group IDs because RHI and AJX share RG-RHINE-SAAR, but that pair now has a narrow two-package capacity rule because anchors 51 and 42 are distinct
+  chaos-band, and wave-size gates. The current eleven-ID set exposes ten compatible reservation-group IDs because RHI and AJX share RG-RHINE-SAAR, but that pair now has a narrow two-package capacity rule because anchors 51 and 42 are distinct
 and each row still passes the ordinary per-host protected-remnant check. The
-3-, 4-, 5-, 7-, and 10-country bands remain
-conditionally viable pending live disjoint reservation and synchronized
-transaction proof. World Collapse remains exactly ten and still fails closed
-when runtime availability cannot satisfy the synchronized frozen plan.
+6-, 8-, and 10-country bands remain conditionally viable pending live disjoint
+reservation and synchronized transaction proof. The 14- and 20-country bands
+are design targets with no currently admitted capacity route and remain
+fail-closed; World Collapse targets twenty and also fails closed when runtime
+availability cannot satisfy the synchronized frozen plan.
 
 ## Completed tranches not to repeat
 
@@ -407,10 +419,13 @@ when runtime availability cannot satisfy the synchronized frozen plan.
   balance, runtime scenario evidence, and remaining family audits are still
   open. The bounded Event Details/evolution/cluster/SCN-008 workbook mirror and
   non-portrait visual families have dated parent PASS records.
-- The shared Event Details, five evolution mirrors, Liberations cluster text,
-  and SCN-008 workbook fields match their in-game localisation sources exactly;
-  the dated catalog verification records why no workbook rewrite or CSV export
-  was needed.
+- The earlier catalog verification recorded exact Event Details, five evolution
+  mirrors, Liberations cluster text, and SCN-008 workbook fields. The later
+  doubled-ladder/crisis tranche updated `Events!C7` from the final static Event
+  Details wording and regenerated `docs/spreadsheets/chaos_redux_events_catalog.csv`
+  with `.tools/export_event_catalog_csv.py`; the workbook-to-localisation
+  comparison now matches for the repaired Event 006 cell. Future player-facing
+  catalog edits must repeat the workbook-source/export workflow.
 - No final balance and Event 006 completion audit covers the whole accepted spec.
 
 ## Do not infer
@@ -421,7 +436,7 @@ when runtime availability cannot satisfy the synchronized frozen plan.
 - No 2026-07-15 fictional portrait, BRI portrait, mixed NWE portrait, or
   army-small hash/approval record is current portrait authority.
 - The IW-005 living-BEL overlay is not a selectable release package.
-- The ten exact package attestations remain binding runtime gates; a broad
+- The eleven exact package attestations remain binding runtime gates; a broad
   identity helper or preflight branch does not admit any additional package.
 - A static source audit is not an in-engine execution result.
 - Historical handoff completion wording is not current when a later audit,
