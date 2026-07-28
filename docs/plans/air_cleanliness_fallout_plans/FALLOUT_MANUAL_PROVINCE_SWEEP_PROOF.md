@@ -154,4 +154,4 @@ Static source proof does not establish these runtime properties:
 - the player-facing result remains readable across the 41 batches
 - the vanilla twelve-event `on_nuke_drop` branch remains bounded when it may schedule about 121,848 one-day news event attempts
 
-The public scenario row, launch dispatch, visible countdown direction, and release claim remain blocked until those properties are resolved. Scenario identity is no longer a blocker. No weaker substitute has been installed or approved.
+The public scenario row and public launch dispatch are prohibited. The Fallout-owned manual trigger, visible countdown direction, and release claim remain dormant until those properties are resolved. Scenario identity is no longer a blocker. No weaker substitute has been installed or approved.
