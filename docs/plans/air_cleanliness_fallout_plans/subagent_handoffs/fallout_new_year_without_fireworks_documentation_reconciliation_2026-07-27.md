@@ -95,4 +95,4 @@ No separate resume packet was created. This handoff is the current resume state 
 
 ## Remaining risks
 
-The New Year Without Fireworks remains dormant and contributes zero release-floor credit. The parent must retain the stale-generation cleanup blocker, runtime boundary, and partial event-inspector result in any completion report.
+The New Year Without Fireworks remains dormant and contributes zero release-floor credit. A later parent repair statically wired a generation-reset abort route from country runtime cleanup. Runtime execution, save recovery, the wider scheduler boundary, and the partial event-inspector result must remain explicit in any completion report.
