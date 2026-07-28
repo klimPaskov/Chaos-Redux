@@ -47,6 +47,19 @@ independence_wave_clear_crisis_runtime = {
 
 independence_wave_apply_crisis_blocked_consequence = {
 	set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.blocked }
+	# A second host can time out while another request owns the shared queue.
+	# Its origin flags are still live here, so preserve that host's initiating
+	# cause before applying the shared blocked-pressure consequence. A queued
+	# requester already cleared those flags when its cause row was written.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = independence_wave_crisis_occupation_origin
+				has_country_flag = independence_wave_crisis_stability_origin
+			}
+		}
+		independence_wave_record_crisis_history = yes
+	}
 	set_global_flag = independence_wave_crisis_failure_receipt
 	add_stability = constant:independence_wave_crisis.stability_failure_loss
 	add_war_support = constant:independence_wave_crisis.war_support_failure_gain

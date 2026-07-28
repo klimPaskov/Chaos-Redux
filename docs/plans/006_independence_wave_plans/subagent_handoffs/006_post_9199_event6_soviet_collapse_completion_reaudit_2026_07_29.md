@@ -73,6 +73,83 @@ The whole-event status remains **HOLD / PARTIAL**.
 
 No gameplay, localisation, workbook, CSV, focus, decision, event, Soviet Collapse, asset, or shared release source was edited by this follow-up audit.
 
+## Post-`7165466b1` crisis resolution-history re-audit (2026-07-29)
+
+This is the authoritative bounded disposition for the resolution-history patch committed in `7165466b1`.
+
+Random Events, Fallout, CBB, CBD, and unrelated shared-worktree changes remain outside scope.
+
+The whole-event status remains **HOLD / PARTIAL**.
+
+### Outcome-row wiring
+
+| Outcome | Static writer and actor | Payload and renderer | Disposition |
+| --- | --- | --- | --- |
+| Queued | `independence_wave_queue_crisis_release` sets resolution `queued` and records in the requesting host's `THIS` scope. | `6007`; Event 006-gated outcome title/detail selectors and `GetIndependenceWaveCrisisResolution`. | **PASS static; runtime HOLD.** |
+| Blocked | `independence_wave_apply_crisis_blocked_consequence` sets resolution `blocked` before recording in the current requesting host scope. It is reached after an invalid standalone attempt, retry exhaustion, or timeout while another global crisis queue already exists; the guarded cause recorder now preserves a second host's initiating pressure without duplicating the queued requester's row. | `6008`; Event 006-gated outcome title/detail selectors and the blocked resolver key. | **PASS static; runtime HOLD.** |
+| Cancelled | `independence_wave_cancel_pre_wave_crisis` sets resolution `cancelled`, writes the initiating cause row, then writes the outcome row before cooldown and transient-origin cleanup. | `6009`; Event 006-gated outcome title/detail selectors and the cancelled resolver key. | **PASS static; runtime HOLD.** |
+| Committed | `chaosx.nr6.3` records resolution `committed` only after `independence_wave_standalone_incident_committed` is present, in the surviving requesting host scope. | `6010`; Event 006-gated outcome title/detail selectors and the committed resolver key. | **PASS static; runtime HOLD.** |
+| Requester lost | `independence_wave_recover_crisis_requester_loss` sets resolution `requester_lost`, scopes to annexed `FROM`, and invokes the shared recorder there, so its internal `THIS.id` remains the lost requester. The existing `6006` loss-cause row also retains `FROM.id`. | `6011`; Event 006-gated outcome title/detail selectors and the requester-lost resolver key. | **PASS static for `on_annex`; runtime and non-annex-removal HOLD.** |
+
+The `unknown = 6012` payload is a fail-safe mapping and is covered by both selectors and the resolver, but no current call site reaches the recorder without first setting one of the five explicit resolution values.
+
+The six payload values are unique within the Event 006 crisis constants, every payload has exactly one English outcome key, and `GetIndependenceWaveCrisisResolution` has one current definition.
+
+The Event 006 history-detail resolver checks all six payloads before the generic Event 006 detail, and the history-title resolver checks all six payloads before the generic Event 006 title.
+
+No new Clausewitz brace, constant-reference, dynamic-localisation ownership, or requester actor-scope defect was found in the committed tranche.
+
+### Historical remaining static defects (superseded by the parent correction below)
+
+1. The outcome localisation is not acceptable player-facing Event Log prose under the repository writing contract.
+
+`independence_wave.history.crisis.outcome.description` and the queued, blocked, committed, and unknown branches expose implementation terms such as “release coordinator,” “frozen synchronized plan,” “existing ownership contract,” “second release path,” “allocator,” “documented pressure,” and “reservations.”
+
+The committed branch is also factually stale at the point it is written: it says the release incident “now owns the planned state and host reservations,” while the finalization pass clears pending package metadata and `liberation_release_commit_plan` clears plan scope marks before `independence_wave_standalone_incident_committed` is observed by `chaosx.nr6.3`.
+
+2. The blocked localisation and accepted-spec wording do not cover every statically reachable blocked path.
+
+Several hosts can open the 120-day mission before any one of them creates the global queue.
+
+After the first host queues, a later host can reach `independence_wave_resolve_pre_wave_crisis`, fail its `NOT = { has_global_flag = independence_wave_crisis_release_queued }` limit, and immediately call the blocked consequence without constructing, rejecting, or exhausting a plan.
+
+The visible blocked text currently says an invalid or exhausted plan was rejected, and specification Parts 2 and 3 say every outcome row is added to an initiating cause row.
+
+That competing-queue blocked path writes the `6008` outcome but does not call `independence_wave_record_crisis_history`, so it has no corresponding initiating cause row and its visible explanation is inaccurate.
+
+### Validation performed
+
+- Traced every outcome writer from mission/callback or annexation entry through resolution value, actor scope, payload selection, Event Log append, view refresh, title resolver, detail resolver, dynamic resolver, and English key.
+- Confirmed payloads `6007` through `6012` are unique in the scoped script-constant sources and all six are covered by the renderer and localisation resolver.
+- Confirmed the outcome YAML remains UTF-8 with BOM and the resolver name is defined once.
+- Re-ran `python -B .tools/audit_event6_allocator.py`; the current 6/8/10/14/20 and Event 005-before-Event 006 reservation-order audit still passes.
+- Attempted a narrow `hoi4.event_inspect` lint of `chaosx.nr6.3`; the MCP transport closed before producing an artifact, so no MCP syntax or state-flow evidence is claimed.
+
+### Historical current boundary and next actions
+
+1. Rewrite the outcome title, shared description, and outcome branches as player-facing historical consequences without allocator, contract, plan, or reservation terminology.
+2. Make the blocked wording truthful for both plan failure/retry exhaustion and competing-queue rejection, and reconcile the specification's claim that every outcome has a separate initiating cause row.
+3. Run live queued, invalid-plan blocked, retry-exhausted blocked, competing-queue blocked, cancelled, committed, requester-annexed, and save/load Event Log scenarios before promoting this surface beyond static wiring.
+4. Preserve the existing whole-event blockers for lower-band allocator execution, 14/20 capacity, Event 005/Event 006 joint delivery, IW-012 runtime, focus geometry, SCN-008, packages, formables, assets/audio, achievements, AI, and balance.
+
+No fallback or simplification was introduced by this audit.
+
+No gameplay, localisation, workbook, CSV, focus, decision, event, Soviet Collapse, asset, or shared release source was edited by this re-audit.
+
+### Parent post-audit correction
+
+The parent repair in the current working tree closes both static defects identified by the post-`7165466b1` audit.
+
+`independence_wave_apply_crisis_blocked_consequence` now records the initiating cause only when the host still carries an occupation or stability origin flag. A competing host reaches that guard with its origin flags intact and receives one cause row before payload `6008`; a normal queued requester cleared those flags after its earlier cause row, so later invalid-plan or retry-exhaustion handling does not duplicate history.
+
+The outcome title, shared description, and six branches are now player-facing. The blocked branch covers every admission failure without claiming a plan was built, and the committed branch truthfully reports completed state transfers and the surviving host remnant after reservation cleanup.
+
+The resolution-history surface therefore receives **PASS static; runtime HOLD** for queued, blocked, cancelled, committed, and requester-lost outcome rows.
+
+Live row rendering, competing-host ordering, retry exhaustion, requester annexation, non-annex removal, persistence, and save/load evidence remain open.
+
+The overall Event 006 and Soviet Collapse coupling disposition remains **HOLD / PARTIAL**, with all allocator-capacity, joint-delivery, IW-012, focus, scenario, package, formable, asset/audio, achievement, AI, and balance blockers unchanged.
+
 ## Overall disposition
 
 **HOLD / PARTIAL remains the correct whole-event disposition.**
@@ -83,7 +160,7 @@ The later commits also add durable crisis resolution receipts, an `on_annex` req
 
 Those improvements do not supply runtime transaction evidence, upper-band capacity, live ICE carrier proof, or the Event 005/Event 006 joint matrix.
 
-Current HEAD also retains two requester-loss Event Log attribution defects, stale documentation authorities, an uncommitted doubled-ladder validator update, and a new Event Details/workbook mismatch introduced by `f4b521767`.
+The older body below is preserved as historical pre-closure evidence. Its requester-loss, documentation-authority, validator, and Event Details/workbook findings are superseded by the dated parent addenda above.
 
 ## Completion status by surface
 
