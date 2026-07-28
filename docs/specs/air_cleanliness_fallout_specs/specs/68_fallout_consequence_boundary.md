@@ -12,7 +12,7 @@ The public Event Details scripted localisation has no Fallout title, owner, or d
 
 ## Air Cleanliness shutdown
 
-`fallout_air_cleanliness_disabled` is a durable global transition flag. The standard coordinator sets it only after the pre-lock snapshot is complete and the request becomes locked. Save migration restores it whenever `world_end_fallout` is already present. The manual scenario sets it when a valid sweep starts and clears it when that sweep fails before Fallout ownership is established.
+`fallout_air_cleanliness_disabled` is a durable global transition flag. The standard coordinator sets it when the request envelope is admitted, before host reconciliation, and keeps it through the locked transition. A temporary `fallout_air_cleanliness_request_paused` flag records that early ownership and restores the ordinary mechanic if validation rejects the pending envelope. Save migration restores the durable flag whenever `world_end_fallout` is already present. The manual scenario sets it when a valid sweep starts and clears it when that sweep fails before Fallout ownership is established.
 
 The flag is consumed by the Air Cleanliness boundary surfaces:
 
