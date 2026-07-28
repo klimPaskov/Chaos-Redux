@@ -35,7 +35,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 
 The shutdown is deliberately separate from the final-silence lock. Fallout is terminal for Air Cleanliness even if a previous settings state or final-silence branch would otherwise reopen a monthly pulse.
 
-The Final Silence handoff trigger also rejects `fallout_air_cleanliness_disabled`, so a predecessor cannot reopen the coordinator after Air shutdown.
+The Final Silence handoff trigger and its contamination setter also reject `fallout_air_cleanliness_disabled`, so a predecessor cannot reopen the coordinator or restore Air pressure after Air shutdown.
 
 ## Standard Fallout population loss
 
