@@ -14,13 +14,14 @@ country history shell is created for those existing countries.
 
 ## Collision evidence
 
-The current installed-mod audit in
-`tag_audit/006_installed_tag_collision_audit_2026_07_26.md` scanned 122
+The superseding installed-mod audit in
+`tag_audit/006_installed_tag_collision_audit_2026_07_28.md` scanned 122
 Workshop directories, eight embedded archives, four sibling local mods,
-vanilla/external definitions, and Chaos Redux definitions. It reported zero
-reserved/custom-tag collisions and 445 unused `??X` candidates. `MFX` is
-documented as a proposed reserved candidate and must be rechecked if the
-installed mod set or registry changes.
+vanilla/external definitions, and Chaos Redux definitions. It reports zero
+reserved/custom-tag collisions, zero custom-cosmetic collisions, and 444
+unused `??X` candidates at the current snapshot. `MFX` is covered by the
+curated identity map and has no scanned collision. The candidate must still be
+rechecked if the installed mod set or registry changes.
 
 ## Asset evidence
 

@@ -36,7 +36,7 @@ no normalized 156x210 PNGs, and no advisor or small/dossier derivatives.
 
 The source-research handoff `subagent_handoffs/006_iw157_iw178_new_guinea_source_research_2026_07_26.md` keeps IW-157/WPG and IW-178/PNG fail-closed. Yapen/Serui, Biak/Supiori, Dogura/Milne Bay, and related leads are research candidates only; exact district containment, rights-cleared period leadership or institutional evidence, and community-specific symbol validation remain outstanding.
 
-The FORM-39 v17 reconciliation and MFX identity handoff confirm that the FIJ/PNG/WPG adapter corrections are source-implemented but runtime admission remains fail-closed. The three member-research gates, MFX reservation, flat-flag readiness, and identity-review inputs remain unset; the current installed-mod tag audit rejects unreviewed MFX, and the `needs_user_review` flag package is not a fallback. No generic Papuan package, flag, or portrait is authorized.
+The FORM-39 v17 reconciliation and MFX identity handoff confirm that the FIJ/PNG/WPG adapter corrections are source-implemented but runtime admission remains fail-closed. The three member-research gates, MFX reservation, flat-flag readiness, and identity-review inputs remain unset; the 2026-07-28 installed-mod audit now includes MFX and reports zero reserved/custom-cosmetic collisions, while the `needs_user_review` flag package is not a readiness fallback. No generic Papuan package, flag, or portrait is authorized.
 
 IW-005 is a committed, independently audited living-BEL overlay and remains outside the selectable pool.
 The canonical runtime content-attestation set is IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California after their current package and sourced real-male portrait audits.
@@ -118,7 +118,7 @@ they are not current routing documents.
 - The synchronized Event 005 and Event 006 release transaction, rollback ledger,
   point-of-no-return, sponsorship transaction, and Liberations cluster capacity
   surface are implemented.
-- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with the bounded FORM-39 FIJ/PNG/WPG adapter source and v17 cancellation, cost-gate, and threshold repairs implemented but not promoted. FORM-39 still has six writerless admission inputs, the current tag audit rejects unreviewed MFX, and the flat MFX package remains `needs_user_review`; no flag or identity fallback is authorized. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
+- FORM-01 through FORM-05 are implemented, source-audited, and readiness-promoted. FORM-06 through FORM-47 remain fail-closed for readiness, with the bounded FORM-39 FIJ/PNG/WPG adapter source and v17 cancellation, cost-gate, and threshold repairs implemented but not promoted. FORM-39 still has six writerless admission inputs, MFX remains `needs_user_review`, and the current installed-mod audit reports zero reserved/custom-cosmetic collisions for its identity; no flag or identity fallback is authorized. FORM-42 remains fail-closed. FORM-48's system contract is readiness-attested, but its HAW/FSM member set has no complete currently admitted country set and cannot form.
 - IW-002/006, IW-018, IW-043/058, IW-173/179, IW-093, and IW-098 retain implemented gameplay adapters, but their generated, generic, or incomplete grounded-polity portrait rosters withdraw visual readiness and runtime content attestation.
   The compile-time package content-attestation set contains IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184.
 - Protected BAY Rupprecht and RHI Matthes remain approved and untouched.
@@ -153,7 +153,7 @@ they are not current routing documents.
   completion audits retain their older shorthand for traceability.
 - Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for
   HBX, the audited flat ImageGen PFX flag, and a fail-closed flat ImageGen MFX
-  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the current installed-mod tag audit rejects the unreviewed Event 006 identity; the runtime TGAs are not a readiness fallback.
+  candidate documented under `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/`. MFX remains `needs_user_review`, its three identity/readiness inputs remain unset, and the 2026-07-28 installed-mod audit reports zero reserved/custom-cosmetic collisions; the runtime TGAs are not a readiness fallback.
   Exactly zero custom Event 006
   advisor icons or advisor portrait/sprite blocks are present; the accepted male
   large portraits are separate country-leader assets and protected BAY/RHI
