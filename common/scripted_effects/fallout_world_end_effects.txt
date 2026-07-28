@@ -182,8 +182,9 @@ fallout_lock_transition = {
 		set_global_flag = fallout_transition_active
 		set_global_flag = fallout_air_cleanliness_disabled
 		# The monthly Air Winter pass pauses at this lock. Clear its country air
-		# burden through the bounded Air-owned registry before blackout scheduling.
-		air_winter_clear_all_country_air_operations_modifiers = yes
+		# burden, state modifiers, and ordinary-map entities before blackout
+		# scheduling while preserving the pretransition survival ledger.
+		air_winter_suspend_all_states_for_fallout = yes
 		air_cleanliness_treaty_pause_for_fallout = yes
 		set_global_flag = world_end
 		set_global_flag = world_end_fallout
@@ -275,6 +276,7 @@ fallout_world_end_migrate_save = {
 	if = {
 		limit = { has_global_flag = world_end_fallout }
 		set_global_flag = fallout_air_cleanliness_disabled
+		air_winter_suspend_all_states_for_fallout = yes
 	}
 	if = {
 		limit = {

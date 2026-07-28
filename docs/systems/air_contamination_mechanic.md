@@ -147,11 +147,13 @@ Hidden evidence is excluded from the list and detail snapshot until it is disclo
 
 ## World-End Integration
 
-Fallout is owned by the dedicated `fallout_world_end` system. Its events live in `events/fallout_world_end_events.txt` under the `chaosx.fallout` namespace. Air Contamination is one request source for that system and does not own the terminal transition.
+Fallout is owned by the dedicated `fallout_world_end` system. Air Contamination is one request source for that system and does not own the terminal transition. Air Winter and post-consequence survivor events live in `events/fallout_world_end_events.txt` under the `chaosx.fallout` namespace. The Fallout consequence itself has no public Event Details row, evolution entry, or ordinary event-log registration.
 
 After each contamination change, `air_contamination_apply_delta_bp` calls `fallout_evaluate_air_contamination_request`. At or above `100%`, the evaluator submits a gradual-air-collapse request through `fallout_request_aftermath` when no other world end is active and Fallout is enabled. Re-enabling Fallout at or above the threshold runs the same evaluator immediately.
 
-The Fallout request coordinator validates the request, records its source and intensity, and owns the transition that sets `world_end` and `world_end_fallout`. It can enter the `chaosx.fallout.*` transition chain and full-screen blackout GUI. Strict postconditions prevent map return while successor allocation, player continuation, country packages, focus packages, or old-world diplomacy cleanup remain incomplete. Fallout has no Event 2 ownership or ordinary super-event slot. Its blackout may still play the dedicated Fallout sound path for presentation.
+The Fallout request coordinator validates the request, records its source and intensity, and owns the transition that sets `world_end` and `world_end_fallout`. It can enter the `chaosx.fallout.*` transition chain and full-screen blackout GUI. Strict postconditions prevent map return while successor allocation, player continuation, country packages, focus packages, or old-world diplomacy cleanup remain incomplete. Fallout has no Event 2 ownership, evolution entry, public event-log row, or ordinary super-event slot. Its blackout may still play the dedicated Fallout sound path for presentation.
+
+Once the consequence lock is accepted, the durable `fallout_air_cleanliness_disabled` flag pauses Air Winter and treaty updates, clears Air Winter state and country modifiers plus ordinary-map entities, clears the natural-source reservoir, rejects later contamination writes, and survives save migration. A failed dormant manual sweep clears the shutdown receipt together with its temporary Air Cleanliness flag so the regular mechanic can resume.
 
 The Fallout checkbox lives in the Miscellaneous settings panel. The stable Fallout id remains in the internal settings and request ledger with owner event `none` and linked super-event `none`. It is not inserted into the public Event Details registry or projected into Event 2 rows.
 

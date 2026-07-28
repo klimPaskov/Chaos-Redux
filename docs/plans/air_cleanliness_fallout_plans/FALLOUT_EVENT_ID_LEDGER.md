@@ -774,3 +774,19 @@ The source contract carries Shelter the Fields, Move the Farms, Seed Cold Crops,
 The asset evidence is `docs/assets/656_second_dust_bowl/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_second_dust_bowl`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-656` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:613` with `Needs Testing` status. The export covers the four branch choices, twelve result outcomes, three callback outcomes, authenticated cancellation, and visible budget cost `3`. Catalog wording matches the current player-facing terms after the wording pass.
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. Pre-result stale cancellation and generation-drift cleanup remain blocked by the shared delayed dispatcher current-generation gate. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker, and the manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. Hearts of Iron IV was not launched. The dedicated proof is `FALLOUT_SECOND_DUST_BOWL_PROOF.md`.
+
+## Great Lakes Lock Winter tranche
+
+Great Lakes Lock Winter adds dormant suffixes `663` through `669` with candidate id `663`, transaction key `710066`, route `7166`, and history `9172`.
+
+The human opening is `663`, the hidden-AI opening is `664`, the human and hidden-AI delayed results are `665` and `666`, the human and hidden-AI callbacks are `667` and `668`, and cleanup is `669`.
+
+The row requires a current-generation owner-controlled Great Lakes state with a produced Air Winter snapshot, surviving population, native lock, port or inland-waterway access, Supply Access, Food, Shelter Capacity, Adaptation, Reclamation, bounded Exposure, and bounded Disease Pressure. It chooses the lowest eligible native state id and retains the lock and waterway evidence for result grading.
+
+The chain carries Joint Ice Authority, Unilateral Opening, Seasonal Closure, and Rival Lock Sabotage branches with exact costs, deterministic result and callback grading, a 35-day result, a 270-day thaw callback, bounded Deaths effects, durable water and shelter ledgers, Event Log history `9172`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not create a new state, transfer population between states, add a recurring scheduler, or register the Fallout consequence as an ordinary event.
+
+The asset evidence is `docs/assets/663_great_lakes_lock_winter/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_great_lakes_lock_winter`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-663` is present in `docs/spreadsheets/chaos_redux_events_catalog.csv` with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
+
+The documented living-world total is now `544` and the countable Fallout living-world total remains `0 of 660`.
