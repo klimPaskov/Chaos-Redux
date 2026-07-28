@@ -1,0 +1,138 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-025 VOJVODINA OVERLAY DECISIONS
+# ============================================================================
+# Costed river, mounted-reserve, garrison, and settlement actions for the
+# vanilla-created HUN-origin vojvodina dynamic country. No action creates a
+# country, transfers a state, or creates free formations.
+# ============================================================================
+
+independence_wave_iw025_vojvodina_category = {
+	independence_wave_iw025_compile_danube_depot_survey = {
+		name = independence_wave_iw025_compile_danube_depot_survey
+		desc = independence_wave_iw025_compile_danube_depot_survey_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_iw025_vojvodina_overlay_active = yes
+			NOT = { has_country_flag = independence_wave_iw025_vojvodina_depot_survey_complete }
+		}
+		available = { can_pay_independence_wave_iw025_vojvodina_depot_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw025_vojvodina_depot_cost = yes }
+		custom_cost_text = independence_wave_iw025_depot_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw025_compile_danube_depot_survey_effect_tt
+			independence_wave_iw025_vojvodina_pay_depot_cost = yes
+			independence_wave_iw025_vojvodina_complete_depot_survey = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw025_vojvodina_ai.high }
+	}
+
+	independence_wave_iw025_establish_mounted_frontier_reserve = {
+		name = independence_wave_iw025_establish_mounted_frontier_reserve
+		desc = independence_wave_iw025_establish_mounted_frontier_reserve_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw025_vojvodina_overlay_active = yes
+			has_country_flag = independence_wave_iw025_vojvodina_depot_survey_complete
+			NOT = { has_country_flag = independence_wave_iw025_vojvodina_mounted_reserve_established }
+		}
+		available = {
+			can_pay_independence_wave_iw025_vojvodina_mounted_reserve_cost = yes
+			has_independence_wave_iw025_vojvodina_anchor_control = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw025_vojvodina_mounted_reserve_cost = yes }
+		custom_cost_text = independence_wave_iw025_mounted_reserve_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw025_establish_mounted_frontier_reserve_effect_tt
+			independence_wave_iw025_vojvodina_pay_mounted_reserve_cost = yes
+			independence_wave_iw025_vojvodina_complete_mounted_reserve = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw025_vojvodina_ai.high
+			modifier = { factor = constant:independence_wave_iw025_vojvodina_ai.double has_war = yes }
+		}
+	}
+
+	independence_wave_iw025_hold_vojvodina_border_watch = {
+		name = independence_wave_iw025_hold_vojvodina_border_watch
+		desc = independence_wave_iw025_hold_vojvodina_border_watch_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = {
+			is_independence_wave_iw025_vojvodina_overlay_active = yes
+			check_variable = {
+				var = independence_wave_iw025_vojvodina_watch_hold_days
+				value = constant:independence_wave_iw025_vojvodina_value.watch_required
+				compare = greater_than_or_equals
+			}
+		}
+		days_mission_timeout = constant:independence_wave_iw025_vojvodina_duration.watch_mission_timeout
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw025_hold_vojvodina_border_watch_success_effect_tt
+			independence_wave_iw025_vojvodina_complete_watch_mission = yes
+		}
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw025_vojvodina_watch_running } }
+		cancel_effect = { independence_wave_iw025_vojvodina_handle_watch_cancel = yes }
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_iw025_hold_vojvodina_border_watch_failure_effect_tt
+			independence_wave_iw025_vojvodina_fail_watch_mission = yes
+		}
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw025_vojvodina_ai.urgent }
+	}
+
+	independence_wave_iw025_charter_municipal_minority_guarantees = {
+		name = independence_wave_iw025_charter_municipal_minority_guarantees
+		desc = independence_wave_iw025_charter_municipal_minority_guarantees_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_iw025_vojvodina_overlay_active = yes
+			has_country_flag = independence_wave_iw025_vojvodina_watch_completed
+			NOT = { has_independence_wave_iw025_vojvodina_settlement = yes }
+		}
+		available = {
+			can_choose_independence_wave_iw025_vojvodina_municipal_charter = yes
+			can_pay_independence_wave_iw025_vojvodina_charter_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw025_vojvodina_charter_cost = yes }
+		custom_cost_text = independence_wave_iw025_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw025_charter_municipal_minority_guarantees_effect_tt
+			independence_wave_iw025_vojvodina_pay_charter_cost = yes
+			independence_wave_iw025_vojvodina_choose_municipal_charter = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw025_vojvodina_ai.high
+			modifier = { factor = constant:independence_wave_iw025_vojvodina_ai.double has_war = no }
+		}
+	}
+
+	independence_wave_iw025_establish_federal_agrarian_compact = {
+		name = independence_wave_iw025_establish_federal_agrarian_compact
+		desc = independence_wave_iw025_establish_federal_agrarian_compact_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw025_vojvodina_overlay_active = yes
+			has_country_flag = independence_wave_iw025_vojvodina_watch_completed
+			NOT = { has_independence_wave_iw025_vojvodina_settlement = yes }
+		}
+		available = {
+			can_choose_independence_wave_iw025_vojvodina_federal_compact = yes
+			can_pay_independence_wave_iw025_vojvodina_federal_compact_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw025_vojvodina_federal_compact_cost = yes }
+		custom_cost_text = independence_wave_iw025_federal_compact_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw025_establish_federal_agrarian_compact_effect_tt
+			independence_wave_iw025_vojvodina_pay_federal_compact_cost = yes
+			independence_wave_iw025_vojvodina_choose_federal_compact = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw025_vojvodina_ai.high
+			modifier = { factor = constant:independence_wave_iw025_vojvodina_ai.triple has_war = yes }
+		}
+	}
+}
