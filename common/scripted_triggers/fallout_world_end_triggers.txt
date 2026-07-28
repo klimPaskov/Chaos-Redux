@@ -767,7 +767,9 @@ fallout_state_grading_rows_are_current = {
 }
 
 # Supported scope: STATE. Deaths and state-map totals are observed after the
-# population mutation. Disabled and zero-loss paths are explicit receipts.
+# population mutation. Zero-loss and registered-loss paths are explicit
+# receipts. Fallout registration remains mandatory even when the general
+# Deaths setting is disabled.
 fallout_population_deaths_accounting_receipt_is_durable = {
 	has_state_flag = fallout_population_loss_deaths_evaluated
 	has_variable = fallout_population_deaths_accounting_status
@@ -800,13 +802,6 @@ fallout_population_deaths_accounting_receipt_is_durable = {
 			check_variable = { var = fallout_population_deaths_total_delta value = fallout_population_loss_memory compare = equals }
 			check_variable = { fallout_population_deaths_sequence_delta = constant:fallout_runtime.one }
 			check_variable = { var = fallout_population_state_deaths_delta value = fallout_population_loss_memory compare = equals }
-		}
-		AND = {
-			check_variable = { fallout_population_loss_memory > constant:fallout_runtime.zero }
-			check_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.disabled }
-			check_variable = { fallout_population_deaths_total_delta = constant:fallout_runtime.zero }
-			check_variable = { fallout_population_deaths_sequence_delta = constant:fallout_runtime.zero }
-			check_variable = { fallout_population_state_deaths_delta = constant:fallout_runtime.zero }
 		}
 	}
 }

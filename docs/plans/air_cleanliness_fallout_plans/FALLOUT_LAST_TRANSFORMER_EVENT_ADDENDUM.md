@@ -218,7 +218,7 @@ Repairable infrastructure damage uses the documented state-scoped `damage_buildi
 If the level is already damaged or absent, the effect records a building-application shortfall and does not damage another building.
 The frozen result token remains unchanged.
 
-Failure casualties call `apply_exact_state_civilian_population_loss` against the authenticated target state with the shared minimum-remaining population, `fallout_aftermath` reason, and internal Deaths logging disabled.
+Failure casualties call `apply_exact_state_civilian_population_loss` against the authenticated target state with the shared minimum-remaining population, `fallout_aftermath` reason, and state population application disabled after the mutation is observed.
 The helper's applied amount is then recorded exactly once through the shared Deaths API.
 No direct negative manpower effect or duplicate Deaths record is allowed.
 

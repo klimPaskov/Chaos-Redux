@@ -1662,13 +1662,7 @@ fallout_reconcile_population_loss_receipt = {
 			set_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.zero_loss }
 			if = {
 				limit = { check_variable = { fallout_population_loss_memory > constant:fallout_runtime.zero } }
-				if = {
-					limit = { has_global_flag = settings_chaos_deaths_disabled }
-					set_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.disabled }
-				}
-				else = {
-					set_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.registered }
-				}
+				set_variable = { fallout_population_deaths_accounting_status = constant:fallout_deaths_accounting_status.registered }
 				set_temp_variable = { chaos_deaths_change = fallout_population_loss_memory }
 				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.fallout_aftermath }
 				set_temp_variable = { chaos_deaths_is_civilian = constant:fallout_runtime.one }
