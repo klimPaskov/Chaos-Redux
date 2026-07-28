@@ -116,7 +116,16 @@ The seven-day countdown cannot begin from the issued counter alone. The verifier
 
 An invalid batch identity, invalid batch size, count mismatch, lost countdown coordinator, or overdue countdown stops the transaction. A coordinator may be rehomed only while the hourly sweep or verifier phase remains recoverable. A failed batch is never replayed because some native effects may already have executed.
 
-Static control flow applies the aggregate Deaths, fallout, Air Contamination, Chaos history, condemnation, and treaty consequences once, only after complete verification. It then invalidates the sweep and verifier scheduling state before the countdown begins.
+Each verified struck state first mutates its live population with the exact
+state-loss helper until the captured prestrike baseline reaches its approved
+90 to 95 percent loss band. The observed loss is accumulated once and sent to
+the shared Deaths ledger after the state mutations, with state mutation disabled
+on that accounting call so the population is not deleted twice. The Fallout
+exception keeps this receipt mandatory even when the general Deaths setting is
+disabled. Static control flow applies that aggregate Deaths receipt, fallout,
+Air Contamination, Chaos history, condemnation, and treaty consequences once,
+only after complete verification. It then invalidates the sweep and verifier
+scheduling state before the countdown begins.
 
 The exact countdown stores its start day and an end day equal to start plus seven only after verification. Event `chaosx.fallout.903` is scheduled with a literal seven-day delay. It is the only path that may submit the standard Fallout request. The daily coordinator does not submit or reschedule the countdown because a calendar-day comparison cannot prove that 168 hours elapsed. Lost countdown ownership and an overdue callback fail closed. This is static proof, not runtime proof.
 
