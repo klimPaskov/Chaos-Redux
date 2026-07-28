@@ -77,7 +77,7 @@ Ownership authority: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`.
 | Surface | Existing file | Planned action | Tranche |
 | --- | --- | --- | --- |
 | scenario ids | `common/script_constants/chaosx_triggerable_scenarios_constants.txt` | scan all assigned ids and append Fallout at the next integer after the current maximum without moving existing entries | 5 |
-| registry and sorting | `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt` | add Fallout in every registry and sort path | 5 |
+| registry and sorting | `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt` | keep Fallout out of public registry and sort paths, then audit the Fallout-owned reservation and dispatch boundary | 5 |
 | launch gate | `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt` | block active terminal state and invalid setup only | 5 |
 | GUI click and confirmation | `common/scripted_guis/chaosx_scripted_gui_settings.txt` | route selected Fallout scenario through normal confirmation | 5 |
 | scripted localisation | `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt` | add name, id, detail, type, and intensity mappings | 5 |

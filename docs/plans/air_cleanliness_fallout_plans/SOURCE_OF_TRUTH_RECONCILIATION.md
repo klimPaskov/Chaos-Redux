@@ -16,7 +16,7 @@ Live code does not silently override accepted design. A difference between code 
 
 ## System identity and path ownership
 
-Air Cleanliness and Fallout are an unnumbered global system package. Fallout is a terminal world rewrite and a manual scenario, not ordinary a numbered random event content.
+Air Cleanliness and Fallout are an unnumbered global system package. Fallout is a terminal consequence and world rewrite with a dormant manual trigger, not ordinary numbered random-event content.
 
 Canonical working paths use the system slug:
 
@@ -27,6 +27,10 @@ Canonical working paths use the system slug:
 - `chaosx.fallout` as the dedicated Fallout event namespace
 
 Fallout has no numbered random-event identity and no ownership relationship with another feature package. Remove stale event definitions, callers, sprites, and asset paths instead of retaining compatibility shims in another namespace.
+
+## Public registry boundary
+
+The accepted correction supersedes older plans that proposed a public Fallout scenario row or registry sort branch. Fallout remains absent from the public scenario, Event Details, evolution, ordinary event-log, and ordinary super-event registries. The manual trigger reserves the next live scenario id in `fallout_manual_scenario_identity.triggerable_scenario_id`, but that value is Fallout-owned and is never inserted into public registry arrays, catalog rows, or player-facing history. The generic framework may dispatch a Fallout-owned bootstrap callback after an authorized manual request. That callback starts the strike transaction and does not register Fallout as an event.
 
 ## Reconciled design decisions
 

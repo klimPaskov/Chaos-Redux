@@ -52,7 +52,7 @@ Forbidden resolution:
 
 ## B3: manual scenario id allocation
 
-Status: resolved, SCN-014 reserved and public activation remains blocked by B2
+Status: resolved, SCN-014 reserved for the dormant Fallout-owned manual trigger and public registry insertion is prohibited
 
 Observed live checkout:
 
@@ -65,9 +65,9 @@ Allocation rule:
 - inspect every assigned scenario id in the live checkout
 - set Fallout to one greater than the highest assigned id
 - preserve every existing scenario id and stored selection value
-- update registry arrays, sorting, localisation, dispatch, and documentation with the allocated id
+- update Fallout-owned reservation, dispatch, and documentation with the allocated id while keeping public registries Fallout-free
 
-`fallout_manual_scenario_identity.triggerable_scenario_id` reserves raw id 14, which is exactly one greater than the live maximum of 13. Raw id 12 remains untouched, no existing id was renumbered, and the public Fallout row remains absent until the exact native sweep passes B2.
+`fallout_manual_scenario_identity.triggerable_scenario_id` reserves raw id 14, which is exactly one greater than the live maximum of 13. Raw id 12 remains untouched, no existing id was renumbered, and Fallout remains absent from the public scenario, Event Details, evolution, and ordinary super-event registries. The exact native sweep still blocks manual activation.
 
 ## B4: mapmode strip frame ownership
 

@@ -160,7 +160,7 @@ Add the manual scenario exactly as specified after the engine proof exists.
 ### Required work
 
 1. Allocate Fallout to the next integer after the highest id in the live scenario registry. Preserve every existing scenario id.
-2. Register Fallout in every scenario registry and sort path.
+2. Keep Fallout out of every public scenario, Event Details, evolution, and ordinary super-event registry and audit the Fallout-owned reservation and dispatch surfaces instead.
 3. Add launch gate, confirmation, type, and intensity behavior.
 4. Add exact thermonuclear strike sweep over every valid province.
 5. Suppress per-strike global spam while preserving real state effects.
