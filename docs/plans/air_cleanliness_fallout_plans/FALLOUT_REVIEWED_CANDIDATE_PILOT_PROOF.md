@@ -1,8 +1,8 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after The New Year Without Fireworks
+## Current reconciliation after The Second Dust Bowl
 
-The reviewed candidate producer now covers `64` ordinary dormant rows through candidate `649`, with `530` defined event blocks and `0 of 660` countable release-floor blocks. The New Year Without Fireworks row uses route `7164`, so the reviewed route upper bound is now `7165`. Its current-generation East Asian admission stores the durable survival resource row, Food, Clean Water, Fuel, Medicine, Shelter Capacity, Recognition, Cohesion, Air Winter disease pressure, and seven New Year ledgers.
+The reviewed candidate producer now covers `65` ordinary dormant rows through Great Lakes Lock Winter candidate `663`, with `544` defined event blocks through `chaosx.fallout.669` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7166`. The Second Dust Bowl source admission contract stores the durable survival resource row, Food, Clean Water, Scrap, Fuel, Power, Shelter Capacity, Recognition, Cohesion, Air Winter Dust Load, Supply Access, Adaptation, Reclamation, Exposure, Disease Pressure, and the native plains target. The producer now preserves the selected state in the dispatch envelope, and the opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
@@ -16,9 +16,13 @@ Mine Generator is the Sub-Saharan African resource-works row with candidate `642
 
 The New Year Without Fireworks is the East Asian country-only row with candidate `649`, transaction `710064`, event ids `649` through `655`, and Event Log history `9170`. It records four authored year-turning branches with subject type `none` and target `0`, without claiming a state or province target. Its dedicated proof is `FALLOUT_NEW_YEAR_WITHOUT_FIREWORKS_PROOF.md`.
 
-Status: dormant, statically reconciled, not release-floor credit.
+The Second Dust Bowl is the North American plains row with candidate `656`, transaction `710065`, event ids `656` through `662`, and Event Log history `9171`. Its source contract selects the lowest eligible native plains state and records four authored branches with a 35-day result and a 240-day planting-season callback. Result and callback grading include infrastructure and all seven durable ledgers, and same-generation committed cleanup uses the generic country registry. Pre-result stale cancellation and generation-drift cleanup remain blocked. The chain does not add Air Contamination, mutate the native state category, transfer population between states, or create a named historical district. Its dedicated proof is `FALLOUT_SECOND_DUST_BOWL_PROOF.md`.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-four global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
+Great Lakes Lock Winter is the North American coastal row with candidate `663`, transaction `710066`, event ids `663` through `669`, and Event Log history `9172`. It requires a native coastal state with a non-damaged naval base and infrastructure, uses four authored branches, resolves after exactly `35` days, and schedules a `270`-day thaw callback. Its hidden-AI lane scores all affordable branches with deterministic tie order, and its cleanup gate accepts a result-only schedule-error receipt without a callback ticket. Its dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
+
+Status: dormant, statically reconciled, completion blocked by the current audit, not release-floor credit.
+
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-five global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 
 ## Candidate rows
 
@@ -73,9 +77,9 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-four candidate ids, sixty-four transaction keys, and sixty-four route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-five candidate ids, sixty-five transaction keys, and sixty-five route ids in a dedicated Fallout namespace.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 309, and the hidden companion ranges
+  126, 153 through 200, 204 through 309, 656 through 669, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger admits major-arc rows only through
@@ -99,7 +103,12 @@ The pilot producer is not a release-floor claim. The activation flags remain
 unset because the living-world content caller, full candidate matrix, complete
 human and AI result coverage, event log and detail depth, focus integration,
 and runtime proof are still incomplete. The exact engine-native all-valid-land-
-province sweep blocker for the manual scenario is unchanged.
+province sweep blocker for the manual scenario is unchanged. The Second Dust
+Bowl pre-result stale-cancellation and generation-drift cleanup paths remain
+blocked by the shared delayed dispatcher current-generation gate. Same-generation
+committed cleanup uses the generic country registry. The manual survival contract remains a
+direct `90` to `95` percent prestrike population-loss band, and Hearts of Iron
+IV was not launched.
 
 ## Candidate count correction
 
@@ -563,3 +572,17 @@ Four authored branches cover Quiet Remembrance, Hold a Ration Feast, Stage a Mil
 The asset package is `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_new_year_without_fireworks`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with candidate events `649` through `655`, transaction `710064`, route `7164`, history `9170`, dormant wording, and `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags, scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. The asset manifest records static registration in `interface/fallout_world_end.gfx`, while live presentation remains unproven. The read-only event-inspector result is unresolved tooling evidence and is not a validation pass.
+
+## The Second Dust Bowl correction
+
+The Second Dust Bowl is the sixty-fifth reviewed ordinary candidate.
+
+It uses candidate id `656`, transaction `710065`, route `7165`, event blocks `656` through `662`, and Event Log history `9171`.
+
+Its country gate requires a current Fallout registry row, current-generation North American regional identity, durable survival resources, campaign days from `365` through `1599`, minimum Food, Clean Water, Scrap, Fuel, Power, Shelter Capacity, Recognition, and Cohesion, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled native `plains` state with a rural, pastoral, or town pretransition category, produced Air Winter snapshot, surviving population, native infrastructure, Supply Access, Food, Adaptation, Reclamation, Exposure, and Disease Pressure.
+
+Four authored branches cover Shelter the Fields, Move the Farms, Seed Cold Crops, and Abandon the Open Plains. The source result contract uses frozen country and state values plus seven durable soil ledgers. It resolves after exactly `35` days and schedules the planting-season callback after exactly `240` days. Result and callback failure use the separate bounded Deaths requests `0.0014` and `0.0006` against the authenticated target state. Result and callback state effects use unscoped temporary variables, callback grading includes infrastructure and all seven durable ledgers, and branch preparation contributes to the result grade. The chain preserves hidden-AI parity in source definitions, records Event Log history `9171`, and closes through a generic-country cleanup route after a committed same-generation result or callback. Pre-result stale cancellation and generation-drift cleanup remain blocked.
+
+The chain does not add Air Contamination, mutate the native state category, transfer population between states, create a named historical district, or add a recurring scheduler. It remains dormant and outside release-floor credit. Both scheduler activation flags, scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker. The manual Fallout survival contract remains a direct `90` to `95` percent prestrike population-loss band, and Hearts of Iron IV was not launched.
+
+The asset package is `docs/assets/656_second_dust_bowl/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_second_dust_bowl`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Exported row `FALLOUT-656` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:613` with `Needs Testing` status and current branch, result, callback, authenticated cancellation, and visible budget cost `3` wording. Catalog wording still needs review against the final player-facing text.
