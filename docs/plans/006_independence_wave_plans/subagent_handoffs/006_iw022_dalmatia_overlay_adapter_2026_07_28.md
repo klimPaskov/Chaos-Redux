@@ -14,7 +14,7 @@ IW-022 observes the vanilla Yugoslav route that creates a dynamic country from `
 - `common/scripted_triggers/006_independence_wave_iw022_dalmatia_triggers.txt`
 - `common/scripted_effects/006_independence_wave_iw022_dalmatia_effects.txt`
 - `common/ideas/006_independence_wave_iw022_dalmatia_ideas.txt`
-- `common/on_actions/006_independence_wave_iw022_dalmatia_on_actions.txt`
+- `common/on_actions/006_independence_wave_iw022_dalmatia_on_actions.txt` (the shared D01-D50 table also invokes the IW-025 Vojvodina refresh, avoiding duplicate on-action keys)
 - `common/decisions/categories/006_independence_wave_iw022_dalmatia_categories.txt`
 - `common/decisions/006_independence_wave_iw022_dalmatia_decisions.txt`
 - `localisation/english/006_independence_wave_iw022_dalmatia_l_english.yml`

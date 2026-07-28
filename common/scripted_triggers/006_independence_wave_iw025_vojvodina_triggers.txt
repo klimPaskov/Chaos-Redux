@@ -1,0 +1,102 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-025 VOJVODINA OVERLAY TRIGGERS
+# ============================================================================
+# Exact HUN-origin dynamic-country identity, anchor-control gates, material
+# costs, and settlement thresholds. These checks never register a country,
+# scan the world, or replace the vanilla Yugoslav route.
+# ============================================================================
+
+is_independence_wave_iw025_vojvodina_route_active = {
+	exists = yes
+	is_dynamic_country = yes
+	original_tag = HUN
+	has_cosmetic_tag = vojvodina
+}
+
+is_independence_wave_iw025_vojvodina_overlay_active = {
+	is_independence_wave_iw025_vojvodina_route_active = yes
+	has_country_flag = independence_wave_iw025_vojvodina_overlay_active
+}
+
+has_independence_wave_iw025_vojvodina_settlement = {
+	OR = {
+		has_country_flag = independence_wave_iw025_vojvodina_municipal_charter
+		has_country_flag = independence_wave_iw025_vojvodina_federal_agrarian_compact
+	}
+}
+
+has_independence_wave_iw025_vojvodina_anchor_control = {
+	owns_state = 45
+	controls_state = 45
+}
+
+has_independence_wave_iw025_vojvodina_watch_garrison = {
+	divisions_in_state = {
+		state = 45
+		size > constant:independence_wave_iw025_vojvodina_value.guard_division_size_exclusive
+	}
+}
+
+has_independence_wave_iw025_vojvodina_watch_objective = {
+	has_independence_wave_iw025_vojvodina_anchor_control = yes
+	has_independence_wave_iw025_vojvodina_watch_garrison = yes
+}
+
+can_pay_independence_wave_iw025_vojvodina_depot_cost = {
+	NOT = { command_power < constant:independence_wave_iw025_vojvodina_cost.depot_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw025_vojvodina_cost.depot_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw025_vojvodina_cost.depot_trains } }
+}
+
+can_pay_independence_wave_iw025_vojvodina_mounted_reserve_cost = {
+	NOT = { command_power < constant:independence_wave_iw025_vojvodina_cost.mounted_reserve_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw025_vojvodina_cost.mounted_reserve_manpower }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw025_vojvodina_cost.mounted_reserve_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw025_vojvodina_cost.mounted_reserve_support_equipment } }
+}
+
+can_pay_independence_wave_iw025_vojvodina_guard_cost = {
+	NOT = { command_power < constant:independence_wave_iw025_vojvodina_cost.guard_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw025_vojvodina_cost.guard_manpower }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw025_vojvodina_cost.guard_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw025_vojvodina_cost.guard_support_equipment } }
+}
+
+can_pay_independence_wave_iw025_vojvodina_charter_cost = {
+	NOT = { command_power < constant:independence_wave_iw025_vojvodina_cost.charter_command_power }
+	NOT = { has_manpower < constant:independence_wave_iw025_vojvodina_cost.charter_manpower }
+	NOT = { has_equipment = { train_equipment < constant:independence_wave_iw025_vojvodina_cost.charter_trains } }
+}
+
+can_pay_independence_wave_iw025_vojvodina_federal_compact_cost = {
+	NOT = { has_manpower < constant:independence_wave_iw025_vojvodina_cost.federal_compact_manpower }
+	NOT = { has_army_experience < constant:independence_wave_iw025_vojvodina_cost.federal_compact_army_experience }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_iw025_vojvodina_cost.federal_compact_infantry_equipment } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_iw025_vojvodina_cost.federal_compact_support_equipment } }
+}
+
+can_choose_independence_wave_iw025_vojvodina_municipal_charter = {
+	check_variable = {
+		var = independence_wave_iw025_vojvodina_river_logistics
+		value = constant:independence_wave_iw025_vojvodina_value.settlement_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_iw025_vojvodina_provincial_legitimacy
+		value = constant:independence_wave_iw025_vojvodina_value.settlement_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+can_choose_independence_wave_iw025_vojvodina_federal_compact = {
+	check_variable = {
+		var = independence_wave_iw025_vojvodina_border_mobility
+		value = constant:independence_wave_iw025_vojvodina_value.settlement_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_iw025_vojvodina_river_logistics
+		value = constant:independence_wave_iw025_vojvodina_value.settlement_threshold
+		compare = greater_than_or_equals
+	}
+}

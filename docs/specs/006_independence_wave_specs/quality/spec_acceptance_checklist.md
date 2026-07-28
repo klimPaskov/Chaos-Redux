@@ -80,6 +80,6 @@ transactions, is maintained in
 - [ ] All thirteen registered-tag compatibility adapters are implemented and route-preservation audited, including the `IW-153 POK` preservation obligations.
 - [ ] All thirteen additive vanilla route-overlay hooks are implemented and kept out of the release selector.
 
-IW-022 has a bounded CRO-origin `dalmatia` source adapter, but its meaningful-tree, network, league, formable, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; eleven other exact route-overlay hooks remain absent.
+IW-022 has a bounded CRO-origin `dalmatia` source adapter and IW-025 has a bounded HUN-origin `vojvodina` source adapter, but their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence are intentionally not counted toward either unchecked acceptance gate; ten other exact route-overlay hooks remain absent.
 - [ ] Parent chooses an explicit state-level mutual exclusion for the Trabzon cross-group automatic conflict.
 - [ ] Parent requires the Himalayan confederation route to consume or exclude the Kashmir reservation.
