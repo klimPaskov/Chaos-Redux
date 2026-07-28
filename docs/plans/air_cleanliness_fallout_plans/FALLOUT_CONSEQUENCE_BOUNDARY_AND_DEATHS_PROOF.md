@@ -20,6 +20,8 @@ The standard path sets `fallout_air_cleanliness_disabled` in `fallout_queue_requ
 
 The manual population replay measures the live `state_population_k` after native strike callbacks and the exact aggregate consequence. The standard population phase therefore requests only the remaining delta to the frozen 90 to 95 percent survivor target. A state that already reached its target requests zero, and its reconciliation receipt cannot register a second Fallout Deaths row. The frozen `fallout_pretransition_population_k` remains provenance and is not reused as a second live loss input.
 
+The population receipt gate now authenticates that manual replay baseline against the generation-bound preflight `fallout_manual_population_contract_preflight_frozen_current_people` value. Ordinary Fallout rows continue to require the frozen pretransition baseline. This keeps the manual exception narrow and prevents a stale or unproven replay from passing as a normal population receipt.
+
 The host manual reconciliation repairs the same durable flag when a save resumes with an admitted manual transaction. The repair accepts only an active sweep, synthetic strike batch, completed native sweep, seven-day countdown, sent request, or current launcher receipt. An invalid-intensity error has none of those admission receipts and therefore does not acquire the shutdown through recovery.
 
 Static consumers of the flag are:
