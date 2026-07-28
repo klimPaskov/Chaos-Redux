@@ -188,9 +188,11 @@ occupation, controller mismatch, and border-war predicates are not exact
 substitutes.
 
 Direct Air Winter pressure or mortality from active combat remains blocked by
-that missing state surface. A second strategic-bombing multiplier is absent
-because it would compound the existing bombing casualty tick and change the
-accepted balance through pressure, building loss, and winter mortality at once.
+that missing state surface. Recent strategic bombing now contributes a separate
+small state-pressure receipt through the documented bombing-date trigger. The
+receipt is capped at 2.00 pressure and never calls Deaths. The exact source and
+engine boundary are recorded in
+`AIR_WINTER_STRATEGIC_BOMBING_PRESSURE_PROOF.md`.
 
 ## Deaths setting contract
 

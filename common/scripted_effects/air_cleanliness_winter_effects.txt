@@ -495,6 +495,7 @@ air_winter_initialize_state = {
 		if = { limit = { NOT = { has_variable = air_winter_water_security } } set_variable = { air_winter_water_security = constant:air_winter_default.water_security } }
 		set_variable = { air_winter_refugee_pressure = constant:air_winter_default.refugee_pressure }
 		set_variable = { air_winter_disease_pressure = constant:air_winter_runtime.zero }
+		set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_runtime.zero }
 		set_variable = { air_winter_survival_value = constant:air_winter_survival.minimum }
 		set_variable = { air_winter_expected_monthly_death_percent = constant:air_winter_runtime.zero }
 		set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero }
@@ -576,6 +577,7 @@ air_winter_normalize_state_ledger = {
 	if = { limit = { NOT = { has_variable = air_winter_water_security } } set_variable = { air_winter_water_security = constant:air_winter_default.water_security } }
 	if = { limit = { NOT = { has_variable = air_winter_refugee_pressure } } set_variable = { air_winter_refugee_pressure = constant:air_winter_default.refugee_pressure } }
 	if = { limit = { NOT = { has_variable = air_winter_disease_pressure } } set_variable = { air_winter_disease_pressure = constant:air_winter_runtime.zero } }
+	if = { limit = { NOT = { has_variable = air_winter_strategic_bombing_pressure } } set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = air_winter_survival_value } } set_variable = { air_winter_survival_value = constant:air_winter_survival.minimum } }
 	if = { limit = { NOT = { has_variable = air_winter_expected_monthly_death_percent } } set_variable = { air_winter_expected_monthly_death_percent = constant:air_winter_runtime.zero } }
 	if = { limit = { NOT = { has_variable = air_winter_local_supply_factor } } set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero } }
@@ -613,6 +615,7 @@ air_winter_normalize_state_ledger = {
 	clamp_variable = { var = air_winter_water_security min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 	clamp_variable = { var = air_winter_refugee_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 	clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
+	clamp_variable = { var = air_winter_strategic_bombing_pressure min = constant:air_winter_runtime.zero max = constant:air_winter_pressure.strategic_bombing_maximum }
 	clamp_variable = { var = air_winter_survival_value min = constant:air_winter_survival.minimum max = constant:air_winter_survival.maximum }
 	clamp_variable = { var = air_winter_expected_monthly_death_percent min = constant:air_winter_runtime.zero max = constant:air_winter_deaths.maximum_monthly_percent }
 	clamp_variable = { var = air_winter_local_supply_factor min = constant:air_winter_phase_6_modifier.local_supplies max = constant:air_winter_runtime.zero }
@@ -672,6 +675,29 @@ air_winter_calculate_state_pressure = {
 	if = {
 		limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
 		add_to_variable = { air_winter_pressure = constant:air_winter_pressure.chemical_contamination }
+	}
+
+	# The installed engine exposes the last strategic-bombing date directly in
+	# state scope. Keep this pressure small and bounded because the Deaths pass
+	# already records the civilian losses from the same bombing receipt.
+	set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_runtime.zero }
+	if = {
+		limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_recent }
+		set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_pressure.strategic_bombing_recent }
+		if = {
+			limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_warm }
+			set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_pressure.strategic_bombing_warm }
+		}
+		if = {
+			limit = { days_since_last_strategic_bombing < constant:chaos_meter_deaths.strategic_bombing_days_hot }
+			set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_pressure.strategic_bombing_hot }
+		}
+	}
+	add_to_variable = { air_winter_pressure = air_winter_strategic_bombing_pressure }
+	clamp_variable = {
+		var = air_winter_strategic_bombing_pressure
+		min = constant:air_winter_runtime.zero
+		max = constant:air_winter_pressure.strategic_bombing_maximum
 	}
 
 	if = { limit = { has_state_category = megalopolis } add_to_variable = { air_winter_pressure = constant:air_winter_pressure.urban_megalopolis } }
@@ -2031,6 +2057,7 @@ air_winter_suspend_state = {
 	set_variable = { air_winter_recovery = constant:air_winter_ledger.minimum }
 	set_variable = { air_winter_pressure = constant:air_winter_runtime.zero }
 	set_variable = { air_winter_recovery_pressure = constant:air_winter_runtime.zero }
+	set_variable = { air_winter_strategic_bombing_pressure = constant:air_winter_runtime.zero }
 	set_variable = { air_winter_expected_exposure_delta = constant:air_winter_runtime.zero }
 	set_variable = { air_winter_expected_monthly_death_percent = constant:air_winter_runtime.zero }
 	set_variable = { air_winter_local_supply_factor = constant:air_winter_runtime.zero }
@@ -2073,6 +2100,7 @@ air_winter_reset_state = {
 	clear_variable = air_winter_recovery
 	clear_variable = air_winter_pressure
 	clear_variable = air_winter_recovery_pressure
+	clear_variable = air_winter_strategic_bombing_pressure
 	clear_variable = air_winter_exposure
 	clear_variable = air_winter_expected_exposure_delta
 	clear_variable = air_winter_adaptation
