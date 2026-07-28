@@ -79,6 +79,8 @@ The authoritative event catalog row is owned by `docs/spreadsheets/chaos_redux_e
 
 The generation reset calls `fallout_event_614_abort_on_generation_change` after the existing Tunnel Ward reset hook.
 
+If an uncommitted opening receipt points at a state that is no longer current, the reset route snapshots `fallout_event_dispatch_issued_target` into `fallout_event_614_target_state_id` before cancelling the exact ordinary receipt. An accepted cancellation records the typed cancellation history, refunds any unresolved paid branch, releases the state reservation and committed flag, and clears the frozen row. This keeps stale opening cleanup bound to the state that issued the receipt.
+
 Opening, result, callback, and cleanup each reauthenticate the current transaction and target before applying state effects.
 
 Target loss or generation change releases payment and state reservations before a cleanup receipt is accepted.
