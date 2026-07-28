@@ -1,0 +1,138 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-022 DALMATIA OVERLAY DECISIONS
+# ============================================================================
+# Costed customs, coastwatch, garrison, and settlement actions for the
+# vanilla-created CRO-origin dalmatia dynamic country. No action creates a
+# country, transfers a state, or creates free formations.
+# ============================================================================
+
+independence_wave_iw022_dalmatia_category = {
+	independence_wave_iw022_compile_port_ledgers = {
+		name = independence_wave_iw022_compile_port_ledgers
+		desc = independence_wave_iw022_compile_port_ledgers_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			NOT = { has_country_flag = independence_wave_iw022_dalmatia_port_ledger_compiled }
+		}
+		available = { can_pay_independence_wave_iw022_dalmatia_ledger_cost = yes }
+		custom_cost_trigger = { can_pay_independence_wave_iw022_dalmatia_ledger_cost = yes }
+		custom_cost_text = independence_wave_iw022_ledger_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_compile_port_ledgers_effect_tt
+			independence_wave_iw022_dalmatia_pay_ledger_cost = yes
+			independence_wave_iw022_dalmatia_complete_port_ledger = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:independence_wave_iw022_dalmatia_ai.high }
+	}
+
+	independence_wave_iw022_establish_adriatic_coastwatch = {
+		name = independence_wave_iw022_establish_adriatic_coastwatch
+		desc = independence_wave_iw022_establish_adriatic_coastwatch_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			has_country_flag = independence_wave_iw022_dalmatia_port_ledger_compiled
+			NOT = { has_country_flag = independence_wave_iw022_dalmatia_coastwatch_established }
+		}
+		available = {
+			can_pay_independence_wave_iw022_dalmatia_coastwatch_cost = yes
+			has_independence_wave_iw022_dalmatia_port_corridor_control = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw022_dalmatia_coastwatch_cost = yes }
+		custom_cost_text = independence_wave_iw022_coastwatch_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_establish_adriatic_coastwatch_effect_tt
+			independence_wave_iw022_dalmatia_pay_coastwatch_cost = yes
+			independence_wave_iw022_dalmatia_complete_coastwatch = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw022_dalmatia_ai.high
+			modifier = { factor = constant:independence_wave_iw022_dalmatia_ai.double has_war = yes }
+		}
+	}
+
+	independence_wave_iw022_hold_adriatic_watch = {
+		name = independence_wave_iw022_hold_adriatic_watch
+		desc = independence_wave_iw022_hold_adriatic_watch_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		activation = { always = no }
+		available = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			check_variable = {
+				var = independence_wave_iw022_dalmatia_watch_hold_days
+				value = constant:independence_wave_iw022_dalmatia_value.watch_required
+				compare = greater_than_or_equals
+			}
+		}
+		days_mission_timeout = constant:independence_wave_iw022_dalmatia_duration.watch_mission_timeout
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_hold_adriatic_watch_success_effect_tt
+			independence_wave_iw022_dalmatia_complete_watch_mission = yes
+		}
+		cancel_trigger = { NOT = { has_country_flag = independence_wave_iw022_dalmatia_watch_running } }
+		cancel_effect = { independence_wave_iw022_dalmatia_handle_watch_cancel = yes }
+		timeout_effect = {
+			custom_effect_tooltip = independence_wave_iw022_hold_adriatic_watch_failure_effect_tt
+			independence_wave_iw022_dalmatia_fail_watch_mission = yes
+		}
+		fire_only_once = no
+		ai_will_do = { base = constant:independence_wave_iw022_dalmatia_ai.urgent }
+	}
+
+	independence_wave_iw022_charter_dalmatian_municipal_authority = {
+		name = independence_wave_iw022_charter_dalmatian_municipal_authority
+		desc = independence_wave_iw022_charter_dalmatian_municipal_authority_desc
+		icon = GFX_decision_independence_wave_government_actions
+		visible = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			has_country_flag = independence_wave_iw022_dalmatia_watch_completed
+			NOT = { has_independence_wave_iw022_dalmatia_settlement = yes }
+		}
+		available = {
+			can_choose_independence_wave_iw022_dalmatia_municipal_charter = yes
+			can_pay_independence_wave_iw022_dalmatia_charter_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw022_dalmatia_charter_cost = yes }
+		custom_cost_text = independence_wave_iw022_charter_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_charter_dalmatian_municipal_authority_effect_tt
+			independence_wave_iw022_dalmatia_pay_charter_cost = yes
+			independence_wave_iw022_dalmatia_choose_municipal_charter = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw022_dalmatia_ai.high
+			modifier = { factor = constant:independence_wave_iw022_dalmatia_ai.double has_war = no }
+		}
+	}
+
+	independence_wave_iw022_entrust_coastal_security_compact = {
+		name = independence_wave_iw022_entrust_coastal_security_compact
+		desc = independence_wave_iw022_entrust_coastal_security_compact_desc
+		icon = GFX_decision_independence_wave_army_integration_actions
+		visible = {
+			is_independence_wave_iw022_dalmatia_overlay_active = yes
+			has_country_flag = independence_wave_iw022_dalmatia_watch_completed
+			NOT = { has_independence_wave_iw022_dalmatia_settlement = yes }
+		}
+		available = {
+			can_choose_independence_wave_iw022_dalmatia_security_compact = yes
+			can_pay_independence_wave_iw022_dalmatia_security_compact_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_iw022_dalmatia_security_compact_cost = yes }
+		custom_cost_text = independence_wave_iw022_security_compact_cost
+		complete_effect = {
+			custom_effect_tooltip = independence_wave_iw022_entrust_coastal_security_compact_effect_tt
+			independence_wave_iw022_dalmatia_pay_security_compact_cost = yes
+			independence_wave_iw022_dalmatia_choose_security_compact = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:independence_wave_iw022_dalmatia_ai.high
+			modifier = { factor = constant:independence_wave_iw022_dalmatia_ai.triple has_war = yes }
+		}
+	}
+}
