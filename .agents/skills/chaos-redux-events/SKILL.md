@@ -29,6 +29,7 @@ Treat every event as a contract across some or all of these surfaces:
 - event logs, actor mapping, event-details content, and evolution views
 - super-event image, localisation, and audio wiring
 - decisions, ideas, AI, characters, unit templates, and more
+- visible 3D unit, building, creature, vehicle, aircraft, naval, or map-entity model packages
 - `docs/events/` documentation and spreadsheet
 
 If a task seems to need custom one-off plumbing, first check whether the same behavior should become generic for future events.
@@ -39,6 +40,7 @@ For large or multi-surface event work, use project subagents to keep the main im
 
 - Spawn `chaosx_repo_explorer` before editing when the event touches many systems or when file locations are uncertain.
 - Spawn `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist` for actual visual asset packages according to `chaos-redux-event-assets`.
+- Spawn `chaosx_3d_model_pipeline` for bounded model geometry, textures, rigs, skeletal actions, `.mesh`/`.anim` exports, reimport proof, and runtime handoff when the event owns a 3D unit or building surface.
 - Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for actual super-event research packages according to `chaos-redux-super-events`.
 - Spawn `chaosx_improvement_loop_planner` after a meaningful implementation tranche when several new mechanics, country packages, formables, focus routes, decisions, scripted GUI surfaces, super-event candidates, or lore systems have been added and the event needs deeper connection. Do not spawn it again for the same event until the previous addendum is implemented, folded into specs, queued with a reason, or rejected.
 - Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
@@ -71,24 +73,23 @@ Large decision systems must hide obsolete or irrelevant actions. Use phases, act
 
 If the spec defines achievements, implement the full achievement surface: tracking flags or variables, unlock triggers, disqualifiers, localisation, icons, docs, and any route or formable hooks. Do not convert hard achievements into automatic unlocks.
 
-Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, and static fallbacks. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
+Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, static fallbacks, and 3D model/entity consumers. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
 
-Do not generate real historical leaders as invented people. Source them,
-document source and license status when possible, explicitly crop them to
-head-and-shoulders, preserve their identity while applying the HOI4 painted
-finish, and compare leader and advisor outputs with the canonical skill-local
-references in
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
-and
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
-Every new flag uses
-imagegen. Historical flags and well-attested real symbols first require cited
-design research, then a strict flat reconstruction with no fabric scene,
-painterly flag artwork, fake lettering, or invented heraldry.
+Do not generate a real historical leader, or an invented substitute for a grounded polity. A polity is grounded when it existed in whole or in part, represents a real community, or claims continuity from a real institution. Source an attributed real male subject or authentic institutional material for those packages, document source and license status, explicitly crop a person to head-and-shoulders, preserve identity while applying the HOI4 painted finish, and compare the output with the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference` and its role-specific contact sheet. Generate a one-person portrait only when both the polity and leader are wholly fictional and the package is deliberately high-chaos. Such a portrait must be distinctive and culturally coherent within its invented setting rather than a normal interchangeable officer. Every new flag uses imagegen. Historical flags and well-attested real symbols first require cited design research, then a strict flat reconstruction with no fabric scene, painterly flag artwork, fake lettering, or invented heraldry.
 
 Any new, released, restored, transformed, or event-managed country that is expected to fight needs starting forces and a reinforcement pathway. Implement dynamic starting units, templates, equipment and manpower assumptions, commander or officer handling when relevant, and later unit growth through decisions, focuses, depots, objectives, volunteers, foreign support, mobilisation, or special mechanics. Do not leave a serious fighting country as an empty tag unless the spec says so and explains why.
 
 Major events and country-creation events need route-specific AI. Implement focus choices, decision choices, unit-raising choices, faction behavior, foreign influence behavior, rare variant handling, high-chaos exceptions, invalid-route blocking, etc.
+
+When an event needs a reusable country carrier, consult
+`common/collections/chaosx_country_collections.txt` and
+`docs/systems/006_independence_wave_country_registry.md` before reserving a
+new tag. Use the `chaosx_country_*` collection that matches the region or
+origin, then record the consuming event's own provenance and package identity
+before loading content. Do not create a duplicate tag for an Event 006 or
+Soviet Collapse carrier, and do not treat event-text mentions as tag
+collisions. Run `.tools/audit_chaosx_country_tags.py` after changing a
+protected carrier or its references.
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 
@@ -311,13 +312,7 @@ Do not add a treaty/new world order after every contained or short-lived disaste
 
 ### MCP event-chain pass
 
-For long or cross-file chains, use the read-only `hoi4.event_inspect`,
-`hoi4.event_render`, and `hoi4.event_compare` tools to map entry points,
-branches, state and scope flow, impact, and structural changes. Event-owned GUI
-surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`. Set the MCP
-server `cwd` to the target mod and omit `workspaceId`; edit event source through
-the normal workflow, then compare and lint again. MCP evidence augments the
-event contract below and does not replace source review or the completion audit.
+For long or cross-file chains, use the read-only `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` tools to map entry points, branches, state and scope flow, impact, and structural changes. Event-owned GUI surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`. Edit event source through the normal workflow, then compare and lint again. MCP evidence augments the event contract below and does not replace source review or the completion audit.
 
 For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence; the analyzer does not choose balance targets or edit event source.
 
@@ -565,8 +560,7 @@ Implementation pattern:
 4. expose reusable scripted triggers if other systems should read the new source directly
 5. document the threat source in the mechanic doc
 
-Do not create a parallel global "cooperation crisis" or "threat active" flag for a single event chain. Everything should fold back into `world_in_threat`.
-The exact purpose of that flag is not yet planned.
+Do not create a parallel global "cooperation crisis" or "threat active" flag for a single event chain. Everything should fold back into `world_in_threat`. The exact purpose of that flag is not yet planned.
 
 ## Documentation rules
 
@@ -638,15 +632,7 @@ If the event creates or manages non-standard countries, account for that in shar
 
 When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
 
-Before registering any new country, cosmetic, formable, or route tag, audit it
-against vanilla, Chaos Redux, every installed Workshop mod, and other local
-mods. Do not add a duplicate new country for a national identity that already
-exists in vanilla: reuse the vanilla tag, preserve the living country and its
-meaningful content, and add only safely gated Event content. If a proposed new
-tag conflicts anywhere in the installed set, remap it and update every script,
-history, localisation, asset, manifest, scenario, documentation, and catalog
-reference together. Apply any event-specific suffix convention only after the
-collision-free tag is locked.
+Before registering any new country, cosmetic, formable, or route tag, audit it against vanilla, Chaos Redux, every installed Workshop mod, and other local mods. Do not add a duplicate new country for a national identity that already exists in vanilla: reuse the vanilla tag, preserve the living country and its meaningful content, and add only safely gated Event content. If a proposed new tag conflicts anywhere in the installed set, remap it and update every script, history, localisation, asset, manifest, scenario, documentation, and catalog reference together. Apply any event-specific suffix convention only after the collision-free tag is locked.
 
 When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup; put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists; it is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
 
@@ -691,6 +677,18 @@ When an event uses a custom interface, align these surfaces:
 Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
 
 Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.
+
+## 3D model and entity integration
+
+When an event creates or changes a 3D unit or building, treat the model as a runtime contract across the event, unit or building definition, entity, `.asset`, `.gfx`, materials, textures, actions, and live map consumer.
+
+The event implementation must use the `chaos-redux-3d-model-pipeline` handoff instead of trying to produce geometry or animations inside event work. The model handoff must include the exact runtime identifiers, processed texture paths, `.mesh`/`.anim` paths, action names, scale crosswalk, provider and Blender evidence, reimport proof, and final hashes.
+
+For a spawned unit, validate that `create_unit` is executed in a country or other supported scope, that the unit template and sub-unit are registered, that every emitted `unit_<id>_icon_small` text icon exists when required, and that movement uses a real exported action rather than a static substitute.
+
+For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
+
+The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, live consumer, and in-game evidence. The 3D worker owns the bounded model package and must not claim event or in-game completion.
 
 ## Generated asset handling
 

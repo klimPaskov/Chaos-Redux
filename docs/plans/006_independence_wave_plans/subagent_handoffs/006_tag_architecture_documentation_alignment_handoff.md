@@ -49,7 +49,7 @@ Registered-tag migrations:
 
 Custom remaps:
 
-- `IW-021 ICX` (parent post-review correction; `AUX` is a Windows-reserved device basename)
+- `IW-021 ICX` (preserves the existing Event 068 `ZIN` carrier; the separate retired `AUX` reservation is the Windows-device issue)
 - `IW-087 HYX`
 - `IW-124 HZX`
 - `IW-161 IAX`

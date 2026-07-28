@@ -28,13 +28,14 @@ The baseline number of countries released by an automatic wave is fixed by the c
 
 | Chaos band | Countries in the wave | Candidate character | Opening character |
 | --- | ---: | --- | --- |
-| Calm World | 3 | Established releasables and countries already represented by registered content | Small territorial package, limited forces, strong diplomatic vulnerability |
-| Gathering Storm | 4 | Established releasables plus a limited set of clear historical restorations | Wider host disruption, better local organization, first rare overlays |
-| Rising Chaos | 5 | Registered tags, historical states, regional identities, and researched local polities | Stronger militias, more contested borders, active patron competition |
-| Chaos Tier | 7 | Broad regional pool with stranger governments and ambitious historical claims | Armed releases, radical routes, league politics, frequent host retaliation |
-| Totalen Chaos and World Collapse | 10 | Full eligible pool, including niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables |
+| Calm World | 6 | Established releasables and countries already represented by registered content | Small territorial package, limited forces, strong diplomatic vulnerability |
+| Gathering Storm | 8 | Established releasables plus a limited set of clear historical restorations | Wider host disruption, better local organization, first rare overlays |
+| Rising Chaos | 10 | Registered tags, historical states, regional identities, and researched local polities | Stronger militias, more contested borders, active patron competition |
+| Chaos Tier | 14 | Broad regional pool with stranger governments and ambitious historical claims | Armed releases, radical routes, league politics, frequent host retaliation |
+| Totalen Chaos | 20 | Full eligible pool, including niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables |
+| World Collapse | 20 | Full eligible pool, including rare and niche historical and local polities | Maximum variety, stronger forces, severe instability, aggressive ambitions, hidden formables, and danger-milestone pressure |
 
-World Collapse does not raise the wave above 10. It changes package quality, route access, force strength, border ambition, instability, and the chance of a dangerous coordinated bloc.
+World Collapse retains the 20-country count of Totalen Chaos while also changing package quality, route access, force strength, border ambition, instability, and the chance of a dangerous coordinated bloc.
 
 The fixed counts are design anchors. A wave may release fewer countries only when the map cannot produce the required number without violating host survival, duplicating a state, selecting an already living tag, or creating an invalid country. Such a shortfall is a blocked wave slot, not permission to annex a host or create overlapping ownership.
 
@@ -230,7 +231,7 @@ The event should prefer cosmetic identity changes and shared package data over c
 
 The candidate registry and `research/006_package_research_resolution.csv` bind every package to one of three representations: 102 custom Event 6 countries, 91 registered vanilla-tag reuses, or 13 non-selectable vanilla route overlays. The same files assign one of eight current dispositions: 9 automatic, 44 automatic if not living, 73 automatic if a unique state exists, 27 high-chaos, 7 route-only, 30 specific-community, 3 scenario, and 13 vanilla-route-overlay-only packages. The planner never treats an overlay row or an unready broad label as a selectable country candidate.
 
-Registered tags are reused where their identity fits. New Event 6 country, formable, cosmetic, and route tags use the reserved `X` ending. The dated collision audit found no duplicate accepted custom tag, no collision in the installed vanilla, Workshop, local-mod, or Chaos Redux tag and alias universe, and no use of the engine-reserved `GFX` graphics namespace or the Windows-reserved `AUX` device basename. Stable registered-tag migrations are `IW-038 RUT`, `IW-042 GAL`, `IW-043 CHU`, `IW-096 BIA`, `IW-133 BAN`, `IW-150 ATJ`, `IW-153 POK`, `IW-155 BLI`, `IW-157 WPG`, `IW-167 CHM`, `IW-171 OKN`, `IW-172 ANU`, and `IW-178 PNG`. Stable custom remaps are `IW-021 ICX`, `IW-087 HYX`, `IW-124 HZX`, `IW-161 IAX`, and `IW-162 IBX`.
+Registered tags are reused where their identity fits. New Event 6 country, formable, cosmetic, and route tags use the reserved `X` ending. The dated collision audit found no duplicate accepted custom tag, no collision in the installed vanilla, Workshop, local-mod, or Chaos Redux tag and alias universe under the stated Random Events exclusion, and no use of the engine-reserved `GFX` graphics namespace. `ZIN` remains the existing Event 068 carrier; the separate retired `AUX` reservation is the Windows-device issue. Stable registered-tag migrations are `IW-038 RUT`, `IW-042 GAL`, `IW-043 CHU`, `IW-096 BIA`, `IW-133 BAN`, `IW-150 ATJ`, `IW-153 POK`, `IW-155 BLI`, `IW-157 WPG`, `IW-167 CHM`, `IW-171 OKN`, `IW-172 ANU`, and `IW-178 PNG`. Stable custom remaps are `IW-021 ICX`, `IW-087 HYX`, `IW-124 HZX`, `IW-161 IAX`, and `IW-162 IBX`.
 
 `IW-153` Dayak Federation reuses vanilla `POK`, the Dayak Republic of West Borneo, instead of retired `FWX`. Its compatibility adapter must preserve registered `POK` history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior. The package remains `specific_community_variant_only` and unbound, and the adapter must preserve that restriction.
 
