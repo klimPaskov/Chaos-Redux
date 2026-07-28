@@ -490,18 +490,6 @@ fallout_manual_apply_state_aggregate_consequence = {
 	set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:fallout_runtime.one }
 	apply_exact_state_civilian_population_loss = yes
 	fallout_manual_record_state_population_loss_provenance = yes
-	add_to_variable = { global.fallout_manual_total_civilian_deaths = state_civilian_population_loss_applied }
-	add_to_variable = { chaos_state_civilian_deaths_total = state_civilian_population_loss_applied }
-	if = {
-		limit = {
-			check_variable = {
-				var = chaos_state_civilian_deaths_total
-				value = global.chaos_state_civilian_deaths_map_max
-				compare = greater_than
-			}
-		}
-		set_variable = { global.chaos_state_civilian_deaths_map_max = chaos_state_civilian_deaths_total }
-	}
 
 	set_temp_variable = { chaos_fallout_intensity_add = fallout_manual_additional_state_strikes }
 	multiply_temp_variable = { chaos_fallout_intensity_add = constant:fallout_manual_aggregate.fallout_intensity_per_additional_strike }
@@ -517,8 +505,9 @@ fallout_manual_apply_state_aggregate_consequence = {
 
 # Supported scope: STATE
 # Records the observed first-week loss against the generation-authenticated
-# prestrike baseline. The aggregate Deaths row remains the accounting entry for
-# this phase. This receipt is provenance for the later manual rewrite.
+# prestrike baseline. The aggregate Deaths row uses this observed total after
+# native strike callbacks and the exact reconciliation have both run. This
+# receipt is also provenance for the later manual rewrite.
 fallout_manual_record_state_population_loss_provenance = {
 	if = {
 		limit = { fallout_manual_prestrike_population_baseline_is_current = yes }
@@ -535,6 +524,18 @@ fallout_manual_record_state_population_loss_provenance = {
 		set_variable = { fallout_manual_first_week_population_reconciled_total_people = fallout_manual_first_week_after_population_people }
 		add_to_variable = { fallout_manual_first_week_population_reconciled_total_people = fallout_manual_first_week_population_loss_people }
 		set_variable = { fallout_manual_first_week_loss_generation = global.fallout_manual_generation }
+		add_to_variable = { global.fallout_manual_total_civilian_deaths = fallout_manual_first_week_population_loss_people }
+		add_to_variable = { chaos_state_civilian_deaths_total = fallout_manual_first_week_population_loss_people }
+		if = {
+			limit = {
+				check_variable = {
+					var = chaos_state_civilian_deaths_total
+					value = global.chaos_state_civilian_deaths_map_max
+					compare = greater_than
+				}
+			}
+			set_variable = { global.chaos_state_civilian_deaths_map_max = chaos_state_civilian_deaths_total }
+		}
 		set_state_flag = fallout_manual_first_week_population_loss_recorded
 	}
 }
