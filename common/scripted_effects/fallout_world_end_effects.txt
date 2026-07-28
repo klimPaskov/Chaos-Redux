@@ -66,6 +66,16 @@ fallout_accept_request_envelope = {
 # Supported scope: COUNTRY. This records one request without appointing the
 # caller as host. The existing host pulse claims and validates the envelope.
 fallout_queue_request_envelope = {
+	# Pause Air Cleanliness at the moment a valid request enters the shared
+	# coordinator. This closes the host-reconciliation gap before the durable
+	# transition lock is written. The temporary ownership flag is cleared again
+	# if validation rejects the pending envelope.
+	if = {
+		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+		set_global_flag = fallout_air_cleanliness_disabled
+		set_global_flag = fallout_air_cleanliness_request_paused
+		air_contamination_apply_state_modifier = yes
+	}
 	clear_global_event_target = fallout_request_actor
 	clear_global_event_target = fallout_request_state
 	# A new request is admitted only while the ledger is free. Clear any stale
@@ -86,6 +96,16 @@ fallout_queue_request_envelope = {
 # Supported scope: COUNTRY. This clears an uncommitted request without touching
 # a completed cause-memory ledger or any active Fallout transition.
 fallout_clear_pending_request_envelope = {
+	if = {
+		limit = {
+			has_global_flag = fallout_air_cleanliness_request_paused
+			NOT = { has_global_flag = fallout_request_locked }
+			NOT = { has_global_flag = world_end_fallout }
+		}
+		clr_global_flag = fallout_air_cleanliness_request_paused
+		clr_global_flag = fallout_air_cleanliness_disabled
+		air_contamination_apply_state_modifier = yes
+	}
 	if = {
 		limit = {
 			fallout_request_source_is_strategic_singularity = yes
@@ -181,6 +201,7 @@ fallout_lock_transition = {
 		set_global_flag = fallout_request_locked
 		set_global_flag = fallout_transition_active
 		set_global_flag = fallout_air_cleanliness_disabled
+		clr_global_flag = fallout_air_cleanliness_request_paused
 		# Remove already-applied Air Cleanliness pressure immediately. The
 		# monthly pass is paused by the same durable flag, so waiting for expiry
 		# would leave stale modifiers during the blackout transition.
