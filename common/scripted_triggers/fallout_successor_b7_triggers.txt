@@ -161,6 +161,58 @@ fallout_successor_b7_usa_human_control_receipt_is_current = {
 	}
 }
 
+# Supported scope: COUNTRY. Every USA continuity project uses the same
+# generation-bound package and capital-control gate before its route-specific
+# resources are checked.
+fallout_successor_b7_usa_project_base_is_valid = {
+	fallout_successor_b7_usa_package_receipts_are_current = yes
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { has_country_flag = fallout_b7_usa_continuity_error }
+}
+
+fallout_successor_b7_usa_depot_project_is_available = {
+	fallout_successor_b7_usa_project_base_is_valid = yes
+	has_country_flag = fallout_usa_supply_corridors_complete
+	NOT = { has_country_flag = fallout_usa_depot_belt_repair_complete }
+	has_equipment = { infantry_equipment > constant:fallout_successor_b7_project.depot_infantry_equipment }
+	has_equipment = { train_equipment > constant:fallout_successor_b7_project.depot_train_equipment }
+	num_of_civilian_factories_available_for_projects > constant:fallout_successor_b7_project.depot_civilian_factory_gate
+}
+
+fallout_successor_b7_usa_guard_project_is_available = {
+	fallout_successor_b7_usa_project_base_is_valid = yes
+	has_country_flag = fallout_usa_guard_compacts_complete
+	NOT = { has_country_flag = fallout_usa_guard_muster_complete }
+	has_manpower > constant:fallout_successor_b7_project.guard_manpower
+	has_equipment = { infantry_equipment > constant:fallout_successor_b7_project.guard_infantry_equipment }
+	has_equipment = { support_equipment > constant:fallout_successor_b7_project.guard_support_equipment }
+	has_command_power > constant:fallout_successor_b7_project.guard_command_power
+}
+
+fallout_successor_b7_usa_charter_project_is_available = {
+	fallout_successor_b7_usa_project_base_is_valid = yes
+	has_country_flag = fallout_usa_bilateral_reconstruction_open
+	NOT = { has_country_flag = fallout_usa_lakes_charter_complete }
+	has_equipment = { convoy > constant:fallout_successor_b7_project.charter_convoys }
+	has_command_power > constant:fallout_successor_b7_project.charter_command_power
+}
+
+fallout_successor_b7_usa_radio_project_is_available = {
+	fallout_successor_b7_usa_project_base_is_valid = yes
+	has_country_flag = fallout_usa_continental_radio_net_complete
+	NOT = { has_country_flag = fallout_usa_radio_sweep_complete }
+	has_equipment = { support_equipment > constant:fallout_successor_b7_project.radio_support_equipment }
+	has_command_power > constant:fallout_successor_b7_project.radio_command_power
+}
+
+fallout_successor_b7_usa_reconstruction_project_is_available = {
+	fallout_successor_b7_usa_project_base_is_valid = yes
+	has_country_flag = fallout_usa_federal_reconstruction_complete
+	NOT = { has_country_flag = fallout_usa_reconstruction_drive_complete }
+	has_equipment = { train_equipment > constant:fallout_successor_b7_project.reconstruction_train_equipment }
+	num_of_civilian_factories_available_for_projects > constant:fallout_successor_b7_project.reconstruction_civilian_factory_gate
+}
+
 fallout_successor_b7_fragmentation_source_is_ready = {
 	fallout_successor_b7_transaction_is_current = yes
 	has_country_flag = fallout_pretransition_player_country

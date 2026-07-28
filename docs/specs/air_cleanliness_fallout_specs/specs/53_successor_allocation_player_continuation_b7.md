@@ -10,6 +10,8 @@ The continuity case is the United States under the federal continuity memory. It
 
 The package writes current-generation country, focus, archetype, regional, government, and country-memory receipts. It loads `fallout_usa_federal_continuity_focus_tree`, adds the federal continuity idea, and records an explicit current-generation human-control receipt while USA remains human controlled. The focus layer has shelter, supply, guard, bilateral, radio, and reconstruction routes with authored USA-specific text.
 
+The continuity focus layer unlocks a separate `fallout_usa_continuity_projects_category` after the route receipts are current. Its five projects are the Inland Depot Belt, Guard Compacts, Great Lakes Charter, Radio Dead Zones, and Federal Reconstruction Drive. Each project has a distinct resource commitment, a capital-control requirement, a completion memory receipt, an AI weight, and a cancellation penalty. The project effects are not Fallout consequence events and do not enter the public Event Log or evolution catalog.
+
 Focus costs use centralized engine weeks of `5`, `10`, and `15`, which provide 35-day, 70-day, and 105-day pacing bands.
 
 The assignment row uses the reserved capital as both origin and capital. The row writes the player-reserved conflict resolution, source country, output country, cleanup owner, generation, assignment count, and state receipt. Existing ownership is retained. No tag switch occurs in this case.
@@ -36,9 +38,9 @@ The static implementation mirrors the documented `fallout_begin_successor_alloca
 
 ## Assets and localisation
 
-The pilot uses vanilla focus and idea icon sprites as a temporary reviewed pilot surface. Dedicated USA Fallout focus and idea art is still required before this package can satisfy the final asset contract. The required sprite names and target paths are recorded in `docs/assets/fallout_successor_b7_usa/manifest.md`. The localisation is concrete, region-aware, and government-aware. No zombie-owned path, id, sprite, audio, or asset is reused.
+The pilot has a dedicated USA Fallout focus and idea icon package under `docs/assets/fallout_successor_b7_usa/`. The shelter-registry focus and idea candidates remain marked `needs_user_review` because the generated source contains a visible `B7` plate. Decision category and decision aliases point to the dedicated USA icons and are listed in the same manifest. The localisation is concrete, region-aware, and government-aware. No zombie-owned path, id, sprite, audio, or asset is reused.
 
-The final icon handoff must place seven focus sprites under `gfx/interface/goals/fallout_successor_b7_usa/` and register them in `interface/fallout_successor_b7_usa.gfx` as `GFX_goal_fallout_usa_federal_continuity_ledger`, `GFX_goal_fallout_usa_shelter_registry`, `GFX_goal_fallout_usa_supply_corridors`, `GFX_goal_fallout_usa_guard_compacts`, `GFX_goal_fallout_usa_bilateral_reconstruction`, `GFX_goal_fallout_usa_continental_radio_net`, and `GFX_goal_fallout_usa_federal_reconstruction`. The idea package needs four dedicated `GFX_idea_fallout_usa_*` sprites in the same GFX handoff. The current pilot intentionally records this asset gap instead of presenting vanilla sprites as final Fallout art.
+The icon handoff places seven focus sprites under `gfx/interface/goals/fallout_successor_b7_usa/` and registers them in `interface/fallout_successor_b7_usa.gfx` as `GFX_goal_fallout_usa_federal_continuity_ledger`, `GFX_goal_fallout_usa_shelter_registry`, `GFX_goal_fallout_usa_supply_corridors`, `GFX_goal_fallout_usa_guard_compacts`, `GFX_goal_fallout_usa_bilateral_reconstruction`, `GFX_goal_fallout_usa_continental_radio_net`, and `GFX_goal_fallout_usa_federal_reconstruction`. The idea package has four dedicated `GFX_idea_fallout_usa_*` sprites in the same GFX handoff. The package still does not claim independent visual approval or runtime sprite loading.
 
 ## Follow-up
 

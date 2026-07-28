@@ -207,6 +207,157 @@ fallout_successor_b7_probe_fragmentation_candidate = {
 	}
 }
 
+# Supported scope: COUNTRY. The USA continuity layer uses five route-locked
+# projects. Each project consumes a real strategic stock and writes a current
+# generation memory receipt before changing the capital or country ledger.
+fallout_successor_b7_usa_complete_depot_belt_repair = {
+	if = {
+		limit = {
+			fallout_successor_b7_usa_project_base_is_valid = yes
+			has_country_flag = fallout_usa_supply_corridors_complete
+			NOT = { has_country_flag = fallout_usa_depot_belt_repair_complete }
+		}
+		capital_scope = {
+			add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+			add_building_construction = { type = rail_way level = 1 instant_build = yes }
+		}
+		set_country_flag = fallout_usa_depot_belt_repair_complete
+		set_variable = { fallout_usa_depot_belt_repair_generation = global.fallout_transition_generation }
+		set_variable = { fallout_usa_logistics_memory = constant:fallout_successor_b7_project_memory.depot }
+		add_war_support = constant:fallout_successor_b7_project_reward.depot_war_support
+	}
+}
+
+fallout_successor_b7_usa_complete_guard_muster = {
+	if = {
+		limit = {
+			fallout_successor_b7_usa_project_base_is_valid = yes
+			has_country_flag = fallout_usa_guard_compacts_complete
+			NOT = { has_country_flag = fallout_usa_guard_muster_complete }
+		}
+		add_manpower = constant:fallout_successor_b7_project.guard_manpower_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.guard_infantry_spend }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.guard_support_spend }
+		add_command_power = constant:fallout_successor_b7_project.guard_command_spend
+		army_experience = constant:fallout_successor_b7_project_reward_value.guard_army_experience
+		add_war_support = constant:fallout_successor_b7_project_reward.guard_war_support
+		set_country_flag = fallout_usa_guard_muster_complete
+		set_variable = { fallout_usa_guard_muster_generation = global.fallout_transition_generation }
+		set_variable = { fallout_usa_security_memory = constant:fallout_successor_b7_project_memory.guard }
+	}
+}
+
+fallout_successor_b7_usa_complete_lakes_charter = {
+	if = {
+		limit = {
+			fallout_successor_b7_usa_project_base_is_valid = yes
+			has_country_flag = fallout_usa_bilateral_reconstruction_open
+			NOT = { has_country_flag = fallout_usa_lakes_charter_complete }
+		}
+		add_equipment_to_stockpile = { type = convoy amount = constant:fallout_successor_b7_project.charter_convoy_spend }
+		add_command_power = constant:fallout_successor_b7_project.charter_command_spend
+		add_stability = constant:fallout_successor_b7_project_reward.charter_stability
+		add_political_power = constant:fallout_successor_b7_project_reward_value.charter_political_power
+		set_country_flag = fallout_usa_lakes_charter_complete
+		set_variable = { fallout_usa_lakes_charter_generation = global.fallout_transition_generation }
+		set_variable = { fallout_usa_diplomacy_memory = constant:fallout_successor_b7_project_memory.charter }
+	}
+}
+
+fallout_successor_b7_usa_complete_radio_sweep = {
+	if = {
+		limit = {
+			fallout_successor_b7_usa_project_base_is_valid = yes
+			has_country_flag = fallout_usa_continental_radio_net_complete
+			NOT = { has_country_flag = fallout_usa_radio_sweep_complete }
+		}
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.radio_support_spend }
+		add_command_power = constant:fallout_successor_b7_project.radio_command_spend
+		air_experience = constant:fallout_successor_b7_project_reward_value.radio_air_experience
+		add_command_power = constant:fallout_successor_b7_project_reward_value.radio_command_recovery
+		set_country_flag = fallout_usa_radio_sweep_complete
+		set_variable = { fallout_usa_radio_sweep_generation = global.fallout_transition_generation }
+		set_variable = { fallout_usa_information_memory = constant:fallout_successor_b7_project_memory.radio }
+	}
+}
+
+fallout_successor_b7_usa_complete_reconstruction_drive = {
+	if = {
+		limit = {
+			fallout_successor_b7_usa_project_base_is_valid = yes
+			has_country_flag = fallout_usa_federal_reconstruction_complete
+			NOT = { has_country_flag = fallout_usa_reconstruction_drive_complete }
+		}
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.reconstruction_train_spend }
+		capital_scope = {
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+		add_stability = constant:fallout_successor_b7_project_reward.reconstruction_stability
+		add_political_power = constant:fallout_successor_b7_project_reward_value.reconstruction_political_power
+		set_country_flag = fallout_usa_reconstruction_drive_complete
+		set_variable = { fallout_usa_reconstruction_drive_generation = global.fallout_transition_generation }
+		set_variable = { fallout_usa_reconstruction_memory = constant:fallout_successor_b7_project_memory.reconstruction }
+	}
+}
+
+# Supported scope: COUNTRY. Cancellation is a visible failure state for any
+# active project whose capital or Fallout package stops being valid.
+fallout_successor_b7_usa_project_cancel_penalty = {
+	add_stability = constant:fallout_successor_b7_project_reward.failure_stability
+	add_war_support = constant:fallout_successor_b7_project_reward.failure_war_support
+	set_country_flag = fallout_usa_project_cancelled
+	set_variable = { fallout_usa_project_cancel_generation = global.fallout_transition_generation }
+}
+
+# Supported scope: COUNTRY. Transition cleanup clears route receipts and the
+# additive ideas without touching the ordinary USA focus tree outside Fallout.
+fallout_successor_b7_cleanup_usa_project_memory = {
+	remove_decision = fallout_usa_repair_inland_depot
+	remove_decision = fallout_usa_muster_guard_compacts
+	remove_decision = fallout_usa_ratify_lakes_charter
+	remove_decision = fallout_usa_sweep_radio_dead_zones
+	remove_decision = fallout_usa_launch_federal_reconstruction_drive
+	remove_ideas = {
+		fallout_usa_federal_continuity_ledger_idea
+		fallout_usa_shelter_registry_idea
+		fallout_usa_guard_compact_idea
+		fallout_usa_federal_reconstruction_idea
+	}
+	clr_country_flag = fallout_usa_continuity_census_open
+	clr_country_flag = fallout_usa_shelter_registry_complete
+	clr_country_flag = fallout_usa_supply_corridors_complete
+	clr_country_flag = fallout_usa_guard_compacts_complete
+	clr_country_flag = fallout_usa_bilateral_reconstruction_open
+	clr_country_flag = fallout_usa_continental_radio_net_complete
+	clr_country_flag = fallout_usa_federal_reconstruction_complete
+	clr_country_flag = fallout_usa_depot_belt_repair_complete
+	clr_country_flag = fallout_usa_guard_muster_complete
+	clr_country_flag = fallout_usa_lakes_charter_complete
+	clr_country_flag = fallout_usa_radio_sweep_complete
+	clr_country_flag = fallout_usa_reconstruction_drive_complete
+	clr_country_flag = fallout_usa_project_cancelled
+	clr_country_flag = fallout_b7_usa_focus_tree_loaded
+	clr_country_flag = fallout_b7_usa_package_current
+	clr_country_flag = fallout_b7_usa_continuity_assigned
+	clr_country_flag = fallout_b7_usa_human_control_receipt
+	clr_country_flag = fallout_b7_usa_continuity_error
+	clear_variable = fallout_usa_depot_belt_repair_generation
+	clear_variable = fallout_usa_guard_muster_generation
+	clear_variable = fallout_usa_lakes_charter_generation
+	clear_variable = fallout_usa_radio_sweep_generation
+	clear_variable = fallout_usa_reconstruction_drive_generation
+	clear_variable = fallout_usa_project_cancel_generation
+	clear_variable = fallout_usa_logistics_memory
+	clear_variable = fallout_usa_security_memory
+	clear_variable = fallout_usa_diplomacy_memory
+	clear_variable = fallout_usa_information_memory
+	clear_variable = fallout_usa_reconstruction_memory
+	clear_variable = fallout_b7_human_control_generation
+	clear_variable = fallout_b7_continuity_status
+	clear_variable = fallout_b7_continuity_generation
+}
+
 # Supported scope: COUNTRY. Materializes the reviewed New Zealand Lifeboat
 # package when no live NZL tag is available. The caller must already own a
 # current non-player conflict row. The dynamic output is created only after
