@@ -1,8 +1,8 @@
 # Event 019 Muster Board Layout Refinement Handoff
 
-> Superseded by the user-directed simple-background correction recorded in `2026-07-28_simple_background_rebuild.md`. The six-well rail and authored slot/plate zones described below are historical context only; the current source removes those decorative layers and uses one broad writable field.
+> Superseded by the user-directed compact-background correction recorded in `event19_compact_background_handoff.md` and `2026-07-28_compact_gui_mcp_review.md`. The six-well rail, authored slot/plate zones, and 1120x760 dimensions described below are historical context only.
 
-The regenerated 1120 by 760 board background is wired through the existing `GFX_infantry_spawn_muster_board_background` identifier and remains the only runtime background asset. This handoff documented an earlier authored-zone layout; the current correction replaces it with one restrained header band, one broad central paper field, and one shallow lower action band without decorative slots or wells.
+The regenerated board background remains wired through the existing `GFX_infantry_spawn_muster_board_background` identifier and remains the only runtime background asset. This handoff documented an earlier authored-zone layout; the current correction replaces it with one restrained header band, one broad central paper field, and one narrow lower action band without decorative slots or wells.
 
 Parent-owned layout changes are in `interface/019_infantry_spawn_muster_board.gui`. The current source keeps functional lists and three-column action rows transparent over the broad field, retains the army-only command scene, and uses a shared inset for title/subtitle and tabs. No decorative ledger rail, repeated card plate, or registry well remains.
 

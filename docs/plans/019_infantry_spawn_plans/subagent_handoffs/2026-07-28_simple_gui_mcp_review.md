@@ -1,5 +1,7 @@
 # Event 019 simple Muster Board GUI review
 
+> Superseded by the compact 960x640 correction in `event19_compact_background_handoff.md` and the parent review handoff `2026-07-28_compact_gui_mcp_review.md`. The 1120x760 dimensions and evidence below are historical only.
+
 ## Scope
 
 This handoff records the parent-owned visual correction after the earlier rail-and-slot treatment was rejected.

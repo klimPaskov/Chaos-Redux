@@ -42,7 +42,7 @@ The Event Log consumer is `common/scripted_guis/chaosx_scripted_gui_events_log.t
 
 | Sprite | Texture | Frames / use |
 | --- | --- | --- |
-| `GFX_infantry_spawn_muster_board_background` | `gfx/interface/019_infantry_spawn/infantry_spawn_muster_board_background.dds` | static 1120×760 |
+| `GFX_infantry_spawn_muster_board_background` | `gfx/interface/019_infantry_spawn/infantry_spawn_muster_board_background.dds` | static 960×640 |
 | `GFX_infantry_spawn_muster_seal_animated` | `gfx/interface/019_infantry_spawn/muster_seal_pulse_sheet.dds` | 8 frames at 8 fps |
 | `GFX_infantry_spawn_muster_seal_static` | `gfx/interface/019_infantry_spawn/muster_seal_pulse_static.dds` | fallback |
 | `GFX_infantry_spawn_critical_command_border_animated` | `gfx/interface/019_infantry_spawn/critical_command_border_sheet.dds` | 8 frames at 6 fps |
@@ -50,7 +50,7 @@ The Event Log consumer is `common/scripted_guis/chaosx_scripted_gui_events_log.t
 | `GFX_infantry_spawn_anomalous_registry_emblem_animated` | `gfx/interface/019_infantry_spawn/anomalous_registry_emblem_sheet.dds` | 10 frames at 5 fps |
 | `GFX_infantry_spawn_anomalous_registry_emblem_static` | `gfx/interface/019_infantry_spawn/anomalous_registry_emblem_static.dds` | fallback |
 
-The current background composition is documented in `docs/assets/019_infantry_spawn/gui_background_rebuild_2026_07/`. It is deliberately restrained: a quiet charcoal/brass header band carries the title and tab controls, one broad uninterrupted paper field hosts the direct Event 19 surfaces, and one shallow lower band receives overview actions. The GUI owns all text, list rows, army scenes, and click targets without painting decorative wells or slot grids. The runtime sprite identifier and DDS path above remain stable.
+The current background composition is documented in `docs/assets/019_infantry_spawn/gui_background_compact_2026_07/`. It is deliberately compact: a quiet charcoal/brass header band carries the title and tab controls, one broad uninterrupted paper field hosts the reduced direct Event 19 surfaces, and one narrow lower band receives overview actions. The GUI owns all text, list rows, army scenes, and click targets without painting decorative wells or slot grids. The runtime sprite identifier and DDS path above remain stable.
 
 ### Animation runtime contract
 
