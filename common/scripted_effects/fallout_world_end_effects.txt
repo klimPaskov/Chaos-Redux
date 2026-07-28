@@ -124,6 +124,20 @@ fallout_clear_pending_request_envelope = {
 	clear_global_event_target = fallout_transition_coordinator
 }
 
+# Supported scope: COUNTRY or the existing global host. This is the single
+# idempotent post-admission shutdown for Air Cleanliness. Request intake keeps
+# its temporary pause separate so a rejected envelope can restore the system.
+# Once Fallout owns the transition, this effect removes live Air pressure,
+# suspends Air Winter, and closes treaty operations without touching the frozen
+# pretransition ledgers used by the rewrite.
+fallout_disable_air_cleanliness_after_fallout_admission = {
+	set_global_flag = fallout_air_cleanliness_disabled
+	clr_global_flag = fallout_air_cleanliness_request_paused
+	air_contamination_apply_state_modifier = yes
+	air_winter_suspend_all_states_for_fallout = yes
+	air_cleanliness_treaty_pause_for_fallout = yes
+}
+
 # Supported scope: COUNTRY
 fallout_validate_pending_request = {
 	if = {
@@ -200,17 +214,10 @@ fallout_lock_transition = {
 		clr_global_flag = fallout_request_pending
 		set_global_flag = fallout_request_locked
 		set_global_flag = fallout_transition_active
-		set_global_flag = fallout_air_cleanliness_disabled
-		clr_global_flag = fallout_air_cleanliness_request_paused
-		# Remove already-applied Air Cleanliness pressure immediately. The
-		# monthly pass is paused by the same durable flag, so waiting for expiry
-		# would leave stale modifiers during the blackout transition.
-		air_contamination_apply_state_modifier = yes
-		# The monthly Air Winter pass pauses at this lock. Clear its country air
-		# burden, state modifiers, and ordinary-map entities before blackout
-		# scheduling while preserving the pretransition survival ledger.
-		air_winter_suspend_all_states_for_fallout = yes
-		air_cleanliness_treaty_pause_for_fallout = yes
+		# The durable shutdown is performed only after the snapshot is ready and
+		# the request is locked. This preserves rejection recovery before this
+		# boundary and removes stale Air pressure before blackout scheduling.
+		fallout_disable_air_cleanliness_after_fallout_admission = yes
 		set_global_flag = world_end
 		set_global_flag = world_end_fallout
 		set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
@@ -300,9 +307,7 @@ fallout_play_blackout_audio = {
 fallout_world_end_migrate_save = {
 	if = {
 		limit = { has_global_flag = world_end_fallout }
-		set_global_flag = fallout_air_cleanliness_disabled
-		air_contamination_apply_state_modifier = yes
-		air_winter_suspend_all_states_for_fallout = yes
+		fallout_disable_air_cleanliness_after_fallout_admission = yes
 	}
 	if = {
 		limit = {
