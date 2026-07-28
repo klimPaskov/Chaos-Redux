@@ -21,7 +21,7 @@ The exact installed-map sweep substrate exists but is dormant.
   after complete verification.
 - Save recovery extends the existing host daily coordinator for hourly sweep and verifier callbacks and never adds a second recurring world iterator. The seven-day callback remains engine-owned and cannot be reconstructed from a calendar-day value.
 
-The public row and dispatch remain absent. The live registry reaches SCN-013 with The Unbidden Muster while the unfinished Black Plague package separately reserves raw id 12. Fallout reserves SCN-014 as the live maximum plus one. Existing ids, including the unused public gap at 12, remain unchanged.
+The public row and dispatch remain intentionally absent. The live registry reaches SCN-013 with The Unbidden Muster while the unfinished Black Plague package separately reserves raw id 12. The Fallout-owned manual trigger keeps SCN-014 as the live maximum plus one without inserting it into public scenario, Event Details, evolution, ordinary event-log, or ordinary super-event registries. Existing ids, including the unused public gap at 12, remain unchanged.
 
 Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The dormant substrate is not a release claim.
 

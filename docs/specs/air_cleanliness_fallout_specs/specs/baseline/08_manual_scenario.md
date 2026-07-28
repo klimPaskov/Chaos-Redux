@@ -59,7 +59,7 @@ If keeping the slider creates confusion, set intensity to fixed and say the scen
 
 ## Event and catalog integration
 
-Scan the complete writable scenario registry, find the highest live integer, and reserve Fallout at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation, but do not add a public scenario-catalog row until the native sweep is verified. The eventual detail text should explain the one-week processing delay without revealing hidden altered-country routes.
+Scan the complete writable scenario registry, find the highest live integer, and reserve the Fallout-owned manual trigger at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation. The reservation is never inserted into the public scenario catalog, Event Details, evolution, ordinary event-log, or ordinary super-event registries. The seven-day processing delay belongs to the Fallout-owned blackout and callback presentation, not to a public scenario row.
 
 ## Compatibility with other world-end events
 
