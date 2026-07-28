@@ -42,7 +42,7 @@ The accepted state loss ladder is defined in `common/script_constants/fallout_wo
 
 `fallout_apply_transition_phase_population_loss` scans every valid state in the frozen world snapshot. `fallout_apply_state_population_loss` computes the grade-specific target from the captured pre-transition population. `fallout_reconcile_population_loss_receipt` records the live delta and calls `chaos_meter_register_deaths` with `chaos_deaths_reason = fallout_aftermath` after the state population mutation. The receipt is generation-bound and idempotent. The standard path therefore deletes 90 to 95 percent from each state and feeds the same loss into the Deaths ledger rather than applying a variable-only shortcut.
 
-Fallout-owned registration is mandatory even if the general Deaths setting is disabled. The shared Deaths effect and exact population-loss helper explicitly admit the Fallout transition, active Fallout, and manual scenario flags. Ordinary non-Fallout losses retain the setting gate. New Fallout receipts therefore resolve to zero-loss or registered-loss only.
+Fallout-owned registration is mandatory even if the general Deaths setting is disabled. The shared Deaths effect and exact population-loss helper explicitly admit the request-time Air shutdown, Fallout transition, active Fallout, and manual scenario flags. Ordinary non-Fallout losses retain the setting gate. New Fallout receipts therefore resolve to zero-loss or registered-loss only.
 
 The shared `air_contamination_update_threshold_flags` effect is also gated by `fallout_air_cleanliness_disabled`. A stale GUI, legacy terminal caller, or save-recovery pass cannot rebuild Air Cleanliness threshold flags or fire ordinary contamination news after Fallout request intake.
 
