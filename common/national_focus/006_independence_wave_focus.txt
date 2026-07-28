@@ -3262,12 +3262,104 @@ shared_focus = {
 	prerequisite = { focus = independence_wave_overlay_open_regional_ambition }
 	relative_position_id = independence_wave_overlay_take_stock_of_independence
 	x = 0
-	y = 4
+	y = 5
 	cost = @independence_wave_focus_long
 	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
-	available = { can_complete_independence_wave_overlay_maturity = yes }
+	available = {
+		can_complete_independence_wave_overlay_maturity = yes
+		OR = {
+			NOT = { is_independence_wave_ice_package = yes }
+			has_country_flag = independence_wave_government_route_locked
+		}
+	}
 	completion_reward = { custom_effect_tooltip = independence_wave_overlay_mature_independence_tt hidden_effect = { set_country_flag = independence_wave_overlay_maturity_complete independence_wave_focus_reward_durable_state = yes } }
 	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+# IW-012 Iceland route consumers. The vanilla Iceland tree imports the shared
+# overlay through an exact snapshot carrier, so these four choices are visible
+# without replacing any vanilla focus block. Each route is gated by its own
+# concrete project, ledger, and threshold checks before it can lock the shared
+# Event 006 government route.
+
+shared_focus = {
+	id = independence_wave_ice_choose_constitutional_route
+	icon = GFX_goal_independence_wave_constitutional_state
+	prerequisite = { focus = independence_wave_overlay_open_regional_ambition }
+	mutually_exclusive = {
+		focus = independence_wave_ice_restore_traditional_authority
+		focus = independence_wave_ice_establish_emergency_command
+		focus = independence_wave_ice_accept_patron_mandate
+	}
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = -3
+	y = 4
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
+	available = { can_lock_independence_wave_ice_constitutional_route = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_ice_choose_constitutional_route_tt hidden_effect = { independence_wave_ice_focus_lock_constitutional_route = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_ice_restore_traditional_authority
+	icon = GFX_goal_independence_wave_traditional_restoration
+	prerequisite = { focus = independence_wave_overlay_open_regional_ambition }
+	mutually_exclusive = {
+		focus = independence_wave_ice_choose_constitutional_route
+		focus = independence_wave_ice_establish_emergency_command
+		focus = independence_wave_ice_accept_patron_mandate
+	}
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = -1
+	y = 4
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
+	available = { can_lock_independence_wave_ice_traditional_route = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_ice_restore_traditional_authority_tt hidden_effect = { independence_wave_ice_focus_lock_traditional_route = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_ice_establish_emergency_command
+	icon = GFX_goal_independence_wave_military_emergency
+	prerequisite = { focus = independence_wave_overlay_open_regional_ambition }
+	mutually_exclusive = {
+		focus = independence_wave_ice_choose_constitutional_route
+		focus = independence_wave_ice_restore_traditional_authority
+		focus = independence_wave_ice_accept_patron_mandate
+	}
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 1
+	y = 4
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
+	available = { can_lock_independence_wave_ice_emergency_military_route = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_ice_establish_emergency_command_tt hidden_effect = { independence_wave_ice_focus_lock_emergency_military_route = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_ice_accept_patron_mandate
+	icon = GFX_goal_independence_wave_patron_client
+	prerequisite = { focus = independence_wave_overlay_open_regional_ambition }
+	mutually_exclusive = {
+		focus = independence_wave_ice_choose_constitutional_route
+		focus = independence_wave_ice_restore_traditional_authority
+		focus = independence_wave_ice_establish_emergency_command
+	}
+	relative_position_id = independence_wave_overlay_take_stock_of_independence
+	x = 3
+	y = 4
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = { can_open_independence_wave_ice_route_focus = yes }
+	available = { can_lock_independence_wave_ice_patron_client_route = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_ice_accept_patron_mandate_tt hidden_effect = { independence_wave_ice_focus_lock_patron_client_route = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
 }
 
 # ---------------------------------------------------------------------------
