@@ -1,8 +1,8 @@
 # Event 006 IW-043 and IW-058 signature country core
 
-This document records the bounded country-core implementation for the `IW-043` Middle Volga and `IW-058` Assyria packages. It covers institutional characters, leader traits, staged ideas, AI strategy, party identity, and country identity, plus the focus-framework integration contract added by the package setup adapter. Decisions, incidents, formable transactions, and achievements remain owned by their dedicated Event 006 surfaces. The gameplay and non-portrait assets remain implemented, but the generated institutional portraits no longer satisfy the sourced-only rule for grounded polities. IW-043 and IW-058 are therefore withdrawn from the shared runtime content-attestation set pending sourced replacement and re-audit.
+This document records the bounded country-core implementation for the `IW-043` Middle Volga and `IW-058` Assyria packages. It covers institutional characters, leader traits, staged ideas, AI strategy, party identity, and country identity, plus the focus-framework integration contract added by the package setup adapter. Decisions, incidents, formable transactions, and achievements remain owned by their dedicated Event 006 surfaces. Mirsaid Sultan-Galiev and Gallo Shabo now provide sourced opening identities, while Galimzhan Ibrahimov has a source-locked HOI4-style repaint candidate that remains no-wire pending prompt-provenance review; the other five route portraits remain blocked or source-gated. IW-043 and IW-058 therefore remain withdrawn from the shared runtime content-attestation set pending complete sourced replacement and re-audit.
 
-The controlling design is `docs/plans/006_independence_wave_plans/006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`. Portrait and identity safeguards come from the accepted specification and the current event-asset skill. Earlier generated portrait manifests remain provenance evidence only; sourced real male candidates or real archival institutional material are required.
+The controlling design is `docs/plans/006_independence_wave_plans/006_iw043_iw058_signature_packages_improvement_addendum_2026_07_18.md`. Portrait and identity safeguards come from the accepted specification and the current event-asset skill. Earlier generated portrait manifests remain provenance evidence only. The 2026-07-22 treatment ledger is the authority for Sultan-Galiev and Shabo; every other route still requires a sourced real male candidate or authentic archival material for the actual institution.
 
 ## Scripted architecture contract
 
@@ -126,7 +126,7 @@ The cosmetic localisation consumers are:
 
 ## Asset consumers and wiring handoff
 
-The stable portrait sprite registrations still resolve to the earlier generated textures, but those files are awaiting sourced replacement and do not grant base runtime content attestation. Focus and national-spirit textures remain valid. The exact setup transaction can write its package-local FORM-12/13/18 adapter and achievement-writer receipts only after package execution is re-admitted. No advisor sprite or advisor texture is registered.
+The opening Middle Volga and Assyrian portrait sprites resolve to the sourced Sultan-Galiev and Shabo treatments. Galimzhan has an independently audited source-locked repaint candidate in the research package but no runtime DDS or `.gfx` promotion; the other five stable sprite registrations still resolve to earlier generated textures, which are invalid provenance records awaiting replacement and do not grant base runtime content attestation. Focus and national-spirit textures remain valid. The exact setup transaction can write its package-local FORM-12/13/18 adapter and achievement-writer receipts only after package execution is re-admitted. No advisor sprite or advisor texture is registered.
 
 The eight large institutional portraits are registered in `interface/006_independence_wave_iw043_iw058_portraits.gfx` and resolve under `gfx/leaders/006_independence_wave/` with these sprite IDs:
 
@@ -139,9 +139,12 @@ The eight large institutional portraits are registered in `interface/006_indepen
 - `GFX_portrait_ASY_independence_wave_civic_national_assembly`
 - `GFX_portrait_ASY_independence_wave_levies_guardianship`
 
-Each must be replaced by sourced real male people connected to the package and
-route, or by sourced archival material for the actual historical institution.
-No advisor, officer-card, or BAY/RHI asset is accepted as a substitute.
+The Sultan-Galiev and Shabo rows meet the source contract. Galimzhan's candidate
+passes the bounded visual audit but remains blocked on prompt provenance and
+runtime admission. Each of the other five rows must be replaced by sourced real
+male people connected to the package and route,
+or by sourced archival material for the actual historical institution. No
+advisor, officer-card, or BAY/RHI asset is accepted as a substitute.
 
 The six shared stage-icon families are registered in `interface/006_independence_wave_iw043_iw058_idea_icons.gfx` under `gfx/interface/ideas/006_independence_wave/volga_assyria/`:
 

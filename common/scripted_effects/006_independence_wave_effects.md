@@ -19,8 +19,8 @@ Outputs and side effects:
 
 - increments the accused country's `independence_wave_charter_violation_count`;
 - writes `independence_wave_expulsion_ground`,
-  `independence_wave_expulsion_ground_date`, and the optional event-target
-  pointer;
+  `independence_wave_expulsion_ground_date`, and the optional persistent
+  country-scope witness variable;
 - sets `independence_wave_expulsion_ground_recorded` and clears any prior
   resolved marker;
 - promotes the current ground to
@@ -64,3 +64,31 @@ Target-country helper for DM-61. It starts a vanilla `start_civil_war` revolt
 using the target's current government to select the opposing ideology and a
 central `independence_wave_decision_coup.revolt_size` value injected by
 `meta_effect`. It does not spawn free sponsor units or run a world scan.
+
+## `independence_wave_revalidate_reclamation_front_operation`
+
+Country-scope lifecycle guard for the active DM-58 operation. It is called after
+the generation-matched league row is removed by
+`independence_wave_unregister_league_member`.
+
+Inputs:
+
+- the persistent global `independence_wave_reclamation_fronts_coordinated`
+  operation flag;
+- the aligned `global.independence_wave_league_member_*` registry and its
+  current member count;
+- the frozen `global.independence_wave_reclamation_front_members` witness array.
+
+Outputs and side effects:
+
+- invokes `independence_wave_cleanup_reclamation_front_operation` when the
+  league drops below the formation minimum or the exiting country is a recorded
+  witness member;
+- clears the shared operation flag, coordinator target, state receipts,
+  readiness fields, and frozen witness arrays through the shared cleanup path;
+- deliberately leaves already-issued finite `take_state_focus` war goals to
+  their own timed expiry and never manufactures replacement targets.
+
+The witness-array membership check is generation-safe for the single active
+operation because the array is rebuilt only by the current-generation DM-58
+resolver and is cleared by every operation reset path.
