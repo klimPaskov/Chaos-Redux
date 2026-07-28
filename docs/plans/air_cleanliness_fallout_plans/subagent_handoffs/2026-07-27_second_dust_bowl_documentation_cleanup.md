@@ -18,7 +18,7 @@ Countable release-floor credit remains `0 of 660` because both scheduler activat
 
 The chain has no HOI4 runtime acceptance, save-recovery acceptance, multiplayer delivery acceptance, host-authority acceptance, live Event Log rendering acceptance, or live report-card presentation acceptance.
 
-The shared delayed dispatcher still blocks stale cleanup after generation or mutable target identity changes.
+The shared delayed dispatcher still blocks runtime acceptance after generation or mutable target identity changes. A dedicated generation-reset abort route is now statically wired before country runtime arrays rebuild, while runtime execution and save recovery remain unproven.
 
 The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker.
 
@@ -45,7 +45,7 @@ Hearts of Iron IV was not launched.
 | Document or surface | Disposition | Reason |
 | --- | --- | --- |
 | Spec 66 | Accepted source design | It remains the design authority and does not claim implementation or runtime completion. |
-| Second Dust Bowl proof | Implementation evidence | Static wiring is recorded. Dormancy, stale cleanup, exact sweep, and runtime boundaries remain open. |
+| Second Dust Bowl proof | Implementation evidence | Static wiring includes the generation-reset abort route. Dormancy, runtime stale execution, exact sweep, save recovery, and wider scheduler boundaries remain open. |
 | Scheduler proof | Reconciled current ledger | Counts and the Second Dust Bowl row now match the current reviewed producer. |
 | Reviewed candidate proof | Reconciled current ledger | Counts, identity, blocker language, workbook export status, and manual survival boundary now match current evidence. |
 | Event ID ledger | Reconciled current ledger | Candidate, transaction, route, history, suffixes, and dormant status are current. |
@@ -88,7 +88,7 @@ The 2026-07-27 Second Dust Bowl completion audit found the following implementat
 - High Exposure or Disease AI preference now enters the issued target state scope before reading pressure. The invalid-option `-1000` priority remains a policy constant rather than a separately rendered option-competition sweep.
 - Eighteen dedicated dynamic modifiers now have localisation keys, and opening tooltips name the issued target state and result timing.
 - The visible budget is now recorded as `3` in the source constant, accepted spec, workbook, and export. A focused search found no stale visible-budget value of `2` in the Second Dust Bowl source surfaces.
-- The proof and older handoffs contained overstatements about target reauthentication, payment and ticket authentication, branch-ledger grading, state effects, and fixed cleanup. Target reauthentication, exact payment, branch-preparation grading, scoped state effects, modifier localisation, and the generation-reset stale route now have static evidence. Runtime delivery, stale cleanup execution, save recovery, and live option-competition priority remain blocked.
+- The proof and older handoffs contained overstatements about target reauthentication, payment and ticket authentication, branch-ledger grading, state effects, and fixed cleanup. Target reauthentication, exact payment, branch-preparation grading, scoped state effects, modifier localisation, and the generation-reset stale route now have static evidence. Runtime delivery, stale-path execution, save recovery, and live option-competition priority remain blocked.
 
 ## Duplicate and superseded documents
 
@@ -126,7 +126,7 @@ Skipped validation: no runtime event delivery, save recovery, multiplayer, host 
 
 2. The spreadsheet worker completed the catalog wording pass and reran the exporter. Keep the row at `Needs Testing` until runtime presentation is reviewed.
 
-3. Keep the tranche dormant and outside release-floor credit until activation, runtime, stale cleanup, exact sweep, and manual survival review are separately accepted.
+3. Keep the tranche dormant and outside release-floor credit until activation, runtime, stale-path execution, exact sweep, and manual survival review are separately accepted.
 
 
 ## Files changed by this curator
