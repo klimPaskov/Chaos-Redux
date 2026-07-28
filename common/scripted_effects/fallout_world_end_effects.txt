@@ -181,6 +181,10 @@ fallout_lock_transition = {
 		set_global_flag = fallout_request_locked
 		set_global_flag = fallout_transition_active
 		set_global_flag = fallout_air_cleanliness_disabled
+		# Remove already-applied Air Cleanliness pressure immediately. The
+		# monthly pass is paused by the same durable flag, so waiting for expiry
+		# would leave stale modifiers during the blackout transition.
+		air_contamination_apply_state_modifier = yes
 		# The monthly Air Winter pass pauses at this lock. Clear its country air
 		# burden, state modifiers, and ordinary-map entities before blackout
 		# scheduling while preserving the pretransition survival ledger.
@@ -276,6 +280,7 @@ fallout_world_end_migrate_save = {
 	if = {
 		limit = { has_global_flag = world_end_fallout }
 		set_global_flag = fallout_air_cleanliness_disabled
+		air_contamination_apply_state_modifier = yes
 		air_winter_suspend_all_states_for_fallout = yes
 	}
 	if = {
