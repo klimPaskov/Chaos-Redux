@@ -4,8 +4,9 @@
 # B7 is a dormant, idempotent allocator pilot. It preserves one USA human
 # continuation in place, applies a country-specific package receipt, records
 # one exact capital, names one deterministic fragmentation candidate, and can
-# run the reviewed five-state NZL transfer pilot. It never switches the
-# player, creates a tag, or marks the global successor matrix complete.
+# run the reviewed five-state NZL transfer or one conflict-ledger-gated dynamic
+# materialization. It never switches the player or marks the global successor
+# matrix complete.
 # ============================================================================
 
 # Supported scope: COUNTRY. Clears only the B7 fragmentation probe on this
@@ -206,6 +207,373 @@ fallout_successor_b7_probe_fragmentation_candidate = {
 	}
 }
 
+# Supported scope: COUNTRY. Materializes the reviewed New Zealand Lifeboat
+# package when no live NZL tag is available. The caller must already own a
+# current non-player conflict row. The dynamic output is created only after
+# the exact five-state package footprint and every source retirement gate pass.
+# This remains a dormant B7 vertical slice and never marks global allocation
+# complete.
+fallout_successor_b7_materialize_dynamic_nzl = {
+	if = {
+		limit = { fallout_successor_b7_nzl_dynamic_materialization_can_commit = yes }
+		save_event_target_as = fallout_b7_nzl_dynamic_source
+		set_global_flag = fallout_b7_nzl_dynamic_materialization_started
+		set_variable = { global.fallout_b7_nzl_dynamic_materialization_generation = global.fallout_transition_generation }
+		clear_array = global.fallout_nzl_transfer_source_countries
+		set_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.zero }
+		create_dynamic_country = {
+			original_tag = NZL
+			copy_tag = NZL
+			set_country_flag = fallout_nzl_dynamic_country
+			reserve_dynamic_country = yes
+			set_variable = { fallout_dynamic_country_materialization_generation = global.fallout_transition_generation }
+			set_variable = { fallout_dynamic_country_materialization_source_country = event_target:fallout_b7_nzl_dynamic_source }
+			save_event_target_as = fallout_b7_nzl_dynamic_output
+		}
+		if = {
+			limit = { has_event_target = fallout_b7_nzl_dynamic_output }
+			event_target:fallout_b7_nzl_dynamic_output = {
+				set_country_flag = fallout_nzl_fragmented_transfer_started
+				set_variable = { fallout_nzl_fragmented_transfer_generation = global.fallout_transition_generation }
+				set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_successor_b7_status.nzl_dynamic_materialization_started }
+			}
+			284 = {
+				save_event_target_as = fallout_b7_nzl_dynamic_capital
+				OWNER = {
+					add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+					add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+					set_country_flag = fallout_nzl_transfer_source_pending
+					set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+					set_variable = { fallout_nzl_transfer_source_state = PREV }
+					set_variable = { fallout_nzl_dynamic_transfer_source_state = PREV }
+				}
+				transfer_state_to = event_target:fallout_b7_nzl_dynamic_output
+			}
+			1079 = {
+				OWNER = {
+					add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+					add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+					set_country_flag = fallout_nzl_transfer_source_pending
+					set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+					set_variable = { fallout_nzl_transfer_source_state = PREV }
+					set_variable = { fallout_nzl_dynamic_transfer_source_state = PREV }
+				}
+				transfer_state_to = event_target:fallout_b7_nzl_dynamic_output
+			}
+			723 = {
+				OWNER = {
+					add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+					add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+					set_country_flag = fallout_nzl_transfer_source_pending
+					set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+					set_variable = { fallout_nzl_transfer_source_state = PREV }
+					set_variable = { fallout_nzl_dynamic_transfer_source_state = PREV }
+				}
+				transfer_state_to = event_target:fallout_b7_nzl_dynamic_output
+			}
+			1080 = {
+				OWNER = {
+					add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+					add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+					set_country_flag = fallout_nzl_transfer_source_pending
+					set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+					set_variable = { fallout_nzl_transfer_source_state = PREV }
+					set_variable = { fallout_nzl_dynamic_transfer_source_state = PREV }
+				}
+				transfer_state_to = event_target:fallout_b7_nzl_dynamic_output
+			}
+			1081 = {
+				OWNER = {
+					add_to_array = { array = global.fallout_nzl_transfer_source_countries value = THIS }
+					add_to_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.one }
+					set_country_flag = fallout_nzl_transfer_source_pending
+					set_variable = { fallout_nzl_transfer_source_generation = global.fallout_transition_generation }
+					set_variable = { fallout_nzl_transfer_source_state = PREV }
+					set_variable = { fallout_nzl_dynamic_transfer_source_state = PREV }
+				}
+				transfer_state_to = event_target:fallout_b7_nzl_dynamic_output
+			}
+			for_each_scope_loop = {
+				array = global.fallout_nzl_transfer_source_countries
+				fallout_nzl_retire_fragmented_transfer_source = yes
+			}
+			event_target:fallout_b7_nzl_dynamic_output = {
+				set_variable = { fallout_nzl_fragmented_transfer_count = constant:fallout_nzl_schema.package_state_count }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.fallout_nzl_transfer_source_count
+							value = constant:fallout_nzl_schema.package_state_count
+							compare = equals
+						}
+						fallout_nzl_has_exact_state_package = yes
+						all_of_scopes = {
+							array = global.fallout_nzl_transfer_source_countries
+							fallout_nzl_transfer_source_row_is_current = yes
+						}
+					}
+					set_country_flag = fallout_nzl_fragmented_transfer_committed
+					set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_successor_b7_status.nzl_dynamic_materialization_committed }
+					set_country_flag = fallout_live_tag_conflict_capital_valid
+					set_variable = { fallout_live_tag_conflict_capital_state = event_target:fallout_b7_nzl_dynamic_capital }
+				}
+				else = {
+					set_country_flag = fallout_nzl_fragmented_transfer_error
+					set_variable = { fallout_nzl_fragmented_transfer_status = constant:fallout_successor_b7_status.nzl_dynamic_materialization_error }
+					set_global_flag = fallout_b7_nzl_dynamic_materialization_error
+					if = {
+						limit = { NOT = { has_global_flag = fallout_transition_error } }
+						set_global_flag = fallout_transition_error
+						set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.successor_allocation_incomplete }
+						add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+					}
+				}
+			}
+			if = {
+				limit = {
+					event_target:fallout_b7_nzl_dynamic_output = {
+						has_country_flag = fallout_nzl_fragmented_transfer_committed
+						fallout_nzl_conflict_disposition_inputs_are_current = yes
+					}
+				}
+				event_target:fallout_b7_nzl_dynamic_output = {
+					fallout_nzl_record_conflict_dispositions = yes
+				}
+			}
+			if = {
+				limit = {
+					event_target:fallout_b7_nzl_dynamic_output = {
+						has_country_flag = fallout_nzl_fragmented_transfer_committed
+						fallout_nzl_conflict_dispositions_are_current = yes
+					}
+				}
+				event_target:fallout_b7_nzl_dynamic_output = {
+					set_variable = { fallout_successor_assignment_generation = global.fallout_transition_generation }
+					set_variable = { fallout_successor_assignment_count = constant:fallout_runtime.one }
+					set_variable = { fallout_successor_assignment_capital_state = event_target:fallout_b7_nzl_dynamic_capital }
+					set_variable = { fallout_successor_assignment_origin_state = event_target:fallout_b7_nzl_dynamic_capital }
+					set_variable = { fallout_successor_conflict_source_country = event_target:fallout_b7_nzl_dynamic_source }
+					set_variable = { fallout_successor_conflict_result = constant:fallout_tag_conflict_resolution.created_dynamic }
+					set_variable = { fallout_successor_conflict_resolution_generation = global.fallout_transition_generation }
+					set_variable = { fallout_successor_cleanup_owner = event_target:fallout_b7_nzl_dynamic_source }
+					set_variable = { fallout_successor_cleanup_generation = global.fallout_transition_generation }
+					set_country_flag = fallout_successor_assignment_committed
+					set_country_flag = fallout_dynamic_country_materialization_committed
+					set_variable = { fallout_dynamic_country_materialization_generation = global.fallout_transition_generation }
+					set_variable = { fallout_live_tag_conflict_resolution = constant:fallout_tag_conflict_resolution.created_dynamic }
+					set_variable = { fallout_live_tag_conflict_resolution_generation = global.fallout_transition_generation }
+					set_variable = { fallout_live_tag_conflict_cleanup_owner = event_target:fallout_b7_nzl_dynamic_source }
+					set_variable = { fallout_live_tag_conflict_cleanup_generation = global.fallout_transition_generation }
+					set_country_flag = fallout_country_survives
+					set_country_flag = fallout_country_classified
+					set_country_flag = fallout_country_package_applied
+					set_country_flag = fallout_focus_package_applied
+					set_country_flag = fallout_archetype_package_applied
+					set_country_flag = fallout_regional_package_applied
+					set_country_flag = fallout_country_memory_package_applied
+					set_variable = { fallout_country_package_generation = global.fallout_transition_generation }
+					set_variable = { fallout_focus_package_generation = global.fallout_transition_generation }
+					set_variable = { fallout_archetype_package_generation = global.fallout_transition_generation }
+					set_variable = { fallout_regional_package_generation = global.fallout_transition_generation }
+					set_variable = { fallout_country_memory_package_generation = global.fallout_transition_generation }
+					set_variable = { fallout_government_classifier_generation = global.fallout_transition_generation }
+					set_variable = { fallout_government_classifier_schema_version = constant:fallout_government_classifier.schema_version }
+					set_variable = { fallout_government_origin_archetype = constant:fallout_government_archetype.maritime_remnant }
+					set_variable = { fallout_government_archetype = constant:fallout_government_archetype.maritime_remnant }
+					set_variable = { fallout_government_archetype_generation = global.fallout_transition_generation }
+					set_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands }
+					set_variable = { fallout_country_memory_id = constant:fallout_country_memory.new_zealand_lifeboat_state }
+				}
+				event_target:fallout_b7_nzl_dynamic_source = {
+					set_variable = { fallout_live_tag_conflict_resolution = constant:fallout_tag_conflict_resolution.created_dynamic }
+					set_variable = { fallout_live_tag_conflict_resolution_generation = global.fallout_transition_generation }
+					set_variable = { fallout_live_tag_conflict_cleanup_owner = event_target:fallout_b7_nzl_dynamic_source }
+					set_variable = { fallout_live_tag_conflict_cleanup_generation = global.fallout_transition_generation }
+					set_variable = { fallout_live_tag_conflict_output_country = event_target:fallout_b7_nzl_dynamic_output }
+					set_country_flag = fallout_live_tag_conflict_resolved
+					clr_country_flag = fallout_live_tag_conflict_allocation_pending
+				}
+				if = {
+					limit = { NOT = { has_variable = global.fallout_successor_assignment_count } }
+					set_variable = { global.fallout_successor_assignment_count = constant:fallout_runtime.zero }
+				}
+				if = {
+					limit = { NOT = { is_in_array = { array = global.fallout_successor_assigned_countries value = event_target:fallout_b7_nzl_dynamic_output } } }
+					add_to_array = { array = global.fallout_successor_assigned_countries value = event_target:fallout_b7_nzl_dynamic_output }
+					add_to_variable = { global.fallout_successor_assignment_count = constant:fallout_runtime.one }
+				}
+				if = {
+					limit = { NOT = { is_in_array = { array = global.fallout_successor_assigned_capital_states value = event_target:fallout_b7_nzl_dynamic_capital } } }
+					add_to_array = { array = global.fallout_successor_assigned_capital_states value = event_target:fallout_b7_nzl_dynamic_capital }
+				}
+				event_target:fallout_b7_nzl_dynamic_capital = {
+					set_state_flag = fallout_successor_assignment_capital
+					set_variable = { fallout_successor_assignment_country = event_target:fallout_b7_nzl_dynamic_output }
+					set_variable = { fallout_successor_assignment_generation = global.fallout_transition_generation }
+					set_variable = { fallout_successor_assignment_count = constant:fallout_runtime.one }
+				}
+				set_global_flag = fallout_b7_nzl_dynamic_materialization_committed
+				event_target:fallout_b7_nzl_dynamic_output = {
+					set_variable = { fallout_nzl_dynamic_materialization_source = event_target:fallout_b7_nzl_dynamic_source }
+					fallout_nzl_activate_lifeboat_package = yes
+				}
+			}
+			if = {
+				limit = {
+					has_event_target = fallout_b7_nzl_dynamic_output
+					OR = {
+						NOT = {
+							event_target:fallout_b7_nzl_dynamic_output = {
+								has_country_flag = fallout_successor_assignment_committed
+							}
+						}
+						NOT = {
+							event_target:fallout_b7_nzl_dynamic_output = {
+								fallout_nzl_lifeboat_package_is_current = yes
+							}
+						}
+					}
+					NOT = { has_global_flag = fallout_transition_error }
+				}
+				set_global_flag = fallout_b7_nzl_dynamic_materialization_error
+				set_global_flag = fallout_transition_error
+				set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.successor_allocation_incomplete }
+				add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+			}
+		}
+		else = {
+			set_global_flag = fallout_transition_error
+			set_variable = { global.fallout_transition_error_code = constant:fallout_transition_error_code.successor_allocation_incomplete }
+			add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Rewinds a same-generation dormant dynamic NZL
+# materialization before a successor transaction is rebuilt. The engine has no
+# documented destroy-country effect, so the output is made landless, its
+# package runtime is retired, and its dynamic slot is released for recycling.
+fallout_successor_b7_cleanup_dynamic_nzl = {
+	clr_global_flag = fallout_b7_nzl_dynamic_cleanup_ran
+	every_country = {
+		limit = {
+			has_country_flag = fallout_nzl_dynamic_country
+			has_variable = fallout_dynamic_country_materialization_generation
+			check_variable = {
+				var = fallout_dynamic_country_materialization_generation
+				value = global.fallout_transition_generation
+				compare = equals
+			}
+		}
+		set_global_flag = fallout_b7_nzl_dynamic_cleanup_ran
+		if = {
+			limit = { has_country_flag = fallout_nzl_lifeboat_package_active }
+			retire_country_leader = yes
+			fallout_nzl_reset_package_runtime = yes
+		}
+		for_each_scope_loop = {
+			array = global.fallout_nzl_transfer_source_countries
+			limit = { has_variable = fallout_nzl_dynamic_transfer_source_state }
+			var:fallout_nzl_dynamic_transfer_source_state = {
+				transfer_state_to = PREV
+				set_state_controller_to = PREV
+			}
+			fallout_nzl_clear_fragmented_transfer_source_receipt = yes
+			clear_variable = fallout_nzl_dynamic_transfer_source_state
+			clr_country_flag = fallout_live_tag_conflict_resolved
+			set_country_flag = fallout_live_tag_conflict_allocation_pending
+			clear_variable = fallout_live_tag_conflict_resolution
+			clear_variable = fallout_live_tag_conflict_resolution_generation
+			clear_variable = fallout_live_tag_conflict_cleanup_owner
+			clear_variable = fallout_live_tag_conflict_cleanup_generation
+			clear_variable = fallout_live_tag_conflict_output_country
+		}
+		284 = {
+			clr_state_flag = fallout_successor_assignment_capital
+			clear_variable = fallout_successor_assignment_country
+			clear_variable = fallout_successor_assignment_generation
+			clear_variable = fallout_successor_assignment_count
+		}
+		1079 = {
+			clr_state_flag = fallout_successor_assignment_capital
+			clear_variable = fallout_successor_assignment_country
+			clear_variable = fallout_successor_assignment_generation
+			clear_variable = fallout_successor_assignment_count
+		}
+		723 = {
+			clr_state_flag = fallout_successor_assignment_capital
+			clear_variable = fallout_successor_assignment_country
+			clear_variable = fallout_successor_assignment_generation
+			clear_variable = fallout_successor_assignment_count
+		}
+		1080 = {
+			clr_state_flag = fallout_successor_assignment_capital
+			clear_variable = fallout_successor_assignment_country
+			clear_variable = fallout_successor_assignment_generation
+			clear_variable = fallout_successor_assignment_count
+		}
+		1081 = {
+			clr_state_flag = fallout_successor_assignment_capital
+			clear_variable = fallout_successor_assignment_country
+			clear_variable = fallout_successor_assignment_generation
+			clear_variable = fallout_successor_assignment_count
+		}
+		clr_country_flag = fallout_successor_assignment_committed
+		clr_country_flag = fallout_dynamic_country_materialization_committed
+		clr_country_flag = fallout_nzl_fragmented_transfer_started
+		clr_country_flag = fallout_nzl_fragmented_transfer_committed
+		clr_country_flag = fallout_nzl_fragmented_transfer_error
+		clr_country_flag = fallout_live_tag_conflict_capital_valid
+		clr_country_flag = fallout_country_survives
+		clr_country_flag = fallout_country_classified
+		clr_country_flag = fallout_country_package_applied
+		clr_country_flag = fallout_focus_package_applied
+		clr_country_flag = fallout_archetype_package_applied
+		clr_country_flag = fallout_regional_package_applied
+		clr_country_flag = fallout_country_memory_package_applied
+		clear_variable = fallout_successor_assignment_generation
+		clear_variable = fallout_successor_assignment_count
+		clear_variable = fallout_successor_assignment_capital_state
+		clear_variable = fallout_successor_assignment_origin_state
+		clear_variable = fallout_successor_conflict_source_country
+		clear_variable = fallout_successor_conflict_result
+		clear_variable = fallout_successor_conflict_resolution_generation
+		clear_variable = fallout_successor_cleanup_owner
+		clear_variable = fallout_successor_cleanup_generation
+		clear_variable = fallout_dynamic_country_materialization_generation
+		clear_variable = fallout_dynamic_country_materialization_source_country
+		clear_variable = fallout_nzl_dynamic_materialization_source
+		clear_variable = fallout_nzl_fragmented_transfer_generation
+		clear_variable = fallout_nzl_fragmented_transfer_count
+		clear_variable = fallout_nzl_fragmented_transfer_status
+		clear_variable = fallout_live_tag_conflict_capital_state
+		clear_variable = fallout_country_package_generation
+		clear_variable = fallout_focus_package_generation
+		clear_variable = fallout_archetype_package_generation
+		clear_variable = fallout_regional_package_generation
+		clear_variable = fallout_country_memory_package_generation
+		clear_variable = fallout_government_classifier_generation
+		clear_variable = fallout_government_classifier_schema_version
+		clear_variable = fallout_government_origin_archetype
+		clear_variable = fallout_government_archetype
+		clear_variable = fallout_government_archetype_generation
+		clear_variable = fallout_region_id
+		clear_variable = fallout_country_memory_id
+		clr_country_flag = fallout_nzl_dynamic_country
+		reserve_dynamic_country = no
+	}
+	if = {
+		limit = { has_global_flag = fallout_b7_nzl_dynamic_cleanup_ran }
+		clear_array = global.fallout_nzl_transfer_source_countries
+		set_variable = { global.fallout_nzl_transfer_source_count = constant:fallout_nzl_schema.zero }
+		clr_global_flag = fallout_b7_nzl_dynamic_materialization_started
+		clr_global_flag = fallout_b7_nzl_dynamic_materialization_committed
+		clr_global_flag = fallout_b7_nzl_dynamic_materialization_error
+		clear_variable = global.fallout_b7_nzl_dynamic_materialization_generation
+		clr_global_flag = fallout_b7_nzl_dynamic_cleanup_ran
+	}
+}
+
 # Supported scope: COUNTRY. Single Fallout transition coordinator entry point.
 # It is deliberately not connected to an on action or a public event.
 fallout_successor_b7_run_vertical_slice = {
@@ -297,9 +665,25 @@ fallout_successor_b7_run_vertical_slice = {
 			}
 			if = {
 				limit = {
+					has_global_flag = fallout_successor_conflict_ledger_built
+					fallout_successor_conflict_ledger_is_current = yes
+					NOT = { has_global_flag = fallout_transition_error }
+				}
+				for_each_scope_loop = {
+					array = global.fallout_live_tag_conflict_countries
+					limit = {
+						fallout_successor_b7_nzl_dynamic_materialization_can_commit = yes
+					}
+					fallout_successor_b7_materialize_dynamic_nzl = yes
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_global_flag = fallout_transition_error }
 					OR = {
 						NOT = { NZL = { has_country_flag = fallout_nzl_fragmented_transfer_started } }
 						NZL = { fallout_nzl_existing_tag_conversion_is_current = yes }
+						has_global_flag = fallout_b7_nzl_dynamic_materialization_committed
 					}
 				}
 				set_global_flag = fallout_b7_vertical_slice_ran
