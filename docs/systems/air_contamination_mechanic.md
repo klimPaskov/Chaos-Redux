@@ -151,9 +151,9 @@ Fallout is owned by the dedicated `fallout_world_end` system. Its events live in
 
 After each contamination change, `air_contamination_apply_delta_bp` calls `fallout_evaluate_air_contamination_request`. At or above `100%`, the evaluator submits a gradual-air-collapse request through `fallout_request_aftermath` when no other world end is active and Fallout is enabled. Re-enabling Fallout at or above the threshold runs the same evaluator immediately.
 
-The Fallout request coordinator validates the request, records its source and intensity, and owns the transition that sets `world_end` and `world_end_fallout`. It can enter the `chaosx.fallout.*` transition chain and full-screen blackout GUI. Strict postconditions prevent map return while successor allocation, player continuation, country packages, focus packages, or old-world diplomacy cleanup remain incomplete. Fallout has no Event 2 ownership, ordinary super-event slot, or ordinary super-event audio ID.
+The Fallout request coordinator validates the request, records its source and intensity, and owns the transition that sets `world_end` and `world_end_fallout`. It can enter the `chaosx.fallout.*` transition chain and full-screen blackout GUI. Strict postconditions prevent map return while successor allocation, player continuation, country packages, focus packages, or old-world diplomacy cleanup remain incomplete. Fallout has no Event 2 ownership or ordinary super-event slot. Its blackout may still play the dedicated Fallout sound path for presentation.
 
-The Fallout checkbox lives in the Miscellaneous settings panel. The shared world-end registry stores Fallout with owner event `none` and linked super-event `none`, so it is not projected into Event 2's Event Details rows.
+The Fallout checkbox lives in the Miscellaneous settings panel. The stable Fallout id remains in the internal settings and request ledger with owner event `none` and linked super-event `none`. It is not inserted into the public Event Details registry or projected into Event 2 rows.
 
 ### Current transition boundary
 

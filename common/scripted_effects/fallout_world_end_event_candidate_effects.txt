@@ -3230,6 +3230,89 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_variable = fallout_event_656_candidate_reclamation
 			clear_variable = fallout_event_656_candidate_exposure
 			clear_variable = fallout_event_656_candidate_disease
+			# Great Lakes Lock Winter selects the lowest owned and controlled
+			# North American coastal state with a native port and infrastructure.
+			# The row carries the produced Air Winter snapshot and native building
+			# evidence into the reviewed scheduler candidate pool.
+			set_variable = { fallout_event_663_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_naval_base = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_infrastructure = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_food = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_supply = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_adaptation = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_reclamation = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_exposure = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_663_candidate_disease = constant:fallout_event_runtime.zero }
+		set_variable = { fallout_event_663_candidate_pressure = constant:fallout_event_runtime.zero }
+		set_variable = { fallout_event_663_candidate_phase = constant:fallout_event_air_winter_phase.phase_zero }
+		every_owned_state = {
+			set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+			if = {
+				limit = {
+					fallout_event_663_state_is_eligible = yes
+					OR = {
+						check_variable = { ROOT.fallout_event_663_candidate_state_id = constant:fallout_event_runtime.zero }
+						check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_663_candidate_state_id compare = less_than }
+					}
+				}
+				set_variable = { ROOT.fallout_event_663_candidate_state_id = fallout_event_pilot_state_candidate_id }
+				set_variable = { ROOT.fallout_event_663_candidate_naval_base = non_damaged_building_level@naval_base }
+				set_variable = { ROOT.fallout_event_663_candidate_infrastructure = non_damaged_building_level@infrastructure }
+				set_variable = { ROOT.fallout_event_663_candidate_food = fallout_pretransition_air_winter_food_reserve }
+				set_variable = { ROOT.fallout_event_663_candidate_supply = fallout_state_supply_access_current }
+				set_variable = { ROOT.fallout_event_663_candidate_adaptation = fallout_pretransition_air_winter_adaptation }
+				set_variable = { ROOT.fallout_event_663_candidate_reclamation = fallout_pretransition_air_winter_reclamation }
+				set_variable = { ROOT.fallout_event_663_candidate_exposure = fallout_pretransition_air_winter_exposure }
+				set_variable = { ROOT.fallout_event_663_candidate_disease = air_winter_disease_pressure }
+				set_variable = { ROOT.fallout_event_663_candidate_pressure = constant:fallout_event_663_threshold.maximum_grade }
+				subtract_from_variable = { ROOT.fallout_event_663_candidate_pressure = fallout_state_supply_access_current }
+				set_variable = { ROOT.fallout_event_663_candidate_phase = fallout_pretransition_air_winter_phase }
+			}
+		}
+		if = {
+			limit = { check_variable = { fallout_event_663_candidate_state_id > constant:fallout_event_runtime.zero } fallout_event_663_country_is_current = yes }
+			fallout_event_initialize_pilot_candidate_row = yes
+			set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.great_lakes_lock_winter_candidate_id }
+			set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.great_lakes_lock_winter_transaction_key }
+			set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+			set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.regional_and_biome }
+			set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.transport_recovery }
+			set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.great_lakes_lock_winter_human }
+			set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.great_lakes_lock_winter_ai }
+			set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+			set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+			set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+			set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_663_transaction.visible_budget_cost }
+			set_temp_variable = { fallout_event_pilot_severity = fallout_event_663_candidate_exposure }
+			set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+			set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_663_candidate_pressure }
+			set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+			set_temp_variable = { fallout_event_pilot_state_value = fallout_event_663_candidate_supply }
+			set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+			set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.fuel }
+			set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.fuel }
+			set_temp_variable = { fallout_event_pilot_air_winter_phase = fallout_event_663_candidate_phase }
+			set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_region.north_america }
+			set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+			set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+			set_temp_variable = { fallout_event_pilot_target = fallout_event_663_candidate_state_id }
+			set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.great_lakes_lock_winter_route }
+			fallout_event_append_pilot_candidate_row = yes
+		}
+		clear_temp_variable = fallout_event_pilot_state_candidate_id
+		clear_variable = fallout_event_663_candidate_state_id
+		clear_variable = fallout_event_663_candidate_naval_base
+		clear_variable = fallout_event_663_candidate_infrastructure
+		clear_variable = fallout_event_663_candidate_food
+		clear_variable = fallout_event_663_candidate_supply
+		clear_variable = fallout_event_663_candidate_adaptation
+		clear_variable = fallout_event_663_candidate_reclamation
+		clear_variable = fallout_event_663_candidate_exposure
+		clear_variable = fallout_event_663_candidate_disease
+		clear_variable = fallout_event_663_candidate_pressure
+		clear_variable = fallout_event_663_candidate_phase
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

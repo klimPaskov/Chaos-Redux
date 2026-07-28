@@ -102,6 +102,7 @@ air_contamination_register_natural_disaster_source = {
 			OR = {
 				has_global_flag = settings_air_cleanliness_disabled
 				has_global_flag = air_contamination_final_silence_locked
+				has_global_flag = fallout_air_cleanliness_disabled
 			}
 		}
 		set_temp_variable = { air_natural_source_add_bp = constant:air_contamination_natural_source.zero }
@@ -216,6 +217,7 @@ air_contamination_register_natural_disaster_aftermath_source = {
 			OR = {
 				has_global_flag = settings_air_cleanliness_disabled
 				has_global_flag = air_contamination_final_silence_locked
+				has_global_flag = fallout_air_cleanliness_disabled
 			}
 		}
 		set_temp_variable = { air_natural_aftermath_add_bp = constant:air_contamination_natural_source.zero }
@@ -290,8 +292,17 @@ air_contamination_prepare_natural_source_monthly = {
 		set_variable = { global.air_contamination_natural_source_bp = constant:air_contamination_natural_source.zero }
 	}
 	if = {
-		limit = { has_global_flag = air_contamination_final_silence_locked }
+		limit = {
+			OR = {
+				has_global_flag = air_contamination_final_silence_locked
+				has_global_flag = fallout_air_cleanliness_disabled
+			}
+		}
 		set_variable = { global.air_contamination_natural_source_bp = constant:air_contamination_natural_source.zero }
+	}
+	if = {
+		limit = { has_global_flag = fallout_air_cleanliness_disabled }
+		set_variable = { global.air_contamination_natural_source_reservoir_bp = constant:air_contamination_natural_source.zero }
 	}
 	set_temp_variable = { air_monthly_natural_bp = global.air_contamination_natural_source_bp }
 }

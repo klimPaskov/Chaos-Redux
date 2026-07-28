@@ -34,9 +34,11 @@ Air Contamination may request Fallout through the shared request helper. It does
 
 No Fallout event, image, icon, sound, music file, sprite, quote slot, or GUI element may reuse zombie-owned content. Fallout is not a normal super-event.
 
+Fallout itself is a consequence transition, not a public Event Details row or evolution. Its stable internal scenario id is retained for request and settings ledgers, while the manual scenario remains dormant and absent from the public scenario catalog until the exact native thermonuclear sweep is proven. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
+
 ## Manual scenario numbering
 
-The manual Fallout scenario receives the next free live scenario id after the writable repository is scanned. The plan does not assume any fixed number. Existing scenarios keep their ids.
+The manual Fallout scenario reserves the next free live scenario id after the writable repository is scanned. The plan does not assume any fixed number. Existing scenarios keep their ids. Reservation does not authorize public registration before the engine-native sweep and seven-day handoff are proven.
 
 ## What this pass adds
 
