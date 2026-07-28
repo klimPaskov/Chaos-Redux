@@ -8,7 +8,7 @@ Fallout does not borrow an event namespace, numbered event identity, event file,
 
 ## Event file
 
-All Fallout events belong in:
+All internal Fallout orchestration events and post-consequence survivor story events belong in:
 
 `events/fallout_world_end_events.txt`
 
@@ -18,7 +18,7 @@ The file uses:
 
 All Fallout sequencing events use `chaosx.fallout.*` identifiers. The exact numeric suffixes must be allocated inside this namespace after checking the completed file for duplicates. They are local event slots and are unrelated to the manual scenario registry id.
 
-The dedicated file owns:
+The dedicated file owns only the internal event callbacks and survivor-facing story chains needed by the consequence system:
 
 - automatic contamination-collapse entry
 - direct scripted terminal entry
@@ -31,11 +31,13 @@ The dedicated file owns:
 - post-transition orientation and regional aftermath events
 - transition recovery events that belong to the Fallout system
 
+The Fallout consequence itself is not an event. It has no public Event Details row, evolution entry, ordinary consequence Event Log entry, or ordinary super-event slot. The internal callbacks in this file are transport and presentation surfaces for the consequence, while survivor-country stories may write their own Fallout memory history after the transition.
+
 ## Event ownership boundaries
 
-`events/chemical_warfare_events.txt` keeps chemical warfare and Air Contamination milestone events only. Remove the old Fallout event block from that file. Air Contamination requests Fallout through a dedicated scripted effect or a `chaosx.fallout.*` event defined in the Fallout file.
+`events/chemical_warfare_events.txt` keeps chemical warfare and Air Contamination milestone events only. Remove the old Fallout event block from that file. Air Contamination requests the Fallout consequence through a dedicated scripted effect or an internal `chaosx.fallout.*` callback defined in the Fallout file.
 
-`events/chaosx_triggerable_scenarios.txt` keeps generic scenario framework events only. The scenario registry may select Fallout, but its confirmation follow-up and launch sequence call events defined in `events/fallout_world_end_events.txt`.
+`events/chaosx_triggerable_scenarios.txt` keeps generic scenario framework events only. A manual Fallout launch, when its native sweep gate is proven, may call the Fallout-owned handoff, but the consequence is never inserted into the public event, evolution, or Event Details catalogs.
 
 No compatibility event remains in an older event namespace. Remove stale event definitions and migrate callers directly to the Fallout request helper. Save compatibility, if required, is handled by a versioned Fallout migration effect. It must not fire an event from another feature namespace.
 
@@ -65,7 +67,7 @@ Use:
 
 The blackout background, transition textures, processing indicators, successor-selection UI, warning states, and any animated transition elements use dedicated Fallout sprites and textures.
 
-Fallout is not a normal super-event. It must not use a super-event image slot, super-event image path, super-event quote slot, super-event reaction slot, or super-event audio id.
+Fallout is not a normal super-event. It must not use a super-event image slot, super-event image path, super-event quote slot, super-event reaction slot, or super-event audio id. The blackout title and transition sound are private presentation surfaces for the consequence and do not register a super-event.
 
 ## Visual asset ownership
 
@@ -96,7 +98,7 @@ Do not assign a normal super-event audio id. Do not reuse another feature's soun
 
 The manual scenario receives the next free scenario registry id found in the writable live repository. That registry id is independent from `chaosx.fallout.*` event suffixes.
 
-The generic scenario launcher calls a Fallout-owned launch event. Every strike, countdown, blackout, rewrite, and post-transition event after that call remains inside the Fallout namespace and file.
+The generic scenario launcher calls a Fallout-owned launch handoff only after the exact native sweep gate is proven. Every strike, countdown, blackout, rewrite, and post-transition callback after that call remains inside the Fallout namespace and file, without creating a public Fallout event row.
 
 ## Required cleanup
 
@@ -116,6 +118,7 @@ The ownership gate passes only when:
 - every `chaosx.fallout.*` event definition is in `events/fallout_world_end_events.txt`
 - no Fallout event block remains in chemical warfare, generic scenario, or other feature event files
 - no Fallout caller uses an event id from another namespace
+- the consequence itself has no public Event Details, evolution, or ordinary Event Log registration
 - no Fallout sprite or texture points into another feature asset folder
 - no Fallout presentation uses the normal super-event system
 - the asset manifest lists only dedicated Fallout paths or engine-required flag roots
