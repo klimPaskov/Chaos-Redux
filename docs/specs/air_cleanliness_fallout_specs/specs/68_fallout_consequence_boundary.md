@@ -26,6 +26,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 - `air_winter_suspend_all_states_for_fallout` removes active phase, disease, railway, airbase, response-project, and pending-event effects while preserving the last valid Air Winter phase and survival ledgers for that historical map view.
 - The monthly Air Cleanliness coordinator does not begin or update Air Winter, treaty pulses, or Air Winter dispatch after the flag is set.
 - Natural wildfire smoke, volcanic ash, and ashfall aftermath registration returns zero after the flag. The monthly natural source reservoir and pulse are cleared.
+- The Black Plague Air source refresh clears its disease-derived reservoir and previous contribution after the flag, so a later disease pulse cannot repopulate the disabled Air surface.
 - `air_contamination_apply_delta_bp` ignores later Air Cleanliness deltas. It does not rewrite the committed 100 percent contamination state.
 - State-wide Air Cleanliness modifiers and country pressure ideas are removed by `air_contamination_apply_state_modifier`.
 - Treaty membership eligibility, pending invitations, decision visibility, and host lifecycle pulses reject the flag and close operational routes.
@@ -58,11 +59,11 @@ The shared `air_contamination_update_threshold_flags` effect is also gated by `f
 
 The manual scenario captures every state's pre-strike population before native strike callbacks. Each struck state is then processed by `fallout_manual_apply_state_aggregate_consequence`. The aggregate death percentage is clamped between `fallout_manual_aggregate.death_percent_base` and `fallout_manual_aggregate.death_percent_max`, which are the approved 90 and 95 percent endpoints.
 
-The effect computes the exact remaining-population target, supplies the state population-loss contract, and calls `apply_exact_state_civilian_population_loss`. It records the applied state delta in `global.fallout_manual_total_civilian_deaths` and `chaos_state_civilian_deaths_total`. After the state loop, `fallout_manual_apply_aggregate_consequences` calls `chaos_meter_register_deaths` with civilian mode enabled and state population application disabled because the exact state mutations have already occurred. This prevents double deletion while keeping the complete loss in the Deaths system.
+The effect computes the exact remaining-population target, supplies the state population-loss contract, and calls `apply_exact_state_civilian_population_loss`. Its provenance receipt then measures the complete pre-strike-to-post-strike loss after native callbacks and exact reconciliation, adding that observed amount to `global.fallout_manual_total_civilian_deaths` and `chaos_state_civilian_deaths_total`. After the state loop, `fallout_manual_apply_aggregate_consequences` calls `chaos_meter_register_deaths` with civilian mode enabled and state population application disabled because the exact state mutations have already occurred. This prevents double deletion while keeping the complete observed loss in the Deaths system rather than only the direct mod adjustment.
 
 ## Engine-sensitive proof boundary
 
-The state mutation and Deaths routing are source-proven by the effects named above. The exact engine-native sweep across every valid installed-map province remains a separate runtime proof requirement for the manual scenario. Until that sweep is proven in a live consumer session, the manual scenario remains dormant and the completion report must retain that blocker. No variable-only fallout, one-strike-per-state substitute, or public Event Details registration may be presented as equivalent proof.
+The state mutation and aggregate Deaths routing are source-proven by the effects named above. The vanilla references document `launch_nuke` inputs but do not specify whether its native callback changes population or writes this mod's Deaths ledger. Runtime review must therefore confirm that the observed aggregate receipt is not duplicated by an undocumented native callback. The exact engine-native sweep across every valid installed-map province remains a separate runtime proof requirement for the manual scenario. Until those properties are proven in a live consumer session, the manual scenario remains dormant and the completion report must retain those blockers. No variable-only fallout, one-strike-per-state substitute, or public Event Details registration may be presented as equivalent proof.
 
 ## Review checklist
 
@@ -73,6 +74,6 @@ The state mutation and Deaths routing are source-proven by the effects named abo
 - Air Cleanliness is disabled by a durable Fallout-owned flag.
 - Wildfire, volcanic, ashfall, Air Winter, treaty, settings, and delta boundaries consume that flag.
 - Standard and manual state population loss both use the approved 90 to 95 percent band.
-- Both paths record civilian losses through Deaths after state population mutation.
+- Both paths record the observed civilian loss through Deaths after state population mutation.
 - Fallout-owned Deaths registration remains mandatory when the general Deaths setting is disabled.
 - The exact native manual sweep remains explicitly unproven until live runtime evidence exists.
