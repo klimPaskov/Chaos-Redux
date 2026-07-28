@@ -43,6 +43,14 @@ costs, durations, route writers, or threshold values. The calculation and
 remaining runtime boundary are recorded in
 `subagent_handoffs/006_iw012_ledger_reachability_repair_2026_07_29.md`.
 
+Post-snapshot tag-scope audit (2026-07-29): the protected namespace is limited
+to the 102 Event 006 reservations and 34 Soviet Collapse carriers. The scoped
+audit reports zero external country-definition collisions, skips the Random
+Events Mod by accepted scope, and leaves the unrelated `REV`, `ZIN`, and `ZZZ`
+carriers untouched. The ranked admission matrix records why no additional
+Event 006 package is ready for attestation; it is maintained in
+`subagent_handoffs/006_next_event6_soviet_tag_admission_matrix_2026_07_29.md`.
+
 Post-snapshot asset update (2026-07-26): IW-173 HAW now has a source-ready
 Samuel Wilder King candidate from the Hawai'i State Archives / U.S. House
 delegate record. The immutable source, exact crop proof, source-locked HOI4
