@@ -27,6 +27,13 @@ cost and category-visibility findings are closed in
 Live mission timing, AI choice, queue retry, requester-loss, save/load, and
 allocator execution evidence remain open.
 
+Post-snapshot crisis recovery repair (2026-07-29): the queued callback now has
+an `on_annex` transaction-boundary recovery. If the requesting host is annexed
+before `chaosx.nr6.3` fires, the global queue is cleared, the requester-loss
+outcome is recorded in the Event 006 history payload, and durable success or
+failure receipt flags preserve the last resolution. No ownership is changed by
+the recovery path; live annexation and save/load evidence remain open.
+
 Post-snapshot IW-012 ledger repair (2026-07-29): the four pre-commitment ICE
 projects now add a centrally tuned minor Coastwatch gain. Starting at 20, the
 serialized path reaches 55 before Armed Neutrality and 70 after the security
