@@ -67,7 +67,7 @@ Use:
 
 The blackout background, transition textures, processing indicators, successor-selection UI, warning states, and any animated transition elements use dedicated Fallout sprites and textures.
 
-Fallout is not a normal super-event. It must not use a super-event image slot, super-event image path, super-event quote slot, super-event reaction slot, or super-event audio id. The blackout title and transition sound are private presentation surfaces for the consequence and do not register a super-event.
+Fallout is not a normal super-event. It must not use a super-event image slot, super-event image path, super-event quote slot, super-event reaction slot, or super-event audio id. The blackout display text and transition sound are private presentation surfaces for the consequence and do not register a super-event.
 
 ## Visual asset ownership
 
