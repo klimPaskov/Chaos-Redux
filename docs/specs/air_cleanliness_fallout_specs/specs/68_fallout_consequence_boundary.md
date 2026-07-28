@@ -64,6 +64,8 @@ The manual scenario captures every state's pre-strike population before native s
 
 The effect computes the exact remaining-population target, supplies the state population-loss contract, and calls `apply_exact_state_civilian_population_loss`. Its provenance receipt then measures the complete pre-strike-to-post-strike loss after native callbacks and exact reconciliation, adding that observed amount to `global.fallout_manual_total_civilian_deaths` and `chaos_state_civilian_deaths_total`. After the state loop, `fallout_manual_apply_aggregate_consequences` calls `chaos_meter_register_deaths` with civilian mode enabled, `chaos_deaths_reason = fallout_aftermath`, and state population application disabled because the exact state mutations have already occurred. This prevents double deletion while keeping the complete observed loss in the Deaths system rather than only the direct mod adjustment.
 
+The later standard population phase reuses the same frozen survivor target but reads live `state_population_k` after native and aggregate mutations. It requests only the remaining delta. When the aggregate already reached the target, the standard receipt records zero loss and does not issue another Deaths registration. The frozen pre-strike population is retained for provenance and target arithmetic only.
+
 After each state records its synthetic Fallout intensity and expiry ledger, `fallout_manual_apply_state_aggregate_consequence` removes the ordinary `nuclear_fallout_state` modifier. A native strike therefore cannot leave a daily nuclear Air contamination or Deaths source behind after the durable Air shutdown.
 
 ## Engine-sensitive proof boundary

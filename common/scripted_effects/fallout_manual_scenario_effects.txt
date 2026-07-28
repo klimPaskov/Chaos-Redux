@@ -564,7 +564,11 @@ fallout_manual_calculate_population_loss_intent = {
 		}
 	}
 	else = { set_temp_variable = { fallout_manual_target_survivor_population = constant:fallout_runtime.zero } }
-	set_temp_variable = { fallout_manual_current_population_people = fallout_pretransition_population_k }
+	# The native strike callbacks and the aggregate exact-loss mutation have
+	# already changed the live state population. Reconciliation must measure the
+	# remaining delta from that live value, never replay the frozen prestrike
+	# snapshot as a second loss.
+	set_temp_variable = { fallout_manual_current_population_people = state_population_k }
 	multiply_temp_variable = { fallout_manual_current_population_people = constant:fallout_runtime.population_scale }
 	round_temp_variable = fallout_manual_current_population_people
 	set_temp_variable = { fallout_expected_population_requested_loss = fallout_manual_current_population_people }
