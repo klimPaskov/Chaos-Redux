@@ -17,6 +17,25 @@ accepted Event 006 design. The current portrait authority is the sourced-only
 gate in the accepted specification and the reusable event-asset skill. Earlier
 generated portrait packages remain provenance evidence, not visual acceptance.
 
+Post-snapshot crisis repair (2026-07-29): the host-facing crisis category now
+stays visible through the active mission, the mission uses the documented
+`activation` surface without an ineffective mission-local `visible` block, the
+standard payment trigger checks the 20 command-power commitment deducted by
+the effect, and crisis AI weights are centrally tuned. The focused source-level
+cost and category-visibility findings are closed in
+`subagent_handoffs/006_pre_wave_crisis_mission_repair_2026_07_29.md`.
+Live mission timing, AI choice, queue retry, requester-loss, save/load, and
+allocator execution evidence remain open.
+
+Post-snapshot IW-012 ledger repair (2026-07-29): the four pre-commitment ICE
+projects now add a centrally tuned minor Coastwatch gain. Starting at 20, the
+serialized path reaches 55 before Armed Neutrality and 70 after the security
+commitment, while Shipping Security reaches 65. This closes the source-level
+unreachable Coastwatch and 60/60 harbour-stability thresholds without changing
+costs, durations, route writers, or threshold values. The calculation and
+remaining runtime boundary are recorded in
+`subagent_handoffs/006_iw012_ledger_reachability_repair_2026_07_29.md`.
+
 Post-snapshot asset update (2026-07-26): IW-173 HAW now has a source-ready
 Samuel Wilder King candidate from the Hawai'i State Archives / U.S. House
 delegate record. The immutable source, exact crop proof, source-locked HOI4

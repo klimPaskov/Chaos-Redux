@@ -42,6 +42,8 @@ Setup selects FORM-02 North Atlantic Compact through the shared formable registr
 
 The six visible IW-012 projects establish a founding posture through state-aware AI willingness, but they never write the formal government route. `Declare Armed Neutrality` is an emergency security commitment that raises Coastwatch and Shipping Security and gives the emergency route a material signal. The four mutually exclusive route focuses remain the sole formal route writers and re-evaluate Civic Cohesion, Port Authority, Shipping Security, Compact Support, Network Standing, former-host pressure, League membership, war, and instability before locking the route.
 
+The founding ledger path is reachable by construction: the registers, municipal charter, Compact, and former-host charter each add a minor Coastwatch gain, while Coastwatch expansion adds the major gain. From the starting 20 Coastwatch Readiness, the pre-commitment path reaches 55 for Armed Neutrality; the commitment then carries the ledger above the 60 harbour-stability threshold alongside the shipping path.
+
 The route weights are centralized in `independence_wave_focus_ai`. Constitutional Republic is preferred by stable civic peace and a settled charter; Traditional Authority by mature port and shipping administration; Emergency Military by war, severe former-host threat, Coastwatch readiness, or the armed-neutrality flag; and Patron-Client by a treaty-backed Compact, League membership, or peaceful severe host pressure. Invalid routes remain hidden through their existing package gates, and no project cost, duration, reward, focus cost, or route outcome changes in this arbitration layer.
 
 ## Assets

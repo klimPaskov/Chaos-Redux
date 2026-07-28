@@ -63,6 +63,76 @@ country_event = {
 	}
 }
 
+# Host-facing crisis handoff. The mission records the request before this
+# event is scheduled; this endpoint consumes the global queue and delegates to
+# the same standalone synchronized planner used by the normal root event. A
+# busy coordinator, joint presentation, or world-end barrier leaves the queue
+# pending for the bounded retry window instead of starting a second incident.
+country_event = {
+	id = chaosx.nr6.3
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_flag = independence_wave_crisis_release_queued
+				has_country_flag = independence_wave_crisis_release_requester
+				can_independence_wave_crisis_release_barrier = yes
+			}
+			clr_global_flag = independence_wave_crisis_release_queued
+			independence_wave_prepare_and_execute_standalone_incident = yes
+			if = {
+				limit = { has_global_flag = independence_wave_standalone_incident_committed }
+				set_global_flag = independence_wave_event_log_actor_ready
+				country_event = { id = chaosx.nr6.2 }
+			}
+			else = {
+				independence_wave_apply_crisis_blocked_consequence = yes
+			}
+			independence_wave_clear_crisis_retry = yes
+			clr_country_flag = independence_wave_crisis_release_requester
+		}
+		else_if = {
+			limit = {
+				has_global_flag = independence_wave_crisis_release_queued
+				has_country_flag = independence_wave_crisis_release_requester
+			}
+			if = {
+				limit = {
+					NOT = { has_variable = independence_wave_crisis_retry_count }
+				}
+				set_variable = { independence_wave_crisis_retry_count = 0 }
+			}
+			add_to_variable = { independence_wave_crisis_retry_count = 1 }
+			if = {
+				limit = {
+					check_variable = {
+						var = independence_wave_crisis_retry_count
+						value = constant:independence_wave_crisis_timing.retry_limit
+						compare = less_than
+					}
+				}
+				set_temp_variable = { independence_wave_crisis_retry_delay = constant:independence_wave_crisis_timing.retry_days }
+				country_event = {
+					id = chaosx.nr6.3
+					days = independence_wave_crisis_retry_delay
+				}
+			}
+			else = {
+				clr_global_flag = independence_wave_crisis_release_queued
+				independence_wave_apply_crisis_blocked_consequence = yes
+				independence_wave_clear_crisis_retry = yes
+				clr_country_flag = independence_wave_crisis_release_requester
+			}
+		}
+		else_if = {
+			limit = { has_global_flag = independence_wave_crisis_release_queued }
+			clr_global_flag = independence_wave_crisis_release_queued
+		}
+	}
+}
+
 # Internal synchronous character handoff for northern/western European
 # regional packages with complete roster contracts. Static characters are recruited from an event,
 # never from a scripted effect or on action. The calling setup effect validates
