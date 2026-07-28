@@ -75,7 +75,7 @@ The 2026-07-27 completion audit found that this proof must remain a blocked stat
 - Result state deltas and timed state-modifier duration now use unscoped temporary variables inside the state block.
 - Result and callback delivery require current generation and mutable owner, controller, category, and terrain gates. Cleanup after a committed result or callback uses the generic country registry so same-generation target drift can release its already-scheduled row. Pre-result stale cancellation and generation drift remain open.
 - Callback grading now includes infrastructure and all seven durable ledgers. The result grade also includes all seven ledgers, with a branch-preparation delta applied to the frozen score before the result is locked and the settled outcome delta applied afterward.
-- High Exposure or Disease AI preference now enters the issued target state scope before reading live pressure. The invalid-option `-1000` value remains a recorded policy constant rather than a separately rendered option-competition sweep.
+- High Exposure or Disease AI preference now enters the issued target state scope before reading live pressure. The hidden-AI lane scores every affordable branch, adds the authored archetype and pressure factors, selects the highest score in the documented tie order, and records the selected score in the priority ledger. The invalid-option `-1000` value remains the score floor for unaffordable branches.
 - Eighteen dedicated dynamic modifiers now have localisation keys, and opening tooltips name the issued target state and result timing.
 - The visible budget is `3` in the source constant, accepted spec, workbook, and export. A focused search found no stale visible-budget value of `2` in the Second Dust Bowl source surfaces.
 
