@@ -6,7 +6,7 @@ The living-world pilot now contains `544` defined event blocks across the review
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
-Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native Eurasian interior railway state and uses dedicated art and localisation.
+Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, and Event Log history `9166`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native Eurasian interior railway state and uses dedicated art and localisation. Its generation-reset abort path now statically terminalizes stale receipts and releases the state reservation before shared runtime teardown.
 
 Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and Event Log history `9167`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native South Asian rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building.
 
