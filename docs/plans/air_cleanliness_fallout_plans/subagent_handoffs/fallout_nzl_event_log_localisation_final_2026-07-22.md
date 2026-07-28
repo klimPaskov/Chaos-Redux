@@ -3,6 +3,14 @@
 Date: 2026-07-22
 Scope: dormant Fallout NZL country-memory Event Log rows, detail strings, and Fallout world-end package-card presentation.
 
+## Current-source reconciliation
+
+This historical handoff predates the Fallout consequence boundary correction.
+The consequence is not an Event Details row, evolution, ordinary event-log row,
+or world-end details card. The composite key and branch described below are
+retired. The remaining NZL surfaces are post-consequence country-memory history
+and must stay dormant until their own activation proof is accepted.
+
 ## Changed files
 
 - `localisation/english/fallout_nzl_event_log_l_english.yml`
@@ -36,15 +44,14 @@ The four detail surfaces use the corrected route sentence. The card still names 
 
 - `fallout_nzl.event_log.card.composite`
 
-New nested localisation key:
-
-`$chaosx.events_log.world_end.fallout.details$\n\n$fallout_nzl.event_log.card$`
-
-This preserves the base Fallout scenario description before the NZL package card.
+The former nested key that combined a Fallout world-end details string with the
+NZL package card is retired. It must not be restored because the Fallout
+consequence has no public details surface.
 
 - `GetEventsLogSelectedWorldEndScenarioDetails` in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
-When the Fallout details context has `fallout_nzl_event_log_card_has_memory > 0`, the branch now selects `fallout_nzl.event_log.card.composite` instead of replacing the base Fallout details with the package card alone.
+The Fallout consequence branch is absent. Any future NZL package view must be
+opened only from a post-consequence country-memory context.
 
 ## Localisation audit
 
@@ -68,7 +75,9 @@ The package already exposes dynamic state names, metrics, dates, event actors, p
 
 ### Cross-surface mismatch notes
 
-- Fixed the world-end details mismatch where the NZL memory-present branch replaced `chaosx.events_log.world_end.fallout.details` rather than including it.
+- The former world-end details mismatch is retired with the consequence details
+  branch. No live localisation key named
+  `chaosx.events_log.world_end.fallout.details` is required.
 - Event 2 remains Zombie-only at the Event Log and catalog surface. A pre-existing Air Winter source event named `chaosx.fallout.2` was not changed by this localisation patch. This handoff does not claim that no raw Event 2 exists anywhere.
 - No ordinary `chaosx.event_name.9101` through `chaosx.event_name.9104` mapping was found.
 - No new `event_id = 9101` through `event_id = 9104` source event was found.
