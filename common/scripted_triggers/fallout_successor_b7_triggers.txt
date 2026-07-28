@@ -198,6 +198,71 @@ fallout_successor_b7_fragmentation_candidate_is_available = {
 	NOT = { any_owned_state = { always = yes } }
 }
 
+# Supported scope: COUNTRY. The dynamic Lifeboat materializer is allowed only
+# after the generation-bound conflict ledger has named every live tag and the
+# exact five-state NZL package footprint is available. A possible-country scope
+# is not treated as a live output, and a recycled dynamic slot is never reused.
+fallout_successor_b7_nzl_dynamic_output_is_absent = {
+	NOT = { any_country = { tag = NZL } }
+	NOT = { any_country = { has_country_flag = fallout_nzl_dynamic_country } }
+}
+
+fallout_successor_b7_nzl_dynamic_footprint_is_ready = {
+	fallout_successor_b7_transaction_is_current = yes
+	fallout_successor_b7_nzl_dynamic_output_is_absent = yes
+	NOT = { has_global_flag = fallout_b7_nzl_dynamic_materialization_started }
+	NOT = { has_global_flag = fallout_b7_nzl_dynamic_materialization_committed }
+	is_in_array = { array = global.fallout_live_tag_conflict_countries value = THIS }
+	has_country_flag = fallout_live_tag_conflict_recorded
+	has_country_flag = fallout_live_tag_conflict_allocation_pending
+	NOT = { has_country_flag = fallout_pretransition_player_country }
+	NOT = { fallout_country_has_live_event_package_ownership = yes }
+	any_owned_state = { always = yes }
+	has_global_flag = fallout_successor_conflict_ledger_built
+	fallout_successor_conflict_ledger_is_current = yes
+	NOT = { has_global_flag = fallout_transition_error }
+	284 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1079 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	723 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1080 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+	1081 = {
+		fallout_successor_state_inventory_row_is_current = yes
+		fallout_successor_state_is_candidate = yes
+		NOT = { is_owned_by = ROOT }
+		is_controlled_by = OWNER
+		OWNER = { check_variable = { num_owned_states = constant:fallout_nzl_schema.one } }
+	}
+}
+
+fallout_successor_b7_nzl_dynamic_materialization_can_commit = {
+	fallout_successor_b7_nzl_dynamic_footprint_is_ready = yes
+	NOT = { has_country_flag = fallout_player_successor_choice_required }
+}
+
 fallout_successor_b7_vertical_slice_is_current = {
 	has_global_flag = fallout_b7_vertical_slice_ran
 	has_variable = global.fallout_b7_vertical_slice_generation
