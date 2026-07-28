@@ -30,7 +30,7 @@ The candidate audit covered vanilla, all 122 installed Workshop directories, all
 | Family | Primary | Clean reserves | Rejected candidates |
 |---|---|---|---|
 | `FORM-01` | `KCX` | none assigned | `CCX` is already reserved by Event 6 package `IW-055`; it cannot be reused by a formable identity. |
-| `FORM-02` | `NUX` | `NBX`, `NCX` | `NAX` is occupied by Workshop item `1827273767`. `ATX` is Event 006 Venice. `AUX` is a Windows device basename and cannot safely own portable files. `NOX` is technically free but is already a visible TNO Greek route acronym. |
+| `FORM-02` | `NUX` | `NBX`, `NCX` | `NAX` is occupied by Workshop item `1827273767`. `ATX` is Event 006 Venice. `ZIN` is already the Event 068 carrier; the separate retired `AUX` reservation is the Windows-device issue. `NOX` is technically free but is already a visible TNO Greek route acronym. |
 | `FORM-03` | `LCX` | `LFX`, `LWX` | none in the reviewed shortlist |
 | `FORM-04` | `RLX` | `RNX`, `RHX` | none in the reviewed shortlist |
 

@@ -28,11 +28,13 @@ The scan parsed 7,981 literal country-tag registration records and 69,484 alias,
 
 No accepted custom Event 6 tag overlaps a tag or alias found in that installed universe, consumes the engine-reserved `GFX` graphics namespace, or uses a Windows-reserved device basename. The post-migration identity comparison found `IW-153` Dayak federation equivalent to vanilla `POK`'s Dayak Republic of West Borneo identity; `FWX` was therefore retired and `IW-153` now reuses `POK`. A later installed mod can still consume a tag, so the audit must be rerun immediately before any later tag migration or final completion audit.
 
+The reusable API surface for later events is the `chaosx_country_*` collection namespace documented in `docs/systems/006_independence_wave_country_registry.md`. It does not change the three-character engine-tag rule or grant another event permission to load Event 006 content without its own origin and package gates. The current Event 005/Soviet Collapse migration is separately audited by `.tools/audit_chaosx_country_tags.py`; its seven original legacy collisions use the collision-free replacements `AAX`, `ABX`, `ADX`, `AEX`, `ANX`, `AOX`, and `INX`, while five additional non-Random extended-surface collisions (`OGB`, `RMC`, `TSC`, `APX`, and `MRC`) now use `IJX`, `IKX`, `ILX`, `INX`, and `IMX`. That focused audit scans real `common/country_tags` definitions and explicitly excludes the Random Events Mod; Cannibalism and other event-only namespaces remain outside this migration tranche.
+
 ## Installed-mod collision migrations
 
 | Package | Retired value | Locked representation |
 | --- | --- | --- |
-| `IW-021` Trieste Free State | `AUX`, the Windows-reserved auxiliary-device basename | Custom `ICX` |
+| `IW-021` Trieste Free State | `ZIN`, already reserved by the Chaos Redux Event 068 carrier | Custom `ICX` |
 | `IW-087` Fezzan | `DIX`, registered by Red Flood | Custom `HYX` |
 | `IW-124` Basotho | `ETX`, used as an Empire of Texas cosmetic by KaiserreduX and copies | Custom `HZX` |
 | `IW-161` Mon State | `GEX`, a German-exile alias in Kaiserreich and KaiserreduX | Custom `IAX` |

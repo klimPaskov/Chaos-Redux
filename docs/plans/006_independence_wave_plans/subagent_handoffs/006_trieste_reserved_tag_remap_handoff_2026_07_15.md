@@ -4,11 +4,11 @@ Date: 2026-07-15
 
 ## Result
 
-`IW-021` Trieste Free State now uses `ICX`. The prior reservation, `AUX`, is a
-Windows DOS device basename. Windows could enumerate generated `AUX.tga` and
-`AUX.png` files created through a long-path-aware process, but normal Win32
-path access could not reopen them. A Windows HOI4 installation therefore could
-not be trusted to load the country, history, localisation, or flag surfaces.
+`IW-021` Trieste Free State now uses `ICX`. The prior reservation, `ZIN`, is
+already the Chaos Redux Event 068 carrier and remains outside Event 006
+creation. The separate retired `AUX` reservation is the Windows DOS device
+basename; it cannot back portable country, history, localisation, or flag
+files.
 
 `ICX` was selected from the dated collision-free `??X` pool, then checked
 against vanilla, all 122 installed Workshop directories, every local mod, and
@@ -37,8 +37,8 @@ No gameplay package was promoted to content-ready by this remap.
 `.tools/audit_hoi4_country_tags.py` excludes the engine-reserved `GFX`
 namespace and the Windows-reserved three-character device basenames `AUX`,
 `CON`, `NUL`, and `PRN` from both accepted Event 6 tags and its suggested
-replacement pool. This prevents the audit from offering an apparently unused
-tag whose required filenames cannot be opened reliably on Windows.
+replacement pool. `ZIN` is an ordinary existing Chaos Redux carrier and is
+not treated as an OS-reserved basename.
 
 ## Validation boundary
 
@@ -47,8 +47,8 @@ tag whose required filenames cannot be opened reliably on Windows.
   `ICX`.
 - The installed tag audit reports zero country-tag collisions for the remapped
   Event 6 registry.
-- `AUX` remains only as a documented retired value; no gameplay, localisation,
-  history, or asset filename uses it.
+- `ZIN` remains the existing Event 068 carrier; Event 006 does not create or
+  overwrite it.
 - Banat `AXX` remains blocked and Sicily `ASX` remains route-ownership locked.
 
 No fallback identity, unresearched flag, or new country was introduced.

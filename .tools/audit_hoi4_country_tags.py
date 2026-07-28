@@ -48,7 +48,6 @@ HISTORY_COUNTRY_RE = re.compile(r'^([A-Z0-9]{3}).*\.txt$', re.IGNORECASE)
 ENGINE_RESERVED_THREE_CHARACTER_NAMESPACES = {
 	"AND": "offline HOI4 wiki forbidden country-tag token",
 	"GFX": "HOI4 sprite and interface graphics identifier namespace",
-	"AUX": "Windows reserved DOS device basename; country, history, localisation, and flag files cannot be opened reliably",
 	"CON": "Windows reserved DOS device basename",
 	"LOG": "offline HOI4 wiki forbidden country-tag token",
 	"NOT": "offline HOI4 wiki forbidden country-tag token",

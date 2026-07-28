@@ -42,7 +42,7 @@ dossier, or `_small` portrait assets.
 
 - `IW-018` Sardinia (`ARX`): researched Four Moors civic synthesis delivered as an official-ImageGen-derived normal/medium/small triplet.
 - `IW-019` Sicily (`ASX`): researched 1848 S.015 constitutional-independence triplet delivered, but route ownership remains under review and the art is not a neutral baseline.
-- `IW-021` Trieste Free State (`ICX`): researched 1918-1936 civic corsesca triplet delivered; `ICX` replaces the Windows-reserved `AUX` basename.
+- `IW-021` Trieste Free State (`ICX`): researched 1918-1936 civic corsesca triplet delivered; `ICX` preserves the existing Event 068 `ZIN` carrier; the separate retired `AUX` reservation is the Windows-device issue.
 - `IW-024` Banat (`AXX`): no flag produced; no attested Republic flag or approved fictional route design was found.
 
 The source and generated packages are under `docs/assets/006_independence_wave/mediterranean_danube_flag_sources_2026_07_15/` and `docs/assets/006_independence_wave/mediterranean_danube_generated_flags_2026_07_15/`. Asset delivery does not override package readiness, route, portrait, focus, mechanic, or AI gates.
