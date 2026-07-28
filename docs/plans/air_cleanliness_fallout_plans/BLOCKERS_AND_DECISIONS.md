@@ -87,7 +87,7 @@ No twentieth strip frame is required. `AIR_WINTER_MAPMODE_ICON_PROOF.md` records
 
 ## B5: full-screen GUI drawing order
 
-Status: open, static evidence proves limited pointer interception only
+Status: open, static container binding is repaired, runtime input and z-order proof remains open
 
 Need proof that the blackout:
 
@@ -102,15 +102,15 @@ Need proof that the blackout:
 Current static evidence:
 
 - a non-transparent top-layer blocker can intercept pointer hits on controls beneath its own layer
-- the official scripted-GUI schema expects an independent `containerWindowType`, while the current `interface/fallout_world_end.gui` root uses `windowType`
-- the current fixed `10000` by `10000` blocker does not prove all-resolution coverage
+- the root now uses the documented independent `containerWindowType` with percentage sizing and `fullScreen = yes`
+- the current fixed `10000` by `10000` blocker still does not prove all-resolution coverage
 - root parentlessness places a structurally valid scripted GUI over most UI, but not necessarily every hardcoded popup
 - the official scripted-GUI schema exposes no modal, exclusive-input, keyboard-capture, shortcut-suppression, or pause surface
 - vanilla native-exclusive examples depend on hardcoded `SetExclusive`, which is not exposed to scripted GUI
 - synchronized state can re-evaluate visibility only after the container binding is structurally valid, and no exposed exclusive-input state can be restored
 - `is_global_host` is a project simulation coordinator rather than a proven literal lobby host, and it cannot suppress client-local keyboard input
 
-Converting the root to a full-screen independent `containerWindowType` with percentage sizing is only a possible fallback for broader pointer coverage. It requires explicit user approval before any GUI change. It would not prove complete pointer priority, keyboard capture, shortcut suppression, native exclusive input, or pause control. Pointer-only behavior is not approved as a substitute for the required blackout.
+The root has been converted to a full-screen independent `containerWindowType` with percentage sizing. That repair does not prove complete pointer priority, keyboard capture, shortcut suppression, native exclusive input, or pause control. Pointer-only behavior is not approved as a substitute for the required blackout.
 
 Do not assume a top-bar parent, root parentlessness, or pointer interception beneath one layer resolves B5.
 
