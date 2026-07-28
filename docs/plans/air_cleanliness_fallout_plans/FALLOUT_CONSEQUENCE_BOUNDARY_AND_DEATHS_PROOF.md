@@ -22,6 +22,7 @@ Static consumers of the flag are:
 
 - `air_winter_system_enabled` and `air_winter_event_targets_are_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`.
 - `air_winter_response_target_is_valid` in `common/scripted_triggers/air_cleanliness_winter_triggers.txt`, which rejects already-open terminal response events after request-time shutdown.
+- `air_winter_response_controlled_evacuation_project_is_valid` and `air_winter_response_final_evacuation_project_is_valid` in the same trigger file, which reject delayed population transfers after request-time shutdown.
 - `air_winter_event_apply_deaths` in `common/scripted_effects/air_cleanliness_winter_event_effects.txt`.
 - `air_contamination_monthly_update` in `common/scripted_effects/chaos_meter_effects.txt`.
 - `air_contamination_apply_delta_bp` and `air_contamination_apply_state_modifier` in `common/scripted_effects/chaos_meter_effects.txt`.
@@ -34,6 +35,8 @@ The monthly pass no longer starts or updates Air Winter after the flag. `air_win
 Cleaning Day start and delayed-project validity now also check `fallout_air_cleanliness_disabled` directly. A project that was opened before a Fallout request cannot reduce Air Contamination after request-time shutdown, even before the transition lock or host pause pulse is observed.
 
 Pending Air Winter terminal responses use the same durable guard. Abandonment and decontamination result events therefore fall into their stale-choice recovery path after request admission instead of changing state ledgers, country effects, or population loss.
+
+The controlled and final evacuation completion validators also fail closed after request admission. A paid project can therefore cancel or become stale, but it cannot transfer population or refugee pressure after Fallout owns the Air boundary.
 
 The Final Silence handoff trigger rejects the same durable flag, so a predecessor cannot reopen the Air coordinator after Fallout request admission.
 
