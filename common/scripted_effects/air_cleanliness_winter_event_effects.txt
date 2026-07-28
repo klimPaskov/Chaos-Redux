@@ -1348,7 +1348,10 @@ air_winter_event_damage_reactor_network = {
 air_winter_event_apply_reactor_failure_fallout = {
 	set_temp_variable = { chaos_fallout_duration_days = constant:air_winter_event_outcome.reactor_failure_fallout_days }
 	set_temp_variable = { chaos_fallout_intensity_add = constant:air_winter_event_outcome.reactor_failure_fallout_intensity }
-	chaos_meter_apply_nuclear_fallout_to_state = yes
+	if = {
+		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
+		chaos_meter_apply_nuclear_fallout_to_state = yes
+	}
 }
 
 # Supported scope: STATE. A later owner can reopen the Phase 2 route, so the

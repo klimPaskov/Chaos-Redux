@@ -5596,7 +5596,22 @@ chaos_meter_on_nuke_drop = {
         set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.nuclear_strike }
         chaos_meter_register_state_civilian_deaths_percent = yes
         set_temp_variable = { chaos_nuke_civilian_deaths = chaos_deaths_change }
-        chaos_meter_apply_nuclear_fallout_to_state = yes
+        if = {
+            limit = {
+                check_variable = {
+                    var = air_cleanliness_system_enabled
+                    value = 0
+                    compare = greater_than
+                }
+            }
+            chaos_meter_apply_nuclear_fallout_to_state = yes
+        }
+        else = {
+            if = {
+                limit = { has_dynamic_modifier = nuclear_fallout_state }
+                remove_dynamic_modifier = { modifier = nuclear_fallout_state }
+            }
+        }
     }
 
     chaos_meter_register_nuclear_condemnation = yes

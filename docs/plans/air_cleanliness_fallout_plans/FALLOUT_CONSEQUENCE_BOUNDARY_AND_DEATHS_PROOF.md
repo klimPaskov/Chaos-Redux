@@ -54,6 +54,8 @@ The shared `air_contamination_update_threshold_flags` effect now refuses to rebu
 
 The Black Plague source refresh now follows the same durable boundary. Once Fallout owns the Air shutdown, the refresh clears its natural-source reservoir and previous contribution instead of reintroducing disease-derived Air Contamination during a later disease pulse.
 
+Late nuclear callbacks also consume the boundary. Ordinary nuke-drop handling, Final Silence fallout helpers, and the Air Winter reactor-failure helper do not add `nuclear_fallout_state` after `fallout_air_cleanliness_disabled`. The ordinary nuke callback removes a stale modifier before it could feed the disabled Air source.
+
 ## Manual state loss proof
 
 `fallout_manual_capture_population_baselines` records the pre-strike population for every state before native strike callbacks. `fallout_manual_apply_state_aggregate_consequence` clamps the aggregate direct loss between `fallout_manual_aggregate.death_percent_base = 0.900` and `fallout_manual_aggregate.death_percent_max = 0.950`. It computes the exact requested loss against the captured baseline and supplies the exact state population contract to `apply_exact_state_civilian_population_loss`.
