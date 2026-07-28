@@ -238,12 +238,13 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Living-world suffix reservations: `FALLOUT_EVENT_ID_LEDGER.md`
 - Accepted Ash-week orientation contract and implementation boundary: `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md`
 
-The manual thermonuclear aggregate applies a direct 90 to 95 percent
-prestrike population-loss band during verified strike resolution. The standard
-seven-day rewrite reconciles only the remaining grade-specific delta through
-the generation-bound population contract. The exact native every-province
-sweep remains dormant because its engine-native enumeration and runtime
-acceptance are unproven.
+The manual thermonuclear aggregate resolves an approved final 90 to 95 percent
+prestrike population-loss band during verified strike resolution. Its
+generation-bound provenance receipt records the complete observed loss after
+native callbacks and exact reconciliation, and the standard seven-day rewrite
+reconciles only the remaining grade-specific delta through the same contract.
+The exact native every-province sweep remains dormant because its engine-native
+enumeration, callback behavior, and runtime acceptance are unproven.
 
 ## Simplifications and fallbacks
 
