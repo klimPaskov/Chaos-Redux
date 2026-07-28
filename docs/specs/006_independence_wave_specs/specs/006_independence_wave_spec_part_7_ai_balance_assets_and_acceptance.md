@@ -782,6 +782,9 @@ If implementation is staged, unresolved tranches remain explicitly queued. The e
 - all viable candidates are attempted at every intensity
 - intensity changes territory and forces
 - type selector changes diplomacy and war setup
+- six numeric scenario families expose eight player-facing modes because Universal Belligerence has three independently selectable rules
+- runtime acceptance covers all eight modes at Low, Medium, High, and Maximum for 32 mode/intensity cells
+- Universal Belligerence rules have separate target-selection and result evidence rows
 - blocked candidates are reported
 - host and overlap safety remains active
 
@@ -825,7 +828,7 @@ A completion report should include:
 - AI scenario tests
 - host survival tests
 - Event 5 and Event 6 collision tests
-- triggerable scenario tests at all four intensities
+- triggerable scenario tests for all 32 selectable mode/intensity cells and the bounded collision, selector, rollback, and persistence sweeps
 - asset manifest status
 - super-event research and wiring status
 - achievement tracking status

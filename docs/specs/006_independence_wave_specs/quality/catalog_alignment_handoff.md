@@ -71,7 +71,7 @@ The next free scenario slot in the uploaded scenario catalog is `SCN-008`. The w
 
 The scenario should state that every intensity attempts every viable candidate. Intensity changes starting territory, units, equipment, institution strength, and pressure. It does not reduce the candidate set.
 
-Planned type families are:
+The implementation uses six numeric type families:
 
 - Sovereign Scatter
 - Common Congress
@@ -79,6 +79,10 @@ Planned type families are:
 - Universal Belligerence
 - Patron Worlds
 - Great Partition
+
+Universal Belligerence has three independently selectable rules: Former Hosts, Neighboring Releases, and Nearby Nonleague States.
+
+The player-facing catalog therefore exposes eight selectable modes backed by the six numeric families. The runtime acceptance matrix is eight selectable modes by four intensities, or 32 cells. The three Universal Belligerence rules require separate acceptance rows and are not interchangeable proxies.
 
 Final scenario detail text, type names, and intensity text must be written in game first and then mirrored into the catalog workbook.
 

@@ -2,7 +2,7 @@
 
 <!-- Documentation reconciliation: IW-006 is part of the current ten-package attestation set; global completion remains open. -->
 
-Curated: 2026-07-27 after the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the expiry cleanup repair `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 and MFX handoffs, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, and the RG-RHINE-SAAR pair-capacity repair.
+Curated: 2026-07-28 after the Event 006 v23 completion audit at `2a0696322`, the DM-58 injective preflight commit `cf2316a9a`, the witness-before-cost repair `0b6289c4b`, the committed cost/coordinator cleanup `61d059841`, the expiry cleanup repair `37c4f6036`, the FORM-39 adapter tranche `b8e983342`, the FORM-39 v17 and MFX handoffs, the New Guinea source HOLD, the v22 `6001` audio research, the Statehood Ledger animation-toggle wiring, the RG-RHINE-SAAR pair-capacity repair, and the SCN-008 mode-cardinality reconciliation.
 
 Completion state: **incomplete and active; ten package attestations expose nine group IDs but the RG-RHINE-SAAR pair-capacity repair now admits the distinct RHI/AJX anchors at source level, while live ten-country reservation proof remains open; DM-58 has a source-level validation-before-cost and coordinator-cleanup PASS but lacks live execution/save-load/no-witness evidence, FORM-39 remains fail-closed around six writerless inputs and unreviewed MFX, IW-157/IW-178 remain research HOLDs, the Statehood Ledger animation toggle is source-wired but lacks focused runtime proof, and the restored focus baseline still has fourteen blocking MCP diagnostics**.
 
@@ -46,8 +46,9 @@ the three member-research gates, MFX reservation, flat-flag readiness, and
 identity-review inputs remain writerless/unset. The current installed-mod tag
 audit rejects unreviewed MFX, and its `needs_user_review` runtime TGA package is
 not a readiness fallback. The durable portrait shelf now contains
-49 pre-resize masters and 83 normalized 156x210 PNGs; no Event 006 advisor or
-small/dossier portrait derivative is authorized.
+exactly 49 original-size pre-resize masters directly in one flat directory, with
+no nested folders or normalized 156x210 PNGs; no Event 006 advisor or small/dossier
+portrait derivative is authorized.
 Package admission below follows the exact compile-time registry and the latest
 bounded package audits rather than the older `7368cc0bf` status snapshot.
 
@@ -123,6 +124,8 @@ other formable family or claim whole-event completion.
 
 ## Current state at a glance
 
+SCN-008 mode authority (2026-07-28): the source retains six numeric scenario families, Universal Belligerence has three independently selectable rules, and the player-facing selector therefore exposes eight modes. The runtime acceptance matrix is eight modes by four intensities, or 32 cells. This clarification follows current constants, selector effects, scripted triggers, localisation, catalog mirror evidence, and the v27 improvement-loop handoff. It does not promote runtime evidence or change the workbook/CSV.
+
 The vanilla-formable compatibility audit is PASS. The `zz_006...` override
 blocks only active Event 006 CHU/ASY shortcuts; ordinary CHU/ASY and Event 005
 behavior remains vanilla. IW-043 and IW-058 retain their implemented exact
@@ -142,6 +145,7 @@ achievements remain hidden by their intended route and survival conditions.
 | Installed tag architecture | Audited snapshot | 206 packages resolve to 102 custom `X`-shell rows, 91 registered vanilla-tag reuse rows (89 unique reused carriers), and 13 overlay-only identities: 191 unique nonblank carrier tags overall, with only `CHU` and `BIA` intentionally shared. The 2026-07-25 installed-mod audit covers 108 Event 006-owned identifiers, all 16 custom cosmetic identifiers, 122 Workshop directories, eight archives, four sibling local mods, and reports zero tag and custom-cosmetic collisions; its 16 fuzzy identity matches remain documented review leads, not tag collisions |
 | Installed map bindings | Implemented snapshot | 138 selectable bound packages, 55 selectable unbound packages, and 13 overlay rows. Trabzon and Kashmir cross-group conflicts have explicit reservation protection |
 | Allocator and joint reservation | Audited and current after content-gate repair | 149 publishers, 126 registered automatic/high-chaos candidates, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering remain implemented. `006_automatic_content_attestation_weight_gate_2026_07_24.md` records the centralized repair: an unadmitted package receives zero automatic weight and a direct or stale anchor-phase dispatch receives `package_unready` before any host, country, or state reservation. Capacity, scenario preflight, reservation, and execution all reuse the same exact compile-time attestation authority. Runtime host, anchor, reservation, Event 5 collision, chaos-band, force, and wave-size gates remain mandatory |
+| SCN-008 selector and acceptance cardinality | Current source/catalog clarification; runtime HOLD | Six numeric scenario families back eight player-facing modes because Universal Belligerence has separate Former Hosts, Neighboring Releases, and Nearby Nonleague States rules. The acceptance matrix is 32 mode/intensity cells across Low, Medium, High, and Maximum. The v27 improvement-loop handoff, current localisation, and catalog mirror agree; no live cell, collision, selector, rollback, persistence, or balance evidence is promoted |
 | Release transaction and rollback | Implemented and source-audited | `b392b2369`, `66f1a68bc`, and `006_transaction_architecture_resolution_2026_07_15.md` supersede the earlier failing transaction audit |
 | DM-58 decision preflight and execution | Static source ordering/cleanup PASS; broader decision/mission HOLD | Commit `cf2316a9a` and `006_dm58_injective_owner_preflight_repair_2026_07_26.md` prove the accepted three-slot matcher requires distinct members, states, and owners. Commit `0b6289c4b`, `006_dm58_witness_resolver_2026_07_26.md`, and the v23 audit bind the first exact witness; committed repair `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` separate mutation-free validation from payment and post-cost claim/wargoal apply, then clean a coordinator-origin exit. Commit `37c4f6036` retains the coordinator-bound `chaosx.nr6.309` expiry callback and shared-target cleanup. Live success, collision, rollback, AI, save/load, and no-witness performance matrices remain open |
 | Shared focus framework and AGX depth | Restored baseline; MCP validation HOLD with bounded AGX overlay PASS | Commit `f8ca54d24` was a failed candidate that moved thirteen shared focus nodes without changing IDs, prerequisites, rewards, icons, localisation, or AI. The later coupled professional-defense trial also retained fourteen blockers and worsened crossings/node intersections/long connectors, so it was fully reverted. `006_shared_focus_geometry_reflow_2026-07-26.md` records the failed coupled reflow and restored baseline: 184 focuses, 223 connectors, 49 crossings, 18 node intersections, 27 long connectors, and 14 blocking diagnostics. `006_agx_focus_overlay_handoff_2026_07_26.md` still records the eight-focus package-wiring PASS |
@@ -393,6 +397,8 @@ waiver.
 | `006_event6_advisor_icon_withdrawal_2026_07_16.md` and its final audit | Current user-directed asset boundary | Event 006 gameplay advisor offices remain active but carry no custom advisor portrait block, sprite registration, runtime DDS, or explicit gender metadata |
 | Shared army-small checksum alignment | Superseded portrait-hash evidence | Commit `45bee09d2` remains historical implementation evidence only. Event 006 has no runtime `_small` files, registrations, or consumers; current full-portrait hashes belong to the sourced per-subject manifests and post-wire package audits |
 | `006_event_completion_audit_v23_2026_07_27.md` | Current whole-event completion authority; HOLD / PARTIAL | Snapshot at `2a0696322`; supersedes v21 for the current whole-event disposition, records source-level exact-ten capacity through the IW-008/IW-010 pair, and retains the package, focus, runtime-matrix, asset, AI, balance, and `6001` gaps |
+| `006_improvement_loop_audit_v27_2026_07_27.md` | Current bounded SCN-008 matrix clarification; working closure handoff | Its C1-C3 addendum resolves the source-driven distinction between six numeric families and eight selectable modes, requiring 32 mode/intensity cells plus bounded collision, selector, rollback, and persistence sweeps. It remains a working handoff and does not claim runtime completion |
+| `006_catalog_audit_v27_2026_07_27.md` | Current catalog mirror evidence; workbook unchanged | The audit confirms `Scenarios!A9:F9` and the export snapshot expose all eight SCN-008 type names and all four intensity paragraphs, with status `Needs Testing`; no workbook or CSV update was required |
 | `006_dm58_reaudit_v18_2026_07_27.md` | Superseded for static cost-order and coordinator-cleanup defects | Commit `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` close those source findings; v18's runtime, save/load, AI, and performance gaps remain open |
 | `006_dm58_cost_cleanup_reconciliation_2026_07_27.md` | Implemented source correction; runtime evidence pending | Validation-only witness pass, payment-before-mutation ordering, and coordinator-origin cleanup are committed; no live execution claim |
 | `006_form39_completion_reconciliation_v17_2026_07_27.md` and `006_form39_mfx_tag_collision_handoff_2026_07_27.md` | Current FORM-39 fail-closed evidence | v17 repairs project cancellation, plebiscite spend/gate, and anchor-threshold wiring; six admission inputs remain writerless/unset, MFX remains `needs_user_review`, and the current tag audit rejects unreviewed MFX |
@@ -426,6 +432,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical implementation snapshots. Their collision, proof-writer, asset, and no-advisor findings remain useful; neither package is currently runtime-admitted |
 | Specification README still describes major implementation work as future | Preserve it as accepted-design context. Use this map for current implementation status |
 | Event documentation and workbook may lag current gameplay | Resolved for the shared Event Details, five evolutions, Liberations cluster, and SCN-008 mirror fields by the dated direct comparison. Recheck only when those player-facing localisation sources change |
+| Older v23/v27 completion snapshots call SCN-008 a six-by-four or 24-cell matrix | Historical audit wording remains preserved. The current bounded matrix authority is the v27 C1-C3 clarification and this map's 2026-07-28 row: six numeric families, eight player-facing modes, and 32 cells. No historical audit body was rewritten |
 | v9 DM-58 and focus rows predate the post-v9 repairs | Superseded for bounded surfaces by `cf2316a9a`, `0b6289c4b`, `f8ca54d24`, and the reversion `8fddaeea3`; the current DM-58 row above records the effect-side witness binding and retains only its live execution, save/load, no-witness performance, and broader decision/mission evidence gaps, while the restored-focus rows retain their MCP geometry blockers |
 | v10 whole-event audit says the Statehood Ledger has no animation consumer | Superseded by v21 and commit `de36a366e` for source wiring. The four animated siblings and explicit `Animate` toggle now have a scripted-GUI consumer; focused interaction, threshold, click-region, and return-to-state runtime evidence remain open |
 | DM-58 v18 says cost-before-mutation and coordinator cleanup are unresolved | Superseded for those static source findings by commit `61d059841` and `006_dm58_cost_cleanup_reconciliation_2026_07_27.md`; v18 runtime, save/load, AI, and performance gaps remain open |
@@ -458,6 +465,7 @@ Parent decisions still required:
    `Animate` toggle, and static DDS fallback. Obtain focused interaction,
    threshold, click-region, and return-to-state evidence before treating the
    animation surface as runtime-validated.
+8. Use the SCN-008 source-driven matrix of eight player-facing modes by four intensities, or 32 cells. Retain six numeric families in implementation and three separate Universal Belligerence rule rows in runtime evidence. Do not treat the historical six-by-four shorthand as the current acceptance matrix.
 
 ## Do-not-touch boundaries
 
@@ -476,3 +484,11 @@ Parent decisions still required:
 - Do not add periodic whole-world on-actions for Event 006.
 - Do not rewrite historical handoff bodies; follow their prominent
   portrait-specific supersession notes and preserve unrelated findings.
+
+Portrait-shelf supersession (2026-07-28): the user-selected shelf layout is the
+flat directory `docs/assets/006_independence_wave/portraits_generated_png/` with
+exactly 49 original-size RGB repaint masters directly inside it. It has no nested
+folders and no normalized 156x210 PNGs. `README.md`, `MANIFEST.md`, and
+`PRE_RESIZE_MANIFEST.md` in that directory are authoritative for this layout;
+earlier 83-file normalized-shelf statements are historical and do not describe
+the current shelf.
