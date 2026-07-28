@@ -5,6 +5,7 @@
 - Protected tags: **136**.
 - External country-definition collisions: **0**.
 - Random Events Mod definitions skipped by policy: **1**.
+- Existing Chaos Redux carriers kept outside this scoped set: **REV, ZIN, ZZZ**.
 
 ## Collisions
 
