@@ -772,6 +772,40 @@ fallout_event_614_clear_state_reservation = {
 }
 
 fallout_event_614_abort_on_generation_change = {
+	set_variable = { fallout_event_614_opening_target_is_current = constant:fallout_event_runtime.zero }
+	if = {
+		limit = {
+			has_country_flag = fallout_event_dispatch_issued
+			NOT = { has_country_flag = fallout_event_614_chain_committed }
+			OR = {
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.metro_republic_below_human }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.metro_republic_below_ai }
+			}
+		}
+		var:fallout_event_dispatch_issued_target = {
+			if = {
+				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_614_state_is_current = yes }
+				set_variable = { ROOT.fallout_event_614_opening_target_is_current = constant:fallout_event_runtime.one }
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { fallout_event_614_opening_target_is_current = constant:fallout_event_runtime.one } } }
+			set_variable = { fallout_event_614_target_state_id = fallout_event_dispatch_issued_target }
+			set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_issued_ordinary_receipt = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				set_temp_variable = { fallout_event_614_history_stage = constant:fallout_event_614_log.cancelled_stage }
+				fallout_event_614_record_history = yes
+				if = { limit = { has_country_flag = fallout_event_614_cost_paid NOT = { has_country_flag = fallout_event_614_result_history_recorded } } fallout_event_614_refund_branch_cost = yes }
+				fallout_event_614_clear_state_reservation = yes
+				var:fallout_event_614_target_state_id = { clr_state_flag = fallout_event_614_registry_committed }
+				fallout_event_614_clear_frozen = yes
+			}
+		}
+	}
+	clear_variable = fallout_event_614_opening_target_is_current
 	if = {
 		limit = {
 			has_variable = global.fallout_transition_generation
