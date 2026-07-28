@@ -712,7 +712,22 @@ fallout_event_621_clear_state_reservation = {
 	}
 }
 
+# Called before a Fallout runtime generation is rebuilt. This state-bound row
+# cancels an unconsumed opening, refunds a branch that never settled, terminalizes
+# issued result or callback receipts, and removes cleanup tombstones before the
+# country runtime arrays are cleared.
 fallout_event_621_abort_on_generation_change = {
+	set_temp_variable = { fallout_event_621_abort_required = constant:fallout_event_runtime.zero }
+	set_variable = { fallout_event_621_target_is_current = constant:fallout_event_runtime.zero }
+	if = {
+		limit = { has_variable = fallout_event_621_target_state_id }
+		var:fallout_event_621_target_state_id = {
+			if = {
+				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
+				set_variable = { ROOT.fallout_event_621_target_is_current = constant:fallout_event_runtime.one }
+			}
+		}
+	}
 	if = {
 		limit = {
 			has_variable = global.fallout_transition_generation
@@ -721,19 +736,172 @@ fallout_event_621_abort_on_generation_change = {
 				AND = { NOT = { has_variable = fallout_event_621_registry_generation } has_country_flag = fallout_event_621_cost_paid }
 			}
 		}
-		if = { limit = { has_country_flag = fallout_event_621_cost_paid NOT = { has_country_flag = fallout_event_621_result_history_recorded } } fallout_event_621_refund_branch_cost = yes }
-		fallout_event_621_clear_state_reservation = yes
-		if = { limit = { has_variable = fallout_event_621_target_state_id } var:fallout_event_621_target_state_id = { clr_state_flag = fallout_event_621_registry_committed } }
-		clr_country_flag = fallout_event_621_chain_committed
-		clr_country_flag = fallout_event_621_chain_pending
-		clr_country_flag = fallout_event_621_callback_scheduled
-		clr_country_flag = fallout_event_621_cost_paid
-		clr_country_flag = fallout_event_621_choice_history_recorded
-		clr_country_flag = fallout_event_621_result_history_recorded
-		clr_country_flag = fallout_event_621_callback_history_recorded
-		clr_country_flag = fallout_event_621_cancellation_history_recorded
-		fallout_event_621_clear_frozen = yes
+		set_temp_variable = { fallout_event_621_abort_required = constant:fallout_event_runtime.one }
 	}
+	if = {
+		limit = { has_country_flag = fallout_event_621_chain_committed NOT = { check_variable = { fallout_event_621_target_is_current = constant:fallout_event_runtime.one } } }
+		set_temp_variable = { fallout_event_621_abort_required = constant:fallout_event_runtime.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = fallout_event_dispatch_issued
+			OR = {
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_human }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_ai }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result_ai }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback_ai }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+			}
+			has_variable = fallout_event_dispatch_issued_generation
+			NOT = { check_variable = { fallout_event_dispatch_issued_generation value = global.fallout_transition_generation compare = equals } }
+		}
+		set_temp_variable = { fallout_event_621_abort_required = constant:fallout_event_runtime.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = fallout_event_dispatch_issued
+			NOT = { has_country_flag = fallout_event_621_chain_committed }
+			OR = {
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_human }
+				check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_ai }
+			}
+		}
+		set_variable = { fallout_event_621_opening_target_is_current = constant:fallout_event_runtime.zero }
+		var:fallout_event_dispatch_issued_target = {
+			if = {
+				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
+				set_variable = { ROOT.fallout_event_621_opening_target_is_current = constant:fallout_event_runtime.one }
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { fallout_event_621_opening_target_is_current = constant:fallout_event_runtime.one } } }
+			set_variable = { fallout_event_621_target_state_id = fallout_event_dispatch_issued_target }
+			set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			fallout_event_cancel_issued_ordinary_receipt = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				set_temp_variable = { fallout_event_621_history_stage = constant:fallout_event_621_log.cancelled_stage }
+				fallout_event_621_record_history = yes
+				fallout_event_621_clear_state_reservation = yes
+				var:fallout_event_621_target_state_id = { clr_state_flag = fallout_event_621_registry_committed }
+				fallout_event_621_clear_frozen = yes
+			}
+		}
+		clear_variable = fallout_event_621_opening_target_is_current
+	}
+	if = {
+		limit = { check_variable = { fallout_event_621_abort_required = constant:fallout_event_runtime.one } }
+		if = { limit = { has_country_flag = fallout_event_621_cost_paid NOT = { has_country_flag = fallout_event_621_result_history_recorded } } fallout_event_621_refund_branch_cost = yes }
+		set_temp_variable = { fallout_event_621_stale_ticket = constant:fallout_event_runtime.no_ticket }
+		if = {
+			limit = {
+				has_country_flag = fallout_event_dispatch_issued
+				OR = {
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result_ai }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback_ai }
+				}
+			}
+			set_temp_variable = { fallout_event_621_stale_ticket = fallout_event_dispatch_issued_ticket }
+			set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
+			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+			set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+			fallout_event_cancel_issued_delayed_result = yes
+			set_temp_variable = { fallout_event_requested_ticket = fallout_event_621_stale_ticket }
+			set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+			fallout_event_prepare_delayed_cleanup = yes
+			if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_release_delayed_result = yes }
+		}
+		if = {
+			limit = {
+				has_country_flag = fallout_event_621_chain_committed
+				OR = {
+					NOT = { has_country_flag = fallout_event_dispatch_issued }
+					AND = {
+						has_country_flag = fallout_event_dispatch_issued
+						NOT = {
+							OR = {
+								check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result }
+								check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result_ai }
+								check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback }
+								check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback_ai }
+								check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+							}
+						}
+					}
+				}
+				OR = { has_country_flag = fallout_event_621_callback_scheduled has_variable = fallout_event_621_result_cleanup_ticket }
+			}
+			if = {
+				limit = { has_country_flag = fallout_event_621_callback_scheduled has_variable = fallout_event_621_callback_cleanup_ticket }
+				set_temp_variable = { fallout_event_621_stale_ticket = fallout_event_621_callback_cleanup_ticket }
+			}
+			else_if = { limit = { has_variable = fallout_event_621_result_cleanup_ticket } set_temp_variable = { fallout_event_621_stale_ticket = fallout_event_621_result_cleanup_ticket } }
+			if = {
+				limit = { check_variable = { fallout_event_621_stale_ticket > constant:fallout_event_runtime.no_ticket } }
+				set_temp_variable = { fallout_event_requested_ticket = fallout_event_621_stale_ticket }
+				set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
+				set_temp_variable = { fallout_event_requested_outcome = constant:fallout_event_outcome_type.aborted_after_choice }
+				fallout_event_cancel_delayed_result = yes
+				set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+				fallout_event_prepare_delayed_cleanup = yes
+				if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_release_delayed_result = yes }
+			}
+			if = {
+				limit = { has_country_flag = fallout_event_621_callback_scheduled has_variable = fallout_event_621_result_cleanup_ticket }
+				set_temp_variable = { fallout_event_requested_ticket = fallout_event_621_result_cleanup_ticket }
+				set_temp_variable = { fallout_event_requested_cleanup_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+				fallout_event_prepare_delayed_cleanup = yes
+				if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_release_delayed_result = yes }
+			}
+		}
+		if = {
+			limit = { NOT = { has_country_flag = fallout_event_621_cancellation_history_recorded } }
+			set_temp_variable = { fallout_event_621_history_stage = constant:fallout_event_621_log.cancelled_stage }
+			fallout_event_621_record_history = yes
+		}
+		set_temp_variable = { fallout_event_621_clear_allowed = constant:fallout_event_runtime.one }
+		if = {
+			limit = {
+				has_country_flag = fallout_event_dispatch_issued
+				OR = {
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_human }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_ai }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_result_ai }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_callback_ai }
+					check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.rail_spine_vote_cleanup }
+				}
+			}
+			set_temp_variable = { fallout_event_621_clear_allowed = constant:fallout_event_runtime.zero }
+		}
+		if = {
+			limit = { check_variable = { fallout_event_621_clear_allowed = constant:fallout_event_runtime.one } }
+			if = { limit = { has_variable = fallout_event_621_target_state_id } var:fallout_event_621_target_state_id = { clr_state_flag = fallout_event_621_registry_committed } }
+			fallout_event_621_clear_state_reservation = yes
+			clr_country_flag = fallout_event_621_chain_committed
+			clr_country_flag = fallout_event_621_chain_pending
+			clr_country_flag = fallout_event_621_callback_scheduled
+			clr_country_flag = fallout_event_621_cost_paid
+			clr_country_flag = fallout_event_621_choice_history_recorded
+			clr_country_flag = fallout_event_621_result_history_recorded
+			clr_country_flag = fallout_event_621_callback_history_recorded
+			clr_country_flag = fallout_event_621_cancellation_history_recorded
+			clr_country_flag = fallout_event_621_result_cleanup_released
+			clr_country_flag = fallout_event_621_callback_cleanup_released
+			clr_country_flag = fallout_event_621_target_invalidated
+			fallout_event_621_clear_frozen = yes
+		}
+		clear_temp_variable = fallout_event_621_stale_ticket
+		clear_temp_variable = fallout_event_621_clear_allowed
+	}
+	clear_temp_variable = fallout_event_621_abort_required
+	clear_variable = fallout_event_621_target_is_current
 }
 
 fallout_event_621_cleanup = {

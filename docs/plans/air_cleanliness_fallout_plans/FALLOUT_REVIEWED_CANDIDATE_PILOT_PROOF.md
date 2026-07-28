@@ -6,7 +6,7 @@ The reviewed candidate producer now covers `65` ordinary dormant rows through Gr
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
-Rail Spine Vote is the Eurasian interior railway row with candidate `621`, transaction `710060`, event ids `621` through `627`, and Event Log history `9166`. It selects the lowest valid native railway state and remains dormant behind the scheduler activation gates. Its dedicated proof is `FALLOUT_RAIL_SPINE_VOTE_PROOF.md`.
+Rail Spine Vote is the Eurasian interior railway row with candidate `621`, transaction `710060`, event ids `621` through `627`, and Event Log history `9166`. It selects the lowest valid native railway state, and its generation-reset abort path now statically terminalizes stale openings and delayed receipts before runtime teardown. It remains dormant behind the scheduler activation gates. Its dedicated proof is `FALLOUT_RAIL_SPINE_VOTE_PROOF.md`.
 
 Canal Schedule is the South Asian regional water row with candidate `628`, transaction `710061`, event ids `628` through `634`, and Event Log history `9167`. It selects the lowest valid native rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building. Its dedicated proof is `FALLOUT_CANAL_SCHEDULE_PROOF.md`.
 

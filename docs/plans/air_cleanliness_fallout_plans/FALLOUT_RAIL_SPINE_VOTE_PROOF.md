@@ -16,6 +16,8 @@ Population loss is requested through `apply_exact_state_civilian_population_loss
 
 The delayed result and callback use the shared receipt scheduler, exact branch and token checks, generation-bound registry, result and callback tickets, hidden AI parity, and explicit cleanup. Event Log payloads use history `9166` and a state secondary actor. The Event Log router has one narrow detail entry and one narrow name entry for this history.
 
+The generation-reset path is now statically wired before shared Fallout dispatch and runtime arrays are cleared. It authenticates the railway state against owner, controller, Air Winter snapshot, native railway, infrastructure, and current generation, cancels an uncommitted opening when the target is stale, refunds only an unpaid branch, terminalizes issued result or callback rows, removes their cleanup tombstones, records one cancellation history row, clears the committed state flag, and releases the native-state reservation before clearing the frozen row. Runtime reset execution, save recovery, delayed delivery, and multiplayer behavior remain unobserved.
+
 ## Dedicated asset proof
 
 The report card source, preview, manifest, prompt, and handoff live under `docs/assets/621_rail_spine_vote/`. The runtime file is `gfx/event_pictures/fallout_world_end/report_event_fallout_rail_spine_vote.dds`. The sprite is `GFX_report_event_fallout_rail_spine_vote`.
@@ -32,7 +34,7 @@ The image is fictional and contains no real people, flags, readable text, or reu
 
 ## Static review
 
-The new effects file has balanced braces `770/770`. The new trigger file has balanced braces `81/81`. The candidate registry remains balanced at `2776/2776`. The events file remains balanced at `11571/11571`. The new dynamic modifier file has balanced braces `9/9`.
+The effects file has balanced braces `898/898`. The trigger file has balanced braces `81/81`. The candidate registry remains balanced at `2776/2776`. The events file remains balanced at `11571/11571`. The dynamic modifier file has balanced braces `9/9`. The shared reset hook contains one Rail Spine abort call in numeric order.
 
 The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 621, 623, and 625 resolve to the dedicated localisation file. The new effects, triggers, and candidate row reference 181 unique Rail Spine constants, all present in `fallout_world_end_rail_spine_vote_constants.txt`.
 
