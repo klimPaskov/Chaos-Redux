@@ -14,6 +14,8 @@ The public Event Details scripted localisation has no Fallout title, owner, or d
 
 `fallout_air_cleanliness_disabled` is a durable global transition flag. The standard coordinator sets it when the request envelope is admitted, before host reconciliation, and keeps it through the locked transition. A temporary `fallout_air_cleanliness_request_paused` flag records that early ownership and restores the ordinary mechanic only if validation rejects the pending envelope. The Air request trigger accepts the durable flag only while this temporary admission marker is present, so recording shutdown ownership cannot make a valid 100 percent request reject itself. Save migration restores the durable flag whenever `world_end_fallout` is already present. The manual scenario sets it when a valid sweep starts and never clears it from a sweep failure after admission, so an incomplete destructive sweep cannot reopen Air Cleanliness.
 
+The host manual reconciliation also repairs the durable flag for an admitted manual transaction after save recovery. It requires a sweep, native-strike, countdown, request, or launcher receipt, so an invalid-intensity error that never admitted the sweep does not disable Air Cleanliness.
+
 The flag is consumed by the Air Cleanliness boundary surfaces:
 
 - `air_winter_system_enabled` rejects all future Air Winter updates and decisions, while `air_winter_event_targets_are_valid` rejects already-scheduled openings and delayed results after request-time shutdown. The mapmode remains a historical view of the last valid Air Winter receipts and receives no further updates.

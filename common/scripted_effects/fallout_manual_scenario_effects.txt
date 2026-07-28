@@ -1250,7 +1250,18 @@ fallout_manual_validate_active_runtime = {
 # Supported scope: COUNTRY. Called only from the existing host daily pulse.
 fallout_manual_reconcile = {
 	if = {
-		limit = { has_global_flag = fallout_manual_scenario_active }
+		limit = {
+			has_global_flag = fallout_manual_scenario_active
+			OR = {
+				has_global_flag = fallout_manual_sweep_active
+				has_global_flag = fallout_synthetic_strike_batch
+				has_global_flag = fallout_manual_native_sweep_complete
+				has_global_flag = fallout_manual_countdown_active
+				has_global_flag = fallout_manual_request_sent
+				has_country_flag = fallout_manual_synthetic_launcher
+			}
+		}
+		set_global_flag = fallout_air_cleanliness_disabled
 		fallout_manual_validate_active_runtime = yes
 		if = {
 			limit = {
