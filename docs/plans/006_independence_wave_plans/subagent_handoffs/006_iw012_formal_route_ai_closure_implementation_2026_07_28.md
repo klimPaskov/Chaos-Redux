@@ -31,4 +31,6 @@ The Armed Neutrality tooltip now describes a security commitment and leaves the 
 
 ## Remaining evidence
 
-Read-only probability inspection, live shared-focus visibility, AI project timing, route selection, allocator/save-load, host-survival, scenario transaction, GUI, achievement, super-event, and whole-event completion evidence remain open. Event 006 stays **HOLD / PARTIAL**.
+The read-only probability adapter inspected the parent Event 006 decision surface with validation passed, ten discovered candidates, zero unresolved source inputs, and an incomplete pool; the direct ICE decision category returned `PROBABILITY_SURFACE_EMPTY` because its nested package category is not indexed by that adapter. The focus adapter inspected the full Event 006 focus source with validation passed, 184 candidates, zero unresolved inputs, and an incomplete pool, but it does not isolate imported shared-focus route consumers. These results are source evidence only and do not prove route selection or normalized probability.
+
+Live shared-focus visibility, AI project timing, route selection, allocator/save-load, host-survival, scenario transaction, GUI, achievement, super-event, and whole-event completion evidence remain open. Event 006 stays **HOLD / PARTIAL**.
