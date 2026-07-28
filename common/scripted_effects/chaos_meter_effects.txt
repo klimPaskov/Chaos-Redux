@@ -4395,6 +4395,11 @@ air_contamination_refresh_values = {
 }
 
 air_contamination_update_threshold_flags = {
+	# Fallout owns the terminal presentation after request intake. Threshold
+	# flags and ordinary contamination news must not be rebuilt by a stale GUI,
+	# legacy terminal caller, or save-recovery pass after that boundary.
+	if = {
+		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
     clr_global_flag = air_contamination_threshold_25
     clr_global_flag = air_contamination_threshold_50
     clr_global_flag = air_contamination_threshold_75
@@ -4472,6 +4477,7 @@ air_contamination_update_threshold_flags = {
         }
         set_global_flag = air_contamination_irreversible
         log = "AIR CONTAMINATION: Irreversible contamination threshold reached"
+	}
 	}
 }
 
