@@ -1,5 +1,7 @@
 # Event 006 IW-012 Iceland adapter re-audit
 
+> **Superseded for current admission (2026-07-28):** This audit predates the executable ICE adapter, dispatch, and attestation tranche. Use `006_iw012_ice_package_implementation_2026_07_28.md`, `006_iw012_ice_country_package_audit_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` for current source status. The historical failures remain useful risk evidence; runtime proof is still open.
+
 ## Scope and verdict
 
 This re-audit covers the installed-map Event 006 candidate `IW-012`, resolved tag `ICE`, reservation group `RG-100`, and fixed anchor state `100`.

@@ -1,5 +1,7 @@
 # Event 006 Northern and Western Europe Package Implementation Map
 
+> **Historical/superseded carrier note (2026-07-28):** The IW-012 section below predates the exact vanilla `iceland_tree` carrier and four ICE route consumers. Use `docs/events/006_independence_wave_iw012_ice_package.md` and the 2026-07-28 IW-012 implementation/country/focus/decision handoffs for current ICE routing. Other package findings remain at-time evidence.
+
 Date: 2026-07-14
 Scope: IW-001, IW-002, IW-003, IW-004, IW-005, IW-006, IW-007, IW-008, IW-009, IW-010, and IW-012
 Mode: read-only repository/vanilla exploration; this handoff is the only file changed

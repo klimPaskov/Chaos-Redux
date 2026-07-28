@@ -1,5 +1,7 @@
 # Event 006 whole-event completion audit v30
 
+> **Superseded current-status notice (2026-07-28):** v31 is the current whole-event authority and adds the static IW-012 admission, 11 exact attestations, 10 compatible reservation groups, and the 54-master shelf. This v30 snapshot remains historical evidence for findings that are not contradicted by v31.
+
 Date: 2026-07-28.
 
 Role: parent reconciliation audit after the MFX-inclusive tag scan, flat portrait-shelf correction, CHU/ASY source research, Galimzhan independent visual audit, deadline-mission repair, and DM-58 participant-invalidation repair.

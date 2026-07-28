@@ -9,14 +9,17 @@ Package sections:
 - Wallonia and Frisia (IW-006–IW-007)
 - Rhineland and Bavaria (IW-008–IW-009)
 - Saar (IW-010)
+- Iceland (IW-012; exact vanilla-path carrier)
 
 Current portrait authority is the sourced-only gate in the accepted specification and event-asset skill.
 The earlier twenty generated large portraits remain consumer/provenance evidence but no longer satisfy grounded country readiness.
-IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, and IW-010 Saar have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested.
+IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, and IW-010 Saar have complete sourced real-male portrait rosters, final runtime DDS wiring, and post-wiring country-package audits, so their exact package IDs are compile-time content-attested. IW-012 Iceland is also statically admitted through its registered vanilla `ICE` tag, exact vanilla-path `iceland_tree` carrier, four ICE route consumers, supported AI profile, and Nordic-precedence formable guard; its runtime release and host-survival evidence remain open.
 IW-002 has an independently approved and runtime-wired J. H. Thomas civic portrait from the Bain/Library of Congress source, but its Lewis Pugh Evans commander retry still fails the non-compensable likeness gate, so Wales remains unattested and the commandant consumer remains unwired. The earlier Saunders Lewis evidence remains rejected because the rights-clear 1973 source preserves the wrong 1936 age, while reconstructing a younger face would violate the source-locked identity gate. IW-006 retains its approved Jules Destrée civic portrait and now has the independently approved, source-locked, byte-matched Louis Ruquoy/Rucquoy commander portrait wired to the stable AFX consumer; the retired Hainaut-born general is documented as an alternate-history reserve appointment rather than a 1936 office. IW-010 has independently approved, byte-matched Walter Simons and Friedrich von Rabenau full-size portraits, a passing post-portrait country-package audit, and exact compile-time content attestation.
 Route-owned Rupprecht and Matthes remain protected and byte-identical.
 Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
 Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
+
+The complete IW-012 package reference is [the dedicated Iceland package document](../006_independence_wave_iw012_ice_package.md). It is kept outside the grounded real-portrait roster because it deliberately reuses Iceland's researched vanilla identity and portrait/flag/history surfaces rather than adding Event 006 art.
 
 ---
 

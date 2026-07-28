@@ -98,4 +98,4 @@ No fallback route or generic-focus rewrite was added.
 
 The former-host-disappearance failure is deliberately retained because the package documentation defines it as a mission failure condition; an alternate recovery route would require explicit design approval.
 
-The constitutional and traditional ICE route consumers remain the only material blocker to calling the full listed route family complete.
+The preceding route-consumer blocker was a pre-carrier finding and is superseded by the four ICE route consumers imported into `iceland_tree`. Current remaining boundaries are live focus visibility, route-AI activation, save/load, and runtime transaction evidence; the broader shared-focus geometry hold is recorded by the current whole-event audit.
