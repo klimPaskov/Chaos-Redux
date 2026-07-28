@@ -4,7 +4,7 @@ Canonical status: accepted baseline design, corrected for independent Fallout ow
 
 Working scenario label, not final localisation: manual Fallout scenario. The public padded id is assigned only after the live registry is scanned.
 
-Current consequence correction: Fallout is not an Event Details row, evolution, ordinary super-event, or public scenario-catalog entry. The reserved id and launch contract remain design inputs, but public registration stays dormant until the exact native province sweep is proven.
+Current consequence correction: Fallout is not an Event Details row, evolution, ordinary super-event, or public scenario-catalog entry. The reserved id and Fallout-owned launch contract remain design inputs. Public registration is prohibited, while trigger activation stays dormant until the exact native province sweep is proven.
 
 ## Scenario purpose
 
