@@ -8,7 +8,7 @@ This correction is accepted for implementation. Fallout is a world consequence t
 
 `common/scripted_effects/chaosx_events_log_effects.txt` is the public Event Details registry. Its initialization intentionally omits `world_end_scenario_id.fallout`. The stable numeric id remains in `common/script_constants/world_end_scenario_registry_constants.txt` for request gates and settings ledgers. It is not a public event identity.
 
-The public Event Details scripted localisation has no Fallout title, owner, or details branch. The Fallout-specific Event Details card preparation hook is absent. The New Zealand survivor card remains a post-consequence card and no longer embeds a world-end scenario description. The super-event title selector uses the dedicated `fallout_world_end_blackout_title` key while the blackout still uses its dedicated sound path.
+The public Event Details scripted localisation has no Fallout title, owner, or details branch. The Fallout-specific Event Details card preparation hook is absent. The New Zealand survivor card remains a post-consequence card and no longer embeds a world-end scenario description. The generic world-end selector returns the direct `chaos_tier_end_fallout` consequence label, while the blackout GUI and sound remain Fallout-owned.
 
 ## Air Cleanliness shutdown
 
@@ -57,7 +57,7 @@ The state mutation and Deaths routing are source-proven by the effects named abo
 - Fallout has no public Event Details registry entry.
 - Fallout has no public Event Details title, owner, or details localisation branch.
 - Fallout has no evolution registration.
-- Fallout blackout title and audio remain dedicated to the consequence transition.
+- Fallout blackout display text and audio remain dedicated to the consequence transition.
 - Air Cleanliness is disabled by a durable Fallout-owned flag.
 - Wildfire, volcanic, ashfall, Air Winter, treaty, settings, and delta boundaries consume that flag.
 - Standard and manual state population loss both use the approved 90 to 95 percent band.
