@@ -1,5 +1,7 @@
 # Event 006 whole-event completion audit v27
 
+> **Superseded for current whole-event status (2026-07-28):** v31 is the current authority and adds the static IW-012 admission, eleven exact attestations across ten compatible reservation groups, and the 54-master shelf. This v27 snapshot remains historical evidence for its bounded findings, while its ten-package, nine-group, 49/83-shelf, and pre-IW-012 routing statements are no longer current. Preserve the fourteen shared-focus geometry blockers and the runtime HOLD findings where v31 carries them forward.
+
 Date: 2026-07-27
 
 Role: read-only event completion auditor

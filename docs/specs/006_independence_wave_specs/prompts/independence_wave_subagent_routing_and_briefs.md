@@ -128,9 +128,18 @@ Read `AGENTS.md`, `chaos-redux-subagents`, all Event 6 source specs, plans, hand
 
 Run only after final in-game localisation and docs exist.
 
+> Current routing note (2026-07-28): the older range-replacement instruction
+> below is a historical work item. Consult the current source-of-truth map,
+> `quality/catalog_alignment_handoff.md`, and
+> `subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md`
+> before touching the workbook. Re-audit the current 6/8/10/14/20 ladder and
+> any player-facing crisis-queue wording rather than repeating a stale update.
+> This prompt does not authorize the documentation curator to edit or export
+> the workbook.
+
 ### Prompt
 
-Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the final Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place. Replace the stale 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16 wave ranges with final in-game wording based on 3, 4, 5, 7, and 10. Preserve workbook structure and formatting. Report changed cells and any blocked fields. Do not edit gameplay or localisation.
+Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the final Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place. Replace the stale 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16 wave ranges with final in-game wording based on the doubled 6, 8, 10, 14, and 20 ladder, with World Collapse also at 20. Preserve workbook structure and formatting. Report changed cells and any blocked fields. Do not edit gameplay or localisation.
 
 ## 15. Completion auditor
 

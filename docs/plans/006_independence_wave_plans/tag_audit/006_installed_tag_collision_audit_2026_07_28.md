@@ -12,19 +12,19 @@ Audit date: 2026-07-28
 - Exact Event 006-owned history filenames retained from the non-Event 006 scan: **85**.
 - Registered vanilla-tag reuse rows: **91**, using **89** unique vanilla tags.
 - Non-selectable vanilla route-overlay rows: **13**.
-- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, AUX, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
+- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, AUX, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**. `ZIN` is an existing Chaos Redux carrier and is not OS-reserved.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
-- Embedded ZIP archives scanned without extraction: **8**.
+- Embedded ZIP archives scanned without extraction: **9**.
 - Embedded ZIP archives containing tag-bearing surfaces: **1**.
 - Country-tag definitions parsed from embedded ZIP archives: **0**.
 - Alias/cosmetic/history/localisation/flag surfaces parsed from embedded ZIP archives: **10**.
-- Sibling local mod directories scanned: **4** (3d_pipeline, agentic_hoi4_modding, chaos_redux_music, slop_redux).
-- Sibling local mods containing country-tag or extended tag surfaces: **1**.
+- Sibling local mod directories scanned: **17** (.agents, .codex, .git, .tools, .vscode, common, content_dump, docs, events, gfx, history, interface, localisation, music, paradox_wiki, sound, tmp).
+- Sibling local mods containing country-tag or extended tag surfaces: **0**.
 - Literal country-tag definitions parsed from sibling local mods: **0**.
-- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **4**.
+- Alias/cosmetic/history/localisation/flag surfaces parsed from sibling local mods: **0**.
 - External and vanilla country-tag definitions parsed: **7981**.
-- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69521**.
+- External and vanilla alias/cosmetic/history/localisation/flag tag uses parsed: **69517**.
 - Other Chaos Redux country-tag definitions parsed: **63**.
 - Other Chaos Redux alias/cosmetic/history/localisation/flag tag uses parsed: **1039**.
 - Reserved-tag collisions: **0**.
@@ -178,7 +178,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - The existing country/tag metrics parse country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete three-character `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
 - Event 006 custom cosmetic identifiers are also scanned separately at exact all-length definition, alias, call-site, localisation, and flag surfaces; this coverage does not change the existing three-character metrics.
 - Event 006 history ownership is path-backed: only current `history/countries` filenames whose three-character tag and normalized stem identity match the Event 006 registry are excluded from the non-Event 006 scan. A same-tag filename with another identity remains collision evidence.
-- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames.
+- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames. `ZIN` is an existing Chaos Redux carrier.
 - The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.
 - ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.
@@ -193,16 +193,16 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - Event 006 formable/cosmetic registry SHA-256: `313ce9ac4264c38acc159cf2ec28689fd97f53a87b7e70da85730529552d0337`
 - Candidate matrix SHA-256: `7d2eba7da88c9703f438ef31b24ad44c9018079bd4a61bc14c36362b986fb4af`
 - Formable-family matrix SHA-256: `816162e3ffd6ce702bfcab591fc85bc49c875343a6d857fa80475e6c2af23169`
-- Formable base-localisation inventory SHA-256: `39107d903720de211afda6194ed09a1a026eae25beaf6482642e1ee50203803e`
+- Formable base-localisation inventory SHA-256: `27162edf01e37453df2f7c56fabe20346ac18709ea7597e3da152152a7584b3d`
 - Manual identity dispositions SHA-256: `08fd0882fb52175b18229d0d85cfbf093e5dc50610f1ec3cb31363237457791c`
 - Vanilla `00_countries.txt` SHA-256: `b3777a74b44bfb1b082817b2a1e9676f0c8cda45a0cbea75e55e2b703f3b73b6`
 - Vanilla country localisation SHA-256: `31aad14d7e190da4f230c7b3fe16e4a087b8ea89951fede2743d5aec0f016706`
 - Vanilla checksum manifest SHA-256: `771814d81faf7bae0f32819380c1114c61bbec1c897b060cecd1592f104f2b76`
 - Parsed vanilla tag-surface inventory SHA-256: `57dfbe267a32983680c3fa385cce69e7e7a9cd52af06d8ec8bf8bb6508004d09`
 - Parsed Workshop tag-surface inventory SHA-256: `6b538f8019efe62af4bab193a0cafb56fe98fc6fc2c6b729e526e66d3efb747b`
-- Parsed sibling-mod tag-surface inventory SHA-256: `d82e4100adcae69dd712a5b57394e63daa364b0f79f16170ab6e07c8b73ab7b4`
-- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `ea4a29550dfa8794970bb03b781e2e5c7c57c849a08e507423d0934d8bcaa927`
-- ZIP archive content inventory SHA-256: `c190bac538705eeb79d7dd04e5f87c0fd59c7c7688856f30c419450d8029305c`
-- Runtime attestation source SHA-256: `f14d4495b7e66d3574c31ef6b28aac457241927cdce83a04c32d3f4c3f3648fb`
-- Package-origin wrapper source inventory SHA-256: `dd5602d4bb8336f1e7fad42a4d7c05b350cfe91a836553c106f1c896780e0f8b`
+- Parsed sibling-mod tag-surface inventory SHA-256: `4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945`
+- Parsed non-Event 006 Chaos Redux tag-surface inventory SHA-256: `09c05d0f00150646d5f1c4a0741e734d1ce6a03dcf26545531c5400d0f744a42`
+- ZIP archive content inventory SHA-256: `2bb99dbcc01c9681e8a777e8861df9fdc1c57ee048e6c87cbbe26ea05fd3cbf9`
+- Runtime attestation source SHA-256: `b618ef3a86a3202049423dbbe7561748d9494e54edf523644734e4c4509485d7`
+- Package-origin wrapper source inventory SHA-256: `5bd9f6fc8c8e225dcf444ff0235e28862a3d409a474ee3325284b3b482c8438c`
 - Scenario block source SHA-256: `934995ced96bbf86c845b00b3a60c70c192f2efa1a8482ec7bd15d9d77e5b4d2`

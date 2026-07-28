@@ -618,7 +618,7 @@ This is not final localisation.
 One of the following must occur:
 
 - a radical league adopts an offensive charter and has enough members and military strength
-- a high-chaos 10-country wave begins with several armed or radical governments and immediate coordinated claims
+- a high-chaos 20-country wave begins with several armed or radical governments and immediate coordinated claims
 - several Event 6 countries launch synchronized wars against former hosts
 - a hidden high-chaos formable becomes the center of an aggressive bloc
 - the league sponsors enough new breakaways to create a visible cascade

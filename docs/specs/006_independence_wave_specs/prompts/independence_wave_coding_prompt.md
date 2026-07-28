@@ -34,15 +34,20 @@ Use `chaosx_repo_explorer` only if the touched-file map or precedent is unclear.
 
 ## Core release system
 
-Implement the exact automatic wave ladder:
+Implement the doubled automatic wave ladder:
 
-- Calm World: 3 countries
-- Gathering Storm: 4 countries
-- Rising Chaos: 5 countries
-- Chaos Tier: 7 countries
-- Totalen Chaos and World Collapse: 10 countries
+- Calm World: 6 countries
+- Gathering Storm: 8 countries
+- Rising Chaos: 10 countries
+- Chaos Tier: 14 countries
+- Totalen Chaos: 20 countries
+- World Collapse: 20 countries, with stronger forces, instability, rarity, and ambition
 
 Build the complete wave plan before releasing anything. Reserve a protected state for every host, prefer its capital, guarantee at least one surviving host state, select unique candidate anchors, trim optional territory before dropping a candidate, and reroll invalid or living tags. Execute the locked plan as one synchronized incident.
+
+## Pre-wave crisis surface
+
+Implement the host-facing crisis as a scoped, costed mission rather than a second release path. Expose it below 35% stability, when an enemy controls an owned state above 50 resistance, or when a country controls a foreign-owned state above 50 resistance; use the centralized 120-day mission and standard security commitment. On successful resolution, queue `chaosx.nr6.3` for the ordinary current-band wave; the endpoint waits through a bounded retry window when the shared Liberations coordinator is busy and fails closed when the plan remains invalid. Busy, invalid, cancelled, or failed resolution must apply visible pressure/cooldown outcomes without changing ownership. The crisis may not add a world-wide periodic loop, create a country directly, bypass host survival, or bypass reservation and synchronized execution. Record live mission, AI, queue-cleanup, save/load, and allocator evidence separately from static source validation.
 
 Use the candidate registry as a data source. A candidate is runtime-eligible only when its tag, country definition, anchor, capital, flags, leader mode, starting setup, focus content, decisions, AI, and localisation are ready.
 

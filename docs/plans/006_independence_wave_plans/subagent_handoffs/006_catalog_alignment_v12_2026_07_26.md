@@ -1,5 +1,11 @@
 # Event 006 catalog alignment v12
 
+> Historical pre-doubled/pre-crisis audit. This 2026-07-26 snapshot predates
+> the 6/8/10/14/20 ladder and host-facing crisis queue. Preserve its bounded
+> mirror evidence, but do not use it to infer current workbook wording or
+> status; the current source map and a fresh spreadsheet-worker audit govern
+> the post-tranche catalog surface.
+
 Date: 2026-07-26
 
 Scope: read-only audit of the Event 006 catalog mirror against current player-facing localisation and `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`.

@@ -1,5 +1,7 @@
 # Event 006 pre-wave crisis architecture audit
 
+> Dated-snapshot notice (2026-07-28): The focused `006_automatic_ladder_host_crisis_completion_audit_2026_07_28.md` supersedes this audit's Command Power cost-trigger and active-category findings with source-repair evidence. Retain this file for its presentation-race, requester-disappearance, pressure-semantics, and runtime-evidence risks; it is not the current authority for the repaired cost/visibility surfaces.
+
 ## Scope and evidence
 
 This audit covers the host-facing crisis surfaces in `common/script_constants/006_independence_wave_crisis_constants.txt`, `common/scripted_triggers/006_independence_wave_crisis_triggers.txt`, `common/scripted_effects/006_independence_wave_crisis_effects.txt`, `common/decisions/categories/006_independence_wave_crisis_categories.txt`, `common/decisions/006_independence_wave_crisis_decisions.txt`, and `events/006_independence_wave.txt` (`chaosx.nr6.3`). The event-chain inspection was read-only; its partial report is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9cef3e69c750ae2eb81fc8fdddf6b516b9ed9282560a6fbcc1fb6ba33b02992f/eb017b468b2d9c0fd73f855e573d189e4b325ae3b438718ac0aa5f2f07160e2a/event-scan-b475d0375104.json`.

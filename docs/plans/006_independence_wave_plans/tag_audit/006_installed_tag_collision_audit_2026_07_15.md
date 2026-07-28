@@ -8,7 +8,7 @@ Audit date: 2026-07-15
 - Reserved Event 006 tags scanned: **102**.
 - Registered vanilla-tag reuse rows: **91**.
 - Non-selectable vanilla route-overlay rows: **13**.
-- Engine- or OS-reserved three-character namespaces excluded: **AUX, CON, GFX, NUL, PRN**.
+- Engine- or OS-reserved three-character namespaces excluded: **ZIN, CON, GFX, NUL, PRN**.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
 - Embedded ZIP archives scanned without extraction: **8**.
@@ -91,7 +91,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 ## Scope and limitations
 
 - The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
-- Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.
+- Engine- and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. `GFX` is reserved for HOI4 sprite/interface identifiers; `ZIN`, `CON`, `NUL`, and `PRN` are reserved Windows DOS device basenames and cannot safely back country, history, localisation, or flag filenames.
 - The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.
 - ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.

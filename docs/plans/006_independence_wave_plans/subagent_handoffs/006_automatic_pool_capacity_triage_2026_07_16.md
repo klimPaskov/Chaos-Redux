@@ -1,5 +1,7 @@
 # Event 006 Automatic-Pool Capacity Triage
 
+> **At-time capacity snapshot (2026-07-28):** This triage predates the IW-012 implementation and the v31 eleven-package, ten-compatible-group source admission. Its statement that IW-012 cannot support baseline capacity remains historical reasoning only. Use `006_event_completion_audit_v31_2026_07_28.md` and `006_source_of_truth_map.md` for current allocator and reservation status; live host-survival and transaction proof remain open.
+
 Date: 2026-07-16
 Scope: smallest coherent package tranche required to prove ten simultaneous World Collapse releases
 Verdict: implement `IW-017`, `IW-018`, `IW-019`, and shared `FORM-05`; no admission is granted by this handoff

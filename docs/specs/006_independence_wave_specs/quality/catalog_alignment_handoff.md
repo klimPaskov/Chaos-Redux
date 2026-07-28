@@ -1,8 +1,16 @@
 # Catalog alignment handoff
 
+> Historical design handoff note (2026-07-28): the uploaded-row wording and
+> `To Be Reworked` status below predate the doubled 6/8/10/14/20 ladder and the
+> host-facing pre-wave crisis. Keep this file as accepted catalog direction,
+> but use `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
+> and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md`
+> for current implementation status. This documentation reconciliation does
+> not edit or export the workbook.
+
 ## Current catalog state
 
-The uploaded Event 6 row is marked `To Be Reworked`. It currently describes evolution wave ranges of 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16. Those ranges are stale against the user-supplied exact automatic wave ladder.
+The uploaded Event 6 row is marked `To Be Reworked`. It currently describes evolution wave ranges of 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16. Those ranges are stale against the accepted doubled automatic wave ladder.
 
 The catalog currently records:
 
@@ -29,14 +37,18 @@ The implementation and catalog must agree on these counts:
 
 | Chaos band | Countries released by an automatic wave |
 | --- | ---: |
-| Calm World | 3 |
-| Gathering Storm | 4 |
-| Rising Chaos | 5 |
-| Chaos Tier | 7 |
-| Totalen Chaos | 10 |
-| World Collapse | 10 |
+| Calm World | 6 |
+| Gathering Storm | 8 |
+| Rising Chaos | 10 |
+| Chaos Tier | 14 |
+| Totalen Chaos | 20 |
+| World Collapse | 20 |
 
-The wave count is baseline chaos behavior. It must not be confused with the five evolution descriptions.
+The wave count is baseline chaos behavior. It must not be confused with the five evolution descriptions. World Collapse retains the 20-country count of Totalen Chaos and raises strength, instability, rarity, and ambition instead of replacing count with intensity.
+
+### Pre-wave crisis surface
+
+The current source implementation adds a host-facing, costed crisis before an ordinary wave. It is visible below 35% stability, when an enemy controls an owned state with resistance above 50, or when a country controls a foreign-owned state above 50 resistance. The 120-day mission spends the standard security commitment and, when pressure persists, queues the ordinary Event 006 entry through `chaosx.nr6.3`; a busy coordinator receives a bounded retry window before a blocked outcome. Invalid, cancelled, or exhausted resolution applies the documented pressure and cooldown consequences without changing ownership. The crisis never creates a country directly, bypasses host survival, or opens a second transaction. The implementation handoff records source-level validation; a fresh spreadsheet-worker cell comparison and live mission/queue evidence remain required.
 
 ### Evolution fields
 
@@ -102,4 +114,4 @@ The user describes Event 6 cluster participation as Low. This is a participation
 6. Send exact localisation keys and final wording to `chaosx_spreadsheet_doc_worker`.
 7. Update the catalog workbook without paraphrasing mirror fields.
 
-The Event 6 status should remain `To Be Reworked` until the implementation and required audits are complete.
+The `To Be Reworked` status at the top of this historical handoff is not a current workbook claim. The current workbook status and any changed Event Details/crisis-queue fields must be confirmed by the spreadsheet worker after the doubled-ladder/crisis wording is re-audited; no status promotion is implied here.

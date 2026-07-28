@@ -1,5 +1,12 @@
 # Event 006 catalog alignment v13
 
+> Superseded same-day catalog snapshot. This handoff reasserted workbook cells
+> before the doubled-ladder/crisis wording was reconciled and still records the
+> old 3/4/5/7/10 counts. Use `006_event_details_catalog_localisation_audit_2026_07_28.md`
+> for the newer read-only HOLD findings and the current source-of-truth map for
+> routing. Its row-level mirror checks remain dated evidence, not current
+> ladder, crisis, or catalog-completion authority.
+
 Date: 2026-07-28
 
 ## Scope and disposition

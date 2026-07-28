@@ -12,7 +12,7 @@ Audit date: 2026-07-25
 - Exact Event 006-owned history filenames retained from the non-Event 006 scan: **85**.
 - Registered vanilla-tag reuse rows: **91**, using **89** unique vanilla tags.
 - Non-selectable vanilla route-overlay rows: **13**.
-- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, AUX, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
+- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, ZIN, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
 - Embedded ZIP archives scanned without extraction: **8**.
@@ -177,7 +177,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 - The existing country/tag metrics parse country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete three-character `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
 - Event 006 custom cosmetic identifiers are also scanned separately at exact all-length definition, alias, call-site, localisation, and flag surfaces; this coverage does not change the existing three-character metrics.
 - Event 006 history ownership is path-backed: only current `history/countries` filenames whose three-character tag and normalized stem identity match the Event 006 registry are excluded from the non-Event 006 scan. A same-tag filename with another identity remains collision evidence.
-- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames.
+- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `ZIN`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames.
 - The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.
 - ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.
