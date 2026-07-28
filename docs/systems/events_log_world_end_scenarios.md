@@ -20,9 +20,9 @@ Clicking a row opens a movable scenario-details window. The row and detail view 
 | Event 14, Cannibalism | No Thaw Will Come | No Thaw Will Come |
 | Event 18, Resources Found | The World Opens Below | The Deep War Crosses the Seas |
 
-## System-owned registry entries
+## Consequence boundary
 
-Fallout is an unnumbered system-owned registry entry. Its owner event and linked super-event fields are both `none`. It does not appear under Event 2 or borrow the Zombie Outbreak presentation. The Miscellaneous settings panel controls its scenario toggle, and the dedicated `fallout_world_end` system owns its blackout transition.
+Fallout is not a registry entry. It has no Event Details row, evolution entry, ordinary event-log entry, owner event, or linked super-event presentation. The Miscellaneous settings panel controls its request gate, and the dedicated `fallout_world_end` system owns its blackout transition. The stable save-facing Fallout token remains an internal request and settings identity only.
 
 Hidden easter-egg terminal branches are not appended to the public view arrays. They therefore receive no row, checkbox, title, details text, workbook entry, or public control from this system.
 
@@ -88,4 +88,4 @@ No new art is required.
 
 - Add authored availability helpers only where a public status can be explained without revealing secret prerequisites.
 - Add optional super-event artwork thumbnails if the Event Details window gains a shared, spoiler-safe image contract.
-- Add a dedicated catalog surface for public terminal systems that do not belong to a numbered event, instead of assigning them an artificial event owner.
+- Keep consequence transitions outside this catalog. Add a separate presentation surface only if a future terminal system receives an approved player-facing catalog contract.
