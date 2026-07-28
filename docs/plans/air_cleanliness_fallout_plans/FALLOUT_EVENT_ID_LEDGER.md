@@ -1,8 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after The Second Dust Bowl
+## Current reconciliation after Great Lakes Lock Winter
 
-The living-world pilot now contains `537` defined event blocks across the reviewed ordinary range through `662`, including the dormant Second Dust Bowl tranche at `656` through `662`. The current reviewed ordinary row count is `65`. Second Dust Bowl uses candidate `656`, transaction `710065`, route `7165`, and Event Log history `9171`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `544` defined event blocks across the reviewed ordinary range through `669`, including the dormant Great Lakes Lock Winter tranche at `663` through `669`. The current reviewed ordinary row count is `65`. Great Lakes Lock Winter uses candidate `663`, transaction `710066`, route `7166`, and Event Log history `9172`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
@@ -11,6 +11,8 @@ Rail Spine Vote reserves candidate `621`, transaction `710060`, route `7160`, an
 Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and Event Log history `9167`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native South Asian rural or pastoral state and records a water schedule from agricultural and infrastructure evidence without claiming a generic canal building.
 
 Second Dust Bowl reserves candidate `656`, transaction `710065`, route `7165`, and Event Log history `9171`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native North American plains state and does not add Air Contamination, mutate the native state category, transfer population between states, or create a named historical district. Committed-row cleanup can release same-generation target drift through the generic country registry, while pre-result stale cancellation and generation drift remain blocked by the shared delayed dispatcher current-generation gate.
+
+Great Lakes Lock Winter reserves candidate `663`, transaction `710066`, route `7166`, and Event Log history `9172`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native coastal Great Lakes state with a non-damaged naval base, infrastructure, surviving population, current Air Winter records, and bounded survival resources. Its four branches change lock policy, food and fuel movement, port access, trust, and thaw inspection memory without creating a new state or successor tag.
 
 ## Purpose
 
