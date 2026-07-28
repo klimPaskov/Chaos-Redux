@@ -1066,9 +1066,20 @@ fallout_event_642_abort_on_generation_change = {
 		}
 		if = {
 			limit = { NOT = { check_variable = { fallout_event_642_opening_target_is_current = constant:fallout_event_runtime.one } } }
+			set_variable = { fallout_event_642_target_state_id = fallout_event_dispatch_issued_target }
 			set_temp_variable = { fallout_event_requested_event_token = fallout_event_dispatch_issued_event_token }
 			set_temp_variable = { fallout_event_requested_cancellation_reason = constant:fallout_event_cancellation_reason.target_lost }
 			fallout_event_cancel_issued_ordinary_receipt = yes
+			if = {
+				limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } }
+				set_temp_variable = { fallout_event_642_history_stage = constant:fallout_event_642_log.cancelled_stage }
+				fallout_event_642_record_history = yes
+				fallout_event_642_revert_branch_settlement_ledgers = yes
+				fallout_event_642_refund_branch_cost = yes
+				fallout_event_642_clear_state_reservation = yes
+				var:fallout_event_642_target_state_id = { clr_state_flag = fallout_event_642_registry_committed }
+				fallout_event_642_clear_frozen = yes
+			}
 		}
 		clear_variable = fallout_event_642_opening_target_is_current
 	}
