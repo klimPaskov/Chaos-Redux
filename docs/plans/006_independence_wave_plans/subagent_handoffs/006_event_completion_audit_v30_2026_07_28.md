@@ -17,7 +17,7 @@ Role: parent reconciliation audit after the MFX-inclusive tag scan, flat portrai
 - The other five newly researched CHU/ASY grounded route rows remain source-only, blocked, or needs-user-review. CHU and ASY therefore remain outside runtime content attestation.
 - Four manually activated deadline missions now declare `available = { always = no }`, preventing immediate empty completion and preserving their timeout paths. The patch is source-validated but has no live activation, timeout, reactivation, or save/load proof.
 - DM-58 now cancels and clears the active operation when an exiting country is present in the frozen participant array, even if unrelated League membership remains above the minimum. The policy deliberately leaves finite war goals to their timed expiry. Static assertions and the allocator audit pass; live participant-exit, expiry, and save/load evidence remain open.
-- The shared-focus re-audit still reports 14 coupled geometry blockers despite route, localisation, icon, reward, and static AI coverage.
+- The shared-focus re-audit still reports 14 coupled geometry blockers despite route, localisation, icon, reward, and static AI coverage. Formable completion now provides a guarded `post_formation_overlay` producer for carriers that already own the Event 006 framework; meaningful vanilla trees remain untouched and the twelve other exact route-overlay hooks remain open.
 - SCN-008 remains a source-level 8-mode by 4-intensity matrix (32 cells) with no live cell acceptance evidence. FORM-39, HAW/FSM/FORM-48, IW-157/WPG, IW-178/PNG, and `6001` retain their documented research, rights, readiness, or reachability holds.
 
 ## Completion matrix
@@ -27,7 +27,7 @@ Role: parent reconciliation audit after the MFX-inclusive tag scan, flat portrai
 | Allocator and synchronized release | Static PASS / runtime HOLD | Ordinary 3/4/5/7/10 waves, exact-ten capacity, host-survival, anchors, Event-005 collision, rollback, repeat-memory, save/load, and joint runtime cases remain unproved. |
 | Country packages and attestation | PARTIAL / HOLD | Only ten packages are exactly attested; the remaining registry rows cannot be promoted from tags, shells, or generic content. |
 | Decisions and missions | Static repair / runtime HOLD | The four deadline repairs and DM-58 policy lack live lifecycle matrices; the accepted 80-row matrix is not closed. |
-| Shared focus tree | Route coverage / validator HOLD | Four geometry clusters produce fourteen blocking MCP diagnostics. |
+| Shared focus tree | Route coverage / validator HOLD | Four geometry clusters produce fourteen blocking MCP diagnostics. The dead post-formation assignment path now has one guarded producer for full-framework Event 006 carriers; meaningful-tree insertion and the remaining twelve route-overlay hooks remain open. |
 | Formables and regional adapters | PARTIAL / HOLD | FORM-01 through FORM-05 are promoted; later families, including FORM-39 and FORM-48, retain explicit gates and no fallback is authorized. |
 | SCN-008 | Static PARTIAL / runtime HOLD | All 32 mode/intensity cells, selector/collision/rollback/persistence/host-war/patron/balance cases remain absent. |
 | Portraits and assets | PARTIAL / HOLD | The flat shelf is structurally correct; Galimzhan v2 is visual/provenance-PASS and parent-promoted to the existing CHU DDS consumer; five CHU/ASY rows and many other grounded rosters remain blocked. |

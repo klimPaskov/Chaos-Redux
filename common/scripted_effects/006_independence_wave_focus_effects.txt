@@ -32,7 +32,14 @@ independence_wave_assign_focus_framework = {
 			is_independence_wave_focus_assignment_scope = yes
 			has_valid_independence_wave_focus_assignment_input = yes
 		}
-		clr_country_flag = independence_wave_full_focus_framework
+		# A post-formation assignment is additive to an already loaded Event 006
+		# tree, so preserve its full-framework ownership for the duration of the
+		# post-formation branch. Full and ordinary additive assignments still
+		# clear the opposite ownership flag as before.
+		if = {
+			limit = { NOT = { check_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.post_formation_overlay } } }
+			clr_country_flag = independence_wave_full_focus_framework
+		}
 		clr_country_flag = independence_wave_additive_focus_overlay
 		clr_country_flag = independence_wave_post_formation_focus_overlay
 		set_variable = { independence_wave_focus_assignment = independence_wave_focus_assignment_input }
