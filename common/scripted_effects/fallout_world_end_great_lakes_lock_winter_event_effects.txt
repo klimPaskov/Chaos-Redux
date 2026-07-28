@@ -717,7 +717,14 @@ fallout_event_663_choose_branch = {
 
 fallout_event_663_choose_ai_branch_and_schedule_result = {
 	fallout_event_663_initialize_ledgers = yes
-	set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.joint_ice_authority }
+	set_temp_variable = { fallout_event_663_ai_joint_score = constant:fallout_event_663_ai.invalid_option }
+	set_temp_variable = { fallout_event_663_ai_closure_score = constant:fallout_event_663_ai.invalid_option }
+	set_temp_variable = { fallout_event_663_ai_sabotage_score = constant:fallout_event_663_ai.invalid_option }
+	set_temp_variable = { fallout_event_663_ai_open_score = constant:fallout_event_663_ai.invalid_option }
+	if = { limit = { fallout_event_663_joint_affordable = yes } set_temp_variable = { fallout_event_663_ai_joint_score = constant:fallout_event_663_ai.joint_priority } }
+	if = { limit = { fallout_event_663_closure_affordable = yes } set_temp_variable = { fallout_event_663_ai_closure_score = constant:fallout_event_663_ai.closure_priority } }
+	if = { limit = { fallout_event_663_sabotage_affordable = yes } set_temp_variable = { fallout_event_663_ai_sabotage_score = constant:fallout_event_663_ai.sabotage_priority } }
+	if = { limit = { fallout_event_663_open_affordable = yes } set_temp_variable = { fallout_event_663_ai_open_score = constant:fallout_event_663_ai.open_priority } }
 	if = {
 		limit = {
 			var:fallout_event_dispatch_issued_target = {
@@ -728,13 +735,13 @@ fallout_event_663_choose_ai_branch_and_schedule_result = {
 			}
 			fallout_event_663_closure_affordable = yes
 		}
-		set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.seasonal_closure }
+		add_to_temp_variable = { fallout_event_663_ai_closure_score = constant:fallout_event_663_ai.high_pressure_closure }
 	}
-	else_if = {
+	if = {
 		limit = { has_variable = fallout_government_archetype check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } has_war = yes fallout_event_663_open_affordable = yes }
-		set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.unilateral_opening }
+		add_to_temp_variable = { fallout_event_663_ai_open_score = constant:fallout_event_663_ai.warlord_opening }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			OR = {
@@ -743,9 +750,9 @@ fallout_event_663_choose_ai_branch_and_schedule_result = {
 			}
 			fallout_event_663_sabotage_affordable = yes
 		}
-		set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.rival_lock_sabotage }
+		add_to_temp_variable = { fallout_event_663_ai_sabotage_score = constant:fallout_event_663_ai.scavenger_sabotage }
 	}
-	else_if = {
+	if = {
 		limit = {
 			has_variable = fallout_government_archetype
 			OR = {
@@ -754,17 +761,30 @@ fallout_event_663_choose_ai_branch_and_schedule_result = {
 			}
 			fallout_event_663_closure_affordable = yes
 		}
-		set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.seasonal_closure }
+		add_to_temp_variable = { fallout_event_663_ai_closure_score = constant:fallout_event_663_ai.nomad_closure }
 	}
-	else_if = { limit = { fallout_event_663_joint_affordable = yes } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.joint_ice_authority } }
-	else_if = { limit = { fallout_event_663_closure_affordable = yes } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.seasonal_closure } }
-	else_if = { limit = { fallout_event_663_sabotage_affordable = yes } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.rival_lock_sabotage } }
-	else_if = { limit = { fallout_event_663_open_affordable = yes } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.unilateral_opening } }
+	set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.joint_ice_authority }
+	set_temp_variable = { fallout_event_663_ai_best_score = fallout_event_663_ai_joint_score }
+	if = { limit = { fallout_event_663_closure_affordable = yes check_variable = { fallout_event_663_ai_closure_score value = fallout_event_663_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_663_ai_best_score = fallout_event_663_ai_closure_score } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.seasonal_closure } }
+	if = { limit = { fallout_event_663_sabotage_affordable = yes check_variable = { fallout_event_663_ai_sabotage_score value = fallout_event_663_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_663_ai_best_score = fallout_event_663_ai_sabotage_score } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.rival_lock_sabotage } }
+	if = { limit = { fallout_event_663_open_affordable = yes check_variable = { fallout_event_663_ai_open_score value = fallout_event_663_ai_best_score compare = greater_than } } set_temp_variable = { fallout_event_663_ai_best_score = fallout_event_663_ai_open_score } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.unilateral_opening } }
+	if = {
+		limit = { NOT = { fallout_event_663_requested_branch_is_affordable = yes } }
+		if = { limit = { fallout_event_663_joint_affordable = yes } } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.joint_ice_authority }
+		else_if = { limit = { fallout_event_663_closure_affordable = yes } } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.seasonal_closure }
+		else_if = { limit = { fallout_event_663_sabotage_affordable = yes } } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.rival_lock_sabotage }
+		else_if = { limit = { fallout_event_663_open_affordable = yes } } set_temp_variable = { fallout_event_663_requested_branch = constant:fallout_event_663_branch.unilateral_opening }
+	}
 	fallout_event_663_schedule_result = yes
 	if = {
 		limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.zero } fallout_event_issued_ordinary_receipt_is_current = yes }
 		fallout_event_663_cancel_opening_receipt = yes
 	}
+	clear_temp_variable = fallout_event_663_ai_joint_score
+	clear_temp_variable = fallout_event_663_ai_closure_score
+	clear_temp_variable = fallout_event_663_ai_sabotage_score
+	clear_temp_variable = fallout_event_663_ai_open_score
+	clear_temp_variable = fallout_event_663_ai_best_score
 }
 
 fallout_event_663_schedule_callback = {
