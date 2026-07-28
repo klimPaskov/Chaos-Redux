@@ -42,6 +42,8 @@ Great Partition advances the selected territory package by one tier before reser
 
 ## Type Contract
 
+The implementation has six numeric scenario families and eight player-facing selectable modes. Universal Belligerence contributes three independently selectable rules, so the acceptance matrix is eight modes by four intensities, or 32 cells.
+
 - **Sovereign Scatter** removes release-created faction ties and seeds survival/local-diplomacy AI.
 - **Common Congress** registers every release in the Event 006 network and league, then scales charter phase and shared reserve by intensity.
 - **Wars of Separation** places each release with a viable independent former host into a defensive host war; invalid host wars become regional-threat missions.
