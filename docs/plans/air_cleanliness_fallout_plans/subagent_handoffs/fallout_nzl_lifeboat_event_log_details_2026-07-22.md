@@ -1,5 +1,10 @@
 # Fallout NZL Lifeboat Event Log and Event Details handoff
 
+Current-source note: this handoff describes a dormant post-consequence
+country-memory package. The Fallout consequence itself has no Event Details
+row, evolution entry, ordinary event-log row, or world-end details opener.
+Any package summary must remain separate from that consequence boundary.
+
 ## Status
 
 Implemented as dormant Fallout-owned country-memory history integration. The
@@ -46,7 +51,7 @@ history-array sanitisation and visible-window refresh are retained.
 | `fallout_nzl_record_late_event_log` | NZL country | current Year 10 choice and result | one shared row and one NZL ledger row | one receipt per transition generation | `fallout_nzl_record_year_ten_order` |
 | `fallout_nzl_event_log_append_snapshot` | NZL country | shared-row temporaries and four live values | parallel NZL ledger arrays keyed by shared sequence | clears local temporaries | record wrapper |
 | `fallout_nzl_load_open_history_payload` | player country | selected history-card id and exact sequence | stored date, actor, partner, choice, result, route, values, and generation | clears stale detail variables | shared detail rebuild |
-| `fallout_nzl_prepare_event_log_card` | player country | current package or stored NZL ledger | current or newest-generation package summary | writes display variables only | Fallout detail opener |
+| `fallout_nzl_prepare_event_log_card` | player country | current package or stored NZL ledger | current or newest-generation package summary | writes display variables only | dormant post-consequence package view |
 | `record_events_log_system_history_entry` | shared logger | system id, type, payload, and actors | shared history arrays | no presentation refresh until the private ledger commits | NZL record wrapper |
 | `refresh_events_log_system_history_views` | shared presenter | completed shared and private rows | refreshed visible History, Events, Event Details, and open NZL package card | bounded human-window iteration | NZL record wrapper after private append |
 
@@ -84,10 +89,9 @@ the exact result band. A partnered external row displays two flags, the partner
 name, and a second navigation target. The shared history row and Event
 Details title use dedicated localisation keys, not `chaosx.event_name.127`,
 `.133`, `.139`, or `.147`. Trigger and enable or disable controls are hidden or
-disabled for the system cards. The existing Fallout world-end details surface
-shows the NZL package card only when a current package or historical ledger is
-present. The card is appended to the base Fallout detail text rather than
-replacing that system description. It does not add a manual scenario row.
+disabled for the system cards. The package card is not attached to a Fallout
+world-end details surface. It does not add a manual scenario row or any
+consequence registration.
 
 ## Engine references
 

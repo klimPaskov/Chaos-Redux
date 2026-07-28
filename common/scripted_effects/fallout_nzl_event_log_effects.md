@@ -92,13 +92,13 @@ history helpers add no on action or scheduler.
 
 ### `fallout_nzl_prepare_event_log_card`
 
-- Scope: player country opening the Fallout world-end details surface.
+- Scope: dormant post-consequence NZL country-memory package view.
 - Inputs: current package receipts and the NZL snapshot ledger.
 - Outputs: one package-card view for the latest relevant transition generation.
 - Current package behavior: after at least one current-generation memory is
   committed, reads the four live values, current route, and current proven
   aggressor receipt from `NZL`, then writes the display snapshot on the human
-  country viewing the shared Fallout details surface.
+  country viewing a future post-consequence package view.
 - Historical behavior: uses the latest snapshot from the newest stored
   transition generation. A newly reactivated package with no memory in its
   current generation continues to show the newest historical generation.
@@ -106,7 +106,10 @@ history helpers add no on action or scheduler.
   outcomes and dates from that same generation only.
 - Partner summary: names up to the two distinct Pacific contacts available to
   this pilot and never fabricates a partner.
-- Call site: shared Fallout world-end scenario detail opener.
+- Call site: none. The helper is dormant and must not be wired to the Fallout
+  consequence boundary. The consequence has no Event Details row, evolution
+  entry, or ordinary event-log registration. Only later NZL country-memory
+  history may use this package view.
 
 ## Shared Event Log contract
 
