@@ -22,7 +22,7 @@ The completed source design supports that promise through five connected layers:
 
 ### Release system
 
-The release logic is deep enough for planning. It defines exact automatic wave counts of 3, 4, 5, 7, and 10, layered candidate pools, territory package levels, unique anchor reservation, host capital protection, overlap resolution, synchronized execution, failed-slot replacement, repeat memory, regional spread, and re-release behavior.
+The release logic is deep enough for planning. It defines exact automatic wave counts of 6, 8, 10, 14, and 20, layered candidate pools, territory package levels, unique anchor reservation, host capital protection, overlap resolution, synchronized execution, failed-slot replacement, repeat memory, regional spread, and re-release behavior. A later design decision also adds a scoped crisis surface for badly occupied states and low-stability countries; its release handoff must use the same frozen allocator rather than a shortcut.
 
 No additional release subtype is needed before implementation. More variants would duplicate the existing distributed, imperial, colonial, federal, restoration, indigenous, armed, and patron wave families.
 

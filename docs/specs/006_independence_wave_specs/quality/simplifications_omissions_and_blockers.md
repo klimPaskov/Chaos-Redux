@@ -21,7 +21,7 @@ The 2026-07-25 installed scan covers 108 Event 006-owned identifiers, 122
 Workshop directories, eight archives, four sibling local mods, vanilla, and
 non-Event 006 Chaos Redux definitions. It reports zero collisions and 445 safe
 X tags. The allocator passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder,
+selectable packages, 138 SCN-008 ranked packages, the doubled 6/8/10/14/20 ladder,
 and Event 005-first joint reservation ordering. Those structural counts do not
 override the compile-time visual-readiness gate. Pacific assets use vanilla
 HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and the audited flat

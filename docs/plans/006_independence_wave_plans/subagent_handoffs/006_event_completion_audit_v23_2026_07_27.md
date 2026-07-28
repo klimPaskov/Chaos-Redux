@@ -1,11 +1,11 @@
 # Event 006 Independence Wave Completion Audit v23
 
-> Historical whole-event snapshot. v30 is the current completion authority and
-> supersedes this audit for whole-event disposition. Any 49/50-master, pre-v2
-> portrait, or v23-current-authority wording below is retained for bounded
-> traceability only. The current shelf is 51 flat original-size masters with no
-> normalized or advisor/small/dossier derivatives, and Galimzhan v2 is
-> parent-promoted to the existing CHU DDS consumer at SHA-256
+> Historical whole-event snapshot. v31 is the current completion authority and
+> supersedes this audit for whole-event disposition. Any 49/50/51-master,
+> pre-v2 portrait, ten-package, or v23/v30-current-authority wording below is
+> retained for bounded traceability only. The current shelf is 54 flat
+> original-size masters with no normalized or advisor/small/dossier derivatives,
+> and Galimzhan v2 is parent-promoted to the existing CHU DDS consumer at SHA-256
 > `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`.
 
 Date: 2026-07-27

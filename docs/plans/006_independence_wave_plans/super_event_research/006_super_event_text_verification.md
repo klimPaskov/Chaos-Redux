@@ -52,7 +52,7 @@ The accepted final sentence frames the reveal through governments that previousl
 
 ### Dangerous package
 
-The accepted description begins with the league's congress. Part 6 also permits this super-event to fire from a high-chaos ten-country wave, synchronized wars by Event 006 countries, or a hidden formable leading an aggressive bloc. Those packages do not require a league congress. The corrected description uses `new-state governments`, which remains true for every eligible trigger family.
+The accepted description begins with the league's congress. Part 6 also permits this super-event to fire from a high-chaos twenty-country wave, synchronized wars by Event 006 countries, or a hidden formable leading an aggressive bloc. Those packages do not require a league congress. The corrected description uses `new-state governments`, which remains true for every eligible trigger family.
 
 The accepted phrases `has ceased to limit itself` and `once protected ... has become` use temporal contrast as their dramatic structure. The corrected wording describes coordinated commands, material pledges, and simultaneous war preparations directly.
 
@@ -124,7 +124,7 @@ Washington, D.C. is the appropriate historical place direction if a production n
 
 ### Role and trigger alignment
 
-This package announces an Independence Wave outcome with coordinated revisionist claims and simultaneous war risk. The route-neutral description covers all accepted trigger families, including an offensive league, a radical ten-country wave, synchronized wars, a hidden aggressive formable, and a league-sponsored cascade. It does not fit an ordinary wave, election, consultative congress, isolated formable, or routine border war, which matches the accepted exclusions.
+This package announces an Independence Wave outcome with coordinated revisionist claims and simultaneous war risk. The route-neutral description covers all accepted trigger families, including an offensive league, a radical twenty-country wave, synchronized wars, a hidden aggressive formable, and a league-sponsored cascade. It does not fit an ordinary wave, election, consultative congress, isolated formable, or routine border war, which matches the accepted exclusions.
 
 ### Final localisation-ready recommendation
 

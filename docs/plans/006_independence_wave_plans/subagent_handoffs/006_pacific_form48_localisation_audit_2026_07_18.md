@@ -105,7 +105,7 @@ English scan found 23 duplicate key groups elsewhere; none is Pacific-specific:
   `006_independence_wave_decisions_l_english.yml` and
   `006_independence_wave_focus_l_english.yml`.
 - The remaining 17 duplicate groups belong to unrelated feature files
-  (`brilliant_scientist_foreign_protection_effect_tt`, ICD, KRG, NRF, RMC, TSC,
+  (`brilliant_scientist_foreign_protection_effect_tt`, ICD, KRG, NRF, IKX, ILX,
   and ZIN surfaces) and were not touched.
 
 ### Scripted localisation issue list

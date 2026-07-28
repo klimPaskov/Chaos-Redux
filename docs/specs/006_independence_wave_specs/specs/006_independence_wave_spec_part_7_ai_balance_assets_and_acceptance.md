@@ -693,7 +693,7 @@ The event can be implemented in tranches, but no tranche is a fallback completio
 - origin system
 - wave planner
 - host safety
-- exact 3, 4, 5, 7, 10 ladder
+- doubled 6, 8, 10, 14, 20 automatic ladder, including 20 at World Collapse
 - registered candidate pool
 - core country values
 - basic survival decisions

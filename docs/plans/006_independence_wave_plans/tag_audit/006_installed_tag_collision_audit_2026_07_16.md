@@ -10,7 +10,7 @@ Audit date: 2026-07-16
 - Unique Event 006-owned identifiers checked together: **107**.
 - Registered vanilla-tag reuse rows: **91**, using **89** unique vanilla tags.
 - Non-selectable vanilla route-overlay rows: **13**.
-- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, AUX, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
+- Engine-, offline-wiki-, or OS-reserved three-character namespaces excluded: **AND, ZIN, CON, GFX, LOG, NOT, NUL, NUM, OOB, PRN, RED, TAG**.
 - Installed Workshop directories scanned: **122**.
 - Workshop directories containing country-tag definitions: **37**.
 - Embedded ZIP archives scanned without extraction: **8**.
@@ -160,7 +160,7 @@ The following tags end in `X` and were unused by vanilla, Chaos Redux, and every
 ## Scope and limitations
 
 - The audit parses country definitions, `common/country_tag_aliases`, top-level three-character cosmetic-country blocks, concrete `set_cosmetic_tag` call sites, country-history filenames, exact three-character base localisation keys, and three-character HOI4 flag filenames.
-- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `AUX`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames.
+- Engine-, wiki-, and OS-reserved three-character namespaces are excluded before collision scoring or replacement-pool generation. The offline wiki forbids `NOT`, `AND`, `TAG`, `OOB`, `LOG`, `NUM`, and `RED`; `GFX` is reserved for sprite/interface identifiers; `ZIN`, `CON`, `NUL`, and `PRN` are Windows DOS device basenames.
 - The scan is intentionally over-inclusive: it audits every installed Workshop directory, not only enabled playset mods, plus every sibling local mod directory beside Chaos Redux.
 - ZIP members under standard HOI4 tag, alias, country, event, history, localisation, and flag paths are scanned in memory without extraction. The audit fails closed if an installed `.7z` or `.rar` archive is present.
 - Identity comparison uses vanilla country-definition basenames and English localisation. Exact matches block acceptance; fuzzy matches require historical/manual review and may represent related but distinct polities.

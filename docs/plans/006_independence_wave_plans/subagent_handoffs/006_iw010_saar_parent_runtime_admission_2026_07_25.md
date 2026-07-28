@@ -1,5 +1,7 @@
 # IW-010 Saar parent runtime admission
 
+> **At-time admission snapshot (2026-07-28):** This handoff predates the IW-012 ICE admission and the post-commit route-arbitration evidence in `3570ed8ff` and `72d8549e3`. Its nine-package list, zero-weight IW-012 example, and one-sixth probability calculation are historical evidence for that admission date only. Use `006_event_completion_audit_v31_2026_07_28.md`, the current source-of-truth map, and the IW-012 handoffs for current routing.
+
 Admission date: 2026-07-25.
 
 ## Decision

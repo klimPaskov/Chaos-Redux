@@ -8,7 +8,7 @@
 
 The additive ICE package has a valid material-cost project chain and one timed mission, no political-power store, no passive checklist, no free-unit loop, and no unsafe live country target.
 
-The remaining hold is narrow but real: the vanilla `iceland_tree` cannot consume the shared constitutional or traditional route flags, and ICE has no equivalent local decisions.
+The remaining hold described by this pre-carrier snapshot was narrow but real: the vanilla `iceland_tree` could not consume the shared constitutional or traditional route flags, and ICE had no equivalent local decisions. The current exact carrier imports the four route consumers, so use the reconciliation notice and current implementation handoff for present source status.
 
 The emergency-military and patron-client routes are reachable.
 
@@ -25,8 +25,8 @@ The emergency-military and patron-client routes are reachable.
    ICE setup now publishes that existing unlock flag.
 6. **High — fixed:** Armed Neutrality could finish after another route locked and then mark its project complete without actually selecting emergency military.
    Its cancel trigger now terminates on `independence_wave_government_route_locked` and applies the established project-failure consequence.
-7. **Medium — remaining:** ICE is an additive-overlay package; the shared constitutional and traditional focus locks live only in `006_independence_wave_focus.txt`, which is not loaded for `iceland_tree`.
-   No ICE decision currently locks those routes.
+7. **Historical pre-carrier finding:** ICE was an additive-overlay package while the shared constitutional and traditional focus locks lived only in `006_independence_wave_focus.txt`, which was not loaded for `iceland_tree`.
+   The current carrier imports the four route consumers and the route locks are now documented in the implementation and focus re-audits.
    The existing ICE route-politics adapter supports both results if another valid consumer calls it, but it does not make them selectable.
    Adding those route decisions is a broader route-system change and remains parent-owned.
 8. **Low — remaining:** Shared material-cost guards use strict greater-than resource checks, so the displayed cost is a minimum commitment rather than an exact zero-stockpile threshold.
