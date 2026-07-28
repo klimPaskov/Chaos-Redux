@@ -24,7 +24,7 @@ The flag is consumed by the Air Cleanliness boundary surfaces:
 - The direct Air Winter population-loss and disease-modifier helpers also reject the durable flag, so a callback outside the monthly coordinator cannot reopen those mutation surfaces.
 - Controlled and final evacuation project validators reject the same flag before a delayed project can transfer population or refugee pressure after Fallout request admission.
 - The shared `air_winter_event_apply_deaths` helper rejects the same durable flag, so a stale open Air Winter choice cannot register a new winter population loss after Fallout request admission.
-- `air_winter_suspend_all_states_for_fallout` removes active phase, disease, railway, airbase, response-project, and pending-event effects while preserving the last valid Air Winter phase and survival ledgers for that historical map view.
+- `air_winter_suspend_all_states_for_fallout` removes active phase, disease, railway, airbase, response-project, pending-event, Air-owned global, nuclear fallout, chemical contamination, and thermonuclear modifiers while preserving the last valid Air Winter phase and survival ledgers for that historical map view. This prevents a stale daily contamination or deaths pulse from mutating the disabled Air surface.
 - The monthly Air Cleanliness coordinator does not begin or update Air Winter, treaty pulses, or Air Winter dispatch after the flag is set.
 - Natural wildfire smoke, volcanic ash, and ashfall aftermath registration returns zero after the flag. The monthly natural source reservoir and pulse are cleared.
 - The Black Plague Air source refresh clears its disease-derived reservoir and previous contribution after the flag, so a later disease pulse cannot repopulate the disabled Air surface.
