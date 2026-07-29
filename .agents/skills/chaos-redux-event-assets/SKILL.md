@@ -160,7 +160,7 @@ Create a durable ComfyUI handoff for every portrait while continuing the normal 
 Create one source/prompt pair for each portrait. Build its basename from dynamic project keys:
 
 ```text
-<runtime_portrait_basename> = portrait_<portrait_owner_key>_<character_key>
+<runtime_portrait_basename> = portrait_<tag>_<character_key>
 ```
 
 Use the resolved basename consistently across the runtime texture and durable ComfyUI pair:
@@ -171,7 +171,7 @@ docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.png
 docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.txt
 ```
 
-Resolve `<portrait_owner_key>` from the actual country tag, cosmetic tag, formable key, organization key, or other stable owning script key used by the implementation. Resolve `<character_key>` from the actual stable scripted character or institutional subject key, not a localised display name. Use the resolved runtime texture filename's basename, not the sprite id or a generic `portrait` filename, and preserve its exact spelling and case. Decide and register the dynamic runtime DDS basename before creating the durable pair when portrait work precedes final wiring, then wire the DDS with that same basename. Never rename only one side of the runtime DDS, source PNG, and prompt TXT contract.
+Resolve `<tag>` from the actual country tag or cosmetic tag that owns the portrait in the implementation. Resolve `<character_key>` from the actual stable scripted character or institutional subject key, not a localised display name. Use the resolved runtime texture filename's basename, not the sprite id or a generic `portrait` filename, and preserve its exact spelling and case. Decide and register the dynamic runtime DDS basename before creating the durable pair when portrait work precedes final wiring, then wire the DDS with that same basename. Never rename only one side of the runtime DDS, source PNG, and prompt TXT contract.
 
 Save the highest-resolution portrait source that anchors the subject as `<runtime_portrait_basename>.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
 
