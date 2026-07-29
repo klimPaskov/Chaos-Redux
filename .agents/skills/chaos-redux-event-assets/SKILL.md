@@ -1165,10 +1165,16 @@ distinct path; do not split out or bypass an individual source to weaken provena
 Prepare each native `65x67` PNG with `.tools/create_advisor_icon.py`. The script
 uses the canonical `portraits/advisors/advisor_frame.png` and
 `portraits/advisors/advisor_paper.png` sources and composites them bottom-to-top as
-frame, resized/rotated portrait, then paper. It clips the portrait to the frame
-opening and applies only a slight portrait-only sepia blend. Record the explicit
-crop, portrait size, offset, rotation, sepia strength, source hashes, processed PNG,
-and final DDS in the asset package.
+frame, resized/rotated portrait, then paper. The script must preserve the portrait's
+source aspect ratio, rotate it around the stable center of the frame opening, and
+calculate the smallest proportional rectangle that covers all four opening corners.
+It must not stretch, squash, skew, or perspective-warp the portrait. The canonical
+frame and paper remain native `65x67` layers with no resize, rotation, recolouring,
+filter, or alpha rewrite. Clip only the portrait, including a narrow exclusion under
+the paper footprint so light clothing cannot create a fringe around the paper. Apply
+only a slight portrait-only sepia blend. Record the explicit crop, fitted dimensions,
+center, rotation, cover margin, sepia strength, source hashes, processed PNG, and
+final DDS in the asset package.
 
 Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
 portrait. Compose the subject independently inside the native card with a
