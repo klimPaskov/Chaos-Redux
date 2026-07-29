@@ -1,5 +1,23 @@
 # Completion Audit Checklist
 
+Status markers used in the reconciliation below: `[x]` means exact current source or bounded audit evidence exists; `[~]` means a bounded source tranche exists but final, engine-bound, or user-owned evidence remains; `[!]` means fail-closed or blocked; `[ ]` means queued or not evidenced. An unchecked legacy item is not a completion claim.
+
+## Current reconciliation disposition
+
+| Surface | Status | Evidence boundary |
+| --- | --- | --- |
+| Native selected-state Chemical air raid | `[~]` source-audited | Native reservation, selected-state preservation, shared dispatch, and failed-attempt accounting are source-proven; live consumer validation remains user-owned. |
+| Continuous ordinary-air contamination | `[!]` fail-closed | No verified current-version eligible-activity hook exists; no estimator or fallback is permitted. |
+| Ground Chemical exact-state operation | `[!]` fail-closed | Exact Army Headquarters weather/terrain receipt remains unavailable. |
+| Nerve suppression | `[!]` fail-closed | Exact state/weather/terrain and target-loss clearance remain unavailable. |
+| Hardened Mobile Plant | `[!]` blocked | No exact bombing or facility-capture equipment-loss transaction is exposed. |
+| Native decision-category presentation | `[x]` accepted | Native categories are accepted; no new all-purpose scripted GUI is required. |
+| Window-only animation concepts | `rejected` for the current surface | No accepted custom-window consumer exists for the readiness seal, contamination border, or operation-preparation concepts. |
+| Exact live production shares and long-run AI pacing | `user-owned`/unresolved | Current source provides bounded relative strategy weights, not exact live percentage receipts. |
+| Historically sourced unique national MIO identities | `[!]` unresolved | Current MIO visibility and AI differentiation do not prove those identities. |
+
+The checklist remains open. The dispositions below do not promote an item merely because a source file exists; each completion claim still requires the exact evidence named in the item.
+
 ## Doctrine
 
 - [ ] adoption no longer grants excessive global combat bonuses
@@ -100,6 +118,19 @@
 - [ ] all dynamic requirements have custom tooltips
 - [ ] no hidden mechanics are exposed through final text
 - [ ] localisation matches repository style and encoding
+
+## Achievement conformance
+
+- [x] Quarantine Without Collapse uses exact current and needed truck/train `get_supply_vehicles_temp` receipts, requires 80% of each needed class, writes `cbrn_achievement_outbreak_supply_ready_history` only during catastrophic-outbreak recovery, and requires that receipt in its completion trigger.
+- [x] Starting-country eligibility is written once after accepted startup profiles through `cbrn_achievement_start_country_eligible`, `cbrn_achievement_starting_major_power`, and `cbrn_achievement_starting_civil_defence_profile`; the common eligibility trigger requires the start-country receipt, and A Mask for Every Door requires the civil-defence receipt.
+- [x] A Poisoned Victory requires current Condemnation at or above the accepted high threshold rather than only a historical peak.
+- [!] No Wind Is Friendly remains fail-closed because exact selected-state forecast/friendly-exposure receipts require the unavailable ground Chemical weather/terrain hook; its required writers are `cbrn_achievement_forecast_failure_history`, `cbrn_achievement_friendly_exposure_history`, `cbrn_achievement_operation_recovered_history`, and `cbrn_achievement_no_wind_clean_after_failure_history`.
+- [!] The Antidote Arrived remains fail-closed because its response receipts are written only by `cbrn_achievement_record_nerve_response`, whose only caller is the exact nerve-suppression state transaction, and Sarin/Soman suppression lacks exact condition/target-loss receipts.
+- [!] Unbroken Supply Corridor remains fail-closed because no exact assigned-Army supply-ratio or major-offensive-objective receipt exists; `cbrn_achievement_corridor_operational_history`, `cbrn_achievement_corridor_supply_objective_history`, `cbrn_achievement_corridor_state_count`, and `cbrn_achievement_corridor_supply_days` have no current writers.
+- [!] Air Is Still Breathable is unresolved because its accepted prompt requires any major or regional power with enemy Chemical use, while no accepted CBRN regional-power definition or gate exists. The Event 006-specific `is_independence_wave_regional_power` predicate must not be reused, and the startup major-power receipt is not itself an accepted regional definition.
+- [ ] The remaining named achievements require final reachability, localisation, icon, anti-exploit, and package scenario audit evidence.
+
+Generic achievement registry `possible = { always = yes }` is presentation-only; happened predicates enforce the startup and campaign receipts. No proxy receipt, estimator, neutral receipt, or fallback is accepted for the fail-closed achievements.
 
 ## Assets
 
