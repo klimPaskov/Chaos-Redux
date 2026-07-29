@@ -1,0 +1,981 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE RESPONSE TRIGGERS
+# ============================================================================
+# Country and state predicates for the selected-state Black Plague response
+# package. Human decisions are bound to the state selected on the shared
+# disease board; AI countries evaluate every eligible controlled state. Costs
+# use state-owned population-scaled quotes and country-owned capacity values.
+# ============================================================================
+
+black_plague_country_can_direct_response = {
+	exists = yes
+	black_plague_country_is_human_host = yes
+	has_global_flag = black_plague_system_started
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	NOT = { has_global_flag = world_end }
+}
+
+black_plague_response_decisions_are_visible = {
+	black_plague_country_can_direct_response = yes
+	OR = {
+		is_ai = yes
+		disease_containment_board_is_black_plague_selected = yes
+	}
+}
+
+# STATE scope; ROOT is the responding country.
+black_plague_response_state_is_selected_or_ai_target = {
+	is_controlled_by = ROOT
+	OR = {
+		ROOT = { is_ai = yes }
+		AND = {
+			ROOT = {
+				is_ai = no
+				has_variable = black_plague_selected_response_state
+			}
+			check_variable = {
+				var = id
+				value = ROOT.black_plague_selected_response_state
+				compare = equals
+			}
+		}
+	}
+}
+
+# STATE scope; ROOT is the responding country.
+black_plague_response_state_can_accept_actions = {
+	black_plague_state_is_tracked = yes
+	black_plague_response_state_is_selected_or_ai_target = yes
+	NOT = { has_state_flag = black_plague_response_failed_mobilization }
+	NOT = { black_plague_state_is_rat_controlled = yes }
+	NOT = { black_plague_controller_is_rat_country = yes }
+	ROOT = { black_plague_country_can_direct_response = yes }
+}
+
+black_plague_response_state_is_threatened_through_recovery = {
+	OR = {
+		black_plague_state_is_threatened = yes
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+		black_plague_state_is_recovering = yes
+	}
+}
+
+black_plague_response_state_is_incubating_through_recovery = {
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+		black_plague_state_is_recovering = yes
+	}
+}
+
+black_plague_response_state_is_infected_through_recovery = {
+	OR = {
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+		black_plague_state_is_recovering = yes
+	}
+}
+
+black_plague_response_state_is_incubating_through_contained = {
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+		black_plague_state_is_contained = yes
+	}
+}
+
+black_plague_response_state_is_incubating_through_collapsed = {
+	OR = {
+		black_plague_state_is_incubating = yes
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+	}
+}
+
+black_plague_response_state_is_infected_through_collapsed = {
+	OR = {
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+	}
+}
+
+black_plague_response_state_is_urban_or_dense = {
+	OR = {
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+		is_capital = yes
+		check_variable = {
+			var = state_population_k
+			value = constant:black_plague_response_threshold.dense_state_population_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# A state-level supply/access proof. It is deliberately local and route based;
+# national stockpiles alone do not make an isolated state reachable.
+black_plague_response_state_has_access = {
+	OR = {
+		infrastructure > constant:black_plague_response_threshold.response_access_infrastructure_floor
+		supply_node > constant:black_plague_response_threshold.response_access_hub_floor
+		naval_base > constant:black_plague_response_threshold.response_access_hub_floor
+		any_neighbor_state = {
+			is_controlled_by = ROOT
+			impassable = no
+			infrastructure > constant:black_plague_response_threshold.response_access_infrastructure_floor
+		}
+	}
+}
+
+# STATE scope; ROOT is the responding country.
+black_plague_response_state_has_containment_force = {
+	black_plague_response_state_has_access = yes
+	any_state_division = {
+		OWNER = { tag = ROOT }
+		unit_strength > constant:black_plague_response_penalty.military_force_strength
+		unit_organization > constant:black_plague_response_penalty.military_force_organization
+	}
+}
+
+black_plague_response_state_has_engineer_force = {
+	black_plague_response_state_has_containment_force = yes
+	any_state_division = {
+		OWNER = { tag = ROOT }
+		unit_strength > constant:black_plague_response_penalty.military_force_strength
+		unit_organization > constant:black_plague_response_penalty.military_force_organization
+		division_has_battalion_in_template = engineer
+	}
+}
+
+black_plague_response_civil_lane_is_free = {
+	NOT = { has_state_flag = black_plague_response_civil_lane_active }
+}
+
+black_plague_response_quarantine_lane_is_free = {
+	NOT = { has_state_flag = black_plague_response_quarantine_lane_active }
+}
+
+black_plague_response_cordon_lane_is_free = {
+	NOT = { has_state_flag = black_plague_response_cordon_lane_active }
+}
+
+black_plague_response_treatment_lane_is_free = {
+	NOT = { has_state_flag = black_plague_response_treatment_lane_active }
+}
+
+black_plague_response_rat_clearance_is_supported = {
+	has_state_flag = black_plague_sealed_food_stores_active
+	has_state_flag = black_plague_flea_control_active
+	has_state_flag = black_plague_transport_purge_active
+}
+
+# STATE scope; ROOT is the responding country.
+black_plague_response_state_is_valid_demolition_receiver = {
+	is_controlled_by = ROOT
+	impassable = no
+	black_plague_state_can_receive_ordinary_exposure = yes
+	NOT = { black_plague_state_is_established = yes }
+	check_variable = {
+		var = black_plague_incoming_exposure
+		value = constant:black_plague_response_threshold.demolition_receiver_exposure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_response_threshold.demolition_receiver_infestation_ceiling
+		compare = less_than_or_equals
+	}
+}
+
+black_plague_response_state_has_demolition_receiver = {
+	any_neighbor_state = { black_plague_response_state_is_valid_demolition_receiver = yes }
+}
+
+black_plague_response_state_has_rat_occupation_history = {
+	OR = {
+		has_state_flag = black_plague_rat_occupation_provenance
+		has_state_flag = black_plague_liberated_rat_state
+		check_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+	}
+}
+
+black_plague_response_cleanup_requirements_are_met = {
+	black_plague_state_is_recovering = yes
+	check_variable = {
+		var = black_plague_cleanup_attempts
+		value = constant:black_plague_response_threshold.cleanup_attempts_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_load
+		value = constant:black_plague_threshold.cure_load_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_incoming_exposure
+		value = constant:black_plague_threshold.cure_exposure_ceiling
+		compare = less_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_threshold.cure_rat_ceiling
+		compare = less_than_or_equals
+	}
+	CONTROLLER = {
+		check_variable = {
+			var = black_plague_countermeasure_progress
+			value = constant:black_plague_response_threshold.countermeasure_completion
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_country_has_response_capacity_one = {
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.treatment_reserves
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_country_has_response_capacity_two = {
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.clean_city_rats
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_country_has_response_capacity_three = {
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.clear_sewers
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_country_has_response_capacity_four = {
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.countermeasure
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_country_has_response_capacity_five = {
+	check_variable = {
+		var = black_plague_response_capacity_remaining
+		value = constant:black_plague_response_burden.demolish_lost_blocks
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_country_has_active_severe_state = {
+	any_state_in = {
+		array = global.black_plague_active_states
+		is_controlled_by = ROOT
+		OR = {
+			black_plague_state_is_severe = yes
+			black_plague_state_is_collapsed = yes
+		}
+	}
+}
+
+black_plague_country_has_operating_emergency_hospital = {
+	any_state_in = {
+		array = global.black_plague_response_states
+		is_controlled_by = ROOT
+		has_state_flag = black_plague_emergency_hospital_active
+	}
+}
+
+black_plague_country_is_doctor_wu_host = {
+	doctor_wu_has_current_host = yes
+	OR = {
+		doctor_wu_is_current_host = yes
+		has_country_flag = doctor_wu_foreign_access_active
+	}
+}
+
+black_plague_country_has_live_crisis_board_surface = {
+	OR = {
+		black_plague_country_has_strong_prevention = yes
+		has_country_flag = black_plague_countermeasure_setup_active
+		has_country_flag = black_plague_countermeasure_program_active
+		has_country_flag = black_plague_medical_reserve_batch_active
+		has_variable = black_plague_selected_response_state
+		any_state_in = {
+			array = global.black_plague_active_states
+			NOT = { black_plague_state_is_cured = yes }
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Action eligibility
+# ---------------------------------------------------------------------------
+
+black_plague_response_can_clean_city_rats = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_incubating_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	OR = {
+		black_plague_response_state_is_urban_or_dense = yes
+		naval_base > constant:black_plague_response_threshold.response_access_hub_floor
+	}
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_response_threshold.clean_city_rats_infestation
+		compare = greater_than_or_equals
+	}
+	NOT = { has_state_flag = black_plague_clean_city_rats_cooldown }
+}
+
+black_plague_response_can_seal_food_stores = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_threatened_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	OR = {
+		black_plague_response_state_is_urban_or_dense = yes
+		black_plague_state_has_strategic_transport = yes
+	}
+	OR = {
+		check_variable = {
+			var = black_plague_rat_infestation
+			value = constant:black_plague_response_threshold.seal_food_stores_pressure
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_incoming_exposure
+			value = constant:black_plague_response_threshold.seal_food_stores_pressure
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { has_state_flag = black_plague_seal_food_stores_cooldown }
+}
+
+black_plague_response_can_clear_sewers = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_infected_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	black_plague_response_state_has_engineer_force = yes
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_response_threshold.clear_sewers_infestation
+		compare = greater_than_or_equals
+	}
+	OR = {
+		black_plague_response_state_is_urban_or_dense = yes
+		black_plague_state_has_strategic_transport = yes
+		black_plague_response_state_has_rat_occupation_history = yes
+	}
+	NOT = { has_state_flag = black_plague_clear_sewers_cooldown }
+}
+
+black_plague_response_can_run_flea_control = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_infected_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	OR = {
+		check_variable = {
+			var = black_plague_mortality_pressure
+			value = constant:black_plague_response_threshold.flea_control_mortality
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_infestation
+			value = constant:black_plague_response_threshold.flea_control_infestation
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { has_state_flag = black_plague_flea_control_cooldown }
+}
+
+black_plague_response_can_purge_transport = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_threatened_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	black_plague_state_has_strategic_transport = yes
+	NOT = { has_state_flag = black_plague_purge_transport_cooldown }
+}
+
+black_plague_response_can_demolish_lost_blocks = {
+	black_plague_response_state_can_accept_actions = yes
+	OR = {
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+	}
+	black_plague_response_state_is_urban_or_dense = yes
+	black_plague_response_civil_lane_is_free = yes
+	has_state_flag = black_plague_quarantine_active
+	has_state_flag = black_plague_cordon_active
+	black_plague_response_state_has_demolition_receiver = yes
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_response_threshold.demolish_infestation
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_load
+		value = constant:black_plague_response_threshold.demolish_load
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_cleanup_attempts
+		value = constant:black_plague_response_threshold.cleanup_attempts_required
+		compare = greater_than_or_equals
+	}
+	NOT = { has_state_flag = black_plague_demolition_used_this_episode }
+}
+
+black_plague_response_can_build_emergency_hospital = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_incubating_through_contained = yes
+	black_plague_response_civil_lane_is_free = yes
+	black_plague_response_state_has_access = yes
+	NOT = { has_state_flag = black_plague_emergency_hospital_active }
+	NOT = { has_state_flag = field_hospitals_deployed }
+}
+
+black_plague_countermeasure_hospital_acceleration_available = {
+	check_variable = {
+		var = black_plague_countermeasure_progress
+		value = constant:black_plague_response_threshold.countermeasure_hospital_discount
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_response_can_establish_quarantine = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_incubating_through_collapsed = yes
+	black_plague_response_quarantine_lane_is_free = yes
+	black_plague_response_state_has_access = yes
+	NOT = { has_state_flag = black_plague_quarantine_active }
+	NOT = { has_state_flag = quarantine_measures_active }
+	NOT = { has_state_flag = black_plague_quarantine_cooldown }
+}
+
+black_plague_response_can_establish_cordon = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_infected_through_collapsed = yes
+	black_plague_response_cordon_lane_is_free = yes
+	black_plague_response_state_has_containment_force = yes
+	NOT = { has_state_flag = black_plague_cordon_active }
+	NOT = { has_state_flag = black_plague_cordon_cooldown }
+}
+
+black_plague_response_can_distribute_treatment = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_infected_through_recovery = yes
+	black_plague_response_treatment_lane_is_free = yes
+	check_variable = {
+		var = black_plague_mortality_pressure
+		value = constant:black_plague_response_threshold.treatment_mortality
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_treatment_coverage
+		value = constant:black_plague_response_threshold.treatment_coverage_ceiling
+		compare = less_than
+	}
+	NOT = { has_state_flag = black_plague_treatment_reserves_cooldown }
+}
+
+black_plague_response_can_purge_liberated_warrens = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_infected_through_recovery = yes
+	black_plague_response_civil_lane_is_free = yes
+	black_plague_response_state_has_rat_occupation_history = yes
+	black_plague_response_state_has_engineer_force = yes
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_response_threshold.warren_infestation
+		compare = greater_than_or_equals
+	}
+	NOT = { has_state_flag = black_plague_warrens_purged_this_episode }
+}
+
+black_plague_response_can_begin_countermeasure_program = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_response_state_is_incubating_through_recovery = yes
+	ROOT = {
+		NOT = { has_country_flag = black_plague_countermeasure_setup_active }
+		NOT = { has_country_flag = black_plague_countermeasure_program_active }
+		NOT = { has_country_flag = black_plague_countermeasure_program_completed }
+		OR = {
+			has_tech = tech_field_hospital
+			black_plague_country_has_operating_emergency_hospital = yes
+		}
+		check_variable = {
+			var = black_plague_medical_reserve
+			value = constant:black_plague_medical_reserve.countermeasure_entry_reserve
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+black_plague_response_can_use_doctor_wu_protocol = {
+	black_plague_response_state_can_accept_actions = yes
+	black_plague_state_is_severe = yes
+	black_plague_response_treatment_lane_is_free = yes
+	ROOT = {
+		black_plague_country_is_doctor_wu_host = yes
+		NOT = { has_country_flag = black_plague_doctor_wu_protocol_used }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cancellation predicates
+# ---------------------------------------------------------------------------
+
+# STATE scope; ROOT is the country running the timed decision. These exact
+# records keep a stale target or administratively cleared lane from resolving
+# into a free completion.
+black_plague_response_clean_city_rats_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.clean_city_rats compare = equals }
+}
+
+black_plague_response_seal_food_stores_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.seal_food_stores compare = equals }
+}
+
+black_plague_response_clear_sewers_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.clear_sewers compare = equals }
+}
+
+black_plague_response_flea_control_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.flea_control compare = equals }
+}
+
+black_plague_response_transport_purge_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.purge_transport compare = equals }
+}
+
+black_plague_response_demolition_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.demolish_lost_blocks compare = equals }
+}
+
+black_plague_response_emergency_hospital_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.emergency_hospitals compare = equals }
+}
+
+black_plague_response_quarantine_project_is_active = {
+	has_state_flag = black_plague_response_quarantine_lane_active
+	has_variable = black_plague_response_quarantine_lane_owner
+	has_variable = black_plague_response_quarantine_lane_project
+	check_variable = { var = black_plague_response_quarantine_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_quarantine_lane_project value = constant:black_plague_response_project.quarantine compare = equals }
+}
+
+black_plague_response_cordon_project_is_active = {
+	has_state_flag = black_plague_response_cordon_lane_active
+	has_variable = black_plague_response_cordon_lane_owner
+	has_variable = black_plague_response_cordon_lane_project
+	check_variable = { var = black_plague_response_cordon_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_cordon_lane_project value = constant:black_plague_response_project.cordon compare = equals }
+}
+
+black_plague_response_treatment_reserves_project_is_active = {
+	has_state_flag = black_plague_response_treatment_lane_active
+	has_variable = black_plague_response_treatment_lane_owner
+	has_variable = black_plague_response_treatment_lane_project
+	check_variable = { var = black_plague_response_treatment_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_treatment_lane_project value = constant:black_plague_response_project.treatment_reserves compare = equals }
+}
+
+black_plague_response_warren_purge_project_is_active = {
+	has_state_flag = black_plague_response_civil_lane_active
+	has_variable = black_plague_response_civil_lane_owner
+	has_variable = black_plague_response_civil_lane_project
+	check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.purge_liberated_warrens compare = equals }
+}
+
+black_plague_response_doctor_wu_project_is_active = {
+	has_state_flag = black_plague_response_treatment_lane_active
+	has_variable = black_plague_response_treatment_lane_owner
+	has_variable = black_plague_response_treatment_lane_project
+	check_variable = { var = black_plague_response_treatment_lane_owner value = ROOT compare = equals }
+	check_variable = { var = black_plague_response_treatment_lane_project value = constant:black_plague_response_project.doctor_wu_protocol compare = equals }
+}
+
+# COUNTRY scope. The stored setup site is deliberately part of the contract so
+# a captured, cleared, or replaced site cannot complete the national program.
+black_plague_response_countermeasure_setup_record_is_active = {
+	has_country_flag = black_plague_countermeasure_setup_active
+	has_variable = black_plague_countermeasure_setup_state
+	var:black_plague_countermeasure_setup_state = {
+		is_controlled_by = ROOT
+		has_state_flag = black_plague_countermeasure_site_active
+		has_variable = black_plague_countermeasure_site_owner
+		check_variable = { var = black_plague_countermeasure_site_owner value = ROOT compare = equals }
+		black_plague_state_is_tracked = yes
+		NOT = { black_plague_state_is_rat_controlled = yes }
+		NOT = { black_plague_controller_is_rat_country = yes }
+	}
+}
+
+black_plague_response_active_state_project_is_invalid = {
+	OR = {
+		NOT = { is_controlled_by = ROOT }
+		NOT = { black_plague_state_is_tracked = yes }
+		black_plague_state_is_cured = yes
+		black_plague_state_is_rat_controlled = yes
+		black_plague_controller_is_rat_country = yes
+		ROOT = {
+			OR = {
+				NOT = { exists = yes }
+				has_global_flag = black_plague_terminal_takeover_complete
+				has_global_flag = world_end
+			}
+		}
+	}
+}
+
+black_plague_response_access_project_is_invalid = {
+	OR = {
+		black_plague_response_active_state_project_is_invalid = yes
+		NOT = { black_plague_response_state_has_access = yes }
+	}
+}
+
+black_plague_response_force_project_is_invalid = {
+	OR = {
+		black_plague_response_active_state_project_is_invalid = yes
+		NOT = { black_plague_response_state_has_containment_force = yes }
+	}
+}
+
+black_plague_response_transport_project_is_invalid = {
+	OR = {
+		black_plague_response_active_state_project_is_invalid = yes
+		NOT = { black_plague_state_has_strategic_transport = yes }
+	}
+}
+
+black_plague_response_countermeasure_setup_is_invalid = {
+	OR = {
+		black_plague_response_active_state_project_is_invalid = yes
+		ROOT = { NOT = { black_plague_response_countermeasure_setup_record_is_active = yes } }
+	}
+}
+
+black_plague_response_doctor_wu_project_is_invalid = {
+	OR = {
+		black_plague_response_active_state_project_is_invalid = yes
+		ROOT = { NOT = { black_plague_country_is_doctor_wu_host = yes } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Country target discovery
+# ---------------------------------------------------------------------------
+
+black_plague_country_has_clean_city_rats_target = {
+	any_controlled_state = { black_plague_response_can_clean_city_rats = yes }
+}
+
+black_plague_country_has_seal_food_stores_target = {
+	any_controlled_state = { black_plague_response_can_seal_food_stores = yes }
+}
+
+black_plague_country_has_clear_sewers_target = {
+	any_controlled_state = { black_plague_response_can_clear_sewers = yes }
+}
+
+black_plague_country_has_flea_control_target = {
+	any_controlled_state = { black_plague_response_can_run_flea_control = yes }
+}
+
+black_plague_country_has_transport_purge_target = {
+	any_controlled_state = { black_plague_response_can_purge_transport = yes }
+}
+
+black_plague_country_has_demolition_target = {
+	any_controlled_state = { black_plague_response_can_demolish_lost_blocks = yes }
+}
+
+black_plague_country_has_emergency_hospital_target = {
+	any_controlled_state = { black_plague_response_can_build_emergency_hospital = yes }
+}
+
+black_plague_country_has_quarantine_target = {
+	any_controlled_state = { black_plague_response_can_establish_quarantine = yes }
+}
+
+black_plague_country_has_cordon_target = {
+	any_controlled_state = { black_plague_response_can_establish_cordon = yes }
+}
+
+black_plague_country_has_treatment_target = {
+	any_controlled_state = { black_plague_response_can_distribute_treatment = yes }
+}
+
+black_plague_country_has_warren_purge_target = {
+	any_controlled_state = { black_plague_response_can_purge_liberated_warrens = yes }
+}
+
+black_plague_country_has_countermeasure_target = {
+	any_controlled_state = { black_plague_response_can_begin_countermeasure_program = yes }
+}
+
+black_plague_country_has_doctor_wu_target = {
+	any_controlled_state = { black_plague_response_can_use_doctor_wu_protocol = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Exact material and capacity gates
+# ---------------------------------------------------------------------------
+
+black_plague_response_target_has_current_quotes = {
+	FROM = {
+		has_state_flag = black_plague_response_quotes_ready
+		has_variable = black_plague_response_quote_owner
+		check_variable = { var = black_plague_response_quote_owner value = ROOT compare = equals }
+	}
+}
+
+black_plague_can_pay_clean_city_rats = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_two = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.clean_city_rats }
+	NOT = { has_manpower < FROM.black_plague_quote_clean_rats_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_clean_rats_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_clean_rats_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_clean_rats_fuel|.0]" }
+	NOT = { has_stability < constant:black_plague_response_cost_clean_city_rats.stability }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = FROM.black_plague_quote_clean_rats_medical_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_seal_food_stores = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_one = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.seal_food_stores }
+	NOT = { has_manpower < FROM.black_plague_quote_seal_stores_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_seal_stores_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_seal_stores_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_seal_stores_fuel|.0]" }
+	NOT = { has_stability < constant:black_plague_response_cost_seal_food_stores.stability }
+}
+
+black_plague_can_pay_clear_sewers = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_three = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.clear_sewers }
+	NOT = { has_manpower < FROM.black_plague_quote_clear_sewers_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_clear_sewers_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_clear_sewers_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_clear_sewers_fuel|.0]" }
+	NOT = { has_stability < constant:black_plague_response_cost_clear_sewers.stability }
+}
+
+black_plague_can_pay_flea_control = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_one = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.flea_control }
+	NOT = { has_manpower < FROM.black_plague_quote_flea_control_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_flea_control_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_flea_control_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_flea_control_fuel|.0]" }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = FROM.black_plague_quote_flea_control_medical_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_transport_purge = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_two = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.purge_transport }
+	NOT = { has_manpower < FROM.black_plague_quote_transport_purge_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_transport_purge_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_transport_purge_motorized } }
+	NOT = { has_equipment = { train_equipment < FROM.black_plague_quote_transport_purge_trains } }
+	NOT = { has_equipment = { convoy_1 < FROM.black_plague_quote_transport_purge_convoys } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_transport_purge_fuel|.0]" }
+	NOT = { command_power < constant:black_plague_response_cost_purge_transport.command_power }
+	NOT = { has_war_support < constant:black_plague_response_cost_purge_transport.war_support }
+}
+
+black_plague_can_pay_demolish_lost_blocks = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_five = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.demolish_lost_blocks }
+	NOT = { has_manpower < FROM.black_plague_quote_demolition_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_demolition_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_demolition_motorized } }
+	NOT = { has_equipment = { train_equipment < FROM.black_plague_quote_demolition_trains } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_demolition_fuel|.0]" }
+	NOT = { command_power < constant:black_plague_response_cost_demolish_lost_blocks.command_power }
+	NOT = { has_stability < constant:black_plague_response_cost_demolish_lost_blocks.stability }
+	NOT = { has_war_support < constant:black_plague_response_cost_demolish_lost_blocks.war_support }
+}
+
+black_plague_can_pay_emergency_hospital = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_three = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.emergency_hospitals_setup }
+	NOT = { has_manpower < FROM.black_plague_quote_hospital_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_hospital_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_hospital_motorized } }
+	NOT = { has_equipment = { train_equipment < FROM.black_plague_quote_hospital_trains } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_hospital_fuel|.0]" }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = FROM.black_plague_quote_hospital_medical_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_quarantine = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_two = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.quarantine_setup }
+	NOT = { has_manpower < FROM.black_plague_quote_quarantine_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_quarantine_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_quarantine_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_quarantine_fuel|.0]" }
+	NOT = { command_power < constant:black_plague_response_cost_quarantine.command_power }
+	NOT = { has_stability < constant:black_plague_response_cost_quarantine.stability }
+	NOT = { has_war_support < constant:black_plague_response_cost_quarantine.war_support }
+}
+
+black_plague_can_pay_cordon = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_three = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.cordon_setup }
+	NOT = { has_manpower < FROM.black_plague_quote_cordon_manpower }
+	NOT = { has_equipment = { infantry_equipment < FROM.black_plague_quote_cordon_infantry } }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_cordon_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_cordon_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_cordon_fuel|.0]" }
+	NOT = { command_power < constant:black_plague_response_cost_cordon.command_power }
+	NOT = { has_stability < constant:black_plague_response_cost_cordon.stability }
+	NOT = { has_war_support < constant:black_plague_response_cost_cordon.war_support }
+}
+
+black_plague_can_pay_treatment_reserves = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_one = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.treatment_reserves }
+	NOT = { has_manpower < FROM.black_plague_quote_treatment_manpower }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_treatment_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_treatment_motorized } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_treatment_fuel|.0]" }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = FROM.black_plague_quote_treatment_medical_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_warren_purge = {
+	black_plague_response_target_has_current_quotes = yes
+	black_plague_country_has_response_capacity_four = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.purge_liberated_warrens }
+	NOT = { has_manpower < FROM.black_plague_quote_warren_purge_manpower }
+	NOT = { has_equipment = { infantry_equipment < FROM.black_plague_quote_warren_purge_infantry } }
+	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_warren_purge_support } }
+	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_warren_purge_motorized } }
+	NOT = { has_equipment = { train_equipment < FROM.black_plague_quote_warren_purge_trains } }
+	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_warren_purge_fuel|.0]" }
+	NOT = { command_power < constant:black_plague_response_cost_purge_liberated_warrens.command_power }
+	NOT = { has_stability < constant:black_plague_response_cost_purge_liberated_warrens.stability }
+	NOT = { has_war_support < constant:black_plague_response_cost_purge_liberated_warrens.war_support }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = FROM.black_plague_quote_warren_purge_medical_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_medical_reserve_batch = {
+	black_plague_country_has_response_capacity_two = yes
+	NOT = { has_country_flag = black_plague_medical_reserve_batch_active }
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_medical_reserve_cost.civilian_factories }
+	NOT = { has_manpower < constant:black_plague_medical_reserve_cost.manpower }
+	NOT = { has_equipment = { support_equipment < constant:black_plague_medical_reserve_cost.support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_medical_reserve_cost.motorized_equipment } }
+	NOT = { has_fuel < constant:black_plague_medical_reserve_cost.fuel }
+	check_variable = {
+		var = black_plague_medical_reserve_room
+		value = black_plague_medical_reserve_batch
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_countermeasure_program = {
+	black_plague_country_has_response_capacity_four = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.countermeasure_setup }
+	NOT = { has_manpower < constant:black_plague_response_cost_countermeasure.manpower }
+	NOT = { has_equipment = { support_equipment < constant:black_plague_response_cost_countermeasure.support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_response_cost_countermeasure.motorized_equipment } }
+	NOT = { has_equipment = { train_equipment < constant:black_plague_response_cost_countermeasure.trains } }
+	NOT = { has_fuel < constant:black_plague_response_cost_countermeasure.fuel }
+	check_variable = {
+		var = black_plague_medical_reserve
+		value = constant:black_plague_medical_reserve.countermeasure_entry_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_can_pay_doctor_wu_protocol = {
+	black_plague_country_has_response_capacity_one = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.doctor_wu_protocol }
+	NOT = { has_manpower < constant:black_plague_response_cost_doctor_wu.manpower }
+	NOT = { has_equipment = { support_equipment < constant:black_plague_response_cost_doctor_wu.support_equipment } }
+	NOT = { has_equipment = { motorized_equipment < constant:black_plague_response_cost_doctor_wu.motorized_equipment } }
+	NOT = { has_fuel < constant:black_plague_response_cost_doctor_wu.fuel }
+}

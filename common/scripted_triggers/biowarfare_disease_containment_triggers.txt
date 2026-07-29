@@ -29,6 +29,14 @@ disease_containment_board_category_is_visible = {
 		has_active_biowarfare_outbreak = yes
 		has_neighbor_with_active_biowarfare_outbreak = yes
 		has_country_flag = black_plague_crisis_board_available
+		any_state_in = {
+			array = global.black_plague_active_states
+			black_plague_state_is_tracked = yes
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
 	}
 }
 
@@ -289,25 +297,41 @@ disease_containment_board_entry_is_response_target = {
 	}
 }
 
-disease_containment_board_view_state_is_controlled = {
+disease_containment_board_view_state_has_private_access = {
 	disease_containment_board_has_valid_view_state = yes
-	var:disease_containment_board_view_state = { is_controlled_by = ROOT }
+	var:disease_containment_board_view_state = {
+		OR = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
+	}
 }
 
 disease_containment_board_view_state_is_public_foreign = {
 	disease_containment_board_has_valid_view_state = yes
-	var:disease_containment_board_view_state = { NOT = { is_controlled_by = ROOT } }
+	var:disease_containment_board_view_state = {
+		NOT = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+	}
 }
 
 black_plague_country_has_uncontrolled_active_state = {
 	any_state_in = {
 		array = global.black_plague_active_states
-		is_controlled_by = ROOT
+		OR = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
 		OR = {
 			black_plague_state_is_incubating = yes
 			black_plague_state_is_infected = yes
 			black_plague_state_is_severe = yes
 			black_plague_state_is_collapsed = yes
+			black_plague_state_is_rat_controlled = yes
 		}
 	}
 }
@@ -315,7 +339,10 @@ black_plague_country_has_uncontrolled_active_state = {
 black_plague_country_has_containment_state = {
 	any_state_in = {
 		array = global.black_plague_active_states
-		is_controlled_by = ROOT
+		OR = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
 		OR = {
 			black_plague_state_is_contained = yes
 			black_plague_state_is_recovering = yes
@@ -326,11 +353,31 @@ black_plague_country_has_containment_state = {
 black_plague_country_has_monitored_state = {
 	any_state_in = {
 		array = global.black_plague_active_states
-		is_controlled_by = ROOT
 		OR = {
-			black_plague_state_is_threatened = yes
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
+		OR = {
 			black_plague_state_is_cured = yes
 			has_state_flag = black_plague_monitoring_memory
+		}
+	}
+}
+
+black_plague_country_has_external_source = {
+	any_state_in = {
+		array = global.black_plague_source_states
+		NOT = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+		any_neighbor_state = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
 		}
 	}
 }
@@ -339,9 +386,12 @@ black_plague_country_is_exposed = {
 	OR = {
 		any_state_in = {
 			array = global.black_plague_active_states
-			is_controlled_by = ROOT
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
 			black_plague_state_is_threatened = yes
 		}
-		has_neighbor_with_active_biowarfare_outbreak = yes
+		black_plague_country_has_external_source = yes
 	}
 }

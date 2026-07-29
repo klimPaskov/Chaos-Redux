@@ -1,0 +1,267 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE WEAPONIZATION EFFECTS
+# ============================================================================
+# Abstract game effects for the long Black Plague special project. This file
+# models scientific governance, iteration roles, project approaches, accidents,
+# condemnation, and native plague-bomb delivery. It intentionally contains no
+# real-world laboratory or pathogen instructions.
+# ============================================================================
+
+# COUNTRY scope. Initializes the shared countermeasure/condemnation ledger.
+black_plague_weaponization_initialize_country = {
+	if = { limit = { NOT = { has_variable = black_plague_weaponization_progress } } set_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.minimum_progress } }
+	if = { limit = { NOT = { has_variable = black_plague_weaponization_risk } } set_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.initial_risk } }
+	if = { limit = { NOT = { has_variable = black_plague_weaponization_iteration_count } } set_variable = { black_plague_weaponization_iteration_count = constant:black_plague_weaponization_program.zero } }
+	if = { limit = { NOT = { has_variable = black_plague_weaponization_last_role } } set_variable = { black_plague_weaponization_last_role = constant:black_plague_evolution_role.field_surveillance } }
+	if = { limit = { NOT = { has_variable = black_plague_weaponization_approach } } set_variable = { black_plague_weaponization_approach = constant:black_plague_weaponization_approach.safety_first } }
+	black_plague_weaponization_clamp_country_values = yes
+	condemnation_initialize_country = yes
+}
+
+black_plague_weaponization_clamp_country_values = {
+	clamp_variable = { var = black_plague_weaponization_progress min = constant:black_plague_weaponization_program.minimum_progress max = constant:black_plague_weaponization_program.maximum_progress }
+	clamp_variable = { var = black_plague_weaponization_risk min = constant:black_plague_weaponization_program.zero max = constant:black_plague_weaponization_program.risk_cap }
+}
+
+# COUNTRY scope. Input: temporary black_plague_weaponization_role. Every
+# option maps to a distinct named role flag so the eighteen-role pool remains
+# auditable rather than collapsing into a generic iteration counter.
+black_plague_weaponization_apply_iteration_role = {
+	black_plague_weaponization_initialize_country = yes
+	black_plague_achievement_record_weaponization_started = yes
+	set_variable = { black_plague_weaponization_last_role = black_plague_weaponization_role }
+	add_to_variable = { black_plague_weaponization_iteration_count = constant:black_plague_weaponization_program.one }
+	add_to_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.progress_balanced }
+	add_to_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_gain }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.field_surveillance } } set_country_flag = black_plague_weaponization_role_field_surveillance }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.clinical_sampling } } set_country_flag = black_plague_weaponization_role_clinical_sampling }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.logistics_mapping } } set_country_flag = black_plague_weaponization_role_logistics_mapping }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.vector_ecology } } set_country_flag = black_plague_weaponization_role_vector_ecology }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.public_health } } set_country_flag = black_plague_weaponization_role_public_health }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.military_quarantine } } set_country_flag = black_plague_weaponization_role_military_quarantine }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.rail_inspection } } set_country_flag = black_plague_weaponization_role_rail_inspection }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.port_security } } set_country_flag = black_plague_weaponization_role_port_security }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.refugee_tracking } } set_country_flag = black_plague_weaponization_role_refugee_tracking }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.countermeasure_modelling } } set_country_flag = black_plague_weaponization_role_countermeasure_modelling }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.industrial_protection } } set_country_flag = black_plague_weaponization_role_industrial_protection }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.foreign_exchange } } set_country_flag = black_plague_weaponization_role_foreign_exchange }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.intelligence_theft } } set_country_flag = black_plague_weaponization_role_intelligence_theft }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.ethics_review } } set_country_flag = black_plague_weaponization_role_ethics_review }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.sterilization_engineering } } set_country_flag = black_plague_weaponization_role_sterilization_engineering }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.burrow_cartography } } set_country_flag = black_plague_weaponization_role_burrow_cartography }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.royal_cryptography } } set_country_flag = black_plague_weaponization_role_royal_cryptography }
+	if = { limit = { check_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.terminal_campaign } } set_country_flag = black_plague_weaponization_role_terminal_campaign }
+	black_plague_weaponization_clamp_country_values = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = black_plague_weaponization_risk
+				value = constant:black_plague_weaponization_program.accident_risk_threshold
+				compare = greater_than_or_equals
+			}
+			NOT = { has_country_flag = black_plague_weaponization_accident_cooldown }
+		}
+		random_list = {
+			18 = { black_plague_weaponization_trigger_accident = yes }
+			82 = { }
+		}
+	}
+}
+
+# COUNTRY scope. One iteration failure creates a state-level accidental return
+# outbreak and a visible Condemnation source, without bypassing normal disease
+# lifecycle or death accounting.
+black_plague_weaponization_trigger_accident = {
+	black_plague_achievement_record_weaponization_started = yes
+	set_country_flag = black_plague_weaponization_accident_history
+	set_country_flag = black_plague_weaponization_accident_active
+	set_country_flag = black_plague_achievement_return_outbreak_recorded
+	set_variable = { black_plague_achievement_return_outbreak_owner_id = THIS.id }
+	set_temp_variable = { black_plague_weaponization_accident_days = constant:black_plague_weaponization_program.accident_cooldown_days }
+	set_country_flag = { flag = black_plague_weaponization_accident_cooldown days = black_plague_weaponization_accident_days }
+	subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_loss }
+	random_controlled_state = {
+		limit = {
+			impassable = no
+			NOT = { black_plague_state_is_rat_controlled = yes }
+		}
+		set_temp_variable = { black_plague_exposure_amount = constant:black_plague_weaponization_program.accident_exposure }
+		set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
+		set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.accidental }
+		black_plague_apply_exposure = yes
+		set_state_flag = black_plague_accidental_provenance
+		set_state_flag = black_plague_achievement_return_outbreak_state
+	}
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = constant:black_plague_weaponization_program.condemnation_accident }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { condemnation_civilian_deaths = constant:black_plague_weaponization_program.accident_exposure }
+	set_temp_variable = { condemnation_contamination_value = constant:black_plague_weaponization_program.accident_exposure }
+	set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+	condemnation_add_source = yes
+	country_event = { id = chaosx_nr20_weaponization.1 }
+}
+
+# COUNTRY scope. The four approach decisions pay real material, military, and
+# fuel costs before changing the scientific posture.
+black_plague_weaponization_pay_approach_cost = {
+	remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.approach_support_equipment }
+	remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_weaponization_program.approach_motorized_equipment }
+	set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.approach_command_power }
+	multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
+	add_command_power = black_plague_weaponization_command_debit
+	set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.approach_fuel }
+	subtract_from_fuel = black_plague_weaponization_fuel_debit
+}
+
+black_plague_weaponization_choose_safety_first = {
+	if = {
+		limit = { black_plague_weaponization_can_choose_approach = yes }
+		black_plague_weaponization_pay_approach_cost = yes
+		set_variable = { black_plague_weaponization_approach = constant:black_plague_weaponization_approach.safety_first }
+		set_country_flag = black_plague_weaponization_approach_chosen
+		set_country_flag = black_plague_weaponization_safety_first
+		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_gain }
+		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
+		black_plague_weaponization_clamp_country_values = yes
+	}
+}
+
+black_plague_weaponization_choose_military_acceleration = {
+	if = {
+		limit = { black_plague_weaponization_can_choose_approach = yes }
+		black_plague_weaponization_pay_approach_cost = yes
+		set_variable = { black_plague_weaponization_approach = constant:black_plague_weaponization_approach.military_acceleration }
+		set_country_flag = black_plague_weaponization_approach_chosen
+		set_country_flag = black_plague_weaponization_military_acceleration
+		add_to_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.progress_accelerated }
+		add_to_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_gain }
+		subtract_from_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_accelerated_loss }
+		black_plague_weaponization_clamp_country_values = yes
+	}
+}
+
+black_plague_weaponization_choose_dual_use = {
+	if = {
+		limit = { black_plague_weaponization_can_choose_approach = yes }
+		black_plague_weaponization_pay_approach_cost = yes
+		set_variable = { black_plague_weaponization_approach = constant:black_plague_weaponization_approach.dual_use }
+		set_country_flag = black_plague_weaponization_approach_chosen
+		set_country_flag = black_plague_weaponization_dual_use
+		add_to_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.progress_balanced }
+		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
+		add_to_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_gain }
+		black_plague_weaponization_clamp_country_values = yes
+	}
+}
+
+black_plague_weaponization_choose_defensive_conversion = {
+	if = {
+		limit = { black_plague_weaponization_can_choose_approach = yes }
+		black_plague_weaponization_pay_approach_cost = yes
+		set_variable = { black_plague_weaponization_approach = constant:black_plague_weaponization_approach.defensive_conversion }
+		set_country_flag = black_plague_weaponization_approach_chosen
+		set_country_flag = black_plague_weaponization_defensive_conversion
+		set_country_flag = black_plague_weaponization_defensive_history
+		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
+		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.accident_risk_gain }
+		black_plague_weaponization_clamp_country_values = yes
+	}
+}
+
+# COUNTRY scope. Project output. Defensive conversion consumes the project
+# without creating an offensive stockpile; every other route grants one native
+# plague_bomb_1 payload and the existing delivery technology.
+black_plague_weaponization_complete_program = {
+	black_plague_weaponization_initialize_country = yes
+	black_plague_achievement_record_weaponization_started = yes
+	set_variable = { black_plague_weaponization_progress = constant:black_plague_weaponization_program.maximum_progress }
+	if = {
+		limit = { has_country_flag = black_plague_weaponization_defensive_conversion }
+		set_country_flag = black_plague_weaponization_defensive_program_complete
+		clr_country_flag = black_plague_weaponization_project_active
+		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
+	}
+	else = {
+		set_country_flag = black_plague_weaponization_complete
+		set_country_flag = black_plague_weaponized_delivery_ready
+		set_country_flag = black_plague_weaponization_stockpile_active
+		add_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.weapon_stockpile_batch }
+		set_technology = { plague_bomb_delivery_systems = 1 popup = no }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+		set_temp_variable = { condemnation_base_gain = constant:black_plague_weaponization_program.condemnation_completion }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+		set_temp_variable = { condemnation_civilian_deaths = constant:black_plague_weaponization_program.zero }
+		set_temp_variable = { condemnation_contamination_value = constant:black_plague_weaponization_program.zero }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+		condemnation_add_source = yes
+		set_country_flag = used_unconventional_weapon
+		country_event = { id = chaosx_nr20_weaponization.2 }
+	}
+	clr_country_flag = black_plague_weaponization_project_active
+	black_plague_weaponization_clamp_country_values = yes
+}
+
+# COUNTRY scope. Called from the shared Event 020 country callback. Stockpile
+# failures are rare and consume one native payload before seeding an accidental
+# state; no world-wide loop is introduced.
+black_plague_weaponization_process_stockpile = {
+	if = {
+		limit = {
+			has_country_flag = black_plague_weaponization_stockpile_active
+			has_equipment = { plague_bomb_1 > 0 }
+			NOT = { has_country_flag = black_plague_weaponization_accident_cooldown }
+		}
+		random_list = {
+			2 = { remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.weapon_stockpile_batch } black_plague_weaponization_trigger_accident = yes }
+			98 = { }
+		}
+	}
+}
+
+# COUNTRY scope with FROM = selected STATE. Uses the ordinary Event 020
+# exposure function so deaths, spread, phase transition, and mapmode state all
+# remain unified with natural and rat-origin outbreaks.
+black_plague_weaponization_deliver_to_state = {
+	if = {
+		limit = {
+			black_plague_weaponization_delivery_is_ready = yes
+			FROM = { black_plague_weaponization_delivery_state_is_valid = yes }
+		}
+		black_plague_achievement_record_weaponization_started = yes
+		remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.weapon_stockpile_batch }
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.delivery_support_equipment }
+		set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.delivery_command_power }
+		multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
+		add_command_power = black_plague_weaponization_command_debit
+		set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.delivery_fuel }
+		subtract_from_fuel = black_plague_weaponization_fuel_debit
+		FROM = {
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_weaponization_program.delivery_exposure }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.weaponized }
+			black_plague_apply_exposure = yes
+			set_state_flag = black_plague_weaponized_provenance
+			set_state_flag = black_plague_weaponization_publicly_attributed
+		}
+		set_country_flag = black_plague_weaponization_delivery_history
+		set_country_flag = black_plague_achievement_weaponization_delivery_history
+		set_country_flag = used_bioweapon
+		set_country_flag = used_unconventional_weapon
+		set_variable = { black_plague_weaponization_delivery_count = constant:black_plague_weaponization_program.one }
+		set_temp_variable = { black_plague_weaponization_delivery_days = constant:black_plague_weaponization_program.delivery_cooldown_days }
+		set_country_flag = { flag = black_plague_weaponization_delivery_cooldown days = black_plague_weaponization_delivery_days }
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+		set_temp_variable = { condemnation_base_gain = constant:black_plague_weaponization_program.condemnation_delivery }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.mass_death }
+		set_temp_variable = { condemnation_civilian_deaths = constant:black_plague_weaponization_program.delivery_exposure }
+		set_temp_variable = { condemnation_contamination_value = constant:black_plague_weaponization_program.delivery_exposure }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+		set_temp_variable = { condemnation_victim_country = FROM.CONTROLLER }
+		condemnation_add_source = yes
+		country_event = { id = chaosx_nr20_weaponization.3 }
+	}
+}

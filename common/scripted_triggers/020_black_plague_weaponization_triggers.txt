@@ -1,0 +1,121 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE WEAPONIZATION TRIGGERS
+# ============================================================================
+# Country and state gates for the abstract Black Plague weaponization program.
+# The project reuses the native plague_bomb technology and stockpile while
+# adding Event 020 attribution, accidents, countermeasure pressure, and the
+# shared disease-board delivery route.
+# ============================================================================
+
+# COUNTRY scope.
+black_plague_weaponization_actor_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_global_flag = world_end }
+	has_global_flag = black_plague_system_active
+	OR = {
+		black_plague_country_has_active_severe_state = yes
+		any_controlled_state = { black_plague_state_is_infected_or_worse = yes }
+	}
+}
+
+# COUNTRY scope. Clinical access is earned through the shared countermeasure
+# board, Doctor Wu bridge, or the native field-hospital / pathogen systems.
+black_plague_weaponization_has_sample_access = {
+	OR = {
+		has_country_flag = black_plague_countermeasure_findings_available
+		has_country_flag = black_plague_doctor_wu_foreign_mission
+		has_country_flag = doctor_wu_current_host
+		has_tech = pathogen_handling_protocols
+		has_tech = bio_surveillance_networks
+	}
+}
+
+black_plague_weaponization_project_is_available = {
+	black_plague_weaponization_actor_is_valid = yes
+	black_plague_weaponization_has_sample_access = yes
+	NOT = { is_special_project_completed = sp:black_plague_weaponization_program }
+	NOT = { has_country_flag = black_plague_weaponization_condemned }
+	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+	OR = {
+		is_special_project_completed = sp:plague_bomb
+		has_tech = plague_bomb_delivery_systems
+	}
+}
+
+black_plague_weaponization_project_is_active = {
+	black_plague_weaponization_actor_is_valid = yes
+	is_special_project_being_researched = sp:black_plague_weaponization_program
+	NOT = { has_country_flag = black_plague_weaponization_complete }
+	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+}
+
+black_plague_weaponization_approach_can_continue = {
+	black_plague_weaponization_project_is_active = yes
+	NOT = { has_country_flag = black_plague_weaponization_approach_chosen }
+}
+
+black_plague_weaponization_can_choose_approach = {
+	black_plague_weaponization_approach_can_continue = yes
+	has_equipment = { support_equipment > constant:black_plague_weaponization_program.approach_support_equipment }
+	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.approach_motorized_equipment }
+	command_power > constant:black_plague_weaponization_program.approach_command_power
+	has_fuel > constant:black_plague_weaponization_program.approach_fuel
+}
+
+black_plague_weaponization_can_begin = {
+	black_plague_weaponization_project_is_available = yes
+	has_equipment = { support_equipment > constant:black_plague_weaponization_program.minimum_support_equipment }
+	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.minimum_motorized_equipment }
+	has_fuel > constant:black_plague_weaponization_program.minimum_fuel
+}
+
+# COUNTRY scope. Delivery stays available after the actor's own outbreak has
+# ended so a completed native payload can seed a hostile state through the
+# ordinary Event 020 exposure lifecycle.
+black_plague_weaponization_delivery_actor_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_global_flag = world_end }
+	has_global_flag = black_plague_system_active
+}
+
+# COUNTRY scope. Native delivery integration remains mandatory: a completed
+# plague_bomb project or its delivery technology plus one real payload.
+black_plague_weaponization_delivery_is_ready = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponized_delivery_ready
+	OR = {
+		is_special_project_completed = sp:plague_bomb
+		has_tech = plague_bomb_delivery_systems
+	}
+	has_equipment = { plague_bomb_1 > 0 }
+	has_equipment = { support_equipment > constant:black_plague_weaponization_program.delivery_support_equipment }
+	command_power > constant:black_plague_weaponization_program.delivery_command_power
+	has_fuel > constant:black_plague_weaponization_program.delivery_fuel
+	NOT = { has_country_flag = black_plague_weaponization_delivery_cooldown }
+}
+
+# STATE scope. ROOT is the actor country when used from a state-targeted
+# decision. The native payload can seed any reachable enemy human state, and
+# black_plague_apply_exposure handles clear and cured states without a bypass.
+black_plague_weaponization_target_state_is_valid = {
+	exists = yes
+	CONTROLLER = {
+		exists = yes
+		has_war_with = ROOT
+	}
+	black_plague_state_can_receive_exposure = yes
+	NOT = { black_plague_state_is_rat_controlled = yes }
+	NOT = { has_state_flag = black_plague_weaponized_provenance }
+}
+
+black_plague_weaponization_delivery_state_is_valid = {
+	ROOT = { black_plague_weaponization_delivery_is_ready = yes }
+	black_plague_weaponization_target_state_is_valid = yes
+}

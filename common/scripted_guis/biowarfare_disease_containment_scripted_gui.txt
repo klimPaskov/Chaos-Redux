@@ -53,17 +53,34 @@ scripted_gui = {
 			disease_containment_board_tab_black_plague_click = { disease_containment_board_select_black_plague_tab = yes }
 			disease_containment_board_status_filter_click = { disease_containment_board_cycle_status_filter = yes }
 			disease_containment_board_ownership_filter_click = { disease_containment_board_cycle_ownership_filter = yes }
+			disease_containment_board_region_filter_click = { disease_containment_board_toggle_region_filter = yes }
 			disease_containment_board_urgency_filter_click = { disease_containment_board_cycle_urgency_filter = yes }
 			disease_containment_board_state_entry_select_click = { ROOT = { disease_containment_board_select_state_entry = yes } }
 		}
 
 		triggers = {
 			disease_containment_board_selected_card_visible = { disease_containment_board_has_valid_view_state = yes }
-			disease_containment_board_selected_card_private_values_visible = { disease_containment_board_view_state_is_controlled = yes }
-			disease_containment_board_selected_card_public_values_visible = { disease_containment_board_view_state_is_public_foreign = yes }
+			disease_containment_board_selected_card_private_values_visible = {
+				AND = {
+					disease_containment_board_view_state_has_private_access = yes
+					NOT = { disease_containment_board_is_black_plague_selected = yes }
+				}
+			}
+			disease_containment_board_selected_card_public_values_visible = {
+				AND = {
+					disease_containment_board_view_state_is_public_foreign = yes
+					NOT = { disease_containment_board_is_black_plague_selected = yes }
+				}
+			}
 			disease_containment_board_response_target_visible = { black_plague_country_has_valid_response_state = yes }
 			disease_containment_board_black_plague_metrics_visible = { disease_containment_board_is_black_plague_selected = yes }
 			disease_containment_board_goto_click_enabled = { disease_containment_board_has_valid_view_state = yes }
+			disease_containment_board_region_filter_click_enabled = {
+				OR = {
+					check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region }
+					disease_containment_board_has_valid_view_state = yes
+				}
+			}
 			disease_containment_board_state_entry_select_click_enabled = { always = yes }
 			disease_containment_board_state_entry_selected_visible = { disease_containment_board_entry_is_selected = yes }
 			disease_containment_board_state_entry_response_visible = { disease_containment_board_entry_is_response_target = yes }

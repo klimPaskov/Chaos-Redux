@@ -4,8 +4,11 @@ add_namespace = chaosx.nr20
 # CHAOS REDUX - EVENT 020 BLACK PLAGUE ENTRY AND RUNTIME
 # ============================================================================
 # The root remains chaosx.nr20.1 for the shared event dispatcher. It delegates
-# every natural start to one canonical weighted-origin effect. Event .900 is the
-# generation- and due-day-guarded state-owned scheduler callback; it is never a
+# every natural start to one canonical weighted-origin effect. Event .900 is
+# the generation- and due-day-guarded state-owned scheduler callback. Event .901
+# returns each open containment board to a country ROOT before rebuilding it.
+# Event .902 gives each registered responder a country ROOT for capacity,
+# countermeasure, and persistent-state work. None of these callbacks are a
 # world-iterating periodic on_action.
 # ============================================================================
 
@@ -30,5 +33,56 @@ state_event = {
 		hidden_effect = {
 			black_plague_run_scheduled_callback = yes
 		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.901
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			disease_containment_board_refresh_open_black_plague_board = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.902
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			black_plague_process_country_response_pulse = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.903
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			black_plague_process_current_state_response_callback = yes
+		}
+	}
+}
+
+news_event = {
+	id = chaosx.nr20.4
+	title = chaosx.nr20.4.t
+	desc = chaosx.nr20.4.d
+	picture = GFX_report_event_020_black_plague_unbound
+
+	is_triggered_only = yes
+	minor_flavor = no
+	major = yes
+
+	option = {
+		name = chaosx.nr20.4.a
 	}
 }

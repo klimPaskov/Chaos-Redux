@@ -1,0 +1,657 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 SHARED DISEASE RESPONSE DECISIONS
+# ============================================================================
+# These entries extend the existing chaosx_disease_containment_category. They
+# are deliberately state-selected and phase-gated, with no duplicate category.
+# ============================================================================
+
+chaosx_disease_containment_category = {
+	black_plague_shared_sentinel_surveillance = {
+		name = black_plague_shared_sentinel_surveillance
+		desc = black_plague_shared_sentinel_surveillance_desc
+		icon = GFX_decision_generic_research
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_sentinel_surveillance = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_sentinel_surveillance = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_sentinel_surveillance_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.sentinel_surveillance
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.sentinel_surveillance } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_inspect_transport_hubs = {
+		name = black_plague_shared_inspect_transport_hubs
+		desc = black_plague_shared_inspect_transport_hubs_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_transport_inspections = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_transport_inspections = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_inspect_transport_hubs_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.inspect_transport_hubs
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.inspect_transport_hubs } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_stronger_prevention_law = {
+		name = black_plague_shared_stronger_prevention_law
+		desc = black_plague_shared_stronger_prevention_law_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_prevention_law = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_prevention_law = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_stronger_prevention_law_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.stronger_prevention_law
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.stronger_prevention_law } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_close_threatened_corridor = {
+		name = black_plague_shared_close_threatened_corridor
+		desc = black_plague_shared_close_threatened_corridor_desc
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_border_corridor = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_border_corridor = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_close_threatened_corridor_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.close_threatened_corridor
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.close_threatened_corridor } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_port_inspections = {
+		name = black_plague_shared_port_inspections
+		desc = black_plague_shared_port_inspections_desc
+		icon = GFX_decision_soviet_collapse_medical_missions
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_port_inspections = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_port_inspections = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_port_inspections_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.port_inspections
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.port_inspections } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_restrict_troop_routes = {
+		name = black_plague_shared_restrict_troop_routes
+		desc = black_plague_shared_restrict_troop_routes_desc
+		icon = GFX_decision_generic_army_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_troop_restrictions = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_troop_restrictions = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes command_power > constant:black_plague_shared_cost.standard_command_power }
+		custom_cost_text = black_plague_shared_restrict_troop_routes_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.restrict_troop_routes
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.restrict_troop_routes } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.transport_priority }
+	}
+
+	black_plague_shared_preposition_field_hospitals = {
+		name = black_plague_shared_preposition_field_hospitals
+		desc = black_plague_shared_preposition_field_hospitals_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_field_hospitals = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_field_hospitals = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_preposition_field_hospitals_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.preposition_field_hospitals
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.preposition_field_hospitals } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_suspend_civilian_travel = {
+		name = black_plague_shared_suspend_civilian_travel
+		desc = black_plague_shared_suspend_civilian_travel_desc
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_civilian_travel = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_civilian_travel = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_suspend_civilian_travel_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.suspend_civilian_travel
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.suspend_civilian_travel } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_relief_corridor = {
+		name = black_plague_shared_relief_corridor
+		desc = black_plague_shared_relief_corridor_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_relief_corridor = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_relief_corridor = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_relief_corridor_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.relief_corridor
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.relief_corridor } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_burial_sanitation = {
+		name = black_plague_shared_burial_sanitation
+		desc = black_plague_shared_burial_sanitation_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_burial_sanitation = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_burial_sanitation = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_burial_sanitation_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.burial_sanitation
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.burial_sanitation } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_seal_all_transport = {
+		name = black_plague_shared_seal_all_transport
+		desc = black_plague_shared_seal_all_transport_desc
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_transport_seal = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_transport_seal = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes command_power > constant:black_plague_shared_cost.country_command_power }
+		custom_cost_text = black_plague_shared_seal_all_transport_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.seal_all_transport
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.seal_all_transport } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.critical }
+	}
+
+	black_plague_shared_evacuate_threatened_perimeter = {
+		name = black_plague_shared_evacuate_threatened_perimeter
+		desc = black_plague_shared_evacuate_threatened_perimeter_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_evacuation = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_evacuation = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_evacuate_threatened_perimeter_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.evacuate_threatened_perimeter
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.evacuate_threatened_perimeter } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_foreign_medical_mission = {
+		name = black_plague_shared_foreign_medical_mission
+		desc = black_plague_shared_foreign_medical_mission_desc
+		icon = GFX_decision_soviet_collapse_medical_missions
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_foreign_medical_mission = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_foreign_medical_mission = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_foreign_medical_mission_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.foreign_medical_mission
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.foreign_medical_mission } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_maintain_containment = {
+		name = black_plague_shared_maintain_containment
+		desc = black_plague_shared_maintain_containment_desc
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_maintain_containment = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_maintain_containment = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_maintain_containment_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.maintain_containment
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.maintain_containment } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_controlled_reopening = {
+		name = black_plague_shared_controlled_reopening
+		desc = black_plague_shared_controlled_reopening_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_controlled_reopening = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_controlled_reopening = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_controlled_reopening_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.controlled_reopening
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.controlled_reopening } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_trace_residual_clusters = {
+		name = black_plague_shared_trace_residual_clusters
+		desc = black_plague_shared_trace_residual_clusters_desc
+		icon = GFX_decision_generic_research
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_residual_tracing = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_residual_tracing = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_trace_residual_clusters_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.trace_residual_clusters
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.trace_residual_clusters } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_rotate_exhausted_personnel = {
+		name = black_plague_shared_rotate_exhausted_personnel
+		desc = black_plague_shared_rotate_exhausted_personnel_desc
+		icon = GFX_decision_generic_army_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_personnel_rotation = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_personnel_rotation = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_rotate_exhausted_personnel_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.rotate_exhausted_personnel
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.rotate_exhausted_personnel } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_restore_local_administration = {
+		name = black_plague_shared_restore_local_administration
+		desc = black_plague_shared_restore_local_administration_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_administration = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_administration = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_restore_local_administration_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.restore_local_administration
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.restore_local_administration } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_rebuild_hospitals_transport = {
+		name = black_plague_shared_rebuild_hospitals_transport
+		desc = black_plague_shared_rebuild_hospitals_transport_desc
+		icon = GFX_decision_soviet_collapse_medical_missions
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_rebuild = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_rebuild = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_rebuild_hospitals_transport_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.rebuild_hospitals_transport
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.rebuild_hospitals_transport } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_support_surviving_households = {
+		name = black_plague_shared_support_surviving_households
+		desc = black_plague_shared_support_surviving_households_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_household_support = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_household_support = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_support_surviving_households_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.support_surviving_households
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.support_surviving_households } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_preserve_sentinel_surveillance = {
+		name = black_plague_shared_preserve_sentinel_surveillance
+		desc = black_plague_shared_preserve_sentinel_surveillance_desc
+		icon = GFX_decision_generic_research
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_preserve_surveillance = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_preserve_surveillance = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_preserve_sentinel_surveillance_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.preserve_sentinel_surveillance
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.preserve_sentinel_surveillance } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_remove_emergency_restrictions = {
+		name = black_plague_shared_remove_emergency_restrictions
+		desc = black_plague_shared_remove_emergency_restrictions_desc
+		icon = GFX_decision_generic_civil_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_start_remove_restrictions = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_start_remove_restrictions = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_remove_emergency_restrictions_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.remove_emergency_restrictions
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.remove_emergency_restrictions } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	# Anti-rat actions remain in the shared category after Evolution III.
+	black_plague_shared_fortify_anti_rat_line = {
+		name = black_plague_shared_fortify_anti_rat_line
+		desc = black_plague_shared_fortify_anti_rat_line_desc
+		icon = GFX_decision_generic_army_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_fortify_anti_rat_line = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_fortify_anti_rat_line = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_fortify_anti_rat_line_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.fortify_cordon_line
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.fortify_cordon_line } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_armored_clearance = {
+		name = black_plague_shared_armored_clearance
+		desc = black_plague_shared_armored_clearance_desc
+		icon = GFX_decision_generic_army_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_armored_clearance = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_armored_clearance = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_armored_clearance_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.armored_clearance
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.armored_clearance } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_air_reconnaissance_sweep = {
+		name = black_plague_shared_air_reconnaissance_sweep
+		desc = black_plague_shared_air_reconnaissance_sweep_desc
+		icon = GFX_decision_generic_army_support
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_air_reconnaissance = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_air_reconnaissance = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_standard_materials = yes }
+		custom_cost_text = black_plague_shared_air_reconnaissance_sweep_cost
+		modifier = { civilian_factory_use = 1 }
+		days_remove = constant:black_plague_shared_duration.air_reconnaissance_sweep
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.air_reconnaissance_sweep } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_liberate_and_quarantine = {
+		name = black_plague_shared_liberate_and_quarantine
+		desc = black_plague_shared_liberate_and_quarantine_desc
+		icon = GFX_decision_death_quarantine_line
+		state_target = any_controlled_state
+		on_map_mode = decision_view_only
+		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
+		target_trigger = { FROM = { black_plague_shared_can_liberate_and_quarantine = yes } }
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { FROM = { black_plague_shared_can_liberate_and_quarantine = yes } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_liberate_and_quarantine_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.liberate_and_quarantine
+		complete_effect = { set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.liberate_and_quarantine } hidden_effect = { FROM = { black_plague_begin_shared_state_action = yes } } }
+		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_shared_state_target_is_usable = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	# Country-level knowledge actions remain in this shared category so the
+	# disease board presents one coherent response surface.
+	black_plague_shared_publish_findings = {
+		name = black_plague_shared_publish_findings
+		desc = black_plague_shared_publish_findings_desc
+		icon = GFX_decision_generic_research
+		visible = { black_plague_shared_country_knowledge_visible = yes }
+		available = { black_plague_shared_can_publish_findings = yes }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_publish_findings_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.publish_findings
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.publish_findings }
+			black_plague_begin_shared_country_action = yes
+		}
+		remove_effect = { black_plague_finish_shared_country_action = yes }
+		cancel_trigger = { NOT = { black_plague_shared_country_knowledge_visible = yes } }
+		cancel_effect = { black_plague_cancel_shared_country_action = yes }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+
+	black_plague_shared_restricted_alliance_exchange = {
+		name = black_plague_shared_restricted_alliance_exchange
+		desc = black_plague_shared_restricted_alliance_exchange_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = { black_plague_shared_country_knowledge_visible = yes }
+		available = { black_plague_shared_can_alliance_exchange = yes }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_restricted_alliance_exchange_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.restricted_alliance_exchange
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.restricted_alliance_exchange }
+			black_plague_begin_shared_country_action = yes
+		}
+		remove_effect = { black_plague_finish_shared_country_action = yes }
+		cancel_trigger = { NOT = { black_plague_shared_country_knowledge_visible = yes } }
+		cancel_effect = { black_plague_cancel_shared_country_action = yes }
+		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	black_plague_shared_hoard_protocol = {
+		name = black_plague_shared_hoard_protocol
+		desc = black_plague_shared_hoard_protocol_desc
+		icon = GFX_decision_generic_civil_support
+		visible = { black_plague_shared_country_knowledge_visible = yes }
+		available = { black_plague_shared_can_hoard_protocol = yes }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_hoard_protocol_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.hoard_protocol
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.hoard_protocol }
+			black_plague_begin_shared_country_action = yes
+		}
+		remove_effect = { black_plague_finish_shared_country_action = yes }
+		cancel_trigger = { NOT = { black_plague_shared_country_knowledge_visible = yes } }
+		cancel_effect = { black_plague_cancel_shared_country_action = yes }
+		ai_will_do = { base = constant:black_plague_response_ai.cautious }
+	}
+
+	black_plague_shared_steal_foreign_progress = {
+		name = black_plague_shared_steal_foreign_progress
+		desc = black_plague_shared_steal_foreign_progress_desc
+		icon = GFX_decision_generic_intelligence_operation
+		visible = { black_plague_shared_country_knowledge_visible = yes }
+		available = { black_plague_shared_can_steal_progress = yes }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_steal_foreign_progress_cost
+		modifier = { civilian_factory_use = 2 }
+		days_remove = constant:black_plague_shared_duration.steal_foreign_progress
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.steal_foreign_progress }
+			black_plague_begin_shared_country_action = yes
+		}
+		remove_effect = { black_plague_finish_shared_country_action = yes }
+		cancel_trigger = { NOT = { black_plague_shared_country_knowledge_visible = yes } }
+		cancel_effect = { black_plague_cancel_shared_country_action = yes }
+		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+	}
+
+	black_plague_shared_international_medical_mission = {
+		name = black_plague_shared_international_medical_mission
+		desc = black_plague_shared_international_medical_mission_desc
+		icon = GFX_decision_soviet_collapse_medical_missions
+		visible = { black_plague_shared_country_knowledge_visible = yes }
+		available = { black_plague_shared_can_international_mission = yes }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_country_materials = yes }
+		custom_cost_text = black_plague_shared_international_medical_mission_cost
+		modifier = { civilian_factory_use = 3 }
+		days_remove = constant:black_plague_shared_duration.international_medical_mission
+		complete_effect = {
+			set_variable = { black_plague_shared_action_pending = constant:black_plague_shared_action.international_medical_mission }
+			black_plague_begin_shared_country_action = yes
+		}
+		remove_effect = { black_plague_finish_shared_country_action = yes }
+		cancel_trigger = { NOT = { black_plague_shared_country_knowledge_visible = yes } }
+		cancel_effect = { black_plague_cancel_shared_country_action = yes }
+		ai_will_do = { base = constant:black_plague_response_ai.strong }
+	}
+}

@@ -109,6 +109,14 @@ The implementation contract, files, assets, and test matrix are documented in `d
 
 Reserved manual scenario placeholder for Event 012. It remains listed in the manual scenario window and launches only a neutral placeholder event until the source event is reworked.
 
+### SCN-012: Black Plague Unbound
+
+Black Plague Unbound owns the collision-free `SCN-012` identity, fixed Instant Plague Kingdoms profile, shared intensity slider, and all four shared list-sort views.
+
+The adapter launches the atomic Event 20 scenario transaction directly. It seeds established outbreaks across the intensity-appropriate continents, forces Evolutions I through IV, creates independent Rat Nations and the separate Rat King, initializes their forces and AI, records the scenario and evolution state, and performs one mapmode rebuild. The scoped setup bypass is cleared after launch, repeat launches are idempotent, and the scenario never grants Evolution V, `world_end`, or automatic victory.
+
+The implementation handoff is at `docs/plans/020_black_plague_plans/subagent_handoffs/2026-07-24_part9_scn012_adapter_handoff.md`.
+
 ### SCN-009: Coalition Unmasked
 
 Coalition Unmasked launches the complete Event 011 Evolution III public-reveal package against the current player. The target is fixed before composition. Regional Ring requires multiple same-continent operational approaches and assigns border or logistics roles. Ideological Front requires target-opposed partners and assigns political-arm roles. Great-Power Sponsor selects a strategically reachable major first and then builds a reachable minor network. Unlikely Coalition requires aligned and opposed minor motives, stores conflicting commitments, and reserves extra fracture pressure for reveal. Random Coalition uses the full safe weighted pool and derives its doctrine and roles from the selected members.

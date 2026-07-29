@@ -6,7 +6,7 @@ All names are working labels. Final IDs and sort values must be checked against 
 
 | Field | Planned value |
 | --- | --- |
-| Scenario ID | `SCN-008` planning candidate |
+| Scenario ID | `SCN-012` |
 | Working name | Black Plague Unbound |
 | Type | fixed profile, Instant Plague Kingdoms |
 | Intensity control | Low, Medium, High, Maximum |

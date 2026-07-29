@@ -1,0 +1,540 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 SHARED RESPONSE EFFECTS
+# ============================================================================
+# Bounded state and country actions consumed by the shared disease category.
+# Every state action stores its owner and action id, pays equipment/fuel at a
+# population-scaled rate, occupies response capacity, and resolves into a
+# distinct disease, logistics, recovery, knowledge, or anti-rat result.
+# ============================================================================
+
+# STATE scope; ROOT is the responding country. The action id is stored on ROOT
+# as black_plague_shared_action_pending by the decision complete effect.
+black_plague_begin_shared_state_action = {
+	if = {
+	limit = {
+			black_plague_shared_state_can_start_action = yes
+			ROOT = { has_variable = black_plague_shared_action_pending }
+		}
+		set_temp_variable = { black_plague_shared_action_scale = constant:black_plague_shared_scale.minimum }
+		if = {
+			limit = {
+				check_variable = {
+					var = state_population_k
+					value = constant:black_plague_shared_scale.metropolitan_population_k
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { black_plague_shared_action_scale = constant:black_plague_shared_scale.metropolitan }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = state_population_k
+					value = constant:black_plague_shared_scale.large_population_k
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { black_plague_shared_action_scale = constant:black_plague_shared_scale.large }
+		}
+		set_variable = { black_plague_shared_action_scale = black_plague_shared_action_scale }
+		set_variable = { black_plague_shared_action = ROOT.black_plague_shared_action_pending }
+		set_variable = { black_plague_shared_action_owner = ROOT }
+		set_state_flag = black_plague_shared_action_active
+		set_variable = { black_plague_shared_action_burden = constant:black_plague_shared_burden.medium }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.seal_all_transport compare = equals }
+					check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.rebuild_hospitals_transport compare = equals }
+					check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.liberate_and_quarantine compare = equals }
+				}
+			}
+			set_variable = { black_plague_shared_action_burden = constant:black_plague_shared_burden.heavy }
+		}
+		ROOT = {
+			set_variable = { black_plague_shared_payment_support = PREV.black_plague_shared_action_scale }
+			multiply_variable = { black_plague_shared_payment_support = constant:black_plague_shared_cost.standard_support_equipment }
+			set_variable = { black_plague_shared_payment_motorized = PREV.black_plague_shared_action_scale }
+			multiply_variable = { black_plague_shared_payment_motorized = constant:black_plague_shared_cost.standard_motorized_equipment }
+			set_variable = { black_plague_shared_payment_fuel = PREV.black_plague_shared_action_scale }
+			multiply_variable = { black_plague_shared_payment_fuel = constant:black_plague_shared_cost.standard_fuel }
+			remove_equipment_to_stockpile = { type = support_equipment amount = var:black_plague_shared_payment_support }
+			remove_equipment_to_stockpile = { type = motorized_equipment amount = var:black_plague_shared_payment_motorized }
+			subtract_from_fuel = black_plague_shared_payment_fuel
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.port_inspections compare = equals }
+						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.relief_corridor compare = equals }
+						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.evacuate_threatened_perimeter compare = equals }
+					}
+				}
+				remove_equipment_to_stockpile = { type = train_equipment amount = constant:black_plague_shared_cost.standard_trains }
+			}
+			clear_variable = black_plague_shared_payment_support
+			clear_variable = black_plague_shared_payment_motorized
+			clear_variable = black_plague_shared_payment_fuel
+			black_plague_register_current_response_state = yes
+			black_plague_recompute_country_response_capacity = yes
+			clear_variable = black_plague_shared_action_pending
+		}
+	}
+}
+
+# STATE scope; ROOT is the action owner. This single resolution effect keeps
+# each shared action distinct while avoiding duplicate decision categories.
+black_plague_finish_shared_state_action = {
+	if = {
+		limit = {
+			has_state_flag = black_plague_shared_action_active
+			has_variable = black_plague_shared_action_owner
+			check_variable = { var = black_plague_shared_action_owner value = ROOT compare = equals }
+		}
+		set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.sentinel_surveillance }
+		if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.sentinel_surveillance compare = equals } }
+			ROOT = {
+				set_temp_variable = { black_plague_shared_sentinel_days = constant:black_plague_shared_duration.sentinel_surveillance }
+				set_country_flag = { flag = black_plague_shared_sentinel_surveillance_active days = black_plague_shared_sentinel_days }
+				subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.preparedness_gain }
+			}
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.sentinel_surveillance }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.inspect_transport_hubs compare = equals } }
+			set_state_flag = black_plague_shared_transport_inspections_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.inspect_transport_hubs }
+			subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.transport_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.stronger_prevention_law compare = equals } }
+			ROOT = {
+				set_country_flag = black_plague_shared_prevention_law_active
+				subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.preparedness_gain }
+				add_stability = constant:black_plague_shared_cost.stability_loss
+			}
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.stronger_prevention_law }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.close_threatened_corridor compare = equals } }
+			set_state_flag = black_plague_shared_threatened_corridor_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.close_threatened_corridor }
+			subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.border_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.port_inspections compare = equals } }
+			set_state_flag = black_plague_shared_port_inspections_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.port_inspections }
+			subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.port_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.restrict_troop_routes compare = equals } }
+			set_state_flag = black_plague_shared_troop_restrictions_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.restrict_troop_routes }
+			subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.troop_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.preposition_field_hospitals compare = equals } }
+			set_state_flag = black_plague_shared_field_hospitals_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.preposition_field_hospitals }
+			add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.field_hospital_treatment }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.suspend_civilian_travel compare = equals } }
+			set_state_flag = black_plague_shared_civilian_travel_suspended
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.suspend_civilian_travel }
+			subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.civilian_travel_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.relief_corridor compare = equals } }
+			set_state_flag = black_plague_shared_relief_corridor_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.relief_corridor }
+			add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.relief_treatment }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.burial_sanitation compare = equals } }
+			set_state_flag = black_plague_shared_burial_sanitation_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.burial_sanitation }
+			subtract_from_variable = { black_plague_load = constant:black_plague_shared_result.burial_load_reduction }
+			subtract_from_variable = { black_plague_mortality_pressure = constant:black_plague_shared_result.burial_mortality_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.seal_all_transport compare = equals } }
+			set_state_flag = black_plague_shared_transport_sealed
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.seal_all_transport }
+			subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.seal_transport_spread_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.evacuate_threatened_perimeter compare = equals } }
+			set_state_flag = black_plague_shared_perimeter_evacuated
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.evacuate_threatened_perimeter }
+			subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.evacuation_exposure_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.foreign_medical_mission compare = equals } }
+			set_state_flag = black_plague_shared_foreign_medical_mission_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.foreign_medical_mission }
+			add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.relief_treatment }
+			ROOT = {
+				set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.international_progress }
+				black_plague_record_countermeasure_findings = yes
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.maintain_containment compare = equals } }
+			set_state_flag = black_plague_shared_maintain_containment_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.maintain_containment }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.containment_gain }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.controlled_reopening compare = equals } }
+			set_state_flag = black_plague_shared_controlled_reopening_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.controlled_reopening }
+			subtract_from_variable = { black_plague_containment = constant:black_plague_shared_result.reopening_containment_loss }
+			clr_state_flag = black_plague_quarantine_monitoring
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.trace_residual_clusters compare = equals } }
+			set_state_flag = black_plague_shared_residual_tracing_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.trace_residual_clusters }
+			subtract_from_variable = { black_plague_load = constant:black_plague_shared_result.residual_load_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.rotate_exhausted_personnel compare = equals } }
+			set_state_flag = black_plague_shared_personnel_rotation_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.rotate_exhausted_personnel }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.personnel_containment_gain }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.restore_local_administration compare = equals } }
+			set_state_flag = black_plague_shared_administration_restored
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.restore_local_administration }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.administration_recovery_gain }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.rebuild_hospitals_transport compare = equals } }
+			set_state_flag = black_plague_shared_hospitals_transport_rebuilt
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.rebuild_hospitals_transport }
+			add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.rebuild_treatment_gain }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.support_surviving_households compare = equals } }
+			set_state_flag = black_plague_shared_households_supported
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.support_surviving_households }
+			subtract_from_variable = { black_plague_mortality_pressure = constant:black_plague_shared_result.household_mortality_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.preserve_sentinel_surveillance compare = equals } }
+			ROOT = {
+				set_temp_variable = { black_plague_shared_sentinel_days = constant:black_plague_shared_duration.preserve_sentinel_surveillance }
+				set_country_flag = { flag = black_plague_shared_sentinel_surveillance_active days = black_plague_shared_sentinel_days }
+			}
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.preserve_sentinel_surveillance }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.remove_emergency_restrictions compare = equals } }
+			clr_state_flag = black_plague_quarantine_monitoring
+			clr_state_flag = black_plague_shared_civilian_travel_suspended
+			ROOT = { add_stability = constant:black_plague_shared_result.restriction_release_stability }
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.remove_emergency_restrictions }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.fortify_cordon_line compare = equals } }
+			set_state_flag = black_plague_shared_anti_rat_cordon_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.fortify_cordon_line }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.anti_rat_containment }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.armored_clearance compare = equals } }
+			set_state_flag = black_plague_shared_armored_clearance_complete
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.armored_clearance }
+			subtract_from_variable = { black_plague_rat_infestation = constant:black_plague_shared_result.anti_rat_infestation }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.anti_rat_containment }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.air_reconnaissance_sweep compare = equals } }
+			set_state_flag = black_plague_shared_air_reconnaissance_complete
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.air_reconnaissance_sweep }
+			subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.evacuation_exposure_reduction }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.liberate_and_quarantine compare = equals } }
+			set_state_flag = black_plague_shared_liberation_quarantine_active
+			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.liberate_and_quarantine }
+			add_to_variable = { black_plague_containment = constant:black_plague_shared_result.anti_rat_containment }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+		}
+		set_state_flag = { flag = black_plague_shared_action_cooldown days = black_plague_shared_cooldown_days }
+		clr_state_flag = black_plague_shared_action_active
+		clear_variable = black_plague_shared_action
+		clear_variable = black_plague_shared_action_owner
+		clear_variable = black_plague_shared_action_burden
+		black_plague_ensure_current_state_values = yes
+		ROOT = { black_plague_recompute_country_response_capacity = yes }
+	}
+}
+
+# STATE scope. Cancels a pending shared action without applying its outcome.
+# ROOT is the action owner, so capacity and the decision's pending variable are
+# cleared atomically before the next board refresh.
+black_plague_cancel_shared_state_action = {
+	if = {
+		limit = {
+			has_state_flag = black_plague_shared_action_active
+			has_variable = black_plague_shared_action_owner
+			check_variable = { var = black_plague_shared_action_owner value = ROOT compare = equals }
+		}
+		clr_state_flag = black_plague_shared_action_active
+		clear_variable = black_plague_shared_action
+		clear_variable = black_plague_shared_action_owner
+		clear_variable = black_plague_shared_action_scale
+		clear_variable = black_plague_shared_action_burden
+		set_temp_variable = { black_plague_shared_cancel_cooldown_days = constant:black_plague_shared_duration.close_threatened_corridor }
+		set_state_flag = { flag = black_plague_shared_action_cooldown days = black_plague_shared_cancel_cooldown_days }
+		ROOT = {
+			clear_variable = black_plague_shared_action_pending
+			black_plague_recompute_country_response_capacity = yes
+		}
+	}
+}
+
+# STATE scope. Called once per disease pulse after the Black Plague-specific
+# response deltas have been collected, so shared actions stack safely.
+black_plague_apply_shared_action_pulse = {
+	if = {
+		limit = { has_state_flag = black_plague_shared_transport_inspections_active }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.transport_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_threatened_corridor_active }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.border_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_port_inspections_active }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.port_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_troop_restrictions_active }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.troop_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_civilian_travel_suspended }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.civilian_travel_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_field_hospitals_active }
+		add_to_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_shared_result.field_hospital_treatment }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_perimeter_evacuated }
+		add_to_temp_variable = { black_plague_response_exposure_reduction = constant:black_plague_shared_result.evacuation_exposure_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_relief_corridor_active }
+		add_to_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_shared_result.relief_treatment }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_foreign_medical_mission_active }
+		add_to_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_shared_result.relief_treatment }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_burial_sanitation_active }
+		add_to_temp_variable = { black_plague_response_load_reduction = constant:black_plague_shared_result.burial_load_reduction }
+		add_to_temp_variable = { black_plague_response_mortality_reduction = constant:black_plague_shared_result.burial_mortality_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_transport_sealed }
+		add_to_temp_variable = { black_plague_response_spread_reduction = constant:black_plague_shared_result.seal_transport_spread_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_maintain_containment_active }
+		add_to_temp_variable = { black_plague_response_containment_gain = constant:black_plague_shared_result.containment_gain }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_residual_tracing_active }
+		add_to_temp_variable = { black_plague_response_load_reduction = constant:black_plague_shared_result.residual_load_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_personnel_rotation_active }
+		add_to_temp_variable = { black_plague_response_containment_gain = constant:black_plague_shared_result.personnel_containment_gain }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_administration_restored }
+		add_to_temp_variable = { black_plague_response_containment_gain = constant:black_plague_shared_result.administration_recovery_gain }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_hospitals_transport_rebuilt }
+		add_to_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_shared_result.rebuild_treatment_gain }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_households_supported }
+		add_to_temp_variable = { black_plague_response_mortality_reduction = constant:black_plague_shared_result.household_mortality_reduction }
+	}
+	if = {
+		limit = { has_state_flag = black_plague_shared_anti_rat_cordon_active }
+		add_to_temp_variable = { black_plague_response_containment_gain = constant:black_plague_shared_result.anti_rat_containment }
+		add_to_temp_variable = { black_plague_response_infestation_reduction = constant:black_plague_shared_result.anti_rat_infestation }
+	}
+}
+
+# COUNTRY scope. Knowledge actions retain the shared program and use real
+# equipment/fuel costs; they never create hidden political-power stores.
+black_plague_begin_shared_country_action = {
+	if = {
+		limit = {
+			black_plague_shared_country_knowledge_visible = yes
+			has_variable = black_plague_shared_action_pending
+		}
+		set_variable = { black_plague_shared_country_action = black_plague_shared_action_pending }
+		set_country_flag = black_plague_shared_country_action_active
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_shared_cost.country_support_equipment }
+		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_shared_cost.country_motorized_equipment }
+		subtract_from_fuel = constant:black_plague_shared_cost.country_fuel
+		black_plague_register_response_country = yes
+		clear_variable = black_plague_shared_action_pending
+	}
+}
+
+black_plague_finish_shared_country_action = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_country_action_active }
+		if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.publish_findings compare = equals } }
+			set_country_flag = black_plague_shared_findings_published
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.findings_progress }
+			black_plague_record_countermeasure_findings = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.restricted_alliance_exchange compare = equals } }
+			set_temp_variable = { black_plague_alliance_exchange_days = constant:black_plague_shared_duration.restricted_alliance_exchange }
+			set_country_flag = { flag = black_plague_shared_alliance_exchange_active days = black_plague_alliance_exchange_days }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.alliance_progress }
+			black_plague_record_countermeasure_findings = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.hoard_protocol compare = equals } }
+			set_country_flag = black_plague_shared_protocol_hoarded
+			add_stability = constant:black_plague_shared_cost.stability_loss
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.hoard_progress }
+			black_plague_record_countermeasure_findings = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.steal_foreign_progress compare = equals } }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.steal_progress }
+			black_plague_record_countermeasure_findings = yes
+			set_temp_variable = { black_plague_steal_cooldown_days = constant:black_plague_shared_duration.steal_foreign_progress }
+			set_country_flag = { flag = black_plague_shared_steal_progress_cooldown days = black_plague_steal_cooldown_days }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.international_medical_mission compare = equals } }
+			set_temp_variable = { black_plague_international_mission_days = constant:black_plague_shared_duration.international_medical_mission }
+			set_country_flag = { flag = black_plague_shared_international_mission_active days = black_plague_international_mission_days }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.international_progress }
+			black_plague_record_countermeasure_findings = yes
+		}
+		clear_variable = black_plague_shared_country_action
+		clr_country_flag = black_plague_shared_country_action_active
+		black_plague_recompute_country_response_capacity = yes
+	}
+}
+
+# COUNTRY scope. A knowledge project that loses its parent program is simply
+# cancelled; its paid material is not refunded, and the response burden is
+# released for the next decision.
+black_plague_cancel_shared_country_action = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_country_action_active }
+		clr_country_flag = black_plague_shared_country_action_active
+		clear_variable = black_plague_shared_country_action
+		clear_variable = black_plague_shared_action_pending
+		black_plague_recompute_country_response_capacity = yes
+	}
+}
+
+# COUNTRY scope. Terminal cleanup is deliberately explicit: shared response
+# flags are state-scoped and must not survive a cured episode or a world-end
+# cleanup pass. Existing four-lane response helpers are reused where ownership
+# is still valid, then all shared flags are removed from every live record.
+black_plague_clear_country_response_runtime = {
+	for_each_scope_loop = {
+		array = global.black_plague_response_states
+		black_plague_clear_shared_state_flags = yes
+		if = {
+			limit = {
+				has_variable = black_plague_response_civil_lane_owner
+				check_variable = { var = black_plague_response_civil_lane_owner value = ROOT compare = equals }
+			}
+			black_plague_clear_current_state_civil_lane = yes
+		}
+		if = {
+			limit = {
+				has_variable = black_plague_response_quarantine_lane_owner
+				check_variable = { var = black_plague_response_quarantine_lane_owner value = ROOT compare = equals }
+			}
+			black_plague_clear_current_state_quarantine_lane = yes
+		}
+		if = {
+			limit = {
+				has_variable = black_plague_response_cordon_lane_owner
+				check_variable = { var = black_plague_response_cordon_lane_owner value = ROOT compare = equals }
+			}
+			black_plague_clear_current_state_cordon_lane = yes
+		}
+		if = {
+			limit = {
+				has_variable = black_plague_response_treatment_lane_owner
+				check_variable = { var = black_plague_response_treatment_lane_owner value = ROOT compare = equals }
+			}
+			black_plague_clear_current_state_treatment_lane = yes
+		}
+		if = {
+			limit = {
+				has_variable = black_plague_response_persistent_owner
+				check_variable = { var = black_plague_response_persistent_owner value = ROOT compare = equals }
+			}
+			black_plague_clear_current_state_persistent_measures = yes
+		}
+	}
+	clr_country_flag = black_plague_shared_country_action_active
+	clr_country_flag = black_plague_shared_findings_published
+	clr_country_flag = black_plague_shared_alliance_exchange_active
+	clr_country_flag = black_plague_shared_protocol_hoarded
+	clr_country_flag = black_plague_shared_steal_progress_cooldown
+	clr_country_flag = black_plague_shared_international_mission_active
+	clear_variable = black_plague_shared_country_action
+	clear_variable = black_plague_shared_action_pending
+	black_plague_recompute_country_response_capacity = yes
+}
+
+# STATE scope. Shared pulse flags have no independent owner after resolution;
+# clearing them here is safe because the caller is ending the disease episode.
+black_plague_clear_shared_state_flags = {
+	clr_state_flag = black_plague_shared_action_active
+	clr_state_flag = black_plague_shared_action_cooldown
+	clr_state_flag = black_plague_shared_transport_inspections_active
+	clr_state_flag = black_plague_shared_threatened_corridor_active
+	clr_state_flag = black_plague_shared_port_inspections_active
+	clr_state_flag = black_plague_shared_troop_restrictions_active
+	clr_state_flag = black_plague_shared_field_hospitals_active
+	clr_state_flag = black_plague_shared_civilian_travel_suspended
+	clr_state_flag = black_plague_shared_relief_corridor_active
+	clr_state_flag = black_plague_shared_burial_sanitation_active
+	clr_state_flag = black_plague_shared_transport_sealed
+	clr_state_flag = black_plague_shared_perimeter_evacuated
+	clr_state_flag = black_plague_shared_foreign_medical_mission_active
+	clr_state_flag = black_plague_shared_maintain_containment_active
+	clr_state_flag = black_plague_shared_controlled_reopening_active
+	clr_state_flag = black_plague_shared_residual_tracing_active
+	clr_state_flag = black_plague_shared_personnel_rotation_active
+	clr_state_flag = black_plague_shared_administration_restored
+	clr_state_flag = black_plague_shared_hospitals_transport_rebuilt
+	clr_state_flag = black_plague_shared_households_supported
+	clr_state_flag = black_plague_shared_anti_rat_cordon_active
+	clr_state_flag = black_plague_shared_armored_clearance_complete
+	clr_state_flag = black_plague_shared_air_reconnaissance_complete
+	clr_state_flag = black_plague_shared_liberation_quarantine_active
+	clear_variable = black_plague_shared_action
+	clear_variable = black_plague_shared_action_owner
+	clear_variable = black_plague_shared_action_scale
+	clear_variable = black_plague_shared_action_burden
+}
