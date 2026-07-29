@@ -484,7 +484,7 @@ Country-identity inventory:
 Political-roster inventory:
 
 - 16 package-specific titled sovereign characters
-- 16 registered 156x210 council portrait paths
+- 16 registered 156x210 sovereign portrait paths
 - 48 route-specific country-leader installation branches; exactly one non-aligned council, democratic civic, or communist producer role is added per package playthrough
 - 48 package-and-route-specific ruling-party names with short and long forms
 - inherited rulers retained through registration and replaced only by explicit political-settlement ratification
