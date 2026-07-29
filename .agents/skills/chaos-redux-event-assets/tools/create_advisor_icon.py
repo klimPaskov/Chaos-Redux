@@ -19,15 +19,9 @@ from PIL import Image, ImageOps
 
 CARD_SIZE = (65, 67)
 TEMPLATE_OPENING_CENTER = (25.0, 32.5)
-DEFAULT_PORTRAIT_SIZE = (33.0, 46.0)
-DEFAULT_PORTRAIT_OFFSET = (-1.0, -1.0)
-DEFAULT_ROTATION = -6.0
-MOD_ROOT = Path(__file__).resolve().parent.parent
+SKILL_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEMPLATE = (
-	MOD_ROOT
-	/ ".agents"
-	/ "skills"
-	/ "chaos-redux-event-assets"
+	SKILL_ROOT
 	/ "assets"
 	/ "vanilla_reference"
 	/ "portraits"
@@ -55,22 +49,22 @@ def parse_args() -> argparse.Namespace:
 		type=float,
 		nargs=2,
 		metavar=("WIDTH", "HEIGHT"),
-		default=DEFAULT_PORTRAIT_SIZE,
-		help="Pre-rotation portrait size in pixels (default: 33 46).",
+		required=True,
+		help="Required pre-rotation portrait size in pixels.",
 	)
 	parser.add_argument(
 		"--portrait-offset",
 		type=float,
 		nargs=2,
 		metavar=("RIGHT", "DOWN"),
-		default=DEFAULT_PORTRAIT_OFFSET,
-		help="Offset from template center (default: 1 left, 1 up).",
+		required=True,
+		help="Required offset from the template opening center.",
 	)
 	parser.add_argument(
 		"--rotation",
 		type=float,
-		default=DEFAULT_ROTATION,
-		help="Portrait rotation in degrees (default: -6).",
+		required=True,
+		help="Required portrait rotation in degrees.",
 	)
 	parser.add_argument(
 		"--sepia-strength",

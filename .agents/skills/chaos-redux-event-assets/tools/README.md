@@ -57,29 +57,39 @@ catalog entry for dimensions and compression.
 
 ## Advisor and high-command dossier portraits
 
-Advisor, theorist, military-high-command, officer-corps, and army-small portraits
-are a separate, explicitly authorized asset family. Inspect the canonical native
-`65x67` references under
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`
-and use them as style precedents only. Do not infer this family from a character or
-small-portrait consumer when the accepted requirement does not request it.
+Advisor, theorist, military-high-command, officer-corps, and army-small portraits are a separate, explicitly authorized asset family.
 
-There is no bundled dossier compositor or reusable card-art package. Prepare each native `65x67`
-PNG with a deterministic, task-specific/manual image workflow. Retain source and
-processed PNGs, exact dimensions, crop/composition notes, hashes, provenance,
-comparison sheet, stable sprite name, and runtime path in distinct repo-contained
-artifacts. For grounded real people, complete the shared sourced identity gate
-through an independently approved `156x210` candidate first; fictional high-chaos
-or impossible/supernatural subjects may use an approved generated master. Never
-directly resize a full portrait into the card, draw replacement card art from
-primitive geometry, or advertise a missing shared processor.
+Inspect the canonical native `65x67` references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
-Review the candidate against the canonical advisor/high-command references at native
-size and at `4x` nearest-neighbour size. Check face readability, frame silhouette and
-palette, paper geometry and opacity where present, transparent corners, texture
-continuity, and holes or fringe. The producer may not approve the candidate. Convert
-only an independently approved PNG with `convert_to_dds.py --width 65 --height 67`
-and wire the stable sprite in the appropriate `.gfx` file.
+Use `create_advisor_icon.py` when the accepted design calls for the shared `advisor_template.png` dossier surface.
+
+The tool loads the complete source portrait without cropping, resizes the complete source to a `65x67` intermediate, applies the requested transformed size, rotation, and opening-center offset, and composites the untouched template once as the top layer.
+
+Run it from the mod root:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
+	--source <approved_portrait.dds> `
+	--portrait-size <width> <height> `
+	--rotation <degrees> `
+	--portrait-offset <right> <down> `
+	--preview <review.png> `
+	--output <runtime.dds>
+```
+
+Negative `--portrait-offset` values move left or up.
+
+Use a coarse placement grid followed by a fine grid against the actual template opening when the first supplied transform does not fit.
+
+Keep the complete head and shoulders readable, prevent portrait pixels from appearing outside the frame, keep the face clear of the paper, and retain the exact template as the final top layer.
+
+Record the source hash, template hash, complete-source resize, selected dimensions, center, offset, rotation, sepia strength, candidate grids, independent review, processed PNG hash, and runtime DDS hash.
+
+For grounded real people, complete the shared sourced identity gate through an independently approved `156x210` candidate first; fictional high-chaos or impossible or supernatural subjects may use an approved generated master.
+
+Review the candidate at native size and at `4x` nearest-neighbour size against the canonical advisor and high-command family.
+
+The producer may not approve the candidate.
 
 ## `process_report_event_image.py`
 

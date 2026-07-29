@@ -2,7 +2,7 @@
 
 ## Scope
 
-This review covers `docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png`, produced with `.tools/create_advisor_icon.py` from the complete stage-0 Kruger portrait and the canonical `advisor_template.png`.
+This review covers `docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png`, produced with `.agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py` from the complete stage-0 Kruger portrait and the canonical `advisor_template.png`.
 
 The runtime composition has exactly two layers: the transformed portrait first and the untouched template on top. No separate frame, paper, shadow, threshold, blur, edge, or component reconstruction remains.
 
@@ -24,6 +24,18 @@ The selected placement gives the strongest balance between full opening coverage
 - Portrait-only sepia strength: `0.18`.
 - Top layer: untouched native `65x67` `advisor_template.png`.
 
+The reproducible command is:
+
+```powershell
+python -B .agents/skills/chaos-redux-event-assets/tools/create_advisor_icon.py `
+	--source gfx/leaders/KRG/leader_doctor_warren_kruger_stage_0.dds `
+	--portrait-size 33 46 `
+	--rotation -6 `
+	--portrait-offset -1 -1 `
+	--preview docs/assets/016_brilliant_scientist/processed_png/portraits/idea_doctor_warren_kruger_stage_0.png `
+	--output gfx/interface/ideas/016_brilliant_scientist/idea_doctor_warren_kruger_stage_0.dds
+```
+
 ## Independent verdict
 
 Reviewer: `/root/kruger_final_template_fit_review`
@@ -40,7 +52,7 @@ Verdict: `PASS`
 
 ## Runtime evidence
 
-- Script SHA-256: `4E270982C764100C618A7D4C5599E5E0179CC2572F220EBE48D49001FD7CE3A0`
+- Script SHA-256: `0080C7BA20C7A19B50C49885B66B775C1967B2CAAAEDCB63230725CB3656E0B0`
 - Canonical template SHA-256: `8F594EF62AFBA6FDEC58DE66A80609350DCFE884320B11E6CB6220F1A0E19F58`
 - Processed PNG SHA-256: `EEEA4A4C058722ACEBE1FECE6B45274C574BCB32E671F5EAEA6C4FCF03B08A60`
 - Runtime DDS SHA-256: `53AEAE1168CFA8B20A5DF4DAB33F13D218939ACDCADC68A3D898CB4520A02802`
