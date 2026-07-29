@@ -56,10 +56,19 @@ def parse_args() -> argparse.Namespace:
 		type=int,
 		nargs=2,
 		metavar=("X", "Y"),
-		default=(8, 4),
+		default=None,
+		help="Optional top-left override after rotation.",
 	)
-	parser.add_argument("--portrait-size", type=int, nargs=2, default=(36, 60))
-	parser.add_argument("--rotation", type=float, default=-2.5)
+	parser.add_argument(
+		"--portrait-center",
+		type=float,
+		nargs=2,
+		metavar=("X", "Y"),
+		default=(24.5, 35.5),
+		help="Stable portrait center inside the frame (default: 24.5 35.5).",
+	)
+	parser.add_argument("--portrait-size", type=int, nargs=2, default=(34, 57))
+	parser.add_argument("--rotation", type=float, default=-1.5)
 	parser.add_argument(
 		"--sepia-strength",
 		type=float,
@@ -119,7 +128,8 @@ def compose(
 	frame: Image.Image,
 	paper: Image.Image,
 	crop: tuple[int, int, int, int] | None,
-	offset: tuple[int, int],
+	offset: tuple[int, int] | None,
+	center: tuple[float, float],
 	size: tuple[int, int],
 	rotation: float,
 	sepia_strength: float,
@@ -128,6 +138,11 @@ def compose(
 	card.alpha_composite(frame)
 
 	portrait = prepare_portrait(source, crop, size, rotation, sepia_strength)
+	if offset is None:
+		offset = (
+			round(center[0] - portrait.width / 2),
+			round(center[1] - portrait.height / 2),
+		)
 	portrait_layer = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
 	portrait_layer.alpha_composite(portrait, offset)
 	window = Image.new("L", CARD_SIZE, 0)
@@ -189,7 +204,8 @@ def main() -> None:
 		frame,
 		paper,
 		tuple(args.crop) if args.crop is not None else None,
-		tuple(args.portrait_offset),
+		tuple(args.portrait_offset) if args.portrait_offset is not None else None,
+		tuple(args.portrait_center),
 		tuple(args.portrait_size),
 		args.rotation,
 		args.sepia_strength,
