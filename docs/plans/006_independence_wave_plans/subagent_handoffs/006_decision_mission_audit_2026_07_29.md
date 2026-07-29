@@ -6,9 +6,13 @@ This is a fresh source audit of Event 006 decisions, missions, targeted league a
 
 No completion claim is made.
 
-The static decision layer is partially sound, but the event remains on HOLD because one player-facing custom-cost localisation defect is confirmed and the existing runtime evidence holds remain open.
+The static decision layer is partially sound, but the event remains on HOLD because the existing runtime evidence holds remain open. The custom-cost and GUI-tooltip defects listed from the audit snapshot were repaired by the parent in commit `478adb4c5` and the final bounded localisation audit records zero missing cost triplets.
 
 No gameplay file was changed by this audit.
+
+## Post-audit repair note
+
+This handoff preserves the snapshot findings below for traceability. The current source has exactly one `_blocked` and one `_tooltip` companion for each of the 133 `custom_cost_text` bases in the audited Event 006 surface, and the Statehood Ledger refresh button is bound to `independence_wave_status_gui_refresh_tt`. See `subagent_handoffs/006_localisation_audit_2026-07-29.md` and commit `478adb4c5` for the repaired evidence. DM-58 lifecycle, AI, cancellation, save/load, and live GUI holds remain open.
 
 ## Issues, sorted by severity
 
