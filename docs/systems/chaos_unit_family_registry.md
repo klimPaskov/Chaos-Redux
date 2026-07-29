@@ -12,25 +12,24 @@ The shared registry never infers eligibility from a unit token and never substit
 
 ## Current Event 19 implementation status
 
-The current no-context registry/scenario v4 reaudit reports no P0, P1, or P2
-finding. The sole dedicated Event 19 registry code file is exactly
-`common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`; there is
-no second Event 19 registry and no fixed-tag derivative route. The provider
-contract has all nine callbacks listed below, including final cleanup. This
-scoped verdict is reinforced by the live-final AI, balance, performance,
-isolation, scenario-safety, and exploit reaudit, which reports zero P0, P1, or
-P2 findings. Every gameplay specialist gate is clean. The owner approved the
-Event 19-only deterministic spot-colour route. Its current package contains 91
-independent unmodified full-flag ImageGen raws, 91 deterministic 820 by 520 spot
-masters, 273 native PNGs, and 273 runtime TGAs. The independent remediation
-re-audit in
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-is PASS and authorizes promotion; the validation JSON's literal
-`candidate_requires_independent_visual_review` value remains an immutable
-processor-state record superseded for approval by that PASS handoff. Parent
-documentation, workbook/catalog reconciliation and export, the 33-file package
-inventory, and the mandatory final whole-event audit are complete. Event 19 and
-SCN-013 are `Fully Functional`; no closure gate remains.
+The current registry and category lifecycle increment has been re-audited after
+the 2026-07-29 changes. The sole dedicated Event 19 registry code file remains
+exactly `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`;
+there is no second Event 19 registry and no fixed-tag derivative route. Ordinary
+automatic generation consumes rows whose policy is `ordinary_mix`, `family_only`,
+or `both` only when the provider eligibility callback sets the native receipt;
+family-only rows remain available through direct requests, first-family
+reception, scenario, natural-release, and derivative consumers. Every consumer
+walks aligned global registry rows and dispatches the stored provider ID, so a
+future family contributes one complete registration row and provider callback
+surface from its existing parent startup path without an Event 19 list or
+registry-file edit. The parent-side derivative revolt marker and Board close are
+success-gated at the final exact-transfer or one-state takeover proof, and the
+country pulse clears a stale Board-open flag after passive closeout. Historical
+whole-event asset, country, focus, scenario, catalog, and audit evidence remains
+valid for those broader surfaces; this increment's focused handoff is the
+current completion authority for registry selection and ordinary-category
+lifecycle.
 
 ## Registration fields
 
@@ -43,6 +42,8 @@ Every row records:
 - spawn weight and contract version.
 
 The shared registry contains only the generic contract and aligned runtime rows. The initial Event 19-specific tuning, triggers, and static-token adapters follow the single-file ownership rule above; later providers remain externally owned and join through the generic provider-ID dispatch contract.
+
+The eligibility callback returns two separate receipts. `chaos_unit_family_candidate_eligible` exposes a row to direct, first-reception, scenario, natural-release, and derivative consumers, while `chaos_unit_family_candidate_native` admits that row to the weighted automatic-generation family draw. A family-only row may therefore participate in automatic generation only for a provider-defined native host, while an ordinary-mix or both row can opt into the same draw for its own eligible countries.
 
 ## Provider contract
 

@@ -23,15 +23,18 @@ Before Event 19 affects the country, no category is visible.
 
 ### Active generation state
 
-The category appears when the country has an unresolved generation, claimant, anomalous family, derivative aftermath, or relevant cooldown.
+The category appears when the country has an unresolved generation, live or unaccounted Event 19 formations, an active claimant, a pending Evolution III opening, a deferred transaction, a running management operation, or a relevant request cooldown.
 
 ### Closeout state
 
-After all lots are resolved, the category either closes or shows one compact generation summary until the cooldown expires.
+After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the category and Muster Board close.
+
+The parent-side derivative revolt marker and Board close are written only after the exact transfer or one-state takeover reaches its final ownership, ledger, control, core, and diplomacy proof; pre-commit recovery and post-commit quarantine do not record a successful revolt.
 
 ### Persistent evolved state
 
-At Evolution III and IV, a country can retain the category between generations because it can request units on demand or manage persistent claimants and anomalous families.
+At Evolution III and IV, the Muster Board remains a doorway while the crisis is live, including the first bounded opening draw and any active claimant or formation.
+Persistent Evolution III or IV entitlement flags alone do not keep the ordinary category open after the country intentionally suppresses new draws and resolves the crisis.
 
 ### Invalid-country cleanup
 
@@ -42,6 +45,8 @@ The category and all active missions close when:
 - a terminal transition forbids the system
 - the country becomes an invalid scope
 - the event-created derivative package replaces its ordinary country package
+- a claimant completes a takeover or an Event 19 derivative revolt completes
+- a direct-scenario actor or isolated breakaway owns the scenario package
 
 Relevant generation, target, and lot data must be migrated or cleared deliberately.
 

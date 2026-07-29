@@ -453,6 +453,16 @@ infantry_spawn_muster_board_close = {
 	clr_country_flag = infantry_spawn_muster_board_open
 }
 
+infantry_spawn_muster_board_close_if_irrelevant = {
+	if = {
+		limit = {
+			has_country_flag = infantry_spawn_muster_board_open
+			NOT = { infantry_spawn_ordinary_management_category_is_relevant = yes }
+		}
+		infantry_spawn_muster_board_close = yes
+	}
+}
+
 infantry_spawn_muster_board_toggle_animations = {
 	if = {
 		limit = { has_country_flag = infantry_spawn_muster_gui_animations_disabled }
@@ -531,7 +541,11 @@ infantry_spawn_muster_board_cycle_claimant = {
 infantry_spawn_muster_board_refresh_if_open = {
 	if = {
 		limit = { has_country_flag = infantry_spawn_muster_board_open }
-		infantry_spawn_muster_board_rebuild_view = yes
+		if = {
+			limit = { infantry_spawn_muster_board_is_available = yes }
+			infantry_spawn_muster_board_rebuild_view = yes
+		}
+		else = { infantry_spawn_muster_board_close = yes }
 	}
 }
 

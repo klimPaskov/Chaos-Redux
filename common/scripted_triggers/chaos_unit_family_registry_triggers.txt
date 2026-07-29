@@ -62,6 +62,21 @@ chaos_unit_family_current_row_allows_event19_ordinary_mix = {
 	}
 }
 
+# Automatic Event 19 generation accepts a family row when the provider opts
+# into ordinary mixing or explicitly permits family lots. Family-only rows are
+# therefore eligible only when their provider callback marks the country as a
+# native family host; they remain available to direct family requests,
+# first-family reception, scenario, natural release, and derivative consumers.
+# This keeps the generation consumer registry-driven: a future Chaos provider
+# chooses its participation policy in its one registration row, without an
+# Event 19 list edit or a new registry file.
+chaos_unit_family_current_row_allows_event19_native_draw = {
+	OR = {
+		chaos_unit_family_current_row_allows_event19_ordinary_mix = yes
+		chaos_unit_family_current_row_allows_event19_family_lot = yes
+	}
+}
+
 chaos_unit_family_current_row_can_train = {
 	OR = {
 		check_variable = {
