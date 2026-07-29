@@ -16,6 +16,16 @@
 @africa_plan_crisis = 100
 @africa_plan_outcome = 120
 
+# External package overlays distinguish sponsorship, independence, rivalry,
+# ideological alignment, and active war pressure without changing route IDs.
+@africa_external_plan_sponsored = 2
+@africa_external_plan_independent = 1
+@africa_external_plan_rival = 3
+@africa_external_plan_aligned = 2
+@africa_external_plan_war = 2
+@africa_external_plan_alignment = 0.35
+@africa_external_plan_strong_alignment = 0.45
+
 africa_continental_uncommitted_plan = {
 	name = "Event 12 constitutional deliberation"
 	desc = "Event 12 continental focus behaviour"
@@ -1792,5 +1802,2275 @@ africa_host_southern_rhodesia_focus_plan = {
 
 	weight = {
 		factor = @africa_plan_weight
+	}
+}
+
+# External package route: Middle East — Arab federal route
+africa_world_middle_east_arab_federal_focus_plan = {
+	name = "Event 12 Middle East Arab federal focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_middle_east_arab_federal_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_middle_east_package }
+			NOT = { has_country_flag = africa_middle_east_arab_federal_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_middle_east_convene_crossroads_balance = @africa_plan_urgent
+		africa_middle_east_end_foreign_mandates = @africa_plan_high
+		africa_middle_east_water_and_food_security = @africa_plan_high
+		africa_middle_east_holy_cities_compact = @africa_plan_very_high
+		africa_middle_east_arab_federal_pact = @africa_plan_urgent
+		africa_middle_east_federal_chamber = @africa_plan_very_high
+		africa_middle_east_pipeline_sovereignty = @africa_plan_normal
+		africa_middle_east_desert_and_mountain_command = @africa_plan_high
+		africa_middle_east_red_sea_and_nile_treaty = @africa_plan_urgent
+		africa_middle_east_withdrawal_and_guarantees_law = @africa_plan_crisis
+		africa_middle_east_crossroads_settlement_congress = @africa_plan_outcome
+		africa_middle_east_sovereign_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Middle East — Plural crossroads route
+africa_world_middle_east_plural_crossroads_focus_plan = {
+	name = "Event 12 Middle East plural crossroads focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_middle_east_plural_crossroads_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_middle_east_package }
+			NOT = { has_country_flag = africa_middle_east_plural_crossroads_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_middle_east_convene_crossroads_balance = @africa_plan_high
+		africa_middle_east_end_foreign_mandates = @africa_plan_high
+		africa_middle_east_water_and_food_security = @africa_plan_urgent
+		africa_middle_east_holy_cities_compact = @africa_plan_urgent
+		africa_middle_east_plural_crossroads_federation = @africa_plan_urgent
+		africa_middle_east_protected_communities_clause = @africa_plan_very_high
+		africa_middle_east_pipeline_sovereignty = @africa_plan_high
+		africa_middle_east_desert_and_mountain_command = @africa_plan_high
+		africa_middle_east_red_sea_and_nile_treaty = @africa_plan_high
+		africa_middle_east_withdrawal_and_guarantees_law = @africa_plan_crisis
+		africa_middle_east_crossroads_settlement_congress = @africa_plan_outcome
+		africa_middle_east_sovereign_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Middle East — Royal concert route
+africa_world_middle_east_royal_concert_focus_plan = {
+	name = "Event 12 Middle East royal concert focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_middle_east_royal_concert_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_middle_east_package }
+			NOT = { has_country_flag = africa_middle_east_royal_concert_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_middle_east_convene_crossroads_balance = @africa_plan_high
+		africa_middle_east_end_foreign_mandates = @africa_plan_urgent
+		africa_middle_east_holy_cities_compact = @africa_plan_very_high
+		africa_middle_east_water_and_food_security = @africa_plan_high
+		africa_middle_east_royal_concert = @africa_plan_urgent
+		africa_middle_east_council_of_courts = @africa_plan_very_high
+		africa_middle_east_pipeline_sovereignty = @africa_plan_normal
+		africa_middle_east_desert_and_mountain_command = @africa_plan_urgent
+		africa_middle_east_red_sea_and_nile_treaty = @africa_plan_urgent
+		africa_middle_east_withdrawal_and_guarantees_law = @africa_plan_crisis
+		africa_middle_east_crossroads_settlement_congress = @africa_plan_outcome
+		africa_middle_east_sovereign_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Middle East — Socialist republics route
+africa_world_middle_east_socialist_republics_focus_plan = {
+	name = "Event 12 Middle East socialist republics focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_middle_east_socialist_republics_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_middle_east_package }
+			NOT = { has_country_flag = africa_middle_east_socialist_republics_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_middle_east_convene_crossroads_balance = @africa_plan_high
+		africa_middle_east_end_foreign_mandates = @africa_plan_urgent
+		africa_middle_east_pipeline_sovereignty = @africa_plan_very_high
+		africa_middle_east_water_and_food_security = @africa_plan_high
+		africa_middle_east_socialist_republics = @africa_plan_urgent
+		africa_middle_east_republics_coordination = @africa_plan_very_high
+		africa_middle_east_holy_cities_compact = @africa_plan_normal
+		africa_middle_east_desert_and_mountain_command = @africa_plan_urgent
+		africa_middle_east_red_sea_and_nile_treaty = @africa_plan_high
+		africa_middle_east_withdrawal_and_guarantees_law = @africa_plan_crisis
+		africa_middle_east_crossroads_settlement_congress = @africa_plan_outcome
+		africa_middle_east_sovereign_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Middle East — Desert covenant route
+africa_world_middle_east_desert_covenant_focus_plan = {
+	name = "Event 12 Middle East desert covenant focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_middle_east_desert_covenant_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_middle_east_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_middle_east_package }
+			NOT = { has_country_flag = africa_middle_east_desert_covenant_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_middle_east_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_middle_east_convene_crossroads_balance = @africa_plan_normal
+		africa_middle_east_end_foreign_mandates = @africa_plan_high
+		africa_middle_east_water_and_food_security = @africa_plan_very_high
+		africa_middle_east_holy_cities_compact = @africa_plan_high
+		africa_middle_east_desert_covenant = @africa_plan_urgent
+		africa_middle_east_nonhuman_covenant_terms = @africa_plan_very_high
+		africa_middle_east_pipeline_sovereignty = @africa_plan_normal
+		africa_middle_east_desert_and_mountain_command = @africa_plan_urgent
+		africa_middle_east_red_sea_and_nile_treaty = @africa_plan_normal
+		africa_middle_east_withdrawal_and_guarantees_law = @africa_plan_crisis
+		africa_middle_east_crossroads_settlement_congress = @africa_plan_outcome
+		africa_middle_east_sovereign_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Europe — Democratic federation route
+africa_world_europe_democratic_federation_focus_plan = {
+	name = "Event 12 Europe democratic federation focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_democratic_federation_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_democratic_federation_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_urgent
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_very_high
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_high
+		africa_europe_colonial_reckoning = @africa_plan_high
+		africa_europe_democratic_federation = @africa_plan_urgent
+		africa_europe_federal_chamber = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_high
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_urgent
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Europe — Socialist union route
+africa_world_europe_socialist_union_focus_plan = {
+	name = "Event 12 Europe socialist union focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_socialist_union_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_socialist_union_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_high
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_very_high
+		africa_europe_colonial_reckoning = @africa_plan_urgent
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_high
+		africa_europe_socialist_union = @africa_plan_urgent
+		africa_europe_congress_of_republics = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_high
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_urgent
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Europe — Royal concert route
+africa_world_europe_royal_concert_focus_plan = {
+	name = "Event 12 Europe royal concert focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_royal_concert_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_royal_concert_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_high
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_very_high
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_high
+		africa_europe_colonial_reckoning = @africa_plan_high
+		africa_europe_royal_concert = @africa_plan_urgent
+		africa_europe_council_of_crowns = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_urgent
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_urgent
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Europe — Continental command route
+africa_world_europe_continental_command_focus_plan = {
+	name = "Event 12 Europe continental command focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_continental_command_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_continental_command_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_high
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_urgent
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_very_high
+		africa_europe_colonial_reckoning = @africa_plan_high
+		africa_europe_continental_command = @africa_plan_urgent
+		africa_europe_emergency_command_statute = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_urgent
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_high
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			fascism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Europe — Neutral confederation route
+africa_world_europe_neutral_confederation_focus_plan = {
+	name = "Event 12 Europe neutral confederation focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_neutral_confederation_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_neutral_confederation_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_urgent
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_very_high
+		africa_europe_colonial_reckoning = @africa_plan_urgent
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_high
+		africa_europe_neutral_confederation = @africa_plan_urgent
+		africa_europe_sovereignties_council = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_high
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_urgent
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Europe — Mythic compact route
+africa_world_europe_mythic_compact_focus_plan = {
+	name = "Event 12 Europe mythic compact focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_mythic_compact_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_europe_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_europe_package }
+			NOT = { has_country_flag = africa_europe_mythic_compact_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_europe_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_europe_convene_continental_settlement = @africa_plan_normal
+		africa_europe_colonial_reckoning = @africa_plan_very_high
+		africa_europe_border_and_sovereignty_guarantees = @africa_plan_high
+		africa_europe_industrial_and_rail_reconstruction = @africa_plan_high
+		africa_europe_mythic_compact = @africa_plan_urgent
+		africa_europe_nonhuman_compact_law = @africa_plan_very_high
+		africa_europe_common_army_and_air_defence = @africa_plan_urgent
+		africa_europe_withdrawal_and_crisis_law = @africa_plan_crisis
+		africa_europe_post_colonial_treaty = @africa_plan_high
+		africa_europe_ratify_continental_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Asia — Plural federation route
+africa_world_asia_plural_federation_focus_plan = {
+	name = "Event 12 Asia plural federation focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_asia_package
+		has_country_flag = africa_asia_plural_federation_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_asia_package }
+			NOT = { has_country_flag = africa_asia_plural_federation_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_asia_convene_regional_congresses = @africa_plan_urgent
+		africa_asia_eastern_and_coastal_centre = @africa_plan_very_high
+		africa_asia_southern_river_centre = @africa_plan_very_high
+		africa_asia_inland_and_steppe_centre = @africa_plan_high
+		africa_asia_archipelago_centre = @africa_plan_high
+		africa_asia_plural_federation = @africa_plan_urgent
+		africa_asia_federal_centres_chamber = @africa_plan_very_high
+		africa_asia_food_river_and_monsoon_board = @africa_plan_urgent
+		africa_asia_rail_and_maritime_corridors = @africa_plan_high
+		africa_asia_common_defence_and_autonomy_law = @africa_plan_crisis
+		africa_asia_indian_ocean_partnership = @africa_plan_high
+		africa_asia_ratify_centres_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Asia — Revolutionary union route
+africa_world_asia_revolutionary_union_focus_plan = {
+	name = "Event 12 Asia revolutionary union focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_asia_package
+		has_country_flag = africa_asia_revolutionary_union_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_asia_package }
+			NOT = { has_country_flag = africa_asia_revolutionary_union_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_asia_convene_regional_congresses = @africa_plan_high
+		africa_asia_southern_river_centre = @africa_plan_very_high
+		africa_asia_eastern_and_coastal_centre = @africa_plan_high
+		africa_asia_inland_and_steppe_centre = @africa_plan_high
+		africa_asia_archipelago_centre = @africa_plan_normal
+		africa_asia_revolutionary_union = @africa_plan_urgent
+		africa_asia_congress_of_revolutionary_republics = @africa_plan_very_high
+		africa_asia_food_river_and_monsoon_board = @africa_plan_very_high
+		africa_asia_rail_and_maritime_corridors = @africa_plan_urgent
+		africa_asia_common_defence_and_autonomy_law = @africa_plan_crisis
+		africa_asia_indian_ocean_partnership = @africa_plan_high
+		africa_asia_ratify_centres_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Asia — Imperial congress route
+africa_world_asia_imperial_congress_focus_plan = {
+	name = "Event 12 Asia imperial congress focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_asia_package
+		has_country_flag = africa_asia_imperial_congress_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_asia_package }
+			NOT = { has_country_flag = africa_asia_imperial_congress_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_asia_convene_regional_congresses = @africa_plan_high
+		africa_asia_inland_and_steppe_centre = @africa_plan_very_high
+		africa_asia_eastern_and_coastal_centre = @africa_plan_high
+		africa_asia_southern_river_centre = @africa_plan_normal
+		africa_asia_archipelago_centre = @africa_plan_normal
+		africa_asia_imperial_congress = @africa_plan_urgent
+		africa_asia_regional_imperial_chambers = @africa_plan_very_high
+		africa_asia_food_river_and_monsoon_board = @africa_plan_high
+		africa_asia_rail_and_maritime_corridors = @africa_plan_urgent
+		africa_asia_common_defence_and_autonomy_law = @africa_plan_crisis
+		africa_asia_indian_ocean_partnership = @africa_plan_high
+		africa_asia_ratify_centres_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Asia — Anti-colonial common front route
+africa_world_asia_anti_colonial_common_front_focus_plan = {
+	name = "Event 12 Asia anti-colonial common front focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_asia_package
+		has_country_flag = africa_asia_anti_colonial_front_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_asia_package }
+			NOT = { has_country_flag = africa_asia_anti_colonial_front_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_asia_convene_regional_congresses = @africa_plan_high
+		africa_asia_archipelago_centre = @africa_plan_very_high
+		africa_asia_southern_river_centre = @africa_plan_high
+		africa_asia_eastern_and_coastal_centre = @africa_plan_high
+		africa_asia_inland_and_steppe_centre = @africa_plan_normal
+		africa_asia_anti_colonial_common_front = @africa_plan_urgent
+		africa_asia_liberation_council = @africa_plan_very_high
+		africa_asia_food_river_and_monsoon_board = @africa_plan_urgent
+		africa_asia_rail_and_maritime_corridors = @africa_plan_high
+		africa_asia_common_defence_and_autonomy_law = @africa_plan_crisis
+		africa_asia_indian_ocean_partnership = @africa_plan_urgent
+		africa_asia_ratify_centres_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Asia — Celestial covenant route
+africa_world_asia_celestial_covenant_focus_plan = {
+	name = "Event 12 Asia celestial covenant focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_asia_package
+		has_country_flag = africa_asia_celestial_covenant_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_asia_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_asia_package }
+			NOT = { has_country_flag = africa_asia_celestial_covenant_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_asia_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_asia_convene_regional_congresses = @africa_plan_normal
+		africa_asia_inland_and_steppe_centre = @africa_plan_very_high
+		africa_asia_eastern_and_coastal_centre = @africa_plan_high
+		africa_asia_southern_river_centre = @africa_plan_high
+		africa_asia_archipelago_centre = @africa_plan_normal
+		africa_asia_celestial_covenant = @africa_plan_urgent
+		africa_asia_publish_celestial_covenant_law = @africa_plan_very_high
+		africa_asia_food_river_and_monsoon_board = @africa_plan_urgent
+		africa_asia_rail_and_maritime_corridors = @africa_plan_high
+		africa_asia_common_defence_and_autonomy_law = @africa_plan_crisis
+		africa_asia_indian_ocean_partnership = @africa_plan_normal
+		africa_asia_ratify_centres_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: North America — Republic of republics route
+africa_world_north_america_republics_focus_plan = {
+	name = "Event 12 North America republic of republics focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_north_america_package
+		has_country_flag = africa_north_america_republics_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_north_america_package }
+			NOT = { has_country_flag = africa_north_america_republics_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_north_america_convene_continental_bargain = @africa_plan_urgent
+		africa_north_america_industrial_grid_and_transport = @africa_plan_very_high
+		africa_north_america_caribbean_and_central_membership = @africa_plan_very_high
+		africa_north_america_indigenous_and_regional_settlement = @africa_plan_urgent
+		africa_north_america_citizenship_and_mobility_compact = @africa_plan_high
+		africa_north_america_republic_of_republics = @africa_plan_urgent
+		africa_north_america_bicameral_congress = @africa_plan_very_high
+		africa_north_america_resources_and_withdrawal_law = @africa_plan_crisis
+		africa_north_america_atlantic_and_pacific_defence = @africa_plan_urgent
+		africa_north_america_caribbean_and_atlantic_islands_settlement = @africa_plan_urgent
+		africa_north_america_africa_diaspora_citizenship_treaty = @africa_plan_high
+		africa_north_america_ratify_continental_bargain = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: North America — Continental commonwealth route
+africa_world_north_america_commonwealth_focus_plan = {
+	name = "Event 12 North America continental commonwealth focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_north_america_package
+		has_country_flag = africa_north_america_commonwealth_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_north_america_package }
+			NOT = { has_country_flag = africa_north_america_commonwealth_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_north_america_convene_continental_bargain = @africa_plan_high
+		africa_north_america_industrial_grid_and_transport = @africa_plan_very_high
+		africa_north_america_citizenship_and_mobility_compact = @africa_plan_very_high
+		africa_north_america_caribbean_and_central_membership = @africa_plan_high
+		africa_north_america_indigenous_and_regional_settlement = @africa_plan_high
+		africa_north_america_continental_commonwealth = @africa_plan_urgent
+		africa_north_america_council_of_governments = @africa_plan_very_high
+		africa_north_america_resources_and_withdrawal_law = @africa_plan_crisis
+		africa_north_america_atlantic_and_pacific_defence = @africa_plan_urgent
+		africa_north_america_caribbean_and_atlantic_islands_settlement = @africa_plan_high
+		africa_north_america_africa_diaspora_citizenship_treaty = @africa_plan_urgent
+		africa_north_america_ratify_continental_bargain = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: North America — Hemisphere command route
+africa_world_north_america_hemisphere_command_focus_plan = {
+	name = "Event 12 North America hemisphere command focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_north_america_package
+		has_country_flag = africa_north_america_command_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_north_america_package }
+			NOT = { has_country_flag = africa_north_america_command_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_north_america_convene_continental_bargain = @africa_plan_high
+		africa_north_america_industrial_grid_and_transport = @africa_plan_very_high
+		africa_north_america_caribbean_and_central_membership = @africa_plan_urgent
+		africa_north_america_indigenous_and_regional_settlement = @africa_plan_high
+		africa_north_america_citizenship_and_mobility_compact = @africa_plan_normal
+		africa_north_america_hemisphere_command = @africa_plan_urgent
+		africa_north_america_civilian_command_statute = @africa_plan_very_high
+		africa_north_america_resources_and_withdrawal_law = @africa_plan_crisis
+		africa_north_america_atlantic_and_pacific_defence = @africa_plan_urgent
+		africa_north_america_caribbean_and_atlantic_islands_settlement = @africa_plan_urgent
+		africa_north_america_africa_diaspora_citizenship_treaty = @africa_plan_high
+		africa_north_america_ratify_continental_bargain = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			fascism > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
+	}
+}
+
+# External package route: North America — Socialist continental union route
+africa_world_north_america_socialist_union_focus_plan = {
+	name = "Event 12 North America socialist continental union focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_north_america_package
+		has_country_flag = africa_north_america_socialist_union_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_north_america_package }
+			NOT = { has_country_flag = africa_north_america_socialist_union_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_north_america_convene_continental_bargain = @africa_plan_high
+		africa_north_america_industrial_grid_and_transport = @africa_plan_very_high
+		africa_north_america_indigenous_and_regional_settlement = @africa_plan_urgent
+		africa_north_america_caribbean_and_central_membership = @africa_plan_high
+		africa_north_america_citizenship_and_mobility_compact = @africa_plan_high
+		africa_north_america_socialist_continental_union = @africa_plan_urgent
+		africa_north_america_congress_of_workers_and_republics = @africa_plan_very_high
+		africa_north_america_resources_and_withdrawal_law = @africa_plan_crisis
+		africa_north_america_atlantic_and_pacific_defence = @africa_plan_urgent
+		africa_north_america_caribbean_and_atlantic_islands_settlement = @africa_plan_high
+		africa_north_america_africa_diaspora_citizenship_treaty = @africa_plan_high
+		africa_north_america_ratify_continental_bargain = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: North America — Storm frontier compact route
+africa_world_north_america_storm_frontier_compact_focus_plan = {
+	name = "Event 12 North America storm frontier compact focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_north_america_package
+		has_country_flag = africa_north_america_storm_compact_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_north_america_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_north_america_package }
+			NOT = { has_country_flag = africa_north_america_storm_compact_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_north_america_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_north_america_convene_continental_bargain = @africa_plan_normal
+		africa_north_america_indigenous_and_regional_settlement = @africa_plan_very_high
+		africa_north_america_citizenship_and_mobility_compact = @africa_plan_very_high
+		africa_north_america_industrial_grid_and_transport = @africa_plan_high
+		africa_north_america_caribbean_and_central_membership = @africa_plan_high
+		africa_north_america_storm_frontier_compact = @africa_plan_urgent
+		africa_north_america_publish_storm_containment_law = @africa_plan_very_high
+		africa_north_america_resources_and_withdrawal_law = @africa_plan_crisis
+		africa_north_america_atlantic_and_pacific_defence = @africa_plan_urgent
+		africa_north_america_caribbean_and_atlantic_islands_settlement = @africa_plan_high
+		africa_north_america_africa_diaspora_citizenship_treaty = @africa_plan_high
+		africa_north_america_ratify_continental_bargain = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
+	}
+}
+
+# External package route: South America — Congress of republics route
+africa_world_south_america_republics_focus_plan = {
+	name = "Event 12 South America congress of republics focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_republics_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_republics_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_urgent
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_very_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_very_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_high
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_high
+		africa_south_america_congress_of_republics = @africa_plan_urgent
+		africa_south_america_republican_chamber = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_urgent
+		africa_south_america_south_atlantic_partnership = @africa_plan_high
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: South America — Plural federation route
+africa_world_south_america_federation_focus_plan = {
+	name = "Event 12 South America plural federation focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_federation_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_federation_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_very_high
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_very_high
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_high
+		africa_south_america_plural_federation = @africa_plan_urgent
+		africa_south_america_council_of_three_regions = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_urgent
+		africa_south_america_south_atlantic_partnership = @africa_plan_high
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: South America — Socialist continental union route
+africa_world_south_america_socialist_union_focus_plan = {
+	name = "Event 12 South America socialist continental union focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_socialist_union_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_socialist_union_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_very_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_urgent
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_high
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_high
+		africa_south_america_socialist_continental_union = @africa_plan_urgent
+		africa_south_america_congress_of_workers_and_communes = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_urgent
+		africa_south_america_south_atlantic_partnership = @africa_plan_high
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: South America — Continental command route
+africa_world_south_america_command_focus_plan = {
+	name = "Event 12 South America continental command focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_command_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_command_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_high
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_very_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_very_high
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_normal
+		africa_south_america_continental_command = @africa_plan_urgent
+		africa_south_america_civilian_command_statute = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_urgent
+		africa_south_america_south_atlantic_partnership = @africa_plan_high
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			fascism > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
+	}
+}
+
+# External package route: South America — Restored concert route
+africa_world_south_america_royal_concert_focus_plan = {
+	name = "Event 12 South America restored concert focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_royal_concert_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_royal_concert_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_high
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_very_high
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_very_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_normal
+		africa_south_america_restored_concert = @africa_plan_urgent
+		africa_south_america_council_of_realms = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_high
+		africa_south_america_south_atlantic_partnership = @africa_plan_high
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: South America — Sun covenant route
+africa_world_south_america_sun_covenant_focus_plan = {
+	name = "Event 12 South America sun covenant focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_south_america_package
+		has_country_flag = africa_south_america_sun_covenant_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_south_america_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_south_america_package }
+			NOT = { has_country_flag = africa_south_america_sun_covenant_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_south_america_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_south_america_convene_three_regions_balance = @africa_plan_normal
+		africa_south_america_andean_transport_and_mountain_supply = @africa_plan_very_high
+		africa_south_america_amazon_river_and_forest_compact = @africa_plan_very_high
+		africa_south_america_resource_concessions_and_debt_audit = @africa_plan_high
+		africa_south_america_plata_ports_and_two_ocean_system = @africa_plan_high
+		africa_south_america_sun_covenant = @africa_plan_urgent
+		africa_south_america_publish_sun_covenant_law = @africa_plan_very_high
+		africa_south_america_resource_and_debt_sovereignty_law = @africa_plan_crisis
+		africa_south_america_continental_defence_and_corridors = @africa_plan_urgent
+		africa_south_america_south_atlantic_partnership = @africa_plan_normal
+		africa_south_america_ratify_three_regions_settlement = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
+	}
+}
+
+# External package route: Oceania — Maritime federation route
+africa_world_oceania_maritime_federation_focus_plan = {
+	name = "Event 12 Oceania maritime federation focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_oceania_package
+		has_country_flag = africa_oceania_maritime_federation_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_oceania_package }
+			NOT = { has_country_flag = africa_oceania_maritime_federation_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_oceania_convene_ocean_network = @africa_plan_urgent
+		africa_oceania_island_congress_and_sovereignty = @africa_plan_very_high
+		africa_oceania_convoy_and_shipping_network = @africa_plan_very_high
+		africa_oceania_air_routes_and_dispersed_industry = @africa_plan_high
+		africa_oceania_island_development_and_evacuation = @africa_plan_high
+		africa_oceania_anti_colonial_liberation_and_land_settlement = @africa_plan_high
+		africa_oceania_maritime_federation = @africa_plan_urgent
+		africa_oceania_federal_island_chamber = @africa_plan_very_high
+		africa_oceania_ocean_constitution_and_withdrawal_law = @africa_plan_crisis
+		africa_oceania_pacific_defence_and_disaster_reserve = @africa_plan_urgent
+		africa_oceania_indian_ocean_and_southern_sea_treaty = @africa_plan_high
+		africa_oceania_ratify_ocean_network = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Oceania — Treaty dominion route
+africa_world_oceania_dominion_focus_plan = {
+	name = "Event 12 Oceania treaty dominion focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_oceania_package
+		has_country_flag = africa_oceania_dominion_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_oceania_package }
+			NOT = { has_country_flag = africa_oceania_dominion_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_oceania_convene_ocean_network = @africa_plan_high
+		africa_oceania_air_routes_and_dispersed_industry = @africa_plan_very_high
+		africa_oceania_island_development_and_evacuation = @africa_plan_very_high
+		africa_oceania_convoy_and_shipping_network = @africa_plan_high
+		africa_oceania_island_congress_and_sovereignty = @africa_plan_high
+		africa_oceania_treaty_dominion = @africa_plan_urgent
+		africa_oceania_dominion_island_council = @africa_plan_very_high
+		africa_oceania_anti_colonial_liberation_and_land_settlement = @africa_plan_high
+		africa_oceania_ocean_constitution_and_withdrawal_law = @africa_plan_crisis
+		africa_oceania_pacific_defence_and_disaster_reserve = @africa_plan_urgent
+		africa_oceania_indian_ocean_and_southern_sea_treaty = @africa_plan_high
+		africa_oceania_ratify_ocean_network = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_strong_alignment
+		}
+	}
+}
+
+# External package route: Oceania — Indigenous-led ocean union route
+africa_world_oceania_indigenous_union_focus_plan = {
+	name = "Event 12 Oceania indigenous-led ocean union focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_oceania_package
+		has_country_flag = africa_oceania_indigenous_union_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_oceania_package }
+			NOT = { has_country_flag = africa_oceania_indigenous_union_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_oceania_convene_ocean_network = @africa_plan_high
+		africa_oceania_island_congress_and_sovereignty = @africa_plan_very_high
+		africa_oceania_anti_colonial_liberation_and_land_settlement = @africa_plan_very_high
+		africa_oceania_convoy_and_shipping_network = @africa_plan_high
+		africa_oceania_air_routes_and_dispersed_industry = @africa_plan_high
+		africa_oceania_indigenous_led_ocean_union = @africa_plan_urgent
+		africa_oceania_peoples_ocean_congress = @africa_plan_very_high
+		africa_oceania_island_development_and_evacuation = @africa_plan_high
+		africa_oceania_ocean_constitution_and_withdrawal_law = @africa_plan_crisis
+		africa_oceania_pacific_defence_and_disaster_reserve = @africa_plan_urgent
+		africa_oceania_indian_ocean_and_southern_sea_treaty = @africa_plan_high
+		africa_oceania_ratify_ocean_network = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			democratic > @africa_external_plan_alignment
+		}
+	}
+}
+
+# External package route: Oceania — Socialist maritime commonwealth route
+africa_world_oceania_socialist_commonwealth_focus_plan = {
+	name = "Event 12 Oceania socialist maritime commonwealth focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_oceania_package
+		has_country_flag = africa_oceania_socialist_commonwealth_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_oceania_package }
+			NOT = { has_country_flag = africa_oceania_socialist_commonwealth_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+		}
+	}
+
+	focus_factors = {
+		africa_oceania_convene_ocean_network = @africa_plan_high
+		africa_oceania_convoy_and_shipping_network = @africa_plan_very_high
+		africa_oceania_air_routes_and_dispersed_industry = @africa_plan_very_high
+		africa_oceania_anti_colonial_liberation_and_land_settlement = @africa_plan_high
+		africa_oceania_island_congress_and_sovereignty = @africa_plan_high
+		africa_oceania_socialist_maritime_commonwealth = @africa_plan_urgent
+		africa_oceania_workers_and_ports_congress = @africa_plan_very_high
+		africa_oceania_island_development_and_evacuation = @africa_plan_high
+		africa_oceania_ocean_constitution_and_withdrawal_law = @africa_plan_crisis
+		africa_oceania_pacific_defence_and_disaster_reserve = @africa_plan_urgent
+		africa_oceania_indian_ocean_and_southern_sea_treaty = @africa_plan_high
+		africa_oceania_ratify_ocean_network = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			communism > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
+	}
+}
+
+# External package route: Oceania — Deep-sea covenant route
+africa_world_oceania_deep_sea_covenant_focus_plan = {
+	name = "Event 12 Oceania deep-sea covenant focus plan"
+	desc = "Event 12 external package route priorities with sponsorship-aware weighting"
+
+	allowed = { always = yes }
+	enable = {
+		is_ai = yes
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_oceania_package
+		has_country_flag = africa_oceania_deep_sea_covenant_route
+		NOT = { has_global_flag = world_end }
+		OR = {
+			has_country_flag = africa_world_package_sponsored
+			has_country_flag = africa_world_package_independent
+			has_country_flag = africa_world_package_rival
+		}
+		has_global_flag = africa_oceania_high_chaos_package_reviewed
+		check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate }
+	}
+	abort = {
+		OR = {
+			NOT = { is_ai = yes }
+			NOT = { africa_world_package_is_installed = yes }
+			NOT = { has_country_flag = africa_world_oceania_package }
+			NOT = { has_country_flag = africa_oceania_deep_sea_covenant_route }
+			has_global_flag = world_end
+			NOT = { has_country_flag = africa_world_package_sponsored }
+			NOT = { has_country_flag = africa_world_package_independent }
+			NOT = { has_country_flag = africa_world_package_rival }
+			NOT = { has_global_flag = africa_oceania_high_chaos_package_reviewed }
+			NOT = { check_variable = { global.chaos_meter_value > constant:africa_world_order.package_high_chaos_gate } }
+		}
+	}
+
+	focus_factors = {
+		africa_oceania_convene_ocean_network = @africa_plan_normal
+		africa_oceania_island_development_and_evacuation = @africa_plan_very_high
+		africa_oceania_anti_colonial_liberation_and_land_settlement = @africa_plan_very_high
+		africa_oceania_convoy_and_shipping_network = @africa_plan_urgent
+		africa_oceania_air_routes_and_dispersed_industry = @africa_plan_high
+		africa_oceania_deep_sea_covenant = @africa_plan_urgent
+		africa_oceania_publish_deep_sea_containment_law = @africa_plan_very_high
+		africa_oceania_island_congress_and_sovereignty = @africa_plan_high
+		africa_oceania_ocean_constitution_and_withdrawal_law = @africa_plan_crisis
+		africa_oceania_pacific_defence_and_disaster_reserve = @africa_plan_urgent
+		africa_oceania_indian_ocean_and_southern_sea_treaty = @africa_plan_normal
+		africa_oceania_ratify_ocean_network = @africa_plan_outcome
+	}
+
+	research = { }
+	ideas = { }
+	traits = { }
+	weight = {
+		factor = @africa_plan_weight
+		modifier = {
+			factor = @africa_external_plan_sponsored
+			has_country_flag = africa_world_package_sponsored
+		}
+		modifier = {
+			factor = @africa_external_plan_independent
+			has_country_flag = africa_world_package_independent
+		}
+		modifier = {
+			factor = @africa_external_plan_rival
+			has_country_flag = africa_world_package_rival
+		}
+		modifier = {
+			factor = @africa_external_plan_aligned
+			neutrality > @africa_external_plan_alignment
+		}
+		modifier = {
+			factor = @africa_external_plan_war
+			has_war = yes
+		}
 	}
 }
