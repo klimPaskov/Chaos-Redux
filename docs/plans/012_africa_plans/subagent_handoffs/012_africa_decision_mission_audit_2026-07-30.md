@@ -8,7 +8,9 @@ The audit began read-only and then applied the parent-authorised narrow correcti
 
 No models, country tags, scripted GUI rewrites, new decision systems, or fallback paths were added.
 
-No commit was created.
+The parent committed the narrow source patch separately as `2482922b3 Harden Event 12 action preflight`.
+
+This subagent did not create a commit.
 
 ## Matrix and static coverage
 
@@ -149,6 +151,18 @@ RSA lifecycle is restricted to the civil-war coalition, post-war settlement, tem
 
 The shared action bands are the principal mission-quality concern because they represent 95 matrix actions with only four static durations and no general action-specific objective surface.
 
+## Cleanup and exploit-risk notes
+
+`africa_cleanup_action` is idempotent and removes the active mission, action arrays, capacity reservation, state-project markers, disaster reservation, and action-scoped variables before it applies the target cooldown.
+
+The natural-disaster reservation is paid before record creation and is cleared by the shared cleanup path, so an interrupted hostile call cannot retain the caller-side reservation.
+
+The priority-member post-settlement gate caps progress at its configured maximum, and its mechanic, force, and post-settlement decisions retain their package cooldowns.
+
+The deferred formation actions cannot execute without their hidden model gate, so they do not form a free-unit loop.
+
+No active core-spam, equipment-farming, war-goal-spam, cooldown-bypass, dead-target, or new-country-tag path was found in the audited decision runtime.
+
 ## Cost and requirement clarity notes
 
 The 102 selectors cost zero because they only choose a profile and refresh a quote.
@@ -220,4 +234,3 @@ The dynamic-duration and natural-disaster-strength gaps remain unimplemented by 
 ## Guidance used
 
 Applied `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
-
