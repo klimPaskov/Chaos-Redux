@@ -71,11 +71,21 @@ The production backlog is one reviewed model and runtime consumer package for ea
 
 The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` pilot packages under `docs/assets/chaos_redux_3d_model_pilots/` are independent showcase consumers. They prove the 3D pipeline workflow only and must not be counted as Event 016 model completion or reused as an unapproved substitute.
 
+## 2026-07-29 final static-audit corrections
+
+- The sovereignty deadline is no longer fixed at sixty days. `brilliant_scientist_calculate_sovereignty_deadline` derives a bounded 30-to-120-day mission from Mandate, deployed or weaponized project burden, war, public or institutional good faith, and dangerous incidents.
+- Generic Sovereign Directorate identity now uses `drop_cosmetic_tag = yes`; no active path references the unregistered base tag as a cosmetic tag.
+- Formal-recognition decisions rely on the engine cost gate and no longer impose a stricter `political_power > cost` check.
+- The Directorate Authority tab is hidden until a real sovereignty or terminal record exists. Unstarted project families are hidden from the project ledger, the primary laboratory names its recorded state, value tooltips identify visible causes, and the Singularity display distinguishes arming, fail-deadly, detonation, disarmament, hold, and terminal states.
+- Temporal Continuum and Xenobiological Ascendancy use distinct route-administration ideas instead of sharing the Project Synthesis idea.
+- Event 016 localisation passed key, duplicate, scripted-localisation, event-target, BOM, and workbook wording checks after the style and dynamic-deadline corrections.
+- The focused Event Chain Viewer lint report returned no Event 016 issue records. The GUI inspector remains unable to render this large workspace because it reaches its configured scan-byte limit.
+
 ## Plan and handoff dispositions
 
 | Document or group | Disposition | Reason and next owner |
 | --- | --- | --- |
-| `docs/specs/016_brilliant_scientist_specs/` | Unchanged accepted design source | All 44 files were read for this reconciliation. Their stale production counters remain historical evidence until the parent chooses a spec-package refresh. |
+| `docs/specs/016_brilliant_scientist_specs/` | Accepted design source with current status reconciliation | All 44 files were read. Package, completion, and asset-status surfaces now distinguish the implemented core runtime from blocked optional content. |
 | `016_source_of_truth_map.md` and `016_brilliant_scientist_resume_packet.md` | Historical snapshots with current pointer | Their 2026-07-14 design decisions remain valid, while current-runtime status now points here. |
 | `016_brilliant_scientist_improvement_loop_addendum.md` | Closed with promoted and rejected dispositions | Existing R1-R7 decisions remain binding; do not rerun the planner for the same gap. |
 | `016_krg_hazardous_mission_pressure_accepted_plan.md` | Accepted bounded implementation plan | The four-mission pressure slice is implemented locally; parent audit and final staging remain open. |
@@ -84,7 +94,7 @@ The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` p
 | Portrait, report, super-event, audio, achievement, flag, focus, idea, decision/category, project-icon, Directorate-UI, and aftermath asset handoffs | Accepted production or review packages | Asset packages may be consumed, but parent `.gfx`, `.gui`, gameplay, localisation, registry, and visual-review boundaries remain as written in each handoff. |
 | Event 019 provider adapters for five Event 016 route families | Implemented core interoperability | Providers 504-508 expose registration and all required callbacks, retain exact Event 016 ledgers/equipment, and own derivative authority, ideas, route state, reports, and cleanup. Live derivative validation remains open. |
 | Remaining flavor, news, defeat/remnant, and Event016-specific 3D packages | Queued future production | These are explicitly outside the core-runtime handoff and require their own bounded plan or asset/model handoff. |
-| `docs/assets/016_brilliant_scientist/manifest.md` and `016_asset_inventory.md` | Left unchanged for concurrent asset work; status prose is stale | Do not use their historical zero counters as current evidence. A later documentation pass should reconcile counters from accepted handoffs without overwriting active asset edits. |
+| `docs/assets/016_brilliant_scientist/manifest.md` and `016_asset_inventory.md` | Reconciled to current core-runtime evidence | Current counters cover portraits, animations, UI, flags, focus and achievement assets, reports, super-events, decisions, and sound. Deferred news/remnant art and 3D packages remain explicit. |
 | Event catalog workbook | Aligned and exported | Event 16, its four evolutions, both terminal routes, no-cluster status, and the absorbed Crazy Scientist row are aligned from the XLSX source and exported to the three CSV snapshots. |
 
 ## Contradictions and stale-document register
@@ -93,7 +103,7 @@ The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` p
 | --- | --- | --- |
 | `docs/events/016_brilliant_scientist/overview.md` | Earlier presentation and blocker prose said all super-event images, later portraits, and severe animations were missing. | Status and presentation paragraphs now point to current accepted packages and the default-enabled core boundary. |
 | `016_source_of_truth_map.md`, `016_brilliant_scientist_resume_packet.md`, and `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md` | 2026-07-14 text described the placeholder opening and no Directorate, project, country, focus, or asset implementation. | The old records are explicitly historical; current bounded tranches are mapped here. The specs themselves remain unmodified design snapshots. |
-| `docs/assets/016_brilliant_scientist/manifest.md` and `matrices/016_asset_inventory.md` | Counters still show zero for several packages that now have runtime files and accepted handoffs. | Unresolved in those source files because concurrent asset edits are active; this map is the current status pointer. |
+| `docs/assets/016_brilliant_scientist/manifest.md` and `matrices/016_asset_inventory.md` | Historical counters showed zero for packages that now have runtime files and accepted handoffs. | Reconciled on 2026-07-29 while preserving the original production provenance tables. |
 | Event 019 registry and Event 016 route forces | Event 019 providers 504-508 now expose clone, robot, paleo, xeno, and alien-interface families from Event 016 history. | Resolved statically; live Anomalous Rising, management, defeat, and final-cleanup validation remains user-owned. |
 | Generic 3D pilot documentation versus Event 016 | The anomaly recon trooper and signal beacon are complete pilot consumers but have no Event 016 route identity. | Resolved by explicitly excluding them from Event 016 model completion. |
 | Default-enabled core versus deferred content | The core fire-once event is enabled while optional scenarios, flavor, expanded report/news art, and 3D packages remain blocked. | Not a design contradiction: core runtime acceptance and future content production are separate gates. |
@@ -102,13 +112,13 @@ The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` p
 
 The following are retained for audit history and must not trigger duplicate production: the 2026-07-14 documentation-curator handoff, the old completion-status handoff, the old resume packet's next-action instructions, `prompts/016_brilliant_scientist_asset_prompt.md`, `prompts/016_brilliant_scientist_animation_prompt.md`, `prompts/016_brilliant_scientist_coding_prompt.md`, and `handoffs/016_mandatory_continuation_prompt.md` where they say later assets or the scripted architecture are absent. The old wording is superseded for current continuation but the files are not deleted.
 
-## Parent decisions required
+## Remaining acceptance decisions
 
-1. Approve this map as the current runtime and resume pointer while leaving the accepted specification as design authority.
-2. Validate Event 019 providers 504-508 through Anomalous Rising, management, defeat, and final cleanup without leaking Event 016 parent state.
-3. Confirm that no dedicated Kruger triggerable scenario is added and that flavor, news, defeat/remnant, and broader report work remain queued after core wiring.
-4. Approve the seven-consumer Event016 3D backlog and route it through the 3D model pipeline with parent-owned runtime wiring and live validation.
-5. Decide when to reconcile the stale asset manifest and spec inventory, finish localisation and workbook alignment, run mapped audits, and consider enablement.
+1. Validate Event 019 providers 504-508 through Anomalous Rising, management, defeat, and final cleanup without leaking Event 016 parent state.
+2. Decide when to produce the queued country-context flavor and expanded project/news/remnant art.
+3. Approve each of the seven reusable 3D packages before routing it through the 3D model pipeline. The user explicitly prohibited model production in the current tranche.
+4. Supply user-owned live acceptance evidence for opening/referral, all four evolutions, containment and territory loss, terminal/Fallout transitions, and Directorate GUI interaction.
+5. Review quantitative research, AI, force-production, rebellion, and terminal timing evidence before a whole-event balance-completion claim.
 
 ## Validation and limitations
 

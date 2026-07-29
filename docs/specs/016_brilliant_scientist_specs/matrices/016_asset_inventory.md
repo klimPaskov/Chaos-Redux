@@ -2,7 +2,7 @@
 
 ## Binding reconciliation
 
-> Planning inventory with current status. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are also present under their registered sprite contracts, and the later advisor cards use the canonical advisor-template workflow. Final gameplay state selection and animation-package acceptance remain separate checks. Every other listed visual asset retains the production and wiring status recorded below. Binding totals remain six super-event packages, seventeen three-state achievement icon sets, and five severe portrait animation package families.
+> Core-runtime inventory reconciled 2026-07-29. The exact stage-0 `156x210` leader or scientist DDS and `65x67` advisor DDS are produced and registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`. The fourteen Stage I through IV leader or scientist portraits and matching advisor cards are present under registered sprite contracts, and every advisor card uses the canonical advisor-template workflow. Six severe route animation sheets contain real frame-by-frame art and have registered static fallbacks. The Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, seven report images, six super-event images, and six sound cues are present and wired. Expanded project/news/remnant art and all seven 3D entity packages remain blocked.
 
 ## Portraits and character assets
 

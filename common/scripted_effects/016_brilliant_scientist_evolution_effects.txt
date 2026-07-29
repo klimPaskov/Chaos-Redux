@@ -815,13 +815,88 @@ brilliant_scientist_finish_evolution_iv_delivery = {
 	}
 }
 
+brilliant_scientist_calculate_sovereignty_deadline = {
+	set_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_base_days }
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_mandate
+				value = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_high_mandate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_high_mandate_adjustment }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_mandate
+				value = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_low_mandate
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_low_mandate_adjustment }
+	}
+	set_temp_variable = { brilliant_scientist_deadline_dangerous_portfolio = brilliant_scientist_project_deployment_count }
+	add_to_temp_variable = { brilliant_scientist_deadline_dangerous_portfolio = brilliant_scientist_project_weaponization_count }
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_deadline_dangerous_portfolio
+				value = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_dangerous_portfolio
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_dangerous_portfolio_adjustment }
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_war_adjustment }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_public_compact
+				has_country_flag = brilliant_scientist_directorate_publication_completed
+				has_country_flag = brilliant_scientist_university_research_network_chartered
+			}
+			NOT = { has_country_flag = brilliant_scientist_dangerous_project_incident }
+		}
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_good_faith_adjustment }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_dangerous_project_incident }
+		add_to_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_dangerous_incident_adjustment }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_sovereignty_deadline_days
+				value = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_minimum_days
+				compare = less_than
+			}
+		}
+		set_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_minimum_days }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_sovereignty_deadline_days
+				value = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_maximum_days
+				compare = greater_than
+			}
+		}
+		set_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_maximum_days }
+	}
+}
+
 brilliant_scientist_start_sovereignty_deadline = {
 	if = {
 		limit = {
 			brilliant_scientist_evolution_iv_requires_sovereignty_deadline = yes
 			NOT = { has_country_flag = brilliant_scientist_sovereignty_deadline_active }
 		}
-		set_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_days }
+		brilliant_scientist_calculate_sovereignty_deadline = yes
 		set_country_flag = brilliant_scientist_sovereignty_deadline_active
 		brilliant_scientist_prepare_sovereignty_board = yes
 		activate_mission = brilliant_scientist_sovereignty_deadline_mission
