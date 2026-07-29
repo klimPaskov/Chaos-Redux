@@ -257,7 +257,7 @@ they are not current routing documents.
   super-event art, and final `6002` audio files materially exist. Gameplay
   advisor offices are asset-neutral after the user-directed withdrawal of all
   custom Event 006 advisor icons.
-- `6002` OGG, WAV, sound wrappers, sound wrappers, zero-random station entry,
+- `6002` WAV and sound wrappers,
   slot-24 localisation/image dispatch, five factual predicates, Event Log
   payload, and settings-aware queued presentation are implemented. Packages 1,
   2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted

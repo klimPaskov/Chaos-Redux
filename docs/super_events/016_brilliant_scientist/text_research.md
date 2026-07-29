@@ -24,7 +24,7 @@ No gameplay, localisation, GUI, GFX, image, audio, spreadsheet, specification, o
 
 ## Follow-up integration status, 2026-07-14
 
-The selected text remains unchanged. Parent-assigned visible IDs are 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Separate audio research and all six Event 016-owned OGGs are complete. Images, final descriptions, localisation, triggers, shared sound definitions, settings-aware playback, and presentation wiring remain incomplete.
+The selected text remains unchanged. Parent-assigned visible IDs are 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Separate audio research and all six Event 016-owned WAVs are complete. Images, final descriptions, localisation, triggers, shared sound definitions, settings-aware playback, and presentation wiring remain incomplete.
 
 ## Rights and confidence legend
 

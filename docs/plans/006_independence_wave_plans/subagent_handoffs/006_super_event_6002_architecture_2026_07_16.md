@@ -322,8 +322,8 @@ The final production files are ready:
 
 Registries already exist:
 
-- `music/chaosx_super_event_music.asset:846-852`: six setting variants `chaosx_super_event_6002_sound_0_5` through `_3_0`;
-- `music/chaosx_super_event_music.txt:264-266`: zero-chance representative track;
+- `sound/chaosx_sound.asset:846-852`: six setting variants `chaosx_super_event_6002_sound_0_5` through `_3_0`;
+- `sound/chaosx_sound.asset:264-266`: zero-chance representative track;
 - `sound/chaosx_sound.asset:278-283`, raw sound near line 428, and setting wrappers at lines 2045-2051.
 
 No collision exists in the super-event audio namespace. An unrelated unit priority using the number `6002` is a separate parser namespace and is not a collision. No runtime Event 6 source currently sets audio id `6002` or displays slot `24`.
@@ -414,7 +414,7 @@ If a new reusable dynamic scripted effect is added to `common/scripted_effects/c
 - Three successful non-league sponsors do not qualify package 5.
 - Two eligible packages reached in the same transaction still produce one display, one audio dispatch, one log append, and one persistent one-shot flag.
 - Eligibility while another super-event is visible follows the approved queue/defer policy without overwriting or dropping either event.
-- Each user audio mode selects the correct `6002` wrapper; muted mode remains silent; dispatch occurs from player scope.
+- Each user volume setting selects the correct `6002` sound wrapper; muted volume remains silent; dispatch occurs from player scope.
 - Closing slot 24 clears only shared transient display/audio state, not the Event 6 one-shot or achievement qualification.
 - Slot 24 resolves the exact image and verified four localisation strings at supported resolutions.
 - `6001` remains absent from runtime firing, image dispatch, text dispatch, and audio playback.

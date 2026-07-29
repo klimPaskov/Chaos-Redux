@@ -36,7 +36,7 @@ The public boundary is `has_global_flag = cannibalism_reveal_complete`. The cons
 | Decisions and GUI | Unified decision access routes through `cannibalism_unified_decisions_are_open`, which requires the reveal. Wendigo access and counterwar surfaces require the reveal and route state. The ordinary revealed GUI and the Wendigo GUI each test the reveal explicitly. |
 | Achievements | Native achievement entries remain hidden. Tracker entries whose wording or icon can identify Hannibal are reveal-gated; tracker 13 and its completion trigger require the reveal, while Wendigo rows additionally require the route. |
 | Reports and news | Pre-reveal report/news images are generic field, burial, containment, ration, commune, island, and warlord scenes. The public-reveal panel containing a bald commander is only used by the gated reveal event. Reveal reports, captured-Hannibal report event 81, and news events 90/91 require the reveal. |
-| Super-events and audio | IDs 49, 50, 52, and 53 all require the reveal in their emitters. Their audio is invoked by those emitters; zero-weight music station registration does not expose it through normal station selection. Internal filenames and comments are not player-facing. |
+| Super-events and audio | IDs 49, 50, 52, and 53 all require the reveal in their emitters. Their audio is invoked by those emitters. Internal filenames and comments are not player-facing. |
 
 Search closure:
 
@@ -140,16 +140,16 @@ The four live 457x328 DDS images are unique, decoded-pixel-match their processed
 
 The ID 52 eligibility gate additionally requires global victory, at least 5,000k consumed population, at least 12 maximum controlled states, at least 365 days of duration, and at least two contributors. The four source prompts, accepted built-in ImageGen cache outputs, repository sources, processed files, and final DDS images are retained in `docs/assets/014_cannibalism/static_event_art_imagegen/`; the accepted cache outputs byte-match their sources. The contact sheet is `contact_sheets/super_events_final_dds_contact_sheet.png`. No actor likeness or sacred motif is present.
 
-Each ID has its own music asset and sound wrapper; no cue is reused:
+Each ID has its own sound definition and wrappers; no cue is reused:
 
-| ID | Runtime audio | OGG duration | Format | Rights disposition |
+| ID | Runtime audio | WAV duration | Format | Rights disposition |
 | ---: | --- | ---: | --- | --- |
-| 49 | `Danse macabre`, Stokowski (1925) | 114.0 s | Vorbis, 44.1 kHz stereo | public domain source documented |
-| 50 | `Siegfried's Funeral March`, U.S. Marine Band | 120.0 s | Vorbis, 44.1 kHz stereo | U.S. federal public-domain source documented, with jurisdiction note |
-| 52 | Fauré `Élégie`, Goldstein/Kalman | 116.1 s | Vorbis, 44.1 kHz stereo | CC BY-SA 2.0 attribution/change notice retained |
-| 53 | Grieg `Death of Åse`, Musopen performance | 118.0 s | Vorbis, 44.1 kHz stereo | worldwide public-domain disposition documented |
+| 49 | `Danse macabre`, Stokowski (1925) | 114.0 s | PCM s16le, 44.1 kHz stereo | public domain source documented |
+| 50 | `Siegfried's Funeral March`, U.S. Marine Band | 120.0 s | PCM s16le, 44.1 kHz stereo | U.S. federal public-domain source documented, with jurisdiction note |
+| 52 | Fauré `Élégie`, Goldstein/Kalman | 116.1 s | PCM s16le, 44.1 kHz stereo | CC BY-SA 2.0 attribution/change notice retained |
+| 53 | Grieg `Death of Åse`, Musopen performance | 118.0 s | PCM s16le, 44.1 kHz stereo | worldwide public-domain disposition documented |
 
-The four archival WAVs are PCM s16le, 44.1 kHz stereo; all four WAV hashes and all four OGG hashes are unique. Each ID resolves through six expected sound wrappers, six sound wrappers, its own scripted-localisation image/title/quote/button/description mapping, and a zero-chance 1.5 station entry. The track table has four rows. Five preserved rights/evidence HTML files cover the four sources and the CC BY-SA legal code. The canonical research record is `docs/super_events/014_cannibalism/audio_research.md`. No generated audio, default cue, reused cue, or undocumented fallback is present.
+The four archival WAVs are PCM s16le, 44.1 kHz stereo, and all four hashes are unique. Each ID resolves through six expected sound wrappers and its own scripted-localisation image/title/quote/button/description mapping. The track table has four rows. Five preserved rights/evidence HTML files cover the four sources and the CC BY-SA legal code. The canonical research record is `docs/super_events/014_cannibalism/audio_research.md`. No generated audio, default cue, reused cue, or undocumented fallback is present.
 
 ## GFX and localisation registry closure
 

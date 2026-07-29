@@ -66,7 +66,7 @@ Mode: documentation-only reconciliation. No gameplay, localisation, asset, workb
 
 ### Queued completion gates
 
-- The verified `6002` source still needs final WAV and WAV derivatives, post-encoding measurements, wrappers, registration, and settings-aware firing.
+- The verified `6002` source still needs final WAV derivatives, post-encoding measurements, wrappers, registration, and settings-aware firing.
 - Final super-event display slots and both images remain unassigned or unproduced.
 - The 167-package asset tranche has research direction but no completed binary package. The 9 route-only and 30 specific-community packages remain outside that tranche.
 - The Event 6 entry event and dedicated localisation remain placeholders. Event log, actor, details, evolution, catalog, and workbook alignment remain implementation work.

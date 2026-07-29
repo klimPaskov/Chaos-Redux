@@ -36,7 +36,7 @@ Event 016 remains a placeholder:
 
 Event 016 remains outside the default-enabled allowlist and gameplay implementation is incomplete. Concurrent gameplay work does not change that completion boundary. The entry event, final lifecycle, Directorate, portfolio, country, focus, AI, achievement, localisation, spreadsheet, and terminal systems still require implementation and audit before any completion claim.
 
-Two bounded presentation tranches are complete. Six final Event 016-owned OGGs exist at visible IDs `90` through `95`. The exact stage-0 leader or scientist DDS and advisor DDS exist and are registered in `interface/016_brilliant_scientist.gfx`. Later portrait sprite contracts are pre-registered, but their source art and runtime files do not exist.
+Two bounded presentation tranches are complete. Six final Event 016-owned WAVs exist at visible IDs `90` through `95`. The exact stage-0 leader or scientist DDS and advisor DDS exist and are registered in `interface/016_brilliant_scientist.gfx`. Later portrait sprite contracts are pre-registered, but their source art and runtime files do not exist.
 
 ## Binding parent dispositions
 
@@ -137,7 +137,7 @@ The unnumbered `Crazy Scientist` idea is absorbed and redesigned inside Event 01
 | --- | --- | --- |
 | Super-event text | Research complete for six packages | `docs/super_events/016_brilliant_scientist/text_research.md` and its handoff |
 | Super-event images | Not produced and not wired | Image and asset subagents, then parent-owned GFX wiring |
-| Super-event audio | Research and six Event 016-owned OGGs complete | Commit `0e8c6f8e` preserves the role mapping at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring is absent |
+| Super-event audio | Research and six Event 016-owned WAVs complete | Commit `0e8c6f8e` preserves the role mapping at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring is absent |
 | Kruger stage 0 | Source, leader or scientist DDS, advisor DDS, and sprite registration complete | Exact base `portrait_generic_biowarfare_europe_male_01`. Registered sprites are `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0` |
 | Kruger stages I through IV | Sprite contracts pre-registered, assets missing | Static source art, runtime DDS files, severe source frames, fallbacks, sheets, previews, contact sheets, and state wiring remain required |
 | UI, report, news, focus, idea, decision, project, unit, technology, and flag art | Not produced and not wired | `docs/assets/016_brilliant_scientist/manifest.md` records the planned inventory |
@@ -158,4 +158,4 @@ The architect must return exact helper, constant, event-target, scope, cleanup, 
 
 ## Completion boundary
 
-This source freeze and follow-up complete documentation reconciliation only. Event 016 is not implemented, ready to enable, visually complete, localisation-complete, workbook-aligned, audited, or ready for a gameplay completion claim. Audio research and Event 016-owned OGG production are complete, but shared playback wiring is not.
+This source freeze and follow-up complete documentation reconciliation only. Event 016 is not implemented, ready to enable, visually complete, localisation-complete, workbook-aligned, audited, or ready for a gameplay completion claim. Audio research and Event 016-owned WAV production are complete, but shared playback wiring is not.

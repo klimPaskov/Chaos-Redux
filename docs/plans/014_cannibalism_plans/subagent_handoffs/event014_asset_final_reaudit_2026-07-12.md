@@ -137,7 +137,7 @@ The four packages use stable unique IDs 49, 50, 52, and 53 from `common/script_c
 | 52 | Fauré, *Élégie, Op. 24*, Goldstein/Kalman | Vorbis, 44100 Hz, stereo, 116.100 s | PCM s16le, 44100 Hz, stereo, 116.001 s | CC BY-SA 2.0 recording; attribution, modification notice, and share-alike record are present. |
 | 53 | Grieg, *The Death of Aase*, Musopen Symphony | Vorbis, 44100 Hz, stereo, 118.000 s | PCM s16le, 44100 Hz, stereo, 118.000 s | Public-domain composition and Musopen public-domain recording. |
 
-The four OGG hashes are unique, the four WAV hashes are unique, and none duplicates another repository audio binary. `music/chaosx_super_event_music.asset` registers six volume variants for each ID, `music/chaosx_super_event_music.txt` suppresses the representative tracks from ordinary music selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware soundeffect wrappers per ID. `music/chaosx_music_track_list.html` and `docs/super_events/014_cannibalism/audio_research.md` preserve the source and license records.
+The four archived OGG hashes are unique, the four WAV hashes are unique, and none duplicates another repository audio binary. `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware sound-effect wrappers per ID. `music/chaosx_music_track_list.html` and `docs/super_events/014_cannibalism/audio_research.md` preserve the source and license records.
 
 ## Visual safety and secrecy review
 

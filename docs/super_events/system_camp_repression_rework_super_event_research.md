@@ -146,7 +146,7 @@ No quotation, attribution, or cultural-reference fallback was used. All five sel
 
 This note completes the audio-research and audio-production portion of the five accepted camp-repression super-event candidates. It follows the roles in `system_camp_repression_rework_spec_part_4_ui_ai_assets_acceptance.md` and the separate research requirement in `system_camp_repression_rework_super_event_prompt.md`.
 
-Five unique musical recordings were selected, downloaded from their legitimate Wikimedia Commons records, preserved, edited, converted, and mirrored for the current Chaos Redux music and sound channels. The recommended numeric audio IDs continue the live catalogue after audio ID `43`:
+Five unique musical recordings were selected, downloaded from their legitimate Wikimedia Commons records, preserved, edited, and converted for Chaos Redux sound registration. The recommended numeric audio IDs continue the live catalogue after audio ID `43`:
 
 | Recommended audio ID | Current visible slot | Super-event role | Selected cue | Final duration |
 | --- | --- | --- | --- | --- |
@@ -156,17 +156,17 @@ Five unique musical recordings were selected, downloaded from their legitimate W
 | `47` | `76` | Pingfang Exposure | *Yangguan Sandie (Three Refrains on the Yang Pass Theme)*, performed by Charlie Huang | `1:49.500` OGG / `1:49.404` WAV |
 | `48` | `77` | Colonial Reckoning | *Go Down Moses*, performed by Les Petits Chanteurs de Montigny | `1:50.000` |
 
-The small OGG/WAV container-duration difference for audio ID `47` is normal Vorbis granule rounding; both derivatives contain the same edited interval and remain below two minutes.
+The small WAV container-duration difference for audio ID `47` is normal Vorbis granule rounding; both derivatives contain the same edited interval and remain below two minutes.
 
 The current implementation constants reserve visible slots `74–77` for the four public camp-rework thresholds and retain the existing Angel of Death slot `12`; those reservations were not edited by the audio worker. Quote, cultural-remark, image, localisation, and gameplay work were outside that audio-only handoff; the text package above now completes the quote and remark research without changing the underlying files. Audio IDs are independent of visible super-event slots.
 
 ## Selection standard
 
-- The current approved repository catalogue and every existing final OGG were checked before external research. No selected work or final derivative is already assigned to another Chaos Redux super-event.
+- The current approved repository catalogue and every existing final WAV were checked before external research. No selected work or final derivative is already assigned to another Chaos Redux super-event.
 - Composition and recording rights were checked separately.
 - Every selection is a musical performance. No SFX, drone, stinger, test tone, oscillator cue, synthetic noise bed, or placeholder was used.
 - Share-alike sources remain share-alike in their edited derivatives. Attribution text below names the work, composer or tradition, performer, source record, license, and the fact that the file was edited.
-- The final derivatives use the current repository wrapper profile: 44.1 kHz stereo Ogg Vorbis for `music/` and 44.1 kHz stereo PCM signed 16-bit WAV for `sound/`.
+- The final derivatives use the current repository wrapper profile: 44.1 kHz stereo PCM signed 16-bit WAV under `sound/`.
 
 ## Audio ID 44: Global Atrocity Evidence Discovery
 
@@ -198,7 +198,7 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:52.000`
 - Processing: `0.25`-second fade-in, `5.00`-second fade-out from `01:47`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final OGG: `music/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.ogg`
+- Final WAV: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
 - Final WAV: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
 - Tone fit: the exposed, hesitant piano line keeps the discovery focused on testimony, records, and the weight of recognition. It is sober and unsettled without turning the evidence reveal into generic apocalypse or military triumph.
 
@@ -232,7 +232,7 @@ Recommended attribution:
 
 - Retained source interval: `00:10.169–02:04.169`; the edit removes the opening silence and ends well before the later *Hail to the Chief* quotation documented on the source page.
 - Processing: `0.25`-second fade-in, `6.00`-second fade-out from `01:48`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, resampling from 48 kHz to 44.1 kHz stereo
-- Final OGG: `music/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.ogg`
+- Final WAV: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
 - Final WAV: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
 - Tone fit: the repeating bass design and accumulating counterpoint sound controlled, procedural, and inexorable. The cue supplies scientific-horror severity and disciplined momentum without borrowing an existing martial super-event track or becoming a triumphant march.
 
@@ -266,7 +266,7 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:56.000`
 - Processing: audio stream isolated from the preserved WebM; non-monotonic source timestamps repaired with asynchronous resampling; `0.35`-second fade-in; `6.00`-second fade-out from `01:50`; two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`; 44.1 kHz stereo export
-- Final OGG: `music/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.ogg`
+- Final WAV: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
 - Final WAV: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
 - Tone fit: the unaccompanied lament puts human loss ahead of state spectacle. Its Ukrainian voice gives the famine branch historical and regional gravity while the slow choral contour supports mass hunger, administrative fear, and collapse rather than victory.
 
@@ -300,7 +300,7 @@ Recommended attribution:
 
 - Retained source interval: `00:01.402–01:50.802`; the edit removes the documented leading silence and ends at the first extended musical pause.
 - Processing: `0.25`-second fade-in, `5.00`-second fade-out from `01:44.400`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final OGG: `music/system_camp_repression_rework/super_event_47_pingfang_exposure.ogg`
+- Final WAV: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
 - Final WAV: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
 - Tone fit: the spare guqin performance is severe without becoming sensational. A Chinese farewell repertory places attention on occupied-territory witnesses and absence, supporting an investigative and tribunal-facing exposure rather than centering the perpetrators.
 
@@ -334,13 +334,13 @@ Recommended attribution:
 
 - Retained source interval: `00:00.000–01:50.000`
 - Processing: `0.25`-second fade-in, `6.00`-second fade-out from `01:44`, two-pass loudness normalization targeting `-18 LUFS` and `-1.5 dBTP`, 44.1 kHz stereo export
-- Final OGG: `music/system_camp_repression_rework/super_event_48_colonial_reckoning.ogg`
+- Final WAV: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
 - Final WAV: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
 - Tone fit: the Exodus refrain is a direct musical language of captivity and release. The choral treatment is solemn and political, making the cue appropriate for exposed forced labor, survivor testimony, decolonization pressure, and imperial accountability.
 
 ## Technical result
 
-| Audio ID | OGG profile | WAV profile | Measured final OGG loudness | Measured final OGG true peak |
+| Audio ID | OGG profile | WAV profile | Measured final WAV loudness | Measured final WAV true peak |
 | --- | --- | --- | --- | --- |
 | `44` | Vorbis, 44.1 kHz, stereo | PCM signed 16-bit, 44.1 kHz, stereo | `-17.96 LUFS` | `-1.31 dBTP` |
 | `45` | Vorbis, 44.1 kHz, stereo | PCM signed 16-bit, 44.1 kHz, stereo | `-17.93 LUFS` | `-1.46 dBTP` |

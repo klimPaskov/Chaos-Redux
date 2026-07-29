@@ -2,7 +2,7 @@
 
 > Implementation closure, 2026-07-11: this file preserves the original research snapshot. All six accepted roles are implemented in slots 67-72 with unique audio ids 37-42, sourced rights and hashes, WAV derivatives, sound registration, settings-aware playback, and final role-specific localisation. The blocker lists below are historical and are superseded by `docs/super_events/013_natural_disasters/audio_production.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
 
-> Uniqueness correction, 2026-07-11: decoded-audio fingerprinting proved that the implemented ID 37 *Egmont Overture* cue duplicated Soviet Collapse ID 14, despite conflicting catalogue attribution. ID 37's OGG and WAV were replaced at their stable paths with Grieg's *In the Hall of the Mountain King*, performed by the Czech National Symphony Orchestra / Musopen Symphony. Commons documents a worldwide public-domain dedication for the recording and public-domain status for the composition. The checksum match, edit, conversion, final hashes, and fingerprint evidence are recorded in `docs/super_events/013_natural_disasters/audio_production.md`. The original ID 37 recommendation below is retained only as superseded research history; the HTML music table records the final Grieg cue.
+> Uniqueness correction, 2026-07-11: decoded-audio fingerprinting proved that the implemented ID 37 *Egmont Overture* cue duplicated Soviet Collapse ID 14, despite conflicting catalogue attribution. ID 37's WAV were replaced at their stable paths with Grieg's *In the Hall of the Mountain King*, performed by the Czech National Symphony Orchestra / Musopen Symphony. Commons documents a worldwide public-domain dedication for the recording and public-domain status for the composition. The checksum match, edit, conversion, final hashes, and fingerprint evidence are recorded in `docs/super_events/013_natural_disasters/audio_production.md`. The original ID 37 recommendation below is retained only as superseded research history; the HTML music table records the final Grieg cue.
 
 ## Scope and status
 
@@ -15,7 +15,7 @@ This is an audio-research handoff for the four Event 013 abnormal outcomes retai
 
 No audio was downloaded, converted, edited, or wired during this pass. No gameplay, localisation, sound-definition, music-definition, spreadsheet, or asset file was changed. The cue windows below are editorial starting points that must be auditioned against the final super-event timing before they are locked.
 
-The repository check found no Event 013 audio package. Existing super-event tracks were not selected for reuse because the super-event workflow requires a unique final track for each role and because several older repository cues have incomplete rights provenance. At the time of this check, `music/chaosx_super_event_music.asset` defined audio ids through `36`; this does **not** reserve `37` onward. The implementing agent must recheck ids immediately before wiring because other work may allocate them first.
+The repository check found no Event 013 audio package. Existing super-event tracks were not selected for reuse because the super-event workflow requires a unique final track for each role and because several older repository cues have incomplete rights provenance. At the time of this check, `sound/chaosx_sound.asset` defined audio ids through `36`; this does **not** reserve `37` onward. The implementing agent must recheck ids immediately before wiring because other work may allocate them first.
 
 License status below was checked on 2026-07-09. Re-open each file page at acquisition time and preserve the rights statement with the source manifest because hosting metadata can change.
 
@@ -215,7 +215,7 @@ The implementing audio pass should use this order:
 7. Export the music file as stereo Vorbis `.ogg`, `44.1 kHz`, with a quality setting comparable to the Event 010 package (libvorbis quality `5` is the current documented precedent).
 8. If a sound file is required by the existing playback helper, mirror the current working repository format: stereo PCM WAV at `44.1 kHz`. The inspected Event 010 mirror is `pcm_s16le`, `44.1 kHz`, stereo; confirm that this remains the active convention before exporting.
 9. Set every sound wrapper to one-shot playback. None of the selected excerpts should loop.
-10. Allocate four unique audio ids only after rechecking the final repository state. Keep those ids aligned across script constants, `global.current_super_event_audio_id`, music definitions, sound definitions, filenames, docs, and `music/chaosx_music_track_list.html`.
+10. Allocate four unique audio ids only after rechecking the final repository state. Keep those ids aligned across script constants, `global.current_super_event_audio_id`, sound definitions, sound definitions, filenames, docs, and `music/chaosx_music_track_list.html`.
 
 A suitable conversion pattern after the cue window and loudness target are approved is:
 
@@ -243,7 +243,7 @@ This is a process template, not a locked command. The Mahler and Beethoven openi
 - No candidate has been auditioned as a final cut inside the super-event UI timing.
 - No `.ogg` or WAV derivative exists.
 - No final audio ids are reserved; ids above `36` only appeared unused at the time of research.
-- No music asset, sound asset, station entry, settings-aware playback call, script constant, or event trigger has been wired.
+- No sound asset, settings-aware playback call, script constant, or event trigger has been wired.
 - `music/chaosx_music_track_list.html` has no Event 013 rows.
 - The storm candidate relies on the project's established acceptance of U.S. federal public-domain recordings. A future worldwide-license-only policy would require a replacement with CC0 or an affirmative worldwide license.
 - The moving-storm art/phenomenon caveat and the meteor destructive-impact trigger caveat from the text research remain unresolved implementation concerns.

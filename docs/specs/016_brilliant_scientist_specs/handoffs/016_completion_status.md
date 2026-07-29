@@ -6,7 +6,7 @@ The mandatory improvement-loop addendum was produced and received a complete par
 
 Documentation planning is process-closed for implementation entry. Event 016 remains default-disabled and gameplay implementation is incomplete. The live entry event still uses the pre-existing placeholder flow, while other implementation work remains outside the completion boundary of this documentation pass.
 
-Presentation work has advanced in two bounded tranches. Six-package text and audio research is complete, and the six final Event 016-owned OGGs use visible IDs `90` through `95`. The exact stage-0 leader and advisor DDS files are complete and registered in `interface/016_brilliant_scientist.gfx`. All super-event images, later portrait source art and runtime files, severe animation packages, achievement icons, flags, project art, UI art, final descriptions, and shared presentation wiring remain incomplete.
+Presentation work has advanced in two bounded tranches. Six-package text and audio research is complete, and the six final Event 016-owned WAVs use visible IDs `90` through `95`. The exact stage-0 leader and advisor DDS files are complete and registered in `interface/016_brilliant_scientist.gfx`. All super-event images, later portrait source art and runtime files, severe animation packages, achievement icons, flags, project art, UI art, final descriptions, and shared presentation wiring remain incomplete.
 
 The exact continuation state is in `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`. The next implementation action is the bounded scripted-system architecture pass, followed by Tranche 1 host selection and the persistent Kruger lifecycle.
 
@@ -29,7 +29,7 @@ The source design is complete at the parent-planning level. It contains no inten
 
 The package specifies exactly seventeen working achievements. The parent rejected the proposed merge because `public_method` and `clean_break` test distinct outcomes.
 
-Six-package super-event title, button, quotation, and audio research is complete and sourced. The Event 016-owned OGGs are complete. Final descriptions, images, localisation, triggers, shared sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
+Six-package super-event title, button, quotation, and audio research is complete and sourced. The Event 016-owned WAVs are complete. Final descriptions, images, localisation, triggers, shared sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
 
 ## Current incomplete work
 
@@ -54,7 +54,7 @@ The earlier blocker was cleared when `chaosx_improvement_loop_planner` produced 
 - Prompt and continuation package: complete.
 - Mandatory project-subagent closure pass: complete and dispositioned.
 - Super-event text research: complete for six packages.
-- Super-event audio research and Event 016-owned OGGs: complete for IDs `90` through `95`.
+- Super-event audio research and Event 016-owned WAVs: complete for IDs `90` through `95`.
 - Kruger stage-0 source, leader DDS, advisor DDS, and sprite registration: complete.
 - Later visual assets and shared presentation wiring: incomplete.
 - Gameplay implementation: incomplete and default-disabled.

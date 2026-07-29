@@ -213,8 +213,8 @@ Fourteen completed 64 by 64 icons plus grey and not-eligible variants. Exact con
 
 | Super-event | Final requirement | Research direction |
 | --- | --- | --- |
-| Rat King coronation | unique 44.1 kHz OGG, one to two minutes, unique audio ID and sound wrapper | dark processional or chant, verified license, not reused |
-| Rat King world end | unique 44.1 kHz OGG, one to two minutes, unique audio ID and sound wrapper | final judgment or ritual piece, public-domain `Dies Irae` lead requires final validation |
+| Rat King coronation | unique 44.1 kHz stereo WAV, one to two minutes, unique audio ID and sound wrapper | dark processional or chant, verified license, not reused |
+| Rat King world end | unique 44.1 kHz stereo WAV, one to two minutes, unique audio ID and sound wrapper | final judgment or ritual piece, public-domain `Dies Irae` lead requires final validation |
 | optional Rat King defeat | unique track only if aftermath super-event eligibility is implemented | reflective memorial or lament, not triumphal |
 
 ## Manifest and handoff requirements

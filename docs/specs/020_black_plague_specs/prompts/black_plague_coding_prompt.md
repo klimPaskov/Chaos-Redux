@@ -126,7 +126,7 @@ Set the shared world_end flag, Event 20 scenario flag, unique super-event state,
 
 ## Super-events, assets, and achievements
 
-Complete Rat King coronation, including its triggerable-scenario entry, and Rat King world-end super-events with verified quotes, remarks, final generated images, unique licensed music, 44.1 kHz OGG files, unique audio IDs, sound wrappers, scripted localisation, GFX, docs, and music table rows. Add the defeat aftermath super-event only when its eligibility gate remains in the accepted implementation.
+Complete Rat King coronation, including its triggerable-scenario entry, and Rat King world-end super-events with verified quotes, remarks, final generated images, unique licensed cues, 44.1 kHz WAV files, unique audio IDs, sound wrappers, scripted localisation, GFX, docs, and audio catalogue rows. Add the defeat aftermath super-event only when its eligibility gate remains in the accepted implementation.
 
 Produce every asset in the asset prompt with source evidence, processed previews, final DDS or TGA, exact dimensions, manifest, and GFX handoff. Animation requires real source frames, frame sheets, static fallbacks, and preview GIFs.
 

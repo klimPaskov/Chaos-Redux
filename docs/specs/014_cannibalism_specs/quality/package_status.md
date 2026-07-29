@@ -15,7 +15,7 @@ Status date: 2026-07-15
 - Scenario `SCN-010` implements five launch types.
 - Event Details contains two independent post-reveal terminal rows and persistent toggles.
 - Four action super-events use unique images and audio IDs 49, 50, 52, and 53.
-- The audio package contains eight unique 44.1 kHz runtime files: four OGG and four WAV.
+- The audio package contains eight unique 44.1 kHz runtime files: four WAV.
 - The asset package contains 56 individually composed regional warlord portraits, 204 focus icons, 62 idea/modifier textures, 135 decision/category textures, 38 distinct unified decision icons, 18 achievement triplets, the 21-surface closure package, and two real-frame leader portrait animations. Every warlord portrait has a distinct deranged face, prop, and macabre action at final HOI4 portrait scale. The live Hannibal sprites use the exact canonical `hannibal.dds` and `hannibal_wendigo.dds` files directly, while every later animation frame is separately image-generated. All 195 flag files derive from 65 distinct built-in ImageGen source designs and retain flat flag readability.
 - The dedicated Event 014 script, GUI, and localisation loader count is consolidated from 93 to 23. The 23-file result is the practical minimum of one dedicated file per incompatible HOI4 loader schema. Per-tag country/history files, engine-required flag ladders, binaries, and shared global registries remain structurally separate and are outside this merge count.
 - Event 014 adds no custom subunit or equipment identifiers. Existing battalion and equipment surfaces remain in use, so no bespoke unit-counter or equipment art is required. This is a verified scope disposition, not a fallback.

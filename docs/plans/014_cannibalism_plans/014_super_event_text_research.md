@@ -301,7 +301,7 @@ Use this order inside each emit effect:
 3. Set `global.current_super_event_audio_id` to the matching audio ID or its verified script constant.
 4. In each player-country scope, call `play_current_super_event_audio = yes`.
 
-The shared helper does nothing when either the visible flag or audio variable is absent. It dynamically resolves `chaosx_super_event_<audio_id>_<volume_suffix>` for music mode and the matching sound wrapper for sound mode. The close button clears both the visible flag and the current audio variable.
+The shared helper does nothing when either the visible flag or audio variable is absent. It dynamically resolves `chaosx_super_event_<audio_id>_sound_<volume_suffix>`. The close button clears both the visible flag and the current audio variable.
 
 The audio files are one-shot musical cues. The GUI text is static and requires no line-by-line timing. Keep the visible slot and audio selection aligned in the same effect chain, then let the track play without replacing title, body, quotation, or option during the cue.
 

@@ -50,7 +50,7 @@ No London Brass Players source file was added. Its Commons remote SHA-1 is `6320
 - Analysis of the exact retained interval found `-13.78 LUFS`, `-0.05 dBTP`, and `16.3 LU`; the planned linear pass measured `-18.0 LUFS`, `-4.3 dBTP`, and `16.2 LU` at `44.1 kHz` without flattening the source dynamics.
 - No retained-interval silence of at least `0.25 s` at `-50 dBFS` was detected.
 - At research time, audio IDs 6001 and 6002 and their dynamic asset names were absent from the registered audio surface; that finding reserved the collision-free IDs. Audio 6002 is now registered and consumed.
-- The current settings helper already constructs numeric music and sound identifiers from `global.current_super_event_audio_id`; no new helper branch is needed.
+- The current settings helper already constructs the numeric sound identifier from `global.current_super_event_audio_id`; no new helper branch is needed.
 
 ## Simplifications, omissions, and blockers
 

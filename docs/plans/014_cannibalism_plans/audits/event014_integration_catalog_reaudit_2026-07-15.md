@@ -71,7 +71,7 @@ No Paradox wiki web page was used. No gameplay source, localisation, media asset
 
 - Public super-event IDs are 49 for the reveal, 50 for The World Is the Larder, 52 for defeat aftermath, and 53 for No Thaw Will Come. Event 014 does not use ID 51.
 - All four IDs have scripted image, title, quote, button, and description mappings plus registered GFX sprites and DDS paths.
-- Each ID has six volume-specific music variants and six volume-specific sound-effect variants. The shared audio helper resolves the variant dynamically from the super-event ID and volume suffix.
+- Each ID has six volume-specific sound variants and six volume-specific sound-effect variants. The shared audio helper resolves the variant dynamically from the super-event ID and volume suffix.
 - The four OGG files and four WAV files are unique and match the hashes recorded in `docs/super_events/014_cannibalism/audio_research.md`.
 - `ffprobe` identified all eight files as stereo 44.1 kHz audio. WAV durations were 114.0/114.0 seconds for ID 49, 120.0/120.0 for ID 50, 116.1/116.001 for ID 52, and 118.0/118.0 for ID 53.
 - The music attribution page includes all four IDs, source and rights data, including the required CC BY-SA 2.0 attribution for ID 52. Preserved rights evidence is present.

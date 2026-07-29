@@ -60,7 +60,7 @@ The source and processed contact sheets show six distinct report compositions an
 
 - The Kruger State formation master contains plain red arm-band details on some figures as an ImageGen artifact. No readable insignia is present, but review this route-specific image before final public release.
 - The image packages are complete, but parent-owned `.gfx` registration already present in the repository still needs runtime load validation and parent-owned event/super-event trigger wiring.
-- Audio, localisation, event descriptions, shared music definitions, sound wrappers, GUI, and spreadsheet work remain outside this handoff.
+- Audio, localisation, event descriptions, shared sound definitions, sound wrappers, GUI, and spreadsheet work remain outside this handoff.
 
 ## Files changed by this tranche
 

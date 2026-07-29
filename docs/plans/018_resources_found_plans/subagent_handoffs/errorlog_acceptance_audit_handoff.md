@@ -32,7 +32,7 @@ The inspected log is:
 - Size: 6,077 bytes, 68 lines.
 - Last write: `2026-07-11T16:58:09.7659249+03:00`.
 - Every row is `no_game_date`; the log contains initialization/audio-loader evidence, not an Event 018 gameplay trace.
-- `sound/chaosx_sound.asset`, both Event 018 super-event music registries, the cave effects, core effects, log effects, cave triggers, decision triggers, AI strategies, units, DHO OOB, on-actions, and event file all predate the log.
+- `sound/chaosx_sound.asset`, the cave effects, core effects, log effects, cave triggers, decision triggers, AI strategies, units, DHO OOB, on-actions, and event file all predate the log.
 - The current `common/script_constants/018_resources_found_decision_constants.txt` (`17:06:11`), `common/scripted_effects/018_resources_found_decision_effects.txt` (`17:07:20`), and `common/national_focus/018_resources_found_cave_focus_tree.txt` (`19:11:06`) postdate the log. The supplied log is therefore not current-load evidence for those three current revisions.
 
 ## Error-log findings
@@ -73,8 +73,8 @@ The count is exact: 60 anonymous `soundeffect` blocks produce one empty-name reg
 - Category entries for IDs 54-56: `sound/chaosx_sound.asset` lines 236-253.
 - Named track definitions: lines 394-396.
 - Eighteen named sound effects: lines 2005-2022.
-- Music definitions: `music/chaosx_super_event_music.asset` lines 818-837.
-- Station entries: `music/chaosx_super_event_music.txt` lines 246, 249, and 252.
+- Sound definitions: `sound/chaosx_sound.asset` lines 818-837.
+- Station entries: `sound/chaosx_sound.asset` lines 246, 249, and 252.
 - All three WAV and all three OGG targets exist and predate the log.
 
 **LOG:** none of these Event 018 names appears in an error row. This supports only loader-level absence of a named diagnostic; it does not prove playback or slot presentation.

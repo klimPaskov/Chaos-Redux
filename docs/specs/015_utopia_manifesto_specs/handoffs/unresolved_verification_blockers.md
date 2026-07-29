@@ -72,7 +72,7 @@ Text and audio research are complete and integrated.
 - main quote: exact closing sentence from Thomas More's *Utopia*, Gilbert Burnet translation, verified against the Project Gutenberg primary text and public-domain compatible
 - audio: Brahms, *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, Musopen Symphony Orchestra
 - recording rights: file-specific CC0 1.0 Universal; source file matches the Commons SHA-1 and byte size
-- runtime: exclusive playback audio ID `57`, final `116 s` OGG and WAV, six sound wrappers, six sound wrappers, and display slots `96`-`100`
+- runtime: exclusive playback audio ID `57`, final `116 s` WAV, six sound wrappers, six sound wrappers, and display slots `96`-`100`
 - catalogue: active row in `music/chaosx_music_track_list.html`
 - uniqueness: no matching cue under any other event in the current `54`-OGG and `52`-WAV scan; the only WAV match is the expected Event 015 mirror
 

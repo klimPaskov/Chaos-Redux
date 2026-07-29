@@ -26,8 +26,8 @@ Before inspecting Chaos Redux audio surfaces, this pass consulted the offline wi
 
 Current Chaos Redux precedent was taken from:
 
-- `music/chaosx_super_event_music.asset`
-- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
+- `sound/chaosx_sound.asset`
 - `sound/chaosx_sound.asset`
 - `common/scripted_effects/chaosx_settings_effects.txt`
 
@@ -160,25 +160,15 @@ loudnorm=I=-18:TP=-1.8:LRA=20:measured_I=-13.78:measured_TP=-0.05:measured_LRA=1
 aresample=44100
 ```
 
-The measured values are reproducible with the current preserved source and local FFmpeg. Re-run the first pass if the source or FFmpeg version changes. Validate the encoded OGG after production because Vorbis reconstruction can move true peak slightly.
+The measured values are reproducible with the current preserved source and local FFmpeg. Re-run the first pass if the source or FFmpeg version changes.
 
 Reserved final derivatives:
 
-- OGG: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
-- WAV mirror: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
+- Runtime WAV: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 - Audio ID: `6002`
-- OGG delivery: Ogg Vorbis, `44,100 Hz`, stereo
 - WAV delivery: PCM signed 16-bit little-endian, `44,100 Hz`, stereo
 
-The final derivatives were produced in the implementation pass from the
-preserved source and exact accepted interval. Post-encode verification found:
-
-- OGG: `109.992517 s`, Ogg Vorbis, 44.1 kHz stereo, `-18.05 LUFS`,
-  `-3.81 dBTP`, `16.40 LU`, SHA-256
-  `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0`;
-- WAV: `109.992517 s`, PCM signed 16-bit little-endian, 44.1 kHz stereo,
-  `-18.00 LUFS`, `-4.27 dBTP`, `16.30 LU`, SHA-256
-  `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08`.
+The final WAV was produced in the implementation pass from the preserved source and exact accepted interval. Post-encode verification found `109.992517 s`, PCM signed 16-bit little-endian, 44.1 kHz stereo, `-18.00 LUFS`, `-4.27 dBTP`, `16.30 LU`, SHA-256 `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08`.
 
 The full production record is in
 `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`.
@@ -200,8 +190,7 @@ For each cleared audio ID, register the six established suffixes and volumes:
 
 For the verified cue, the required identifiers are:
 
-- music assets: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
-- representative station row: `chaosx_super_event_6002_sound_1_5`, with `chance = { factor = 0 }`;
+- sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
 - raw sound name: `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`;
 - sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
 - each sound wrapper should retain `max_audible = 1` and `max_audible_behaviour = fail` and should not enable looping.

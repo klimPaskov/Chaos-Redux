@@ -412,7 +412,7 @@ Use quotes about knowledge, arrogance, forbidden inquiry, unintended consequence
 
 Super-event audio should make the moment feel distinct.
 
-Super-event audio runtime uses sound output only. Register the final cue as sound and play it through the settings-aware sound helper.
+Register the final super-event cue as sound and play it through the settings-aware sound helper.
 
 Core rule: a super-event task is not complete unless its audio is selected, verified, converted to a game-ready WAV, registered, wired, and documented.
 

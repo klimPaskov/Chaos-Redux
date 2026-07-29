@@ -119,7 +119,7 @@ The four distinct licensed cues are delivered as eight hash-distinct binaries: f
 - ID 52: Faure, `Elegie, Op. 24`, Goldstein/Kalman; CC BY-SA 2.0 attribution, adaptation notice, and share-alike record.
 - ID 53: Grieg, `The Death of Aase`, Musopen Symphony; public-domain composition and recording record.
 
-`music/chaosx_super_event_music.asset` registers six volume variants per ID, `music/chaosx_super_event_music.txt` suppresses their representative entries from normal selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware wrappers per ID. Source, rights, excerpt, processing, and output evidence is retained in `docs/super_events/014_cannibalism/audio_research.md` and `music/chaosx_music_track_list.html`. No generated tone or placeholder track is present.
+`sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware wrappers per ID. Source, rights, excerpt, processing, and output evidence is retained in `docs/super_events/014_cannibalism/audio_research.md` and `music/chaosx_music_track_list.html`. No generated tone or placeholder track is present.
 
 ## Changed files
 

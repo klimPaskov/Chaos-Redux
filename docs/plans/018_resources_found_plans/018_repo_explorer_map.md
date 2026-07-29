@@ -392,8 +392,8 @@ Shared files to merge carefully:
 
 - `interface/chaosx_super_events.gfx`;
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`;
-- `music/chaosx_super_event_music.asset`;
-- `music/chaosx_super_event_music.txt`;
+- `sound/chaosx_sound.asset`;
+- `sound/chaosx_sound.asset`;
 - `sound/chaosx_sound.asset`;
 - `localisation/english/chaosx_music_l_english.yml`;
 - `music/chaosx_music_track_list.html`;

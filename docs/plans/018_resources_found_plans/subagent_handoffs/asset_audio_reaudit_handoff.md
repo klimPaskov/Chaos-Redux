@@ -96,7 +96,7 @@ All three active cues are real performances, unique by file hash and decoded aud
 | 55 | 110.000000 s, Vorbis, 44.1 kHz stereo; b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215 | 110.000000 s, PCM s16le, 44.1 kHz stereo; f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266 | 17d07bdeae93b40ecd5a5b3276943149de05b2eca187aef8bea981ecbd002eaa |
 | 56 | 109.000000 s, Vorbis, 44.1 kHz stereo; b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e | 109.000000 s, PCM s16le, 44.1 kHz stereo; 9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9 | 40dd0c8bed140da0f2039c3a631c89b50b1e3ddae52c01d058fb3bd30951bd7b |
 
-The OGG and WAV mirrors have matching sample counts, matching quarter-sine fade/edit structure, and zeroed tails. Their decoded waveforms correlate at 0.9988, 0.9983, and 0.9995 respectively, which is consistent with the WAV master and lossy OGG carrying the same three edits. All six final files decode.
+The WAV files have matching sample counts, matching quarter-sine fade/edit structure, and zeroed tails. Their decoded waveforms correlate at 0.9988, 0.9983, and 0.9995 respectively, which is consistent with the WAV master and lossy OGG carrying the same three edits. All six final files decode.
 
 Rights and source disposition is clean:
 
@@ -106,7 +106,7 @@ Rights and source disposition is clean:
 
 All nine frozen source/deed/legal-code snapshots exist and match the SHA-256 inventory in source/audio/license_evidence/README.md. The three preserved source masters match their documented hashes and profiles. The superseded Debussy/USAF file is retained only as rejected research history; it has no Event 018 runtime definition, helper, localisation title, catalogue row, or final-cue mapping. The live stable ID 55 mapping is Brahms/CC0 everywhere.
 
-Runtime audio wiring is exact: 18 sound wrappers and 18 sound wrappers provide six volume variants per ID at 0.67, 1.33, 2.00, 2.67, 3.33, and 4.00. Each family points to the correct final filename/base sound, and each ID has one zero-chance music-station registration. Display IDs 82–84, audio IDs 54–56, helper/wrapper names, sound-track names, and runtime filenames remain stable. The shared player dispatches the correct music or sound path according to settings and volume.
+Runtime audio wiring is exact: 18 sound wrappers provide six volume variants per ID at 0.67, 1.33, 2.00, 2.67, 3.33, and 4.00. Each family points to the correct final filename/base sound. Display IDs 82–84, audio IDs 54–56, wrapper names, sound-track names, and runtime filenames remain stable. The shared player dispatches the correct sound path according to volume.
 
 ## Combined super-event reconciliation
 

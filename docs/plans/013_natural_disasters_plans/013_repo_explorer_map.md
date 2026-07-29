@@ -518,7 +518,7 @@ Slots `67`-`70` are partially reserved in `common/scripted_localisation/chaosx_s
 - `interface/chaosx_super_events.gfx` has no Event 013 sprites
 - no `chaosx_super_event.67`-`.70` localisation exists
 - no Event 013 WAV folders exist
-- `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset` have no Event 013 registrations
+- `sound/chaosx_sound.asset` have no Event 013 registrations
 
 The current untracked constants also define only four abnormal super-event slots. The six accepted roles need a final collision-free numeric allocation and complete research packages before wiring.
 
@@ -527,8 +527,8 @@ For each completed role, update:
 - `interface/chaosx_super_events.gfx`
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` (`GetSuperEventImage`, title, quote, remark, description)
 - `localisation/english/013_natural_disasters_l_english.yml`
-- `music/chaosx_super_event_music.asset`
-- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
+- `sound/chaosx_sound.asset`
 - `sound/chaosx_sound.asset`
 - actual licensed/researched audio under new Event 013 sound folders
 - Event 013 emit helpers using `super_event_visible`, `global.current_super_event_audio_id`, and `play_current_super_event_audio`

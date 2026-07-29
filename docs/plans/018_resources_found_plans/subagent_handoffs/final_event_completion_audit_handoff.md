@@ -107,7 +107,7 @@ All are unique, real-music Vorbis tracks at 44.1 kHz stereo, but none satisfies 
 Repair contract:
 
 1. Produce unique, licensed, musically structured 60-to-120-second final cuts for IDs 54, 55, and 56.
-2. Replace both OGG runtime files and preserved WAV mirrors.
+2. Replace both OGG runtime files and preserved WAV files.
 3. Keep the tracks distinct and preserve the no-generated-tone, no-drone, no-placeholder requirements.
 4. Re-run duration, codec, channel, sample-rate, loudness, peak, and uniqueness checks.
 5. Update every hash, edit ledger, source attribution, and final-path reference.

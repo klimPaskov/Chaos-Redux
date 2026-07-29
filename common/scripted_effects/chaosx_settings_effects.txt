@@ -722,9 +722,6 @@ export_chaosx_settings_config_to_log = {
 	set_temp_variable = { settings_export_scalar_key = 43 }
 	set_temp_variable = { settings_export_scalar_value = settings_advanced_increment_mode }
 	settings_export_add_scalar_row = yes
-	set_temp_variable = { settings_export_scalar_key = 44 }
-	set_temp_variable = { settings_export_scalar_value = settings_super_event_audio_mode }
-	settings_export_add_scalar_row = yes
 	set_temp_variable = { settings_export_scalar_key = 45 }
 	set_temp_variable = { settings_export_scalar_value = settings_super_event_audio_volume }
 	settings_export_add_scalar_row = yes
@@ -4235,41 +4232,13 @@ reset_advanced_settings_to_defaults = {
 # ============================================================================
 
 initialize_miscellaneous_settings = {
-    set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound }
     set_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_5 }
     set_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
 }
 
 reset_miscellaneous_to_defaults = {
-    set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound }
     set_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x1_5 }
     set_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
-}
-
-toggle_super_event_audio_mode = {
-    if = {
-        limit = { check_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.music } }
-        set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound }
-    }
-    else = {
-        set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.music }
-    }
-}
-
-cycle_super_event_audio_mode_prev = {
-    toggle_super_event_audio_mode = yes
-}
-
-cycle_super_event_audio_mode_next = {
-    toggle_super_event_audio_mode = yes
-}
-
-set_super_event_audio_mode_sound = {
-    set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound }
-}
-
-set_super_event_audio_mode_music = {
-    set_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.music }
 }
 
 cycle_super_event_audio_volume_prev = {
@@ -4872,7 +4841,6 @@ fire_event_by_temp_id_no_cluster = {
 # - `global.current_super_event_audio_id` normally mirrors that ID; route variants may use a dedicated audio id.
 #
 # Settings used:
-# - `settings_super_event_audio_mode`
 # - `settings_super_event_audio_volume`
 # ============================================================================
 
@@ -4885,21 +4853,8 @@ play_current_super_event_audio = {
             }
         }
     }
-    else_if = {
-        limit = { check_variable = { settings_super_event_audio_mode = constant:settings_super_event_audio_mode.sound } }
+    else = {
         play_current_super_event_sound = yes
-    }
-    else = {
-        play_current_super_event_music = yes
-    }
-}
-
-play_current_super_event_music = {
-    if = {
-        limit = { check_variable = { settings_super_event_audio_volume = constant:settings_super_event_audio_volume.x0 } }
-    }
-    else = {
-        play_dynamic_super_event_music = yes
     }
 }
 
@@ -4909,16 +4864,6 @@ play_current_super_event_sound = {
     }
     else = {
         play_dynamic_super_event_sound = yes
-    }
-}
-
-play_dynamic_super_event_music = {
-    meta_effect = {
-        text = {
-            scoped_play_song = "chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]"
-        }
-        SUPER_EVENT_ID = "[?global.current_super_event_audio_id|.0]"
-        VOLUME_SUFFIX = "[GetSuperEventAudioVolumeToken]"
     }
 }
 

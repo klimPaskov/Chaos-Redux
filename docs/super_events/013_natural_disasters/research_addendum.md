@@ -261,7 +261,7 @@ Before the parent treats either package as complete:
 2. Re-open the canonical Commons page and confirm the rights block has not changed.
 3. Acquire the original FLAC from Commons, preserve it under the Event 013 docs audio-source area, and record access date, size, and SHA-256.
 4. Audition the proposed cue window; move the endpoint to a nearby musical cadence where needed.
-5. Export a unique 44.1 kHz OGG and any required sound file; do not loop either cue.
+5. Export a unique 44.1 kHz stereo WAV and any required sound file; do not loop either cue.
 6. Allocate unique super-event and audio ids only after checking the live repository state.
 7. Wire settings-aware playback, scripted localisation, image sprite, once-only trigger behavior, documentation, music catalog, and spreadsheet together.
 

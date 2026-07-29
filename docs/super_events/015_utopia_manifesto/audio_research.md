@@ -123,13 +123,12 @@ The following keys were verified in the live repository on `2026-07-14`:
   - `chaosx_super_event_57_sound_2_0`
   - `chaosx_super_event_57_sound_2_5`
   - `chaosx_super_event_57_sound_3_0`
-- representative zero-chance station entry: `chaosx_super_event_57_sound_1_5`
 - underlying sound ID: `chaosx_super_event_utopia_manifesto_regional_proclamation_track`
 - sound wrappers: `chaosx_super_event_57_sound_0_5` through `chaosx_super_event_57_sound_3_0`
 - music display localisation: `chaosx_super_event_57_sound_0_5` through `chaosx_super_event_57_sound_3_0`
 - catalogue row: `music/chaosx_music_track_list.html`, playback audio ID `57`, display slots `96`-`100`
 
-The six music definitions point only to the Event 015 OGG. The six sound wrappers point only to the Event 015 WAV through the Event 015 base sound. `utopia_manifesto_emit_regional_proclamation` assigns audio ID `57` before invoking the settings-aware playback helper. No historical `151` or `152` audio mapping remains in the active Event 015 package.
+The six sound wrappers point only to the Event 015 WAV through the Event 015 base sound. `utopia_manifesto_emit_regional_proclamation` assigns audio ID `57` before invoking the settings-aware playback helper. No historical `151` or `152` audio mapping remains in the active Event 015 package.
 
 ## Candidate disposition
 

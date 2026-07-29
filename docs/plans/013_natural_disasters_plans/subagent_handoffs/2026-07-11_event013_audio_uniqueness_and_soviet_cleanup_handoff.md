@@ -12,8 +12,8 @@ Skill used: `chaos-redux-super-events`
 
 ## Outcome
 
-- Event 013 audio ID 37 was an actual recording-level duplicate of Soviet Collapse audio ID 14. The collision was present in both music and sound encodings.
-- ID 37 now uses a legally reusable, role-fitting replacement at the same stable OGG and WAV paths. The source is preserved and its repository checksum matches the checksum published by Wikimedia Commons.
+- Event 013 audio ID 37 was an actual recording-level duplicate of Soviet Collapse audio ID 14. The collision was present in the sound encoding.
+- ID 37 now uses a legally reusable, role-fitting replacement at the same stable WAV paths. The source is preserved and its repository checksum matches the checksum published by Wikimedia Commons.
 - Event 013 IDs 38–42 do not reuse any other registered super-event recording.
 - Event 013 IDs 37–42 have unique identifiers and registered paths. No registry identifier or cross-ID path collision was found.
 - Soviet Collapse IDs 16 and 19–27 are strong unused-audio deletion candidates. ID 17 is a conditional candidate because its setter helper exists but has no caller in the parent-authorized inspection roots. IDs 14, 15, and 18 should be retained.
@@ -105,7 +105,7 @@ The replacement matches its preserved source at `0.923771` over 931 aligned Chro
 | 41 | `87F058595719F13F52799AFBC3C6410E807784AD96B1D52FEB684A5DB7E45939` | `4B5CB5E37CB6C9E0A36AF5F4BBB40B223D6F9D25D4B633A9B9DD61926F5937F4` | `110 s` | `0.636282` | unique |
 | 42 | `E3077C188F5F06F563311CFC7C4B2DF21A55729D7E42A5B103AD8E1AEB88228F` | `11E79EF57098B2159522F01E9B30B88230F021F8F09F19C23663A05B7B2C0804` | `115 s` | `0.608631` | unique |
 
-For each Event 013 ID, six unique music-volume definitions point only to its OGG, one representative music-station entry exists, one unique raw sound wrapper points to its WAV, and six unique sound-effect-volume definitions exist. No duplicate music definition name, sound-effect definition name, sound-wrapper name, or cross-ID Event 013 OGG path was found.
+For each Event 013 ID, one unique raw sound definition points to its WAV and six unique sound-effect-volume definitions exist. No duplicate sound-effect definition name, sound-definition name, or cross-ID Event 013 WAV path was found.
 
 ## Event 013 parent documentation changes — closed
 
@@ -132,7 +132,7 @@ The Event 013 manifest and audio-research note were updated in this handoff. The
 
 ## Soviet Collapse runtime-use audit
 
-All IDs 14–27 have OGG and WAV files, full sound registration, a representative station entry, music-label localisation, and an HTML catalogue row. Registration alone cannot play a track. `soviet_collapse_emit_super_event` assigns `global.current_super_event_audio_id` from `soviet_collapse_super_event_id`, and the settings helper only plays the assigned ID. A track is reachable only when a live call chain first assigns its ID and invokes the emitter.
+All IDs 14–27 have WAV files, full sound registration, and an HTML catalogue row. Registration alone cannot play a track. `soviet_collapse_emit_super_event` assigns `global.current_super_event_audio_id` from `soviet_collapse_super_event_id`, and the settings helper only plays the assigned ID. A track is reachable only when a live call chain first assigns its ID and invokes the emitter.
 
 | Audio ID | Registered | Referenced state | Runtime conclusion |
 | ---: | --- | --- | --- |
@@ -142,16 +142,16 @@ All IDs 14–27 have OGG and WAV files, full sound registration, a representativ
 | 17 | fully registered | setter helper at `common/scripted_effects/005_soviet_collapse_effects.txt:3736–3741`, called by the factory-successor focus at `common/national_focus/005_soviet_collapse_factory_successors.txt:2831` | retain; it has a live gameplay caller |
 | 18 | fully registered | Every Port setter at `:3745–3750`; called by `soviet_collapse_complete_port_council_endgame` at `:18779` | keep conservatively |
 | 19–22 | fully registered; presentation localisation/selectors remain | gameplay equivalents use ordinary news events `.140–.143` at `:3754–3783`; no audio setter | strong deletion candidates |
-| 23 | fully registered | registry, catalogue, and music-label localisation only; no super-event selectors or event text | strong deletion candidate |
+| 23 | fully registered | registry, catalogue, and audio catalogue metadata only; no super-event selectors or event text | strong deletion candidate |
 | 24 | fully registered | gameplay uses ordinary news event `.36` at `:3786–3791`; no audio setter or super-event selectors | strong deletion candidate |
 | 25–26 | fully registered | league formation uses ordinary news events `.30` and `.31` around `:12034` and `:12049`; no audio setter or super-event selectors | strong deletion candidates |
-| 27 | fully registered | registry, catalogue, and music-label localisation only; no super-event selectors or event text | strong deletion candidate |
+| 27 | fully registered | registry, catalogue, and audio catalogue metadata only; no super-event selectors or event text | strong deletion candidate |
 
 All 28 Soviet media files are distinct by SHA-256 and are 44.1 kHz stereo. The deletion verdict is based on script reachability, not filenames or duplicate media.
 
 ## Strong Soviet media deletion set
 
-Delete both the OGG under `music/005_soviet_collapse/` and the WAV under `sound/005_soviet_collapse/` for each stem:
+Delete the WAV under `sound/005_soviet_collapse/` for each stem:
 
 - `super_event_16_northern_signals_break`
 - `super_event_19_map_larger_than_union`
@@ -179,10 +179,10 @@ Including ID 17 raises the cleanup to 22 files and approximately `150.27 MiB`.
 
 Identifiers are the source of truth; line numbers are included as navigation aids and may shift with concurrent work.
 
-- `music/chaosx_super_event_music.asset`
+- `sound/chaosx_sound.asset`
   - remove all six volume blocks for ID 16, current lines 483–517
   - remove all six volume blocks for each ID 19–27, current lines 591–913
-- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
   - remove the ID 16 representative entry, current lines 135–141
   - remove representative entries for IDs 19–27, current lines 159–229
 - `sound/chaosx_sound.asset`
@@ -197,12 +197,9 @@ Identifiers are the source of truth; line numbers are included as navigation aid
 
 If ID 17 is confirmed unused, additionally remove:
 
-- music asset blocks: current lines 519–553
-- music station entry: current lines 143–149
 - sound category entries: current lines 104–109
 - raw sound definition: current lines 487–490
 - sound-effect wrappers: current lines 1334–1380
-- music-label localisation: current lines 104–109
 - HTML catalogue row: current lines 285–294
 
 No Soviet-specific per-ID audio rows exist under `docs/super_events`. `docs/events/005_soviet_collapse/overview.md` contains only generic asset-directory references and needs no audio-row deletion.
@@ -225,9 +222,8 @@ IDs 23–27 have no equivalent super-event presentation selectors or `.t/.d/.a/.
 
 - `docs/assets/013_natural_disasters/audio_source/earth_rupture_grieg_mountain_king_source.flac`
 - `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
-- `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
 - `docs/assets/013_natural_disasters/audio_manifest.md`
 - `docs/super_events/013_natural_disasters/archive/audio_research.md`
 - `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-11_event013_audio_uniqueness_and_soviet_cleanup_handoff.md`
 
-No `.asset`, music-station `.txt`, scripted localisation, event, gameplay localisation, GUI/GFX, spreadsheet, or Soviet media file was edited or deleted.
+No scripted localisation, event, gameplay localisation, GUI/GFX, spreadsheet, or Soviet media file was edited or deleted.

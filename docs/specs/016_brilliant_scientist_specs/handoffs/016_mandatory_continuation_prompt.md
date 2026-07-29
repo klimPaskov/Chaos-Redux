@@ -124,7 +124,7 @@ Do not claim the planning process closed until these steps are complete.
 - Laboratory World follows the normal world-end threshold.
 - Event 16 has no cluster.
 - The blank `Crazy Scientist` catalog concept is absorbed or retired rather than implemented as a duplicate chain.
-- At this historical cutoff, final super-event text and music were blocked. Six-package text and audio research later completed, and final Event 016-owned OGGs now exist at IDs `90` through `95`. Images, final descriptions, localisation, shared playback, and live presentation wiring remain outstanding.
+- At this historical cutoff, final super-event text and music were blocked. Six-package text and audio research later completed, and final Event 016-owned WAVs now exist at IDs `90` through `95`. Images, final descriptions, localisation, shared playback, and live presentation wiring remain outstanding.
 - Severe animations require real per-frame source art, frame sheets, static fallbacks, previews, manifests, and wiring handoffs.
 - Do not create final art from transformed copies of one still.
 - Do not use political power or command power as the default cost model.

@@ -28,7 +28,7 @@ The previous Event 016 visible-ID range 88 through 93 is superseded. Live Event 
 - Commit `0e8c6f8e` completed the role-preserving Event 016 audio rename.
 - All six Event 016 OGG files are present and independently verified as 115-second Vorbis streams at 44.1 kHz in stereo.
 - The recorded SHA-256 hashes match the Event 016 audio research and handoff records.
-- Event 016 audio research and Event 016-owned OGG production are complete.
+- Event 016 audio research and Event 016-owned WAV production are complete.
 - Shared music registration, sound registration, settings, event, scripted GUI, and localisation wiring remain absent.
 
 ### Stage 0 portrait

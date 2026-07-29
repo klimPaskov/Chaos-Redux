@@ -114,7 +114,7 @@ Run after the super-event roles are fixed.
 
 ### Prompt
 
-Read only the Event 6 super-event prompt, relevant audio rules, named existing track lists, and output paths. Use the two approved recordings and segment plans in `research/006_super_event_audio_research.md`. Reverify the source pages and rights, preserve source downloads, edit and convert to 44.1 kHz OGG, place final files under the Event 6 music folder, and document checksums, audio IDs, and wiring. Do not edit sound definitions or gameplay files. Reject uncertain licenses and placeholders.
+Read only the Event 6 super-event prompt, relevant audio rules, named existing track lists, and output paths. Use the two approved recordings and segment plans in `research/006_super_event_audio_research.md`. Reverify the source pages and rights, preserve source downloads, edit and convert to a 44.1 kHz stereo WAV, place final files under the Event 6 music folder, and document checksums, audio IDs, and wiring. Do not edit sound definitions or gameplay files. Reject uncertain licenses and placeholders.
 
 ## 13. Documentation curator
 

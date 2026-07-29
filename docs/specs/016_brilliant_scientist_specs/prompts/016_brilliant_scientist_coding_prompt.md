@@ -46,7 +46,7 @@ Build the 85 to 115 focus tree from the architecture. Include survival, politics
 
 Implement foreign invitation, recruitment, theft, sabotage, extraction, assassination, protection, joint laboratories, public challenge, countermeasure, and containment systems.
 
-Set a Kruger world-threat source only when actual existential conditions exist. Implement all six mapped super-event packages at visible IDs `90` through `95` with the completed researched text and Event 016-owned OGGs, new images, settings-aware playback, and documentation. Recognition and defeat are conditional at runtime, not optional packages. Preserve world-end scenario IDs `11` and `12`.
+Set a Kruger world-threat source only when actual existential conditions exist. Implement all six mapped super-event packages at visible IDs `90` through `95` with the completed researched text and Event 016-owned WAVs, new images, settings-aware playback, and documentation. Recognition and defeat are conditional at runtime, not optional packages. Preserve world-end scenario IDs `11` and `12`.
 
 Implement Laboratory World through the normal chaos-over-1000 terminal contract. Implement Strategic Singularity as a multi-year, multi-component project. Enforce the mutually exclusive commitment lock and verified disarmament or consolidation transitions. When Singularity validly fires, first add the chaos deficit needed to exceed 1000, record consequences, then call the normal Fallout world-end pipeline. Provide intelligence, raids, anchor and component counterplay, disarmament, surrender, and fast-victory counterplay.
 

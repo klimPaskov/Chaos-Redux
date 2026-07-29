@@ -68,9 +68,9 @@ The three final WAV file hashes and decoded-PCM hashes are mutually unique. ID `
 
 ## Runtime and catalogue alignment
 
-- `music/chaosx_super_event_music.asset` still points every ID `54`-`56` helper to the exact stable OGG filename.
+- `sound/chaosx_sound.asset` still points every ID `54`-`56` helper to the exact stable WAV filename.
 - `sound/chaosx_sound.asset` still points every base sound and wrapper to the exact stable WAV filename.
-- `music/chaosx_super_event_music.txt` still contains one representative zero-chance helper per cue.
+- `sound/chaosx_sound.asset` still contains one representative zero-chance helper per cue.
 - `localisation/english/chaosx_music_l_english.yml` identifies ID `55` as Brahms rather than the superseded Debussy source.
 - `music/chaosx_music_track_list.html`, `docs/super_events/super_event_audio_packages.md`, `docs/assets/018_resources_found/manifest.md`, and `docs/events/018_resources_found/overview.md` carry the active sources, rights, and durations.
 
@@ -82,7 +82,7 @@ Preserved source and evidence:
 - `docs/assets/018_resources_found/source/audio/license_evidence/README.md`
 - nine HTML evidence snapshots under `docs/assets/018_resources_found/source/audio/license_evidence/`
 
-Final music and sound files were replaced in place at the six stable paths listed above. Primary audio documentation and all Event 018 downstream catalogue/attribution records were updated. The superseded Debussy source master was retained for audit history.
+Final sound files were replaced in place at the stable paths listed above. Primary audio documentation and all Event 018 downstream catalogue/attribution records were updated. The superseded Debussy source master was retained for audit history.
 
 ## Blockers, simplifications, and unresolved rights risk
 

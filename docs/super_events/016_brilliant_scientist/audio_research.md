@@ -179,7 +179,7 @@ The 2026-07-14 collision repair in commit `0e8c6f8e` moved the six final WAVs by
 
 The six encoded hashes and six decoded-PCM hashes are mutually unique. A repository-wide source-byte comparison found no preserved source recording duplicated outside the Event 016 archive. A title and performer search found only the Event 013 research rejection of a different, ambiguously licensed 1921 Edison *Ride of the Valkyries* recording; the selected 2014 Ulm recording is a separate performance with explicit open terms.
 
-### Direct sound WAV mirrors
+### Direct sound WAV files
 
 The sound files were rendered independently from the preserved original recordings with the same source windows, gain, quarter-sine fades, stereo treatment, SoXr resampling, and zero-tail treatment documented above. They are not OGG-to-WAV transcodes. All six are exactly `115.000000 s`, `44,100 Hz`, stereo, signed 16-bit little-endian PCM. Their measured programme loudness remains within `0.1 LUFS` of the corresponding final WAV, with the expected small peak-meter difference between lossless PCM and Vorbis playback.
 
@@ -205,7 +205,7 @@ The current framework uses one mastered file per audio ID and six definition-lev
 | `_2_5` | `3.33` |
 | `_3_0` | `4.00` |
 
-Every ID from 90 through 95 has `chaosx_super_event_<ID>_<suffix>` music definitions pointing to the corresponding Event 016 OGG and `chaosx_super_event_<ID>_sound_<suffix>` wrappers pointing to the matching source-rendered WAV. The representative radio-station entries use the `_1_5` music definitions with zero chance, following the existing pattern.
+Every ID from 90 through 95 has `chaosx_super_event_<ID>_sound_<suffix>` wrappers pointing to the matching source-rendered WAV.
 
 ## Rights risks rejected during selection
 

@@ -695,7 +695,7 @@ If spam becomes too strong, balance through costs, stockpile production, target 
 
 Audit every super-event in the repo.
 
-The accepted runtime contract is sound-only. `music/` and the station shell remain repository infrastructure, while super-event runtime WAVs, sound wrapper definitions, station entries, and output-channel selection are not part of the current package.
+The accepted runtime contract registers one super-event WAV under `sound/` with settings-scaled sound wrappers. `music/` and the station shell remain repository infrastructure, and `music/chaosx_music_track_list.html` remains the audio catalogue.
 
 Required:
 

@@ -8,13 +8,13 @@ Skill used: `chaos-redux-super-events` (audio research and validation sections)
 
 ## Scope and disposition
 
-This audit covered the Event 013 audio source archive, six event-scoped WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. The original audit did not edit shared sound or music definitions, event scripts, gameplay files, localisation, GFX, GUI, or UI. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
+This audit covered the Event 013 audio source archive, six event-scoped WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. The original audit did not edit shared sound or sound definitions, event scripts, gameplay files, localisation, GFX, GUI, or UI. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
 
 Follow-up cleanup on 2026-07-26 removed the 60 unnamed sound-effect blocks that still pointed at the deleted Soviet Collapse IDs 16 and 19-27. This touched only `sound/chaosx_sound.asset`; the shared super-event presentation files remain baseline-exact, and unrelated Event 016 sound additions in the worktree were preserved outside the cleanup commit.
 
 ## Final Event 013 media
 
-The six completed super-events remain mapped to UI slots 67-72 and audio IDs 37-42. Every final WAV and WAV is stereo, 44.1 kHz, one-shot material between 110 and 118 seconds. The exact source paths, source SHA-256 values, final hashes, wrapper names, and representative station song IDs are recorded in `docs/super_events/013_natural_disasters/audio_production.md` and `docs/assets/013_natural_disasters/audio_manifest.md`.
+The six completed super-events remain mapped to UI slots 67-72 and audio IDs 37-42. Every final WAV is stereo, 44.1 kHz, one-shot material between 110 and 118 seconds. The exact source paths, source SHA-256 values, final hashes, and wrapper names are recorded in `docs/super_events/013_natural_disasters/audio_production.md` and `docs/assets/013_natural_disasters/audio_manifest.md`.
 
 | Audio ID | Role | Final duration | Final WAV SHA-256 | Final WAV SHA-256 | Source archive file |
 | ---: | --- | ---: | --- | --- | --- |
@@ -37,11 +37,11 @@ The current repository has 56 `sound/**/super_event_*.wav` files and 56 `sound/*
 
 ## Runtime wiring handoff
 
-The shared registration audit confirms, without editing those files, that each ID has six music variants (`chaosx_super_event_<id>_0_5` through `_3_0`), one representative station entry (`chaosx_super_event_<id>_1_5`), one Event013-specific raw sound wrapper, and six sound-effect variants (`chaosx_super_event_<id>_sound_0_5` through `_3_0`). The raw wrappers point to the matching WAV stems, and the music variants point to the matching OGG stems. The parent implementation owns the final event-side setter and `global.current_super_event_audio_id` call-chain check; the production record states that the common `play_current_super_event_audio` helper is used for settings-aware playback.
+The shared registration audit confirms, without editing those files, that each ID has one Event013-specific raw sound wrapper and six sound-effect variants (`chaosx_super_event_<id>_sound_0_5` through `_sound_3_0`). The raw wrappers point to the matching WAV stems. The parent implementation owns the final event-side setter and `global.current_super_event_audio_id` call-chain check; the production record states that the common `play_current_super_event_audio` helper is used for settings-aware playback.
 
 ## Soviet Collapse cleanup disposition
 
-The clearly unreferenced audio set already removed from the accepted scope is IDs 16 and 19-27: 20 files consisting of the matching WAV stems `super_event_16_northern_signals_break`, `super_event_19_map_larger_than_union`, `super_event_20_steppe_beyond_history`, `super_event_21_corridors_decide`, `super_event_22_bread_state`, `super_event_23_league_of_equal_republics`, `super_event_24_steppe_federation`, `super_event_25_baltic_league`, `super_event_26_caucasus_league`, and `super_event_27_eastern_buffer_coalition` under `music/005_soviet_collapse/` and `sound/005_soviet_collapse/`. The current narrow scan finds no remaining media, station entry, sound registration, or HTML catalogue row for those IDs. IDs 14, 15, 17, and 18 remain present; ID 17 is intentionally not deleted because its gameplay helper caller was outside this audio-only audit boundary.
+The clearly unreferenced audio set already removed from the accepted scope is IDs 16 and 19-27: 10 files consisting of the matching WAV stems `super_event_16_northern_signals_break`, `super_event_19_map_larger_than_union`, `super_event_20_steppe_beyond_history`, `super_event_21_corridors_decide`, `super_event_22_bread_state`, `super_event_23_league_of_equal_republics`, `super_event_24_steppe_federation`, `super_event_25_baltic_league`, `super_event_26_caucasus_league`, and `super_event_27_eastern_buffer_coalition` under `sound/005_soviet_collapse/`. The current narrow scan finds no remaining media, sound registration, or HTML catalogue row for those IDs. IDs 14, 15, 17, and 18 remain present; ID 17 is intentionally not deleted because its gameplay helper caller was outside this audio-only audit boundary.
 
 ## Files changed by this audit
 

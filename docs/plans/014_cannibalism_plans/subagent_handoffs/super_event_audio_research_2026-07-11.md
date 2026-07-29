@@ -8,7 +8,7 @@ The detailed rights record, cue rationale, hashes, attribution, and rejection lo
 
 - `docs/super_events/014_cannibalism/audio_research.md`
 
-This subagent did not edit music definitions, sound definitions, event script, scripted localisation, ordinary localisation, GUI, GFX, spreadsheets, or the music track list. The parent agent owns final registration and wiring.
+This subagent did not edit sound definitions, sound definitions, event script, scripted localisation, ordinary localisation, GUI, GFX, spreadsheets, or the music track list. The parent agent owns final registration and wiring.
 
 ## Final identifier map
 
@@ -83,8 +83,8 @@ The four final WAV hashes are mutually unique and do not duplicate any other OGG
 ## Parent-agent wiring checklist
 
 1. Re-scan the shared tree for `49`, `50`, `52`, and `53` before changing definitions.
-2. Register the four OGG files in `music/chaosx_super_event_music.asset` with the six settings-scaled helper variants per ID.
-3. Add representative zero-chance entries to `music/chaosx_super_event_music.txt`.
+2. Register the four WAV files in `sound/chaosx_sound.asset` with the six settings-scaled helper variants per ID.
+3. Add representative zero-chance entries to `sound/chaosx_sound.asset`.
 4. Register the four WAV files and six sound-effect wrappers per ID in `sound/chaosx_sound.asset`.
 5. Wire the settings-aware dispatcher and Event 014 call sites to the stable sound-track IDs listed above.
 6. Keep the visual `super_event_visible` slots aligned with the accepted Event 014 text/image package; do not reuse `51`.

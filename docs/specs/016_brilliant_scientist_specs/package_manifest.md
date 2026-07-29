@@ -17,7 +17,7 @@
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
 | Visual asset status | Stage-0 leader and advisor portraits complete and registered, later visual assets missing, later sprite contracts pre-registered only |
-| Audio status | Research and six Event 016-owned OGGs complete, shared music, sound, settings, event, and localisation wiring absent |
+| Audio status | Research and six Event 016-owned WAVs complete, shared music, sound, settings, event, and localisation wiring absent |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
 

@@ -138,4 +138,4 @@ the user approves a newly researched replacement.
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `interface/006_independence_wave_event_pictures.gfx`
-- Event 006 music and sound registries plus `music/chaosx_music_track_list.html`
+- Event 006 sound registry plus `music/chaosx_music_track_list.html`

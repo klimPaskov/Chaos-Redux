@@ -333,7 +333,7 @@ The main implementation agent must:
 - wire scripted localisation for image, title, description, button, and quote
 - wire image sprites in the correct GFX file
 - define unique audio IDs and volume variants
-- add representative entries to the super-event music station
+- register each cue as sound
 - add sound wrappers where required
 - set `global.current_super_event_audio_id`
 - use the settings-aware playback helper

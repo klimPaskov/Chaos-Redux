@@ -70,6 +70,6 @@ Only research and prepare if the Herald route is implemented.
 
 ## Research note output
 
-Create or update the research files indexed by `docs/super_events/010_death/README.md` with title candidates, quote candidates, cultural remark/button candidates, selected text package for each role, source links, attribution confidence, copyright notes, audio candidates, selected audio, license, duration, final `.ogg` path, suggested audio ids, image asset references, and implementation notes.
+Create or update the research files indexed by `docs/super_events/010_death/README.md` with title candidates, quote candidates, cultural remark/button candidates, selected text package for each role, source links, attribution confidence, copyright notes, audio candidates, selected audio, license, duration, final WAV path, suggested audio ids, image asset references, and implementation notes.
 
 The research note must explicitly state that the planning role labels are not final localisation. If no researched text package is ready for a role, mark that role blocked instead of recommending placeholder text.

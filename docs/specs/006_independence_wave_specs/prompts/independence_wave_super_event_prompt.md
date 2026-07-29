@@ -100,7 +100,7 @@ The text researcher only verifies the selected source pages and confirms UI fit.
 
 ## Audio research requirements
 
-Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for rights-cleared production. Do not download, process, or wire the accepted `6001` London Brass Players recording unless permission or a waiver covering United States redistribution is obtained. Reopening that selection requires explicit user approval. Produce the exact game-ready 44.1 kHz `6002` OGG segment from the preserved source, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit.
+Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for rights-cleared production. Do not download, process, or wire the accepted `6001` London Brass Players recording unless permission or a waiver covering United States redistribution is obtained. Reopening that selection requires explicit user approval. Produce the exact game-ready 44.1 kHz `6002` WAV segment from the preserved source, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit.
 
 Suggested final folder pattern:
 

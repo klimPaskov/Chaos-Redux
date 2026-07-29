@@ -58,7 +58,7 @@ The image is a dedicated Oth-Kesh emergence composition and is not reused by eit
 - **Preserved master:** `docs/assets/018_resources_found/source/audio/mussorgsky_bydlo_musopen_vrts_original.ogg`, SHA-256 `87da8f6bc6a03900ce0eac2879e7b027de707d1173c1cadc82db1caa081a88d4`.
 - **Edit:** retained `00:24.000–02:18.750`, quarter-sine fades, fixed `-2.6 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `88d3b749fd51bcc106daf352ae9791c51d3452e7bce9a01ebf8971dad57385c0`.
-- **WAV mirror:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `daf27599720d281eaa96fe828dc38337553026054b634a57d652a41236050575`.
+- **WAV file:** `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`, `115.000000 s`, SHA-256 `daf27599720d281eaa96fe828dc38337553026054b634a57d652a41236050575`.
 - **Attribution treatment:** no legal attribution is required by the stated grant; courtesy credit is retained in the audio records.
 
 ## Slot 83 — cross-continent World End
@@ -97,7 +97,7 @@ The image depicts cross-continent rupture and is distinct from the country-emerg
 - **Preserved master:** `docs/assets/018_resources_found/source/audio/brahms_symphony_1_i_musopen_cc0_original.ogg`, SHA-256 `f86f1df2f97b79c9bc92dac63b0da1bf868675005af4fe9c05ab886291af9b95`; its SHA-1 matches the Commons structured checksum.
 - **Edit:** retained `08:40.000–10:29.750`, quarter-sine fades, original dynamics, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215`.
-- **WAV mirror:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266`.
+- **WAV file:** `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`, `110.000000 s`, SHA-256 `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266`.
 - **Attribution treatment:** CC0 imposes no attribution requirement; courtesy performer and source credit is retained.
 
 The former Debussy / United States Air Force Band candidate is not live. Its U.S.-federal public-domain basis did not provide the clean worldwide grant required for a distributable mod, so it was replaced at the stable ID `55` paths. The preserved rejected source exists only as research history and is not named by a runtime definition, localisation label, catalogue row, or final cue.
@@ -138,7 +138,7 @@ The image is a dedicated multinational reconstruction scene and is not used by t
 - **Preserved master:** `docs/assets/018_resources_found/source/audio/chopin_prelude_op28_no4_ivan_ilic_original.ogg`, SHA-256 `c64c302948b73e251478b4e4a9e44d0e92ceec2e34f95e02d6c1130420dcd7cf`.
 - **Edit:** retained `00:00.450–01:49.200`, quarter-sine fades, fixed `+6.5 dB` gain, `0.250 s` zero tail, 44.1 kHz stereo delivery.
 - **Runtime WAV:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e`.
-- **WAV mirror:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9`.
+- **WAV file:** `sound/018_resources_found/super_event_56_last_depth_sealed.wav`, `109.000000 s`, SHA-256 `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9`.
 - **Required treatment:** credit Chopin and Ivan Ilić, link the source and CC BY 3.0 licence, state the excerpt/fade/gain/tail/encoding changes, impose no additional restriction, and imply no endorsement. The full change notice is retained in the audio manifest and detailed audio research.
 
 ## Runtime trigger and presentation contract
@@ -153,7 +153,7 @@ The constants in `common/script_constants/018_resources_found_cave_constants.txt
 
 ## Technical and uniqueness disposition
 
-All three OGG files are unique Vorbis recordings at 44.1 kHz stereo and between 60 and 120 seconds. All three WAV mirrors are unique 44.1 kHz stereo PCM s16le files. Their decoded PCM hashes are also mutually unique. The original images are three separate generated compositions at `457x328`, with separate source PNG, processed PNG, runtime DDS, and sprite records.
+All three OGG files are unique Vorbis recordings at 44.1 kHz stereo and between 60 and 120 seconds. All three WAV files are unique 44.1 kHz stereo PCM s16le files. Their decoded PCM hashes are also mutually unique. The original images are three separate generated compositions at `457x328`, with separate source PNG, processed PNG, runtime DDS, and sprite records.
 
 Rejected music candidates include reused repository recordings, provenance-unclear performances, YouTube-only sources, modern commercial recordings, generated or MIDI-rendered cues, drones, test tones, and the superseded jurisdiction-limited Debussy recording. Rejected quotation candidates and their context are retained in the detailed text research; none is live. No placeholder text, substitute super-event visual, generated music, reused final super-event image, unresolved quotation attribution, or unresolved distribution-rights caveat remains in this combined package.
 
