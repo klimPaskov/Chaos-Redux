@@ -8,16 +8,16 @@
 | Scientist | Doctor Warren Kruger |
 | Entry classification | Minor fire-once |
 | Source status | Reconciled implementation specification |
-| Package date | 2026-07-14 |
+| Package date | 2026-07-29 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete, gameplay incomplete, default-disabled |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime implemented; optional content, 3D production, balance evidence, and live acceptance remain blocked |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states are present and registered; the fourteen later advisor cards use the canonical advisor-template workflow; remaining visual families and final state-selection review remain tracked separately |
-| Audio status | Research and six Event 016-owned WAVs complete, shared music, sound, settings, event, and localisation wiring absent |
+| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, seven report images, and six super-event images are present and registered; expanded project/news/remnant art remains queued |
+| Audio status | Six Event 016-owned WAVs, sound tracks, volume variants, and super-event presentation selectors are wired |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
 
