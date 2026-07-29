@@ -759,7 +759,7 @@ Every priority package should receive:
 - refusal, withdrawal, and rival-bloc behavior
 - route-aware AI
 - a post-settlement activity loop
-- flags, a leader or council portrait, and a small icon family
+- flags, one decorated sovereign portrait on a plain background, and a small icon family
 
 No priority package should receive:
 

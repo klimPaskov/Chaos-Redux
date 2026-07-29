@@ -6,7 +6,7 @@ Date: 2026-07-18
 
 The bounded gameplay overlay for all 16 rows in the priority-member package matrix is implemented. No priority row was merged, rejected, or queued inside this overlay. Parent integration also supplies one dynamically loaded eight-focus package tree and a 35-idea lifecycle: sixteen distinct starting problems, three political-settlement stages, and sixteen distinct mature compacts. This parameterises common structure while preserving package-specific institutions, economies, forces, League roles, overlap settlements, post-settlement programmes, localisation, rewards, and AI priorities.
 
-This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, institutional-council portrait DDS files, country-tag flag coverage, and the remaining visual assets remain parent-owned integration work. All sixteen promoted packages remain on existing country tags. The seven niche Event 006 carriers are `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, and `EQX`; Event 012 creates no priority-member country or cosmetic tag. After Action 102 promotion, those seven carriers load the Event 012 priority-member tree directly, while existing vanilla carriers replace only the generic tree and otherwise receive the package additively. Each package also recruits one distinct collective council and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching council leader role. All current priority-member focus, idea, decision, category, report-picture, and council-portrait sprite IDs are registered under stable final paths. Forty decision DDS files now resolve: eight shared actions, sixteen distinct mechanics, and sixteen national-force actions. The remaining sixty-three focus, idea, decision, and report DDS files plus sixteen council portraits remain unresolved.
+This is not a whole-country-package completion claim. Formation or release scripts, specialist confirmation of compact territory, sovereign portrait DDS files, country-tag flag coverage, and the remaining visual assets remain parent-owned integration work. All sixteen promoted packages remain on existing country tags. The seven niche Event 006 carriers are `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, and `EQX`; Event 012 creates no priority-member country or cosmetic tag. After Action 102 promotion, those seven carriers load the Event 012 priority-member tree directly, while existing vanilla carriers replace only the generic tree and otherwise receive the package additively. Each package also recruits one distinct titled sovereign and, only after explicit political ratification, installs the selected ruling party, elections rule, named institution, and matching sovereign leader role. All current priority-member focus, idea, decision, category, report-picture, and sovereign-portrait sprite IDs are registered under stable final paths. Forty decision DDS files now resolve: eight shared actions, sixteen distinct mechanics, and sixteen national-force actions. The remaining sixty-three focus, idea, decision, and report DDS files plus sixteen sovereign portraits remain unresolved.
 
 Parent integration on 2026-07-18 connected this overlay to a bounded promotion survey and the live Action 102 gate. The survey recognises all sixteen accepted carrier identities, records the eight formerly missing origin markers, scores the six documented promotion conditions, requires at least three conditions plus the Action 102 local-support floor, and selects the exact country on the existing Charter action card. All sixteen carrier identities are also mapped into their correct regional contact overlay, so a valid country can enter the bounded roster before survey. It creates no tag, transfers no state, grants no core, and changes no relationship stage.
 
@@ -115,7 +115,7 @@ No web research was used.
 2. Existing Action 102, promote_priority_member_package, resolves either a full promotion or negotiated compact result.
 3. A full result invokes africa_priority_member_register_from_origin. A partial result stops at Protected status for an outside candidate or Associate status for an already Protected candidate, records one access, overlap, or local-ratification obstacle, and does not activate the full package.
 4. The bounded requalification decision checks the live obstacle requirement, rebuilds the dossier, and permits another Action 102 attempt. Registration validates the later full result and exact origin, assigns one stable package ID on the existing country tag, creates no territory or core change, and opens the political settlement.
-5. Full registration recruits one package-specific collective council without retiring, killing, or replacing the inherited ruler. The country then chooses one of three political routes. Ratification promotes that council into the matching non-aligned, democratic, or communist leader role, installs the corresponding elections rule, and gives the ruling party the package-specific council, civic-government, or producer-institution name.
+5. Full registration recruits one package-specific sovereign without retiring, killing, or replacing the inherited ruler. The country then chooses one of three political routes. Ratification promotes that sovereign into the matching non-aligned, democratic, or communist leader role, installs the corresponding elections rule, and gives the ruling party the package-specific council, civic-government, or producer-institution name.
 6. The country advances a four-step distinct mechanic and a separate four-step force-reinforcement track.
 7. League bargaining uses only the shared africa_apply_relationship_transition state machine.
 8. The overlap event records congress, local consent, autonomy, or rivalry without automatic cores, annexation, or maximal borders.
@@ -420,11 +420,11 @@ The mechanic identifier and filename pattern matches the existing Event 012 asse
 | GFX_report_event_012_africa_priority_member_overlap_settlement | report_event_012_africa_priority_member_overlap_settlement.dds |
 | GFX_report_event_012_africa_priority_member_departure | report_event_012_africa_priority_member_departure.dds |
 
-The expanded registration covers the package focus and idea icons in addition to these 60 decision and report references. Priority packages use the existing country-tag localisation and country colours; the superseded sixteen priority cosmetic definitions have been removed. Forty of the fifty-six decision references now have reviewed final DDS files. The sixteen post-settlement decisions, eight focus icons, thirty-five idea icons, four report pictures, incomplete Event 006 country-tag flag families, and the final institutional-council portrait DDS files remain unresolved rows in the Event 012 asset tranche.
+The expanded registration covers the package focus and idea icons in addition to these 60 decision and report references. Priority packages use the existing country-tag localisation and country colours; the superseded sixteen priority cosmetic definitions have been removed. Forty of the fifty-six decision references now have reviewed final DDS files. The sixteen post-settlement decisions, eight focus icons, thirty-five idea icons, four report pictures, incomplete Event 006 country-tag flag families, and the final sovereign portrait DDS files remain unresolved rows in the Event 012 asset tranche.
 
-### Institutional-council portraits
+### Sovereign portraits
 
-Every package key uses `GFX_portrait_012_africa_priority_<package>_council` and the final 156x210 file `gfx/leaders/012_africa/priority_members/portrait_012_africa_priority_<package>_council.dds`. All sixteen sprite IDs and paths are registered. No generic or random portrait is wired as a substitute; the final DDS files remain asset-tranche work.
+Every package key uses `GFX_portrait_012_africa_priority_<package>_sovereign` and the final 156x210 file `gfx/leaders/012_africa/priority_members/portrait_012_africa_priority_<package>_sovereign.dds`. All sixteen sprite IDs and paths are registered. No generic or random portrait is wired as a substitute; each sovereign receives a dedicated plain-background portrait.
 
 ## Validation evidence
 
@@ -483,7 +483,7 @@ Country-identity inventory:
 
 Political-roster inventory:
 
-- 16 package-specific collective council characters
+- 16 package-specific titled sovereign characters
 - 16 registered 156x210 council portrait paths
 - 48 route-specific country-leader installation branches; exactly one non-aligned council, democratic civic, or communist producer role is added per package playthrough
 - 48 package-and-route-specific ruling-party names with short and long forms
@@ -530,7 +530,7 @@ Owned gameplay overlay:
 Whole package layer remains incomplete until the parent integrates:
 
 - final specialist confirmation of the accepted compact carrier territories; the current survey never expands them
-- the 16 final institutional-council portrait DDS files registered in this handoff
+- the 16 final sovereign portrait DDS files registered in this handoff
 - base and ideology flag coverage for the seven existing Event 006 country tags where the Independence Wave package has not yet supplied complete runtime flags; no Event 012 priority-member cosmetic flag family is permitted
 - 63 unresolved focus, idea, post-settlement decision, and report DDS assets; 40 decision DDS files are present and documented
 - verified source-generation provenance for the 40 present decision icons; their retained source files have no embedded generator, prompt, author, or licence metadata
@@ -552,3 +552,9 @@ After the missing core package dependencies are implemented:
 ## Git
 
 The original bounded overlay was delivered without a subagent commit. Parent integration records each accepted tranche in the repository history.
+
+## Release-candidate correction (2026-07-29)
+
+The asset-status paragraphs above are retained as the 2026-07-18 overlay baseline and are not the current release ledger. The current filesystem and GFX registration evidence records sixteen installed sovereign portrait families, thirty-five installed priority-member idea textures, sixteen mechanic decision textures, sixteen force decision textures, sixteen post-settlement decision textures, eight shared decision textures, and four priority-member report textures. The seven niche carrier flag ladders are being installed on existing Event 006 identities; Event 012 creates no new country tags.
+
+These assets are runtime-capable only through the bounded Action 102 promotion and package-selection gates; they are not generic dormant substitutes. Full package acceptance remains open for carrier-flag ownership and provenance, route/runtime audits, selected package gates, and the parent country-package and localisation audits. No gameplay completion claim follows from this documentation correction.

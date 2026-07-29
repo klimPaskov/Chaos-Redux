@@ -61,9 +61,13 @@ No gameplay, `.gfx`, `.gui`, localisation, spreadsheet, specification, or existi
 
 No simplifications or omissions were made within the assigned family-level asset scope: all 13 requested live IDs have complete source-to-DDS packages and direct matrix reconciliation.
 
-The source matrix separately calls for one distinct icon per final focus through `<focus_slug>` variants. The current focus tree consumes shared family-level sprite IDs, so that broader per-focus expansion remains a planned Event 012 design task and is not represented as complete here. Runtime registration also remains pending solely because `.gfx` edits were explicitly outside this tranche.
+The source matrix separately calls for one distinct icon per final focus through `<focus_slug>` variants. The current focus tree consumes shared family-level sprite IDs, so that broader per-focus expansion remains a planned Event 012 design task and is not represented as complete here. Runtime registration is complete for the thirteen current family consumers; the broader per-focus expansion remains deferred.
 
 ## Skills used
 
 - `chaos-redux-event-assets`
 - `imagegen`
+
+## Release-candidate correction (2026-07-29)
+
+The runtime-registration note above is historical. `interface/012_africa.gfx` now registers all thirteen regular focus-family sprites and their thirteen shine sprites, and the thirteen final DDS textures are present under `gfx/interface/goals/012_africa/`. The final focus re-audit and registration scan report no active blocker for these consumers. The broader matrix request for one distinct icon per final focus remains deferred.

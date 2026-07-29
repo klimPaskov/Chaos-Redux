@@ -325,11 +325,14 @@ africa_matches_prefire_host_contact_pool = {
 
 # COUNTRY scope. The mapped playbook is itself the African-rooted historical
 # package; the capital/core checks prevent relocated metropoles or occupation
-# authorities from borrowing that legitimacy.
+# authorities from borrowing that legitimacy. The release-candidate package
+# only takes over the generic tree. Countries with meaningful national trees
+# remain eligible as members but cannot lose their existing content to Event 12.
 africa_is_eligible_host = {
 	exists = yes
 	africa_has_mapped_host_playbook = yes
 	africa_has_prefire_opening_contact = yes
+	has_focus_tree = generic_focus
 	has_capitulated = no
 	capital_scope = {
 		is_on_continent = africa
@@ -1074,6 +1077,46 @@ africa_action_target_is_usable = {
 		any_controlled_state = { is_on_continent = africa }
 		africa_is_valid_external_action_target = yes
 	}
+}
+
+# COUNTRY scope on the Event 012 host. Only a priority sovereign with enough
+# recorded ecological pressure, or a documented covenant-nature package, may
+# turn the Rain/Drought actions into hostile Event 013 calls.
+africa_natural_disaster_weapon_actor_is_eligible = {
+	africa_is_current_host = yes
+	has_global_flag = africa_evolution_iii_logged
+	OR = {
+		AND = {
+			africa_priority_member_has_package = yes
+			has_variable = africa_ecological_wrath
+			check_variable = { africa_ecological_wrath > constant:africa_focus_route_threshold.minimum_covenant_pressure }
+		}
+		AND = {
+			OR = {
+				has_country_flag = africa_covenant_route_committed
+				has_country_flag = africa_covenant_favour_and_wrath
+				has_country_flag = africa_covenant_write_warfare_doctrine
+				has_country_flag = africa_covenant_route_capstone
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the Event 012 host before a hostile nature action is
+# reserved. Action quote costs are checked separately by africa_can_pay_action_quote.
+africa_natural_disaster_weapon_cost_is_available = {
+	has_political_power > constant:africa_natural_disaster.caller_pp_cost
+	command_power > constant:africa_natural_disaster.caller_cp_cost
+	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+}
+
+# COUNTRY scope on the selected target. ROOT is the Event 012 host when this
+# trigger is evaluated from the selected-target ledger.
+africa_natural_disaster_weapon_target_is_valid = {
+	exists = yes
+	NOT = { africa_is_current_host = yes }
+	has_war_with = ROOT
 }
 
 # COUNTRY scope on an active target.
