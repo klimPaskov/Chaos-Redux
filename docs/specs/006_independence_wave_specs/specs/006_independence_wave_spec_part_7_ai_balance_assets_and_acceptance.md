@@ -729,6 +729,10 @@ If implementation is staged, unresolved tranches remain explicitly queued. The e
 
 ## Acceptance criteria
 
+### Controlling acceptance authority (2026-07-29)
+
+Completion is evaluated from source and static evidence. Repository source inspection, MCP inspections, transaction and source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. This decision does not waive static package-capacity, incomplete-package, formable, asset, focus-diagnostic, rights, route, AI, or wiring requirements.
+
 ### Release planner
 
 - exact wave counts by chaos band
@@ -799,7 +803,7 @@ If implementation is staged, unresolved tranches remain explicitly queued. The e
 - intensity changes territory and forces
 - type selector changes diplomacy and war setup
 - six numeric scenario families expose eight player-facing modes because Universal Belligerence has three independently selectable rules
-- runtime acceptance covers all eight modes at Low, Medium, High, and Maximum for 32 mode/intensity cells
+- source and MCP acceptance coverage maps all eight modes at Low, Medium, High, and Maximum for 32 mode/intensity cells; live cell execution is optional future QA
 - Universal Belligerence rules have separate target-selection and result evidence rows
 - blocked candidates are reported
 - host and overlap safety remains active
@@ -841,10 +845,10 @@ A completion report should include:
 - candidate package coverage count by region and depth level
 - formable family coverage
 - mechanics value and action map
-- AI scenario tests
+- AI source and weight inspections with declared scenario inputs
 - host survival tests
 - Event 5 and Event 6 collision tests
-- triggerable scenario tests for all 32 selectable mode/intensity cells and the bounded collision, selector, rollback, and persistence sweeps
+- triggerable-scenario source and MCP inspections for all 32 selectable mode/intensity cells and the bounded collision, selector, rollback, and persistence sweeps; live execution and save/load are optional future QA
 - asset manifest status
 - super-event research and wiring status
 - achievement tracking status

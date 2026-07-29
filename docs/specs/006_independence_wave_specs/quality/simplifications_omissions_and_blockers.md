@@ -4,30 +4,39 @@
 
 This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `6002` source has a produced game-ready derivative and runtime package. Direct comparison of the editable catalog workbook with the current Event Details, evolution, Liberations-cluster, and SCN-008 localisation found exact agreement, so the bounded catalog-alignment task is closed without a workbook rewrite.
 
+The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
+
+## 2026-07-29 shared core and registry API milestone
+
+The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The approved automatic ladder remains 6/8/10/14/20, with the 14- and 20-country targets fail-closed below admitted package and reservation capacity.
+
+This closure is not a country-package completion claim. The current twelve-package static attestation set, 55 unbound selectable rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `6001` rights blocker remain open. The three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
+
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
 ## Current implementation reconciliation (2026-07-25)
 
 The accepted specification includes the later sourced-portrait decision.
 This section is the current implementation ledger rather than a rewrite of the planning baseline.
-IW-001 Scotland, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-017 Corsica, IW-019 Sicily, and IW-184 California are the runtime content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
+IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, and IW-184 California are the twelve statically content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
 Every other formerly admitted grounded package whose live country leader, route leader, commander, or institutional portrait uses generated art remains withdrawn until sourced real male replacements pass review.
 FORM-48 remains implemented without an annexation fallback, but HAW/FSM package withdrawal prevents a complete currently admitted carrier/member set.
 IW-184 `HBX` is admitted after the full post-wire package audit for William D. Stephens, while IW-173 `HAW` remains withdrawn because its vanilla David Kalakaua Kawananakoa sprite resolves to generic `Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
 The source-locked HAW trial built from his correct 1925 archival photograph passed the HOI4 style gate but failed independent likeness review because clipped source highlights forced the repaint to reconstruct identity-bearing facial geometry.
 It remains unwired and supplies no DDS.
 
-The 2026-07-25 installed scan covers 108 Event 006-owned identifiers, 122
-Workshop directories, eight archives, four sibling local mods, vanilla, and
-non-Event 006 Chaos Redux definitions. It reports zero collisions and 445 safe
-X tags. The allocator passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, the doubled 6/8/10/14/20 ladder,
-and Event 005-first joint reservation ordering. Those structural counts do not
-override the compile-time visual-readiness gate. Pacific assets use vanilla
-HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and the audited flat
-ImageGen PFX flag. Exactly zero custom Event 006 advisor icons/assets/sprites/
-portrait blocks are present; leader assets are separate, and protected BAY/RHI
-hashes are unchanged.
+The current scoped tag audit covers the 102 Event 006 reservation tags plus the
+34 Soviet Collapse carriers. It excludes the Random Events Mod by accepted scope,
+reports zero external collisions for the scoped surface, and leaves the unrelated
+`REV`, `ZIN`, and `ZZZ` carriers untouched. Earlier broad installed scans remain
+dated evidence only. The allocator still records 149 publishers, 126
+automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, the doubled
+6/8/10/14/20 ladder, and Event 005-first joint reservation ordering. Those
+structural counts do not override the compile-time visual-readiness gate. Pacific
+assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and
+the audited flat ImageGen PFX flag. Exactly zero custom Event 006 advisor
+icons/assets/sprites/portrait blocks are present; leader assets are separate, and
+protected BAY/RHI hashes are unchanged.
 
 The bounded IW-043/IW-058 gameplay tranche is also recorded. The package audits
 and manifests record eight generated all-male institutional portraits,
@@ -52,8 +61,9 @@ ten flat flags, two report images, and the final 27-icon static package,
   crossover, and the final Mesopotamian proof requires that lock.
 
 FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
-006 completion audit, final balance audit, runtime scenario evidence, and
-unrelated package/achievement work remain incomplete. Earlier Pacific handoffs
+006 completion audit, static balance/source audit, and unrelated package/achievement
+work remain incomplete. Runtime scenario execution is optional future QA and is
+not a completion blocker. Earlier Pacific handoffs
 that state HOLD/FAIL-CLOSED are historical records and are not rewritten here.
 
 IW-093 `DOX` Asante and IW-098 `SOK` Sokoto now have a bounded foundational
@@ -103,7 +113,7 @@ The following items are implementation or production work. Their design and sour
 
 Every candidate has a resolved representation in the tag audit and package resolution matrix. The architecture contains 102 custom Event 6 countries, 91 registered vanilla-tag reuses, and 13 non-selectable vanilla route overlays. Every custom Event 6 tag is unique and ends in `X`. The 2026-07-15 scan found that all 91 reuse rows resolve to registered tags and found no collision for any of the 102 accepted custom tags. This result is binding for that scan universe and must be repeated if the installed or mod registries change.
 
-The tag audit locks identifiers only. The thirteen registered-tag compatibility adapters and thirteen additive overlay hooks remain implementation blockers. Bounded IW-022 Dalmatia, IW-025 Vojvodina, IW-035 Livonia, IW-059 Mesopotamia, and IW-085 Cyrenaica source adapters now observe the vanilla CRO-origin `dalmatia`, HUN-origin `vojvodina`, living-LIT `LIVONIA`, formed `neo_mesopotamia`, and Italian-autonomy `LBA` routes with route-specific visible values, costed actions, timed missions, lifecycle ideas, and narrow identity-gated hooks; they create no tags or history and are not complete package admissions. Their meaningful-tree, network, league, formable, symbol, save/load, and live-runtime evidence remain open, as do the seven other exact route-overlay hooks. The `IW-153 POK` adapter must preserve registered history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior while retaining the named-community restriction. No source document may describe those adapters or overlays as implemented without gameplay evidence and route-preservation validation.
+The tag audit locks identifiers only. The thirteen registered-tag compatibility adapters and thirteen additive overlay hooks remain implementation blockers. Bounded IW-022 Dalmatia, IW-025 Vojvodina, IW-035 Livonia, IW-059 Mesopotamia, and IW-085 Cyrenaica source adapters now observe the vanilla CRO-origin `dalmatia`, HUN-origin `vojvodina`, living-LIT `LIVONIA`, formed `neo_mesopotamia`, and Italian-autonomy `LBA` routes with route-specific visible values, costed actions, timed missions, lifecycle ideas, and narrow identity-gated hooks; they create no tags or history and are not complete package admissions. Their meaningful-tree, network, league, formable, symbol, and source/MCP route-preservation audits remain open, as do the seven other exact route-overlay hooks. Save/load and live-runtime evidence are optional future QA. The `IW-153 POK` adapter must preserve registered history, characters, cores, `INS` releasable membership, and `indonesia_transfer_POK` behavior while retaining the named-community restriction. No source document may describe those adapters or overlays as complete without the required static route-preservation validation.
 
 ### State IDs and borders
 
@@ -111,7 +121,7 @@ Every package has a public-baseline state ID or an explicit no-unique-state outc
 
 ### Final focus count and layout
 
-The source defines route architecture, focus groups, route locks, branch interaction, rewards, failure states, and AI. Exact focus IDs, node count, coordinates, prerequisites, durations, and icons belong to implementation and must be reviewed in game.
+The source defines route architecture, focus groups, route locks, branch interaction, rewards, failure states, and AI. Exact focus IDs, node count, coordinates, prerequisites, durations, and icons belong to implementation and must be reviewed through source and MCP focus inspection. Live viewing is optional future QA.
 
 ### Final scripted values
 
@@ -133,8 +143,8 @@ reviewed. The two signature achievements remain hidden by their intended
 player-facing visibility rules, while their exact proof writers and formable
 adapter attestations are operational for the matching CHU and ASY package
 generations. The vanilla CHU/ASY shortcut guards have independently passed.
-The full achievement audit and live validation matrix remain required before
-whole-event completion.
+The full achievement audit and static proof/source matrix remain required before
+whole-event completion. Live validation is optional future QA.
 
 ### Super-event production
 
@@ -156,16 +166,17 @@ localisation. `Events!C7`, `Events!D7:H7`, `Clusters!B3:C3`, and
 `Scenarios!B9:E9` match the current Event Details, all five evolution title/body
 pairs, Liberations cluster wording, and SCN-008 name, premise, type labels, and
 intensity descriptions exactly. No workbook write or CSV export was needed
-because there was no content delta. Whole-event status remains **In progress / Needs Testing** for implementation and runtime reasons, not catalog drift.
+because there was no content delta. Whole-event status remains **In progress / Needs Testing** for implementation and static-source reasons, not catalog drift. Live rendering and runtime QA are optional future follow-up.
 
 ### Repository and game validation
 
 No Clausewitz files were edited in this planning-only pass. That historical
 statement does not describe the current implementation snapshot; the Pacific
 promotion and its gameplay validation evidence are recorded above and in the
-Event 006 source-of-truth map. No final whole-event parser, game load, live
-scenario, focus-tree layout, AI behavior, map release, unit spawn, or
-super-event playback completion audit is claimed here.
+Event 006 source-of-truth map. No final whole-event parser, focus-tree layout,
+AI behavior, map release, unit spawn, or super-event source audit is claimed
+here. Game load, live scenario, and live playback checks are optional future QA
+rather than acceptance blockers.
 
 ## Research status
 
@@ -175,8 +186,9 @@ FORM-12/13/18 and the signature proof writers are operational for their exact
 carrier contracts. The sovereign-autonomy partner and terminal-ordering gap is
 closed in source with a permanent terminal-choice lock and proof requirement,
 and the bounded non-portrait visual families have a dated parent PASS. Remaining
-work is runtime scenario evidence and parent-wide Event 006 documentation,
-balance, asset/audio, package-registry, and completion validation.
+work is static scenario source/MCP evidence and parent-wide Event 006
+documentation, balance, asset/audio, package-registry, and completion validation.
+Live runtime evidence is optional future QA.
 
 Every package has a final representation, research disposition, and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding is complete for the 2026-07-14 snapshot and the accepted tag scan is complete for the 2026-07-15 scan universe. Compatibility adapters, overlay hooks, final asset provenance, the `6001` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 

@@ -1,6 +1,20 @@
 # Source specification acceptance checklist
 
-This checklist evaluates the planning package against the Event 6 request. `Complete in source design` means the requirement is fully specified but not implemented. `Implementation gate` means the final value depends on repository inspection, asset research, or game validation.
+This checklist evaluates the planning package against the Event 6 request. `Complete in source design` means the requirement is fully specified but not implemented. `Implementation gate` means the final value depends on repository inspection, asset research, MCP inspection, or source audit.
+
+The controlling 2026-07-29 acceptance decision makes source and static evidence the completion authority. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static package capacity, incomplete package or formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain in force.
+
+## 2026-07-29 shared core and registry API milestone
+
+The following bounded implementation milestone is closed under source and static evidence. It does not mark the full Event 006 specification complete and does not promote country-specific package content.
+
+| Milestone surface | Status | Boundary that remains open |
+| --- | --- | --- |
+| Automatic loop, World Collapse allocation, and Event 005/Event 006 transaction boundary | Source-closed | The approved ladder remains 6/8/10/14/20. The 14- and 20-country targets stay fail-closed below admitted package and reservation capacity. |
+| Shared dynamic systems | Source-closed | Package-specific route writers, package AI and balance, and package admission still require their own audits. |
+| Country registration and reusable `chaosx_country_*` API | Source-closed | Registration does not promote country definitions, leaders, portraits, flags, focuses, decisions, forces, AI, formables, or assets. |
+
+Evidence is recorded in `subagent_handoffs/006_core_loop_closure_v35_2026_07_29.md`, `subagent_handoffs/006_dynamic_systems_closure_v35_2026_07_29.md`, and `subagent_handoffs/006_registry_api_closure_v35_2026_07_29.md`. The whole-event disposition remains **HOLD / PARTIAL** for the unresolved package and static acceptance surfaces.
 
 This checklist is frozen source-design evidence. Current implementation status,
 including sixteen achievement definitions/localisation sets, final bounded
@@ -28,7 +42,7 @@ transactions, is maintained in
 | Legitimacy, recognition, foreign support, patron influence, league cooperation, claims, instability, and formables are represented | Parts 3 and 6 | Complete in source design | Script constants, variables, UI, and cleanup |
 | Shared content adapts across all candidates | Part 4 shared framework, Part 5 overlays, registries | Complete in source design | Prove country-specific play in audit |
 | Strong packages receive signature ambitions | Part 5 signature modules and candidate registry | Complete in source design | Historical leaders, routes, symbols, and state mapping |
-| IW-043 and IW-058 signature transactions preserve member sovereignty | Parts 3, 5, and 6 plus the dated transaction audits | Implemented for exact carriers | Whole-event completion audit and runtime transaction matrix |
+| IW-043 and IW-058 signature transactions preserve member sovereignty | Parts 3, 5, and 6 plus the dated transaction audits | Implemented for exact carriers | Whole-event completion audit and static transaction/source audit |
 | New Event 6 tags end in X | Candidate registry, Part 1 tag rule, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Repeat the collision scan if either registry changes |
 | Existing registered tags can be reused | Part 1 tag policy, 2026-07-15 installed-registry scan | Complete in source design and current snapshot | Implement and validate all thirteen package compatibility adapters |
 | Vanilla route identities remain non-selectable overlays | Part 1 representation architecture, tag audit, candidate registry | Complete in source design and current snapshot | Implement and validate all thirteen exact additive overlay hooks |
@@ -51,7 +65,7 @@ transactions, is maintained in
 | Historical flags, symbols, and real portraits are sourced | Part 7, asset prompt | Complete in source design | Source, license, processing, DDS, and manifest work |
 | Fictional and alternate visual states can use generated art | Part 7 and asset prompt | Complete in source design | Use the correct art subagent and asset workflow |
 | Animation uses real per-frame art and static fallbacks | Part 7 and asset prompt | Complete in source design | Produce frame plans, source frames, sheets, DDS, and handoff |
-| Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Implemented in bounded source and proof writers | Parent-wide completion audit and live validation matrix |
+| Difficult achievements cover survival, league, formables, signature packages, and scenario play | Part 7 and achievement matrix | Implemented in bounded source and proof writers | Parent-wide completion audit and static proof/source matrix; live validation is optional future QA |
 | Event log, docs, catalog, and workbook alignment are planned | Part 7, catalog handoff, and dated direct comparison | Shared Event 6 mirror fields aligned | Recheck when player-facing localisation changes and finish parent-wide documentation |
 | Final player-facing text is direction-only in the source spec | All spec parts and prompts | Complete in source design | Implementation writes final localisation and runs text audit |
 | Final super-event titles, descriptions, buttons, quotes, and musical selections are sourced | Approved text research and corrected audio-rights research | Text complete, `6002` source verified, `6001` blocked | Preserve approved wording and attribution, do not process `6001` without clearance |

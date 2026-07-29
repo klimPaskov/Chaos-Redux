@@ -30,6 +30,68 @@ independence_wave_country_groups = {
 		AFA ALT ANU ARM ASY ATJ AZR BAN BAR BAY BIA BLC BLI BOS BRD BRI BSK BYA CAT CHM CHU CIN COR CRI DAG DAH DON EVE FER FIJ FSM GAL GAR GEO GLC HAR HAW HYD ICE IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MAY MEL MEN MIS MNT MPU MYS NAV NEN OCC OKN ORO PAL PNG POK PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS WPG YAK YUC
 	}
 
+	# Package-row status projections. Country groups de-duplicate a carrier tag
+	# when the same registered identity serves more than one package row. The
+	# accepted ledger therefore projects 138 bound rows to 137 unique tags and
+	# 55 unbound rows to 55 unique tags. BIA intentionally appears in both
+	# projections (IW-107 is bound; IW-096 remains fail-closed/unbound); callers
+	# that need exact package identity must use the IW package-id constants and
+	# the current-map binding ledger rather than treating a tag as a row key.
+	selectable_bound_tags = {
+		AFA AFX AGX AJX AKX ALT ANU ARM ARX ASX ASY ATJ ATX AXX AZR BAN BAR BAX BAY BBX BHX BIA BJX BKX BLC BLI BOS BRD BRI BSK BYA CAT CHM CHU CIN CJX CLX COR COX CPX CQX CRI CUX CVX CXX DAG DAH DHX DKX DMX DON DOX DSX DUX DVX EBX EQX FAX FBX FDX FER FIJ FLX FNX FOX FSM FSX FUX FVX FXX GAL GAR GBX GCX GEO GHX GLC GMX GZX HAR HAW HAX HBX HCX HKX HPX HSX HUX HYD IAX IBX ICE ICX IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MEL MEN MNT MPU MYS NAV NEN OCC OKN PAL PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS YAK YUC
+	}
+
+	selectable_unbound_tags = {
+		ACX BFX BIA BWX CIX CKX CWX CYX DAX DBX DFX DJX DLX DNX DPX DYX DZX EEX EHX ELX EMX ENX ERX ESX EUX EVE EWX EXX EYX FPX GDX GGX GIX GLX GRX GTX GYX HDX HEX HFX HGX HHX HMX HQX HTX HWX HXX HYX HZX MAY MIS ORO PNG POK WPG
+	}
+
+	event6_owned_bound_tags = {
+		AFX AGX AJX AKX ARX ASX ATX AXX BAX BBX BHX BJX BKX CJX CLX COX CPX CQX CUX CVX CXX DHX DKX DMX DOX DSX DUX DVX EBX EQX FAX FBX FDX FLX FNX FOX FSX FUX FVX FXX GBX GCX GHX GMX GZX HAX HBX HCX HKX HPX HSX HUX IAX IBX ICX
+	}
+
+	event6_owned_unbound_tags = {
+		ACX BFX BWX CIX CKX CWX CYX DAX DBX DFX DJX DLX DNX DPX DYX DZX EEX EHX ELX EMX ENX ERX ESX EUX EWX EXX EYX FPX GDX GGX GIX GLX GRX GTX GYX HDX HEX HFX HGX HHX HMX HQX HTX HWX HXX HYX HZX
+	}
+
+	registered_reuse_bound_tags = {
+		AFA ALT ANU ARM ASY ATJ AZR BAN BAR BAY BIA BLC BLI BOS BRD BRI BSK BYA CAT CHM CHU CIN COR CRI DAG DAH DON FER FIJ FSM GAL GAR GEO GLC HAR HAW HYD ICE IMO KAR KAS KHA KHL KOM KOS KUB KUR LAO LEB MAC MAD MEL MEN MNT MPU MYS NAV NEN OCC OKN PAL PSH QUE RAS RHI RIF RUT RWA SAM SCO SIN SKK SOK SOM TAT TIG TRA UDM UGA WLS YAK YUC
+	}
+
+	registered_reuse_unbound_tags = {
+		BIA EVE MAY MIS ORO PNG POK WPG
+	}
+
+	# Overlay rows never receive a new country tag. These carrier groups expose
+	# the exact original-tag allowlists used by the route adapters, while the
+	# per-route scripted triggers retain cosmetic, formable, autonomy, and
+	# ideology gates. IW-005 BEL_flanders; IW-022 CRO/dalmatia; IW-025
+	# HUN/vojvodina; IW-035 LIT/LIVONIA; IW-059 neo_mesopotamia; IW-085 LBA;
+	# IW-101/IW-102/IW-105 COG cosmetics; IW-156 TNE; IW-196 antilles; and
+	# IW-197/IW-204 CHL routes are all represented below.
+	overlay_route_carrier_tags = {
+		ASY BAH BAS BEL CHL COG CRO CUB DOM EGY GDL HAI HUN IRQ JAM KUR KUW LBA LEB LIT PAL PUE SYR TNE
+	}
+
+	overlay_fixed_route_carrier_tags = {
+		BEL CHL COG CRO HUN LBA LIT TNE
+	}
+
+	overlay_mesopotamia_route_carrier_tags = {
+		ASY EGY IRQ KUR KUW LEB PAL SYR
+	}
+
+	overlay_antilles_route_carrier_tags = {
+		BAH BAS CUB DOM GDL HAI JAM PUE
+	}
+
+	overlay_chile_route_carrier_tags = {
+		CHL
+	}
+
+	overlay_cog_route_carrier_tags = {
+		COG
+	}
+
 	# Event 012 uses the existing carriers for these direct identity overlaps.
 	# COG is an overlay-only IW row and therefore appears only in the all-overlap
 	# view, never in a selectable Event 006 carrier array.
@@ -104,4 +166,33 @@ independence_wave_country_groups = {
 	americas_and_caribbean = {
 		GAR GYX GZX HAX HBX HCX HDX HEX HFX HGX HHX HKX HMX HPX HQX HSX HTX HUX HWX HXX MAY MIS QUE YUC
 	}
+}
+
+# Row-level counts are kept as numeric constants because country groups
+# intentionally de-duplicate tags. The package-id and row-level binding
+# authorities remain `006_independence_wave_package_constants.txt`,
+# `006_candidate_country_registry.csv`, and
+# `006_current_installed_map_package_bindings.csv`.
+independence_wave_country_registry_counts = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	package_row_count = 206
+	selectable_row_count = 193
+	bound_selectable_row_count = 138
+	unbound_selectable_row_count = 55
+	overlay_only_row_count = 13
+	unique_resolved_carrier_tag_count = 191
+	event6_owned_row_count = 102
+	registered_reuse_row_count = 91
+	unique_registered_reuse_carrier_count = 89
+	unique_bound_carrier_tag_count = 137
+	unique_unbound_carrier_tag_count = 55
+	bound_unbound_shared_carrier_tag_count = 1
+	region_count = 14
+	reservation_group_count = 111
+	scenario_ranked_row_count = 138
+	scenario_only_unbound_row_count = 2
 }
