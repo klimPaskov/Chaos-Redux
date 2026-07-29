@@ -50,7 +50,7 @@ The Event Log consumer is `common/scripted_guis/chaosx_scripted_gui_events_log.t
 | `GFX_infantry_spawn_anomalous_registry_emblem_animated` | `gfx/interface/019_infantry_spawn/anomalous_registry_emblem_sheet.dds` | 10 frames at 5 fps |
 | `GFX_infantry_spawn_anomalous_registry_emblem_static` | `gfx/interface/019_infantry_spawn/anomalous_registry_emblem_static.dds` | fallback |
 
-The current background composition is documented in `docs/assets/019_infantry_spawn/gui_background_compact_2026_07/`. It is deliberately compact: a quiet charcoal/brass header band carries the title and tab controls, one broad uninterrupted paper field hosts the reduced direct Event 19 surfaces, and one narrow lower band receives overview actions. The GUI owns all text, list rows, army scenes, and click targets without painting decorative wells or slot grids. The runtime sprite identifier and DDS path above remain stable.
+The current background composition is documented in `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/`. It is deliberately compact but no longer flat: a continuous charcoal/brass frame, subdued map-grid drafting marks, paper seams, and a central muster compass add depth without painting decorative wells, slots, rails, cards, text, or controls. The GUI owns all text, list rows, army scenes, and click targets. The runtime sprite identifier and DDS path above remain stable.
 
 ### Animation runtime contract
 
