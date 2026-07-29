@@ -62,7 +62,7 @@ All new writes are lifetime global disqualifier flags or an existing country cle
 | 30 `africa_ore_leaves_as_machines` | No raw-export or forced-resource-seizure proxy was added. | Live concession-share and exact resource failure owners remain absent. |
 | 31 `africa_bread_before_banners` | Formation now records the exact formed-before-food ordering failure. | Preventable famine and maximum ecological-wrath civilian owners remain absent. |
 | 34 `africa_no_foreign_boot_remains` | External puppeting of a current Event 012 host/member with an African core now records the existing DQ. | African-core cession and unreversed capitulation owners remain absent. |
-| 37 `africa_the_forest_kept_its_word` | No disaster weaponisation or forest-rampage proxy was added. | Those exact high-chaos final dispositions remain absent. |
+| 37 `africa_the_forest_kept_its_word` | An accepted Event 012 hostile-actor natural-disaster call now records the exact disaster-weaponisation DQ. | Forest-rampage remains absent because no exact final actor-rampage disposition is exposed. |
 | 39 `africa_disease_made_and_unmade` | No uncontrolled-release, irreversible-outcome, or terminal-disease proxy was added. | Those exact disease-system final dispositions remain absent. |
 
 The shared annexation callback also supplies already-declared restoration identity DQs for rows 19-24 and 38 when their recorded victim is actually annexed; no new readiness gate was changed.
@@ -92,3 +92,49 @@ No fallback or simplification was introduced by this patch.
 The remaining absent owners listed above are intentional blockers and must not be replaced with opinion, current-control-only proxies, generic action failures, recurring scans, or inferred victories.
 
 The parent should review the annexation and external-puppet callbacks against the final Event 012 actor-registration lifecycle before integrating the tranche.
+
+## Second-tranche exact owner audit (2026-07-30)
+
+This tranche re-audited the remaining non-model, non-world rows against the current action, focus, event, natural-disaster, annexation, capitulation, peace-conference, and state-control surfaces.
+
+### Helper map
+
+| Helper or owner | Scope and inputs | Outputs and side effects | Exact callsite |
+|---|---|---|---|
+| `africa_achievement_record_disaster_weaponised_against_civilians` | Event 012 host scope after `call_natural_disaster` returns the accepted result; the enclosing caller has already required a selected country at war with the host, an eligible hostile actor, and the reserved action cost. | Sets the existing sticky `africa_achievement_disaster_weaponised_against_civilians` DQ and resets the ecological-stability retention clock. | Accepted branch of `africa_call_hostile_natural_disaster_from_action` in `common/scripted_effects/012_africa_action_effects.txt`; helper body in `common/scripted_effects/012_africa_achievement_effects.txt`. |
+
+The accepted result is the narrowest available final witness for Row 37's disaster-weaponisation clause; rejected calls, generic ecological wrath, Event 013 aftermath flags, and random backfire are not treated as equivalent.
+
+### Constants and tuning table plan
+
+No constants or tuning values were added or changed.
+
+The new helper reuses the existing `africa_achievement_days.unset_deadline` retention sentinel and adds no thresholds, duration bands, or AI weights.
+
+### Event targets, variables, flags, and cleanup
+
+No new event target, global event target, variable, array, or recurring on-action was introduced.
+
+The helper writes one lifetime global DQ and invalidates the existing ecological-stability clock, matching the surrounding sticky achievement-owner helpers.
+
+### Migration plan
+
+Existing hostile disaster callers should continue to route through `africa_call_hostile_natural_disaster_from_action`, so the accepted-result branch remains the single owner for this DQ.
+
+No migration was possible for the other audited rows because their exact terminal owners are not exposed by the current action, focus, event, state-control, capitulation, or peace-conference callbacks.
+
+### Remaining exact-owner dispositions
+
+Rows 4–17, 25–31, 34, and 39 remain unchanged except for Row 37's accepted hostile-disaster owner above: no exact writers were found for partition acceptance, archive destruction or suppression, protected-clause cancellation, exit war or coup, coerced return, rival terminal coercion, post-proof region loss, military takeover, republic suspension or centralisation, court deposition, monarchy abolition, takeover, concession cap, famine, permanent emergency rule, genocide, federal annexation, diaspora negligence, returnee discrimination, military-labor-only programming, representation denial, catastrophic return loss, government capture, corruption, connected-region loss, raw-export dependency, forced resource seizure, preventable famine, maximum ecological wrath against civilians, African-core cession, unreversed capitulation, forest rampage, or disease severity outcomes.
+
+The existing congress-agenda completion simplification remains documented and was not broadened in this tranche.
+
+### Risks, unsupported fields, and validation
+
+The accepted Event 013 result does not expose a separate civilian-casualty field to Event 012, so the helper is intentionally gated on the Event 012 hostile-actor call contract rather than inferred from Event 013 aftermath or wrath values.
+
+The state-control callback still lacks a safe region-to-state proof mapping for Row 10 or Row 29 cleanup, and the capitulation callback lacks a later exact reversal witness for Row 34; neither was approximated.
+
+Validation was limited to the touched callsite/helper diff, `rg` confirmation of the new helper and existing DQ trigger, and a re-read of the surrounding action contract and handoff row matrix.
+
+HOI4 was not launched, and no in-game save or live consumer validation was performed because runtime validation belongs to the parent/user workflow.
