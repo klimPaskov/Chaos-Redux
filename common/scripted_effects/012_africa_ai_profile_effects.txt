@@ -2241,6 +2241,16 @@ africa_ai_store_host_policy_snapshot = {
 	set_variable = { africa_ai_snapshot_retry_stance = africa_ai_retry_stance }
 }
 
+# COUNTRY scope on the Event 12 host. Phase and route transitions use this
+# helper so decision weights never wait for the next bounded controller cycle.
+africa_ai_refresh_host_policy_snapshot = {
+	if = {
+		limit = { africa_is_current_host = yes }
+		africa_ai_refresh_profile_registry = yes
+		africa_ai_store_host_policy_snapshot = yes
+	}
+}
+
 # Input: temporary africa_requested_action_id and a registry refreshed for the
 # host. Output: africa_ai_late_candidate_weight. Target profiles are composed
 # again after the weighted action has selected a real bounded target.

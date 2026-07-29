@@ -2,7 +2,8 @@
 
 ## Scope
 
-This tranche binds the existing 64-profile Event 12 AI registry to the foreign Scramble response, Actions 77 through 92, the three world-order route choices, and post-World administration. It does not claim that Actions 1 through 76 or 93 through 102 have live AI dispatch yet.
+This tranche originally bound the existing 64-profile Event 12 AI registry to the foreign Scramble response, Actions 77 through 92, the three world-order route choices, and post-World administration.
+The later full bounded controller extends the same registry and shared action kernel to Actions 1 through 76 and 93 through 102; the row-complete source audit is recorded in `subagent_handoffs/012_africa_ai_profile_audit_2026-07-29.md`.
 
 ## Runtime path
 
@@ -59,7 +60,8 @@ No daily, weekly, monthly, or autonomous country iteration was added.
 ## Remaining risks and open work
 
 - The terminal World action still correctly cannot fire until the researched super-event image, final text, licensed audio, unique sound ID, slot, and scenario package set `africa_the_world_super_event_package_ready`.
-- Actions 1 through 76 and 93 through 102 still need a live profile-driven dispatcher or equivalent bounded AI callers.
+- Actions 1 through 76 and 93 through 102 use the full bounded early dispatcher; their previous missing-dispatch status is superseded.
+- Country-specific host profile differences still need an accepted focus-plan binding so they can alter initial focus priorities independently of action selection.
 - Campaign simulation and the independent decision and completion audits remain required before the whole Event 12 AI surface can be accepted.
 
 ## Validation evidence
@@ -71,4 +73,6 @@ No daily, weekly, monthly, or autonomous country iteration was added.
 
 ## Simplifications
 
-No Action 77-92 concept was replaced, merged, or routed through a fallback. Target selection is bounded to implemented Event 12 stores. The open work above is outside this tranche and remains explicitly incomplete.
+No Action 77-92 concept was replaced, merged, or routed through a fallback.
+Target selection is bounded to implemented Event 12 stores.
+The later dispatcher closes the action-range omission without changing this tranche's target contract; focus-plan differentiation and campaign acceptance remain explicitly incomplete.
