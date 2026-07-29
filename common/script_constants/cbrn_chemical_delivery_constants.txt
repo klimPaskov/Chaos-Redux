@@ -173,6 +173,43 @@ cbrn_chemical_dispatch = {
 	evidence_decay_step = 20
 }
 
+# State-class contribution to the existing global Air Cleanliness total.
+# Trace is deliberately zero; later classes add only when a state crosses a
+# threshold and remove the same amount when it recovers.
+cbrn_chemical_air_cleanliness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	trace = 0
+	local = 1
+	serious = 3
+	severe = 5
+	catastrophic = 10
+}
+
+# Continuing chemical deaths are one state-owned event stream per contaminated
+# state. Values are per scheduled operation period, not a daily world pulse.
+cbrn_chemical_continuing_death = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	trace = 0
+	local = 0.0000005
+	serious = 0.000001
+	severe = 0.000002
+	catastrophic = 0.000004
+	period_days = 30
+	cap_factor = 1.45
+	choking_mult = 0.50
+	blister_mult = 1.00
+	nerve_mult = 1.25
+	incapacitating_mult = 0.25
+}
+
 cbrn_chemical_delivery_ai = {
 	schema = {
 		any_key = yes

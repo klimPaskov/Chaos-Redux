@@ -1,0 +1,220 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL AIR CLEANLINESS TRANSITION EFFECTS
+# ============================================================================
+# Overview:
+# - Applies the existing global Air Cleanliness contribution for ordinary
+#   biological outbreaks when an exact state crosses a low, base, or high
+#   intensity band.
+# - Keeps one contribution receipt per agent in the affected state so four
+#   simultaneous ordinary agents cannot overwrite one another.
+# - The source is the outbreak intensity band, not the delivery route or
+#   weapon identity. Deliberate use therefore does not create a second global
+#   Air Cleanliness contribution.
+# - No helper here performs a recurring world scan. The lifecycle tick calls
+#   this effect for the exact active state, while the explicit settings repair
+#   effect may rebuild receipts after Air Cleanliness is re-enabled.
+# ============================================================================
+
+bio_lifecycle_set_current_agent_air_contribution = {
+	set_temp_variable = { bio_air_contribution_value = constant:bio_lifecycle_air_cleanliness.zero }
+	set_temp_variable = { bio_air_agent_active = constant:bio_lifecycle_proof.missing }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { has_state_flag = bio_agent_[BIO_AGENT]_active }
+				set_temp_variable = { bio_air_agent_active = constant:bio_lifecycle_proof.supplied }
+			}
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+	if = {
+		limit = { check_variable = { var = bio_air_agent_active value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		if = {
+			limit = {
+				check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.local_min compare = greater_than_or_equals }
+				check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.serious_regional_min compare = less_than }
+			}
+			set_temp_variable = { bio_air_contribution_value = constant:bio_lifecycle_air_cleanliness.low }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.serious_regional_min compare = greater_than_or_equals }
+				check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.severe_multi_state_min compare = less_than }
+			}
+			set_temp_variable = { bio_air_contribution_value = constant:bio_lifecycle_air_cleanliness.base }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.severe_multi_state_min compare = greater_than_or_equals } }
+			set_temp_variable = { bio_air_contribution_value = constant:bio_lifecycle_air_cleanliness.high }
+		}
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = settings_air_cleanliness_disabled
+				has_global_flag = fallout_air_cleanliness_disabled
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
+		meta_effect = {
+			text = {
+				set_variable = { bio_agent_[BIO_AGENT]_air_contribution_bp = bio_air_contribution_value }
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+	}
+	else = {
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_bio_bp } }
+			set_variable = { global.air_contamination_bio_bp = constant:bio_lifecycle_air_cleanliness.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_bio_states } }
+			set_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.zero }
+		}
+		set_temp_variable = { bio_air_contribution_old = constant:bio_lifecycle_air_cleanliness.zero }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { has_variable = bio_agent_[BIO_AGENT]_air_contribution_bp }
+					set_temp_variable = { bio_air_contribution_old = bio_agent_[BIO_AGENT]_air_contribution_bp }
+				}
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+		set_temp_variable = { bio_air_contribution_delta = bio_air_contribution_value }
+		subtract_from_temp_variable = { bio_air_contribution_delta = bio_air_contribution_old }
+		if = {
+			limit = { check_variable = { bio_air_contribution_delta > constant:bio_lifecycle_air_cleanliness.zero } }
+			add_to_variable = { global.air_contamination_bio_bp = bio_air_contribution_delta }
+		}
+		else_if = {
+			limit = { check_variable = { bio_air_contribution_delta < constant:bio_lifecycle_air_cleanliness.zero } }
+			add_to_variable = { global.air_contamination_bio_bp = bio_air_contribution_delta }
+		}
+		if = {
+			limit = {
+				check_variable = { var = bio_air_contribution_old value = constant:bio_lifecycle_air_cleanliness.zero compare = equals }
+				check_variable = { bio_air_contribution_value > constant:bio_lifecycle_air_cleanliness.zero }
+			}
+			add_to_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { bio_air_contribution_old > constant:bio_lifecycle_air_cleanliness.zero }
+				check_variable = { var = bio_air_contribution_value value = constant:bio_lifecycle_air_cleanliness.zero compare = equals }
+			}
+			subtract_from_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one }
+		}
+		clamp_variable = { var = global.air_contamination_bio_bp min = constant:bio_lifecycle_air_cleanliness.zero }
+		clamp_variable = { var = global.air_contamination_bio_states min = constant:bio_lifecycle_air_cleanliness.zero }
+		meta_effect = {
+			text = {
+				set_variable = { bio_agent_[BIO_AGENT]_air_contribution_bp = bio_air_contribution_value }
+			}
+			BIO_AGENT = "[?bio_active_agent|.0]"
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { bio_air_contribution_delta > constant:bio_lifecycle_air_cleanliness.zero }
+					check_variable = { bio_air_contribution_delta < constant:bio_lifecycle_air_cleanliness.zero }
+				}
+			}
+			set_temp_variable = { air_contamination_delta_bp = bio_air_contribution_delta }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			air_contamination_apply_delta_bp = yes
+		}
+	}
+}
+
+bio_lifecycle_update_current_agent_air_contribution_from_slot = {
+	set_temp_variable = { bio_current_intensity = constant:bio_lifecycle_math.zero }
+	meta_effect = {
+		text = {
+			if = {
+				limit = { has_variable = bio_agent_[BIO_AGENT]_intensity }
+				set_temp_variable = { bio_current_intensity = bio_agent_[BIO_AGENT]_intensity }
+			}
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+	bio_lifecycle_set_current_agent_air_contribution = yes
+	clear_temp_variable = bio_current_intensity
+}
+
+bio_lifecycle_clear_current_agent_air_contribution = {
+	meta_effect = {
+		text = {
+			if = {
+				limit = { has_variable = bio_agent_[BIO_AGENT]_air_contribution_bp }
+				set_temp_variable = { bio_air_contribution_old = bio_agent_[BIO_AGENT]_air_contribution_bp }
+			}
+			clear_variable = bio_agent_[BIO_AGENT]_air_contribution_bp
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+	}
+	if = {
+		limit = {
+			check_variable = { bio_air_contribution_old > constant:bio_lifecycle_air_cleanliness.zero }
+			NOT = { has_global_flag = settings_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+		}
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_bio_bp } }
+			set_variable = { global.air_contamination_bio_bp = constant:bio_lifecycle_air_cleanliness.zero }
+		}
+		subtract_from_variable = { global.air_contamination_bio_bp = bio_air_contribution_old }
+		clamp_variable = { var = global.air_contamination_bio_bp min = constant:bio_lifecycle_air_cleanliness.zero }
+		if = {
+			limit = { has_variable = global.air_contamination_bio_states }
+			subtract_from_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one }
+			clamp_variable = { var = global.air_contamination_bio_states min = constant:bio_lifecycle_air_cleanliness.zero }
+		}
+		set_temp_variable = { air_contamination_delta_bp = bio_air_contribution_old }
+		multiply_temp_variable = { air_contamination_delta_bp = constant:cbrn_payload_math.negation_multiplier }
+		set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+		set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+		air_contamination_apply_delta_bp = yes
+	}
+}
+
+bio_lifecycle_rebuild_air_cleanliness_contributions = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = settings_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+		}
+		set_variable = { global.air_contamination_bio_bp = constant:bio_lifecycle_air_cleanliness.zero }
+		set_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.zero }
+		every_state = {
+				if = {
+					limit = { has_variable = bio_agent_1_air_contribution_bp }
+					add_to_variable = { global.air_contamination_bio_bp = bio_agent_1_air_contribution_bp }
+					if = { limit = { check_variable = { bio_agent_1_air_contribution_bp > constant:bio_lifecycle_air_cleanliness.zero } } add_to_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one } }
+				}
+				if = {
+					limit = { has_variable = bio_agent_2_air_contribution_bp }
+					add_to_variable = { global.air_contamination_bio_bp = bio_agent_2_air_contribution_bp }
+					if = { limit = { check_variable = { bio_agent_2_air_contribution_bp > constant:bio_lifecycle_air_cleanliness.zero } } add_to_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one } }
+				}
+				if = {
+					limit = { has_variable = bio_agent_3_air_contribution_bp }
+					add_to_variable = { global.air_contamination_bio_bp = bio_agent_3_air_contribution_bp }
+					if = { limit = { check_variable = { bio_agent_3_air_contribution_bp > constant:bio_lifecycle_air_cleanliness.zero } } add_to_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one } }
+				}
+				if = {
+					limit = { has_variable = bio_agent_4_air_contribution_bp }
+					add_to_variable = { global.air_contamination_bio_bp = bio_agent_4_air_contribution_bp }
+					if = { limit = { check_variable = { bio_agent_4_air_contribution_bp > constant:bio_lifecycle_air_cleanliness.zero } } add_to_variable = { global.air_contamination_bio_states = constant:bio_lifecycle_air_cleanliness.one } }
+				}
+		}
+		clamp_variable = { var = global.air_contamination_bio_bp min = constant:bio_lifecycle_air_cleanliness.zero }
+		clamp_variable = { var = global.air_contamination_bio_states min = constant:bio_lifecycle_air_cleanliness.zero }
+		air_contamination_refresh_values = yes
+	}
+}

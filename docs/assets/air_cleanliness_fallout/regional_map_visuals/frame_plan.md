@@ -39,12 +39,12 @@ Particle-file definitions live under `gfx/particles/air_cleanliness_winter/`. PD
 
 | Family | Mesh entity | Sprite |
 | --- | --- | --- |
-| Snow/frost | `air_winter_static_snow_frost_entity` | `GFX_air_winter_regional_static_snow_frost` |
-| Cold rain/mist | `air_winter_static_cold_rain_mist_entity` | `GFX_air_winter_regional_static_cold_rain_mist` |
-| Ash/dirty snow | `air_winter_static_ash_dirty_snow_entity` | `GFX_air_winter_regional_static_ash_dirty_snow` |
-| Thaw/flood | `air_winter_static_thaw_flood_entity` | `GFX_air_winter_regional_static_thaw_flood` |
+| Snow/frost | `air_winter_static_snow_frost_entity` | Unregistered source plate |
+| Cold rain/mist | `air_winter_static_cold_rain_mist_entity` | Unregistered source plate |
+| Ash/dirty snow | `air_winter_static_ash_dirty_snow_entity` | Unregistered source plate |
+| Thaw/flood | `air_winter_static_thaw_flood_entity` | Unregistered source plate |
 
-Mesh registrations live in `gfx/entities/air_cleanliness_winter_regional_visuals.gfx` and `.asset`. Sprite registrations live in `interface/air_cleanliness_winter_regional_visuals.gfx`.
+Mesh registrations live in `gfx/entities/air_cleanliness_winter_regional_visuals.gfx` and `.asset`. The unused interface sprite registrations were removed because no approved GUI or setting owned them.
 
 ## Runtime proof still required
 

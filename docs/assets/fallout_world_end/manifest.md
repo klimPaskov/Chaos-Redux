@@ -4,7 +4,7 @@
 
 This package contains only the dedicated Fallout blackout tile and the dedicated Fallout state-grade modifier icon requested for the transition UI. Both sprites are registered in `interface/fallout_world_end.gfx` and referenced by their dedicated Fallout consumers.
 
-Package status: `registered_and_referenced_runtime_gui_pending`
+Package status: `registered_and_referenced_static_runtime_validation_pending`
 
 Reference review:
 
@@ -12,7 +12,7 @@ Reference review:
 - offline Interface modding and Scripted GUI modding pages
 - the vanilla idea-picture sprite convention
 - the vanilla `10x10` black UI tile precedent
-- the Chaos Redux idea-icon reference set in `.agents/skills/chaos-redux-event-assets/assets/ideas/`
+- the Chaos Redux idea-icon reference set in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas/`
 
 ## Asset 1: Fallout blackout tile
 
@@ -31,7 +31,7 @@ Reference review:
 - Source note: a temporary `10x10` RGBA raster with pixel value `(0, 0, 0, 255)` was converted through `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and removed after conversion
 - DDS format: legacy one-level uncompressed 32-bit BGRA, equivalent to `B8G8R8A8`, with no mipmaps
 - Alpha result: all `100` pixels have alpha `255`
-- Asset status: `registered_and_referenced_runtime_gui_pending`
+- Asset status: `registered_and_referenced_static_runtime_validation_pending`
 
 ## Asset 2: Fallout state-grade modifier icon
 
@@ -101,9 +101,9 @@ The modifier icon is original fictional artwork created with the Codex built-in 
 
 ## Risks and remaining wiring
 
-- `GFX_fallout_blackout_tile` is referenced by `interface/fallout_world_end.gui`. Structural all-resolution binding, drawing order, and input blocking remain unresolved engine-sensitive GUI work.
+- `GFX_fallout_blackout_tile` is referenced by `interface/fallout_world_end.gui`. Static sprite and GUI bindings are present. Live all-resolution draw order, input blocking, and z-order remain engine-sensitive runtime work.
 - `GFX_idea_fallout_state_grade` is referenced by all seven Fallout grade dynamic modifiers.
-- The literal full-screen draw order and input-blocking behavior remain properties of the future `.gui` and scripted GUI implementation. The tile itself is fully opaque and suitable for that layer.
+- The literal full-screen draw order and input-blocking behavior remain live runtime properties of the `.gui` and scripted GUI implementation. The tile itself is fully opaque and suitable for that layer.
 - The icon is a shared state-grade visual. If distinct grade-specific icons are later required, they need separate source artwork and separate manifest entries.
 
 ## Audio package

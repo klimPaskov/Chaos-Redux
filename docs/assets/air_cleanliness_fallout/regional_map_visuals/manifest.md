@@ -49,7 +49,6 @@ The values mirror `common/script_constants/air_cleanliness_winter_constants.txt`
 | `gfx/particles/air_cleanliness_winter/*.asset` | Dedicated particle-file definitions | 9 |
 | `gfx/entities/air_cleanliness_winter_regional_particles.gfx` | `pdxparticle` registrations | 9 |
 | `gfx/entities/air_cleanliness_winter_regional_particles.asset` | Particle wrapper entities | 9 |
-| `interface/air_cleanliness_winter_regional_visuals.gfx` | Grade and static-fallback sprites | 12 |
 
 The 85 descriptive mesh entities comprise 54 phase plates, 27 regional props, and 4 static fallbacks. The 81 numeric aliases comprise 54 phase aliases and 27 prop aliases. Numeric aliases exist so a gameplay integration can select an entity with `meta_effect` using the stable integer class and phase values.
 
@@ -88,16 +87,16 @@ These meshes use `PdxMeshAlphaBlend`. Dead vegetation uses three layered ground 
 
 Every atlas is 4x1 and contains four separately generated/authored visual states extracted from the approved 4x4 source plate. Each particle definition uses its dedicated atlas, alpha blending, finite lifetime, fade animation, velocity, and forces. No vanilla particle texture path appears in the final definitions.
 
-### Static fallbacks
+### Static mesh layers
 
-Each animated family has both:
+Each animated family also has:
 
 - a normal-mapped mesh entity: `air_winter_static_<family>_entity`
-- a registered sprite: `GFX_air_winter_regional_static_<family>`
+- a source DDS plate under `gfx/interface/air_cleanliness_winter/regional_grades/`
 
-The fallback uses the first authored frame, not a transform-only imitation of the animation. Final mesh material channels live under `gfx/models/air_cleanliness_winter/regional/`. Final sprite DDS files live under `gfx/interface/air_cleanliness_winter/regional_grades/`.
+The static mesh uses the first authored frame, not a transform-only imitation of the animation. Final mesh material channels live under `gfx/models/air_cleanliness_winter/regional/`. The interface DDS plates are retained as source assets and are not registered as runtime sprites.
 
-### Atmospheric grades
+### Unregistered atmospheric-grade sources
 
 | State | Sprite |
 | --- | --- |
@@ -105,7 +104,7 @@ The fallback uses the first authored frame, not a transform-only imitation of th
 | Soot-thinning recovery | `GFX_air_winter_regional_grade_recovery_soot_thinning` |
 | Ultraviolet-clear recovery | `GFX_air_winter_regional_grade_recovery_uv_clear` |
 
-The grade textures are 512x512 RGBA DDS plates. The six phase plates increase coldness/darkness in distinct steps. They are registered only. Their non-blocking ordinary-map GUI parent, draw order, resolution behavior, click-through behavior, and mapmode interaction remain unproven.
+The grade textures are 512x512 RGBA DDS plates. The six phase plates increase coldness and darkness in distinct steps. They are source assets only. No runtime sprite registration remains because no approved GUI parent or player setting owns this route.
 
 ## Source and processed inventory
 

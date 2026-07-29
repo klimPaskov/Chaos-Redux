@@ -93,13 +93,26 @@ fallout_request_source_is_legacy = {
 	}
 }
 
+# Supported scope: COUNTRY
+fallout_request_source_is_strategic_singularity = {
+	check_variable = {
+		var = global.fallout_request_source
+		value = constant:fallout_request_source.strategic_singularity
+		compare = equals
+	}
+}
+
 # Supported scope: COUNTRY. Automatic air collapse respects the dedicated
 # Fallout settings gate and the ordinary world-end disable switch.
 fallout_air_request_is_valid = {
 	fallout_request_source_is_air = yes
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = world_end_disabled }
-	world_end_fallout_scenario_enabled = yes
+	OR = {
+		NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+		has_global_flag = fallout_air_cleanliness_request_paused
+	}
+	fallout_consequence_enabled = yes
 	check_variable = {
 		var = global.air_contamination_bp
 		value = constant:air_contamination_threshold_bp.irreversible_100
@@ -107,13 +120,23 @@ fallout_air_request_is_valid = {
 	}
 }
 
-# Supported scope: COUNTRY. Final Silence is the one accepted predecessor that
-# can already own the generic world_end flag when it hands control to Fallout.
+# Supported scope: COUNTRY. Final Silence remains a source-memory identity for
+# legacy Holy Realm saves, but its terminal route now hands control to Fallout
+# before any generic world-end flag is written.
 fallout_final_silence_request_is_valid = {
 	fallout_request_source_is_final_silence = yes
-	has_global_flag = world_end_final_silence
-	has_global_flag = world_end_final_silence_completed
-	NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+	fallout_consequence_enabled = yes
+	NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+	OR = {
+		AND = {
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = world_end_disabled }
+		}
+		AND = {
+			has_global_flag = world_end_final_silence
+			has_global_flag = world_end_final_silence_completed
+		}
+	}
 	NOT = { has_global_flag = world_end_zombies }
 	NOT = { has_global_flag = world_end_fury }
 	NOT = { has_global_flag = world_end_death }
@@ -128,6 +151,7 @@ fallout_explicit_terminal_request_is_valid = {
 		fallout_request_source_is_chemical = yes
 		fallout_request_source_is_biological = yes
 		fallout_request_source_is_mixed = yes
+		fallout_request_source_is_strategic_singularity = yes
 	}
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = world_end_disabled }
@@ -533,7 +557,7 @@ fallout_world_snapshot_rows_are_current = {
 	check_variable = { global.fallout_pretransition_request_source > constant:fallout_request_source.none }
 	check_variable = {
 		var = global.fallout_pretransition_request_source
-		value = constant:fallout_request_source.legacy_fallout
+		value = constant:fallout_request_source.strategic_singularity
 		compare = less_than_or_equals
 	}
 	check_variable = {
@@ -589,8 +613,36 @@ fallout_world_snapshot_capture_rows_are_current = {
 				limit = { NOT = { fallout_pretransition_state_snapshot_row_is_current = yes } }
 			}
 		}
-		value = constant:fallout_runtime.zero
+	value = constant:fallout_runtime.zero
 	}
+}
+
+# Supported scope: any. This is the no-delete invariant for original country
+# tags. Ownership can change, and a later gated fracture may add dynamic tags,
+# but every country that existed in the frozen snapshot must still resolve to
+# a live tag before the map is revealed.
+fallout_pretransition_tag_rows_exist = {
+	has_variable = global.fallout_snapshot_epoch_generation
+	check_variable = {
+		var = global.fallout_pretransition_countries^num
+		value = constant:fallout_runtime.zero
+		compare = greater_than
+	}
+	all_of_scopes = {
+		array = global.fallout_pretransition_countries
+		exists = yes
+	}
+}
+
+fallout_pretransition_tags_are_preserved = {
+	has_global_flag = fallout_tag_preservation_complete
+	has_variable = global.fallout_tag_preservation_generation
+	check_variable = {
+		var = global.fallout_tag_preservation_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	fallout_pretransition_tag_rows_exist = yes
 }
 
 # Supported scope: COUNTRY. A rebuild is legal only inside the short pre-lock
@@ -3516,6 +3568,19 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 	NOT = { any_country = { is_in_peace_conference = yes } }
 }
 
+# Supported scope: COUNTRY. This admission receipt proves that the active war
+# surface was settled before the blackout became visible. It is separate from
+# the later full diplomacy postcondition.
+fallout_wars_stopped_at_admission_is_current = {
+	has_global_flag = fallout_transition_wars_stopped_at_admission
+	has_variable = global.fallout_transition_wars_stopped_at_admission_generation
+	check_variable = {
+		var = global.fallout_transition_wars_stopped_at_admission_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+}
+
 # Supported scope: COUNTRY. Truces and market access have exact inverses and
 # ordered-pair readback. Docking rights have an exhaustive ordered-pair inverse
 # with generation-bound application proof. Resource rights have an exhaustive
@@ -3524,6 +3589,13 @@ fallout_old_world_diplomacy_proven_surfaces_are_clean = {
 fallout_old_world_diplomacy_full_reset_is_verified = {
 	has_global_flag = fallout_transition_old_world_diplomacy_proven_complete
 	has_global_flag = fallout_transition_truces_reset_complete
+	has_global_flag = fallout_transition_wars_stopped_complete
+	has_variable = global.fallout_transition_wars_stopped_generation
+	check_variable = {
+		var = global.fallout_transition_wars_stopped_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
 	fallout_old_world_diplomacy_proven_surfaces_are_clean = yes
 	NOT = { has_global_flag = fallout_transition_docking_rights_validation_blocked }
 	NOT = { has_global_flag = fallout_transition_market_access_reset_blocked }
@@ -3830,6 +3902,9 @@ fallout_map_return_postconditions_are_met = {
 	fallout_population_loss_rows_are_durable = yes
 	fallout_physical_collapse_rows_are_durable = yes
 	has_global_flag = fallout_government_sorting_complete
+	has_global_flag = fallout_technology_regression_complete
+	fallout_all_live_country_technology_rows_are_current = yes
+	fallout_pretransition_tags_are_preserved = yes
 	fallout_successor_allocation_is_current = yes
 	fallout_survival_ledger_transition_barrier_is_current = yes
 	has_global_flag = fallout_player_continuation_ledger_complete

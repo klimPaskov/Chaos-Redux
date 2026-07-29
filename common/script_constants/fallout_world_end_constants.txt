@@ -17,6 +17,57 @@ fallout_consequence_id = {
 	settings_ledger = 2
 }
 
+# After the Fallout blackout, Air Contamination is a permanent state value.
+# Basis points are used by the existing contamination pipeline, so 9900 is
+# displayed as ninety-nine percent. The lock is distinct from the request
+# pause and from the old disabled-scenario compatibility flag.
+fallout_air_contamination_lock = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	permanent_99_bp = 9900
+	permanent_fallout_source_bp = 9900
+	zero_delta_bp = 0
+}
+
+# Fallout technology regression is applied to every live pretransition tag
+# before successor allocation. Every country keeps a survival-grade infantry,
+# workshop, and construction floor. Majors and special Chaos countries also
+# keep the reviewed emergency support, engineering, radio, and transport floor.
+fallout_technology_regression = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+	basic_floor_infantry = 1
+	basic_floor_industry = 1
+	basic_floor_construction = 1
+	retained_country_floor = 2
+	zero = 0
+}
+
+# Dynamic Independence Wave fracture is intentionally release-gated. The
+# reserved tags and random state transfer are implemented in the Fallout-owned
+# fracture effect, but the gate stays unset until a live conflict ledger and
+# dynamic-country readback prove that no original tag is lost.
+fallout_fracture_contract = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+	release_gate = 0
+	zero = 0
+	minimum_source_states = 1
+	maximum_outputs_per_transition = 9
+	seed_modulus = 997
+}
+
 fallout_world_end_schema = {
 	schema = {
 		any_key = yes
@@ -121,6 +172,9 @@ fallout_transition_error_code = {
 	physical_collapse_incomplete = 22
 	survival_ledger_incomplete = 23
 	manual_population_contract_unproven = 24
+	tag_preservation_failed = 25
+	technology_regression_incomplete = 26
+	fracture_conflict_ledger_incomplete = 27
 }
 
 fallout_player_continuation_branch = {

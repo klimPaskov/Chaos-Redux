@@ -418,7 +418,7 @@ Live stable enum values:
 | Value | Cause |
 | --- | --- |
 | 1 | gradual Air Contamination collapse |
-| 2 | Final Silence |
+| 2 | Final Silence cause-memory source. It routes through Fallout and is not a separate world-end scenario. |
 | 3 | chemical saturation |
 | 4 | biological follow-through |
 | 5 | mixed terminal cause |

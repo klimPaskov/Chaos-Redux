@@ -34,11 +34,11 @@ Air Contamination may request Fallout through the shared request helper. It does
 
 No Fallout event, image, icon, sound, music file, sprite, quote slot, or GUI element may reuse zombie-owned content. Fallout is not a normal super-event.
 
-Fallout itself is a consequence transition, not a public Event Details row or evolution. Its stable settings-ledger value is owned by `fallout_consequence_id` in `common/script_constants/fallout_world_end_constants.txt`, outside the public scenario registry. The manual trigger remains a Fallout-owned internal route and stays absent from the public scenario catalog. The exact native thermonuclear sweep and seven-day handoff are activation gates, not reasons to register a public row. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
+Fallout itself is a consequence transition, not an ordinary Event Log row or evolution. It replaces the retired Final Silence row in the world-end selector registry, where its title and details describe the consequence without registering a normal event. Its stable settings-ledger value is owned by `fallout_consequence_id` in `common/script_constants/fallout_world_end_constants.txt`. The manual trigger is a Fallout-owned sandbox launch surface at the allocated next-live id. It remains absent from ordinary Event Log, evolution, ordinary Event Details, and ordinary super-event registries. The exact native thermonuclear sweep and seven-day handoff are activation gates, not reasons to register a normal event. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
 
 ## Manual scenario numbering
 
-The manual Fallout trigger reserves the next free live scenario id after the writable repository is scanned. The plan does not assume any fixed number. Existing scenarios keep their ids. The reservation is Fallout-owned and never authorizes insertion into public scenario, Event Details, evolution, ordinary event-log, or ordinary super-event registries. The engine-native sweep and seven-day handoff remain activation gates.
+The manual Fallout trigger reserves the next free live scenario id after the writable repository is scanned. The plan does not assume any fixed number. Existing scenarios keep their ids. The reservation is Fallout-owned and may appear only in the manual sandbox scenario list. It never authorizes insertion into ordinary Event Log, ordinary Event Details, evolution, or ordinary super-event registries. The engine-native sweep and seven-day handoff remain activation gates.
 
 ## What this pass adds
 

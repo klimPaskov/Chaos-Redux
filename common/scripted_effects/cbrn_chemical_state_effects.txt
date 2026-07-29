@@ -1,0 +1,310 @@
+# ============================================================================
+# CHAOS REDUX - CANONICAL CHEMICAL STATE EFFECTS
+# ============================================================================
+# Overview:
+# - Derives the legacy state-modifier presentation from the canonical CBRN
+#   contamination ledger without maintaining a second contamination ledger.
+# - Owns threshold-transition contributions to the existing Air Cleanliness
+#   total and one exact-state continuing-death schedule.
+# - This file is CBRN-specific. It is not a generic dynamic-effects registry.
+# - No helper here iterates the world periodically; callers are exact-state
+#   consequence, cleanup, lifecycle, or explicit settings-rebuild paths.
+# ============================================================================
+
+cbrn_chemical_set_air_contribution_from_class = {
+	set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_chemical_air_cleanliness.trace }
+	if = {
+		limit = { check_variable = { var = cbrn_air_contribution_class value = constant:cbrn_contamination_class.local compare = equals } }
+		set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_chemical_air_cleanliness.local }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_contribution_class value = constant:cbrn_contamination_class.serious compare = equals } }
+		set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_chemical_air_cleanliness.serious }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_contribution_class value = constant:cbrn_contamination_class.severe compare = equals } }
+		set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_chemical_air_cleanliness.severe }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_air_contribution_class value = constant:cbrn_contamination_class.catastrophic compare = equals } }
+		set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_chemical_air_cleanliness.catastrophic }
+	}
+}
+
+cbrn_air_cleanliness_update_chemical_state_contribution = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = settings_air_cleanliness_disabled
+				has_global_flag = fallout_air_cleanliness_disabled
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
+		set_variable = { cbrn_chemical_air_contribution_bp = cbrn_air_contribution_value }
+	}
+	else = {
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_chem_bp } }
+			set_variable = { global.air_contamination_chem_bp = constant:cbrn_math.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = global.air_contamination_chem_states } }
+			set_variable = { global.air_contamination_chem_states = constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_chemical_air_contribution_old = constant:cbrn_math.zero }
+		if = {
+			limit = { has_variable = cbrn_chemical_air_contribution_bp }
+			set_temp_variable = { cbrn_chemical_air_contribution_old = cbrn_chemical_air_contribution_bp }
+		}
+		set_temp_variable = { cbrn_chemical_air_contribution_delta = cbrn_air_contribution_value }
+		subtract_from_temp_variable = { cbrn_chemical_air_contribution_delta = cbrn_chemical_air_contribution_old }
+		if = {
+			limit = {
+				check_variable = { cbrn_chemical_air_contribution_delta > constant:cbrn_math.zero }
+			}
+			add_to_variable = { global.air_contamination_chem_bp = cbrn_chemical_air_contribution_delta }
+		}
+		else_if = {
+			limit = {
+				check_variable = { cbrn_chemical_air_contribution_delta < constant:cbrn_math.zero }
+			}
+			add_to_variable = { global.air_contamination_chem_bp = cbrn_chemical_air_contribution_delta }
+		}
+		if = {
+			limit = {
+				check_variable = { var = cbrn_chemical_air_contribution_old value = constant:cbrn_math.zero compare = equals }
+				check_variable = { cbrn_air_contribution_value > constant:cbrn_math.zero }
+			}
+			add_to_variable = { global.air_contamination_chem_states = constant:cbrn_math.one }
+		}
+		else_if = {
+			limit = {
+				check_variable = { cbrn_chemical_air_contribution_old > constant:cbrn_math.zero }
+				check_variable = { var = cbrn_air_contribution_value value = constant:cbrn_math.zero compare = equals }
+			}
+			subtract_from_variable = { global.air_contamination_chem_states = constant:cbrn_math.one }
+		}
+		clamp_variable = { var = global.air_contamination_chem_bp min = constant:cbrn_math.zero }
+		set_variable = { cbrn_chemical_air_contribution_bp = cbrn_air_contribution_value }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { cbrn_chemical_air_contribution_delta > constant:cbrn_math.zero }
+					check_variable = { cbrn_chemical_air_contribution_delta < constant:cbrn_math.zero }
+				}
+			}
+			set_temp_variable = { air_contamination_delta_bp = cbrn_chemical_air_contribution_delta }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			air_contamination_apply_delta_bp = yes
+		}
+	}
+}
+
+cbrn_air_cleanliness_clear_chemical_state_contribution = {
+	if = {
+		limit = { has_variable = cbrn_chemical_air_contribution_bp }
+		set_temp_variable = { cbrn_chemical_air_contribution_old = cbrn_chemical_air_contribution_bp }
+		if = {
+			limit = {
+				check_variable = { cbrn_chemical_air_contribution_old > constant:cbrn_math.zero }
+				NOT = { has_global_flag = settings_air_cleanliness_disabled }
+				NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+				NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+			}
+			if = {
+				limit = { NOT = { has_variable = global.air_contamination_chem_bp } }
+				set_variable = { global.air_contamination_chem_bp = constant:cbrn_math.zero }
+			}
+			subtract_from_variable = { global.air_contamination_chem_bp = cbrn_chemical_air_contribution_old }
+			clamp_variable = { var = global.air_contamination_chem_bp min = constant:cbrn_math.zero }
+			if = {
+				limit = { has_variable = global.air_contamination_chem_states }
+				subtract_from_variable = { global.air_contamination_chem_states = constant:cbrn_math.one }
+				clamp_variable = { var = global.air_contamination_chem_states min = constant:cbrn_math.zero }
+			}
+			set_temp_variable = { air_contamination_delta_bp = cbrn_chemical_air_contribution_old }
+			multiply_temp_variable = { air_contamination_delta_bp = constant:cbrn_payload_math.negation_multiplier }
+			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
+			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
+			air_contamination_apply_delta_bp = yes
+		}
+		clear_variable = cbrn_chemical_air_contribution_bp
+	}
+}
+
+cbrn_chemical_rebuild_air_cleanliness_contributions = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = settings_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+			NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+		}
+		set_variable = { global.air_contamination_chem_bp = constant:cbrn_math.zero }
+		set_variable = { global.air_contamination_chem_states = constant:cbrn_math.zero }
+		every_state = {
+			if = {
+				limit = { has_variable = cbrn_chemical_contamination_class }
+				set_temp_variable = { cbrn_air_contribution_class = cbrn_chemical_contamination_class }
+				cbrn_chemical_set_air_contribution_from_class = yes
+				set_variable = { cbrn_chemical_air_contribution_bp = cbrn_air_contribution_value }
+				add_to_variable = { global.air_contamination_chem_bp = cbrn_air_contribution_value }
+				if = {
+					limit = { check_variable = { cbrn_air_contribution_value > constant:cbrn_math.zero } }
+					add_to_variable = { global.air_contamination_chem_states = constant:cbrn_math.one }
+				}
+			}
+			else = {
+				clear_variable = cbrn_chemical_air_contribution_bp
+			}
+		}
+		clamp_variable = { var = global.air_contamination_chem_bp min = constant:cbrn_math.zero }
+		clamp_variable = { var = global.air_contamination_chem_states min = constant:cbrn_math.zero }
+		air_contamination_refresh_values = yes
+	}
+}
+
+cbrn_chemical_refresh_state_modifier = {
+	if = {
+		limit = {
+			has_variable = cbrn_chemical_contamination
+			check_variable = { cbrn_chemical_contamination > constant:cbrn_math.zero }
+		}
+		set_variable = { cbrn_chemical_effective_strength = cbrn_chemical_contamination }
+		multiply_variable = { cbrn_chemical_effective_strength = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
+		clamp_variable = {
+			var = cbrn_chemical_effective_strength
+			min = constant:cbrn_chemical_dispatch.effective_strength_minimum
+			max = constant:cbrn_chemical_dispatch.effective_strength_maximum
+		}
+		set_variable = { cbrn_chemical_supplies = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_supplies = constant:chem_state.mult.supply }
+		set_variable = { cbrn_chemical_supply_impact = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_supply_impact = constant:chem_state.mult.supply_impact }
+		set_variable = { cbrn_chemical_speed = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_speed = constant:chem_state.mult.speed }
+		set_variable = { cbrn_chemical_truck_attrition = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_truck_attrition = constant:chem_state.mult.truck_attrition }
+		set_variable = { cbrn_chemical_attack = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_attack = constant:chem_state.mult.attack }
+		set_variable = { cbrn_chemical_breakthrough = cbrn_chemical_effective_strength }
+		multiply_variable = { cbrn_chemical_breakthrough = constant:chem_state.mult.breakthrough }
+		if = {
+			limit = {
+				has_variable = cbrn_chemical_contamination_expiry_day
+				check_variable = { cbrn_chemical_contamination_expiry_day > global.num_days }
+			}
+			set_temp_variable = { cbrn_chemical_modifier_days_left = cbrn_chemical_contamination_expiry_day }
+			set_temp_variable = { cbrn_chemical_modifier_current_day_negative = global.num_days }
+			multiply_temp_variable = { cbrn_chemical_modifier_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
+			add_to_temp_variable = { cbrn_chemical_modifier_days_left = cbrn_chemical_modifier_current_day_negative }
+			clamp_temp_variable = { var = cbrn_chemical_modifier_days_left min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
+			if = {
+				limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+				remove_dynamic_modifier = { modifier = chem_state_contamination }
+			}
+			add_dynamic_modifier = { modifier = chem_state_contamination days = cbrn_chemical_modifier_days_left }
+			force_update_dynamic_modifier = yes
+		}
+		else_if = {
+			limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+			remove_dynamic_modifier = { modifier = chem_state_contamination }
+		}
+		cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
+	}
+	else = {
+		if = { limit = { has_dynamic_modifier = { modifier = chem_state_contamination } } remove_dynamic_modifier = { modifier = chem_state_contamination } }
+		cbrn_air_cleanliness_clear_chemical_state_contribution = yes
+		clear_variable = cbrn_chemical_effective_strength
+		clear_variable = cbrn_chemical_supplies
+		clear_variable = cbrn_chemical_supply_impact
+		clear_variable = cbrn_chemical_speed
+		clear_variable = cbrn_chemical_truck_attrition
+		clear_variable = cbrn_chemical_attack
+		clear_variable = cbrn_chemical_breakthrough
+	}
+}
+
+cbrn_chemical_refresh_continuing_death_profile = {
+	set_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.trace }
+	if = {
+		limit = { check_variable = { var = cbrn_chemical_contamination_class value = constant:cbrn_contamination_class.local compare = equals } }
+		set_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.local }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_chemical_contamination_class value = constant:cbrn_contamination_class.serious compare = equals } }
+		set_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.serious }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_chemical_contamination_class value = constant:cbrn_contamination_class.severe compare = equals } }
+		set_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.severe }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_chemical_contamination_class value = constant:cbrn_contamination_class.catastrophic compare = equals } }
+		set_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.catastrophic }
+	}
+	set_temp_variable = { cbrn_chemical_profile_agent_class = constant:cbrn_agent_class.none }
+	if = {
+		limit = { has_variable = cbrn_last_chemical_agent_class }
+		set_temp_variable = { cbrn_chemical_profile_agent_class = cbrn_last_chemical_agent_class }
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_action_agent_class
+			NOT = { check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.none compare = equals } }
+		}
+		set_temp_variable = { cbrn_chemical_profile_agent_class = cbrn_action_agent_class }
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = cbrn_chemical_profile_agent_class value = constant:cbrn_agent_class.none compare = equals } } }
+		if = {
+			limit = { check_variable = { var = cbrn_chemical_profile_agent_class value = constant:cbrn_agent_class.choking compare = equals } }
+			multiply_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.choking_mult }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_chemical_profile_agent_class value = constant:cbrn_agent_class.blister compare = equals } }
+			multiply_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.blister_mult }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_chemical_profile_agent_class value = constant:cbrn_agent_class.nerve compare = equals } }
+			multiply_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.nerve_mult }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_chemical_profile_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals } }
+			multiply_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_chemical_continuing_death.incapacitating_mult }
+		}
+	}
+	if = {
+		limit = { CONTROLLER = { has_idea = cbrn_terminal_hazard_doctrine_spirit } }
+		multiply_temp_variable = { cbrn_chemical_continuing_rate = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
+	}
+	set_variable = { cbrn_chemical_continuing_death_rate = cbrn_chemical_continuing_rate }
+}
+
+cbrn_chemical_schedule_continuing_deaths = {
+	if = {
+		limit = {
+			has_variable = cbrn_chemical_contamination_expiry_day
+			check_variable = { cbrn_chemical_contamination_expiry_day > global.num_days }
+			check_variable = { cbrn_chemical_continuing_death_rate > constant:cbrn_math.zero }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = cbrn_chemical_continuing_death_due_day }
+					check_variable = { cbrn_chemical_continuing_death_due_day value = global.num_days compare = less_than_or_equals }
+				}
+			}
+			set_temp_variable = { cbrn_chemical_continuing_death_period = constant:cbrn_chemical_continuing_death.period_days }
+			round_temp_variable = cbrn_chemical_continuing_death_period
+			set_variable = { cbrn_chemical_continuing_death_due_day = global.num_days }
+			add_to_variable = { cbrn_chemical_continuing_death_due_day = cbrn_chemical_continuing_death_period }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_delivery.4 days = [CBRN_CONTINUING_DEATH_PERIOD] }
+				}
+				CBRN_CONTINUING_DEATH_PERIOD = "[?cbrn_chemical_continuing_death_period|.0]"
+			}
+		}
+	}
+}

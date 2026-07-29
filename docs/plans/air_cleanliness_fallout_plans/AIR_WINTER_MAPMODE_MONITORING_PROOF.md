@@ -1,6 +1,6 @@
 # Air Winter Mapmode Monitoring Proof
 
-Status: implemented and statically reviewed. Hearts of Iron IV was not launched. Tooltip scope evaluation and rendering remain unobserved.
+Status: implemented and statically reviewed. Hearts of Iron IV was not launched, and no live tooltip or rendering claim is made.
 
 ## Accepted contract
 
@@ -72,4 +72,4 @@ The following behavior is not claimed as observed:
 - daily mapmode refresh after a sampler completes or contamination crosses 90 percent
 - multiplayer visibility and save reconstruction of the country capability
 
-Those points require a future authorized runtime observation pass.
+Those points remain available for the user's later live validation. They are not a completion requirement for this static core-mechanics tranche.

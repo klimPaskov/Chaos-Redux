@@ -29,7 +29,7 @@ A dedicated same-phase score bonus of 131 makes a valid ruined major-urban state
 
 ## Exact pre-Fallout identity
 
-The route is a ruined major-urban salvage candidate. It is not an exact Fallout dead city. `fallout_state_grade = dead_city` does not exist until Fallout grading, after Air Winter event dispatch is disabled.
+The route is a ruined major-urban salvage candidate. It is not an exact Fallout dead city. `fallout_state_grade = dead_city` does not exist until Fallout grading. Air Winter state mechanics resume after the Fallout transition, but the pre-Fallout response category and phase-event scheduler remain closed once Fallout owns the world.
 
 The state qualifies only when every condition below is true:
 

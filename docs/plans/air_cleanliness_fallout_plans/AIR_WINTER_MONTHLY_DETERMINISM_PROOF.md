@@ -18,7 +18,7 @@ The live order is:
 6. dispatch phase events from the bounded event-owner array
 7. finalize global Air Winter aggregates
 
-When `fallout_transition_active` is set, steps 2, 4, 5, 6, and 7 are skipped for Air Winter. The same monthly pass still collects Air Contamination inputs. This keeps the Fallout snapshot stable through its multi-event rewrite without adding a second state iterator. Air Winter resumes through its normal next monthly cycle after the transition flag clears.
+When `fallout_transition_active` is set, steps 2, 4, 5, 6, and 7 are skipped for Air Winter. This keeps the Fallout snapshot stable through its multi-event rewrite without adding a second state iterator. The permanent lock supplies a fixed 9,900-basis-point Fallout source and zeros all competing inputs. Air Winter resumes through its normal next monthly cycle after the transition flag clears.
 
 ## Opening snapshot
 
@@ -79,7 +79,7 @@ It calculates severe-state share, updates active, severe, terminal, and classifi
 
 State reset clears `air_winter_last_update_cycle_id`. Global reset clears snapshots, prepare and finalize dates, transient candidate arrays, and the open-cycle flag. It deliberately preserves the monotonic cycle id so stale state stamps cannot collide with a restarted cycle. Countries previously registered from the existing state pass are reset through a bounded persistent array, including country scopes whose tags are absent from the map. State cleanup is requested for the next existing monthly state pass, then finalize clears the request after every state has received the reset branch. The legacy ordinary-map proof entity has a dedicated destroy helper. Regional slots are destroyed by the deferred state reset without adding another world iterator.
 
-On a normal loaded save, persistent cycle variables retain the last completed ownership state. The next host monthly call opens a new cycle only for a new `global.date`. This is static script reasoning. Runtime save-resume reconstruction remains unobserved.
+On a normal loaded save, persistent cycle variables retain the last completed ownership state. The next host monthly call opens a new cycle only for a new `global.date`. This is static script reasoning without a live observation claim.
 
 ## Engine references
 
@@ -93,4 +93,4 @@ On a normal loaded save, persistent cycle variables retain the last completed ow
 
 The implemented pipeline removes the two known iterator-order dependencies: neighbor phase reads and same-country event candidate selection. It also prevents duplicate state work and duplicate finalization within one cycle. No additional periodic world scan was introduced.
 
-Runtime repetition across save and reload remains unobserved and is not reported as passing proof.
+Live repetition across save and reload is a later user validation handoff and is not a completion requirement for this static implementation tranche.

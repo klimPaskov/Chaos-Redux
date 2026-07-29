@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Great Lakes Lock Winter
+## Current reconciliation after The Battalion's Bread List
 
-The reviewed candidate producer now covers `65` ordinary dormant rows through Great Lakes Lock Winter candidate `663`, with `544` defined event blocks through `chaosx.fallout.669` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7166`. The Second Dust Bowl source admission contract stores the durable survival resource row, Food, Clean Water, Scrap, Fuel, Power, Shelter Capacity, Recognition, Cohesion, Air Winter Dust Load, Supply Access, Adaptation, Reclamation, Exposure, Disease Pressure, and the native plains target. The producer now preserves the selected state in the dispatch envelope, and the opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+The reviewed candidate producer now covers `68` ordinary dormant rows through The Battalion's Bread List candidate `677`, with `558` defined event blocks through `chaosx.fallout.683` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7169`. Candidate 677 uses transaction `710068`, route `7168`, and survivor Event Log history `9174`. The producer selects the lowest eligible native Food Compact granary state with a current Work for Rations policy receipt and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+
+Candidate 677 requires a current owner and generation receipt written by Work for Rations, minimum Cohesion, configured army manpower, a produced Air Winter snapshot, and one complete affordable branch. Its protected issue, equal measure, field requisition, and rear-echelon stand-down routes share one deterministic `28` day result, one `210` day callback, branch-aware hidden AI, Deaths-backed failure, durable military-food memory, and authenticated cleanup. Its dedicated proof is `FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md`.
 
 Metro Republic Below is the Europe shelter-governance row with candidate `614`, transaction `710059`, event ids `614` through `620`, and Event Log history `9165`. It selects the lowest valid native European city or large-city state and remains dormant behind the scheduler activation gates.
 
@@ -20,9 +22,9 @@ The Second Dust Bowl is the North American plains row with candidate `656`, tran
 
 Great Lakes Lock Winter is the North American coastal row with candidate `663`, transaction `710066`, event ids `663` through `669`, and Event Log history `9172`. It requires a native coastal state with a non-damaged naval base and infrastructure, uses four authored branches, resolves after exactly `35` days, and schedules a `270`-day thaw callback. Its hidden-AI lane scores all affordable branches with deterministic tie order, and its cleanup gate accepts a result-only schedule-error receipt without a callback ticket. Its generation-reset abort path statically cancels stale openings and delayed receipts before runtime teardown. Its dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
 
-Status: dormant, statically reconciled, completion blocked by the current audit, not release-floor credit.
+Status: dormant, statically reconciled, tranche audit clear, completion blocked by scheduler and runtime gates, not release-floor credit.
 
-The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-five global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
+The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-eight global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 
 ## Candidate rows
 
@@ -73,13 +75,13 @@ and generation markers instead of selecting a fallback.
 - `fallout_event_candidate_registry_arrays_are_aligned` lists 55 arrays. The
   producer appends all 53 mutable row arrays and leaves the two completion
   history arrays intentionally durable.
-- The candidate effect file balances at 508 braces. The edited constants,
+- The candidate effect file balances at 3,137 braces. The edited constants,
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-five candidate ids, sixty-five transaction keys, and sixty-five route ids in a dedicated Fallout namespace.
+- The candidate pilot constants define sixty-eight candidate ids, sixty-eight transaction keys, and sixty-eight route ids in a dedicated Fallout namespace. The Battalion's Bread List candidate `677` is emitted by the candidate producer after Work for Rations and carries a typed state target, a global-survival route with no false regional claim, Food Compact government proof, a durable Work for Rations policy receipt, Air Winter winter proof, food-resource proof, controller proof, a first-year issue gate, minimum Cohesion, configured army manpower, and at least one affordable branch.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 309, 656 through 669, and the hidden companion ranges
+  126, 153 through 200, 204 through 309, 656 through 683, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger admits major-arc rows only through
@@ -556,7 +558,7 @@ It uses candidate id `642`, transaction `710063`, route `7163`, event blocks `64
 
 Its country gate requires a current Fallout registry row, current-generation Sub-Saharan African regional identity, durable Survival resources, an affordable branch, and no conflicting ordinary receipt. Its state selector chooses the lowest eligible owner-controlled state with a produced Air Winter snapshot, surviving population, native infrastructure, Supply Access, Reclamation, Food reserve, bounded Exposure and Disease Pressure, and a native steel, tungsten, chromium, aluminium, or coal deposit.
 
-Four authored branches cover Trade Mineral Shares, Conscript the Labor Shift, Establish Engineer Rule, and Evacuate the Works. The result and callback use frozen ledgers, deterministic grading, exact 42-day and 270-day delays, native infrastructure or industrial damage on failure, bounded Deaths effects, durable branch memories, hidden-AI parity, Event Log history `9169`, dedicated report art, generation-reset refunds, and authenticated cleanup.
+Four authored branches cover Trade Mineral Shares, Conscript the Labor Shift, Establish Engineer Rule, and Evacuate the Works. The result and callback use frozen ledgers, deterministic grading, exact 42-day and 270-day delays, native infrastructure or industrial damage on failure, bounded Deaths effects, durable branch memories, hidden-AI parity, Event Log history `9169`, dedicated report art, generation-reset refunds, and authenticated cleanup. The generation-reset opening path snapshots the issued state before cancellation so stale reservation release remains state-bound.
 
 The chain remains dormant and outside release-floor credit. It does not create a mine or generator building, alter a native resource deposit, create a country, transfer population across states, or add a recurring scheduler. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven.
 
@@ -573,6 +575,30 @@ Four authored branches cover Quiet Remembrance, Hold a Ration Feast, Stage a Mil
 The asset package is `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_new_year_without_fireworks`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with candidate events `649` through `655`, transaction `710064`, route `7164`, history `9170`, dormant wording, and `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags, scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven. The asset manifest records static registration in `interface/fallout_world_end.gfx`, while live presentation remains unproven. The read-only event-inspector result is unresolved tooling evidence and is not a validation pass.
+
+## Work for Rations reviewed tranche
+
+Work for Rations is the sixty-seventh reviewed ordinary survivor candidate. It uses candidate id `670`, transaction `710067`, route `7167`, event blocks `670` through `676`, and survivor Event Log history `9173`.
+
+The country gate requires a current Food Compact owner, an ordinary Fallout receipt, a current-generation native state target, durable Food and Air Winter rows, surviving population, supply access, a produced Air Winter food snapshot, a controlled target, the first post-consequence-year window, and at least one affordable branch. The opening gate preserves the state target and rechecks ownership, controller, generation, resource row, Supply Access, adaptation, reclamation, exposure, and disease before a branch can be paid.
+
+Four authored branches cover Universal Duty, Paid Labor, Refugee Work Program, and Mechanized Harvest. Their costs are distinct and use Food, Fuel, Scrap, Recognition, Command Power, Shelter Capacity, Medicine, Power, and Support Equipment. The result resolves after exactly `35` days and the callback after exactly `270` days. Deterministic grading uses the frozen food reserve, supply, adaptation, reclamation, exposure, and disease values. Mechanized maintenance is added only when frozen Adaptation is below its low-adaptation threshold. Result and callback effects update Food Compact labor and production, Air Winter, supply, manpower, integration, maintenance, and branch-aware memory. Every resolved Refugee result preserves an owner-state host memory with controller, generation, and outcome receipts. Failure losses use the Deaths system with cause `fallout_aftermath`.
+
+The hidden-AI route uses the same target proof, branch costs, grade, deterministic tie order, delayed receipts, and cleanup. The chain writes only post-consequence survivor memory history. It does not register the Fallout transition, blackout, population sweep, or Air Cleanliness shutdown as a public event log or evolution row. Dedicated report art and static sprite wiring are present under `docs/assets/670_work_for_rations/` and `interface/fallout_world_end.gfx`.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, Deaths readback, manpower readback, runtime Event Log rendering, and player-visible art remain unproven because Hearts of Iron IV was not launched. The dedicated proof is `FALLOUT_WORK_FOR_RATIONS_CHAIN_PROOF.md`.
+
+## The Battalion's Bread List reviewed tranche
+
+The Battalion's Bread List is the sixty-eighth reviewed ordinary survivor candidate. It uses candidate id `677`, transaction `710068`, route `7168`, event blocks `677` through `683`, and survivor Event Log history `9174`.
+
+The country gate requires a current Food Compact owner, an ordinary Fallout receipt, a current-generation native granary state, a durable current-owner Work for Rations policy receipt, produced Air Winter evidence, surviving population, supply access, bounded food, exposure, and disease values, minimum Cohesion, configured army manpower, and at least one complete affordable branch. The opening preserves and rechecks both the country and state ledgers before payment.
+
+Four authored branches cover a protected military issue, one equal public measure, field requisition, and rear-echelon stand-down. The result resolves after exactly `28` days and the callback after exactly `210` days. Deterministic grading uses food, supply, Cohesion, Adaptation, Reclamation, Exposure, Disease Pressure, ration discipline, battalion loyalty, civil-military trust, War Support, Army Experience, and civilian hunger. Failure losses use the Deaths system with cause `fallout_aftermath`.
+
+The stand-down route releases a bounded personnel amount through manpower and applies a strong `240`-day military-readiness penalty. It writes a durable one-use receipt and does not delete a division, remove equipment, or refund equipment. The hidden-AI route uses the same target proof, branch affordability, grade, fixed tie order, delayed receipts, and cleanup. The chain writes only post-consequence survivor memory history and does not register Fallout itself as an event, evolution, or Event Log entry.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, Deaths readback, army manpower readback, runtime Event Log rendering, and player-visible art remain unproven because Hearts of Iron IV was not launched. The dedicated proof is `FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md`.
 
 ## The Second Dust Bowl correction
 

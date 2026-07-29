@@ -30,7 +30,7 @@ Fallout has no numbered random-event identity and no ownership relationship with
 
 ## Public registry boundary
 
-The accepted correction supersedes older plans that proposed a public Fallout scenario row or registry sort branch. Fallout remains absent from the public scenario, Event Details, evolution, ordinary event-log, and ordinary super-event registries. The manual trigger reserves the next live scenario id in `fallout_manual_scenario_identity.triggerable_scenario_id`, but that value is Fallout-owned and is never inserted into public registry arrays, catalog rows, or player-facing history. The generic framework may dispatch a Fallout-owned bootstrap callback after an authorized manual request. That callback starts the strike transaction and does not register Fallout as an event.
+The accepted correction supersedes older plans that proposed a public Fallout scenario row or registry sort branch. Fallout remains absent from ordinary Event Details, evolution, ordinary event-log, and ordinary super-event registries. A separate Fallout-owned sandbox launch row uses the next live triggerable-scenario id in `fallout_manual_scenario_identity.triggerable_scenario_id`, which is currently raw id `14`. That row is launch-gated by the exact native sweep proof and is not an ordinary event, evolution, Event Details card, or super-event registration. The generic framework may dispatch a Fallout-owned bootstrap callback after an authorized manual request. That callback starts the strike transaction and does not register Fallout as an event.
 
 ## Reconciled design decisions
 

@@ -31,7 +31,7 @@ The dedicated file owns only the internal event callbacks and survivor-facing st
 - post-transition orientation and regional aftermath events
 - transition recovery events that belong to the Fallout system
 
-The Fallout consequence itself is not an event. It has no public Event Details row, evolution entry, ordinary consequence Event Log entry, or ordinary super-event slot. The internal callbacks in this file are transport and presentation surfaces for the consequence, while survivor-country stories may write their own Fallout memory history after the transition.
+The Fallout consequence itself is not an ordinary event. It occupies the dedicated world-end selector row that replaces the retired Final Silence row, but it has no ordinary consequence Event Log entry, evolution entry, or ordinary super-event slot. The internal callbacks in this file are transport and presentation surfaces for the consequence, while survivor-country stories may write their own Fallout memory history after the transition.
 
 ## Event ownership boundaries
 
@@ -98,7 +98,7 @@ Do not assign a normal super-event audio id. Do not reuse another feature's soun
 
 The manual scenario receives the next free scenario registry id found in the writable live repository. That registry id is independent from `chaosx.fallout.*` event suffixes.
 
-The generic scenario launcher calls a Fallout-owned launch handoff only after the exact native sweep gate is proven. Every strike, countdown, blackout, rewrite, and post-transition callback after that call remains inside the Fallout namespace and file, without creating a public Fallout event row.
+The generic scenario launcher exposes the Fallout-owned manual sandbox row and calls its launch handoff only after the exact native sweep gate is proven. Every strike, countdown, blackout, rewrite, and post-transition callback after that call remains inside the Fallout namespace and file, without creating an ordinary Fallout Event Log row.
 
 ## Required cleanup
 
@@ -118,7 +118,7 @@ The ownership gate passes only when:
 - every `chaosx.fallout.*` event definition is in `events/fallout_world_end_events.txt`
 - no Fallout event block remains in chemical warfare, generic scenario, or other feature event files
 - no Fallout caller uses an event id from another namespace
-- the consequence itself has no public Event Details, evolution, or ordinary Event Log registration
+- the consequence is present only in the dedicated world-end selector row and has no ordinary Event Log or evolution registration
 - no Fallout sprite or texture points into another feature asset folder
 - no Fallout presentation uses the normal super-event system
 - the asset manifest lists only dedicated Fallout paths or engine-required flag roots

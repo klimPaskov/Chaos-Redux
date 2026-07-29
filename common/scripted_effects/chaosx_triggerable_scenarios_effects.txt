@@ -28,10 +28,6 @@ initialize_triggerable_scenarios_settings = {
 		set_variable = { triggerable_scenarios_soviet_collapse_type = constant:triggerable_scenario_soviet_collapse_type.normal_republics }
 	}
 	if = {
-		limit = { NOT = { has_variable = triggerable_scenarios_final_silence_type } }
-		set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
-	}
-	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_fury_type } }
 		set_variable = { triggerable_scenarios_fury_type = constant:fury_scenario_type.pact }
 	}
@@ -93,11 +89,11 @@ triggerable_scenarios_initialize_registry = {
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
-		value = constant:triggerable_scenario_id.final_silence
+		value = constant:triggerable_scenario_id.fallout
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_name_sort_values
-		value = constant:triggerable_scenario_sort_value.final_silence_name
+		value = constant:triggerable_scenario_sort_value.fallout_name
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
@@ -224,11 +220,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.final_silence
+			value = constant:triggerable_scenario_id.fallout
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.final_silence_name
+			value = constant:triggerable_scenario_sort_value.fallout_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -319,11 +315,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.final_silence
+			value = constant:triggerable_scenario_id.fallout
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.final_silence_name
+			value = constant:triggerable_scenario_sort_value.fallout_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -445,11 +441,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.final_silence
+			value = constant:triggerable_scenario_id.fallout
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.final_silence_name
+			value = constant:triggerable_scenario_sort_value.fallout_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -503,11 +499,11 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
-			value = constant:triggerable_scenario_id.final_silence
+			value = constant:triggerable_scenario_id.fallout
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
-			value = constant:triggerable_scenario_sort_value.final_silence_name
+			value = constant:triggerable_scenario_sort_value.fallout_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -638,9 +634,15 @@ select_triggerable_scenario_soviet_collapse = {
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.soviet_collapse }
 }
 
-select_triggerable_scenario_final_silence = {
+select_triggerable_scenario_fallout = {
 	initialize_triggerable_scenarios_settings = yes
-	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence }
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.fallout }
+}
+
+# Legacy button/script compatibility. Old saves that still call the retired
+# Final Silence selector are redirected to the Fallout consequence row.
+select_triggerable_scenario_final_silence = {
+	select_triggerable_scenario_fallout = yes
 }
 
 select_triggerable_scenario_fury = {
@@ -780,14 +782,6 @@ triggerable_scenario_type_previous = {
 		independence_wave_scenario_type_previous = yes
 	}
 	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
-		subtract_from_variable = { triggerable_scenarios_final_silence_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_final_silence_type < constant:triggerable_scenario_final_silence_type.nuclear } }
-			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.thermonuclear }
-		}
-	}
-	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked } }
 		subtract_from_variable = { triggerable_scenarios_secret_alliance_type = 1 }
 		if = {
@@ -864,14 +858,6 @@ triggerable_scenario_type_next = {
 		independence_wave_scenario_type_next = yes
 	}
 	else_if = {
-		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.final_silence } }
-		add_to_variable = { triggerable_scenarios_final_silence_type = 1 }
-		if = {
-			limit = { check_variable = { triggerable_scenarios_final_silence_type > constant:triggerable_scenario_final_silence_type.thermonuclear } }
-			set_variable = { triggerable_scenarios_final_silence_type = constant:triggerable_scenario_final_silence_type.nuclear }
-		}
-	}
-	else_if = {
 		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.coalition_unmasked } }
 		add_to_variable = { triggerable_scenarios_secret_alliance_type = 1 }
 		if = {
@@ -939,11 +925,23 @@ trigger_selected_chaosx_scenario = {
 		limit = {
 			check_variable = {
 				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.fallout
+				compare = equals
+			}
+		}
+		trigger_fallout_scenario = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
 				value = constant:triggerable_scenario_id.final_silence
 				compare = equals
 			}
 		}
-		trigger_final_silence_scenario = yes
+		# Legacy id 4 is never shown in the live registry. Existing saves are
+		# redirected through the same Fallout manual sweep.
+		trigger_fallout_scenario = yes
 	}
 	else_if = {
 		limit = {
@@ -2411,46 +2409,18 @@ trigger_soviet_collapse_scenario = {
 	clear_variable = global.soviet_collapse_triggerable_scenario_intensity
 }
 
+trigger_fallout_scenario = {
+	# The manual route owns the exact native thermonuclear sweep, the completed
+	# batch receipt, the exact seven-day wait, and the shared blackout request.
+	# It never registers Fallout as a normal event or evolution.
+	set_temp_variable = { fallout_manual_selected_intensity_input = constant:triggerable_scenario_intensity.maximum }
+	fallout_manual_scenario_begin = yes
+}
+
+# Legacy scripted callers are redirected without invoking the retired Holy
+# Realm firing-wave implementation.
 trigger_final_silence_scenario = {
-	holy_realm_ensure_counters = yes
-	set_country_flag = holy_realm_active
-	set_country_flag = holy_realm_triggerable_final_silence_source
-	set_country_flag = holy_realm_final_doctrine_armed
-	set_country_flag = holy_realm_memory_ministry_of_release
-	set_country_flag = holy_realm_warning_world_marked_as_wound
-	set_variable = { final_silence_pressure = constant:triggerable_scenario_final_silence.launch_final_silence_pressure }
-	set_variable = { mandala_reach = constant:triggerable_scenario_final_silence.launch_mandala_reach }
-	if = {
-		limit = {
-			check_variable = {
-				var = triggerable_scenarios_final_silence_type
-				value = constant:triggerable_scenario_final_silence_type.thermonuclear
-				compare = equals
-			}
-		}
-		set_country_flag = holy_realm_triggerable_final_silence_thermonuclear
-	}
-	else = {
-		clr_country_flag = holy_realm_triggerable_final_silence_thermonuclear
-	}
-	holy_realm_prepare_final_silence = yes
-	every_other_country = {
-		limit = {
-			exists = yes
-			NOT = { is_holy_realm_country = yes }
-		}
-		country_event = { id = chaosx.nr3.73 days = 1 }
-	}
-	holy_realm_apply_final_silence_wave = yes
-	if = {
-		limit = { NOT = { has_global_flag = world_end_final_silence_completed } }
-		country_event = { id = chaosx.nr3.82 days = constant:holy_realm_final_silence.wave_days }
-	}
-	else = {
-		country_event = { id = chaosx.nr3.90 days = 1 }
-	}
-	country_event = { id = chaosx.triggerable_scenarios.5 days = 1 }
-	clr_country_flag = holy_realm_triggerable_final_silence_thermonuclear
+	trigger_fallout_scenario = yes
 }
 
 death_triggerable_consume_extra_island = {

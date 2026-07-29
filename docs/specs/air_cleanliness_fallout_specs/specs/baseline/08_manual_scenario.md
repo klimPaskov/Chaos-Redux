@@ -4,11 +4,11 @@ Canonical status: accepted baseline design, corrected for independent Fallout ow
 
 Working scenario label, not final localisation: manual Fallout scenario. The public padded id is assigned only after the live registry is scanned.
 
-Current consequence correction: Fallout is not an Event Details row, evolution, ordinary super-event, or public scenario-catalog entry. The reserved id and Fallout-owned launch contract remain design inputs. Public registration is prohibited, while trigger activation stays dormant until the exact native province sweep is proven.
+Current consequence correction: Fallout is not an ordinary Event Log row, evolution, ordinary super-event, or ordinary Event Details card. It replaces the retired Final Silence world-end selector row. The reserved id and Fallout-owned manual launch contract remain design inputs. The manual sandbox row may be present while its launch gate stays dormant until the exact native province sweep is proven.
 
 ## Scenario purpose
 
-The Fallout scenario is designed as a manual sandbox trigger for a total world rewrite. Its public launch remains gated by the exact native province-sweep proof, so it is not exposed in the Triggerable Scenarios menu while that proof is missing.
+The Fallout scenario is designed as a manual sandbox trigger for a total world rewrite. Its launch row may be exposed in the Triggerable Scenarios menu, but the exact native province-sweep release gate remains closed until the engine-sensitive proof is complete.
 
 ## Manual scenario rules
 
@@ -59,7 +59,7 @@ If keeping the slider creates confusion, set intensity to fixed and say the scen
 
 ## Event and catalog integration
 
-Scan the complete writable scenario registry, find the highest live integer, and reserve the Fallout-owned manual trigger at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation. The reservation is never inserted into the public scenario catalog, Event Details, evolution, ordinary event-log, or ordinary super-event registries. The seven-day processing delay belongs to the Fallout-owned blackout and callback presentation, not to a public scenario row.
+Scan the complete writable scenario registry, find the highest live integer, and reserve the Fallout-owned manual trigger at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation. The reservation may appear only as the Fallout-owned manual sandbox row. It is never inserted into the ordinary Event Log, ordinary Event Details, evolution, or ordinary super-event registries. The seven-day processing delay belongs to the Fallout-owned blackout and callback presentation, not to an ordinary event row.
 
 ## Compatibility with other world-end events
 

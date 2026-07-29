@@ -60,7 +60,7 @@ The file uses:
 
 `add_namespace = chaosx.fallout`
 
-The Fallout consequence transition is owned by the request coordinator. It is intentionally absent from public Event Details, evolution entries, and ordinary event-log rows. The file is organized into internal sections:
+The Fallout consequence transition is owned by the request coordinator. It occupies the replacement world-end selector row for retired Final Silence, but remains absent from ordinary Event Log rows and evolution entries. The file is organized into internal sections:
 
 1. request and transition
 2. player continuation and orientation

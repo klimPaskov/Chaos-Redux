@@ -131,10 +131,9 @@ fallout_manual_initialize_sweep = {
 		set_global_flag = fallout_manual_scenario_active
 		# Reset the one-shot cleanup receipt before the new generation owns Air.
 		# The helper below writes it again after the prestrike ledger is frozen.
-		clr_global_flag = fallout_air_winter_shutdown_complete
 		# The manual sweep has captured its prestrike population ledger above, so
 		# Fallout can now own the durable Air shutdown before native strikes.
-		fallout_disable_air_cleanliness_after_fallout_admission = yes
+		fallout_lock_air_cleanliness_after_fallout_admission = yes
 		set_global_flag = fallout_manual_sweep_active
 		set_global_flag = fallout_synthetic_strike_batch
 		set_variable = { global.fallout_manual_status = constant:fallout_manual_status.sweeping }
@@ -700,14 +699,7 @@ fallout_manual_apply_aggregate_consequences = {
 	set_temp_variable = { chaos_deaths_has_target_country = constant:fallout_runtime.one }
 	chaos_meter_register_deaths = yes
 
-	set_temp_variable = { fallout_manual_previous_air_contamination_bp = global.air_contamination_bp }
-	set_variable = { global.air_contamination_bp = constant:air_contamination_threshold_bp.irreversible_100 }
-	set_variable = { global.air_contamination_last_delta_bp = global.air_contamination_bp }
-	subtract_from_variable = { global.air_contamination_last_delta_bp = fallout_manual_previous_air_contamination_bp }
-	set_variable = { global.air_contamination_last_nuke_bp = global.air_contamination_last_delta_bp }
-	set_variable = { global.air_contamination_decay_bp = constant:fallout_runtime.zero }
-	air_contamination_refresh_values = yes
-	air_contamination_apply_state_modifier = yes
+	fallout_enforce_permanent_air_contamination = yes
 
 	set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
 	set_temp_variable = { condemnation_base_gain = constant:fallout_manual_aggregate.condemnation_base_gain }
@@ -1268,7 +1260,7 @@ fallout_manual_reconcile = {
 				has_country_flag = fallout_manual_synthetic_launcher
 			}
 		}
-		fallout_disable_air_cleanliness_after_fallout_admission = yes
+		fallout_lock_air_cleanliness_after_fallout_admission = yes
 		fallout_manual_validate_active_runtime = yes
 		if = {
 			limit = {
