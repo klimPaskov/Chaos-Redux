@@ -77,6 +77,65 @@ africa_rsa_has_exile_patron_candidate = {
 	}
 }
 
+# COUNTRY scope during the shared Event 12 fire-once selection pass. South
+# Africa keeps its meaningful vanilla focus tree, so it enters through this
+# narrow branch instead of the generic-focus host gate. Before the prefire
+# roster is frozen, the patron check is deferred; after freezing, the same
+# bounded roster must contain a valid African custodian before the entry event
+# can fire. The public civil-war effect remains the final hard gate.
+africa_rsa_shared_entry_is_eligible = {
+	exists = yes
+	tag = SAF
+	original_tag = SAF
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { has_global_flag = africa_event_active }
+	NOT = { has_global_flag = africa_is_one }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = africa_rsa_branch_used }
+	NOT = { has_global_flag = africa_rsa_recovery_used }
+	NOT = { has_global_flag = africa_rsa_civil_war_active }
+	NOT = { has_country_flag = africa_unifier_host }
+	NOT = { has_country_flag = africa_unified_identity }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	capital_scope = {
+		is_on_continent = africa
+		is_controlled_by = PREV
+	}
+	any_core_state = { is_on_continent = africa }
+	africa_has_prefire_opening_contact = yes
+	africa_rsa_has_supported_subject_autonomy = yes
+	is_in_faction = yes
+	OR = {
+		ENG = {
+			exists = yes
+			is_in_faction_with = ROOT
+		}
+		has_country_flag = africa_rsa_allied_framework_confirmed
+	}
+	275 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+	}
+	681 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		naval_base > constant:africa_rsa_count.none
+	}
+	719 = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		naval_base > constant:africa_rsa_count.none
+	}
+	OR = {
+		NOT = { has_country_flag = africa_prefire_contacts_frozen }
+		africa_rsa_has_exile_patron_candidate = yes
+	}
+}
+
 # Public integration gate. The original, player-led SAF must control the three
 # current vanilla South African core states so the deterministic split cannot
 # silently substitute a random capital or random territory.

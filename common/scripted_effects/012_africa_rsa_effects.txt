@@ -7,6 +7,31 @@
 # faction-wide peace effect is used by this package.
 # ============================================================================
 
+# COUNTRY scope on the actor that owns the RSA outcome. Input is the temporary
+# `africa_rsa_history_payload` value. Appends one Event 12 system-history row
+# without touching the ordinary fire-once event counters, then refreshes open
+# Event Log surfaces. Callers use the current coalition, union, or exile
+# custodian scope so actor attribution remains explicit through the civil war.
+africa_rsa_record_event_log_history = {
+	set_temp_variable = { events_log_system_event_id = constant:africa_event.id }
+	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.fire_once }
+	set_temp_variable = { events_log_system_payload = africa_rsa_history_payload }
+	set_temp_variable = { events_log_system_actor = THIS.id }
+	set_temp_variable = { events_log_system_has_actor = constant:africa_rsa_count.one }
+	set_temp_variable = { events_log_system_secondary_actor = constant:africa_rsa_count.none }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:africa_rsa_count.none }
+	record_events_log_system_history_entry = yes
+	refresh_events_log_system_history_views = yes
+	clear_temp_variable = africa_rsa_history_payload
+	clear_temp_variable = events_log_system_event_id
+	clear_temp_variable = events_log_system_event_type
+	clear_temp_variable = events_log_system_payload
+	clear_temp_variable = events_log_system_actor
+	clear_temp_variable = events_log_system_has_actor
+	clear_temp_variable = events_log_system_secondary_actor
+	clear_temp_variable = events_log_system_has_secondary_actor
+}
+
 # ---------------------------------------------------------------------------
 # Persistent pre-war context
 # ---------------------------------------------------------------------------
@@ -403,7 +428,13 @@ africa_rsa_start_allied_civil_war = {
 		africa_rsa_seed_initial_allied_intervention_ledger = yes
 		africa_rsa_prepare_first_proof = yes
 		country_event = { id = chaosx.nr12.1200 }
-		event_target:africa_rsa_allied_union_government = { country_event = { id = chaosx.nr12.1201 } }
+		set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.opening_coalition }
+		africa_rsa_record_event_log_history = yes
+		event_target:africa_rsa_allied_union_government = {
+			set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.opening_union }
+			africa_rsa_record_event_log_history = yes
+			country_event = { id = chaosx.nr12.1201 }
+		}
 		if = {
 			limit = {
 				has_event_target = africa_rsa_original_faction_leader
@@ -971,6 +1002,8 @@ africa_rsa_transfer_host_to_exile_patron = {
 			array = africa_peace_exemption_countries
 			set_variable = { africa_member_host_generation = event_target:africa_rsa_exile_patron.africa_host_generation }
 		}
+		set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.exile_continuation }
+		africa_rsa_record_event_log_history = yes
 	}
 	set_global_flag = africa_rsa_recovery_used
 }
@@ -1119,7 +1152,11 @@ africa_rsa_resolve_loyalist_victory = {
 			country_event = { id = chaosx.nr12.1206 days = africa_rsa_exile_recovery_delay_days }
 		}
 	}
-	else = { country_event = { id = chaosx.nr12.1208 } }
+	else = {
+		set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.no_exile_patron }
+		africa_rsa_record_event_log_history = yes
+		country_event = { id = chaosx.nr12.1208 }
+	}
 	if = {
 		limit = { has_event_target = africa_rsa_original_faction_leader }
 		event_target:africa_rsa_original_faction_leader = {
@@ -1228,6 +1265,8 @@ africa_rsa_settle_cape_convention = {
 	add_to_variable = { africa_continental_reach = constant:africa_rsa_effect.settlement_reach }
 	africa_clamp_host_values = yes
 	africa_rsa_cleanup_continental_crisis = yes
+	set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.settlement_convention }
+	africa_rsa_record_event_log_history = yes
 }
 
 # COUNTRY scope on the coalition winner.
@@ -1254,6 +1293,8 @@ africa_rsa_settle_temporary_base_lease = {
 	country_event = { id = chaosx.nr12.1207 days = africa_rsa_settlement_truce_days }
 	africa_clamp_host_values = yes
 	africa_rsa_cleanup_continental_crisis = yes
+	set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.settlement_base_lease }
+	africa_rsa_record_event_log_history = yes
 }
 
 # COUNTRY scope on the coalition winner.
@@ -1265,6 +1306,8 @@ africa_rsa_settle_closed_ports = {
 	add_to_variable = { africa_colonial_pressure = constant:africa_rsa_effect.settlement_pressure }
 	africa_clamp_host_values = yes
 	africa_rsa_cleanup_continental_crisis = yes
+	set_temp_variable = { africa_rsa_history_payload = constant:africa_rsa_log.settlement_closed_ports }
+	africa_rsa_record_event_log_history = yes
 }
 
 # COUNTRY scope on the coalition winner. Safe for the scheduled expiry event

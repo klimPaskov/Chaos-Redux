@@ -366,7 +366,21 @@ africa_is_eligible_host = {
 # Any scope. Explicit availability query for the random-event resolver.
 africa_has_any_eligible_host = {
 	any_country = {
+		OR = {
+			africa_is_eligible_host = yes
+			africa_rsa_shared_entry_is_eligible = yes
+		}
+	}
+}
+
+# COUNTRY scope. The shared initializer accepts either the release-candidate
+# generic host or the narrow South African meaningful-tree route. Keeping the
+# OR here centralizes the one sanctioned exception instead of weakening the
+# generic host predicate for every other country.
+africa_can_initialize_selected_host = {
+	OR = {
 		africa_is_eligible_host = yes
+		africa_rsa_shared_entry_is_eligible = yes
 	}
 }
 
