@@ -99,6 +99,7 @@ The current source-of-truth surfaces are:
 - `docs/specs/system_camp_repression_rework_specs/package_index.md`
 - `docs/plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md`
 - `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`
+- `docs/plans/system_camp_repression_rework_plans/repression_ledger_interface_audit_2026_07_29.md`
 - `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/decision_mission_final_audit_2026-07-11.md`
 - `docs/plans/system_camp_repression_rework_plans/major_country_kit_implementation_map.md`
 - `docs/plans/system_camp_repression_rework_plans/colonial_country_kit_implementation_map.md`
