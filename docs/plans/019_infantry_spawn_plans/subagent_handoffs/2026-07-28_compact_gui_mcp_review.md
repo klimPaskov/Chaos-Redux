@@ -1,8 +1,10 @@
 # Event 019 compact Muster Board MCP review
 
+> Superseded by the richer background and left-aligned button-label correction recorded in `2026-07-28_richer_gui_button_mcp_review.md`. The compact geometry and reduced-information decisions remain current.
+
 ## Scope
 
-This handoff records the user-directed compact correction for the direct Event 019 Muster Board surfaces. The board is now a 960 by 640 movable window over the compact background in `docs/assets/019_infantry_spawn/gui_background_compact_2026_07/`.
+This handoff records the user-directed compact correction for the direct Event 019 Muster Board surfaces. The board is now a 960 by 640 movable window over the compact background that was later replaced by the richer package in `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/`.
 
 The correction removes visible information rather than adding another decorative layer. The Overview keeps only Muster Control and Army Congestion as direct counters, removes the visible debt and saturation cards, removes the two explanatory request-cost paragraphs, and uses short labels for the request and lot-order controls. The Lots, Private Commands, Anomalous Hosts, and Muster History surfaces use shorter headings, constrained text boxes, and compact action rows. Gameplay tooltips and scripted GUI effects remain attached to the existing controls, so the visual reduction does not remove the underlying orders or their decision-equivalent logic.
 

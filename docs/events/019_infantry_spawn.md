@@ -591,9 +591,10 @@ Overview can open the shared audit, begin shared standardization, or close every
 eligible resolved generation. Selected-lot and selected-family buttons likewise
 call the same effects as decisions, and AI uses equivalent affordability,
 cooldown, state, lot, and family gates.
+Each direct action keeps a transparent button hitbox with its full `pdx_tooltip`; the visible caption is a separate left-aligned overlay so the action name never inherits the engine's centered `buttonText` layout. Short captions are used only where the compact plate would otherwise crowd the text, while the tooltip retains the complete requirements, cost, and outcome description.
 The Overview surface uses the open central dossier field for active lots, unresolved records, claimant demands, anomalous saturation, pending requests, and active divisions.
 The values are read directly from the shared Event 19 counters rather than decorative placeholders.
-The board is authored around the compact regenerated `GFX_infantry_spawn_muster_board_background` at 960 by 640: one restrained header band carries the title and tab controls, one broad paper field carries the reduced direct Event 19 surfaces, and one narrow lower band receives the overview actions. Functional text, lists, army scenes, and click targets remain GUI-owned and do not paint decorative wells or slot grids. The compact source, processed review, and runtime handoff are retained under `docs/assets/019_infantry_spawn/gui_background_compact_2026_07/`.
+The board is authored around the richer compact `GFX_infantry_spawn_muster_board_background` at 960 by 640: a continuous charcoal and brass frame surrounds a period muster map field with sparse red and steel drafting traces, paper seams, and one understated compass seal. Functional text, lists, army scenes, and click targets remain GUI-owned and do not paint decorative wells or slot grids. The richer source, processed review, and runtime handoff are retained under `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/`.
 
 Three real frame-sheet animations provide the muster seal, critical claimant
 border, and anomalous registry emblem. Each has a player-selectable static
