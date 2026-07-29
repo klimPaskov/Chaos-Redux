@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION DYNAMIC MODIFIERS
+# ============================================================================
+# Overview:
+# - Applies the temporary operational shock, persistent resistance trauma, and
+#   delayed backlash created by targeted nerve-agent suppression.
+# - Scripted effects bind the modifiers to the recorded responsible occupier,
+#   refresh trauma values after every change, and remove operational benefits
+#   immediately when control changes.
+# - These modifiers never create camps, genocide infrastructure, passive
+#   chemical release, or a substitute for the shared exposure pipeline.
+# ============================================================================
+
+cbrn_nerve_suppression_active_state = {
+	icon = GFX_modifiers_cbrn_nerve_suppression_active
+	enable = { has_state_flag = cbrn_occupation_nerve_suppression_active }
+	remove_trigger = { NOT = { has_state_flag = cbrn_occupation_nerve_suppression_active } }
+	required_garrison_factor = constant:cbrn_occupation_state_modifier.active_required_garrison
+	resistance_damage_to_garrison = constant:cbrn_occupation_state_modifier.active_garrison_damage
+	resistance_target = constant:cbrn_occupation_state_modifier.active_resistance_target
+	local_factories = constant:cbrn_occupation_state_modifier.active_local_factories
+	local_resources = constant:cbrn_occupation_state_modifier.active_local_resources
+	enemy_army_speed_factor = constant:cbrn_occupation_state_modifier.active_enemy_speed
+	enemy_local_supplies = constant:cbrn_occupation_state_modifier.active_enemy_supplies
+}
+
+cbrn_nerve_suppression_trauma_state = {
+	icon = GFX_modifiers_cbrn_nerve_suppression_trauma
+	enable = {
+		has_variable = cbrn_occupation_nerve_suppression_trauma
+		check_variable = { cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero }
+	}
+	remove_trigger = {
+		OR = {
+			NOT = { has_variable = cbrn_occupation_nerve_suppression_trauma }
+			check_variable = {
+				var = cbrn_occupation_nerve_suppression_trauma
+				value = constant:cbrn_math.zero
+				compare = less_than_or_equals
+			}
+		}
+	}
+	resistance_target = var:cbrn_occupation_trauma_resistance_target
+	resistance_growth = var:cbrn_occupation_trauma_resistance_growth
+	compliance_gain = var:cbrn_occupation_trauma_compliance_gain
+}
+
+cbrn_occupation_backlash_state = {
+	icon = GFX_modifiers_cbrn_occupation_backlash
+	enable = { has_state_flag = cbrn_occupation_backlash_active }
+	remove_trigger = { NOT = { has_state_flag = cbrn_occupation_backlash_active } }
+	resistance_target = constant:cbrn_occupation_state_modifier.backlash_resistance_target
+	resistance_growth = constant:cbrn_occupation_state_modifier.backlash_resistance_growth
+	resistance_damage_to_garrison = constant:cbrn_occupation_state_modifier.backlash_garrison_damage
+	local_factories = constant:cbrn_occupation_state_modifier.backlash_local_factories
+	local_resources = constant:cbrn_occupation_state_modifier.backlash_local_resources
+}
+
+cbrn_occupation_state_sealed_modifier = {
+	icon = GFX_modifiers_cbrn_occupation_state_sealed
+	enable = { has_state_flag = cbrn_occupation_state_seal_active }
+	remove_trigger = { NOT = { has_state_flag = cbrn_occupation_state_seal_active } }
+	local_factories = constant:cbrn_occupation_state_modifier.sealed_local_factories
+	local_resources = constant:cbrn_occupation_state_modifier.sealed_local_resources
+	resistance_growth = constant:cbrn_occupation_state_modifier.sealed_resistance_growth
+}

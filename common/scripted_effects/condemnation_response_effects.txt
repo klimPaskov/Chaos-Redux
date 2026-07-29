@@ -23,12 +23,14 @@ condemnation_apply_response_duration = {
 
 condemnation_accept_inspections = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.inspection }
-	set_country_flag = { flag = condemnation_inspections_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_inspection_burden days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_inspections_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_inspection_burden days = var:condemnation_response_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.inspection }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.inspections }
 	condemnation_apply_response_duration = yes
+	cbrn_diplomacy_clear_active_inspection_demand = yes
+	cbrn_achievement_record_inspection_acceptance = yes
 }
 
 condemnation_destroy_chemical_stockpiles = {
@@ -120,11 +122,12 @@ condemnation_destroy_chemical_stockpiles = {
 	set_country_flag = condemnation_stockpiles_destroyed
 	set_country_flag = condemnation_chemical_stockpiles_destroyed
 	set_temp_variable = { condemnation_stockpile_restriction_days = constant:condemnation_duration_days.non_use_pledge }
-	set_country_flag = { flag = condemnation_chemical_stockpile_restriction days = condemnation_stockpile_restriction_days }
+	set_country_flag = { flag = condemnation_chemical_stockpile_restriction days = var:condemnation_stockpile_restriction_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.destroy_chemical_stockpile }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction }
 	condemnation_apply_response_duration = yes
+	cbrn_achievement_record_stockpile_destruction = yes
 }
 
 condemnation_destroy_biological_stockpiles = {
@@ -151,11 +154,12 @@ condemnation_destroy_biological_stockpiles = {
 	set_country_flag = condemnation_stockpiles_destroyed
 	set_country_flag = condemnation_biological_stockpiles_destroyed
 	set_temp_variable = { condemnation_stockpile_restriction_days = constant:condemnation_duration_days.non_use_pledge }
-	set_country_flag = { flag = condemnation_biological_stockpile_restriction days = condemnation_stockpile_restriction_days }
+	set_country_flag = { flag = condemnation_biological_stockpile_restriction days = var:condemnation_stockpile_restriction_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.destroy_biological_stockpile }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction }
 	condemnation_apply_response_duration = yes
+	cbrn_achievement_record_stockpile_destruction = yes
 }
 
 condemnation_dismantle_restricted_sites = {
@@ -178,6 +182,7 @@ condemnation_dismantle_restricted_sites = {
 		set_state_flag = genocide_extermination_site_dismantled
 	}
 	set_country_flag = condemnation_sites_dismantled
+	set_country_flag = cbrn_achievement_program_dismantled_history
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.dismantle_sites }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction }
@@ -205,8 +210,8 @@ condemnation_pay_compensation = {
 		}
 	}
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.compensation }
-	set_country_flag = { flag = condemnation_compensation_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_compensation_program days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_compensation_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_compensation_program days = var:condemnation_response_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.compensation }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.compensation }
@@ -215,8 +220,8 @@ condemnation_pay_compensation = {
 
 condemnation_make_non_use_pledge = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.non_use_pledge }
-	set_country_flag = { flag = condemnation_non_use_pledge days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_non_use_pledge_idea days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_non_use_pledge days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_non_use_pledge_idea days = var:condemnation_response_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.non_use_pledge }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.non_use_pledge }
@@ -226,8 +231,8 @@ condemnation_make_non_use_pledge = {
 
 condemnation_allow_observers = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.observers }
-	set_country_flag = { flag = condemnation_observers_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_observer_access days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_observers_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_observer_access days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_observer_convoy_cost = constant:condemnation_cost.observer_convoys }
 	multiply_temp_variable = { condemnation_observer_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_observer_convoy_cost }
@@ -249,7 +254,7 @@ condemnation_reform_command = {
 	navy_experience = condemnation_xp_cost
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.command_reform }
 	set_country_flag = condemnation_command_reformed
-	add_timed_idea = { idea = condemnation_command_reform days = condemnation_response_days }
+	add_timed_idea = { idea = condemnation_command_reform days = var:condemnation_response_days }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.command_reform }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.command_reform }
@@ -262,7 +267,7 @@ condemnation_refuse_inspections = {
 	clr_country_flag = condemnation_observers_active
 	remove_ideas = condemnation_inspection_burden
 	remove_ideas = condemnation_observer_access
-	set_country_flag = { flag = condemnation_refused_inspection days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_refused_inspection days = var:condemnation_response_days }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
 	set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.blocked_inspection_coverup }
@@ -270,12 +275,13 @@ condemnation_refuse_inspections = {
 	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
 	set_temp_variable = { condemnation_context_type = constant:condemnation_context.blocked_inspection }
 	condemnation_add_source = yes
+	cbrn_diplomacy_clear_active_inspection_demand = yes
 }
 
 condemnation_activate_domestic_propaganda = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_domestic_propaganda_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_domestic_propaganda days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_domestic_propaganda_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_domestic_propaganda days = var:condemnation_response_days }
 	add_stability = constant:condemnation_cost.propaganda_stability
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
@@ -283,8 +289,8 @@ condemnation_activate_domestic_propaganda = {
 
 condemnation_activate_autarky = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_autarky_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_autarky_program days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_autarky_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_autarky_program days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.autarky_fuel_fraction }
 	condemnation_pay_fuel_fraction = yes
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
@@ -293,8 +299,8 @@ condemnation_activate_autarky = {
 
 condemnation_activate_forced_extraction = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_forced_extraction_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_forced_extraction days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_forced_extraction_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_forced_extraction days = var:condemnation_response_days }
 	add_stability = constant:condemnation_cost.forced_extraction_stability
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
@@ -302,24 +308,24 @@ condemnation_activate_forced_extraction = {
 
 condemnation_activate_substitute_materials = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_substitute_materials_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_substitute_materials days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_substitute_materials_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_substitute_materials days = var:condemnation_response_days }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
 }
 
 condemnation_activate_military_rationing = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_military_rationing_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_military_rationing days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_military_rationing_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_military_rationing days = var:condemnation_response_days }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
 }
 
 condemnation_activate_subject_pressure = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_subject_pressure_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_subject_pressure days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_subject_pressure_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_subject_pressure days = var:condemnation_response_days }
 	add_stability = constant:condemnation_cost.subject_pressure_stability
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
@@ -327,8 +333,8 @@ condemnation_activate_subject_pressure = {
 
 condemnation_activate_controlled_shipping = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_controlled_shipping_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_controlled_shipping days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_controlled_shipping_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_controlled_shipping days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.controlled_shipping_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -340,8 +346,8 @@ condemnation_activate_controlled_shipping = {
 
 condemnation_activate_hardline_mobilization = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
-	set_country_flag = { flag = condemnation_hardline_mobilization_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_hardline_mobilization days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_hardline_mobilization_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_hardline_mobilization days = var:condemnation_response_days }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
 }
@@ -358,8 +364,8 @@ condemnation_add_evasion_route = {
 
 condemnation_open_black_market = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_black_market_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_black_market_network days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_black_market_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_black_market_network days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.black_market_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -373,8 +379,8 @@ condemnation_open_black_market = {
 
 condemnation_use_false_manifests = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_false_manifest_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_false_manifests days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_false_manifest_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_false_manifests days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.false_manifest_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -384,8 +390,8 @@ condemnation_use_false_manifests = {
 
 condemnation_use_neutral_intermediaries = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_intermediary_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_neutral_intermediaries days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_intermediary_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_neutral_intermediaries days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.intermediary_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -396,8 +402,8 @@ condemnation_use_neutral_intermediaries = {
 
 condemnation_use_subject_front = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_subject_front_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_subject_front days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_subject_front_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_subject_front days = var:condemnation_response_days }
 	add_stability = constant:condemnation_cost.subject_pressure_stability
 	set_temp_variable = { condemnation_evasion_strength = constant:condemnation_route.subject_front_strength }
 	condemnation_add_evasion_route = yes
@@ -405,8 +411,8 @@ condemnation_use_subject_front = {
 
 condemnation_open_covert_fuel_route = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_covert_fuel_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_covert_fuel_route days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_covert_fuel_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_covert_fuel_route days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.covert_fuel_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -418,8 +424,8 @@ condemnation_open_covert_fuel_route = {
 
 condemnation_reflag_shipping = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_reflagging_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_reflagged_shipping days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_reflagging_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_reflagged_shipping days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.reflagging_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -429,8 +435,8 @@ condemnation_reflag_shipping = {
 
 condemnation_use_stolen_license = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_stolen_license_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_stolen_license days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_stolen_license_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_stolen_license days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.stolen_license_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
@@ -440,8 +446,8 @@ condemnation_use_stolen_license = {
 
 condemnation_open_smuggled_lab = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
-	set_country_flag = { flag = condemnation_smuggled_lab_active days = condemnation_response_days }
-	add_timed_idea = { idea = condemnation_smuggled_laboratory days = condemnation_response_days }
+	set_country_flag = { flag = condemnation_smuggled_lab_active days = var:condemnation_response_days }
+	add_timed_idea = { idea = condemnation_smuggled_laboratory days = var:condemnation_response_days }
 	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.smuggled_lab_convoys }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }

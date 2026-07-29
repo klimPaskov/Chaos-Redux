@@ -39,6 +39,28 @@ chaosx_apply_startup_history_grants = {
 		chaosx_startup_grant_usa = yes
 		chaosx_startup_grant_yug = yes
 		chaosx_apply_starting_cbrn_mask_profiles = yes
+		# One-time achievement eligibility receipts are written after the
+		# accepted starting profiles. They prevent country or profile switching
+		# from manufacturing a starting condition later in the campaign.
+		every_country = {
+			limit = { is_ai = no }
+			set_country_flag = cbrn_achievement_start_country_eligible
+			if = {
+				limit = { is_major = yes }
+				set_country_flag = cbrn_achievement_starting_major_power
+			}
+			if = {
+				limit = {
+					OR = {
+						cbrn_profile_is_mass_civil_defence = yes
+						cbrn_profile_is_civil_defence_network = yes
+					}
+				}
+				set_country_flag = cbrn_achievement_starting_civil_defence_profile
+			}
+		}
+		cbrn_initialize_battlefield_operation_selection = yes
+		cbrn_occupation_initialize_action_conditions = yes
 	}
 }
 
@@ -281,7 +303,6 @@ chaosx_startup_grant_eng = {
 				specialization = specialization_biowarfare
 				value = constant:startup_history_breakthrough.britain_biowarfare
 			}
-			complete_special_project = sp:anthrax_bomb
 			if = {
 				limit = { 122 = { is_owned_by = ENG } }
 				122 = { chaosx_add_startup_cw_facility_9364 = yes }
@@ -341,7 +362,6 @@ chaosx_startup_grant_ger = {
 				chlorine_gas = 1
 				phosgene = 1
 				mustard_gas = 1
-				tabun = 1
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes

@@ -270,6 +270,24 @@ Actor-independent public confirmed-use history is preserved even if the responsi
 
 National surveillance and vaccination commitments are restored only by their own stand-down decisions because they are national continuing programs rather than outbreak-state commitments.
 
+## Designer integration
+
+Completed Biological Security Directorate and Medical Countermeasure Directorate traits enter the same exact-state lifecycle rather than a parallel response system.
+
+Distributed Surveillance multiplies the final ordinary-agent detection chance by 1.25 before the normal detection cap.
+
+Mobile Containment Team multiplies only the outbound spread chance of an episode whose persisted source is an exact captured-facility release by 0.75.
+
+Vaccine Scale multiplies Smallpox growth, spread, and death pressure by 0.75 and does not affect Tularemia, Anthrax, or Plague.
+
+Mobile Casualty Sorting multiplies biological medical-saturation growth by 0.75.
+
+When an active international medical mission records an existing provider with International Medical Mission completed, that provider's Surveillance, Containment, and Medical Response contributions are each multiplied by 1.25.
+
+The same trait multiplies the existing Condemnation system's calculated compliance credibility by 1.15 before its normal zero-through-one cap.
+
+No designer trait changes ordinary-agent raid success by agent identity.
+
 ## AI profiles
 
 AI weights distinguish agent potency, political profile, capacity, industry, and historical emergency routes without changing delivery reliability.

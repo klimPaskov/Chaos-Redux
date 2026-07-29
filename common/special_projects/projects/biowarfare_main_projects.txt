@@ -21,6 +21,16 @@
 
 @anti_zombie_bomb_project_rubber_cost = 1
 
+@BIO_AGENT_PROJECT_AI_BASE = 1
+@BIO_AGENT_PROJECT_AI_DISABLED = 0
+@BIO_AGENT_PROJECT_AI_TULAREMIA = 2
+@BIO_AGENT_PROJECT_AI_ANTHRAX = 3
+@BIO_AGENT_PROJECT_AI_PLAGUE = 4
+@BIO_AGENT_PROJECT_AI_SMALLPOX = 2
+@BIO_AGENT_PROJECT_AI_JAPAN_ANTHRAX = 3
+@BIO_AGENT_PROJECT_AI_JAPAN_PLAGUE = 2
+@BIO_AGENT_PROJECT_AI_DESPERATE_SMALLPOX = 4
+
 # FROM - country
 # ROOT - project
 zombie_cure_bomb = {
@@ -446,37 +456,21 @@ anthrax_bomb = {
     complexity = sp_complexity.medium
 
 
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 1.5
-            ROOT = { has_war = yes }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { num_of_factories > 30 }
-        }
-        modifier = {
-            factor = 0.5
-            ROOT = { has_government = democratic }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { is_major = yes }
-        }
-        modifier = {
-            factor = 5
-            ROOT = { tag = JAP }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { tag = ENG }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { tag = USA }
-        }
-    }
+	ai_will_do = {
+		base = @BIO_AGENT_PROJECT_AI_BASE
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_DISABLED
+			ROOT = { NOT = { cbrn_ai_should_research_anthrax_project = yes } }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_ANTHRAX
+			ROOT = { cbrn_ai_should_research_anthrax_project = yes }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_JAPAN_ANTHRAX
+			ROOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		}
+	}
 
     project_output = {
         country_effects = {
@@ -582,18 +576,17 @@ anthrax_bomb = {
                 token = sp_anthrax_reward_field_testing_conduct
 
                 iteration_output = {
-                    country_effects = {
+                    facility_state_effects = {
                         if = {
                             limit = {
-                                OR = {
-                                    is_ai = no
-                                    has_war = yes
+                                FROM.owner = {
+                                    OR = {
+                                        is_ai = no
+                                        has_war = yes
+                                    }
                                 }
                             }
                             custom_effect_tooltip = anthrax_field_testing_tt
-                            FROM = {
-                                add_project_progress_ratio = constant:sp_progress.gain.high
-                            }
                             conduct_anthrax_field_test = yes
                         }
                         else = {
@@ -701,33 +694,21 @@ plague_bomb = {
 
     complexity = sp_complexity.large
 
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 1.5
-            ROOT = { has_war = yes }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { num_of_factories > 30 }
-        }
-        modifier = {
-            factor = 0.25
-            ROOT = { has_government = democratic }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { is_major = yes }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { tag = JAP }
-        }
-        modifier = {
-            factor = 1.5
-            ROOT = { is_special_project_completed = sp:anthrax_bomb }
-        }
-    }
+	ai_will_do = {
+		base = @BIO_AGENT_PROJECT_AI_BASE
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_DISABLED
+			ROOT = { NOT = { cbrn_ai_should_research_plague_project = yes } }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_PLAGUE
+			ROOT = { cbrn_ai_should_research_plague_project = yes }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_JAPAN_PLAGUE
+			ROOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		}
+	}
 
     project_output = {
         country_effects = {
@@ -833,18 +814,17 @@ plague_bomb = {
                 token = sp_plague_reward_field_testing_conduct
 
                 iteration_output = {
-                    country_effects = {
+                    facility_state_effects = {
                         if = {
                             limit = {
-                                OR = {
-                                    is_ai = no
-                                    has_war = yes
+                                FROM.owner = {
+                                    OR = {
+                                        is_ai = no
+                                        has_war = yes
+                                    }
                                 }
                             }
                             custom_effect_tooltip = plague_field_testing_tt
-                            FROM = {
-                                add_project_progress_ratio = constant:sp_progress.gain.high
-                            }
                             conduct_plague_field_test = yes
                         }
                         else = {
@@ -951,38 +931,17 @@ tularemia_bomb = {
 
     complexity = sp_complexity.small
 
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 2
-            ROOT = { has_war = yes }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { num_of_factories > 20 }
-        }
-        modifier = {
-            factor = 0.25
-            ROOT = { has_government = democratic }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { is_major = yes }
-        }
-        modifier = {
-            factor = 6
-            ROOT = { tag = JAP }
-        }
-        modifier = {
-            factor = 2
-            ROOT = {
-                OR = {
-                    is_special_project_completed = sp:anthrax_bomb
-                    is_special_project_completed = sp:plague_bomb
-                }
-            }
-        }
-    }
+	ai_will_do = {
+		base = @BIO_AGENT_PROJECT_AI_BASE
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_DISABLED
+			ROOT = { NOT = { cbrn_ai_should_research_tularemia_project = yes } }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_TULAREMIA
+			ROOT = { cbrn_ai_should_research_tularemia_project = yes }
+		}
+	}
 
     project_output = {
         country_effects = {
@@ -1088,18 +1047,17 @@ tularemia_bomb = {
                 token = sp_tularemia_reward_field_testing_conduct
 
                 iteration_output = {
-                    country_effects = {
+                    facility_state_effects = {
                         if = {
                             limit = {
-                                OR = {
-                                    is_ai = no
-                                    has_war = yes
+                                FROM.owner = {
+                                    OR = {
+                                        is_ai = no
+                                        has_war = yes
+                                    }
                                 }
                             }
                             custom_effect_tooltip = tularemia_field_testing_tt
-                            FROM = {
-                                add_project_progress_ratio = constant:sp_progress.gain.medium
-                            }
                             conduct_tularemia_field_test = yes
                         }
                         else = {
@@ -1207,54 +1165,21 @@ smallpox_bomb = {
 
     complexity = sp_complexity.large
 
-    ai_will_do = {
-        base = 1  # Low base weight - only for desperate situations
-        modifier = {
-            factor = 5
-            ROOT = {
-                has_war = yes
-                # Only when losing badly - check relative strength
-                any_enemy_country = {
-                    strength_ratio = {
-                        tag = ROOT
-                        ratio > 1.5
-                    }
-                }
-            }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { num_of_factories > 50 }  # Need massive industrial base
-        }
-        modifier = {
-            factor = 0.1  # Very unlikely for democratic nations
-            ROOT = { has_government = democratic }
-        }
-        modifier = {
-            factor = 2
-            ROOT = { is_major = yes }
-        }
-        modifier = {
-            factor = 5
-            ROOT = { tag = JAP }
-        }
-        modifier = {
-            factor = 2
-            ROOT = {
-                AND = {
-                    is_special_project_completed = sp:anthrax_bomb
-                    is_special_project_completed = sp:plague_bomb
-                }
-            }
-        }
-        modifier = {
-            factor = 0  # Never develop if at peace and doing well
-            ROOT = {
-                NOT = { has_war = yes }
-                has_stability > 0.6
-            }
-        }
-    }
+	ai_will_do = {
+		base = @BIO_AGENT_PROJECT_AI_BASE
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_DISABLED
+			ROOT = { NOT = { cbrn_ai_should_research_smallpox_project = yes } }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_SMALLPOX
+			ROOT = { cbrn_ai_should_research_smallpox_project = yes }
+		}
+		modifier = {
+			factor = @BIO_AGENT_PROJECT_AI_DESPERATE_SMALLPOX
+			ROOT = { cbrn_ai_has_desperate_release_posture = yes }
+		}
+	}
 
     project_output = {
         country_effects = {
@@ -1362,18 +1287,17 @@ smallpox_bomb = {
                 token = sp_smallpox_reward_field_testing_conduct
 
                 iteration_output = {
-                    country_effects = {
+                    facility_state_effects = {
                         if = {
                             limit = {
-                                OR = {
-                                    is_ai = no
-                                    has_war = yes
+                                FROM.owner = {
+                                    OR = {
+                                        is_ai = no
+                                        has_war = yes
+                                    }
                                 }
                             }
                             custom_effect_tooltip = smallpox_field_testing_tt
-                            FROM = {
-                                add_project_progress_ratio = constant:sp_progress.gain.high
-                            }
                             conduct_smallpox_field_test = yes
                         }
                         else = {

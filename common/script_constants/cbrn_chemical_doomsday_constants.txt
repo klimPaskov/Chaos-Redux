@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - CHEMICAL DOOMSDAY ADAPTER CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes the explicit decision route's state-target, condition-receipt,
+#   and batch-Condemnation tuning.
+# - The adapter consumes the complete old cylinder stock exactly once, then
+#   allocates those real lots across the exact controlled-state array. It does
+#   not estimate weather, activity, target selection, or aircraft presence.
+# - Values are gameplay tuning with low historical confidence. A legacy
+#   cylinder is an operation-sized abstraction, not a fixed chemical mass.
+# ============================================================================
+
+cbrn_chemical_doomsday_condition = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# A terminal decision supplies a resolved release order. The current engine
+	# surface does not expose live environmental inputs for this route, so none
+	# are manufactured here.
+	release_efficiency = 1.00
+}
+
+cbrn_chemical_doomsday_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 0
+}
+
+cbrn_chemical_doomsday_consequence = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# The package matrix places a deliberate doomsday release in the 150 to
+	# 500 Condemnation range. Stock scaling is a gameplay receipt, not a mass
+	# conversion or historical casualty estimate.
+	condemnation_base = 150
+	condemnation_stock_divisor = 1000
+	condemnation_stock_cap = 350
+	condemnation_total_cap = 500
+}

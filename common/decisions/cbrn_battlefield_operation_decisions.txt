@@ -1,0 +1,284 @@
+# ============================================================================
+# CHAOS REDUX - EXACT-STATE CBRN BATTLEFIELD OPERATION DECISIONS
+# ============================================================================
+# Overview:
+# - Exposes one agent-selection control and four state-targeted timed
+#   operations. Chemical deployment remains a decision surface here because
+#   the native raid API is not a verified Army-HQ-to-state receipt for these
+#   ground routes.
+# - Each route commits immediately to the selected state, pays its political
+#   power cost, then completes after its preparation duration. The completion
+#   effect consumes payload and route equipment before the shared consequence
+#   pipeline resolves the release.
+# - AI scoring is route-aware and target-aware. Country profiles modify route
+#   preference only; they never create a target, grant a payload, or bypass
+#   the shared policy and protection gates.
+# ============================================================================
+
+cbrn_operations_category = {
+	cbrn_battlefield_cycle_agent = {
+		name = cbrn_battlefield_cycle_agent
+		desc = cbrn_battlefield_cycle_agent_desc
+		icon = GFX_decision_cbrn_battlefield_cycle_agent
+		visible = {
+			cbrn_battlefield_current_version_condition_hook_verified = yes
+			cbrn_country_has_program = yes
+			NOT = { has_country_flag = cbrn_battlefield_operation_in_progress }
+		}
+		available = {
+			cbrn_battlefield_current_version_condition_hook_verified = yes
+			cbrn_country_has_program = yes
+		}
+		days_remove = constant:cbrn_battlefield_operation_timing.agent_selection_duration
+		days_re_enable = constant:cbrn_battlefield_operation_timing.agent_selection_cooldown
+		complete_effect = {
+			custom_effect_tooltip = cbrn_battlefield_cycle_agent_tt
+			hidden_effect = { cbrn_battlefield_cycle_selected_agent = yes }
+		}
+		ai_will_do = { base = constant:cbrn_battlefield_operation_ai.disabled }
+	}
+
+	cbrn_battlefield_cylinder_release = {
+		name = cbrn_battlefield_cylinder_release
+		desc = cbrn_battlefield_cylinder_release_desc
+		icon = GFX_decision_cbrn_battlefield_cylinder_release
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_battlefield_operation_cost.cylinder_political_power
+		days_remove = constant:cbrn_battlefield_operation_timing.cylinder_release
+		days_re_enable = constant:cbrn_battlefield_operation_timing.cylinder_cooldown
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { cbrn_battlefield_cylinder_actor_can_prepare = yes }
+		target_root_trigger = { cbrn_battlefield_cylinder_actor_can_prepare = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_cylinder_target_tt
+				hidden_trigger = { FROM = { cbrn_battlefield_cylinder_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_cylinder_requirements_tt
+				hidden_trigger = {
+					cbrn_battlefield_cylinder_actor_can_prepare = yes
+					FROM = { cbrn_battlefield_cylinder_target_state = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_battlefield_cylinder_begin_tt
+			hidden_effect = { cbrn_battlefield_begin_cylinder_release = yes }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { cbrn_battlefield_decision_record_is_valid = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_battlefield_operation_cancelled_tt
+			hidden_effect = { cbrn_battlefield_cancel_operation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { cbrn_battlefield_resolve_operation = yes }
+			cbrn_battlefield_present_last_resolution = yes
+		}
+		ai_will_do = {
+			base = constant:cbrn_battlefield_operation_ai.cylinder_priority
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled NOT = { cbrn_ai_has_stable_protective_base = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.prepared_power cbrn_ai_has_battlefield_program_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.terminal_doctrine has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.retaliation cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.first_use cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.contaminated_state FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_has_conventional_army_deficit = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_is_losing_near_capitulation = yes }
+		}
+	}
+
+	cbrn_battlefield_projector_barrage = {
+		name = cbrn_battlefield_projector_barrage
+		desc = cbrn_battlefield_projector_barrage_desc
+		icon = GFX_decision_cbrn_battlefield_projector_barrage
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_battlefield_operation_cost.projector_political_power
+		days_remove = constant:cbrn_battlefield_operation_timing.projector_barrage
+		days_re_enable = constant:cbrn_battlefield_operation_timing.projector_cooldown
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { cbrn_battlefield_projector_actor_can_prepare = yes }
+		target_root_trigger = { cbrn_battlefield_projector_actor_can_prepare = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_projector_target_tt
+				hidden_trigger = { FROM = { cbrn_battlefield_projector_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_projector_requirements_tt
+				hidden_trigger = {
+					cbrn_battlefield_projector_actor_can_prepare = yes
+					FROM = { cbrn_battlefield_projector_target_state = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_battlefield_projector_begin_tt
+			hidden_effect = { cbrn_battlefield_begin_projector_barrage = yes }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { cbrn_battlefield_decision_record_is_valid = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_battlefield_operation_cancelled_tt
+			hidden_effect = { cbrn_battlefield_cancel_operation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { cbrn_battlefield_resolve_operation = yes }
+			cbrn_battlefield_present_last_resolution = yes
+		}
+		ai_will_do = {
+			base = constant:cbrn_battlefield_operation_ai.projector_priority
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled NOT = { cbrn_ai_has_stable_protective_base = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.prepared_power cbrn_ai_has_battlefield_program_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.terminal_doctrine has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.retaliation cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.first_use cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.contaminated_state FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.france_projector_factor cbrn_ai_profile_is_france = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_has_conventional_army_deficit = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_is_losing_near_capitulation = yes }
+		}
+	}
+
+	cbrn_battlefield_artillery_fire_plan = {
+		name = cbrn_battlefield_artillery_fire_plan
+		desc = cbrn_battlefield_artillery_fire_plan_desc
+		icon = GFX_decision_cbrn_battlefield_artillery_fire_plan
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_battlefield_operation_cost.artillery_political_power
+		days_remove = constant:cbrn_battlefield_operation_timing.artillery_fire_plan
+		days_re_enable = constant:cbrn_battlefield_operation_timing.artillery_cooldown
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { cbrn_battlefield_artillery_actor_can_prepare = yes }
+		target_root_trigger = { cbrn_battlefield_artillery_actor_can_prepare = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_artillery_target_tt
+				hidden_trigger = { FROM = { cbrn_battlefield_artillery_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_artillery_requirements_tt
+				hidden_trigger = {
+					cbrn_battlefield_artillery_actor_can_prepare = yes
+					FROM = { cbrn_battlefield_artillery_target_state = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_battlefield_artillery_begin_tt
+			hidden_effect = { cbrn_battlefield_begin_artillery_fire_plan = yes }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { cbrn_battlefield_decision_record_is_valid = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_battlefield_operation_cancelled_tt
+			hidden_effect = { cbrn_battlefield_cancel_operation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { cbrn_battlefield_resolve_operation = yes }
+			cbrn_battlefield_present_last_resolution = yes
+		}
+		ai_will_do = {
+			base = constant:cbrn_battlefield_operation_ai.artillery_priority
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled NOT = { cbrn_ai_has_stable_protective_base = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.prepared_power cbrn_ai_has_battlefield_program_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.terminal_doctrine has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.retaliation cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.first_use cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.contaminated_state FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.britain_artillery_factor cbrn_ai_profile_is_britain = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.soviet_artillery_factor cbrn_ai_profile_is_soviet_union = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.usa_artillery_factor cbrn_ai_profile_is_united_states = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.italy_artillery_factor cbrn_ai_profile_is_italy = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.secondary_defensive_factor cbrn_ai_profile_is_defensive_secondary = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_has_conventional_army_deficit = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_is_losing_near_capitulation = yes }
+		}
+	}
+
+	cbrn_battlefield_armored_delivery = {
+		name = cbrn_battlefield_armored_delivery
+		desc = cbrn_battlefield_armored_delivery_desc
+		icon = GFX_decision_cbrn_battlefield_armored_delivery
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_battlefield_operation_cost.armored_political_power
+		days_remove = constant:cbrn_battlefield_operation_timing.armored_delivery
+		days_re_enable = constant:cbrn_battlefield_operation_timing.armored_cooldown
+		cancel_if_not_visible = no
+		is_good = no
+		visible = { cbrn_battlefield_armored_actor_can_prepare = yes }
+		target_root_trigger = { cbrn_battlefield_armored_actor_can_prepare = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_armored_target_tt
+				hidden_trigger = { FROM = { cbrn_battlefield_armored_target_state = yes } }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_battlefield_armored_requirements_tt
+				hidden_trigger = {
+					cbrn_battlefield_armored_actor_can_prepare = yes
+					FROM = { cbrn_battlefield_armored_target_state = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_battlefield_armored_begin_tt
+			hidden_effect = { cbrn_battlefield_begin_armored_delivery = yes }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { cbrn_battlefield_decision_record_is_valid = yes }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = cbrn_battlefield_operation_cancelled_tt
+			hidden_effect = { cbrn_battlefield_cancel_operation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { cbrn_battlefield_resolve_operation = yes }
+			cbrn_battlefield_present_last_resolution = yes
+		}
+		ai_will_do = {
+			base = constant:cbrn_battlefield_operation_ai.armored_priority
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled NOT = { cbrn_ai_has_stable_protective_base = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.prepared_power cbrn_ai_has_battlefield_program_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.terminal_doctrine has_idea = cbrn_terminal_hazard_doctrine_spirit }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.retaliation cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.first_use cbrn_ai_route_allows_first_use = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.contaminated_state FROM = { cbrn_state_has_chemical_contamination = yes } }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.germany_armored_factor cbrn_ai_profile_is_germany = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.japan_armored_factor cbrn_ai_profile_is_japan = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_has_conventional_army_deficit = yes }
+			modifier = { factor = constant:cbrn_battlefield_operation_ai.disabled cbrn_ai_is_losing_near_capitulation = yes }
+		}
+	}
+}

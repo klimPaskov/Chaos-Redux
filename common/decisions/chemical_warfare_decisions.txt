@@ -13,6 +13,14 @@ chaosx_cbw_doom_category = {
             has_war = yes
             NOT = { has_capitulated = yes }
             surrender_progress > constant:cbw_doom_decision.defaults.surrender_threshold
+			custom_trigger_tooltip = {
+				tooltip = cbrn_chemical_doomsday_policy_tt
+				cbrn_policy_allows_extreme_use = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = cbrn_chemical_doomsday_target_tt
+				cbrn_chemical_doomsday_actor_has_target = yes
+			}
             OR = {
                 has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
                 has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
@@ -52,7 +60,16 @@ chaosx_cbw_doom_category = {
             hidden_effect = {
                 chem_unleash_stockpile_doomsday = yes
             }
-            news_event = { id = chaosx_cbw_doom.1 }
+            if = {
+                limit = {
+                    check_variable = {
+                        var = cbrn_doomsday_release_status
+                        value = constant:cbrn_proof.supplied
+                        compare = equals
+                    }
+                }
+                news_event = { id = chaosx_cbw_doom.1 }
+            }
         }
     }
 

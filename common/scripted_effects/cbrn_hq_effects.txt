@@ -27,6 +27,7 @@ cbrn_hq_stop_operation_benefits = {
 	remove_unit_leader_trait = cbrn_hq_preparing_operation
 	remove_unit_leader_trait = cbrn_hq_active_chemical_offensive
 	remove_unit_leader_trait = cbrn_hq_active_protective_posture
+	remove_unit_leader_trait = cbrn_hq_active_low_resistance_protective_posture
 	remove_unit_leader_trait = cbrn_hq_active_decontamination_corridor
 	remove_unit_leader_trait = cbrn_hq_active_sealed_operational_area
 	remove_unit_leader_trait = cbrn_hq_active_antidote_response
@@ -490,6 +491,23 @@ cbrn_hq_set_decon_activation_package = {
 		set_temp_variable = { cbrn_hq_support_debit = constant:cbrn_hq_decon_cost.mass_support }
 		set_temp_variable = { cbrn_hq_fuel_debit = constant:cbrn_hq_decon_cost.mass_fuel }
 	}
+	if = {
+		limit = { OWNER = { cbrn_designer_has_truck_mounted_wash_systems = yes } }
+		multiply_temp_variable = { cbrn_hq_preparation_base = constant:cbrn_decontamination_designer_effect.truck_wash_setup_time_mult }
+		multiply_temp_variable = { cbrn_hq_preparation_min = constant:cbrn_decontamination_designer_effect.truck_wash_setup_time_mult }
+		multiply_temp_variable = { cbrn_hq_preparation_max = constant:cbrn_decontamination_designer_effect.truck_wash_setup_time_mult }
+		if = {
+			limit = { cbrn_hq_force_is_light = yes }
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.light_decon }
+		}
+		else_if = {
+			limit = { cbrn_hq_force_is_standard = yes }
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.standard_decon }
+		}
+		else = {
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.mass_decon }
+		}
+	}
 }
 
 cbrn_hq_set_decon_upkeep_package = {
@@ -516,6 +534,20 @@ cbrn_hq_set_decon_upkeep_package = {
 		set_temp_variable = { cbrn_hq_mask_debit = constant:cbrn_hq_decon_cost.weekly_mass_masks }
 		set_temp_variable = { cbrn_hq_support_debit = constant:cbrn_hq_decon_cost.weekly_mass_support }
 		set_temp_variable = { cbrn_hq_fuel_debit = constant:cbrn_hq_decon_cost.weekly_mass_fuel }
+	}
+	if = {
+		limit = { OWNER = { cbrn_designer_has_truck_mounted_wash_systems = yes } }
+		if = {
+			limit = { cbrn_hq_committed_force_is_light = yes }
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.weekly_light_decon }
+		}
+		else_if = {
+			limit = { cbrn_hq_committed_force_is_standard = yes }
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.weekly_standard_decon }
+		}
+		else = {
+			set_temp_variable = { cbrn_hq_decon_debit = constant:cbrn_hq_decon_designer_cost.weekly_mass_decon }
+		}
 	}
 }
 
@@ -746,17 +778,42 @@ cbrn_hq_set_overmatch_upkeep_package = {
 	}
 }
 
+cbrn_hq_add_preparing_trait_for_current_duration = {
+	meta_effect = {
+		text = {
+			add_timed_unit_leader_trait = {
+				trait = cbrn_hq_preparing_operation
+				days = [CBRN_HQ_PREPARATION_DAYS]
+			}
+		}
+		CBRN_HQ_PREPARATION_DAYS = "[?cbrn_hq_preparation_days|.0]"
+	}
+}
+
+cbrn_hq_schedule_current_event = {
+	meta_effect = {
+		text = {
+			unit_leader_event = {
+				id = cbrn_hq.[CBRN_HQ_EVENT_ID]
+				days = [CBRN_HQ_EVENT_DAYS]
+			}
+		}
+		CBRN_HQ_EVENT_ID = "[?cbrn_hq_scheduled_event_id|.0]"
+		CBRN_HQ_EVENT_DAYS = "[?cbrn_hq_scheduled_event_days|.0]"
+	}
+}
+
 cbrn_hq_commit_preparation = {
 	cbrn_hq_set_committed_force_band = yes
 	cbrn_hq_debit_command_power_remainder = yes
 	set_temp_variable = { cbrn_hq_recovery_days = cbrn_hq_preparation_days }
 	add_to_temp_variable = { cbrn_hq_recovery_days = cbrn_hq_active_duration }
 	cbrn_hq_debit_operating_package = yes
-	add_timed_unit_leader_trait = {
-		trait = cbrn_hq_preparing_operation
-		days = cbrn_hq_preparation_days
-	}
-	unit_leader_event = { id = cbrn_hq.3 days = cbrn_hq_recovery_days }
+	cbrn_achievement_record_hq_commitment = yes
+	cbrn_hq_add_preparing_trait_for_current_duration = yes
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.recovery_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_recovery_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_prepare_chemical_offensive = {
@@ -768,7 +825,9 @@ cbrn_hq_start_prepare_chemical_offensive = {
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_apply_offensive_doctrine_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_theater_protective_posture = {
@@ -777,7 +836,9 @@ cbrn_hq_start_theater_protective_posture = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_decontamination_corridor = {
@@ -786,7 +847,9 @@ cbrn_hq_start_decontamination_corridor = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_seal_operational_area = {
@@ -795,7 +858,9 @@ cbrn_hq_start_seal_operational_area = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_mass_antidote_response = {
@@ -804,7 +869,9 @@ cbrn_hq_start_mass_antidote_response = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_seal_infection_corridor = {
@@ -813,7 +880,9 @@ cbrn_hq_start_seal_infection_corridor = {
 	cbrn_hq_calculate_preparation_days = yes
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_start_combined_overmatch = {
@@ -825,7 +894,9 @@ cbrn_hq_start_combined_overmatch = {
 	cbrn_hq_apply_operations_commander_preparation_discount = yes
 	cbrn_hq_apply_offensive_doctrine_preparation_discount = yes
 	cbrn_hq_commit_preparation = yes
-	unit_leader_event = { id = cbrn_hq.1 days = cbrn_hq_preparation_days }
+	set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.preparation_complete }
+	set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_preparation_days }
+	cbrn_hq_schedule_current_event = yes
 }
 
 cbrn_hq_debit_prepare_upkeep = {
@@ -873,7 +944,9 @@ cbrn_hq_schedule_next_upkeep_tick = {
 			}
 		}
 		set_temp_variable = { cbrn_hq_next_upkeep_days = constant:cbrn_hq_force.weekly_tick_days }
-		unit_leader_event = { id = cbrn_hq.2 days = cbrn_hq_next_upkeep_days }
+		set_temp_variable = { cbrn_hq_scheduled_event_id = constant:cbrn_hq_event_id.upkeep_tick }
+		set_temp_variable = { cbrn_hq_scheduled_event_days = cbrn_hq_next_upkeep_days }
+		cbrn_hq_schedule_current_event = yes
 	}
 }
 

@@ -115,7 +115,7 @@ cbrn_begin_state_protection_project = {
 		max = constant:cbrn_scheduler.contamination_maximum_days
 	}
 	add_to_temp_variable = { cbrn_project_duration_local = constant:cbrn_math.one }
-	set_state_flag = { flag = cbrn_protection_project_active days = cbrn_project_duration_local }
+	set_state_flag = { flag = cbrn_protection_project_active days = var:cbrn_project_duration_local }
 }
 
 cbrn_end_state_protection_project = {
@@ -238,7 +238,7 @@ cbrn_complete_simplified_filter_program = {
 		amount = constant:cbrn_protection_decision_cost.simplify_filters_basic_crates
 	}
 	set_temp_variable = { cbrn_simplified_filter_duration = constant:cbrn_protection_decision_timing.simplified_filter_program_days }
-	set_country_flag = { flag = cbrn_simplified_filter_program_active days = cbrn_simplified_filter_duration }
+	set_country_flag = { flag = cbrn_simplified_filter_program_active days = var:cbrn_simplified_filter_duration }
 	set_country_flag = cbrn_program_established
 	cbrn_refresh_country_mask_snapshot = yes
 	cbrn_start_protection_maintenance_job = yes
@@ -249,7 +249,7 @@ cbrn_export_masks_to_protection_partner = {
 	if = {
 		limit = {
 			has_event_target = cbrn_protection_trade_partner
-			event_target:cbrn_protection_trade_partner = { cbrn_target_is_valid_allied_protection_partner = yes }
+			event_target:cbrn_protection_trade_partner = { cbrn_target_can_receive_exported_masks = yes }
 		}
 		send_equipment = {
 			target = event_target:cbrn_protection_trade_partner
@@ -287,7 +287,7 @@ cbrn_import_masks_from_protection_partner = {
 			set_temp_variable = { cbrn_allied_request_signal_days = constant:cbrn_protection_decision_timing.allied_request_signal_days }
 			set_country_flag = {
 				flag = cbrn_allied_protection_request_received
-				days = cbrn_allied_request_signal_days
+				days = var:cbrn_allied_request_signal_days
 			}
 			send_equipment = {
 				target = ROOT
@@ -389,7 +389,7 @@ cbrn_register_exact_state_chemical_raid_alert = {
 		remove_dynamic_modifier = cbrn_civilian_shelter_disruption
 		remove_dynamic_modifier = cbrn_hospitals_utilities_protected
 		remove_dynamic_modifier = cbrn_industry_kept_operating
-		set_state_flag = { flag = cbrn_chemical_raid_alert_active days = cbrn_alert_duration_local }
+		set_state_flag = { flag = cbrn_chemical_raid_alert_active days = var:cbrn_alert_duration_local }
 	}
 }
 
@@ -409,7 +409,7 @@ cbrn_apply_hospital_utility_protection = {
 			check_variable = { var = cbrn_support_equipment_debit_completed value = cbrn_response_hospital_support_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-		set_state_flag = { flag = cbrn_hospitals_utilities_secured days = cbrn_response_duration_local }
+		set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
 		add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
 	}
 }
@@ -426,20 +426,20 @@ cbrn_apply_civilian_shelter_movement = {
 			check_variable = { var = cbrn_train_equipment_debit_completed value = cbrn_response_shelter_train_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-		set_state_flag = { flag = cbrn_civilians_moved_to_shelters days = cbrn_response_duration_local }
+		set_state_flag = { flag = cbrn_civilians_moved_to_shelters days = var:cbrn_response_duration_local }
 		add_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption days = cbrn_response_duration_local }
 	}
 }
 
 cbrn_apply_chemical_alarm = {
 	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-	set_state_flag = { flag = cbrn_chemical_alarm_sounded days = cbrn_response_duration_local }
+	set_state_flag = { flag = cbrn_chemical_alarm_sounded days = var:cbrn_response_duration_local }
 	add_dynamic_modifier = { modifier = cbrn_chemical_alarm_disruption days = cbrn_response_duration_local }
 	cbrn_refresh_state_civilian_mask_snapshot = yes
 }
 
 cbrn_apply_industrial_continuity_order = {
 	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-	set_state_flag = { flag = cbrn_industry_ordered_to_continue days = cbrn_response_duration_local }
+	set_state_flag = { flag = cbrn_industry_ordered_to_continue days = var:cbrn_response_duration_local }
 	add_dynamic_modifier = { modifier = cbrn_industry_kept_operating days = cbrn_response_duration_local }
 }

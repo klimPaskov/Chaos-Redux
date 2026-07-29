@@ -1,0 +1,198 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ACHIEVEMENT CONTRACTS
+# ============================================================================
+# Completion predicates for the supported Chaos Warfare achievements.
+# Historical facts are written by narrow CBRN transactions; live predicates
+# remain here so current contamination, sanctions, stability, and stockpile
+# state cannot be replaced by a stale flag.
+# ============================================================================
+
+cbrn_achievement_human_campaign_is_eligible = {
+	is_ai = no
+	has_capitulated = no
+	has_country_flag = cbrn_achievement_start_country_eligible
+}
+
+cbrn_achievement_masks_before_guns_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	NOT = { has_country_flag = cbrn_achievement_enemy_confirmed_chemical_use }
+	has_country_flag = cbrn_achievement_all_core_coverage_prepared
+	has_country_flag = cbrn_achievement_mask_reserve_ready_history
+}
+
+cbrn_achievement_prepared_army_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_prepared_chemical_offensive_history
+	has_country_flag = cbrn_achievement_chemical_attack_repelled_history
+	has_country_flag = cbrn_achievement_high_military_protection_history
+	has_variable = cbrn_achievement_hq_commitment_count
+	check_variable = {
+		var = cbrn_achievement_hq_commitment_count
+		value = constant:cbrn_achievement_threshold.prepared_hq_count
+		compare = greater_than_or_equals
+	}
+	has_variable = cbrn_achievement_chemical_military_death_fraction
+	check_variable = {
+		var = cbrn_achievement_chemical_military_death_fraction
+		value = constant:cbrn_achievement_threshold.low_military_loss_fraction
+		compare = less_than
+	}
+}
+
+cbrn_achievement_poisoned_victory_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_major_war_victory_receipt
+	has_country_flag = cbrn_achievement_chemical_operation_history
+	has_variable = cbrn_achievement_operation_type_count
+	check_variable = {
+		var = cbrn_achievement_operation_type_count
+		value = constant:cbrn_achievement_threshold.operation_type_count
+		compare = greater_than_or_equals
+	}
+	has_country_flag = cbrn_achievement_high_condemnation_history
+	has_variable = condemnation_tier
+	check_variable = {
+		var = condemnation_tier
+		value = constant:cbrn_achievement_threshold.minimum_active_condemnation
+		compare = greater_than_or_equals
+	}
+	OR = {
+		has_country_flag = cbrn_achievement_active_sanctions_history
+		has_country_flag = cbrn_achievement_serious_chemical_contamination_history
+		has_country_flag = cbrn_achievement_bio_catastrophic_history
+	}
+}
+
+cbrn_achievement_clean_hands_dirty_work_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_covert_operation_history
+	has_variable = cbrn_achievement_covert_operation_count
+	check_variable = {
+		var = cbrn_achievement_covert_operation_count
+		value = constant:cbrn_achievement_threshold.covert_operation_count
+		compare = greater_than_or_equals
+	}
+	has_variable = cbrn_achievement_first_covert_operation_day
+	set_temp_variable = { cbrn_achievement_elapsed_days = global.num_days }
+	subtract_from_temp_variable = { cbrn_achievement_elapsed_days = cbrn_achievement_first_covert_operation_day }
+	check_variable = {
+		var = cbrn_achievement_elapsed_days
+		value = constant:cbrn_achievement_threshold.covert_duration_days
+		compare = greater_than_or_equals
+	}
+	has_country_flag = cbrn_achievement_covert_strategic_result_history
+	NOT = { has_country_flag = cbrn_achievement_covert_discovered_history }
+	NOT = { has_country_flag = cbrn_achievement_covert_coverup_history }
+	NOT = { has_country_flag = cbrn_achievement_strategic_civilian_attack_history }
+	NOT = { has_country_flag = cbrn_achievement_doomsday_use_history }
+}
+
+cbrn_achievement_evidence_survives_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_facility_evidence_preserved_history
+	has_country_flag = cbrn_achievement_facility_responsibility_confirmed_history
+	OR = {
+		has_country_flag = cbrn_achievement_inspection_accepted_history
+		has_country_flag = cbrn_achievement_inspection_credible_history
+		has_country_flag = cbrn_achievement_high_condemnation_history
+	}
+}
+
+cbrn_achievement_quarantine_without_collapse_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_catastrophic_outbreak_contained
+	has_country_flag = cbrn_achievement_outbreak_supply_ready_history
+	NOT = { has_country_flag = cbrn_achievement_foreign_bio_spread_history }
+	NOT = { any_owned_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+	has_variable = stability
+	check_variable = {
+		var = stability
+		value = constant:cbrn_achievement_threshold.minimum_stability
+		compare = greater_than_or_equals
+	}
+	has_variable = cbrn_medical_capacity
+	check_variable = {
+		var = cbrn_medical_capacity
+		value = constant:cbrn_achievement_threshold.minimum_medical_capacity
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_achievement_arsenal_dismantled_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_inspection_accepted_history
+	has_country_flag = cbrn_achievement_inspection_credible_history
+	has_country_flag = cbrn_achievement_offensive_stockpile_destroyed_history
+	has_variable = cbrn_achievement_condemnation_peak_tier
+	check_variable = {
+		var = cbrn_achievement_condemnation_peak_tier
+		value = constant:cbrn_achievement_threshold.minimum_condemnation_peak
+		compare = greater_than_or_equals
+	}
+	has_variable = condemnation_tier
+	check_variable = {
+		var = condemnation_tier
+		value = constant:condemnation_tier.formal_censure
+		compare = less_than
+	}
+	NOT = { has_country_flag = cbrn_achievement_regime_change_history }
+	NOT = { has_country_flag = cbrn_achievement_defeat_history }
+	NOT = { condemnation_has_chemical_stockpile = yes }
+	NOT = { condemnation_has_biological_stockpile = yes }
+}
+
+cbrn_achievement_terminal_contagion_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_idea = cbrn_terminal_hazard_doctrine_spirit
+	has_tech = chaos_battalion_1942
+	has_country_flag = cbrn_achievement_capstone_used
+	has_country_flag = cbrn_achievement_terminal_capstone_formation_receipt
+	has_country_flag = cbrn_achievement_capstone_contamination_history
+	has_variable = cbrn_achievement_capstone_start_day
+	set_temp_variable = { cbrn_achievement_elapsed_days = global.num_days }
+	subtract_from_temp_variable = { cbrn_achievement_elapsed_days = cbrn_achievement_capstone_start_day }
+	check_variable = {
+		var = cbrn_achievement_elapsed_days
+		value = constant:cbrn_achievement_threshold.terminal_survival_days
+		compare = greater_than_or_equals
+	}
+	has_war = yes
+	has_country_flag = cbrn_achievement_active_sanctions_history
+	OR = {
+		has_country_flag = cbrn_achievement_serious_chemical_contamination_history
+		has_country_flag = cbrn_achievement_bio_catastrophic_history
+	}
+}
+
+cbrn_achievement_mask_for_every_door_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_starting_civil_defence_profile
+	has_country_flag = cbrn_achievement_near_total_civilian_coverage_history
+	has_country_flag = cbrn_achievement_mask_reserve_ready_history
+	has_variable = cbrn_achievement_aid_recipient_count
+	check_variable = {
+		var = cbrn_achievement_aid_recipient_count
+		value = constant:cbrn_achievement_threshold.aid_recipient_count
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = cbrn_achievement_enemy_confirmed_chemical_use }
+}
+
+cbrn_achievement_weapon_turns_home_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_major_domestic_accident_history
+	has_country_flag = cbrn_achievement_domestic_accident_contained
+	has_country_flag = cbrn_achievement_safety_reformed_history
+	has_country_flag = cbrn_achievement_program_dismantled_history
+	NOT = { has_country_flag = cbrn_achievement_doomsday_use_history }
+}
+
+cbrn_achievement_first_user_pays_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_policy_history_retaliation_authority
+	has_country_flag = cbrn_achievement_defeated_first_user_receipt
+	has_country_flag = cbrn_achievement_major_war_victory_receipt
+	NOT = { has_country_flag = cbrn_achievement_offensive_first_use_history }
+	NOT = { has_country_flag = cbrn_achievement_strategic_civilian_attack_history }
+	NOT = { has_country_flag = cbrn_achievement_doomsday_use_history }
+}

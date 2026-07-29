@@ -248,6 +248,8 @@ cbrn_action_delivery_route_is_recognized = {
 		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
 		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
 		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.continuous_air_mission compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.restricted_chemical_site compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals }
 	}
 }
 
@@ -317,6 +319,14 @@ cbrn_action_agent_is_eligible_for_route = {
 			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
 			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
 		}
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.restricted_chemical_site compare = equals }
+			cbrn_action_agent_class_is_chemical = yes
+		}
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals }
+			cbrn_action_agent_class_is_chemical = yes
+		}
 	}
 }
 
@@ -361,6 +371,11 @@ cbrn_action_protection_is_resolved = {
 	has_variable = cbrn_action_civilian_casualty_mult
 	has_variable = cbrn_action_civilian_disruption_mult
 	has_variable = cbrn_action_civilian_contamination_mult
+}
+
+cbrn_action_release_is_resolved = {
+	has_variable = cbrn_action_release_efficiency_mult
+	check_variable = { cbrn_action_release_efficiency_mult > constant:cbrn_math.zero }
 }
 
 cbrn_action_conditions_are_resolved = {
@@ -408,5 +423,5 @@ cbrn_chemical_action_metadata_is_valid = {
 	cbrn_chemical_action_static_metadata_is_valid = yes
 	cbrn_action_payload_debit_is_valid = yes
 	cbrn_action_protection_is_resolved = yes
-	cbrn_action_conditions_are_resolved = yes
+	cbrn_action_release_is_resolved = yes
 }

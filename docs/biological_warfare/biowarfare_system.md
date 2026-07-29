@@ -24,7 +24,11 @@ Bioweapons are unlocked through special project progression.
 
 Each completed project opens practical deployment options for that agent family and increases your strategic leverage, but also raises risk.
 
-The most severe agents also ask you to make protective choices during development.
+Overall weapon strength follows `Tularemia < Anthrax < Plague < Smallpox`.
+
+Tularemia is low severity, Anthrax is moderate, Plague is serious, and only Smallpox belongs to the severe weapon tier.
+
+Agent identity changes the harm that follows a release, not the native chance that a raid reaches its target.
 
 That means:
 
@@ -35,19 +39,25 @@ That means:
 ## Delivery
 
 Deliberate battlefield and strategic deployment uses dedicated native raids.
-Operative release uses the intelligence-operation route, while food, water, and
-medical sabotage uses its separate covert route. No biological delivery is a
-generic decision click.
+
+Operative release uses the intelligence-operation route, while food, water, and medical sabotage uses its separate covert route.
+
+The historical Japan-China campaign uses exact-state Anthrax and Plague decisions on its explicit route, and the exceptional doomsday release remains a decision.
+
+Those exceptions consume exact payload and enter the same ordinary lifecycle; they do not replace the native raid system for ordinary strategic or battlefield deployment.
 
 In practice:
 
 - native routes reserve or consume the exact matching payload,
 - the raid or operation supplies the exact target state and responsible actor,
 - the ordinary lifecycle creates incubation before an outbreak becomes active,
-- detection, deaths, medical pressure, evidence, attribution, contamination,
-  spread, and Condemnation continue after the initial release.
+- detection, deaths, medical pressure, evidence, attribution, contamination, spread, and Condemnation continue after the initial release.
 
-Strike success and resulting damage vary by conditions and preparedness.
+All four ordinary agents use the same native strategic-raid success, critical, and disaster factors and the same native battlefield-raid success factor.
+
+Aircraft, air defense, intelligence, assignment, headquarters preparation, and other verified operational conditions can change delivery reliability.
+
+The selected agent changes post-release potency, incubation, detection, persistence, spread, treatment, deaths, and medical pressure.
 
 ## Contamination Effects
 
@@ -82,7 +92,7 @@ Available responses include:
 
 - emergency containment decisions,
 - medical production programs,
-- vaccination-style long-cycle mitigation for severe agents.
+- vaccination-scale mitigation for Smallpox and agent-specific treatment or containment for the other ordinary agents.
 
 A strong response can slow spread, reduce damage, and eventually clear contamination.
 
@@ -122,13 +132,13 @@ Repeated use drives increasing international backlash and can reshape your strat
 
 ## AI Behavior
 
-AI can pursue biowarfare and can also react defensively.
+AI chooses research, production, stockpile safety, countermeasures, and delivery according to country program, doctrine route, war state, retaliation status, medical readiness, likely friendly spread, sanction exposure, and target evidence.
 
-Expect:
+Ordinary profiles avoid biological first use.
 
-- escalation in high-pressure wars,
-- stronger response patterns as threat grows,
-- a real arms-race dynamic if biowarfare is widely used.
+Retaliatory, historical Japan-China, high-chaos, radical, and near-defeat routes can become more aggressive only after their explicit gates are satisfied.
+
+Agent-specific route preferences may differ because their strategic effects differ, but AI preference never changes the equal native raid-success factors.
 
 ## Player Strategy Notes
 
@@ -136,8 +146,12 @@ Expect:
 - Raid success is only part of the story; post-strike pressure and spread management matter more.
 - Overuse can win short wars but lose long diplomatic positioning.
 
-## Future Plans
+## Implementation surfaces and remaining validation
 
-1. Complete exact captured-facility recovery and release handling.
-2. Complete the doomsday native raid and the remaining treatment package.
-3. Wire biological designer risk traits and finish package scenario validation.
+Strategic and battlefield raids, operative release, food-water-medical sabotage, the Japan-China campaign decisions, field testing, stockpile accidents, captured-facility recovery raids, doomsday release, agent-specific incubation and treatment, evidence, attribution, deaths, contamination, spread, and designer integration all enter the ordinary biological lifecycle.
+
+Captured facilities are secured or destroyed through native land raids and never through a deployment decision.
+
+The doomsday route remains the explicitly authorized decision exception.
+
+Package scenario validation, balance recording, and the mapped specialist completion audits remain part of the wider CBRN completion stages and are not claimed by this guide.

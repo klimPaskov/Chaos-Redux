@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION DELAYED STATE EVENTS
+# ============================================================================
+# Overview:
+# - Resolves resistance backlash and slow trauma decay only for the exact state
+#   that scheduled the event after an accepted nerve-suppression action.
+# - Due-day checks prevent an older delayed event from resolving a newer
+#   operation record. No daily, weekly, monthly, or all-country pulse is used.
+# ============================================================================
+
+add_namespace = cbrn_occupation
+
+state_event = {
+	id = cbrn_occupation.1
+	hidden = yes
+
+	trigger = {
+		cbrn_occupation_state_delayed_backlash_is_due = yes
+	}
+
+	immediate = {
+		cbrn_occupation_apply_delayed_backlash = yes
+	}
+}
+
+state_event = {
+	id = cbrn_occupation.2
+	hidden = yes
+
+	trigger = {
+		cbrn_occupation_state_can_decay_trauma = yes
+	}
+
+	immediate = {
+		cbrn_occupation_decay_state_trauma = yes
+	}
+}

@@ -99,6 +99,7 @@ cbrn_hq_has_no_preparation_or_active_posture = {
 			has_trait = cbrn_hq_preparing_operation
 			has_trait = cbrn_hq_active_chemical_offensive
 			has_trait = cbrn_hq_active_protective_posture
+			has_trait = cbrn_hq_active_low_resistance_protective_posture
 			has_trait = cbrn_hq_active_decontamination_corridor
 			has_trait = cbrn_hq_active_sealed_operational_area
 			has_trait = cbrn_hq_active_antidote_response
@@ -485,39 +486,129 @@ cbrn_hq_can_pay_protective_upkeep = {
 	}
 }
 
+cbrn_hq_country_can_pay_decon_light_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.light_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.light_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.light_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.light_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.light_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.light_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_standard_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.standard_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.standard_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.standard_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.standard_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.standard_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.standard_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_mass_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.mass_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.mass_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.mass_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.mass_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.mass_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.mass_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_light_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_light_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_light_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_light_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_light_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_light_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_light_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_standard_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_standard_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_standard_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_standard_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_standard_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_standard_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_standard_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_mass_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_mass_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_mass_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_mass_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_mass_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_mass_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_mass_fuel }
+}
+
 cbrn_hq_can_pay_decon_activation = {
 	OR = {
 		AND = {
 			cbrn_hq_force_is_light = yes
 			OWNER = {
 				NOT = { command_power < constant:cbrn_hq_command_power.decon_light }
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.light_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.light_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.light_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.light_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.light_fuel }
+				cbrn_hq_country_can_pay_decon_light_activation = yes
 			}
 		}
 		AND = {
 			cbrn_hq_force_is_standard = yes
 			OWNER = {
 				NOT = { command_power < constant:cbrn_hq_command_power.decon_standard }
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.standard_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.standard_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.standard_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.standard_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.standard_fuel }
+				cbrn_hq_country_can_pay_decon_standard_activation = yes
 			}
 		}
 		AND = {
 			cbrn_hq_force_is_mass = yes
 			OWNER = {
 				NOT = { command_power < constant:cbrn_hq_command_power.decon_mass }
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.mass_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.mass_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.mass_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.mass_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.mass_fuel }
+				cbrn_hq_country_can_pay_decon_mass_activation = yes
 			}
 		}
 	}
@@ -527,33 +618,15 @@ cbrn_hq_can_pay_decon_upkeep = {
 	OR = {
 		AND = {
 			cbrn_hq_committed_force_is_light = yes
-			OWNER = {
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_light_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_light_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_light_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_light_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_light_fuel }
-			}
+			OWNER = { cbrn_hq_country_can_pay_decon_light_upkeep = yes }
 		}
 		AND = {
 			cbrn_hq_committed_force_is_standard = yes
-			OWNER = {
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_standard_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_standard_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_standard_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_standard_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_standard_fuel }
-			}
+			OWNER = { cbrn_hq_country_can_pay_decon_standard_upkeep = yes }
 		}
 		AND = {
 			cbrn_hq_committed_force_is_mass = yes
-			OWNER = {
-				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_mass_decon } }
-				NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_mass_trucks } }
-				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_mass_masks } }
-				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_mass_support } }
-				NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_mass_fuel }
-			}
+			OWNER = { cbrn_hq_country_can_pay_decon_mass_upkeep = yes }
 		}
 	}
 }

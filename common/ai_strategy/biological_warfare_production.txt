@@ -1,0 +1,242 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL PAYLOAD PRODUCTION AI
+# ============================================================================
+# Overview:
+# - Produces only completed-project payload models and never grants free stock.
+# - Uses exact-model surplus management, which vanilla evaluates only after
+#   ordinary equipment needs are met.
+# - Selects one strongest route-appropriate generic payload family. Japan's
+#   exact China campaign maintains only its accepted Anthrax and Plague stores.
+# - Controlled or Strained risk permits normal production. Dangerous or Critical
+#   stops it unless the explicit desperate-release route is active.
+# - Agent identity changes arsenal preference and consequences, not native
+#   biological-raid success probability.
+# - `ai_strategy.value` and stock thresholds use file-local constants because
+#   this context does not parse shared script-constant values.
+# ============================================================================
+
+@BIO_PAYLOAD_SURPLUS_BATTLEFIELD = 1
+@BIO_PAYLOAD_SURPLUS_RETALIATORY = 1
+@BIO_PAYLOAD_SURPLUS_STRATEGIC = 3
+@BIO_PAYLOAD_SURPLUS_SEVERE = 2
+@BIO_PAYLOAD_SURPLUS_JAPAN_ANTHRAX = 1
+@BIO_PAYLOAD_SURPLUS_JAPAN_PLAGUE = 2
+@BIO_PAYLOAD_SURPLUS_DESPERATE = 5
+
+@BIO_PAYLOAD_TARGET_BATTLEFIELD = 120
+@BIO_PAYLOAD_TARGET_RETALIATORY = 160
+@BIO_PAYLOAD_TARGET_STRATEGIC = 300
+@BIO_PAYLOAD_TARGET_SEVERE = 180
+@BIO_PAYLOAD_TARGET_JAPAN_ANTHRAX = 220
+@BIO_PAYLOAD_TARGET_JAPAN_PLAGUE = 300
+@BIO_PAYLOAD_TARGET_DESPERATE = 400
+
+# A non-Japanese battlefield program keeps Tularemia only while no stronger
+# completed family matches its current route.
+cbrn_bio_tularemia_payload_safe = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		has_tech = tularemia_bomb_delivery_systems
+		NOT = { has_tech = anthrax_bomb_delivery_systems }
+		NOT = { has_tech = plague_bomb_delivery_systems }
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_retaliatory_arsenal_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+		}
+		has_equipment = { tularemia_bomb_1 < @BIO_PAYLOAD_TARGET_BATTLEFIELD }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = tularemia_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
+}
+
+# Retaliatory and early strategic programs keep Anthrax until they complete a
+# stronger strategic family.
+cbrn_bio_anthrax_payload_safe = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		has_tech = anthrax_bomb_delivery_systems
+		NOT = { has_tech = plague_bomb_delivery_systems }
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		OR = {
+			cbrn_ai_has_retaliatory_arsenal_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+		}
+		has_equipment = { anthrax_bomb_1 < @BIO_PAYLOAD_TARGET_RETALIATORY }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = anthrax_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_RETALIATORY
+	}
+}
+
+# Plague is the serious strategic family. Smallpox supersedes it only after the
+# severe project and its stricter route have both been accepted.
+cbrn_bio_plague_payload_safe = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		has_tech = plague_bomb_delivery_systems
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		cbrn_ai_has_strategic_program_posture = yes
+		has_equipment = { plague_bomb_1 < @BIO_PAYLOAD_TARGET_STRATEGIC }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = plague_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_STRATEGIC
+	}
+}
+
+# Smallpox is the sole severe ordinary agent and remains restricted to an
+# unrestricted, fail-safe strategic program outside the desperate branch.
+cbrn_bio_smallpox_payload_safe = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		has_tech = smallpox_bomb_delivery_systems
+		has_tech = fail_safe_containment_facilities
+		cbrn_ai_route_allows_unrestricted_use = yes
+		cbrn_ai_has_strategic_program_posture = yes
+		has_equipment = { smallpox_bomb_1 < @BIO_PAYLOAD_TARGET_SEVERE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = smallpox_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_SEVERE
+	}
+}
+
+# Japan's exact China campaign uses both historically mapped agent families
+# because separate Anthrax and Plague campaign actions consume them.
+cbrn_bio_japan_china_anthrax_payload = {
+	allowed = { original_tag = JAP }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		cbrn_ai_has_japan_china_biological_campaign_posture = yes
+		has_tech = anthrax_bomb_delivery_systems
+		has_equipment = { anthrax_bomb_1 < @BIO_PAYLOAD_TARGET_JAPAN_ANTHRAX }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = anthrax_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_JAPAN_ANTHRAX
+	}
+}
+
+cbrn_bio_japan_china_plague_payload = {
+	allowed = { original_tag = JAP }
+	enable = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+		cbrn_ai_has_japan_china_biological_campaign_posture = yes
+		has_tech = plague_bomb_delivery_systems
+		has_equipment = { plague_bomb_1 < @BIO_PAYLOAD_TARGET_JAPAN_PLAGUE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = plague_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_JAPAN_PLAGUE
+	}
+}
+
+# The desperate route may continue production in a Dangerous or Critical exact
+# risk context. It chooses the strongest completed family and never treats a
+# missing arsenal snapshot as permission.
+cbrn_bio_smallpox_payload_desperate = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_desperate_biological_production = yes
+		has_tech = smallpox_bomb_delivery_systems
+		has_equipment = { smallpox_bomb_1 < @BIO_PAYLOAD_TARGET_DESPERATE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = smallpox_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_DESPERATE
+	}
+}
+
+cbrn_bio_plague_payload_desperate = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_desperate_biological_production = yes
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		has_tech = plague_bomb_delivery_systems
+		has_equipment = { plague_bomb_1 < @BIO_PAYLOAD_TARGET_DESPERATE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = plague_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_DESPERATE
+	}
+}
+
+cbrn_bio_anthrax_payload_desperate = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_desperate_biological_production = yes
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		NOT = { has_tech = plague_bomb_delivery_systems }
+		has_tech = anthrax_bomb_delivery_systems
+		has_equipment = { anthrax_bomb_1 < @BIO_PAYLOAD_TARGET_DESPERATE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = anthrax_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_DESPERATE
+	}
+}
+
+cbrn_bio_tularemia_payload_desperate = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_desperate_biological_production = yes
+		NOT = { has_tech = smallpox_bomb_delivery_systems }
+		NOT = { has_tech = plague_bomb_delivery_systems }
+		NOT = { has_tech = anthrax_bomb_delivery_systems }
+		has_tech = tularemia_bomb_delivery_systems
+		has_equipment = { tularemia_bomb_1 < @BIO_PAYLOAD_TARGET_DESPERATE }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = tularemia_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_DESPERATE
+	}
+}

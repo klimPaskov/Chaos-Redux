@@ -1,0 +1,837 @@
+# CHAOS REDUX - SELECTED-STATE CHEMICAL AIR RAIDS
+# ============================================================================
+# Overview:
+# - Reuses the established chemical raid identifiers for Sarin, Soman,
+#   Malodor, and the behavioral-agent project, and adds the earlier agents.
+# - Every native outcome calls one shared selected-state chemical adapter.
+#   The adapter reserves the exact class payload, resolves the native result,
+#   accounts for protection and the native condition receipt, and dispatches
+#   exposure or a no-release attempt exactly once.
+# - Native success factors are identical across ordinary chemical agents.
+#   Agent identity changes class, potency, persistence, protection burden, and
+#   post-release consequences after the delivery roll.
+# - Existing Chaos Redux military-raid icons are referenced without changing
+#   or replacing their files. New agent IDs use the registered Stage 6
+#   chemical-air operation icon.
+# - No ordinary air mission, idle aircraft, aircraft-presence scan, or
+#   continuous-air contamination path is present here.
+# ============================================================================
+
+@CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE = 0.35
+@CBRN_CHEM_AIR_SUCCESS_BASE = 0.50
+@CBRN_CHEM_AIR_CRITICAL_BASE = 0.12
+@CBRN_CHEM_AIR_DISASTER_BASE = 0.10
+@CBRN_CHEM_AIR_EXPERIENCE_REFERENCE = 1
+@CBRN_CHEM_AIR_AIR_STAT_REFERENCE = 100
+@CBRN_CHEM_AIR_RELIABILITY_REFERENCE = 1
+@CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE = 1
+@CBRN_CHEM_AIR_INTERCEPTION_REFERENCE = 10
+@CBRN_CHEM_AIR_INTEL_REFERENCE = 100
+@CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT = 0.10
+@CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START = -0.10
+@CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT = 0.05
+@CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START = -0.05
+@CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT = 0.10
+@CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START = -0.10
+@CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT = 0.10
+@CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START = -0.10
+@CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT = 0.25
+@CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START = -0.25
+@CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT = -0.25
+@CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT = -0.05
+@CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT = -0.05
+@CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT = 0.20
+@CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT = 0.08
+@CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT = 0.05
+@CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT = 0
+@CBRN_CHEM_AIR_DISASTER_RELIABILITY_START = 0.12
+@CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT = 0.10
+@CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT = 0.05
+@CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT = 0.05
+@CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM = 25
+@CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM = 10
+@CBRN_CHEM_AIR_FAILURE_PLANE_LOSS = 0.60
+@CBRN_CHEM_AIR_LIMITED_PLANE_LOSS = 0.35
+@CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS = 0.12
+@CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS = 0.08
+@CBRN_CHEM_AIR_FAILURE_XP = 0.05
+@CBRN_CHEM_AIR_LIMITED_XP = 0.15
+@CBRN_CHEM_AIR_SUCCESS_XP = 0.30
+@CBRN_CHEM_AIR_CRITICAL_XP = 0.45
+
+types = {
+	chemical_chlorine_strike = {
+		days_to_prepare = 14
+		days_re_enable = 60
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_chlorine_gas_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 12
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = chlorine_gas has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_chlorine_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_choking_payload = yes cbrn_chemical_air_raid_has_chlorine_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_choking_payload = yes cbrn_chemical_air_raid_has_chlorine_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { choking_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_chlorine_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_chlorine_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_chlorine_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_chlorine_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_chlorine_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_chlorine_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_chlorine_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_chlorine_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_phosgene_strike = {
+		days_to_prepare = 16
+		days_re_enable = 65
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_phosgene_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 14
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = phosgene has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_phosgene_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_choking_payload = yes cbrn_chemical_air_raid_has_phosgene_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_choking_payload = yes cbrn_chemical_air_raid_has_phosgene_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { choking_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_phosgene_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_phosgene_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_phosgene_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_phosgene_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_phosgene_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_phosgene_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_phosgene_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_phosgene_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_mustard_strike = {
+		days_to_prepare = 18
+		days_re_enable = 75
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_mustard_gas_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 16
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = mustard_gas has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_mustard_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_blister_payload = yes cbrn_chemical_air_raid_has_mustard_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_blister_payload = yes cbrn_chemical_air_raid_has_mustard_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { blister_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_mustard_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_mustard_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_mustard_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_mustard_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_mustard_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_mustard_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_mustard_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_mustard_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_lewisite_strike = {
+		days_to_prepare = 20
+		days_re_enable = 80
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_lewisite_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 18
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = lewisite has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_lewisite_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_blister_payload = yes cbrn_chemical_air_raid_has_lewisite_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_blister_payload = yes cbrn_chemical_air_raid_has_lewisite_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { blister_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_lewisite_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_lewisite_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_lewisite_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_lewisite_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_lewisite_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_lewisite_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_lewisite_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_lewisite_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_tabun_strike = {
+		days_to_prepare = 21
+		days_re_enable = 90
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_tabun_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 20
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = tabun has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_tabun_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_tabun_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_tabun_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { nerve_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_tabun_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_tabun_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_tabun_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_tabun_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_tabun_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_tabun_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_tabun_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_tabun_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_sarin_strike = {
+		days_to_prepare = 24
+		days_re_enable = 100
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_chemical_sarin_strike
+		equipment_icon = GFX_sarin_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 22
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = sarin has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_sarin_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_sarin_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_sarin_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { nerve_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_soman_strike = {
+		days_to_prepare = 30
+		days_re_enable = 120
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_chemical_soman_strike
+		equipment_icon = GFX_soman_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 25
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = soman has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_soman_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_soman_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_nerve_payload = yes cbrn_chemical_air_raid_has_soman_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { nerve_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_malodor_strike = {
+		days_to_prepare = 18
+		days_re_enable = 70
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_malodor_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 14
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { is_special_project_completed = sp:sp_cw_malodor_bomb_program has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_malodor_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_incapacitating_payload = yes cbrn_chemical_air_raid_has_malodor_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_incapacitating_payload = yes cbrn_chemical_air_raid_has_malodor_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { incapacitating_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_malodor_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_malodor_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_malodor_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_malodor_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_malodor_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_malodor_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_malodor_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_malodor_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_aphrodisiac_strike = {
+		days_to_prepare = 21
+		days_re_enable = 90
+		fire_only_once = no
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_cbrn_chemical_air_operation
+		equipment_icon = GFX_aphrodisiac_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_air
+		command_power = 16
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program has_tech = chemical_air_interdiction cbrn_chemical_air_raid_has_behavioral_rack = yes }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_incapacitating_payload = yes cbrn_chemical_air_raid_has_behavioral_rack = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_air_raid_has_incapacitating_payload = yes cbrn_chemical_air_raid_has_behavioral_rack = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { tactical_bomber } amount = { min = @CBRN_CHEM_AIR_TAC_BOMBER_MINIMUM } } }
+		unit_requirements = { equipment = { type = { strategic_bomber } amount = { min = @CBRN_CHEM_AIR_STRAT_BOMBER_MINIMUM } } }
+		essential_equipment = { incapacitating_chemical_air_payload = 120 }
+		starting_point = { types = { air_base } }
+		arrow = { type = air }
+		success_factors = {
+			success = {
+				base = @CBRN_CHEM_AIR_SUCCESS_BASE
+				experience = { weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_EXPERIENCE_START reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE }
+				air_defence = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_DEFENCE_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				air_agility = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_AGILITY_START reference = @CBRN_CHEM_AIR_AIR_STAT_REFERENCE }
+				reliability = { weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE }
+				air_superiority = { weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_WEIGHT start_weight = @CBRN_CHEM_AIR_SUCCESS_AIR_SUPERIORITY_START reference = @CBRN_CHEM_AIR_AIR_SUPERIORITY_REFERENCE }
+				interception = { weight = @CBRN_CHEM_AIR_SUCCESS_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE }
+				anti_air = { weight = @CBRN_CHEM_AIR_SUCCESS_ANTI_AIR_WEIGHT }
+				radar = { weight = @CBRN_CHEM_AIR_SUCCESS_RADAR_WEIGHT }
+				intel = { weight = @CBRN_CHEM_AIR_SUCCESS_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE experience = { weight = @CBRN_CHEM_AIR_CRITICAL_EXPERIENCE_WEIGHT reference = @CBRN_CHEM_AIR_EXPERIENCE_REFERENCE } intel = { weight = @CBRN_CHEM_AIR_CRITICAL_INTEL_WEIGHT reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE reliability = { weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_WEIGHT start_weight = @CBRN_CHEM_AIR_DISASTER_RELIABILITY_START reference = @CBRN_CHEM_AIR_RELIABILITY_REFERENCE } interception = { weight = @CBRN_CHEM_AIR_DISASTER_INTERCEPTION_WEIGHT reference = @CBRN_CHEM_AIR_INTERCEPTION_REFERENCE } anti_air = { weight = @CBRN_CHEM_AIR_DISASTER_ANTI_AIR_WEIGHT } radar = { weight = @CBRN_CHEM_AIR_DISASTER_RADAR_WEIGHT } }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_behavioral_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_FAILURE_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_behavioral_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_behavioral_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_LIMITED_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_behavioral_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_behavioral_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_SUCCESS_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_behavioral_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_behavioral_outcome = yes } raid_damage_units = { plane_loss = @CBRN_CHEM_AIR_CRITICAL_PLANE_LOSS ratio = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_behavioral_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_sarin_rocket_strike = {
+		days_to_prepare = 21
+		days_re_enable = 180
+		fire_only_once = no
+		speed_multiplier = 0.08
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_chemical_sarin_rocket_strike
+		equipment_icon = GFX_sarin_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_nuclear_missile
+		command_power = 18
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = sarin has_tech = chemical_air_interdiction }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_strategic_raid_has_nerve_payload = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_strategic_raid_has_nerve_payload = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { guided_missile_equipment } amount = { min = 1 } } }
+		unit_requirements = { equipment = { type = { ballistic_missile_equipment } amount = { min = 1 } } }
+		essential_equipment = { nerve_chemical_air_payload = 240 }
+		starting_point = { types = { rocket_site } }
+		arrow = { type = ballistic }
+		unit_model = { scale = 0.5 }
+		success_factors = {
+			success = { base = 0.80 intel = { weight = 0.20 reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_rocket_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_rocket_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_rocket_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_sarin_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_sarin_rocket_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+	chemical_soman_rocket_strike = {
+		days_to_prepare = 21
+		days_re_enable = 180
+		fire_only_once = no
+		speed_multiplier = 0.08
+		ai_min_success_chance = @CBRN_CHEM_AIR_AI_MIN_SUCCESS_CHANCE
+		category = chemical_raids
+		custom_map_icon = GFX_raid_type_icon_chemical_soman_rocket_strike
+		equipment_icon = GFX_soman_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_chemical_state
+		launch_sound = raid_launch_nuclear_missile
+		command_power = 22
+		ai_will_do = {
+			base = 1
+			modifier = { factor = 0 ROOT = { NOT = { cbrn_chemical_air_raid_ai_may_target_from = yes } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.retaliation_factor ROOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.aggressive_profile_factor ROOT = { cbrn_ai_has_strategic_program_posture = yes } }
+			modifier = { factor = constant:cbrn_chemical_delivery_ai.existential_factor ROOT = { cbrn_ai_has_desperate_release_posture = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.target_major_factor FROM = { is_major = yes } }
+			modifier = { factor = constant:bio_strategic_raid_ai.dense_target_factor var:target_state = { state_population_k > constant:bio_strategic_raid_ai.dense_target_population_k } }
+			modifier = { factor = constant:bio_strategic_raid_ai.supply_hub_factor var:target_state = { supply_node > 0 } }
+		}
+		visible = { has_tech = soman has_tech = chemical_air_interdiction }
+		show_target = { cbrn_chemical_air_raid_target_from_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_strategic_raid_has_nerve_payload = yes
+				}
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = raid_chemical_air_raid_preparation_requirements_tt
+				hidden_trigger = {
+					cbrn_chemical_air_raid_can_prepare_against_from = yes
+					cbrn_chemical_strategic_raid_has_nerve_payload = yes
+				}
+			}
+		}
+		target_type = { state = { cbrn_chemical_air_raid_state_is_valid = yes } }
+		unit_requirements = { equipment = { type = { guided_missile_equipment } amount = { min = 1 } } }
+		unit_requirements = { equipment = { type = { ballistic_missile_equipment } amount = { min = 1 } } }
+		essential_equipment = { nerve_chemical_air_payload = 240 }
+		starting_point = { types = { rocket_site } }
+		arrow = { type = ballistic }
+		unit_model = { scale = 0.5 }
+		success_factors = {
+			success = { base = 0.80 intel = { weight = 0.20 reference = @CBRN_CHEM_AIR_INTEL_REFERENCE } }
+			critical = { base = @CBRN_CHEM_AIR_CRITICAL_BASE }
+			disaster = { base = @CBRN_CHEM_AIR_DISASTER_BASE }
+		}
+		success_levels = {
+			failure = { actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_FAILURE_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_rocket_tt } } visual_effect = { entity = "raid_failed_entity" animation = "attack" } }
+			limited_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_LIMITED_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_rocket_tt } } visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" } }
+			success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_SUCCESS_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_rocket_tt } } visual_effect = { entity = "land_raids_success_entity" animation = "attack" } }
+			critical_success = { custom_sound = generic_bioweapon_aerosol actor_effects = { hidden_effect = { set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } cbrn_resolve_chemical_air_raid_soman_outcome = yes } raid_add_unit_experience = @CBRN_CHEM_AIR_CRITICAL_XP add_raid_history_entry = yes } victim_effects = { var:target_state = { custom_effect_tooltip = raid_chemical_air_soman_rocket_tt } } visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" } }
+		}
+	}
+}

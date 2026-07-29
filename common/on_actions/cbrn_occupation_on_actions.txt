@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION ON ACTIONS
+# ============================================================================
+# Overview:
+# - Ends occupier-specific nerve-suppression benefits immediately when control
+#   changes and advances the exact stored chemical record when an enemy or the
+#   lawful owner captures the state.
+# - Uses the native on_state_control_changed scopes: ROOT is the new
+#   controller, FROM is the former controller, and FROM.FROM is the state.
+# - This event-driven hook does not iterate countries or states periodically.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = {
+				clr_state_flag = cbrn_occupation_target_loss_risk_cleared
+				clr_state_flag = cbrn_occupation_nerve_suppression_preparation_active
+				if = {
+					limit = {
+						has_state_flag = cbrn_occupation_nerve_suppression_history
+						has_variable = cbrn_occupation_responsible_country
+						NOT = { is_controlled_by = var:cbrn_occupation_responsible_country }
+					}
+					cbrn_occupation_end_responsible_country_operational_modifiers = yes
+					clr_state_flag = cbrn_occupation_delayed_backlash_pending
+					clear_variable = cbrn_occupation_backlash_due_day
+					if = {
+						limit = {
+							NOT = { has_state_flag = cbrn_occupation_discovery_recorded }
+							OR = {
+								owner = { tag = ROOT }
+								var:cbrn_occupation_responsible_country = {
+									exists = yes
+									has_war_with = ROOT
+								}
+							}
+						}
+						cbrn_occupation_register_liberation_discovery = yes
+					}
+				}
+			}
+		}
+	}
+}

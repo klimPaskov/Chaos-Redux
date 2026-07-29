@@ -2,16 +2,46 @@
 # CHAOS REDUX - REPRESSION LEDGER SCRIPTED GUI
 # ============================================================================
 # Overview:
-# - Provides an optional, player-opened decision-category ledger for the camp
-#   repression system without adding any AI dependency or recurring popup.
+# - Provides a compact decision-category header and a player-context ledger
+#   popup for the camp repression system without adding any AI dependency or
+#   recurring popup.
 # - Reads bounded country arrays rebuilt by camp_rework_rebuild_display_values.
 # - Every operational button calls the same shared effects used by decisions;
 #   AI continues to act through decisions and country-kit monthly bridges.
 # ============================================================================
 
 scripted_gui = {
-	camp_repression_ledger_scripted_gui = {
+	camp_repression_ledger_category_scripted_gui = {
 		context_type = decision_category
+		window_name = "repression_ledger_category_window"
+
+		ai_enabled = { always = no }
+		visible = {
+			ROOT = {
+				is_ai = no
+				has_camp_category_visible_action = yes
+			}
+		}
+
+		effects = {
+			repression_ledger_category_open_button_click = {
+				ROOT = { camp_rework_open_ledger = yes }
+			}
+		}
+
+		triggers = {
+			repression_ledger_category_open_button_visible = {
+				ROOT = { NOT = { has_country_flag = camp_repression_ledger_open } }
+			}
+			repression_ledger_category_open_button_click_enabled = {
+				ROOT = { NOT = { has_country_flag = camp_repression_ledger_open } }
+			}
+		}
+	}
+
+	camp_repression_ledger_scripted_gui = {
+		context_type = player_context
+		parent_window_token = top_bar
 		window_name = "repression_ledger_window"
 
 		ai_enabled = { always = no }
@@ -113,6 +143,29 @@ scripted_gui = {
 		}
 
 		triggers = {
+			# Keep the close control inside the same visibility envelope as the
+			# scripted GUI.  Without an element-level guard the engine can retain
+			# its click region for one frame while the parent window is hidden.
+			camp_gui_close_window_visible = {
+				ROOT = {
+					is_ai = no
+					has_country_flag = camp_repression_ledger_open
+					OR = {
+						has_active_camp_network = yes
+						has_visible_camp_reform_work = yes
+						has_camp_country_specific_route = yes
+						has_country_flag = camp_rework_managed_network_visible
+					}
+				}
+			}
+			camp_gui_close_window_click_enabled = { ROOT = { always = yes } }
+
+			repression_ledger_tab_overview_mark_visible = { ROOT = { has_country_flag = camp_ledger_tab_overview } }
+			repression_ledger_tab_state_pools_mark_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools } }
+			repression_ledger_tab_sites_mark_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites } }
+			repression_ledger_tab_country_mark_visible = { ROOT = { has_country_flag = camp_ledger_tab_country } }
+			repression_ledger_tab_discovery_mark_visible = { ROOT = { has_country_flag = camp_ledger_tab_discovery } }
+
 			repression_ledger_overview_panel_visible = { ROOT = { has_country_flag = camp_ledger_tab_overview } }
 			repression_ledger_state_pools_panel_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools } }
 			repression_ledger_sites_panel_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites } }
@@ -155,10 +208,30 @@ scripted_gui = {
 					}
 				}
 			}
-			camp_gui_country_specific_primary_visible = { ROOT = { check_variable = { display_camp_country_action_1_id > 0 } } }
-			camp_gui_country_action_2_visible = { ROOT = { check_variable = { display_camp_country_action_2_id > 0 } } }
-			camp_gui_country_action_3_visible = { ROOT = { check_variable = { display_camp_country_action_3_id > 0 } } }
-			camp_gui_country_action_4_visible = { ROOT = { check_variable = { display_camp_country_action_4_id > 0 } } }
+			camp_gui_country_specific_primary_visible = {
+				ROOT = {
+					has_country_flag = camp_ledger_tab_country
+					check_variable = { display_camp_country_action_1_id > 0 }
+				}
+			}
+			camp_gui_country_action_2_visible = {
+				ROOT = {
+					has_country_flag = camp_ledger_tab_country
+					check_variable = { display_camp_country_action_2_id > 0 }
+				}
+			}
+			camp_gui_country_action_3_visible = {
+				ROOT = {
+					has_country_flag = camp_ledger_tab_country
+					check_variable = { display_camp_country_action_3_id > 0 }
+				}
+			}
+			camp_gui_country_action_4_visible = {
+				ROOT = {
+					has_country_flag = camp_ledger_tab_country
+					check_variable = { display_camp_country_action_4_id > 0 }
+				}
+			}
 			camp_gui_country_specific_primary_click_enabled = { ROOT = { has_country_flag = camp_gui_country_action_1_available } }
 			camp_gui_country_action_2_click_enabled = { ROOT = { has_country_flag = camp_gui_country_action_2_available } }
 			camp_gui_country_action_3_click_enabled = { ROOT = { has_country_flag = camp_gui_country_action_3_available } }
@@ -167,30 +240,30 @@ scripted_gui = {
 			camp_gui_start_labor_project_visible = { ROOT = { camp_rework_country_uses_generic_kit = yes } }
 			camp_gui_inspect_selected_site_visible = { ROOT = { camp_rework_country_uses_generic_kit = yes } }
 
-			camp_gui_select_pool_1_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 0 } } }
-			camp_gui_select_pool_2_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 1 } } }
-			camp_gui_select_pool_3_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 2 } } }
-			camp_gui_select_pool_4_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 3 } } }
-			camp_gui_select_pool_5_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 4 } } }
-			camp_gui_select_pool_6_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 5 } } }
-			repression_ledger_pool_1_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 0 } } }
-			repression_ledger_pool_2_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 1 } } }
-			repression_ledger_pool_3_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 2 } } }
-			repression_ledger_pool_4_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 3 } } }
-			repression_ledger_pool_5_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 4 } } }
-			repression_ledger_pool_6_text_visible = { ROOT = { check_variable = { camp_gui_pool_states^num > 5 } } }
-			camp_gui_select_site_1_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 0 } } }
-			camp_gui_select_site_2_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 1 } } }
-			camp_gui_select_site_3_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 2 } } }
-			camp_gui_select_site_4_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 3 } } }
-			camp_gui_select_site_5_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 4 } } }
-			camp_gui_select_site_6_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 5 } } }
-			repression_ledger_site_1_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 0 } } }
-			repression_ledger_site_2_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 1 } } }
-			repression_ledger_site_3_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 2 } } }
-			repression_ledger_site_4_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 3 } } }
-			repression_ledger_site_5_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 4 } } }
-			repression_ledger_site_6_text_visible = { ROOT = { check_variable = { camp_gui_active_site_states^num > 5 } } }
+			camp_gui_select_pool_1_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 0 } } }
+			camp_gui_select_pool_2_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 1 } } }
+			camp_gui_select_pool_3_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 2 } } }
+			camp_gui_select_pool_4_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 3 } } }
+			camp_gui_select_pool_5_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 4 } } }
+			camp_gui_select_pool_6_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 5 } } }
+			repression_ledger_pool_1_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 0 } } }
+			repression_ledger_pool_2_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 1 } } }
+			repression_ledger_pool_3_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 2 } } }
+			repression_ledger_pool_4_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 3 } } }
+			repression_ledger_pool_5_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 4 } } }
+			repression_ledger_pool_6_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 5 } } }
+			camp_gui_select_site_1_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 0 } } }
+			camp_gui_select_site_2_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 1 } } }
+			camp_gui_select_site_3_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 2 } } }
+			camp_gui_select_site_4_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 3 } } }
+			camp_gui_select_site_5_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 4 } } }
+			camp_gui_select_site_6_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 5 } } }
+			repression_ledger_site_1_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 0 } } }
+			repression_ledger_site_2_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 1 } } }
+			repression_ledger_site_3_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 2 } } }
+			repression_ledger_site_4_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 3 } } }
+			repression_ledger_site_5_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 4 } } }
+			repression_ledger_site_6_text_visible = { ROOT = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 5 } } }
 
 			camp_gui_expand_selected_pool_click_enabled = {
 				ROOT = {
@@ -315,6 +388,7 @@ scripted_gui = {
 					OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
 					NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
 					camp_rework_country_has_chemical_escalation_capacity = yes
+					cbrn_camp_restricted_site_release_is_ready = yes
 					var:camp_selected_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
 				}
 			}

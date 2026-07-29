@@ -1,667 +1,545 @@
-# AI strategy: ensure the AI produces chemical cylinders for abilities and chemical tank support companies.
-# NOTE: `ai_strategy.value` does not parse script constants in this context,
-# so the values here are mirrored as file-local `@` constants.
+# ============================================================================
+# CHAOS REDUX - MODERN CHEMICAL PAYLOAD PRODUCTION AI
+# ============================================================================
+# Overview:
+# - Retains the compatibility filename while retiring AI pressure for legacy
+#   cylinder equipment.
+# - Produces the modern agent-lot and shell-lot families only after protection,
+#   conventional supply, policy, route, and industry gates pass.
+# - Uses exact model surplus weights to preserve country agent identities.
+# - Produces no chemical air payload while the exact native raid adapter remains
+#   unavailable; idle or merely capable aircraft never create a production or
+#   contamination signal.
+# - `ai_strategy.value` does not parse script constants in this context, so all
+#   production values and stock targets are file-local constants.
+# ============================================================================
 
-@CHEM_AI_CYLINDER_BASE_MAJOR = 1
-@CHEM_AI_CYLINDER_RETALIATE_ADD_LOW = 1
-@CHEM_AI_CYLINDER_RETALIATE_ADD_MED = 1
-@CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH = 1
-@CHEM_AI_CYLINDER_JAPAN_BONUS = 1
+@CBRN_PAYLOAD_PRESSURE_RETALIATORY = 20
+@CBRN_PAYLOAD_PRESSURE_BATTLEFIELD = 50
+@CBRN_PAYLOAD_PRESSURE_STRATEGIC = 80
+@CBRN_PAYLOAD_PRESSURE_DESPERATE = 100
+@CBRN_SHELL_PRESSURE_BATTLEFIELD = 40
+@CBRN_SHELL_PRESSURE_STRATEGIC = 70
 
-chem_cylinders_chlorine_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = chlorine_gas
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-        NOT = { has_tech = phosgene }
-        NOT = { has_tech = mustard_gas }
-        NOT = { has_tech = lewisite }
-    }
-    abort_when_not_enabled = yes
+@CBRN_PAYLOAD_SURPLUS_RETALIATORY = 4
+@CBRN_PAYLOAD_SURPLUS_BATTLEFIELD = 7
+@CBRN_PAYLOAD_SURPLUS_STRATEGIC = 10
+@CBRN_PAYLOAD_SURPLUS_DESPERATE = 14
+@CBRN_SHELL_SURPLUS_BATTLEFIELD = 6
+@CBRN_SHELL_SURPLUS_STRATEGIC = 10
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_chlorine_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+@CBRN_PAYLOAD_TARGET_BRITAIN = 350
+@CBRN_PAYLOAD_TARGET_FRANCE = 450
+@CBRN_PAYLOAD_TARGET_GERMANY = 600
+@CBRN_PAYLOAD_TARGET_SOVIET = 600
+@CBRN_PAYLOAD_TARGET_USA = 450
+@CBRN_PAYLOAD_TARGET_ITALY = 300
+@CBRN_PAYLOAD_TARGET_JAPAN = 400
+@CBRN_PAYLOAD_TARGET_GENERIC = 300
+@CBRN_SHELL_TARGET_BATTLEFIELD = 350
+@CBRN_SHELL_TARGET_STRATEGIC = 550
+
+cbrn_payload_pressure_retaliatory = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_retaliatory_arsenal_posture = yes
+		NOT = { cbrn_ai_has_battlefield_program_posture = yes }
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_RETALIATORY
+	}
 }
 
-chem_cylinders_chlorine_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = chlorine_gas
-        is_major = yes
-        NOT = { has_tech = phosgene }
-        NOT = { has_tech = mustard_gas }
-        NOT = { has_tech = lewisite }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_pressure_battlefield = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_battlefield_program_posture = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_chlorine_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_BATTLEFIELD
+	}
 }
 
-chem_cylinders_chlorine_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = chlorine_gas
-        is_major = yes
-        NOT = { has_tech = phosgene }
-        NOT = { has_tech = mustard_gas }
-        NOT = { has_tech = lewisite }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_pressure_strategic = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_strategic_program_posture = yes
+		NOT = { cbrn_ai_has_desperate_release_posture = yes }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_chlorine_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_STRATEGIC
+	}
 }
 
-chem_cylinders_chlorine_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = chlorine_gas
-        is_major = yes
-        NOT = { has_tech = phosgene }
-        NOT = { has_tech = mustard_gas }
-        NOT = { has_tech = lewisite }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_pressure_desperate = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_desperate_release_posture = yes
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_chlorine_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_agent_payload
+		value = @CBRN_PAYLOAD_PRESSURE_DESPERATE
+	}
 }
 
-chem_cylinders_phosgene_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = phosgene
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-        }
-    }
-    abort_when_not_enabled = yes
+# Country identities. Each ordinary major has one preferred chemical family.
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_phosgene_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+cbrn_payload_british_phosgene_reserve = {
+	allowed = { original_tag = ENG }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = phosgene
+		has_equipment = { phosgene_agent_lot_1 < @CBRN_PAYLOAD_TARGET_BRITAIN }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = phosgene_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_RETALIATORY
+	}
 }
 
-chem_cylinders_phosgene_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = phosgene
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_french_phosgene_reserve = {
+	allowed = { original_tag = FRA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = phosgene
+		has_equipment = { phosgene_agent_lot_1 < @CBRN_PAYLOAD_TARGET_FRANCE }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_phosgene_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = phosgene_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_phosgene_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = phosgene
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_german_battlefield_tabun = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_battlefield_program_posture = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		has_tech = tabun
+		has_equipment = { tabun_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GERMANY }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_phosgene_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = tabun_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_phosgene_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = phosgene
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_german_strategic_soman = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_desperate_release_posture = yes
+		}
+		has_tech = soman
+		has_equipment = { soman_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GERMANY }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_phosgene_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = soman_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_STRATEGIC
+	}
 }
 
-chem_cylinders_mustard_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = mustard_gas
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-            tag = ITA
-            tag = JAP
-            tag = USA
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_german_strategic_sarin = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_desperate_release_posture = yes
+		}
+		has_tech = sarin
+		NOT = { has_tech = soman }
+		has_equipment = { sarin_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GERMANY }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_mustard_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = sarin_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_STRATEGIC
+	}
 }
 
-chem_cylinders_mustard_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = mustard_gas
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-            tag = ITA
-            tag = JAP
-            tag = USA
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_german_pre_nerve_mustard = {
+	allowed = { original_tag = GER }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		NOT = { has_tech = tabun }
+		has_tech = mustard_gas
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GERMANY }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_mustard_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_mustard_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = mustard_gas
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-            tag = ITA
-            tag = JAP
-            tag = USA
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_soviet_mustard_reserve = {
+	allowed = { original_tag = SOV }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = mustard_gas
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_SOVIET }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_mustard_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_mustard_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = mustard_gas
-        is_major = yes
-        OR = {
-            tag = GER
-            tag = ENG
-            tag = FRA
-            tag = SOV
-            tag = ITA
-            tag = JAP
-            tag = USA
-        }
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_american_lewisite_reserve = {
+	allowed = { original_tag = USA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = lewisite
+		has_equipment = { lewisite_agent_lot_1 < @CBRN_PAYLOAD_TARGET_USA }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_mustard_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = lewisite_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_RETALIATORY
+	}
 }
 
-chem_cylinders_lewisite_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = lewisite
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-        tag = USA
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_american_mustard_bridge = {
+	allowed = { original_tag = USA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = mustard_gas
+		NOT = { has_tech = lewisite }
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_USA }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_lewisite_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_RETALIATORY
+	}
 }
 
-chem_cylinders_lewisite_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = lewisite
-        is_major = yes
-        tag = USA
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_italian_mustard_reserve = {
+	allowed = { original_tag = ITA }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = mustard_gas
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_ITALY }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_lewisite_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_lewisite_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = lewisite
-        is_major = yes
-        tag = USA
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_japanese_mustard_reserve = {
+	allowed = { original_tag = JAP }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_tech = mustard_gas
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_JAPAN }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_lewisite_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_lewisite_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = lewisite
-        is_major = yes
-        tag = USA
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+# Non-major-profile countries select one strongest authorized family instead of
+# filling every researched agent model.
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_lewisite_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
+cbrn_payload_generic_strategic_soman = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_desperate_release_posture = yes
+		}
+		has_tech = soman
+		has_equipment = { soman_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = soman_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_STRATEGIC
+	}
 }
 
-chem_cylinders_japan_bonus_mustard = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = mustard_gas
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_generic_strategic_sarin = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_desperate_release_posture = yes
+		}
+		has_tech = sarin
+		NOT = { has_tech = soman }
+		has_equipment = { sarin_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_mustard_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = sarin_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_STRATEGIC
+	}
 }
 
-chem_cylinders_japan_bonus_lewisite = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = lewisite
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_generic_strategic_tabun = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		OR = {
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_desperate_release_posture = yes
+		}
+		has_tech = tabun
+		NOT = { has_tech = sarin }
+		has_equipment = { tabun_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_lewisite_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = tabun_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_STRATEGIC
+	}
 }
 
-chem_cylinders_sarin_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = sarin
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_generic_battlefield_mustard = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		has_tech = mustard_gas
+		has_equipment = { mustard_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_sarin_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = mustard_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_sarin_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = sarin
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_generic_battlefield_phosgene = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		has_tech = phosgene
+		NOT = { has_tech = mustard_gas }
+		has_equipment = { phosgene_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_sarin_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = phosgene_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_sarin_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = sarin
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_payload_generic_battlefield_chlorine = {
+	allowed = {
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = GER
+				original_tag = SOV
+				original_tag = USA
+				original_tag = ITA
+				original_tag = JAP
+			}
+		}
+	}
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		has_tech = chlorine_gas
+		NOT = { has_tech = phosgene }
+		NOT = { has_tech = mustard_gas }
+		has_equipment = { chlorine_agent_lot_1 < @CBRN_PAYLOAD_TARGET_GENERIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_sarin_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = chlorine_agent_lot_1
+		value = @CBRN_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_sarin_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = sarin
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
+# Filled shell lots require the doctrine-granted equipment unlock, one active
+# exact filling profile, and a real modern agent-lot reserve. Legacy cylinders
+# are not accepted as the feedstock signal.
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_sarin_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
+cbrn_shell_lot_battlefield_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_battlefield_program_posture = yes
+		NOT = { cbrn_ai_has_strategic_program_posture = yes }
+		has_tech = chemical_artillery_shells
+		cbrn_ai_has_active_shell_filling_profile = yes
+		cbrn_ai_has_modern_agent_payload_reserve = yes
+		has_equipment = { chemical_shell_lot_1 < @CBRN_SHELL_TARGET_BATTLEFIELD }
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_shell_lot
+		value = @CBRN_SHELL_PRESSURE_BATTLEFIELD
+	}
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = chemical_shell_lot_1
+		value = @CBRN_SHELL_SURPLUS_BATTLEFIELD
+	}
 }
 
-chem_cylinders_soman_majors = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = soman
-        is_major = yes
-        OR = {
-            original_tag = JAP
-            has_enemy_used_chemical_weapons = yes
-        }
-    }
-    abort_when_not_enabled = yes
+cbrn_shell_lot_strategic_production = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		cbrn_ai_has_strategic_program_posture = yes
+		has_tech = chemical_artillery_shells
+		cbrn_ai_has_active_shell_filling_profile = yes
+		cbrn_ai_has_modern_agent_payload_reserve = yes
+		has_equipment = { chemical_shell_lot_1 < @CBRN_SHELL_TARGET_STRATEGIC }
+	}
+	abort_when_not_enabled = yes
 
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_soman_payload_cylinder
-        value = @CHEM_AI_CYLINDER_BASE_MAJOR
-    }
+	ai_strategy = {
+		type = equipment_production_factor
+		id = chemical_shell_lot
+		value = @CBRN_SHELL_PRESSURE_STRATEGIC
+	}
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = chemical_shell_lot_1
+		value = @CBRN_SHELL_SURPLUS_STRATEGIC
+	}
 }
-
-chem_cylinders_soman_retaliate_low = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = soman
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_soman_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_LOW
-    }
-}
-
-chem_cylinders_soman_retaliate_med = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = soman
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_soman_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_MED
-    }
-}
-
-chem_cylinders_soman_retaliate_high = {
-    allowed = { always = yes }
-    enable = {
-        has_war = yes
-        has_tech = soman
-        is_major = yes
-        any_enemy_country = {
-            check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.high compare = greater_than }
-        }
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_soman_payload_cylinder
-        value = @CHEM_AI_CYLINDER_RETALIATE_ADD_HIGH
-    }
-}
-
-chem_cylinders_japan_bonus_chlorine = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = chlorine_gas
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_chlorine_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
-}
-
-chem_cylinders_japan_bonus_phosgene = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = phosgene
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_phosgene_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
-}
-
-chem_cylinders_japan_bonus_sarin = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = sarin
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_sarin_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
-}
-
-chem_cylinders_japan_bonus_soman = {
-    allowed = { original_tag = JAP }
-    enable = {
-        has_war = yes
-        is_major = yes
-        has_tech = soman
-    }
-    abort_when_not_enabled = yes
-
-    ai_strategy = {
-        type = equipment_production_min_factories_archetype
-        id = chemical_soman_payload_cylinder
-        value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-    }
-}
-
-# TODO: planes need rework
-# chem_air_bombs_japan_bonus = {
-#     allowed = { original_tag = JAP }
-#     enable = {
-#         has_war = yes
-#         is_major = yes
-#         OR = {
-#             has_tech = chlorine_gas
-#             has_tech = phosgene
-#             has_tech = mustard_gas
-#             has_tech = lewisite
-#             has_tech = sarin
-#             has_tech = soman
-#         }
-#     }
-#     abort_when_not_enabled = yes
-#
-#     ai_strategy = {
-#         type = equipment_production_min_factories_archetype
-#         id = tactical_bomber
-#         value = @CHEM_AI_CYLINDER_JAPAN_BONUS
-#     }
-# }

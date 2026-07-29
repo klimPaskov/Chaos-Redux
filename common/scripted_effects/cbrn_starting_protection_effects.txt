@@ -4,17 +4,23 @@
 # Overview:
 # - Applies the accepted gas-mask matrix as tuned 1936 crate totals.
 # - Converts each country's military target into issue against its actual
-#   deployed manpower and each civilian target into population-scaled state
-#   distribution against actual controlled core states.
+#   deployed manpower and each already-distributed civilian share into
+#   population-scaled state distribution against actual controlled core states.
+# - Imported emergency profiles receive real crates and profile-aware AI
+#   without a free domestic production technology or established program.
 # - Keeps technology, warehouse stock, military issue, civilian distribution,
 #   registration, filter condition, and annual maintenance separate.
 # ============================================================================
 
 cbrn_apply_starting_mask_profile = {
 	cbrn_initialize_country_data = yes
-	set_technology = {
-		basic_gas_masks = 1
-		popup = no
+	cbrn_occupation_initialize_action_conditions = yes
+	if = {
+		limit = { NOT = { has_country_flag = cbrn_starting_imported_masks_only } }
+		set_technology = {
+			basic_gas_masks = 1
+			popup = no
+		}
 	}
 	if = {
 		limit = { check_variable = { cbrn_starting_mask_improved > constant:cbrn_math.zero } }
@@ -41,8 +47,11 @@ cbrn_apply_starting_mask_profile = {
 	}
 
 	set_variable = { cbrn_protection_program_profile = cbrn_starting_program_profile }
-	set_country_flag = cbrn_program_established
 	set_country_flag = cbrn_national_respirator_reserve
+	if = {
+		limit = { NOT = { has_country_flag = cbrn_starting_imported_masks_only } }
+		set_country_flag = cbrn_program_established
+	}
 	if = {
 		limit = {
 			check_variable = {
@@ -92,6 +101,12 @@ cbrn_apply_starting_mask_profile = {
 	}
 	cbrn_refresh_country_mask_snapshot = yes
 	cbrn_start_protection_maintenance_job = yes
+}
+
+cbrn_apply_starting_imported_mask_profile = {
+	set_country_flag = cbrn_starting_imported_masks_only
+	cbrn_apply_starting_mask_profile = yes
+	clr_country_flag = cbrn_starting_imported_masks_only
 }
 
 chaosx_apply_starting_cbrn_mask_profiles = {
@@ -332,7 +347,91 @@ chaosx_apply_starting_cbrn_mask_profiles = {
 			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.CHI.civilian_distribution_target }
 			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.CHI.registration }
 			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
-			cbrn_apply_starting_mask_profile = yes
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	PRC = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.PRC.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.PRC.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.PRC.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.PRC.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.PRC.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	SHX = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.SHX.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.SHX.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.SHX.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.SHX.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.SHX.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	GXC = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.GXC.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.GXC.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.GXC.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.GXC.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.GXC.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	YUN = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.YUN.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.YUN.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.YUN.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.YUN.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.YUN.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	XSM = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.XSM.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.XSM.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.XSM.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.XSM.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.XSM.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	SIK = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.SIK.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.SIK.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.SIK.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.SIK.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.SIK.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	MAN = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.MAN.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.MAN.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.MAN.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.MAN.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.MAN.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.fragmented_chinese_program }
+			cbrn_apply_starting_imported_mask_profile = yes
 		}
 	}
 	BUL = {
@@ -453,6 +552,54 @@ chaosx_apply_starting_cbrn_mask_profiles = {
 			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.FIN.registration }
 			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.scandinavian_program }
 			cbrn_apply_starting_mask_profile = yes
+		}
+	}
+	BRA = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.BRA.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.BRA.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.BRA.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.BRA.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.BRA.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.limited_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	ARG = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.ARG.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.ARG.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.ARG.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.ARG.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.ARG.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.limited_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	MEX = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.MEX.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.MEX.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.MEX.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.MEX.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.MEX.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.limited_program }
+			cbrn_apply_starting_imported_mask_profile = yes
+		}
+	}
+	CHL = {
+		if = {
+			limit = { exists = yes }
+			set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_starting_masks.CHL.basic }
+			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.CHL.improved }
+			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.CHL.military_issue_target }
+			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.CHL.civilian_distribution_target }
+			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.CHL.registration }
+			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.limited_program }
+			cbrn_apply_starting_imported_mask_profile = yes
 		}
 	}
 }

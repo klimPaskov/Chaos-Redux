@@ -65,7 +65,8 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 Use repo skills as required implementation guidance.
 
 - Use `chaos-redux-events` for Chaos Redux event implementation, event logs, evolutions, event details, documentation, and spreadsheet alignment.
-- Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes.
+- Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes; route 3D geometry, materials, skeletal actions, `.mesh`/`.anim` exports, and reimport evidence to `chaos-redux-3d-model-pipeline`.
+- Use `chaos-redux-event-planning` to plan 3D unit and building profiles, exact-one-image Meshy inputs, vanilla scale calibration, action roles, entity consumers, map placement, and runtime acceptance evidence whenever a feature needs a model.
 - Use `chaos-redux-3d-model-pipeline` when creating, rigging, animating, converting, exporting, auditing, or documenting Chaos Redux HOI4 3D models; route bounded production work to `chaosx_3d_model_pipeline` with `fork_context=false`.
 - Use `chaos-redux-frame-animation` when a task needs animated sprites, frame sequences, sprite sheets, GIF previews, animated UI pieces, animated portraits, hover loops, pulse loops, route emblems, or frame-by-frame visual packages. This skill forbids final animation made only by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
 - Use `chaos-redux-super-events` when a task creates, updates, researches, or wires a super-event.
@@ -102,7 +103,7 @@ Use these high-level routing rules:
 
 - Use `chaosx_repo_explorer` only when file locations, existing patterns, vanilla references, likely touchpoints, missing-file recovery, or implementation order are unclear. Do not use it for small known-file edits, provided-file edits, direct skill or prompt updates, localisation-only cleanup, asset-only production, or tasks already bounded to exact files. The parent should inspect the known files directly for those cases.
 - Use asset subagents for visual production: `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist`.
-- When an asset subagent is asked to produce animation, the parent prompt must require `chaos-redux-frame-animation` and must ask for separate generated, sourced, or provided source frames, static fallback, manifest, contact sheet, preview, and `.gfx` or `.gui` handoff.
+- When an asset subagent is asked to produce animation, the parent prompt must require `chaos-redux-frame-animation` for 2D frame-sheet assets and `chaos-redux-3d-model-pipeline` for skeletal `.anim` actions; 3D prompts must include the Meshy hard gate, one-image rule, vanilla scale crosswalk, material packing, reimport proof, and parent-owned runtime wiring.
 - Use super-event subagents for specialised research: `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher`.
 - Use audit subagents before completion claims: `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, and `chaosx_event_completion_auditor`.
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.
@@ -289,7 +290,7 @@ When implementing any new mechanic, follow this checklist:
 12. Confirm that all decisions and event options or other effects have proper trigger tooltips and effect descriptions.
 13. Respect the repository style and naming rules so new content blends with existing Chaos Redux code.
 14. For systems that touch or are related to bio/chemical warfare, review any related docs, and verify integration across events, on_actions, decisions, contamination effects, scripted logic, etc.
-15. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves.
+15. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves. Agents must not launch or run Hearts of Iron IV for in-game testing; all in-game testing and live consumer validation belong to the user.
 16. Fallbacks are never allowed and MUST ALWAYS be discussed with the user.
 17. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
 18. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
@@ -354,9 +355,9 @@ Before claiming focus-tree completion, use the appropriate audit route from `cha
 
 ## 8. Agent-generated Visual Assets
 
-For final visual assets, use `chaos-redux-event-assets`. That skill is the detailed source of truth for image generation rules.
+For final visual assets, use `chaos-redux-event-assets`. That skill is the detailed source of truth for image generation rules, 2D asset classification, and the handoff boundary for 3D model packages.
 
-For animated visual assets, use `chaos-redux-frame-animation` in addition to `chaos-redux-event-assets`. Final animation assets must be built from real planned frames and must not be transform-only mockups.
+For animated visual assets, use `chaos-redux-frame-animation` in addition to `chaos-redux-event-assets` for frame-sheet animation. Use `chaos-redux-3d-model-pipeline` for skeletal unit or entity actions. Final animation assets must be built from real planned frames or real exported skeletal actions and must not be transform-only mockups.
 
 Use `chaos-redux-subagents` for detailed asset subagent routing. Asset subagents create source files, processed PNGs, DDS files, manifests, and handoff notes. The main agent owns `.gfx` edits, gameplay references, localisation references, documentation alignment, and final validation.
 

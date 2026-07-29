@@ -244,10 +244,64 @@ bio_operative_release_ai_smallpox_target_profile = {
 	}
 }
 
+# Country scope with FROM as the exact proposed victim.
+bio_operative_release_ai_has_retaliation_right_against_from = {
+	FROM = {
+		exists = yes
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	cbrn_country_has_active_retaliation_right_against_target_id = yes
+}
+
+# Country scope with FROM as the proposed victim. These are only AI ranking
+# signals after the exact operation target state, relationship, policy, and
+# native equipment gates pass. They never authorize an operation.
+bio_operative_release_ai_target_shares_border_with_from = {
+	any_neighbor_country = {
+		tag = FROM
+	}
+}
+
+bio_operative_release_ai_target_has_surveillance = {
+	FROM = {
+		has_idea = bio_surveillance_network_idea
+	}
+}
+
+bio_operative_release_ai_has_low_attribution_control = {
+	has_variable = cbrn_attribution_control
+	check_variable = {
+		var = cbrn_attribution_control
+		value = constant:bio_operation_plant_outbreak.low_attribution_control_threshold
+		compare = less_than
+	}
+}
+
+bio_operative_release_ai_is_sanction_vulnerable = {
+	has_variable = condemnation_import_vulnerability
+	check_variable = {
+		var = condemnation_import_vulnerability
+		value = constant:condemnation_ai.import_vulnerability
+		compare = greater_than_or_equals
+	}
+	NOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+}
+
+bio_operative_release_ai_target_is_near_capitulation = {
+	FROM = {
+		check_variable = {
+			var = surrender_progress
+			value = constant:cbrn_ai_posture.sanction_response_near_capitulation
+			compare = greater_than_or_equals
+		}
+	}
+}
+
 # Country scope with FROM as the proposed victim. This cannot bypass project,
 # stockpile, policy, target-state, or native operation requirements.
 bio_operative_release_ai_may_target_from = {
 	bio_operative_release_can_prepare_against_from = yes
+	bio_kruger_last_resort_ai_is_valid = yes
 	OR = {
 		bio_operative_release_ai_has_safe_domestic_program = yes
 		bio_operative_release_ai_is_desperate_route = yes
@@ -301,7 +355,6 @@ bio_operative_release_native_context_is_valid = {
 				cbrn_policy_allows_extreme_use = yes
 			}
 		}
-	bio_kruger_last_resort_ai_is_valid = yes
 	}
 	event_target:bio_operation_victim = {
 		exists = yes

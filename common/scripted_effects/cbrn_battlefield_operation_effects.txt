@@ -1,0 +1,869 @@
+# ============================================================================
+# CHAOS REDUX - EXACT-STATE CBRN BATTLEFIELD OPERATION EFFECTS
+# ============================================================================
+# Overview:
+# - Implements the four non-air chemical delivery routes exposed by the
+#   state-targeted timed decisions: cylinder release, projector barrage,
+#   artillery fire plan, and armored delivery.
+# - Every committed route saves one exact state, debits one shared chemical
+#   payload lot and route equipment, records a bounded shortage receipt, and
+#   later resolves through cbrn_prepare_chemical_action_record followed by
+#   cbrn_dispatch_chemical_action_record.
+# - The shared dispatcher owns protection, disruption, deaths, contamination,
+#   medical saturation, evidence, attribution, Condemnation, Air Cleanliness,
+#   history, and cleanup. This file only supplies the route receipt and its
+#   commitment ledger.
+# - No effect in this file estimates weather, searches for a target, scans all
+#   countries, treats idle aircraft as activity, or refunds a committed payload.
+# ============================================================================
+
+cbrn_initialize_battlefield_operation_selection = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_selected_agent } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.chlorine }
+	}
+	if = {
+		limit = {
+			NOT = { has_tech = chlorine_gas }
+			OR = { has_tech = phosgene has_tech = mustard_gas has_tech = lewisite has_tech = tabun has_tech = sarin has_tech = soman }
+		}
+		if = {
+			limit = { has_tech = phosgene }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.phosgene }
+		}
+		else_if = {
+			limit = { has_tech = mustard_gas }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.mustard }
+		}
+		else_if = {
+			limit = { has_tech = lewisite }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.lewisite }
+		}
+		else_if = {
+			limit = { has_tech = tabun }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.tabun }
+		}
+		else_if = {
+			limit = { has_tech = sarin }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.sarin }
+		}
+		else_if = {
+			limit = { has_tech = soman }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.soman }
+		}
+	}
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_last_result } }
+		set_variable = { cbrn_battlefield_last_result = constant:cbrn_action_result.rejected }
+	}
+}
+
+cbrn_battlefield_ai_select_agent_for_route = {
+	if = {
+		limit = { is_ai = yes }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+				has_variable = cbrn_shell_filling_agent
+				cbrn_battlefield_shell_profile_agent_is_unlocked = yes
+			}
+			set_variable = { cbrn_battlefield_selected_agent = cbrn_shell_filling_agent }
+		}
+		else_if = {
+			limit = { OR = { has_tech = soman is_special_project_completed = sp:sp_cw_soman_program } }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.soman }
+		}
+		else_if = {
+			limit = { OR = { has_tech = sarin is_special_project_completed = sp:sp_cw_sarin_program } }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.sarin }
+		}
+		else_if = {
+			limit = { has_tech = tabun }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.tabun }
+		}
+		else_if = {
+			limit = { has_tech = lewisite }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.lewisite }
+		}
+		else_if = {
+			limit = { has_tech = mustard_gas }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.mustard }
+		}
+		else_if = {
+			limit = { has_tech = phosgene }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.phosgene }
+		}
+		else_if = {
+			limit = { has_tech = chlorine_gas }
+			set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.chlorine }
+		}
+	}
+}
+
+cbrn_battlefield_cycle_selected_agent = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_selected_agent } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.chlorine }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.chlorine compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.phosgene }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.phosgene compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.mustard }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.mustard compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.lewisite }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.lewisite compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.tabun }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.tabun compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.sarin }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.sarin compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.soman }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.soman compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.malodor }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.malodor compare = equals } }
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.behavioral }
+	}
+	else = {
+		set_variable = { cbrn_battlefield_selected_agent = constant:cbrn_agent.chlorine }
+	}
+}
+
+cbrn_battlefield_set_action_agent_class_from_action = {
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.tabun compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.sarin compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.soman compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.behavioral compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.incapacitating }
+	}
+}
+
+cbrn_battlefield_set_severity_from_action_route = {
+	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.none }
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_battlefield_operation_severity.cylinder_release }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_battlefield_operation_severity.projector_barrage }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_battlefield_operation_severity.artillery_fire_plan }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_battlefield_operation_severity.armored_delivery }
+	}
+}
+
+cbrn_battlefield_set_action_conditions_receipt = {
+	set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_command_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_command_integration = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_battlefield_operation_condition.cylinder_weather_mult }
+		set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_battlefield_operation_condition.cylinder_terrain_mult }
+		set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_battlefield_operation_condition.cylinder_target_density_mult }
+		set_temp_variable = { cbrn_action_command_mult = constant:cbrn_battlefield_operation_condition.cylinder_command_mult }
+		set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_battlefield_operation_condition.cylinder_evidence_control_mult }
+		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_battlefield_operation_condition.cylinder_context_condemnation_mult }
+		set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_battlefield_operation_condition.cylinder_forecast_confidence }
+		set_temp_variable = { cbrn_action_command_integration = constant:cbrn_battlefield_operation_condition.cylinder_command_integration }
+		set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_battlefield_operation_condition.cylinder_base_friendly_risk }
+		set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_battlefield_operation_condition.cylinder_release_efficiency }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_battlefield_operation_condition.projector_weather_mult }
+		set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_battlefield_operation_condition.projector_terrain_mult }
+		set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_battlefield_operation_condition.projector_target_density_mult }
+		set_temp_variable = { cbrn_action_command_mult = constant:cbrn_battlefield_operation_condition.projector_command_mult }
+		set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_battlefield_operation_condition.projector_evidence_control_mult }
+		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_battlefield_operation_condition.projector_context_condemnation_mult }
+		set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_battlefield_operation_condition.projector_forecast_confidence }
+		set_temp_variable = { cbrn_action_command_integration = constant:cbrn_battlefield_operation_condition.projector_command_integration }
+		set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_battlefield_operation_condition.projector_base_friendly_risk }
+		set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_battlefield_operation_condition.projector_release_efficiency }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_battlefield_operation_condition.artillery_weather_mult }
+		set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_battlefield_operation_condition.artillery_terrain_mult }
+		set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_battlefield_operation_condition.artillery_target_density_mult }
+		set_temp_variable = { cbrn_action_command_mult = constant:cbrn_battlefield_operation_condition.artillery_command_mult }
+		set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_battlefield_operation_condition.artillery_evidence_control_mult }
+		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_battlefield_operation_condition.artillery_context_condemnation_mult }
+		set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_battlefield_operation_condition.artillery_forecast_confidence }
+		set_temp_variable = { cbrn_action_command_integration = constant:cbrn_battlefield_operation_condition.artillery_command_integration }
+		set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_battlefield_operation_condition.artillery_base_friendly_risk }
+		set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_battlefield_operation_condition.artillery_release_efficiency }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_battlefield_operation_condition.armored_weather_mult }
+		set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_battlefield_operation_condition.armored_terrain_mult }
+		set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_battlefield_operation_condition.armored_target_density_mult }
+		set_temp_variable = { cbrn_action_command_mult = constant:cbrn_battlefield_operation_condition.armored_command_mult }
+		set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_battlefield_operation_condition.armored_evidence_control_mult }
+		set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_battlefield_operation_condition.armored_context_condemnation_mult }
+		set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_battlefield_operation_condition.armored_forecast_confidence }
+		set_temp_variable = { cbrn_action_command_integration = constant:cbrn_battlefield_operation_condition.armored_command_integration }
+		set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_battlefield_operation_condition.armored_base_friendly_risk }
+		set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_battlefield_operation_condition.armored_release_efficiency }
+	}
+
+	if = {
+		limit = {
+			has_variable = cbrn_battlefield_active_equipment_supply_ratio
+			check_variable = {
+				var = cbrn_battlefield_active_equipment_supply_ratio
+				value = constant:cbrn_battlefield_operation_condition_shortage.adequate_ratio
+				compare = less_than
+			}
+		}
+		multiply_temp_variable = { cbrn_action_command_mult = constant:cbrn_battlefield_operation_condition_shortage.shortage_command_mult }
+		multiply_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_battlefield_operation_condition_shortage.shortage_release_mult }
+		add_to_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_battlefield_operation_condition_shortage.shortage_friendly_risk_add }
+	}
+
+	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.supplied }
+}
+
+cbrn_battlefield_set_route_equipment_costs = {
+	set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_projector_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_ammunition_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_tank_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_motorized_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_fuel_requested = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_equipment_supply_ratio = constant:cbrn_battlefield_operation_condition_shortage.shortage_ratio }
+
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.cylinder_mask_crates }
+		set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment }
+		set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment }
+		set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment }
+		if = {
+			limit = { cbrn_battlefield_common_equipment_is_full = yes }
+			set_temp_variable = { cbrn_battlefield_equipment_supply_ratio = constant:cbrn_battlefield_operation_condition_shortage.adequate_ratio }
+		}
+		else = {
+			set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.cylinder_mask_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment_shortage_floor }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.projector_mask_crates }
+		set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment }
+		set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment }
+		add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.projector_instrument_equipment }
+		set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment }
+		set_temp_variable = { cbrn_battlefield_projector_requested = constant:cbrn_battlefield_operation_cost.projector_chassis }
+		if = {
+			limit = { cbrn_battlefield_projector_equipment_is_full = yes }
+			set_temp_variable = { cbrn_battlefield_equipment_supply_ratio = constant:cbrn_battlefield_operation_condition_shortage.adequate_ratio }
+		}
+		else = {
+			set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.projector_mask_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.projector_instrument_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment_shortage_floor }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.artillery_mask_crates }
+		set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment }
+		add_to_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.artillery_decontamination_equipment }
+		set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment }
+		add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.artillery_instrument_equipment }
+		set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment }
+		add_to_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.artillery_support_equipment }
+		set_temp_variable = { cbrn_battlefield_ammunition_requested = constant:cbrn_battlefield_operation_cost.artillery_ammunition }
+		if = {
+			limit = { cbrn_battlefield_artillery_equipment_is_full = yes }
+			set_temp_variable = { cbrn_battlefield_equipment_supply_ratio = constant:cbrn_battlefield_operation_condition_shortage.adequate_ratio }
+		}
+		else = {
+			set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.artillery_mask_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.artillery_decontamination_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.artillery_instrument_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.artillery_support_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_ammunition_requested = constant:cbrn_battlefield_operation_cost.artillery_ammunition_shortage_floor }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.armored_mask_crates }
+		set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment }
+		add_to_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.armored_decontamination_equipment }
+		set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment }
+		add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.armored_instrument_equipment }
+		set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment }
+		add_to_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.armored_support_equipment }
+		set_temp_variable = { cbrn_battlefield_tank_requested = constant:cbrn_battlefield_operation_cost.armored_medium_chassis }
+		set_temp_variable = { cbrn_battlefield_motorized_requested = constant:cbrn_battlefield_operation_cost.armored_motorized_equipment }
+		set_temp_variable = { cbrn_battlefield_fuel_requested = constant:cbrn_battlefield_operation_cost.armored_fuel }
+		if = {
+			limit = { cbrn_battlefield_armored_equipment_is_full = yes }
+			set_temp_variable = { cbrn_battlefield_equipment_supply_ratio = constant:cbrn_battlefield_operation_condition_shortage.adequate_ratio }
+		}
+		else = {
+			set_temp_variable = { cbrn_battlefield_masks_requested = constant:cbrn_battlefield_operation_cost.armored_mask_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_decon_requested = constant:cbrn_battlefield_operation_cost.armored_decontamination_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.common_instrument_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_instruments_requested = constant:cbrn_battlefield_operation_cost.armored_instrument_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.common_support_equipment_shortage_floor }
+			add_to_temp_variable = { cbrn_battlefield_support_requested = constant:cbrn_battlefield_operation_cost.armored_support_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_tank_requested = constant:cbrn_battlefield_operation_cost.armored_medium_chassis_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_motorized_requested = constant:cbrn_battlefield_operation_cost.armored_motorized_shortage_floor }
+			set_temp_variable = { cbrn_battlefield_fuel_requested = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor }
+		}
+	}
+}
+
+cbrn_battlefield_set_route_commit_costs = {
+	set_temp_variable = { cbrn_battlefield_readiness_cost = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_battlefield_command_power_cost = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_battlefield_readiness_cost = constant:cbrn_battlefield_operation_readiness.cylinder_release }
+		set_temp_variable = { cbrn_battlefield_command_power_cost = constant:cbrn_battlefield_operation_cost.cylinder_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_battlefield_readiness_cost = constant:cbrn_battlefield_operation_readiness.projector_barrage }
+		set_temp_variable = { cbrn_battlefield_command_power_cost = constant:cbrn_battlefield_operation_cost.projector_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_battlefield_readiness_cost = constant:cbrn_battlefield_operation_readiness.artillery_fire_plan }
+		set_temp_variable = { cbrn_battlefield_command_power_cost = constant:cbrn_battlefield_operation_cost.artillery_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_battlefield_readiness_cost = constant:cbrn_battlefield_operation_readiness.armored_delivery }
+		set_temp_variable = { cbrn_battlefield_command_power_cost = constant:cbrn_battlefield_operation_cost.armored_command_power }
+	}
+}
+
+cbrn_battlefield_commit_readiness_and_command_power = {
+	set_temp_variable = { cbrn_readiness_delta = cbrn_battlefield_readiness_cost }
+	multiply_temp_variable = { cbrn_readiness_delta = constant:cbrn_payload_math.negation_multiplier }
+	cbrn_modify_chemical_readiness = yes
+	set_temp_variable = { cbrn_battlefield_command_power_debit = cbrn_battlefield_command_power_cost }
+	multiply_temp_variable = { cbrn_battlefield_command_power_debit = constant:cbrn_payload_math.negation_multiplier }
+	add_command_power = cbrn_battlefield_command_power_debit
+
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_pending_readiness_recovery } }
+		set_variable = { cbrn_battlefield_pending_readiness_recovery = constant:cbrn_math.zero }
+	}
+	add_to_variable = { cbrn_battlefield_pending_readiness_recovery = cbrn_battlefield_readiness_cost }
+	set_variable = { cbrn_battlefield_readiness_recovery_due_day = global.num_days }
+	add_to_variable = { cbrn_battlefield_readiness_recovery_due_day = constant:cbrn_battlefield_operation_timing.readiness_recovery_days }
+	if = {
+		limit = { NOT = { has_country_flag = cbrn_battlefield_readiness_recovery_event_pending } }
+		set_country_flag = cbrn_battlefield_readiness_recovery_event_pending
+		country_event = { id = cbrn_battlefield.1 days = constant:cbrn_battlefield_operation_timing.readiness_recovery_days }
+	}
+}
+
+cbrn_battlefield_debit_masks = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_masks_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@gas_mask_equipment_4 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@gas_mask_equipment_3 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@gas_mask_equipment_2 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@gas_mask_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@gas_mask_equipment_reconditioned }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_decontamination = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_decon_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@decontamination_equipment_3 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = decontamination_equipment_3 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@decontamination_equipment_2 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = decontamination_equipment_2 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@decontamination_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = decontamination_equipment_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_instruments = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_instruments_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@cbrn_instrument_equipment_3 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = cbrn_instrument_equipment_3 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@cbrn_instrument_equipment_2 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = cbrn_instrument_equipment_2 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@cbrn_instrument_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = cbrn_instrument_equipment_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_support = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_support_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@support_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_ammunition = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_ammunition_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@chemical_shell_lot_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = chemical_shell_lot_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_projector = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_projector_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@livens_projector_equipment_3 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = livens_projector_equipment_3 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@livens_projector_equipment_2 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = livens_projector_equipment_2 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@livens_projector_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = livens_projector_equipment_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_tanks = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_tank_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@medium_tank_chassis_3 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = medium_tank_chassis_3 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@medium_tank_chassis_2 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = medium_tank_chassis_2 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@medium_tank_chassis_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = medium_tank_chassis_1 amount = cbrn_battlefield_equipment_take }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@medium_tank_chassis_0 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = medium_tank_chassis_0 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_debit_motorized = {
+	set_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_motorized_requested }
+	set_temp_variable = { cbrn_battlefield_equipment_take = num_equipment@motorized_equipment_1 }
+	clamp_temp_variable = { var = cbrn_battlefield_equipment_take min = constant:cbrn_math.zero max = cbrn_battlefield_equipment_remaining }
+	subtract_from_temp_variable = { cbrn_battlefield_equipment_remaining = cbrn_battlefield_equipment_take }
+	multiply_temp_variable = { cbrn_battlefield_equipment_take = constant:cbrn_payload_math.negation_multiplier }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cbrn_battlefield_equipment_take }
+}
+
+cbrn_battlefield_pay_route_equipment = {
+	set_temp_variable = { cbrn_battlefield_equipment_payment_proof = constant:cbrn_proof.missing }
+	cbrn_battlefield_debit_masks = yes
+	set_temp_variable = { cbrn_battlefield_masks_remaining = cbrn_battlefield_equipment_remaining }
+	cbrn_battlefield_debit_decontamination = yes
+	set_temp_variable = { cbrn_battlefield_decon_remaining = cbrn_battlefield_equipment_remaining }
+	cbrn_battlefield_debit_instruments = yes
+	set_temp_variable = { cbrn_battlefield_instruments_remaining = cbrn_battlefield_equipment_remaining }
+	cbrn_battlefield_debit_support = yes
+	set_temp_variable = { cbrn_battlefield_support_remaining = cbrn_battlefield_equipment_remaining }
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		cbrn_battlefield_debit_ammunition = yes
+		set_temp_variable = { cbrn_battlefield_ammunition_remaining = cbrn_battlefield_equipment_remaining }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		cbrn_battlefield_debit_projector = yes
+		set_temp_variable = { cbrn_battlefield_projector_remaining = cbrn_battlefield_equipment_remaining }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		cbrn_battlefield_debit_tanks = yes
+		set_temp_variable = { cbrn_battlefield_tank_remaining = cbrn_battlefield_equipment_remaining }
+		cbrn_battlefield_debit_motorized = yes
+		set_temp_variable = { cbrn_battlefield_motorized_remaining = cbrn_battlefield_equipment_remaining }
+		set_temp_variable = { cbrn_battlefield_fuel_debit = cbrn_battlefield_fuel_requested }
+		multiply_temp_variable = { cbrn_battlefield_fuel_debit = constant:cbrn_payload_math.negation_multiplier }
+		add_fuel = cbrn_battlefield_fuel_debit
+	}
+
+	if = {
+		limit = {
+			check_variable = { var = cbrn_battlefield_masks_remaining value = constant:cbrn_math.zero compare = equals }
+			check_variable = { var = cbrn_battlefield_decon_remaining value = constant:cbrn_math.zero compare = equals }
+			check_variable = { var = cbrn_battlefield_instruments_remaining value = constant:cbrn_math.zero compare = equals }
+			check_variable = { var = cbrn_battlefield_support_remaining value = constant:cbrn_math.zero compare = equals }
+			OR = {
+				NOT = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+				check_variable = { var = cbrn_battlefield_ammunition_remaining value = constant:cbrn_math.zero compare = equals }
+			}
+			OR = {
+				check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+				check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+				check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+				check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+			}
+			OR = {
+				NOT = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+				check_variable = { var = cbrn_battlefield_projector_remaining value = constant:cbrn_math.zero compare = equals }
+			}
+			OR = {
+				NOT = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+				AND = {
+					check_variable = { var = cbrn_battlefield_tank_remaining value = constant:cbrn_math.zero compare = equals }
+					check_variable = { var = cbrn_battlefield_motorized_remaining value = constant:cbrn_math.zero compare = equals }
+				}
+			}
+		}
+		set_temp_variable = { cbrn_battlefield_equipment_payment_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_battlefield_set_cooldown = {
+	set_temp_variable = { cbrn_battlefield_cooldown_days = constant:cbrn_battlefield_operation_timing.cylinder_cooldown }
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_battlefield_cooldown_days = constant:cbrn_battlefield_operation_timing.projector_cooldown }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_battlefield_cooldown_days = constant:cbrn_battlefield_operation_timing.artillery_cooldown }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_battlefield_cooldown_days = constant:cbrn_battlefield_operation_timing.armored_cooldown }
+	}
+	set_variable = { cbrn_battlefield_next_allowed_day = global.num_days }
+	add_to_variable = { cbrn_battlefield_next_allowed_day = cbrn_battlefield_cooldown_days }
+}
+
+cbrn_battlefield_commit_operation = {
+	set_country_flag = cbrn_battlefield_operation_in_progress
+	save_event_target_as = cbrn_battlefield_actor_target
+	set_variable = { cbrn_battlefield_active_route = cbrn_battlefield_requested_route }
+	set_variable = { cbrn_battlefield_active_agent = cbrn_action_agent }
+	set_variable = { cbrn_battlefield_active_payload = cbrn_action_payload_consumed }
+	set_variable = { cbrn_battlefield_active_equipment_supply_ratio = cbrn_battlefield_equipment_supply_ratio }
+	set_variable = { cbrn_battlefield_active_start_date = global.num_days }
+	set_variable = { cbrn_battlefield_active_state = event_target:cbrn_battlefield_state_target }
+	set_variable = { cbrn_battlefield_active_victim = event_target:cbrn_battlefield_victim_country }
+
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_attempt_count } }
+		set_variable = { cbrn_battlefield_attempt_count = constant:cbrn_math.zero }
+	}
+	add_to_variable = { cbrn_battlefield_attempt_count = constant:cbrn_math.one }
+	set_variable = { cbrn_battlefield_last_agent = cbrn_action_agent }
+	set_variable = { cbrn_battlefield_last_state = event_target:cbrn_battlefield_state_target }
+	set_variable = { cbrn_battlefield_last_victim = event_target:cbrn_battlefield_victim_country }
+
+	event_target:cbrn_battlefield_state_target = {
+		set_state_flag = cbrn_battlefield_operation_active
+		set_variable = { cbrn_battlefield_actor = event_target:cbrn_battlefield_actor_target }
+		set_variable = { cbrn_battlefield_victim = event_target:cbrn_battlefield_victim_country }
+		set_variable = { cbrn_battlefield_agent = cbrn_action_agent }
+		set_variable = { cbrn_battlefield_route = cbrn_battlefield_requested_route }
+		set_variable = { cbrn_battlefield_payload_consumed = cbrn_action_payload_consumed }
+		set_variable = { cbrn_battlefield_equipment_supply_ratio = cbrn_battlefield_equipment_supply_ratio }
+		set_variable = { cbrn_battlefield_start_date = global.num_days }
+	}
+}
+
+cbrn_battlefield_begin_operation = {
+	FROM = {
+		save_event_target_as = cbrn_battlefield_state_target
+		CONTROLLER = { save_event_target_as = cbrn_battlefield_victim_country }
+	}
+	cbrn_battlefield_ai_select_agent_for_route = yes
+	if = {
+		limit = {
+			has_event_target = cbrn_battlefield_state_target
+			has_event_target = cbrn_battlefield_victim_country
+			cbrn_battlefield_requested_operation_is_valid = yes
+			cbrn_battlefield_requested_target_is_valid = yes
+		}
+		event_target:cbrn_battlefield_state_target = { save_event_target_as = cbrn_action_target_state }
+		event_target:cbrn_battlefield_victim_country = { save_event_target_as = cbrn_action_victim_country }
+		cbrn_reset_action_context = yes
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		set_temp_variable = { cbrn_action_delivery_route = cbrn_battlefield_requested_route }
+		set_temp_variable = { cbrn_action_agent = cbrn_battlefield_selected_agent }
+		cbrn_battlefield_set_action_agent_class_from_action = yes
+		cbrn_battlefield_set_severity_from_action_route = yes
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+				has_tech = nerve_agent_suppression_formation
+			}
+			set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+		}
+		cbrn_set_default_payload_requirement_for_action = yes
+		cbrn_try_debit_action_payload = yes
+		if = {
+			limit = { check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals } }
+			cbrn_battlefield_set_route_equipment_costs = yes
+			cbrn_battlefield_pay_route_equipment = yes
+			if = {
+				limit = { check_variable = { var = cbrn_battlefield_equipment_payment_proof value = constant:cbrn_proof.supplied compare = equals } }
+				cbrn_battlefield_set_route_commit_costs = yes
+				cbrn_battlefield_commit_readiness_and_command_power = yes
+				cbrn_battlefield_set_cooldown = yes
+				cbrn_battlefield_commit_operation = yes
+			}
+		}
+	}
+}
+
+cbrn_battlefield_clear_operation_state = {
+	if = {
+		limit = { has_variable = cbrn_battlefield_active_state }
+		var:cbrn_battlefield_active_state = {
+			clr_state_flag = cbrn_battlefield_operation_active
+			clear_variable = cbrn_battlefield_actor
+			clear_variable = cbrn_battlefield_victim
+			clear_variable = cbrn_battlefield_agent
+			clear_variable = cbrn_battlefield_route
+			clear_variable = cbrn_battlefield_payload_consumed
+			clear_variable = cbrn_battlefield_equipment_supply_ratio
+			clear_variable = cbrn_battlefield_start_date
+		}
+	}
+	else_if = {
+		limit = { has_event_target = cbrn_battlefield_state_target }
+		event_target:cbrn_battlefield_state_target = {
+			clr_state_flag = cbrn_battlefield_operation_active
+			clear_variable = cbrn_battlefield_actor
+			clear_variable = cbrn_battlefield_victim
+			clear_variable = cbrn_battlefield_agent
+			clear_variable = cbrn_battlefield_route
+			clear_variable = cbrn_battlefield_payload_consumed
+			clear_variable = cbrn_battlefield_equipment_supply_ratio
+			clear_variable = cbrn_battlefield_start_date
+		}
+	}
+	clear_country_flag = cbrn_battlefield_operation_in_progress
+	clear_variable = cbrn_battlefield_active_route
+	clear_variable = cbrn_battlefield_active_agent
+	clear_variable = cbrn_battlefield_active_payload
+	clear_variable = cbrn_battlefield_active_equipment_supply_ratio
+	clear_variable = cbrn_battlefield_active_start_date
+	clear_variable = cbrn_battlefield_active_state
+	clear_variable = cbrn_battlefield_active_victim
+}
+
+cbrn_battlefield_cancel_operation = {
+	set_variable = { cbrn_battlefield_last_result = constant:cbrn_action_result.rejected }
+	if = {
+		limit = { NOT = { has_variable = cbrn_battlefield_cancelled_count } }
+		set_variable = { cbrn_battlefield_cancelled_count = constant:cbrn_math.zero }
+	}
+	add_to_variable = { cbrn_battlefield_cancelled_count = constant:cbrn_math.one }
+	cbrn_battlefield_clear_operation_state = yes
+}
+
+cbrn_battlefield_resolve_operation = {
+	cbrn_reset_action_context = yes
+	if = {
+		limit = {
+			has_variable = cbrn_battlefield_active_state
+			has_variable = cbrn_battlefield_active_route
+			has_variable = cbrn_battlefield_active_agent
+			has_variable = cbrn_battlefield_active_payload
+			cbrn_battlefield_current_version_condition_hook_verified = yes
+		}
+		var:cbrn_battlefield_active_state = {
+			save_event_target_as = cbrn_action_target_state
+			CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
+		}
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		set_temp_variable = { cbrn_action_delivery_route = cbrn_battlefield_active_route }
+		set_temp_variable = { cbrn_action_agent = cbrn_battlefield_active_agent }
+		set_temp_variable = { cbrn_action_payload_consumed = cbrn_battlefield_active_payload }
+		set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
+		cbrn_battlefield_set_action_agent_class_from_action = yes
+		cbrn_battlefield_set_severity_from_action_route = yes
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+				has_tech = nerve_agent_suppression_formation
+			}
+			set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+		}
+		cbrn_resolve_action_target_protection = yes
+		cbrn_battlefield_set_action_conditions_receipt = yes
+		# The public prepare wrapper overwrites this with the attacker's actual
+		# doctrine multiplier after validation; supply the positive validation
+		# value here so battlefield routes do not fail before that overwrite.
+		cbrn_set_doctrine_condemnation_mult_from_country = yes
+		cbrn_prepare_chemical_action_record = yes
+		if = {
+			limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+			cbrn_dispatch_chemical_action_record = yes
+			set_variable = { cbrn_battlefield_last_result = cbrn_action_result }
+			set_variable = { cbrn_battlefield_last_disruption = cbrn_action_disruption }
+			set_variable = { cbrn_battlefield_last_civilian_death_fraction = cbrn_action_civilian_death_fraction }
+			set_variable = { cbrn_battlefield_last_contamination = cbrn_action_contamination_points }
+			set_variable = { cbrn_battlefield_last_medical_saturation = cbrn_action_medical_saturation_points }
+			set_variable = { cbrn_battlefield_last_evidence = cbrn_action_evidence_points }
+		}
+		else = {
+			set_variable = { cbrn_battlefield_last_result = constant:cbrn_action_result.rejected }
+			set_variable = { cbrn_battlefield_last_reject_reason = cbrn_action_reject_reason }
+		}
+	}
+	else = {
+		set_variable = { cbrn_battlefield_last_result = constant:cbrn_action_result.rejected }
+	}
+	cbrn_battlefield_clear_operation_state = yes
+}
+
+cbrn_battlefield_present_last_resolution = {
+	if = {
+		limit = { check_variable = { var = cbrn_battlefield_last_result value = constant:cbrn_action_result.accepted compare = equals } }
+		custom_effect_tooltip = cbrn_battlefield_resolution_success_tt
+	}
+	else = {
+		custom_effect_tooltip = cbrn_battlefield_resolution_rejected_tt
+	}
+}
+
+cbrn_battlefield_begin_cylinder_release = {
+	set_temp_variable = { cbrn_battlefield_requested_route = constant:cbrn_delivery_route.cylinder_release }
+	cbrn_battlefield_begin_operation = yes
+}
+
+cbrn_battlefield_begin_projector_barrage = {
+	set_temp_variable = { cbrn_battlefield_requested_route = constant:cbrn_delivery_route.projector_barrage }
+	cbrn_battlefield_begin_operation = yes
+}
+
+cbrn_battlefield_begin_artillery_fire_plan = {
+	set_temp_variable = { cbrn_battlefield_requested_route = constant:cbrn_delivery_route.artillery_fire_plan }
+	cbrn_battlefield_begin_operation = yes
+}
+
+cbrn_battlefield_begin_armored_delivery = {
+	set_temp_variable = { cbrn_battlefield_requested_route = constant:cbrn_delivery_route.armored_delivery }
+	cbrn_battlefield_begin_operation = yes
+}

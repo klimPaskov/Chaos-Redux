@@ -9,6 +9,142 @@
 # - Contains no effects and never supplies weather, terrain, or payload proof.
 # ============================================================================
 
+cbrn_chemical_air_raid_state_is_valid = {
+	exists = yes
+	CONTROLLER = { exists = yes }
+}
+
+# Native raid target scope. The selected state remains the only accepted
+# release target; aircraft presence without this native state receipt cannot
+# enter the shared pipeline.
+cbrn_chemical_air_raid_target_from_is_valid = {
+	FROM = { exists = yes }
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	var:target_state = {
+		cbrn_chemical_air_raid_state_is_valid = yes
+		is_controlled_by = FROM
+	}
+}
+
+cbrn_chemical_air_raid_can_prepare_against_from = {
+	cbrn_chemical_air_raid_target_from_is_valid = yes
+	has_tech = chemical_air_interdiction
+	cbrn_country_has_integrated_readiness = yes
+	cbrn_policy_allows_strategic_use_against_from = yes
+}
+
+cbrn_chemical_air_raid_ai_may_target_from = {
+	cbrn_chemical_air_raid_can_prepare_against_from = yes
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+	OR = {
+		cbrn_ai_has_strategic_program_posture = yes
+		cbrn_ai_has_retaliatory_arsenal_posture = yes
+		cbrn_ai_route_allows_first_use = yes
+	}
+}
+
+cbrn_chemical_air_raid_has_choking_payload = {
+	NOT = { has_equipment = { choking_chemical_air_payload < constant:cbrn_payload_route_cost.chemical_air_raid } }
+}
+
+cbrn_chemical_air_raid_has_blister_payload = {
+	NOT = { has_equipment = { blister_chemical_air_payload < constant:cbrn_payload_route_cost.chemical_air_raid } }
+}
+
+cbrn_chemical_air_raid_has_nerve_payload = {
+	NOT = { has_equipment = { nerve_chemical_air_payload < constant:cbrn_payload_route_cost.chemical_air_raid } }
+}
+
+cbrn_chemical_air_raid_has_incapacitating_payload = {
+	NOT = { has_equipment = { incapacitating_chemical_air_payload < constant:cbrn_payload_route_cost.chemical_air_raid } }
+}
+
+cbrn_chemical_strategic_raid_has_nerve_payload = {
+	NOT = { has_equipment = { nerve_chemical_air_payload < constant:cbrn_payload_route_cost.strategic_chemical_raid } }
+}
+
+cbrn_chemical_air_raid_has_chlorine_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_chlorine_lightweight_tech
+		has_tech = cbrn_air_rack_chlorine_long_range_tech
+		has_tech = cbrn_air_rack_chlorine_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_phosgene_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_phosgene_lightweight_tech
+		has_tech = cbrn_air_rack_phosgene_long_range_tech
+		has_tech = cbrn_air_rack_phosgene_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_mustard_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_mustard_lightweight_tech
+		has_tech = cbrn_air_rack_mustard_long_range_tech
+		has_tech = cbrn_air_rack_mustard_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_lewisite_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_lewisite_lightweight_tech
+		has_tech = cbrn_air_rack_lewisite_long_range_tech
+		has_tech = cbrn_air_rack_lewisite_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_tabun_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_tabun_lightweight_tech
+		has_tech = cbrn_air_rack_tabun_long_range_tech
+		has_tech = cbrn_air_rack_tabun_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_sarin_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_sarin_lightweight_tech
+		has_tech = cbrn_air_rack_sarin_long_range_tech
+		has_tech = cbrn_air_rack_sarin_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_soman_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_soman_lightweight_tech
+		has_tech = cbrn_air_rack_soman_long_range_tech
+		has_tech = cbrn_air_rack_soman_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_malodor_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_malodor_lightweight_tech
+		has_tech = cbrn_air_rack_malodor_long_range_tech
+		has_tech = cbrn_air_rack_malodor_lightweight_long_range_tech
+	}
+}
+
+cbrn_chemical_air_raid_has_behavioral_rack = {
+	OR = {
+		has_tech = cbrn_air_rack_behavioral_lightweight_tech
+		has_tech = cbrn_air_rack_behavioral_long_range_tech
+		has_tech = cbrn_air_rack_behavioral_lightweight_long_range_tech
+	}
+}
+
+# Legacy leader abilities do not expose a native selected target state or a
+# verified combat-condition receipt. Keep their access closed until a route
+# adapter can call the shared CBRN exposure pipeline with those proofs.
+cbrn_chemical_ability_target_receipt_is_valid = {
+	always = no
+}
+
 cbrn_chemical_air_raid_result_has_no_release = {
 	OR = {
 		check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.aborted compare = equals }
@@ -31,9 +167,21 @@ cbrn_chemical_air_raid_reservation_is_resolved = {
 	check_variable = { var = cbrn_raid_reservation_proof value = constant:cbrn_proof.supplied compare = equals }
 	cbrn_action_agent_is_valid_chemical = yes
 	cbrn_action_agent_matches_class = yes
-	check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+	OR = {
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+		check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+	}
 	has_variable = cbrn_action_payload_required
-	check_variable = { var = cbrn_action_payload_required value = constant:cbrn_payload_route_cost.chemical_air_raid compare = equals }
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+			check_variable = { var = cbrn_action_payload_required value = constant:cbrn_payload_route_cost.chemical_air_raid compare = equals }
+		}
+		AND = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+			check_variable = { var = cbrn_action_payload_required value = constant:cbrn_payload_route_cost.strategic_chemical_raid compare = equals }
+		}
+	}
 	has_variable = cbrn_action_payload_consumed
 	check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
 	check_variable = {

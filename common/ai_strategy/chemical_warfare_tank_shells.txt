@@ -1,4 +1,8 @@
-# AI strategy: chemical tank-support adoption for support companies.
+# AI strategy: armored Chemical-delivery adoption for regimental support.
+# Pressure is applied to the flame-role variants actually required by the
+# consolidated detachments, never to ordinary tank chassis.
+# Every pressure path uses the shared protection, conventional-reserve,
+# industry, and posture gate before it can compete with ordinary army needs.
 # NOTE: `ai_strategy.value` in this context does not parse script constants.
 
 @CHEM_AI_TANK_SHELL_PROD_BASE = 1
@@ -13,6 +17,7 @@ chem_tank_shell_production_major_base = {
 	enable = {
 		is_major = yes
 		has_war = yes
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
 		OR = {
 			has_tech = chlorine_gas
 			has_tech = phosgene
@@ -26,18 +31,18 @@ chem_tank_shell_production_major_base = {
 	abort_when_not_enabled = yes
 
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = light_tank_chassis
+			type = equipment_variant_production_factor
+			id = light_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_BASE
 		}
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = medium_tank_chassis
+			type = equipment_variant_production_factor
+			id = medium_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_BASE
 		}
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = heavy_tank_chassis
+			type = equipment_variant_production_factor
+			id = heavy_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_BASE
 		}
 }
@@ -47,9 +52,8 @@ chem_tank_shell_production_major_threat_low = {
 	enable = {
 		is_major = yes
 		has_war = yes
-		any_enemy_country = {
-			check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.low compare = greater_than }
-		}
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_enemy_used_chemical_weapons = yes
 		OR = {
 			has_tech = chlorine_gas
 			has_tech = phosgene
@@ -63,8 +67,8 @@ chem_tank_shell_production_major_threat_low = {
 	abort_when_not_enabled = yes
 
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = light_tank_chassis
+			type = equipment_variant_production_factor
+			id = light_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_LOW
 		}
 }
@@ -74,9 +78,8 @@ chem_tank_shell_production_major_threat_med = {
 	enable = {
 		is_major = yes
 		has_war = yes
-		any_enemy_country = {
-			check_variable = { var = condemnation_chemical value = constant:chem_ai_cylinder_retaliate_threshold.med compare = greater_than }
-		}
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
+		has_enemy_used_chemical_weapons = yes
 		OR = {
 			has_tech = chlorine_gas
 			has_tech = phosgene
@@ -90,13 +93,13 @@ chem_tank_shell_production_major_threat_med = {
 	abort_when_not_enabled = yes
 
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = medium_tank_chassis
+			type = equipment_variant_production_factor
+			id = medium_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_MED
 		}
 		ai_strategy = {
-			type = equipment_production_min_factories_archetype
-			id = heavy_tank_chassis
+			type = equipment_variant_production_factor
+			id = heavy_tank_flame_chassis
 			value = @CHEM_AI_TANK_SHELL_PROD_THREAT_LOW
 		}
 }
@@ -106,6 +109,7 @@ chem_tank_shell_template_design_focus = {
 	enable = {
 		is_major = yes
 		has_war = yes
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
 		OR = {
 			has_tech = chlorine_gas
 			has_tech = phosgene
@@ -128,6 +132,7 @@ chem_tank_shell_template_design_focus = {
 chem_tank_shell_production_japan_bonus = {
 	allowed = { original_tag = JAP }
 	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
 		has_tech = livens_projector_tech
 		is_japan_china_chemical_campaign_war = yes
 		OR = {
@@ -143,13 +148,13 @@ chem_tank_shell_production_japan_bonus = {
 	abort_when_not_enabled = yes
 
 	ai_strategy = {
-		type = equipment_production_min_factories_archetype
-		id = light_tank_chassis
+		type = equipment_variant_production_factor
+		id = light_tank_flame_chassis
 		value = @CHEM_AI_TANK_SHELL_PROD_JAPAN_BONUS
 	}
 	ai_strategy = {
-		type = equipment_production_min_factories_archetype
-		id = medium_tank_chassis
+		type = equipment_variant_production_factor
+		id = medium_tank_flame_chassis
 		value = @CHEM_AI_TANK_SHELL_PROD_JAPAN_BONUS
 	}
 }
@@ -157,6 +162,7 @@ chem_tank_shell_production_japan_bonus = {
 chem_tank_shell_template_design_focus_japan_bonus = {
 	allowed = { original_tag = JAP }
 	enable = {
+		cbrn_ai_can_expand_offensive_cbrn_production = yes
 		has_tech = livens_projector_tech
 		is_japan_china_chemical_campaign_war = yes
 		OR = {

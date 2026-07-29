@@ -1,0 +1,405 @@
+# ============================================================================
+# CHAOS REDUX - CBRN AI POSTURE TRIGGERS
+# ============================================================================
+# Overview:
+# - Classifies civil-defence, retaliation, battlefield, strategic, desperate,
+#   countermeasure, and sanction-response priorities from exact game state.
+# - Blocks offensive expansion during real conventional-equipment deficits and
+#   until a refreshed protective base exists.
+# - Biological project and stockpile expansion use explicit program routes,
+#   containment foundations, exact arsenal risk, and the accepted agent ladder.
+# - Japan's China program selects Anthrax before Plague and never receives an
+#   unrelated agent preference merely from its tag.
+# - These triggers provide no target, activity, weather, terrain, air-mission,
+#   facility, or stockpile fallback.
+# ============================================================================
+
+cbrn_ai_has_civil_defence_priority = {
+	OR = {
+		cbrn_ai_has_defensive_cbrn_profile = yes
+		cbrn_country_has_public_chemical_emergency = yes
+		cbrn_country_controls_chemical_contamination = yes
+		bio_countermeasure_country_has_any_detected_outbreak = yes
+		has_active_biowarfare_outbreak = yes
+	}
+}
+
+cbrn_ai_has_retaliatory_arsenal_posture = {
+	OR = {
+		cbrn_policy_is_retaliation_authority = yes
+		has_country_flag = cbrn_retaliation_authorized
+		AND = {
+			cbrn_ai_has_defensive_cbrn_profile = yes
+			has_enemy_used_chemical_weapons = yes
+		}
+	}
+}
+
+cbrn_ai_has_battlefield_program_posture = {
+	has_doctrine = chaos_warfare
+	OR = {
+		AND = {
+			cbrn_ai_has_battlefield_cbrn_profile = yes
+			cbrn_policy_allows_battlefield_use = yes
+		}
+		AND = {
+			cbrn_ai_has_retaliatory_arsenal_posture = yes
+			cbrn_policy_allows_battlefield_use = yes
+		}
+	}
+}
+
+cbrn_ai_has_strategic_program_posture = {
+	has_doctrine = chaos_warfare
+	cbrn_country_has_integrated_readiness = yes
+	NOT = {
+		num_of_military_factories < constant:cbrn_ai_posture.strategic_program_minimum_military_factories
+	}
+	OR = {
+		AND = {
+			cbrn_ai_route_allows_first_use = yes
+			cbrn_policy_allows_strategic_use = yes
+		}
+		AND = {
+			cbrn_ai_has_retaliatory_arsenal_posture = yes
+			cbrn_policy_allows_strategic_use = yes
+		}
+	}
+}
+
+cbrn_ai_has_desperate_release_posture = {
+	OR = {
+		bio_sabotage_ai_is_desperate_route = yes
+		AND = {
+			bio_doomsday_actor_has_explicit_route_or_extreme_policy = yes
+			bio_doomsday_actor_is_in_last_resort_condition = yes
+		}
+	}
+}
+
+cbrn_ai_has_conventional_army_deficit = {
+	OR = {
+		stockpile_ratio = {
+			archetype = infantry_equipment
+			ratio < constant:cbrn_ai_posture.conventional_infantry_reserve_floor
+		}
+		stockpile_ratio = {
+			archetype = support_equipment
+			ratio < constant:cbrn_ai_posture.conventional_support_reserve_floor
+		}
+		AND = {
+			has_tech = artillery1
+			stockpile_ratio = {
+				archetype = artillery_equipment
+				ratio < constant:cbrn_ai_posture.conventional_artillery_reserve_floor
+			}
+		}
+		AND = {
+			has_tech = motorised_infantry
+			stockpile_ratio = {
+				archetype = motorized_equipment
+				ratio < constant:cbrn_ai_posture.conventional_motorized_reserve_floor
+			}
+		}
+	}
+}
+
+cbrn_ai_has_stable_protective_base = {
+	has_tech = basic_gas_masks
+	cbrn_country_has_military_choking_protection_medium = yes
+	NOT = { cbrn_country_has_military_mask_shortage = yes }
+	NOT = {
+		has_equipment = {
+			decontamination_equipment < constant:cbrn_ai_posture.stable_decontamination_reserve
+		}
+	}
+	NOT = {
+		has_equipment = {
+			cbrn_instrument_equipment < constant:cbrn_ai_posture.stable_instrument_reserve
+		}
+	}
+}
+
+cbrn_ai_can_expand_offensive_cbrn_production = {
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = {
+		num_of_military_factories < constant:cbrn_ai_posture.offensive_program_minimum_military_factories
+	}
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	cbrn_ai_has_stable_protective_base = yes
+	OR = {
+		cbrn_ai_has_retaliatory_arsenal_posture = yes
+		cbrn_ai_has_battlefield_program_posture = yes
+		cbrn_ai_has_strategic_program_posture = yes
+		cbrn_ai_has_desperate_release_posture = yes
+	}
+}
+
+cbrn_ai_has_safe_biological_stockpile_context = {
+	bio_stockpile_safety_risk_context_is_valid = yes
+	OR = {
+		bio_stockpile_safety_is_controlled = yes
+		bio_stockpile_safety_is_strained = yes
+	}
+}
+
+cbrn_ai_has_japan_china_biological_campaign_posture = {
+	japan_bio_campaign_route_is_open = yes
+}
+
+cbrn_ai_has_no_ordinary_biological_agent_project = {
+	NOT = { bio_strategic_raid_country_has_any_agent_project = yes }
+}
+
+cbrn_ai_has_early_biological_agent_project = {
+	OR = {
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:anthrax_bomb
+	}
+}
+
+cbrn_ai_biological_project_risk_allows_expansion = {
+	OR = {
+		cbrn_ai_has_no_ordinary_biological_agent_project = yes
+		AND = {
+			bio_strategic_raid_country_has_any_agent_project = yes
+			bio_stockpile_safety_risk_context_is_valid = yes
+			OR = {
+				cbrn_ai_has_safe_biological_stockpile_context = yes
+				cbrn_ai_has_desperate_release_posture = yes
+			}
+		}
+	}
+}
+
+cbrn_ai_can_research_biological_agent_project = {
+	NOT = { is_actual_nonhuman_country = yes }
+	has_tech = pathogen_handling_protocols
+	cbrn_ai_biological_project_risk_allows_expansion = yes
+	OR = {
+		AND = {
+			NOT = {
+				num_of_military_factories < constant:cbrn_ai_posture.offensive_program_minimum_military_factories
+			}
+			NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+			has_tech = rapid_outbreak_response
+			cbrn_ai_has_stable_protective_base = yes
+			OR = {
+				cbrn_ai_has_retaliatory_arsenal_posture = yes
+				cbrn_ai_has_battlefield_program_posture = yes
+				cbrn_ai_has_strategic_program_posture = yes
+				cbrn_ai_has_japan_china_biological_campaign_posture = yes
+			}
+		}
+		AND = {
+			cbrn_ai_has_desperate_release_posture = yes
+			OR = {
+				cbrn_ai_has_no_ordinary_biological_agent_project = yes
+				bio_stockpile_safety_risk_context_is_valid = yes
+			}
+		}
+	}
+}
+
+cbrn_ai_should_research_tularemia_project = {
+	cbrn_ai_can_research_biological_agent_project = yes
+	cbrn_ai_has_no_ordinary_biological_agent_project = yes
+	cbrn_ai_has_battlefield_program_posture = yes
+	NOT = { cbrn_ai_has_retaliatory_arsenal_posture = yes }
+	NOT = { cbrn_ai_has_strategic_program_posture = yes }
+	NOT = { cbrn_ai_has_desperate_release_posture = yes }
+	NOT = { original_tag = JAP }
+}
+
+cbrn_ai_should_research_anthrax_project = {
+	cbrn_ai_can_research_biological_agent_project = yes
+	cbrn_ai_has_no_ordinary_biological_agent_project = yes
+	OR = {
+		cbrn_ai_has_japan_china_biological_campaign_posture = yes
+		cbrn_ai_has_desperate_release_posture = yes
+		AND = {
+			NOT = { original_tag = JAP }
+			OR = {
+				cbrn_ai_has_retaliatory_arsenal_posture = yes
+				cbrn_ai_has_strategic_program_posture = yes
+			}
+		}
+	}
+}
+
+cbrn_ai_should_research_plague_project = {
+	cbrn_ai_can_research_biological_agent_project = yes
+	NOT = { is_special_project_completed = sp:plague_bomb }
+	cbrn_ai_has_early_biological_agent_project = yes
+	OR = {
+		cbrn_ai_has_desperate_release_posture = yes
+		AND = {
+			cbrn_ai_has_japan_china_biological_campaign_posture = yes
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		AND = {
+			NOT = { original_tag = JAP }
+			cbrn_ai_has_strategic_program_posture = yes
+		}
+	}
+}
+
+cbrn_ai_should_research_smallpox_project = {
+	cbrn_ai_can_research_biological_agent_project = yes
+	NOT = { is_special_project_completed = sp:smallpox_bomb }
+	is_special_project_completed = sp:plague_bomb
+	OR = {
+		cbrn_ai_has_desperate_release_posture = yes
+		AND = {
+			cbrn_ai_route_allows_unrestricted_use = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			is_major = yes
+			NOT = {
+				num_of_military_factories < constant:cbrn_ai_posture.strategic_program_minimum_military_factories
+			}
+			has_tech = fail_safe_containment_facilities
+			cbrn_ai_has_safe_biological_stockpile_context = yes
+		}
+	}
+}
+
+cbrn_ai_can_expand_safe_biological_production = {
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = {
+		num_of_military_factories < constant:cbrn_ai_posture.offensive_program_minimum_military_factories
+	}
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	has_tech = pathogen_handling_protocols
+	has_tech = rapid_outbreak_response
+	cbrn_ai_has_stable_protective_base = yes
+	cbrn_ai_has_safe_biological_stockpile_context = yes
+	OR = {
+		cbrn_ai_has_retaliatory_arsenal_posture = yes
+		cbrn_ai_has_battlefield_program_posture = yes
+		cbrn_ai_has_strategic_program_posture = yes
+		cbrn_ai_has_japan_china_biological_campaign_posture = yes
+	}
+}
+
+cbrn_ai_can_expand_desperate_biological_production = {
+	NOT = { is_actual_nonhuman_country = yes }
+	has_tech = pathogen_handling_protocols
+	bio_stockpile_safety_risk_context_is_valid = yes
+	cbrn_ai_has_desperate_release_posture = yes
+}
+
+cbrn_ai_can_expand_biological_production = {
+	OR = {
+		cbrn_ai_can_expand_safe_biological_production = yes
+		cbrn_ai_can_expand_desperate_biological_production = yes
+	}
+}
+
+cbrn_ai_has_modern_agent_payload_reserve = {
+	OR = {
+		has_equipment = { chlorine_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { phosgene_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { mustard_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { lewisite_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { tabun_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { sarin_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { soman_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { malodor_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+		has_equipment = { behavioral_agent_lot_1 > constant:cbrn_ai_posture.modern_agent_payload_reserve }
+	}
+}
+
+cbrn_ai_has_active_shell_filling_profile = {
+	NOT = { has_country_flag = cbrn_shell_profile_change_in_progress }
+	has_variable = cbrn_shell_filling_agent
+	check_variable = {
+		var = cbrn_shell_filling_agent
+		value = constant:cbrn_agent.none
+		compare = not_equals
+	}
+}
+
+cbrn_ai_should_prioritize_countermeasures = {
+	OR = {
+		cbrn_country_has_public_chemical_emergency = yes
+		cbrn_country_controls_chemical_contamination = yes
+		bio_countermeasure_country_has_any_detected_outbreak = yes
+		has_active_biowarfare_outbreak = yes
+	}
+}
+
+cbrn_ai_should_prioritize_sanction_response = {
+	OR = {
+		has_country_flag = cbrn_inspection_demand_active
+		AND = {
+			has_variable = condemnation_total
+			has_variable = condemnation_import_vulnerability
+			check_variable = {
+				var = condemnation_total
+				value = constant:cbrn_ai_posture.sanction_response_condemnation
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = condemnation_import_vulnerability
+				value = constant:cbrn_ai_posture.sanction_response_import_vulnerability
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+cbrn_ai_has_democratic_import_dependent_sanction_profile = {
+	has_government = democratic
+	condemnation_is_formally_censured = yes
+	NOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+	has_variable = condemnation_import_vulnerability
+	check_variable = {
+		var = condemnation_import_vulnerability
+		value = constant:cbrn_ai_posture.sanction_response_import_vulnerability
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_ai_has_authoritarian_industrial_sanction_profile = {
+	NOT = { has_government = democratic }
+	is_major = yes
+	condemnation_target_is_strong = yes
+	condemnation_is_formally_censured = yes
+	NOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+}
+
+cbrn_ai_has_radical_high_chaos_sanction_profile = {
+	condemnation_is_formally_censured = yes
+	cbrn_ai_route_allows_unrestricted_use = yes
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+}
+
+cbrn_ai_has_desperate_near_victory_sanction_profile = {
+	condemnation_is_formally_censured = yes
+	has_war = yes
+	cbrn_ai_route_allows_unrestricted_use = yes
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+	any_enemy_country = {
+		check_variable = {
+			var = surrender_progress
+			value = constant:cbrn_ai_posture.sanction_response_near_victory_enemy_surrender
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+cbrn_ai_is_losing_near_capitulation = {
+	has_war = yes
+	check_variable = {
+		var = surrender_progress
+		value = constant:cbrn_ai_posture.sanction_response_near_capitulation
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_ai_should_destroy_stockpiles_during_collapse = {
+	cbrn_ai_is_losing_near_capitulation = yes
+	NOT = { bio_doomsday_actor_has_explicit_route_or_extreme_policy = yes }
+}

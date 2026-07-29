@@ -919,6 +919,12 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
     animation_downloads: Dict[str, Dict[str, Any]] = {}
     for action in spec["required_actions"]:
         role = action["role"]
+        if action.get("task_type") == "blender_authored_skeletal":
+            continue
+        if action.get("provider_action_id") is None:
+            raise RuntimeError(
+                f"Required action {role} has no provider action id or Blender authoring route."
+            )
         stage = f"animation_{role}"
         animation_id = provider_task(
             client,
@@ -1109,8 +1115,19 @@ def continue_humanoid(spec: Dict[str, Any]) -> Dict[str, Any]:
         "export": move_anim_export,
         "output_rel": move_anim_rel,
         "loop": True,
-        "frame_policy": "24fps_in_place_blender_authored",
+        "frame_policy": next(
+            item.get("frame_policy", "24fps_in_place_blender_authored")
+            for item in spec["required_actions"]
+            if item["role"] == "move"
+        ),
     }
+    required_roles = {item["role"] for item in spec["required_actions"]}
+    missing_roles = required_roles.difference(action_reports)
+    if missing_roles:
+        raise RuntimeError(
+            "Required skeletal actions were not produced: "
+            + ", ".join(sorted(missing_roles))
+        )
     mesh_file = job / mesh_rel
     update_job(
         job,

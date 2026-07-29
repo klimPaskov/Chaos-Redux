@@ -1,0 +1,24 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CAMP ADAPTER TRIGGERS
+# ============================================================================
+# Overview:
+# - Validates the exact restricted-site adapter owned by the camp system.
+# - Keeps the adapter separate from frequently used dynamic CBRN helpers.
+# - Does not create, reveal, or authorize camp sites; it only validates an
+#   already selected and already eligible camp route.
+# ============================================================================
+
+cbrn_camp_restricted_site_target_is_valid = {
+	has_variable = camp_rework_action_state_id
+	var:camp_rework_action_state_id = {
+		camp_rework_state_is_chemical_escalation_target = yes
+	}
+}
+
+cbrn_camp_restricted_site_release_is_ready = {
+	cbrn_country_has_operational_readiness = yes
+	has_variable = cbrn_command_integration
+	check_variable = { cbrn_command_integration > constant:cbrn_math.zero }
+	has_variable = chemical_readiness
+	check_variable = { chemical_readiness > constant:cbrn_math.zero }
+}

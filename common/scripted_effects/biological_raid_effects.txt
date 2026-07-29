@@ -101,6 +101,10 @@ bio_strategic_raid_select_failure_outcome_internal = {
 			limit = { cbrn_designer_has_sealed_bomb_bay_interfaces = yes }
 			multiply_temp_variable = { bio_raid_attacker_accident_weight = constant:bio_strategic_raid_selection.sealed_bomb_bay_accident_mult }
 		}
+		if = {
+			limit = { cbrn_designer_has_stable_weaponization = yes }
+			multiply_temp_variable = { bio_raid_attacker_accident_weight = constant:cbrn_biosecurity_designer_effect.stable_weaponization_attacker_accident_mult }
+		}
 	}
 
 	random_list = {
@@ -283,6 +287,16 @@ bio_strategic_raid_record_failed_attempt_evidence_internal = {
 	set_temp_variable = { bio_raid_attempt_evidence_points = constant:bio_strategic_raid_outcome_profile.failed_delivery.evidence }
 	set_temp_variable = { bio_raid_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_raid_attempt_evidence_applied = constant:bio_lifecycle_math.zero }
+	event_target:bio_raid_actor = {
+		if = {
+			limit = { cbrn_designer_has_stable_weaponization = yes }
+			multiply_temp_variable = { bio_raid_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.stable_weaponization_evidence_mult }
+		}
+		if = {
+			limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+			multiply_temp_variable = { bio_raid_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_evidence_mult }
+		}
+	}
 
 	if = {
 		limit = { NOT = { has_variable = bio_strategic_raid_attempt_actor } }
@@ -336,7 +350,12 @@ bio_strategic_raid_record_failed_attempt_evidence_internal = {
 			set_state_flag = bio_strategic_raid_attempt_evidence_decay_scheduled
 			set_temp_variable = { bio_raid_attempt_decay_days = constant:bio_strategic_raid_attempt_evidence.decay_days }
 			round_temp_variable = bio_raid_attempt_decay_days
-			state_event = { id = cbrn_bio_lifecycle.21 days = bio_raid_attempt_decay_days }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_bio_lifecycle.21 days = [BIO_RAID_ATTEMPT_DECAY_DAYS] }
+				}
+				BIO_RAID_ATTEMPT_DECAY_DAYS = "[?bio_raid_attempt_decay_days|.0]"
+			}
 		}
 	}
 }
@@ -401,6 +420,10 @@ bio_strategic_raid_apply_failed_attempt_condemnation_internal = {
 			has_idea = cbrn_theater_contamination_doctrine_spirit
 		}
 		set_temp_variable = { bio_raid_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	if = {
+		limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+		multiply_temp_variable = { bio_raid_attempt_condemnation_mult = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_condemnation_mult }
 	}
 	multiply_temp_variable = { condemnation_base_gain = bio_raid_attempt_condemnation_mult }
 	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }
@@ -549,7 +572,12 @@ bio_strategic_raid_decay_attempt_evidence = {
 		subtract_from_temp_variable = { bio_raid_attempt_decay_days = global.num_days }
 		round_temp_variable = bio_raid_attempt_decay_days
 		clamp_temp_variable = { var = bio_raid_attempt_decay_days min = constant:bio_lifecycle_schedule.minimum_event_delay_days }
-		state_event = { id = cbrn_bio_lifecycle.21 days = bio_raid_attempt_decay_days }
+		meta_effect = {
+			text = {
+				state_event = { id = cbrn_bio_lifecycle.21 days = [BIO_RAID_ATTEMPT_DECAY_DAYS] }
+			}
+			BIO_RAID_ATTEMPT_DECAY_DAYS = "[?bio_raid_attempt_decay_days|.0]"
+		}
 	}
 	else_if = {
 		limit = { has_state_flag = bio_strategic_raid_attempt_evidence_decay_scheduled }
@@ -567,7 +595,12 @@ bio_strategic_raid_decay_attempt_evidence = {
 			set_state_flag = bio_strategic_raid_attempt_evidence_decay_scheduled
 			set_temp_variable = { bio_raid_attempt_decay_days = constant:bio_strategic_raid_attempt_evidence.decay_days }
 			round_temp_variable = bio_raid_attempt_decay_days
-			state_event = { id = cbrn_bio_lifecycle.21 days = bio_raid_attempt_decay_days }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_bio_lifecycle.21 days = [BIO_RAID_ATTEMPT_DECAY_DAYS] }
+				}
+				BIO_RAID_ATTEMPT_DECAY_DAYS = "[?bio_raid_attempt_decay_days|.0]"
+			}
 		}
 		else = {
 			clear_variable = bio_strategic_raid_attempt_actor

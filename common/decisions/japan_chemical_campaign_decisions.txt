@@ -2,9 +2,9 @@
 # JAPAN CHEMICAL CAMPAIGN DECISIONS
 # ============================================================================
 # State-targeted chemical cylinder operations for Japan during the China war.
-# One free selector decision rotates the prepared agent, while the attack
-# decision spends command power, consumes cylinders, and applies state
-# contamination through shared scripted effects.
+# One free selector decision rotates the prepared agent. The attack decision
+# remains gated until a verified current-version selected-state receipt can
+# spend command power, consume cylinders, and dispatch the shared pipeline.
 # ============================================================================
 
 @JAPAN_CHEMICAL_CAMPAIGN_AI_ATTACK_BASE = 4
@@ -18,10 +18,12 @@ japan_chemical_campaign_category = {
 
 		available = {
 			is_japan_china_chemical_campaign_war = yes
+			cbrn_japan_chemical_campaign_shared_adapter_is_valid = yes
 		}
 
 		visible = {
 			is_japan_china_chemical_campaign_war = yes
+			cbrn_japan_chemical_campaign_shared_adapter_is_valid = yes
 		}
 
 		ai_will_do = {
@@ -44,7 +46,12 @@ japan_chemical_campaign_category = {
 
 		available = {
 			is_japan_china_chemical_campaign_war = yes
+			cbrn_japan_chemical_campaign_shared_adapter_is_valid = yes
 			NOT = { has_country_flag = japan_chemical_campaign_attack_cooldown }
+			custom_trigger_tooltip = {
+				tooltip = japan_chemical_campaign_exact_adapter_unavailable_tt
+				cbrn_japan_chemical_campaign_shared_adapter_is_valid = yes
+			}
 			custom_trigger_tooltip = {
 				tooltip = japan_chemical_campaign_attack_stockpile_tt
 				has_japan_chemical_campaign_selected_stockpile_attack = yes

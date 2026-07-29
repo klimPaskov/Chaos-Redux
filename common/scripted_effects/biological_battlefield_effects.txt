@@ -5,6 +5,8 @@
 # - Resolves four native exact-state land raids through one private battlefield
 #   route adapter and the shared ordinary biological lifecycle dispatcher.
 # - Treats native essential equipment as the full physical payload debit.
+# - Keeps the native delivery roll agent-neutral; potency is applied only after
+#   the roll through the central agent profile.
 # - Records release, deaths, contamination, saturation, evidence, attribution,
 #   and Condemnation only through the shared lifecycle after exact validation.
 # - Resolves bounded adjacent friendly blowback without a scan or alternate
@@ -145,26 +147,37 @@ bio_battlefield_map_engine_result_internal = {
 # release evidence is persistent; it is not placed in a shared dynamic registry.
 bio_battlefield_record_failed_attempt_evidence_internal = {
 	set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_battlefield_attempt_evidence_points = constant:bio_battlefield_attempt.evidence }
+	event_target:bio_battlefield_actor = {
+		if = {
+			limit = { cbrn_designer_has_stable_weaponization = yes }
+			multiply_temp_variable = { bio_battlefield_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.stable_weaponization_evidence_mult }
+		}
+		if = {
+			limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+			multiply_temp_variable = { bio_battlefield_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_evidence_mult }
+		}
+	}
 	if = {
 		limit = { NOT = { has_variable = bio_battlefield_attempt_actor } }
 		set_variable = { bio_battlefield_attempt_actor = event_target:bio_battlefield_actor }
-		set_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		set_variable = { bio_battlefield_attempt_evidence = bio_battlefield_attempt_evidence_points }
 		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
 	}
 	else_if = {
 		limit = { var:bio_battlefield_attempt_actor = { tag = event_target:bio_battlefield_actor } }
-		add_to_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		add_to_variable = { bio_battlefield_attempt_evidence = bio_battlefield_attempt_evidence_points }
 		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
 	}
 	else_if = {
 		limit = {
 			OR = {
 				NOT = { has_variable = bio_battlefield_attempt_evidence }
-				check_variable = { var = bio_battlefield_attempt_evidence value = constant:bio_battlefield_attempt.evidence compare = less_than }
+				check_variable = { var = bio_battlefield_attempt_evidence value = bio_battlefield_attempt_evidence_points compare = less_than }
 			}
 		}
 		set_variable = { bio_battlefield_attempt_actor = event_target:bio_battlefield_actor }
-		set_variable = { bio_battlefield_attempt_evidence = constant:bio_battlefield_attempt.evidence }
+		set_variable = { bio_battlefield_attempt_evidence = bio_battlefield_attempt_evidence_points }
 		set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
 	}
 
@@ -232,6 +245,10 @@ bio_battlefield_apply_failed_attempt_condemnation_internal = {
 			has_idea = cbrn_theater_contamination_doctrine_spirit
 		}
 		set_temp_variable = { bio_battlefield_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	if = {
+		limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+		multiply_temp_variable = { bio_battlefield_attempt_condemnation_mult = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_condemnation_mult }
 	}
 	multiply_temp_variable = { condemnation_base_gain = bio_battlefield_attempt_condemnation_mult }
 	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.minor }

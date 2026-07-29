@@ -1,0 +1,272 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION BACKEND CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes the exact policy states, procurement debit, target gates,
+#   short-term suppression records, delayed trauma, repeat-use escalation,
+#   coverup/discovery records, and targeted timing used by the occupation
+#   backend.
+# - The shared payload category remains authoritative for the nerve lot debit:
+#   cbrn_payload_route_cost.nerve_suppression. This file does not duplicate
+#   that shared cost.
+# - State modifiers consume the values in this file directly or through
+#   bounded state variables refreshed by subsystem-specific effects.
+# ============================================================================
+
+cbrn_occupation_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	coercive_security = 1
+	protected_administration = 2
+}
+
+cbrn_occupation_coverup_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	seal_state = 1
+	destroy_records = 2
+	admit_accident = 3
+	permit_inspection = 4
+}
+
+cbrn_occupation_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	gas_masks = 40
+	decontamination_equipment = 30
+	cbrn_instruments = 15
+	support_equipment = 40
+	motorized_equipment = 20
+	command_power = 30
+}
+
+cbrn_occupation_decision_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	authorize_coercive_security_pp = 75
+	authorize_protected_administration_pp = 50
+	protective_aid_pp = 25
+	protective_aid_factories = 2
+	seal_state_pp = 40
+	destroy_records_pp = 60
+	admit_release_pp = 20
+	permit_inspection_pp = 35
+}
+
+cbrn_occupation_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_resistance = 25
+	ai_minimum_resistance = 50
+	minimum_chemical_readiness = 70
+	minimum_detachment_strength = 0.50
+	minimum_detachment_organization = 0.40
+	neighbor_spillover_trauma = 40
+	neighbor_spillover_civilian_deaths = 1000
+	ai_maximum_condemnation = 100
+}
+
+cbrn_occupation_suppression = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	resistance_reduction = 25
+	trauma_base_gain = 25
+	trauma_repeat_gain = 15
+	trauma_to_backlash = 0.20
+	backlash_resistance_base = 15
+	backlash_resistance_maximum = 40
+	backlash_target_gain = 10
+	backlash_compliance_loss = 5
+	country_repeat_pressure_gain = 10
+	country_repeat_pressure_maximum = 100
+	trauma_decay_step = 5
+	trauma_maximum = 100
+}
+
+cbrn_occupation_state_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	active_required_garrison = -0.40
+	active_garrison_damage = -0.25
+	active_resistance_target = -0.20
+	active_local_factories = -0.15
+	active_local_resources = -0.10
+	active_enemy_speed = -0.15
+	active_enemy_supplies = -0.15
+	trauma_resistance_target_per_point = 0.002
+	trauma_resistance_growth_per_point = 0.002
+	trauma_compliance_gain_per_point = -0.0004
+	backlash_resistance_target = 0.10
+	backlash_resistance_growth = 0.15
+	backlash_garrison_damage = 0.15
+	backlash_local_factories = -0.10
+	backlash_local_resources = -0.05
+	neighbor_resistance_gain = 5
+	sealed_local_factories = -0.25
+	sealed_local_resources = -0.10
+	sealed_resistance_growth = 0.10
+}
+
+cbrn_occupation_law = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	coercive_resistance_target = -0.50
+	coercive_compliance_gain = -0.065
+	coercive_garrison_factor = 0.20
+	coercive_garrison_damage = 0.10
+	coercive_local_factories = -0.10
+	coercive_local_resources = -0.05
+	coercive_suppressed_resistance_target = -0.25
+	coercive_suppressed_compliance_gain = -0.05
+	coercive_suppressed_garrison_factor = 0.15
+	coercive_suppressed_local_factories = -0.05
+	coercive_suppressed_local_resources = -0.025
+	protected_resistance_target = -0.10
+	protected_compliance_gain = 0.015
+	protected_garrison_factor = 0.25
+	protected_garrison_damage = -0.25
+	protected_local_factories = -0.05
+	protected_local_resources = -0.025
+	protected_suppressed_resistance_target = -0.05
+	protected_suppressed_compliance_gain = 0.02
+	protected_suppressed_garrison_factor = 0.20
+	protected_suppressed_garrison_damage = -0.30
+	protected_suppressed_local_factories = -0.025
+}
+
+cbrn_occupation_law_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	coercive_high_resistance_threshold = 49
+	coercive_high_resistance_add = 650
+	coercive_extreme_route_add = 350
+	protected_base = 250
+	protected_contamination_add = 450
+	protected_defensive_add = 300
+}
+
+cbrn_occupation_condemnation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	single_use_context_mult = 1.00
+	repeat_use_context_mult = 1.25
+	admission_chemical_context_gain = 10
+	atrocity_context_gain = 8
+	coverup_discovery_context_gain = 8
+}
+
+cbrn_occupation_action_receipt = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Occupation suppression is a selected-state ground operation. These are
+	# bounded command-receipt values, not a weather estimator or passive scan.
+	release_efficiency = 0.90
+	weather = 0.95
+	terrain = 1.00
+	target_density = 0.95
+	command = 0.90
+	evidence_control = 0.80
+	forecast_confidence = 0.80
+	command_integration = 0.75
+	base_friendly_risk = 0.20
+}
+
+cbrn_occupation_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	operation_preparation_days = 21
+	protective_aid_days = 21
+	protective_aid_reenable_days = 90
+	coverup_reenable_days = 30
+	active_days = 60
+	resistance_target_days = 60
+	state_cooldown_days = 270
+	backlash_delay_days = 60
+	repeat_window_days = 730
+	trauma_decay_interval_days = 365
+	backlash_target_days = 180
+	neighbor_spillover_days = 90
+	sealed_state_days = 60
+}
+
+cbrn_occupation_coverup = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	seal_evidence_suppression = 10
+	destroy_records_evidence_suppression = 25
+	coverup_pressure_seal = 15
+	coverup_pressure_destroy_records = 30
+	discovery_evidence_gain = 20
+	liberation_discovery_evidence_gain = 30
+	inspection_evidence_gain = 20
+	admission_hidden_chemical_exposure = 1.00
+	inspection_hidden_chemical_exposure = 0.50
+	discovery_hidden_chemical_exposure = 1.00
+	discovery_hidden_coverup_exposure = 1.00
+}
+
+cbrn_occupation_decision_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	authorize_coercive_security = 25
+	authorize_protected_administration = 80
+	nerve_suppression_sarin = 20
+	nerve_suppression_soman = 30
+	protective_aid = 40
+	protective_aid_own_core_factor = 5
+	protective_aid_allied_core_factor = 2
+	protective_aid_trauma_factor = 2
+	seal_state = 20
+	destroy_records = 10
+	admit_release = 15
+	permit_inspection = 25
+	defensive_inspection_factor = 3
+	high_condemnation_inspection_factor = 2
+}

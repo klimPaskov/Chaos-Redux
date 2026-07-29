@@ -78,7 +78,10 @@ disease_containment_board_state_matches_ownership_filter = {
 					compare = equals
 				}
 			}
-			is_controlled_by = ROOT
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
 		}
 		AND = {
 			ROOT = {
@@ -88,7 +91,12 @@ disease_containment_board_state_matches_ownership_filter = {
 					compare = equals
 				}
 			}
-			NOT = { is_controlled_by = ROOT }
+			NOT = {
+				OR = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+				}
+			}
 		}
 	}
 }
@@ -111,11 +119,9 @@ disease_containment_board_state_matches_region_filter = {
 				}
 				has_variable = disease_containment_board_selected_region_id
 			}
-			has_variable = disease_containment_board_region_id
-			check_variable = {
-				var = disease_containment_board_region_id
-				value = ROOT.disease_containment_board_selected_region_id
-				compare = equals
+			meta_trigger = {
+				text = { region = [REGION_ID] }
+				REGION_ID = "[?ROOT.disease_containment_board_selected_region_id|.0]"
 			}
 		}
 	}

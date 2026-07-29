@@ -158,7 +158,50 @@ cbrn_begin_hazard_assault_training = {
 	activate_mission = cbrn_hazard_assault_training_mission
 }
 
+cbrn_pay_theater_decontamination_assignment = {
+	ROOT = {
+		if = {
+			limit = { cbrn_country_can_pay_theater_decontamination_assignment = yes }
+			set_temp_variable = { cbrn_hq_family_debit_requested = constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment }
+			cbrn_hq_debit_decontamination_stock_oldest_first = yes
+			set_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_doctrine_cleanup_assignment_cost.gas_masks }
+			cbrn_debit_mask_stockpile_oldest_first = yes
+			set_temp_variable = { cbrn_doctrine_cleanup_support_debit = constant:cbrn_doctrine_cleanup_assignment_cost.support_equipment }
+			multiply_temp_variable = { cbrn_doctrine_cleanup_support_debit = constant:cbrn_doctrine_value.negation_multiplier }
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = cbrn_doctrine_cleanup_support_debit
+			}
+			set_temp_variable = { cbrn_doctrine_cleanup_motorized_debit = constant:cbrn_doctrine_cleanup_assignment_cost.motorized_equipment }
+			multiply_temp_variable = { cbrn_doctrine_cleanup_motorized_debit = constant:cbrn_doctrine_value.negation_multiplier }
+			add_equipment_to_stockpile = {
+				type = motorized_equipment_1
+				amount = cbrn_doctrine_cleanup_motorized_debit
+			}
+			set_temp_variable = { cbrn_doctrine_cleanup_fuel_debit = constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+			multiply_temp_variable = { cbrn_doctrine_cleanup_fuel_debit = constant:cbrn_doctrine_value.negation_multiplier }
+			add_fuel = cbrn_doctrine_cleanup_fuel_debit
+			set_temp_variable = { cbrn_doctrine_cleanup_command_power_debit = constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+			multiply_temp_variable = { cbrn_doctrine_cleanup_command_power_debit = constant:cbrn_doctrine_value.negation_multiplier }
+			add_command_power = cbrn_doctrine_cleanup_command_power_debit
+			set_temp_variable = { cbrn_doctrine_cleanup_political_power_debit = constant:cbrn_doctrine_cleanup_assignment_cost.political_power }
+			multiply_temp_variable = { cbrn_doctrine_cleanup_political_power_debit = constant:cbrn_doctrine_value.negation_multiplier }
+			add_political_power = cbrn_doctrine_cleanup_political_power_debit
+			set_country_flag = cbrn_doctrine_cleanup_assignment_paid
+		}
+	}
+}
+
 cbrn_apply_theater_decontamination_assignment = {
+	ROOT = { cbrn_pay_theater_decontamination_assignment = yes }
+	if = {
+		limit = { ROOT = { has_country_flag = cbrn_doctrine_cleanup_assignment_paid } }
+		cbrn_apply_theater_decontamination_assignment_paid = yes
+	}
+	ROOT = { clr_country_flag = cbrn_doctrine_cleanup_assignment_paid }
+}
+
+cbrn_apply_theater_decontamination_assignment_paid = {
 	cbrn_refresh_state_contamination_class = yes
 	set_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_doctrine_cleanup.trace_or_local_points }
 	if = {
@@ -195,6 +238,20 @@ cbrn_apply_theater_decontamination_assignment = {
 	if = {
 		limit = { CONTROLLER = { has_idea = cbrn_theater_contamination_doctrine_spirit } }
 		multiply_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_doctrine_spirit.theater_contamination.cleanup_output_mult }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { cbrn_designer_has_low_water_process = yes }
+			OR = {
+				infrastructure < 4
+				is_desert_state = yes
+			}
+		}
+		multiply_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_decontamination_designer_effect.low_water_cleanup_mult }
+	}
+	if = {
+		limit = { CONTROLLER = { cbrn_designer_has_rapid_route_clearance = yes } }
+		multiply_temp_variable = { cbrn_doctrine_cleanup_points = constant:cbrn_decontamination_designer_effect.rapid_route_cleanup_mult }
 	}
 
 	set_temp_variable = { cbrn_state_contamination_delta = cbrn_doctrine_cleanup_points }

@@ -700,11 +700,7 @@ Formation systems should support partial success and failure. A country can form
 
 When a decision category controls a major mechanic, consider attaching a scripted GUI or opening a custom mechanic window from a category button. This is appropriate when the player needs to manage values, targets, meters, factions, sponsors, province groups, formable requirements, investment tracks, or competing internal blocs.
 
-Use `hoi4.gui_inspect` and `hoi4.gui_render` to inspect linked layout, states,
-clipping, click regions, localisation overflow, sprites, fonts, and animation
-placement. Use `hoi4.gui_rewrite` only for a GUI change inside the current
-decision scope. Set the MCP server `cwd` to the target mod and omit
-`workspaceId`; keep gameplay validation and balance review in this skill.
+Use `hoi4.gui_inspect` to map linked layout, states, resolutions, click regions, localisation, sprites, fonts, and animation, then call `hoi4.gui_render` for deterministic normal, cropped, annotated, state, resolution, click-region, hierarchy, and comparison views. MCP diagnostics expose bad alignment, uneven spacing, overlapping controls, clipping, overflow, broken click regions, state mismatches, resolution drift, missing assets, and other layout defects. Use `hoi4.gui_rewrite` for an in-scope GUI change after reviewing those diagnostics and the render fidelity report. Keep gameplay validation and balance review in this skill.
 
 A scripted GUI or custom window must have a gameplay reason. It should expose useful choices, not merely decorate a category.
 

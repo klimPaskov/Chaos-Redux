@@ -1,84 +1,45 @@
-# Chaos Warfare: Chemical Suppression (Armor Track)
+# Toxic Armored Warfare compatibility note
 
-## Overview
-This mechanic adds one Chaos Warfare armor-track subdoctrine:
+## Source of truth
 
-- `chemical_suppression`
+This file documents the legacy `chemical_suppression` compatibility identifier. The complete accepted doctrine design and current implementation are documented in `docs/systems/chaos_warfare_doctrine.md`.
 
-The subdoctrine is always visible in the doctrine interface, but it is only available while `chaos_warfare` is the active grand doctrine.  
-Its design focus is occupation control through armored chemical pressure, with explicit separation between:
+The player-facing track is Toxic Armored Warfare. Its implementation is in `common/doctrines/subdoctrines/land/chaos_warfare_armor_subdoctrines.txt`, with shared gates and state changes in the CBRN doctrine trigger and effect files.
 
-- generic chemical support (`category_chemical_support_companies`)
-- chemical tank support only (`category_chemical_tank_support_companies`)
+## Current mastery progression
 
-This prevents Livens projector companies from inheriting tank-only suppression bonuses.
+The five mastery rewards are:
 
-## Implementation Summary
-Files added/updated:
+1. Sealed Crew Compartments
+2. Armored Agent Delivery
+3. Mobile Nerve Suppression
+4. Protected Breakthrough Logistics
+5. Catastrophic Shock Breakthrough
 
-- `common/doctrines/subdoctrines/land/chaos_warfare_armor_subdoctrines.txt`
-- `common/unit_tags/chaosx_categories.txt`
-- `common/units/chemical_tank_support.txt`
-- `common/occupation_laws/chaosx_occupation_laws.txt`
-- `localisation/english/chaosx_doctrines_l_english.yml`
-- `localisation/english/chaosx_occupation_laws_l_english.yml`
+The track separates generic Chemical support from armored Chemical delivery by applying its formation modifiers only to `category_chemical_tank_support_companies`. Its mastery units are the light, medium, and heavy CBRN armored delivery detachments plus the independently gated nerve-suppression detachment.
 
-## Subdoctrine Progression
-`chemical_suppression` contains five mastery rewards:
+Mobile Nerve Suppression grants only a doctrine eligibility flag. It does not release an agent and does not waive the separate project, protection, occupation-policy, readiness, stock, state, condition, or consequence requirements. A valid later suppression operation must consume equipment and record deaths, contamination, resistance trauma, evidence, attribution, and severe diplomatic consequences.
 
-1. `adamsite_emission_cells`
-2. `armored_chemical_support_liaison`
-3. `zyklon_b_saturation_drills` (large chemical tank support suppression increase + concentration law unlock)
-4. `sealed_pressure_logistics`
-5. `catastrophic_shock_breakthrough`
+## Explicitly absent infrastructure
 
-Mastery 3 sets `concentration_occupation_law_unlocked`, enabling the new occupation law `concentration`.
+Toxic Armored Warfare grants no Concentration occupation law, camp, extermination site, experiment site, genocide system, restricted Chemical site, or concealment mechanism. The migration effects clear the obsolete `concentration_occupation_law_unlocked` flag rather than restoring it. Independent camp mechanics can receive the accepted Terminal Hazard killing-efficiency multiplier only after their own infrastructure, ownership, and authorization already exist; doctrine never creates or reveals those systems.
 
-## Occupation Law
-`concentration` is defined in `common/occupation_laws/chaosx_occupation_laws.txt`.
+## Runtime art
 
-Behavior:
-- highest suppression profile (`resistance_target` pushed beyond vanilla harsh laws)
-- high control cost (`required_garrison_factor` up)
-- near-zero/negative compliance growth plus severe economic/local manpower penalties
+`GFX_doctrine_chemical_suppression_medium` is registered in `interface/cbrn_doctrine.gfx` and uses the final dedicated Toxic Armored Warfare icon at `gfx/interface/doctrines/icons/stage_5_chaos_warfare/doctrine_toxic_armored_warfare.dds`.
 
-Availability gate:
-- requires country flag `concentration_occupation_law_unlocked`
+The full doctrine and officer-corps asset package, source PNGs, processed PNGs, contact sheets, validation inventory, and manifests are under `docs/assets/chaos_warfare_system/stage_5_doctrine_officer_corps/`. No placeholder or cross-type substitute is retained for this track.
 
-## GFX Wiring
-Doctrine, tech, raid, special project, and drum icon wiring was normalized to avoid missing-GFX errors.
+## Relevant files
 
-### Added/updated GFX files
-- `interface/chaosx_doctrines.gfx`
-- `interface/chaosx_techtree.gfx`
-- `interface/chaosx_raids.gfx`
-- `interface/special_projects/biowarfare.gfx`
-- `interface/chaosx_equipment.gfx`
+- Doctrine track: `common/doctrines/subdoctrines/land/chaos_warfare_armor_subdoctrines.txt`
+- Doctrine gates: `common/scripted_triggers/cbrn_doctrine_triggers.txt`
+- Doctrine state and migration: `common/scripted_effects/cbrn_doctrine_effects.txt`
+- Nerve-suppression authorization: `common/scripted_triggers/cbrn_occupation_triggers.txt`
+- Nerve-suppression operation: `common/scripted_effects/cbrn_occupation_effects.txt`
+- Player-facing doctrine text: `localisation/english/chaosx_doctrines_l_english.yml`
+- Final doctrine art wiring: `interface/cbrn_doctrine.gfx`
 
-### New/updated sprite tokens
-- Doctrine:
-  - `GFX_doctrine_chemical_suppression_medium` (placeholder mapped)
-- Nerve tech:
-  - `GFX_sarin_medium` -> `gfx/interface/technologies/sarin_gas_tech.dds`
-  - `GFX_soman_medium` -> `gfx/interface/technologies/soman_gas_tech.dds`
-- Raid aliases:
-  - `GFX_raid_type_icon_sarin_strike`
-  - `GFX_raid_type_icon_soman_strike`
-  - `GFX_raid_unit_icon_cw_raids`
-  - `GFX_raid_category_small_cw_raids`
-- Special projects:
-  - `GFX_sp_cw_sarin_program` -> `sp_sarin_bomb.dds`
-  - `GFX_sp_cw_soman_program` -> `sp_soman_bomb.dds`
-  - `GFX_sp_sarin_bomb`
-  - `GFX_sp_soman_bomb`
-- Drums/payload cylinders:
-  - `GFX_chemical_*_payload_cylinder(_1)_medium` for chlorine/phosgene/mustard/lewisite/tabun/sarin/soman
-  - non-medium aliases `GFX_chemical_*_payload_cylinder`
+## Engine limit
 
-## Sprite Placeholder Notes
-Where dedicated art is not yet finalized, tokens are mapped to stable existing textures so the game does not log missing GFX entries.
-
-## Future Extension Ideas
-1. Add a second armor subdoctrine with maneuver/attrition identity instead of suppression identity.
-2. Add custom milestone effects for `chaos_warfare` armor track (currently empty milestones in grand doctrine file).
-3. Add dedicated cylinder/drum atlas textures and replace temporary mappings in `interface/chaosx_equipment.gfx`.
+The exact state transaction for nerve-agent suppression remains fail-closed because the current confirmed hook does not provide the required target-loss, weather, and terrain receipts. No decision-click approximation, proxy casualty formula, or hidden periodic fallback is retained.

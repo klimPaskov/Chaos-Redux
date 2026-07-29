@@ -1,0 +1,80 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CAMP ADAPTER EFFECTS
+# ============================================================================
+# Overview:
+# - Bridges the existing exact-state camp route into the shared chemical
+#   exposure and consequence pipeline.
+# - Camp code remains responsible for site eligibility, recurring stockpile
+#   maintenance, site flags, evidence-site registration, and monthly killing
+#   efficiency. This adapter owns only shared action inputs and the post-
+#   dispatch Deaths record bridge.
+# - The restricted-site route derives release efficiency from exact readiness
+#   and camp-method inputs. It does not manufacture weather, terrain, density,
+#   forecast, or friendly-risk receipts.
+# - No direct contamination, Deaths, attribution, evidence, or Condemnation
+#   effect is defined here.
+# ============================================================================
+
+cbrn_camp_bind_shared_action_target = {
+	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.missing }
+	if = {
+		limit = { cbrn_camp_restricted_site_target_is_valid = yes }
+		var:camp_rework_action_state_id = {
+			save_event_target_as = cbrn_action_target_state
+		}
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_camp_set_chemical_agent_from_tier = {
+	set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.none }
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.soman }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.sarin }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.tabun }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.lewisite }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.mustard }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.phosgene }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+	}
+	else_if = {
+		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
+		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.chlorine }
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+	}
+}
+
+cbrn_camp_set_restricted_site_release = {
+	cbrn_initialize_country_data = yes
+	set_temp_variable = { cbrn_action_release_efficiency_mult = chemical_readiness }
+	divide_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_restricted_site_chemical.readiness_divisor }
+	multiply_temp_variable = { cbrn_action_release_efficiency_mult = camp_rework_method_death_factor }
+	set_temp_variable = { cbrn_action_duration_override = cbrn_camp_action_duration_days }
+}
+
+cbrn_camp_record_shared_action_deaths = {
+	set_temp_variable = { chaos_deaths_change = cbrn_action_civilian_deaths }
+	camp_rework_record_latest_state_deaths = yes
+}

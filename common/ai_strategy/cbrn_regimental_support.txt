@@ -4,13 +4,15 @@
 # Overview:
 # - Assigns bounded ratios to the dedicated CBRN template roles only while the
 #   corresponding complete template gate remains valid.
+# - Protected garrison and coercive suppression remain native garrison and
+#   suppression candidates; they do not create duplicate custom role quotas.
 # - Prioritizes decontamination and instrument production after a real program,
 #   emergency, contamination, or outbreak signal; urgent signals add pressure.
-# - Full route and country-profile differentiation is owned by Stage 10.
 # ============================================================================
 
 @CBRN_AI_ROLE_PROTECTED_RATIO = 6
 @CBRN_AI_ROLE_CHEMICAL_ASSAULT_RATIO = 2
+@CBRN_AI_ROLE_CHEMICAL_ARTILLERY_RATIO = 1
 @CBRN_AI_ROLE_ARMORED_ASSAULT_RATIO = 1
 @CBRN_AI_ROLE_CONTAINMENT_RATIO = 2
 @CBRN_AI_DECON_PRODUCTION_FACTOR = 25
@@ -39,6 +41,18 @@ cbrn_ai_chemical_assault_ratio = {
 		type = role_ratio
 		id = cbrn_chemical_assault
 		value = @CBRN_AI_ROLE_CHEMICAL_ASSAULT_RATIO
+	}
+}
+
+cbrn_ai_chemical_artillery_ratio = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = { cbrn_country_can_field_chemical_artillery_template = yes }
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = role_ratio
+		id = cbrn_chemical_artillery
+		value = @CBRN_AI_ROLE_CHEMICAL_ARTILLERY_RATIO
 	}
 }
 
