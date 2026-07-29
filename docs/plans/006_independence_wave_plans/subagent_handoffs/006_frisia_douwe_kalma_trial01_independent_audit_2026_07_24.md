@@ -38,7 +38,7 @@ Canonical country-leader references were verified at `156 x 210` and against the
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png` — `08732002182BDCB2BFF3D78B142CC2B3D75ADBDB29D4115F9E89CA5BDC6A21B6`.
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/fin_carl_mannerheim.png` — `7E78E33E0B691B96B584393F2D363C07A302320F7E6300BDA0FFF261AA98D49E`.
 
-The processor hash recorded in metadata matches the current `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`.
+The processor hash recorded in metadata matches the current `the retired portrait-processing utility` SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`.
 
 ## Separate gate verdicts
 

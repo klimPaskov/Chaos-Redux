@@ -34,7 +34,7 @@ No gameplay script, `.gfx`, `.gui`, localisation, spreadsheet, or event specific
 - Consulted the required offline HOI4 wiki core pages and portrait/interface pages before asset changes.
 - Reviewed the Event 014 country package, portrait prompt, regional name pools, dynamic portrait selection, and existing GFX registrations.
 - Used the canonical vanilla leader portraits `den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png` only as framing, value-range, and paint-finish references.
-- Used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version 2.0 with explicit in-bounds 26:35 crops and `.tools/convert_to_dds.py` for the live textures.
+- Used `the retired portrait-processing utility` version 2.0 with explicit in-bounds 26:35 crops and `.tools/convert_to_dds.py` for the live textures.
 
 ## Validation evidence
 

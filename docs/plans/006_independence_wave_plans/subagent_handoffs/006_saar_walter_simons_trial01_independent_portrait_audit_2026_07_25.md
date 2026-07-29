@@ -62,7 +62,7 @@ Independent Pillow verification produced `465x605`, `281325` pixels, `decoded_pi
 
 The crop JSON and source package preserve the canonical equality evidence rather than replacing the immutable source with a resized or filtered image.
 
-The processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version `5.0` in positional `leader` mode with role family `leader`, source kind `real`, raw crop `(1,0,1080,1453)`, and deterministic output `156x210`.
+The processor is `the retired portrait-processing utility` version `5.0` in positional `leader` mode with role family `leader`, source kind `real`, raw crop `(1,0,1080,1453)`, and deterministic output `156x210`.
 
 ## Visual review method
 

@@ -66,7 +66,7 @@ The prompt explicitly locks the long narrow facial geometry, natural unequal eye
 
 The raw ImageGen result is `imagegen_results/SCO_cunninghame_graham_identity_preserve_trial_04.png`, RGB `1082x1454`, SHA-256 `3A34FFBE6A546F0F9E432C49B23019DCF3845DFF0E17BAB981AC1D59E991C106`.
 
-The deterministic processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` at SHA-256 `C6E78C01C025AD57FEF8DC25EB79BD216FF9809DF27E4C758EB9EC72594A3963`.
+The deterministic processor is `the retired portrait-processing utility` at SHA-256 `C6E78C01C025AD57FEF8DC25EB79BD216FF9809DF27E4C758EB9EC72594A3963`.
 
 The processor metadata is `metadata/SCO_cunninghame_graham_processing.json`, SHA-256 `9F98C5554E3DE61089C5A5C48E347FC85F2990CE438716208F2FBC716DAE455C`.
 

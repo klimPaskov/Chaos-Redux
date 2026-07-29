@@ -93,7 +93,7 @@ Each source is an original fictional three-person institutional collective. The 
 
 Processing was identical and explicit for all four:
 
-- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`
+- `the retired portrait-processing utility leader`
 - crop `[5, 0, 1075, 1440]`
 - `--source-kind collective`
 - output `156x210`

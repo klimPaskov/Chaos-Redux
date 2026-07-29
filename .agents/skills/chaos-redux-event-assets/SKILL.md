@@ -1094,7 +1094,7 @@ Before marking any flag complete, verify normal, medium, and small TGA files:
 
 For real country-leader, commander, operative, and named-officeholder portraits, apply the section 3 sequence exactly: unchanged attributed archival photograph (archival male photograph for male subjects) -> explicit head-and-shoulders crop -> source-locked identity-preserving ImageGen repaint in the matching HOI4 painted portrait family -> deterministic 156x210 processing -> independent likeness/style/provenance audit by someone other than the producer -> DDS conversion and runtime wiring only after PASS.
 
-The full-size processor keeps positional mode `leader` for backward compatibility and defaults `--role-family leader`. Commanders must pass `--role-family commander`; this selects the canonical commander directory and commander-only style references (Montgomery and Witzleben) for the processor review sheet and evidence. The review sheet's first panel is the `processor input crop`, meaning the crop of the supplied processed source or ImageGen result; it is not the immutable archival crop. The independent auditor must still compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references separately, because the processor sheet cannot replace provenance evidence.
+There is no bundled full-size portrait processor. After the immutable crop, create the deterministic `156x210` country-leader, commander, operative, or named-officeholder candidate with a reproducible task-specific/manual image workflow. Retain the processed source or ImageGen result, candidate PNG, exact dimensions, crop metadata, hashes, role-specific reference sheet, and independent likeness/style/provenance review. The review must compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references separately; automated checks and a producer-created sheet cannot replace that audit.
 
 Before the full-size invocation, create the immutable source crop with the exact decoded-master boundary and retain the utility's JSON equality evidence:
 
@@ -1107,13 +1107,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_
 
 The metadata must record the Pillow/tool version and hash, master/output hashes and dimensions, decode modes, crop rectangle, equality result and hashes, and normalized command. Do not accept an `ffmpeg` or ImageMagick crop as immutable source evidence when it cannot prove exact decoded-pixel equality against the same master rectangle.
 
-Use this full-size commander boundary exactly:
-
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader `
-	<processed_source_or_imagegen_result.png> <candidate.png> --role-family commander `
-	--source-kind real --crop <left> <top> <right> <bottom> --review-sheet <review.png>
-```
+After the immutable crop and any source-locked ImageGen repaint, produce the full-size candidate with the same explicit role boundary and deterministic `156x210` canvas. Keep the image-editing steps reproducible and record their normalized commands or manual operations in the manifest; do not advertise a missing shared processor or silently treat a raw, filtered, or merely resized photograph as runtime art.
 
 Choose the canonical reference family by role before starting:
 
@@ -1138,154 +1132,67 @@ Record:
 
 For fictional people, non-human beings, supernatural entities, aliens, zombies, monsters, symbolic leaders, or other invented characters, `$imagegen` may be used to create the base portrait only when the portrait source-mode gate classifies the identity as `fictional_high_chaos`. Grounded real, historical, restored, separatist, regional, indigenous, dynastic, or otherwise plausibly historical polities must use sourced real-person candidates; if no defensible candidate and usable image exists, mark the portrait `blocked`. Give an allowed generated portrait the matching leader, commander, or operative references as style inputs and request the vanilla HOI4 painted portrait treatment, head-and-shoulders or restrained bust framing, extraordinary invented ceremonial dress or regalia, a quiet painted background, and controlled contrast. Reject normal-looking, conventionally dressed, or interchangeable fictional leaders. Require culturally coherent absurdity designed for the invented polity without borrowing or distorting sacred objects or traits of a real people. Allow no modern props, generic face, meme aesthetics, gore, mockery, stereotype, caricature, text, or photographic/modern concept-art finish.
 
-Country-leader, commander, operative, and named-officeholder identity candidates are deterministic `156x210` portraits. Advisor and high-command cards then follow section 21.1's separate native `65x67` dossier pipeline after the shared identity gate. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline; follow their cataloged owning sprite.
+Country-leader, commander, operative, and named-officeholder identity candidates are deterministic `156x210` portraits. Advisor and high-command cards use section 21.1's separate native `65x67` manual workflow after the shared identity gate. A commander reference is a full `156x210` vanilla portrait, even if a particular UI view displays it at a smaller apparent size; never manufacture or document a 50x67 commander source texture. Operatives also use the full portrait pipeline; follow their cataloged owning sprite.
 
 ## 21.1 Advisor and high-command portrait icons
 
 Advisor, theorist, military-high-command, and officer-corps portrait icons are a
 separate asset type. Inspect `assets/vanilla_reference/portraits/advisors/` before
 work. The final target is native `65x67`, with a recognisable HOI4-styled
-head-and-shoulders portrait, dark irregular dossier framing, and transparent outer
-corners. Do not infer this family from a character or small-portrait consumer; it
-must be present in the accepted requirement set.
+head-and-shoulders portrait, a dark irregular dossier frame where the approved
+reference family uses one, and transparent outer corners. Do not infer this family
+from a character or small-portrait consumer; it must be present in the accepted
+requirement set.
 
-Apply the section 3 source-mode gate to the advisor subject: grounded, historical,
-restored, separatist, regional, indigenous, dynastic, or otherwise plausibly
-historical advisor identities use sourced real people, while generated one-person
-advisors are limited to truly fictional high-chaos or impossible/supernatural
-entities. Missing or contradictory classification fails closed. For a fictional
-advisor in the allowed class, generate a distinct full-resolution portrait master
-with `$imagegen`; do not reuse a leader crop or manufacture card artwork with a
-local drawing script. For real people, complete the shared real-person identity gate through an independently approved 156x210 candidate before following this separate dossier-card pipeline, and preserve source attribution. Institutional or collective briefs must state whether the result is people-free or includes a governing group; never imply that invented faces are sourced historical individuals.
+Apply the section 3 source-mode gate to the advisor or high-command subject:
+grounded, historical, restored, separatist, regional, indigenous, dynastic, or
+otherwise plausibly historical identities use sourced real people, while generated
+one-person subjects are limited to truly fictional high-chaos or
+impossible/supernatural entities. Missing or contradictory classification fails
+closed. For a fictional subject in the allowed class, generate a distinct
+full-resolution portrait master with `$imagegen`; do not reuse a leader crop or
+invent a reusable card-art generator. For real people, complete the shared
+real-person identity gate through an independently approved `156x210` candidate
+before preparing the native card and preserve source attribution. Institutional or
+collective briefs must state whether the result is people-free or includes a
+governing group; never imply that invented faces are sourced historical individuals.
 
-Every advisor run requires a repo-contained schema-1 portrait-provenance manifest
-through `--portrait-provenance-manifest`. A manifest may contain several approved
-portrait-source records, but each processor invocation must select exactly one
-`approved_for_processing` record by the invoked source path. The selected record
-must pin the source kind, source hash and dimensions, exact-source-copy assertion,
-approved crop and face box, prompt record/section/hash, generation mode and inputs,
-and either an ImageGen handle for fictional, collective, or symbolic art or
-attribution and license for a real archival portrait. Do not split out or bypass an
-individual source to avoid these checks.
+Keep a repo-contained provenance manifest for every native card. Record the source
+mode, source and candidate hashes and dimensions, exact crop or composition notes,
+generation or editing inputs, attribution or ImageGen record, reviewer, date, and
+runtime path. Keep each source, processed PNG, review sheet, and metadata file in a
+distinct path; do not split out or bypass an individual source to weaken provenance.
 
-The visible dossier kit must also be authored with `$imagegen`. Use a shadowless,
-unrotated frame source and a separate shadowless, unrotated, visibly opaque
-textured-paper source. The paper must have continuous material and clean edges with
-no transparent holes, cut-out fringe, chroma fringe, white matte, or fake
-translucency. Derive each overlay from its retained ImageGen source through the
-manifest-pinned alpha extraction and despill only; do not redraw, repair, recolour,
-relight, texture, seal, write on, or otherwise change its visible RGB artwork
-locally. Both retained sources, both alpha-extracted overlays, their prompt and
-generation-input records, the frozen keyer and arguments, and the six canonical
-style-reference hashes must remain in the self-contained provenance-schema-4
-overlay manifest. If a genuinely different dossier treatment is required, retain
-and manifest a complete new frame-and-paper source/overlay pair.
+There is no bundled advisor/dossier compositor or reusable card-art package. Prepare each native
+`65x67` PNG with a deterministic, task-specific/manual image workflow. If the card
+uses authored frame or paper art, retain those source files and their processing
+record with the asset package; do not place a reusable kit or frozen processor
+contract in this skill.
 
 Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
-portrait. Choose an explicit source-pixel crop and compose the subject independently
-inside the native card with processor/render v5.0 at
-`.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`.
-Pass `--face-box`, both provenance manifests, and both retained ImageGen
-source/overlay pairs. There is no paperless, procedural, primitive-drawn,
-synthesized, or unpinned-source fallback. The processor may crop, grade, resize,
-angle, derive soft RGB shadows from authored alpha, composite, validate, and export;
-it must never draw or reconstruct visible frame, paper, seal, bevel, patina, emblem,
-writing, or shadow artwork from primitive geometry.
+portrait. Compose the subject independently inside the native card with a
+deterministic, task-specific/manual workflow and retain the exact crop, face
+placement, dimensions, hashes, and review evidence. Do not draw replacement frame,
+paper, seal, bevel, patina, emblem, writing, or shadow artwork from primitive
+geometry, and do not advertise a missing shared processor.
 
-Processor/render v5.0 always exports an exact `65x67` native PNG. Its pinned native
-composition uses a `40x58` frame at `(1,1)` rotated `5` degrees and a `25x30` paper
-at `(29,26)` rotated `-4.25` degrees. It validates frame and paper geometry,
-palette, alpha coverage, portrait window, overlap, face placement, paper opacity,
-and RGB support rather than trusting a resized source. The frame must remain
-narrow, irregular, and neutral charcoal/black. The paper must remain pale,
-low-chroma, textured, visually opaque across its support, and free of holes or
-fringe.
+Check the native `65x67` candidate against the canonical advisor and high-command
+references. Confirm composition, face readability, frame silhouette and palette,
+paper geometry and opacity where present, transparent corners, texture continuity,
+and the absence of holes or fringe. Record any deterministic dimension or alpha
+checks as evidence, but treat visual approval as a separate human gate.
 
-Freeze the v5 execution contract before processing: Python `3.9.12`, Pillow
-`11.1.0`, processor SHA-256
-`e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`, and advisor
-render-configuration SHA-256
-`e9f8d54d1ea7fc8845bf22675c09686acc7196556a56f96f5a1b46268b134637`. Stop and
-re-review the pipeline if any frozen value differs. Preserve the full seed payload,
-normalised command and argument hash, runtime, configuration, processor/source/
-input hashes, and artifact hashes in metadata.
+When a character explicitly defines a `portraits = { army = { small = ... } }`
+sprite, the small slot remains a native `65x67` dossier portrait while
+`army.large` remains the full `156x210` commander portrait. Do not create a plain
+`50x67` resize or crop for the army-small slot, and do not replace or downsize the
+approved full commander texture. Keep the large and small sprite names stable,
+record both runtime paths and provenance, and validate both textures separately.
 
-The final native composite must sit inside all nine frozen six-reference style bands
-with a minimum normalized interior margin of `0.03`:
-`top_frame_variation`, `left_rail_variation`, `left_rail_mean`, `left_rail_std`,
-`paper_mean`, `paper_std`, `paper_samples`, `portrait_mean`, and
-`bottom_area_variation`. These mechanical family gates prove measured placement,
-value, texture, and variation compatibility at native size; they do not claim
-one-to-one visual equivalence and do not grant visual approval.
-
-At runtime, v5 derives and verifies both canonical six-reference families from the
-actual skill-local reference PNGs. The rounded per-pixel mean alpha envelope must
-hash to
-`5d33afdd1adc0349e33b52bb141ddd1449107fd34727d19fcc45bcd7809d2993`, and the
-derived aggregate paper-family record must hash to
-`c751cbe5f1178c8b894c56a4cebe01bb4dae88ae859b7238c2c68f39a6224dbc`. The vanilla
-alpha envelope is opacity data only. Visible RGB may originate only from the
-approved portrait, ImageGen-authored frame and paper, their authored-alpha-derived
-shadows, and the permitted faint black backing at the low-alpha fringe. Never copy,
-blend, trace, expose, or ship visible vanilla RGB.
-
-The v5 identity-preservation search has an authored-edge-preserving unsmoothed
-stage and a face-protected background-smoothing last-resort stage. Every retained
-candidate must pass background structure gates plus both the strict face gate
-against the post-grade baseline and the source-face gate against the mapped
-original source. Frame and paper identity, palette, opacity, and geometry remain
-separate fail-closed gates; passing one gate cannot compensate for another.
-
-Use this invocation shape for the dossier-card processor:
-
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor `
-	<portrait_master.png> <advisor_icon.png> --source-kind fictional `
-	--crop <left> <top> <right> <bottom> `
-	--face-box <left> <top> <right> <bottom> `
-	--portrait-provenance-manifest <portrait_provenance_manifest.json> `
-	--advisor-overlay-manifest .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json `
-	--advisor-frame-source .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_frame_shadowless_imagegen_source.png `
-	--advisor-frame-overlay .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_frame_shadowless_overlay.png `
-	--advisor-paper-source .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_imagegen_source.png `
-	--advisor-paper-overlay .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_overlay.png `
-	--review-sheet <advisor_review.png> `
-	--metadata <advisor_icon.json>
-```
-
-Never omit the portrait-provenance manifest, self-contained overlay manifest, or
-either source/overlay pair, and never provide an overlay without its retained
-generated source. A candidate that cannot satisfy the complete provenance,
-runtime, identity, style-band, frame, paper, face-placement, palette, opacity,
-alpha/paper-family, and RGB-support gates must be regenerated or recropped; it must
-not be accepted through a weaker mode.
-
-Apply this same dossier-card pipeline when a character explicitly defines a
-`portraits = { army = { small = ... } }` sprite. Vanilla army-character precedents
-point that small slot to a `65x67` dossier portrait while the character's
-`army.large` sprite remains the full `156x210` commander portrait. Do not create a
-plain `50x67` resize or crop for the army-small slot, and do not replace or downsize
-the approved full commander texture. Independently compose the approved portrait
-master inside the dossier overlays, keep the large and small sprite names stable,
-and validate both runtime textures separately.
-
-Protect all provenance inputs as immutable. The candidate PNG, review PNG, and
-metadata JSON must use three distinct repo-contained output paths that do not alias
-the portrait source, manifests, frame/paper sources or overlays, prompt records,
-generation inputs, keyer, processor, or six vanilla references. The processor
-prepares and verifies the exact PNG decodes and JSON payload first, then commits the
-three artifacts transactionally with rollback. Retain the portrait master,
-provenance manifests, generated overlay sources, alpha-extracted overlays, prompts,
-processor arguments, hashes, metadata, and reference comparison sheet.
-
-The review sheet must show the candidate and every one of the six frozen references
-both at native `65x67` and at `4x` nearest-neighbour size. The reviewer must inspect
-face readability and identity, frame silhouette and palette, paper geometry and
-opacity, texture continuity, holes/fringe, alpha-derived shadows, transparent
-corners, and overall vanilla-family fit at both scales. Automated validation
-produces a candidate, never visual approval; keep metadata at
-`candidate_requires_visual_approval`. The producing agent may not approve its own
-candidate. Convert only an independently approved PNG with
+The independent visual review must compare the candidate with the canonical advisor
+and high-command references at native `65x67` and at `4x` nearest-neighbour size.
+Automated dimension and alpha checks produce evidence only; the producer may not
+approve the candidate. Convert only an independently approved PNG with
 `python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <approved.png> --output <runtime.dds> --width 65 --height 67`.
 
 

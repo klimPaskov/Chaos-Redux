@@ -80,7 +80,7 @@ Built-in ImageGen output root:
 
 ## Processing record
 
-Every selected master was processed through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader` with `--source-kind fictional`, the canonical leader reference directory, explicit source-pixel crop coordinates, per-portrait JSON metadata, and per-portrait comparison sheet.
+Every selected master was processed through `the retired portrait-processing utility leader` with `--source-kind fictional`, the canonical leader reference directory, explicit source-pixel crop coordinates, per-portrait JSON metadata, and per-portrait comparison sheet.
 
 | Stem | Source size | Explicit crop `(left, top, right, bottom)` | Visual review at source and 156x210 |
 | --- | ---: | --- | --- |

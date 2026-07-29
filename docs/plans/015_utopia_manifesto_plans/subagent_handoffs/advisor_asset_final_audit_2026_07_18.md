@@ -21,7 +21,7 @@ I read the parent asset prompt/handoffs and the following active package surface
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/approvals/advisor_v5_independent_visual_approval_2026_07_16.json`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_installed_validation_2026_07_16.json`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_portrait_source_manifest.json`
-- `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`
+- the retired advisor dossier asset kit
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/imagegen_source_evidence_2026_07_15.json`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/flag_identity_validation_2026_07_15.json`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/institutional_portrait_validation_2026_07_15.json`
@@ -38,7 +38,7 @@ Subagent scope restriction: I did not read repository `AGENTS.md`, the offline w
 
 ### Renderer/provenance contract
 
-- Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, SHA-256 `E248979F21784C016E69C5458B9925C32177D6AF29F2CCA1A82BFAAFFBE1F23C`.
+- Processor: `the retired portrait-processing utility`, SHA-256 `E248979F21784C016E69C5458B9925C32177D6AF29F2CCA1A82BFAAFFBE1F23C`.
 - Processor metadata is v5.0, target `65x67`, Python `3.9.12`, Pillow `11.1.0`, and records the visible-art contract `crop_grade_resize_angle_alpha_shadow_composite_validate_export_only`; frame and paper are ImageGen-authored overlays, not procedurally drawn card art.
 - Converter: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, SHA-256 `D8AA0BA6A16BA8B6B698CCD6CF599B90E81DB6F6C6132009F07115C728F6B8A0`.
 - Source portrait manifest SHA-256 `AE2566DD1C3D2E8C2A522908110AB0A970A1911E23F454A091BF6272B26DBE95`; all 16 source records are unique built-in ImageGen outputs, exact source PNG copies, and `approved_for_processing` with explicit crop/face boxes.

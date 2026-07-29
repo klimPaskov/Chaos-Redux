@@ -33,7 +33,7 @@ The raw ImageGen result is `imagegen_results/AGX_pieter_reenalda_identity_preser
 
 The identity-preserving prompt is `identity_repaint_prompt.md` with SHA-256 `353C12A05A1187572C305B66DD3B9C42C44BACA200766604148315FE0A08293B` and explicitly locks the high forehead, uneven eyes and ears, long narrow nose, tapering face and small chin, exact moustache mass/length/asymmetry, source-supported uniform geometry, and no invented insignia.
 
-The deterministic processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version 5.0 with SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`, positional mode `leader`, role family `commander`, and recorded Python `3.9.12` / Pillow `11.1.0` runtime.
+The deterministic processor is `the retired portrait-processing utility` version 5.0 with SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`, positional mode `leader`, role family `commander`, and recorded Python `3.9.12` / Pillow `11.1.0` runtime.
 
 The processed candidate is `processed_png/portrait_AGX_friesland_coastal_commander.png` at `156 x 210` with SHA-256 `C683EEB6E71FE5EF118843F3748DB9C66136ACBC5C120C8B82F35FC55CE3789C`.
 

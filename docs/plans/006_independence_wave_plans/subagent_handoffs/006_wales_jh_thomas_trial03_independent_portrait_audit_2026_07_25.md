@@ -63,7 +63,7 @@ Independent Pillow re-cropping of the current master produced the same `3000x400
 
 The equality utility is `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py`, version `1.0`, with current file SHA-256 `14fa178d6df999346874a7033e84f9b3ae988e7d845f3a4b2f8a44755e30641c`.
 
-The processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, version `5.0`, with current file SHA-256 `1adb521b43238ee971e093dae90007c4c44c600435ebb897c6482ba3b64b96ec`.
+The processor is `the retired portrait-processing utility`, version `5.0`, with current file SHA-256 `1adb521b43238ee971e093dae90007c4c44c600435ebb897c6482ba3b64b96ec`.
 
 The candidate is opaque with alpha range `255..255`, has no advisor frame, dossier paper, transparent corners, or `_small` treatment, and is the correct full-size country-leader canvas.
 

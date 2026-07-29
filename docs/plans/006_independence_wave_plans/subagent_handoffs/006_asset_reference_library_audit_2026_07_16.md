@@ -56,7 +56,7 @@ conversion decoded pixel-for-pixel identically to the approved PNG candidate.
 
 ### Advisor package and tools
 
-- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+- `the retired portrait-processing utility`
   - validates provenance schema 4 and rejects event- or machine-specific
     dependencies;
   - pins and verifies the exact six canonical advisor reference names and
@@ -67,10 +67,10 @@ conversion decoded pixel-for-pixel identically to the approved PNG candidate.
     row/column occupancy gates;
   - emits deterministic seed, render configuration, provenance, composition,
     and validation metadata.
-- `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`
+- the retired advisor dossier asset kit
   - active schema-4 reusable manifest with two approved processing records and
     six canonical style-reference hashes.
-- `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_dossier_overlay_manifest.json`
+- the retired advisor dossier asset kit
   - retained full iteration/provenance manifest made portable by removing
     Event 015 package-copy fields, user-store roots, and absolute tool paths;
   - retains generated sources, prompts, alpha derivatives, and superseded

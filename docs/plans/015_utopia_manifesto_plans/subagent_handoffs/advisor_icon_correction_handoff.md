@@ -8,7 +8,7 @@ Scope: correct all sixteen Event 015 advisor portraits to the native HOI4 adviso
 
 ## Outcome
 
-All sixteen Event 015 advisors now use independently cropped `65x67` advisor dossier cards produced by `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. Every output has the dark bevelled vanilla-style card, paper overlay, and transparent outer corners required by the repository advisor pipeline. These are not square leader portraits and were not made by shrinking the existing leader-format crop.
+All sixteen Event 015 advisors now use independently cropped `65x67` advisor dossier cards produced by `the retired portrait-processing utility advisor`. Every output has the dark bevelled vanilla-style card, paper overlay, and transparent outer corners required by the repository advisor pipeline. These are not square leader portraits and were not made by shrinking the existing leader-format crop.
 
 Each source master is a distinct fictional ImageGen-created person. All sixteen sources supported a readable independent head-and-shoulders crop, so no source was blocked and no regeneration or fallback was used. Each processed PNG was reviewed at native size, at nearest-neighbour enlargement, and beside the repository references in `assets/vanilla_reference/portraits/advisors`.
 

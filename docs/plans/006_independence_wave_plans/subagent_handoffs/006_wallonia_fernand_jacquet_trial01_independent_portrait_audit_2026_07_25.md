@@ -58,7 +58,7 @@ The candidate alpha channel is fully opaque (255, 255), matching the full comman
 
 The processing metadata is processed_png/portrait_AFX_walloon_reserve_commander.png.json, with recomputed file SHA-256 57fbd782505eff01bec358d948c118bcaf17716559da78da9b7740f0975fd47c.
 
-The metadata records processor .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py version 5.0, role family commander, source kind real, positional mode leader, and raw crop (0, 0, 1023, 1377).
+The metadata records processor the retired portrait-processing utility version 5.0, role family commander, source kind real, positional mode leader, and raw crop (0, 0, 1023, 1377).
 
 The metadata canonical payload hash recomputes to 86f6425cf6e1b50647271d0ca4cf467d39c04c77a2b3b6ddebd1ea86f09f480c, matching metadata_integrity.payload_sha256.
 

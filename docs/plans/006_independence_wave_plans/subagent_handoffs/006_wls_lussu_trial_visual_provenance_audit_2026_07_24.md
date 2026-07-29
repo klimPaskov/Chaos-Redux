@@ -63,7 +63,7 @@ The crop retains the narrow rectangular face, high forehead, short center-parted
 
 ## Processing and evidence hashes
 
-The processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version `5.0`, processor SHA-256 `c6e78c01c025ad57fef8dc25eb79bd216ff9809df27e4c758eb9ec72594a3963`. Both metadata records use `mode = leader`, `source_kind = real`, the candidate raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory. Both retain `portrait_provenance = null` and `status = candidate_requires_visual_approval`.
+The processor is `the retired portrait-processing utility` version `5.0`, processor SHA-256 `c6e78c01c025ad57fef8dc25eb79bd216ff9809df27e4c758eb9ec72594a3963`. Both metadata records use `mode = leader`, `source_kind = real`, the candidate raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory. Both retain `portrait_provenance = null` and `status = candidate_requires_visual_approval`.
 
 | Candidate | Raw ImageGen result | Processed candidate | Processor metadata | Processor sheet |
 |---|---|---|---|---|

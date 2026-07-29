@@ -89,7 +89,7 @@ The role metadata and source/candidate review therefore satisfy the male-only re
 
 The active 2026-07-26 trial workspaces contain no advisor portrait, high-command card, operative portrait, dossier card, `50x67` output, `_small` derivative, female asset, generated-generic substitute, or alternate-person asset.
 
-The processed metadata invokes the shared `advisor_icon_processing.py` implementation in `leader` mode, but `advisor_composition`, `advisor_validation`, all overlay and paper fields, and all advisor manifests are `null`, so the processor filename is not an advisor-card consumer.
+The processed metadata invokes the shared `the retired portrait-processing utility` implementation in `leader` mode, but `advisor_composition`, `advisor_validation`, all overlay and paper fields, and all advisor manifests are `null`, so the processor filename is not an advisor-card consumer.
 
 The runtime source search finds only the two intended full-size AGX portrait sprites and their two `large` character consumers.
 
