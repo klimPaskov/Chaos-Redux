@@ -21,6 +21,3 @@ Shared records:
 - [`super_event_quote_sources.md`](super_event_quote_sources.md)
 - `source_audio/`
 - `processed_audio/`
-
-The Event 013 `archive/` directory contains superseded research snapshots. Its current audio production record is `013_natural_disasters/audio_production.md`.
-

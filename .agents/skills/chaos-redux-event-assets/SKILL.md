@@ -1150,8 +1150,7 @@ otherwise plausibly historical identities use sourced real people, while generat
 one-person subjects are limited to truly fictional high-chaos or
 impossible/supernatural entities. Missing or contradictory classification fails
 closed. For a fictional subject in the allowed class, generate a distinct
-full-resolution portrait master with `$imagegen`; do not reuse a leader crop or
-invent a reusable card-art generator. For real people, complete the shared
+full-resolution portrait master with `$imagegen`; do not reuse a leader crop. For real people, complete the shared
 real-person identity gate through an independently approved `156x210` candidate
 before preparing the native card and preserve source attribution. Institutional or
 collective briefs must state whether the result is people-free or includes a
@@ -1163,11 +1162,13 @@ generation or editing inputs, attribution or ImageGen record, reviewer, date, an
 runtime path. Keep each source, processed PNG, review sheet, and metadata file in a
 distinct path; do not split out or bypass an individual source to weaken provenance.
 
-There is no bundled advisor/dossier compositor or reusable card-art package. Prepare each native
-`65x67` PNG with a deterministic, task-specific/manual image workflow. If the card
-uses authored frame or paper art, retain those source files and their processing
-record with the asset package; do not place a reusable kit or frozen processor
-contract in this skill.
+Prepare each native `65x67` PNG with `.tools/create_advisor_icon.py`. The script
+uses the canonical `portraits/advisors/advisor_frame.png` and
+`portraits/advisors/advisor_paper.png` sources and composites them bottom-to-top as
+frame, resized/rotated portrait, then paper. It clips the portrait to the frame
+opening and applies only a slight portrait-only sepia blend. Record the explicit
+crop, portrait size, offset, rotation, sepia strength, source hashes, processed PNG,
+and final DDS in the asset package.
 
 Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
 portrait. Compose the subject independently inside the native card with a

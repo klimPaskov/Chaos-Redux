@@ -18,6 +18,3 @@ This directory is the working documentation area. Accepted design belongs in `do
 - `repo_cleanup/`
 - `world_end_scenarios_plans/`
 - `chaos_redux_3d_model_workflow_skill_handoff/`
-
-The duplicate Event 003 plan directories and the current-state contradictions identified in several long-running event packages require explicit design dispositions. They are preserved rather than merged or deleted during structural cleanup.
-

@@ -1,11 +1,14 @@
-"""Create one HOI4 advisor card from a portrait and a vanilla card template.
+"""Create a HOI4 advisor icon from three explicit image layers.
 
-This is a standalone maintenance utility. It is intentionally not registered by
-any repository skill or asset workflow.
+The bottom-to-top layer order is:
 
-The template supplies the existing HOI4 frame and paper artwork. The utility
-replaces only the portrait window, preserves the template alpha and paper, and
-writes a legacy one-level 32-bit BGRA DDS.
+1. advisor frame
+2. resized, rotated, lightly sepia-treated portrait
+3. advisor paper
+
+The portrait is clipped to the frame opening so it cannot cover the visible
+frame. The script writes both a review PNG and a legacy one-level 32-bit BGRA
+DDS.
 """
 
 from __future__ import annotations
@@ -14,18 +17,31 @@ import argparse
 import struct
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance
+from PIL import Image, ImageChops, ImageDraw, ImageOps
 
 
 CARD_SIZE = (65, 67)
 PORTRAIT_WINDOW = ((10, 8), (40, 8), (40, 56), (11, 57))
-PAPER_REGION = (27, 22, 61, 61)
+MOD_ROOT = Path(__file__).resolve().parent.parent
+ADVISOR_REFERENCE_ROOT = (
+	MOD_ROOT
+	/ ".agents"
+	/ "skills"
+	/ "chaos-redux-event-assets"
+	/ "assets"
+	/ "vanilla_reference"
+	/ "portraits"
+	/ "advisors"
+)
+DEFAULT_FRAME = ADVISOR_REFERENCE_ROOT / "advisor_frame.png"
+DEFAULT_PAPER = ADVISOR_REFERENCE_ROOT / "advisor_paper.png"
 
 
 def parse_args() -> argparse.Namespace:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--source", type=Path, required=True)
-	parser.add_argument("--template", type=Path, required=True)
+	parser.add_argument("--frame", type=Path, default=DEFAULT_FRAME)
+	parser.add_argument("--paper", type=Path, default=DEFAULT_PAPER)
 	parser.add_argument("--preview", type=Path, required=True)
 	parser.add_argument("--output", type=Path, required=True)
 	parser.add_argument(
@@ -33,17 +49,23 @@ def parse_args() -> argparse.Namespace:
 		type=int,
 		nargs=4,
 		metavar=("LEFT", "TOP", "RIGHT", "BOTTOM"),
-		required=True,
+		default=None,
 	)
 	parser.add_argument(
 		"--portrait-offset",
 		type=int,
 		nargs=2,
 		metavar=("X", "Y"),
-		default=(8, 6),
+		default=(8, 4),
 	)
-	parser.add_argument("--portrait-size", type=int, nargs=2, default=(34, 54))
+	parser.add_argument("--portrait-size", type=int, nargs=2, default=(36, 60))
 	parser.add_argument("--rotation", type=float, default=-2.5)
+	parser.add_argument(
+		"--sepia-strength",
+		type=float,
+		default=0.18,
+		help="Portrait-only sepia blend from 0.0 to 1.0 (default: 0.18).",
+	)
 	return parser.parse_args()
 
 
@@ -57,57 +79,55 @@ def validate_crop(image: Image.Image, crop: tuple[int, int, int, int]) -> None:
 
 def prepare_portrait(
 	source: Image.Image,
-	crop: tuple[int, int, int, int],
+	crop: tuple[int, int, int, int] | None,
 	size: tuple[int, int],
 	rotation: float,
+	sepia_strength: float,
 ) -> Image.Image:
-	validate_crop(source, crop)
-	portrait = source.crop(crop).convert("RGBA")
-	portrait = ImageEnhance.Color(portrait).enhance(0.86)
-	portrait = ImageEnhance.Contrast(portrait).enhance(1.06)
+	if crop is None:
+		portrait = source.convert("RGBA")
+	else:
+		validate_crop(source, crop)
+		portrait = source.crop(crop).convert("RGBA")
+	if not 0.0 <= sepia_strength <= 1.0:
+		raise ValueError("--sepia-strength must be between 0.0 and 1.0")
+
+	alpha = portrait.getchannel("A")
+	sepia = ImageOps.colorize(
+		ImageOps.grayscale(portrait),
+		black=(24, 18, 12),
+		white=(244, 224, 188),
+	)
+	portrait = Image.blend(portrait.convert("RGB"), sepia, sepia_strength)
+	portrait.putalpha(alpha)
 	portrait = portrait.resize(size, Image.Resampling.LANCZOS)
 	return portrait.rotate(rotation, Image.Resampling.BICUBIC, expand=True)
 
 
-def build_template_overlay(template: Image.Image) -> Image.Image:
-	overlay = template.convert("RGBA")
-	if overlay.size != CARD_SIZE:
-		raise ValueError(f"Template must be {CARD_SIZE[0]}x{CARD_SIZE[1]}")
-
-	window = Image.new("L", CARD_SIZE, 0)
-	ImageDraw.Draw(window).polygon(PORTRAIT_WINDOW, fill=255)
-
-	rgb = overlay.convert("RGB")
-	paper = Image.new("L", CARD_SIZE, 0)
-	paper_pixels = paper.load()
-	rgb_pixels = rgb.load()
-	alpha_pixels = overlay.getchannel("A").load()
-	left, top, right, bottom = PAPER_REGION
-	for y in range(top, bottom):
-		for x in range(left, right):
-			red, green, blue = rgb_pixels[x, y]
-			luminance = (red * 299 + green * 587 + blue * 114) // 1000
-			chroma = max(red, green, blue) - min(red, green, blue)
-			if alpha_pixels[x, y] > 24 and luminance > 132 and chroma < 90:
-				paper_pixels[x, y] = 255
-
-	clear_window = ImageChops.subtract(window, paper)
-	alpha = overlay.getchannel("A")
-	alpha = ImageChops.subtract(alpha, clear_window)
-	overlay.putalpha(alpha)
-	return overlay
+def load_layer(path: Path, label: str) -> Image.Image:
+	layer = Image.open(path).convert("RGBA")
+	if layer.size != CARD_SIZE:
+		raise ValueError(
+			f"{label} must be {CARD_SIZE[0]}x{CARD_SIZE[1]}, got "
+			f"{layer.width}x{layer.height}"
+		)
+	return layer
 
 
 def compose(
 	source: Image.Image,
-	template: Image.Image,
-	crop: tuple[int, int, int, int],
+	frame: Image.Image,
+	paper: Image.Image,
+	crop: tuple[int, int, int, int] | None,
 	offset: tuple[int, int],
 	size: tuple[int, int],
 	rotation: float,
+	sepia_strength: float,
 ) -> Image.Image:
 	card = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
-	portrait = prepare_portrait(source, crop, size, rotation)
+	card.alpha_composite(frame)
+
+	portrait = prepare_portrait(source, crop, size, rotation, sepia_strength)
 	portrait_layer = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
 	portrait_layer.alpha_composite(portrait, offset)
 	window = Image.new("L", CARD_SIZE, 0)
@@ -116,7 +136,7 @@ def compose(
 		ImageChops.multiply(portrait_layer.getchannel("A"), window)
 	)
 	card.alpha_composite(portrait_layer)
-	card.alpha_composite(build_template_overlay(template))
+	card.alpha_composite(paper)
 	return card
 
 
@@ -152,7 +172,7 @@ def write_bgra_dds(image: Image.Image, output: Path) -> None:
 		raise AssertionError(f"Unexpected DDS header size: {len(header)}")
 
 	raw = bytearray()
-	for red, green, blue, alpha in image.getdata():
+	for red, green, blue, alpha in image.get_flattened_data():
 		raw.extend((blue, green, red, alpha))
 
 	output.parent.mkdir(parents=True, exist_ok=True)
@@ -162,14 +182,17 @@ def write_bgra_dds(image: Image.Image, output: Path) -> None:
 def main() -> None:
 	args = parse_args()
 	source = Image.open(args.source)
-	template = Image.open(args.template)
+	frame = load_layer(args.frame, "Frame")
+	paper = load_layer(args.paper, "Paper")
 	card = compose(
 		source,
-		template,
-		tuple(args.crop),
+		frame,
+		paper,
+		tuple(args.crop) if args.crop is not None else None,
 		tuple(args.portrait_offset),
 		tuple(args.portrait_size),
 		args.rotation,
+		args.sepia_strength,
 	)
 	args.preview.parent.mkdir(parents=True, exist_ok=True)
 	card.save(args.preview)
