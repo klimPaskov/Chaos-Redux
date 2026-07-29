@@ -28,10 +28,10 @@ A super-event package must keep these parts aligned:
 - quote localisation
 - image
 - audio id
-- audio file
+- final sound file
 - audio documentation
 - event trigger or effect wiring
-- settings-aware playback
+- settings-aware sound playback
 - event docs
 - spreadsheet entry if relevant
 
@@ -49,7 +49,7 @@ Use this skill for:
 - global threat escalation
 - large event chain milestones
 - super-event quote research
-- super-event music research
+- super-event audio research
 - super-event audio documentation
 - super-event localisation updates
 - super-event image handoff to `chaos-redux-event-assets`
@@ -103,11 +103,11 @@ For actual research work, use the narrow project subagents instead of making one
 | --- | --- |
 | Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_quote_researcher` |
 | Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_cultural_remark_researcher` |
-| Audio candidates, license verification, legitimate download, conversion to `.ogg`, and audio research notes | `chaosx_super_event_audio_researcher` |
+| Audio candidates, license verification, legitimate download, conversion to a game-ready `.wav`, and audio research notes | `chaosx_super_event_audio_researcher` |
 | Real historical, archival, or real-world super-event image that must depict real material | `chaosx_asset_source_researcher` |
 | Fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific generated super-event image | `chaosx_generated_event_art` |
 
-The main agent owns final localisation, scripted localisation, slot wiring, settings-aware playback wiring, audio id wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
+The main agent owns final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
 
 The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
 
@@ -412,28 +412,27 @@ Use quotes about knowledge, arrogance, forbidden inquiry, unintended consequence
 
 Super-event audio should make the moment feel distinct.
 
-Core rule: a super-event task is not complete unless its audio is selected, verified, converted, wired, and documented.
+Super-event audio runtime uses sound output only. Register the final cue as sound and play it through the settings-aware sound helper.
 
-Every super-event implementation must include complete audio wiring. Do not leave a completed super-event on default, placeholder, mismatched, wrong-format, or undocumented audio.
+Core rule: a super-event task is not complete unless its audio is selected, verified, converted to a game-ready WAV, registered, wired, and documented.
 
-Every super-event must have its own unique final track, unique audio id, and unique sound wrapper unless the user explicitly approves a specific reuse before implementation. Do not reuse another super-event's track just because the moments are related.
+Every super-event implementation must include complete sound wiring. Do not leave a completed super-event on default, placeholder, mismatched, wrong-format, or undocumented audio.
 
-The final audio should be actual music by default: a musical recording, chant, hymn, orchestral excerpt, song, march, or other track with musical structure. Do not use pure sound effects, drones, pulses, room tone, one-shot stingers, abstract ambience, or texture beds for a super-event unless the user explicitly asks for non-musical audio and the exception is documented.
+Every super-event must have its own unique final track, unique audio id, and unique sound registration unless the user explicitly approves a specific reuse before implementation. Do not reuse another super-event's track just because the moments are related.
+
+The final cue should be an intentional musical recording by default, such as a chant, hymn, orchestral excerpt, song, march, or other track with musical structure. Do not use pure sound effects, drones, pulses, room tone, one-shot stingers, abstract ambience, or texture beds for a super-event unless the user explicitly asks for non-musical audio and the exception is documented.
 
 Never create or accept a super-event track from generated test tones, primitive waveforms, signal-generator output, metronome clicks, generated beeps, simple oscillator layers, noise beds, or quick local synthesis. This includes sine, square, triangle, sawtooth, and similar waveforms, even when mixed with noise or effects. If no real licensed track is available, stop and report the blocker instead of manufacturing a cue.
 
-Never describe a final cue with placeholder provenance such as "restored legacy", "legacy audio package", "repository history", or similar implementation-history wording in player-facing or attribution documentation. The final music table and audio docs must name the actual source title, creator or composer, performer or recording source when known, source URL, license, and duration. Use attribution status `verified` only after the title and creator/composer are identified and the source/license have been checked.
+Never describe a final cue with placeholder provenance such as "restored legacy", "legacy audio package", "repository history", or similar implementation-history wording in player-facing or attribution documentation. The canonical audio catalogue at `music/chaosx_music_track_list.html` and the audio docs must name the actual source title, creator or composer, performer or recording source when known, source URL, license, and duration. Use attribution status `verified` only after the title and creator/composer are identified and the source/license have been checked.
 
-The final music should be chosen intentionally.
+The final cue should be chosen intentionally.
 
 ## 13. Audio research rules
 
 Before looking outside the repository, check whether an approved suitable track already exists in the repo. Inspect:
 
-- existing `music/*.ogg`
 - existing `sound/*.wav`
-- `music/chaosx_super_event_music.asset`
-- `music/chaosx_super_event_music.txt`
 - `sound/chaosx_sound.asset`
 - `music/chaosx_music_track_list.html`
 - existing docs or manifests that identify source and license
@@ -442,7 +441,7 @@ Use an existing track only when its source, license, duration, and intended use 
 
 If no approved suitable track exists, search the internet using the repository web research workflow from `AGENTS.md`. Do not use unapproved web browsing tools for this repo.
 
-Find music that fits the exact super-event tone, role, and pacing. Prefer tracks between 1 and 2 minutes long. If a better track falls outside that range, document the exception before use and trim the final in-game file to 2 minutes or less unless the user explicitly approves a longer final track.
+Find audio that fits the exact super-event tone, role, and pacing. Prefer tracks between 1 and 2 minutes long. If a better track falls outside that range, document the exception before use and trim the final in-game file to 2 minutes or less unless the user explicitly approves a longer final track.
 
 Prefer:
 
@@ -455,13 +454,13 @@ Prefer:
 
 Reject:
 
-- generated test-tone or oscillator music, including sine, square, triangle, sawtooth, beep, pulse, and noise-bed cues
-- tracks that are primarily sound effects, drones, stingers, loops, abstract ambience, or texture beds when the request is for music
+- generated test-tone or oscillator audio, including sine, square, triangle, sawtooth, beep, pulse, and noise-bed cues
+- tracks that are primarily sound effects, drones, stingers, loops, abstract ambience, or texture beds when the request is for a structured musical cue
 - tracks with unclear licensing
 - YouTube uploads with no license information
 - vague "royalty free" claims without usage terms
 - modern commercial recordings with unclear rights
-- copyrighted film, game, trailer, or album music without clear permission
+- copyrighted film, game, trailer, or album recordings without clear permission
 - tracks where the composition is public domain but the recording is not usable
 
 For each candidate and final selected track, verify and document:
@@ -497,17 +496,16 @@ For every super-event audio package:
 1. Select the track after repository and internet-source checks.
 2. Verify the track title, creator or composer, source, license, duration, and usage terms.
 3. Download the selected audio from its legitimate source.
-4. Preserve the downloaded source file under the temporary event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio path when practical. Do not keep source downloads under `music/source/` or `music/super_events/`; those folders are not persistent source archives. Before the event goal is fully complete, promote durable source, license, attribution, and conversion facts into the permanent audio documentation, verify that no runtime reference points into `docs/assets/`, and delete the event-scoped workspace. Keep it for blocked or incomplete work.
-5. Convert the final in-game file to game-ready `.ogg`. Game-ready super-event `.ogg` files must be 44.1 kHz / 44100 Hz.
-6. Place the final `.ogg` in the correct event-scoped music folder: `music/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.ogg`. Shared defaults or non-event music may remain in `music/` only when they are intentionally shared and documented.
-7. Add or update `music/chaosx_super_event_music.asset` definitions for every dynamic volume variant that the current audio helper can call.
-8. Add or update `music/chaosx_super_event_music.txt` so the station includes a representative entry for every final super-event track.
-9. Add or update `sound/chaosx_sound.asset` sound and soundeffect definitions for sound-channel playback. If a sound-channel WAV is used for the same super-event, mirror the folder and filename structure under `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
-10. Wire the super-event to the correct audio id through `global.current_super_event_audio_id` and the settings-aware playback helper.
-11. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`. every super-event track must have a row in the HTML music table, and that row must list the super-event id using the track. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
-12. Verify the final file paths, definitions, ids, and docs before calling the super-event complete.
+4. Preserve the downloaded source file under the temporary event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio path when practical. Before the event goal is fully complete, promote durable source, license, attribution, and conversion facts into the permanent audio documentation, verify that no runtime reference points into `docs/assets/`, and delete the event-scoped workspace. Keep it for blocked or incomplete work.
+5. Convert the final cue to a game-ready `.wav`.
+6. Place the final `.wav` in the event-scoped sound folder: `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
+7. Add or update the base `sound` definition in `sound/chaosx_sound.asset` so it points to the final WAV and has a unique sound definition id.
+8. Add or update the required settings-volume `soundeffect` wrappers in `sound/chaosx_sound.asset`. Each wrapper must point to the base sound, follow the existing `max_audible` and `max_audible_behaviour` pattern, and use the helper naming contract `chaosx_super_event_<super_event_id>_sound_<volume_suffix>`.
+9. Set `global.current_super_event_audio_id` to the correct unique audio id and call `play_current_super_event_sound = yes`, the settings-aware sound helper.
+10. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`, the canonical audio catalogue. Every final cue must have a row that lists the super-event id using the track and the source/rights details. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
+11. Verify the final file paths, sound definitions, volume wrappers, ids, helper call, and docs before calling the super-event complete.
 
-Use the existing Chaos Redux settings-aware playback helper. Do not bypass it.
+Use the existing Chaos Redux settings-aware sound helper. Do not bypass it.
 
 ## 15. Audio editing notes
 
@@ -538,25 +536,27 @@ When implementing audio, follow the existing Chaos Redux audio pattern.
 
 The implementation should keep these aligned:
 
-- audio file
+- final sound file
+- base sound definition
+- required volume-wrapper soundeffects
 - audio id
 - `global.current_super_event_audio_id`
-- settings-aware playback helper
+- settings-aware sound helper
 - super-event slot
 - localisation
 - documentation
 
 Every super-event must have a specific audio id and a unique final track. Shared audio ids or shared tracks are allowed only when the user explicitly approved the exact reuse.
 
-Use the settings-aware playback helper rather than bypassing it.
+Use `play_current_super_event_sound = yes` rather than bypassing the settings-aware sound helper.
 
 Fallbacks are not allowed without discussing them with the user. If final audio is unavailable, stop and explain the blocker instead of silently leaving default or placeholder audio.
 
 ## 17. Audio documentation
 
-Always update `music/chaosx_music_track_list.html` for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID using the track. User-approved reuse must list every affected ID and the audio docs must explain why reuse was approved.
+Always update `music/chaosx_music_track_list.html`, the canonical audio catalogue, for every super-event track. Every final super-event track must have a row in that table, and the row must show the super-event ID using the track. User-approved reuse must list every affected ID and the audio docs must explain why reuse was approved.
 
-Update any additional music or audio documentation used by the repo.
+Update any additional audio documentation used by the repo.
 
 For each super-event audio package, document:
 
@@ -570,9 +570,9 @@ For each super-event audio package, document:
 - duration
 - attribution text if required
 - downloaded source path
-- final `.ogg` path
-- final sound-channel `.wav` path, when used
-- sound definition id
+- final `.wav` path
+- base sound definition id
+- required volume-wrapper soundeffect ids
 - super-event id or key using the track
 - `music/chaosx_music_track_list.html` row with the final track and super-event ID or IDs
 - editing or conversion steps
@@ -585,18 +585,17 @@ If metadata cannot identify the author, title, source, license, or duration, and
 
 Before finishing any super-event task, confirm:
 
-- the final `.ogg` exists
-- the final `.ogg` is 44.1 kHz / 44100 Hz
-- the file is in the correct folder
+- the final `.wav` exists
+- the final `.wav` is game-ready for the HOI4 sound pipeline
+- the file is in the correct event-scoped sound folder
 - the selected track is between 1 and 2 minutes long, or the exception is documented
-- the music definitions point to the correct `.ogg`
-- `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track
-- the sound definitions point to the correct file or intended sound wrapper
-- the super-event points to the correct audio id
+- the base sound definition in `sound/chaosx_sound.asset` points to the correct `.wav`
+- the required settings-volume soundeffect wrappers point to the base sound and use the helper naming contract
+- the super-event points to the correct audio id and calls `play_current_super_event_sound = yes`
 - `music/chaosx_music_track_list.html` documents every super-event track and shows the super-event ID or IDs using it
 - documentation records the source, license, and duration
-- documentation records the downloaded source path, final `.ogg` path, sound definition id, and super-event use
-- no generated test-tone, oscillator, beep, primitive waveform, or noise-bed music remains in any completed super-event track
+- documentation records the downloaded source path, final `.wav` path, sound definition id, volume-wrapper ids, and super-event use
+- no generated test-tone, oscillator, beep, primitive waveform, or noise-bed cue remains in any completed super-event track
 - every completed super-event has a unique final track unless exact reuse was explicitly approved by the user and documented
 - no placeholder, default, mismatched, or wrong-format audio remains for completed super-events
 
@@ -681,7 +680,7 @@ The super-event should communicate:
 - what new order or memory follows
 - why the campaign does not simply return to normal
 
-Quotes and music should usually feel reflective, not triumphant without cost.
+Quotes and audio should usually feel reflective, not triumphant without cost.
 
 ## 23. Documentation requirements
 
@@ -737,9 +736,11 @@ The note should include:
 - duration
 - attribution text if required
 - downloaded source path
-- final `.ogg` path
-- sound definition id
+- final `.wav` path
+- base sound definition id
+- required volume-wrapper soundeffect ids
 - super-event id or key using the track
+- `music/chaosx_music_track_list.html` row with the final track and super-event ID or IDs
 - editing or conversion steps
 - uncertainties, if any
 - implementation notes
@@ -774,19 +775,19 @@ Before closing a super-event task, confirm:
 15. Tracks with unclear licensing were rejected.
 16. License or public domain status is documented.
 17. Selected audio has title, creator or composer, source, license, duration, usage terms, and suitability notes.
-18. The final `.ogg` exists in the correct folder.
+18. The final `.wav` exists in the correct event-scoped sound folder.
 19. The selected track is between 1 and 2 minutes long, or the exception is documented.
-20. Music definitions point to the correct `.ogg`.
-21. `music/chaosx_super_event_music.txt` includes the final super-event track or a representative helper song id for that track.
-22. Sound definitions point to the correct file or wrapper.
+20. The base sound definition in `sound/chaosx_sound.asset` points to the correct `.wav`.
+21. Required settings-volume soundeffect wrappers point to the base sound and follow the helper naming contract.
+22. `music/chaosx_music_track_list.html` records the final track, source/rights details, and super-event ID or IDs.
 23. The audio id is specific to the super-event or intentionally shared and documented.
 24. `global.current_super_event_audio_id` is set correctly.
-25. Settings-aware playback is used.
+25. `play_current_super_event_sound = yes` uses the settings-aware sound helper.
 26. Scripted localisation is updated, including `GetSuperEventImage`. otherwise the slot can show default art while the text/audio work.
 27. Player-facing localisation is updated.
 28. Image wiring is updated.
 29. Audio wiring is updated.
-30. Music or audio documentation is updated with source, license, duration, paths, sound definition id, super-event use, and conversion steps.
+30. Audio documentation is updated with source, license, duration, paths, sound definition id, volume-wrapper ids, super-event use, and conversion steps.
 31. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
 32. Event docs are updated.
 33. Spreadsheet or event catalog is updated if relevant.
