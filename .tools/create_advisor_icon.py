@@ -1,16 +1,9 @@
-"""Create a HOI4 advisor icon from three explicit image layers.
+"""Place a processed portrait beneath the canonical HOI4 advisor template.
 
-The bottom-to-top layer order is:
-
-1. advisor frame with a soft generated shadow
-2. resized, rotated, lightly sepia-treated portrait
-3. advisor paper with a soft generated shadow
-
-The portrait is clipped to the frame opening so it cannot cover the visible
-frame. The canonical source files remain unchanged. Working copies have their
-baked shadow alpha removed before consistent generated shadows are applied,
-preventing transparent or light fringes. The script writes both a review PNG
-and a legacy one-level 32-bit BGRA DDS.
+The portrait is center-cropped without distortion, sampled to the requested
+fractional size, rotated around the advisor opening center, and offset from
+that center. The supplied template is then composited unchanged over the
+portrait. The script writes a review PNG and a one-level 32-bit BGRA DDS.
 """
 
 from __future__ import annotations
@@ -20,14 +13,16 @@ import math
 import struct
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageOps
 
 
 CARD_SIZE = (65, 67)
-PORTRAIT_WINDOW = ((10, 8), (40, 8), (40, 56), (11, 57))
-DEFAULT_PORTRAIT_CENTER = (25.0, 32.5)
+TEMPLATE_OPENING_CENTER = (25.0, 32.5)
+DEFAULT_PORTRAIT_SIZE = (25.03, 31.38)
+DEFAULT_PORTRAIT_OFFSET = (7.0, -2.0)
+DEFAULT_ROTATION = -3.75
 MOD_ROOT = Path(__file__).resolve().parent.parent
-ADVISOR_REFERENCE_ROOT = (
+DEFAULT_TEMPLATE = (
 	MOD_ROOT
 	/ ".agents"
 	/ "skills"
@@ -36,16 +31,14 @@ ADVISOR_REFERENCE_ROOT = (
 	/ "vanilla_reference"
 	/ "portraits"
 	/ "advisors"
+	/ "advisor_template.png"
 )
-DEFAULT_FRAME = ADVISOR_REFERENCE_ROOT / "advisor_frame.png"
-DEFAULT_PAPER = ADVISOR_REFERENCE_ROOT / "advisor_paper.png"
 
 
 def parse_args() -> argparse.Namespace:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--source", type=Path, required=True)
-	parser.add_argument("--frame", type=Path, default=DEFAULT_FRAME)
-	parser.add_argument("--paper", type=Path, default=DEFAULT_PAPER)
+	parser.add_argument("--template", type=Path, default=DEFAULT_TEMPLATE)
 	parser.add_argument("--preview", type=Path, required=True)
 	parser.add_argument("--output", type=Path, required=True)
 	parser.add_argument(
@@ -56,55 +49,34 @@ def parse_args() -> argparse.Namespace:
 		default=None,
 	)
 	parser.add_argument(
-		"--portrait-center",
+		"--template-center",
 		type=float,
 		nargs=2,
 		metavar=("X", "Y"),
-		default=DEFAULT_PORTRAIT_CENTER,
-		help="Stable center of the frame opening (default: 25 32.5).",
+		default=TEMPLATE_OPENING_CENTER,
+		help="Center of the portrait opening in the template (default: 25 32.5).",
 	)
 	parser.add_argument(
 		"--portrait-size",
-		type=int,
+		type=float,
 		nargs=2,
-		default=None,
-		metavar=("MIN_WIDTH", "MIN_HEIGHT"),
-		help=(
-			"Optional minimum cover box before rotation. The automatic "
-			"corner-to-corner frame fit remains active and aspect ratio is "
-			"always preserved."
-		),
+		metavar=("WIDTH", "HEIGHT"),
+		default=DEFAULT_PORTRAIT_SIZE,
+		help="Pre-rotation portrait size in pixels (default: 25.03 31.38).",
 	)
-	parser.add_argument("--rotation", type=float, default=10.0)
 	parser.add_argument(
-		"--portrait-zoom",
+		"--portrait-offset",
 		type=float,
-		default=1.16,
-		help="Extra proportional cover margin after corner fitting (default: 1.16).",
+		nargs=2,
+		metavar=("RIGHT", "DOWN"),
+		default=DEFAULT_PORTRAIT_OFFSET,
+		help="Offset from template center (default: 7 right, 2 up).",
 	)
 	parser.add_argument(
-		"--shadow-radius",
+		"--rotation",
 		type=float,
-		default=1.05,
-		help="Gaussian radius for generated frame and paper shadows (default: 1.05).",
-	)
-	parser.add_argument(
-		"--shadow-opacity",
-		type=float,
-		default=0.36,
-		help="Maximum opacity for generated frame and paper shadows (default: 0.36).",
-	)
-	parser.add_argument(
-		"--frame-core-threshold",
-		type=int,
-		default=96,
-		help="Minimum source alpha retained in the shadow-free frame core.",
-	)
-	parser.add_argument(
-		"--paper-core-threshold",
-		type=int,
-		default=176,
-		help="Minimum source alpha retained in the shadow-free paper core.",
+		default=DEFAULT_ROTATION,
+		help="Portrait rotation in degrees (default: -3.75).",
 	)
 	parser.add_argument(
 		"--sepia-strength",
@@ -121,45 +93,6 @@ def validate_crop(image: Image.Image, crop: tuple[int, int, int, int]) -> None:
 		raise ValueError(f"Crop {crop} is outside {image.width}x{image.height}")
 	if left >= right or top >= bottom:
 		raise ValueError(f"Crop has no area: {crop}")
-
-
-def calculate_corner_cover_scale(
-	source_size: tuple[int, int],
-	minimum_size: tuple[int, int] | None,
-	center: tuple[float, float],
-	rotation: float,
-	zoom: float,
-) -> float:
-	if zoom < 1.0:
-		raise ValueError("--portrait-zoom must be at least 1.0")
-
-	angle = math.radians(rotation)
-	cosine = math.cos(angle)
-	sine = math.sin(angle)
-	max_local_x = 0.0
-	max_local_y = 0.0
-	for corner_x, corner_y in PORTRAIT_WINDOW:
-		delta_x = corner_x - center[0]
-		delta_y = corner_y - center[1]
-		local_x = cosine * delta_x + sine * delta_y
-		local_y = -sine * delta_x + cosine * delta_y
-		max_local_x = max(max_local_x, abs(local_x))
-		max_local_y = max(max_local_y, abs(local_y))
-
-	scale = max(
-		(2.0 * max_local_x) / source_size[0],
-		(2.0 * max_local_y) / source_size[1],
-	)
-	if minimum_size is not None:
-		minimum_width, minimum_height = minimum_size
-		if minimum_width < 1 or minimum_height < 1:
-			raise ValueError("--portrait-size values must be positive")
-		scale = max(
-			scale,
-			minimum_width / source_size[0],
-			minimum_height / source_size[1],
-		)
-	return scale * zoom
 
 
 def prepare_portrait(
@@ -186,20 +119,43 @@ def prepare_portrait(
 	return portrait
 
 
+def calculate_center_crop(
+	source_size: tuple[int, int],
+	target_size: tuple[float, float],
+) -> tuple[float, float, float, float]:
+	source_width, source_height = source_size
+	target_width, target_height = target_size
+	if target_width <= 0.0 or target_height <= 0.0:
+		raise ValueError("--portrait-size values must be positive")
+
+	target_aspect = target_width / target_height
+	source_aspect = source_width / source_height
+	if source_aspect < target_aspect:
+		crop_width = float(source_width)
+		crop_height = crop_width / target_aspect
+	else:
+		crop_height = float(source_height)
+		crop_width = crop_height * target_aspect
+	left = (source_width - crop_width) / 2.0
+	top = (source_height - crop_height) / 2.0
+	return left, top, left + crop_width, top + crop_height
+
+
 def render_portrait_layer(
 	portrait: Image.Image,
-	minimum_size: tuple[int, int] | None,
+	target_size: tuple[float, float],
 	center: tuple[float, float],
 	rotation: float,
-	zoom: float,
 ) -> Image.Image:
-	scale = calculate_corner_cover_scale(
-		portrait.size,
-		minimum_size,
-		center,
-		rotation,
-		zoom,
-	)
+	left, top, right, bottom = calculate_center_crop(portrait.size, target_size)
+	crop_width = right - left
+	crop_height = bottom - top
+	scale_x = target_size[0] / crop_width
+	scale_y = target_size[1] / crop_height
+	if not math.isclose(scale_x, scale_y, rel_tol=0.0, abs_tol=1e-12):
+		raise AssertionError("Portrait transform would distort the source aspect ratio")
+
+	scale = scale_x
 	angle = math.radians(rotation)
 	cosine = math.cos(angle)
 	sine = math.sin(angle)
@@ -208,8 +164,10 @@ def render_portrait_layer(
 	b = sine * inverse_scale
 	d = -sine * inverse_scale
 	e = cosine * inverse_scale
-	c = portrait.width / 2.0 - a * center[0] - b * center[1]
-	f = portrait.height / 2.0 - d * center[0] - e * center[1]
+	source_center_x = (left + right) / 2.0
+	source_center_y = (top + bottom) / 2.0
+	c = source_center_x - a * center[0] - b * center[1]
+	f = source_center_y - d * center[0] - e * center[1]
 	return portrait.transform(
 		CARD_SIZE,
 		Image.Transform.AFFINE,
@@ -219,113 +177,38 @@ def render_portrait_layer(
 	)
 
 
-def load_layer(path: Path, label: str) -> Image.Image:
-	layer = Image.open(path).convert("RGBA")
-	if layer.size != CARD_SIZE:
+def load_template(path: Path) -> Image.Image:
+	template = Image.open(path).convert("RGBA")
+	if template.size != CARD_SIZE:
 		raise ValueError(
-			f"{label} must be {CARD_SIZE[0]}x{CARD_SIZE[1]}, got "
-			f"{layer.width}x{layer.height}"
+			f"Template must be {CARD_SIZE[0]}x{CARD_SIZE[1]}, got "
+			f"{template.width}x{template.height}"
 		)
-	return layer
-
-
-def create_soft_shadow(
-	layer: Image.Image,
-	radius: float,
-	opacity: float,
-) -> Image.Image:
-	if radius < 0.0:
-		raise ValueError("--shadow-radius cannot be negative")
-	if not 0.0 <= opacity <= 1.0:
-		raise ValueError("--shadow-opacity must be between 0.0 and 1.0")
-
-	core = layer.getchannel("A").point(
-		lambda alpha: 255 if alpha > 160 else 0
-	)
-	core = core.filter(ImageFilter.MaxFilter(3))
-	core = core.filter(ImageFilter.GaussianBlur(radius))
-	core = core.transform(
-		CARD_SIZE,
-		Image.Transform.AFFINE,
-		(1, 0, 0, 0, 1, -1),
-		resample=Image.Resampling.BICUBIC,
-		fillcolor=0,
-	)
-	shadow_alpha = core.point(lambda alpha: round(alpha * opacity))
-	shadow = Image.new("RGBA", CARD_SIZE, (7, 6, 5, 0))
-	shadow.putalpha(shadow_alpha)
-	return shadow
-
-
-def remove_baked_shadow(
-	layer: Image.Image,
-	alpha_threshold: int,
-) -> Image.Image:
-	if not 1 <= alpha_threshold <= 255:
-		raise ValueError("Layer core thresholds must be between 1 and 255")
-
-	source_alpha = layer.getchannel("A")
-	support = source_alpha.point(
-		lambda alpha: 255 if alpha > 0 else 0
-	)
-	core = source_alpha.point(
-		lambda alpha: 255 if alpha >= alpha_threshold else 0
-	)
-	core = core.filter(ImageFilter.GaussianBlur(0.45))
-	clean_alpha = ImageChops.multiply(core, support)
-	clean = layer.copy()
-	clean.putalpha(clean_alpha)
-	return clean
+	return template
 
 
 def compose(
 	source: Image.Image,
-	frame: Image.Image,
-	paper: Image.Image,
+	template: Image.Image,
 	crop: tuple[int, int, int, int] | None,
-	center: tuple[float, float],
-	minimum_size: tuple[int, int] | None,
+	template_center: tuple[float, float],
+	portrait_size: tuple[float, float],
+	portrait_offset: tuple[float, float],
 	rotation: float,
-	zoom: float,
-	shadow_radius: float,
-	shadow_opacity: float,
-	frame_core_threshold: int,
-	paper_core_threshold: int,
 	sepia_strength: float,
 ) -> Image.Image:
-	frame = remove_baked_shadow(frame, frame_core_threshold)
-	paper = remove_baked_shadow(paper, paper_core_threshold)
-
-	card = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
-	card.alpha_composite(create_soft_shadow(frame, shadow_radius, shadow_opacity))
-	card.alpha_composite(frame)
-
 	portrait = prepare_portrait(source, crop, sepia_strength)
-	portrait_layer = render_portrait_layer(
+	portrait_center = (
+		template_center[0] + portrait_offset[0],
+		template_center[1] + portrait_offset[1],
+	)
+	card = render_portrait_layer(
 		portrait,
-		minimum_size,
-		center,
+		portrait_size,
+		portrait_center,
 		rotation,
-		zoom,
 	)
-	window = Image.new("L", CARD_SIZE, 0)
-	ImageDraw.Draw(window).polygon(PORTRAIT_WINDOW, fill=255)
-	frame_footprint = frame.getchannel("A").point(
-		lambda alpha: 255 if alpha > 0 else 0
-	)
-	portrait_visibility = ImageChops.subtract(
-		window,
-		frame_footprint,
-	)
-	portrait_layer.putalpha(
-		ImageChops.multiply(
-			portrait_layer.getchannel("A"),
-			portrait_visibility,
-		)
-	)
-	card.alpha_composite(portrait_layer)
-	card.alpha_composite(create_soft_shadow(paper, shadow_radius, shadow_opacity))
-	card.alpha_composite(paper)
+	card.alpha_composite(template)
 	return card
 
 
@@ -371,34 +254,30 @@ def write_bgra_dds(image: Image.Image, output: Path) -> None:
 def main() -> None:
 	args = parse_args()
 	source = Image.open(args.source)
-	frame = load_layer(args.frame, "Frame")
-	paper = load_layer(args.paper, "Paper")
+	template = load_template(args.template)
 	card = compose(
 		source,
-		frame,
-		paper,
+		template,
 		tuple(args.crop) if args.crop is not None else None,
-		tuple(args.portrait_center),
-		tuple(args.portrait_size) if args.portrait_size is not None else None,
+		tuple(args.template_center),
+		tuple(args.portrait_size),
+		tuple(args.portrait_offset),
 		args.rotation,
-		args.portrait_zoom,
-		args.shadow_radius,
-		args.shadow_opacity,
-		args.frame_core_threshold,
-		args.paper_core_threshold,
 		args.sepia_strength,
 	)
-	args.preview.parent.mkdir(parents=True, exist_ok=True)
-	card.save(args.preview)
-	write_bgra_dds(card, args.output)
+	preview = args.preview.resolve()
+	output = args.output.resolve()
+	preview.parent.mkdir(parents=True, exist_ok=True)
+	card.save(preview)
+	write_bgra_dds(card, output)
 
-	reopened = Image.open(args.output).convert("RGBA")
+	reopened = Image.open(output).convert("RGBA")
 	if reopened.size != CARD_SIZE:
 		raise ValueError(f"DDS reopened at {reopened.size}, expected {CARD_SIZE}")
 	if reopened.tobytes() != card.tobytes():
 		raise ValueError("DDS decoded pixels differ from the preview")
 	expected_length = 128 + CARD_SIZE[0] * CARD_SIZE[1] * 4
-	if args.output.stat().st_size != expected_length:
+	if output.stat().st_size != expected_length:
 		raise ValueError("DDS length does not match one-level BGRA layout")
 
 
