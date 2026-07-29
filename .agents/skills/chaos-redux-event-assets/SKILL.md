@@ -166,19 +166,21 @@ docs/assets/portraits/<event_id>_<event_slug>/portrait.txt
 
 Save the highest-resolution portrait source that anchors the subject as `portrait.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
 
-Analyze the saved portrait source and use the following prompt exactly as the portrait-description instruction:
+Analyze the saved portrait source, use established task context and verified research about the subject, and follow this portrait-description instruction:
 
 ```text
-Write one concise natural-language image prompt describing the input portrait.
+Write one concise natural-language image prompt describing the input portrait and its subject.
 
 Begin with:
 
 hoi4_portrait,
 
-Prioritize visible details that help recreate the person:
+Use established task context and verified research for non-visual facts about the subject. If nationality, ethnicity, ideology, political role, military role, branch, rank, organization, or historical period are not already established, research them before writing the prompt. Use the input portrait for visible appearance and presentation.
+
+Prioritize details that help recreate the person:
 
 - approximate age and gender
-- nationality, ideology, military role, or political role when clearly visible
+- nationality, ethnicity, ideology, military role, political role, branch, rank, organization, and historical period when supported by established context or verified research
 - hair, hairline, facial hair, glasses, and accessories
 - expression and head direction
 - eye shape and spacing
@@ -188,12 +190,12 @@ Prioritize visible details that help recreate the person:
 - facial proportions, skin tone, and visible asymmetry
 - clothing, uniform, medals, hats, jewelry, and other relevant visible details
 
-Use concise natural language, not a tag list. Do not use the person’s name. Do not invent details that cannot be inferred from the image.
+Use concise natural language, not a tag list. Do not use the person’s name. Do not invent details unsupported by either the image or verified context. If the image and contextual evidence appear to conflict, preserve verified identity and role facts while describing only appearance that is clearly visible.
 
 Output only the final prompt with no headings, quotation marks, explanations, or formatting.
 ```
 
-Save only the resulting final prompt in `portrait.txt`. Do not add provenance, labels, headings, notes, or the instruction text itself to that file.
+Save only the resulting final prompt in `portrait.txt`. Do not add provenance, labels, headings, notes, or the instruction text itself to that file. Record the research sources used for non-visual facts in the asset manifest or permanent event documentation, not in `portrait.txt`.
 
 For an accepted event with more than one portrait, keep the primary portrait at `portrait.png` and `portrait.txt`, then use paired stable subject basenames such as `portrait_<subject_slug>.png` and `portrait_<subject_slug>.txt` for each additional portrait. Never overwrite one subject with another. Record every durable pair, its subject, source relationship, and `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed` state in the active manifest and permanent event documentation.
 
@@ -1141,7 +1143,7 @@ The metadata must record the Pillow/tool version and hash, master/output hashes 
 
 After the immutable crop and any source-locked ImageGen repaint, produce the full-size candidate with the same explicit role boundary and deterministic `156x210` canvas. Keep the image-editing steps reproducible and record their normalized commands or manual operations in the manifest; do not advertise a missing shared processor or silently treat a raw, filtered, or merely resized photograph as runtime art.
 
-Before the final resize and DDS conversion, also create the durable ComfyUI pair from section 2.3. Save the highest-resolution subject source as `docs/assets/portraits/<event_id>_<event_slug>/portrait.png`, analyze that image with the exact portrait-description instruction from section 2.3, and save only its final natural-language prompt as `portrait.txt`. This queue does not replace the source master, audit evidence, processed candidate, or runtime asset.
+Before the final resize and DDS conversion, also create the durable ComfyUI pair from section 2.3. Save the highest-resolution subject source as `docs/assets/portraits/<event_id>_<event_slug>/portrait.png`, combine analysis of that image with established task context and verified research through the section 2.3 portrait-description instruction, and save only its final natural-language prompt as `portrait.txt`. This queue does not replace the source master, audit evidence, processed candidate, or runtime asset.
 
 Choose the canonical reference family by role before starting:
 
