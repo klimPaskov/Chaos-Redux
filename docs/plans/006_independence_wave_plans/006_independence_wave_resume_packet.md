@@ -12,6 +12,8 @@ The current scoped tag boundary is the 102 Event 006 reservation tags plus the 3
 
 The doubled automatic ladder is 6/8/10/14/20, with World Collapse targeting 20. Fourteen- and twenty-country waves remain fail-closed below admitted package capacity. The localized pre-wave crisis is source-implemented and queues the ordinary synchronized planner; live mission, retry, requester-loss, save/load, allocator, focus, scenario, package, asset, audio, achievement, and balance evidence remain open. Do not promote a registry row or claim whole-event completion from adapter or publisher presence.
 
+The 2026-07-29 grounded CHU portrait tranche adds Musa Dzhalil as the current Bolgar civic-presidium candidate and Ahmet Zeki Velidi Togan as the current river-security-directorate candidate. Both preserved their archival male identities through exact crop and HOI4-style repaint processing and passed the independent visual audit; Commons/museum rights, provenance, and the Bashkir-to-CHU route-role decision remain open, so both candidates stay evidence-only with no DDS or `.gfx` wiring.
+
 The 2026-07-28 doubled-ladder and pre-wave crisis evidence is bounded by
 `subagent_handoffs/006_pre_wave_crisis_and_doubled_ladder_2026_07_28.md` and the
 focused completion audit
