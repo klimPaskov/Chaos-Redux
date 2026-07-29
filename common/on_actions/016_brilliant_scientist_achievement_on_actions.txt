@@ -1,0 +1,98 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ACHIEVEMENT ON ACTIONS
+# ============================================================================
+# Event-driven receipts for real wars, a project-unit capital capture, and
+# player nuclear use. No recurring all-country or all-state pulse is used.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = { ROOT = { brilliant_scientist_is_kruger_sovereign_country = yes } FROM = { exists = yes } }
+				FROM = { save_event_target_as = brilliant_scientist_achievement_war_opponent }
+				ROOT = { brilliant_scientist_achievement_register_kruger_war_opponent = yes }
+			}
+			if = {
+				limit = { FROM = { brilliant_scientist_is_kruger_sovereign_country = yes } ROOT = { exists = yes } }
+				ROOT = { save_event_target_as = brilliant_scientist_achievement_war_opponent }
+				FROM = { brilliant_scientist_achievement_register_kruger_war_opponent = yes }
+			}
+		}
+	}
+
+	# ROOT is the capitulated country and FROM is the winner.
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { has_country_flag = brilliant_scientist_achievement_major_enemy_at_kruger_war_start }
+					FROM = { brilliant_scientist_is_kruger_sovereign_country = yes }
+				}
+				ROOT = { save_event_target_as = brilliant_scientist_achievement_capitulated_opponent }
+				FROM = { brilliant_scientist_achievement_record_major_war_victory = yes }
+			}
+		}
+	}
+
+	# ROOT is the new controller, FROM is the old controller, and FROM.FROM is
+	# the changed state. The capital marker and its war epoch were fixed at the
+	# start of the still-active major war, so an old marker cannot qualify later.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = {
+						brilliant_scientist_is_kruger_sovereign_country = yes
+						has_war_with = FROM
+					}
+					FROM = {
+						has_country_flag = brilliant_scientist_achievement_major_enemy_at_kruger_war_start
+						has_variable = brilliant_scientist_achievement_kruger_war_epoch
+					}
+					FROM.FROM = {
+						has_state_flag = brilliant_scientist_achievement_kruger_major_enemy_capital_at_war_start
+						has_variable = brilliant_scientist_achievement_kruger_major_enemy_capital_epoch
+						check_variable = {
+							var = brilliant_scientist_achievement_kruger_major_enemy_capital_epoch
+							value = FROM.brilliant_scientist_achievement_kruger_war_epoch
+							compare = equals
+						}
+						any_state_division = {
+							OWNER = { tag = ROOT }
+							division_has_battalion_in_template = kruger_paleogenetic_beast
+						}
+					}
+				}
+				ROOT = { set_country_flag = brilliant_scientist_achievement_paleogenetic_major_capital_capture }
+				FROM.FROM = {
+					clr_state_flag = brilliant_scientist_achievement_kruger_major_enemy_capital_at_war_start
+					clear_variable = brilliant_scientist_achievement_kruger_major_enemy_capital_epoch
+				}
+			}
+		}
+	}
+
+	# ROOT is the country dropping the weapon and FROM is the target state.
+	on_nuke_drop = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { exists = yes }
+					FROM = {
+						OR = {
+							owner = { brilliant_scientist_is_kruger_sovereign_country = yes }
+							controller = { brilliant_scientist_is_kruger_sovereign_country = yes }
+							has_state_flag = brilliant_scientist_primary_facility
+							has_state_flag = brilliant_scientist_secondary_facility
+							has_state_flag = brilliant_scientist_krg_facility
+							has_state_flag = brilliant_scientist_former_primary_facility
+							has_state_flag = brilliant_scientist_former_secondary_facility
+						}
+					}
+				}
+				ROOT = { set_country_flag = brilliant_scientist_achievement_nuked_kruger_territory }
+			}
+		}
+	}
+}

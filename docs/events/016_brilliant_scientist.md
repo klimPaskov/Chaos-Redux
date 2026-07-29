@@ -2,9 +2,9 @@
 
 ## Implementation status
 
-Event 016 remains default-disabled while the core package is integrated and audited. The opening incident and shared scripted architecture are implemented: the dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
+Event 016 is default-enabled as a minor fire-once incident after the core package audits. The dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
 
-The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Bounded Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, and presentation tranches are present in the current worktree or accepted handoffs, but parent-owned shared wiring, Event 019 provider interoperability, deferred report/news and flavor content, Event016-specific 3D models, localisation, workbook alignment, mapped audits, and final enablement remain open. This document does not claim the whole event is complete.
+The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, presentation, shared wiring, Event 019 provider interoperability, localisation, workbook alignment, and mapped audit tranches form the core runtime package. Deferred report/news and flavor content, Event016-specific 3D models, and live consumer validation remain open. This document does not claim the whole event is content-complete.
 
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
@@ -135,13 +135,13 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 
 ## Current blockers
 
-- Event 016 remains default-disabled because the current tranches still require parent-owned shared registry and consumer wiring, Event 019 provider adapters, final localisation, workbook alignment, mapped audits, and live scenario validation.
+- Event 016 is default-enabled for ordinary fire-once selection; live scenario validation remains user-owned.
 - The accepted report, super-event, portrait, animation, icon, flag, and Directorate UI packages still require the parent-owned registrations or consumer checks recorded in their handoffs; package existence is not a whole-event completion claim.
 - No Event016-specific 3D unit or building model package is accepted. The seven route-specific unit consumers remain a production and runtime-wiring backlog.
 - Broader news, defeat/remnant, and country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design.
 
 ## Future plans
 
-Continue the parent-owned core handoff: Event 019 provider adapters, shared Event Details and presentation wiring, final localisation, workbook alignment, mapped audits, and live scenario validation. Keep broader flavor, news, defeat or remnant, and Event016-specific 3D production queued behind that core boundary. Preserve the completed opening transaction, accepted architecture, staged identity packages, accepted visual tranches, and Event 016-owned OGGs.
+Continue from the core-runtime handoff with live scenario validation and future content tranches. Keep broader flavor, news, defeat or remnant, and Event016-specific 3D production queued behind that core boundary. Preserve the completed opening transaction, accepted architecture, staged identity packages, accepted visual tranches, and Event 016-owned OGGs.
 
 Another improvement-loop pass is appropriate only after the accepted addendum is implemented and new evidence shows a distinct shallow or disconnected mechanic.

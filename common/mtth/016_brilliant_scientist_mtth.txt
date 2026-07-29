@@ -8,6 +8,27 @@
 # These entries are decision/event clocks only and create no periodic on_action.
 # ============================================================================
 
+brilliant_scientist_evolution_dormant_interval = {
+	base = constant:brilliant_scientist_evolution_mtth.evolution_i_active_days
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_high
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_2.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:brilliant_scientist_evolution_mtth_factor.chaos_extreme
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_4.min
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:brilliant_scientist_evolution_mtth_factor.active_crisis has_war = yes }
+}
+
 brilliant_scientist_evolution_i_prefire_interval = {
 	base = constant:brilliant_scientist_evolution_mtth.evolution_i_prefire_days
 	modifier = {

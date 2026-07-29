@@ -1,0 +1,204 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ACHIEVEMENT EFFECTS
+# ============================================================================
+# One-time host baselines, bounded origin evidence, real project-force war
+# snapshots, and defeat-recipient receipts. These effects never grant an
+# achievement directly; the achievement registry checks the resulting history.
+# ============================================================================
+
+# COUNTRY scope. Reserved for any future triggerable scenario or explicit
+# debug bootstrap that grants Event 016 progress instead of earning it.
+brilliant_scientist_disqualify_achievement_setup = {
+	set_country_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified
+	set_global_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified
+}
+
+# COUNTRY scope. Called once after the first appointment or atomic transfer has
+# reconstructed the recipient's portfolio. The timed flag creates one bounded
+# research window per country and cannot be renewed by transferring Kruger out
+# and back again.
+brilliant_scientist_achievement_record_host_entry = {
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_achievement_host_entry_recorded } }
+		set_country_flag = brilliant_scientist_achievement_host_entry_recorded
+		set_variable = { brilliant_scientist_achievement_host_entry_date = global.date }
+		set_temp_variable = { brilliant_scientist_achievement_window_days = constant:brilliant_scientist_achievement_threshold.borrowed_century_window_days }
+		set_country_flag = {
+			flag = brilliant_scientist_achievement_borrowed_century_window
+			days = brilliant_scientist_achievement_window_days
+		}
+		if = { limit = { has_tech = advanced_computing_machine } set_country_flag = brilliant_scientist_achievement_borrowed_century_electronics_preexisting }
+		if = { limit = { OR = { has_tech = advanced_machine_tools has_tech = construction3 } } set_country_flag = brilliant_scientist_achievement_borrowed_century_industry_preexisting }
+		if = { limit = { has_tech = rocket_engines } set_country_flag = brilliant_scientist_achievement_borrowed_century_rocketry_preexisting }
+		if = { limit = { OR = { has_tech = atomic_research has_tech = nuclear_reactor } } set_country_flag = brilliant_scientist_achievement_borrowed_century_atomic_preexisting }
+		if = { limit = { has_country_flag = brilliant_scientist_biomedical_prototype_completed } set_country_flag = brilliant_scientist_achievement_borrowed_century_medicine_preexisting }
+	}
+}
+
+# COUNTRY scope on a deliberate foreign-operation recipient. This is called
+# only after the atomic transfer succeeded and the inherited portfolio count is
+# final, so the later Prototype must genuinely be new under this host.
+brilliant_scientist_achievement_record_deliberate_foreign_recruitment = {
+	set_country_flag = brilliant_scientist_achievement_deliberate_foreign_recruitment
+	set_variable = { brilliant_scientist_achievement_foreign_recruitment_prototype_baseline = brilliant_scientist_project_prototype_count }
+}
+
+# COUNTRY scope on a transfer recipient. The old host is the regular target
+# brilliant_scientist_transfer_old_host. Provenance evidence travels with the
+# fixed Kruger identity but never increments during transfer.
+brilliant_scientist_achievement_inherit_origin_investigation = {
+	if = {
+		limit = { has_event_target = brilliant_scientist_transfer_old_host }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_variable = brilliant_scientist_origin_independent_evidence_count } } set_variable = { brilliant_scientist_origin_independent_evidence_count = event_target:brilliant_scientist_transfer_old_host.brilliant_scientist_origin_independent_evidence_count } }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_variable = brilliant_scientist_origin_authenticated_source_count } } set_variable = { brilliant_scientist_origin_authenticated_source_count = event_target:brilliant_scientist_transfer_old_host.brilliant_scientist_origin_authenticated_source_count } }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_variable = brilliant_scientist_origin_conclusion } } set_variable = { brilliant_scientist_origin_conclusion = event_target:brilliant_scientist_transfer_old_host.brilliant_scientist_origin_conclusion } }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_source_exotic_interface } } set_country_flag = brilliant_scientist_origin_source_exotic_interface }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_source_biological_isotopes } } set_country_flag = brilliant_scientist_origin_source_biological_isotopes }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_source_stellar_vector } } set_country_flag = brilliant_scientist_origin_source_stellar_vector }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_source_nonhuman_archive } } set_country_flag = brilliant_scientist_origin_source_nonhuman_archive }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_conclusion_locked } } set_country_flag = brilliant_scientist_origin_conclusion_locked }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_evidence_authenticated } } set_country_flag = brilliant_scientist_origin_evidence_authenticated }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance } } set_country_flag = brilliant_scientist_origin_extraterrestrial_provenance }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_temporal_displacement } } set_country_flag = brilliant_scientist_origin_temporal_displacement }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_manufactured_continuity } } set_country_flag = brilliant_scientist_origin_manufactured_continuity }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_unresolved } } set_country_flag = brilliant_scientist_origin_unresolved }
+		if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_origin_public_proof_published } } set_country_flag = brilliant_scientist_origin_public_proof_published }
+	}
+}
+
+# COUNTRY scope. Temporary input brilliant_scientist_origin_source_authenticated
+# is zero or one. Every caller is fire-once and has its own persistent source
+# flag, preventing re-running one test to manufacture independent evidence.
+brilliant_scientist_origin_record_independent_source = {
+	add_to_variable = { brilliant_scientist_origin_independent_evidence_count = constant:brilliant_scientist_achievement_value.one }
+	if = {
+		limit = { check_variable = { brilliant_scientist_origin_source_authenticated > constant:brilliant_scientist_achievement_value.zero } }
+		add_to_variable = { brilliant_scientist_origin_authenticated_source_count = constant:brilliant_scientist_achievement_value.one }
+	}
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_exposure = yes
+}
+
+# COUNTRY scope. Recounts seven physical project-force families from live
+# divisions. A formation count or unlocked icon alone never enters the tally.
+brilliant_scientist_achievement_snapshot_fielded_project_families = {
+	set_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.zero }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_teleportation_active any_country_division = { division_has_battalion_in_template = kruger_portal_raider } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_cloning_active any_country_division = { division_has_battalion_in_template = kruger_clone_infantry } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_robotics_active any_country_division = { division_has_battalion_in_template = kruger_robot_frame } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_paleogenetics_active any_country_division = { division_has_battalion_in_template = kruger_paleogenetic_beast } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active any_country_division = { division_has_battalion_in_template = kruger_xenobiological_assault } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_alien_arms_active any_country_division = { division_has_battalion_in_template = kruger_exotic_guard } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { has_country_flag = brilliant_scientist_project_force_temporal_active any_country_division = { division_has_battalion_in_template = kruger_temporal_guard } } add_to_variable = { brilliant_scientist_achievement_fielded_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+}
+
+# KRG scope. Input regular COUNTRY target brilliant_scientist_achievement_war_opponent.
+brilliant_scientist_achievement_register_kruger_war_opponent = {
+	if = {
+		limit = {
+			brilliant_scientist_is_kruger_sovereign_country = yes
+			has_event_target = brilliant_scientist_achievement_war_opponent
+			event_target:brilliant_scientist_achievement_war_opponent = { exists = yes is_major = yes }
+		}
+		set_temp_variable = { brilliant_scientist_achievement_war_epoch = global.date }
+		brilliant_scientist_achievement_snapshot_fielded_project_families = yes
+		event_target:brilliant_scientist_achievement_war_opponent = {
+			set_country_flag = brilliant_scientist_achievement_major_enemy_at_kruger_war_start
+			set_variable = { brilliant_scientist_achievement_kruger_war_epoch = brilliant_scientist_achievement_war_epoch }
+			capital_scope = {
+				set_state_flag = brilliant_scientist_achievement_kruger_major_enemy_capital_at_war_start
+				set_variable = { brilliant_scientist_achievement_kruger_major_enemy_capital_epoch = brilliant_scientist_achievement_war_epoch }
+			}
+		}
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_project_force_package_state_current
+				check_variable = { var = brilliant_scientist_achievement_fielded_project_family_count value = constant:brilliant_scientist_achievement_threshold.project_force_families compare = greater_than_or_equals }
+			}
+			event_target:brilliant_scientist_achievement_war_opponent = { set_country_flag = brilliant_scientist_achievement_faced_three_project_families_at_war_start }
+		}
+	}
+}
+
+# KRG scope after a major enemy capitulates. Input regular COUNTRY target
+# brilliant_scientist_achievement_capitulated_opponent. The same enemy must
+# have observed three live project families at war start, and three must remain
+# fielded with the runtime logistics package at victory.
+brilliant_scientist_achievement_record_major_war_victory = {
+	brilliant_scientist_achievement_snapshot_fielded_project_families = yes
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_achievement_capitulated_opponent
+			event_target:brilliant_scientist_achievement_capitulated_opponent = { has_country_flag = brilliant_scientist_achievement_faced_three_project_families_at_war_start }
+			has_country_flag = brilliant_scientist_project_force_package_state_current
+			check_variable = { var = brilliant_scientist_achievement_fielded_project_family_count value = constant:brilliant_scientist_achievement_threshold.project_force_families compare = greater_than_or_equals }
+		}
+		set_country_flag = brilliant_scientist_achievement_combined_arms_major_victory
+	}
+}
+
+# Defeat-recipient COUNTRY scope. The defeated KRG is the regular or global
+# event target brilliant_scientist_defeated_state_actor.
+brilliant_scientist_achievement_record_defeat_recipient_evidence = {
+	set_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.zero }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_achievement_value.zero } } } add_to_variable = { brilliant_scientist_achievement_defeated_project_family_count = constant:brilliant_scientist_achievement_value.one } }
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_player_remained_with_former_host
+			event_target:brilliant_scientist_defeated_state_actor = { has_country_flag = brilliant_scientist_formation_rebellion }
+			OR = {
+				check_variable = { var = brilliant_scientist_achievement_defeated_project_family_count value = constant:brilliant_scientist_achievement_threshold.project_rich_rebellion_families compare = greater_than_or_equals }
+				event_target:brilliant_scientist_defeated_state_actor = { check_variable = { var = brilliant_scientist_project_weaponization_count value = constant:brilliant_scientist_achievement_threshold.project_rich_rebellion_weaponized_families compare = greater_than_or_equals } }
+			}
+		}
+		set_country_flag = brilliant_scientist_achievement_defeated_project_rich_rebellion
+	}
+	if = {
+		limit = {
+			event_target:brilliant_scientist_defeated_state_actor = {
+				has_country_flag = brilliant_scientist_qualifying_defeat_recorded
+				has_country_flag = brilliant_scientist_singularity_late_construction_ever
+				check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_achievement_threshold.world_threat_substantial_days compare = greater_than_or_equals }
+			}
+		}
+		set_country_flag = brilliant_scientist_achievement_no_second_sun_candidate
+	}
+	if = {
+		limit = {
+			event_target:brilliant_scientist_defeated_state_actor = {
+				has_country_flag = brilliant_scientist_qualifying_defeat_recorded
+				check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_achievement_threshold.world_threat_substantial_days compare = greater_than_or_equals }
+			}
+			OR = {
+				has_country_flag = brilliant_scientist_aftermath_clone_population
+				has_country_flag = brilliant_scientist_aftermath_machine_population
+				has_country_flag = brilliant_scientist_aftermath_paleogenetic_population
+				has_country_flag = brilliant_scientist_aftermath_xenobiological_population
+			}
+		}
+		set_country_flag = brilliant_scientist_achievement_rights_settlement_candidate
+	}
+}
+
+# Defeated KRG scope. Records real dismantlement for every currently valid
+# recipient without erasing the project history needed by the achievements.
+brilliant_scientist_achievement_record_project_arsenal_secured = {
+	if = {
+		limit = { has_event_target = brilliant_scientist_aftermath_custodian event_target:brilliant_scientist_aftermath_custodian = { exists = yes } }
+		event_target:brilliant_scientist_aftermath_custodian = { set_country_flag = brilliant_scientist_achievement_project_arsenal_secured }
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_kruger_state_former_host_persistent event_target:brilliant_scientist_kruger_state_former_host_persistent = { exists = yes } }
+		event_target:brilliant_scientist_kruger_state_former_host_persistent = { set_country_flag = brilliant_scientist_achievement_project_arsenal_secured }
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_defeat_victor_input event_target:brilliant_scientist_defeat_victor_input = { exists = yes } }
+		event_target:brilliant_scientist_defeat_victor_input = { set_country_flag = brilliant_scientist_achievement_project_arsenal_secured }
+	}
+}

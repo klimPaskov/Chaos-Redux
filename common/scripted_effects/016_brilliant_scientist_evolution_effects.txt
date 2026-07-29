@@ -1,0 +1,1130 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST EVOLUTION EFFECTS
+# ============================================================================
+# Implements exactly four logged evolution deliveries without a global periodic
+# on_action. One delayed country event belongs to the current host at a time.
+# Global flags own chronology, persistent Kruger character flags own delivery
+# history, and country flags own the policy selected by the host government.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Shared policy vectors and disabled-stage safety
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Inputs are six temporary brilliant_scientist_policy_* deltas.
+brilliant_scientist_apply_evolution_policy_vector = {
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_mandate }
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_dependence }
+	brilliant_scientist_change_dependence = yes
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_exposure }
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_capacity }
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_independent_capacity }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_policy_grievance }
+	brilliant_scientist_change_grievance = yes
+}
+
+brilliant_scientist_apply_disabled_evolution_safety = {
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_16_16_1 }
+		set_country_flag = brilliant_scientist_evolution_i_disabled_baseline
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_16_16_2 }
+		set_country_flag = brilliant_scientist_evolution_ii_disabled_no_international_escalation
+		clr_country_flag = brilliant_scientist_evolution_ii_foreign_attention_active
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_16_16_3 }
+		set_country_flag = brilliant_scientist_evolution_iii_disabled_safe_science_resolution
+		set_country_flag = brilliant_scientist_forbidden_rebellion_blocked
+		clr_country_flag = brilliant_scientist_forbidden_weaponization_authorized
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_16_16_4 }
+		set_country_flag = brilliant_scientist_evolution_iv_disabled_regional_ceiling
+		set_country_flag = brilliant_scientist_conquest_routes_blocked
+		set_country_flag = brilliant_scientist_singularity_routes_blocked
+		clr_country_flag = brilliant_scientist_sovereign_science_pressure
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Idempotent evolution state packages
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_apply_evolution_i_base = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_global_flag = brilliant_scientist_evolution_i_chronology_recorded
+			NOT = { has_country_flag = brilliant_scientist_evolution_i_base_applied }
+		}
+		set_country_flag = brilliant_scientist_evolution_i_base_applied
+		set_country_flag = brilliant_scientist_evolution_i_projects_unlocked
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_portrait_stage_i_unlocked }
+		set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_value.zero }
+		brilliant_scientist_apply_evolution_policy_vector = yes
+		brilliant_scientist_foreign_initialize_contest = yes
+	}
+}
+
+brilliant_scientist_apply_evolution_ii_base = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded
+			NOT = { has_country_flag = brilliant_scientist_evolution_ii_base_applied }
+		}
+		set_country_flag = brilliant_scientist_evolution_ii_base_applied
+		set_country_flag = brilliant_scientist_evolution_ii_projects_unlocked
+		set_country_flag = brilliant_scientist_evolution_ii_foreign_attention_active
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_portrait_stage_ii_unlocked }
+		set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+		set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_value.zero }
+		brilliant_scientist_apply_evolution_policy_vector = yes
+	}
+}
+
+brilliant_scientist_apply_evolution_iii_base = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_global_flag = brilliant_scientist_evolution_iii_chronology_recorded
+			NOT = { has_country_flag = brilliant_scientist_evolution_iii_base_applied }
+		}
+		set_country_flag = brilliant_scientist_evolution_iii_base_applied
+		set_country_flag = brilliant_scientist_evolution_iii_forbidden_science_active
+		set_country_flag = brilliant_scientist_evolution_iii_projects_unlocked
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_portrait_stage_iii_unlocked }
+		set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+		set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.major }
+		set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.minor }
+		brilliant_scientist_apply_evolution_policy_vector = yes
+	}
+}
+
+brilliant_scientist_apply_evolution_iv_base = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
+			NOT = { has_country_flag = brilliant_scientist_evolution_iv_base_applied }
+		}
+		set_country_flag = brilliant_scientist_evolution_iv_base_applied
+		set_country_flag = brilliant_scientist_evolution_iv_projects_unlocked
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_portrait_stage_iv_unlocked }
+		if = {
+			limit = { brilliant_scientist_evolution_iii_safe_resolution_is_required = no }
+			set_country_flag = brilliant_scientist_sovereign_science_pressure
+		}
+		else = {
+			set_country_flag = brilliant_scientist_safe_regional_science_compact_available
+			set_country_flag = brilliant_scientist_forbidden_rebellion_blocked
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_kruger_state }
+			set_country_flag = brilliant_scientist_kruger_state_global_actions_unlocked
+		}
+		set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+		set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.extreme }
+		set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.moderate }
+		brilliant_scientist_apply_evolution_policy_vector = yes
+	}
+}
+
+brilliant_scientist_apply_recorded_evolution_state = {
+	brilliant_scientist_apply_disabled_evolution_safety = yes
+	brilliant_scientist_apply_evolution_i_base = yes
+	brilliant_scientist_apply_evolution_ii_base = yes
+	brilliant_scientist_apply_evolution_iii_base = yes
+	brilliant_scientist_apply_evolution_iv_base = yes
+	brilliant_scientist_refresh_kruger_portrait_stage = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolved-opening project packages
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_seed_evolved_opening_projects = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_value.zero } }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_i_stage } }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_country_flag = brilliant_scientist_public_reputation_established
+		set_country_flag = brilliant_scientist_evolved_opening_foreign_opportunities_pending
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_ii_stage } }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_country_flag = brilliant_scientist_dangerous_project_incident
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_iii_stage } }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		set_country_flag = brilliant_scientist_evolved_opening_loyal_network
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Static native portrait route selection
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Inputs: temporary candidate route and score.
+brilliant_scientist_evaluate_portrait_candidate = {
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_portrait_candidate_score
+				value = brilliant_scientist_portrait_maximum_score
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { brilliant_scientist_portrait_maximum_score = brilliant_scientist_portrait_candidate_score }
+		set_temp_variable = { brilliant_scientist_portrait_selected_route = brilliant_scientist_portrait_candidate_route }
+		set_temp_variable = { brilliant_scientist_portrait_route_tied = constant:brilliant_scientist_value.zero }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_portrait_candidate_score
+				value = brilliant_scientist_portrait_maximum_score
+				compare = equals
+			}
+			check_variable = { brilliant_scientist_portrait_candidate_score > constant:brilliant_scientist_value.zero }
+		}
+		set_temp_variable = { brilliant_scientist_portrait_route_tied = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_resolve_severe_portrait_route = {
+	set_temp_variable = { brilliant_scientist_portrait_selected_route = constant:brilliant_scientist_evolution_portrait_route.synthesis }
+	set_temp_variable = { brilliant_scientist_portrait_maximum_score = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_portrait_route_tied = constant:brilliant_scientist_value.zero }
+
+	if = {
+		limit = { brilliant_scientist_portrait_alien_provenance_is_valid = yes }
+		set_temp_variable = { brilliant_scientist_portrait_selected_route = constant:brilliant_scientist_evolution_portrait_route.alien_revealed }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_origin_extraterrestrial_provenance }
+	}
+	else = {
+		set_temp_variable = { brilliant_scientist_portrait_candidate_route = constant:brilliant_scientist_evolution_portrait_route.clone }
+		set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_cloning_weaponization } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_weaponization }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_cloning_deployment } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_deployment }
+		}
+		brilliant_scientist_evaluate_portrait_candidate = yes
+
+		set_temp_variable = { brilliant_scientist_portrait_candidate_route = constant:brilliant_scientist_evolution_portrait_route.machine }
+		set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_robotics_weaponization } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_weaponization }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_robotics_deployment } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_deployment }
+		}
+		brilliant_scientist_evaluate_portrait_candidate = yes
+
+		set_temp_variable = { brilliant_scientist_portrait_candidate_route = constant:brilliant_scientist_evolution_portrait_route.temporal }
+		set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_temporal_weaponization } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_weaponization }
+		}
+		else_if = {
+			limit = { KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_temporal_deployment } }
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_deployment }
+		}
+		brilliant_scientist_evaluate_portrait_candidate = yes
+
+		set_temp_variable = { brilliant_scientist_portrait_candidate_route = constant:brilliant_scientist_evolution_portrait_route.xenobiological }
+		set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = {
+				KRG_warren_kruger = {
+					OR = {
+						has_character_flag = brilliant_scientist_personal_xenobiological_synthesis_weaponization
+						has_character_flag = brilliant_scientist_personal_alien_arms_weaponization
+					}
+				}
+			}
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_weaponization }
+		}
+		else_if = {
+			limit = {
+				KRG_warren_kruger = {
+					OR = {
+						has_character_flag = brilliant_scientist_personal_xenobiological_synthesis_deployment
+						has_character_flag = brilliant_scientist_personal_alien_arms_deployment
+					}
+				}
+			}
+			set_temp_variable = { brilliant_scientist_portrait_candidate_score = constant:brilliant_scientist_evolution_runtime.portrait_score_deployment }
+		}
+		brilliant_scientist_evaluate_portrait_candidate = yes
+
+		if = {
+			limit = {
+				OR = {
+					check_variable = { brilliant_scientist_portrait_maximum_score = constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_portrait_route_tied > constant:brilliant_scientist_value.zero }
+				}
+			}
+			set_temp_variable = { brilliant_scientist_portrait_selected_route = constant:brilliant_scientist_evolution_portrait_route.synthesis }
+		}
+	}
+
+	set_variable = { brilliant_scientist_kruger_portrait_route = brilliant_scientist_portrait_selected_route }
+	clr_country_flag = brilliant_scientist_portrait_route_clone
+	clr_country_flag = brilliant_scientist_portrait_route_machine
+	clr_country_flag = brilliant_scientist_portrait_route_temporal
+	clr_country_flag = brilliant_scientist_portrait_route_xenobiological
+	clr_country_flag = brilliant_scientist_portrait_route_alien_revealed
+	clr_country_flag = brilliant_scientist_portrait_route_synthesis
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_portrait_route_clone
+		clr_character_flag = brilliant_scientist_personal_portrait_route_machine
+		clr_character_flag = brilliant_scientist_personal_portrait_route_temporal
+		clr_character_flag = brilliant_scientist_personal_portrait_route_xenobiological
+		clr_character_flag = brilliant_scientist_personal_portrait_route_alien_revealed
+		clr_character_flag = brilliant_scientist_personal_portrait_route_synthesis
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_kruger_portrait_route = constant:brilliant_scientist_evolution_portrait_route.clone } }
+		set_country_flag = brilliant_scientist_portrait_route_clone
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_clone }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_kruger_portrait_route = constant:brilliant_scientist_evolution_portrait_route.machine } }
+		set_country_flag = brilliant_scientist_portrait_route_machine
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_machine }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_kruger_portrait_route = constant:brilliant_scientist_evolution_portrait_route.temporal } }
+		set_country_flag = brilliant_scientist_portrait_route_temporal
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_temporal }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_kruger_portrait_route = constant:brilliant_scientist_evolution_portrait_route.xenobiological } }
+		set_country_flag = brilliant_scientist_portrait_route_xenobiological
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_xenobiological }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_kruger_portrait_route = constant:brilliant_scientist_evolution_portrait_route.alien_revealed } }
+		set_country_flag = brilliant_scientist_portrait_route_alien_revealed
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_alien_revealed }
+	}
+	else = {
+		set_country_flag = brilliant_scientist_portrait_route_synthesis
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_portrait_route_synthesis }
+	}
+}
+
+brilliant_scientist_apply_kruger_portraits_for_current_stage = {
+	if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			check_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.four }
+		}
+		brilliant_scientist_resolve_severe_portrait_route = yes
+		if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_clone }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_clone small = GFX_idea_doctor_warren_kruger_stage_4_clone }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_clone small = GFX_idea_doctor_warren_kruger_stage_4_clone }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_machine }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_machine small = GFX_idea_doctor_warren_kruger_stage_4_machine }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_machine small = GFX_idea_doctor_warren_kruger_stage_4_machine }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_temporal }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_temporal small = GFX_idea_doctor_warren_kruger_stage_4_temporal }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_temporal small = GFX_idea_doctor_warren_kruger_stage_4_temporal }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_xenobiological }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_xenobiological small = GFX_idea_doctor_warren_kruger_stage_4_xenobiological }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_xenobiological small = GFX_idea_doctor_warren_kruger_stage_4_xenobiological }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_alien_revealed }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_alien_revealed small = GFX_idea_doctor_warren_kruger_stage_4_alien_revealed }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_alien_revealed small = GFX_idea_doctor_warren_kruger_stage_4_alien_revealed }
+				}
+			}
+		}
+		else = {
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_synthesis small = GFX_idea_doctor_warren_kruger_stage_4_synthesis }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_4_synthesis small = GFX_idea_doctor_warren_kruger_stage_4_synthesis }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			check_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.three }
+		}
+		brilliant_scientist_resolve_severe_portrait_route = yes
+		if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_clone }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_clone small = GFX_idea_doctor_warren_kruger_stage_3_clone }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_clone small = GFX_idea_doctor_warren_kruger_stage_3_clone }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_machine }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_machine small = GFX_idea_doctor_warren_kruger_stage_3_machine }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_machine small = GFX_idea_doctor_warren_kruger_stage_3_machine }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_temporal }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_temporal small = GFX_idea_doctor_warren_kruger_stage_3_temporal }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_temporal small = GFX_idea_doctor_warren_kruger_stage_3_temporal }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_xenobiological }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_xenobiological small = GFX_idea_doctor_warren_kruger_stage_3_xenobiological }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_xenobiological small = GFX_idea_doctor_warren_kruger_stage_3_xenobiological }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_portrait_route_alien_revealed }
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_alien_revealed small = GFX_idea_doctor_warren_kruger_stage_3_alien_revealed }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_alien_revealed small = GFX_idea_doctor_warren_kruger_stage_3_alien_revealed }
+				}
+			}
+		}
+		else = {
+			KRG_warren_kruger = {
+				set_portraits = {
+					army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_synthesis small = GFX_idea_doctor_warren_kruger_stage_3_synthesis }
+					civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_3_synthesis small = GFX_idea_doctor_warren_kruger_stage_3_synthesis }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			check_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.two }
+		}
+		KRG_warren_kruger = {
+			set_portraits = {
+				army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_2 small = GFX_idea_doctor_warren_kruger_stage_2 }
+				civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_2 small = GFX_idea_doctor_warren_kruger_stage_2 }
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_character = KRG_warren_kruger
+			check_variable = { brilliant_scientist_kruger_portrait_stage = constant:brilliant_scientist_value.one }
+		}
+		KRG_warren_kruger = {
+			set_portraits = {
+				army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_1 small = GFX_idea_doctor_warren_kruger_stage_1 }
+				civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_1 small = GFX_idea_doctor_warren_kruger_stage_1 }
+			}
+		}
+	}
+	else_if = {
+		limit = { has_character = KRG_warren_kruger }
+		KRG_warren_kruger = {
+			set_portraits = {
+				army = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_0 small = GFX_idea_doctor_warren_kruger_stage_0 }
+				civilian = { large = GFX_portrait_KRG_doctor_warren_kruger_stage_0 small = GFX_idea_doctor_warren_kruger_stage_0 }
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolved openings and one-event host scheduler
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_clear_evolution_schedule_state = {
+	clr_country_flag = brilliant_scientist_evolution_check_pending
+	clear_variable = brilliant_scientist_evolution_scheduled_stage
+	clear_variable = brilliant_scientist_evolution_scheduled_delay_days
+	clear_variable = brilliant_scientist_evolution_next_check_date
+}
+
+brilliant_scientist_prepare_evolved_opening_runtime = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_value.zero }
+			NOT = { has_country_flag = brilliant_scientist_evolved_opening_runtime_applied }
+		}
+		set_country_flag = brilliant_scientist_evolved_opening_runtime_applied
+		set_country_flag = brilliant_scientist_evolved_opening_active
+		set_variable = { brilliant_scientist_evolved_opening_target_stage = brilliant_scientist_prefire_evolution_stage }
+		brilliant_scientist_seed_evolved_opening_projects = yes
+		brilliant_scientist_apply_recorded_evolution_state = yes
+
+		if = {
+			limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_i_stage } }
+			KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_i_delivered }
+			if = {
+				limit = { has_country_flag = brilliant_scientist_public_compact }
+				set_country_flag = brilliant_scientist_evolution_i_policy_open_methods
+			}
+			else = { set_country_flag = brilliant_scientist_evolution_i_policy_strategic_laboratory }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_ii_stage } }
+			KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_ii_delivered }
+			if = {
+				limit = { has_country_flag = brilliant_scientist_public_compact }
+				set_country_flag = brilliant_scientist_evolution_ii_policy_open_science
+			}
+			else = { set_country_flag = brilliant_scientist_evolution_ii_policy_state_security }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_event.evolution_iii_stage } }
+			KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_iii_delivered }
+			if = {
+				limit = { has_country_flag = brilliant_scientist_public_compact }
+				set_country_flag = brilliant_scientist_evolution_iii_policy_negotiated_limits
+			}
+			else = {
+				set_country_flag = brilliant_scientist_evolution_iii_policy_secret_projects
+				set_country_flag = brilliant_scientist_forbidden_weaponization_authorized
+			}
+		}
+	}
+}
+
+brilliant_scientist_schedule_next_evolution_check = {
+	if = {
+		limit = {
+			brilliant_scientist_evolution_scheduler_can_run = yes
+			NOT = { brilliant_scientist_all_evolution_stages_are_settled = yes }
+			NOT = { has_country_flag = brilliant_scientist_evolution_check_pending }
+		}
+		brilliant_scientist_apply_recorded_evolution_state = yes
+		set_temp_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_value.zero }
+
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_value.zero }
+				NOT = { has_global_flag = events_log_disabled_evolution_16_16_1 }
+				brilliant_scientist_is_evolution_i_enabled = yes
+				OR = {
+					NOT = { has_global_flag = brilliant_scientist_evolution_i_chronology_recorded }
+					KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_evolution_i_delivered } }
+				}
+			}
+			set_temp_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_i_stage }
+		}
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_value.zero }
+				OR = {
+					has_global_flag = brilliant_scientist_evolution_i_chronology_recorded
+					has_global_flag = events_log_disabled_evolution_16_16_1
+				}
+				NOT = { has_global_flag = events_log_disabled_evolution_16_16_2 }
+				brilliant_scientist_is_evolution_ii_enabled = yes
+				OR = {
+					NOT = { has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded }
+					KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_evolution_ii_delivered } }
+				}
+			}
+			set_temp_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_ii_stage }
+		}
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_value.zero }
+				OR = {
+					has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded
+					has_global_flag = events_log_disabled_evolution_16_16_2
+				}
+				NOT = { has_global_flag = events_log_disabled_evolution_16_16_3 }
+				brilliant_scientist_is_evolution_iii_enabled = yes
+				OR = {
+					NOT = { has_global_flag = brilliant_scientist_evolution_iii_chronology_recorded }
+					KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_evolution_iii_delivered } }
+				}
+			}
+			set_temp_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_iii_stage }
+		}
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_value.zero }
+				OR = {
+					has_global_flag = brilliant_scientist_evolution_iii_chronology_recorded
+					has_global_flag = events_log_disabled_evolution_16_16_3
+				}
+				NOT = { has_global_flag = events_log_disabled_evolution_16_16_4 }
+				brilliant_scientist_is_evolution_iv_enabled = yes
+				OR = {
+					NOT = { has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded }
+					KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_evolution_iv_delivered } }
+				}
+			}
+			set_temp_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_iv_stage }
+		}
+
+		set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_dormant_interval }
+		if = {
+			limit = { check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_i_stage } }
+			if = {
+				limit = { has_global_flag = brilliant_scientist_evolution_i_chronology_recorded }
+				set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_i_prefire_interval }
+			}
+			else = { set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_i_active_interval } }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_ii_stage } }
+			if = {
+				limit = { has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded }
+				set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_ii_prefire_interval }
+			}
+			else = { set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_ii_active_interval } }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_iii_stage } }
+			if = {
+				limit = { has_global_flag = brilliant_scientist_evolution_iii_chronology_recorded }
+				set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_iii_prefire_interval }
+			}
+			else = { set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_iii_active_interval } }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_evolution_schedule_target = constant:brilliant_scientist_event.evolution_iv_stage } }
+			if = {
+				limit = { has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded }
+				set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_iv_prefire_interval }
+			}
+			else = { set_temp_variable = { brilliant_scientist_evolution_delay_days = mtth:brilliant_scientist_evolution_iv_active_interval } }
+		}
+
+		clamp_temp_variable = {
+			var = brilliant_scientist_evolution_delay_days
+			min = constant:brilliant_scientist_evolution_runtime.schedule_minimum_days
+			max = constant:brilliant_scientist_evolution_runtime.schedule_maximum_days
+		}
+		set_variable = { brilliant_scientist_evolution_scheduled_stage = brilliant_scientist_evolution_schedule_target }
+		set_variable = { brilliant_scientist_evolution_scheduled_delay_days = brilliant_scientist_evolution_delay_days }
+		set_variable = { brilliant_scientist_evolution_next_check_date = global.date }
+		add_to_variable = { brilliant_scientist_evolution_next_check_date = brilliant_scientist_evolution_delay_days }
+		set_country_flag = brilliant_scientist_evolution_check_pending
+		country_event = { id = chaosx.nr16.90 days = brilliant_scientist_evolution_scheduled_delay_days }
+	}
+	else_if = {
+		limit = { brilliant_scientist_all_evolution_stages_are_settled = yes }
+		brilliant_scientist_clear_evolution_schedule_state = yes
+	}
+}
+
+brilliant_scientist_sync_evolution_runtime = {
+	if = {
+		limit = { brilliant_scientist_evolution_scheduler_can_run = yes }
+		brilliant_scientist_apply_recorded_evolution_state = yes
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_prefire_evolution_stage > constant:brilliant_scientist_value.zero }
+				NOT = { has_country_flag = brilliant_scientist_evolved_opening_runtime_applied }
+			}
+			brilliant_scientist_prepare_evolved_opening_runtime = yes
+		}
+		brilliant_scientist_schedule_next_evolution_check = yes
+	}
+}
+
+brilliant_scientist_dispatch_evolution_pulse = {
+	brilliant_scientist_clear_evolution_schedule_state = yes
+	if = {
+		limit = { brilliant_scientist_evolution_scheduler_can_run = yes }
+		brilliant_scientist_refresh_project_counts = yes
+		brilliant_scientist_apply_disabled_evolution_safety = yes
+		if = {
+			limit = { brilliant_scientist_evolution_i_delivery_is_valid = yes }
+			set_country_flag = brilliant_scientist_evolution_delivery_active
+			country_event = { id = chaosx.nr16.21 }
+		}
+		else_if = {
+			limit = { brilliant_scientist_evolution_ii_delivery_is_valid = yes }
+			set_country_flag = brilliant_scientist_evolution_delivery_active
+			country_event = { id = chaosx.nr16.22 }
+		}
+		else_if = {
+			limit = { brilliant_scientist_evolution_iii_delivery_is_valid = yes }
+			set_country_flag = brilliant_scientist_evolution_delivery_active
+			country_event = { id = chaosx.nr16.23 }
+		}
+		else_if = {
+			limit = { brilliant_scientist_evolution_iv_delivery_is_valid = yes }
+			set_country_flag = brilliant_scientist_evolution_delivery_active
+			country_event = { id = chaosx.nr16.24 }
+		}
+		else = { brilliant_scientist_schedule_next_evolution_check = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Delivery completion and sovereignty deadline
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_finish_evolution_i_delivery = {
+	if = {
+		limit = { brilliant_scientist_evolution_i_delivery_commit_is_valid = yes }
+		brilliant_scientist_record_evolution_i = yes
+		brilliant_scientist_apply_evolution_i_base = yes
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_i_delivered }
+		set_country_flag = brilliant_scientist_evolution_i_policy_recorded
+		set_variable = { brilliant_scientist_evolution_i_policy_date = global.date }
+		clr_country_flag = brilliant_scientist_evolution_delivery_active
+		if = {
+			limit = { check_variable = { brilliant_scientist_evolved_opening_target_stage = constant:brilliant_scientist_event.evolution_i_stage } }
+			clr_country_flag = brilliant_scientist_evolved_opening_active
+		}
+		brilliant_scientist_schedule_next_evolution_check = yes
+	}
+}
+
+brilliant_scientist_finish_evolution_ii_delivery = {
+	if = {
+		limit = { brilliant_scientist_evolution_ii_delivery_commit_is_valid = yes }
+		brilliant_scientist_record_evolution_ii = yes
+		brilliant_scientist_apply_evolution_ii_base = yes
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_ii_delivered }
+		set_country_flag = brilliant_scientist_evolution_ii_policy_recorded
+		set_variable = { brilliant_scientist_evolution_ii_policy_date = global.date }
+		clr_country_flag = brilliant_scientist_evolution_delivery_active
+		if = {
+			limit = { check_variable = { brilliant_scientist_evolved_opening_target_stage = constant:brilliant_scientist_event.evolution_ii_stage } }
+			clr_country_flag = brilliant_scientist_evolved_opening_active
+		}
+		brilliant_scientist_schedule_next_evolution_check = yes
+	}
+}
+
+brilliant_scientist_finish_evolution_iii_delivery = {
+	if = {
+		limit = { brilliant_scientist_evolution_iii_delivery_commit_is_valid = yes }
+		brilliant_scientist_record_evolution_iii = yes
+		brilliant_scientist_apply_evolution_iii_base = yes
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_iii_delivered }
+		set_country_flag = brilliant_scientist_evolution_iii_policy_recorded
+		set_variable = { brilliant_scientist_evolution_iii_policy_date = global.date }
+		clr_country_flag = brilliant_scientist_evolution_delivery_active
+		if = {
+			limit = { check_variable = { brilliant_scientist_evolved_opening_target_stage = constant:brilliant_scientist_event.evolution_iii_stage } }
+			clr_country_flag = brilliant_scientist_evolved_opening_active
+		}
+		brilliant_scientist_schedule_next_evolution_check = yes
+	}
+}
+
+brilliant_scientist_finish_evolution_iv_delivery = {
+	if = {
+		limit = { brilliant_scientist_evolution_iv_delivery_commit_is_valid = yes }
+		brilliant_scientist_record_evolution_iv = yes
+		brilliant_scientist_apply_evolution_iv_base = yes
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_evolution_iv_delivered }
+		set_country_flag = brilliant_scientist_evolution_iv_policy_recorded
+		set_variable = { brilliant_scientist_evolution_iv_policy_date = global.date }
+		clr_country_flag = brilliant_scientist_evolution_delivery_active
+		clr_country_flag = brilliant_scientist_evolved_opening_active
+		brilliant_scientist_schedule_next_evolution_check = yes
+	}
+}
+
+brilliant_scientist_start_sovereignty_deadline = {
+	if = {
+		limit = {
+			brilliant_scientist_evolution_iv_requires_sovereignty_deadline = yes
+			NOT = { has_country_flag = brilliant_scientist_sovereignty_deadline_active }
+		}
+		set_variable = { brilliant_scientist_sovereignty_deadline_days = constant:brilliant_scientist_evolution_runtime.sovereignty_deadline_days }
+		set_country_flag = brilliant_scientist_sovereignty_deadline_active
+		brilliant_scientist_prepare_sovereignty_board = yes
+		activate_mission = brilliant_scientist_sovereignty_deadline_mission
+	}
+}
+
+brilliant_scientist_mark_sovereignty_deadline_expired = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_sovereignty_deadline_active
+		}
+		clr_country_flag = brilliant_scientist_sovereignty_deadline_active
+		set_country_flag = brilliant_scientist_sovereignty_deadline_expired
+		set_country_flag = brilliant_scientist_containment_resolution_requested
+		set_variable = { brilliant_scientist_sovereignty_deadline_expired_date = global.date }
+		clear_variable = brilliant_scientist_sovereignty_deadline_days
+		country_event = { id = chaosx.nr16.30 }
+	}
+}
+
+brilliant_scientist_cancel_sovereignty_deadline = {
+	clr_country_flag = brilliant_scientist_sovereignty_deadline_active
+	clear_variable = brilliant_scientist_sovereignty_deadline_days
+}
+
+# ---------------------------------------------------------------------------
+# Evolution I policy directions
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_evolution_i_choose_open_methods = {
+	set_country_flag = brilliant_scientist_evolution_i_policy_open_methods
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.light_political_power
+	brilliant_scientist_finish_evolution_i_delivery = yes
+}
+
+brilliant_scientist_evolution_i_choose_strategic_laboratory = {
+	set_country_flag = brilliant_scientist_evolution_i_policy_strategic_laboratory
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_i_delivery = yes
+}
+
+brilliant_scientist_evolution_i_choose_industrial_timetable = {
+	set_country_flag = brilliant_scientist_evolution_i_policy_industrial_timetable
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_stability = constant:brilliant_scientist_evolution_policy_cost.light_stability
+	add_war_support = constant:brilliant_scientist_evolution_policy_cost.light_war_support
+	brilliant_scientist_finish_evolution_i_delivery = yes
+}
+
+brilliant_scientist_evolution_i_choose_university_confederation = {
+	set_country_flag = brilliant_scientist_evolution_i_policy_university_confederation
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_i_delivery = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolution II security and foreign posture
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_evolution_ii_choose_state_security = {
+	set_country_flag = brilliant_scientist_evolution_ii_policy_state_security
+	set_country_flag = brilliant_scientist_security_posture_state
+	clr_country_flag = brilliant_scientist_military_guard_assigned
+	set_variable = { brilliant_scientist_assigned_guard_strength = constant:brilliant_scientist_country_guard.state_security_strength }
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.light_political_power
+	brilliant_scientist_finish_evolution_ii_delivery = yes
+}
+
+brilliant_scientist_evolution_ii_choose_military_guard = {
+	set_country_flag = brilliant_scientist_evolution_ii_policy_military_guard
+	set_country_flag = brilliant_scientist_security_posture_military
+	set_country_flag = brilliant_scientist_military_guard_assigned
+	set_variable = { brilliant_scientist_assigned_guard_strength = constant:brilliant_scientist_country_guard.military_guard_strength }
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.negative_major }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.major }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_war_support = constant:brilliant_scientist_evolution_policy_cost.light_war_support
+	brilliant_scientist_finish_evolution_ii_delivery = yes
+}
+
+brilliant_scientist_evolution_ii_choose_private_guard = {
+	set_country_flag = brilliant_scientist_evolution_ii_policy_private_guard
+	set_country_flag = brilliant_scientist_security_posture_private
+	clr_country_flag = brilliant_scientist_military_guard_assigned
+	set_variable = { brilliant_scientist_assigned_guard_strength = constant:brilliant_scientist_country_guard.private_guard_strength }
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_ii_delivery = yes
+}
+
+brilliant_scientist_evolution_ii_choose_allied_protection = {
+	set_country_flag = brilliant_scientist_evolution_ii_policy_allied_protection
+	set_country_flag = brilliant_scientist_security_posture_allied
+	clr_country_flag = brilliant_scientist_military_guard_assigned
+	set_variable = { brilliant_scientist_assigned_guard_strength = constant:brilliant_scientist_country_guard.allied_protection_strength }
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.light_political_power
+	brilliant_scientist_finish_evolution_ii_delivery = yes
+}
+
+brilliant_scientist_evolution_ii_choose_open_science = {
+	set_country_flag = brilliant_scientist_evolution_ii_policy_open_science
+	set_country_flag = brilliant_scientist_security_posture_open
+	clr_country_flag = brilliant_scientist_military_guard_assigned
+	set_variable = { brilliant_scientist_assigned_guard_strength = constant:brilliant_scientist_country_guard.open_science_strength }
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_stability = constant:brilliant_scientist_evolution_policy_cost.light_stability
+	brilliant_scientist_finish_evolution_ii_delivery = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolution III forbidden-science authority
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_evolution_iii_choose_safe_public_science = {
+	set_country_flag = brilliant_scientist_evolution_iii_policy_safe_public_science
+	set_country_flag = brilliant_scientist_forbidden_weaponization_blocked
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_major }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.major }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_iii_delivery = yes
+}
+
+brilliant_scientist_evolution_iii_choose_secret_projects = {
+	set_country_flag = brilliant_scientist_evolution_iii_policy_secret_projects
+	set_country_flag = brilliant_scientist_forbidden_weaponization_authorized
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.severe }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_stability = constant:brilliant_scientist_evolution_policy_cost.heavy_stability
+	brilliant_scientist_finish_evolution_iii_delivery = yes
+}
+
+brilliant_scientist_evolution_iii_choose_negotiated_limits = {
+	set_country_flag = brilliant_scientist_evolution_iii_policy_negotiated_limits
+	set_country_flag = brilliant_scientist_forbidden_weaponization_negotiated
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.light_political_power
+	brilliant_scientist_finish_evolution_iii_delivery = yes
+}
+
+# ---------------------------------------------------------------------------
+# Evolution IV sovereignty responses
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_evolution_iv_choose_safe_regional_compact = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_safe_regional_compact
+	set_country_flag = brilliant_scientist_forbidden_rebellion_blocked
+	set_country_flag = brilliant_scientist_sovereignty_deadline_resolved
+	set_country_flag = brilliant_scientist_regional_science_compact
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_major }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+}
+
+brilliant_scientist_evolution_iv_choose_charter = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_charter
+	set_country_flag = brilliant_scientist_sovereignty_response_charter
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+	brilliant_scientist_start_sovereignty_deadline = yes
+}
+
+brilliant_scientist_evolution_iv_choose_concession = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_concession
+	set_country_flag = brilliant_scientist_sovereignty_response_concession
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.negative_major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.severe }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.negative_major }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_stability = constant:brilliant_scientist_evolution_policy_cost.heavy_stability
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+	brilliant_scientist_start_sovereignty_deadline = yes
+}
+
+brilliant_scientist_evolution_iv_choose_military_seizure = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_military_seizure
+	set_country_flag = brilliant_scientist_sovereignty_response_military_seizure
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.severe }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_war_support = constant:brilliant_scientist_evolution_policy_cost.heavy_war_support
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+	brilliant_scientist_start_sovereignty_deadline = yes
+}
+
+brilliant_scientist_evolution_iv_choose_foreign_containment = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_foreign_containment
+	set_country_flag = brilliant_scientist_sovereignty_response_foreign_containment
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_moderate }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.extreme }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_political_power = constant:brilliant_scientist_evolution_policy_cost.heavy_political_power
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+	brilliant_scientist_start_sovereignty_deadline = yes
+}
+
+brilliant_scientist_evolution_iv_choose_refusal = {
+	set_country_flag = brilliant_scientist_evolution_iv_policy_refusal
+	set_country_flag = brilliant_scientist_sovereignty_response_refusal
+	set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_evolution_policy_delta.major }
+	set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_evolution_policy_delta.moderate }
+	set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_evolution_policy_delta.negative_minor }
+	set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_evolution_policy_delta.minor }
+	set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_evolution_policy_delta.severe }
+	brilliant_scientist_apply_evolution_policy_vector = yes
+	add_stability = constant:brilliant_scientist_evolution_policy_cost.heavy_stability
+	brilliant_scientist_finish_evolution_iv_delivery = yes
+	brilliant_scientist_start_sovereignty_deadline = yes
+}

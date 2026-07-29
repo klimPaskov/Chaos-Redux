@@ -1,0 +1,147 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CONTAINMENT AND SOVEREIGNTY TRIGGERS
+# ============================================================================
+# Availability, resource, causal-state, and territory revalidation for the
+# hosted sovereignty board. Exact hidden values never appear in localisation.
+# ============================================================================
+
+brilliant_scientist_sovereignty_board_is_open = {
+	brilliant_scientist_is_current_host = yes
+	NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		has_country_flag = brilliant_scientist_sovereignty_deadline_active
+		has_country_flag = brilliant_scientist_containment_resolution_requested
+	}
+}
+
+brilliant_scientist_containment_has_low_coercive_risk = {
+	check_variable = { brilliant_scientist_mandate < constant:brilliant_scientist_containment_threshold.low_authority_ceiling }
+	check_variable = { brilliant_scientist_dependence < constant:brilliant_scientist_containment_threshold.low_dependence_ceiling }
+	check_variable = { brilliant_scientist_independent_capacity < constant:brilliant_scientist_containment_threshold.clean_independent_capacity_ceiling }
+	check_variable = { brilliant_scientist_project_deployment_count < constant:brilliant_scientist_containment_threshold.clean_deployment_ceiling }
+	check_variable = { brilliant_scientist_project_weaponization_count = constant:brilliant_scientist_containment_threshold.clean_weaponization_ceiling }
+	check_variable = { brilliant_scientist_containment_facility_state_count < constant:brilliant_scientist_containment_threshold.clean_facility_ceiling }
+	NOT = { has_country_flag = brilliant_scientist_sovereign_science_authority }
+}
+
+brilliant_scientist_containment_has_moderate_coercive_risk = {
+	check_variable = { brilliant_scientist_independent_capacity < constant:brilliant_scientist_containment_threshold.moderate_independent_capacity_ceiling }
+	NOT = { brilliant_scientist_institutional_capture_is_proven = yes }
+}
+
+brilliant_scientist_can_release_kruger_safely = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	brilliant_scientist_containment_has_low_coercive_risk = yes
+	NOT = { has_country_flag = brilliant_scientist_sovereignty_response_military_seizure }
+	NOT = { has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment }
+}
+
+brilliant_scientist_can_exile_kruger = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	brilliant_scientist_containment_has_moderate_coercive_risk = yes
+	has_event_target = brilliant_scientist_containment_exile_recipient
+	event_target:brilliant_scientist_containment_exile_recipient = {
+		brilliant_scientist_is_valid_transfer_recipient = yes
+	}
+	has_equipment = { convoy_1 > constant:brilliant_scientist_containment_cost.exile_convoy_gate }
+	has_equipment = { train_equipment > constant:brilliant_scientist_containment_cost.exile_train_gate }
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.exile_support_gate }
+}
+
+brilliant_scientist_can_arrest_kruger = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.arrest_support_gate }
+	has_equipment = { infantry_equipment > constant:brilliant_scientist_containment_cost.arrest_infantry_gate }
+	has_manpower > constant:brilliant_scientist_containment_cost.arrest_manpower_gate
+	has_army_experience > constant:brilliant_scientist_containment_cost.arrest_army_xp_gate
+}
+
+brilliant_scientist_can_shutdown_directorate = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.shutdown_support_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_containment_cost.shutdown_truck_gate }
+	has_equipment = { train_equipment > constant:brilliant_scientist_containment_cost.shutdown_train_gate }
+	has_fuel > constant:brilliant_scientist_containment_cost.shutdown_fuel_gate
+}
+
+brilliant_scientist_can_ratify_sovereign_charter = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_country_flag = brilliant_scientist_sovereignty_response_charter
+	brilliant_scientist_can_form_by_charter = yes
+	has_equipment = { convoy_1 > constant:brilliant_scientist_containment_cost.charter_convoy_gate }
+	has_equipment = { train_equipment > constant:brilliant_scientist_containment_cost.charter_train_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_containment_cost.charter_truck_gate }
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.charter_support_gate }
+}
+
+brilliant_scientist_can_launch_military_seizure = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_country_flag = brilliant_scientist_sovereignty_response_military_seizure
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.seizure_support_gate }
+	has_equipment = { infantry_equipment > constant:brilliant_scientist_containment_cost.seizure_infantry_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_containment_cost.seizure_truck_gate }
+	has_fuel > constant:brilliant_scientist_containment_cost.seizure_fuel_gate
+	has_manpower > constant:brilliant_scientist_containment_cost.seizure_manpower_gate
+	has_army_experience > constant:brilliant_scientist_containment_cost.seizure_army_xp_gate
+}
+
+brilliant_scientist_can_launch_foreign_containment = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment
+	is_in_faction = yes
+	has_equipment = { convoy_1 > constant:brilliant_scientist_containment_cost.foreign_convoy_gate }
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.foreign_support_gate }
+	has_command_power > constant:brilliant_scientist_containment_cost.foreign_command_power_gate
+}
+
+brilliant_scientist_can_concede_institutional_authority = {
+	brilliant_scientist_sovereignty_board_is_open = yes
+	has_country_flag = brilliant_scientist_sovereignty_response_concession
+	brilliant_scientist_institutional_capture_is_proven = yes
+	has_equipment = { support_equipment > constant:brilliant_scientist_containment_cost.concession_support_gate }
+	has_equipment = { train_equipment > constant:brilliant_scientist_containment_cost.concession_train_gate }
+}
+
+brilliant_scientist_containment_government_is_decisive = {
+	check_variable = {
+		var = brilliant_scientist_containment_score_margin
+		value = constant:brilliant_scientist_containment_threshold.decisive_government_margin
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_containment_government_has_edge = {
+	check_variable = {
+		var = brilliant_scientist_containment_score_margin
+		value = constant:brilliant_scientist_containment_threshold.contested_government_margin
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_containment_kruger_is_decisive = {
+	check_variable = {
+		var = brilliant_scientist_containment_score_margin
+		value = constant:brilliant_scientist_containment_threshold.decisive_kruger_margin
+		compare = less_than_or_equals
+	}
+}
+
+brilliant_scientist_containment_kruger_can_sustain_full_rebellion = {
+	check_variable = {
+		var = brilliant_scientist_containment_kruger_score
+		value = constant:brilliant_scientist_containment_threshold.full_rebellion_power
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_can_form_by_rebellion = yes
+}
+
+brilliant_scientist_containment_kruger_can_sustain_partial_uprising = {
+	check_variable = {
+		var = brilliant_scientist_containment_kruger_score
+		value = constant:brilliant_scientist_containment_threshold.partial_uprising_power
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_can_form_enclave = yes
+}

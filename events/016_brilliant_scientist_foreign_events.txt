@@ -1,0 +1,376 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FOREIGN OPERATIONS EVENTS (.100-.199)
+# ============================================================================
+# Host diplomatic choices, detected-operation responses, and actor after-action
+# reports. All events are triggered from targeted decisions through regular
+# actor/host event targets; no event creates an autonomous global scheduler.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.100
+	title = chaosx_nr16_100_title
+	desc = chaosx_nr16_100_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_nr16_100_a
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_medium
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred brilliant_scientist_has_high_dependence = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_secret_directorate }
+		}
+		brilliant_scientist_foreign_host_refuse_invitation = yes
+	}
+	option = {
+		name = chaosx_nr16_100_b
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_high
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred event_target:brilliant_scientist_foreign_operation_actor = { has_same_ideology = ROOT } }
+		}
+		brilliant_scientist_foreign_host_offer_limited_visit = yes
+	}
+	option = {
+		name = chaosx_nr16_100_c
+		trigger = { brilliant_scientist_is_transfer_ready = yes }
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_low
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_urgent brilliant_scientist_has_high_grievance = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_independent_capacity = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_half brilliant_scientist_has_high_dependence = yes }
+		}
+		brilliant_scientist_foreign_host_let_kruger_decide = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.101
+	title = chaosx_nr16_101_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_101_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_101_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_101_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_101_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+country_event = {
+	id = chaosx.nr16.110
+	title = chaosx_nr16_110_title
+	desc = chaosx_nr16_110_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_nr16_110_a
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_medium
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred event_target:brilliant_scientist_foreign_operation_actor = { is_in_faction_with = ROOT } }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_half brilliant_scientist_has_high_dependence = yes }
+		}
+		brilliant_scientist_foreign_host_accept_protection = yes
+	}
+	option = {
+		name = chaosx_nr16_110_b
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_high
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_government = democratic }
+		}
+		brilliant_scientist_foreign_host_accept_limited_protection = yes
+	}
+	option = {
+		name = chaosx_nr16_110_c
+		ai_chance = {
+			base = constant:brilliant_scientist_foreign_ai.option_medium
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred brilliant_scientist_has_high_mandate = yes }
+			modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_internal_security_section_established }
+		}
+		brilliant_scientist_foreign_host_refuse_protection = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.111
+	title = chaosx_nr16_111_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_111_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_111_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_111_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_111_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Observation
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.120
+	title = chaosx_nr16_120_title
+	desc = chaosx_nr16_120_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_secret_directorate } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_medium modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_government = democratic } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.121
+	title = chaosx_nr16_121_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_121_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_121_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_121_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_121_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Assistant recruitment
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.130
+	title = chaosx_nr16_130_title
+	desc = chaosx_nr16_130_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred brilliant_scientist_has_high_dependence = yes } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_medium modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_public_compact } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.131
+	title = chaosx_nr16_131_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_131_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_131_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_131_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_131_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Archive theft
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.140
+	title = chaosx_nr16_140_title
+	desc = chaosx_nr16_140_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_internal_security_section_established } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_medium modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred brilliant_scientist_has_high_exposure = yes } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.141
+	title = chaosx_nr16_141_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_141_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_141_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_141_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_141_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Project sabotage
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.150
+	title = chaosx_nr16_150_title
+	desc = chaosx_nr16_150_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_very_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_primary_laboratory_hardened } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_low modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_mandate = yes } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.151
+	title = chaosx_nr16_151_title
+	desc = {
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } } text = chaosx_nr16_151_desc_success }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial } } text = chaosx_nr16_151_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_151_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_151_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Defection
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.160
+	title = chaosx_nr16_160_title
+	desc = chaosx_nr16_160_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_dependence = yes } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_medium modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong brilliant_scientist_has_high_mandate = yes } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.161
+	title = chaosx_nr16_161_title
+	desc = {
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_transfer_race_prevented } text = chaosx_nr16_161_desc_race }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_transfer_received } text = chaosx_nr16_161_desc_success }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_defection_assistant_departed } text = chaosx_nr16_161_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_161_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_161_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Extraction
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.170
+	title = chaosx_nr16_170_title
+	desc = chaosx_nr16_170_desc
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_detected_secure_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_very_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_preferred has_country_flag = brilliant_scientist_internal_security_section_established } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_detected_protest_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_low modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_war_with = event_target:brilliant_scientist_foreign_operation_actor } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.171
+	title = chaosx_nr16_171_title
+	desc = {
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_transfer_race_prevented } text = chaosx_nr16_171_desc_race }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_transfer_received } text = chaosx_nr16_171_desc_success }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_extraction_captured_assistant } text = chaosx_nr16_171_desc_partial }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_171_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_171_a brilliant_scientist_foreign_finish_operation = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Assassination attempt
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr16.180
+	title = chaosx_nr16_180_title
+	desc = {
+		triggered_desc = { trigger = { event_target:brilliant_scientist_foreign_operation_actor = { has_country_flag = brilliant_scientist_foreign_assassination_confirmed_death } } text = chaosx_nr16_180_desc_death }
+		triggered_desc = { trigger = { event_target:brilliant_scientist_foreign_operation_actor = { has_country_flag = brilliant_scientist_foreign_assassination_continuity_target } } text = chaosx_nr16_180_desc_continuity }
+		triggered_desc = { trigger = { event_target:brilliant_scientist_foreign_operation_actor = { has_country_flag = brilliant_scientist_foreign_assassination_injury } } text = chaosx_nr16_180_desc_injury }
+		triggered_desc = { trigger = { event_target:brilliant_scientist_foreign_operation_actor = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } } text = chaosx_nr16_180_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = {
+		name = chaosx_nr16_180_a
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_country_flag = brilliant_scientist_secret_directorate } }
+		brilliant_scientist_foreign_host_secure_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+	option = {
+		name = chaosx_nr16_180_b
+		ai_chance = { base = constant:brilliant_scientist_foreign_ai.option_high modifier = { factor = constant:brilliant_scientist_foreign_ai.factor_strong has_country_flag = brilliant_scientist_failed_assassination_exposed_program } }
+		brilliant_scientist_foreign_host_diplomatic_response = yes
+		brilliant_scientist_foreign_continue_to_actor_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.181
+	title = chaosx_nr16_181_title
+	desc = {
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_assassination_confirmed_death } text = chaosx_nr16_181_desc_death }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_assassination_continuity_target } text = chaosx_nr16_181_desc_continuity }
+		triggered_desc = { trigger = { has_country_flag = brilliant_scientist_foreign_assassination_injury } text = chaosx_nr16_181_desc_injury }
+		triggered_desc = { trigger = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.failure } } text = chaosx_nr16_181_desc_failure }
+	}
+	picture = GFX_report_event_016_brilliant_scientist_appointment
+	is_triggered_only = yes
+	option = { name = chaosx_nr16_181_a brilliant_scientist_foreign_finish_operation = yes }
+}

@@ -2,7 +2,7 @@
 
 Date: 2026-07-14
 
-> Current-runtime pointer (2026-07-29): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, and multiple asset packages have advanced since this packet was written. Event 016 remains default-disabled and is not complete.
+> Current-runtime pointer (2026-07-29): this packet is retained as the 2026-07-14 planning resume snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` before continuing implementation because the opening, shared architecture, bounded gameplay tranches, and multiple asset packages have advanced since this packet was written. Event 016 is default-enabled at the core-runtime milestone but is not content-complete.
 
 ## Resume state
 

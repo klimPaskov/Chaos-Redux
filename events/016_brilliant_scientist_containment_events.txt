@@ -1,0 +1,143 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CONTAINMENT AND SOVEREIGNTY OUTCOMES
+# ============================================================================
+# The deadline event resolves the previously chosen policy against live causal
+# state. Outcome reports never grant a second reward or mutate the result.
+# Invalidated contracts reopen the board without transferring land or Kruger.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.30
+	title = chaosx.nr16.30.t
+	desc = chaosx.nr16.30.d
+	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_sovereignty_deadline_expired
+		NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+	}
+
+	option = {
+		name = chaosx.nr16.30.a
+		ai_chance = { base = constant:brilliant_scientist_containment_ai.high }
+		custom_effect_tooltip = brilliant_scientist_sovereignty_deadline_resolution_tt
+		hidden_effect = { brilliant_scientist_resolve_unanswered_sovereignty_deadline = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.31
+	title = chaosx.nr16.31.t
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_released }
+		text = chaosx.nr16.31.released.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_exiled }
+		text = chaosx.nr16.31.exiled.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_confined }
+		text = chaosx.nr16.31.confined.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_shutdown }
+		text = chaosx.nr16.31.shutdown.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_foreign_defection }
+		text = chaosx.nr16.31.foreign_defection.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_laboratory_uprising }
+		text = chaosx.nr16.31.laboratory_uprising.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_kruger_state_rebellion }
+		text = chaosx.nr16.31.kruger_state_rebellion.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_kruger_state_charter }
+		text = chaosx.nr16.31.kruger_state_charter.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_institutional_takeover }
+		text = chaosx.nr16.31.institutional_takeover.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_containment_outcome_noncountry_crisis }
+		text = chaosx.nr16.31.noncountry_crisis.d
+	}
+	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_country_flag = brilliant_scientist_containment_outcome_released
+			has_country_flag = brilliant_scientist_containment_outcome_exiled
+			has_country_flag = brilliant_scientist_containment_outcome_confined
+			has_country_flag = brilliant_scientist_containment_outcome_shutdown
+			has_country_flag = brilliant_scientist_containment_outcome_foreign_defection
+			has_country_flag = brilliant_scientist_containment_outcome_laboratory_uprising
+			has_country_flag = brilliant_scientist_containment_outcome_kruger_state_rebellion
+			has_country_flag = brilliant_scientist_containment_outcome_kruger_state_charter
+			has_country_flag = brilliant_scientist_containment_outcome_institutional_takeover
+			has_country_flag = brilliant_scientist_containment_outcome_noncountry_crisis
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.31.a
+		ai_chance = { base = constant:brilliant_scientist_containment_ai.high }
+		if = {
+			limit = {
+				is_ai = no
+				KRG = { exists = yes }
+			}
+			set_country_flag = brilliant_scientist_player_remained_with_former_host
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.31.b
+		trigger = {
+			is_ai = no
+			OR = {
+				has_country_flag = brilliant_scientist_containment_outcome_laboratory_uprising
+				has_country_flag = brilliant_scientist_containment_outcome_kruger_state_rebellion
+				has_country_flag = brilliant_scientist_containment_outcome_kruger_state_charter
+			}
+			KRG = {
+				exists = yes
+				is_ai = yes
+				brilliant_scientist_is_active_kruger_state = yes
+			}
+		}
+		ai_chance = { base = constant:brilliant_scientist_country.ai_blocked }
+		KRG = {
+			set_country_flag = brilliant_scientist_player_continuation_chosen
+			change_tag_from = ROOT
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.32
+	title = chaosx.nr16.32.t
+	desc = chaosx.nr16.32.d
+	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_containment_outcome_invalidated
+		NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+	}
+
+	option = {
+		name = chaosx.nr16.32.a
+		ai_chance = { base = constant:brilliant_scientist_containment_ai.high }
+		custom_effect_tooltip = brilliant_scientist_invalidated_contract_reopens_board_tt
+	}
+}

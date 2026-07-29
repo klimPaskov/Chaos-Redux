@@ -1,0 +1,52 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 DIRECTORATE OUTCOME TRIGGERS
+# ============================================================================
+# Revalidates the saved primary-laboratory relocation request before any state
+# flag, facility-type variable, or persistent event target is moved. These
+# triggers are COUNTRY-scoped and require the request's saved global targets.
+# ============================================================================
+
+brilliant_scientist_relocation_requested_origin_is_valid = {
+	brilliant_scientist_is_current_host = yes
+	has_event_target = brilliant_scientist_primary_facility
+	has_event_target = brilliant_scientist_relocation_requested_origin
+	event_target:brilliant_scientist_relocation_requested_origin = {
+		exists = yes
+		brilliant_scientist_is_valid_primary_facility_state = yes
+		is_fully_controlled_by = ROOT
+		has_state_flag = brilliant_scientist_primary_facility
+		check_variable = { brilliant_scientist_facility_type = constant:brilliant_scientist_facility.primary_type }
+	}
+}
+
+brilliant_scientist_relocation_requested_destination_is_valid = {
+	brilliant_scientist_is_current_host = yes
+	has_event_target = brilliant_scientist_relocation_requested_destination
+	event_target:brilliant_scientist_relocation_requested_destination = {
+		exists = yes
+		brilliant_scientist_is_valid_primary_facility_state = yes
+		is_fully_controlled_by = ROOT
+		NOT = { has_state_flag = brilliant_scientist_primary_facility }
+		NOT = { has_variable = brilliant_scientist_facility_type }
+		infrastructure > constant:brilliant_scientist_directorate_building.prepared_site_infrastructure_gate
+		OR = {
+			industrial_complex > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+			arms_factory > constant:brilliant_scientist_directorate_building.prepared_site_building_gate
+		}
+		OR = {
+			AND = {
+				ROOT = { has_country_flag = brilliant_scientist_directorate_relocation_land_route }
+				is_in_home_area = yes
+			}
+			AND = {
+				ROOT = { has_country_flag = brilliant_scientist_directorate_relocation_sea_route }
+				naval_base > constant:brilliant_scientist_directorate_building.port_route_naval_base_gate
+			}
+		}
+	}
+}
+
+brilliant_scientist_relocation_requested_pair_is_valid = {
+	brilliant_scientist_relocation_requested_origin_is_valid = yes
+	brilliant_scientist_relocation_requested_destination_is_valid = yes
+}

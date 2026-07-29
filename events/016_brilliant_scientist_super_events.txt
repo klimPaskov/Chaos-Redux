@@ -1,0 +1,62 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 SUPER-EVENT RUNTIME EVENTS (.300, .901-.902)
+# ============================================================================
+# Hidden event-driven retry for collision-safe super-event presentation.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.300
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_global_flag = brilliant_scientist_super_event_queue_retry_pending
+		brilliant_scientist_try_dispatch_super_event_queue = yes
+		brilliant_scientist_schedule_super_event_queue_retry = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.901
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_country_flag = brilliant_scientist_singularity_fallout_retry_pending
+		if = {
+			limit = {
+				has_country_flag = brilliant_scientist_kruger_state
+				has_country_flag = brilliant_scientist_terminal_commitment_singularity
+				has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+				NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+				NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+				NOT = { has_global_flag = world_end }
+			}
+			brilliant_scientist_execute_singularity_terminal = yes
+			brilliant_scientist_schedule_singularity_fallout_retry = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.902
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = super_event_visible } }
+			if = {
+				limit = { has_event_target = brilliant_scientist_super_event_actor }
+				clear_global_event_target = brilliant_scientist_super_event_actor
+			}
+			clr_global_flag = brilliant_scientist_super_event_actor_cleanup_pending
+		}
+		else = {
+			set_temp_variable = { brilliant_scientist_super_event_actor_cleanup_days = constant:brilliant_scientist_super_event_runtime.actor_cleanup_retry_days }
+			country_event = { id = chaosx.nr16.902 days = brilliant_scientist_super_event_actor_cleanup_days }
+		}
+	}
+}

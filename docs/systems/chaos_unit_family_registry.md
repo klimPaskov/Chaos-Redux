@@ -31,6 +31,24 @@ valid for those broader surfaces; this increment's focused handoff is the
 current completion authority for registry selection and ordinary-category
 lifecycle.
 
+### Event 016 generic provider bridge
+
+Event 016 registers the following generic Event 019 families from its idempotent runtime-package rebuild in `common/scripted_effects/016_brilliant_scientist_project_force_event19_effects.txt`.
+
+| Family | Family/provider ID | Event 016 implementation consumer | Provider-owned material profile |
+| --- | ---: | --- | --- |
+| Clone Infantry | 504 | `kruger_clone_infantry`, `infantry_equipment` | Standard infantry equipment plus exact manpower and training/sustainment costs. |
+| Autonomous Robot | 505 | `kruger_robot_frame`, `kruger_robot_equipment_1` | Robot equipment, manpower, political power, and command power callbacks. |
+| Paleogenetic Creature | 506 | `kruger_paleogenetic_beast`, `kruger_paleogenetic_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
+| Xenobiological Organism | 507 | `kruger_xenobiological_assault`, `kruger_xenobiological_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
+| Alien Interface Infantry | 508 | `kruger_exotic_guard`, `kruger_exotic_arms_equipment_1` | Alien-arms equipment, manpower, political power, and command power callbacks. |
+
+These rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.
+
+The provider callbacks record only manpower in the shared Event 019 obligation ledger; project equipment is deliberately reconciled and paid by the provider callbacks so the shared equipment-profile enum is not broadened for Event 016-only equipment lines.
+
+Generic derivatives use the common Event 019 country shell plus a provider-owned hidden family idea, neutral host commander, route variable, release report, and removable package marker, and cleanup verifies the stored family/provider pair and requested lifecycle phase before proving teardown.
+
 ## Registration fields
 
 Every row records:
@@ -57,6 +75,7 @@ An Event 19-capable provider implements:
 - `chaos_unit_family_provider_N_event19_refund_management_action`;
 - `chaos_unit_family_provider_N_event19_reconcile_sustainment`;
 - `chaos_unit_family_provider_N_event19_setup_derivative`;
+- `chaos_unit_family_provider_N_event19_remove_public_additions`;
 - `chaos_unit_family_provider_N_event19_cleanup_derivative`.
 
 Static-token operations are selected with `meta_effect` using the recorded provider ID. Registration is idempotent only when every field in the existing row matches the offered entry; any conflicting provider, source event, availability mode, lot policy, profile, weight, or contract version marks the registry invariant failed. Startup initialization therefore cannot duplicate or silently redefine a row. A future family contributes one aligned runtime registration row and its provider contract from its own existing integration surface; Event 19 needs no hardcoded family enumeration, localisation map, picture map, list edit, or registry-file edit.

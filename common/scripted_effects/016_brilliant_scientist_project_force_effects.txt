@@ -530,6 +530,10 @@ brilliant_scientist_rebuild_project_force_runtime_package = {
 
 	brilliant_scientist_define_project_force_templates = yes
 	set_country_flag = brilliant_scientist_project_force_package_state_current
+	# Event 019 consumes generic provider rows only after this complete
+	# history-derived runtime package exists. Registration is idempotent and
+	# leaves native Event 016 force materialisation unchanged.
+	brilliant_scientist_register_event19_project_force_providers = yes
 }
 
 # COUNTRY scope. Ledger mutations on a sovereign or previously initialized
@@ -545,6 +549,7 @@ brilliant_scientist_sync_project_force_runtime_after_ledger_change = {
 			}
 		}
 		brilliant_scientist_rebuild_project_force_runtime_package = yes
+		brilliant_scientist_refresh_world_threat_source = yes
 	}
 }
 

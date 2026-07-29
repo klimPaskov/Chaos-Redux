@@ -179,6 +179,19 @@ The 2026-07-14 collision repair in commit `0e8c6f8e` moved the six final OGGs by
 
 The six encoded hashes and six decoded-PCM hashes are mutually unique. A repository-wide source-byte comparison found no preserved source recording duplicated outside the Event 016 archive. A title and performer search found only the Event 013 research rejection of a different, ambiguously licensed 1921 Edison *Ride of the Valkyries* recording; the selected 2014 Ulm recording is a separate performance with explicit open terms.
 
+### Direct sound-channel WAV mirrors
+
+The sound-channel mirrors were rendered independently from the preserved original recordings with the same source windows, gain, quarter-sine fades, stereo treatment, SoXr resampling, and zero-tail treatment documented above. They are not OGG-to-WAV transcodes. All six are exactly `115.000000 s`, `44,100 Hz`, stereo, signed 16-bit little-endian PCM. Their measured programme loudness remains within `0.1 LUFS` of the corresponding final OGG, with the expected small peak-meter difference between lossless PCM and Vorbis playback.
+
+| ID | Runtime WAV | Bytes | WAV SHA-256 |
+| ---: | --- | ---: | --- |
+| 90 | `sound/016_brilliant_scientist/super_event_90_international_recognition.wav` | `20,286,078` | `ceb731053a8a043270b09af02c54bcf883891bb60b9029b3b83fce09f4f829c1` |
+| 91 | `sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` | `20,286,078` | `8761543231fc465a22038c0999d85fda9be602b74dd4b7aac52ce8ffda7de64d` |
+| 92 | `sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` | `20,286,166` | `cf1a5c54b30b42c7b8559d01f72ba246da135b48596b422e5e14ed722e298ab8` |
+| 93 | `sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` | `20,286,078` | `c3e7a901719faf2e863d93be7f9ea5de53a6b172d39f4e27276bf939191ca134` |
+| 94 | `sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` | `20,286,078` | `28752423ffdbcd7245394508925263fe2edfc8c53289ba593b9ec8c18ff13037` |
+| 95 | `sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` | `20,286,078` | `1e3d4a6f56bac99d2269946395346ee16539f9461c7cc66b4f9c116d0343c1da` |
+
 ## Settings-aware playback plan
 
 The current framework uses one mastered file per audio ID and six definition-level volume wrappers. It does not require six derivative OGG copies.
@@ -192,7 +205,7 @@ The current framework uses one mastered file per audio ID and six definition-lev
 | `_2_5` | `3.33` |
 | `_3_0` | `4.00` |
 
-For every ID from 90 through 95, the parent should add `chaosx_super_event_<ID>_<suffix>` music definitions pointing to the corresponding Event 016 OGG. The representative radio-station entry should use the `_1_5` music definition with zero chance, following the existing pattern. If the parent enables sound-channel playback, it should render a WAV from the preserved source with the same documented filter chain and add `chaosx_super_event_<ID>_sound_<suffix>` wrappers; transcoding the lossy final OGG back to WAV is not recommended.
+Every ID from 90 through 95 has `chaosx_super_event_<ID>_<suffix>` music definitions pointing to the corresponding Event 016 OGG and `chaosx_super_event_<ID>_sound_<suffix>` wrappers pointing to the matching source-rendered WAV. The representative radio-station entries use the `_1_5` music definitions with zero chance, following the existing pattern.
 
 ## Rights risks rejected during selection
 
@@ -201,4 +214,4 @@ For every ID from 90 through 95, the parent should add `chaosx_super_event_<ID>_
 
 ## Scope and remaining integration
 
-The audio research package is complete with no simplifications inside its assigned scope. The parent remains responsible for shared music and sound definitions, station/catalog rows, settings-aware helper wiring, `global.current_super_event_audio_id`, event/localisation/GUI wiring, and any sound-channel WAVs. No shared music, sound, localisation, GUI, gameplay, specification, workbook, or registry file was edited here.
+The audio research package and runtime masters are complete with no simplifications inside their assigned scope. Shared definition, station, settings-aware helper, `global.current_super_event_audio_id`, event, localisation, and GUI integration are maintained by the Event 016 implementation package.

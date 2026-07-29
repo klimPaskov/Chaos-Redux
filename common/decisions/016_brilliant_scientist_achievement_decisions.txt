@@ -1,0 +1,248 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ACHIEVEMENT-BEARING PROVENANCE INVESTIGATION
+# ============================================================================
+# Four distinct project-crosschecked sources, an authentication tribunal, and
+# a public proof decision. Each source is fire-once, consumes real industrial
+# capacity and equipment, takes time, raises Exposure, and has explicit AI.
+# ============================================================================
+
+brilliant_scientist_origin_investigation_category = {
+	brilliant_scientist_analyze_exotic_interface_residue = {
+		icon = GFX_decision_generic_research
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_source_exotic_interface }
+			OR = { NOT = { has_country_flag = brilliant_scientist_origin_conclusion_locked } has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_country_flag = brilliant_scientist_alien_arms_prototype_completed
+			has_country_flag = brilliant_scientist_materials_prototype_completed
+			has_equipment = { support_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.interface_support_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.interface_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.interface_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.interface_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.interface_support_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_country_flag = brilliant_scientist_origin_source_exotic_interface
+			set_temp_variable = { brilliant_scientist_origin_source_authenticated = constant:brilliant_scientist_achievement_value.one }
+			brilliant_scientist_origin_record_independent_source = yes
+			custom_effect_tooltip = brilliant_scientist_origin_interface_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.medium
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.secret_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.war_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_sequence_xenobiological_isotopes = {
+		icon = GFX_decision_generic_research
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_source_biological_isotopes }
+			OR = { NOT = { has_country_flag = brilliant_scientist_origin_conclusion_locked } has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed
+			OR = { has_country_flag = brilliant_scientist_biomedical_prototype_completed has_country_flag = brilliant_scientist_cloning_prototype_completed }
+			has_equipment = { support_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.biological_support_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.biological_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.biological_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.biological_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.biological_support_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_country_flag = brilliant_scientist_origin_source_biological_isotopes
+			set_temp_variable = { brilliant_scientist_origin_source_authenticated = constant:brilliant_scientist_achievement_value.zero }
+			brilliant_scientist_origin_record_independent_source = yes
+			custom_effect_tooltip = brilliant_scientist_origin_biological_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.medium
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.public_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.stable_factor has_country_flag = brilliant_scientist_control_stable }
+		}
+	}
+
+	brilliant_scientist_triangulate_stellar_provenance = {
+		icon = GFX_decision_generic_operation
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_source_stellar_vector }
+			OR = { NOT = { has_country_flag = brilliant_scientist_origin_conclusion_locked } has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_country_flag = brilliant_scientist_rocketry_prototype_completed
+			has_country_flag = brilliant_scientist_high_energy_prototype_completed
+			OR = { has_country_flag = brilliant_scientist_computation_prototype_completed has_country_flag = brilliant_scientist_electronics_prototype_completed }
+			has_equipment = { motorized_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.stellar_truck_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.stellar_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.stellar_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.stellar_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.stellar_truck_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_country_flag = brilliant_scientist_origin_source_stellar_vector
+			set_temp_variable = { brilliant_scientist_origin_source_authenticated = constant:brilliant_scientist_achievement_value.one }
+			brilliant_scientist_origin_record_independent_source = yes
+			custom_effect_tooltip = brilliant_scientist_origin_stellar_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.medium
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.high brilliant_scientist_is_kruger_sovereign_country = yes }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.war_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_authenticate_nonhuman_archive = {
+		icon = GFX_decision_generic_operation
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_source_nonhuman_archive }
+			OR = { NOT = { has_country_flag = brilliant_scientist_origin_conclusion_locked } has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_country_flag = brilliant_scientist_temporal_prototype_completed
+			has_country_flag = brilliant_scientist_alien_arms_prototype_completed
+			has_country_flag = brilliant_scientist_computation_prototype_completed
+			has_equipment = { train_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.archive_train_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.archive_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.archive_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.archive_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.archive_train_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_country_flag = brilliant_scientist_origin_source_nonhuman_archive
+			set_temp_variable = { brilliant_scientist_origin_source_authenticated = constant:brilliant_scientist_achievement_value.zero }
+			brilliant_scientist_origin_record_independent_source = yes
+			custom_effect_tooltip = brilliant_scientist_origin_archive_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.low
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.high has_country_flag = brilliant_scientist_route_temporal_continuum }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+		}
+	}
+
+	brilliant_scientist_convene_provenance_tribunal = {
+		icon = GFX_decision_generic_political_discourse
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			brilliant_scientist_origin_evidence_is_sufficient = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_conclusion_locked }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_equipment = { support_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.tribunal_support_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.tribunal_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.tribunal_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.tribunal_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.tribunal_support_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_temp_variable = { brilliant_scientist_requested_origin = constant:brilliant_scientist_origin.extraterrestrial_provenance }
+			brilliant_scientist_lock_origin_conclusion = yes
+			if = {
+				limit = { check_variable = { brilliant_scientist_origin_conclusion_locked > constant:brilliant_scientist_achievement_value.zero } }
+				set_country_flag = brilliant_scientist_origin_tribunal_concluded
+			}
+			custom_effect_tooltip = brilliant_scientist_origin_tribunal_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.medium
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.secret_factor has_country_flag = brilliant_scientist_secret_directorate }
+		}
+	}
+
+	brilliant_scientist_publish_conclusive_provenance_dossier = {
+		icon = GFX_decision_generic_speech
+		fire_only_once = yes
+		visible = {
+			brilliant_scientist_achievement_origin_investigation_actor = yes
+			brilliant_scientist_origin_public_proof_is_ready = yes
+			NOT = { has_country_flag = brilliant_scientist_origin_public_proof_published }
+		}
+		available = {
+			NOT = { has_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+			brilliant_scientist_primary_facility_is_valid = yes
+			has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance
+			has_equipment = { motorized_equipment_1 > constant:brilliant_scientist_origin_investigation_cost.publication_truck_gate }
+		}
+		cost = constant:brilliant_scientist_origin_investigation_cost.publication_pp
+		days_remove = constant:brilliant_scientist_origin_investigation_timing.publication_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_origin_investigation_cost.publication_factories }
+		complete_effect = {
+			set_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:brilliant_scientist_origin_investigation_cost.publication_truck_spend }
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_achievement_origin_investigation_actor = yes } NOT = { brilliant_scientist_primary_facility_is_valid = yes } } }
+		cancel_effect = { clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_origin_investigation_action_in_progress
+			set_country_flag = brilliant_scientist_origin_public_proof_published
+			set_variable = { brilliant_scientist_origin_publication_date = global.date }
+			set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.major }
+			brilliant_scientist_change_exposure = yes
+			custom_effect_tooltip = brilliant_scientist_origin_publication_result_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_origin_investigation_ai.low
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.public_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.high has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_origin_investigation_ai.secret_factor has_country_flag = brilliant_scientist_secret_directorate }
+		}
+	}
+}

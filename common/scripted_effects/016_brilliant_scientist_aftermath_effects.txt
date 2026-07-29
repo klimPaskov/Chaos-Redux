@@ -1,0 +1,165 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 DEFEAT AFTERMATH EFFECTS
+# ============================================================================
+# Exact equipment payments, project-army dismantlement, progress bookkeeping,
+# and settlement closure for the qualifying global-crisis aftermath.
+# ============================================================================
+
+brilliant_scientist_aftermath_pay_reconstruction_materials = {
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:brilliant_scientist_aftermath_cost.truck_spend }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:brilliant_scientist_aftermath_cost.train_spend }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_aftermath_cost.support_spend }
+}
+
+brilliant_scientist_aftermath_refresh_remnant_completion = {
+	if = {
+		limit = { brilliant_scientist_aftermath_all_project_remnants_resolved = yes }
+		clr_country_flag = brilliant_scientist_aftermath_remnants_pending
+		set_country_flag = brilliant_scientist_aftermath_remnants_resolved
+		set_variable = { brilliant_scientist_aftermath_remnant_resolution_date = global.date }
+	}
+}
+
+# Custodian country scope. Called exactly once by each project-causal hearing
+# after its mutually exclusive legal disposition has been recorded.
+brilliant_scientist_aftermath_record_remnant_resolution = {
+	add_to_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.one }
+	add_to_variable = { brilliant_scientist_aftermath_remnant_progress = constant:brilliant_scientist_aftermath_value.one }
+	brilliant_scientist_aftermath_refresh_remnant_completion = yes
+	brilliant_scientist_aftermath_refresh_full_completion = yes
+}
+
+# Minor/regional custodian scope. The defeat caller saves the defeated KRG as a
+# regular event target before entering this effect. Exactly one dominant legacy
+# is selected from real project history for event text and persistent history.
+brilliant_scientist_aftermath_select_minor_dominant_legacy = {
+	if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { has_country_flag = brilliant_scientist_singularity_late_construction_ever } }
+		set_country_flag = brilliant_scientist_aftermath_minor_singularity_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_temporal_deployment_completed check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_temporal_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_alien_arms_deployment_completed check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_alien_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_biological_weapons_deployment_completed has_country_flag = brilliant_scientist_biological_weapons_weaponization_completed } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_biological_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_teleportation_deployment_completed check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_portal_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_xenobiological_synthesis_deployment_completed check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_xenobiological_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_paleogenetics_deployment_completed check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_paleogenetic_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_robotics_deployment_completed check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_machine_legacy
+	}
+	else_if = {
+		limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_cloning_deployment_completed check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_value.zero } } } }
+		set_country_flag = brilliant_scientist_aftermath_minor_clone_legacy
+	}
+	else = {
+		set_country_flag = brilliant_scientist_aftermath_minor_prototype_archive_legacy
+	}
+}
+
+brilliant_scientist_aftermath_prepare_local_recipient = {
+	set_country_flag = brilliant_scientist_aftermath_local_archive_recovery
+	brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
+	brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
+	country_event = { id = chaosx.nr16.301 }
+}
+
+brilliant_scientist_aftermath_prepare_regional_recipient = {
+	set_country_flag = brilliant_scientist_aftermath_regional_cleanup
+	brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
+	brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
+	country_event = { id = chaosx.nr16.303 }
+}
+
+# Defeated Kruger country scope. Removes every Event 016-owned project template
+# and unit, closes recruitment, records dismantlement without erasing history,
+# and permanently disables the armed Singularity route.
+brilliant_scientist_aftermath_dismantle_project_arsenal = {
+	delete_units = { division_template = "Quantum Transit Raiders" disband = no }
+	delete_units = { division_template = "Replicated Guard Cadre" disband = no }
+	delete_units = { division_template = "Autonomous Frame Cohort" disband = no }
+	delete_units = { division_template = "Paleogenetic Shock Pack" disband = no }
+	delete_units = { division_template = "Xenobiological Assault Organisms" disband = no }
+	delete_units = { division_template = "Exotic Interface Guard" disband = no }
+	delete_units = { division_template = "Temporal Continuity Guard" disband = no }
+	brilliant_scientist_clear_project_force_runtime_package = yes
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.teleportation } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.teleportation } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.cloning } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.cloning } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.robotics } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.robotics } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.paleogenetics } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.paleogenetics } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.alien_arms } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.alien_arms } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.temporal } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.temporal } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.biological_weapons } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.biological_weapons } }
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.singularity } } } add_to_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.singularity } }
+	clr_country_flag = brilliant_scientist_biological_delivery_package_ready
+	remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_deployment }
+	remove_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_weaponization }
+	clr_country_flag = brilliant_scientist_singularity_armed
+	clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	clr_country_flag = brilliant_scientist_singularity_live_command_network
+	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	clr_country_flag = brilliant_scientist_krg_singularity_disarmament_hold_active
+	set_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
+	set_country_flag = brilliant_scientist_singularity_verified_nonterminal
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.verified_nonterminal }
+	set_country_flag = brilliant_scientist_global_weapons_dismantled
+	set_country_flag = brilliant_scientist_conquest_routes_blocked
+	set_country_flag = brilliant_scientist_singularity_routes_blocked
+	set_global_flag = brilliant_scientist_singularity_permanently_cancelled
+	set_global_flag = brilliant_scientist_lab_world_permanently_cancelled
+	brilliant_scientist_achievement_record_project_arsenal_secured = yes
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_aftermath_certify_inspections = {
+	set_country_flag = brilliant_scientist_aftermath_inspections_certified
+	clr_country_flag = brilliant_scientist_aftermath_inspections_pending
+	set_variable = { brilliant_scientist_aftermath_inspection_certification_date = global.date }
+	add_ideas = brilliant_scientist_aftermath_inspection_authority
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_defeated_state_actor
+			event_target:brilliant_scientist_defeated_state_actor = { exists = yes }
+		}
+		event_target:brilliant_scientist_defeated_state_actor = { brilliant_scientist_aftermath_dismantle_project_arsenal = yes }
+	}
+}
+
+brilliant_scientist_aftermath_refresh_full_completion = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_aftermath_treaty_ratified
+			has_country_flag = brilliant_scientist_aftermath_inspections_certified
+			has_country_flag = brilliant_scientist_aftermath_reconstruction_completed
+			has_country_flag = brilliant_scientist_aftermath_remnants_resolved
+			NOT = { has_global_flag = brilliant_scientist_defeat_aftermath_completed }
+		}
+		set_global_flag = brilliant_scientist_defeat_aftermath_completed
+		set_country_flag = brilliant_scientist_aftermath_settlement_completed
+		set_variable = { brilliant_scientist_aftermath_completion_date = global.date }
+		clr_global_flag = brilliant_scientist_defeat_aftermath_active
+		clr_country_flag = brilliant_scientist_aftermath_custodian
+		clear_global_event_target = brilliant_scientist_aftermath_custodian
+		clear_global_event_target = brilliant_scientist_defeated_state_actor
+	}
+}

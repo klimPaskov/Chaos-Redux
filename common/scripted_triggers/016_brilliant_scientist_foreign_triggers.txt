@@ -1,0 +1,351 @@
+# ============================================================================
+
+@brilliant_scientist_foreign_project_index_computation = 0
+@brilliant_scientist_foreign_project_index_electronics = 1
+@brilliant_scientist_foreign_project_index_materials = 2
+@brilliant_scientist_foreign_project_index_rocketry = 3
+@brilliant_scientist_foreign_project_index_high_energy = 4
+@brilliant_scientist_foreign_project_index_biomedical = 5
+@brilliant_scientist_foreign_project_index_teleportation = 6
+@brilliant_scientist_foreign_project_index_cloning = 7
+@brilliant_scientist_foreign_project_index_robotics = 8
+@brilliant_scientist_foreign_project_index_paleogenetics = 9
+@brilliant_scientist_foreign_project_index_xenobiological_synthesis = 10
+@brilliant_scientist_foreign_project_index_biological_weapons = 11
+@brilliant_scientist_foreign_project_index_alien_arms = 12
+@brilliant_scientist_foreign_project_index_temporal = 13
+@brilliant_scientist_foreign_project_index_singularity = 14
+# CHAOS REDUX - EVENT 016 FOREIGN OPERATIONS TRIGGERS
+# ============================================================================
+# Evolution II foreign actors target only the current valid host stored in the
+# actor's bounded host array. Every route checks its own persistent resolution
+# ledger, the shared live-operation lock, host capacity, diplomacy, access,
+# intelligence, project threat, and Kruger lifecycle state.
+# ============================================================================
+
+# Any scope.
+brilliant_scientist_foreign_contest_is_active = {
+	has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded
+	brilliant_scientist_has_current_host = yes
+	event_target:brilliant_scientist_current_host = {
+		has_country_flag = brilliant_scientist_evolution_ii_unlocked
+		NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+		NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope on a prospective foreign actor.
+brilliant_scientist_foreign_actor_is_operation_ready = {
+	brilliant_scientist_is_valid_foreign_actor = yes
+	brilliant_scientist_foreign_contest_is_active = yes
+	has_country_flag = brilliant_scientist_foreign_contest_observer
+	NOT = { has_country_flag = brilliant_scientist_foreign_operation_live }
+	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
+}
+
+# Targeted-decision ROOT actor, FROM proposed host.
+brilliant_scientist_foreign_target_lifecycle_is_valid = {
+	FROM = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_evolution_ii_unlocked
+		NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+		NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	}
+	NOT = { has_global_flag = world_end }
+}
+
+# Targeted-decision ROOT actor, FROM proposed host.
+brilliant_scientist_foreign_target_is_current_host = {
+	brilliant_scientist_foreign_target_lifecycle_is_valid = yes
+	FROM = {
+		check_variable = {
+			var = brilliant_scientist_foreign_incoming_operation_count
+			value = constant:brilliant_scientist_foreign_limit.maximum_incoming_operations
+			compare = less_than
+		}
+	}
+	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope on an actor. The current host is the relation target.
+brilliant_scientist_foreign_has_diplomatic_access = {
+	OR = {
+		is_in_faction_with = event_target:brilliant_scientist_current_host
+		is_ally_with = event_target:brilliant_scientist_current_host
+		is_neighbor_of = event_target:brilliant_scientist_current_host
+		has_opinion = {
+			target = event_target:brilliant_scientist_current_host
+			value > constant:brilliant_scientist_foreign_limit.positive_opinion_exclusive
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_controlled_research_access_partner
+			event_target:brilliant_scientist_current_host = { has_country_flag = brilliant_scientist_controlled_research_access_opened }
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_joint_laboratory_partner
+			event_target:brilliant_scientist_current_host = { has_country_flag = brilliant_scientist_joint_laboratory_framework_active }
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_foreign_protection_partner
+			event_target:brilliant_scientist_current_host = { has_country_flag = brilliant_scientist_foreign_protection_framework_active }
+		}
+		is_in_array = { array = brilliant_scientist_foreign_invitation_contact_targets value = event_target:brilliant_scientist_current_host }
+		is_in_array = { array = brilliant_scientist_foreign_observation_success_targets value = event_target:brilliant_scientist_current_host }
+	}
+}
+
+# COUNTRY scope on an actor.
+brilliant_scientist_foreign_has_intelligence_access = {
+	OR = {
+		AND = {
+			has_intelligence_agency = yes
+			num_of_operatives > constant:brilliant_scientist_foreign_limit.minimum_operative_threshold
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_controlled_research_access_partner
+			event_target:brilliant_scientist_current_host = { has_country_flag = brilliant_scientist_controlled_research_access_opened }
+		}
+		AND = {
+			has_country_flag = brilliant_scientist_joint_laboratory_partner
+			event_target:brilliant_scientist_current_host = { has_country_flag = brilliant_scientist_joint_laboratory_framework_active }
+		}
+		is_in_array = { array = brilliant_scientist_foreign_observation_success_targets value = event_target:brilliant_scientist_current_host }
+		is_in_array = { array = brilliant_scientist_foreign_recruitment_success_targets value = event_target:brilliant_scientist_current_host }
+	}
+}
+
+# COUNTRY scope on an actor.
+brilliant_scientist_foreign_has_hostile_motive = {
+	OR = {
+		has_war_with = event_target:brilliant_scientist_current_host
+		AND = {
+			NOT = { has_same_ideology = event_target:brilliant_scientist_current_host }
+			has_opinion = {
+				target = event_target:brilliant_scientist_current_host
+				value < constant:brilliant_scientist_foreign_limit.negative_opinion_exclusive
+			}
+		}
+	}
+}
+
+# COUNTRY scope on an actor.
+brilliant_scientist_foreign_host_has_project = {
+	event_target:brilliant_scientist_current_host = {
+		check_variable = {
+			var = brilliant_scientist_project_theory_count
+			value = constant:brilliant_scientist_foreign_limit.strategic_project_count
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# COUNTRY scope on an actor.
+brilliant_scientist_foreign_host_has_strategic_project = {
+	event_target:brilliant_scientist_current_host = {
+		OR = {
+			check_variable = {
+				var = brilliant_scientist_project_deployment_count
+				value = constant:brilliant_scientist_foreign_limit.strategic_project_count
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = brilliant_scientist_project_weaponization_count
+				value = constant:brilliant_scientist_foreign_limit.strategic_project_count
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope on an actor. Explicit aligned checks keep dismantled stolen
+# families from hiding a different active archive target.
+brilliant_scientist_foreign_host_has_unstolen_project = {
+	event_target:brilliant_scientist_current_host = {
+		OR = {
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_computation > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.computation } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_electronics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.electronics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_materials > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.materials } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_rocketry > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.rocketry } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_high_energy > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.high_energy } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_biomedical > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.biomedical } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_teleportation > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.teleportation } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_cloning > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.cloning } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_robotics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.robotics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_paleogenetics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.paleogenetics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_xenobiological_synthesis > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_biological_weapons > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.biological_weapons } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_alien_arms > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.alien_arms } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_temporal > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.temporal } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_singularity > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.singularity } } }
+		}
+	}
+}
+
+# COUNTRY scope on an actor.
+brilliant_scientist_foreign_host_has_undamaged_project = {
+	event_target:brilliant_scientist_current_host = {
+		OR = {
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_computation > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.computation } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_electronics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.electronics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_materials > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.materials } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_rocketry > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.rocketry } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_high_energy > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.high_energy } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_biomedical > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.biomedical } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_teleportation > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.teleportation } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_cloning > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.cloning } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_robotics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.robotics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_paleogenetics > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.paleogenetics } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_xenobiological_synthesis > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.xenobiological_synthesis } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_biological_weapons > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.biological_weapons } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_alien_arms > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.alien_arms } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_temporal > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.temporal } } }
+			AND = { check_variable = { brilliant_scientist_project_stage_entries^@brilliant_scientist_foreign_project_index_singularity > constant:brilliant_scientist_project_stage.none } NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.singularity } } }
+		}
+	}
+}
+
+# Targeted-decision ROOT actor, FROM host.
+brilliant_scientist_foreign_can_observe_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.observe_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_observation_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_invite_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_invite = yes
+	brilliant_scientist_foreign_has_diplomatic_access = yes
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_invitation_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_recruit_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_host_has_project = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.joint_lab_gate
+		compare = greater_than_or_equals
+	}
+	OR = {
+		brilliant_scientist_foreign_has_diplomatic_access = yes
+		brilliant_scientist_foreign_has_intelligence_access = yes
+	}
+	FROM = {
+		check_variable = {
+			var = brilliant_scientist_foreign_recruited_assistant_count
+			value = constant:brilliant_scientist_foreign_limit.maximum_recruited_assistants_per_host
+			compare = less_than
+		}
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_recruitment_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_steal_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_attempt_theft = yes
+	brilliant_scientist_foreign_has_intelligence_access = yes
+	brilliant_scientist_foreign_host_has_project = yes
+	NOT = { is_in_faction_with = event_target:brilliant_scientist_current_host }
+	brilliant_scientist_foreign_host_has_unstolen_project = yes
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_theft_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_sabotage_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_attempt_sabotage = yes
+	brilliant_scientist_foreign_has_intelligence_access = yes
+	brilliant_scientist_foreign_host_has_project = yes
+	brilliant_scientist_foreign_has_hostile_motive = yes
+	NOT = { is_in_faction_with = event_target:brilliant_scientist_current_host }
+	brilliant_scientist_foreign_host_has_undamaged_project = yes
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_sabotage_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_encourage_defection_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	check_variable = {
+		var = brilliant_scientist_foreign_interest
+		value = constant:brilliant_scientist_foreign.extraction_gate
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_foreign_has_diplomatic_access = yes
+	OR = {
+		is_in_array = { array = brilliant_scientist_foreign_invitation_contact_targets value = event_target:brilliant_scientist_current_host }
+		is_in_array = { array = brilliant_scientist_foreign_recruitment_success_targets value = event_target:brilliant_scientist_current_host }
+		event_target:brilliant_scientist_current_host = {
+			check_variable = {
+				var = brilliant_scientist_grievance
+				value = constant:brilliant_scientist_foreign_limit.serious_grievance
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	event_target:brilliant_scientist_current_host = { brilliant_scientist_is_transfer_ready = yes }
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_defection_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_extract_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_attempt_extraction = yes
+	brilliant_scientist_foreign_has_intelligence_access = yes
+	NOT = { is_in_faction_with = event_target:brilliant_scientist_current_host }
+	event_target:brilliant_scientist_current_host = { brilliant_scientist_is_transfer_ready = yes }
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_extraction_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_offer_protection_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_offer_protection = yes
+	brilliant_scientist_foreign_has_diplomatic_access = yes
+	NOT = { has_war_with = event_target:brilliant_scientist_current_host }
+	NOT = { has_country_flag = brilliant_scientist_foreign_protection_partner }
+	event_target:brilliant_scientist_current_host = {
+		NOT = { has_country_flag = brilliant_scientist_foreign_protection_framework_active }
+		NOT = { has_country_flag = brilliant_scientist_foreign_protection_framework_ever_accepted }
+	}
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_foreign_consequence.protection_host_support_equipment } }
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_protection_resolved_targets value = FROM } }
+}
+
+brilliant_scientist_foreign_can_assassinate_target = {
+	brilliant_scientist_foreign_actor_is_operation_ready = yes
+	brilliant_scientist_foreign_target_is_current_host = yes
+	brilliant_scientist_foreign_can_attempt_assassination = yes
+	brilliant_scientist_foreign_has_intelligence_access = yes
+	brilliant_scientist_foreign_host_has_strategic_project = yes
+	brilliant_scientist_foreign_has_hostile_motive = yes
+	has_intelligence_agency = yes
+	num_of_operatives > constant:brilliant_scientist_foreign_limit.strong_operative_threshold
+	NOT = { is_in_faction_with = event_target:brilliant_scientist_current_host }
+	event_target:brilliant_scientist_current_host = {
+		NOT = { has_country_flag = brilliant_scientist_foreign_assassination_attempt_live }
+		NOT = { has_country_flag = brilliant_scientist_foreign_assassination_attempt_resolved }
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_foreign_assassination_resolved_targets value = FROM } }
+}
+
+# Targeted decision cancellation contract. ROOT actor, FROM original host.
+brilliant_scientist_foreign_operation_target_remains_valid = {
+	has_country_flag = brilliant_scientist_foreign_operation_live
+	FROM = {
+		brilliant_scientist_is_current_host = yes
+		NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+		NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	}
+	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+	NOT = { has_global_flag = world_end }
+}

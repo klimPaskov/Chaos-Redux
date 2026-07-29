@@ -494,6 +494,10 @@ refresh_world_threat_state = {
     if = {
         limit = { check_variable = { global.world_threat_source_count > 0 } }
         set_global_flag = world_in_threat
+	if = {
+		limit = { has_global_flag = world_threat_source_brilliant_scientist }
+		add_to_variable = { global.world_threat_source_count = 1 }
+	}
     }
     else = {
         clr_global_flag = world_in_threat
