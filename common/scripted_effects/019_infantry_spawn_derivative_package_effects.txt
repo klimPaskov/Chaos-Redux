@@ -539,9 +539,6 @@ infantry_spawn_setup_derivative_identity_common = {
 		}
 		else = { set_country_flag = infantry_spawn_nonhuman_derivative }
 		set_country_flag = infantry_spawn_derivative_origin_event19
-		var:infantry_spawn_derivative_former_parent = {
-			infantry_spawn_achievement_mark_claimant_or_derivative_revolt = yes
-		}
 		infantry_spawn_unregister_all_evolution_memberships = yes
 		infantry_spawn_derivative_clear_parent_runtime_surface = yes
 		set_country_flag = infantry_spawn_automatic_generation_suppressed
@@ -5317,6 +5314,8 @@ infantry_spawn_run_natural_derivative_exact_transaction = {
 											check_variable = { var = infantry_spawn_natural_derivative_final_actor_core_states value = infantry_spawn_natural_derivative_selected_revolt_states^num compare = equals }
 											check_variable = { infantry_spawn_natural_derivative_final_parent_selected_states = constant:infantry_spawn_weight_result.zero }
 										}
+										infantry_spawn_achievement_mark_claimant_or_derivative_revolt = yes
+										infantry_spawn_muster_board_close = yes
 										event_target:infantry_spawn_natural_derivative_actor = {
 											infantry_spawn_record_derivative_revolt_history = yes
 											clr_country_flag = infantry_spawn_derivative_creation_in_progress
@@ -5508,6 +5507,8 @@ infantry_spawn_execute_natural_family_same_tag_takeover = {
 				check_variable = { var = infantry_spawn_template_uid_entries^num value = infantry_spawn_natural_same_tag_template_rows_before compare = equals }
 				check_variable = { var = num_divisions value = infantry_spawn_natural_same_tag_divisions_before compare = equals }
 			}
+			infantry_spawn_achievement_mark_claimant_or_derivative_revolt = yes
+			infantry_spawn_muster_board_close = yes
 			infantry_spawn_record_derivative_revolt_history = yes
 			remove_ideas = infantry_spawn_derivative_pursued_by_former_state
 			remove_mission = infantry_spawn_derivative_survive_former_parent_front

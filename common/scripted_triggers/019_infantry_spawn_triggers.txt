@@ -109,6 +109,49 @@ infantry_spawn_has_deferred_event19_action = {
 	}
 }
 
+# Ordinary-country decision surface lifecycle. Evolution III and IV capability
+# flags deliberately do not appear here: they remain after the government has
+# suppressed further draws and settled every live Event 19 obligation.
+infantry_spawn_ordinary_management_crisis_is_active = {
+	OR = {
+		infantry_spawn_has_unresolved_generation = yes
+		check_variable = { infantry_spawn_active_lot_count > constant:infantry_spawn_weight_result.zero }
+		AND = {
+			has_country_flag = infantry_spawn_unaccounted_formation_detected
+			check_variable = { infantry_spawn_unaccounted_division_count > constant:infantry_spawn_weight_result.zero }
+		}
+		infantry_spawn_has_active_claimant = yes
+		infantry_spawn_has_deferred_event19_action = yes
+		has_country_flag = infantry_spawn_prefire_opening_pending
+		has_country_flag = infantry_spawn_audit_decision_running
+		has_country_flag = infantry_spawn_standardization_running
+		has_country_flag = infantry_spawn_demobilization_running
+		has_country_flag = infantry_spawn_training_cycle_running
+		has_country_flag = infantry_spawn_muster_districts_running
+		has_country_flag = infantry_spawn_integration_staff_search_running
+		has_country_flag = infantry_spawn_specialist_preservation_running
+		has_country_flag = infantry_spawn_prototype_trial_running
+		has_country_flag = infantry_spawn_rail_corridor_running
+		has_country_flag = infantry_spawn_request_cooldown
+	}
+}
+
+# Shared player and AI gate for the ordinary category, direct decisions, and
+# Muster Board. A completed takeover or derivative revolt is a terminal
+# ordinary-country surface outcome even if its historical ledger still exists.
+infantry_spawn_ordinary_management_category_is_relevant = {
+	infantry_spawn_country_is_active = yes
+	infantry_spawn_scenario_transaction_is_idle = yes
+	NOT = { is_infantry_spawn_derivative_country = yes }
+	NOT = { has_country_flag = infantry_spawn_derivative_creation_in_progress }
+	NOT = { has_country_flag = infantry_spawn_scenario_actor }
+	NOT = { has_country_flag = infantry_spawn_scenario_dynamic_breakaway }
+	NOT = { has_country_flag = infantry_spawn_scenario_takeover_actor }
+	NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+	NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
+	infantry_spawn_ordinary_management_crisis_is_active = yes
+}
+
 infantry_spawn_country_can_continue_pulse = {
 	exists = yes
 	infantry_spawn_scenario_transaction_is_idle = yes
@@ -655,6 +698,7 @@ infantry_spawn_can_roll_lot_incident = {
 infantry_spawn_management_is_available = {
 	infantry_spawn_scenario_transaction_is_idle = yes
 	infantry_spawn_country_is_active = yes
+	infantry_spawn_ordinary_management_category_is_relevant = yes
 	infantry_spawn_all_ledgers_are_aligned = yes
 	NOT = { has_country_flag = division_template_lock_event_active }
 	NOT = { has_country_flag = infantry_spawn_management_temporarily_locked }

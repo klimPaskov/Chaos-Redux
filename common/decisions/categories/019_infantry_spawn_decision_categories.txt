@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 ORDINARY-COUNTRY DECISION CATEGORY
 # ============================================================================
-# Baseline through Anomalous Muster lot management. Evolution III keeps the
-# category visible as the doorway to the movable Muster Board even when no lot
-# is currently unresolved.
+# Baseline through Anomalous Muster lot management. Evolution III retains the
+# Muster Board doorway while a live Event 19 crisis remains, then closes the
+# ordinary surface after quiet closeout or an erupted terminal outcome.
 # ============================================================================
 
 @INFANTRY_SPAWN_MANAGEMENT_PRIORITY = 94
@@ -11,27 +11,9 @@
 infantry_spawn_formation_management_category = {
 	icon = GFX_decision_category_infantry_spawn_formation_management
 	visible = {
-		infantry_spawn_country_is_active = yes
-		infantry_spawn_scenario_transaction_is_idle = yes
-		NOT = { is_infantry_spawn_derivative_country = yes }
-		OR = {
-			infantry_spawn_has_evolution_iii = yes
-			infantry_spawn_has_unresolved_generation = yes
-			check_variable = { infantry_spawn_active_lot_count > 0 }
-			has_country_flag = infantry_spawn_evolution_two_management_active
-			has_country_flag = infantry_spawn_audit_decision_running
-			has_country_flag = infantry_spawn_standardization_running
-			has_country_flag = infantry_spawn_demobilization_running
-			has_country_flag = infantry_spawn_training_cycle_running
-			has_country_flag = infantry_spawn_specialist_preservation_running
-			has_country_flag = infantry_spawn_muster_districts_running
-			has_country_flag = infantry_spawn_integration_staff_search_running
-			has_country_flag = infantry_spawn_rail_corridor_running
-			has_country_flag = infantry_spawn_request_cooldown
-			has_country_flag = infantry_spawn_muster_board_open
-		}
+		infantry_spawn_ordinary_management_category_is_relevant = yes
 	}
 	allowed = { always = yes }
-	visible_when_empty = yes
+	visible_when_empty = no
 	priority = @INFANTRY_SPAWN_MANAGEMENT_PRIORITY
 }

@@ -8,6 +8,10 @@
 
 infantry_spawn_run_country_pulse = {
 	clr_country_flag = infantry_spawn_audit_pulse_scheduled
+	# A passive lot closeout may invalidate the category without a Board action.
+	# Clear only an irrelevant open flag here; the post-management refresh below
+	# rebuilds a still-valid view once per pulse.
+	infantry_spawn_muster_board_close_if_irrelevant = yes
 	if = {
 		limit = { infantry_spawn_scenario_transaction_is_idle = yes }
 		infantry_spawn_resume_deferred_event19_actions = yes
@@ -67,6 +71,7 @@ infantry_spawn_run_country_pulse = {
 					}
 				}
 			}
+			infantry_spawn_muster_board_refresh_if_open = yes
 			infantry_spawn_schedule_country_pulse = yes
 		}
 		else = { infantry_spawn_apply_staged_ideas = yes }

@@ -380,6 +380,14 @@ is eligible, the one-time pending state retries only on that country's Event 19
 pulse. Active Evolution IV transitions, scenarios, and derivatives are excluded,
 so the reception cannot duplicate or consume their routes.
 
+Every automatic Event 19 generation, direct family request, first-family reception, natural release, scenario selector, and Muster Board view scans the aligned Chaos-family registry rather than a fixed zombie, ghost, or golem list.
+
+Rows opt into ordinary generation with `ordinary_mix` or `both`, and opt into family-only requests and derivative paths with `family_only` or `both`.
+
+Family-only rows enter an automatic generation only when their provider callback marks the country as a native family host; they remain available through the direct family, first-reception, scenario, natural-release, and derivative consumers that use the same registry.
+
+Provider callbacks are dispatched from the stored provider id, so a future Chaos unit family adds one complete registration row and its provider callback surface to its existing parent startup path; Event 19 code, family lists, and registry files remain unchanged.
+
 The Event 19 implementation has exactly one dedicated registry code file:
 `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`. It owns
 the ordinary random-component table and the initial family integrations.
@@ -594,6 +602,10 @@ cooldown, state, lot, and family gates.
 Each direct action keeps a transparent button hitbox with its full `pdx_tooltip`; the visible caption is a separate left-aligned overlay so the action name never inherits the engine's centered `buttonText` layout. Short captions are used only where the compact plate would otherwise crowd the text, while the tooltip retains the complete requirements, cost, and outcome description.
 The Overview surface uses the open central dossier field for active lots, unresolved records, claimant demands, anomalous saturation, pending requests, and active divisions.
 The values are read directly from the shared Event 19 counters rather than decorative placeholders.
+The ordinary Formation Management category and Muster Board remain available only while an unresolved record, live Event 19 formation, unaccounted formation, active claimant, pending Evolution III opening, deferred transaction, or running management operation exists.
+Evolution III and IV capability flags alone do not keep the surface open after a government suppresses new draws and settles the crisis.
+A completed claimant takeover or a final proven derivative revolt closes the ordinary category and Board immediately; direct-scenario actors are excluded from the ordinary surface for the duration of their isolated package.
+The shared country pulse clears an irrelevant Board-open flag before work and rechecks the same gate after management, so a later crisis can reopen the Board only through its decision doorway.
 The board is authored around the richer compact `GFX_infantry_spawn_muster_board_background` at 960 by 640: a continuous charcoal and brass frame surrounds a period muster map field with sparse red and steel drafting traces, paper seams, and one understated compass seal. Functional text, lists, army scenes, and click targets remain GUI-owned and do not paint decorative wells or slot grids. The richer source, processed review, and runtime handoff are retained under `docs/assets/019_infantry_spawn/gui_background_richer_2026_07/`.
 
 Three real frame-sheet animations provide the muster seal, critical claimant
