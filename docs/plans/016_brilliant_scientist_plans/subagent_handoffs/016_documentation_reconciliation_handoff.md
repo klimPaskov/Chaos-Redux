@@ -8,7 +8,7 @@ Mode: documentation-only reconciliation for the core-runtime handoff milestone. 
 
 The current source-of-truth and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. It separates core mechanics and reference wiring required now from accepted bounded assets or content, explicitly deferred scenario or flavor and report/news work, Event 019 provider interoperability, and the Event016-specific 3D model backlog.
 
-The reconciliation preserves the accepted ten-part specification as design authority, records current implementation files and handoffs as evidence only, and keeps Event 016 default-disabled. It does not claim that the event, its shared registry, its provider adapters, its presentation, its audits, or its live consumer validation are complete.
+The reconciliation preserves the accepted ten-part specification as design authority and records current implementation files and handoffs as evidence only. The parent core-runtime pass subsequently default-enabled Event 016 after the mapped audits and Event 019 provider bridge; this does not claim that deferred scenarios, flavor, expanded presentation, 3D production, or live consumer validation are complete.
 
 ## Exact files changed
 
@@ -45,7 +45,7 @@ No other file was changed by this documentation pass.
 ## Contradictions still open
 
 - `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md`, `package_manifest.md`, `matrices/016_asset_inventory.md`, and `docs/assets/016_brilliant_scientist/manifest.md` retain historical statements or zero counters that do not match current runtime files and accepted handoffs.
-- Event 016 remains default-disabled while many bounded implementation tranches exist; this is an intentional acceptance boundary, but parent integration and audits must prove it.
+- Event 016 is default-enabled only after the parent core-runtime integration and mapped audit pass; deferred content and live validation remain separate acceptance boundaries.
 - The Event 019 family and provider IDs, adapter owner, and exact bridge between Event016 project ledgers and Event019 provider ledgers are not decided.
 - Shared playback, Event Details, final localisation, workbook rows, mapped audits, and live scenario validation remain open.
 - The package inventory calls for broader news and defeat or remnant art, but no Event016 news DDS is present and no accepted decision has prioritized those variants.

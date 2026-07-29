@@ -15,7 +15,7 @@ This implementation owns the host framework around projects. The fifteen native 
 - `brilliant_scientist_exposure`: foreign and public visibility of the programme.
 - `brilliant_scientist_project_capacity`: institutional bandwidth available for ambitious work.
 
-Independent Capacity and Grievance remain hidden. Decisions alter them through the shared measure helpers, while their consequences are communicated through requirements, incidents, control-state triggers, and player-facing warnings elsewhere in Event 016.
+Independent Capacity and Grievance remain hidden. Decisions alter them through the shared measure helpers, while their consequences are communicated through requirements, incidents, control-state triggers, and player-facing warnings elsewhere in Event 016. The header also resolves a broad Government Control label from the shared stable, strained, compromised, and lost flags. Named appointment, institutional, priority, security, and authority fragments explain the visible causal direction without printing either hidden value. The latest loyalty-review and relocation records remain visible after their transient request context has been cleared.
 
 Shared tuning introduced here is under `common/script_constants/016_brilliant_scientist_directorate_constants.txt`. Timing, political costs, equipment gates and spends, construction burdens, persistent modifiers, and AI weights are separated by category. The priority and relocation cooldown values are additionally mirrored as file-scoped `@` literals in their decision files because the timed-country-flag `days` field rejects script-constant and variable tokens; both copies must change together. The shared `brilliant_scientist_measure_delta` ladder remains the source for minor, moderate, and major meter changes.
 
@@ -63,35 +63,35 @@ Only one security action may run at a time. A pending loyalty finding blocks ano
 
 The authority path offers cabinet safety oversight, delegated technical authority, and final sovereign technical authority. Cabinet review improves stability and political control while slowing projects. Delegation accelerates work but increases Exposure. Final authority replaces delegated authority, sets `brilliant_scientist_sovereign_science_authority`, and creates the strongest project-speed/political-control trade-off.
 
-## Deferred outcome adapter contracts
+## Directorate outcome resolvers
 
-The Directorate owns bounded context producers, while the shared Event 016 event/effect layer owns narrative outcomes. Neither producer polls the world on a recurring on-action.
+The Directorate owns bounded context producers, while `common/scripted_effects/016_brilliant_scientist_directorate_outcome_effects.txt` commits their narrative outcomes. Neither producer polls the world on a recurring on-action.
 
 ### Loyalty review
 
 When `brilliant_scientist_loyalty_review_mission` expires, the host receives `brilliant_scientist_directorate_loyalty_review_requested`. The mission snapshots Mandate, Dependence, Exposure, Independent Capacity, Grievance, the Prototype/Deployment/Weaponization counts, and a four-step intelligence score assembled from agency presence, a mature agency, any operative, and a multi-operative team. It also records boolean history flags for cloning, robotics, paleogenetics, xenobiological synthesis, and singularity projects.
 
-The parent resolver must be a country-scope scripted effect named `brilliant_scientist_resolve_directorate_loyalty_review_request`. Once that effect exists, call it directly at the end of the mission's `timeout_effect`:
+The country-scope resolver `brilliant_scientist_resolve_directorate_loyalty_review_request` is called directly at the end of the mission's `timeout_effect`:
 
 ```txt
 brilliant_scientist_resolve_directorate_loyalty_review_request = yes
 ```
 
-The resolver must require the request flag, weight rather than guarantee its result, and use the captured intelligence score, Exposure, hidden pressure, and project-history context. Its valid result families are a foreign-agent finding, a Kruger-loyalist finding, a project-gated transformed-personnel finding, an inconclusive review, or a wrongful purge that raises Grievance. It must clear the request flag, intelligence/history flags, and all loyalty snapshot variables after one outcome. It must not grant a capturable operative or a deterministic Exposure reduction on every use.
+The resolver requires the request flag and weights rather than guarantees its result. Foreign-agent findings gain weight from Exposure, agency capability, operatives, and existing foreign access. Kruger-loyalist findings gain weight from Dependence, Independent Capacity, Grievance, and sovereign technical authority. Transformed-personnel findings require relevant project history to become likely. Weak intelligence and low Exposure favor an inconclusive review or a wrongful purge. The chosen finding writes mutually exclusive latest-result flags and a persistent history flag, applies its causal meter consequences, clears every request flag and snapshot variable, and then fires dossier event `chaosx.nr16.10`. It never creates a capturable operative, and an inconclusive review grants no Exposure reduction.
 
 ### Primary relocation
 
 After the transfer timer, the host receives `brilliant_scientist_directorate_relocation_requested`. `event_target:brilliant_scientist_relocation_requested_origin` and `_destination` persist the two states. Route flags preserve whether land or sea logistics were paid. The host also snapshots Mandate, Exposure, Dependence, Project Capacity, Independent Capacity, Grievance, project-stage counts, and whether the plan was made under fire.
 
-The parent resolver must be a country-scope scripted effect named `brilliant_scientist_resolve_directorate_relocation_request`. Once that effect exists, call it directly after the request context is written:
+The country-scope resolver `brilliant_scientist_resolve_directorate_relocation_request` is called directly after the request context is written:
 
 ```txt
 brilliant_scientist_resolve_directorate_relocation_request = yes
 ```
 
-The resolver must validate both global state targets again, then weight successful transfer, interception, prototype loss, staff refusal, and escape opportunities from the stored context. Success clears the primary-facility state flag and `brilliant_scientist_facility_type` variable at the origin, sets both at the destination, replaces `event_target:brilliant_scientist_primary_facility`, and grants no buildings, slots, facilities, prototypes, project stages, or equipment. Every terminal outcome clears the request flag, route/under-fire flags, request targets, and snapshot variables. An invalid target must resolve as interruption or failure, never as unconditional success.
+The resolver validates both global state targets again, including ownership, control, core status, infrastructure, industry, route suitability, and the absence of another facility-type record at the destination. Land routes, low Exposure, Mandate, and Capacity favor success. Sea movement, war, and Exposure favor interception. Advanced project counts and an actual undamaged Prototype-or-higher family enable prototype loss. Grievance, weak Mandate, Independent Capacity, Dependence, and sovereign authority favor refusal or escape. A zero-weight success cannot be selected after invalidation.
 
-These two resolver effects are parent-owned and are not defined or called by this bounded Directorate tranche. Until the parent wires them, requests remain pending by design and a whole-Event-016 completion claim is blocked.
+Success clears the primary-facility state flag and `brilliant_scientist_facility_type` variable at the origin, sets both at the destination, replaces `event_target:brilliant_scientist_primary_facility`, and grants no buildings, slots, facilities, prototypes, project stages, or equipment. Prototype loss calls `brilliant_scientist_damage_project` for the highest consequential eligible family found in the real ledger. Escape marks the requested destination with the hidden `brilliant_scientist_hidden_escape_cell` state flag without moving the fixed character or primary-laboratory target. Every outcome clears the request flag, route and under-fire flags, request targets, snapshots, selection scratch state, and outcome weights before firing dossier event `chaosx.nr16.11`.
 
 ## Foreign liaison lifecycle
 
@@ -154,9 +154,9 @@ The AI cannot bypass family prerequisites through the generic board. The native 
 
 ## Localisation and UI assets
 
-Player-facing strings are in `localisation/english/016_brilliant_scientist_directorate_l_english.yml`. Every decision, mission, custom result tooltip, persistent dynamic modifier, and the four-value category header is localized there.
+Player-facing decision strings are in `localisation/english/016_brilliant_scientist_directorate_l_english.yml`. Outcome reports and causal header fragments are in `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`. Broad control, cause, and latest-result selection is defined in `common/scripted_localisation/016_brilliant_scientist_directorate_scripted_localisation.txt`.
 
-This tranche requires no new raster asset. It deliberately uses verified existing vanilla sprite identifiers:
+Ordinary decisions deliberately use verified existing vanilla sprite identifiers:
 
 | Use | Sprite identifier |
 | --- | --- |
@@ -171,7 +171,7 @@ This tranche requires no new raster asset. It deliberately uses verified existin
 | Facilities and joint laboratory | `GFX_decision_generic_construction` |
 | Directorate dynamic modifiers | `GFX_idea_generic_research_bonus` |
 
-Because all required sprites already exist, this tranche adds no DDS files and no `.gfx` registration. It does not edit `interface/016_brilliant_scientist.gfx`. If bespoke Directorate art is later commissioned, stable replacements should use `GFX_decision_brilliant_scientist_directorate_institution`, `_facility`, `_security`, `_foreign_liaison`, and `_project_board`; source/final files should live under `docs/assets/016_brilliant_scientist/` and `gfx/interface/decisions/016_brilliant_scientist/`, with registrations in a distinct `interface/016_brilliant_scientist_directorate.gfx` handoff so existing Event 016 registrations remain untouched.
+Both result events use the dedicated `GFX_report_event_016_brilliant_scientist_directorate_dossier` sprite registered in `interface/016_brilliant_scientist.gfx`. Its final asset lives at `gfx/event_pictures/016_brilliant_scientist/report_event_016_brilliant_scientist_directorate_dossier.dds`; source, decoded, contact-sheet, and manifest records belong under `docs/assets/016_brilliant_scientist/`. The image contract is a sealed counterintelligence dossier, laboratory floor plan, and convoy route rather than another Kruger portrait.
 
 ## Source references
 
@@ -183,6 +183,5 @@ Implementation was checked against the offline wiki snapshot pages for Data stru
 - Give the richer scripted Directorate window its own bounded implementation tranche; ordinary decisions must remain the gameplay authority and AI entry point.
 - Add family-specific warnings to the project cards once all fifteen native families expose stable status contracts.
 - Connect foreign-framework invalidation to the shared Event 016 cleanup effect so partner defeat, host transfer, and terminal branches cannot retain stale global targets.
-- Implement and directly wire the two parent-owned outcome resolvers documented above; do not replace them with periodic request polling.
 - Use Event 016 incidents to surface hidden Independent Capacity and Grievance consequences without exposing exact values.
 - Revisit institutional and security weights after the native family burdens and accident frequencies are final, since those systems determine the real value of capacity, secrecy, and replication.

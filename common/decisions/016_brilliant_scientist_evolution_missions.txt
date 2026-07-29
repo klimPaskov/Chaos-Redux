@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BRILLIANT SCIENTIST EVOLUTION MISSIONS
+# ============================================================================
+# The hosted Evolution IV response opens one visible sovereignty deadline.
+# Its duration is loaded into a country variable before activation because
+# mission timeout fields do not reliably parse script-constant tokens.
+# ============================================================================
+
+brilliant_scientist_directorate_category = {
+	brilliant_scientist_sovereignty_deadline_mission = {
+		icon = GFX_decision_generic_political_discourse
+		activation = { has_country_flag = brilliant_scientist_sovereignty_deadline_active }
+		days_mission_timeout = var:brilliant_scientist_sovereignty_deadline_days
+		is_good = no
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_country_flag = brilliant_scientist_sovereignty_deadline_active }
+				has_country_flag = brilliant_scientist_sovereignty_deadline_resolved
+				has_global_flag = events_log_disabled_evolution_16_16_4
+				has_global_flag = world_end
+			}
+		}
+		cancel_effect = { hidden_effect = { brilliant_scientist_cancel_sovereignty_deadline = yes } }
+		timeout_effect = {
+			custom_effect_tooltip = brilliant_scientist_sovereignty_deadline_timeout_tt
+			hidden_effect = { brilliant_scientist_mark_sovereignty_deadline_expired = yes }
+		}
+	}
+}

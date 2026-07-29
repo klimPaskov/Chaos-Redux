@@ -1,0 +1,666 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 DIRECTORATE OUTCOME EFFECTS
+# ============================================================================
+# Resolves the two decision-generated Directorate requests. Loyalty findings
+# use saved evidence and portfolio history. Relocation outcomes use the saved
+# route, map targets, causal-state snapshots, and a real damageable project.
+# Both transactions clear request-only state before presenting their dossier.
+# ============================================================================
+
+# COUNTRY scope.
+brilliant_scientist_clear_last_loyalty_review_outcome = {
+	clr_country_flag = brilliant_scientist_last_loyalty_review_found_foreign_agents
+	clr_country_flag = brilliant_scientist_last_loyalty_review_found_kruger_loyalists
+	clr_country_flag = brilliant_scientist_last_loyalty_review_found_transformed_personnel
+	clr_country_flag = brilliant_scientist_last_loyalty_review_was_inconclusive
+	clr_country_flag = brilliant_scientist_last_loyalty_review_caused_wrongful_purge
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_loyalty_review_foreign_agents_outcome = {
+	brilliant_scientist_clear_last_loyalty_review_outcome = yes
+	set_country_flag = brilliant_scientist_last_loyalty_review_found_foreign_agents
+	set_country_flag = brilliant_scientist_ever_found_foreign_agents_in_directorate
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_mandate = yes
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_loyalty_review_kruger_loyalists_outcome = {
+	brilliant_scientist_clear_last_loyalty_review_outcome = yes
+	set_country_flag = brilliant_scientist_last_loyalty_review_found_kruger_loyalists
+	set_country_flag = brilliant_scientist_ever_found_kruger_loyalists_in_directorate
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_exposure = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_loyalty_review_transformed_personnel_outcome = {
+	brilliant_scientist_clear_last_loyalty_review_outcome = yes
+	set_country_flag = brilliant_scientist_last_loyalty_review_found_transformed_personnel
+	set_country_flag = brilliant_scientist_ever_found_transformed_personnel_in_directorate
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope. This finding never grants a guaranteed Exposure reduction.
+brilliant_scientist_apply_loyalty_review_inconclusive_outcome = {
+	brilliant_scientist_clear_last_loyalty_review_outcome = yes
+	set_country_flag = brilliant_scientist_last_loyalty_review_was_inconclusive
+	set_country_flag = brilliant_scientist_ever_had_inconclusive_loyalty_review
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_loyalty_review_wrongful_purge_outcome = {
+	brilliant_scientist_clear_last_loyalty_review_outcome = yes
+	set_country_flag = brilliant_scientist_last_loyalty_review_caused_wrongful_purge
+	set_country_flag = brilliant_scientist_ever_caused_wrongful_directorate_purge
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_outcome_delta.wrongful_purge_grievance }
+	brilliant_scientist_change_grievance = yes
+	add_stability = constant:brilliant_scientist_directorate_outcome_delta.wrongful_purge_stability
+}
+
+# COUNTRY scope. Consumes only the request's saved evidence.
+brilliant_scientist_calculate_loyalty_review_outcome_weights = {
+	set_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.foreign_agents_base }
+	set_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.kruger_loyalists_base }
+	set_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.transformed_personnel_base }
+	set_variable = { brilliant_scientist_loyalty_weight_inconclusive = constant:brilliant_scientist_directorate_outcome_weight.inconclusive_base }
+	set_variable = { brilliant_scientist_loyalty_weight_wrongful_purge = constant:brilliant_scientist_directorate_outcome_weight.wrongful_purge_base }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_exposure_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_exposure_snapshot
+				value = constant:brilliant_scientist_measure.band_high
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_intelligence_score
+				value = constant:brilliant_scientist_directorate_outcome_intelligence.competent_score
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_intelligence_score
+				value = constant:brilliant_scientist_directorate_outcome_intelligence.strong_score
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_agency_present }
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_operatives_present }
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_foreign_approach_under_review
+				has_country_flag = brilliant_scientist_joint_laboratory_framework_active
+				has_country_flag = brilliant_scientist_foreign_protection_framework_active
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_foreign_agents = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_dependence_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_dependence_snapshot
+				value = constant:brilliant_scientist_measure.band_high
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_independent_capacity_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_grievance_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_sovereign_science_authority }
+		add_to_variable = { brilliant_scientist_loyalty_weight_kruger_loyalists = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+	}
+
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_cloning_history }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_robotics_history }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_paleogenetics_history }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_xenobiological_history }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_loyalty_review_singularity_history }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_loyalty_review_prototype_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_loyalty_review_deployment_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_loyalty_review_weaponization_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_loyalty_weight_transformed_personnel = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_intelligence_score
+				value = constant:brilliant_scientist_directorate_outcome_intelligence.competent_score
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_inconclusive = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+		add_to_variable = { brilliant_scientist_loyalty_weight_wrongful_purge = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_exposure_snapshot
+				value = constant:brilliant_scientist_measure.band_low
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_inconclusive = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+		add_to_variable = { brilliant_scientist_loyalty_weight_wrongful_purge = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_directorate_loyalty_review_agency_present } }
+		add_to_variable = { brilliant_scientist_loyalty_weight_inconclusive = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+		add_to_variable = { brilliant_scientist_loyalty_weight_wrongful_purge = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_prototype_count_snapshot
+				value = constant:brilliant_scientist_directorate_value.one
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_inconclusive = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_loyalty_review_mandate_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+			has_country_flag = brilliant_scientist_internal_security_section_established
+		}
+		add_to_variable = { brilliant_scientist_loyalty_weight_wrongful_purge = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+
+	clamp_variable = { var = brilliant_scientist_loyalty_weight_foreign_agents min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	clamp_variable = { var = brilliant_scientist_loyalty_weight_kruger_loyalists min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	clamp_variable = { var = brilliant_scientist_loyalty_weight_transformed_personnel min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	clamp_variable = { var = brilliant_scientist_loyalty_weight_inconclusive min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	clamp_variable = { var = brilliant_scientist_loyalty_weight_wrongful_purge min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+}
+
+# COUNTRY scope.
+brilliant_scientist_clear_loyalty_review_request = {
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_requested
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_agency_present
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_mature_agency
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_operatives_present
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_operative_team
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_cloning_history
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_robotics_history
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_paleogenetics_history
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_xenobiological_history
+	clr_country_flag = brilliant_scientist_directorate_loyalty_review_singularity_history
+	clear_variable = brilliant_scientist_directorate_loyalty_review_mandate_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_dependence_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_exposure_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_independent_capacity_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_grievance_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_prototype_count_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_deployment_count_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_weaponization_count_snapshot
+	clear_variable = brilliant_scientist_directorate_loyalty_review_intelligence_score
+	clear_variable = brilliant_scientist_loyalty_weight_foreign_agents
+	clear_variable = brilliant_scientist_loyalty_weight_kruger_loyalists
+	clear_variable = brilliant_scientist_loyalty_weight_transformed_personnel
+	clear_variable = brilliant_scientist_loyalty_weight_inconclusive
+	clear_variable = brilliant_scientist_loyalty_weight_wrongful_purge
+}
+
+# COUNTRY scope. Called once by the mission timeout after its evidence snapshot.
+brilliant_scientist_resolve_directorate_loyalty_review_request = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_directorate_loyalty_review_requested
+			brilliant_scientist_is_current_host = yes
+		}
+		brilliant_scientist_calculate_loyalty_review_outcome_weights = yes
+		random_list = {
+			brilliant_scientist_loyalty_weight_foreign_agents = { brilliant_scientist_apply_loyalty_review_foreign_agents_outcome = yes }
+			brilliant_scientist_loyalty_weight_kruger_loyalists = { brilliant_scientist_apply_loyalty_review_kruger_loyalists_outcome = yes }
+			brilliant_scientist_loyalty_weight_transformed_personnel = { brilliant_scientist_apply_loyalty_review_transformed_personnel_outcome = yes }
+			brilliant_scientist_loyalty_weight_inconclusive = { brilliant_scientist_apply_loyalty_review_inconclusive_outcome = yes }
+			brilliant_scientist_loyalty_weight_wrongful_purge = { brilliant_scientist_apply_loyalty_review_wrongful_purge_outcome = yes }
+		}
+		brilliant_scientist_clear_loyalty_review_request = yes
+		country_event = { id = chaosx.nr16.10 }
+	}
+}
+
+# COUNTRY scope. Selects one actual Prototype-or-higher family that has not
+# already been damaged. The scan starts with the most consequential family.
+brilliant_scientist_identify_damageable_relocation_project = {
+	clear_variable = brilliant_scientist_directorate_relocation_selected_damage_family
+	set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+	while = {
+		limit = {
+			check_variable = { brilliant_scientist_project_family > constant:brilliant_scientist_project_family.none }
+			NOT = { has_variable = brilliant_scientist_directorate_relocation_selected_damage_family }
+		}
+		brilliant_scientist_load_project_index = yes
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.theory }
+				NOT = { brilliant_scientist_project_is_damaged = yes }
+			}
+			set_variable = { brilliant_scientist_directorate_relocation_selected_damage_family = brilliant_scientist_project_family }
+		}
+		subtract_from_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_directorate_value.one }
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_clear_last_relocation_outcome = {
+	clr_country_flag = brilliant_scientist_last_relocation_succeeded
+	clr_country_flag = brilliant_scientist_last_relocation_was_intercepted
+	clr_country_flag = brilliant_scientist_last_relocation_lost_prototype
+	clr_country_flag = brilliant_scientist_last_relocation_met_staff_refusal
+	clr_country_flag = brilliant_scientist_last_relocation_enabled_escape
+}
+
+# COUNTRY scope. Revalidates again immediately before moving only the primary
+# state flag, its facility-type variable, and the persistent primary target.
+brilliant_scientist_apply_relocation_success_outcome = {
+	brilliant_scientist_clear_last_relocation_outcome = yes
+	if = {
+		limit = { brilliant_scientist_relocation_requested_pair_is_valid = yes }
+		event_target:brilliant_scientist_relocation_requested_origin = {
+			set_temp_variable = { brilliant_scientist_relocation_facility_type = brilliant_scientist_facility_type }
+			clr_state_flag = brilliant_scientist_primary_facility
+			clear_variable = brilliant_scientist_facility_type
+		}
+		clear_global_event_target = brilliant_scientist_primary_facility
+		event_target:brilliant_scientist_relocation_requested_destination = {
+			set_state_flag = brilliant_scientist_primary_facility
+			set_variable = { brilliant_scientist_facility_type = brilliant_scientist_relocation_facility_type }
+			save_global_event_target_as = brilliant_scientist_primary_facility
+		}
+		set_country_flag = brilliant_scientist_last_relocation_succeeded
+		set_country_flag = brilliant_scientist_ever_relocated_primary_laboratory
+	}
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_relocation_interception_outcome = {
+	brilliant_scientist_clear_last_relocation_outcome = yes
+	set_country_flag = brilliant_scientist_last_relocation_was_intercepted
+	set_country_flag = brilliant_scientist_ever_suffered_relocation_interception
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_grievance = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_mandate = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_relocation_prototype_loss_outcome = {
+	brilliant_scientist_clear_last_relocation_outcome = yes
+	set_country_flag = brilliant_scientist_last_relocation_lost_prototype
+	set_country_flag = brilliant_scientist_ever_lost_prototype_during_relocation
+	set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_directorate_relocation_selected_damage_family }
+	brilliant_scientist_damage_project = yes
+	set_variable = { brilliant_scientist_last_relocation_damaged_project_family = brilliant_scientist_directorate_relocation_selected_damage_family }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_apply_relocation_staff_refusal_outcome = {
+	brilliant_scientist_clear_last_relocation_outcome = yes
+	set_country_flag = brilliant_scientist_last_relocation_met_staff_refusal
+	set_country_flag = brilliant_scientist_ever_met_relocation_staff_refusal
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_dependence = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope. The requested destination records the hidden escape cell, but
+# neither Kruger's fixed character nor the primary-laboratory target is moved.
+brilliant_scientist_apply_relocation_escape_outcome = {
+	brilliant_scientist_clear_last_relocation_outcome = yes
+	set_country_flag = brilliant_scientist_last_relocation_enabled_escape
+	set_country_flag = brilliant_scientist_ever_enabled_kruger_relocation_escape
+	if = {
+		limit = { has_event_target = brilliant_scientist_relocation_requested_destination }
+		event_target:brilliant_scientist_relocation_requested_destination = {
+			if = {
+				limit = { exists = yes }
+				set_state_flag = brilliant_scientist_hidden_escape_cell
+			}
+		}
+	}
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.moderate }
+	brilliant_scientist_change_independent_capacity = yes
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_measure_delta.minor }
+	brilliant_scientist_change_dependence = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_directorate_value.negative_one }
+	brilliant_scientist_change_grievance = yes
+}
+
+# COUNTRY scope.
+brilliant_scientist_calculate_relocation_outcome_weights = {
+	set_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.relocation_success_base }
+	set_variable = { brilliant_scientist_relocation_weight_interception = constant:brilliant_scientist_directorate_outcome_weight.relocation_interception_base }
+	set_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.relocation_prototype_loss_base }
+	set_variable = { brilliant_scientist_relocation_weight_staff_refusal = constant:brilliant_scientist_directorate_outcome_weight.relocation_staff_refusal_base }
+	set_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.relocation_escape_base }
+
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_relocation_land_route }
+		add_to_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_exposure_snapshot
+				value = constant:brilliant_scientist_measure.band_low
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_mandate_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_capacity_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_relocation_sea_route }
+		add_to_variable = { brilliant_scientist_relocation_weight_interception = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_directorate_relocation_requested_under_fire }
+		add_to_variable = { brilliant_scientist_relocation_weight_interception = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+		add_to_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_exposure_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_interception = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_relocation_prototype_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_relocation_deployment_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_directorate_relocation_weaponization_count_snapshot > constant:brilliant_scientist_directorate_value.zero } }
+		add_to_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_grievance_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_staff_refusal = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+		add_to_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_mandate_snapshot
+				value = constant:brilliant_scientist_measure.band_low
+				compare = less_than
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_staff_refusal = constant:brilliant_scientist_directorate_outcome_weight.major_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_independent_capacity_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_staff_refusal = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+		add_to_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_directorate_relocation_dependence_snapshot
+				value = constant:brilliant_scientist_measure.band_moderate
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.moderate_bonus }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_sovereign_science_authority }
+		add_to_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+	}
+
+	if = {
+		limit = { NOT = { brilliant_scientist_relocation_requested_pair_is_valid = yes } }
+		set_variable = { brilliant_scientist_relocation_weight_success = constant:brilliant_scientist_directorate_outcome_weight.disabled }
+		add_to_variable = { brilliant_scientist_relocation_weight_interception = constant:brilliant_scientist_directorate_outcome_weight.extreme_bonus }
+		add_to_variable = { brilliant_scientist_relocation_weight_escape = constant:brilliant_scientist_directorate_outcome_weight.minor_bonus }
+	}
+	if = {
+		limit = { NOT = { has_variable = brilliant_scientist_directorate_relocation_selected_damage_family } }
+		set_variable = { brilliant_scientist_relocation_weight_prototype_loss = constant:brilliant_scientist_directorate_outcome_weight.disabled }
+	}
+
+	if = {
+		limit = { check_variable = { brilliant_scientist_relocation_weight_success > constant:brilliant_scientist_directorate_outcome_weight.disabled } }
+		clamp_variable = { var = brilliant_scientist_relocation_weight_success min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	}
+	clamp_variable = { var = brilliant_scientist_relocation_weight_interception min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	if = {
+		limit = { check_variable = { brilliant_scientist_relocation_weight_prototype_loss > constant:brilliant_scientist_directorate_outcome_weight.disabled } }
+		clamp_variable = { var = brilliant_scientist_relocation_weight_prototype_loss min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	}
+	clamp_variable = { var = brilliant_scientist_relocation_weight_staff_refusal min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+	clamp_variable = { var = brilliant_scientist_relocation_weight_escape min = constant:brilliant_scientist_directorate_outcome_weight.minimum max = constant:brilliant_scientist_directorate_outcome_weight.maximum }
+}
+
+# COUNTRY scope.
+brilliant_scientist_clear_relocation_request = {
+	clr_country_flag = brilliant_scientist_directorate_relocation_requested
+	clr_country_flag = brilliant_scientist_directorate_relocation_land_route
+	clr_country_flag = brilliant_scientist_directorate_relocation_sea_route
+	clr_country_flag = brilliant_scientist_directorate_relocation_requested_under_fire
+	if = {
+		limit = { has_event_target = brilliant_scientist_relocation_requested_origin }
+		clear_global_event_target = brilliant_scientist_relocation_requested_origin
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_relocation_requested_destination }
+		clear_global_event_target = brilliant_scientist_relocation_requested_destination
+	}
+	clear_variable = brilliant_scientist_directorate_relocation_mandate_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_exposure_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_dependence_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_capacity_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_independent_capacity_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_grievance_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_prototype_count_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_deployment_count_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_weaponization_count_snapshot
+	clear_variable = brilliant_scientist_directorate_relocation_selected_damage_family
+	clear_variable = brilliant_scientist_relocation_weight_success
+	clear_variable = brilliant_scientist_relocation_weight_interception
+	clear_variable = brilliant_scientist_relocation_weight_prototype_loss
+	clear_variable = brilliant_scientist_relocation_weight_staff_refusal
+	clear_variable = brilliant_scientist_relocation_weight_escape
+}
+
+# COUNTRY scope. Called once when the relocation decision finishes.
+brilliant_scientist_resolve_directorate_relocation_request = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_directorate_relocation_requested
+			brilliant_scientist_is_current_host = yes
+		}
+		brilliant_scientist_identify_damageable_relocation_project = yes
+		brilliant_scientist_calculate_relocation_outcome_weights = yes
+		brilliant_scientist_clear_last_relocation_outcome = yes
+		clr_country_flag = brilliant_scientist_last_relocation_used_land_route
+		clr_country_flag = brilliant_scientist_last_relocation_used_sea_route
+		if = {
+			limit = { has_country_flag = brilliant_scientist_directorate_relocation_land_route }
+			set_country_flag = brilliant_scientist_last_relocation_used_land_route
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_directorate_relocation_sea_route }
+			set_country_flag = brilliant_scientist_last_relocation_used_sea_route
+		}
+		random_list = {
+			brilliant_scientist_relocation_weight_success = { brilliant_scientist_apply_relocation_success_outcome = yes }
+			brilliant_scientist_relocation_weight_interception = { brilliant_scientist_apply_relocation_interception_outcome = yes }
+			brilliant_scientist_relocation_weight_prototype_loss = { brilliant_scientist_apply_relocation_prototype_loss_outcome = yes }
+			brilliant_scientist_relocation_weight_staff_refusal = { brilliant_scientist_apply_relocation_staff_refusal_outcome = yes }
+			brilliant_scientist_relocation_weight_escape = { brilliant_scientist_apply_relocation_escape_outcome = yes }
+		}
+		brilliant_scientist_clear_relocation_request = yes
+		country_event = { id = chaosx.nr16.11 }
+	}
+}

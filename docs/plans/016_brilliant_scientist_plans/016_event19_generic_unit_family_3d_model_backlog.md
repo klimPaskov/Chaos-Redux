@@ -1,0 +1,37 @@
+# Event 016 Generic Unit-Family 3D Model Backlog
+
+This backlog is durable planning evidence only; no model, texture, `.mesh`, `.anim`, `.asset`, or runtime entity binding was produced by the provider bridge.
+
+The current implementation uses the existing engine presentation selected by each Event 016 subunit's `sprite` and `map_icon_category` fields, and neutral Event 019 visual profile 999 makes no bespoke 3D claim.
+
+Every future package must pass the one-image Meshy gate, use a vanilla scale crosswalk, document source/provider lineage, map PDX materials, export and reimport `.mesh` and `.anim`, and prove a live consumer before runtime wiring.
+
+## Reusable package matrix
+
+| Generic family | Current gameplay consumer | Current engine presentation | Future entity consumer | Skeleton and required actions | Variants | Map/runtime surfaces | Reusability |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Clone Infantry | `kruger_clone_infantry` in Event 016 native templates and Event 019 provider 504 templates. | `sprite = infantry`, `map_icon_category = infantry`, therefore the current vanilla infantry presentation. | Deferred `chaosx_clone_infantry_entity`. | Humanoid infantry skeleton with idle, march, attack, defend, entrain, and death actions. | Line infantry, officer/standard bearer, winter, desert, damaged, and Event 019 generic host variants. | Land counters, division template, native Event 016 formations, Event 019 generated formations, and controlled-state spawn tests. | Reusable for any clone, replication, or generic humanoid provider without inheriting Event 016 names. |
+| Autonomous Robot | `kruger_robot_frame` plus `kruger_robot_equipment_1` in Event 016 and Event 019 provider 505. | `sprite = mechanized`, `map_icon_category = armored`, with a distinct mechanized equipment archetype. | Deferred `chaosx_autonomous_robot_entity` and a later vehicle/robot equipment entity if the engine consumer requires one. | Bipedal or tracked robot skeleton with idle, march, attack, defend, damaged, disabled, and death actions. | Light frame, heavy frame, command frame, winterized frame, desert frame, and damaged/overheated frame. | Land counters, mechanized map surface, division template, equipment/technology view, Event 019 generated formations, and supply/terrain tests. | Reusable for autonomous armies, industrial guardians, and other machine providers while keeping exact equipment ownership in the provider callback. |
+| Paleogenetic Creature | `kruger_paleogenetic_beast` plus `kruger_paleogenetic_equipment_1` in Event 016 and Event 019 provider 506. | `sprite = cavalry`, `map_icon_category = other`, with mobile infantry/cavalry gameplay semantics. | Deferred `chaosx_paleogenetic_creature_entity`. | Large quadruped or mixed dinosaur skeleton with idle, stalk, march, charge, attack, defend, roar, wounded, and death actions. | Small pack creature, large dinosaur/large paleo creature, armored beast, amphibious beast, winter coat, and desert-adapted variants. | Land counters, cavalry/mobile map surface, division template, state spawn, terrain modifiers for forest/jungle/hills/mountain/urban/amphibious, and Event 019 transfer/release surfaces. | Reusable for dinosaur packs, megafauna, bioengineered beasts, and other nonhuman creature providers. |
+| Xenobiological Organism | `kruger_xenobiological_assault` plus `kruger_xenobiological_equipment_1` in Event 016 and Event 019 provider 507. | `sprite = infantry`, `map_icon_category = armored`, with a current neutral infantry engine presentation. | Deferred `chaosx_xenobiological_assault_entity`. | Alien monster or coordinated swarm skeleton with idle, crawl/walk, attack, defend, leap, ranged/chemical strike if supported, wounded, and death actions. | Ground monster, swarm, chemical-adapted, neural-controlled, machine-controlled, researched-control, winter, and amphibious variants. | Land counters, division template, Event 016 control-mode technology surfaces, Event 019 generated formations, terrain and contamination-adjacent runtime tests. | Reusable for alien fauna, laboratory organisms, and xenobiological armies without inheriting any parent country identity. |
+| Alien Interface Infantry | `kruger_exotic_guard` plus `kruger_exotic_arms_equipment_1` in Event 016 and Event 019 provider 508. | `sprite = infantry`, `map_icon_category = armored`, with a current neutral infantry engine presentation. | Deferred `chaosx_alien_interface_infantry_entity`. | Humanoid or exosuit skeleton with idle, march, attack, defend, interface activation, damaged, and death actions. | Interface guard, exosuit guard, signal bearer, heavy guard, winter, desert, and alien-technology overload variants. | Land counters, division template, alien-arms technology/equipment surface, Event 019 generated formations, and state spawn/cleanup tests. | Reusable for alien-interface troops, controlled auxiliaries, and other high-tech infantry families. |
+
+## Distinct vehicle, building, and entity consumers found
+
+The only distinct vehicle-like consumer found in the current Event 016 package is `kruger_robot_equipment_1`, an Event 016 mechanized equipment variant consumed by `kruger_robot_frame`.
+
+The current paleogenetic, xenobiological, and alien-arms equipment variants are infantry/mobile equipment archetypes rather than separately wired 3D vehicle entities.
+
+The current subunit consumers map to vanilla presentation tokens through `sprite = infantry`, `sprite = mechanized`, or `sprite = cavalry`; no Chaos Redux `.asset`, `.mesh`, or `.anim` binding for these five families was found in the repository inspection.
+
+No dedicated building consumer was found for clone, robot, paleogenetic, xenobiological, or alien-interface formations.
+
+Any future laboratory, foundry, hatchery, containment facility, or alien-interface building is a separate asset family and must be approved and planned with its own entity consumer rather than inferred from the unit package.
+
+## Production and acceptance gates
+
+Each package needs one approved exact reference image, a Meshy source record, a vanilla scale comparison, a Blender checkpoint, a PDX material/texture map, repaired topology proof, required action exports, `.mesh` and `.anim` reimport evidence, and hash-aware runtime synchronization.
+
+Each package needs a static fallback and a clear consumer crosswalk covering the unit archetype, entity/asset file, template, equipment or technology view, map counter, and at least one controlled-state runtime test.
+
+The parent agent owns final `.asset`/entity wiring and must not claim a bespoke 3D substitute while this backlog remains deferred.

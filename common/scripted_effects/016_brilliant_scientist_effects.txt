@@ -2594,6 +2594,7 @@ brilliant_scientist_appoint_kruger_from_opening = {
 		}
 		set_variable = { brilliant_scientist_appointment_date = global.date }
 		brilliant_scientist_initialize_host_state = yes
+		brilliant_scientist_achievement_record_host_entry = yes
 		brilliant_scientist_add_kruger_roles = yes
 		brilliant_scientist_refresh_kruger_continuity_state = yes
 		set_country_flag = brilliant_scientist_appointment_completed
@@ -2823,6 +2824,8 @@ brilliant_scientist_transfer_kruger_atomically = {
 			brilliant_scientist_initialize_host_state = yes
 			brilliant_scientist_add_kruger_roles = yes
 			brilliant_scientist_inherit_kruger_carried_portfolio = yes
+			brilliant_scientist_achievement_inherit_origin_investigation = yes
+			brilliant_scientist_achievement_record_host_entry = yes
 			brilliant_scientist_refresh_kruger_continuity_state = yes
 			brilliant_scientist_sync_evolution_runtime = yes
 			clr_country_flag = brilliant_scientist_character_transaction_lock
@@ -3387,13 +3390,18 @@ brilliant_scientist_verify_singularity_nonterminal = {
 		limit = {
 			NOT = { has_country_flag = brilliant_scientist_singularity_armed }
 			NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 			has_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
 			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
 		}
 		set_country_flag = brilliant_scientist_singularity_verified_nonterminal
 		clr_country_flag = brilliant_scientist_terminal_commitment_singularity
 		clr_country_flag = brilliant_scientist_terminal_commitment_locked
+		clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+		clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+		clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
 		set_variable = { brilliant_scientist_terminal_commitment = constant:brilliant_scientist_terminal_commitment.none }
+		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.verified_nonterminal }
 	}
 }
 
@@ -3415,7 +3423,7 @@ brilliant_scientist_prepare_singularity_terminal_commit = {
 	set_temp_variable = { brilliant_scientist_singularity_chaos_deficit = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { brilliant_scientist_singularity_chaos_history_reason = constant:brilliant_scientist_singularity.chaos_history_reason }
 	if = {
-		limit = { brilliant_scientist_singularity_terminal_is_ready = yes }
+		limit = { brilliant_scientist_singularity_terminal_commit_state_is_ready = yes }
 		set_temp_variable = { brilliant_scientist_singularity_chaos_deficit = constant:chaos_meter_tier_range.tier_final.plus }
 		if = {
 			limit = { has_variable = global.chaos_meter_value }
@@ -3446,6 +3454,10 @@ brilliant_scientist_mark_singularity_terminal_fired = {
 	set_country_flag = brilliant_scientist_all_actions_locked_after_world_end
 	clr_country_flag = brilliant_scientist_singularity_armed
 	clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.terminal }
 }
 
 # COUNTRY scope. Call only after world-end scenario 11 fires.
@@ -3455,6 +3467,9 @@ brilliant_scientist_mark_lab_world_terminal_fired = {
 	set_country_flag = brilliant_scientist_all_actions_locked_after_world_end
 	clr_country_flag = brilliant_scientist_singularity_armed
 	clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
+	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
+	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
 }
 
 # Any scope. Clears only transient Event 016 pointers. Persistent project,

@@ -694,6 +694,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_death`
 - `world_threat_source_cannibalism`
 - `world_threat_source_resources_found_caves`
+- `world_threat_source_brilliant_scientist`
 
 Future threats should follow the same pattern:
 

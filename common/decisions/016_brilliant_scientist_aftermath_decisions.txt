@@ -1,0 +1,362 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 QUALIFYING DEFEAT AFTERMATH DECISIONS
+# ============================================================================
+# A decision-led international settlement for the actual custodian after a
+# qualifying global Kruger crisis. Costs use political authority, factories,
+# equipment, time, and controlled-state requirements. Each remnant hearing is
+# enabled only by the matching project-derived history flag.
+# ============================================================================
+
+brilliant_scientist_aftermath_treaty_category = {
+	brilliant_scientist_aftermath_found_scientific_commission = {
+		icon = GFX_decision_brilliant_scientist_aftermath_found_scientific_commission
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes NOT = { has_country_flag = brilliant_scientist_aftermath_commission_founded } }
+		available = { has_country_flag = brilliant_scientist_aftermath_treaty_pending brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_commission_founded
+			add_to_variable = { brilliant_scientist_aftermath_treaty_progress = constant:brilliant_scientist_aftermath_value.one }
+			add_to_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_found_scientific_commission_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+
+	brilliant_scientist_aftermath_exchange_countermeasures = {
+		icon = GFX_decision_brilliant_scientist_aftermath_exchange_countermeasures
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_commission_founded NOT = { has_country_flag = brilliant_scientist_aftermath_countermeasures_shared } }
+		available = { has_country_flag = brilliant_scientist_aftermath_treaty_pending brilliant_scientist_aftermath_has_light_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_light
+		days_remove = constant:brilliant_scientist_aftermath_timing.short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.light_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_countermeasures_shared
+			add_to_variable = { brilliant_scientist_aftermath_treaty_progress = constant:brilliant_scientist_aftermath_value.one }
+			add_ideas = brilliant_scientist_aftermath_countermeasure_exchange
+			custom_effect_tooltip = brilliant_scientist_aftermath_exchange_countermeasures_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_codify_personhood_and_asylum = {
+		icon = GFX_decision_brilliant_scientist_aftermath_codify_personhood_and_asylum
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_commission_founded NOT = { has_country_flag = brilliant_scientist_aftermath_personhood_articles_drafted } }
+		available = { has_country_flag = brilliant_scientist_aftermath_treaty_pending brilliant_scientist_aftermath_has_light_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.light_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_personhood_articles_drafted
+			add_to_variable = { brilliant_scientist_aftermath_treaty_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_codify_personhood_and_asylum_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_aftermath_ai.standard
+			modifier = { factor = constant:brilliant_scientist_aftermath_ai.high has_government = democratic }
+		}
+	}
+
+	brilliant_scientist_aftermath_ban_singularity_components = {
+		icon = GFX_decision_brilliant_scientist_aftermath_ban_singularity_components
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_commission_founded NOT = { has_country_flag = brilliant_scientist_aftermath_singularity_convention_drafted } }
+		available = { has_country_flag = brilliant_scientist_aftermath_treaty_pending brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_singularity_convention_drafted
+			add_to_variable = { brilliant_scientist_aftermath_treaty_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_ban_singularity_components_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+
+	brilliant_scientist_aftermath_ratify_scientific_compact = {
+		icon = GFX_decision_brilliant_scientist_aftermath_ratify_scientific_compact
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes NOT = { has_country_flag = brilliant_scientist_aftermath_treaty_ratified } }
+		available = { brilliant_scientist_aftermath_can_ratify_treaty = yes brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_treaty_ratified
+			clr_country_flag = brilliant_scientist_aftermath_treaty_pending
+			set_variable = { brilliant_scientist_aftermath_treaty_ratification_date = global.date }
+			add_ideas = brilliant_scientist_aftermath_scientific_compact
+			custom_effect_tooltip = brilliant_scientist_aftermath_ratify_scientific_compact_tt
+			brilliant_scientist_aftermath_refresh_full_completion = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+}
+
+brilliant_scientist_aftermath_inspection_category = {
+	brilliant_scientist_aftermath_register_recovered_facility = {
+		icon = GFX_decision_brilliant_scientist_aftermath_register_recovered_facility
+		cancel_if_not_visible = yes
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_commission_founded }
+		target_trigger = { FROM = { brilliant_scientist_aftermath_is_valid_inspection_state = yes } }
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_inspections_pending }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		cancel_trigger = { FROM = { NOT = { is_fully_controlled_by = ROOT } } }
+		remove_effect = {
+			FROM = { set_state_flag = brilliant_scientist_aftermath_facility_registered }
+			set_country_flag = brilliant_scientist_aftermath_any_facility_registered
+			add_to_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_register_recovered_facility_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_inventory_project_templates = {
+		icon = GFX_decision_brilliant_scientist_aftermath_inventory_project_templates
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_inspections_pending NOT = { has_country_flag = brilliant_scientist_aftermath_project_templates_inventoried } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_project_templates_inventoried
+			add_to_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_inventory_project_templates_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+
+	brilliant_scientist_aftermath_secure_command_archives = {
+		icon = GFX_decision_brilliant_scientist_aftermath_secure_command_archives
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_inspections_pending NOT = { has_country_flag = brilliant_scientist_aftermath_command_archives_secured } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_light_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_light
+		days_remove = constant:brilliant_scientist_aftermath_timing.short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.light_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_command_archives_secured
+			add_to_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_secure_command_archives_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+
+	brilliant_scientist_aftermath_certify_global_dismantlement = {
+		icon = GFX_decision_brilliant_scientist_aftermath_certify_global_dismantlement
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_inspections_pending NOT = { has_country_flag = brilliant_scientist_aftermath_inspections_certified } }
+		available = { brilliant_scientist_aftermath_can_certify_inspections = yes brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = {
+			brilliant_scientist_aftermath_certify_inspections = yes
+			custom_effect_tooltip = brilliant_scientist_aftermath_certify_global_dismantlement_tt
+			brilliant_scientist_aftermath_refresh_full_completion = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+}
+
+brilliant_scientist_aftermath_reconstruction_category = {
+	brilliant_scientist_aftermath_rebuild_laboratory_state = {
+		icon = GFX_decision_brilliant_scientist_aftermath_rebuild_laboratory_state
+		cancel_if_not_visible = yes
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_reconstruction_pending }
+		target_trigger = { FROM = { brilliant_scientist_aftermath_is_valid_reconstruction_state = yes } }
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_reconstruction_pending }
+		available = { brilliant_scientist_aftermath_has_reconstruction_materials = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		complete_effect = { brilliant_scientist_aftermath_pay_reconstruction_materials = yes }
+		cancel_trigger = { FROM = { NOT = { is_fully_controlled_by = ROOT } } }
+		remove_effect = {
+			FROM = {
+				add_building_construction = { type = infrastructure level = constant:brilliant_scientist_aftermath_building.recovery_level_increment instant_build = yes }
+				add_building_construction = { type = industrial_complex level = constant:brilliant_scientist_aftermath_building.recovery_level_increment instant_build = yes }
+				set_state_flag = brilliant_scientist_aftermath_recovery_completed
+			}
+			add_to_variable = { brilliant_scientist_aftermath_reconstruction_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_rebuild_laboratory_state_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_open_survivor_clinics = {
+		icon = GFX_decision_brilliant_scientist_aftermath_open_survivor_clinics
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_reconstruction_pending NOT = { has_country_flag = brilliant_scientist_aftermath_survivor_clinics_open } }
+		available = { NOT = { has_equipment = { support_equipment_1 < constant:brilliant_scientist_aftermath_cost.support_gate } } brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		complete_effect = { add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_aftermath_cost.support_spend } }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_survivor_clinics_open
+			add_stability = constant:brilliant_scientist_aftermath_outcome.stability_small
+			add_to_variable = { brilliant_scientist_aftermath_reconstruction_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_open_survivor_clinics_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_build_memorial_archive = {
+		icon = GFX_decision_brilliant_scientist_aftermath_build_memorial_archive
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_reconstruction_pending NOT = { has_country_flag = brilliant_scientist_aftermath_memorial_archive_built } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_light_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_light
+		days_remove = constant:brilliant_scientist_aftermath_timing.short_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.light_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_memorial_archive_built
+			add_war_support = constant:brilliant_scientist_aftermath_outcome.war_support_small
+			add_to_variable = { brilliant_scientist_aftermath_reconstruction_progress = constant:brilliant_scientist_aftermath_value.one }
+			custom_effect_tooltip = brilliant_scientist_aftermath_build_memorial_archive_tt
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.standard }
+	}
+
+	brilliant_scientist_aftermath_close_reconstruction_board = {
+		icon = GFX_decision_brilliant_scientist_aftermath_close_reconstruction_board
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_reconstruction_pending NOT = { has_country_flag = brilliant_scientist_aftermath_reconstruction_completed } }
+		available = { brilliant_scientist_aftermath_can_close_reconstruction = yes brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = {
+			set_country_flag = brilliant_scientist_aftermath_reconstruction_completed
+			clr_country_flag = brilliant_scientist_aftermath_reconstruction_pending
+			set_variable = { brilliant_scientist_aftermath_reconstruction_completion_date = global.date }
+			add_ideas = brilliant_scientist_aftermath_reconstruction_board
+			custom_effect_tooltip = brilliant_scientist_aftermath_close_reconstruction_board_tt
+			brilliant_scientist_aftermath_refresh_full_completion = yes
+		}
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+}
+
+brilliant_scientist_aftermath_remnants_category = {
+	brilliant_scientist_aftermath_hear_clone_communities = {
+		icon = GFX_decision_brilliant_scientist_aftermath_hear_clone_communities
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_clone_population NOT = { has_country_flag = brilliant_scientist_aftermath_clone_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.310 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_audit_machine_nodes = {
+		icon = GFX_decision_brilliant_scientist_aftermath_audit_machine_nodes
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_machine_population NOT = { has_country_flag = brilliant_scientist_aftermath_machine_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_standard_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.standard_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.standard_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.311 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_secure_paleogenetic_reserves = {
+		icon = GFX_decision_brilliant_scientist_aftermath_secure_paleogenetic_reserves
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_paleogenetic_population NOT = { has_country_flag = brilliant_scientist_aftermath_paleogenetic_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.312 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_receive_xenobiological_handlers = {
+		icon = GFX_decision_brilliant_scientist_aftermath_receive_xenobiological_handlers
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_xenobiological_population NOT = { has_country_flag = brilliant_scientist_aftermath_xenobiological_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.313 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_map_portal_terminals = {
+		icon = GFX_decision_brilliant_scientist_aftermath_map_portal_terminals
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_portal_remnant NOT = { has_country_flag = brilliant_scientist_aftermath_portal_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_standard
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.314 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_reconcile_temporal_records = {
+		icon = GFX_decision_brilliant_scientist_aftermath_reconcile_temporal_records
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_temporal_remnant NOT = { has_country_flag = brilliant_scientist_aftermath_temporal_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.315 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_open_biological_archive = {
+		icon = GFX_decision_brilliant_scientist_aftermath_open_biological_archive
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_biological_archive NOT = { has_country_flag = brilliant_scientist_aftermath_biological_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.316 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+
+	brilliant_scientist_aftermath_catalogue_alien_cache = {
+		icon = GFX_decision_brilliant_scientist_aftermath_catalogue_alien_cache
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_alien_arms_cache NOT = { has_country_flag = brilliant_scientist_aftermath_alien_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.317 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.high }
+	}
+
+	brilliant_scientist_aftermath_dispose_singularity_core = {
+		icon = GFX_decision_brilliant_scientist_aftermath_dispose_singularity_core
+		cancel_if_not_visible = yes
+		visible = { brilliant_scientist_aftermath_is_active_custodian = yes has_country_flag = brilliant_scientist_aftermath_singularity_remnant NOT = { has_country_flag = brilliant_scientist_aftermath_singularity_resolved } }
+		available = { has_country_flag = brilliant_scientist_aftermath_commission_founded brilliant_scientist_aftermath_has_heavy_factory_capacity = yes }
+		cost = constant:brilliant_scientist_aftermath_cost.pp_major
+		days_remove = constant:brilliant_scientist_aftermath_timing.long_days
+		modifier = { civilian_factory_use = constant:brilliant_scientist_aftermath_burden.heavy_factory_use }
+		remove_effect = { country_event = { id = chaosx.nr16.318 } }
+		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
+	}
+}

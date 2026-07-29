@@ -1,0 +1,555 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CONTAINMENT AND SOVEREIGNTY EFFECTS
+# ============================================================================
+# One-shot preparation and deterministic resolution for the hosted sovereignty
+# crisis. Prior institutions, security, facilities, projects, replication,
+# Dependence, Independent Capacity, Grievance, and diplomatic support create
+# opposing hidden strength scores. Invalid formation plans never mutate land.
+# ============================================================================
+
+# Event delay fields do not reliably parse script-constant tokens. Keep these
+# file-scoped values synchronized with brilliant_scientist_containment_duration.
+@CONTAINMENT_OUTCOME_NOTICE_HOURS = 1
+@CONTAINMENT_INVALIDATED_REVIEW_HOURS = 1
+
+# COUNTRY scope on the current host. Uses the same weighted recipient model as
+# the opening referral, but permits AI and persists the recipient across the
+# visible decision window. The global target is always cleared at resolution.
+brilliant_scientist_select_containment_exile_recipient = {
+	if = {
+		limit = { has_event_target = brilliant_scientist_containment_exile_recipient }
+		clear_global_event_target = brilliant_scientist_containment_exile_recipient
+	}
+	clear_temp_array = brilliant_scientist_send_away_selection_pool
+	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
+	save_event_target_as = brilliant_scientist_send_away_rejector
+	every_country = {
+		limit = {
+			brilliant_scientist_is_valid_transfer_recipient = yes
+			NOT = { has_war_with = event_target:brilliant_scientist_send_away_rejector }
+		}
+		brilliant_scientist_add_current_country_to_send_away_pool = yes
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_send_away_pool_count > constant:brilliant_scientist_value.zero } }
+		random_scope_in_array = {
+			array = brilliant_scientist_send_away_selection_pool
+			save_global_event_target_as = brilliant_scientist_containment_exile_recipient
+		}
+	}
+	clear_temp_array = brilliant_scientist_send_away_selection_pool
+	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_value.zero }
+}
+
+# COUNTRY scope. This one-shot state scan counts only actual Event 016 sites.
+brilliant_scientist_refresh_containment_facility_count = {
+	set_variable = { brilliant_scientist_containment_facility_state_count = constant:brilliant_scientist_value.zero }
+	every_owned_state = {
+		limit = {
+			OR = {
+				has_variable = brilliant_scientist_facility_type
+				has_state_flag = brilliant_scientist_primary_facility
+				has_state_flag = brilliant_scientist_secondary_facility
+				has_state_flag = brilliant_scientist_joint_laboratory_site
+				has_state_flag = brilliant_scientist_quantum_transit_terminal
+				has_state_flag = brilliant_scientist_cloning_growth_site
+				has_state_flag = brilliant_scientist_robotics_assembly_complex
+				has_state_flag = brilliant_scientist_paleogenetic_reserve
+				has_state_flag = brilliant_scientist_paleogenetic_hatchery
+				has_state_flag = brilliant_scientist_xenobiological_vat_complex
+				has_state_flag = brilliant_scientist_xenobiological_control_center
+				has_state_flag = brilliant_scientist_alien_interface_chamber
+				has_state_flag = brilliant_scientist_temporal_anchor
+			}
+		}
+		PREV = { add_to_variable = { brilliant_scientist_containment_facility_state_count = constant:brilliant_scientist_value.one } }
+	}
+}
+
+# COUNTRY scope. Stores exact scores for script use and later history audits;
+# player-facing text describes only the broad outcome and named causes.
+brilliant_scientist_calculate_containment_scores = {
+	brilliant_scientist_refresh_project_counts = yes
+	brilliant_scientist_refresh_containment_facility_count = yes
+	brilliant_scientist_refresh_government_control = yes
+
+	set_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_threshold.minimum_score }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_mandate }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.government_mandate_factor }
+	add_to_variable = { brilliant_scientist_containment_government_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_measure.maximum }
+	subtract_from_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_dependence }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.government_inverse_dependence_factor }
+	add_to_variable = { brilliant_scientist_containment_government_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_measure.maximum }
+	subtract_from_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_independent_capacity }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.government_inverse_independent_factor }
+	add_to_variable = { brilliant_scientist_containment_government_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_independently_replicated_family_count }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.government_replication_family }
+	add_to_variable = { brilliant_scientist_containment_government_score = brilliant_scientist_containment_component }
+	if = { limit = { has_country_flag = brilliant_scientist_public_science_council_established } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_public_council } }
+	if = { limit = { has_country_flag = brilliant_scientist_compartmentalized_military_office_established } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_military_office } }
+	if = { limit = { has_country_flag = brilliant_scientist_internal_security_section_established } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_state_security } }
+	if = { limit = { has_country_flag = brilliant_scientist_security_posture_military } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_military_guard } }
+	if = { limit = { has_country_flag = brilliant_scientist_primary_laboratory_hardened } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_hardened_laboratory } }
+	if = { limit = { has_country_flag = brilliant_scientist_last_loyalty_review_found_foreign_agents } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_loyalty_foreign_agents } }
+	if = { limit = { has_country_flag = brilliant_scientist_last_loyalty_review_found_kruger_loyalists } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_loyalty_kruger_cadre } }
+	if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_military_seizure } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_military_seizure } }
+	if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_foreign_containment } }
+	if = { limit = { is_in_faction = yes } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_faction_support } }
+	if = { limit = { has_country_flag = brilliant_scientist_directorate_shutdown_prepared } add_to_variable = { brilliant_scientist_containment_government_score = constant:brilliant_scientist_containment_score.government_shutdown_preparation } }
+	round_variable = brilliant_scientist_containment_government_score
+	clamp_variable = { var = brilliant_scientist_containment_government_score min = constant:brilliant_scientist_containment_threshold.minimum_score max = constant:brilliant_scientist_containment_threshold.maximum_score }
+
+	set_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_threshold.minimum_score }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_independent_capacity }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_independent_capacity_factor }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_dependence }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_dependence_factor }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_grievance }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_grievance_factor }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_containment_facility_state_count }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_facility_state }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_project_deployment_count }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_deployment_family }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	set_temp_variable = { brilliant_scientist_containment_component = brilliant_scientist_project_weaponization_count }
+	multiply_temp_variable = { brilliant_scientist_containment_component = constant:brilliant_scientist_containment_score.kruger_weaponization_family }
+	add_to_variable = { brilliant_scientist_containment_kruger_score = brilliant_scientist_containment_component }
+	if = { limit = { has_country_flag = brilliant_scientist_security_posture_private } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_private_guard } }
+	if = { limit = { has_country_flag = brilliant_scientist_sovereign_science_authority } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_sovereign_authority } }
+	if = { limit = { brilliant_scientist_control_is_compromised = yes } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_control_compromised } }
+	if = { limit = { brilliant_scientist_control_is_lost = yes } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_control_lost } }
+	if = { limit = { has_country_flag = brilliant_scientist_dangerous_project_incident } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_dangerous_incident } }
+	if = { limit = { has_country_flag = brilliant_scientist_failed_assassination_exposed_program } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_failed_assassination } }
+	if = { limit = { has_country_flag = brilliant_scientist_multi_site_network_verified } add_to_variable = { brilliant_scientist_containment_kruger_score = constant:brilliant_scientist_containment_score.kruger_multi_site_network } }
+	round_variable = brilliant_scientist_containment_kruger_score
+	clamp_variable = { var = brilliant_scientist_containment_kruger_score min = constant:brilliant_scientist_containment_threshold.minimum_score max = constant:brilliant_scientist_containment_threshold.maximum_score }
+
+	set_variable = { brilliant_scientist_containment_score_margin = brilliant_scientist_containment_government_score }
+	subtract_from_variable = { brilliant_scientist_containment_score_margin = brilliant_scientist_containment_kruger_score }
+	round_variable = brilliant_scientist_containment_score_margin
+}
+
+# COUNTRY scope. Refreshes every mutable input before the board becomes usable.
+brilliant_scientist_prepare_sovereignty_board = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+		}
+		brilliant_scientist_select_containment_exile_recipient = yes
+		brilliant_scientist_prepare_formation_territory_plan = yes
+		brilliant_scientist_calculate_containment_scores = yes
+		set_country_flag = brilliant_scientist_sovereignty_board_prepared
+		set_variable = { brilliant_scientist_sovereignty_board_prepared_date = global.date }
+	}
+}
+
+brilliant_scientist_clear_containment_outcome_flags = {
+	clr_country_flag = brilliant_scientist_containment_outcome_released
+	clr_country_flag = brilliant_scientist_containment_outcome_exiled
+	clr_country_flag = brilliant_scientist_containment_outcome_confined
+	clr_country_flag = brilliant_scientist_containment_outcome_shutdown
+	clr_country_flag = brilliant_scientist_containment_outcome_foreign_defection
+	clr_country_flag = brilliant_scientist_containment_outcome_laboratory_uprising
+	clr_country_flag = brilliant_scientist_containment_outcome_kruger_state_rebellion
+	clr_country_flag = brilliant_scientist_containment_outcome_kruger_state_charter
+	clr_country_flag = brilliant_scientist_containment_outcome_institutional_takeover
+	clr_country_flag = brilliant_scientist_containment_outcome_noncountry_crisis
+	clr_country_flag = brilliant_scientist_containment_outcome_invalidated
+}
+
+# COUNTRY scope. Input temporary brilliant_scientist_containment_outcome.
+brilliant_scientist_record_containment_outcome = {
+	brilliant_scientist_clear_containment_outcome_flags = yes
+	set_variable = { brilliant_scientist_last_containment_outcome = brilliant_scientist_containment_outcome }
+	set_variable = { brilliant_scientist_last_containment_outcome_date = global.date }
+	if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.released } } set_country_flag = brilliant_scientist_containment_outcome_released set_country_flag = brilliant_scientist_ever_released_kruger }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.exiled } } set_country_flag = brilliant_scientist_containment_outcome_exiled set_country_flag = brilliant_scientist_ever_exiled_kruger }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.confined } } set_country_flag = brilliant_scientist_containment_outcome_confined set_country_flag = brilliant_scientist_ever_confined_kruger }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.shutdown } } set_country_flag = brilliant_scientist_containment_outcome_shutdown set_country_flag = brilliant_scientist_ever_shutdown_directorate }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.foreign_defection } } set_country_flag = brilliant_scientist_containment_outcome_foreign_defection set_country_flag = brilliant_scientist_ever_lost_kruger_to_foreign_power }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.laboratory_uprising } } set_country_flag = brilliant_scientist_containment_outcome_laboratory_uprising set_country_flag = brilliant_scientist_ever_faced_laboratory_uprising }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.kruger_state_rebellion } } set_country_flag = brilliant_scientist_containment_outcome_kruger_state_rebellion set_country_flag = brilliant_scientist_ever_created_kruger_state_by_rebellion }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.kruger_state_charter } } set_country_flag = brilliant_scientist_containment_outcome_kruger_state_charter set_country_flag = brilliant_scientist_ever_chartered_kruger_state }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.institutional_takeover } } set_country_flag = brilliant_scientist_containment_outcome_institutional_takeover set_country_flag = brilliant_scientist_ever_suffered_institutional_takeover }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.noncountry_crisis } } set_country_flag = brilliant_scientist_containment_outcome_noncountry_crisis set_country_flag = brilliant_scientist_ever_faced_noncountry_kruger_crisis }
+	else_if = { limit = { check_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.invalidated } } set_country_flag = brilliant_scientist_containment_outcome_invalidated }
+}
+
+brilliant_scientist_close_sovereignty_board = {
+	if = {
+		limit = { has_active_mission = brilliant_scientist_sovereignty_deadline_mission }
+		remove_mission = brilliant_scientist_sovereignty_deadline_mission
+	}
+	clr_country_flag = brilliant_scientist_sovereignty_deadline_active
+	clr_country_flag = brilliant_scientist_containment_resolution_requested
+	clr_country_flag = brilliant_scientist_containment_action_in_progress
+	set_country_flag = brilliant_scientist_sovereignty_deadline_resolved
+	set_country_flag = brilliant_scientist_containment_resolution_completed
+	set_variable = { brilliant_scientist_containment_resolution_date = global.date }
+	clear_variable = brilliant_scientist_sovereignty_deadline_days
+	if = {
+		limit = { has_event_target = brilliant_scientist_containment_exile_recipient }
+		clear_global_event_target = brilliant_scientist_containment_exile_recipient
+	}
+}
+
+# COUNTRY scope. Ends hosted personal control while retaining only independently
+# replicated project stages and immutable history. Facility sites become former
+# Directorate sites instead of disappearing from aftermath logic.
+brilliant_scientist_finalize_nonsovereign_departure = {
+	brilliant_scientist_clear_evolution_schedule_state = yes
+	brilliant_scientist_remove_kruger_roles = yes
+	brilliant_scientist_reconcile_old_host_after_transfer = yes
+	clr_country_flag = brilliant_scientist_current_host
+	set_country_flag = brilliant_scientist_kruger_departed
+	KRG_warren_kruger = { clr_character_flag = brilliant_scientist_personal_active }
+	if = {
+		limit = { has_event_target = brilliant_scientist_primary_facility }
+		event_target:brilliant_scientist_primary_facility = {
+			clr_state_flag = brilliant_scientist_primary_facility
+			set_state_flag = brilliant_scientist_former_primary_facility
+		}
+		clear_global_event_target = brilliant_scientist_primary_facility
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_secondary_facility }
+		event_target:brilliant_scientist_secondary_facility = {
+			clr_state_flag = brilliant_scientist_secondary_facility
+			set_state_flag = brilliant_scientist_former_secondary_facility
+		}
+		clear_global_event_target = brilliant_scientist_secondary_facility
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_current_host }
+		clear_global_event_target = brilliant_scientist_current_host
+	}
+}
+
+brilliant_scientist_shutter_former_directorate_sites = {
+	every_owned_state = {
+		limit = {
+			OR = {
+				has_state_flag = brilliant_scientist_former_primary_facility
+				has_state_flag = brilliant_scientist_former_secondary_facility
+				has_state_flag = brilliant_scientist_joint_laboratory_site
+				has_variable = brilliant_scientist_facility_type
+			}
+		}
+		set_state_flag = brilliant_scientist_directorate_site_shuttered
+	}
+}
+
+brilliant_scientist_fire_containment_outcome_report = {
+	country_event = { id = chaosx.nr16.31 hours = @CONTAINMENT_OUTCOME_NOTICE_HOURS }
+}
+
+# COUNTRY scope. Used when an advertised legal or territorial route ceases to
+# satisfy its own contract during the decision timer. The paid preparation is
+# historical, but land and character ownership are left untouched and the
+# board reopens for an explicit replacement choice.
+brilliant_scientist_reopen_invalidated_sovereignty_board = {
+	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.invalidated }
+	brilliant_scientist_record_containment_outcome = yes
+	clr_country_flag = brilliant_scientist_containment_action_in_progress
+	set_country_flag = brilliant_scientist_containment_resolution_requested
+	brilliant_scientist_prepare_sovereignty_board = yes
+	country_event = { id = chaosx.nr16.32 hours = @CONTAINMENT_INVALIDATED_REVIEW_HOURS }
+}
+
+brilliant_scientist_resolve_clean_release = {
+	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.released }
+	brilliant_scientist_record_containment_outcome = yes
+	KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_released }
+	brilliant_scientist_finalize_nonsovereign_departure = yes
+	brilliant_scientist_close_sovereignty_board = yes
+	brilliant_scientist_fire_containment_outcome_report = yes
+}
+
+brilliant_scientist_resolve_clean_exile = {
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_containment_exile_recipient
+			event_target:brilliant_scientist_containment_exile_recipient = { brilliant_scientist_is_valid_transfer_recipient = yes }
+		}
+		event_target:brilliant_scientist_containment_exile_recipient = { save_event_target_as = brilliant_scientist_transfer_recipient }
+		brilliant_scientist_transfer_kruger_atomically = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_transfer_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.exiled }
+			brilliant_scientist_record_containment_outcome = yes
+			set_country_flag = brilliant_scientist_planned_exile_completed
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+	}
+	else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+}
+
+brilliant_scientist_resolve_clean_confinement = {
+	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.confined }
+	brilliant_scientist_record_containment_outcome = yes
+	KRG_warren_kruger = {
+		set_character_flag = brilliant_scientist_personal_confined
+		clr_character_flag = brilliant_scientist_personal_active
+	}
+	set_country_flag = brilliant_scientist_kruger_confined
+	brilliant_scientist_finalize_nonsovereign_departure = yes
+	brilliant_scientist_close_sovereignty_board = yes
+	brilliant_scientist_fire_containment_outcome_report = yes
+}
+
+brilliant_scientist_resolve_clean_shutdown = {
+	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.shutdown }
+	brilliant_scientist_record_containment_outcome = yes
+	KRG_warren_kruger = {
+		set_character_flag = brilliant_scientist_personal_dismissed
+		clr_character_flag = brilliant_scientist_personal_active
+	}
+	brilliant_scientist_finalize_nonsovereign_departure = yes
+	brilliant_scientist_shutter_former_directorate_sites = yes
+	set_country_flag = brilliant_scientist_directorate_permanently_closed
+	brilliant_scientist_close_sovereignty_board = yes
+	brilliant_scientist_fire_containment_outcome_report = yes
+}
+
+brilliant_scientist_resolve_foreign_defection = {
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_containment_exile_recipient
+			event_target:brilliant_scientist_containment_exile_recipient = { brilliant_scientist_is_valid_transfer_recipient = yes }
+		}
+		event_target:brilliant_scientist_containment_exile_recipient = { save_event_target_as = brilliant_scientist_transfer_recipient }
+		brilliant_scientist_transfer_kruger_atomically = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_transfer_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.foreign_defection }
+			brilliant_scientist_record_containment_outcome = yes
+			set_country_flag = brilliant_scientist_coercion_produced_foreign_defection
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
+	}
+	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
+}
+
+brilliant_scientist_resolve_noncountry_laboratory_crisis = {
+	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.noncountry_crisis }
+	brilliant_scientist_record_containment_outcome = yes
+	if = {
+		limit = { has_event_target = brilliant_scientist_primary_facility }
+		event_target:brilliant_scientist_primary_facility = {
+			set_state_flag = brilliant_scientist_hidden_escape_cell
+			set_state_flag = brilliant_scientist_laboratory_seizure_crisis
+		}
+	}
+	KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_escaped }
+	brilliant_scientist_finalize_nonsovereign_departure = yes
+	brilliant_scientist_close_sovereignty_board = yes
+	brilliant_scientist_fire_containment_outcome_report = yes
+}
+
+brilliant_scientist_resolve_partial_laboratory_uprising = {
+	set_country_flag = brilliant_scientist_enclave_settlement
+	clr_country_flag = brilliant_scientist_rebellion_committed
+	clr_country_flag = brilliant_scientist_charter_accepted
+	brilliant_scientist_prepare_formation_territory_plan = yes
+	if = {
+		limit = { brilliant_scientist_can_form_enclave = yes }
+		brilliant_scientist_form_kruger_state_from_verified_plan = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_formation_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.laboratory_uprising }
+			brilliant_scientist_record_containment_outcome = yes
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+	}
+	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
+}
+
+brilliant_scientist_resolve_full_kruger_rebellion = {
+	set_country_flag = brilliant_scientist_rebellion_committed
+	clr_country_flag = brilliant_scientist_enclave_settlement
+	clr_country_flag = brilliant_scientist_charter_accepted
+	brilliant_scientist_prepare_formation_territory_plan = yes
+	if = {
+		limit = { brilliant_scientist_can_form_by_rebellion = yes }
+		brilliant_scientist_form_kruger_state_from_verified_plan = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_formation_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.kruger_state_rebellion }
+			brilliant_scientist_record_containment_outcome = yes
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = {
+			set_country_flag = brilliant_scientist_rebellion_territory_plan_failed
+			brilliant_scientist_reopen_invalidated_sovereignty_board = yes
+		}
+	}
+	else = {
+		set_country_flag = brilliant_scientist_rebellion_territory_plan_failed
+		brilliant_scientist_reopen_invalidated_sovereignty_board = yes
+	}
+}
+
+brilliant_scientist_resolve_institutional_takeover = {
+	if = {
+		limit = { brilliant_scientist_institutional_capture_is_proven = yes }
+		brilliant_scientist_transform_host_into_kruger_state = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_formation_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.institutional_takeover }
+			brilliant_scientist_record_containment_outcome = yes
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+	}
+	else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+}
+
+brilliant_scientist_resolve_verified_charter = {
+	set_country_flag = brilliant_scientist_charter_accepted
+	clr_country_flag = brilliant_scientist_rebellion_committed
+	clr_country_flag = brilliant_scientist_enclave_settlement
+	brilliant_scientist_prepare_formation_territory_plan = yes
+	if = {
+		limit = { brilliant_scientist_can_form_by_charter = yes }
+		brilliant_scientist_form_kruger_state_from_verified_plan = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_formation_committed > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.kruger_state_charter }
+			brilliant_scientist_record_containment_outcome = yes
+			brilliant_scientist_close_sovereignty_board = yes
+			brilliant_scientist_fire_containment_outcome_report = yes
+		}
+		else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+	}
+	else = {
+		brilliant_scientist_reopen_invalidated_sovereignty_board = yes
+	}
+}
+
+# COUNTRY scope after arrest, shutdown, military seizure, or foreign-backed
+# containment. The score is recalculated at resolution so changed map/project
+# state cannot be exploited during the decision timer.
+brilliant_scientist_resolve_coercive_containment = {
+	brilliant_scientist_prepare_formation_territory_plan = yes
+	brilliant_scientist_calculate_containment_scores = yes
+	if = {
+		limit = {
+			brilliant_scientist_institutional_capture_is_proven = yes
+			brilliant_scientist_containment_kruger_is_decisive = yes
+		}
+		brilliant_scientist_resolve_institutional_takeover = yes
+	}
+	else_if = {
+		limit = { brilliant_scientist_containment_government_is_decisive = yes }
+		if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown } }
+			brilliant_scientist_resolve_clean_shutdown = yes
+		}
+		else = { brilliant_scientist_resolve_clean_confinement = yes }
+	}
+	else_if = {
+		limit = { brilliant_scientist_containment_kruger_can_sustain_full_rebellion = yes }
+		brilliant_scientist_resolve_full_kruger_rebellion = yes
+	}
+	else_if = {
+		limit = { brilliant_scientist_containment_kruger_can_sustain_partial_uprising = yes }
+		brilliant_scientist_resolve_partial_laboratory_uprising = yes
+	}
+	else_if = {
+		limit = {
+			brilliant_scientist_containment_kruger_is_decisive = yes
+			has_event_target = brilliant_scientist_containment_exile_recipient
+			event_target:brilliant_scientist_containment_exile_recipient = { brilliant_scientist_is_valid_transfer_recipient = yes }
+		}
+		brilliant_scientist_resolve_foreign_defection = yes
+	}
+	else_if = {
+		limit = { brilliant_scientist_containment_government_has_edge = yes }
+		if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown } }
+			brilliant_scientist_resolve_clean_shutdown = yes
+		}
+		else = { brilliant_scientist_resolve_clean_confinement = yes }
+	}
+	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
+}
+
+# COUNTRY scope. Input temporary brilliant_scientist_containment_action.
+brilliant_scientist_begin_containment_action = {
+	set_country_flag = brilliant_scientist_containment_action_in_progress
+	set_variable = { brilliant_scientist_containment_action_started_date = global.date }
+}
+
+# COUNTRY scope. Input temporary brilliant_scientist_containment_action.
+brilliant_scientist_resolve_containment_action = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+		}
+		set_variable = { brilliant_scientist_last_containment_action = brilliant_scientist_containment_action }
+		set_variable = { brilliant_scientist_last_containment_action_date = global.date }
+		if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release } }
+			brilliant_scientist_refresh_containment_facility_count = yes
+			if = { limit = { brilliant_scientist_containment_has_low_coercive_risk = yes } brilliant_scientist_resolve_clean_release = yes }
+			else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile } }
+			brilliant_scientist_resolve_clean_exile = yes
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter } }
+			brilliant_scientist_resolve_verified_charter = yes
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession } }
+			brilliant_scientist_resolve_institutional_takeover = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
+					check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+					check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+					check_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+				}
+			}
+			brilliant_scientist_resolve_coercive_containment = yes
+		}
+		else = { brilliant_scientist_reopen_invalidated_sovereignty_board = yes }
+	}
+}
+
+# COUNTRY scope. Designed forced resolution for a deadline that reached zero;
+# it follows the previously selected Evolution IV response and current evidence.
+brilliant_scientist_resolve_unanswered_sovereignty_deadline = {
+	brilliant_scientist_prepare_sovereignty_board = yes
+	set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.none }
+	if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_charter } set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter } }
+	else_if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_concession brilliant_scientist_institutional_capture_is_proven = yes } set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession } }
+	else_if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_military_seizure } set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure } }
+	else_if = { limit = { has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment } set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment } }
+	else_if = { limit = { brilliant_scientist_containment_has_low_coercive_risk = yes } set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release } }
+	else = { set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest } }
+	brilliant_scientist_resolve_containment_action = yes
+}

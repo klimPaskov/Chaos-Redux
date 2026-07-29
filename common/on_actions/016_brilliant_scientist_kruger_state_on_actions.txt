@@ -1,0 +1,54 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER STATE SPECIFIC ON ACTIONS
+# ============================================================================
+# Records a major opponent when war begins after the machine continuity network
+# takes office, then awards victory only if that same marked opponent capitulates
+# directly to the independent network-ruled Kruger State. No periodic pulse or
+# whole-world iteration is introduced.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					has_country_flag = brilliant_scientist_machine_network_rule_active
+					FROM = { is_major = yes }
+				}
+				FROM = { set_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession }
+			}
+			if = {
+				limit = {
+					is_major = yes
+					FROM = { has_country_flag = brilliant_scientist_machine_network_rule_active }
+				}
+				set_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					has_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession
+					FROM = {
+						brilliant_scientist_kruger_focus_is_active = yes
+						has_country_flag = brilliant_scientist_continuity_machine
+						has_country_flag = brilliant_scientist_machine_network_rule_active
+						has_country_flag = brilliant_scientist_biological_kruger_removed_from_rule
+						is_subject = no
+					}
+				}
+				FROM = { set_country_flag = brilliant_scientist_machine_major_war_victory }
+			}
+			clr_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession
+		}
+	}
+
+	on_peace = {
+		effect = {
+			clr_country_flag = brilliant_scientist_krg_machine_major_opponent_after_succession
+		}
+	}
+}

@@ -90,6 +90,7 @@ brilliant_scientist_is_transfer_ready = {
 	}
 	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
 	NOT = { has_country_flag = brilliant_scientist_kruger_confined }
+	NOT = { has_country_flag = brilliant_scientist_evolution_delivery_active }
 	NOT = { has_country_flag = brilliant_scientist_character_transaction_lock }
 	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
 	NOT = { has_global_flag = world_end }
@@ -376,6 +377,20 @@ brilliant_scientist_project_independently_replicated_to_requested_stage = {
 	}
 }
 
+brilliant_scientist_has_forbidden_weaponization = {
+	OR = {
+		has_country_flag = brilliant_scientist_teleportation_weaponization_completed
+		has_country_flag = brilliant_scientist_cloning_weaponization_completed
+		has_country_flag = brilliant_scientist_robotics_weaponization_completed
+		has_country_flag = brilliant_scientist_paleogenetics_weaponization_completed
+		has_country_flag = brilliant_scientist_xenobiological_synthesis_weaponization_completed
+		has_country_flag = brilliant_scientist_biological_weapons_weaponization_completed
+		has_country_flag = brilliant_scientist_alien_arms_weaponization_completed
+		has_country_flag = brilliant_scientist_temporal_weaponization_completed
+		has_country_flag = brilliant_scientist_singularity_weaponization_completed
+	}
+}
+
 brilliant_scientist_project_is_suspended = {
 	is_in_array = {
 		array = brilliant_scientist_project_suspended_families
@@ -409,6 +424,15 @@ brilliant_scientist_project_is_dismantled = {
 		array = brilliant_scientist_project_dismantled_families
 		value = brilliant_scientist_project_family
 	}
+}
+
+# Inputs are temporary family plus its loaded aligned-array index.
+brilliant_scientist_project_is_operational = {
+	brilliant_scientist_project_family_input_is_valid = yes
+	check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.none }
+	NOT = { brilliant_scientist_project_is_suspended = yes }
+	NOT = { brilliant_scientist_project_is_damaged = yes }
+	NOT = { brilliant_scientist_project_is_dismantled = yes }
 }
 
 brilliant_scientist_project_can_advance = {
@@ -752,33 +776,15 @@ brilliant_scientist_has_viable_formation_inputs = {
 }
 
 brilliant_scientist_can_form_by_charter = {
-	brilliant_scientist_has_viable_formation_inputs = yes
-	has_country_flag = brilliant_scientist_charter_accepted
-	check_variable = {
-		var = brilliant_scientist_formation_selected_state_count
-		value = constant:brilliant_scientist_formation.charter_minimum_states
-		compare = greater_than_or_equals
-	}
+	brilliant_scientist_verified_charter_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_enclave = {
-	brilliant_scientist_has_viable_formation_inputs = yes
-	has_country_flag = brilliant_scientist_enclave_settlement
-	check_variable = {
-		var = brilliant_scientist_formation_selected_state_count
-		value = constant:brilliant_scientist_formation.enclave_minimum_states
-		compare = greater_than_or_equals
-	}
+	brilliant_scientist_verified_enclave_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_by_rebellion = {
-	brilliant_scientist_has_viable_formation_inputs = yes
-	has_country_flag = brilliant_scientist_rebellion_committed
-	check_variable = {
-		var = brilliant_scientist_formation_selected_state_count
-		value = constant:brilliant_scientist_formation.rebellion_minimum_states
-		compare = greater_than_or_equals
-	}
+	brilliant_scientist_verified_rebellion_territory_plan_is_valid = yes
 }
 
 brilliant_scientist_can_form_multi_site = {
@@ -792,13 +798,10 @@ brilliant_scientist_can_form_multi_site = {
 }
 
 brilliant_scientist_can_form_by_institutional_capture = {
-	brilliant_scientist_has_viable_formation_inputs = yes
 	brilliant_scientist_institutional_capture_is_proven = yes
-	check_variable = {
-		var = brilliant_scientist_formation_selected_state_count
-		value = constant:brilliant_scientist_formation.takeover_minimum_states
-		compare = greater_than_or_equals
-	}
+	brilliant_scientist_is_current_host = yes
+	NOT = { has_global_flag = brilliant_scientist_kruger_state_active }
+	NOT = { has_global_flag = world_end }
 }
 
 # ---------------------------------------------------------------------------
@@ -874,26 +877,18 @@ brilliant_scientist_origin_public_proof_is_ready = {
 # ---------------------------------------------------------------------------
 
 brilliant_scientist_lab_world_scenario_is_enabled = {
-	NOT = {
-		is_in_array = {
-			array = global.disabled_world_end_scenarios
-			value = constant:brilliant_scientist_world_end.laboratory_world
-		}
-	}
+	world_end_brilliant_scientist_laboratory_world_scenario_enabled = yes
 }
 
 brilliant_scientist_singularity_scenario_is_enabled = {
-	NOT = {
-		is_in_array = {
-			array = global.disabled_world_end_scenarios
-			value = constant:brilliant_scientist_world_end.strategic_singularity
-		}
-	}
+	world_end_brilliant_scientist_strategic_singularity_scenario_enabled = yes
 }
 
 brilliant_scientist_can_commit_to_singularity = {
 	has_country_flag = brilliant_scientist_kruger_state
+	has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
 	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_country_flag = brilliant_scientist_singularity_routes_blocked }
 	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
 	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
 	NOT = { has_global_flag = brilliant_scientist_singularity_permanently_cancelled }
@@ -903,7 +898,9 @@ brilliant_scientist_can_commit_to_singularity = {
 
 brilliant_scientist_can_commit_to_lab_world = {
 	has_country_flag = brilliant_scientist_kruger_state
+	has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
 	brilliant_scientist_lab_world_scenario_is_enabled = yes
+	NOT = { has_country_flag = brilliant_scientist_conquest_routes_blocked }
 	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
 	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
 	NOT = { has_global_flag = brilliant_scientist_lab_world_permanently_cancelled }
@@ -917,13 +914,18 @@ brilliant_scientist_can_commit_to_lab_world = {
 	NOT = { has_global_flag = world_end_disabled }
 }
 
-brilliant_scientist_singularity_terminal_is_ready = {
+brilliant_scientist_singularity_terminal_commit_state_is_ready = {
 	has_country_flag = brilliant_scientist_kruger_state
+	has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
+	NOT = { has_country_flag = brilliant_scientist_singularity_routes_blocked }
 	has_country_flag = brilliant_scientist_terminal_commitment_singularity
 	has_country_flag = brilliant_scientist_singularity_armed
 	has_country_flag = brilliant_scientist_singularity_live_command_network
 	has_country_flag = brilliant_scientist_singularity_fail_deadly_active
+	NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 	brilliant_scientist_singularity_scenario_is_enabled = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	NOT = { has_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active }
 	check_variable = {
 		var = brilliant_scientist_singularity_component_count
 		value = constant:brilliant_scientist_singularity.components_required
@@ -944,8 +946,13 @@ brilliant_scientist_singularity_terminal_is_ready = {
 	NOT = { has_global_flag = world_end_disabled }
 }
 
+brilliant_scientist_singularity_terminal_is_ready = {
+	brilliant_scientist_singularity_terminal_commit_state_is_ready = yes
+	fallout_request_ledger_is_free = yes
+}
+
 brilliant_scientist_singularity_capitulation_failsafe_is_ready = {
-	brilliant_scientist_singularity_terminal_is_ready = yes
+	brilliant_scientist_singularity_terminal_commit_state_is_ready = yes
 	surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold
 	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
 	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
@@ -953,6 +960,8 @@ brilliant_scientist_singularity_capitulation_failsafe_is_ready = {
 
 brilliant_scientist_lab_world_terminal_is_ready = {
 	has_country_flag = brilliant_scientist_kruger_state
+	has_global_flag = brilliant_scientist_evolution_iv_chronology_recorded
+	NOT = { has_country_flag = brilliant_scientist_conquest_routes_blocked }
 	has_country_flag = brilliant_scientist_terminal_commitment_lab_world
 	NOT = { has_country_flag = brilliant_scientist_singularity_armed }
 	NOT = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
@@ -963,25 +972,14 @@ brilliant_scientist_lab_world_terminal_is_ready = {
 		has_country_flag = brilliant_scientist_singularity_verified_nonterminal
 	}
 	brilliant_scientist_lab_world_scenario_is_enabled = yes
+	NOT = { has_global_flag = settings_chaos_meter_disabled }
+	has_country_flag = brilliant_scientist_krg_terminal_map_audit_completed
+	has_country_flag = brilliant_scientist_krg_terminal_map_audit_passed
+	brilliant_scientist_krg_terminal_map_control_is_sufficient = yes
 	check_variable = {
 		var = global.chaos_meter_value
-		value = constant:chaos_meter_tier_range.tier_final.min
+		value = constant:chaos_meter_tier_range.tier_final.plus
 		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_world_control_ratio
-		value = constant:brilliant_scientist_lab_world.minimum_world_control_ratio
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_integrated_state_ratio
-		value = constant:brilliant_scientist_lab_world.minimum_integrated_state_ratio
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_major_opposition_count
-		value = constant:brilliant_scientist_lab_world.maximum_major_opposition
-		compare = less_than_or_equals
 	}
 	check_variable = {
 		var = brilliant_scientist_global_administration_score

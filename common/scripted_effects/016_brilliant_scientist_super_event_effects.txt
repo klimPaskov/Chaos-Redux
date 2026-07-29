@@ -1,0 +1,691 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 SUPER-EVENT, THREAT, AND TERMINAL EFFECTS
+# ============================================================================
+# Owns collision-safe presentation of all six mapped packages, recognition and
+# threat ledgers, project-causal defeat history, and the two terminal outcomes.
+# Every world scan is tied to an explicit lifecycle action; no periodic global
+# iteration is introduced here.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Collision-safe super-event queue
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Input: temporary brilliant_scientist_super_event_id.
+brilliant_scientist_queue_current_super_event = {
+	add_to_array = {
+		array = global.brilliant_scientist_super_event_queue_id_entries
+		value = brilliant_scientist_super_event_id
+	}
+	add_to_array = {
+		array = global.brilliant_scientist_super_event_queue_actor_entries
+		value = ROOT
+	}
+	brilliant_scientist_try_dispatch_super_event_queue = yes
+	brilliant_scientist_schedule_super_event_queue_retry = yes
+}
+
+brilliant_scientist_schedule_super_event_queue_retry = {
+	if = {
+		limit = {
+			check_variable = { global.brilliant_scientist_super_event_queue_id_entries^num > constant:brilliant_scientist_value.zero }
+			NOT = { has_global_flag = brilliant_scientist_super_event_queue_retry_pending }
+		}
+		set_global_flag = brilliant_scientist_super_event_queue_retry_pending
+		set_temp_variable = { brilliant_scientist_super_event_retry_days = constant:brilliant_scientist_super_event_runtime.queue_retry_days }
+		if = {
+			limit = { any_country = { has_country_flag = is_global_host } }
+			every_country = {
+				limit = { has_country_flag = is_global_host }
+				country_event = { id = chaosx.nr16.300 days = brilliant_scientist_super_event_retry_days }
+			}
+		}
+		else_if = {
+			limit = { exists = yes }
+			country_event = { id = chaosx.nr16.300 days = brilliant_scientist_super_event_retry_days }
+		}
+	}
+}
+
+brilliant_scientist_schedule_super_event_actor_cleanup = {
+	if = {
+		limit = { NOT = { has_global_flag = brilliant_scientist_super_event_actor_cleanup_pending } }
+		set_global_flag = brilliant_scientist_super_event_actor_cleanup_pending
+		set_temp_variable = { brilliant_scientist_super_event_actor_cleanup_days = constant:brilliant_scientist_super_event_runtime.visible_days }
+		if = {
+			limit = { any_country = { has_country_flag = is_global_host } }
+			every_country = {
+				limit = { has_country_flag = is_global_host }
+				country_event = { id = chaosx.nr16.902 days = brilliant_scientist_super_event_actor_cleanup_days }
+			}
+		}
+		else_if = {
+			limit = { exists = yes }
+			country_event = { id = chaosx.nr16.902 days = brilliant_scientist_super_event_actor_cleanup_days }
+		}
+	}
+}
+
+brilliant_scientist_try_dispatch_super_event_queue = {
+	if = {
+		limit = {
+			check_variable = { global.brilliant_scientist_super_event_queue_id_entries^num > constant:brilliant_scientist_value.zero }
+			NOT = { has_global_flag = super_event_visible }
+		}
+		set_temp_variable = { brilliant_scientist_super_event_dispatch_id = global.brilliant_scientist_super_event_queue_id_entries^0 }
+		if = {
+			limit = { has_event_target = brilliant_scientist_super_event_actor }
+			clear_global_event_target = brilliant_scientist_super_event_actor
+		}
+		clr_global_flag = brilliant_scientist_super_event_actor_cleanup_pending
+		global.brilliant_scientist_super_event_queue_actor_entries^0 = {
+			save_global_event_target_as = brilliant_scientist_super_event_actor
+		}
+		remove_from_array = { array = global.brilliant_scientist_super_event_queue_id_entries index = 0 }
+		remove_from_array = { array = global.brilliant_scientist_super_event_queue_actor_entries index = 0 }
+		set_temp_variable = { brilliant_scientist_super_event_visible_days = constant:brilliant_scientist_super_event_runtime.visible_days }
+		meta_effect = {
+			text = {
+				set_global_flag = {
+					flag = super_event_visible
+					days = brilliant_scientist_super_event_visible_days
+					value = [SUPER_EVENT_ID]
+				}
+			}
+			SUPER_EVENT_ID = "[?brilliant_scientist_super_event_dispatch_id|.0]"
+		}
+		set_variable = { global.current_super_event_audio_id = brilliant_scientist_super_event_dispatch_id }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+		brilliant_scientist_schedule_super_event_actor_cleanup = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# International recognition
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_refresh_international_recognition_score = {
+	brilliant_scientist_refresh_project_counts = yes
+	set_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_project_prototype_count
+				value = constant:brilliant_scientist_recognition_threshold.minimum_prototypes
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.prototype }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_project_prototype_count
+				value = constant:brilliant_scientist_recognition_threshold.advanced_prototypes
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.advanced_portfolio }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_public_reputation_established }
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.public_reputation }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_research_advantage_exposed }
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.research_advantage }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_foreign_operations_received
+				value = constant:brilliant_scientist_recognition_threshold.minimum_foreign_operations
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.foreign_operations }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_high_interest_foreign_actor_count
+				value = constant:brilliant_scientist_recognition_threshold.minimum_high_interest_actors
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.high_interest_actors }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_failed_assassination_exposed_program }
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.failed_assassination }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_joint_laboratory_ever_established }
+		add_to_variable = { brilliant_scientist_international_recognition_score = constant:brilliant_scientist_recognition_score.joint_laboratory }
+	}
+	if = {
+		limit = { brilliant_scientist_international_recognition_is_ready = yes }
+		set_global_flag = brilliant_scientist_super_event_international_recognition_fired
+		set_country_flag = brilliant_scientist_international_recognition_earned
+		set_variable = { brilliant_scientist_international_recognition_date = global.date }
+		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.international_recognition }
+		brilliant_scientist_queue_current_super_event = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Formation and world-threat lifecycle
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_refresh_project_force_family_count = {
+	set_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.zero }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = { limit = { check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_value.zero } } add_to_variable = { brilliant_scientist_world_threat_deployed_family_count = constant:brilliant_scientist_value.one } }
+	if = {
+		limit = { check_variable = { brilliant_scientist_world_threat_deployed_family_count > brilliant_scientist_world_threat_peak_deployed_family_count } }
+		set_variable = { brilliant_scientist_world_threat_peak_deployed_family_count = brilliant_scientist_world_threat_deployed_family_count }
+	}
+}
+
+brilliant_scientist_evaluate_formation_super_event = {
+	if = {
+		limit = { brilliant_scientist_formation_super_event_is_ready = yes }
+		set_global_flag = brilliant_scientist_super_event_kruger_state_formation_fired
+		set_country_flag = brilliant_scientist_formation_super_event_earned
+		set_variable = { brilliant_scientist_formation_super_event_date = global.date }
+		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.kruger_state_formation }
+		brilliant_scientist_queue_current_super_event = yes
+	}
+}
+
+# COUNTRY scope on KRG. Input: regular COUNTRY target
+# brilliant_scientist_world_threat_opponent_input.
+brilliant_scientist_register_world_threat_opponent = {
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_world_threat_opponent_input
+			event_target:brilliant_scientist_world_threat_opponent_input = {
+				exists = yes
+				NOT = { tag = ROOT }
+			}
+			NOT = {
+				is_in_array = {
+					array = brilliant_scientist_world_threat_opponent_entries
+					value = event_target:brilliant_scientist_world_threat_opponent_input
+				}
+			}
+		}
+		add_to_array = {
+			array = brilliant_scientist_world_threat_opponent_entries
+			value = event_target:brilliant_scientist_world_threat_opponent_input
+		}
+		set_variable = { brilliant_scientist_world_threat_distinct_opponent_count = brilliant_scientist_world_threat_opponent_entries^num }
+		if = {
+			limit = { event_target:brilliant_scientist_world_threat_opponent_input = { is_major = yes } }
+			add_to_variable = { brilliant_scientist_world_threat_major_opponent_count = constant:brilliant_scientist_value.one }
+		}
+	}
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+brilliant_scientist_calculate_world_threat_score = {
+	set_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_current_states value = constant:brilliant_scientist_world_threat_threshold.minimum_controlled_states compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.territorial_base }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_current_states value = constant:brilliant_scientist_world_threat_threshold.high_controlled_states compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.territorial_depth }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_current_factories value = constant:brilliant_scientist_world_threat_threshold.minimum_factories compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.industrial_base }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_current_factories value = constant:brilliant_scientist_world_threat_threshold.high_factories compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.industrial_depth }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_deployed_family_count value = constant:brilliant_scientist_world_threat_threshold.minimum_deployed_families compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.project_army }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_deployed_family_count value = constant:brilliant_scientist_world_threat_threshold.high_deployed_families compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.project_army_depth }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_project_weaponization_count value = constant:brilliant_scientist_world_threat_threshold.minimum_weaponized_families compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.weaponization }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_singularity_arming_ever_started
+				has_country_flag = brilliant_scientist_singularity_armed
+			}
+		}
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.singularity_program }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_distinct_opponent_count value = constant:brilliant_scientist_world_threat_threshold.minimum_distinct_opponents compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.distinct_opponents }
+	}
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_world_threat_major_opponent_count value = constant:brilliant_scientist_world_threat_threshold.minimum_major_opponents compare = greater_than_or_equals } }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.major_opponents }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_world_conquest_decision_active }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.world_conquest }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_submission_demand_issued }
+		add_to_variable = { brilliant_scientist_global_threat_score = constant:brilliant_scientist_world_threat_score.submission_campaign }
+	}
+}
+
+# COUNTRY scope. This is the canonical event-driven hook used by project,
+# focus, decision, war, and territory changes.
+brilliant_scientist_refresh_world_threat_source = {
+	if = {
+		limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
+		brilliant_scientist_refresh_project_counts = yes
+		brilliant_scientist_refresh_project_force_family_count = yes
+		every_controlled_state = {
+			set_state_flag = brilliant_scientist_krg_historical_territory
+		}
+		set_variable = { brilliant_scientist_world_threat_current_states = num_of_controlled_states }
+		set_variable = { brilliant_scientist_world_threat_current_factories = num_of_factories }
+		set_variable = { brilliant_scientist_world_threat_distinct_opponent_count = brilliant_scientist_world_threat_opponent_entries^num }
+		if = {
+			limit = { check_variable = { brilliant_scientist_world_threat_current_states > brilliant_scientist_world_threat_peak_states } }
+			set_variable = { brilliant_scientist_world_threat_peak_states = brilliant_scientist_world_threat_current_states }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_world_threat_current_factories > brilliant_scientist_world_threat_peak_factories } }
+			set_variable = { brilliant_scientist_world_threat_peak_factories = brilliant_scientist_world_threat_current_factories }
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_weaponization_count > brilliant_scientist_world_threat_peak_weaponization_count } }
+			set_variable = { brilliant_scientist_world_threat_peak_weaponization_count = brilliant_scientist_project_weaponization_count }
+		}
+		if = {
+			limit = { is_major = yes }
+			set_country_flag = brilliant_scientist_world_threat_was_major
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = brilliant_scientist_singularity_armed
+					check_variable = {
+						var = brilliant_scientist_singularity_component_count
+						value = constant:brilliant_scientist_world_threat_threshold.late_singularity_components
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			set_country_flag = brilliant_scientist_singularity_late_construction_ever
+		}
+		brilliant_scientist_calculate_world_threat_score = yes
+		brilliant_scientist_evaluate_formation_super_event = yes
+		if = {
+			limit = {
+				brilliant_scientist_world_threat_activation_is_ready = yes
+				NOT = { has_global_flag = world_threat_source_brilliant_scientist }
+			}
+			set_global_flag = world_threat_source_brilliant_scientist
+			set_country_flag = brilliant_scientist_world_threat_active
+			brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+			set_country_flag = brilliant_scientist_world_threat_ever_active
+			set_global_flag = brilliant_scientist_world_threat_ever_active
+			if = {
+				limit = { NOT = { has_variable = brilliant_scientist_world_threat_start_date } }
+				set_variable = { brilliant_scientist_world_threat_start_date = global.date }
+			}
+			save_global_event_target_as = brilliant_scientist_world_threat_actor
+			if = {
+				limit = { NOT = { has_global_flag = brilliant_scientist_super_event_global_threat_fired } }
+				set_global_flag = brilliant_scientist_super_event_global_threat_fired
+				set_variable = { brilliant_scientist_world_threat_reveal_date = global.date }
+				set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.global_kruger_threat }
+				brilliant_scientist_queue_current_super_event = yes
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = world_threat_source_brilliant_scientist
+				brilliant_scientist_world_threat_should_clear = yes
+			}
+			clr_global_flag = world_threat_source_brilliant_scientist
+			clr_country_flag = brilliant_scientist_world_threat_active
+			brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+			set_variable = { brilliant_scientist_world_threat_end_date = global.date }
+			if = {
+				limit = { has_variable = brilliant_scientist_world_threat_start_date }
+				set_variable = { brilliant_scientist_world_threat_duration_days = global.date }
+				subtract_from_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_start_date }
+			}
+		}
+	}
+	refresh_world_threat_state = yes
+}
+
+# ---------------------------------------------------------------------------
+# Qualifying defeat and project-causal aftermath
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_calculate_defeat_qualification_score = {
+	set_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_world_threat_duration_days = global.date }
+	if = {
+		limit = { has_variable = brilliant_scientist_world_threat_start_date }
+		subtract_from_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_start_date }
+	}
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_short_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_short } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_long_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_long } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_epic_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_epic } }
+	if = { limit = { has_country_flag = brilliant_scientist_world_threat_was_major } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.major_power } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_distinct_opponent_count value = constant:brilliant_scientist_defeat_threshold.minimum_opponents compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.opponents } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_major_opponent_count value = constant:brilliant_scientist_defeat_threshold.minimum_major_opponents compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.major_opponents } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_peak_deployed_family_count value = constant:brilliant_scientist_defeat_threshold.minimum_project_families compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.project_families } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_peak_deployed_family_count value = constant:brilliant_scientist_defeat_threshold.high_project_families compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.project_families_high } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_peak_weaponization_count value = constant:brilliant_scientist_defeat_threshold.minimum_weaponization compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.weaponization } }
+	if = { limit = { has_country_flag = brilliant_scientist_singularity_late_construction_ever } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.late_singularity } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_peak_states value = constant:brilliant_scientist_defeat_threshold.minimum_peak_states compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.territorial_peak } }
+	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_peak_factories value = constant:brilliant_scientist_defeat_threshold.minimum_peak_factories compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.industrial_peak } }
+}
+
+# KRG scope. Input: regular COUNTRY target brilliant_scientist_defeat_victor_input.
+brilliant_scientist_activate_defeat_aftermath = {
+	save_global_event_target_as = brilliant_scientist_defeated_state_actor
+	set_global_flag = brilliant_scientist_defeat_aftermath_active
+	set_global_flag = brilliant_scientist_super_event_qualifying_defeat_fired
+	set_country_flag = brilliant_scientist_kruger_state_defeated
+	set_country_flag = brilliant_scientist_qualifying_defeat_recorded
+	set_variable = { brilliant_scientist_qualifying_defeat_date = global.date }
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_defeat_victor_input
+			event_target:brilliant_scientist_defeat_victor_input = { exists = yes }
+		}
+		event_target:brilliant_scientist_defeat_victor_input = {
+			set_country_flag = brilliant_scientist_aftermath_custodian
+			set_country_flag = brilliant_scientist_aftermath_treaty_pending
+			set_country_flag = brilliant_scientist_aftermath_inspections_pending
+			set_country_flag = brilliant_scientist_aftermath_reconstruction_pending
+			set_country_flag = brilliant_scientist_aftermath_remnants_pending
+			set_variable = { brilliant_scientist_aftermath_treaty_progress = constant:brilliant_scientist_aftermath_value.zero }
+			set_variable = { brilliant_scientist_aftermath_inspection_progress = constant:brilliant_scientist_aftermath_value.zero }
+			set_variable = { brilliant_scientist_aftermath_reconstruction_progress = constant:brilliant_scientist_aftermath_value.zero }
+			set_variable = { brilliant_scientist_aftermath_remnant_progress = constant:brilliant_scientist_aftermath_value.zero }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_cloning_deployment_completed check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_clone_population }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_robotics_deployment_completed check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_machine_population }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_paleogenetics_deployment_completed check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_paleogenetic_population }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_xenobiological_synthesis_deployment_completed check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_xenobiological_population }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_teleportation_deployment_completed check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_portal_remnant }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_alien_arms_deployment_completed check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_alien_arms_cache }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_temporal_deployment_completed check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_value.zero } } } } set_country_flag = brilliant_scientist_aftermath_temporal_remnant }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { OR = { has_country_flag = brilliant_scientist_biological_weapons_deployment_completed has_country_flag = brilliant_scientist_biological_weapons_weaponization_completed } } } set_country_flag = brilliant_scientist_aftermath_biological_archive }
+			if = { limit = { event_target:brilliant_scientist_defeated_state_actor = { has_country_flag = brilliant_scientist_singularity_late_construction_ever } } set_country_flag = brilliant_scientist_aftermath_singularity_remnant }
+			# A qualifying defeat can occur without any surviving project population or
+			# archive. Resolve that branch immediately so the treaty cannot deadlock on
+			# hearings that were never created.
+			brilliant_scientist_aftermath_refresh_remnant_completion = yes
+			brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
+			save_global_event_target_as = brilliant_scientist_aftermath_custodian
+			set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.qualifying_defeat }
+			brilliant_scientist_queue_current_super_event = yes
+		}
+	}
+	clr_global_flag = world_threat_source_brilliant_scientist
+	clr_country_flag = brilliant_scientist_world_threat_active
+	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+	refresh_world_threat_state = yes
+}
+
+# KRG scope. Local and regional defeats use the former host as custodian when
+# it survives, otherwise the actual capitulation/annexation victor receives the
+# archive. Unlike a qualifying global crisis, project armies are dismantled
+# immediately and no international treaty system is opened.
+brilliant_scientist_activate_local_or_regional_defeat_aftermath = {
+	save_event_target_as = brilliant_scientist_defeated_state_actor
+	set_country_flag = brilliant_scientist_kruger_state_defeated
+	set_country_flag = brilliant_scientist_local_or_regional_defeat_recorded
+	set_variable = { brilliant_scientist_local_or_regional_defeat_date = global.date }
+	if = {
+		limit = { brilliant_scientist_regional_defeat_is_ready = yes }
+		set_country_flag = brilliant_scientist_regional_defeat_recorded
+		news_event = { id = chaosx.nr16.302 }
+		if = {
+			limit = {
+				has_event_target = brilliant_scientist_kruger_state_former_host_persistent
+				event_target:brilliant_scientist_kruger_state_former_host_persistent = { exists = yes }
+			}
+			event_target:brilliant_scientist_kruger_state_former_host_persistent = { brilliant_scientist_aftermath_prepare_regional_recipient = yes }
+		}
+		else_if = {
+			limit = { has_event_target = brilliant_scientist_defeat_victor_input event_target:brilliant_scientist_defeat_victor_input = { exists = yes } }
+			event_target:brilliant_scientist_defeat_victor_input = { brilliant_scientist_aftermath_prepare_regional_recipient = yes }
+		}
+	}
+	else = {
+		set_country_flag = brilliant_scientist_local_defeat_recorded
+		if = {
+			limit = {
+				has_event_target = brilliant_scientist_kruger_state_former_host_persistent
+				event_target:brilliant_scientist_kruger_state_former_host_persistent = { exists = yes }
+			}
+			event_target:brilliant_scientist_kruger_state_former_host_persistent = { brilliant_scientist_aftermath_prepare_local_recipient = yes }
+		}
+		else_if = {
+			limit = { has_event_target = brilliant_scientist_defeat_victor_input event_target:brilliant_scientist_defeat_victor_input = { exists = yes } }
+			event_target:brilliant_scientist_defeat_victor_input = { brilliant_scientist_aftermath_prepare_local_recipient = yes }
+		}
+	}
+	brilliant_scientist_aftermath_dismantle_project_arsenal = yes
+	clr_global_flag = world_threat_source_brilliant_scientist
+	clr_country_flag = brilliant_scientist_world_threat_active
+	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+	refresh_world_threat_state = yes
+}
+
+# KRG scope. Input is the same optional victor target as above.
+brilliant_scientist_evaluate_defeat_after_global_threat = {
+	if = {
+		limit = {
+			brilliant_scientist_singularity_capitulation_failsafe_is_ready = yes
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+		}
+		set_country_flag = brilliant_scientist_singularity_capitulation_failsafe_triggered
+		brilliant_scientist_execute_singularity_terminal = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+			NOT = { has_country_flag = brilliant_scientist_singularity_capitulation_failsafe_triggered }
+			NOT = { has_country_flag = brilliant_scientist_qualifying_defeat_recorded }
+			NOT = { has_global_flag = world_end }
+		}
+		brilliant_scientist_calculate_defeat_qualification_score = yes
+		if = {
+			limit = { brilliant_scientist_qualifying_defeat_is_ready = yes }
+			brilliant_scientist_activate_defeat_aftermath = yes
+		}
+		else = {
+			brilliant_scientist_activate_local_or_regional_defeat_aftermath = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Laboratory World and Strategic Singularity
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_apply_singularity_prelock_chaos = {
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded } }
+		set_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+		if = {
+			limit = { check_variable = { brilliant_scientist_singularity_chaos_deficit > constant:brilliant_scientist_value.zero } }
+			set_temp_variable = { chaos_change = brilliant_scientist_singularity_chaos_deficit }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.brilliant_scientist_singularity }
+			set_temp_variable = { chaos_history_reason_custom = constant:brilliant_scientist_value.one }
+			save_event_target_as = chaos_history_actor
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+brilliant_scientist_apply_singularity_terminal_consequences = {
+	if = {
+		limit = { NOT = { has_country_flag = brilliant_scientist_singularity_consequences_recorded } }
+		set_country_flag = brilliant_scientist_singularity_consequences_recorded
+		set_temp_variable = { chaos_deaths_change = constant:brilliant_scientist_singularity_consequence.civilian_deaths }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.strategic_singularity }
+		set_temp_variable = { chaos_deaths_is_civilian = constant:brilliant_scientist_value.one }
+		set_temp_variable = { chaos_deaths_target_country = THIS }
+		set_temp_variable = { chaos_deaths_has_target_country = constant:brilliant_scientist_value.one }
+		chaos_meter_register_deaths = yes
+		set_temp_variable = { chaos_deaths_change = constant:brilliant_scientist_singularity_consequence.military_deaths }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.strategic_singularity }
+		set_temp_variable = { chaos_deaths_is_civilian = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { chaos_deaths_target_country = THIS }
+		set_temp_variable = { chaos_deaths_has_target_country = constant:brilliant_scientist_value.one }
+		chaos_meter_register_deaths = yes
+		set_temp_variable = { air_contamination_delta_bp = constant:brilliant_scientist_singularity_consequence.air_contamination_bp }
+		set_temp_variable = { air_contamination_skip_fallout_evaluation = constant:brilliant_scientist_value.one }
+		air_contamination_apply_delta_bp = yes
+		set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
+		set_temp_variable = { condemnation_base_gain = constant:brilliant_scientist_singularity_consequence.condemnation_base }
+		set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+		set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.doomsday }
+		set_temp_variable = { condemnation_civilian_deaths = constant:brilliant_scientist_singularity_consequence.civilian_deaths }
+		set_temp_variable = { condemnation_contamination_value = constant:brilliant_scientist_singularity_consequence.condemnation_contamination }
+		set_temp_variable = { condemnation_context_type = constant:condemnation_context.strategic_singularity }
+		condemnation_add_source = yes
+		set_country_flag = used_unconventional_weapon
+		air_cleanliness_treaty_on_unconventional_use = yes
+	}
+}
+
+brilliant_scientist_schedule_singularity_fallout_retry = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_kruger_state
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+			brilliant_scientist_singularity_scenario_is_enabled = yes
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_retry_pending }
+			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = world_end_disabled }
+			NOT = { has_global_flag = settings_chaos_meter_disabled }
+		}
+		set_country_flag = brilliant_scientist_singularity_fallout_retry_pending
+		set_temp_variable = { brilliant_scientist_singularity_fallout_retry_days = constant:brilliant_scientist_super_event_runtime.fallout_retry_days }
+		country_event = { id = chaosx.nr16.901 days = brilliant_scientist_singularity_fallout_retry_days }
+	}
+}
+
+# KRG scope. The shared Fallout validator calls this before discarding a
+# strategic-singularity request envelope. Pre-lock chaos and consequences keep
+# separate one-time receipts so retries can resubmit without replaying either.
+brilliant_scientist_recover_rejected_singularity_fallout_request = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+		}
+		clr_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+		set_country_flag = brilliant_scientist_singularity_fallout_request_rejected
+		add_to_variable = { brilliant_scientist_singularity_fallout_retry_count = constant:brilliant_scientist_value.one }
+		brilliant_scientist_schedule_singularity_fallout_retry = yes
+	}
+}
+
+brilliant_scientist_execute_singularity_terminal = {
+	brilliant_scientist_prepare_singularity_terminal_commit = yes
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_terminal_commit_ready > constant:brilliant_scientist_value.zero }
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = settings_chaos_meter_disabled }
+		}
+		brilliant_scientist_apply_singularity_prelock_chaos = yes
+		if = {
+			limit = { check_variable = { global.chaos_meter_value > constant:chaos_meter_tier_range.tier_final.min } }
+			if = {
+				limit = { fallout_request_ledger_is_free = yes }
+				brilliant_scientist_apply_singularity_terminal_consequences = yes
+				set_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+				clr_country_flag = brilliant_scientist_singularity_fallout_request_rejected
+				if = {
+					limit = { NOT = { has_variable = brilliant_scientist_singularity_detonation_date } }
+					set_variable = { brilliant_scientist_singularity_detonation_date = global.date }
+				}
+				save_event_target_as = fallout_request_actor_input
+				set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.strategic_singularity }
+				set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.maximum }
+				fallout_request_aftermath = yes
+				if = {
+					limit = {
+						has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+						NOT = { has_global_flag = fallout_request_pending }
+						NOT = { has_global_flag = fallout_request_locked }
+					}
+					brilliant_scientist_recover_rejected_singularity_fallout_request = yes
+				}
+			}
+			else = {
+				brilliant_scientist_schedule_singularity_fallout_retry = yes
+			}
+		}
+	}
+}
+
+# KRG scope. Called only by the source-aware Fallout lock after it owns world_end.
+brilliant_scientist_finalize_singularity_after_fallout_lock = {
+	if = {
+		limit = { brilliant_scientist_singularity_fallout_finalize_is_ready = yes }
+		set_global_flag = world_end_brilliant_scientist_singularity
+		set_variable = { global.world_end_event_id = constant:brilliant_scientist_event.id }
+		brilliant_scientist_mark_singularity_terminal_fired = yes
+		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.strategic_singularity }
+		brilliant_scientist_queue_current_super_event = yes
+		clr_global_flag = world_threat_source_brilliant_scientist
+		refresh_world_threat_state = yes
+		brilliant_scientist_cleanup_transient_targets_after_world_end = yes
+	}
+}
+
+brilliant_scientist_execute_lab_world_terminal = {
+	brilliant_scientist_prepare_lab_world_terminal_commit = yes
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_terminal_commit_ready > constant:brilliant_scientist_value.zero }
+			NOT = { has_global_flag = world_end }
+		}
+		set_global_flag = world_end
+		set_global_flag = world_end_brilliant_scientist_laboratory_world
+		set_variable = { global.world_end_event_id = constant:brilliant_scientist_event.id }
+		set_variable = { brilliant_scientist_lab_world_completion_date = global.date }
+		brilliant_scientist_mark_lab_world_terminal_fired = yes
+		random_faction_cleanup_after_world_end = yes
+		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.laboratory_world }
+		brilliant_scientist_queue_current_super_event = yes
+		clr_global_flag = world_threat_source_brilliant_scientist
+		refresh_world_threat_state = yes
+		brilliant_scientist_cleanup_transient_targets_after_world_end = yes
+	}
+}

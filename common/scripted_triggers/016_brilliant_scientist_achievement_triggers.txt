@@ -1,0 +1,339 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Exact player, role, chronology, portfolio, operational-force, terminal, and
+# aftermath contracts for the seventeen Brilliant Scientist achievements.
+# ============================================================================
+
+brilliant_scientist_achievement_has_unforced_history = {
+	is_ai = no
+	NOT = { has_global_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified }
+	NOT = { has_country_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified }
+}
+
+brilliant_scientist_achievement_kruger_is_active_here = {
+	brilliant_scientist_is_current_host = yes
+	has_character = KRG_warren_kruger
+	NOT = { has_country_flag = brilliant_scientist_kruger_departed }
+	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+	KRG_warren_kruger = { has_character_flag = brilliant_scientist_personal_active }
+}
+
+brilliant_scientist_achievement_actor_has_event_role = {
+	OR = {
+		has_country_flag = brilliant_scientist_host_history
+		brilliant_scientist_is_kruger_sovereign_country = yes
+		has_country_flag = brilliant_scientist_player_remained_with_former_host
+		has_country_flag = brilliant_scientist_aftermath_custodian
+	}
+}
+
+brilliant_scientist_achievement_origin_investigation_actor = {
+	NOT = { has_global_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified }
+	NOT = { has_country_flag = brilliant_scientist_achievement_debug_or_scenario_disqualified }
+	OR = {
+		brilliant_scientist_is_current_host = yes
+		brilliant_scientist_is_kruger_sovereign_country = yes
+	}
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = brilliant_scientist_origin_public_proof_published }
+}
+
+brilliant_scientist_achievement_has_forbidden_weaponization = {
+	brilliant_scientist_has_forbidden_weaponization = yes
+}
+
+brilliant_scientist_achievement_all_impossible_prototypes = {
+	has_country_flag = brilliant_scientist_teleportation_prototype_completed
+	has_country_flag = brilliant_scientist_cloning_prototype_completed
+	has_country_flag = brilliant_scientist_robotics_prototype_completed
+	has_country_flag = brilliant_scientist_paleogenetics_prototype_completed
+	has_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed
+	has_country_flag = brilliant_scientist_biological_weapons_prototype_completed
+	has_country_flag = brilliant_scientist_alien_arms_prototype_completed
+	has_country_flag = brilliant_scientist_temporal_prototype_completed
+	has_country_flag = brilliant_scientist_singularity_prototype_completed
+}
+
+brilliant_scientist_achievement_every_door_domain_prototypes = {
+	OR = {
+		has_country_flag = brilliant_scientist_computation_prototype_completed
+		has_country_flag = brilliant_scientist_electronics_prototype_completed
+	}
+	OR = {
+		has_country_flag = brilliant_scientist_materials_prototype_completed
+		has_country_flag = brilliant_scientist_high_energy_prototype_completed
+		has_country_flag = brilliant_scientist_rocketry_prototype_completed
+	}
+	OR = {
+		has_country_flag = brilliant_scientist_biomedical_prototype_completed
+		has_country_flag = brilliant_scientist_cloning_prototype_completed
+		has_country_flag = brilliant_scientist_paleogenetics_prototype_completed
+		has_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed
+	}
+	OR = {
+		has_country_flag = brilliant_scientist_teleportation_prototype_completed
+		has_country_flag = brilliant_scientist_temporal_prototype_completed
+	}
+	OR = {
+		has_country_flag = brilliant_scientist_robotics_prototype_completed
+		has_country_flag = brilliant_scientist_cloning_prototype_completed
+		has_country_flag = brilliant_scientist_paleogenetics_prototype_completed
+		has_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed
+	}
+	OR = {
+		has_country_flag = brilliant_scientist_biological_weapons_prototype_completed
+		has_country_flag = brilliant_scientist_alien_arms_prototype_completed
+		has_country_flag = brilliant_scientist_singularity_prototype_completed
+	}
+}
+
+brilliant_scientist_achievement_original_laboratories_are_recovered = {
+	any_state = {
+		OR = {
+			has_state_flag = brilliant_scientist_former_primary_facility
+			has_state_flag = brilliant_scientist_former_secondary_facility
+		}
+	}
+	NOT = {
+		any_state = {
+			OR = {
+				has_state_flag = brilliant_scientist_former_primary_facility
+				has_state_flag = brilliant_scientist_former_secondary_facility
+			}
+			NOT = { is_controlled_by = ROOT }
+		}
+	}
+}
+
+brilliant_scientist_achievement_rights_respecting_remnant_settlement = {
+	OR = {
+		NOT = { has_country_flag = brilliant_scientist_aftermath_clone_population }
+		has_country_flag = brilliant_scientist_aftermath_clone_personhood_enacted
+	}
+	OR = {
+		NOT = { has_country_flag = brilliant_scientist_aftermath_machine_population }
+		has_country_flag = brilliant_scientist_aftermath_machine_registry_enacted
+	}
+	OR = {
+		NOT = { has_country_flag = brilliant_scientist_aftermath_paleogenetic_population }
+		has_country_flag = brilliant_scientist_aftermath_paleogenetic_reserve_created
+	}
+	OR = {
+		NOT = { has_country_flag = brilliant_scientist_aftermath_xenobiological_population }
+		has_country_flag = brilliant_scientist_aftermath_xenobiological_asylum_granted
+	}
+	NOT = { has_country_flag = brilliant_scientist_aftermath_clone_sequestration_enacted }
+	NOT = { has_country_flag = brilliant_scientist_aftermath_machine_scrapped }
+	NOT = { has_country_flag = brilliant_scientist_aftermath_paleogenetic_erasure_ordered }
+	NOT = { has_country_flag = brilliant_scientist_aftermath_xenobiological_neutralized }
+}
+
+# ---------------------------------------------------------------------------
+# Seventeen completion contracts
+# ---------------------------------------------------------------------------
+
+brilliant_scientist_achievement_borrowed_century_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	has_country_flag = brilliant_scientist_achievement_host_entry_recorded
+	has_country_flag = brilliant_scientist_achievement_borrowed_century_window
+	brilliant_scientist_achievement_kruger_is_active_here = yes
+	NOT = { has_country_flag = brilliant_scientist_achievement_borrowed_century_electronics_preexisting }
+	has_tech = advanced_computing_machine
+	NOT = { has_country_flag = brilliant_scientist_achievement_borrowed_century_industry_preexisting }
+	OR = { has_tech = advanced_machine_tools has_tech = construction3 }
+	NOT = { has_country_flag = brilliant_scientist_achievement_borrowed_century_rocketry_preexisting }
+	has_tech = rocket_engines
+	NOT = { has_country_flag = brilliant_scientist_achievement_borrowed_century_atomic_preexisting }
+	OR = { has_tech = atomic_research has_tech = nuclear_reactor }
+	NOT = { has_country_flag = brilliant_scientist_achievement_borrowed_century_medicine_preexisting }
+	has_country_flag = brilliant_scientist_biomedical_prototype_completed
+	NOT = { has_country_flag = brilliant_scientist_ever_chartered_kruger_state }
+	NOT = { has_country_flag = brilliant_scientist_ever_lost_kruger_to_foreign_power }
+}
+
+brilliant_scientist_achievement_every_door_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_achievement_actor_has_event_role = yes
+	brilliant_scientist_achievement_every_door_domain_prototypes = yes
+}
+
+brilliant_scientist_achievement_public_method_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_achievement_kruger_is_active_here = yes
+	has_country_flag = brilliant_scientist_public_compact
+	has_country_flag = brilliant_scientist_directorate_publication_completed
+	check_variable = {
+		var = brilliant_scientist_independently_replicated_family_count
+		value = constant:brilliant_scientist_achievement_threshold.public_replication_families
+		compare = greater_than_or_equals
+	}
+	brilliant_scientist_has_low_dependence = yes
+	NOT = { brilliant_scientist_achievement_has_forbidden_weaponization = yes }
+	NOT = { has_country_flag = brilliant_scientist_ever_created_kruger_state_by_rebellion }
+	NOT = { has_country_flag = brilliant_scientist_offensive_biological_weapon_used }
+}
+
+brilliant_scientist_achievement_the_one_who_left_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_achievement_kruger_is_active_here = yes
+	has_country_flag = brilliant_scientist_achievement_deliberate_foreign_recruitment
+	check_variable = {
+		var = brilliant_scientist_project_prototype_count
+		value = brilliant_scientist_achievement_foreign_recruitment_prototype_baseline
+		compare = greater_than
+	}
+	NOT = { has_country_flag = brilliant_scientist_foreign_transfer_race_prevented }
+}
+
+brilliant_scientist_achievement_clean_break_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	has_country_flag = brilliant_scientist_host_history
+	has_country_flag = brilliant_scientist_kruger_departed
+	OR = {
+		has_country_flag = brilliant_scientist_ever_released_kruger
+		has_country_flag = brilliant_scientist_ever_exiled_kruger
+		has_country_flag = brilliant_scientist_ever_shutdown_directorate
+	}
+	check_variable = {
+		var = brilliant_scientist_independently_replicated_family_count
+		value = constant:brilliant_scientist_achievement_threshold.public_replication_families
+		compare = greater_than_or_equals
+	}
+	has_country_flag = brilliant_scientist_directorate_publication_completed
+	NOT = { has_country_flag = brilliant_scientist_kruger_killed }
+	NOT = { has_country_flag = brilliant_scientist_ever_faced_laboratory_uprising }
+	NOT = { has_country_flag = brilliant_scientist_ever_created_kruger_state_by_rebellion }
+	NOT = { has_country_flag = brilliant_scientist_ever_chartered_kruger_state }
+	NOT = { has_country_flag = brilliant_scientist_ever_suffered_institutional_takeover }
+	NOT = { has_country_flag = brilliant_scientist_ever_faced_noncountry_kruger_crisis }
+	NOT = { has_country_flag = brilliant_scientist_ever_lost_kruger_to_foreign_power }
+	NOT = { has_country_flag = brilliant_scientist_offensive_biological_weapon_used }
+}
+
+brilliant_scientist_achievement_approve_everything_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_achievement_kruger_is_active_here = yes
+	brilliant_scientist_achievement_all_impossible_prototypes = yes
+	has_country_flag = brilliant_scientist_evolution_iv_policy_safe_regional_compact
+	has_country_flag = brilliant_scientist_sovereignty_deadline_resolved
+	has_country_flag = brilliant_scientist_control_stable
+	NOT = { has_country_flag = brilliant_scientist_ever_created_kruger_state_by_rebellion }
+	NOT = { has_country_flag = brilliant_scientist_ever_chartered_kruger_state }
+	NOT = { has_country_flag = brilliant_scientist_ever_suffered_institutional_takeover }
+}
+
+brilliant_scientist_achievement_the_former_host_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	has_country_flag = brilliant_scientist_player_remained_with_former_host
+	has_country_flag = brilliant_scientist_achievement_defeated_project_rich_rebellion
+	has_country_flag = brilliant_scientist_achievement_project_arsenal_secured
+	brilliant_scientist_achievement_original_laboratories_are_recovered = yes
+	NOT = { has_country_flag = brilliant_scientist_achievement_nuked_kruger_territory }
+}
+
+brilliant_scientist_achievement_combined_arms_redefined_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_achievement_combined_arms_major_victory
+}
+
+brilliant_scientist_achievement_clever_girl_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_achievement_paleogenetic_major_capital_capture
+}
+
+brilliant_scientist_achievement_the_machine_continues_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_route_machine_ascendancy
+	has_country_flag = brilliant_scientist_machine_population_majority
+	has_country_flag = brilliant_scientist_continuity_machine
+	has_country_flag = brilliant_scientist_machine_network_rule_active
+	has_country_flag = brilliant_scientist_biological_kruger_removed_from_rule
+	has_country_flag = brilliant_scientist_machine_major_war_victory
+	is_subject = no
+}
+
+brilliant_scientist_achievement_population_one_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_route_clone_sovereignty
+	has_country_flag = brilliant_scientist_focus_clone_citizenship_law
+	has_country_flag = brilliant_scientist_focus_clone_property_prohibited
+	has_country_flag = brilliant_scientist_clone_only_population
+	has_country_flag = brilliant_scientist_krg_clone_growth_site_operational
+	has_country_flag = brilliant_scientist_krg_clone_identity_register_active
+	has_country_flag = brilliant_scientist_krg_clone_registry_repaired
+	has_country_flag = brilliant_scientist_krg_clone_property_audit_complete
+	has_country_flag = brilliant_scientist_krg_clone_population_transition_complete
+	check_variable = { var = brilliant_scientist_krg_clone_growth_cycles value = constant:brilliant_scientist_achievement_threshold.clone_growth_cycles compare = greater_than_or_equals }
+	check_variable = { var = brilliant_scientist_project_force_cloning_formation_count value = constant:brilliant_scientist_achievement_threshold.clone_fielded_formations compare = greater_than_or_equals }
+	has_equipment = { support_equipment_1 > constant:brilliant_scientist_achievement_threshold.clone_support_equipment }
+	NOT = { has_country_flag = brilliant_scientist_clone_revolt_ever }
+}
+
+brilliant_scientist_achievement_yesterday_sent_help_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_route_temporal_continuum
+	has_country_flag = brilliant_scientist_temporal_deployment_completed
+	has_country_flag = brilliant_scientist_temporal_capital_or_singularity_danger_recorded
+	has_country_flag = brilliant_scientist_temporal_bounded_intervention_completed
+	has_country_flag = brilliant_scientist_temporal_debt_incurred_by_intervention
+	has_country_flag = brilliant_scientist_temporal_stabilization_completed
+	NOT = { has_country_flag = brilliant_scientist_temporal_civil_war }
+}
+
+brilliant_scientist_achievement_not_from_here_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_achievement_actor_has_event_role = yes
+	has_country_flag = brilliant_scientist_origin_conclusion_locked
+	has_country_flag = brilliant_scientist_origin_extraterrestrial_provenance
+	has_country_flag = brilliant_scientist_origin_evidence_authenticated
+	has_country_flag = brilliant_scientist_origin_public_proof_published
+	check_variable = { brilliant_scientist_origin_conclusion = constant:brilliant_scientist_origin.extraterrestrial_provenance }
+	check_variable = { var = brilliant_scientist_origin_independent_evidence_count value = constant:brilliant_scientist_origin.public_proof_minimum compare = greater_than_or_equals }
+	check_variable = { var = brilliant_scientist_origin_authenticated_source_count value = constant:brilliant_scientist_origin.authenticated_sources_minimum compare = greater_than_or_equals }
+}
+
+brilliant_scientist_achievement_no_second_sun_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	has_country_flag = brilliant_scientist_achievement_no_second_sun_candidate
+	has_country_flag = brilliant_scientist_aftermath_inspections_certified
+	has_country_flag = brilliant_scientist_achievement_project_arsenal_secured
+	NOT = { has_country_flag = brilliant_scientist_achievement_nuked_kruger_territory }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}
+
+brilliant_scientist_achievement_the_last_calculation_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_singularity_capitulation_failsafe_triggered
+	has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+	has_global_flag = world_end_brilliant_scientist_singularity
+	has_global_flag = brilliant_scientist_singularity_terminal_fired
+}
+
+brilliant_scientist_achievement_the_world_is_the_laboratory_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_global_flag = brilliant_scientist_lab_world_terminal_fired
+	has_country_flag = brilliant_scientist_singularity_verified_nonterminal
+	has_global_flag = world_end_brilliant_scientist_laboratory_world
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}
+
+brilliant_scientist_achievement_ordinary_people_won_is_complete = {
+	brilliant_scientist_achievement_has_unforced_history = yes
+	has_country_flag = brilliant_scientist_achievement_rights_settlement_candidate
+	has_country_flag = brilliant_scientist_aftermath_settlement_completed
+	has_country_flag = brilliant_scientist_aftermath_treaty_ratified
+	has_country_flag = brilliant_scientist_aftermath_inspections_certified
+	has_country_flag = brilliant_scientist_aftermath_reconstruction_completed
+	has_country_flag = brilliant_scientist_aftermath_remnants_resolved
+	has_idea = brilliant_scientist_aftermath_countermeasure_exchange
+	has_idea = brilliant_scientist_aftermath_reconstruction_board
+	brilliant_scientist_achievement_rights_respecting_remnant_settlement = yes
+}

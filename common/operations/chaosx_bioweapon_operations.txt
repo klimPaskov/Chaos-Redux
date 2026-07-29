@@ -103,6 +103,7 @@ operation_plant_anthrax_outbreak = {
 
 	visible = {
 		is_special_project_completed = sp:anthrax_bomb
+		bio_kruger_last_resort_authority_is_valid = yes
 		network_national_coverage = { target = FROM value > 0 }
 	}
 	available = {
@@ -196,6 +197,7 @@ operation_plant_plague_outbreak = {
 		has_equipment = { plague_bomb_1 > @BIO_OP_PLAGUE_PAYLOAD_FLOOR }
 		has_equipment = { support_equipment > @BIO_OP_PLAGUE_SUPPORT_FLOOR }
 	}
+		bio_kruger_last_resort_authority_is_valid = yes
 	requirements = {
 		bio_operative_release_can_prepare_against_from = yes
 		FROM = { any_controlled_state = { bio_operative_release_plague_target_state = yes } }
@@ -289,6 +291,7 @@ operation_plant_tularemia_outbreak = {
 	selection_target = { targets = { FROM } }
 	selection_target_state = { bio_operative_release_tularemia_target_state = yes }
 
+		bio_kruger_last_resort_authority_is_valid = yes
 	equipment = {
 		tularemia_bomb_equipment = @BIO_OP_TULAREMIA_PAYLOAD
 		support_equipment = @BIO_OP_TULAREMIA_SUPPORT
@@ -382,6 +385,7 @@ operation_plant_smallpox_outbreak = {
 	return_on_complete = no
 	risk_chance = @BIO_OP_SMALLPOX_RISK
 	experience = @BIO_OP_SMALLPOX_EXPERIENCE
+		bio_kruger_last_resort_authority_is_valid = yes
 	risk_modifiers = { operation_risk }
 
 	ai_will_do = {
@@ -451,7 +455,10 @@ operation_plant_weaponized_zombie_outbreak = {
 		has_country_flag = weaponized_zombies_completed
 		network_national_coverage = { target = FROM value > 0 }
 	}
-	available = { has_weaponized_zombie_raid_payload = yes }
+	available = {
+		bio_kruger_last_resort_authority_is_valid = yes
+		has_weaponized_zombie_raid_payload = yes
+	}
 	requirements = {
 		FROM = { any_controlled_state = { is_weaponized_zombie_raid_target_state = yes } }
 	}
@@ -477,10 +484,12 @@ operation_plant_weaponized_zombie_outbreak = {
 			FROM = { tag = CHI }
 		}
 	}
+		bio_kruger_last_resort_authority_is_valid = yes
 
 	outcome_potential = { custom_effect_tooltip = operation_plant_weaponized_zombie_outcome_tt }
 	outcome_execute = {
 		ROOT = { save_event_target_as = bio_operation_actor }
+		bio_kruger_last_resort_authority_is_valid = yes
 		FROM = { save_event_target_as = bio_operation_victim }
 		set_temp_variable = { bio_operation_infectiousness = constant:bio_operation_plant_outbreak.zombie_default_infectiousness }
 		if = {
@@ -499,6 +508,7 @@ operation_plant_weaponized_zombie_outbreak = {
 			modifier = { ROOT = { has_equipment = { transport_plane_equipment < @BIO_OP_REQUIRED_TRANSPORT_PLANE } } factor = 0 }
 		}
 		infiltration_diplomatic = {
+		modifier = { factor = 0 NOT = { bio_kruger_last_resort_ai_is_valid = yes } }
 			base = @BIO_OP_ZOMBIE_INFILTRATION
 			modifier = { FROM = { has_war_with = ROOT } factor = 0 }
 		}

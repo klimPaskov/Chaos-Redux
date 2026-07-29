@@ -1,0 +1,169 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 KRUGER DIRECTORATE SCRIPTED GUI
+# ============================================================================
+# Read-only decision-category dashboard for the Directorate and the sovereign
+# Kruger State. Ordinary decisions retain every gameplay action, cost, mission,
+# duration, map requirement, and AI path. The GUI owns only view state and calls
+# country-scoped refresh helpers which do not depend on event targets.
+# ============================================================================
+
+scripted_gui = {
+	brilliant_scientist_directorate_scripted_gui = {
+		context_type = decision_category
+		window_name = "kruger_directorate_container"
+
+		ai_enabled = { always = no }
+		visible = {
+			is_ai = no
+			OR = {
+				brilliant_scientist_is_current_host = yes
+				brilliant_scientist_is_kruger_sovereign_country = yes
+			}
+		}
+
+		effects = {
+			kruger_directorate_open_button_click = {
+				clr_country_flag = brilliant_scientist_directorate_gui_collapsed
+				brilliant_scientist_refresh_government_control = yes
+				brilliant_scientist_refresh_project_counts = yes
+				brilliant_scientist_refresh_containment_facility_count = yes
+				brilliant_scientist_refresh_kruger_portrait_stage = yes
+			}
+			kruger_directorate_close_button_click = {
+				set_country_flag = brilliant_scientist_directorate_gui_collapsed
+			}
+			kruger_directorate_refresh_button_click = {
+				brilliant_scientist_refresh_government_control = yes
+				brilliant_scientist_refresh_project_counts = yes
+				brilliant_scientist_refresh_containment_facility_count = yes
+				brilliant_scientist_refresh_kruger_portrait_stage = yes
+			}
+			kruger_directorate_animation_button_click = {
+				if = {
+					limit = { has_country_flag = brilliant_scientist_directorate_gui_animations_disabled }
+					clr_country_flag = brilliant_scientist_directorate_gui_animations_disabled
+				}
+				else = {
+					set_country_flag = brilliant_scientist_directorate_gui_animations_disabled
+				}
+			}
+
+			kruger_directorate_tab_overview_button_click = {
+				set_country_flag = brilliant_scientist_directorate_gui_tab_overview
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_projects
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+			}
+			kruger_directorate_tab_projects_button_click = {
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_overview
+				set_country_flag = brilliant_scientist_directorate_gui_tab_projects
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+			}
+			kruger_directorate_tab_facilities_button_click = {
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_overview
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_projects
+				set_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+			}
+			kruger_directorate_tab_foreign_button_click = {
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_overview
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_projects
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+				set_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+			}
+			kruger_directorate_tab_sovereignty_button_click = {
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_overview
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_projects
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+				clr_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+				set_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+			}
+		}
+
+		triggers = {
+			kruger_directorate_open_button_click_enabled = { always = yes }
+			kruger_directorate_close_button_click_enabled = { always = yes }
+			kruger_directorate_refresh_button_click_enabled = { always = yes }
+			kruger_directorate_animation_button_click_enabled = { always = yes }
+			kruger_directorate_tab_overview_button_click_enabled = { always = yes }
+			kruger_directorate_tab_projects_button_click_enabled = { always = yes }
+			kruger_directorate_tab_facilities_button_click_enabled = { always = yes }
+			kruger_directorate_tab_foreign_button_click_enabled = { always = yes }
+			kruger_directorate_tab_sovereignty_button_click_enabled = { always = yes }
+
+			kruger_directorate_compact_panel_visible = {
+				has_country_flag = brilliant_scientist_directorate_gui_collapsed
+			}
+			kruger_directorate_full_panel_visible = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_collapsed }
+			}
+
+			kruger_directorate_overview_panel_visible = {
+				OR = {
+					has_country_flag = brilliant_scientist_directorate_gui_tab_overview
+					NOR = {
+						has_country_flag = brilliant_scientist_directorate_gui_tab_projects
+						has_country_flag = brilliant_scientist_directorate_gui_tab_facilities
+						has_country_flag = brilliant_scientist_directorate_gui_tab_foreign
+						has_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty
+					}
+				}
+			}
+			kruger_directorate_projects_panel_visible = { has_country_flag = brilliant_scientist_directorate_gui_tab_projects }
+			kruger_directorate_facilities_panel_visible = { has_country_flag = brilliant_scientist_directorate_gui_tab_facilities }
+			kruger_directorate_foreign_panel_visible = { has_country_flag = brilliant_scientist_directorate_gui_tab_foreign }
+			kruger_directorate_sovereignty_panel_visible = { has_country_flag = brilliant_scientist_directorate_gui_tab_sovereignty }
+
+			kruger_directorate_control_warning_animated_visible = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_animations_disabled }
+				OR = {
+					brilliant_scientist_control_is_compromised = yes
+					brilliant_scientist_control_is_lost = yes
+				}
+			}
+			kruger_directorate_control_warning_static_visible = {
+				has_country_flag = brilliant_scientist_directorate_gui_animations_disabled
+				OR = {
+					brilliant_scientist_control_is_compromised = yes
+					brilliant_scientist_control_is_lost = yes
+				}
+			}
+			kruger_directorate_active_project_marker_animated_visible = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_animations_disabled }
+				has_variable = brilliant_scientist_active_project_family
+			}
+			kruger_directorate_active_project_marker_static_visible = {
+				has_country_flag = brilliant_scientist_directorate_gui_animations_disabled
+				has_variable = brilliant_scientist_active_project_family
+			}
+			kruger_directorate_singularity_armed_animated_visible = {
+				NOT = { has_country_flag = brilliant_scientist_directorate_gui_animations_disabled }
+				has_country_flag = brilliant_scientist_singularity_armed
+			}
+			kruger_directorate_singularity_armed_static_visible = {
+				has_country_flag = brilliant_scientist_directorate_gui_animations_disabled
+				has_country_flag = brilliant_scientist_singularity_armed
+			}
+		}
+
+		properties = {
+			kruger_directorate_profile_frame = { image = "[GetBrilliantScientistDirectorateProfileFrameSprite]" }
+			kruger_directorate_portrait = { image = "[GetBrilliantScientistDirectoratePortraitSprite]" }
+			kruger_directorate_mandate_meter = { image = "[GetBrilliantScientistDirectorateMandateSprite]" }
+			kruger_directorate_dependence_meter = { image = "[GetBrilliantScientistDirectorateDependenceSprite]" }
+			kruger_directorate_exposure_meter = { image = "[GetBrilliantScientistDirectorateExposureSprite]" }
+			kruger_directorate_capacity_meter = { image = "[GetBrilliantScientistDirectorateCapacitySprite]" }
+			kruger_directorate_control_frame = { image = "[GetBrilliantScientistDirectorateControlSprite]" }
+			kruger_directorate_project_card = { image = "[GetBrilliantScientistDirectorateProjectCardSprite]" }
+			kruger_directorate_facility_card = { image = "[GetBrilliantScientistDirectorateFacilityCardSprite]" }
+			kruger_directorate_foreign_card = { image = "[GetBrilliantScientistDirectorateForeignCardSprite]" }
+			kruger_directorate_sovereignty_card = { image = "[GetBrilliantScientistDirectorateSovereigntySprite]" }
+			kruger_directorate_singularity_indicator = { image = "[GetBrilliantScientistDirectorateSingularitySprite]" }
+		}
+	}
+}

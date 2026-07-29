@@ -1,0 +1,172 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 SUPER-EVENT, THREAT, AND TERMINAL TRIGGERS
+# ============================================================================
+# Country-scope gates for conditional recognition, meaningful Kruger State
+# formation, global threat activation, qualifying defeat, and terminal safety.
+# ============================================================================
+
+brilliant_scientist_recognition_has_public_anchor = {
+	OR = {
+		has_country_flag = brilliant_scientist_public_reputation_established
+		has_country_flag = brilliant_scientist_research_advantage_exposed
+		has_country_flag = brilliant_scientist_failed_assassination_exposed_program
+	}
+}
+
+brilliant_scientist_recognition_has_international_anchor = {
+	OR = {
+		has_country_flag = brilliant_scientist_joint_laboratory_ever_established
+		has_country_flag = brilliant_scientist_failed_assassination_exposed_program
+		check_variable = {
+			var = brilliant_scientist_foreign_operations_received
+			value = constant:brilliant_scientist_recognition_threshold.minimum_foreign_operations
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_high_interest_foreign_actor_count
+			value = constant:brilliant_scientist_recognition_threshold.minimum_high_interest_actors
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+brilliant_scientist_international_recognition_is_ready = {
+	brilliant_scientist_is_current_host = yes
+	has_global_flag = brilliant_scientist_evolution_ii_chronology_recorded
+	has_country_flag = brilliant_scientist_evolution_ii_unlocked
+	brilliant_scientist_recognition_has_public_anchor = yes
+	brilliant_scientist_recognition_has_international_anchor = yes
+	check_variable = {
+		var = brilliant_scientist_international_recognition_score
+		value = constant:brilliant_scientist_recognition_threshold.minimum_score
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = brilliant_scientist_super_event_international_recognition_fired }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_formation_super_event_is_ready = {
+	brilliant_scientist_is_active_kruger_state = yes
+	NOT = { num_of_controlled_states < constant:brilliant_scientist_formation_super_event_threshold.minimum_controlled_states }
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_world_threat_deployed_family_count
+			value = constant:brilliant_scientist_formation_super_event_threshold.minimum_project_force_families
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_prototype_count
+			value = constant:brilliant_scientist_formation_super_event_threshold.minimum_advanced_project_families
+			compare = greater_than_or_equals
+		}
+		has_country_flag = brilliant_scientist_singularity_prepared_nonterminal
+	}
+	NOT = { has_global_flag = brilliant_scientist_super_event_kruger_state_formation_fired }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_world_threat_has_aggressive_reach = {
+	OR = {
+		has_war = yes
+		has_country_flag = brilliant_scientist_world_conquest_decision_active
+		has_country_flag = brilliant_scientist_submission_demand_issued
+		check_variable = { brilliant_scientist_submission_acceptance_count > constant:brilliant_scientist_value.zero }
+		check_variable = {
+			var = brilliant_scientist_world_threat_current_states
+			value = constant:brilliant_scientist_world_threat_threshold.high_controlled_states
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+brilliant_scientist_world_threat_activation_is_ready = {
+	brilliant_scientist_is_active_kruger_state = yes
+	brilliant_scientist_world_threat_has_aggressive_reach = yes
+	check_variable = {
+		var = brilliant_scientist_global_threat_score
+		value = constant:brilliant_scientist_world_threat_threshold.minimum_score
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_world_threat_current_states
+		value = constant:brilliant_scientist_world_threat_threshold.minimum_controlled_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_world_threat_current_factories
+		value = constant:brilliant_scientist_world_threat_threshold.minimum_factories
+		compare = greater_than_or_equals
+	}
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_world_threat_deployed_family_count
+			value = constant:brilliant_scientist_world_threat_threshold.minimum_deployed_families
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_project_weaponization_count
+			value = constant:brilliant_scientist_world_threat_threshold.minimum_weaponized_families
+			compare = greater_than_or_equals
+		}
+		has_country_flag = brilliant_scientist_singularity_arming_ever_started
+	}
+	NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+	NOT = { has_country_flag = brilliant_scientist_global_weapons_dismantled }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_world_threat_should_clear = {
+	OR = {
+		has_country_flag = brilliant_scientist_durable_settlement_active
+		has_country_flag = brilliant_scientist_global_weapons_dismantled
+		has_country_flag = brilliant_scientist_kruger_state_defeated
+		has_capitulated = yes
+		has_global_flag = world_end
+	}
+}
+
+brilliant_scientist_qualifying_defeat_is_ready = {
+	has_country_flag = brilliant_scientist_world_threat_ever_active
+	check_variable = {
+		var = brilliant_scientist_defeat_qualification_score
+		value = constant:brilliant_scientist_defeat_threshold.minimum_score
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = brilliant_scientist_super_event_qualifying_defeat_fired }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = brilliant_scientist_durable_settlement_active }
+}
+
+brilliant_scientist_regional_defeat_is_ready = {
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_defeat_qualification_score
+			value = constant:brilliant_scientist_defeat_threshold.regional_minimum_score
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_world_threat_peak_states
+			value = constant:brilliant_scientist_defeat_threshold.regional_minimum_peak_states
+			compare = greater_than_or_equals
+		}
+	}
+	NOT = { brilliant_scientist_qualifying_defeat_is_ready = yes }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_singularity_fallout_finalize_is_ready = {
+	has_country_flag = brilliant_scientist_kruger_state
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	has_country_flag = brilliant_scientist_singularity_prelock_chaos_recorded
+	has_country_flag = brilliant_scientist_singularity_consequences_recorded
+	has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+	has_variable = brilliant_scientist_singularity_detonation_date
+	has_global_flag = fallout_request_locked
+	has_global_flag = fallout_transition_active
+	has_global_flag = world_end
+	has_global_flag = world_end_fallout
+	fallout_request_source_is_strategic_singularity = yes
+	has_event_target = fallout_request_actor
+	tag = event_target:fallout_request_actor
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+}

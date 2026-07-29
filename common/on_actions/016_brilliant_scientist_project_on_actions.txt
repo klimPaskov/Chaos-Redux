@@ -32,6 +32,57 @@ on_actions = {
 					save_event_target_as = brilliant_scientist_kruger_state_carrier
 					brilliant_scientist_apply_project_force_package_from_history = yes
 				}
+				if = {
+					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
+					brilliant_scientist_refresh_world_threat_source = yes
+				}
+			}
+			FROM = {
+				if = {
+					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
+					brilliant_scientist_refresh_world_threat_source = yes
+				}
+			}
+		}
+	}
+
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					brilliant_scientist_is_kruger_sovereign_country = yes
+					FROM = { exists = yes }
+				}
+				FROM = { save_event_target_as = brilliant_scientist_world_threat_opponent_input }
+				brilliant_scientist_register_world_threat_opponent = yes
+			}
+			if = {
+				limit = {
+					FROM = { brilliant_scientist_is_kruger_sovereign_country = yes }
+					exists = yes
+				}
+				save_event_target_as = brilliant_scientist_world_threat_opponent_input
+				FROM = { brilliant_scientist_register_world_threat_opponent = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
+				FROM = { save_event_target_as = brilliant_scientist_defeat_victor_input }
+				brilliant_scientist_evaluate_defeat_after_global_threat = yes
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			if = {
+				limit = { FROM = { brilliant_scientist_is_kruger_sovereign_country = yes } }
+				save_event_target_as = brilliant_scientist_defeat_victor_input
+				FROM = { brilliant_scientist_evaluate_defeat_after_global_threat = yes }
 			}
 		}
 	}

@@ -4217,7 +4217,16 @@ add_chaos_meter_value = {
         log = "CHAOS METER: Update blocked - chaos meter is disabled"
     }
     else_if = {
-        limit = { check_variable = { global.chaos_meter_value < constant:chaos_meter_tier_range.tier_final.min } }
+        limit = {
+			OR = {
+				check_variable = { global.chaos_meter_value < constant:chaos_meter_tier_range.tier_final.min }
+				AND = {
+					has_variable = chaos_history_reason
+					check_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.brilliant_scientist_singularity }
+					check_variable = { global.chaos_meter_value < constant:chaos_meter_tier_range.tier_final.plus }
+				}
+			}
+		}
 
         round_temp_variable = chaos_change
 

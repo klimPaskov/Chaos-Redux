@@ -1,0 +1,325 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FOREIGN OPERATIONS DECISIONS
+# ============================================================================
+# Each observer targets only its actor-owned current-host array. Diplomatic
+# offers open immediate host events. Covert routes use timed targeted decisions,
+# one shared actor lock, a host incoming cap, cancellation cleanup, and per-host
+# one-shot ledgers. No decision or mission is activated by a periodic world scan.
+# ============================================================================
+
+brilliant_scientist_foreign_operations_category = {
+	brilliant_scientist_foreign_observe_program = {
+		icon = GFX_decision_infiltrate_state
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_observe_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_observe_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.observation_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.observation_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_observe_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.observation }
+				brilliant_scientist_foreign_start_operation = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_observation_weight }
+	}
+
+	brilliant_scientist_foreign_send_formal_invitation = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_invitation_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_invite_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.formal_invitation_pp
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_invitation_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.formal_invitation }
+				brilliant_scientist_foreign_start_operation = yes
+				save_event_target_as = brilliant_scientist_foreign_operation_actor
+				FROM = {
+					save_event_target_as = brilliant_scientist_foreign_operation_host
+					country_event = { id = chaosx.nr16.100 }
+				}
+			}
+		}
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_invitation_weight }
+	}
+
+	brilliant_scientist_foreign_recruit_assistant = {
+		icon = GFX_decision_generic_research
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_recruitment_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_recruit_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.assistant_recruitment_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.assistant_recruitment_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_recruitment_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assistant_recruitment }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_recruitment_weight }
+	}
+
+	brilliant_scientist_foreign_steal_archive = {
+		icon = GFX_decision_infiltrate_state
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_theft_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_steal_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.archive_theft_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.archive_theft_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_theft_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.archive_theft }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_theft_weight }
+	}
+
+	brilliant_scientist_foreign_sabotage_project = {
+		icon = GFX_decision_infiltrate_state
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_sabotage_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_sabotage_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.project_sabotage_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.project_sabotage_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_sabotage_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.project_sabotage }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_sabotage_weight }
+	}
+
+	brilliant_scientist_foreign_encourage_defection = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_defection_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_encourage_defection_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.encourage_defection_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.encourage_defection_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_defection_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.encourage_defection }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_defection_weight }
+	}
+
+	brilliant_scientist_foreign_extract_kruger = {
+		icon = GFX_decision_infiltrate_state
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_extraction_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_extract_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.extraction_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.extraction_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_extraction_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.extraction }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_extraction_weight }
+	}
+
+	brilliant_scientist_foreign_offer_protection = {
+		icon = GFX_decision_generic_political_discourse
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_protection_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_offer_protection_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.protection_offer_pp
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_offer_protection_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.protection_offer }
+				brilliant_scientist_foreign_start_operation = yes
+				save_event_target_as = brilliant_scientist_foreign_operation_actor
+				FROM = {
+					save_event_target_as = brilliant_scientist_foreign_operation_host
+					country_event = { id = chaosx.nr16.110 }
+				}
+			}
+		}
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_protection_weight }
+	}
+
+	brilliant_scientist_foreign_attempt_assassination = {
+		icon = GFX_decision_infiltrate_state
+		target_array = brilliant_scientist_foreign_host_targets
+		fire_only_once = yes
+		target_root_trigger = {
+			brilliant_scientist_is_valid_foreign_actor = yes
+			brilliant_scientist_foreign_contest_is_active = yes
+			has_country_flag = brilliant_scientist_foreign_contest_observer
+		}
+		target_trigger = { brilliant_scientist_foreign_target_lifecycle_is_valid = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_foreign_assassination_requirements_tt
+				hidden_trigger = { brilliant_scientist_foreign_can_assassinate_target = yes }
+			}
+		}
+		cost = constant:brilliant_scientist_foreign_cost.assassination_attempt_pp
+		days_remove = constant:brilliant_scientist_foreign_duration.assassination_attempt_days
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_foreign_assassination_effect_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assassination_attempt }
+				brilliant_scientist_foreign_start_operation = yes
+				brilliant_scientist_foreign_prepare_project_target = yes
+			}
+		}
+		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_effect = {
+			save_event_target_as = brilliant_scientist_foreign_operation_actor
+			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
+			brilliant_scientist_foreign_cancel_operation = yes
+		}
+		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_assassination_weight }
+	}
+}
