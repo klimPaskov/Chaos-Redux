@@ -6,6 +6,8 @@
 # - Recalculates the connected national pressure model from registered states.
 # - Applies one exclusive monthly Deaths pulse per active state, including
 #   abstract chemical/biological factors without operational instructions.
+# - Routes one-time restricted chemical escalation through the CBRN shared
+#   exposure dispatcher; recurring camp processing remains camp-owned.
 # - Owns cleanup, display caches, bounded GUI arrays, and shared reform hooks.
 # ============================================================================
 
@@ -1445,7 +1447,7 @@ camp_rework_maintain_restricted_method = {
 			set_temp_variable = { camp_method_suppression_days = constant:camp_rework_timing.restricted_method_suppression_days }
 			set_state_flag = {
 				flag = camp_rework_restricted_method_suppression_active
-				days = camp_method_suppression_days
+				days = var:camp_method_suppression_days
 			}
 			if = {
 				limit = { check_variable = { camp_state_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
@@ -1552,7 +1554,7 @@ camp_rework_maintain_restricted_method = {
 			set_temp_variable = { camp_method_suppression_days = constant:camp_rework_timing.restricted_method_suppression_days }
 			set_state_flag = {
 				flag = camp_rework_restricted_method_suppression_active
-				days = camp_method_suppression_days
+				days = var:camp_method_suppression_days
 			}
 			if = {
 				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
@@ -3181,19 +3183,19 @@ camp_rework_gui_pay_political_cost = {
 camp_rework_apply_country_gui_slot_cooldown = {
 	if = {
 		limit = { check_variable = { camp_gui_country_action_slot = 1 } }
-		set_country_flag = { flag = camp_gui_country_action_1_cooldown days = camp_gui_country_action_cooldown_days }
+		set_country_flag = { flag = camp_gui_country_action_1_cooldown days = var:camp_gui_country_action_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_gui_country_action_slot = 2 } }
-		set_country_flag = { flag = camp_gui_country_action_2_cooldown days = camp_gui_country_action_cooldown_days }
+		set_country_flag = { flag = camp_gui_country_action_2_cooldown days = var:camp_gui_country_action_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_gui_country_action_slot = 3 } }
-		set_country_flag = { flag = camp_gui_country_action_3_cooldown days = camp_gui_country_action_cooldown_days }
+		set_country_flag = { flag = camp_gui_country_action_3_cooldown days = var:camp_gui_country_action_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_gui_country_action_slot = 4 } }
-		set_country_flag = { flag = camp_gui_country_action_4_cooldown days = camp_gui_country_action_cooldown_days }
+		set_country_flag = { flag = camp_gui_country_action_4_cooldown days = var:camp_gui_country_action_cooldown_days }
 	}
 }
 
@@ -3587,7 +3589,7 @@ camp_rework_reduce_labor_quotas = {
 	set_temp_variable = { camp_quota_duration_days = constant:camp_rework_timing.idea_medium_days }
 	set_country_flag = {
 		flag = camp_rework_quotas_reduced
-		days = camp_quota_duration_days
+		days = var:camp_quota_duration_days
 	}
 	add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.quota_relief }
 	add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.quota_relief }
@@ -3633,11 +3635,11 @@ camp_rework_apply_site_inspection_in_action_state = {
 	set_temp_variable = { camp_inspection_duration_days = constant:camp_rework_timing.idea_medium_days }
 	set_country_flag = {
 		flag = camp_rework_inspection_active
-		days = camp_inspection_duration_days
+		days = var:camp_inspection_duration_days
 	}
 	add_timed_idea = {
 		idea = camp_rework_site_inspection_burden
-		days = camp_inspection_duration_days
+		days = var:camp_inspection_duration_days
 	}
 	camp_rework_freeze_expansion_for_reform = yes
 	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
@@ -3738,6 +3740,7 @@ camp_rework_gui_apply_selected_chemical_method = {
 			OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
 			NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
 			camp_rework_country_has_chemical_escalation_capacity = yes
+			cbrn_camp_restricted_site_release_is_ready = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
 		}
@@ -3840,7 +3843,7 @@ camp_rework_start_dismantlement = {
 	set_temp_variable = { camp_dismantlement_days = constant:camp_rework_timing.dismantle_days }
 	set_state_flag = {
 		flag = camp_rework_site_dismantlement_in_progress
-		days = camp_dismantlement_days
+		days = var:camp_dismantlement_days
 	}
 	if = {
 		limit = { has_variable = genocide_responsible_country }
@@ -4306,12 +4309,12 @@ camp_rework_resolve_restricted_method_tiers = {
 		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.plague }
 	}
 	else_if = {
-		limit = { camp_rework_country_has_biological_tularemia_activation_capacity = yes }
-		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia }
-	}
-	else_if = {
 		limit = { camp_rework_country_has_biological_anthrax_activation_capacity = yes }
 		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax }
+	}
+	else_if = {
+		limit = { camp_rework_country_has_biological_tularemia_activation_capacity = yes }
+		set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia }
 	}
 
 	set_variable = { display_camp_chemical_killing_efficiency = camp_chemical_killing_efficiency }
@@ -4323,16 +4326,14 @@ camp_rework_prepare_chemical_method_outcome = {
 	set_temp_variable = { camp_method_evidence_gain = 0 }
 	set_temp_variable = { camp_method_accident_pressure = 0 }
 	set_temp_variable = { camp_method_stockpile_cost = 0 }
-	set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.chlorine_dose }
-	set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.chlorine_days }
+	set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.chlorine_days }
 	if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.soman } }
 		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_chemical_factor.soman_deaths }
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.soman_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.soman_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.soman_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.soman_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.soman_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.soman_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.sarin } }
@@ -4340,8 +4341,7 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.sarin_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.sarin_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.sarin_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.sarin_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.sarin_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.sarin_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.tabun } }
@@ -4349,8 +4349,7 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.tabun_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.tabun_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.tabun_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.tabun_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.tabun_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.tabun_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.lewisite } }
@@ -4358,8 +4357,7 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.lewisite_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.lewisite_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.lewisite_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.lewisite_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.lewisite_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.lewisite_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.mustard } }
@@ -4367,8 +4365,7 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.mustard_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.mustard_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.mustard_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.mustard_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.mustard_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.mustard_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.phosgene } }
@@ -4376,8 +4373,7 @@ camp_rework_prepare_chemical_method_outcome = {
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_chemical_factor.phosgene_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_chemical_factor.phosgene_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_chemical_cost.phosgene_cylinders }
-		set_temp_variable = { chem_dose_each = constant:camp_rework_chemical_contamination.phosgene_dose }
-		set_temp_variable = { chem_state_duration_add = constant:camp_rework_chemical_contamination.phosgene_days }
+		set_temp_variable = { cbrn_camp_action_duration_days = constant:camp_rework_chemical_contamination.phosgene_days }
 	}
 	else_if = {
 		limit = { check_variable = { camp_chemical_killing_efficiency = constant:camp_rework_chemical_tier.chlorine } }
@@ -4436,40 +4432,80 @@ camp_rework_apply_chemical_escalation_in_action_state = {
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			check_variable = { camp_chemical_killing_efficiency > constant:camp_rework_chemical_tier.none }
 			var:camp_rework_action_state_id = { camp_rework_state_is_chemical_escalation_target = yes }
+			cbrn_camp_restricted_site_release_is_ready = yes
 		}
 		camp_rework_prepare_chemical_method_outcome = yes
-		camp_rework_consume_chemical_stockpile = yes
-		add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
-		add_to_variable = { camp_policy_resistance_pressure = camp_method_accident_pressure }
-		add_to_variable = { camp_policy_evidence = camp_method_evidence_gain }
-		add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
-		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
-		add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
-		var:camp_rework_action_state_id = {
+		cbrn_reset_action_context = yes
+		cbrn_camp_bind_shared_action_target = yes
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		cbrn_camp_set_chemical_agent_from_tier = yes
+		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.restricted_chemical_site }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.persistent }
+		cbrn_set_default_payload_requirement_for_action = yes
+		set_temp_variable = { cbrn_action_payload_required = camp_method_stockpile_cost }
+		cbrn_try_debit_action_payload = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_action_payload_consumed_proof
+					value = constant:cbrn_proof.supplied
+					compare = equals
+				}
+				check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
+			}
+			cbrn_resolve_action_target_protection = yes
+			cbrn_camp_set_restricted_site_release = yes
+			cbrn_prepare_chemical_action_record = yes
 			if = {
-				limit = { NOT = { has_variable = genocide_responsible_country } }
-				set_variable = { genocide_responsible_country = ROOT }
+				limit = {
+					check_variable = {
+						var = cbrn_action_result
+						value = constant:cbrn_action_result.accepted
+						compare = equals
+					}
+				}
+				cbrn_dispatch_chemical_action_record = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = cbrn_action_dispatch_proof
+							value = constant:cbrn_proof.supplied
+							compare = equals
+						}
+					}
+					add_to_variable = { camp_policy_population_loss = constant:camp_rework_country_value.population_loss_major }
+					add_to_variable = { camp_policy_resistance_pressure = camp_method_accident_pressure }
+					add_to_variable = { camp_policy_evidence = camp_method_evidence_gain }
+					add_to_variable = { camp_policy_visibility = constant:camp_rework_country_value.visibility_major }
+					add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+					add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_major }
+					var:camp_rework_action_state_id = {
+						if = {
+							limit = { NOT = { has_variable = genocide_responsible_country } }
+							set_variable = { genocide_responsible_country = ROOT }
+						}
+						set_state_flag = genocide_site_has_responsible_country
+						clr_state_flag = camp_rework_restricted_method_shortage
+						set_state_flag = genocide_restricted_chemical_site
+						set_state_flag = camp_rework_contaminated_evidence_site
+						set_state_flag = {
+							flag = genocide_restricted_chemical_site_active
+							days = var:cbrn_action_contamination_duration_days
+						}
+						set_state_flag = {
+							flag = camp_rework_chemical_method_active
+							days = var:cbrn_action_contamination_duration_days
+						}
+						set_variable = { camp_state_chemical_killing_efficiency = ROOT.camp_chemical_killing_efficiency }
+						add_to_variable = { camp_state_evidence_depth = camp_method_evidence_gain }
+						add_to_variable = { camp_state_resistance_accumulation = camp_method_accident_pressure }
+						cbrn_camp_record_shared_action_deaths = yes
+						set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
+						camp_rework_register_active_site = yes
+						camp_rework_register_evidence_state = yes
+					}
+				}
 			}
-			set_state_flag = genocide_site_has_responsible_country
-			clr_state_flag = camp_rework_restricted_method_shortage
-			set_state_flag = genocide_restricted_chemical_site
-			set_state_flag = camp_rework_contaminated_evidence_site
-			set_state_flag = {
-				flag = genocide_restricted_chemical_site_active
-				days = chem_state_duration_add
-			}
-			set_state_flag = {
-				flag = camp_rework_chemical_method_active
-				days = chem_state_duration_add
-			}
-			set_variable = { camp_state_chemical_killing_efficiency = ROOT.camp_chemical_killing_efficiency }
-			add_to_variable = { camp_state_evidence_depth = camp_method_evidence_gain }
-			add_to_variable = { camp_state_resistance_accumulation = camp_method_accident_pressure }
-			chem_apply_state_contamination = yes
-			camp_rework_record_latest_state_deaths = yes
-			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
-			camp_rework_register_active_site = yes
-			camp_rework_register_evidence_state = yes
 		}
 		camp_rework_recalculate_country_values = yes
 	}
@@ -4497,18 +4533,18 @@ camp_rework_prepare_biological_method_outcome = {
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_plague }
 	}
 	else_if = {
-		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
-		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.tularemia_deaths }
-		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.tularemia_evidence }
-		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.tularemia_accident }
-		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_tularemia }
-	}
-	else_if = {
 		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
 		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.anthrax_deaths }
 		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.anthrax_evidence }
 		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.anthrax_accident }
 		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_anthrax }
+	}
+	else_if = {
+		limit = { check_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
+		set_temp_variable = { camp_rework_method_death_factor = constant:camp_rework_biological_factor.tularemia_deaths }
+		set_temp_variable = { camp_method_evidence_gain = constant:camp_rework_biological_factor.tularemia_evidence }
+		set_temp_variable = { camp_method_accident_pressure = constant:camp_rework_biological_factor.tularemia_accident }
+		set_temp_variable = { camp_method_stockpile_cost = constant:camp_rework_equipment_cost.biological_tularemia }
 	}
 }
 
@@ -4568,7 +4604,7 @@ camp_rework_apply_biological_escalation_in_action_state = {
 			set_state_flag = camp_rework_contaminated_evidence_site
 			set_state_flag = {
 				flag = camp_rework_biological_method_active
-				days = contamination_days
+				days = var:contamination_days
 			}
 			set_variable = { camp_state_biological_killing_efficiency = ROOT.camp_biological_killing_efficiency }
 			add_to_variable = { camp_state_evidence_depth = camp_method_evidence_gain }
@@ -4576,22 +4612,6 @@ camp_rework_apply_biological_escalation_in_action_state = {
 			if = {
 				limit = { ROOT = { original_tag = JAP } }
 				set_state_flag = genocide_japanese_biowarfare_atrocity_site
-			}
-			if = {
-				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.smallpox } }
-				apply_smallpox_contamination = yes
-			}
-			else_if = {
-				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.plague } }
-				apply_plague_contamination = yes
-			}
-			else_if = {
-				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.tularemia } }
-				apply_tularemia_contamination = yes
-			}
-			else_if = {
-				limit = { check_variable = { camp_state_biological_killing_efficiency = constant:camp_rework_biological_tier.anthrax } }
-				apply_anthrax_contamination = yes
 			}
 			camp_rework_record_latest_state_deaths = yes
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
@@ -4834,7 +4854,7 @@ camp_rework_allocate_additional_guards = {
 	set_temp_variable = { camp_guard_duration_days = constant:camp_rework_timing.idea_medium_days }
 	set_country_flag = {
 		flag = camp_rework_guards_allocated
-		days = camp_guard_duration_days
+		days = var:camp_guard_duration_days
 	}
 	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.guard_relief }
 	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.guard_overstretch }

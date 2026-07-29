@@ -1,5 +1,0 @@
-# Report event art prompt: The Weapons in the Nursery
-
-Create a 1369 by 1149 painterly but grounded Hearts of Iron IV report-event illustration for a fictional Fallout survival story titled The Weapons in the Nursery. Show an empty ash-filtered underground refuge classroom, formerly a child-care room, converted into a guarded armory. Include a sealed rack of old rifles and numbered ammunition tins behind a mesh barrier, faded animal murals and stacked empty cots, two exhausted civilian wardens in patched winter coats checking a handwritten inventory, and a medic carrying a lamp. Frost clings to ventilation pipes, with muted blue-grey light and one warm lamp. No people under eighteen, no readable text, no logos, no gore, no explosions, no flags, and no UI. Make the composition specific to a cold post-fallout settlement and emphasize the moral tension of storing weapons in a former child-care room. Avoid generic wasteland imagery and avoid any reused composition from earlier assets.
-
-The source was generated through the approved image workflow. It is fictional content and does not depict a real person, flag, or attested symbol.

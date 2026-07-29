@@ -17,6 +17,9 @@ bio_disease_modifier = {
 	}
 
 	anthrax = {
+		# Direct state pressure follows the overall weapon ladder:
+		# Tularemia < Anthrax < Plague < Smallpox. Epidemiological fields in
+		# biological_lifecycle_constants.txt remain agent-specific by design.
 		manpower = -0.5
 		resources = -0.3
 		supplies = -0.3
@@ -26,12 +29,14 @@ bio_disease_modifier = {
 	}
 
 	plague = {
-		manpower = -0.9
-		resources = -0.75
-		supplies = -0.9
-		production = -0.75
-		attrition = 0.9
-		speed = -0.9
+		# Plague is stronger than Anthrax but remains below Smallpox in every
+		# shared direct state-pressure field.
+		manpower = -0.65
+		resources = -0.45
+		supplies = -0.55
+		production = -0.45
+		attrition = 0.55
+		speed = -0.50
 	}
 
 	tularemia = {
@@ -189,10 +194,11 @@ bio_operation_plant_outbreak = {
 	# Success roll weights are out of 100.
 	base_success = 15
 	infectiousness_factor = 8
-	anthrax_infectiousness = 2
+	# Ordinary agent identity changes post-release potency, not delivery odds.
+	anthrax_infectiousness = 3
 	plague_infectiousness = 3
 	tularemia_infectiousness = 3
-	smallpox_infectiousness = 5
+	smallpox_infectiousness = 3
 	zombie_default_infectiousness = 1
 	intel_bonus_40 = 5
 	intel_bonus_60 = 10
@@ -239,6 +245,7 @@ bio_operation_plant_outbreak = {
 	tularemia_ai_weight = 0.85
 	smallpox_ai_weight = 1
 	zombie_ai_weight = 0.5
+	disabled_ai_factor = 0
 	retaliation_ai_factor = 4
 	first_use_ai_factor = 2
 	unrestricted_ai_factor = 2.50
@@ -253,6 +260,14 @@ bio_operation_plant_outbreak = {
 	plague_target_profile_ai_factor = 1.50
 	tularemia_target_profile_ai_factor = 1.35
 	smallpox_target_profile_ai_factor = 1.75
+	# These modifiers rank operational risk after the native target and
+	# relationship gates have passed. They do not change delivery odds.
+	target_shared_border_ai_factor = 0.30
+	target_surveillance_ai_factor = 0.50
+	low_attribution_control_ai_factor = 0.50
+	sanction_vulnerability_ai_factor = 0.25
+	target_near_capitulation_ai_factor = 0.50
+	low_attribution_control_threshold = 50
 	desperate_surrender_threshold = 0.70
 }
 

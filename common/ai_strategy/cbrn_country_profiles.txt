@@ -1,0 +1,874 @@
+# ============================================================================
+# CHAOS REDUX - DIFFERENTIATED CBRN COUNTRY-PROFILE AI
+# ============================================================================
+# Overview:
+# - Gives the major and secondary profiles distinct research, medical-support,
+#   and regimental-role preferences while retaining the shared CBRN safety
+#   gates, exact route conditions, and real equipment requirements.
+# - Offensive research in the existing chemical strategy files remains the
+#   source for agent-family preferences. This file supplements it with each
+#   profile's defensive, medical, delivery-support, and biological-response
+#   priorities.
+# - Biological special-project selection remains in
+#   common/special_projects/projects/biowarfare_main_projects.txt, where its
+#   native AI weights enforce the Tularemia < Anthrax < Plague < Smallpox
+#   ladder. This file does not turn a project into a decision or authorize a
+#   delivery route.
+# - AI strategy values are file-local because this context does not parse
+#   shared script-constant values. No strategy below grants equipment, creates
+#   a target, or supplies an unsupported estimator.
+# ============================================================================
+
+@CBRN_PROFILE_RESEARCH_DEFENSIVE = 90
+@CBRN_PROFILE_RESEARCH_MEDICAL = 120
+@CBRN_PROFILE_RESEARCH_FIELD_RESPONSE = 110
+@CBRN_PROFILE_RESEARCH_ARTILLERY = 85
+@CBRN_PROFILE_RESEARCH_DELIVERY = 75
+@CBRN_PROFILE_RESEARCH_BIOLOGICAL = 95
+@CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN = 125
+
+@CBRN_PROFILE_PRODUCTION_DEFENSIVE = 30
+@CBRN_PROFILE_PRODUCTION_MEDICAL = 40
+@CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE = 35
+@CBRN_PROFILE_PRODUCTION_BIOLOGICAL_RESPONSE = 45
+
+@CBRN_PROFILE_ROLE_DEFENSIVE_PROTECTED = 10
+@CBRN_PROFILE_ROLE_DEFENSIVE_ASSAULT = 3
+@CBRN_PROFILE_ROLE_DEFENSIVE_ARTILLERY = 2
+@CBRN_PROFILE_ROLE_DEFENSIVE_ARMORED = 1
+@CBRN_PROFILE_ROLE_DEFENSIVE_CONTAINMENT = 8
+
+@CBRN_PROFILE_ROLE_ARTILLERY_PROTECTED = 8
+@CBRN_PROFILE_ROLE_ARTILLERY_ASSAULT = 4
+@CBRN_PROFILE_ROLE_ARTILLERY_ARTILLERY = 6
+@CBRN_PROFILE_ROLE_ARTILLERY_ARMORED = 2
+@CBRN_PROFILE_ROLE_ARTILLERY_CONTAINMENT = 5
+
+@CBRN_PROFILE_ROLE_ASSAULT_PROTECTED = 5
+@CBRN_PROFILE_ROLE_ASSAULT_ASSAULT = 7
+@CBRN_PROFILE_ROLE_ASSAULT_ARTILLERY = 4
+@CBRN_PROFILE_ROLE_ASSAULT_ARMORED = 5
+@CBRN_PROFILE_ROLE_ASSAULT_CONTAINMENT = 3
+
+@CBRN_PROFILE_ROLE_MEDICAL_PROTECTED = 9
+@CBRN_PROFILE_ROLE_MEDICAL_ASSAULT = 3
+@CBRN_PROFILE_ROLE_MEDICAL_ARTILLERY = 2
+@CBRN_PROFILE_ROLE_MEDICAL_ARMORED = 2
+@CBRN_PROFILE_ROLE_MEDICAL_CONTAINMENT = 10
+
+@CBRN_PROFILE_ROLE_CHINA_PROTECTED = 4
+@CBRN_PROFILE_ROLE_CHINA_ASSAULT = 6
+@CBRN_PROFILE_ROLE_CHINA_ARTILLERY = 2
+@CBRN_PROFILE_ROLE_CHINA_ARMORED = 4
+@CBRN_PROFILE_ROLE_CHINA_CONTAINMENT = 6
+
+@CBRN_PROFILE_ROLE_FRONTIER_PROTECTED = 6
+@CBRN_PROFILE_ROLE_FRONTIER_ASSAULT = 3
+@CBRN_PROFILE_ROLE_FRONTIER_ARTILLERY = 2
+@CBRN_PROFILE_ROLE_FRONTIER_ARMORED = 1
+@CBRN_PROFILE_ROLE_FRONTIER_CONTAINMENT = 5
+
+# --------------------------------------------------------------------------
+# Major-country research profiles
+# --------------------------------------------------------------------------
+
+cbrn_ai_profile_britain_research = {
+	allowed = { cbrn_ai_profile_is_britain = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_has_program = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = rapid_filter_replacement
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+}
+
+cbrn_ai_profile_france_research = {
+	allowed = { cbrn_ai_profile_is_france = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_artillery_shells
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_germany_research = {
+	allowed = { cbrn_ai_profile_is_germany = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_artillery_shells
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = armored_agent_delivery
+		value = @CBRN_PROFILE_RESEARCH_DELIVERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = sealed_tank_crews
+		value = @CBRN_PROFILE_RESEARCH_DELIVERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = sealed_containment_laboratories
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+}
+
+cbrn_ai_profile_soviet_research = {
+	allowed = { cbrn_ai_profile_is_soviet_union = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_artillery_shells
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = sealed_containment_laboratories
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_united_states_research = {
+	allowed = { cbrn_ai_profile_is_united_states = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = fail_safe_containment_facilities
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+}
+
+cbrn_ai_profile_italy_research = {
+	allowed = { cbrn_ai_profile_is_italy = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_artillery_shells
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = livens_projector_tech
+		value = @CBRN_PROFILE_RESEARCH_ARTILLERY
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_japan_research = {
+	allowed = { cbrn_ai_profile_is_japan = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_japan_china_biological_campaign_posture = yes
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = pathogen_handling_protocols
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = sealed_containment_laboratories
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = rapid_outbreak_response
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+# --------------------------------------------------------------------------
+# Defensive-secondary research profiles
+# --------------------------------------------------------------------------
+
+cbrn_ai_profile_commonwealth_research = {
+	allowed = { cbrn_ai_profile_is_commonwealth_reserve = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = improved_gas_masks
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = military_filter_standardization
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_wash_columns
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_frontier_research = {
+	allowed = { cbrn_ai_profile_is_frontier_legacy_industrial = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = chemical_detection_paper
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = pathogen_handling_protocols
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = rapid_outbreak_response
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+}
+
+cbrn_ai_profile_scandinavian_research = {
+	allowed = { cbrn_ai_profile_is_scandinavian_defensive = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = meteorological_stations
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_sampling_laboratories
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_epidemiology_teams
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_chinese_research = {
+	allowed = { cbrn_ai_profile_is_chinese_emergency = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_has_public_chemical_emergency = yes
+			has_active_biowarfare_outbreak = yes
+			has_neighbor_with_active_biowarfare_outbreak = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = pathogen_handling_protocols
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = rapid_outbreak_response
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL_JAPAN
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = mobile_cbrn_hospitals
+		value = @CBRN_PROFILE_RESEARCH_MEDICAL
+	}
+}
+
+cbrn_ai_profile_limited_research = {
+	allowed = { cbrn_ai_profile_is_limited_industrial = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = research_weight_factor
+		id = basic_gas_masks
+		value = @CBRN_PROFILE_RESEARCH_DEFENSIVE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = field_decontamination_kits
+		value = @CBRN_PROFILE_RESEARCH_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = pathogen_handling_protocols
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+	ai_strategy = {
+		type = research_weight_factor
+		id = rapid_outbreak_response
+		value = @CBRN_PROFILE_RESEARCH_BIOLOGICAL
+	}
+}
+
+# --------------------------------------------------------------------------
+# Profile-specific CBRN support production
+# --------------------------------------------------------------------------
+
+cbrn_ai_profile_britain_support_production = {
+	allowed = { cbrn_ai_profile_is_britain = yes }
+	enable = {
+		cbrn_ai_has_civil_defence_priority = yes
+		OR = {
+			cbrn_country_should_produce_regimental_decon = yes
+			cbrn_country_should_produce_regimental_instruments = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_DEFENSIVE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_BIOLOGICAL_RESPONSE
+	}
+}
+
+cbrn_ai_profile_france_support_production = {
+	allowed = { cbrn_ai_profile_is_france = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_civil_defence_priority = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_MEDICAL
+	}
+}
+
+cbrn_ai_profile_germany_support_production = {
+	allowed = { cbrn_ai_profile_is_germany = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_strategic_program_posture = yes
+			cbrn_ai_has_civil_defence_priority = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_DEFENSIVE
+	}
+}
+
+cbrn_ai_profile_soviet_support_production = {
+	allowed = { cbrn_ai_profile_is_soviet_union = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_civil_defence_priority = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_BIOLOGICAL_RESPONSE
+	}
+}
+
+cbrn_ai_profile_united_states_support_production = {
+	allowed = { cbrn_ai_profile_is_united_states = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_ai_has_strategic_program_posture = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_MEDICAL
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_BIOLOGICAL_RESPONSE
+	}
+}
+
+cbrn_ai_profile_italy_support_production = {
+	allowed = { cbrn_ai_profile_is_italy = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_civil_defence_priority = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_DEFENSIVE
+	}
+}
+
+cbrn_ai_profile_japan_support_production = {
+	allowed = { cbrn_ai_profile_is_japan = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_japan_china_biological_campaign_posture = yes
+			cbrn_ai_has_battlefield_program_posture = yes
+			cbrn_ai_has_civil_defence_priority = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_BIOLOGICAL_RESPONSE
+	}
+}
+
+cbrn_ai_profile_secondary_support_production = {
+	allowed = { cbrn_ai_profile_is_defensive_secondary = yes }
+	enable = {
+		OR = {
+			cbrn_ai_has_civil_defence_priority = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			cbrn_country_has_public_chemical_emergency = yes
+			has_active_biowarfare_outbreak = yes
+			has_neighbor_with_active_biowarfare_outbreak = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = decontamination_equipment
+		value = @CBRN_PROFILE_PRODUCTION_DEFENSIVE
+	}
+	ai_strategy = {
+		type = equipment_production_factor
+		id = cbrn_instrument_equipment
+		value = @CBRN_PROFILE_PRODUCTION_FIELD_RESPONSE
+	}
+}
+
+# --------------------------------------------------------------------------
+# Differentiated regimental-role preferences
+# --------------------------------------------------------------------------
+# These preferences are intentionally separate from the exact template gates
+# in cbrn_regimental_support_triggers.txt. A role can be preferred here only
+# after the existing equipment, technology, policy, contamination, outbreak,
+# and target receipts make it fieldable.
+
+cbrn_ai_profile_britain_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_britain = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_DEFENSIVE_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_DEFENSIVE_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_DEFENSIVE_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_DEFENSIVE_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_DEFENSIVE_CONTAINMENT }
+}
+
+cbrn_ai_profile_france_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_france = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_ARTILLERY_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_ARTILLERY_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_ARTILLERY_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_ARTILLERY_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_ARTILLERY_CONTAINMENT }
+}
+
+cbrn_ai_profile_germany_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_germany = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_ASSAULT_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_ASSAULT_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_ASSAULT_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_ASSAULT_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_ASSAULT_CONTAINMENT }
+}
+
+cbrn_ai_profile_soviet_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_soviet_union = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_ARTILLERY_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_ARTILLERY_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_ARTILLERY_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_ARTILLERY_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_ARTILLERY_CONTAINMENT }
+}
+
+cbrn_ai_profile_united_states_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_united_states = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_MEDICAL_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_MEDICAL_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_MEDICAL_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_MEDICAL_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_MEDICAL_CONTAINMENT }
+}
+
+cbrn_ai_profile_italy_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_italy = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_ASSAULT_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_ASSAULT_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_ASSAULT_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_ASSAULT_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_ASSAULT_CONTAINMENT }
+}
+
+cbrn_ai_profile_japan_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_japan = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_CHINA_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_CHINA_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_CHINA_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_CHINA_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_CHINA_CONTAINMENT }
+}
+
+cbrn_ai_profile_secondary_regimental_roles = {
+	allowed = { cbrn_ai_profile_is_defensive_secondary = yes }
+	enable = {
+		OR = {
+			cbrn_country_can_field_protected_template = yes
+			cbrn_country_can_field_chemical_assault_template = yes
+			cbrn_country_can_field_chemical_artillery_template = yes
+			cbrn_country_can_field_armored_delivery_template = yes
+			cbrn_country_can_field_containment_template = yes
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = role_ratio id = cbrn_protected_infantry value = @CBRN_PROFILE_ROLE_FRONTIER_PROTECTED }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_assault value = @CBRN_PROFILE_ROLE_FRONTIER_ASSAULT }
+	ai_strategy = { type = role_ratio id = cbrn_chemical_artillery value = @CBRN_PROFILE_ROLE_FRONTIER_ARTILLERY }
+	ai_strategy = { type = role_ratio id = cbrn_armored_assault value = @CBRN_PROFILE_ROLE_FRONTIER_ARMORED }
+	ai_strategy = { type = role_ratio id = cbrn_containment value = @CBRN_PROFILE_ROLE_FRONTIER_CONTAINMENT }
+}

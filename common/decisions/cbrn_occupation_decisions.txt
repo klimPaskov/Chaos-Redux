@@ -1,0 +1,590 @@
+# ============================================================================
+# CHAOS REDUX - CBRN OCCUPATION DECISIONS
+# ============================================================================
+# Overview:
+# - Authorizes the two accepted occupation laws, runs an exact-state timed
+#   nerve-suppression operation, delivers real population-scaled respirator
+#   aid from a foreign stockpile, and resolves exact-record concealment or
+#   disclosure choices.
+# - Nerve suppression remains fail-closed until a verified current-version
+#   adapter supplies every target-specific condition and target-loss proof.
+# - No decision creates payload, protection, evidence, deaths, contamination,
+#   attribution, or Condemnation directly. The subsystem helpers debit real
+#   stock and call the shared exposure, forensic, and consequence pipelines.
+# ============================================================================
+
+cbrn_occupation_measures_category = {
+	cbrn_authorize_coercive_security = {
+		icon = GFX_decision_cbrn_authorize_coercive_security
+		cost = constant:cbrn_occupation_decision_cost.authorize_coercive_security_pp
+		fire_only_once = yes
+
+		visible = {
+			NOT = { has_country_flag = cbrn_occupation_coercive_security_authorized }
+			cbrn_occupation_coercive_security_authorization_requirements = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_authorize_coercive_security_requirements_tt
+				hidden_trigger = {
+					cbrn_occupation_coercive_security_authorization_requirements = yes
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_authorize_coercive_security_effect_tt
+			hidden_effect = { cbrn_occupation_authorize_coercive_security = yes }
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.authorize_coercive_security
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				NOT = { cbrn_occupation_ai_coercive_route_requirements = yes }
+			}
+		}
+	}
+
+	cbrn_adopt_protected_occupation = {
+		icon = GFX_decision_cbrn_adopt_protected_occupation
+		cost = constant:cbrn_occupation_decision_cost.authorize_protected_administration_pp
+		fire_only_once = yes
+
+		visible = {
+			NOT = { has_country_flag = cbrn_occupation_protected_administration_authorized }
+			cbrn_occupation_protected_administration_authorization_requirements = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_adopt_protected_occupation_requirements_tt
+				hidden_trigger = {
+					cbrn_occupation_protected_administration_authorization_requirements = yes
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_adopt_protected_occupation_effect_tt
+			hidden_effect = { cbrn_occupation_authorize_protected_administration = yes }
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.authorize_protected_administration
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor
+				cbrn_ai_has_defensive_cbrn_profile = yes
+			}
+		}
+	}
+
+	cbrn_nerve_suppression_sarin = {
+		icon = GFX_decision_cbrn_nerve_suppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:cbrn_occupation_timing.operation_preparation_days
+		days_re_enable = constant:cbrn_occupation_timing.state_cooldown_days
+		custom_cost_trigger = {
+			cbrn_occupation_country_has_non_payload_operation_costs = yes
+			cbrn_occupation_country_has_sarin_suppression_stock = yes
+		}
+		custom_cost_text = cbrn_nerve_suppression_operation_cost
+
+		target_root_trigger = {
+			cbrn_occupation_country_can_prepare_nerve_suppression = yes
+			cbrn_occupation_country_has_sarin_suppression_stock = yes
+		}
+
+		target_trigger = {
+			FROM = {
+				cbrn_occupation_state_is_valid_nerve_target = yes
+				NOT = { has_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+				owner = { has_war_with = ROOT }
+			}
+		}
+
+		visible = {
+			cbrn_occupation_country_can_prepare_nerve_suppression = yes
+			cbrn_occupation_country_has_sarin_suppression_stock = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_nerve_suppression_sarin_requirements_tt
+				hidden_trigger = {
+					cbrn_occupation_country_can_prepare_nerve_suppression = yes
+					cbrn_occupation_country_has_sarin_suppression_stock = yes
+					FROM = {
+						cbrn_occupation_state_is_valid_nerve_target = yes
+						NOT = { has_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+						owner = { has_war_with = ROOT }
+					}
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_nerve_suppression_preparation_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = {
+						cbrn_occupation_preparation_days = constant:cbrn_occupation_timing.operation_preparation_days
+					}
+					set_state_flag = {
+						flag = cbrn_occupation_nerve_suppression_preparation_active
+						days = var:cbrn_occupation_preparation_days
+					}
+				}
+			}
+		}
+
+		remove_effect = {
+			custom_effect_tooltip = cbrn_nerve_suppression_sarin_effect_tt
+			hidden_effect = {
+				FROM = {
+					clr_state_flag = cbrn_occupation_nerve_suppression_preparation_active
+					save_event_target_as = cbrn_occupation_target_state
+				}
+				set_variable = { cbrn_occupation_requested_agent = constant:cbrn_agent.sarin }
+				cbrn_occupation_execute_nerve_suppression = yes
+				cbrn_occupation_clear_transient_action_inputs = yes
+			}
+		}
+
+		cancel_trigger = {
+			OR = {
+				NOT = { cbrn_occupation_country_can_prepare_nerve_suppression = yes }
+				NOT = { cbrn_occupation_country_has_sarin_suppression_stock = yes }
+				FROM = {
+					OR = {
+						NOT = { cbrn_occupation_state_is_valid_nerve_target = yes }
+						owner = { NOT = { has_war_with = ROOT } }
+					}
+				}
+			}
+		}
+
+		cancel_effect = {
+			hidden_effect = {
+				FROM = { clr_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.nerve_suppression_sarin
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				NOT = { cbrn_occupation_ai_can_prepare_nerve_suppression = yes }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				FROM = {
+					OR = {
+						NOT = { cbrn_occupation_state_is_ai_target = yes }
+						has_state_flag = cbrn_occupation_compliance_agreement_active
+						has_state_flag = cbrn_occupation_inspection_agreement_active
+					}
+				}
+			}
+		}
+	}
+
+	cbrn_nerve_suppression_soman = {
+		icon = GFX_decision_cbrn_nerve_suppression
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:cbrn_occupation_timing.operation_preparation_days
+		days_re_enable = constant:cbrn_occupation_timing.state_cooldown_days
+		custom_cost_trigger = {
+			cbrn_occupation_country_has_non_payload_operation_costs = yes
+			cbrn_occupation_country_has_soman_suppression_stock = yes
+		}
+		custom_cost_text = cbrn_nerve_suppression_operation_cost
+
+		target_root_trigger = {
+			cbrn_occupation_country_can_prepare_nerve_suppression = yes
+			cbrn_occupation_country_has_soman_suppression_stock = yes
+		}
+
+		target_trigger = {
+			FROM = {
+				cbrn_occupation_state_is_valid_nerve_target = yes
+				NOT = { has_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+				owner = { has_war_with = ROOT }
+			}
+		}
+
+		visible = {
+			cbrn_occupation_country_can_prepare_nerve_suppression = yes
+			cbrn_occupation_country_has_soman_suppression_stock = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_nerve_suppression_soman_requirements_tt
+				hidden_trigger = {
+					cbrn_occupation_country_can_prepare_nerve_suppression = yes
+					cbrn_occupation_country_has_soman_suppression_stock = yes
+					FROM = {
+						cbrn_occupation_state_is_valid_nerve_target = yes
+						NOT = { has_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+						owner = { has_war_with = ROOT }
+					}
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_nerve_suppression_preparation_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = {
+						cbrn_occupation_preparation_days = constant:cbrn_occupation_timing.operation_preparation_days
+					}
+					set_state_flag = {
+						flag = cbrn_occupation_nerve_suppression_preparation_active
+						days = var:cbrn_occupation_preparation_days
+					}
+				}
+			}
+		}
+
+		remove_effect = {
+			custom_effect_tooltip = cbrn_nerve_suppression_soman_effect_tt
+			hidden_effect = {
+				FROM = {
+					clr_state_flag = cbrn_occupation_nerve_suppression_preparation_active
+					save_event_target_as = cbrn_occupation_target_state
+				}
+				set_variable = { cbrn_occupation_requested_agent = constant:cbrn_agent.soman }
+				cbrn_occupation_execute_nerve_suppression = yes
+				cbrn_occupation_clear_transient_action_inputs = yes
+			}
+		}
+
+		cancel_trigger = {
+			OR = {
+				NOT = { cbrn_occupation_country_can_prepare_nerve_suppression = yes }
+				NOT = { cbrn_occupation_country_has_soman_suppression_stock = yes }
+				FROM = {
+					OR = {
+						NOT = { cbrn_occupation_state_is_valid_nerve_target = yes }
+						owner = { NOT = { has_war_with = ROOT } }
+					}
+				}
+			}
+		}
+
+		cancel_effect = {
+			hidden_effect = {
+				FROM = { clr_state_flag = cbrn_occupation_nerve_suppression_preparation_active }
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.nerve_suppression_soman
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				NOT = { cbrn_occupation_ai_can_prepare_nerve_suppression = yes }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				FROM = {
+					OR = {
+						NOT = { cbrn_occupation_state_is_ai_target = yes }
+						has_state_flag = cbrn_occupation_compliance_agreement_active
+						has_state_flag = cbrn_occupation_inspection_agreement_active
+					}
+				}
+			}
+		}
+	}
+
+	cbrn_deploy_protective_aid = {
+		icon = GFX_decision_cbrn_deploy_protective_aid
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_occupation_decision_cost.protective_aid_pp
+		days_remove = constant:cbrn_occupation_timing.protective_aid_days
+		days_re_enable = constant:cbrn_occupation_timing.protective_aid_reenable_days
+		modifier = {
+			civilian_factory_use = constant:cbrn_occupation_decision_cost.protective_aid_factories
+		}
+
+		target_root_trigger = {
+			cbrn_occupation_country_can_supply_external_protective_aid = yes
+		}
+
+		target_trigger = {
+			FROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
+		}
+
+		visible = {
+			cbrn_occupation_country_can_supply_external_protective_aid = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_deploy_protective_aid_requirements_tt
+				hidden_trigger = {
+					cbrn_occupation_country_can_supply_external_protective_aid = yes
+					FROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
+				}
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_deploy_protective_aid_begin_tt
+			hidden_effect = {
+				FROM = {
+					set_temp_variable = {
+						cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days
+					}
+					set_state_flag = {
+						flag = cbrn_occupation_external_aid_project_active
+						days = var:cbrn_occupation_external_aid_days
+					}
+				}
+			}
+		}
+
+		remove_effect = {
+			custom_effect_tooltip = cbrn_deploy_protective_aid_complete_tt
+			hidden_effect = {
+				FROM = {
+					clr_state_flag = cbrn_occupation_external_aid_project_active
+					save_event_target_as = cbrn_occupation_target_state
+				}
+				cbrn_occupation_execute_external_protective_aid = yes
+			}
+		}
+
+		cancel_trigger = {
+			OR = {
+				NOT = { cbrn_occupation_country_can_supply_external_protective_aid = yes }
+				FROM = {
+					OR = {
+						NOT = { state_population_k > constant:cbrn_math.zero }
+						is_core_of = controller
+						is_controlled_by = ROOT
+					}
+				}
+			}
+		}
+
+		cancel_effect = {
+			hidden_effect = {
+				FROM = { clr_state_flag = cbrn_occupation_external_aid_project_active }
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.protective_aid
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_own_core_factor
+				FROM = { is_core_of = ROOT }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_allied_core_factor
+				FROM = { owner = { is_in_faction_with = ROOT } }
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.protective_aid_trauma_factor
+				FROM = {
+					has_variable = cbrn_occupation_nerve_suppression_trauma
+					check_variable = {
+						cbrn_occupation_nerve_suppression_trauma > constant:cbrn_math.zero
+					}
+				}
+			}
+		}
+	}
+
+	cbrn_seal_state = {
+		icon = GFX_decision_cbrn_seal_state
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_occupation_decision_cost.seal_state_pp
+		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
+
+		target_root_trigger = {
+			has_country_flag = cbrn_occupation_nerve_suppression_history
+		}
+
+		target_trigger = {
+			FROM = { cbrn_occupation_state_can_start_coverup = yes }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_seal_state_requirements_tt
+				hidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_seal_state_effect_tt
+			hidden_effect = {
+				FROM = {
+					set_variable = {
+						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.seal_state
+					}
+					cbrn_occupation_apply_requested_coverup_action = yes
+					clear_variable = cbrn_occupation_requested_coverup_action
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.seal_state
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				OR = {
+					has_government = democratic
+					NOT = { cbrn_ai_route_allows_first_use = yes }
+				}
+			}
+		}
+	}
+
+	cbrn_destroy_contaminated_records = {
+		icon = GFX_decision_cbrn_destroy_contaminated_records
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_occupation_decision_cost.destroy_records_pp
+		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
+
+		target_root_trigger = {
+			has_country_flag = cbrn_occupation_nerve_suppression_history
+		}
+
+		target_trigger = {
+			FROM = { cbrn_occupation_state_can_start_coverup = yes }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_destroy_contaminated_records_requirements_tt
+				hidden_trigger = { FROM = { cbrn_occupation_state_can_start_coverup = yes } }
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_destroy_contaminated_records_effect_tt
+			hidden_effect = {
+				FROM = {
+					set_variable = {
+						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.destroy_records
+					}
+					cbrn_occupation_apply_requested_coverup_action = yes
+					clear_variable = cbrn_occupation_requested_coverup_action
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.destroy_records
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.disabled
+				NOT = { cbrn_ai_route_allows_unrestricted_use = yes }
+			}
+		}
+	}
+
+	cbrn_admit_accidental_release = {
+		icon = GFX_decision_cbrn_admit_accidental_release
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_occupation_decision_cost.admit_release_pp
+		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
+
+		target_root_trigger = {
+			has_country_flag = cbrn_occupation_nerve_suppression_history
+		}
+
+		target_trigger = {
+			FROM = { cbrn_occupation_state_can_admit_release = yes }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_admit_accidental_release_requirements_tt
+				hidden_trigger = { FROM = { cbrn_occupation_state_can_admit_release = yes } }
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_admit_accidental_release_effect_tt
+			hidden_effect = {
+				FROM = {
+					set_variable = {
+						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.admit_accident
+					}
+					cbrn_occupation_apply_requested_coverup_action = yes
+					clear_variable = cbrn_occupation_requested_coverup_action
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.admit_release
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor
+				OR = {
+					has_government = democratic
+					cbrn_ai_has_defensive_cbrn_profile = yes
+				}
+			}
+		}
+	}
+
+	cbrn_permit_inspection = {
+		icon = GFX_decision_cbrn_permit_inspection
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		cost = constant:cbrn_occupation_decision_cost.permit_inspection_pp
+		days_re_enable = constant:cbrn_occupation_timing.coverup_reenable_days
+
+		target_root_trigger = {
+			has_country_flag = cbrn_occupation_nerve_suppression_history
+		}
+
+		target_trigger = {
+			FROM = { cbrn_occupation_state_can_permit_inspection = yes }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_permit_inspection_requirements_tt
+				hidden_trigger = { FROM = { cbrn_occupation_state_can_permit_inspection = yes } }
+			}
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = cbrn_permit_inspection_effect_tt
+			hidden_effect = {
+				FROM = {
+					set_variable = {
+						cbrn_occupation_requested_coverup_action = constant:cbrn_occupation_coverup_action.permit_inspection
+					}
+					cbrn_occupation_apply_requested_coverup_action = yes
+					clear_variable = cbrn_occupation_requested_coverup_action
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = constant:cbrn_occupation_decision_ai.permit_inspection
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.defensive_inspection_factor
+				cbrn_ai_has_defensive_cbrn_profile = yes
+			}
+			modifier = {
+				factor = constant:cbrn_occupation_decision_ai.high_condemnation_inspection_factor
+				condemnation_is_formally_censured = yes
+			}
+		}
+	}
+}

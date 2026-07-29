@@ -19,8 +19,7 @@ Last reconciled with the repository source on 2026-07-29.
 13. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
 14. [Chaos Warfare](#chaos-warfare)
 15. [CBRN Command, Protection, and Diplomacy](#cbrn-command-protection-and-diplomacy)
-16. [Major Event-Owned Systems](#major-event-owned-systems)
-17. [Shared Country, UI, and Support Systems](#shared-country-ui-and-support-systems)
+16. [Shared Country, UI, and Support Systems](#shared-country-ui-and-support-systems)
 
 This guide is the top-level map of implemented gameplay. Live script remains authoritative for exact runtime behavior. Accepted specifications describe intended design, while dated plans and handoffs are evidence snapshots. The event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx` remains the complete player-facing catalog for events, clusters, and manual scenarios.
 
@@ -1025,50 +1024,6 @@ The legacy `concentration` occupation-law ID remains hidden and modifier-free fo
 The Nerve Agent Suppression Detachment and exact-state suppression transaction remain fail-closed. The engine does not expose the verified state-condition and target-loss receipts required by the accepted design. Its commissioning and operation controls remain hidden, and no estimator or fallback is used.
 
 Supporting documentation: `docs/systems/cbrn_occupation_and_nerve_suppression.md`.
-
----
-
-## Major Event-Owned Systems
-
-The event catalog contains the complete event list. The table below identifies the numbered events that own substantial persistent systems and records their current implementation boundary.
-
-| ID | Event | Persistent systems | Current status |
-| --- | --- | --- | --- |
-| `1` | Communist Insurgency | State control, sabotage, intervention, insurgency levels, revolutionary escalation | Active |
-| `2` | Zombie Outbreak | State outbreaks, zombie countries, evolutions, Anti-Zombie League, cures, weaponization, terminal routes | Active |
-| `3` | The Holy Realm | Himalayan host, focus tree, Buddhahood, Dhyana, Sangha Compact, Buddha powers, Final Silence ritual content | Active. Automatic public Final Silence terminal registration is retired in favor of Fallout |
-| `4` | Random War | Safe country-pair selection, repeatable declarations, War Contagion escalation | Active |
-| `5` | Soviet Collapse | Union Collapse Threat, republic release, leagues, command and corridors, successor packages | Partial. Its event document records unresolved successor, focus, presentation, and completion work |
-| `6` | Independence Wave | Frozen release transaction, package registry, founding simulation, Networks, Leagues, rival blocs, formables | Partial. Shared core is source-closed, while package capacity and country-specific content remain open |
-| `7` | Fury | Aggressive minor transformation, finite reinforcements, expansion AI, focus and decisions, terminal route | Active |
-| `8` | Tensions Rising | World-tension shocks, diplomatic fever, relation damage, AI posture, follow-up incidents | Active |
-| `9` | White Peace | Safe war selection, dynamic repeatable cap, status-quo settlement, settlement memory | Active |
-| `10` | Death | Hidden island consumption, maritime evidence, coastal reveal, wasteland spread, ghost hosts, Last Shores | Active |
-| `11` | Secret Alliance | Concealed coalition, investigation, reveal, war, settlement, achievements, manual scenario | Active |
-| `12` | Africa | Pan-African formation, charter autonomy, continental focus AI, world-order responses, evolutions | Partial release candidate |
-| `13` | Natural Disasters | Exact-state disasters, warnings, delayed impacts, deaths, aftermath, recovery missions | Active |
-| `14` | Cannibalism | Hunger, Command Integrity, cults, network spread, finite Larder, warlords, convergence, terminal routes | Active |
-| `15` | Utopia Manifesto | Country transformation, society routes, island lease, replacement focus tree, decisions, identities | Complete against its frozen accepted package |
-| `16` | Brilliant Scientist | Doctor Kruger, Directorate, project portfolio, foreign operations, containment, Kruger State, terminal routes | Active core package with additional report, flavor, model, and consumer-validation work open |
-| `17` | Random Faction | Dynamic minor selection, live faction discovery, forced alignment, regional pressure, cascades | Implemented in source and cataloged as Needs Testing |
-| `18` | Resources Found | Persistent resource fields, enrichment, exploitation, cave breach, Oth-Kesh Host, Deep War | Active |
-| `19` | Infantry Spawn | Formation lots, obligation ledgers, claimant pressure, derivative countries, manual scenario | Fully functional in its completion records |
-| `20` | Black Plague | State disease lifecycle, shared response, countermeasures, Rat Nations, Rat King, weaponization | Active. Additional narrative and bespoke 3D assets remain later work |
-| `163` | Doctor Wu | Weighted clinical host, persistent host-transfer API, Black Plague response integration | Active |
-
-Canonical mechanic files are stored under `docs/events/`. The event catalog workbook remains the source of truth for ordinary events that do not require a separate persistent-system summary here.
-
-### Germany, Mengele, and the Tibet Expedition
-
-The Germany Mengele chain is triggered through ordinary HOI4 country conditions rather than the random-event pool. It connects Auschwitz experiments, Mengele autonomy, an Angel of Death civil-war route, Final Solution decisions, a Tibet expedition, cloning projects, camps, Condemnation, Deaths, world threat, and Holy Realm reactions.
-
-Supporting documentation: `docs/events/germany_mengele/overview.md`.
-
-### Fallout Living-World Memories
-
-Fallout owns a separate scheduled country-memory ecosystem with country and state registries, survival resources, cause memory, successor packages, delayed callbacks, and a dedicated Event Log type.
-
-Fallout catalog rows are not normal random events and do not enter the standard event-weight pool.
 
 ---
 

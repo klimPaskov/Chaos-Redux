@@ -22,14 +22,14 @@ The designated state is a secured handling, storage, inspection, and loading com
 
 ## Agent Profiles
 
-| Agent | Overall severity | Canonical strength | Preparation | Command Power | Tactical bombers | Strategic bombers | Payload reservation |
+| Agent | Agent potency tier | Canonical strength | Preparation | Command Power | Tactical bombers | Strategic bombers | Payload reservation |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Tularemia | low | 0.85 | 21 days | 8 | 15 | 5 | 100 Tularemia Bombs |
 | Anthrax | moderate | 1.00 | 28 days | 10 | 25 | 10 | 200 Anthrax Bombs |
 | Plague | serious | 1.15 | 35 days | 15 | 50 | 20 | 100 Plague Bombs |
 | Smallpox | severe | 1.30 | 45 days | 25 | 25 | 10 | 50 Smallpox Bombs |
 
-Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
+Overall weapon strength is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
 
 All four agents use the same native base result factors: 0.50 success, 0.12 critical success, and 0.10 disaster.
 
@@ -51,7 +51,7 @@ Chaos Warfare doctrine may refund part of the Command Power cost after a resolve
 
 ## Six Outcomes
 
-The native raid engine exposes four success levels. The resolver maps them to the accepted six-outcome biological model:
+The native raid engine exposes four operational delivery results. These are not weapon-severity ratings. The resolver maps them to the accepted six-outcome biological model:
 
 1. `failed_delivery`: no release enters the target lifecycle. Investigators can still recover evidence and Condemnation can follow.
 2. `partial_contamination`: a weaker seed enters the selected state and begins incubation.
@@ -102,9 +102,11 @@ AI use passes one common authorization gate and then applies route-aware weighti
 - Shared borders reduce willingness because of blowback.
 - Surveillance, rapid response, integrated control, and active outbreaks reduce target value.
 - Population, capital status, industry, and major-country status increase target value.
-- High Condemnation combined with import vulnerability sharply reduces use unless an authorized unrestricted route is near capitulation.
+- High Condemnation combined with import vulnerability sharply reduces ordinary use.
+- An unrestricted actor under formal censure receives a continuation preference only when a current enemy has crossed the exact near-victory surrender threshold.
+- An actor whose own surrender progress reaches the near-capitulation threshold stops selecting ordinary strategic biological raids.
 
-The ordinary safety floor requires Pathogen Handling Protocols and Rapid Outbreak Response. Desperation can waive that floor only when an unrestricted route already has extreme-use authority and is near capitulation. It cannot create policy authority, projects, payloads, aircraft, or a staging complex.
+The ordinary safety floor requires Pathogen Handling Protocols and Rapid Outbreak Response. The authorization gate retains a desperate safety waiver for an unrestricted route with extreme-use authority, but Stage 10 AI does not select an ordinary raid during the actor's own near-capitulation state. An explicitly authorized doomsday route leaves the separate doomsday decision as the only biological release choice during collapse. Neither route can create policy authority, projects, payloads, aircraft, or a staging complex.
 
 ## Engine Limits
 

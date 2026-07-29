@@ -1,12 +1,13 @@
 # Chemical warfare on_actions:
-# - Relevant-country field-protection snapshots plus leader-daily tooltip and
-#   state-dispersal updates for active cylinder abilities.
-# - Livens support combat contamination (daily) + condemnation updates on combat resolution.
-# - Chemical tank-shell support contamination + condemnation hooks.
+# - Relevant-country field-protection snapshots plus leader-daily tooltip
+#   updates for the retained legacy cylinder UI.
 # - Chaos Assault Battalions are protected formations and never release payload passively.
-# - Exact-state chemical-air-raid handling remains adapter driven; this file
-#   does not estimate ordinary-air activity or run periodic air contamination.
-# - The shared exposure pipeline rejects the unsupported continuous-air route.
+# - Exact-state chemical delivery remains adapter driven; this file does not
+#   estimate a combat target, run periodic contamination, or register chemical
+#   use from combat outcomes.
+# - The old cylinder, Livens, and tank-shell state scans are intentionally not
+#   called here. A future route must provide the selected state, payload debit,
+#   protection proof, and verified conditions to the shared exposure pipeline.
 on_actions = {
 	on_startup = {
 		effect = {
@@ -58,22 +59,9 @@ on_actions = {
 					set_temp_variable = { cbrn_mask_snapshot_refresh_guard_days = constant:cbrn_scheduler.mask_snapshot_refresh_guard_days }
 					set_country_flag = {
 						flag = cbrn_mask_snapshot_refreshed_today
-						days = cbrn_mask_snapshot_refresh_guard_days
+						days = var:cbrn_mask_snapshot_refresh_guard_days
 					}
 				}
-			}
-
-			if = {
-				limit = {
-					OR = {
-						has_trait = chemical_cylinder_active_chlorine
-						has_trait = chemical_cylinder_active_phosgene
-						has_trait = chemical_cylinder_active_mustard
-						has_trait = chemical_cylinder_active_lewisite
-					}
-				}
-				FROM = { save_event_target_as = chem_state_dispersal_owner_country }
-				chem_apply_state_dispersal = yes
 			}
 
 			if = {
@@ -90,91 +78,8 @@ on_actions = {
 				chem_update_cylinder_previews = yes
 			}
 
-			if = {
-				limit = { check_variable = { num_units_in_combat > 0 } }
-				if = {
-					limit = { chem_owner_has_chemical_weapon_tech = yes }
-					FROM = { save_event_target_as = chem_state_dispersal_owner_country }
-
-					if = {
-						limit = { chem_leader_has_chemical_tank_support_battalions = yes }
-						chem_tank_shell_apply_state_dispersal = yes
-					}
-
-					if = {
-						limit = { chem_leader_has_livens_support_battalions = yes }
-						chem_livens_support_apply_state_dispersal = yes
-					}
-
-					# Chaos Assault Battalions are protected formations, not passive
-					# release triggers. Chemical support must prove and debit an
-					# explicitly selected operation payload before dispatch.
-				}
-			}
-		}
-	}
-
-	on_army_leader_won_combat = {
-		effect = {
-			if = {
-				limit = {
-					check_variable = { num_units_offensive_combats > 0 }
-					OR = {
-						has_trait = chemical_cylinder_active_chlorine
-						has_trait = chemical_cylinder_active_phosgene
-						has_trait = chemical_cylinder_active_mustard
-						has_trait = chemical_cylinder_active_lewisite
-					}
-				}
-				FROM = { chem_grant_first_use_surprise = yes }
-			}
-
-			if = {
-				limit = { check_variable = { num_units_offensive_combats > 0 } }
-				if = {
-					limit = { chem_owner_has_chemical_weapon_tech = yes }
-					if = {
-						limit = { chem_leader_has_livens_support_battalions = yes }
-						chem_livens_support_register_combat_condemnation_won = yes
-					}
-					if = {
-						limit = { chem_leader_has_chemical_tank_support_battalions = yes }
-						chem_tank_shell_register_combat_condemnation_won = yes
-					}
-				}
-			}
-		}
-	}
-
-	on_army_leader_lost_combat = {
-		effect = {
-			if = {
-				limit = {
-					check_variable = { num_units_offensive_combats > 0 }
-					OR = {
-						has_trait = chemical_cylinder_active_chlorine
-						has_trait = chemical_cylinder_active_phosgene
-						has_trait = chemical_cylinder_active_mustard
-						has_trait = chemical_cylinder_active_lewisite
-					}
-				}
-				FROM = { chem_grant_first_use_surprise = yes }
-			}
-
-			if = {
-				limit = { check_variable = { num_units_offensive_combats > 0 } }
-				if = {
-					limit = { chem_owner_has_chemical_weapon_tech = yes }
-					if = {
-						limit = { chem_leader_has_livens_support_battalions = yes }
-						chem_livens_support_register_combat_condemnation_lost = yes
-					}
-					if = {
-						limit = { chem_leader_has_chemical_tank_support_battalions = yes }
-						chem_tank_shell_register_combat_condemnation_lost = yes
-					}
-				}
-			}
+			# Combat hooks expose leader/combatant values but no verified selected
+			# target state. No legacy support release is inferred from them.
 		}
 	}
 

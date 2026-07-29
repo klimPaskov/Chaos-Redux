@@ -3,10 +3,11 @@
 # ============================================================================
 # Overview:
 # - Keeps CBRN diplomatic target and cost checks in the CBRN subsystem.
-# - Forensic publication requires one exact unshared state record with a live
-#   recorded actor; it never infers responsibility from country history.
+# - Forensic publication requires one exact open state record; inactive
+#   historical actors remain attributable without successor or proxy effects.
 # - International decontamination requires an exact contaminated state and
-#   prior allied, subject, inspection, or observer consent.
+#   allied, subject, inspection, observer, or humanitarian-corridor access,
+#   then revalidates the recorded relationship until completion.
 # ============================================================================
 
 cbrn_country_can_pay_inspection_demand_cost = {
@@ -111,56 +112,75 @@ cbrn_policy_allows_strategic_use_against_target_id = {
 # chemical action record. This gate runs before payload debit.
 cbrn_chemical_action_policy_allows_exact_target = {
 	has_event_target = cbrn_action_target_state
-	event_target:cbrn_action_target_state = {
-		CONTROLLER = {
-			exists = yes
-			NOT = { tag = ROOT }
-			set_temp_variable = { cbrn_retaliation_target_id = id }
-		}
-	}
-	event_target:cbrn_action_target_state = {
-		CONTROLLER = { has_war_with = ROOT }
-	}
 	OR = {
 		AND = {
-			OR = {
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
-			}
-			check_variable = {
-				var = cbrn_use_policy
-				value = constant:cbrn_use_policy.limited_battlefield_authority
-				compare = greater_than_or_equals
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.restricted_chemical_site compare = equals }
+			ROOT = { cbrn_country_has_operational_readiness = yes }
+			event_target:cbrn_action_target_state = {
+				CONTROLLER = { tag = ROOT }
+				camp_rework_state_is_chemical_escalation_target = yes
 			}
 		}
 		AND = {
-			OR = {
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
-			}
-			check_variable = {
-				var = cbrn_use_policy
-				value = constant:cbrn_use_policy.strategic_release_authority
-				compare = greater_than_or_equals
-			}
-		}
-		AND = {
-			OR = {
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
-				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals }
-			}
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals }
 			cbrn_policy_allows_extreme_use = yes
+			event_target:cbrn_action_target_state = {
+				CONTROLLER = { tag = ROOT }
+			}
 		}
 		AND = {
-			NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
-			NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals } }
-			NOT = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
-			cbrn_country_has_active_retaliation_right_against_target_id = yes
-		}
+			event_target:cbrn_action_target_state = {
+				CONTROLLER = {
+					exists = yes
+					NOT = { tag = ROOT }
+					set_temp_variable = { cbrn_retaliation_target_id = id }
+				}
+			}
+			event_target:cbrn_action_target_state = {
+				CONTROLLER = { has_war_with = ROOT }
+			}
+			OR = {
+				AND = {
+					OR = {
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+					}
+					check_variable = {
+						var = cbrn_use_policy
+						value = constant:cbrn_use_policy.limited_battlefield_authority
+						compare = greater_than_or_equals
+					}
+				}
+				AND = {
+					OR = {
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
+					}
+					check_variable = {
+						var = cbrn_use_policy
+						value = constant:cbrn_use_policy.strategic_release_authority
+						compare = greater_than_or_equals
+					}
+				}
+				AND = {
+					OR = {
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals }
+					}
+					cbrn_policy_allows_extreme_use = yes
+				}
+				AND = {
+					NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
+					NOT = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.doomsday_release compare = equals } }
+					NOT = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
+					cbrn_country_has_active_retaliation_right_against_target_id = yes
+				}
+			}
 	}
+}
 }
 
 # Country scope. ROOT is the demanding participant.
@@ -169,66 +189,26 @@ cbrn_target_can_receive_inspection_demand_from_root = {
 	NOT = { tag = ROOT }
 	NOT = { is_actual_nonhuman_country = yes }
 	condemnation_is_formally_censured = yes
+	is_in_array = {
+		array = condemnation_sanction_participants
+		value = ROOT
+	}
 	NOT = { has_country_flag = condemnation_inspections_active }
 	NOT = { has_country_flag = condemnation_refused_inspection }
 	NOT = { has_country_flag = cbrn_inspection_demand_active }
 	NOT = { has_war_with = ROOT }
+	ROOT = {
+		NOT = { has_country_flag = cbrn_inspection_demand_sender_cooldown }
+	}
 }
 
 cbrn_state_has_shareable_chemical_evidence = {
-	has_variable = cbrn_evidence_quality
-	check_variable = {
-		var = cbrn_evidence_quality
-		value = constant:cbrn_evidence_threshold.suspected
-		compare = greater_than_or_equals
-	}
-	has_variable = cbrn_last_chemical_actor
-	var:cbrn_last_chemical_actor = { exists = yes }
-	has_variable = cbrn_last_chemical_action_date
-	has_variable = cbrn_last_chemical_condemnation_record_date
-	check_variable = {
-		var = cbrn_last_chemical_condemnation_record_date
-		value = cbrn_last_chemical_action_date
-		compare = equals
-	}
-	has_variable = cbrn_last_chemical_condemnation_total
-	has_variable = cbrn_last_chemical_condemnation_paid
-	has_variable = cbrn_last_chemical_condemnation_unpaid
-	check_variable = { cbrn_last_chemical_condemnation_unpaid > constant:cbrn_math.zero }
-	has_variable = cbrn_last_chemical_evidence_applied
-	check_variable = {
-		var = cbrn_last_chemical_evidence_applied
-		value = constant:cbrn_diplomacy_evidence.chemical_sample_minimum
-		compare = greater_than_or_equals
-	}
-	OR = {
-		NOT = { has_variable = cbrn_last_chemical_evidence_shared_action_date }
-		check_variable = {
-			var = cbrn_last_chemical_evidence_shared_action_date
-			value = cbrn_last_chemical_action_date
-			compare = less_than
-		}
-	}
+	has_variable = cbrn_chemical_open_forensic_record_count
+	check_variable = { cbrn_chemical_open_forensic_record_count > constant:cbrn_math.zero }
 }
 
 cbrn_state_has_observable_chemical_evidence = {
-	has_variable = cbrn_evidence_quality
-	check_variable = {
-		var = cbrn_evidence_quality
-		value = constant:cbrn_evidence_threshold.maximum
-		compare = less_than
-	}
-	has_variable = cbrn_last_chemical_actor
-	var:cbrn_last_chemical_actor = { exists = yes }
-	has_variable = cbrn_last_chemical_action_date
-	has_variable = cbrn_last_chemical_condemnation_record_date
-	check_variable = {
-		var = cbrn_last_chemical_condemnation_record_date
-		value = cbrn_last_chemical_action_date
-		compare = equals
-	}
-	has_variable = cbrn_last_chemical_condemnation_unpaid
-	check_variable = { cbrn_last_chemical_condemnation_unpaid > constant:cbrn_math.zero }
+	cbrn_state_has_shareable_chemical_evidence = yes
 }
 
 cbrn_state_has_shareable_anthrax_evidence = {
@@ -342,6 +322,35 @@ cbrn_state_can_receive_international_decontamination_from_root = {
 			is_subject_of = ROOT
 			has_country_flag = condemnation_inspections_active
 			has_country_flag = condemnation_observers_active
+			is_in_array = {
+				array = condemnation_humanitarian_carveout_participants
+				value = ROOT
+			}
+		}
+	}
+}
+
+# State scope. Revalidates the exact provider-recipient relationship recorded
+# when an international decontamination mission began. Entry-only contamination
+# and cooldown requirements are intentionally excluded.
+cbrn_state_retains_international_decontamination_access = {
+	has_variable = cbrn_international_decon_provider
+	var:cbrn_international_decon_provider = { exists = yes }
+	has_variable = cbrn_international_decon_recipient
+	var:cbrn_international_decon_recipient = { exists = yes }
+	CONTROLLER = {
+		tag = var:PREV.cbrn_international_decon_recipient
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = { has_war_with = var:PREV.cbrn_international_decon_provider }
+		OR = {
+			is_in_faction_with = var:PREV.cbrn_international_decon_provider
+			is_subject_of = var:PREV.cbrn_international_decon_provider
+			has_country_flag = condemnation_inspections_active
+			has_country_flag = condemnation_observers_active
+			is_in_array = {
+				array = condemnation_humanitarian_carveout_participants
+				value = var:PREV.cbrn_international_decon_provider
+			}
 		}
 	}
 }

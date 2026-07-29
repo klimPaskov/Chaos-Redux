@@ -1,0 +1,716 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ACHIEVEMENT RECEIPTS
+# ============================================================================
+# Overview:
+# - Records campaign-performance proof for the eleven supported Chaos Warfare
+#   achievements.
+# - Every helper is called by an existing exact action, state transition,
+#   headquarters commitment, protection refresh, facility transaction, or
+#   diplomatic response. No helper runs from a broad country/world pulse.
+# - These receipts never grant an achievement, authorize an operation, change
+#   casualties, suppress evidence, or replace a missing engine hook.
+# - Counters are permanent history. Current-state predicates remain in the
+#   matching scripted trigger so cleanup and sanctions can be evaluated live.
+# ============================================================================
+
+cbrn_achievement_refresh_core_coverage_readiness = {
+	set_temp_variable = { cbrn_achievement_core_state_count = constant:cbrn_achievement_value.zero }
+	set_temp_variable = { cbrn_achievement_core_state_gap = constant:cbrn_achievement_value.zero }
+	every_core_state = {
+		add_to_temp_variable = { cbrn_achievement_core_state_count = constant:cbrn_achievement_value.one }
+		if = {
+			limit = { NOT = { has_state_flag = cbrn_achievement_civilian_coverage_high_history } }
+			add_to_temp_variable = { cbrn_achievement_core_state_gap = constant:cbrn_achievement_value.one }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_achievement_core_state_count
+				value = constant:cbrn_achievement_value.zero
+				compare = greater_than
+			}
+			check_variable = { var = cbrn_achievement_core_state_gap value = constant:cbrn_achievement_value.zero compare = equals }
+		}
+		set_country_flag = cbrn_achievement_all_core_coverage_prepared
+	}
+}
+
+# Country scope. Called by the existing mask snapshot and starting-protection
+# paths. The reserve ratio is measured against deployed mobilisation need, not
+# against a guessed national population.
+cbrn_achievement_record_country_protection_snapshot = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_achievement_max_military_protection } }
+		set_variable = { cbrn_achievement_max_military_protection = constant:cbrn_achievement_value.zero }
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_military_respiratory_protection
+			check_variable = {
+				var = cbrn_military_respiratory_protection
+				value = cbrn_achievement_max_military_protection
+				compare = greater_than
+			}
+		}
+		set_variable = { cbrn_achievement_max_military_protection = cbrn_military_respiratory_protection }
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_military_respiratory_protection
+			check_variable = {
+				var = cbrn_military_respiratory_protection
+				value = constant:cbrn_achievement_threshold.high_military_protection
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = cbrn_achievement_high_military_protection_history
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_military_mask_requirement
+			check_variable = {
+				var = cbrn_military_mask_requirement
+				value = constant:cbrn_achievement_value.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { cbrn_achievement_reserve_ratio = cbrn_mask_reserve_crates }
+		divide_temp_variable = { cbrn_achievement_reserve_ratio = cbrn_military_mask_requirement }
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_achievement_reserve_ratio
+					value = constant:cbrn_achievement_threshold.military_reserve_ratio
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = cbrn_achievement_mask_reserve_ready_history
+		}
+	}
+	cbrn_achievement_refresh_core_coverage_readiness = yes
+}
+
+# State scope. The caller has already refreshed fitting, filter, and model
+# quality into cbrn_civilian_mask_effective_coverage.
+cbrn_achievement_record_state_protection_snapshot = {
+	if = {
+		limit = {
+			has_variable = cbrn_civilian_mask_effective_coverage
+			check_variable = {
+				var = cbrn_civilian_mask_effective_coverage
+				value = constant:cbrn_achievement_threshold.high_civilian_coverage
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = cbrn_achievement_civilian_coverage_high_history
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_civilian_mask_effective_coverage
+			check_variable = {
+				var = cbrn_civilian_mask_effective_coverage
+				value = constant:cbrn_achievement_threshold.near_total_civilian_coverage
+				compare = greater_than_or_equals
+			}
+		}
+		set_state_flag = cbrn_achievement_civilian_coverage_near_total_history
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { set_country_flag = cbrn_achievement_near_total_civilian_coverage_history }
+		}
+	}
+	if = {
+		limit = { CONTROLLER = { exists = yes } }
+		CONTROLLER = {
+			cbrn_achievement_record_country_protection_snapshot = yes
+		}
+	}
+}
+
+# State scope. External mask aid is counted once per recipient country and only
+# when the supplier-recipient relationship is an existing faction relationship.
+# The state flag prevents repeated deliveries to the same state from inflating
+# the ally count.
+cbrn_achievement_record_external_mask_aid = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_external_distribution_proof
+				value = constant:cbrn_proof.supplied
+				compare = equals
+			}
+			NOT = { has_state_flag = cbrn_achievement_external_mask_aid_history }
+			controller = { exists = yes }
+			has_event_target = cbrn_distribution_external_supplier
+			event_target:cbrn_distribution_external_supplier = { exists = yes }
+		}
+		CONTROLLER = {
+			if = {
+				limit = {
+					is_in_faction_with = event_target:cbrn_distribution_external_supplier
+					NOT = { has_country_flag = cbrn_achievement_mask_aid_recipient_history }
+				}
+				set_country_flag = cbrn_achievement_mask_aid_recipient_history
+				save_event_target_as = cbrn_achievement_aid_recipient
+				event_target:cbrn_distribution_external_supplier = {
+					set_temp_variable = { cbrn_achievement_aid_recipient_id = event_target:cbrn_achievement_aid_recipient.id }
+					meta_effect = {
+						text = {
+							if = {
+								limit = { NOT = { has_variable = cbrn_achievement_aid_recipient_[RECIPIENT_ID] } }
+								set_variable = { cbrn_achievement_aid_recipient_[RECIPIENT_ID] = constant:cbrn_achievement_value.one }
+								if = { limit = { NOT = { has_variable = cbrn_achievement_aid_recipient_count } } set_variable = { cbrn_achievement_aid_recipient_count = constant:cbrn_achievement_value.zero } }
+								add_to_variable = { cbrn_achievement_aid_recipient_count = constant:cbrn_achievement_value.one }
+							}
+						}
+						RECIPIENT_ID = "[?cbrn_achievement_aid_recipient_id|.0]"
+					}
+				}
+			}
+		}
+		set_state_flag = cbrn_achievement_external_mask_aid_history
+	}
+}
+
+# Country scope. Called after an accepted shared chemical action has written the
+# validated action record and after Condemnation has resolved attribution.
+cbrn_achievement_record_chemical_action = {
+	set_country_flag = cbrn_achievement_chemical_operation_history
+	if = {
+		limit = { NOT = { has_variable = cbrn_achievement_operation_type_count } }
+		set_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.zero }
+	}
+
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_cylinder_history } }
+		set_country_flag = cbrn_achievement_operation_cylinder_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_projector_history } }
+		set_country_flag = cbrn_achievement_operation_projector_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_artillery_history } }
+		set_country_flag = cbrn_achievement_operation_artillery_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_armored_history } }
+		set_country_flag = cbrn_achievement_operation_armored_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_air_history } }
+		set_country_flag = cbrn_achievement_operation_air_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_strategic_air_history } }
+		set_country_flag = cbrn_achievement_operation_strategic_air_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
+	}
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
+			has_variable = cbrn_action_raid_result
+			OR = {
+				check_variable = { var = cbrn_action_raid_result value = constant:cbrn_chemical_raid_result.success compare = equals }
+				check_variable = { var = cbrn_action_raid_result value = constant:cbrn_chemical_raid_result.catastrophic compare = equals }
+			}
+		}
+		set_country_flag = cbrn_achievement_covert_strategic_result_history
+	}
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals }
+			OR = {
+				check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.probable compare = equals }
+				check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals }
+			}
+		}
+		set_country_flag = cbrn_achievement_covert_discovered_history
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.covert_operation compare = equals } }
+		set_country_flag = cbrn_achievement_covert_operation_history
+		if = { limit = { NOT = { has_variable = cbrn_achievement_covert_operation_count } } set_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.zero } }
+		add_to_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.one }
+		if = { limit = { NOT = { has_variable = cbrn_achievement_first_covert_operation_day } } set_variable = { cbrn_achievement_first_covert_operation_day = global.num_days } }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.food_water_medical_sabotage compare = equals }
+			}
+			check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.success compare = equals }
+		}
+		set_country_flag = cbrn_achievement_covert_strategic_result_history
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
+		set_country_flag = cbrn_achievement_nerve_attack_history
+		if = { limit = { NOT = { has_variable = cbrn_achievement_nerve_military_death_fraction } } set_variable = { cbrn_achievement_nerve_military_death_fraction = constant:cbrn_math.zero } }
+		add_to_variable = { cbrn_achievement_nerve_military_death_fraction = cbrn_action_military_death_fraction }
+		if = { limit = { NOT = { has_variable = cbrn_achievement_nerve_civilian_deaths } } set_variable = { cbrn_achievement_nerve_civilian_deaths = constant:cbrn_math.zero } }
+		add_to_variable = { cbrn_achievement_nerve_civilian_deaths = cbrn_action_civilian_deaths }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
+		set_country_flag = cbrn_achievement_doomsday_use_history
+		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_retaliation_status value = constant:cbrn_retaliation_status.authorized compare = equals }
+				check_variable = { var = cbrn_action_retaliation_status value = constant:cbrn_retaliation_status.proportionate compare = equals }
+			}
+		}
+		set_country_flag = cbrn_achievement_retaliation_action_history
+	}
+	if = {
+		limit = { has_country_flag = cbrn_confirmed_cbrn_first_user_history }
+		set_country_flag = cbrn_achievement_offensive_first_use_history
+	}
+}
+
+# State scope. Records the victim-side consequence of the same accepted
+# chemical action. The actor's own Air Cleanliness receipt is intentionally a
+# separate country value so defensive victims are not charged for another
+# country's release.
+cbrn_achievement_record_chemical_episode = {
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_action_contamination_points
+				value = constant:cbrn_math.zero
+				compare = greater_than
+			}
+		}
+		set_state_flag = cbrn_achievement_chemical_contamination_history
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_action_contamination_points
+					value = constant:cbrn_achievement_threshold.serious_chemical_contamination_points
+					compare = greater_than_or_equals
+				}
+			}
+			set_state_flag = cbrn_achievement_serious_chemical_contamination_history
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = cbrn_action_victim_country
+			event_target:cbrn_action_victim_country = { exists = yes }
+		}
+		event_target:cbrn_action_victim_country = {
+			set_country_flag = cbrn_achievement_enemy_confirmed_chemical_use
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_action_contamination_points
+						value = constant:cbrn_math.zero
+						compare = greater_than
+					}
+				}
+				set_country_flag = cbrn_achievement_received_chemical_attack_history
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_action_contamination_points
+						value = constant:cbrn_achievement_threshold.serious_chemical_contamination_points
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = cbrn_achievement_serious_chemical_contamination_history
+			}
+			if = {
+				limit = { NOT = { has_variable = cbrn_achievement_chemical_civilian_deaths } }
+				set_variable = { cbrn_achievement_chemical_civilian_deaths = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_achievement_chemical_civilian_deaths = cbrn_action_civilian_deaths }
+			if = {
+				limit = { NOT = { has_variable = cbrn_achievement_chemical_military_death_fraction } }
+				set_variable = { cbrn_achievement_chemical_military_death_fraction = constant:cbrn_math.zero }
+			}
+			add_to_variable = { cbrn_achievement_chemical_military_death_fraction = cbrn_action_military_death_fraction }
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_action_military_effective_protection
+						value = constant:cbrn_achievement_threshold.high_military_protection
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = cbrn_action_military_death_fraction
+						value = constant:cbrn_achievement_threshold.low_military_loss_fraction
+						compare = less_than
+					}
+				}
+				set_country_flag = cbrn_achievement_chemical_attack_repelled_history
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = cbrn_action_actor }
+		event_target:cbrn_action_actor = {
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
+						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+					}
+				}
+				if = { limit = { NOT = { has_variable = cbrn_achievement_own_chemical_air_contribution } } set_variable = { cbrn_achievement_own_chemical_air_contribution = constant:cbrn_math.zero } }
+				add_to_variable = { cbrn_achievement_own_chemical_air_contribution = cbrn_action_contamination_points }
+			}
+			if = {
+				limit = {
+					has_country_flag = cbrn_achievement_capstone_used
+					check_variable = {
+						var = cbrn_action_contamination_points
+						value = constant:cbrn_achievement_threshold.minimum_capstone_contamination
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = cbrn_achievement_capstone_contamination_history
+			}
+		}
+	}
+}
+
+# Country scope. Called once for each actual deliberate biological seed, before
+# later incubation, spread, or confirmation can create duplicate use records.
+cbrn_achievement_record_biological_operation = {
+	set_country_flag = cbrn_achievement_biological_operation_history
+	if = {
+		limit = { NOT = { has_variable = cbrn_achievement_operation_type_count } }
+		set_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.zero }
+	}
+	if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_raid_history } }
+		set_country_flag = cbrn_achievement_operation_biological_raid_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.battlefield_dissemination compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_battlefield_history } }
+		set_country_flag = cbrn_achievement_operation_biological_battlefield_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.food_water_medical_sabotage compare = equals }
+			}
+			NOT = { has_country_flag = cbrn_achievement_operation_biological_covert_history }
+		}
+		set_country_flag = cbrn_achievement_operation_biological_covert_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+		set_country_flag = cbrn_achievement_covert_operation_history
+		if = { limit = { NOT = { has_variable = cbrn_achievement_covert_operation_count } } set_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.zero } }
+		add_to_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.one }
+		if = { limit = { NOT = { has_variable = cbrn_achievement_first_covert_operation_day } } set_variable = { cbrn_achievement_first_covert_operation_day = global.num_days } }
+	}
+	if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.field_test_release compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_field_test_history } }
+		set_country_flag = cbrn_achievement_operation_biological_field_test_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.japan_china_campaign compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_japan_campaign_history } }
+		set_country_flag = cbrn_achievement_operation_japan_campaign_history
+		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.doomsday_release compare = equals }
+				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.doomsday compare = equals }
+			}
+		}
+		set_country_flag = cbrn_achievement_doomsday_use_history
+		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
+	}
+}
+
+# Country scope. Confirmation is separate from deliberate-use recording so an
+# accident or an operative capture cannot silently become a first-use receipt.
+cbrn_achievement_record_biological_confirmation = {
+	set_country_flag = cbrn_achievement_confirmed_biological_use_history
+	if = { limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } } set_country_flag = cbrn_achievement_confirmed_anthrax_history }
+	if = { limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } } set_country_flag = cbrn_achievement_confirmed_plague_history }
+	if = { limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } } set_country_flag = cbrn_achievement_confirmed_tularemia_history }
+	if = { limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } } set_country_flag = cbrn_achievement_confirmed_smallpox_history }
+}
+
+# Character scope. A committed HQ package is the receipt for one fully
+# equipped protected formation. The unit-leader flag prevents repeated orders
+# to one commander from pretending to be several armies.
+cbrn_achievement_record_hq_commitment = {
+	if = {
+		limit = { NOT = { has_unit_leader_flag = cbrn_achievement_hq_commitment_history } }
+		set_unit_leader_flag = cbrn_achievement_hq_commitment_history
+		OWNER = {
+			if = { limit = { NOT = { has_variable = cbrn_achievement_hq_commitment_count } } set_variable = { cbrn_achievement_hq_commitment_count = constant:cbrn_achievement_value.zero } }
+			add_to_variable = { cbrn_achievement_hq_commitment_count = constant:cbrn_achievement_value.one }
+			set_country_flag = cbrn_achievement_prepared_hq_history
+		}
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.prepare_chemical_offensive compare = equals } }
+		OWNER = { set_country_flag = cbrn_achievement_prepared_chemical_offensive_history }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals } }
+		OWNER = { set_country_flag = cbrn_achievement_decon_corridor_prepared_history }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals } }
+		OWNER = { set_country_flag = cbrn_achievement_mass_antidote_response_history }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.combined_overmatch compare = equals } }
+		OWNER = {
+			set_country_flag = cbrn_achievement_capstone_used
+			set_country_flag = cbrn_achievement_terminal_capstone_formation_receipt
+			set_variable = { cbrn_achievement_capstone_start_day = global.num_days }
+		}
+	}
+}
+
+# Country scope. Called after a real Condemnation source has been added or a
+# compliance transaction has changed the response state.
+cbrn_achievement_record_condemnation_snapshot = {
+	if = {
+		limit = { NOT = { has_variable = cbrn_achievement_condemnation_peak_tier } }
+		set_variable = { cbrn_achievement_condemnation_peak_tier = constant:condemnation_tier.normal }
+	}
+	if = {
+		limit = {
+			has_variable = condemnation_tier
+			check_variable = { var = condemnation_tier value = cbrn_achievement_condemnation_peak_tier compare = greater_than }
+		}
+		set_variable = { cbrn_achievement_condemnation_peak_tier = condemnation_tier }
+	}
+	if = {
+		limit = {
+			has_variable = condemnation_tier
+			check_variable = { var = condemnation_tier value = constant:cbrn_achievement_threshold.minimum_active_condemnation compare = greater_than_or_equals }
+		}
+		set_country_flag = cbrn_achievement_high_condemnation_history
+	}
+	if = { limit = { condemnation_has_active_sanctions = yes } set_country_flag = cbrn_achievement_active_sanctions_history }
+}
+
+# State scope. The facility recovery raid requires the exact Biosecurity
+# Assault Detachment and the biological-security HQ section in its native unit
+# requirements/success factors. Recording that raid's evidence here preserves
+# the formation proof instead of inferring it from a technology alone.
+	cbrn_achievement_record_facility_evidence = {
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_facility_capture_evidence_amount
+				value = constant:bio_facility_capture_math.zero
+				compare = greater_than
+			}
+			CONTROLLER = { exists = yes }
+		}
+		set_state_flag = cbrn_achievement_facility_capture_history
+		set_state_flag = cbrn_achievement_facility_evidence_preserved_history
+		CONTROLLER = {
+			set_country_flag = cbrn_achievement_facility_capture_history
+			set_country_flag = cbrn_achievement_facility_evidence_preserved_history
+			set_country_flag = cbrn_achievement_facility_responsibility_confirmed_history
+		}
+	}
+}
+
+# Country scope. Called by the resolved stockpile-incident transaction, not by
+# the risk-band preview. A major receipt requires an actual domestic accident
+# severity; bombing, sabotage, and captured-facility release remain distinct.
+cbrn_achievement_record_domestic_bio_accident = {
+	set_country_flag = cbrn_achievement_domestic_accident_history
+	if = {
+		limit = {
+			bio_stockpile_safety_incident_is_ordinary_accident = yes
+			check_variable = {
+				var = bio_stockpile_safety_selected_incident_severity
+				value = constant:bio_stockpile_safety_incident_severity.major_domestic_outbreak
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = cbrn_achievement_major_domestic_accident_history
+	}
+}
+
+# State scope. Called after a biological weekly death delta has been applied.
+cbrn_achievement_record_biological_episode = {
+	if = {
+		limit = { check_variable = { var = bio_current_intensity value = constant:bio_lifecycle_intensity_band.catastrophic_min compare = greater_than_or_equals } }
+		set_state_flag = cbrn_achievement_bio_catastrophic_history
+		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { set_country_flag = cbrn_achievement_bio_catastrophic_history } }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = chaos_deaths_change
+				value = constant:bio_lifecycle_math.zero
+				compare = greater_than
+			}
+		}
+		set_state_flag = cbrn_achievement_bio_death_history
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = {
+				if = { limit = { NOT = { has_variable = cbrn_achievement_bio_civilian_deaths } } set_variable = { cbrn_achievement_bio_civilian_deaths = constant:bio_lifecycle_math.zero } }
+			add_to_variable = { cbrn_achievement_bio_civilian_deaths = chaos_deaths_change }
+			set_country_flag = cbrn_achievement_bio_death_history
+			}
+		}
+	}
+}
+
+# State scope. A recovery receipt is written only after the exact episode is
+# below cleanup thresholds. The country helper then checks that no ordinary
+# episode remains in its owned states and that no foreign spread receipt exists.
+cbrn_achievement_record_biological_recovery = {
+	set_state_flag = cbrn_achievement_bio_recovery_history
+	if = {
+		limit = { CONTROLLER = { exists = yes } }
+		CONTROLLER = { cbrn_achievement_refresh_bio_containment_receipt = yes }
+	}
+}
+
+# Country scope. The accepted national supply threshold is measured from the
+# current truck and train stockpiles against the engine-reported need for each
+# supply-vehicle class. The receipt is written only at exact outbreak recovery;
+# no periodic estimate or state-building proxy is used.
+cbrn_achievement_refresh_bio_containment_receipt = {
+	get_supply_vehicles_temp = {
+		var = cbrn_achievement_current_trucks
+		type = truck
+	}
+	get_supply_vehicles_temp = {
+		var = cbrn_achievement_needed_trucks
+		type = truck
+		need = yes
+	}
+	get_supply_vehicles_temp = {
+		var = cbrn_achievement_current_trains
+		type = train
+	}
+	get_supply_vehicles_temp = {
+		var = cbrn_achievement_needed_trains
+		type = train
+		need = yes
+	}
+	set_temp_variable = { cbrn_achievement_required_trucks = cbrn_achievement_needed_trucks }
+	multiply_temp_variable = { cbrn_achievement_required_trucks = constant:cbrn_achievement_threshold.minimum_supply }
+	set_temp_variable = { cbrn_achievement_required_trains = cbrn_achievement_needed_trains }
+	multiply_temp_variable = { cbrn_achievement_required_trains = constant:cbrn_achievement_threshold.minimum_supply }
+	if = {
+		limit = {
+			has_country_flag = cbrn_achievement_major_domestic_accident_history
+			NOT = { any_owned_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+		}
+		set_country_flag = cbrn_achievement_domestic_accident_contained
+	}
+	if = {
+		limit = {
+			has_country_flag = cbrn_achievement_bio_catastrophic_history
+			NOT = { has_country_flag = cbrn_achievement_foreign_bio_spread_history }
+			NOT = { any_owned_state = { bio_lifecycle_state_has_any_ordinary_episode = yes } }
+			check_variable = { var = cbrn_medical_capacity value = constant:cbrn_achievement_threshold.minimum_medical_capacity compare = greater_than_or_equals }
+			check_variable = { var = stability value = constant:cbrn_achievement_threshold.minimum_stability compare = greater_than_or_equals }
+			check_variable = { var = cbrn_achievement_current_trucks value = cbrn_achievement_required_trucks compare = greater_than_or_equals }
+			check_variable = { var = cbrn_achievement_current_trains value = cbrn_achievement_required_trains compare = greater_than_or_equals }
+		}
+		set_country_flag = cbrn_achievement_outbreak_supply_ready_history
+		set_country_flag = cbrn_achievement_catastrophic_outbreak_contained
+	}
+}
+
+# State scope. Cross-border spread is a separate receipt from deliberate use;
+# it disqualifies an original-country containment achievement even if every
+# original state is later cleaned.
+cbrn_achievement_record_foreign_bio_spread = {
+	if = {
+		limit = {
+			check_variable = { var = bio_spread_cross_border_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals }
+			has_event_target = bio_seed_victim
+		}
+		event_target:bio_seed_victim = { set_country_flag = cbrn_achievement_foreign_bio_spread_history }
+	}
+}
+
+# Country scope. Used by explicit condemnation-response transactions.
+cbrn_achievement_record_inspection_acceptance = {
+	set_country_flag = cbrn_achievement_inspection_accepted_history
+	set_country_flag = cbrn_achievement_inspection_credible_history
+}
+
+cbrn_achievement_record_stockpile_destruction = {
+	set_country_flag = cbrn_achievement_offensive_stockpile_destroyed_history
+	set_country_flag = cbrn_achievement_program_dismantled_history
+}
+
+# State scope. Called by the accepted nerve-suppression state receipt.
+cbrn_achievement_record_nerve_response = {
+	set_state_flag = cbrn_achievement_nerve_attack_state_history
+	if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_attack_history } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_military_effective_protection value = constant:cbrn_achievement_threshold.high_military_protection compare = greater_than_or_equals }
+				check_variable = { var = cbrn_action_civilian_effective_protection value = constant:cbrn_achievement_threshold.high_military_protection compare = greater_than_or_equals }
+			}
+		}
+		set_state_flag = cbrn_achievement_nerve_advanced_protection_history
+		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_advanced_protection_history } }
+	}
+	if = {
+		limit = {
+			has_variable = cbrn_occupation_paid_decontamination_equipment
+			check_variable = {
+				var = cbrn_occupation_paid_decontamination_equipment
+				value = constant:cbrn_math.zero
+				compare = greater_than
+			}
+		}
+		set_state_flag = cbrn_achievement_nerve_decontamination_history
+		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_decontamination_history } }
+	}
+	if = {
+		limit = { OWNER = { exists = yes } }
+		OWNER = {
+			if = {
+				limit = {
+					OR = {
+						has_tech = antidote_production
+						has_tech = mobile_cbrn_hospitals
+						check_variable = { var = cbrn_medical_capacity value = constant:cbrn_achievement_threshold.minimum_medical_capacity compare = greater_than_or_equals }
+					}
+				}
+				set_country_flag = cbrn_achievement_nerve_medical_response_history
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_military_death_fraction value = constant:cbrn_achievement_threshold.low_nerve_military_loss_fraction compare = less_than }
+			check_variable = { var = cbrn_action_civilian_deaths value = constant:cbrn_achievement_threshold.low_nerve_civilian_deaths compare = less_than }
+		}
+		set_state_flag = cbrn_achievement_nerve_low_death_history
+		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_low_death_history } }
+	}
+}

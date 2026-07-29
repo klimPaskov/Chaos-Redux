@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - CBRN BATTLEFIELD OPERATION RECOVERY EVENTS
+# ============================================================================
+# Overview:
+# - Restores Chemical Readiness spent by exact-state ground operations after a
+#   bounded recovery interval.
+# - The event is scheduled by an operation commitment, not by an on_action or
+#   world-wide periodic pulse. If another operation is committed before the
+#   queued recovery date, the due date moves out and the same event reschedules
+#   itself for the newer ledger.
+# - Pending recovery is stored on the acting country and never grants payload,
+#   Command Power, equipment, permission, or a delivery result.
+# ============================================================================
+
+add_namespace = cbrn_battlefield
+
+country_event = {
+	id = cbrn_battlefield.1
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = cbrn_battlefield_readiness_recovery_event_pending
+		has_variable = cbrn_battlefield_readiness_recovery_due_day
+		has_variable = cbrn_battlefield_pending_readiness_recovery
+	}
+	immediate = {
+		set_temp_variable = { cbrn_battlefield_recovery_due_day = cbrn_battlefield_readiness_recovery_due_day }
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_battlefield_recovery_due_day
+					value = global.num_days
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { cbrn_battlefield_recovery_wait_days = cbrn_battlefield_recovery_due_day }
+			subtract_from_temp_variable = { cbrn_battlefield_recovery_wait_days = global.num_days }
+			country_event = { id = cbrn_battlefield.1 days = cbrn_battlefield_recovery_wait_days }
+		}
+		else = {
+			set_temp_variable = { cbrn_readiness_delta = cbrn_battlefield_pending_readiness_recovery }
+			cbrn_modify_chemical_readiness = yes
+			clear_variable = cbrn_battlefield_pending_readiness_recovery
+			clear_variable = cbrn_battlefield_readiness_recovery_due_day
+			clear_country_flag = cbrn_battlefield_readiness_recovery_event_pending
+		}
+	}
+}

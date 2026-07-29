@@ -1,13 +1,17 @@
 # ============================================================================
-# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE SCRIPTED EFFECTS
+# CHAOS REDUX - BIOLOGICAL SUPPLY-CHAIN SABOTAGE SHARED EFFECTS
 # ============================================================================
 # Overview:
-# - Starts and resolves exact-state covert contamination of public food, water,
-#   and medical supply chains for the four ordinary biological agents.
+# - Retains the exact-state lifecycle, evidence, attribution, and consequence
+#   helpers used by the public food, water, and medical-chain route.
 # - Debits one exact payload model, support_equipment_1, and Command Power at
-#   commitment. Payload and support equipment are never refunded.
+#   commitment for the legacy timed-operation contract. Payload and support
+#   equipment are never refunded.
 # - Sends every proven release through the shared ordinary biological lifecycle
 #   and records failed or cancelled attempts without fabricating weapon use.
+# - The live ordinary deployment surface is the exact-state covert decision
+#   family below. Strategic and battlefield biological raids use their own
+#   adapters and enter the same ordinary lifecycle.
 # - Keeps all helpers private to this subsystem and excludes weaponized zombies.
 # ============================================================================
 
@@ -54,9 +58,9 @@ bio_sabotage_prepare_terminal_doctrine_parameters = {
 	set_temp_variable = { bio_sabotage_cooldown_days = constant:bio_sabotage_doctrine.terminal_cooldown_days }
 }
 
-# Actor country scope with FROM as the exact selected state. The decision has
-# already charged Political Power; this effect revalidates every physical and
-# policy input immediately before creating the persistent state record.
+# Live timed-operation state contract for the covert food, water, and medical
+# supply-chain decision family. Strategic and battlefield biological raids use
+# their dedicated raid adapters instead.
 bio_sabotage_begin_operation = {
 	FROM = {
 		save_event_target_as = bio_sabotage_state_target
@@ -150,6 +154,10 @@ bio_sabotage_begin_operation = {
 bio_sabotage_calculate_outcome_weights_internal = {
 	set_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.base_success }
 	if = {
+		limit = { cbrn_designer_has_stable_weaponization = yes }
+		add_to_temp_variable = { bio_sabotage_success_chance = constant:cbrn_biosecurity_designer_effect.stable_weaponization_operation_success_add }
+	}
+	if = {
 		limit = { cbrn_country_has_full_readiness = yes }
 		add_to_temp_variable = { bio_sabotage_success_chance = constant:bio_sabotage_resolution.full_readiness_success_add }
 	}
@@ -204,6 +212,17 @@ bio_sabotage_prepare_program_values_internal = {
 # low-confidence lead, but it never creates release, death, or use history.
 bio_sabotage_record_failed_attempt_evidence_internal = {
 	set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_sabotage_attempt_evidence_points = constant:bio_sabotage_resolution.failed_attempt_evidence }
+	event_target:bio_sabotage_actor_target = {
+		if = {
+			limit = { cbrn_designer_has_stable_weaponization = yes }
+			multiply_temp_variable = { bio_sabotage_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.stable_weaponization_evidence_mult }
+		}
+		if = {
+			limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+			multiply_temp_variable = { bio_sabotage_attempt_evidence_points = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_evidence_mult }
+		}
+	}
 	if = {
 		limit = {
 			has_variable = bio_sabotage_attempt_actor
@@ -213,7 +232,7 @@ bio_sabotage_record_failed_attempt_evidence_internal = {
 			limit = { NOT = { has_variable = bio_sabotage_attempt_evidence } }
 			set_variable = { bio_sabotage_attempt_evidence = constant:bio_lifecycle_math.zero }
 		}
-		add_to_variable = { bio_sabotage_attempt_evidence = constant:bio_sabotage_resolution.failed_attempt_evidence }
+		add_to_variable = { bio_sabotage_attempt_evidence = bio_sabotage_attempt_evidence_points }
 		set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
 	}
 	else_if = {
@@ -221,11 +240,11 @@ bio_sabotage_record_failed_attempt_evidence_internal = {
 			OR = {
 				NOT = { has_variable = bio_sabotage_attempt_actor }
 				NOT = { has_variable = bio_sabotage_attempt_evidence }
-				check_variable = { var = bio_sabotage_attempt_evidence value = constant:bio_sabotage_resolution.failed_attempt_evidence compare = less_than }
+				check_variable = { var = bio_sabotage_attempt_evidence value = bio_sabotage_attempt_evidence_points compare = less_than }
 			}
 		}
 		set_variable = { bio_sabotage_attempt_actor = event_target:bio_sabotage_actor_target }
-		set_variable = { bio_sabotage_attempt_evidence = constant:bio_sabotage_resolution.failed_attempt_evidence }
+		set_variable = { bio_sabotage_attempt_evidence = bio_sabotage_attempt_evidence_points }
 		set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.supplied }
 	}
 	clamp_variable = {
@@ -294,6 +313,10 @@ bio_sabotage_apply_failed_attempt_condemnation_internal = {
 			has_idea = cbrn_theater_contamination_doctrine_spirit
 		}
 		set_temp_variable = { bio_sabotage_attempt_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	if = {
+		limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+		multiply_temp_variable = { bio_sabotage_attempt_condemnation_mult = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_condemnation_mult }
 	}
 	multiply_temp_variable = { condemnation_base_gain = bio_sabotage_attempt_condemnation_mult }
 	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
@@ -429,7 +452,8 @@ bio_sabotage_cleanup_actor_record_internal = {
 	clear_variable = bio_sabotage_active_state
 }
 
-# Actor country scope with FROM as the exact selected state at timer expiry.
+# Actor country scope with FROM as the exact selected state at covert-decision
+# timer expiry. The native raid callback uses the dedicated raid resolver.
 bio_sabotage_resolve_operation = {
 	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
 	set_temp_variable = { bio_sabotage_dispatch_status = constant:bio_lifecycle_proof.missing }
@@ -526,6 +550,8 @@ bio_sabotage_resolve_operation = {
 # Actor country scope with FROM as the exact selected state. Cancellation loses
 # all committed equipment and Command Power, records an attempt lead when the
 # stored actor/victim scopes remain exact, applies cooldown, and cleans up.
+# Covert-decision cancellation contract. Native raid outcomes do not call this
+# effect because the native raid engine owns its reservation cleanup.
 bio_sabotage_cancel_operation = {
 	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.failed }
 	FROM = {

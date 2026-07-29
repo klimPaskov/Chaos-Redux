@@ -14,9 +14,9 @@
 #   and Condemnation path that cannot create target exposure or confirmed-use
 #   history.
 # - Reservation helpers do not select weather or terrain, resolve protection,
-#   or dispatch exposure. The dedicated no-release path is limited to evidence
-#   and Condemnation; an exact-state release adapter must supply every remaining
-#   proof before calling the shared exposure pipeline.
+#   or dispatch exposure. The explicit native-raid adapter below supplies the
+#   selected-state target, protection, and native outcome condition receipt
+#   before calling the shared exposure pipeline.
 # - Country scope is required. Public callers supply cbrn_raid_agent and one
 #   engine-outcome code from a native raid block whose raid type reserves
 #   exactly the matching class archetype.
@@ -239,7 +239,15 @@ cbrn_resolve_chemical_air_raid_reservation = {
 		set_temp_variable = { cbrn_action_agent = cbrn_raid_agent }
 	}
 	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.chemical_air_raid }
+	if = {
+		limit = { has_variable = cbrn_raid_route }
+		set_temp_variable = { cbrn_action_delivery_route = cbrn_raid_route }
+	}
 	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.chemical_air_raid }
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.strategic_chemical_raid }
+	}
 	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
@@ -267,6 +275,112 @@ cbrn_resolve_chemical_air_raid_reservation = {
 			set_temp_variable = { cbrn_raid_reservation_proof = constant:cbrn_proof.supplied }
 		}
 	}
+}
+
+cbrn_chemical_air_raid_set_action_metadata_internal = {
+	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+	set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
+	if = {
+		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.catastrophic compare = equals } }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.mass_casualty }
+	}
+	set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.missing }
+	if = {
+		limit = { has_tech = chemical_air_interdiction }
+		set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+	}
+}
+
+cbrn_chemical_air_raid_convert_rejected_release_to_attempt_internal = {
+	set_temp_variable = { cbrn_raid_result = constant:cbrn_chemical_raid_result.failed }
+	set_temp_variable = { cbrn_raid_release_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
+}
+
+cbrn_resolve_chemical_air_raid_outcome = {
+	var:actor_country = { save_event_target_as = cbrn_action_actor }
+	var:target_state = { save_event_target_as = cbrn_action_target_state }
+	var:victim_country = { save_event_target_as = cbrn_action_victim_country }
+
+	cbrn_resolve_chemical_air_raid_reservation = yes
+
+	if = {
+		limit = {
+			cbrn_chemical_air_raid_reservation_is_resolved = yes
+			cbrn_chemical_air_raid_result_has_release = yes
+		}
+		var:actor_country = { save_event_target_as = cbrn_action_actor }
+		var:target_state = { save_event_target_as = cbrn_action_target_state }
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		cbrn_chemical_air_raid_set_action_metadata_internal = yes
+		cbrn_resolve_action_target_protection = yes
+		cbrn_set_doctrine_condemnation_mult_from_country = yes
+		cbrn_prepare_chemical_action_record = yes
+		if = {
+			limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+			cbrn_dispatch_chemical_action_record = yes
+		}
+		else = {
+			cbrn_chemical_air_raid_convert_rejected_release_to_attempt_internal = yes
+			cbrn_dispatch_failed_chemical_air_raid_attempt = yes
+		}
+	}
+	else_if = {
+		limit = {
+			cbrn_chemical_air_raid_reservation_is_resolved = yes
+			cbrn_chemical_air_raid_result_has_no_release = yes
+		}
+		var:actor_country = { save_event_target_as = cbrn_action_actor }
+		var:target_state = { save_event_target_as = cbrn_action_target_state }
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		cbrn_dispatch_failed_chemical_air_raid_attempt = yes
+	}
+}
+
+cbrn_resolve_chemical_air_raid_chlorine_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.chlorine }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_phosgene_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.phosgene }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_mustard_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.mustard }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_lewisite_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.lewisite }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_tabun_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.tabun }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_sarin_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.sarin }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_soman_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.soman }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_malodor_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.malodor }
+	cbrn_resolve_chemical_air_raid_outcome = yes
+}
+
+cbrn_resolve_chemical_air_raid_behavioral_outcome = {
+	set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.behavioral }
+	cbrn_resolve_chemical_air_raid_outcome = yes
 }
 
 cbrn_chemical_air_raid_set_attempt_consequences_internal = {
@@ -330,7 +444,12 @@ cbrn_chemical_air_raid_apply_attempt_evidence_internal = {
 			limit = { check_variable = { cbrn_state_evidence_delta > constant:cbrn_math.zero } }
 			set_variable = { cbrn_evidence_decay_due_day = global.num_days }
 			add_to_variable = { cbrn_evidence_decay_due_day = cbrn_raid_attempt_evidence_decay_days }
-			state_event = { id = cbrn_delivery.3 days = cbrn_raid_attempt_evidence_decay_days }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_delivery.3 days = [CBRN_RAID_ATTEMPT_EVIDENCE_DECAY_DAYS] }
+				}
+				CBRN_RAID_ATTEMPT_EVIDENCE_DECAY_DAYS = "[?cbrn_raid_attempt_evidence_decay_days|.0]"
+			}
 		}
 
 		set_variable = { cbrn_last_chemical_attempt_actor = event_target:cbrn_action_actor }
@@ -372,7 +491,53 @@ cbrn_chemical_air_raid_apply_attempt_condemnation_internal = {
 		limit = { has_event_target = cbrn_action_victim_country }
 		set_temp_variable = { condemnation_victim_country = event_target:cbrn_action_victim_country }
 	}
+	set_temp_variable = { cbrn_chemical_public_liability_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_chemical_hidden_liability_before = constant:cbrn_math.zero }
+	if = {
+		limit = { has_variable = condemnation_chemical }
+		set_temp_variable = { cbrn_chemical_public_liability_before = condemnation_chemical }
+	}
+	if = {
+		limit = { has_variable = condemnation_hidden_chemical }
+		set_temp_variable = { cbrn_chemical_hidden_liability_before = condemnation_hidden_chemical }
+	}
 	condemnation_add_source = yes
+	set_temp_variable = { cbrn_chemical_public_liability_delta = condemnation_chemical }
+	subtract_from_temp_variable = { cbrn_chemical_public_liability_delta = cbrn_chemical_public_liability_before }
+	clamp_temp_variable = {
+		var = cbrn_chemical_public_liability_delta
+		min = constant:cbrn_math.zero
+		max = constant:condemnation_threshold.bucket_cap
+	}
+	set_temp_variable = { cbrn_chemical_hidden_liability_delta = condemnation_hidden_chemical }
+	subtract_from_temp_variable = { cbrn_chemical_hidden_liability_delta = cbrn_chemical_hidden_liability_before }
+	clamp_temp_variable = {
+		var = cbrn_chemical_hidden_liability_delta
+		min = constant:cbrn_math.zero
+		max = constant:condemnation_threshold.bucket_cap
+	}
+	set_temp_variable = { cbrn_chemical_total_liability_delta = cbrn_chemical_public_liability_delta }
+	add_to_temp_variable = { cbrn_chemical_total_liability_delta = cbrn_chemical_hidden_liability_delta }
+	set_temp_variable = { cbrn_chemical_public_relief_delta = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_chemical_hidden_relief_delta = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_chemical_total_relief_delta = constant:cbrn_math.zero }
+}
+
+cbrn_chemical_air_raid_append_attempt_record_internal = {
+	set_temp_variable = { cbrn_dispatch_current_day = global.num_days }
+	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.none }
+	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.chemical_air_raid_attempt }
+	set_temp_variable = { cbrn_action_civilian_deaths = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_contamination_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_points = cbrn_raid_attempt_evidence_points }
+	set_temp_variable = { cbrn_action_evidence_floor = cbrn_raid_attempt_evidence_floor }
+	set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
+	set_temp_variable = { cbrn_action_release_status = constant:cbrn_chemical_release_status.no_release }
+	set_temp_variable = { cbrn_action_raid_result = cbrn_raid_result }
+	event_target:cbrn_action_target_state = {
+		cbrn_diplomacy_append_chemical_action_record = yes
+	}
 }
 
 cbrn_chemical_air_raid_record_attempt_history_internal = {
@@ -418,6 +583,7 @@ cbrn_dispatch_failed_chemical_air_raid_attempt = {
 		cbrn_chemical_air_raid_set_attempt_consequences_internal = yes
 		cbrn_chemical_air_raid_apply_attempt_evidence_internal = yes
 		cbrn_chemical_air_raid_apply_attempt_condemnation_internal = yes
+		cbrn_chemical_air_raid_append_attempt_record_internal = yes
 		cbrn_chemical_air_raid_record_attempt_history_internal = yes
 	}
 }

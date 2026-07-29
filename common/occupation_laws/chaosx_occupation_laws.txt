@@ -1,46 +1,146 @@
 # ============================================================================
-# CHAOS REDUX - OCCUPATION LAW EXTENSIONS
+# CHAOS REDUX - CBRN OCCUPATION LAW EXTENSIONS
 # ============================================================================
-# Adds doctrine-gated occupation laws used by Chaos Warfare progression.
+# Overview:
+# - Retains the legacy concentration token as a hidden compatibility law so
+#   existing references fall back safely without exposing genocide terminology.
+# - Adds the doctrine-gated CBRN Coercive Security and defensive Protected
+#   Occupation Administration laws defined by the Chaos Warfare specification.
+# - Uses native occupation-law icon frames. Targeted equipment payments,
+#   nerve-agent releases, trauma, evidence, and delayed consequences remain in
+#   the dedicated CBRN occupation decision and scripted-system files.
 # ============================================================================
 
+# Hidden migration token only. It carries no gameplay modifiers and cannot be
+# selected. A loaded reference falls back to the native military governor law.
 concentration = {
-    tooltip = concentration_desc
-    icon = 18
-    sound_effect = "Martial_Law_Interface_Military_Governor_Occupation"
-    fallback_law = military_governor_occupation
+	tooltip = concentration_desc
+	icon = 6
+	sound_effect = "Martial_Law_Interface_Military_Governor_Occupation"
+	fallback_law = military_governor_occupation
 
-    visible = {
-        has_country_flag = concentration_occupation_law_unlocked
-    }
+	visible = {
+		always = no
+	}
 
-    available = {
-        has_country_flag = concentration_occupation_law_unlocked
-    }
+	available = {
+		always = no
+	}
 
-    state_modifier = {
-        resistance_target = -0.99
-        resistance_decay = 1.0
-        compliance_gain = -0.24
-        required_garrison_factor = 0.15
-        resistance_damage_to_garrison = 0.03
-        local_factories = -0.20
-        local_resources = -0.20
-        local_manpower = -0.85
-    }
+	state_modifier = {
+	}
 
-    suppressed_state_modifier = {
-        resistance_target = -0.95
-        resistance_decay = 1.0
-        compliance_gain = -0.16
-        required_garrison_factor = 0.10
-        resistance_damage_to_garrison = 0.01
-        local_factories = -0.10
-        local_resources = -0.10
-        local_manpower = -0.70
-    }
+	suppressed_state_modifier = {
+	}
 
-    ai_will_do = {
-        base = 0
-    }
+	ai_will_do = {
+		base = 0
+	}
+}
+
+cbrn_coercive_security_occupation = {
+	tooltip = cbrn_coercive_security_occupation_desc
+	icon = 7
+	sound_effect = "Martial_Law_Interface_Martial_Law_Occupation_Default"
+	fallback_law = military_governor_occupation
+
+	visible = {
+		has_country_flag = cbrn_occupation_coercive_security_authorized
+	}
+
+	available = {
+		has_country_flag = cbrn_occupation_coercive_security_authorized
+	}
+
+	state_modifier = {
+		resistance_target = constant:cbrn_occupation_law.coercive_resistance_target
+		compliance_gain = constant:cbrn_occupation_law.coercive_compliance_gain
+		required_garrison_factor = constant:cbrn_occupation_law.coercive_garrison_factor
+		resistance_damage_to_garrison = constant:cbrn_occupation_law.coercive_garrison_damage
+		local_factories = constant:cbrn_occupation_law.coercive_local_factories
+		local_resources = constant:cbrn_occupation_law.coercive_local_resources
+	}
+
+	suppressed_state_modifier = {
+		resistance_target = constant:cbrn_occupation_law.coercive_suppressed_resistance_target
+		compliance_gain = constant:cbrn_occupation_law.coercive_suppressed_compliance_gain
+		required_garrison_factor = constant:cbrn_occupation_law.coercive_suppressed_garrison_factor
+		resistance_damage_to_garrison = constant:cbrn_occupation_law.coercive_garrison_damage
+		local_factories = constant:cbrn_occupation_law.coercive_suppressed_local_factories
+		local_resources = constant:cbrn_occupation_law.coercive_suppressed_local_resources
+	}
+
+	ai_will_do = {
+		base = constant:cbrn_occupation_law_ai.disabled
+		modifier = {
+			resistance > constant:cbrn_occupation_law_ai.coercive_high_resistance_threshold
+			add = constant:cbrn_occupation_law_ai.coercive_high_resistance_add
+		}
+		modifier = {
+			FROM = {
+				cbrn_ai_route_allows_unrestricted_use = yes
+			}
+			add = constant:cbrn_occupation_law_ai.coercive_extreme_route_add
+		}
+		modifier = {
+			FROM = {
+				NOT = { cbrn_occupation_ai_can_select_coercive_law = yes }
+			}
+			factor = constant:cbrn_occupation_law_ai.disabled
+		}
+	}
+}
+
+cbrn_protected_occupation_administration = {
+	tooltip = cbrn_protected_occupation_administration_desc
+	icon = 3
+	sound_effect = "Martial_Law_Interface_Foreign_Cvilian_Oversight"
+	fallback_law = military_governor_occupation
+
+	visible = {
+		has_country_flag = cbrn_occupation_protected_administration_authorized
+	}
+
+	available = {
+		has_country_flag = cbrn_occupation_protected_administration_authorized
+	}
+
+	state_modifier = {
+		resistance_target = constant:cbrn_occupation_law.protected_resistance_target
+		compliance_gain = constant:cbrn_occupation_law.protected_compliance_gain
+		required_garrison_factor = constant:cbrn_occupation_law.protected_garrison_factor
+		resistance_damage_to_garrison = constant:cbrn_occupation_law.protected_garrison_damage
+		local_factories = constant:cbrn_occupation_law.protected_local_factories
+		local_resources = constant:cbrn_occupation_law.protected_local_resources
+	}
+
+	suppressed_state_modifier = {
+		resistance_target = constant:cbrn_occupation_law.protected_suppressed_resistance_target
+		compliance_gain = constant:cbrn_occupation_law.protected_suppressed_compliance_gain
+		required_garrison_factor = constant:cbrn_occupation_law.protected_suppressed_garrison_factor
+		resistance_damage_to_garrison = constant:cbrn_occupation_law.protected_suppressed_garrison_damage
+		local_factories = constant:cbrn_occupation_law.protected_suppressed_local_factories
+		local_resources = constant:cbrn_occupation_law.protected_local_resources
+	}
+
+	ai_will_do = {
+		base = constant:cbrn_occupation_law_ai.protected_base
+		modifier = {
+			OR = {
+				cbrn_state_has_chemical_contamination = yes
+				is_biowarfare_contaminated_state = yes
+			}
+			add = constant:cbrn_occupation_law_ai.protected_contamination_add
+		}
+		modifier = {
+			FROM = {
+				OR = {
+					has_government = democratic
+					cbrn_policy_is_defensive_preparation = yes
+					cbrn_ai_has_defensive_cbrn_profile = yes
+				}
+			}
+			add = constant:cbrn_occupation_law_ai.protected_defensive_add
+		}
+	}
 }

@@ -1,3 +1,0 @@
-# Counterfeit Antibiotics report art prompt
-
-A fictional alternate-history Hearts of Iron IV report-event illustration of a dim ash-covered field clinic at a ruined freight border. An exhausted nurse holds a glass vial under a kerosene lamp while an apothecary checks handwritten batch marks. Sealed medicine crates sit beside a cracked railway map. Muted ochre, charcoal, faded teal, and blue-gray tones, solemn documentary realism, no readable text, no logos, no flags, no modern brand marks, no gore, and a strong focal center. Frame the source for a 210 by 176 report-event card with darker margins for the interface overlay.

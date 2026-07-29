@@ -247,12 +247,22 @@ condemnation_expose_hidden_bucket = {
 	set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = constant:cbrn_math.zero }
 	if = {
 		limit = { check_variable = { var = condemnation_source_type value = constant:condemnation_source.chemical compare = equals } }
-		set_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_chemical }
-		multiply_temp_variable = { condemnation_hidden_exposed_gain = condemnation_hidden_exposure_fraction }
+		set_temp_variable = { cbrn_diplomacy_generic_exposure_fraction = condemnation_hidden_exposure_fraction }
+		cbrn_diplomacy_reconcile_actor_generic_chemical_exposure = yes
+		set_temp_variable = { condemnation_hidden_exposed_gain = cbrn_diplomacy_generic_exposed_liability }
+		set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = cbrn_diplomacy_generic_exposed_relief }
+		clamp_temp_variable = {
+			var = condemnation_hidden_exposed_gain
+			min = constant:cbrn_math.zero
+			max = condemnation_hidden_chemical
+		}
+		clamp_temp_variable = {
+			var = condemnation_hidden_retaliation_relief_exposed
+			min = constant:cbrn_math.zero
+			max = condemnation_hidden_chemical_retaliation_relief
+		}
 		subtract_from_variable = { condemnation_hidden_chemical = condemnation_hidden_exposed_gain }
 		add_to_variable = { condemnation_chemical = condemnation_hidden_exposed_gain }
-		set_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_chemical_retaliation_relief }
-		multiply_temp_variable = { condemnation_hidden_retaliation_relief_exposed = condemnation_hidden_exposure_fraction }
 		subtract_from_variable = { condemnation_hidden_chemical_retaliation_relief = condemnation_hidden_retaliation_relief_exposed }
 		add_to_variable = { condemnation_retaliation_pressure_relief = condemnation_hidden_retaliation_relief_exposed }
 	}
@@ -331,7 +341,7 @@ condemnation_expose_hidden_evidence = {
 	if = {
 		limit = { check_variable = { condemnation_recent_gain > 0 } }
 		set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
-		set_country_flag = { flag = condemnation_recent_gain_visible days = condemnation_recent_gain_days }
+		set_country_flag = { flag = condemnation_recent_gain_visible days = var:condemnation_recent_gain_days }
 	}
 	condemnation_refresh_tier = yes
 }
@@ -390,6 +400,7 @@ condemnation_add_source = {
 				check_variable = { var = condemnation_context_type value = constant:condemnation_context.nuclear_strike compare = equals }
 				check_variable = { var = condemnation_context_type value = constant:condemnation_context.thermonuclear_strike compare = equals }
 				check_variable = { var = condemnation_context_type value = constant:condemnation_context.final_silence compare = equals }
+				check_variable = { var = condemnation_context_type value = constant:condemnation_context.strategic_singularity compare = equals }
 			}
 		}
 		set_temp_variable = { condemnation_source_is_weapon_use = constant:condemnation_tier.concern }
@@ -546,7 +557,7 @@ condemnation_add_source = {
 			}
 			clr_country_flag = condemnation_non_use_pledge
 			set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
-			set_country_flag = { flag = condemnation_pledge_broken days = condemnation_pledge_break_days }
+			set_country_flag = { flag = condemnation_pledge_broken days = var:condemnation_pledge_break_days }
 			add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
 			add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
 			set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
@@ -588,7 +599,7 @@ condemnation_add_source = {
 			if = {
 				limit = { NOT = { has_country_flag = condemnation_pledge_broken } }
 				set_temp_variable = { condemnation_pledge_break_days = constant:condemnation_duration_days.pledge_break_memory }
-				set_country_flag = { flag = condemnation_pledge_broken days = condemnation_pledge_break_days }
+				set_country_flag = { flag = condemnation_pledge_broken days = var:condemnation_pledge_break_days }
 				add_to_variable = { condemnation_coverup = constant:condemnation_gain.pledge_break_coverup }
 				add_to_variable = { condemnation_repeat_use = constant:condemnation_gain.pledge_break_repeat }
 				set_temp_variable = { condemnation_context_type = constant:condemnation_context.pledge_breach }
@@ -651,11 +662,11 @@ condemnation_add_source = {
 		condemnation_register_target = yes
 
 		set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
-		set_country_flag = { flag = condemnation_recent_gain_visible days = condemnation_recent_gain_days }
+		set_country_flag = { flag = condemnation_recent_gain_visible days = var:condemnation_recent_gain_days }
 		if = {
 			limit = { check_variable = { condemnation_source_is_weapon_use > constant:condemnation_tier.normal } }
 			set_temp_variable = { condemnation_recent_use_days = constant:condemnation_duration_days.recent_use }
-			set_country_flag = { flag = condemnation_recent_use days = condemnation_recent_use_days }
+			set_country_flag = { flag = condemnation_recent_use days = var:condemnation_recent_use_days }
 			set_country_flag = used_unconventional_weapon
 		}
 		set_variable = { condemnation_last_gain_date = global.date }
@@ -1650,7 +1661,7 @@ condemnation_expose_quiet_breach = {
 			limit = { has_event_target = condemnation_exposed_participant }
 			remove_from_array = { array = condemnation_quiet_breach_participants value = condemnation_exposed_participant }
 			set_temp_variable = { condemnation_exposure_days = constant:condemnation_duration_days.exposure_memory }
-			set_country_flag = { flag = condemnation_evasion_exposed days = condemnation_exposure_days }
+			set_country_flag = { flag = condemnation_evasion_exposed days = var:condemnation_exposure_days }
 			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
 			set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.quiet_breach_exposure_coverup }
 			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
@@ -1944,7 +1955,13 @@ condemnation_recalculate_participants = {
 				if = {
 					limit = {
 						var:condemnation_recalculation_target = { condemnation_is_concern = yes }
-						check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.shield compare = less_than_or_equals }
+						OR = {
+							check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.shield compare = less_than_or_equals }
+							AND = {
+								var:condemnation_recalculation_target = { cbrn_ai_has_radical_high_chaos_sanction_profile = yes }
+								check_variable = { var = condemnation_pair_score value = constant:condemnation_participant_band.radical_route_shield compare = less_than_or_equals }
+							}
+						}
 						condemnation_can_pay_shield_cost = yes
 						NOT = { has_war_with = var:condemnation_recalculation_target }
 						OR = {
@@ -2365,7 +2382,7 @@ condemnation_monthly_pulse = {
 			if = { limit = { check_variable = { condemnation_quiet_breach_participants^num > 0 } } condemnation_expose_quiet_breach = yes }
 			else = {
 				set_temp_variable = { condemnation_exposure_days = constant:condemnation_duration_days.exposure_memory }
-				set_country_flag = { flag = condemnation_evasion_exposed days = condemnation_exposure_days }
+				set_country_flag = { flag = condemnation_evasion_exposed days = var:condemnation_exposure_days }
 				set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
 				set_temp_variable = { condemnation_base_gain = constant:condemnation_gain.black_market_exposure_coverup }
 				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
@@ -2555,6 +2572,10 @@ condemnation_refresh_target_modifiers = {
 	if = { limit = { has_country_flag = condemnation_inspections_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.inspections } }
 	if = { limit = { has_country_flag = condemnation_observers_active } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.observers } }
 	if = { limit = { has_country_flag = condemnation_verified_non_use } add_to_variable = { condemnation_compliance_credibility = constant:condemnation_compliance_credibility.verified_non_use } }
+	if = {
+		limit = { cbrn_designer_has_international_medical_mission = yes }
+		multiply_variable = { condemnation_compliance_credibility = constant:cbrn_medical_designer_effect.international_mission_compliance_mult }
+	}
 	clamp_variable = { var = condemnation_compliance_credibility min = 0 max = 1 }
 
 	set_temp_variable = { condemnation_relief_factor = 0 }

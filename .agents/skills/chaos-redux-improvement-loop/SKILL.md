@@ -83,10 +83,7 @@ Use the system skill that owns the surface being improved.
 - `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
 - `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.
 
-When an improvement pass requires event-catalog alignment, update only the
-authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook and
-then run `python .tools/export_event_catalog_csv.py`. The three catalog CSVs
-are export-only snapshots and must never be edited directly.
+When an improvement pass requires event-catalog alignment, update only the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook and then run `python .tools/export_event_catalog_csv.py`. The three catalog CSVs are export-only snapshots and must never be edited directly.
 
 ## Research and historical connection standard
 
@@ -238,6 +235,10 @@ If a shared tag can appear through more than one event, define origin logic. The
 ## Asset and visual improvement
 
 Visual improvement should support mechanic clarity. It should not become decoration detached from gameplay.
+
+When an improvement changes a unit, building, creature, vehicle, aircraft, naval object, or map entity, include a 3D model review instead of treating the model as a final-render detail. Check whether the feature needs a static prop, a calibrated humanoid unit, a domain-specific mesh, or a building entity, then name the vanilla mesh/entity precedent, source-height/entity-scale crosswalk, one-image Meshy input rule, PDX material mapping, required skeletal actions, `.mesh`/`.anim` exports, reimport evidence, runtime hashes, valid map placement, and live consumer.
+
+Route bounded production to `chaosx_3d_model_pipeline` with `fork_context=false`. Keep provider source, Blender checkpoints, processed textures, and runtime handoff evidence separate from the parent-owned `.asset`, entity, `.gfx`, gameplay wiring, and in-game proof.
 
 An asset addendum can define route-specific report images, decision icons, idea icons, focus icon families, flags, portraits, faction emblems, scripted GUI panels, animated sprites, animated portrait variants, progression states, and contact sheets.
 

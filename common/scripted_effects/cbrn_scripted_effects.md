@@ -10,18 +10,50 @@ Biological lifecycle, biological raid, and biological operative-release helpers 
 
 ## Source files
 
+- `common/scripted_effects/cbrn_achievement_effects.txt`
+- `common/scripted_effects/cbrn_action_record_effects.txt`
+- `common/scripted_effects/cbrn_battlefield_operation_effects.txt`
+- `common/scripted_effects/cbrn_biological_air_effects.txt`
+- `common/scripted_effects/cbrn_camp_effects.txt`
 - `common/scripted_effects/cbrn_chemical_raid_effects.txt`
+- `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`
+- `common/scripted_effects/cbrn_chemical_state_effects.txt`
 - `common/scripted_effects/cbrn_consequence_effects.txt`
 - `common/scripted_effects/cbrn_designer_effects.txt`
 - `common/scripted_effects/cbrn_diplomacy_effects.txt`
 - `common/scripted_effects/cbrn_doctrine_effects.txt`
 - `common/scripted_effects/cbrn_exposure_effects.txt`
 - `common/scripted_effects/cbrn_hq_effects.txt`
+- `common/scripted_effects/cbrn_occupation_effects.txt`
 - `common/scripted_effects/cbrn_payload_effects.txt`
 - `common/scripted_effects/cbrn_project_effects.txt`
 - `common/scripted_effects/cbrn_protection_decision_effects.txt`
 - `common/scripted_effects/cbrn_protection_effects.txt`
 - `common/scripted_effects/cbrn_starting_protection_effects.txt`
+
+## cbrn_append_unified_action_record
+
+Appends one package-wide action row after an accepted deliberate Chemical action or deliberate biological seed has already been validated and resolved by its subsystem-specific pipeline.
+
+Scope: attacker country.
+
+Inputs: the normalized `cbrn_unified_record_*` temporary values listed in `common/scripted_effects/cbrn_action_record_effects.txt`, plus required `event_target:cbrn_unified_record_target_state`. `event_target:cbrn_unified_record_victim_country` is optional when the exact victim is already known.
+
+Defaults: a missing target state fails closed and writes no record. When the caller does not supply an exact victim, the helper records the target state's owner; an unowned target records the attacker so the aligned country-scope array and Event Log payload never contain a numeric placeholder where a country scope is required.
+
+Outputs: an immutable identity row in the aligned global CBRN action arrays, attacker mirrors for the latest row and UID, and one Event Log history entry carrying that row index.
+
+Side effects: none outside record keeping and Event Log refresh. This helper does not deliver an agent, debit payload, calculate harm, infer a target, scan periodically, or estimate activity.
+
+Example:
+
+```txt
+set_temp_variable = { cbrn_unified_record_weapon_class = constant:cbrn_action_record_weapon_class.chemical }
+event_target:cbrn_selected_target_state = {
+	save_event_target_as = cbrn_unified_record_target_state
+}
+cbrn_append_unified_action_record = yes
+```
 
 ## Biological subsystem-private delivery effects
 
@@ -74,13 +106,23 @@ cbrn_diplomacy_record_confirmed_cbrn_use = yes
 
 ### Exact forensic liability effects
 
-`cbrn_diplomacy_expose_recorded_chemical_responsibility` is state-scoped. The caller supplies the attribution band produced from that state's exact action record. The effect calculates the desired paid share from the action's own recorded total, paid, and unpaid Chemical liability, then asks `condemnation_expose_exact_hidden_source_amount` to settle only that delta. The actor's aggregate hidden Chemical bucket is a ceiling, never the source of the amount. Repeating the same evidence band exposes nothing twice.
+`cbrn_diplomacy_append_chemical_action_record` is state-scoped and is called once after exact Chemical liability has been calculated. It appends one exact action row to aligned persistent arrays containing the exact UID, actor, victim, action date, agent, class, route, severity, source label, explicit release status, native raid result where applicable, deaths, contamination, medical load, evidence, attribution, retaliation status, paid and unpaid Condemnation, paid and unpaid retaliation relief, row status, and confirmation-registration status. Accepted shared-dispatch actions record a real release. Failed or aborted chemical air raids record an explicit no-release attempt when they create evidence or Condemnation, so their liability is not left as an unaccountable aggregate. Rows are never overwritten or deleted; only their evidence, attribution, settlement, confirmation, and status fields advance. The state-level `cbrn_last_chemical_*` fields and actor-level latest-use fields remain compatibility and latest-display mirrors only; forensic settlement never reads them as the authoritative action record.
 
-`cbrn_diplomacy_register_newly_confirmed_chemical_record` records bilateral first use when later state evidence first reaches confirmed attribution. `cbrn_diplomacy_publish_best_forensic_record` selects the eligible chemical action or ordinary-pathogen episode with the greatest evidence, adds exact-state evidence, marks its action or seed date as published, and reruns only that record's attribution and liability path.
+`cbrn_diplomacy_select_chemical_forensic_record` scans only the selected state's exact open rows and selects the greatest evidence value, preserving the older row on a tie. `cbrn_diplomacy_load_selected_chemical_record` loads that row and its exact actor and victim scopes. `cbrn_diplomacy_begin_forensic_publication` locks either that chemical row or one exact biological seed before the timed decision pays its cost, so later actions cannot replace the selected record.
+
+`cbrn_diplomacy_expose_recorded_chemical_responsibility` is state-scoped. The caller supplies the loaded row and its resulting attribution band. The effect calculates the desired paid share from that action's own recorded total, paid, and unpaid Chemical liability, then asks `condemnation_expose_exact_hidden_source_amount` to settle only that delta. The actor's aggregate hidden Chemical bucket is a ceiling, never the source of the amount. Repeating the same evidence band exposes nothing twice.
+
+`cbrn_diplomacy_register_newly_confirmed_chemical_record` records bilateral first use only for a row whose explicit release status proves agent release and when both exact countries still exist. A confirmed no-release attempt can expose its own liability but cannot create weapon-use history, treaty callbacks, or retaliation authority. A confirmed release record whose historical actor no longer exists is marked as historical and closed without applying country effects to a successor, controller, or proxy. `cbrn_diplomacy_advance_selected_chemical_record` advances one locked exact chemical row. `cbrn_diplomacy_observe_best_chemical_record` applies the observer evidence increment to the strongest open exact row. `cbrn_diplomacy_publish_best_forensic_record` advances only the locked chemical row or the locked biological seed if that seed remains current, then clears the publication lock.
+
+`cbrn_diplomacy_project_chemical_record_for_condemnation_detail` is a read-only state-scope UI adapter. The caller supplies the offender's latest exact action UID, and the effect projects only the matching ledger row's state, date, agent, route, current evidence, current attribution, and recorded retaliation classification into ROOT's Condemnation-detail snapshot. A missing UID or row produces no display record; compatibility mirrors are not accepted as evidence or attribution.
+
+`cbrn_diplomacy_reconcile_actor_generic_chemical_exposure` is country-scoped and is called only from an already targeted Condemnation inspection or observer disclosure. The actor's append-only state-and-UID registry visits its own exact chemical rows, and `cbrn_diplomacy_reconcile_exact_row_generic_exposure` applies the same caller-supplied disclosure fraction independently to each row's unpaid liability and retaliation relief while respecting the actor's aggregate exposure ceiling. The helpers return only the amounts actually reconciled to exact rows; unmatched aggregate liability remains hidden rather than being assigned to an inferred action. A fully paid open row becomes settled and decrements its state's open-record count.
 
 ### Material diplomacy actions
 
-`cbrn_diplomacy_send_inspection_demand` and its timeout helpers consume exact equipment, preserve the demanding country, and resolve one native mission without duplicate refusal consequences. `cbrn_diplomacy_begin_international_decon_mission` and `cbrn_diplomacy_complete_international_decon_mission` preserve the exact state, sponsor, and initial recipient, consume the full material bill, reduce only live contamination and medical saturation, and allow only evidence-band progression from the recorded chemical action. Controller changes or war cancel without refund.
+`cbrn_diplomacy_send_inspection_demand` and its timeout helpers consume exact equipment, preserve the demanding country, apply the sender cooldown, and resolve one native mission without duplicate refusal consequences. The target trigger requires the demander to be an active sanctions participant against that exact target.
+
+`cbrn_diplomacy_begin_international_decon_mission` and `cbrn_diplomacy_complete_international_decon_mission` preserve the exact state, sponsor, and initial recipient, consume the full material bill, reduce only live contamination and medical saturation, and allow only evidence-band progression from an open exact chemical row. Exact humanitarian carve-out participants can sponsor decontamination and protective-equipment exports even when ordinary alliance access is absent. The mission revalidates the recorded provider, original recipient-controller, peace, and at least one continuing alliance, subject, inspection, observer, or exact humanitarian-corridor access route during cancellation and at completion. Loss of access cancels without refund.
 
 These helpers do not scan all countries or states periodically, infer a target, substitute another state, fabricate material, or use a generic dynamic-effect registry.
 
@@ -121,7 +163,7 @@ Scope: country.
 
 Inputs: none.
 
-Defaults: Chemical Readiness `0`, readiness cap `19`, defensive-preparation policy, no protection-program profile, full military filter condition, and zero decontamination, medical, biological-security, attribution-control, command-integration, issued-mask, distributed-mask, replacement-demand, reconditioning-cache, and protective-aid values.
+Defaults: Chemical Readiness `0`, readiness cap `19`, defensive-preparation policy, the minimal-program AI profile for an ordinary country, the no-program profile for an actual nonhuman country, full military filter condition, and zero decontamination, medical, biological-security, attribution-control, command-integration, issued-mask, distributed-mask, replacement-demand, reconditioning-cache, and protective-aid values.
 
 Outputs: persistent country variables for Chemical Readiness and policy; the five national CBRN capacities; `cbrn_protection_program_profile`; model-specific military-issue ledgers; military filter condition; replacement demand and reconditioning cache; model-specific and aggregate civilian-distribution totals; and cumulative protective-aid export/receipt totals.
 
@@ -282,7 +324,9 @@ Required payload inputs: positive `cbrn_action_payload_required`, positive `cbrn
 
 Required protection inputs: outputs and proof from `cbrn_resolve_action_target_protection`.
 
-Required condition inputs and proof: positive `cbrn_action_release_efficiency_mult`, `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, `cbrn_action_context_condemnation_mult`, a positive `cbrn_action_doctrine_condemnation_mult` validation value, `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. Release efficiency is separate from payload consumption: it records the share and pattern of consumed payload that actually reached the intended exposure, allowing an operation to consume most of its reservation while delivering only a partial dose. The context multiplier carries retaliation and target-relationship effects. Immediately after validation, the public wrapper overwrites the doctrine value from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
+Required release input: positive `cbrn_action_release_efficiency_mult`. Release efficiency is separate from payload consumption: it records the share of consumed payload that the native route reports as released into the intended exposure.
+
+Optional verified condition receipt: an adapter may set positive `cbrn_action_weather_mult`, `cbrn_action_terrain_mult`, `cbrn_action_target_density_mult`, `cbrn_action_command_mult`, `cbrn_action_evidence_control_mult`, and `cbrn_action_context_condemnation_mult`, together with `cbrn_action_forecast_confidence`, `cbrn_action_command_integration`, `cbrn_action_base_friendly_risk`, and `cbrn_action_conditions_resolved_proof`. These modifiers apply only when the complete receipt is verified. A route without the required current-version engine surface leaves the receipt missing; the calculator omits those modifiers and friendly-risk resolution instead of manufacturing neutral values, estimating target conditions, or rejecting an otherwise genuine selected-state release. Immediately before calculation, the public wrapper derives the doctrine Condemnation multiplier from the attacker country's Integrated CBRN Command mastery and clamps it to `0.70` through `1.00`; route adapters cannot select a different doctrine discount.
 
 Defaults: none. Validation is fail-closed. The continuous ordinary-air route returns `unsupported_continuous_air_route`; no neutral condition or idle-aircraft estimator is substituted.
 
@@ -302,7 +346,8 @@ set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.chokin
 set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.chlorine }
 set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.cylinder_release }
 set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.local }
-# The real route adapter must set payload, protection, and condition inputs/proofs here.
+# The real route adapter must set payload, protection, and release inputs here.
+# It may add condition inputs only when a verified engine receipt exists.
 cbrn_prepare_chemical_action_record = yes
 ```
 
@@ -318,7 +363,7 @@ The public action-record wrapper owns these private temporary calculators:
 | `cbrn_set_chemical_agent_profile_from_action` | Applies the distinct chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral-agent potency, persistence, evidence, and source-profile values. |
 | `cbrn_set_action_source_label` | Chooses battlefield, persistent-contamination, strategic-raid, or nerve-suppression source classification from the validated route and severity. |
 | `cbrn_set_action_attribution_from_evidence` | Converts the current episode evidence score into unknown, suspected, probable, or confirmed attribution without changing evidence. |
-| `cbrn_calculate_chemical_action_outputs` | Combines payload ratio, conditions, protection, route, class, agent, response choices, completed exact CBRN designer traits, offensive doctrine-posture multipliers, Condemnation-only doctrine mitigation, and confirmed-use floors into the normalized action outputs. Theater Contamination raises dose, contamination, and duration; Terminal Hazard raises operational effect, deaths, contamination, duration, and medical saturation while reducing Condemnation before unchanged public-harm floors. Stable Choking Fill lowers choking artillery dose; Persistent Agent Formulation increases blister contamination, duration, and evidence; Standardized Fuzes increases artillery evidence; Sealed Bomb-Bay Interfaces lowers chemical-air friendly risk; Precision Release lowers chemical-air civilian exposure and contamination. Lightweight and Long-Range Payload effects live on exact installed rack variants rather than this country-scope calculator. Designer traits never reduce evidence or Condemnation. |
+| `cbrn_calculate_chemical_action_outputs` | Combines payload ratio, conditions, protection, route, class, agent, response choices, completed exact CBRN designer traits, offensive doctrine-posture multipliers, Condemnation-only doctrine mitigation, and confirmed-use floors into the normalized action outputs. Theater Contamination raises dose, contamination, and duration; Terminal Hazard raises operational effect, deaths, contamination, duration, and medical saturation while reducing Condemnation before unchanged public-harm floors. Stable Choking Fill lowers choking artillery dose; Persistent Agent Formulation increases blister contamination, duration, and evidence; Standardized Fuzes increases artillery evidence; Sealed Bomb-Bay Interfaces lowers chemical-air friendly risk; Precision Release lowers chemical-air civilian exposure and contamination. The target controller's Respiratory Care lowers choking deaths, Antidote Production lowers nerve-agent deaths, and Mobile Casualty Sorting lowers medical saturation. Lightweight and Long-Range Payload effects live on exact installed rack variants rather than this country-scope calculator. Designer traits never reduce evidence or Condemnation. |
 
 Scope: attacker country/enclosing effect chain. Inputs are the temporary metadata and proof contract documented for `cbrn_prepare_chemical_action_record`. Defaults are fail closed: the reset helper runs first, and missing or invalid inputs leave a rejected record. Outputs are temporary only. Side effects: none. Offensive doctrine postures deliberately increase specified harm outputs; their Condemnation multiplier changes Condemnation only. Evidence, attribution, payload debit, and confirmed-use history remain untouched.
 
@@ -434,9 +479,9 @@ cbrn_set_default_payload_requirement_for_action = yes
 cbrn_try_debit_action_payload = yes
 ```
 
-## CBRN designer module unlocks
+## CBRN designer effects
 
-These country-scope effects are defined in `cbrn_designer_effects.txt`. They grant hidden, unresearchable technologies that enable exact agent-specific Lightweight, Long-Range, or combined aircraft rack modules. A grant creates no equipment and affects no aircraft design that does not install the unlocked module.
+These effects are defined in `cbrn_designer_effects.txt`. Country-scope module helpers grant hidden, unresearchable technologies that enable exact agent-specific Lightweight, Long-Range, or combined aircraft rack modules. State-scope helpers refresh only the exact contaminated state supplied by an existing consequence or state-control callback. No helper creates equipment, selects a state, or starts a periodic country scan.
 
 | Effect | Inputs, defaults, outputs, and side effects |
 | --- | --- |
@@ -445,6 +490,8 @@ These country-scope effects are defined in `cbrn_designer_effects.txt`. They gra
 | `cbrn_sync_aerosol_designer_module_unlocks` | Country scope, idempotent. Reads both completed MIO traits and reruns the relevant direction helpers. Each chlorine, phosgene, mustard, lewisite, Tabun, Sarin, and Soman technology calls this after research so a trait completed earlier cannot bypass the agent gate. |
 | `cbrn_unlock_malodor_aerosol_modules_after_project` | Country scope. Called only by the completed Malodor project output. Reads completed designer traits and grants the exact Malodor variant technologies without depending on whether the project-completed trigger has updated during its own output block. |
 | `cbrn_unlock_behavioral_aerosol_modules_after_project` | Same contract for the completed Behavioral-Agent project and its exact rack variants. |
+| `cbrn_designer_refresh_contaminated_state_vehicle_attrition` | State scope. Recomputes the legacy contamination modifier's truck-attrition input from the state's exact contamination strength and the current controller's completed Vehicle Recovery Teams trait. It is called by contamination application and the exact state-control-change hook, then forces the modifier to refresh. |
+| `cbrn_designer_apply_blister_continuing_death_treatment` | State scope inside the existing chemical-contamination death pass. Requires an active contamination modifier, a persisted blister-agent class, and a current controller with Burn Treatment. It multiplies only the already-prepared continuing-death value; initial release deaths and non-blister contamination are unchanged. |
 
 The hidden technology family is defined in `cbrn_aerosol_module_variant_technologies.txt`. Separate technology IDs preserve an exact AND gate between one agent and one physical rack direction. The module variants are defined in `chemical_air_bomb_variant_modules.txt`: Lightweight changes only that rack's weight, agility burden, and payload volume; Long-Range changes only the installed rack's range and maneuver burden; combined modules compose both. No helper applies a country modifier, ordinary-aircraft bonus, strategic dose proxy, friendly-risk proxy, or periodic unlock pulse.
 
@@ -456,11 +503,11 @@ on_research_complete = {
 }
 ```
 
-## CBRN chemical-air raid reservation
+## CBRN selected-state chemical-air raid adapter
 
-`cbrn_resolve_chemical_air_raid_reservation` is the country-scope public reservation effect in `cbrn_chemical_raid_effects.txt`. It may be called only from a native raid outcome whose raid type reserved exactly 120 units of the matching choking, blister, nerve, or incapacitating air-payload archetype through `essential_equipment`. Native collection is the debit; the helper must not call `cbrn_try_debit_action_payload` a second time.
+`cbrn_resolve_chemical_air_raid_reservation` is the country-scope reservation effect in `cbrn_chemical_raid_effects.txt`. Ordinary selected-state chemical air raids reserve exactly 120 units of the matching choking, blister, nerve, or incapacitating air-payload archetype, while strategic chemical rocket raids reserve exactly 240 nerve-class units through native `essential_equipment`. Native collection is the debit; the helper must not call `cbrn_try_debit_action_payload` a second time.
 
-Required temporary inputs are exact `cbrn_raid_agent` and one `cbrn_raid_engine_outcome` code for failure, limited success, success, or critical success. The effect first resets the shared action context, copies the exact raid agent into it, records the chemical-air route, derives the agent class, splits the engine failure result evenly between accepted Aborted and Failed outcomes, selects the centralized consumption and intended-dose bands, refunds the exact unused class-specific model, and records positive net consumption with native-reservation proof. Completed Controlled Dispersal narrows only the partial dose band to 0.45-0.60 and the catastrophic band to 1.15-1.30; payload consumption is unchanged. Partial, successful, and catastrophic results additionally return a positive release-efficiency multiplier and release proof. Aborted and failed results return zero release efficiency and no release proof.
+Required temporary inputs are exact `cbrn_raid_agent`, one `cbrn_raid_engine_outcome` code for failure, limited success, success, or critical success, and optional `cbrn_raid_route` set to `strategic_chemical_raid` for the rocket route. The effect first resets the shared action context, copies the exact raid agent into it, records the selected route, derives the agent class, splits the engine failure result evenly between accepted Aborted and Failed outcomes, selects the centralized consumption and intended-dose bands, refunds the exact unused class-specific model, and records positive net consumption with native-reservation proof. Completed Controlled Dispersal narrows only the partial dose band to 0.45-0.60 and the catastrophic band to 1.15-1.30; payload consumption is unchanged. Partial, successful, and catastrophic results additionally return a positive release-efficiency multiplier and release proof. Aborted and failed results return zero release efficiency and no release proof.
 
 Defaults: fail closed. An invalid agent or engine result leaves missing reservation proof and performs no refund. Outputs are temporary `cbrn_raid_result`, consumption/dose values, refund, reservation proof, release proof, and the shared action payload/release fields. Side effects are limited to returning unused payload stock; this effect does not select weather or terrain, resolve protection, contaminate a state, create deaths, add evidence, or apply Condemnation.
 
@@ -478,6 +525,23 @@ if = {
 }
 ```
 
+## cbrn_resolve_chemical_air_raid_outcome
+
+`cbrn_resolve_chemical_air_raid_outcome` is the public country-scope selected-state adapter for the active chemical air and strategic chemical rocket raid identifiers. The nine ordinary air wrappers are `cbrn_resolve_chemical_air_raid_chlorine_outcome`, `cbrn_resolve_chemical_air_raid_phosgene_outcome`, `cbrn_resolve_chemical_air_raid_mustard_outcome`, `cbrn_resolve_chemical_air_raid_lewisite_outcome`, `cbrn_resolve_chemical_air_raid_tabun_outcome`, `cbrn_resolve_chemical_air_raid_sarin_outcome`, `cbrn_resolve_chemical_air_raid_soman_outcome`, `cbrn_resolve_chemical_air_raid_malodor_outcome`, and `cbrn_resolve_chemical_air_raid_behavioral_outcome`. Strategic Sarin and Soman rocket outcomes use the Sarin or Soman wrapper with `cbrn_raid_route = strategic_chemical_raid`.
+
+Required native raid inputs are `var:actor_country`, `var:target_state`, `var:victim_country`, and one engine outcome code. The adapter saves those scopes as regular event targets, resolves native reservation and salvage, resolves the target's military and civilian protection, records a supplied selected-state target proof, and derives release efficiency from the native partial, success, or catastrophic result. The installed raid surface exposes no verified live target-weather or state-terrain trigger, so the adapter supplies no environmental condition receipt and the shared calculator omits those optional modifiers.
+
+Release-bearing results call `cbrn_prepare_chemical_action_record` and then `cbrn_dispatch_chemical_action_record` exactly once. If target, protection, release, or any other required shared proof fails, the adapter converts the result into a no-release attempt and calls `cbrn_dispatch_failed_chemical_air_raid_attempt`. Aborted and failed native results always use the no-release path. No branch searches another state, contaminates a region, infers idle aircraft activity, or refunds a failed native reservation.
+
+Example from a native raid outcome:
+
+```txt
+hidden_effect = {
+	set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success }
+	cbrn_resolve_chemical_air_raid_sarin_outcome = yes
+}
+```
+
 ## cbrn_dispatch_failed_chemical_air_raid_attempt
 
 Records one resolved Aborted or Failed chemical-air raid attempt without fabricating a release. This public country-scope effect lives in `cbrn_chemical_raid_effects.txt`.
@@ -486,9 +550,9 @@ Required inputs: a successful `cbrn_resolve_chemical_air_raid_reservation` resul
 
 Defaults: fail closed. Missing reservation proof, a release-bearing outcome, missing target proof, zero payload consumption, or an already supplied attempt-dispatch proof produces no mutation. The reservation helper and `cbrn_reset_action_context` invalidate the one-shot proof before a later attempt.
 
-Outputs: supplied `cbrn_raid_attempt_dispatch_proof`, actual state evidence applied after the failed-aircraft floor, cumulative attribution, and separate actor/state attempted-operation history. Aborted attempts add a small latent evidence value; Failed attempts establish at least the centralized aircraft-wreckage evidence floor.
+Outputs: supplied `cbrn_raid_attempt_dispatch_proof`, actual state evidence applied after the failed-aircraft floor, cumulative attribution, and separate actor/state attempted-operation history. Aborted attempts add a small latent evidence value; Failed attempts establish at least the centralized aircraft-wreckage evidence floor. The same contract applies to ordinary air and strategic rocket raid routes.
 
-Side effects: schedules the existing targeted state evidence-decay job and adds chemical Condemnation at the cumulative visibility level. Integrated CBRN Command modifies only the attempt's Condemnation base. The one-shot no-release proof prevents the shared Condemnation helper from recording repeat use, a non-use-pledge breach, a stockpile-restriction breach, recent weapon use, or `used_unconventional_weapon`. This path does not calculate exposure, damage units, create civilian or military deaths, contaminate the target, add medical saturation, consume masks or filters, grant chemical-use achievements, record confirmed chemical use, or notify treaty systems.
+Side effects: schedules the existing targeted state evidence-decay job, adds chemical Condemnation at the cumulative visibility level, and appends one exact no-release forensic row containing the native Aborted or Failed result and the liability created by that attempt. Integrated CBRN Command modifies only the attempt's Condemnation base. The one-shot no-release proof prevents the shared Condemnation helper from recording repeat use, a non-use-pledge breach, a stockpile-restriction breach, recent weapon use, or `used_unconventional_weapon`. The explicit no-release row can expose responsibility for the attempt but cannot register confirmed weapon use, treaty callbacks, or retaliation authority. This path does not calculate exposure, damage units, create civilian or military deaths, contaminate the target, add medical saturation, consume masks or filters, or grant chemical-use achievements.
 
 Example after native reservation resolution and exact target preservation:
 
@@ -515,13 +579,15 @@ Side effects:
 - applies dynamic `damage_units` organisation and strength ratios only to armies in the exact selected state; hostile and bounded friendly/blowback limits are separate;
 - lets the existing country-casualty tracker record exact engine military losses instead of inventing an estimated death count;
 - removes civilian population and writes one immediate chemical Deaths record from the calculated exact fraction;
-- accumulates CBRN contamination and updates the legacy `chem_state_contamination` modifier under a guard that prevents duplicate immediate deaths, so existing continuing-death and Air Cleanliness systems see the same state;
+- accumulates CBRN contamination and updates the canonical `chem_state_contamination` presentation modifier through the state-owned chemical helper; it does not call the retired legacy contamination or continuing-death helper;
 - adds medical saturation, consumes civilian and military mask/filter stocks, applies cumulative evidence and attribution floors, and schedules state-scoped expiry/recovery/decay events;
 - applies Condemnation with cumulative visibility, raw civilian deaths, contamination, severity, victim, strategic/mass-casualty floors, sanctions, and confirmed treaty breach;
 - records permanent confirmed-use history. Doctrine can reduce only the Condemnation base before the public floor; it never changes the other outputs;
 - applies first-exposure multipliers to the affected state and a short defender adaptation idea. Prior world use and real protection reduce this shock without benefiting the attacker.
 
 Internal helpers are `cbrn_dispatch_set_source_and_context`, `cbrn_dispatch_set_evidence_floor`, `cbrn_dispatch_apply_first_exposure_shock`, `cbrn_dispatch_apply_unit_damage`, `cbrn_dispatch_apply_mask_losses`, `cbrn_dispatch_apply_state_consequences`, `cbrn_dispatch_apply_condemnation`, and `cbrn_dispatch_record_actor_history`. They share the validated temporary record and must not be called directly by route adapters.
+
+The internal `cbrn_bind_action_victim_country` helper binds the selected state's controller for ordinary battlefield and strategic delivery. For the occupation-only `nerve_suppression` route it binds the selected state's owner, so evidence, retaliation, and Condemnation name the occupied population's country rather than the occupying actor.
 
 Example:
 
@@ -626,7 +692,7 @@ Scope: country. Inputs: current deployed manpower and stock. Defaults: zero issu
 
 Population-scales an exact state's requested civilian distribution, measures its remaining effective-coverage gap, grosses that gap up for the fitting and filter quality of the new issue, applies urban, infrastructure, combat, occupation, reserve, registration, civil-defence, applied-registration-technology, and simplified-filter cost/effectiveness modifiers, then debits the controller's real models oldest-first.
 
-Scope: state. Required temporary inputs: effective target `cbrn_distribution_target_fraction`, `cbrn_distribution_base_cost_mult`, fitting-quality `cbrn_distribution_effectiveness_mult`, and percent filter condition `cbrn_distribution_new_filter_condition`. Defaults: inputs are clamped; a zero fitting or filter factor produces no useful distribution. Outputs: consumed stock, usable crates, fitting points, weighted filter condition, effective coverage, and remaining state demand. Side effects: removes equipment from the controller, updates model-specific state and country aggregate ledgers, and never creates reclaimable national stock. Existing raw crates do not suppress a valid request when poor fitting or exhausted filters leave effective coverage below target.
+Scope: state. Required temporary inputs: effective target `cbrn_distribution_target_fraction`, `cbrn_distribution_base_cost_mult`, fitting-quality `cbrn_distribution_effectiveness_mult`, and percent filter condition `cbrn_distribution_new_filter_condition`. Defaults: inputs are clamped; a zero fitting or filter factor produces no useful distribution. Outputs: consumed stock, usable crates, fitting points, weighted filter condition, effective coverage, and remaining state demand. Side effects: the public wrapper binds the controller as both the real stock source and aggregate-ledger country, removes equipment from that country, updates model-specific state and controller aggregate ledgers, and never creates reclaimable national stock. Existing raw crates do not suppress a valid request when poor fitting or exhausted filters leave effective coverage below target.
 
 Example:
 
@@ -636,6 +702,25 @@ set_temp_variable = { cbrn_distribution_base_cost_mult = 1 }
 set_temp_variable = { cbrn_distribution_effectiveness_mult = 1 }
 set_temp_variable = { cbrn_distribution_new_filter_condition = 100 }
 cbrn_distribute_requested_masks_to_state = yes
+```
+
+### cbrn_distribute_requested_external_masks_to_state
+
+Uses the same population, fitting, filter, model-order, and effective-coverage transaction for protective aid supplied by a foreign country.
+
+Scope: state. Required regular event target: `cbrn_distribution_external_supplier`, pointing to the actual donor country. Required temporary inputs are the same four distribution inputs as `cbrn_distribute_requested_masks_to_state`. Defaults: a missing donor, missing controller, empty donor stock, or zero useful delivery fails closed. Output: temporary `cbrn_external_distribution_proof`, plus the normal consumed and usable crate outputs. Side effects: debits the donor's real oldest-first stock while crediting the exact state's model ledgers and its current controller's aggregate distributed-stock ledgers. This split preserves later state-control transfer accounting and never treats the donor as the state controller.
+
+Example:
+
+```txt
+save_event_target_as = cbrn_distribution_external_supplier
+event_target:cbrn_occupation_target_state = {
+	set_temp_variable = { cbrn_distribution_target_fraction = 0.35 }
+	set_temp_variable = { cbrn_distribution_base_cost_mult = 1 }
+	set_temp_variable = { cbrn_distribution_effectiveness_mult = 1 }
+	set_temp_variable = { cbrn_distribution_new_filter_condition = 100 }
+	cbrn_distribute_requested_external_masks_to_state = yes
+}
 ```
 
 ### cbrn_distribute_priority_masks_to_state, cbrn_distribute_full_masks_to_state, and cbrn_distribute_emergency_masks_to_state
@@ -661,6 +746,8 @@ Scope: country for military; state for civilian. Inputs: current issued/distribu
 Apply explicit exposure/storage loss to issued military or distributed civilian stock. `military_filter_standardization` reduces both crate loss and filter-condition loss by the accepted 15 percent for military and civilian ledgers. Controlled Retaliation Doctrine and Mask Discipline apply their separate military-only consumption multipliers; they do not reduce civilian loss or exposure consequences.
 
 Scope: country or state respectively. Inputs: temporary `cbrn_mask_loss_fraction` and `cbrn_mask_condition_loss`. Defaults: values are clamped to safe ranges. Outputs: model ledgers, filter condition, and replacement demand. Side effects: civilian loss also updates the controller's aggregate distributed totals; no lost equipment returns to stock.
+
+Military-accounting boundary: the snapshot counts real model equipment already deployed in divisions through the documented `num_equipment_in_armies@<model>` read and combines it with the separate, non-reclaimable military-issue ledgers. `cbrn_apply_military_mask_loss` can debit the latter and degrade their shared filter condition, but the installed native script surface does not expose a current-version effect that removes one selected respirator model directly from deployed divisions. The system therefore records military issue loss honestly and never pretends that a stockpile debit removed fielded equipment; it also does not introduce a hidden unit estimator or synthetic deployed-equipment damage ledger.
 
 ### cbrn_apply_standard_chemical_mask_losses, cbrn_apply_persistent_chemical_mask_losses, and cbrn_apply_strategic_raid_mask_losses
 
@@ -731,7 +818,7 @@ Scope: country. Input: persistent `cbrn_reconditioned_batch_size`. Defaults: no 
 
 ### cbrn_export_masks_to_protection_partner, cbrn_import_masks_from_protection_partner, and cbrn_license_respirator_design_from_partner
 
-Country-scope allied procurement handlers using regular event target `cbrn_protection_trade_partner`. Invalid or stale partners fail closed. Export sends a real 500-crate family shipment, records bilateral aid totals and recipient opinion, and gives a small capped decay credit only when the exporter already follows a verified Condemnation-compliance path; offense history is unchanged. Import sends real partner stock to the caller and marks the supplier with a timed allied-request production signal. Licensing grants one gas-mask research bonus. All successful paths refresh relevant readiness/maintenance state.
+Country-scope procurement handlers using regular event target `cbrn_protection_trade_partner`. Invalid or stale partners fail closed. Export accepts a faction partner or exact humanitarian-carve-out recipient, sends a real 500-crate family shipment, records bilateral aid totals and recipient opinion, and gives a small capped decay credit only when the exporter already follows a verified Condemnation-compliance path; offense history is unchanged. Import remains restricted to an allied supplier, sends real partner stock to the caller, and marks the supplier with a timed allied-request production signal. Licensing grants one gas-mask research bonus from an eligible allied partner. All successful paths refresh relevant readiness and maintenance state.
 
 ## CBRN exact-state raid response adapter
 
@@ -767,19 +854,49 @@ State-scope explicit alert cleanup. It clears only `cbrn_chemical_raid_alert_act
 
 ### cbrn_apply_starting_mask_profile
 
-Applies one accepted 1936 country profile from temporary inputs: basic/improved stock, military issue target, civilian distribution target, registration proof, and program-profile enum.
+Applies one accepted 1936 country profile from temporary inputs: basic/improved stock, military issue target, already-issued civilian share, registration proof, and program-profile enum.
 
-Scope: country. Required temporary inputs: `cbrn_starting_mask_basic`, `cbrn_starting_mask_improved`, `cbrn_starting_military_issue_target`, `cbrn_starting_civilian_distribution_target`, `cbrn_starting_registration_proof`, and `cbrn_starting_program_profile`. Defaults: the static caller supplies every value. Outputs: technology, exact tuned starting crates, reserve/registration flags, readiness, actual manpower-scaled military issue, actual population-scaled distribution across controlled core states, and maintenance scheduling. Military targets above 100 percent represent replacement, training, and mobilization issue; protection remains capped while the extra issued ledger is retained. All issue and distribution are stock-limited, so unmet target demand creates no equipment. Side effects: a bounded one-time owned-state loop for that country; no periodic pulse.
+Scope: country. Required temporary inputs: `cbrn_starting_mask_basic`, `cbrn_starting_mask_improved`, `cbrn_starting_military_issue_target`, `cbrn_starting_civilian_distribution_target`, `cbrn_starting_registration_proof`, and `cbrn_starting_program_profile`. Defaults: the static caller supplies every value. Outputs: technology, exact tuned starting crates, reserve/registration flags, readiness, actual manpower-scaled military issue, actual population-scaled distribution across controlled core states, and maintenance scheduling. `cbrn_starting_civilian_distribution_target` is the share already issued at the 1936 bookmark, not the matrix's eventual civilian-coverage target; undistributed crates remain in the national reserve. Military targets above 100 percent represent replacement, training, and mobilization issue; protection remains capped while the extra issued ledger is retained. All issue and distribution are stock-limited, so unmet target demand creates no equipment. Side effects: a bounded one-time owned-state loop for that country; no periodic pulse.
+
+### cbrn_apply_starting_imported_mask_profile
+
+Country-scope wrapper for an imported emergency reserve. It sets the temporary import-only flag, calls `cbrn_apply_starting_mask_profile`, and clears the flag in the same effect chain. The country receives its real tuned crates, issue and distribution ledgers, reserve flag, readiness contribution, maintenance job, and profile-aware AI classification, but it does not receive free `basic_gas_masks` technology or the `cbrn_program_established` flag. Improved-mask technology is still granted only when the accepted profile contains a positive improved-mask stock.
 
 ### chaosx_apply_starting_cbrn_mask_profiles
 
-Static startup dispatcher for the 30 explicitly mapped tags in `gas_mask_starting_stockpile_matrix.md`. It assigns all temporary inputs and calls `cbrn_apply_starting_mask_profile` per existing country. Exact totals are gameplay tuning inside accepted historical bands; relative preparedness and confidence, not literal inventory certainty, control the profiles. Britain has the largest reserve and strongest starting civilian share.
+Static startup dispatcher for the 30 explicitly mapped domestic-program tags plus imported emergency-reserve profiles for China, the Chinese regional powers, Manchukuo, Brazil, Argentina, Mexico, and Chile. It assigns all temporary inputs and calls the domestic or imported wrapper per existing country. Exact totals are gameplay tuning inside accepted historical bands; relative preparedness and confidence, not literal inventory certainty, control the profiles. Britain has the largest reserve and strongest starting civilian share. Imported profiles model access to crates without fabricating domestic respirator-production capability.
 
 Example:
 
 ```txt
 chaosx_apply_starting_cbrn_mask_profiles = yes
 ```
+
+## CBRN occupation and nerve-suppression effects
+
+These subsystem-specific effects live in `cbrn_occupation_effects.txt`. They are not part of the generic dynamic-effect library because their exact-state record, occupation-law, and evidence-row contracts are used only by the occupation CBRN surface.
+
+### Authorization, law, and protective-aid effects
+
+- `cbrn_occupation_authorize_coercive_security` and `cbrn_occupation_authorize_protected_administration` recheck their exact institutional gates and set only their named authorization flags.
+- `cbrn_occupation_set_coercive_security_state`, `cbrn_occupation_set_protected_administration_state`, and `cbrn_occupation_clear_state_policy` are state-scoped law adapters for an exact occupied state.
+- `cbrn_occupation_execute_external_protective_aid` is country scoped and requires the caller to bind `cbrn_occupation_target_state`. It binds the donor as `cbrn_distribution_external_supplier`, invokes the external mask transaction in the exact state, records consumed and delivered crates, updates donor and recipient history, and grants a bounded opinion record. Missing stock, target, controller, or distribution gap produces no equipment and no completion proof.
+
+### Nerve-suppression transaction
+
+`cbrn_occupation_execute_nerve_suppression` is country scoped. Required inputs are the regular event target `cbrn_occupation_target_state`, `cbrn_occupation_requested_agent` set to Sarin or Soman, and every exact condition variable required by `cbrn_occupation_action_conditions_are_supplied`. The target must retain CBRN Coercive Security, resistance, control, war ownership, a ready detachment, no allied force risk, an explicit target-loss clearance record, and no cooldown. The startup initializer clears every legacy release, weather, terrain, density, command, evidence-control, forecast-confidence, command-integration, and friendly-risk value; it never supplies a neutral receipt. The route therefore remains fail-closed until `cbrn_occupation_current_version_condition_hook_verified` is backed by a proven current-version exact-state provider.
+
+The effect resets the shared action context, checks repeat use, debits the real agent payload first, debits masks, decontamination equipment, CBRN instruments, support equipment, trucks, and Command Power only after payload proof, resolves target protection, then calls the shared chemical action preparation and dispatch pipeline. Only a proven shared dispatch applies the temporary suppression modifier, state contamination and death history, trauma, cooldown, delayed backlash event, exact responsible-country pointer, exact chemical-record UID, and national repetition records. Rejected input produces no state consequence and never selects an alternate state or agent.
+
+### Exact evidence and disclosure effects
+
+`cbrn_occupation_select_exact_chemical_record`, `cbrn_occupation_advance_exact_chemical_record`, `cbrn_occupation_advance_exact_chemical_record_to_confirmed`, and `cbrn_occupation_suppress_exact_chemical_record_evidence` operate only on the chemical record UID stored by the exact occupation action. Missing or stale UID proof fails closed; no latest-row or same-country fallback exists. Evidence suppression never removes the row, actor, payload, deaths, contamination, attribution history, or use history.
+
+`cbrn_occupation_apply_requested_coverup_action` dispatches one explicit state-scoped action enum to Seal State, Destroy Records, Admit Accidental Release, or Permit Inspection. Seal and record destruction reduce only the exact record's present evidence and create permanent concealment history plus hidden coverup liability. Admission and inspection advance the same exact record, publish discoverable coverup liability, end an active seal, and preserve every physical and historical consequence. Doctrine is applied only to the new contextual Condemnation amount; it never modifies evidence, attribution, casualties, contamination, trauma, medical history, domestic consequences, or action history.
+
+### Delayed aftermath and cleanup effects
+
+`cbrn_occupation_apply_delayed_backlash` is state scoped and runs only from the exact scheduled state event when the stored due day and responsible controller still agree. It applies bounded resistance and compliance backlash, an occupier-scoped dynamic modifier, and at most one eligible neighboring occupied-state spillover. `cbrn_occupation_decay_state_trauma` advances one exact state's annual self-scheduled trauma step. `cbrn_occupation_end_responsible_country_operational_modifiers` removes occupier-specific temporary benefits when control changes while retaining historical trauma, evidence, deaths, and responsibility. No helper performs a broad country or state pulse.
 
 ## Chaos Warfare doctrine effects
 
@@ -821,7 +938,7 @@ complete_effect = { hidden_effect = { cbrn_begin_hazard_assault_training = yes }
 
 ### Exact-state decontamination
 
-`cbrn_apply_theater_decontamination_assignment` is state scoped. The caller must pass `cbrn_state_can_receive_theater_decontamination`. It refreshes the exact state's contamination class, selects 10/8/5/3 cleanup points for Trace-or-Local/Serious/Severe/Catastrophic, applies the Theater Contamination Doctrine 1.25 multiplier when present, calls `cbrn_apply_state_contamination_delta_internal`, records only the actual removed amount on the controller, and applies a 28-day state lock. Missing or clean state input produces no useful cleanup. It never alters evidence, attribution, deaths, Condemnation, or use history.
+`cbrn_apply_theater_decontamination_assignment` is state scoped. The caller must pass `cbrn_state_can_receive_theater_decontamination`; its country wrapper first charges 5 Political Power, 4 Command Power, 40 Decontamination Equipment, 100 Gas Masks, 20 Support Equipment, 2 Motorized Equipment, and 300 Fuel. Decontamination stock and masks are debited oldest-first, and any missing payment blocks the assignment. After payment, it refreshes the exact state's contamination class, selects 10/8/5/3 cleanup points for Trace-or-Local/Serious/Severe/Catastrophic, applies the Theater Contamination Doctrine 1.25 multiplier when present, calls `cbrn_apply_state_contamination_delta_internal`, records only the actual removed amount on the controller, and applies a 28-day state lock. Missing or clean state input produces no useful cleanup. It never alters evidence, attribution, deaths, Condemnation, or use history.
 
 Example:
 
@@ -899,6 +1016,8 @@ These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expe
 | `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
 | `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-gated commander's ten-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. |
 | `cbrn_hq_apply_offensive_doctrine_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the mutually exclusive Theater Contamination or Terminal Hazard preparation multiplier, reclamps, and rounds. Call only from Prepare Chemical Offensive and Combined CBRN Overmatch; it does not accelerate protective, cleanup, medical, or containment orders and changes no cost, active duration, cooldown, or exposure record. |
+| `cbrn_hq_add_preparing_trait_for_current_duration` | Character scope. Reads the exact rounded `cbrn_hq_preparation_days` value and injects it into the otherwise static timed-trait field through a CBRN-local meta effect. |
+| `cbrn_hq_schedule_current_event` | Character scope. Requires `cbrn_hq_scheduled_event_id` from `cbrn_hq_event_id` and exact rounded `cbrn_hq_scheduled_event_days`. It injects both into the unit-leader event call because installed documentation does not verify bare dynamic durations for that field. |
 | `cbrn_hq_commit_preparation` | Character scope. Required temporary inputs: calculated preparation, active duration, full/native command-power costs, and an activation operating package. Stores the force band, debits the scripted CP remainder and real stores, applies the timed preparation trait, and schedules bounded preparation/final-cleanup events. Medical/manpower commitments recover on their planned date even if active benefits end early. |
 
 ### Model-aware operating-stock debit helpers
@@ -939,4 +1058,68 @@ one_time_effect = {
 
 `cbrn_hq_debit_prepare_upkeep`, `cbrn_hq_debit_protective_upkeep`, `cbrn_hq_debit_decon_upkeep`, `cbrn_hq_debit_seal_area_upkeep`, `cbrn_hq_debit_antidote_upkeep`, `cbrn_hq_debit_infection_upkeep`, and `cbrn_hq_debit_overmatch_upkeep` select and debit one paid weekly installment from the force band stored at activation. The caller must first pass the corresponding upkeep trigger. Army reorganization after activation cannot reduce that package.
 
-`cbrn_hq_schedule_next_upkeep_tick` schedules `cbrn_hq.2` only while the persistent finite tick budget is positive. `cbrn_hq_complete_upkeep_tick` decrements that budget and schedules the next tick when required. `cbrn_hq_fail_upkeep` removes active benefits and the tick budget while retaining the operation commitment until its already scheduled final cleanup. These targeted chains create no periodic country iteration.
+`cbrn_hq_schedule_next_upkeep_tick` schedules `cbrn_hq.2` through `cbrn_hq_schedule_current_event` only while the persistent finite tick budget is positive. `cbrn_hq_complete_upkeep_tick` decrements that budget and schedules the next tick when required. `cbrn_hq_fail_upkeep` removes active benefits and the tick budget while retaining the operation commitment until its already scheduled final cleanup. These targeted chains create no periodic country iteration.
+
+## Exact-state CBRN battlefield operation effects
+
+The four route effects in `cbrn_battlefield_operation_effects.txt` are CBRN-specific and stay outside the generic dynamic effect file. They are called by the state-targeted battlefield decisions and by no broad event pulse.
+
+The begin effect saves the selected state into the country-scoped `cbrn_battlefield_active_state` variable before the timed operation leaves the selection chain. Resolution and cancellation read that persistent state pointer, while the short-lived `cbrn_battlefield_state_target` event target is retained only for the immediate begin-chain validation and cleanup path. This prevents a later decision or bounded event from depending on a regular event target that has already expired.
+
+The installed build does not expose a verified state-scope weather and terrain condition hook for this timed Army Headquarters route. `cbrn_battlefield_current_version_condition_hook_verified` therefore remains `always = no`; the persistent state pointer does not relax that gate and does not act as an estimator or proxy.
+
+| Effect | Scope and contract |
+| --- | --- |
+| `cbrn_initialize_battlefield_operation_selection` | Country scope. Initializes the selected chemical agent to an unlocked model and records a rejected last result. |
+| `cbrn_battlefield_cycle_selected_agent` | Country scope. Cycles the explicit agent ladder without changing payload or consequence state. |
+| `cbrn_battlefield_set_route_equipment_costs` | Country scope. Calculates the route-specific full or shortage equipment bill from centralized constants. |
+| `cbrn_battlefield_pay_route_equipment` | Country scope. Debits model-aware masks, decontamination equipment, instruments, support equipment, chemical shell lots, projector chassis, armored chassis, motorized equipment, and fuel. |
+| `cbrn_battlefield_begin_operation` | State-targeted decision scope. Revalidates the exact state, binds the victim, consumes the matching chemical payload, debits readiness and Command Power, and commits the finite operation ledger. |
+| `cbrn_battlefield_resolve_operation` | Country scope with stored state target. Reconstructs the exact action record and sends it to the shared CBRN chemical exposure dispatcher. |
+| `cbrn_battlefield_cancel_operation` | Country scope with stored state target. Records cancellation and clears the bounded ledger without inventing a payload refund. |
+| `cbrn_battlefield_clear_operation_state` | Country scope. Clears state and country operation flags after resolution or cancellation. |
+
+All route effects require the side-effect-free triggers in `cbrn_battlefield_operation_triggers.txt`. No effect selects an alternate state, estimates combat activity, or uses continuous-air activity as a proxy.
+
+## Canonical chemical-state ledger effects
+
+The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`. These helpers are private to the chemical exposure and recovery architecture; they are not generic dynamic effects.
+
+| Effect | Scope and contract |
+| --- | --- |
+| `cbrn_chemical_set_air_contribution_from_class` | State scope. Converts the exact canonical contamination class into the configured Air Cleanliness contribution and applies only the delta to the state and global component totals. |
+| `cbrn_chemical_update_state_receipt` | State scope. Replaces the canonical contamination class, refreshes the exact expiry and continuing-death schedule, updates the presentation modifier, and adjusts Air Cleanliness by the actual class delta. |
+| `cbrn_chemical_cleanup_state_receipt` | State scope. Removes only the state-owned chemical receipt and its Air Cleanliness contribution, then clears the state-owned continuing-death schedule. An older cleanup event cannot erase a newer receipt. |
+| `cbrn_chemical_rebuild_air_cleanliness_contributions` | Country scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
+
+The legacy `chem_state_contamination_*` variables and presentation modifier remain compatibility mirrors. The legacy `chem_apply_state_contamination` writer is structurally unreachable, and active shared chemical dispatch no longer mutates the legacy helper or applies a broad chemical pulse. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
+
+## Biological Air Cleanliness receipts
+
+`cbrn_biological_air_effects.txt` owns the biological component of Air Cleanliness. A state receives a configured contribution only while an active lifecycle episode exists, and the helper changes the global biological total by the exact state delta. Lifecycle cleanup and countermeasure transitions call the same state-owned cleanup path.
+
+| Effect | Scope and contract |
+| --- | --- |
+| `cbrn_biological_set_air_contribution_from_agent` | State scope. Maps the selected agent and active lifecycle status to the centralized receipt contribution. Inactive or unknown episodes contribute zero. |
+| `cbrn_biological_cleanup_air_receipt` | State scope. Removes only the biological receipt owned by the current lifecycle episode. It does not alter incubation, deaths, attribution, or treatment ledgers. |
+| `cbrn_biological_rebuild_air_cleanliness_contributions` | Country scope. Explicit settings-reenable repair for active biological episodes; it is not a periodic country or world pulse. |
+
+The biological effect does not reuse the chemical contamination ledger and does not turn weaponized zombies into ordinary pathogen receipts. Shared lifecycle helpers remain in the biological files.
+
+## Chemical doomsday release adapter
+
+`cbrn_chemical_doomsday_effects.txt` is the decision-owned batch adapter for the retained doomsday decision. It validates exact controlled states and the selected extreme-use policy, captures each agent's real restricted-site cylinder stock, consumes stock once, and dispatches each accepted state through `cbrn_prepare_chemical_action_record` and `cbrn_dispatch_chemical_action_record`. The batch Condemnation receipt is attached to accepted states after the shared action record has been created.
+
+It never estimates a target, substitutes a state, dispatches from idle aircraft, or calls the retired direct contamination helper. Missing condition or target proof rejects the release. The stock-scaled Condemnation range is centralized in `cbrn_chemical_doomsday_constants.txt` and is gameplay tuning rather than a historical casualty estimate.
+
+## CBRN achievement and preparation effects
+
+`cbrn_achievement_effects.txt` records achievement receipts from actual readiness, protection, delivery, lifecycle, decontamination, medical, evidence, and consequence outcomes. It does not grant the underlying state and cannot be used as a gameplay shortcut.
+
+`cbrn_starting_protection_effects.txt` initializes country-specific prepared reserves and the population-scaled military/civilian protection ledgers. The starting values are gameplay tuning with explicitly limited historical confidence; Britain is intentionally the strongest prepared First World War reserve in the accepted matrix.
+
+## Camp, occupation, and headquarters adapters
+
+`cbrn_camp_effects.txt` and `cbrn_occupation_effects.txt` remain route-specific adapters. Camp efficiency may be improved by the accepted terminal doctrine and extreme policy, but those effects do not create, reveal, or authorize camps or other extermination infrastructure. Nerve suppression consumes the exact restricted-site package and records protection failure, deaths, contamination, medical saturation, resistance trauma, evidence, attribution, and diplomatic consequence through the shared contract.
+
+`cbrn_hq_effects.txt` owns Army Headquarters preparation and regimental-support operating packages. It debits essential equipment, filter wear, decontamination, instruments, transport, fuel, medical capacity, and manpower using finite preparation, active, upkeep, cooldown, and cleanup events. It is the theater layer; regimental support remains the division layer. None of these helpers performs a broad all-country periodic pulse.

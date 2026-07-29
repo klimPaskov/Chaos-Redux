@@ -34,6 +34,11 @@ cbrn_dispatch_set_source_and_context = {
 		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.nerve_suppression }
 	}
 	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.restricted_chemical_site compare = equals } }
+		set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.persistent_chemical_contamination }
+		set_temp_variable = { cbrn_action_condemnation_context = constant:condemnation_context.restricted_chemical_site }
+	}
+	else_if = {
 		limit = {
 			OR = {
 				check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
@@ -134,7 +139,7 @@ cbrn_dispatch_apply_first_exposure_shock = {
 			set_variable = { cbrn_first_chemical_exposure_date = global.num_days }
 			add_timed_idea = {
 				idea = cbrn_first_chemical_shock_idea
-				days = cbrn_first_use_shock_days
+				days = var:cbrn_first_use_shock_days
 			}
 		}
 		set_temp_variable = { cbrn_first_exposure_shock_applied = constant:cbrn_proof.supplied }
@@ -256,35 +261,44 @@ cbrn_dispatch_apply_state_consequences = {
 			set_temp_variable = { cbrn_state_contamination_delta = cbrn_action_contamination_points }
 			set_temp_variable = { cbrn_state_contamination_duration_input = cbrn_action_contamination_duration_days }
 			cbrn_apply_state_contamination_delta_internal = yes
-
-			set_temp_variable = { chem_dose_each = cbrn_action_contamination_points }
-			multiply_temp_variable = { chem_dose_each = constant:cbrn_chemical_dispatch.legacy_contamination_strength_per_point }
-			set_temp_variable = { chem_state_duration_add = cbrn_action_contamination_duration_days }
 			set_temp_variable = { cbrn_shared_dispatch_duration_cap = cbrn_action_contamination_duration_days }
 			if = {
 				limit = {
-					has_variable = chem_state_contamination_expiry_day
-					check_variable = { var = chem_state_contamination_expiry_day value = cbrn_dispatch_current_day compare = greater_than }
+					has_variable = cbrn_chemical_contamination_expiry_day
+					check_variable = { var = cbrn_chemical_contamination_expiry_day value = cbrn_dispatch_current_day compare = greater_than }
 				}
-				set_temp_variable = { cbrn_existing_contamination_days = chem_state_contamination_expiry_day }
+				set_temp_variable = { cbrn_existing_contamination_days = cbrn_chemical_contamination_expiry_day }
 				set_temp_variable = { cbrn_dispatch_current_day_negative = cbrn_dispatch_current_day }
 				multiply_temp_variable = { cbrn_dispatch_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
 				add_to_temp_variable = { cbrn_existing_contamination_days = cbrn_dispatch_current_day_negative }
 				add_to_temp_variable = { cbrn_shared_dispatch_duration_cap = cbrn_existing_contamination_days }
 			}
 			clamp_temp_variable = { var = cbrn_shared_dispatch_duration_cap min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
-			set_temp_variable = { cbrn_shared_dispatch_guard = constant:cbrn_proof.supplied }
-			chem_apply_state_contamination = yes
-			set_temp_variable = { cbrn_shared_dispatch_guard = constant:cbrn_proof.missing }
+			set_temp_variable = { cbrn_contamination_expiry_day = cbrn_dispatch_current_day }
+			add_to_temp_variable = { cbrn_contamination_expiry_day = cbrn_shared_dispatch_duration_cap }
+			set_temp_variable = { cbrn_contamination_expiry_cap = cbrn_dispatch_current_day }
+			add_to_temp_variable = { cbrn_contamination_expiry_cap = constant:cbrn_scheduler.contamination_maximum_days }
+			if = {
+				limit = { check_variable = { var = cbrn_contamination_expiry_day value = cbrn_contamination_expiry_cap compare = greater_than } }
+				set_temp_variable = { cbrn_contamination_expiry_day = cbrn_contamination_expiry_cap }
+			}
+			set_variable = { cbrn_chemical_contamination_expiry_day = cbrn_contamination_expiry_day }
+			cbrn_chemical_refresh_state_modifier = yes
+			cbrn_chemical_refresh_continuing_death_profile = yes
+			cbrn_chemical_schedule_continuing_deaths = yes
 
-			set_variable = { cbrn_chemical_contamination_expiry_day = chem_state_contamination_expiry_day }
-			set_temp_variable = { cbrn_contamination_cleanup_days = chem_state_contamination_expiry_day }
+			set_temp_variable = { cbrn_contamination_cleanup_days = cbrn_contamination_expiry_day }
 			set_temp_variable = { cbrn_dispatch_current_day_negative = cbrn_dispatch_current_day }
 			multiply_temp_variable = { cbrn_dispatch_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
 			add_to_temp_variable = { cbrn_contamination_cleanup_days = cbrn_dispatch_current_day_negative }
 			clamp_temp_variable = { var = cbrn_contamination_cleanup_days min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
 			round_temp_variable = cbrn_contamination_cleanup_days
-			state_event = { id = cbrn_delivery.1 days = cbrn_contamination_cleanup_days }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_delivery.1 days = [CBRN_CONTAMINATION_CLEANUP_DAYS] }
+				}
+				CBRN_CONTAMINATION_CLEANUP_DAYS = "[?cbrn_contamination_cleanup_days|.0]"
+			}
 		}
 
 		if = {
@@ -297,7 +311,12 @@ cbrn_dispatch_apply_state_consequences = {
 			clamp_variable = { var = cbrn_medical_saturation min = constant:cbrn_chemical_dispatch.state_medical_minimum max = constant:cbrn_chemical_dispatch.state_medical_maximum }
 			set_variable = { cbrn_medical_recovery_due_day = cbrn_dispatch_current_day }
 			add_to_variable = { cbrn_medical_recovery_due_day = cbrn_medical_recovery_days_local }
-			state_event = { id = cbrn_delivery.2 days = cbrn_medical_recovery_days_local }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_delivery.2 days = [CBRN_MEDICAL_RECOVERY_DAYS] }
+				}
+				CBRN_MEDICAL_RECOVERY_DAYS = "[?cbrn_medical_recovery_days_local|.0]"
+			}
 		}
 
 		set_temp_variable = { cbrn_state_evidence_delta = cbrn_action_evidence_points }
@@ -326,7 +345,12 @@ cbrn_dispatch_apply_state_consequences = {
 			limit = { check_variable = { cbrn_state_evidence_delta > constant:cbrn_math.zero } }
 			set_variable = { cbrn_evidence_decay_due_day = cbrn_dispatch_current_day }
 			add_to_variable = { cbrn_evidence_decay_due_day = cbrn_evidence_decay_days_local }
-			state_event = { id = cbrn_delivery.3 days = cbrn_evidence_decay_days_local }
+			meta_effect = {
+				text = {
+					state_event = { id = cbrn_delivery.3 days = [CBRN_EVIDENCE_DECAY_DAYS] }
+				}
+				CBRN_EVIDENCE_DECAY_DAYS = "[?cbrn_evidence_decay_days_local|.0]"
+			}
 		}
 
 		if = {
@@ -349,6 +373,7 @@ cbrn_dispatch_apply_state_consequences = {
 			set_variable = { cbrn_last_chemical_victim_country = event_target:cbrn_action_victim_country }
 		}
 		cbrn_dispatch_apply_mask_losses = yes
+		cbrn_achievement_record_chemical_episode = yes
 	}
 }
 
@@ -507,6 +532,15 @@ cbrn_dispatch_apply_condemnation = {
 			}
 		}
 	}
+	set_temp_variable = { cbrn_action_release_status = constant:cbrn_chemical_release_status.released }
+	set_temp_variable = { cbrn_action_raid_result = constant:cbrn_chemical_raid_result.none }
+	if = {
+		limit = { has_variable = cbrn_raid_result }
+		set_temp_variable = { cbrn_action_raid_result = cbrn_raid_result }
+	}
+	event_target:cbrn_action_target_state = {
+		cbrn_diplomacy_append_chemical_action_record = yes
+	}
 }
 
 cbrn_dispatch_record_actor_history = {
@@ -515,6 +549,39 @@ cbrn_dispatch_record_actor_history = {
 		set_variable = { cbrn_chemical_action_count = constant:cbrn_math.zero }
 	}
 	add_to_variable = { cbrn_chemical_action_count = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_unified_record_weapon_class = cbrn_action_weapon_class }
+	set_temp_variable = { cbrn_unified_record_agent = cbrn_action_agent }
+	set_temp_variable = { cbrn_unified_record_delivery_method = cbrn_action_delivery_route }
+	set_temp_variable = { cbrn_unified_record_severity = cbrn_action_severity }
+	set_temp_variable = { cbrn_unified_record_civilian_deaths = cbrn_action_civilian_deaths }
+	# The native unit-damage effect exposes this resolved casualty fraction,
+	# rather than a direct killed-person count. The unified ledger records that
+	# exact receipt without inventing a headcount.
+	set_temp_variable = { cbrn_unified_record_military_deaths = cbrn_action_military_death_fraction }
+	set_temp_variable = { cbrn_unified_record_contamination_change = cbrn_action_contamination_points }
+	set_temp_variable = { cbrn_unified_record_outbreak_change = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_unified_record_evidence_quality = cbrn_action_evidence_points }
+	set_temp_variable = { cbrn_unified_record_attribution_state = cbrn_action_attribution_state }
+	set_temp_variable = { cbrn_unified_record_retaliation_status = cbrn_action_retaliation_status }
+	if = {
+		limit = { check_variable = { var = cbrn_chemical_action_count value = constant:cbrn_math.one compare = equals } }
+		set_temp_variable = { cbrn_unified_record_first_use_status = constant:cbrn_action_record_status.first_use }
+	}
+	else = {
+		set_temp_variable = { cbrn_unified_record_first_use_status = constant:cbrn_action_record_status.repeated_use }
+	}
+	set_temp_variable = { cbrn_unified_record_repeat_use_pressure = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { var = cbrn_chemical_action_count value = constant:cbrn_math.one compare = greater_than } }
+		set_temp_variable = { cbrn_unified_record_repeat_use_pressure = cbrn_chemical_action_count }
+		subtract_from_temp_variable = { cbrn_unified_record_repeat_use_pressure = constant:cbrn_math.one }
+	}
+	event_target:cbrn_action_target_state = { save_event_target_as = cbrn_unified_record_target_state }
+	if = {
+		limit = { has_event_target = cbrn_action_victim_country }
+		event_target:cbrn_action_victim_country = { save_event_target_as = cbrn_unified_record_victim_country }
+	}
+	cbrn_append_unified_action_record = yes
 	set_variable = { cbrn_last_chemical_action_date = global.num_days }
 	set_variable = { cbrn_last_chemical_agent = cbrn_action_agent }
 	set_variable = { cbrn_last_chemical_agent_class = cbrn_action_agent_class }
@@ -524,7 +591,7 @@ cbrn_dispatch_record_actor_history = {
 	set_variable = { cbrn_last_chemical_target_state = event_target:cbrn_action_target_state }
 	set_variable = { cbrn_last_chemical_civilian_deaths = cbrn_action_civilian_deaths }
 	set_variable = { cbrn_last_chemical_contamination_points = cbrn_action_contamination_points }
-	set_variable = { cbrn_last_chemical_evidence_points = cbrn_action_evidence_applied }
+	set_variable = { cbrn_last_chemical_evidence_points = cbrn_action_evidence_points }
 	set_variable = { cbrn_last_chemical_attribution_state = cbrn_action_attribution_state }
 	set_variable = { cbrn_last_chemical_retaliation_status = cbrn_action_retaliation_status }
 	if = {
@@ -532,6 +599,8 @@ cbrn_dispatch_record_actor_history = {
 		set_variable = { cbrn_last_chemical_victim_country = event_target:cbrn_action_victim_country }
 	}
 	set_country_flag = achievement_used_chemical_ability
+	cbrn_achievement_record_chemical_action = yes
+	cbrn_achievement_record_condemnation_snapshot = yes
 }
 
 cbrn_dispatch_chemical_action_record = {
@@ -542,6 +611,7 @@ cbrn_dispatch_chemical_action_record = {
 			check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
 			check_variable = { var = cbrn_action_target_state_supplied value = constant:cbrn_proof.supplied compare = equals }
 			has_event_target = cbrn_action_target_state
+			has_event_target = cbrn_action_victim_country
 			NOT = { check_variable = { var = cbrn_action_dispatch_proof value = constant:cbrn_proof.supplied compare = equals } }
 		}
 		set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.supplied }

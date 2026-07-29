@@ -101,6 +101,32 @@ cbrn_country_has_active_decontamination_corridor = {
 	}
 }
 
+cbrn_country_can_pay_theater_decontamination_assignment = {
+	NOT = { has_political_power < constant:cbrn_doctrine_cleanup_assignment_cost.political_power }
+	NOT = { command_power < constant:cbrn_doctrine_cleanup_assignment_cost.command_power }
+	NOT = {
+		has_equipment = {
+			decontamination_equipment < constant:cbrn_doctrine_cleanup_assignment_cost.decontamination_equipment
+		}
+	}
+	NOT = {
+		has_equipment = {
+			gas_mask_equipment < constant:cbrn_doctrine_cleanup_assignment_cost.gas_masks
+		}
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment_1 < constant:cbrn_doctrine_cleanup_assignment_cost.support_equipment
+		}
+	}
+	NOT = {
+		has_equipment = {
+			motorized_equipment_1 < constant:cbrn_doctrine_cleanup_assignment_cost.motorized_equipment
+		}
+	}
+	NOT = { has_fuel < constant:cbrn_doctrine_cleanup_assignment_cost.fuel }
+}
+
 cbrn_state_can_receive_theater_decontamination = {
 	is_controlled_by = ROOT
 	cbrn_state_has_chemical_contamination = yes

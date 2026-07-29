@@ -1,0 +1,130 @@
+# CHAOS REDUX - PACKAGE-WIDE CBRN ACTION RECORD EFFECTS
+# ============================================================================
+# Overview:
+# - Appends one immutable identity row for every accepted deliberate chemical
+#   action and every deliberate biological seed.
+# - Stores the common Spec 09 fields in aligned global arrays so Deaths,
+#   Condemnation, event logs, diplomatic reactions, achievements, and later
+#   evidence work can consume one package-wide record shape.
+# - Chemical adapters provide a normalized military-death receipt because the
+#   native unit-damage effect exposes a casualty fraction rather than a direct
+#   killed-person count. Biological lifecycle records civilian deaths as the
+#   shared episode accrues them; military deaths and chemical contamination are
+#   exactly zero for that civilian outbreak path.
+# - This file contains no recurring scan and no delivery logic. It only records
+#   already-validated receipts supplied by the calling subsystem.
+#
+# Required temporary inputs:
+# - cbrn_unified_record_weapon_class
+# - cbrn_unified_record_agent
+# - cbrn_unified_record_delivery_method
+# - cbrn_unified_record_severity
+# - cbrn_unified_record_civilian_deaths
+# - cbrn_unified_record_military_deaths
+# - cbrn_unified_record_contamination_change
+# - cbrn_unified_record_outbreak_change
+# - cbrn_unified_record_evidence_quality
+# - cbrn_unified_record_attribution_state
+# - cbrn_unified_record_retaliation_status
+# - cbrn_unified_record_first_use_status
+# - cbrn_unified_record_repeat_use_pressure
+#
+# Required event targets:
+# - cbrn_unified_record_target_state
+# - cbrn_unified_record_victim_country when a victim is known
+#
+# The caller's current country scope is the attacker.
+# ============================================================================
+
+cbrn_append_unified_action_record = {
+	if = {
+		limit = {
+			has_event_target = cbrn_unified_record_target_state
+		}
+		if = {
+			limit = { NOT = { has_variable = global.cbrn_action_record_uid_next } }
+			set_variable = { global.cbrn_action_record_uid_next = constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_unified_record_row_index = global.cbrn_action_record_uid_entries^num }
+		add_to_variable = { global.cbrn_action_record_uid_next = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_unified_record_uid = global.cbrn_action_record_uid_next }
+
+		save_event_target_as = cbrn_unified_record_actor
+		clear_event_target = cbrn_unified_record_resolved_victim
+		add_to_array = { array = global.cbrn_action_record_uid_entries value = cbrn_unified_record_uid }
+		add_to_array = { array = global.cbrn_action_record_actor_entries value = event_target:cbrn_unified_record_actor }
+		if = {
+			limit = { has_event_target = cbrn_unified_record_victim_country }
+			event_target:cbrn_unified_record_victim_country = {
+				save_event_target_as = cbrn_unified_record_resolved_victim
+			}
+		}
+		else = {
+			event_target:cbrn_unified_record_target_state = {
+				owner = {
+					save_event_target_as = cbrn_unified_record_resolved_victim
+				}
+			}
+			if = {
+				limit = { NOT = { has_event_target = cbrn_unified_record_resolved_victim } }
+				event_target:cbrn_unified_record_actor = {
+					save_event_target_as = cbrn_unified_record_resolved_victim
+				}
+			}
+		}
+		add_to_array = { array = global.cbrn_action_record_victim_entries value = event_target:cbrn_unified_record_resolved_victim }
+		add_to_array = { array = global.cbrn_action_record_target_state_entries value = event_target:cbrn_unified_record_target_state }
+		add_to_array = { array = global.cbrn_action_record_action_date_entries value = global.num_days }
+		add_to_array = { array = global.cbrn_action_record_weapon_class_entries value = cbrn_unified_record_weapon_class }
+		add_to_array = { array = global.cbrn_action_record_agent_entries value = cbrn_unified_record_agent }
+		add_to_array = { array = global.cbrn_action_record_delivery_method_entries value = cbrn_unified_record_delivery_method }
+		add_to_array = { array = global.cbrn_action_record_severity_entries value = cbrn_unified_record_severity }
+		add_to_array = { array = global.cbrn_action_record_civilian_deaths_entries value = cbrn_unified_record_civilian_deaths }
+		add_to_array = { array = global.cbrn_action_record_military_deaths_entries value = cbrn_unified_record_military_deaths }
+		add_to_array = { array = global.cbrn_action_record_contamination_change_entries value = cbrn_unified_record_contamination_change }
+		add_to_array = { array = global.cbrn_action_record_outbreak_change_entries value = cbrn_unified_record_outbreak_change }
+		add_to_array = { array = global.cbrn_action_record_evidence_quality_entries value = cbrn_unified_record_evidence_quality }
+		add_to_array = { array = global.cbrn_action_record_attribution_state_entries value = cbrn_unified_record_attribution_state }
+		add_to_array = { array = global.cbrn_action_record_retaliation_status_entries value = cbrn_unified_record_retaliation_status }
+		add_to_array = { array = global.cbrn_action_record_first_use_status_entries value = cbrn_unified_record_first_use_status }
+		add_to_array = { array = global.cbrn_action_record_repeat_use_pressure_entries value = cbrn_unified_record_repeat_use_pressure }
+
+		set_variable = { cbrn_last_unified_action_record_uid = cbrn_unified_record_uid }
+		set_variable = { cbrn_last_unified_action_record_row = cbrn_unified_record_row_index }
+
+		set_temp_variable = { events_log_system_event_id = constant:cbrn_action_record_event_log.event_id }
+		set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.cbrn_action }
+		set_temp_variable = { events_log_system_payload = cbrn_unified_record_row_index }
+		set_temp_variable = { events_log_system_actor = THIS.id }
+		set_temp_variable = { events_log_system_has_actor = constant:cbrn_proof.supplied }
+		set_temp_variable = { events_log_system_secondary_actor = constant:cbrn_math.zero }
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:cbrn_proof.missing }
+		event_target:cbrn_unified_record_resolved_victim = {
+			set_temp_variable = { events_log_system_secondary_actor = THIS.id }
+		}
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:cbrn_proof.supplied }
+		record_events_log_system_history_entry = yes
+		refresh_events_log_system_history_views = yes
+	}
+}
+
+# State scope. Updates only the current biological episode row. A biological
+# repeat starts a new immutable action row while the lifecycle still merges the
+# pathogen into one state episode; the current row therefore owns the exposed
+# episode's accumulated civilian deaths until another deliberate seed replaces
+# it. No actor, victim, target-state, route, or first-use field is overwritten.
+cbrn_update_biological_action_record = {
+	if = {
+		limit = {
+			check_variable = {
+				var = bio_current_action_record_row
+				value = constant:cbrn_action_record_math.invalid_row
+				compare = greater_than
+			}
+		}
+		set_variable = { global.cbrn_action_record_civilian_deaths_entries^bio_current_action_record_row = bio_current_episode_deaths }
+		set_variable = { global.cbrn_action_record_evidence_quality_entries^bio_current_action_record_row = bio_current_evidence }
+		set_variable = { global.cbrn_action_record_attribution_state_entries^bio_current_action_record_row = bio_current_attribution }
+		set_variable = { global.cbrn_action_record_repeat_use_pressure_entries^bio_current_action_record_row = bio_current_repeated_seed_count }
+	}
+}

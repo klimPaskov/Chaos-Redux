@@ -1,3 +1,0 @@
-# Thaw Water report-event image prompt
-
-Create a dedicated Hearts of Iron IV report-event illustration for a fictional post-fallout thaw-water recovery story. Use a cinematic documentary composition with cracked river ice breaking into muddy meltwater channels beside a small cold-weather settlement, workers placing wooden flood markers and sandbag berms, one clinic lantern glowing, remnants of frost and gray cold rain, distant ash haze, and dim pale winter light. Use a grounded historical reportage style with a subdued blue-gray and rust palette. Do not include text, logos, UI, gore, modern typography, or reused motifs from other event images.

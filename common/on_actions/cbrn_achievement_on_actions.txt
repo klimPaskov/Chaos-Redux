@@ -1,0 +1,46 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ACHIEVEMENT ON-ACTION RECEIPTS
+# ============================================================================
+# The only native world relation used here is capitulation. It records a major
+# war victory and the defeat of a recorded first user for the winning country,
+# while preserving an exact defeat disqualifier for compliance achievements.
+# Government change preserves the corresponding exact regime-change receipt.
+# No periodic country, state, or aircraft scan is introduced.
+# ============================================================================
+
+on_actions = {
+	on_government_change = {
+		effect = {
+			if = {
+				limit = { has_country_flag = cbrn_achievement_start_country_eligible }
+				set_country_flag = cbrn_achievement_regime_change_history
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			ROOT = { set_country_flag = cbrn_achievement_defeat_history }
+			if = {
+				limit = {
+					ROOT = {
+						has_capitulated = yes
+						is_major = yes
+					}
+					FROM = { exists = yes }
+				}
+				FROM = { set_country_flag = cbrn_achievement_major_war_victory_receipt }
+			}
+			if = {
+				limit = {
+					ROOT = {
+						has_capitulated = yes
+						has_country_flag = cbrn_achievement_offensive_first_use_history
+					}
+					FROM = { exists = yes }
+				}
+				FROM = { set_country_flag = cbrn_achievement_defeated_first_user_receipt }
+			}
+		}
+	}
+}

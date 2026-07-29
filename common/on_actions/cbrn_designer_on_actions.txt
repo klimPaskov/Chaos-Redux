@@ -1,0 +1,24 @@
+# ============================================================================
+# CHAOS REDUX - CBRN DESIGNER EVENT-DRIVEN HOOKS
+# ============================================================================
+# Overview:
+# - Refreshes the exact changed state's contaminated-vehicle attrition when
+#   state control changes.
+# - ROOT is the new controller, FROM is the old controller, and FROM.FROM is the
+#   changed state under the documented current-version on-action contract.
+# - This hook performs no country or world iteration and never creates
+#   contamination.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = {
+				if = {
+					limit = { has_variable = cbrn_chemical_effective_strength }
+					cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
+				}
+			}
+		}
+	}
+}

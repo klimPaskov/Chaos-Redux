@@ -18,6 +18,10 @@ bio_operative_release_calculate_outcome_weights_internal = {
 	bio_operation_calculate_plant_success_chance = yes
 
 	if = {
+		limit = { event_target:bio_operation_actor = { cbrn_designer_has_stable_weaponization = yes } }
+		add_to_temp_variable = { bio_operation_success_chance = constant:cbrn_biosecurity_designer_effect.stable_weaponization_operation_success_add }
+	}
+	if = {
 		limit = { event_target:bio_operation_actor = { has_idea = cbrn_terminal_hazard_doctrine_spirit } }
 		add_to_temp_variable = { bio_operation_success_chance = constant:bio_operation_plant_outbreak.terminal_hazard_success_add }
 	}
@@ -238,6 +242,8 @@ bio_operative_release_record_captured_operative_internal = {
 # public biological-attempt record plus coverup pressure. The dedicated source
 # proof prevents the shared Condemnation system from writing weapon-use history.
 bio_operative_release_apply_captured_attempt_consequence_internal = {
+	set_country_flag = cbrn_achievement_covert_discovered_history
+	set_country_flag = cbrn_achievement_covert_coverup_history
 	set_temp_variable = { bio_operation_capture_condemnation_mult = constant:bio_lifecycle_math.one }
 	if = {
 		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
@@ -246,6 +252,10 @@ bio_operative_release_apply_captured_attempt_consequence_internal = {
 	else_if = {
 		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
 		set_temp_variable = { bio_operation_capture_condemnation_mult = constant:bio_lifecycle_doctrine.theater_contamination.condemnation_mult }
+	}
+	if = {
+		limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+		multiply_temp_variable = { bio_operation_capture_condemnation_mult = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_condemnation_mult }
 	}
 	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
 	set_temp_variable = { condemnation_base_gain = constant:bio_operation_plant_outbreak.captured_attempt_condemnation }
@@ -267,6 +277,17 @@ bio_operative_release_apply_captured_attempt_consequence_internal = {
 # release and may write confirmed-use history.
 bio_operative_release_process_capture = {
 	set_temp_variable = { bio_active_agent = bio_operation_agent }
+	set_temp_variable = { bio_operation_captured_attempt_evidence = constant:bio_operation_plant_outbreak.captured_attempt_evidence_floor }
+	event_target:bio_operation_actor = {
+		if = {
+			limit = { cbrn_designer_has_stable_weaponization = yes }
+			multiply_temp_variable = { bio_operation_captured_attempt_evidence = constant:cbrn_biosecurity_designer_effect.stable_weaponization_evidence_mult }
+		}
+		if = {
+			limit = { cbrn_designer_has_strategic_dissemination_program = yes }
+			multiply_temp_variable = { bio_operation_captured_attempt_evidence = constant:cbrn_biosecurity_designer_effect.strategic_dissemination_evidence_mult }
+		}
+	}
 	event_target:bio_operation_actor = { bio_operative_release_record_captured_operative_internal = yes }
 	meta_effect = {
 		text = { set_state_flag = bio_agent_[BIO_AGENT]_operative_capture_history }
@@ -279,7 +300,7 @@ bio_operative_release_process_capture = {
 	else = {
 		meta_effect = {
 			text = {
-				set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = constant:bio_operation_plant_outbreak.captured_attempt_evidence_floor }
+				set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = bio_operation_captured_attempt_evidence }
 				set_state_flag = bio_agent_[BIO_AGENT]_operative_attempt_confirmed_history
 			}
 			BIO_AGENT = "[?bio_active_agent|.0]"

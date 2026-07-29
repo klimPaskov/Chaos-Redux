@@ -2,9 +2,9 @@
 
 ## Overview
 
-This mechanic implements the containment half of the zombie special-project spec from `docs/events/002_zombie_special_project_spec.md`.
+This mechanic implements the containment half of the zombie special-project spec from `docs/specs/002_zombie_special_project_specs/002_zombie_special_project_spec.md`.
 
-`zombie_cure_bomb` now unlocks a dedicated biological raid, `zombie_cure_strike`, instead of pretending to be a general bioweapon payload. The raid is bomber-launched and follows the same air-raid structure as the existing special chemical strikes.
+`zombie_cure_bomb` unlocks a dedicated biological raid, `zombie_cure_strike`, instead of acting as a general bioweapon payload. The raid is bomber-launched and remains separate from ordinary-pathogen warfare.
 
 ## How it works
 
@@ -22,10 +22,10 @@ This mechanic implements the containment half of the zombie special-project spec
 ## Current Balance
 
 - `zombie_cure_bomb` requires `0` breakthrough.
-- Its project resource cost is now only `1` rubber.
+- Its project resource cost is `1` rubber.
 - Anti-Zombie League members reduce cure decision research times through shared league coordination.
-- League members also share a stronger `cure_sharing` research group than before.
-- The League itself now uses the vanilla faction framework with a dedicated template, manifest, visible faction rules, and cure-focused faction goals.
+- League members share the `cure_sharing` research group.
+- The League uses the vanilla faction framework with a dedicated template, manifest, visible faction rules, and cure-focused faction goals.
 
 ## State Modifier Behavior
 
@@ -48,7 +48,7 @@ The modifier has no scripted day timer. It removes itself automatically once no 
 - `common/factions/rules/anti_zombie_league_rules.txt`
 - `common/collections/anti_zombie_league_collections.txt`
 - `common/raids/categories/chaosx_raid_categories.txt`
-- `common/raids/biological_raids.txt`
+- `common/raids/biological_zombie_cure_raid.txt`
 - `common/script_constants/zombie_special_project_constants.txt`
 - `common/script_constants/zombie_constants.txt`
 - `common/scripted_triggers/002_zombie_outbreak_triggers.txt`
@@ -58,17 +58,20 @@ The modifier has no scripted day timer. It removes itself automatically once no 
 
 ## Icons
 
-Current placeholder wiring:
+Current wiring:
 
 - Raid map icon:
   `gfx/interface/military_raids/map_icons/raid_type_icon_zombie_cure_strike.dds`
   Referenced by `interface/chaosx_raids.gfx` as `GFX_raid_type_icon_zombie_cure_strike`.
+  This is the retained pre-existing Chaos Redux military-raid icon at its stable runtime path.
 - State modifier icon:
   `gfx/interface/ideas/002_zombie_outbreak/idea_zombie_decontamination.dds`
   Referenced by `interface/chaosx_ideas.gfx` as `GFX_idea_zombie_decontamination`.
+  This is the retained pre-existing Chaos Redux state-modifier icon.
 - Raid equipment icon:
   `gfx/interface/technologies/zombie_cure_bomb_equipment.dds`
   Referenced by `interface/chaosx_equipment.gfx` as `GFX_zombie_cure_bomb_equipment_medium`.
+  This is the retained pre-existing Chaos Redux equipment icon.
 - Special project icon already in use:
   `gfx/interface/special_project/project_icons/sp_zombie_cure_bomb.dds`
   Referenced by `interface/special_projects/biowarfare.gfx` as `GFX_sp_zombie_cure_bomb`.
@@ -87,4 +90,4 @@ So this pass does not require any new custom faction GFX files.
 
 - Add a dedicated raid payload equipment archetype if the zombie project is later expanded into stockpile-based deployment.
 - Add AI weighting based on cure ownership, zombie front urgency, and faction support priorities once the offensive zombie project exists.
-- Replace placeholder art with distinct anti-zombie containment visuals for the raid icon, the state modifier, and the equipment panel icon.
+- Preserve separate visual identities for the raid marker, state condition, equipment panel, and special project whenever those assets are revised.

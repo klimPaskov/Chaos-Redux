@@ -113,8 +113,11 @@ cbrn_international_response_category = {
 		complete_effect = {
 			custom_effect_tooltip = cbrn_share_forensic_evidence_begin_tt
 			hidden_effect = {
-				cbrn_diplomacy_pay_forensic_publication_cost = yes
-				FROM = { set_state_flag = cbrn_forensic_publication_active }
+				FROM = { cbrn_diplomacy_begin_forensic_publication = yes }
+				if = {
+					limit = { FROM = { has_state_flag = cbrn_forensic_publication_active } }
+					cbrn_diplomacy_pay_forensic_publication_cost = yes
+				}
 			}
 		}
 		remove_effect = {
@@ -224,6 +227,7 @@ cbrn_international_response_category = {
 				OR = {
 					NOT = { has_state_flag = cbrn_international_decon_mission_active }
 					NOT = { has_variable = cbrn_international_decon_recipient }
+					NOT = { cbrn_state_retains_international_decontamination_access = yes }
 					CONTROLLER = {
 						OR = {
 							NOT = { tag = var:PREV.cbrn_international_decon_recipient }

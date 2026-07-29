@@ -63,6 +63,8 @@ Researchable defensive support is attached to the equipment and medical branches
 
 The complete target division bill is checked before a role activates. Offensive roles additionally require battlefield-use policy and positive supported chemical payload stock. This stock signal does not authorize an operation. Role ratios abort when their prerequisites disappear. Production strategies raise the registered `decontamination_equipment` and `cbrn_instrument_equipment` category priorities only after a program, emergency, contamination, or outbreak signal; they create no broad periodic country pulse.
 
+Livens research, projector production, armored-delivery variant production, and their template-design pressure all use `cbrn_ai_can_expand_offensive_cbrn_production`. The shared gate requires a stable protective base, sufficient industry, no conventional infantry/support/artillery/motorized deficit, and an accepted retaliatory, battlefield, strategic, or desperate posture. Armored-delivery pressure targets the exact light, medium, and heavy flame-role chassis required by the three consolidated detachments through the vanilla `equipment_variant_production_factor` pattern; it does not increase ordinary tank-chassis minimum factories.
+
 Stage 10 adds the final route-aware country profile weights, preferred delivery/agent posture, and economic stop conditions.
 
 ## Legacy safety

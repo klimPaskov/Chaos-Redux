@@ -1,7 +1,8 @@
 # Chemical Livens support scripted effects:
 # - Reads support-company composition from the active army leader battalions.
 # - Applies only when Livens supports are guaranteed to be in combat.
-# - Keeps a legacy fallback path for old generic Livens support battalions.
+# - The old generic Livens identifier remains parser-compatible but cannot
+#   contribute to a profile or release without an agent-specific company.
 
 @CHEM_FIRST_USE_SURPRISE_SUPPORT_MULT = 1.50
 @CHEM_LIVENS_STATE_SUPPORT_COUNT_MAX = 1200
@@ -13,7 +14,9 @@ chem_livens_support_collect_support_counts = {
 	set_temp_variable = { var = chem_livens_units_lewisite value = num_battalions_with_type@livens_projector_support_lewisite }
 	set_temp_variable = { var = chem_livens_units_sarin value = num_battalions_with_type@livens_projector_support_sarin }
 	set_temp_variable = { var = chem_livens_units_soman value = num_battalions_with_type@livens_projector_support_soman }
-	set_temp_variable = { var = chem_livens_units_legacy value = num_battalions_with_type@livens_projector_support }
+	# The generic identifier is retained for save and template parsing only. It
+	# is not a valid delivery profile and is deliberately excluded from counts.
+	set_temp_variable = { var = chem_livens_units_legacy value = 0 }
 
 	set_temp_variable = { var = chem_livens_support_total value = chem_livens_units_chlorine }
 	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_phosgene }
@@ -21,7 +24,6 @@ chem_livens_support_collect_support_counts = {
 	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_lewisite }
 	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_sarin }
 	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_soman }
-	add_to_temp_variable = { var = chem_livens_support_total value = chem_livens_units_legacy }
 }
 
 chem_livens_support_set_profile_from_support_counts = {
@@ -110,8 +112,10 @@ chem_livens_support_set_profile_from_support_counts = {
 		multiply_temp_variable = { var = chem_livens_profile_add value = constant:chem_tank_shell.condemnation_per_unit.soman }
 		add_to_temp_variable = { var = chem_livens_profile_condemnation_per_unit value = chem_livens_profile_add }
 
+		# Legacy generic Livens support has no agent identity and cannot release.
+		# Keep the old block structurally inert for save/script compatibility.
 		if = {
-			limit = { check_variable = { var = chem_livens_units_legacy value = 0 compare = greater_than } }
+			limit = { always = no }
 			if = {
 				limit = { OWNER = { has_tech = soman } }
 				set_temp_variable = { var = chem_livens_profile_add value = chem_livens_units_legacy }
@@ -366,7 +370,6 @@ chem_livens_support_set_owner_support_count_in_state = {
 									livens_projector_support_lewisite
 									livens_projector_support_sarin
 									livens_projector_support_soman
-									livens_projector_support
 								}
 							}
 						}

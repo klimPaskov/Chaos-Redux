@@ -2450,6 +2450,10 @@ defined_text = {
 		localization_key = condemnation.context.final_silence
 	}
 	text = {
+		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.strategic_singularity compare = equals } }
+		localization_key = condemnation.context.strategic_singularity
+	}
+	text = {
 		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.camp_discovery compare = equals } }
 		localization_key = condemnation.context.camp_discovery
 	}
@@ -2476,6 +2480,14 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.observer_report compare = equals } }
 		localization_key = condemnation.context.observer_report
+	}
+	text = {
+		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.forensic_disclosure compare = equals } }
+		localization_key = condemnation.context.forensic_disclosure
+	}
+	text = {
+		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.nerve_suppression compare = equals } }
+		localization_key = condemnation.context.nerve_suppression
 	}
 	text = {
 		trigger = { check_variable = { var = chaos_meter_condemnation_detail_last_source_context value = constant:condemnation_context.destroyed_records compare = equals } }
@@ -3456,6 +3468,24 @@ defined_text = {
 		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
 	}
 }
+
+defined_text = {
+	name = GetChaosMeterDeathsViewTooltipStrategicSingularityLine
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.chaos_meter_deaths_view_cause_strategic_singularity_entries^chaos_deaths_index
+				value = 0
+				compare = greater_than
+			}
+		}
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.strategic_singularity
+	}
+	text = {
+		localization_key = chaos_meter.window.deaths.entry.tooltip.line.none
+	}
+}
+
 defined_text = {
 	name = GetChaosMeterDeathsViewTooltipUnknownLine
 	text = {
@@ -4010,6 +4040,16 @@ defined_text = {
 			localization_key = chaos_meter.deaths.cause.infantry_spawn_ghost_decline
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = chaos_meter_deaths_selected_last_reason
+					value = constant:chaos_meter_deaths_reason.strategic_singularity
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.strategic_singularity
+		}
+		text = {
 			localization_key = chaos_meter.deaths.cause.unknown
 		}
 }
@@ -4234,6 +4274,16 @@ defined_text = {
 			localization_key = chaos_meter.deaths.cause.infantry_spawn_ghost_decline
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = global.chaos_meter_deaths_detail_reason_entries^chaos_deaths_detail_index
+					value = constant:chaos_meter_deaths_reason.strategic_singularity
+					compare = equals
+				}
+			}
+			localization_key = chaos_meter.deaths.cause.strategic_singularity
+		}
+		text = {
 			localization_key = chaos_meter.deaths.cause.unknown
 		}
 }
@@ -4267,4 +4317,135 @@ defined_text = {
 	text = {
 		localization_key = "GFX_chaosx_checkbox_checked"
 	}
+}
+
+defined_text = {
+	name = GetCBRNDetailSourceName
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_source_chemical }
+		localization_key = cbrn.response.source.chemical
+	}
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_source_biological }
+		localization_key = cbrn.response.source.biological
+	}
+	text = { localization_key = cbrn.response.source.none }
+}
+
+defined_text = {
+	name = GetCBRNDetailAttributionName
+	text = {
+		trigger = {
+			check_variable = {
+				var = chaos_meter_condemnation_detail_cbrn_attribution
+				value = constant:cbrn_attribution_state.confirmed
+				compare = equals
+			}
+		}
+		localization_key = cbrn.response.attribution.confirmed
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = chaos_meter_condemnation_detail_cbrn_attribution
+				value = constant:cbrn_attribution_state.probable
+				compare = equals
+			}
+		}
+		localization_key = cbrn.response.attribution.probable
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = chaos_meter_condemnation_detail_cbrn_attribution
+				value = constant:cbrn_attribution_state.suspected
+				compare = equals
+			}
+		}
+		localization_key = cbrn.response.attribution.suspected
+	}
+	text = { localization_key = cbrn.response.attribution.unknown }
+}
+
+defined_text = {
+	name = GetCBRNDetailRecordLine
+	text = {
+		trigger = {
+			has_country_flag = chaos_meter_condemnation_detail_cbrn_record_available
+			has_country_flag = chaos_meter_condemnation_detail_cbrn_action_retaliation_recorded
+		}
+		localization_key = cbrn.response.record.present_classified
+	}
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_record_available }
+		localization_key = cbrn.response.record.present
+	}
+	text = { localization_key = cbrn.response.record.none }
+}
+
+defined_text = {
+	name = GetCBRNDetailActionRetaliationName
+	text = {
+		trigger = {
+			check_variable = {
+				var = chaos_meter_condemnation_detail_cbrn_action_retaliation_status
+				value = constant:cbrn_retaliation_status.proportionate
+				compare = equals
+			}
+		}
+		localization_key = cbrn.response.action_retaliation.proportionate
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = chaos_meter_condemnation_detail_cbrn_action_retaliation_status
+				value = constant:cbrn_retaliation_status.authorized
+				compare = equals
+			}
+		}
+		localization_key = cbrn.response.action_retaliation.authorized
+	}
+	text = { localization_key = cbrn.response.action_retaliation.none }
+}
+
+defined_text = {
+	name = GetCBRNDetailInspectionState
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_inspection_active }
+		localization_key = cbrn.response.inspection.demanded
+	}
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_inspection_refused }
+		localization_key = cbrn.response.inspection.refused
+	}
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_observers_active }
+		localization_key = cbrn.response.inspection.observers
+	}
+	text = { localization_key = cbrn.response.inspection.none }
+}
+
+defined_text = {
+	name = GetCBRNDetailRetaliationState
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_retaliation_active }
+		localization_key = cbrn.response.retaliation.active
+	}
+	text = { localization_key = cbrn.response.retaliation.none }
+}
+
+defined_text = {
+	name = GetCBRNDetailReliefState
+	text = {
+		trigger = {
+			has_country_flag = chaos_meter_condemnation_detail_cbrn_sanctions_participant
+			has_country_flag = chaos_meter_condemnation_detail_cbrn_humanitarian_carveout
+		}
+		localization_key = cbrn.response.relief.participant_carveout
+	}
+	text = {
+		trigger = { has_country_flag = chaos_meter_condemnation_detail_cbrn_sanctions_participant }
+		localization_key = cbrn.response.relief.participant
+	}
+	text = { localization_key = cbrn.response.relief.none }
 }

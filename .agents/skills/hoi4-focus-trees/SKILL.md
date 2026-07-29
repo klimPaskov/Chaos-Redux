@@ -13,6 +13,40 @@ Use this skill together with:
 - `chaos-redux-events` when the tree belongs to an event
 - `hoi4-decisions-missions` when focuses unlock, modify, or depend on decisions and missions
 - `chaos-redux-event-assets` when focus icons, leader portraits, flags, or idea icons are required
+- `chaos-redux-improvement-loop` when a tree needs broader route depth or a near-completion anti-bloat pass
+- `chaos-redux-subagents` before routing focus audits, improvement plans, or active small patches
+- the installed `hoi4-agent-tools` MCP server for `hoi4.focus_inspect`, `hoi4.focus_render`, and bounded `hoi4.focus_rewrite` work. Use it to inspect, render, lint, compare, and improve focus-tree structure, then review every returned layout and diagnostic. MCP supports this skill and does not replace required source review, wiki and vanilla documentation checks, repository validation, or parent review.
+
+
+## Core design baseline
+
+A strong focus tree should:
+
+- introduce one or two manageable starting problems for a stable small or medium country
+- begin with a small set of clear choices and reveal more complexity later
+- use 35-day focuses for early strategic forks, focused reforms, and short opportunity windows
+- give concrete rewards the player can feel immediately
+- offer distinct strategies, including short-term power and long-term growth when the country supports that choice
+- allow strong bonuses when the cost, duration, and aftermath are clear
+- keep optional support investments skippable unless full commitment defines the route
+- use existing systems such as diplomacy, production, supply, laws, compliance, stockpiles, and map control
+- provide meaningful early action through war, diplomacy, internal politics, construction, intervention, or another active objective
+- end major goals with a visible payoff such as territory, cores, a formable, a new government, a faction, or a lasting mechanic
+
+Reject trees that:
+
+- overload the opening with penalties, currencies, national spirits, templates, or specialist mechanics
+- expose too many branches before the player understands the country
+- use long chains of small standalone modifiers as filler
+- present a choice where one option dominates in nearly every plausible campaign
+- create shallow ideology paths to fill a political quota
+- leave meaningful content dependent on one foreign AI action
+- delay the country's main premise through years of generic preparation
+- use repeated or uncontrolled civil wars
+- rely on automatic reward dumps as the main progression model
+- encourage focus clicking without changing the player's build, objectives, decisions, or strategy
+
+The duration and reward rules need context. A 35-day focus works when the click creates a real choice, action, event, requirement, or opportunity. A 5 percent modifier can be meaningful when it affects a sensitive statistic, supports a larger reward package, contributes to a visible stacking system, or completes an idea lifecycle. Repeated small standalone rewards remain a design defect. Early action can be military, diplomatic, political, industrial, or crisis-driven.
 
 ## 1. Required checks
 
@@ -48,7 +82,7 @@ Use vanilla examples before changing complex prerequisite and mutual-exclusion s
 
 ## 3. Focus tree design purpose
 
-A focus tree is not a list of rewards. It is the playable identity of a country.
+A focus tree defines the playable identity of a country. Rewards should express that identity and change how the country plays.
 
 A good focus tree gives the country:
 
@@ -94,6 +128,25 @@ The implementation agent owns:
 
 The final tree must preserve the route logic and gameplay intent from the spec.
 
+
+## 4.1 Route plausibility and ideology restraint
+
+Do not build political paths to satisfy an ideology quota.
+
+A political route needs a clear basis in at least one of these:
+
+- the country's history, institutions, leaders, movements, or regional position
+- the event or crisis that created the country
+- a believable alternate-history divergence
+- a researched ideological movement with enough local support to sustain a full route
+- a high-chaos transformation with a clear reveal, internal logic, and gameplay identity
+
+Two or three deep political routes are better than four shallow ideology routes. Do not add a five-focus communist, democratic, fascist, monarchist, or non-aligned branch only to claim that every ideology is represented.
+
+A route can be unlikely. It still needs enough political actors, internal conflict, decisions, consequences, AI logic, and late-game purpose to feel complete. High-chaos routes can break ordinary plausibility when the route earns that break through events, mechanics, or campaign state.
+
+When an ideology does not support a full route, leave it out, use it as a minor faction inside another route, or represent it through decisions and events.
+
 ## 5. Major country tree requirements
 
 Large, playable, long-lived, or event-created countries need real focus trees.
@@ -114,9 +167,72 @@ A major tree should usually include:
 Do not collapse everything into one political ladder.
 
 
+## 5.1 Lean opening, national constraints, and staged complexity
+
+The opening should be understandable before the player studies the whole tree.
+
+For a stable small or medium country, prefer zero to two focus-tree-owned starting national spirits. Use three only when each one represents a separate major problem or institution with a real lifecycle. Do not invent a long stack of national crises so the opening appears busy.
+
+New crisis countries and collapsed states may start with several serious problems, but those problems should be consolidated into no more than three deep spirits under the normal spirit limit. Each starting spirit should change early priorities and have a visible route for mitigation, exploitation, transformation, or failure.
+
+The starting army, navy, air force, production setup, and political situation should also be readable. Preserve real historical complexity for large powers and colonial empires. Do not add extra templates, fleets, laws, or mechanics when they do not create meaningful early choices.
+
+Treat national weaknesses as route incentives. Resource scarcity, weak supply, low industrial capacity, poor access to steel or fuel, an obsolete navy, diplomatic isolation, or exposed borders should give the country a reason to act. The tree should offer distinct responses such as:
+
+- build civilian capacity and import the missing resource
+- invest in domestic substitution or extraction
+- seek a foreign sponsor or commercial agreement
+- use a military route to secure nearby supply
+- accept a temporary shortage in exchange for another advantage
+
+Do not erase the country's main constraint in the first focus. Let the player choose how to answer it.
+
+Stage complexity across the opening:
+
+1. Begin with one clear opening focus or a very small opening group.
+2. Reveal two to four meaningful early choices in most trees.
+3. Open larger route families after the player has seen the country's starting problem.
+4. Reveal specialist, crisis, hidden, or high-chaos branches only when their conditions become relevant.
+
+Use the numbers above as design guidance. A historically complex major can expose more choices when the layout groups them clearly.
+
+The first few focuses should establish a real direction. Do not delay the first meaningful choice behind several generic political power, stability, research, or factory focuses.
+
+### Opening choice test
+
+Every early choice should change at least one of these:
+
+- the player's immediate build plan
+- the country's military timetable
+- the route used to solve a resource or supply problem
+- foreign alignment
+- political leadership
+- a special mechanic
+- access to an early war, limited conflict, or diplomatic action
+- the balance between short-term strength and long-term growth
+
+If two early options lead to the same build and the same next focus, combine them or make their consequences more distinct.
+
+### Focus duration and click value
+
+Focus duration should match the size of the decision and the amount of play it creates.
+
+Useful duration roles include:
+
+- 7 days for a narrow policy switch, emergency response, route handoff, or reversible commitment
+- 35 days for an early strategic fork, focused reform, event choice, or action that changes the next phase
+- 70 days for a major program, normal institutional reform, or substantial construction and military work
+- longer durations for sustained national commitments whose value and risk justify the wait
+
+These are guidance bands. Follow vanilla and project precedent when a system needs another duration.
+
+Do not split one 70-day reward into two 35-day focuses when the player gains no new choice, requirement, event, or mechanic between them. More clicks do not create more depth.
+
+A short focus should earn its place through a meaningful choice, immediate action, new requirement, new event, temporary opportunity window, or route change. Reject short filler focuses that only divide one reward into several buttons.
+
 ## 5.2 Branch interaction and payoff
 
-Political, industry, and expansion are the minimum branch families, not a full large-country tree. Important countries should usually also have military, diplomacy, internal faction, intelligence or security, special mechanic, and late-game branches when their identity supports them.
+Political, industry, and expansion form the minimum branch set. Important countries should usually also have military, diplomacy, internal faction, intelligence or security, special mechanic, and late-game branches when their identity supports them.
 
 Branches should not be isolated columns. Political choices should alter which expansion, industry, military, diplomacy, and decision paths are available. Industry should support military or expansion. Expansion should create political consequences. Diplomacy should affect both foreign aid and war options.
 
@@ -130,7 +246,24 @@ Examples:
 - a military branch can end in a doctrine, special force, command structure, defensive network, or offensive system
 - a diplomacy branch can end in recognition, neutrality, sponsor alignment, balanced sponsorship, faction creation, or anti-puppet protection
 
-A focus should usually unlock new gameplay, not only stats. Strong focus rewards unlock decisions, missions, units, advisors, leaders, laws, claims, cores, war goals, buildings, events, mechanics, route access, or AI behavior. Flat modifiers are supporting rewards, not the main design.
+A focus should usually unlock new gameplay. Strong focus rewards unlock decisions, missions, units, advisors, leaders, laws, claims, cores, war goals, buildings, events, mechanics, route access, or AI behavior. Flat modifiers should support the main reward.
+
+
+### Cross-branch utility
+
+Branches that players often ignore should support the wider country loop.
+
+Examples:
+
+- a navy branch can improve commercial shipping, resource imports, convoy security, coastal industry, port construction, fuel access, or limited overseas operations
+- an air branch can support reconnaissance, logistics, industrial protection, border control, or a special strike mechanic
+- an intelligence branch can improve diplomatic leverage, target selection, resistance work, foreign investment, or limited-war preparation
+- an industry branch can change the army the country can sustain instead of giving factories in isolation
+- a military branch can unlock diplomatic intimidation, expeditionary support, border missions, or postwar integration tools
+
+Cross-branch rewards should fit the country's identity. Do not add unrelated bonuses only to make a branch attractive.
+
+A branch should offer value to players who are not already committed to its subsystem. The naval branch should have a reason to exist beyond giving naval bonuses to a player who had already decided to build a navy.
 
 ## 5.3 Country identity changes
 
@@ -172,7 +305,7 @@ A real branch should usually include:
 - at least one interaction with decisions, missions, ideas, leaders, units, buildings, diplomacy, map changes, AI, or events
 - a clear end-state or payoff
 
-A branch made of one or two generic focuses is not a branch. It is a support node.
+Treat one or two generic focuses as a support node.
 
 Large-country branches should not be shallow labels. If a tree says it has a political branch, industry branch, expansion branch, military branch, or diplomacy branch, each of those branches must have enough content to be felt in play.
 
@@ -188,7 +321,7 @@ Every major branch should answer what the player does after finishing it. Good a
 
 ## 5.5 Route-specific AI and localisation tone
 
-Every major route needs route-specific AI strategy. AI should not only have generic focus weights.
+Every major route needs route-specific AI strategy. Generic focus weights alone are insufficient.
 
 AI should understand:
 
@@ -269,6 +402,93 @@ Important routes should define failure states. A failed political reform can emp
 Focus and decision localisation should tell the player the visible baseline effect of the route or action. It should not reveal hidden effects, secret outcomes, hidden variables, or future surprises. The player should understand what the focus visibly does, such as moving toward military rule, opening an industry program, unlocking a public diplomatic route, forming a League office, or preparing border claims, without being told about hidden follow-up effects.
 
 
+### Strategic time horizons
+
+Important early branches should offer different time horizons when the country concept supports them.
+
+A useful three-way structure is:
+
+- a short-term gamble that gives immediate military, industrial, or diplomatic power with a clear later cost
+- a balanced route that gives moderate permanent strength and lower risk
+- a long-term investment that delays power for a larger later payoff
+
+Do not make the long-term option automatically correct. The short-term route needs a real campaign use, and its later cost should be serious enough that timing matters.
+
+Possible costs include production exhaustion, resource consumption, consumer-goods burden, debt, foreign dependency, lower efficiency growth, weaker research, reduced civilian construction, political instability, or a timed obligation to act.
+
+### Temporary power windows and aftermath
+
+Large bonuses are allowed when their duration, cost, and aftermath create a real decision.
+
+A temporary power focus should define:
+
+- what the player is expected to accomplish during the window
+- the exact public duration or end condition
+- the resource, political, or military pressure created while it is active
+- what happens when the window closes
+- whether the player can prepare for, reduce, or accept the aftermath
+- how AI decides when the window is worth using
+
+A strong construction surge can consume more fuel or resources and leave an exhausted economy. A short-war plan can give immediate factories and output, then reduce efficiency or civilian capacity after the campaign window. A naval surge can improve dockyard output while reducing factory output.
+
+Do not hide the basic tradeoff. The player should understand the public cost before committing.
+
+Permanent extreme policies should usually have an exit, replacement, or later reform route. A permanent penalty is acceptable when it defines the final country identity and the player knowingly commits to it.
+
+### Interactive focus requirements and anti-autopilot play
+
+Use existing game systems when they make a focus feel earned.
+
+Good focus requirements can ask the player to:
+
+- reach a visible relations threshold with named countries
+- control a named state, port, rail hub, or resource area
+- produce or stockpile a meaningful amount of trucks, trains, aircraft, ships, or other relevant equipment
+- place a capital ship in port
+- maintain a law, trade policy, or economy policy
+- build compliance or local support in named territory
+- complete a decision, mission, special project, or diplomatic action
+- keep a supply route open
+- field a route-specific unit or template
+- survive a timed commitment
+
+The requirement must connect directly to the payoff. A truck stockpile can gate a logistics program. Relations can gate foreign construction aid. Compliance can gate integration. A capital ship can support a temporary power-generation or prestige scheme.
+
+Do not use arbitrary requirements that force unrelated busywork.
+
+Every non-obvious gate needs clear localisation. Tell the player the exact target, amount, state group, law, or action required.
+
+When a difficult gate is central to the route, give the player tools to pursue it. A formable that needs compliance can unlock costly compliance decisions. A foreign investment route can unlock relation-building actions. A naval gate can provide a clear shipbuilding or acquisition route.
+
+A focus chain has become autopilot when several consecutive focuses require no new choice, no changed build, no map objective, no decision, no event, and no interaction with the country mechanic. Merge, shorten, or redesign such chains.
+
+### Optional investment and safe stopping points
+
+Support branches should allow selective investment.
+
+Do not require every side focus when one or two choices are enough to establish the route. The player should often be able to choose one sponsor, one military preparation, or one industry method and continue.
+
+A branch can contain deeper optional investments for players who want to specialize. The player should also have a clear stable point where they can stop without leaving the country broken or the main route blocked.
+
+Large risk policies should be optional unless the country's concept makes them unavoidable. A player who declines an extreme construction surge, naval conversion, foreign dependency deal, or total mobilization scheme should still have a coherent route forward.
+
+### Commitment mechanics
+
+A focus can start a timed commitment instead of granting a flat reward.
+
+Examples include war fervor, public credit, mobilization pressure, emergency production, national savings, rearmament promises, or a diplomatic deadline.
+
+A commitment mechanic should:
+
+- build a visible benefit over time
+- require the player to act before a deadline or threshold
+- create a consequence when the promise is abandoned
+- offer decisions or focuses that help manage the commitment
+- give AI a clear condition for entering, fulfilling, or cancelling it
+
+Use consequences that fit the commitment. Do not default every missed deadline to a civil war.
+
+
 ## 5.9 Special mechanics, values, and faction rules
 
 Large focus trees should interact with the event or country special mechanic. A major tree should not sit beside the mechanic without changing it.
@@ -294,7 +514,7 @@ Special mechanic values can include:
 
 Focuses should affect mechanic values directly when the country has such a mechanic. Political focuses can change legitimacy, balance of power, party strength, faction cohesion, or authority. Industry focuses can change industrial capacity, construction pressure, resource control, or economic recovery. Military focuses can change readiness, command obedience, recruitment, or defensive preparedness. Diplomacy focuses can change influence, recognition, sponsor pressure, faction cohesion, or foreign penetration. Expansion focuses can change threat, legitimacy, claims, resistance, local support, or faction goals.
 
-Mechanic values should unlock or block content. A value should not only be a number. Values should affect focuses, decisions, missions, events, advisors, leaders, laws, factions, war goals, reforms, crises, or endings.
+Mechanic values should unlock or block content and create gameplay consequences. Values should affect focuses, decisions, missions, events, advisors, leaders, laws, factions, war goals, reforms, crises, or endings.
 
 Important internal struggles should consider a balance of power or equivalent mechanic. Good balance-of-power conflicts include army versus parliament, factory councils versus ministries, monarchists versus republicans, foreign patrons versus national independence, security service versus civilian cabinet, or cult authority versus military command. Focuses and decisions should push the balance and unlock branch content, risks, leaders, laws, advisors, or events.
 
@@ -309,11 +529,11 @@ Special mechanics must be visible somewhere the player can understand them. A me
 
 When a mechanic is important enough for a custom scripted GUI, consider visual presentation beyond static text. Useful presentation can include progress bars, meter fill variants, state icons, status frames, warning frames, selected and locked variants, animated frames, or frame-by-frame visual changes that make the mechanic feel alive. The visuals should clarify the mechanic, not clutter it.
 
-Special mechanics can hide future surprises, but they should not hide basic cause and effect. The player should understand why a visible value rose or fell, which public action changed it, and what broad type of response is available.
+Special mechanics may hide future surprises. Basic cause and effect must remain clear. The player should understand why a visible value rose or fell, which public action changed it, and what broad type of response is available.
 
 AI strategy must respect route validity. AI should not pick a branch that requires a missing state, dead sponsor, non-existent faction, unavailable ideology, disabled evolution, impossible border, or absent enemy. Invalid routes should be hidden, bypassed, or weighted to zero.
 
-A new playable country package must not be generic. It needs a specific identity, starting problem, political direction, map role, military style, economy, diplomacy, AI behavior, and at least one mechanic or decision family that makes it play differently from other new countries.
+Every new playable country package needs a specific identity, starting problem, political direction, map role, military style, economy, diplomacy, AI behavior, and at least one mechanic or decision family that makes it play differently from other new countries.
 
 Shared trees are allowed, but they must be adapted. Shared trees need country-specific localisation, route names, decisions, AI weights, leaders, rewards, icons, and scripted localisation where relevant. If every country using a shared tree reads and plays the same, the tree has failed.
 
@@ -397,6 +617,33 @@ Bad expansion branches:
 - claims hidden inside the political branch with no separate strategic route
 - expansion focuses that do not unlock wars, claims, cores, decisions, treaties, or interventions
 
+
+## 6.1 Early action and limited-war architecture
+
+A major playable tree should offer meaningful active play early enough to affect the campaign when the country's identity supports it. Active play can mean a limited war, border settlement, intervention, expedition, foreign-aid race, internal crisis, regional league, or another action with real risk.
+
+Do not force every country into an early war. Pacifist, defensive, isolated, or institution-building countries can use other early active goals. Do not make the player wait through years of filler before the tree begins doing what its premise promises.
+
+When an early expansion route would otherwise create an unreasonable total war, consider a limited-war system.
+
+A limited-war route must define:
+
+- the exact target states or objectives
+- who can participate
+- what causes outside escalation
+- how guarantees and faction membership are handled
+- the conditions for an early peace
+- what each side keeps after the settlement
+- what happens when the attacker exceeds the limited objective
+- what happens when the defender reverses the war
+- AI willingness and AI peace behavior
+- cleanup for war goals, missions, flags, participants, and temporary modifiers
+- postwar compliance, resistance, integration, recognition, or border-settlement work
+
+The early route can trade long-term strength for immediate action. It can use temporary military bonuses, economic exhaustion, diplomatic backlash, lower legitimacy, or restricted objectives to keep the choice meaningful.
+
+A limited war should produce a clear campaign goal and a satisfying visible payoff. The route can culminate in a formable, regional settlement, restored border, resource corridor, protectorate system, or other identity change after the player proves control and completes the postwar work.
+
 ## 7. Political depth
 
 Large focus trees must alter politics directly.
@@ -440,6 +687,62 @@ Examples of route families:
 - death-state actor
 
 Fixed-purpose chaos countries can have narrower political design. For example, a country whose entire identity is death, plague, machine rule, or total destruction may have one ideological purpose. Even then, its tree should still create mechanical choices inside that purpose, such as doctrine, expansion method, internal hierarchy, recruitment, economy, and endgame ambition.
+
+
+## 7.1 Leader and institution customization
+
+Some routes should let the player build a leader, regency, council, cabinet, doctrine, or governing institution through several choices.
+
+A customization sequence can use events, focuses, decisions, or a dedicated mechanic to select traits and priorities. Useful dimensions include construction, military command, diplomacy, reform, logistics, research, legitimacy, or faction management.
+
+A strong customization system should:
+
+- give two or three clear choices at each stage
+- let repeated investment in one theme unlock a specialist threshold bonus
+- allow mixed choices to create a generalist
+- cap or price stacking so one combination does not become the automatic answer
+- update the visible leader, traits, portrait, institution, or national spirit
+- give AI route-specific profiles instead of random trait stacking
+- preserve a regent, council, or interim authority as a valid final choice when the route supports it
+
+Do not use leader customization as a menu of small percentage bonuses. The selected traits should change build priorities, decisions, route access, or how the country handles its main problem.
+
+Use this system only when leadership construction is part of the route fantasy.
+
+## 7.2 Civil war restraint and controlled internal conflict
+
+Do not use a vanilla civil war as the default climax for political disagreement.
+
+Prefer controlled alternatives when they fit:
+
+- balance-of-power struggle
+- coup attempt
+- election crisis
+- timed loyalty contest
+- state-by-state allegiance
+- targeted regional secession
+- negotiated settlement
+- purge or officer removal
+- rival council mechanic
+- limited mutiny
+- leader replacement
+- staged takeover through decisions and events
+
+A full civil war is justified when territorial control and military command are central to the route.
+
+When a focus tree uses a civil war:
+
+- determine the participating states through clear route logic
+- control division transfer where the engine and project patterns allow it
+- tell the player which areas and forces are at risk
+- avoid arbitrary loss of half the army
+- define stockpile, navy, air force, commander, subject, and faction handling
+- define postwar reintegration and the fate of surviving units
+- give AI a viable war plan
+- clean up all temporary tags, flags, decisions, ideas, and route locks
+- make the result affect later politics instead of returning immediately to the same tree state
+
+Do not repeat several similar civil wars inside one tree unless repeated fragmentation is the country's central mechanic. Use different internal-conflict forms for different political struggles.
 
 ## 8. Focus reward diversity
 
@@ -523,6 +826,8 @@ A focus reward should usually do at least one of these things:
 
 If a focus mainly gives a small flat modifier, the implementation must justify why that modifier matters. It can be acceptable as one part of a larger reward package, a frequent stack, a temporary crisis push, or a final adjustment to an existing mechanic. It is not acceptable as the whole reward for an important focus.
 
+A 5 percent modifier can be meaningful when the affected statistic is sensitive, the effect belongs to a larger reward package, the route builds a visible stack toward a threshold, or the modifier completes a staged idea. Judge the gameplay impact and context, not the number in isolation.
+
 Do not scatter many tiny modifiers across a tree to create the appearance of progression. Combine weak rewards into fewer stronger focuses, convert them into staged idea upgrades, or replace them with decisions, missions, map changes, unit paths, advisors, mechanic thresholds, or route access.
 
 Completion reports and focus audits must flag fairy-dust rewards. A route with many tiny standalone rewards should be treated as incomplete until the rewards are merged, strengthened, connected to a mechanic, or replaced with visible gameplay.
@@ -568,7 +873,7 @@ Every important starting idea should have a lifecycle:
 
 ### National spirit count limit
 
-A focus tree must never grant or maintain more than three focus-tree-created national spirits at the same time for one country. This is a hard maximum, not a target.
+A focus tree must never grant or maintain more than three focus-tree-created national spirits at the same time for one country. This is a hard maximum. Treat three as an upper bound.
 
 Before adding a fourth spirit, the implementation must upgrade, replace, merge, transform, or remove one of the existing three. Starting national spirits that belong to the same focus-tree package count toward this limit when the tree is responsible for their lifecycle. Temporary timed modifiers do not count when they are clearly short-lived and are not being used to evade the limit.
 
@@ -715,24 +1020,37 @@ Do not use mutual exclusions for branches that should logically coexist, such as
 
 When a route becomes impossible, use bypasses or availability logic cleanly.
 
+
+A route must not depend forever on one external country taking one scripted action.
+
+If a branch expects an invasion, alliance offer, foreign conference, sponsor decision, or historical war, define at least one safe resolution:
+
+- an alternate valid aggressor or sponsor
+- a campaign-state trigger that represents the same pressure
+- a timed reveal after the historical opportunity passes
+- a player decision that provokes or requests the interaction
+- a bypass into the appropriate aftermath route
+- a clean route closure when the premise can no longer happen
+
+Do not leave a meaningful branch permanently inaccessible because one AI country chose another focus.
+
+External-event gates need AI and multiplayer checks. Verify that alternate history, missing countries, dead leaders, faction changes, and player-controlled foreign actors cannot strand the tree.
+
 ## 12. Layout rules
 
 The tree must be readable in game.
 
-For complex cleanup or creation, use `hoi4-mcp-workbench` after the route plan
-and source review. Call `hoi4.focus_inspect` and `hoi4.focus_render`, then use
-`hoi4.focus_rewrite` for an in-scope rewrite or a complete new route plan. Set
-the MCP server `cwd` to the target mod and omit `workspaceId`; no mod-selection
-command is needed. Review layout diagnostics, rendered artifacts, the source
-diff, and the final focus audit. MCP supplies shared parsing, layout, rendering,
-and writes; this skill still owns design, prerequisites, localisation, AI,
-icons, balance, and completion.
+Use the MCP focus tools to find layout deformities before rewriting. `hoi4.focus_inspect` and `hoi4.focus_render` report overlapping focus boxes, excessive gaps, cramped spacing, connector crossings, path lines that run through focuses or stretch too far, dangling connectors, bad prerequisite presentation, unbalanced branches, off-center layouts, and related diagnostics. Review the artifacts, then call `hoi4.focus_rewrite` with `layoutMode: "compact"` for cleanup or a complete route plan for creation. Review the rewritten artifacts and source diff. MCP supplies shared parsing, layout, rendering, and writes. This skill owns design, prerequisites, localisation, AI, icons, balance, and completion.
 
 Required layout checks:
 
 - prerequisite parents are above children
 - no duplicate coordinates
 - no unnecessary crossing lines
+- no connector runs through focus boxes or unrelated branches
+- horizontal and vertical gaps are balanced and readable
+- visible connectors agree with the scripted prerequisite structure
+- route families remain balanced and centered
 - mutually exclusive branches are spaced comfortably
 - branches are visually distinct
 - continuous focuses are placed somewhere convenient
@@ -751,12 +1069,11 @@ When an event creates or releases a country, set a flag showing that the event c
 
 Only load or replace a runtime focus tree if the event actually created the country.
 
-Existing countries with their own meaningful tree should usually receive additive crisis branches, decisions, ideas, or events, not a blind tree replacement.
+Existing countries with their own meaningful tree should usually receive additive crisis branches, decisions, ideas, or events. Blind tree replacement needs explicit design support.
 
 For every event-created country, verify:
 
 - tag
-- history setup for new custom tags only; use `common/scripted_effects/chaosx_startup_history_effects.txt` and `on_startup` for additive existing-country technologies, equipment, facilities, generated scientists, and traits. Do not use `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists; it is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
 - localisation
 - flags
 - leader or council
@@ -816,7 +1133,7 @@ Do not solve asset variety by taking the same composition and changing only its 
 
 ## Improvement addenda and formation routes
 
-When an improvement addendum deepens a focus tree, preserve the route idea before adding nodes. The goal is not a longer tree. The goal is a sharper country identity, stronger branch interaction, clearer route locks, better rewards, stronger AI, and more visible consequences.
+When an improvement addendum deepens a focus tree, preserve the route idea before adding nodes. Aim for a sharper country identity, stronger branch interaction, clearer route locks, better rewards, stronger AI, and more visible consequences.
 
 Formation routes should usually combine focus preparation with a decision that verifies state control. Focuses can discover old claims, call a congress, unlock a seal, prepare integration, recruit elites, expose a hidden identity, or open the formation decision. The decision then checks the map and performs the formation.
 
@@ -849,6 +1166,14 @@ Include:
 - AI behavior
 - icons or icon families
 - remaining blockers
+- opening structure and first meaningful choices
+- national constraints and the route answers they create
+- focus duration logic
+- temporary power windows and aftermath
+- interactive focus requirements
+- limited-war rules when used
+- civil-war handling when used
+- leader or institution customization when used
 
 Before completion, audit:
 
@@ -873,6 +1198,23 @@ Before completion, audit:
 - national spirits that are too easy to earn for their importance
 - national spirits that have no lifecycle, route commitment, mechanic hook, or decision hook
 - layout readability
+- unnecessary starting spirit stacks or military setup complexity
+- an opening that exposes too many choices before the player understands the country problem
+- first meaningful choices delayed behind filler focuses
+- political routes added only to satisfy an ideology quota
+- focus durations that do not match the decision or reward
+- several consecutive focuses with no choice, requirement, event, map objective, or mechanic interaction
+- national constraints erased before they shape a route
+- underused branches with no cross-branch utility
+- temporary bonuses with no stated window, cost, or aftermath
+- permanent extreme policies with no exit when an exit should exist
+- interactive gates that are arbitrary, unclear, or impossible to pursue intentionally
+- external-event gates that can permanently strand a branch
+- optional side investments made mandatory without a route reason
+- early-war routes that force total war when a limited objective is intended
+- limited wars without peace, escalation, AI, cleanup, or postwar rules
+- repeated or uncontrolled civil wars
+- leader customization that produces one dominant trait stack
 
 ## 17. Completion rules
 
@@ -880,6 +1222,15 @@ A focus tree task is complete only when:
 
 - the tree has distinct political, industry, and expansion branch families, unless it is explicitly documented as a temporary non-playable tag
 - large playable countries have military, diplomacy, internal faction, special mechanic, and late-game branches where their identity supports them
+- the opening is lean enough to understand and complexity is revealed in stages
+- stable countries do not start with unnecessary stacks of national spirits or military clutter
+- the country's main constraints create route incentives and are not erased immediately
+- the first meaningful strategic choice appears early
+- political routes exist because they have a real historical, institutional, alternate-history, event, or high-chaos basis
+- no shallow ideology route exists only to satisfy a route quota
+- focus durations match the size of the decision and do not split one reward into empty clicks
+- early choices change the build plan, military timetable, foreign alignment, leadership, mechanic, or route
+- underused branches provide country-specific cross-branch utility
 - branches interact through prerequisites, decisions, missions, events, AI, crisis values, diplomacy, or route locks
 - every major branch has a clear payoff
 - political routes change visible country identity where relevant
@@ -921,6 +1272,18 @@ A focus tree task is complete only when:
 - decision categories avoid showing every possible action at once
 - large trees have early, middle, and late pacing
 - major routes have real tradeoffs and failure states
+- important early branches offer distinct short-term, balanced, or long-term strategies where the country supports them
+- temporary power windows define their duration, active cost, intended use, aftermath, and AI behavior
+- permanent extreme policies have an exit or a documented identity reason for remaining permanent
+- interactive focus requirements use relevant game systems and explain exact requirements
+- central route gates have decisions, missions, or other tools that let the player pursue them intentionally
+- several-focus autopilot chains have been merged, shortened, or given real interaction
+- optional side investments remain optional unless the route logic requires full commitment
+- meaningful early active play exists where the country premise calls for it
+- limited wars define objectives, participants, escalation, peace, AI, cleanup, and postwar handling
+- external event gates have alternate activation, timeout, player action, bypass, or clean closure
+- civil wars are controlled, previewable, and fully cleaned up when they are used
+- leader or institution customization has viable specialist and generalist outcomes when it is used
 - mutual exclusions are not overused
 - major routes have distinct AI behavior and localisation tone
 - expansion branches include postwar handling

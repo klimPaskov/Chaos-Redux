@@ -24,14 +24,14 @@ No state is inferred from the headquarters, no estimator or proxy launch hook is
 
 The values below are gameplay tuning for route identity and balance. They are not claims that historical battlefield biological doctrine used standardized HOI4-sized packages. The equipment quantities represent complete route packages within the mod's production scale.
 
-| Agent | Overall severity | Native payload reservation | Command Power | Route potency | Canonical lifecycle strength | Base AI weight | Base success factor |
+| Agent | Agent potency tier | Native payload reservation | Command Power | Route potency | Canonical lifecycle strength | Base AI weight | Base success factor |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Tularemia | low | 25 | 10 | 1.00 | 0.85 | 1.50 | 0.50 |
 | Anthrax | moderate | 50 | 10 | 1.00 | 1.00 | 1.00 | 0.50 |
 | Plague | serious | 25 | 12 | 1.00 | 1.15 | 0.60 | 0.50 |
 | Smallpox | severe | 10 | 15 | 1.00 | 1.30 | 0.40 | 0.50 |
 
-Overall weapon severity is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
+Overall weapon strength is strictly `Tularemia < Anthrax < Plague < Smallpox`, and only Smallpox belongs to the severe tier.
 
 All four agents have the same native battlefield-delivery reliability. The different AI weights describe route preference and strategic willingness, not success probability.
 
@@ -70,7 +70,7 @@ Blowback uses the private connected-spread lifecycle route with 35 evidence, 35 
 
 Chaos Warfare doctrine is escalation. Existing lifecycle doctrine modifiers can raise potency, growth, spread, deaths, duration, and medical saturation. Battlefield dissemination also makes friendly blowback more likely. Theater Contamination refunds up to 5 Command Power and Terminal Hazard up to 10 after a valid resolution, capped at that agent's native Command Power cost. Neither doctrine refunds payload or reduces evidence, attribution, physical harm, history, accident records, or public-harm floors. Only Condemnation may be reduced through the shared consequence rules.
 
-AI must pass the same readiness, policy, project, payload, headquarters, front, and target checks as the player. It avoids battlefield dissemination without the required domestic safety technologies unless it is on an unrestricted desperate route. Retaliation, permitted first use, unrestricted posture, program preparation, supply hubs, forts, and concentrated enemy formations raise willingness. Defensive profiles, active outbreaks in the target, treaty membership, and high Condemnation combined with import vulnerability suppress willingness. AI never targets friendly-owned ground.
+AI must pass the same readiness, policy, project, payload, headquarters, front, and target checks as the player. It avoids battlefield dissemination without the required domestic safety technologies unless it is on an unrestricted desperate route. Retaliation, permitted first use, unrestricted posture, program preparation, supply hubs, forts, and concentrated enemy formations raise willingness. Defensive profiles, active outbreaks in the target, treaty membership, and high Condemnation combined with import vulnerability suppress willingness. An unrestricted actor under formal censure receives a continuation preference only when a current enemy has crossed the exact near-victory surrender threshold. An actor at its own near-capitulation threshold stops selecting ordinary battlefield dissemination; an explicitly authorized doomsday route leaves the separate doomsday decision as the only biological release choice during collapse. AI never targets friendly-owned ground.
 
 ## Assets and wiring
 
@@ -86,6 +86,10 @@ No new raid art was required. The native battlefield raids reuse the existing Ch
 
 `interface/chaosx_raids.gfx` owns the stable sprite registrations. `common/raids/categories/chaosx_raid_categories.txt` owns the Army-intelligence raid category. `common/raids/biological_battlefield_raids.txt` owns the four native raid types. Generated decision-icon drafts are not part of this route and are not referenced by gameplay, localisation, or GFX.
 
-## Future plans
+## Current closure boundary
 
-This route does not close Stage 7. Remaining work includes food, water, and medical-chain sabotage; laboratory and stockpile accidents; captured-facility and doomsday releases; the full agent-specific countermeasure and treatment package; remaining biological assets and final localisation; route/package scenarios; migration of every supported legacy caller; and the mapped specialist, improvement-loop, and completion audits.
+The food, water, and medical-chain sabotage, laboratory and stockpile accidents, captured-facility recovery, doomsday, countermeasure, asset, and localization surfaces are implemented in their subsystem files.
+
+This document does not claim Stage 13 or Stage 14 completion.
+
+Remaining package validation is to compare all four battlefield agents and weak, normal, and high-chaos profiles in the package scenarios; exercise the native actor-controlled enemy-owned target contract for captured-facility raids where current-version engine behavior remains unobserved; consume the mapped decision, localization, and completion audits and improvement-loop findings; and reconcile any remaining safe legacy callers against the final checklist.

@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - CHEMICAL DOOMSDAY ADAPTER TRIGGERS
+# ============================================================================
+# Overview:
+# - State-scoped eligibility for the explicit chemical doomsday decision.
+# - The target is always an exact controlled state with a positive native
+#   population value. Missing or non-controlled state context returns false.
+# - No trigger in this file searches for a target, estimates a mission, or
+#   authorizes a periodic/world-wide pulse.
+# ============================================================================
+
+# State scope with the releasing country as ROOT.
+cbrn_chemical_doomsday_state_is_eligible = {
+	is_controlled_by = ROOT
+	state_population_k > constant:cbrn_chemical_doomsday_target.minimum_population_k
+}
+
+# Country scope. The decision and resolver use this same exact target gate.
+cbrn_chemical_doomsday_actor_has_target = {
+	any_controlled_state = {
+		cbrn_chemical_doomsday_state_is_eligible = yes
+	}
+}

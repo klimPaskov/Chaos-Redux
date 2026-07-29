@@ -35,6 +35,17 @@ cbrn_payload_route_cost = {
 	strategic_chemical_raid = 240
 	covert_operation = 20
 	nerve_suppression = 40
+	# The camp adapter replaces this route default with its exact tier cost.
+	restricted_chemical_site = 1
+}
+
+cbrn_restricted_site_chemical = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	readiness_divisor = 100
 }
 
 cbrn_payload_conversion = {
@@ -156,7 +167,12 @@ cbrn_chemical_dispatch = {
 		data = fixed_point
 	}
 
+	# The old state modifier used a negative strength scale. The canonical
+	# contamination ledger keeps 0 to 100 state points and derives that scale
+	# only for the existing presentation modifier.
 	legacy_contamination_strength_per_point = -0.008
+	effective_strength_minimum = -0.80
+	effective_strength_maximum = 0
 	state_medical_minimum = 0
 	state_medical_maximum = 100
 	state_evidence_minimum = 0

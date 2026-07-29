@@ -1,5 +1,0 @@
-# The Skilled List report-event prompt
-
-Fallout survival report-event illustration for a fictional alternate-history Hearts of Iron IV event. In a dim ash-gray school boiler room after nuclear winter, a careful census clerk spreads a handwritten roster across a scarred wooden table while four surviving specialists stand behind it: a grease-stained water engineer holding a valve wrench, a tired field doctor with a canvas medical bag, a quiet radio officer with a paper map, and a seed keeper holding frost-damaged seed envelopes. Snowlight enters through a boarded window, soot and frost mark the walls, and a chalkboard shows names and repair routes. Use a subdued gray blue and rust palette with realistic archival alternate-history news illustration, no readable text, no logos, no flags, no modern typography, no gore, and a strong focal center. Frame the source for a 210 by 176 report-event card with darker margins for the interface overlay.
-
-The source was generated through the approved Chaos Redux event-art workflow. The processed card and runtime DDS are dedicated to The Skilled List and do not reuse zombie assets, ids, audio, sprites, or paths.

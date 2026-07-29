@@ -155,14 +155,7 @@ cbrn_country_faces_enemy_chemical_capability = {
 }
 
 cbrn_world_has_confirmed_chemical_use = {
-	OR = {
-		has_global_flag = cbrn_world_confirmed_chemical_use
-		# Compatibility for saves whose public chemical record predates the
-		# shared dispatcher flag.
-		any_country = {
-			check_variable = { condemnation_chemical > constant:cbrn_math.zero }
-		}
-	}
+	has_global_flag = cbrn_world_confirmed_chemical_use
 }
 
 cbrn_country_has_priority_civilian_protection_gap = {
@@ -529,7 +522,18 @@ cbrn_target_can_supply_imported_masks = {
 }
 
 cbrn_target_can_receive_exported_masks = {
-	cbrn_target_is_valid_allied_protection_partner = yes
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		cbrn_target_is_valid_allied_protection_partner = yes
+		is_in_array = {
+			array = condemnation_humanitarian_carveout_participants
+			value = ROOT
+		}
+	}
 	NOT = {
 		has_equipment = {
 			gas_mask_equipment > constant:cbrn_protection_ai.export_minimum_reserve

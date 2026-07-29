@@ -45,6 +45,8 @@ Use `chaosx_generated_event_art` for generated non-icon art, including fictional
 
 Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, officer corps icons, decision icons, decision category icons, achievement icons, tech icons, formable seals, scripted GUI icons, and small animated icon or button sprites.
 
+Use `chaosx_3d_model_pipeline` for bounded custom HOI4 3D model work covering geometry, provider candidates, Blender processing, model textures, rigs, skeletal actions, `.mesh`/`.anim` export, QA evidence, and runtime handoffs.
+
 Use `chaosx_super_event_text_researcher` for super-event main quotes, exact wording checks, attribution confidence, source comparison, button text, cultural remarks, slogans, allusions, and short references.
 
 Use `chaosx_super_event_audio_researcher` for licensed or public domain audio research, source verification, download, final `.wav` preparation, and audio handoff notes.
@@ -126,6 +128,18 @@ It must not edit gameplay files, localisation, scripted localisation, GUI, GFX, 
 Asset subagents create source files, processed previews, final DDS outputs, contact sheets, manifests, and asset handoffs. During active work, event-scoped evidence belongs under the temporary `docs/assets/<event_id>_<event_slug>/` workspace. They do not wire gameplay, localisation, GFX, GUI, events, focuses, decisions, or spreadsheets unless the parent gives a narrow exception.
 
 The parent owns temporary-workspace cleanup. Keep the event-scoped `docs/assets/` workspace while the event is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and sprite-handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, then delete the complete event-scoped workspace. An absent workspace is expected for a fully complete event. Never delete a skill-local reference library or an unrelated event workspace.
+
+### 3D model routing
+
+Route `chaosx_3d_model_pipeline` only with `fork_context=false` and a context-complete prompt containing the exact deterministic job root, reference-image path or approved asset brief, output folders, handoff path, asset profile, named vanilla references, scale relationship, required action roles, credit and paid-attempt limits, dependency lock, and forbidden simplifications. The parent must pass the owner/asset identifiers explicitly; the subagent must not infer them from inherited conversation state.
+
+The parent prompt must also require the MESHY_API_KEY hard gate before path discovery or provider work, exactly one Meshy input image when no ready image exists, no multi-view provider board, immediate provider download and checksum, protected provider source, topology repair, PDX packed-material validation, hash-aware runtime synchronization, and `.mesh`/`.anim` reimport evidence. For humanoids, name the installed vanilla source mesh and entity and pass the source-height/entity-scale/effective-runtime crosswalk; for buildings, pass the valid state/province pair and entity visibility test.
+
+Its allowed scope is source/reference preservation, provider candidates, downloaded GLB/FBX and lineage, Blender source and checkpoints, bounded geometry/material/rig/weight/action work, processed model textures and DDS files, `.mesh`/`.anim` exports, previews, manifests, QA/reimport evidence, crosswalk rows, and handoffs. It must not edit gameplay, GFX, `.gfx`, `.gui`, `.asset`, entity, localisation, events, focuses, decisions, country/history/AI, on-actions, or spreadsheets.
+
+The handoff must list files and checksums, provider task lineage and credits, verified dependency versions, Blender checkpoint stages, geometry/material/rig/weight/action/export results, reimport or parser evidence (or an explicit missing-capability blocker), proposed runtime identifiers, statuses, skipped meaningful validation, and remaining risks. Use only actual provider or Blender tool names discovered and verified by the parent; missing integrations are `required installation/verification` or `blocked`, not invented capabilities. Any viewer or inspector is read-only.
+
+The parent alone owns `.asset`/entity/GFX/runtime source wiring, live-consumer and in-game validation, runtime evidence, and the overall completion claim. A successful provider task, `.blend`, preview, or export never authorizes the subagent to claim the feature is complete or to silently use a fallback.
 
 ### Active small-patch agents
 
@@ -231,24 +245,13 @@ The parent agent must give each asset subagent a bounded prompt with exact asset
 
 Country-identity asset work must not start until the parent has audited the candidate tag against vanilla, Chaos Redux, every installed Workshop mod, and other local mods, and has checked whether the national identity already exists in vanilla. A conflicting new tag must be remapped; a vanilla country identity must reuse the vanilla tag and preserve its meaningful content. Pass the locked tag and audit evidence into the context-free subagent prompt.
 
-Portrait prompts must name the canonical skill-local leader and advisor references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/`. Real people require an attributed source, explicit head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop metadata, and comparison sheet. Fictional one-person portraits require ImageGen with the leader references as style inputs. Fictional councils, committees, juntas, boards, offices, and symbolic bodies require people-free institutional ImageGen compositions and institutional names; do not generate a crowd or invented officeholder.
-
+Portrait prompts must inspect the canonical reference root `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference`, the matching leader, commander, or operative contact sheet, and the male quick-reference routing at `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/leader_portraits/README.md`. Real people require an attributed source, explicit head-and-shoulders crop, identity-preserving HOI4 painted finish, source/crop metadata, and comparison sheet. A polity that existed in whole or in part, represents a real community, or claims continuity from a real institution is grounded and must use sourced real people or authentic institutional material rather than an invented substitute. Fictional one-person portraits require ImageGen only when both the leader and polity are wholly fictional and deliberately high-chaos. They must look extraordinary and culturally coherent within the invented setting, not like normal interchangeable officers. Fictional councils, committees, juntas, boards, offices, and symbolic bodies require people-free institutional ImageGen compositions and institutional names; do not generate a crowd or invented officeholder.
 
 
 
 For `chaosx_icon_artist`, the parent prompt must require `$imagegen` source atlas or source PNG evidence, prompt and source-mode notes, transparent-background processing, contact sheets, dimension and alignment QA, no white matte or opaque square backgrounds, and confirmation that final generated icons are not primitive local drawings or resized unrelated icons.
 
-For flags, the parent prompt must state whether each flag is a base flag,
-ideology variant, route variant, cosmetic-tag flag, historical flag, or
-fictional flag. Every final flag requires imagegen source evidence. Historical
-flags and attested symbols begin with `chaosx_asset_source_researcher`, then
-use the cited design as a strict imagegen input; fictional or alternate-history
-variants belong with `chaosx_generated_event_art`. Require clean flat flag
-designs, exact historical geometry and symbols when attested, and reject
-waving fabric, folds, flagpoles, scenery, painterly artwork, perspective,
-lighting, gradients, fake text, or invented heraldry. Base flags for existing
-countries must be preserved unless explicitly in scope. Ideology variants
-must be distinct designs, not recolors or copied emblems.
+For flags, the parent prompt must state whether each flag is a base flag, ideology variant, route variant, cosmetic-tag flag, historical flag, or fictional flag. Every final flag requires imagegen source evidence. Historical flags and attested symbols begin with `chaosx_asset_source_researcher`, then use the cited design as a strict imagegen input; fictional or alternate-history variants belong with `chaosx_generated_event_art`. Require clean flat flag designs, exact historical geometry and symbols when attested, and reject waving fabric, folds, flagpoles, scenery, painterly artwork, perspective, lighting, gradients, fake text, or invented heraldry. Base flags for existing countries must be preserved unless explicitly in scope. Ideology variants must be distinct designs, not recolors or copied emblems.
 
 Asset subagents may create source files, PNG previews, DDS files, contact sheets, manifests, and `gfx_handoff.md`. They must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files unless the parent explicitly expands scope.
 
@@ -284,17 +287,13 @@ Use it when the only required output is an update to:
 docs/spreadsheets/chaos_redux_events_catalog.xlsx
 ```
 
-The workbook is the only editable catalog source. The three catalog CSVs are
-export-only snapshots generated from the workbook's `Events`, `Clusters`, and
-`Scenarios` sheets. After the worker saves the workbook, it must run:
+The workbook is the only editable catalog source. The three catalog CSVs are export-only snapshots generated from the workbook's `Events`, `Clusters`, and `Scenarios` sheets. After the worker saves the workbook, it must run:
 
 ```text
 python .tools/export_event_catalog_csv.py
 ```
 
-The worker must never edit the CSVs directly or treat a stale CSV as the
-source of truth. If the exporter fails, report the failure and leave the
-workbook as the only attempted edit until the exporter can be rerun.
+The worker must never edit the CSVs directly or treat a stale CSV as the source of truth. If the exporter fails, report the failure and leave the workbook as the only attempted edit until the exporter can be rerun.
 
 The parent prompt should provide event ids, row targets, source localisation keys, or the exact fields to update when possible.
 

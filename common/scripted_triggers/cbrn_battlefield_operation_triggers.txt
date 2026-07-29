@@ -1,0 +1,501 @@
+# ============================================================================
+# CHAOS REDUX - EXACT-STATE CBRN BATTLEFIELD OPERATION TRIGGERS
+# ============================================================================
+# Overview:
+# - Provides the CBRN-specific actor, selected-agent, equipment, cooldown, and
+#   exact-state target gates for cylinder, projector, artillery, and armored
+#   chemical operations.
+# - A target is always a state selected by the player or by the native timed
+#   decision target surface. No random state, capital proxy, combat estimator,
+#   aircraft-presence test, or periodic world scan can satisfy these gates.
+# - The shared chemical action validator remains the final policy, payload,
+#   protection, condition, evidence, attribution, and consequence gate.
+# - Shortage gates permit a deliberately weaker operation when the committed
+#   route has only its central shortage floor. The operation effect records that
+#   receipt and scales command, release efficiency, and friendly risk.
+# ============================================================================
+
+# The current game build exposes weather and terrain combat triggers only from
+# combat/unit-leader scopes. It does not expose a verified selected-state Army
+# Headquarters receipt for these timed operations. Keep the route fail-closed
+# until a build-specific hook is proven; the operation must not activate from a
+# fixed condition estimate.
+cbrn_battlefield_current_version_condition_hook_verified = {
+	always = no
+}
+
+cbrn_battlefield_selected_agent_is_initialized = {
+	has_variable = cbrn_battlefield_selected_agent
+	NOT = {
+		check_variable = {
+			var = cbrn_battlefield_selected_agent
+			value = constant:cbrn_agent.none
+			compare = equals
+		}
+	}
+}
+
+cbrn_battlefield_selected_agent_is_unlocked = {
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.chlorine compare = equals }
+			has_tech = chlorine_gas
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.phosgene compare = equals }
+			has_tech = phosgene
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.mustard compare = equals }
+			has_tech = mustard_gas
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.lewisite compare = equals }
+			has_tech = lewisite
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.tabun compare = equals }
+			has_tech = tabun
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.sarin compare = equals }
+			OR = {
+				has_tech = sarin
+				is_special_project_completed = sp:sp_cw_sarin_program
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.soman compare = equals }
+			OR = {
+				has_tech = soman
+				is_special_project_completed = sp:sp_cw_soman_program
+			}
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.malodor compare = equals }
+			is_special_project_completed = sp:sp_cw_malodor_bomb_program
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.behavioral compare = equals }
+			is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+		}
+	}
+}
+
+cbrn_battlefield_shell_profile_agent_is_unlocked = {
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.chlorine compare = equals }
+			has_tech = chlorine_gas
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.phosgene compare = equals }
+			has_tech = phosgene
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.mustard compare = equals }
+			has_tech = mustard_gas
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.lewisite compare = equals }
+			has_tech = lewisite
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.tabun compare = equals }
+			has_tech = tabun
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.sarin compare = equals }
+			OR = { has_tech = sarin is_special_project_completed = sp:sp_cw_sarin_program }
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.soman compare = equals }
+			OR = { has_tech = soman is_special_project_completed = sp:sp_cw_soman_program }
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.malodor compare = equals }
+			is_special_project_completed = sp:sp_cw_malodor_bomb_program
+		}
+		AND = {
+			check_variable = { var = cbrn_shell_filling_agent value = constant:cbrn_agent.behavioral compare = equals }
+			is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program
+		}
+	}
+}
+
+cbrn_battlefield_selected_agent_is_choking = {
+	OR = {
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.chlorine compare = equals }
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.phosgene compare = equals }
+	}
+}
+
+cbrn_battlefield_selected_agent_is_blister = {
+	OR = {
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.mustard compare = equals }
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.lewisite compare = equals }
+	}
+}
+
+cbrn_battlefield_selected_agent_is_nerve = {
+	OR = {
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.tabun compare = equals }
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.sarin compare = equals }
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.soman compare = equals }
+	}
+}
+
+cbrn_battlefield_selected_agent_is_incapacitating = {
+	OR = {
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.malodor compare = equals }
+		check_variable = { var = cbrn_battlefield_selected_agent value = constant:cbrn_agent.behavioral compare = equals }
+	}
+}
+
+cbrn_battlefield_selected_agent_is_ground_eligible = {
+	OR = {
+		cbrn_battlefield_selected_agent_is_choking = yes
+		cbrn_battlefield_selected_agent_is_blister = yes
+		cbrn_battlefield_selected_agent_is_incapacitating = yes
+		AND = {
+			cbrn_battlefield_selected_agent_is_nerve = yes
+			has_tech = nerve_agent_suppression_formation
+		}
+	}
+}
+
+cbrn_battlefield_hq_receipt_is_valid = {
+	cbrn_country_has_active_chemical_operation_plan = yes
+	any_army_leader = {
+		cbrn_hq_command_is_deployed = yes
+		cbrn_hq_has_operations_section = yes
+		cbrn_hq_has_intelligence_weather_cell = yes
+		cbrn_hq_has_protective_logistics_section = yes
+	}
+}
+
+cbrn_battlefield_operation_cooldown_is_clear = {
+	OR = {
+		NOT = { has_variable = cbrn_battlefield_next_allowed_day }
+		check_variable = {
+			var = cbrn_battlefield_next_allowed_day
+			value = global.num_days
+			compare = less_than_or_equals
+		}
+	}
+}
+
+cbrn_battlefield_actor_base_can_prepare = {
+	exists = yes
+	cbrn_battlefield_current_version_condition_hook_verified = yes
+	NOT = { has_country_flag = cbrn_battlefield_operation_in_progress }
+	has_war = yes
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	cbrn_policy_allows_battlefield_use = yes
+	cbrn_battlefield_hq_receipt_is_valid = yes
+	cbrn_battlefield_selected_agent_is_initialized = yes
+	cbrn_battlefield_selected_agent_is_unlocked = yes
+	cbrn_battlefield_selected_agent_is_ground_eligible = yes
+	cbrn_battlefield_operation_cooldown_is_clear = yes
+	has_tech = basic_gas_masks
+	has_tech = field_decontamination_kits
+}
+
+cbrn_battlefield_cylinder_commit_cost_is_available = {
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.cylinder_release compare = greater_than_or_equals }
+	command_power > constant:cbrn_battlefield_operation_cost.cylinder_command_power
+}
+
+cbrn_battlefield_projector_commit_cost_is_available = {
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.projector_barrage compare = greater_than_or_equals }
+	command_power > constant:cbrn_battlefield_operation_cost.projector_command_power
+}
+
+cbrn_battlefield_artillery_commit_cost_is_available = {
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.artillery_fire_plan compare = greater_than_or_equals }
+	command_power > constant:cbrn_battlefield_operation_cost.artillery_command_power
+}
+
+cbrn_battlefield_armored_commit_cost_is_available = {
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	command_power > constant:cbrn_battlefield_operation_cost.armored_command_power
+}
+
+cbrn_battlefield_common_equipment_is_full = {
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.cylinder_mask_crates compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.common_instrument_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.common_support_equipment compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_common_equipment_is_shortage_ready = {
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.cylinder_mask_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.common_decontamination_equipment_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.common_instrument_equipment_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.common_support_equipment_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_cylinder_equipment_is_ready = {
+	OR = {
+		cbrn_battlefield_common_equipment_is_full = yes
+		cbrn_battlefield_common_equipment_is_shortage_ready = yes
+	}
+}
+
+cbrn_battlefield_projector_equipment_is_full = {
+	cbrn_battlefield_common_equipment_is_full = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.projector_mask_crates compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.projector_instrument_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@livens_projector_chassis value = constant:cbrn_battlefield_operation_cost.projector_chassis compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_projector_equipment_is_shortage_ready = {
+	cbrn_battlefield_common_equipment_is_shortage_ready = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.projector_mask_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.projector_instrument_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@livens_projector_chassis value = constant:cbrn_battlefield_operation_cost.projector_chassis_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_projector_equipment_is_ready = {
+	has_tech = livens_projector_tech
+	OR = {
+		cbrn_battlefield_projector_equipment_is_full = yes
+		cbrn_battlefield_projector_equipment_is_shortage_ready = yes
+	}
+}
+
+cbrn_battlefield_artillery_equipment_is_full = {
+	cbrn_battlefield_common_equipment_is_full = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.artillery_mask_crates compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.artillery_instrument_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.artillery_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.artillery_decontamination_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@chemical_shell_lot_1 value = constant:cbrn_battlefield_operation_cost.artillery_ammunition compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_artillery_equipment_is_shortage_ready = {
+	cbrn_battlefield_common_equipment_is_shortage_ready = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.artillery_mask_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.artillery_instrument_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.artillery_support_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.artillery_decontamination_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@chemical_shell_lot_1 value = constant:cbrn_battlefield_operation_cost.artillery_ammunition_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_battlefield_artillery_equipment_is_ready = {
+	has_tech = chemical_artillery_shells
+	has_tech = livens_projector_tech
+	has_variable = cbrn_shell_filling_agent
+	check_variable = { var = cbrn_shell_filling_agent value = cbrn_battlefield_selected_agent compare = equals }
+	OR = {
+		cbrn_battlefield_artillery_equipment_is_full = yes
+		cbrn_battlefield_artillery_equipment_is_shortage_ready = yes
+	}
+}
+
+cbrn_battlefield_armored_equipment_is_full = {
+	cbrn_battlefield_common_equipment_is_full = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.armored_mask_crates compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.armored_instrument_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.armored_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.armored_decontamination_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@medium_tank_chassis value = constant:cbrn_battlefield_operation_cost.armored_medium_chassis compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:cbrn_battlefield_operation_cost.armored_motorized_equipment compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_floor
+}
+
+cbrn_battlefield_armored_equipment_is_shortage_ready = {
+	cbrn_battlefield_common_equipment_is_shortage_ready = yes
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.armored_mask_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.armored_instrument_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.armored_support_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.armored_decontamination_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@medium_tank_chassis value = constant:cbrn_battlefield_operation_cost.armored_medium_chassis_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:cbrn_battlefield_operation_cost.armored_motorized_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_shortage_floor
+}
+
+cbrn_battlefield_armored_equipment_is_ready = {
+	has_tech = sealed_tank_crews
+	OR = {
+		cbrn_battlefield_armored_equipment_is_full = yes
+		cbrn_battlefield_armored_equipment_is_shortage_ready = yes
+	}
+}
+
+cbrn_battlefield_cylinder_actor_can_prepare = {
+	cbrn_battlefield_actor_base_can_prepare = yes
+	cbrn_battlefield_cylinder_commit_cost_is_available = yes
+	cbrn_battlefield_cylinder_equipment_is_ready = yes
+}
+
+cbrn_battlefield_projector_actor_can_prepare = {
+	cbrn_battlefield_actor_base_can_prepare = yes
+	cbrn_battlefield_projector_commit_cost_is_available = yes
+	cbrn_battlefield_projector_equipment_is_ready = yes
+}
+
+cbrn_battlefield_artillery_actor_can_prepare = {
+	cbrn_battlefield_actor_base_can_prepare = yes
+	cbrn_battlefield_artillery_commit_cost_is_available = yes
+	cbrn_battlefield_artillery_equipment_is_ready = yes
+}
+
+cbrn_battlefield_armored_actor_can_prepare = {
+	cbrn_battlefield_actor_base_can_prepare = yes
+	cbrn_battlefield_armored_commit_cost_is_available = yes
+	cbrn_battlefield_armored_equipment_is_ready = yes
+}
+
+cbrn_battlefield_requested_operation_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+			cbrn_battlefield_cylinder_actor_can_prepare = yes
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+			cbrn_battlefield_projector_actor_can_prepare = yes
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+			cbrn_battlefield_artillery_actor_can_prepare = yes
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+			cbrn_battlefield_armored_actor_can_prepare = yes
+		}
+	}
+}
+
+cbrn_battlefield_requested_target_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+			FROM = { cbrn_battlefield_cylinder_target_state = yes }
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+			FROM = { cbrn_battlefield_projector_target_state = yes }
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+			FROM = { cbrn_battlefield_artillery_target_state = yes }
+		}
+		AND = {
+			check_variable = { var = cbrn_battlefield_requested_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+			FROM = { cbrn_battlefield_armored_target_state = yes }
+		}
+	}
+}
+
+cbrn_battlefield_state_relationship_is_valid = {
+	CONTROLLER = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { is_subject_of = ROOT }
+		ROOT = {
+			NOT = { is_in_faction_with = PREV }
+			NOT = { is_subject_of = PREV }
+			PREV = { set_temp_variable = { cbrn_battlefield_target_id = id } }
+			OR = {
+				AND = {
+					has_war_with = PREV
+					cbrn_policy_allows_battlefield_use_against_target_id = yes
+				}
+				AND = {
+					NOT = { has_war_with = PREV }
+					cbrn_policy_allows_extreme_use = yes
+				}
+			}
+		}
+	}
+}
+
+cbrn_battlefield_common_target_state = {
+	impassable = no
+	state_population_k > constant:cbrn_battlefield_operation_target.minimum_population_k
+	NOT = { has_state_flag = cbrn_battlefield_operation_active }
+	cbrn_battlefield_state_relationship_is_valid = yes
+}
+
+cbrn_battlefield_target_has_enemy_divisions = {
+	CONTROLLER = {
+		divisions_in_state = { state = PREV size > constant:cbrn_math.zero }
+	}
+}
+
+cbrn_battlefield_cylinder_target_state = {
+	cbrn_battlefield_common_target_state = yes
+	OR = {
+		supply_node > constant:cbrn_battlefield_operation_target.minimum_supply_node
+		cbrn_battlefield_target_has_enemy_divisions = yes
+	}
+}
+
+cbrn_battlefield_projector_target_state = {
+	cbrn_battlefield_common_target_state = yes
+	OR = {
+		supply_node > constant:cbrn_battlefield_operation_target.minimum_supply_node
+		fort > constant:cbrn_battlefield_operation_target.minimum_fort_level
+		has_state_category = city
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
+	}
+}
+
+cbrn_battlefield_artillery_target_state = {
+	cbrn_battlefield_common_target_state = yes
+	cbrn_battlefield_target_has_enemy_divisions = yes
+}
+
+cbrn_battlefield_armored_target_state = {
+	cbrn_battlefield_common_target_state = yes
+	AND = {
+		cbrn_battlefield_target_has_enemy_divisions = yes
+		OR = {
+			supply_node > constant:cbrn_battlefield_operation_target.minimum_supply_node
+			has_state_category = city
+			has_state_category = large_city
+			has_state_category = metropolis
+			has_state_category = megalopolis
+		}
+	}
+}
+
+cbrn_battlefield_cylinder_target_is_valid = {
+	FROM = { cbrn_battlefield_cylinder_target_state = yes }
+}
+
+cbrn_battlefield_projector_target_is_valid = {
+	FROM = { cbrn_battlefield_projector_target_state = yes }
+}
+
+cbrn_battlefield_artillery_target_is_valid = {
+	FROM = { cbrn_battlefield_artillery_target_state = yes }
+}
+
+cbrn_battlefield_armored_target_is_valid = {
+	FROM = { cbrn_battlefield_armored_target_state = yes }
+}
+
+cbrn_battlefield_decision_record_is_valid = {
+	has_country_flag = cbrn_battlefield_operation_in_progress
+	has_variable = cbrn_battlefield_active_state
+	check_variable = {
+		var = cbrn_battlefield_active_state
+		value = FROM
+		compare = equals
+	}
+	var:cbrn_battlefield_active_state = {
+		has_state_flag = cbrn_battlefield_operation_active
+	}
+}

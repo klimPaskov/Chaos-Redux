@@ -8,9 +8,11 @@ as the national arsenal, reads the four live payload inventories, exposes a
 player-facing risk band, and resolves ordinary accidents through the shared
 ordinary-pathogen lifecycle.
 
-The arsenal decision is management only. It cannot target another country or
-release an agent. Anthrax, Plague, Tularemia, and Smallpox deployment remains in
-the native biological raid routes.
+The arsenal decision is management only.
+
+It cannot target another country or release an agent.
+
+Ordinary strategic and battlefield deployment remains in the native biological raid routes; the exact-state Japan-China campaign decisions and the exceptional doomsday decision are separately gated routes.
 
 ## Exact arsenal designation
 
@@ -121,11 +123,14 @@ processed PNGs, contact sheet, DDS validation, hashes, and prompts live under
 The existing native raid icons under `gfx/interface/military_raids/` are
 unchanged.
 
-## Future plans and required continuations
+## Related completed surfaces and remaining validation
 
-Captured-facility secure, destroy, evidence-preservation, and accidental-release
-handling must be completed with exact capture context and verified Biological
-Security Assault Detachment participation. Doomsday release, remaining
-countermeasures and treatment, designer risk traits, package scenarios, and the
-Stage 7 specialist audits remain required before biological warfare or the full
-CBRN goal can be called complete.
+Captured-facility secure-and-preserve and safe-destruction actions use native land raids with exact capture context, Biosecurity Assault participation, assigned Army Headquarters preparation, state-held payload ledgers, evidence preservation, and ordinary-lifecycle accidental releases.
+
+The doomsday decision consumes the verified four-agent arsenal and dispatches exact allocations to eligible states.
+
+Tularemia, Anthrax, and Plague receive their canonical low, moderate, or serious agent profiles; Smallpox alone receives the severe doomsday result.
+
+The Biological Security Directorate changes exact stockpile safety, captured-facility release risk, detection, capture-source spread, production, evidence, Condemnation, and accident pressure through completed traits.
+
+Package scenario validation, balance recording, and the mapped specialist completion audits remain part of the wider CBRN completion stages and are not claimed by this subsystem document.

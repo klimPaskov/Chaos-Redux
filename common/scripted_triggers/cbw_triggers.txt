@@ -192,8 +192,12 @@ has_used_unconventional_weapons = {
 }
 
 has_enemy_used_chemical_weapons = {
-	any_enemy_country = {
-		check_variable = { condemnation_chemical > 0 }
+	OR = {
+		has_country_flag = cbrn_confirmed_chemical_attack_victim_history
+		has_country_flag = cbrn_retaliation_authorized
+		any_enemy_country = {
+			has_country_flag = cbrn_confirmed_chemical_use_history
+		}
 	}
 }
 

@@ -1,3 +1,0 @@
-# Report event art prompt: The Orchard Flowers Once
-
-Grounded alternate-history post-collapse report illustration for Hearts of Iron IV, 210 by 176 composition. A small orchard in a cold ash-stained valley has just flowered after years of nuclear winter. Pale fruit blossoms grow on twisted trees beside patched irrigation channels. A seed ledger rests on a rough wooden crate while a few growers in heavy coats inspect the first rows. Snow retreats from dark hills and a ruined town sits in the distance under thin grey light. Subdued green and rust colors, documentary realism, no text, no logos, no emblems, no gore, and no recognizable real people.

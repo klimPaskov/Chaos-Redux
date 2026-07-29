@@ -1,0 +1,245 @@
+# ============================================================================
+# CHAOS REDUX - EXACT-STATE CBRN BATTLEFIELD OPERATION CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes preparation, cooldown, readiness, command-power, support-store,
+#   essential-equipment, and condition-receipt tuning for the four non-air
+#   chemical delivery routes.
+# - These values describe a deliberately selected state operation. They are
+#   not a combat-target estimator, aircraft-presence proxy, weather pulse, or
+#   country-wide periodic tick.
+# - Payload lots remain owned by cbrn_chemical_delivery_constants.txt and are
+#   debited only by cbrn_try_debit_action_payload after the exact target record
+#   has passed its static policy and stock checks.
+# - Numeric values are gameplay tuning. Historical confidence is low to
+#   moderate because one payload lot abstracts filling, transport, handling,
+#   and an operation-sized release rather than a fixed historical mass.
+# ============================================================================
+
+cbrn_battlefield_operation_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cylinder_release = 5
+	projector_barrage = 7
+	artillery_fire_plan = 14
+	armored_delivery = 10
+	agent_selection_duration = 1
+	agent_selection_cooldown = 1
+
+	cylinder_cooldown = 30
+	projector_cooldown = 45
+	artillery_cooldown = 90
+	armored_cooldown = 60
+}
+
+cbrn_battlefield_operation_readiness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cylinder_release = 30
+	projector_barrage = 40
+	artillery_fire_plan = 50
+	armored_delivery = 50
+
+	readiness_recovery_days = 90
+}
+
+cbrn_battlefield_operation_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cylinder_political_power = 12
+	projector_political_power = 18
+	artillery_political_power = 24
+	armored_political_power = 22
+
+	cylinder_command_power = 8
+	projector_command_power = 12
+	artillery_command_power = 16
+	armored_command_power = 15
+
+	common_support_equipment = 12
+	common_decontamination_equipment = 6
+	common_instrument_equipment = 4
+	common_support_equipment_shortage_floor = 6
+	common_decontamination_equipment_shortage_floor = 3
+	common_instrument_equipment_shortage_floor = 2
+	cylinder_mask_crates = 8
+	cylinder_mask_shortage_floor = 4
+	projector_mask_crates = 12
+	projector_mask_shortage_floor = 6
+	artillery_mask_crates = 18
+	artillery_mask_shortage_floor = 9
+	armored_mask_crates = 16
+	armored_mask_shortage_floor = 8
+
+	projector_chassis = 1
+	projector_instrument_equipment = 10
+	projector_chassis_shortage_floor = 1
+	projector_instrument_shortage_floor = 5
+	artillery_ammunition = 1
+	artillery_instrument_equipment = 16
+	artillery_support_equipment = 24
+	artillery_decontamination_equipment = 14
+	artillery_ammunition_shortage_floor = 1
+	artillery_instrument_shortage_floor = 8
+	artillery_support_shortage_floor = 12
+	artillery_decontamination_shortage_floor = 7
+	armored_medium_chassis = 1
+	armored_instrument_equipment = 14
+	armored_support_equipment = 22
+	armored_decontamination_equipment = 12
+	armored_motorized_equipment = 10
+	armored_fuel = 15
+	armored_medium_chassis_shortage_floor = 1
+	armored_instrument_shortage_floor = 7
+	armored_support_shortage_floor = 11
+	armored_decontamination_shortage_floor = 6
+	armored_motorized_shortage_floor = 5
+	armored_fuel_shortage_floor = 8
+	armored_fuel_ratio_floor = 0.15
+	armored_fuel_ratio_shortage_floor = 0.08
+}
+
+cbrn_battlefield_operation_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_supply_node = 0
+	minimum_fort_level = 0
+	minimum_industry = 0
+}
+
+cbrn_battlefield_operation_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cylinder_release = 1
+	projector_barrage = 2
+	artillery_fire_plan = 3
+	armored_delivery = 2
+}
+
+cbrn_battlefield_operation_condition = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# A selected state and a committed HQ order supply the operation receipt.
+	# No value below is inferred from an aircraft mission or a live combat roll.
+	cylinder_weather_mult = 0.90
+	cylinder_terrain_mult = 0.90
+	cylinder_target_density_mult = 0.90
+	cylinder_command_mult = 0.85
+	cylinder_evidence_control_mult = 0.90
+	cylinder_context_condemnation_mult = 1.00
+	cylinder_forecast_confidence = 60
+	cylinder_command_integration = 60
+	cylinder_base_friendly_risk = 0.35
+	cylinder_release_efficiency = 0.90
+
+	projector_weather_mult = 0.95
+	projector_terrain_mult = 1.00
+	projector_target_density_mult = 1.00
+	projector_command_mult = 0.95
+	projector_evidence_control_mult = 0.95
+	projector_context_condemnation_mult = 1.00
+	projector_forecast_confidence = 70
+	projector_command_integration = 70
+	projector_base_friendly_risk = 0.25
+	projector_release_efficiency = 1.00
+
+	artillery_weather_mult = 0.95
+	artillery_terrain_mult = 0.95
+	artillery_target_density_mult = 1.10
+	artillery_command_mult = 1.00
+	artillery_evidence_control_mult = 1.00
+	artillery_context_condemnation_mult = 1.00
+	artillery_forecast_confidence = 75
+	artillery_command_integration = 80
+	artillery_base_friendly_risk = 0.30
+	artillery_release_efficiency = 1.00
+
+	armored_weather_mult = 1.00
+	armored_terrain_mult = 0.90
+	armored_target_density_mult = 0.95
+	armored_command_mult = 0.95
+	armored_evidence_control_mult = 0.95
+	armored_context_condemnation_mult = 1.00
+	armored_forecast_confidence = 65
+	armored_command_integration = 70
+	armored_base_friendly_risk = 0.25
+	armored_release_efficiency = 0.95
+}
+
+cbrn_battlefield_operation_condition_shortage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	adequate_ratio = 1.00
+	shortage_ratio = 0.50
+	shortage_command_mult = 0.70
+	shortage_release_mult = 0.75
+	shortage_friendly_risk_add = 0.20
+}
+
+cbrn_battlefield_operation_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	base = 1
+	prepared_power = 2
+	terminal_doctrine = 3
+	retaliation = 2
+	first_use = 0.60
+	contaminated_state = 0.25
+	conventional_deficit = 0
+	losing_war = 0
+	artillery_priority = 1.40
+	armored_priority = 1.20
+	projector_priority = 1.10
+	cylinder_priority = 0.85
+	britain_artillery_factor = 1.35
+	france_projector_factor = 1.25
+	germany_armored_factor = 1.30
+	soviet_artillery_factor = 1.25
+	usa_artillery_factor = 1.15
+	italy_artillery_factor = 1.15
+	japan_armored_factor = 1.25
+	secondary_defensive_factor = 0.50
+}
+
+cbrn_battlefield_operation_agent_cycle = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	chlorine = 101
+	phosgene = 102
+	mustard = 201
+	lewisite = 202
+	tabun = 301
+	sarin = 302
+	soman = 303
+	malodor = 401
+	behavioral = 402
+}

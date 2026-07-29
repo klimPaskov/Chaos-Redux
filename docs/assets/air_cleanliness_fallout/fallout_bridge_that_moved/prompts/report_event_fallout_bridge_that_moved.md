@@ -1,3 +1,0 @@
-# The Bridge That Moved report-event asset prompt
-
-Create a dedicated Hearts of Iron IV report-event illustration for a fictional post-fallout thaw recovery story. Show a damaged railway bridge crossing a wide gray river, one rail span shifted on its supports, ash-slick mud on the approaches, engineers measuring the embankment, a guarded medical cart waiting on one bank, and a simple shared crossing notice painted on a ruined station wall. Use dim cold daylight, restrained documentary realism, slate blue, iron gray, and brown mud. Do not include readable words, logos, UI, gore, modern typography, or reused motifs from other event images.

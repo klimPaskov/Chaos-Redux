@@ -53,10 +53,8 @@ disease_containment_board_initialize_country = {
 	if = { limit = { NOT = { has_variable = disease_containment_board_dirty } } set_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.zero } }
 
 	if = { limit = { NOT = { has_variable = black_plague_countermeasure_progress } } set_variable = { black_plague_countermeasure_progress = constant:disease_containment_board_value.minimum } }
-	if = { limit = { NOT = { has_variable = black_plague_countermeasure_reserve } } set_variable = { black_plague_countermeasure_reserve = constant:disease_containment_board_value.minimum } }
 	if = { limit = { NOT = { has_variable = black_plague_response_burden } } set_variable = { black_plague_response_burden = constant:disease_containment_board_value.minimum } }
 	clamp_variable = { var = black_plague_countermeasure_progress min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
-	clamp_variable = { var = black_plague_countermeasure_reserve min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
 	clamp_variable = { var = black_plague_response_burden min = constant:disease_containment_board_value.minimum max = constant:disease_containment_board_value.maximum }
 }
 
@@ -115,16 +113,16 @@ disease_containment_board_refresh_country_phase = {
 		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.infected }
 	}
 	else_if = {
+		limit = { black_plague_country_is_exposed = yes }
+		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.exposed }
+	}
+	else_if = {
 		limit = { black_plague_country_has_containment_state = yes }
 		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.containment }
 	}
 	else_if = {
 		limit = { black_plague_country_has_monitored_state = yes }
 		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.recovered }
-	}
-	else_if = {
-		limit = { black_plague_country_is_exposed = yes }
-		set_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.exposed }
 	}
 }
 
@@ -151,7 +149,12 @@ disease_containment_board_count_current_black_plague_state = {
 			ROOT = { add_to_variable = { disease_containment_board_critical_state_count = constant:disease_containment_board_value.one } }
 		}
 		if = {
-			limit = { is_controlled_by = ROOT }
+			limit = {
+				OR = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+				}
+			}
 			ROOT = { add_to_variable = { disease_containment_board_controlled_state_count = constant:disease_containment_board_value.one } }
 		}
 		else = {
@@ -279,8 +282,18 @@ black_plague_clear_response_state = {
 	if = {
 		limit = { has_variable = black_plague_selected_response_state }
 		var:black_plague_selected_response_state = {
-			clr_state_flag = black_plague_response_state_target
-			clear_variable = black_plague_response_state_owner
+			if = {
+				limit = {
+					has_variable = black_plague_response_state_owner
+					check_variable = {
+						var = black_plague_response_state_owner
+						value = PREV
+						compare = equals
+					}
+				}
+				clr_state_flag = black_plague_response_state_target
+				clear_variable = black_plague_response_state_owner
+			}
 		}
 	}
 	clear_variable = black_plague_selected_response_state
@@ -297,8 +310,18 @@ black_plague_designate_response_state = {
 		if = {
 			limit = { has_variable = black_plague_selected_response_state }
 			var:black_plague_selected_response_state = {
-				clr_state_flag = black_plague_response_state_target
-				clear_variable = black_plague_response_state_owner
+				if = {
+					limit = {
+						has_variable = black_plague_response_state_owner
+						check_variable = {
+							var = black_plague_response_state_owner
+							value = PREV
+							compare = equals
+						}
+					}
+					clr_state_flag = black_plague_response_state_target
+					clear_variable = black_plague_response_state_owner
+				}
 			}
 		}
 		clear_variable = black_plague_selected_response_state
@@ -307,7 +330,10 @@ black_plague_designate_response_state = {
 		var:black_plague_selected_response_state = {
 			set_state_flag = black_plague_response_state_target
 			set_variable = { black_plague_response_state_owner = ROOT }
+			black_plague_refresh_current_state_response_quotes = yes
+			black_plague_register_current_response_state = yes
 		}
+		black_plague_recompute_country_response_capacity = yes
 		clear_variable = black_plague_response_state_candidate
 		add_to_variable = { disease_containment_board_dirty = constant:disease_containment_board_value.one }
 	}
@@ -339,6 +365,13 @@ disease_containment_board_rebuild_state_entries = {
 	clear_array = disease_containment_board_state_entries
 	if = {
 		limit = { disease_containment_board_is_black_plague_selected = yes }
+		if = {
+			limit = {
+				has_global_flag = black_plague_system_started
+				black_plague_country_is_human_host = yes
+			}
+			black_plague_recompute_country_response_capacity = yes
+		}
 		disease_containment_board_rebuild_black_plague_state_entries = yes
 	}
 	else_if = {
@@ -361,12 +394,20 @@ disease_containment_board_rebuild_state_entries = {
 disease_containment_board_open = {
 	disease_containment_board_initialize_country = yes
 	set_country_flag = disease_containment_board_open
+	if = {
+		limit = { NOT = { is_in_array = { array = global.disease_containment_board_open_countries value = THIS } } }
+		add_to_array = { array = global.disease_containment_board_open_countries value = THIS }
+	}
 	disease_containment_board_rebuild_state_entries = yes
-	force_update_map_mode = contaminated_states_map_mode
+	force_update_map_mode = {
+		limit = { always = yes }
+		mapmode = contaminated_states_map_mode
+	}
 }
 
 disease_containment_board_close = {
 	clr_country_flag = disease_containment_board_open
+	remove_from_array = { array = global.disease_containment_board_open_countries value = THIS }
 	clear_array = disease_containment_board_state_entries
 	clear_array = disease_containment_board_active_country_entries
 	clear_variable = disease_containment_board_view_state
@@ -375,7 +416,10 @@ disease_containment_board_close = {
 
 disease_containment_board_refresh = {
 	disease_containment_board_rebuild_state_entries = yes
-	force_update_map_mode = contaminated_states_map_mode
+	force_update_map_mode = {
+		limit = { always = yes }
+		mapmode = contaminated_states_map_mode
+	}
 }
 
 disease_containment_board_select_anthrax_tab = {
@@ -417,6 +461,27 @@ disease_containment_board_cycle_ownership_filter = {
 	if = {
 		limit = { check_variable = { disease_containment_board_ownership_filter > constant:disease_containment_ownership_filter.public_foreign } }
 		set_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.all_visible }
+	}
+	disease_containment_board_rebuild_state_entries = yes
+}
+
+disease_containment_board_toggle_region_filter = {
+	if = {
+		limit = {
+			check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all }
+			disease_containment_board_has_valid_view_state = yes
+		}
+		clear_variable = disease_containment_board_selected_region_id
+		var:disease_containment_board_view_state = { disease_containment_board_capture_current_state_region = yes }
+		if = {
+			limit = { has_variable = disease_containment_board_selected_region_id }
+			set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region } }
+		set_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.all }
+		clear_variable = disease_containment_board_selected_region_id
 	}
 	disease_containment_board_rebuild_state_entries = yes
 }
@@ -472,4 +537,33 @@ black_plague_select_response_state_from_decision = {
 		black_plague_designate_response_state = yes
 		disease_containment_board_refresh = yes
 	}
+}
+
+# Rebuilds only boards explicitly opened by human players. The country callback
+# gives each board its own ROOT scope after Event 20's state-owned scheduler.
+disease_containment_board_refresh_open_black_plague_board = {
+	if = {
+		limit = {
+			has_country_flag = disease_containment_board_open
+			disease_containment_board_category_is_visible = yes
+		}
+		disease_containment_board_rebuild_state_entries = yes
+	}
+	else = { disease_containment_board_close = yes }
+}
+
+disease_containment_board_refresh_open_black_plague_boards = {
+	clear_temp_array = disease_containment_board_open_country_snapshot
+	for_each_scope_loop = {
+		array = global.disease_containment_board_open_countries
+		add_to_temp_array = { disease_containment_board_open_country_snapshot = THIS }
+	}
+	for_each_scope_loop = {
+		array = disease_containment_board_open_country_snapshot
+		if = {
+			limit = { exists = yes }
+			country_event = { id = chaosx.nr20.901 }
+		}
+	}
+	clear_temp_array = disease_containment_board_open_country_snapshot
 }

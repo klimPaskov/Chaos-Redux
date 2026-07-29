@@ -13,8 +13,8 @@
 #     - chem_consumed_amount (temp variable): exact consumable units used (shells, cylinders, rounds).
 # - Consumption path B:
 #     - chem_required_amount (temp variable): full requirement for a full-strength attack.
-#     - chem_attack_scale (temp variable, 0–1): preferred scale for requirement-based usage.
-#     - chem_ratio_loc (temp variable, 0–1): fallback scale if chem_attack_scale is not set.
+#     - chem_attack_scale (temp variable, 0–1): required scale for requirement-based usage.
+#       If the caller does not provide it, the requirement-based contribution is rejected.
 #
 # Output:
 # - OWNER gains chemical condemnation equal to:
@@ -331,9 +331,8 @@ chem_warfare_register_attack_use = {
             limit = { has_variable = chem_attack_scale }
             multiply_temp_variable = { var = chem_condemnation_scale value = chem_attack_scale }
         }
-        else_if = {
-            limit = { has_variable = chem_ratio_loc }
-            multiply_temp_variable = { var = chem_condemnation_scale value = chem_ratio_loc }
+        else = {
+            set_temp_variable = { var = chem_condemnation_scale value = 0 }
         }
     }
     else = {
@@ -421,9 +420,8 @@ chem_warfare_register_attack_use_no_livens = {
             limit = { has_variable = chem_attack_scale }
             multiply_temp_variable = { var = chem_condemnation_scale value = chem_attack_scale }
         }
-        else_if = {
-            limit = { has_variable = chem_ratio_loc }
-            multiply_temp_variable = { var = chem_condemnation_scale value = chem_ratio_loc }
+        else = {
+            set_temp_variable = { var = chem_condemnation_scale value = 0 }
         }
     }
     else = {

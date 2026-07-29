@@ -127,7 +127,8 @@ cbrn_operations_category = {
 		icon = GFX_decision_cbrn_assign_decontamination_corridor
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_math.zero
+		custom_cost_trigger = { cbrn_country_can_pay_theater_decontamination_assignment = yes }
+		custom_cost_text = cbrn_assign_decontamination_corridor_cost
 		visible = { has_country_flag = cbrn_milestone_theater_exploitation }
 		target_root_trigger = {
 			cbrn_country_has_active_decontamination_corridor = yes
@@ -137,9 +138,10 @@ cbrn_operations_category = {
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = cbrn_assign_decontamination_corridor_requirements_tt
-				hidden_trigger = {
+					hidden_trigger = {
 					cbrn_country_has_active_decontamination_corridor = yes
 					NOT = { has_country_flag = cbrn_hq_decontamination_assignment_committed }
+					cbrn_country_can_pay_theater_decontamination_assignment = yes
 					FROM = { cbrn_state_can_receive_theater_decontamination = yes }
 				}
 			}
@@ -444,7 +446,11 @@ cbrn_operations_category = {
 		icon = GFX_decision_cbrn_commission_nerve_suppression
 		cost = constant:cbrn_doctrine_technology_commission.pp_cost
 		days_remove = constant:cbrn_doctrine_timing.technology_commission_days
-		visible = { has_country_flag = cbrn_armor_mastery_three NOT = { has_tech = nerve_agent_suppression_formation } }
+		visible = {
+			cbrn_occupation_current_version_condition_hook_verified = yes
+			has_country_flag = cbrn_armor_mastery_three
+			NOT = { has_tech = nerve_agent_suppression_formation }
+		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = cbrn_commission_nerve_suppression_requirements_tt

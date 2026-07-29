@@ -98,6 +98,7 @@ cbrn_delivery_route = {
 	covert_operation = 7
 	nerve_suppression = 8
 	continuous_air_mission = 9
+	restricted_chemical_site = 10
 	biological_raid = 20
 	biological_battlefield = 21
 	biological_sabotage = 22
@@ -184,6 +185,7 @@ cbrn_source_label = {
 	chemical_strategic_raid = 102
 	persistent_chemical_contamination = 103
 	nerve_suppression = 104
+	chemical_air_raid_attempt = 105
 	biological_attack = 201
 	deliberate_outbreak = 202
 	biological_stockpile_accident = 203
@@ -223,6 +225,7 @@ cbrn_action_reject_reason = {
 	conditions_not_resolved = 12
 	invalid_payload_values = 13
 	agent_route_mismatch = 14
+	missing_victim_country = 15
 }
 
 cbrn_meter = {
@@ -612,6 +615,31 @@ cbrn_route_profile = {
 		evidence_points = 70
 		condemnation_base = 15
 		duration_days = 30
+	}
+	restricted_site_chemical = {
+		# A restricted site is an exact, contained population route. Its
+		# one-time exposure is resolved here; the camp system owns the
+		# separate recurring monthly processing after acceptance.
+		base_disruption = 0.12
+		civilian_exposed_fraction = 0.80
+		contamination_points = 30
+		medical_points = 25
+		evidence_points = 65
+		condemnation_base = 20
+		duration_days = 30
+	}
+	doomsday_release = {
+		# The decision adapter distributes an exact, fully debited legacy
+		# cylinder arsenal across the exact controlled-state set. These are
+		# per-state terminal-release outputs; the adapter supplies the single
+		# batch Condemnation share.
+		base_disruption = 0.45
+		civilian_exposed_fraction = 0.80
+		contamination_points = 70
+		medical_points = 60
+		evidence_points = 100
+		condemnation_base = 0
+		duration_days = 90
 	}
 }
 
@@ -1130,6 +1158,9 @@ cbrn_starting_masks = {
 		}
 	}
 
+	# civilian_distribution_target is the share already issued at the 1936
+	# bookmark. It is intentionally distinct from the matrix's eventual
+	# civilian coverage target; undistributed crates remain in national reserve.
 	ENG = { basic = 26000 improved = 19000 military_issue_target = 1.50 civilian_distribution_target = 0.70 registration = 1 }
 	FRA = { basic = 16000 improved = 8000 military_issue_target = 1.40 civilian_distribution_target = 0.28 registration = 1 }
 	GER = { basic = 16000 improved = 10000 military_issue_target = 1.50 civilian_distribution_target = 0.20 registration = 0 }
@@ -1138,7 +1169,7 @@ cbrn_starting_masks = {
 	ITA = { basic = 10000 improved = 0 military_issue_target = 1.10 civilian_distribution_target = 0.07 registration = 0 }
 	JAP = { basic = 11000 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.05 registration = 0 }
 	POL = { basic = 8000 improved = 0 military_issue_target = 1.30 civilian_distribution_target = 0.15 registration = 0 }
-	CZE = { basic = 3500 improved = 2000 military_issue_target = 1.30 civilian_distribution_target = 0.20 registration = 1 }
+	CZE = { basic = 5500 improved = 0 military_issue_target = 1.30 civilian_distribution_target = 0.20 registration = 1 }
 	BEL = { basic = 2500 improved = 1000 military_issue_target = 1.20 civilian_distribution_target = 0.18 registration = 1 }
 	HOL = { basic = 2500 improved = 1000 military_issue_target = 1.10 civilian_distribution_target = 0.18 registration = 1 }
 	CAN = { basic = 3000 improved = 0 military_issue_target = 1.20 civilian_distribution_target = 0.08 registration = 0 }
@@ -1150,6 +1181,13 @@ cbrn_starting_masks = {
 	TUR = { basic = 2000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.03 registration = 0 }
 	SPR = { basic = 1000 improved = 0 military_issue_target = 0.80 civilian_distribution_target = 0.01 registration = 0 }
 	CHI = { basic = 2500 improved = 0 military_issue_target = 0.60 civilian_distribution_target = 0.005 registration = 0 }
+	PRC = { basic = 1000 improved = 0 military_issue_target = 0.55 civilian_distribution_target = 0.002 registration = 0 }
+	SHX = { basic = 1000 improved = 0 military_issue_target = 0.55 civilian_distribution_target = 0.002 registration = 0 }
+	GXC = { basic = 1200 improved = 0 military_issue_target = 0.60 civilian_distribution_target = 0.003 registration = 0 }
+	YUN = { basic = 1000 improved = 0 military_issue_target = 0.55 civilian_distribution_target = 0.002 registration = 0 }
+	XSM = { basic = 700 improved = 0 military_issue_target = 0.50 civilian_distribution_target = 0.001 registration = 0 }
+	SIK = { basic = 700 improved = 0 military_issue_target = 0.50 civilian_distribution_target = 0.001 registration = 0 }
+	MAN = { basic = 1000 improved = 0 military_issue_target = 0.60 civilian_distribution_target = 0.003 registration = 0 }
 	BUL = { basic = 1200 improved = 0 military_issue_target = 0.90 civilian_distribution_target = 0.03 registration = 0 }
 	HUN = { basic = 1400 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.04 registration = 0 }
 	GRE = { basic = 1000 improved = 0 military_issue_target = 0.90 civilian_distribution_target = 0.03 registration = 0 }
@@ -1160,4 +1198,8 @@ cbrn_starting_masks = {
 	NOR = { basic = 1000 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.08 registration = 1 }
 	DEN = { basic = 900 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.08 registration = 1 }
 	FIN = { basic = 1200 improved = 0 military_issue_target = 1.00 civilian_distribution_target = 0.05 registration = 0 }
+	BRA = { basic = 1500 improved = 0 military_issue_target = 0.70 civilian_distribution_target = 0.03 registration = 0 }
+	ARG = { basic = 1200 improved = 0 military_issue_target = 0.70 civilian_distribution_target = 0.03 registration = 0 }
+	MEX = { basic = 1400 improved = 0 military_issue_target = 0.70 civilian_distribution_target = 0.03 registration = 0 }
+	CHL = { basic = 800 improved = 0 military_issue_target = 0.60 civilian_distribution_target = 0.02 registration = 0 }
 }

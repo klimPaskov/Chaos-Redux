@@ -10,7 +10,7 @@ This mechanic adds a Japan-only decision category for targeted cylinder use duri
 	- `japan_chemical_campaign_attack`
 - Scripted effects:
 	- `japan_cycle_targeted_chemical_campaign_agent`
-	- `japan_apply_targeted_chemical_campaign_attack`
+	- `japan_apply_targeted_chemical_campaign_attack` (migration-safe retired identifier)
 
 The decisions are state-targeted and only appear for Japan while it is at war with Chinese tags (`CHI`, `PRC`, `SHX`, `GXC`, `YUN`, `XSM`, `SIK`).
 
@@ -19,15 +19,15 @@ The decisions are state-targeted and only appear for Japan while it is at war wi
 1. Japan selects an eligible state in Asia that is a Chinese core and currently controlled by an enemy at war with Japan.
 2. Japan can rotate the prepared chemical agent for free inside the category.
 3. The attack decision spends command power and consumes the selected cylinder type.
-4. The selected state receives contamination through `chem_apply_state_contamination`.
-5. The operation calls the shared chemical-use helper with reduced Japan-campaign tuning, the target owner, and measured contamination, then notifies the Air Cleanliness Treaty use hook.
-6. The targeted state gets a short anti-spam cooldown flag (`japan_chemical_campaign_recently_targeted`).
+4. The attack remains unavailable until a current-version adapter can provide the selected state, exact payload debit, military and civilian protection, and verified weather and terrain inputs to the shared chemical exposure dispatcher.
+5. The historical decision does not retain a direct contamination or Condemnation path while that adapter is unavailable.
+6. The targeted state will receive the short anti-spam cooldown flag (`japan_chemical_campaign_recently_targeted`) only after an accepted shared dispatch exists.
 
 ## Integration With Existing Systems
 
-- **Condemnation:** The state-targeted China campaign decision applies reduced source-aware chemical condemnation and treaty-use reactions. Japan's separate general-led cylinder use against Chinese targets also uses reduced chemical condemnation.
-- **Air Cleanliness / Contamination:** Adds to state contamination using existing chemical state modifier logic.
-- **Deaths / Chaos:** Uses existing contamination/death systems through shared effects.
+- **Condemnation:** The accepted adapter will use the same source-aware chemical Condemnation dispatcher as raids and occupation suppression; no decision-local Condemnation formula remains active.
+- **Air Cleanliness / Contamination:** The accepted adapter will contaminate only the exact selected state through the shared state consequence dispatcher.
+- **Deaths / Chaos:** The accepted adapter will record deaths, medical saturation, evidence, attribution, and cleanup through the shared exposure pipeline.
 - **AI:** Japan gets extra AI weighting for Livens and chemical support usage during the China war.
 
 ## AI Changes
@@ -49,6 +49,10 @@ The exact category `japan_chemical_campaign_category` uses a dedicated generated
 The two individual decisions continue to use `GFX_decision_generic_operation`; the category header provides the campaign's persistent visual identity.
 
 - Localisation keys are in: `localisation/english/chaosx_decisions_l_english.yml`
+
+## Adapter status
+
+The decision is visible for historical continuity and retains its selector, but its attack trigger is fail-closed because the current decision surface does not provide a verified weather and terrain receipt. Implementing a neutral-condition or neighboring-state estimator would violate the package contract and is not retained.
 
 ## Future Plans
 

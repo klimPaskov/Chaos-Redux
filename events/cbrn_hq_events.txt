@@ -54,9 +54,18 @@ unit_leader_event = {
 				remove_unit_leader_trait = cbrn_hq_preparing_operation
 				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.protective_upkeep_ticks }
 				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.protective_active }
-				add_timed_unit_leader_trait = {
-					trait = cbrn_hq_active_protective_posture
-					days = cbrn_hq_active_days
+				if = {
+					limit = { OWNER = { cbrn_designer_has_low_resistance_facepiece = yes } }
+					add_timed_unit_leader_trait = {
+						trait = cbrn_hq_active_low_resistance_protective_posture
+						days = cbrn_hq_active_days
+					}
+				}
+				else = {
+					add_timed_unit_leader_trait = {
+						trait = cbrn_hq_active_protective_posture
+						days = cbrn_hq_active_days
+					}
 				}
 				OWNER = { set_country_flag = cbrn_doctrine_protected_order_issued }
 				cbrn_hq_schedule_next_upkeep_tick = yes
@@ -210,7 +219,10 @@ unit_leader_event = {
 			}
 			if = {
 				limit = {
-					has_trait = cbrn_hq_active_protective_posture
+					OR = {
+						has_trait = cbrn_hq_active_protective_posture
+						has_trait = cbrn_hq_active_low_resistance_protective_posture
+					}
 					cbrn_hq_protective_command_is_valid = yes
 					cbrn_hq_can_pay_protective_upkeep = yes
 				}

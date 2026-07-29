@@ -32,9 +32,14 @@ bio_facility_capture_schedule_hazard_check = {
 		set_state_flag = bio_captured_facility_hazard_event_scheduled
 		set_variable = { bio_captured_facility_hazard_due_day = global.num_days }
 		add_to_variable = { bio_captured_facility_hazard_due_day = bio_facility_capture_delay_days }
-		state_event = {
-			id = cbrn_bio_facility.1
-			days = bio_facility_capture_delay_days
+		meta_effect = {
+			text = {
+				state_event = {
+					id = cbrn_bio_facility.1
+					days = [BIO_FACILITY_CAPTURE_DELAY_DAYS]
+				}
+			}
+			BIO_FACILITY_CAPTURE_DELAY_DAYS = "[?bio_facility_capture_delay_days|.0]"
 		}
 	}
 }
@@ -423,6 +428,7 @@ bio_facility_capture_record_program_evidence = {
 		set_variable = { bio_captured_facility_last_program_evidence = bio_facility_capture_evidence_amount }
 		set_variable = { bio_captured_facility_last_evidence_date = global.num_days }
 		set_state_flag = bio_captured_facility_program_evidence_history
+		cbrn_achievement_record_facility_evidence = yes
 
 		CONTROLLER = { save_event_target_as = bio_facility_evidence_discoverer }
 		if = {
@@ -538,6 +544,16 @@ bio_facility_capture_debit_selected_release = {
 bio_facility_capture_dispatch_accidental_release = {
 	if = {
 		limit = { bio_facility_capture_release_context_is_valid = yes }
+		if = {
+			limit = {
+				has_variable = bio_stockpile_safety_arsenal_actor
+				var:bio_stockpile_safety_arsenal_actor = {
+					exists = yes
+					cbrn_designer_has_sealed_sample_chain = yes
+				}
+			}
+			multiply_temp_variable = { bio_facility_capture_release_fraction = constant:cbrn_biosecurity_designer_effect.sealed_sample_capture_risk_mult }
+		}
 		bio_facility_capture_debit_selected_release = yes
 		if = {
 			limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }

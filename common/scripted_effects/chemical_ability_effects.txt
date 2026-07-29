@@ -474,6 +474,12 @@ chem_register_state_civilian_deaths = {
 }
 
 chem_apply_state_contamination = {
+	# Legacy state writer retained only for identifier compatibility. Active
+	# chemical delivery uses cbrn_chemical_state_effects through the shared
+	# consequence dispatcher; allowing this writer to run would bypass payload,
+	# protection, evidence, attribution, medical, and Condemnation receipts.
+	if = {
+		limit = { always = no }
 	# State-based chemical adapters can identify the affected controller even
 	# when the combat on_action does not expose an opposing country scope.
 	OWNER = { set_temp_variable = { chem_condemnation_victim_country = THIS } }
@@ -526,6 +532,7 @@ chem_apply_state_contamination = {
     set_temp_variable = { var = chem_truck_attrition value = chem_new_strength }
     multiply_temp_variable = { var = chem_truck_attrition value = constant:chem_state.mult.truck_attrition }
     set_variable = { var = chem_state_contamination_truck_attrition value = chem_truck_attrition }
+	cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
     set_temp_variable = { var = chem_attack_effect value = chem_new_strength }
     multiply_temp_variable = { var = chem_attack_effect value = constant:chem_state.mult.attack }
     set_variable = { var = chem_state_contamination_attack value = chem_attack_effect }
@@ -563,9 +570,14 @@ chem_apply_state_contamination = {
 		chem_register_state_civilian_deaths = yes
 	}
     # log = "CHEM_STATE: contaminated [THIS.GetName] ([THIS.GetID]) strength=[?chem_state_contamination_strength|.4] supplies=[?chem_state_contamination_supplies|.4] atk=[?chem_state_contamination_attack|.4] brk=[?chem_state_contamination_breakthrough|.4] days=[?chem_days_left|0]"
+	}
 }
 
 chem_apply_state_contamination_doomsday = {
+    # Legacy identifier retained for save/script compatibility only. The canonical
+    # doomsday route resolves through the shared CBRN action record and dispatcher.
+	if = {
+		limit = { always = no }
     set_temp_variable = { var = chem_current_day value = global.num_days }
     set_temp_variable = { var = chem_max_strength value = constant:chem_state.core.max_strength_base }
     multiply_temp_variable = { var = chem_max_strength value = constant:chem_state.core.strength_scale }
@@ -604,6 +616,7 @@ chem_apply_state_contamination_doomsday = {
     set_temp_variable = { var = chem_truck_attrition value = chem_new_strength }
     multiply_temp_variable = { var = chem_truck_attrition value = constant:chem_state.mult.truck_attrition }
     set_variable = { var = chem_state_contamination_truck_attrition value = chem_truck_attrition }
+	cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
     set_temp_variable = { var = chem_attack_effect value = chem_new_strength }
     multiply_temp_variable = { var = chem_attack_effect value = constant:chem_state.mult.attack }
     set_variable = { var = chem_state_contamination_attack value = chem_attack_effect }
@@ -632,9 +645,14 @@ chem_apply_state_contamination_doomsday = {
     add_dynamic_modifier = { modifier = chem_state_contamination days = chem_days_left }
     force_update_dynamic_modifier = yes
     chem_register_state_civilian_deaths = yes
+	}
 }
 
-chem_unleash_stockpile_doomsday = {
+chem_unleash_stockpile_doomsday_legacy_unreachable = {
+    # Legacy direct contamination, damage, and Condemnation path. It is retained
+    # only as an inert identifier while callers migrate to the CBRN adapter.
+	if = {
+		limit = { always = no }
     set_temp_variable = { var = chem_doom_stock_chlorine value = num_equipment@chemical_chlorine_payload_cylinder_1 }
     set_temp_variable = { var = chem_doom_stock_phosgene value = num_equipment@chemical_phosgene_payload_cylinder_1 }
     set_temp_variable = { var = chem_doom_stock_mustard value = num_equipment@chemical_mustard_payload_cylinder_1 }
@@ -738,7 +756,13 @@ chem_unleash_stockpile_doomsday = {
 	save_event_target_as = fallout_request_actor_input
 	set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.chemical_saturation }
 	set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.terminal }
-	fallout_request_aftermath = yes
+    fallout_request_aftermath = yes
+	}
+}
+
+chem_unleash_stockpile_doomsday = {
+    # The decision-facing identifier now resolves through the shared CBRN pipeline.
+    cbrn_chemical_doomsday_release = yes
 }
 
 chem_apply_current_ability_state_dispersal = {

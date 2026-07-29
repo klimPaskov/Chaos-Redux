@@ -1,0 +1,569 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROTECTION, DECONTAMINATION, BIOSECURITY, AND MEDICAL MIOs
+# ============================================================================
+# Overview:
+# - Defines the four accepted generic designer families that were not covered
+#   by cbrn_organizations.txt.
+# - Native bonuses apply only to the exact gas-mask, decontamination,
+#   biological-payload, or CBRN-instrument equipment families.
+# - Scripted effects query completed traits through cbrn_designer_triggers.txt.
+# - Biological delivery traits apply to all four ordinary agents equally. They
+#   never alter the Tularemia < Anthrax < Plague < Smallpox potency ladder.
+# - Static MIO values use this file-local table because the organization
+#   database does not accept script-constant tokens in native bonus fields.
+# ============================================================================
+
+@cbrn_mio_research_bonus = 0.10
+@cbrn_mio_task_capacity = 2
+@cbrn_mio_initial_research_bonus = 0.03
+@cbrn_mio_initial_efficiency_gain = 0.04
+
+@cbrn_protection_initial_cost = -0.08
+@cbrn_protection_durable_reliability = 0.15
+@cbrn_protection_durable_cost = 0.03
+@cbrn_protection_clothing_cost = 0.10
+@cbrn_protection_low_resistance_cost = 0.05
+@cbrn_protection_sealed_cost = 0.15
+
+@cbrn_decon_wash_cost = -0.08
+@cbrn_decon_vehicle_recovery_reliability = 0.10
+@cbrn_bio_stable_reliability = 0.10
+@cbrn_bio_stable_cost = 0.05
+@cbrn_bio_accelerated_capacity = 0.15
+@cbrn_bio_accelerated_reliability = -0.08
+@cbrn_bio_strategic_reliability = 0.12
+@cbrn_bio_strategic_cost = 0.10
+
+@cbrn_medical_initial_cost = -0.05
+@cbrn_medical_trait_reliability = 0.05
+@cbrn_medical_mobile_capacity = 0.08
+
+@cbrn_mio_ai_base = 1.00
+@cbrn_mio_ai_disabled = 0.00
+@cbrn_mio_ai_low = 0.50
+@cbrn_mio_ai_medium = 1.25
+@cbrn_mio_ai_high = 2.00
+@cbrn_mio_ai_very_high = 3.00
+
+cbrn_protective_equipment_consortium = {
+	icon = GFX_cbrn_protective_equipment_consortium
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = basic_gas_masks
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = basic_gas_masks
+			}
+		}
+	}
+
+	equipment_type = { gas_mask_equipment }
+	research_categories = { gas_masks_tech }
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_base
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = ENG original_tag = FRA original_tag = USA } } }
+		modifier = { factor = @cbrn_mio_ai_medium FROM = { OR = { original_tag = GER original_tag = SOV } } }
+	}
+
+	tree_header_text = { text = cbrn_protection_header_military x = 1 }
+	tree_header_text = { text = cbrn_protection_header_civil x = 3 }
+
+	initial_trait = {
+		name = cbrn_protective_equipment_consortium_initial_trait
+		equipment_bonus = { build_cost_ic = @cbrn_protection_initial_cost }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_protection_durable_filter_canisters
+		name = cbrn_protection_durable_filter_canisters
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 0 }
+		mutually_exclusive = { cbrn_protection_mass_civilian_pattern }
+		equipment_bonus = {
+			reliability = @cbrn_protection_durable_reliability
+			build_cost_ic = @cbrn_protection_durable_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_protection_durable_filter_canisters_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_profile_is_military_first = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_protection_mass_civilian_pattern
+		name = cbrn_protection_mass_civilian_pattern
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 3 y = 0 }
+		mutually_exclusive = { cbrn_protection_durable_filter_canisters }
+		on_complete = { custom_effect_tooltip = cbrn_protection_mass_civilian_pattern_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_profile_is_mass_civil_defence = yes } }
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_protection_protective_clothing_sets
+		name = cbrn_protection_protective_clothing_sets
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 1 y = 1 }
+		all_parents = { cbrn_protection_durable_filter_canisters }
+		limit_to_equipment_type = {
+			gas_mask_equipment_3
+			gas_mask_equipment_4
+		}
+		equipment_bonus = { build_cost_ic = @cbrn_protection_clothing_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_protective_clothing_sets_tt }
+		ai_will_do = { base = @cbrn_mio_ai_medium }
+	}
+
+	trait = {
+		token = cbrn_protection_low_resistance_facepiece
+		name = cbrn_protection_low_resistance_facepiece
+		icon = GFX_generic_mio_trait_icon_build_cost_ic
+		position = { x = 3 y = 1 }
+		all_parents = { cbrn_protection_mass_civilian_pattern }
+		equipment_bonus = { build_cost_ic = @cbrn_protection_low_resistance_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_low_resistance_facepiece_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_protection_sealed_assault_ensemble
+		name = cbrn_protection_sealed_assault_ensemble
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 2 y = 2 }
+		any_parent = {
+			cbrn_protection_protective_clothing_sets
+			cbrn_protection_low_resistance_facepiece
+		}
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_protection_sealed_assault_ensemble_requirement_tt
+					has_tech = sealed_assault_protection
+				}
+			}
+		}
+		limit_to_equipment_type = { gas_mask_equipment_4 }
+		equipment_bonus = { build_cost_ic = @cbrn_protection_sealed_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_sealed_assault_ensemble_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_profile_is_military_first = yes } }
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+}
+
+cbrn_mobile_decontamination_works = {
+	icon = GFX_cbrn_mobile_decontamination_works
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = field_decontamination_kits
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = field_decontamination_kits
+			}
+		}
+	}
+
+	equipment_type = { decontamination_equipment }
+	research_categories = { decontamination_tech }
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_base
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_country_controls_chemical_contamination = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = SOV original_tag = FRA } } }
+	}
+
+	tree_header_text = { text = cbrn_decon_header_field_systems x = 2 }
+
+	initial_trait = {
+		name = cbrn_mobile_decontamination_works_initial_trait
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_decon_truck_mounted_wash_systems
+		name = cbrn_decon_truck_mounted_wash_systems
+		icon = GFX_generic_mio_trait_icon_build_cost_ic
+		position = { x = 2 y = 0 }
+		equipment_bonus = { build_cost_ic = @cbrn_decon_wash_cost }
+		on_complete = { custom_effect_tooltip = cbrn_decon_truck_mounted_wash_systems_tt }
+		ai_will_do = { base = @cbrn_mio_ai_high }
+	}
+
+	trait = {
+		token = cbrn_decon_low_water_process
+		name = cbrn_decon_low_water_process
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 1 }
+		all_parents = { cbrn_decon_truck_mounted_wash_systems }
+		mutually_exclusive = { cbrn_decon_vehicle_recovery_teams }
+		on_complete = { custom_effect_tooltip = cbrn_decon_low_water_process_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_profile_is_exposed_or_fragmented = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_decon_vehicle_recovery_teams
+		name = cbrn_decon_vehicle_recovery_teams
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 3 y = 1 }
+		all_parents = { cbrn_decon_truck_mounted_wash_systems }
+		mutually_exclusive = { cbrn_decon_low_water_process }
+		equipment_bonus = { reliability = @cbrn_decon_vehicle_recovery_reliability }
+		on_complete = { custom_effect_tooltip = cbrn_decon_vehicle_recovery_teams_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_base
+			modifier = { factor = @cbrn_mio_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_decon_rapid_route_clearance
+		name = cbrn_decon_rapid_route_clearance
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 2 y = 2 }
+		any_parent = {
+			cbrn_decon_low_water_process
+			cbrn_decon_vehicle_recovery_teams
+		}
+		on_complete = { custom_effect_tooltip = cbrn_decon_rapid_route_clearance_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_medium
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_country_controls_chemical_contamination = yes } }
+		}
+	}
+
+}
+
+cbrn_biological_security_directorate = {
+	icon = GFX_cbrn_biological_security_directorate
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				has_tech = pathogen_handling_protocols
+				bio_strategic_raid_country_has_any_agent_project = yes
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				has_tech = pathogen_handling_protocols
+				bio_strategic_raid_country_has_any_agent_project = yes
+			}
+		}
+	}
+
+	equipment_type = {
+		anthrax_bomb_equipment
+		plague_bomb_equipment
+		tularemia_bomb_equipment
+		smallpox_bomb_equipment
+	}
+	research_categories = { biowarfare_tech }
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_low
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { bio_strategic_raid_country_has_any_agent_project = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { original_tag = JAP } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = USA original_tag = ENG original_tag = SOV } } }
+	}
+
+	tree_header_text = { text = cbrn_biosecurity_header_defensive x = 1 }
+	tree_header_text = { text = cbrn_biosecurity_header_offensive x = 3 }
+
+	initial_trait = {
+		name = cbrn_biological_security_directorate_initial_trait
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_biosecurity_sealed_sample_chain
+		name = cbrn_biosecurity_sealed_sample_chain
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 0 }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_sealed_sample_chain_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_high
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_biosecurity_stable_weaponization
+		name = cbrn_biosecurity_stable_weaponization
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 3 y = 0 }
+		equipment_bonus = {
+			reliability = @cbrn_bio_stable_reliability
+			build_cost_ic = @cbrn_bio_stable_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_stable_weaponization_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_first_use = yes } }
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { original_tag = JAP } }
+		}
+	}
+
+	trait = {
+		token = cbrn_biosecurity_distributed_surveillance
+		name = cbrn_biosecurity_distributed_surveillance
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 1 y = 1 }
+		all_parents = { cbrn_biosecurity_sealed_sample_chain }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_distributed_surveillance_tt }
+		ai_will_do = { base = @cbrn_mio_ai_high }
+	}
+
+	trait = {
+		token = cbrn_biosecurity_accelerated_cultivation
+		name = cbrn_biosecurity_accelerated_cultivation
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 3 y = 1 }
+		all_parents = { cbrn_biosecurity_stable_weaponization }
+		equipment_bonus = { reliability = @cbrn_bio_accelerated_reliability }
+		production_bonus = { production_capacity_factor = @cbrn_bio_accelerated_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_accelerated_cultivation_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_biosecurity_mobile_containment_team
+		name = cbrn_biosecurity_mobile_containment_team
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 1 y = 2 }
+		all_parents = { cbrn_biosecurity_distributed_surveillance }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_mobile_containment_team_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_high
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { has_active_biowarfare_outbreak = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_biosecurity_strategic_dissemination_program
+		name = cbrn_biosecurity_strategic_dissemination_program
+		icon = GFX_generic_mio_trait_icon_soft_attack
+		position = { x = 3 y = 2 }
+		all_parents = { cbrn_biosecurity_accelerated_cultivation }
+		equipment_bonus = {
+			reliability = @cbrn_bio_strategic_reliability
+			build_cost_ic = @cbrn_bio_strategic_cost
+		}
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_strategic_dissemination_program_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_low
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_biosecurity_fail_safe_facilities
+		name = cbrn_biosecurity_fail_safe_facilities
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 1 y = 3 }
+		all_parents = { cbrn_biosecurity_mobile_containment_team }
+		available = {
+			owner = {
+				custom_trigger_tooltip = {
+					tooltip = cbrn_biosecurity_fail_safe_facilities_requirement_tt
+					has_tech = sealed_containment_laboratories
+				}
+			}
+		}
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_fail_safe_facilities_tt }
+		ai_will_do = { base = @cbrn_mio_ai_very_high }
+	}
+}
+
+cbrn_medical_countermeasure_directorate = {
+	icon = GFX_cbrn_medical_countermeasure_directorate
+
+	allowed = { always = yes }
+
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = chemical_detection_paper
+				has_tech = field_epidemiology_teams
+				has_tech = mobile_cbrn_hospitals
+			}
+		}
+	}
+
+	available = {
+		FROM = {
+			OR = {
+				cbrn_country_has_program = yes
+				has_tech = chemical_detection_paper
+				has_tech = field_epidemiology_teams
+				has_tech = mobile_cbrn_hospitals
+			}
+		}
+	}
+
+	equipment_type = { cbrn_instrument_equipment }
+	research_categories = {
+		cbrn_instruments_tech
+		biowarfare_tech
+	}
+	research_bonus = @cbrn_mio_research_bonus
+	task_capacity = @cbrn_mio_task_capacity
+
+	ai_will_do = {
+		factor = @cbrn_mio_ai_base
+		modifier = { factor = @cbrn_mio_ai_disabled FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_mio_ai_very_high FROM = { has_active_biowarfare_outbreak = yes } }
+		modifier = { factor = @cbrn_mio_ai_high FROM = { OR = { original_tag = USA original_tag = ENG original_tag = CHI } } }
+	}
+
+	tree_header_text = { text = cbrn_medical_header_treatment x = 1 }
+	tree_header_text = { text = cbrn_medical_header_public_health x = 3 }
+
+	initial_trait = {
+		name = cbrn_medical_countermeasure_directorate_initial_trait
+		equipment_bonus = { build_cost_ic = @cbrn_medical_initial_cost }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_mio_initial_efficiency_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_mio_initial_research_bonus }
+	}
+
+	trait = {
+		token = cbrn_medical_respiratory_care
+		name = cbrn_medical_respiratory_care
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 1 y = 0 }
+		equipment_bonus = { reliability = @cbrn_medical_trait_reliability }
+		on_complete = { custom_effect_tooltip = cbrn_medical_respiratory_care_tt }
+		ai_will_do = { base = @cbrn_mio_ai_high }
+	}
+
+	trait = {
+		token = cbrn_medical_burn_treatment
+		name = cbrn_medical_burn_treatment
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 3 y = 0 }
+		equipment_bonus = { reliability = @cbrn_medical_trait_reliability }
+		on_complete = { custom_effect_tooltip = cbrn_medical_burn_treatment_tt }
+		ai_will_do = { base = @cbrn_mio_ai_high }
+	}
+
+	trait = {
+		token = cbrn_medical_antidote_production
+		name = cbrn_medical_antidote_production
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 1 }
+		all_parents = { cbrn_medical_respiratory_care }
+		on_complete = { custom_effect_tooltip = cbrn_medical_antidote_production_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_medium
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { has_tech = tabun } }
+		}
+	}
+
+	trait = {
+		token = cbrn_medical_vaccine_scale
+		name = cbrn_medical_vaccine_scale
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 3 y = 1 }
+		all_parents = { cbrn_medical_burn_treatment }
+		on_complete = { custom_effect_tooltip = cbrn_medical_vaccine_scale_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_medium
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { has_active_biowarfare_outbreak = yes } }
+		}
+	}
+
+	trait = {
+		token = cbrn_medical_mobile_casualty_sorting
+		name = cbrn_medical_mobile_casualty_sorting
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 2 y = 2 }
+		any_parent = {
+			cbrn_medical_antidote_production
+			cbrn_medical_vaccine_scale
+		}
+		production_bonus = { production_capacity_factor = @cbrn_medical_mobile_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_medical_mobile_casualty_sorting_tt }
+		ai_will_do = { base = @cbrn_mio_ai_high }
+	}
+
+	trait = {
+		token = cbrn_medical_international_medical_mission
+		name = cbrn_medical_international_medical_mission
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 2 y = 3 }
+		all_parents = { cbrn_medical_mobile_casualty_sorting }
+		on_complete = { custom_effect_tooltip = cbrn_medical_international_medical_mission_tt }
+		ai_will_do = {
+			base = @cbrn_mio_ai_medium
+			modifier = { factor = @cbrn_mio_ai_very_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		}
+	}
+}

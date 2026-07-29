@@ -2,28 +2,34 @@
 # CHAOS REDUX - CBRN REGIMENTAL SUPPORT TRIGGERS
 # ============================================================================
 # Overview:
-# - Provides country-scope stock, policy, and threat gates for the baseline
-#   Stage 3 AI templates and production strategies.
-# - Uses only actual equipment stock, technology, policy, and outbreak state.
-# - Does not estimate per-division essential-equipment fulfillment and does not
-#   authorize or dispatch an exposure operation.
+# - Provides country-scope stock, policy, threat, HQ-plan, fuel, occupation,
+#   contamination, and outbreak gates for CBRN AI role packages.
+# - Uses actual standing-template bills and exact program state. It does not
+#   estimate per-division fulfillment, invent an operation target, authorize
+#   use, reserve payload, dispatch exposure, or delete an existing template.
 # ============================================================================
 
 @CBRN_AI_ANY_PAYLOAD_MIN_EXCLUSIVE = 0
 @CBRN_AI_PROTECTION_INFANTRY_MIN_EXCLUSIVE = 899
-@CBRN_AI_PROTECTION_MASKS_MIN_EXCLUSIVE = 119
+@CBRN_AI_PROTECTION_MASKS_MIN_EXCLUSIVE = 99
 @CBRN_AI_PROTECTION_DECON_MIN_EXCLUSIVE = 9
-@CBRN_AI_PROTECTION_INSTRUMENTS_MIN_EXCLUSIVE = 29
-@CBRN_AI_PROTECTION_SUPPORT_MIN_EXCLUSIVE = 69
-@CBRN_AI_PROTECTION_TRUCKS_MIN_EXCLUSIVE = 9
+@CBRN_AI_PROTECTION_SUPPORT_MIN_EXCLUSIVE = 29
 @CBRN_AI_ASSAULT_INFANTRY_MIN_EXCLUSIVE = 1109
-@CBRN_AI_ASSAULT_MASKS_MIN_EXCLUSIVE = 484
-@CBRN_AI_ASSAULT_DECON_MIN_EXCLUSIVE = 249
-@CBRN_AI_ASSAULT_INSTRUMENTS_MIN_EXCLUSIVE = 62
-@CBRN_AI_ASSAULT_SUPPORT_MIN_EXCLUSIVE = 324
-@CBRN_AI_ASSAULT_TRUCKS_MIN_EXCLUSIVE = 109
-@CBRN_AI_ASSAULT_PROJECTORS_MIN_EXCLUSIVE = 23
-@CBRN_AI_ASSAULT_PAYLOAD_MIN_EXCLUSIVE = 59
+@CBRN_AI_ASSAULT_MASKS_MIN_EXCLUSIVE = 474
+@CBRN_AI_ASSAULT_DECON_MIN_EXCLUSIVE = 234
+@CBRN_AI_ASSAULT_INSTRUMENTS_MIN_EXCLUSIVE = 84
+@CBRN_AI_ASSAULT_SUPPORT_MIN_EXCLUSIVE = 334
+@CBRN_AI_ASSAULT_TRUCKS_MIN_EXCLUSIVE = 119
+@CBRN_AI_ARTILLERY_INFANTRY_MIN_EXCLUSIVE = 599
+@CBRN_AI_ARTILLERY_GUNS_MIN_EXCLUSIVE = 107
+@CBRN_AI_ARTILLERY_MASKS_MIN_EXCLUSIVE = 159
+@CBRN_AI_ARTILLERY_DECON_MIN_EXCLUSIVE = 44
+@CBRN_AI_ARTILLERY_INSTRUMENTS_MIN_EXCLUSIVE = 15
+@CBRN_AI_ARTILLERY_SUPPORT_MIN_EXCLUSIVE = 104
+@CBRN_AI_ARTILLERY_TRUCKS_MIN_EXCLUSIVE = 54
+@CBRN_AI_ARTILLERY_PROJECTORS_MIN_EXCLUSIVE = 23
+@CBRN_AI_ARTILLERY_SHELLS_MIN_EXCLUSIVE = 119
+@CBRN_AI_ARTILLERY_PAYLOAD_MIN_EXCLUSIVE = 59
 @CBRN_AI_ARMOR_MASKS_MIN_EXCLUSIVE = 144
 @CBRN_AI_ARMOR_DECON_MIN_EXCLUSIVE = 24
 @CBRN_AI_ARMOR_INSTRUMENTS_MIN_EXCLUSIVE = 37
@@ -32,12 +38,26 @@
 @CBRN_AI_ARMOR_MEDIUM_CHASSIS_MIN_EXCLUSIVE = 149
 @CBRN_AI_ARMOR_FLAME_CHASSIS_MIN_EXCLUSIVE = 14
 @CBRN_AI_ARMOR_PAYLOAD_MIN_EXCLUSIVE = 59
+@CBRN_AI_ARMOR_FUEL_RATIO_MIN_EXCLUSIVE = 0.20
+@CBRN_AI_GARRISON_INFANTRY_MIN_EXCLUSIVE = 399
+@CBRN_AI_GARRISON_MASKS_MIN_EXCLUSIVE = 194
+@CBRN_AI_GARRISON_DECON_MIN_EXCLUSIVE = 69
+@CBRN_AI_GARRISON_INSTRUMENTS_MIN_EXCLUSIVE = 59
+@CBRN_AI_GARRISON_SUPPORT_MIN_EXCLUSIVE = 124
+@CBRN_AI_GARRISON_TRUCKS_MIN_EXCLUSIVE = 39
+@CBRN_AI_SUPPRESSION_INFANTRY_MIN_EXCLUSIVE = 1079
+@CBRN_AI_SUPPRESSION_MASKS_MIN_EXCLUSIVE = 139
+@CBRN_AI_SUPPRESSION_DECON_MIN_EXCLUSIVE = 39
+@CBRN_AI_SUPPRESSION_INSTRUMENTS_MIN_EXCLUSIVE = 14
+@CBRN_AI_SUPPRESSION_SUPPORT_MIN_EXCLUSIVE = 69
+@CBRN_AI_SUPPRESSION_TRUCKS_MIN_EXCLUSIVE = 19
+@CBRN_AI_SUPPRESSION_PAYLOAD_MIN_EXCLUSIVE = 39
 @CBRN_AI_CONTAINMENT_INFANTRY_MIN_EXCLUSIVE = 899
-@CBRN_AI_CONTAINMENT_MASKS_MIN_EXCLUSIVE = 159
-@CBRN_AI_CONTAINMENT_DECON_MIN_EXCLUSIVE = 9
-@CBRN_AI_CONTAINMENT_INSTRUMENTS_MIN_EXCLUSIVE = 29
-@CBRN_AI_CONTAINMENT_SUPPORT_MIN_EXCLUSIVE = 109
-@CBRN_AI_CONTAINMENT_TRUCKS_MIN_EXCLUSIVE = 34
+@CBRN_AI_CONTAINMENT_MASKS_MIN_EXCLUSIVE = 194
+@CBRN_AI_CONTAINMENT_DECON_MIN_EXCLUSIVE = 69
+@CBRN_AI_CONTAINMENT_INSTRUMENTS_MIN_EXCLUSIVE = 59
+@CBRN_AI_CONTAINMENT_SUPPORT_MIN_EXCLUSIVE = 124
+@CBRN_AI_CONTAINMENT_TRUCKS_MIN_EXCLUSIVE = 39
 
 cbrn_country_has_any_chemical_payload_stock = {
 	OR = {
@@ -66,20 +86,59 @@ cbrn_country_has_protected_template_stock = {
 	has_equipment = { infantry_equipment > @CBRN_AI_PROTECTION_INFANTRY_MIN_EXCLUSIVE }
 	has_equipment = { gas_mask_equipment > @CBRN_AI_PROTECTION_MASKS_MIN_EXCLUSIVE }
 	has_equipment = { decontamination_equipment > @CBRN_AI_PROTECTION_DECON_MIN_EXCLUSIVE }
-	has_equipment = { cbrn_instrument_equipment > @CBRN_AI_PROTECTION_INSTRUMENTS_MIN_EXCLUSIVE }
 	has_equipment = { support_equipment > @CBRN_AI_PROTECTION_SUPPORT_MIN_EXCLUSIVE }
-	has_equipment = { motorized_equipment > @CBRN_AI_PROTECTION_TRUCKS_MIN_EXCLUSIVE }
 }
 
 cbrn_country_can_field_protected_template = {
+	has_tech = basic_gas_masks
 	has_tech = field_decontamination_kits
-	has_tech = chemical_detection_paper
 	cbrn_country_has_protected_template_stock = yes
 	OR = {
-		cbrn_country_has_program = yes
-		cbrn_country_has_public_chemical_emergency = yes
-		has_doctrine = chaos_warfare
+		cbrn_ai_has_civil_defence_priority = yes
+		cbrn_country_controls_chemical_contamination = yes
+		has_active_biowarfare_outbreak = yes
+		has_neighbor_with_active_biowarfare_outbreak = yes
 	}
+}
+
+cbrn_country_has_active_chemical_operation_plan = {
+	any_army_leader = {
+		OR = {
+			AND = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.prepare_chemical_offensive
+					compare = equals
+				}
+				OR = {
+					has_trait = cbrn_hq_preparing_operation
+					has_trait = cbrn_hq_active_chemical_offensive
+				}
+			}
+			AND = {
+				check_variable = {
+					var = cbrn_hq_operation_code
+					value = constant:cbrn_hq_operation.combined_overmatch
+					compare = equals
+				}
+				OR = {
+					has_trait = cbrn_hq_preparing_operation
+					has_trait = cbrn_hq_active_combined_overmatch
+				}
+			}
+		}
+	}
+}
+
+# The current 1.19 country-scope AI/template surface exposes neither the
+# selected native-raid target nor an Army-HQ-to-target-state pointer. A live
+# enemy country is not an exact target and is therefore not accepted here.
+# Stage 6's exact chemical delivery adapter must replace this fail-closed
+# contract with a native target receipt before offensive templates can be
+# adopted by AI. No inferred, capital, random, or generic enemy substitute is
+# permitted.
+cbrn_country_has_verified_chemical_force_target = {
+	always = no
 }
 
 cbrn_country_has_chemical_assault_template_stock = {
@@ -89,17 +148,43 @@ cbrn_country_has_chemical_assault_template_stock = {
 	has_equipment = { cbrn_instrument_equipment > @CBRN_AI_ASSAULT_INSTRUMENTS_MIN_EXCLUSIVE }
 	has_equipment = { support_equipment > @CBRN_AI_ASSAULT_SUPPORT_MIN_EXCLUSIVE }
 	has_equipment = { motorized_equipment > @CBRN_AI_ASSAULT_TRUCKS_MIN_EXCLUSIVE }
-	has_equipment = { livens_projector_chassis > @CBRN_AI_ASSAULT_PROJECTORS_MIN_EXCLUSIVE }
-	has_equipment = { chemical_agent_payload > @CBRN_AI_ASSAULT_PAYLOAD_MIN_EXCLUSIVE }
 }
 
 cbrn_country_can_field_chemical_assault_template = {
 	has_tech = chaos_battalion_tech
 	has_tech = hazard_pioneer_formation
+	has_tech = field_decontamination_kits
+	has_tech = chemical_detection_paper
+	cbrn_country_has_chemical_assault_template_stock = yes
+	OR = {
+		cbrn_ai_has_civil_defence_priority = yes
+		cbrn_country_has_active_chemical_operation_plan = yes
+		cbrn_country_controls_chemical_contamination = yes
+	}
+}
+
+cbrn_country_has_chemical_artillery_template_stock = {
+	has_equipment = { infantry_equipment > @CBRN_AI_ARTILLERY_INFANTRY_MIN_EXCLUSIVE }
+	has_equipment = { artillery_equipment > @CBRN_AI_ARTILLERY_GUNS_MIN_EXCLUSIVE }
+	has_equipment = { gas_mask_equipment > @CBRN_AI_ARTILLERY_MASKS_MIN_EXCLUSIVE }
+	has_equipment = { decontamination_equipment > @CBRN_AI_ARTILLERY_DECON_MIN_EXCLUSIVE }
+	has_equipment = { cbrn_instrument_equipment > @CBRN_AI_ARTILLERY_INSTRUMENTS_MIN_EXCLUSIVE }
+	has_equipment = { support_equipment > @CBRN_AI_ARTILLERY_SUPPORT_MIN_EXCLUSIVE }
+	has_equipment = { motorized_equipment > @CBRN_AI_ARTILLERY_TRUCKS_MIN_EXCLUSIVE }
+	has_equipment = { livens_projector_chassis > @CBRN_AI_ARTILLERY_PROJECTORS_MIN_EXCLUSIVE }
+	has_equipment = { chemical_artillery_ammunition > @CBRN_AI_ARTILLERY_SHELLS_MIN_EXCLUSIVE }
+	has_equipment = { chemical_agent_payload > @CBRN_AI_ARTILLERY_PAYLOAD_MIN_EXCLUSIVE }
+}
+
+cbrn_country_can_field_chemical_artillery_template = {
+	has_tech = chemical_artillery_shells
 	has_tech = livens_projector_tech
+	has_tech = field_decontamination_kits
 	cbrn_policy_allows_battlefield_use = yes
 	cbrn_country_has_any_chemical_payload_stock = yes
-	cbrn_country_has_chemical_assault_template_stock = yes
+	cbrn_country_has_active_chemical_operation_plan = yes
+	cbrn_country_has_verified_chemical_force_target = yes
+	cbrn_country_has_chemical_artillery_template_stock = yes
 }
 
 cbrn_country_has_armored_delivery_template_stock = {
@@ -122,7 +207,75 @@ cbrn_country_can_field_armored_delivery_template = {
 	}
 	cbrn_policy_allows_battlefield_use = yes
 	cbrn_country_has_any_chemical_payload_stock = yes
+	cbrn_country_has_active_chemical_operation_plan = yes
+	cbrn_country_has_verified_chemical_force_target = yes
+	fuel_ratio > @CBRN_AI_ARMOR_FUEL_RATIO_MIN_EXCLUSIVE
 	cbrn_country_has_armored_delivery_template_stock = yes
+}
+
+cbrn_country_has_protected_garrison_template_stock = {
+	has_equipment = { infantry_equipment > @CBRN_AI_GARRISON_INFANTRY_MIN_EXCLUSIVE }
+	has_equipment = { gas_mask_equipment > @CBRN_AI_GARRISON_MASKS_MIN_EXCLUSIVE }
+	has_equipment = { decontamination_equipment > @CBRN_AI_GARRISON_DECON_MIN_EXCLUSIVE }
+	has_equipment = { cbrn_instrument_equipment > @CBRN_AI_GARRISON_INSTRUMENTS_MIN_EXCLUSIVE }
+	has_equipment = { support_equipment > @CBRN_AI_GARRISON_SUPPORT_MIN_EXCLUSIVE }
+	has_equipment = { motorized_equipment > @CBRN_AI_GARRISON_TRUCKS_MIN_EXCLUSIVE }
+}
+
+cbrn_country_can_field_protected_garrison_template = {
+	has_tech = field_decontamination_kits
+	has_tech = field_epidemiology_teams
+	has_tech = biological_security_assault_formation
+	cbrn_country_has_protected_garrison_template_stock = yes
+	OR = {
+		cbrn_country_has_public_chemical_emergency = yes
+		cbrn_country_controls_chemical_contamination = yes
+		has_active_biowarfare_outbreak = yes
+		has_neighbor_with_active_biowarfare_outbreak = yes
+	}
+}
+
+cbrn_country_has_nerve_suppression_template_stock = {
+	has_equipment = { infantry_equipment > @CBRN_AI_SUPPRESSION_INFANTRY_MIN_EXCLUSIVE }
+	has_equipment = { gas_mask_equipment > @CBRN_AI_SUPPRESSION_MASKS_MIN_EXCLUSIVE }
+	has_equipment = { decontamination_equipment > @CBRN_AI_SUPPRESSION_DECON_MIN_EXCLUSIVE }
+	has_equipment = { cbrn_instrument_equipment > @CBRN_AI_SUPPRESSION_INSTRUMENTS_MIN_EXCLUSIVE }
+	has_equipment = { support_equipment > @CBRN_AI_SUPPRESSION_SUPPORT_MIN_EXCLUSIVE }
+	has_equipment = { motorized_equipment > @CBRN_AI_SUPPRESSION_TRUCKS_MIN_EXCLUSIVE }
+	has_equipment = { chemical_agent_payload > @CBRN_AI_SUPPRESSION_PAYLOAD_MIN_EXCLUSIVE }
+}
+
+cbrn_country_has_nerve_suppression_force_requirement = {
+	any_controlled_state = {
+		cbrn_occupation_state_is_occupied_non_core = yes
+		cbrn_occupation_state_is_coercive_security = yes
+		resistance > constant:cbrn_occupation_target.ai_minimum_resistance
+		NOT = { cbrn_occupation_state_has_allied_force_risk = yes }
+	}
+}
+
+cbrn_country_can_field_nerve_suppression_template = {
+	has_country_flag = cbrn_occupation_coercive_security_authorized
+	has_country_flag = cbrn_nerve_suppression_policy_authorized
+	has_country_flag = cbrn_armor_mastery_three
+	has_tech = armored_agent_delivery
+	has_tech = nerve_agent_suppression_formation
+	cbrn_chaos_warfare_has_advanced_protection = yes
+	cbrn_policy_allows_extreme_use = yes
+	has_variable = chemical_readiness
+	check_variable = {
+		var = chemical_readiness
+		value = constant:cbrn_occupation_target.minimum_chemical_readiness
+		compare = greater_than_or_equals
+	}
+	cbrn_occupation_country_has_non_payload_operation_costs = yes
+	cbrn_occupation_country_has_adequate_protection = yes
+	OR = {
+		cbrn_occupation_country_has_sarin_suppression_stock = yes
+		cbrn_occupation_country_has_soman_suppression_stock = yes
+	}
+	cbrn_country_has_nerve_suppression_force_requirement = yes
+	cbrn_country_has_nerve_suppression_template_stock = yes
 }
 
 cbrn_country_has_containment_template_stock = {
@@ -170,6 +323,7 @@ cbrn_country_has_urgent_regimental_support_need = {
 cbrn_country_can_field_containment_template = {
 	has_tech = field_epidemiology_teams
 	has_tech = mobile_cbrn_hospitals
+	has_tech = biological_security_assault_formation
 	cbrn_country_has_containment_template_stock = yes
 	OR = {
 		has_active_biowarfare_outbreak = yes

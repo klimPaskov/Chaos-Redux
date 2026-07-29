@@ -9,6 +9,10 @@
 # ============================================================================
 
 @CBRN_HQ_AI_ROLE_WEIGHT = 1
+@CBRN_HQ_AI_DEFENSIVE_PRIORITY = 3
+@CBRN_HQ_AI_OFFENSIVE_PRIORITY = 3
+@CBRN_HQ_AI_URGENT_RESPONSE_PRIORITY = 6
+@CBRN_HQ_AI_OVERMATCH_PRIORITY = 4
 @CBRN_HQ_AI_REINFORCE_PRIORITY = 2
 @CBRN_HQ_AI_INCLUDED = 1
 @CBRN_HQ_AI_INFANTRY_BATTALIONS = 4
@@ -17,11 +21,17 @@ cbrn_hq_templates = {
 	blocked_for = { ZZZ }
 	role = hq_role
 
-	upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+	upgrade_prio = { base = @CBRN_HQ_AI_ROLE_WEIGHT }
 
 	cbrn_protected_hq = {
 		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
-		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		upgrade_prio = {
+			base = @CBRN_HQ_AI_ROLE_WEIGHT
+			modifier = {
+				factor = @CBRN_HQ_AI_DEFENSIVE_PRIORITY
+				cbrn_ai_has_civil_defence_priority = yes
+			}
+		}
 		enable = { cbrn_country_can_field_protected_hq = yes }
 		can_upgrade_in_field = { cbrn_country_can_field_protected_hq = yes }
 
@@ -38,7 +48,17 @@ cbrn_hq_templates = {
 
 	cbrn_chemical_fireplan_hq = {
 		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
-		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		upgrade_prio = {
+			base = @CBRN_HQ_AI_ROLE_WEIGHT
+			modifier = {
+				factor = @CBRN_HQ_AI_OFFENSIVE_PRIORITY
+				OR = {
+					cbrn_ai_has_retaliatory_arsenal_posture = yes
+					cbrn_ai_has_battlefield_program_posture = yes
+					cbrn_ai_has_strategic_program_posture = yes
+				}
+			}
+		}
 		enable = { cbrn_country_can_field_chemical_fireplan_hq = yes }
 		can_upgrade_in_field = { cbrn_country_can_field_chemical_fireplan_hq = yes }
 
@@ -55,7 +75,13 @@ cbrn_hq_templates = {
 
 	cbrn_contaminated_theater_hq = {
 		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
-		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		upgrade_prio = {
+			base = @CBRN_HQ_AI_ROLE_WEIGHT
+			modifier = {
+				factor = @CBRN_HQ_AI_URGENT_RESPONSE_PRIORITY
+				cbrn_country_controls_chemical_contamination = yes
+			}
+		}
 		enable = { cbrn_country_can_field_contaminated_theater_hq = yes }
 		can_upgrade_in_field = { cbrn_country_can_field_contaminated_theater_hq = yes }
 
@@ -72,7 +98,13 @@ cbrn_hq_templates = {
 
 	cbrn_biological_containment_hq = {
 		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
-		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		upgrade_prio = {
+			base = @CBRN_HQ_AI_ROLE_WEIGHT
+			modifier = {
+				factor = @CBRN_HQ_AI_URGENT_RESPONSE_PRIORITY
+				has_active_biowarfare_outbreak = yes
+			}
+		}
 		enable = { cbrn_country_can_field_biological_containment_hq = yes }
 		can_upgrade_in_field = { cbrn_country_can_field_biological_containment_hq = yes }
 
@@ -89,7 +121,16 @@ cbrn_hq_templates = {
 
 	cbrn_overmatch_hq = {
 		reinforce_prio = @CBRN_HQ_AI_REINFORCE_PRIORITY
-		upgrade_prio = { factor = @CBRN_HQ_AI_ROLE_WEIGHT }
+		upgrade_prio = {
+			base = @CBRN_HQ_AI_ROLE_WEIGHT
+			modifier = {
+				factor = @CBRN_HQ_AI_OVERMATCH_PRIORITY
+				OR = {
+					cbrn_ai_has_strategic_program_posture = yes
+					cbrn_ai_has_desperate_release_posture = yes
+				}
+			}
+		}
 		enable = { cbrn_country_can_field_overmatch_hq = yes }
 		can_upgrade_in_field = { cbrn_country_can_field_overmatch_hq = yes }
 

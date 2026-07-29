@@ -95,6 +95,8 @@ An exact state already used by the campaign receives lower weight after its cool
 
 High Condemnation combined with high import vulnerability sharply suppresses use without disabling an otherwise authorized human action.
 
+Japan stops selecting either historical campaign action when its own surrender progress reaches the exact near-capitulation threshold. An explicitly authorized doomsday route leaves only the separate doomsday decision as a biological release choice during collapse; without that route, stockpile destruction is preferred.
+
 The AI never receives a fabricated target, inferred frontline, or fallback action.
 
 ## Historical Confidence

@@ -10,6 +10,8 @@ Biological lifecycle, biological raid, and biological operative-release helpers 
 
 ## Source files
 
+- `common/scripted_triggers/cbrn_ai_posture_triggers.txt`
+- `common/scripted_triggers/cbrn_ai_profile_triggers.txt`
 - `common/scripted_triggers/cbrn_chemical_raid_triggers.txt`
 - `common/scripted_triggers/cbrn_designer_triggers.txt`
 - `common/scripted_triggers/cbrn_diplomacy_triggers.txt`
@@ -19,6 +21,45 @@ Biological lifecycle, biological raid, and biological operative-release helpers 
 - `common/scripted_triggers/cbrn_protection_triggers.txt`
 - `common/scripted_triggers/cbrn_regimental_support_triggers.txt`
 - `common/scripted_triggers/cbrn_triggers.txt`
+
+## Differentiated AI country profiles
+
+Source: `common/scripted_triggers/cbrn_ai_profile_triggers.txt`, consumed by `common/ai_strategy/cbrn_country_profiles.txt`.
+
+The profile selectors classify Britain, France, Germany, the Soviet Union, the United States, Italy, Japan, Commonwealth reserves, frontier and legacy-industrial states, Scandinavian defensive states, Chinese emergency states, and limited industrial states. They use `original_tag` for the major-country profiles so released or subject variants retain the profile of the country that established the program.
+
+These selectors are preference inputs only. They may change research weights, decontamination and instrument production factors, and regimental role ratios after the shared CBRN gates pass. They never authorize a chemical or biological action, create a target, select a state, bypass readiness or policy, override stockpile safety, or replace a native raid or operative-operation receipt.
+
+`cbrn_ai_profile_is_major_cbrn_power` and `cbrn_ai_profile_is_defensive_secondary` are grouping selectors for strategy composition. `cbrn_ai_profile_is_exposed_secondary` is an index grouping for the frontier, Chinese, and limited-industrial profiles. Profile-specific AI must continue to use `cbrn_ai_posture_triggers.txt`, `cbrn_protection_triggers.txt`, and `cbrn_regimental_support_triggers.txt` for live safety and equipment gates.
+
+## CBRN AI posture and production gates
+
+Source: `common/scripted_triggers/cbrn_ai_posture_triggers.txt`.
+
+- `cbrn_ai_has_civil_defence_priority` reads defensive country identity, confirmed chemical emergency, actual controlled contamination, or a detected/active outbreak.
+- `cbrn_ai_has_retaliatory_arsenal_posture` requires Retaliation Authority, an active retaliation authorization, or a defensive country that has actually suffered confirmed chemical use.
+- `cbrn_ai_has_battlefield_program_posture` requires Chaos Warfare plus battlefield policy permission and either a battlefield identity or retaliatory posture.
+- `cbrn_ai_has_strategic_program_posture` adds integrated readiness, the centralized major-industry floor, strategic policy permission, and either an explicit first-use route or retaliatory posture.
+- `cbrn_ai_has_desperate_release_posture` delegates to the explicit unrestricted-route, surrender-progress, extreme-policy, and world-end gates already owned by the biological sabotage and doomsday subsystems.
+- `cbrn_ai_has_conventional_army_deficit` uses the engine's exact stockpile-to-fielded-need ratio for infantry equipment, support equipment, and researched artillery and motorized archetypes. The centralized reserve floors live in `common/script_constants/cbrn_ai_constants.txt`.
+- `cbrn_ai_has_stable_protective_base` requires Basic Service Respirators, a refreshed medium military respiratory-protection band, no refreshed military mask shortage, and real decontamination and instrument reserves.
+- `cbrn_ai_can_expand_offensive_cbrn_production` combines sufficient military industry, no conventional deficit, stable protection, and one accepted offensive posture. It is shared by offensive research and production AI.
+- `cbrn_ai_has_safe_biological_stockpile_context` accepts only a fully valid exact designated-arsenal risk context currently classified as Controlled or Strained. Missing or stale condition, handling, stock, facility, or security proof fails closed.
+- `cbrn_ai_has_japan_china_biological_campaign_posture` delegates to the exact Pingfang, Ishii authority, China-war, policy, readiness, security, and attribution route. A Japan tag by itself is not a biological authorization.
+- `cbrn_ai_has_no_ordinary_biological_agent_project` and `cbrn_ai_has_early_biological_agent_project` distinguish a first project from an escalation after Tularemia or Anthrax. The first-project case does not require an arsenal risk snapshot because no completed ordinary-agent project has designated an arsenal yet.
+- `cbrn_ai_biological_project_risk_allows_expansion` requires every project after the first to have a complete exact arsenal-risk context. Controlled or Strained permits normal expansion; Dangerous or Critical permits expansion only under the explicit desperate-release route. Missing context never passes.
+- `cbrn_ai_can_research_biological_agent_project` requires Pathogen Handling Protocols. Normal research also requires Rapid Outbreak Response, sufficient military industry, no conventional deficit, a stable protective base, and a recognized offensive route. The desperate branch remains route-locked and does not treat missing post-project risk data as safe.
+- `cbrn_ai_should_research_tularemia_project`, `cbrn_ai_should_research_anthrax_project`, `cbrn_ai_should_research_plague_project`, and `cbrn_ai_should_research_smallpox_project` implement the route-aware agent plan. Battlefield programs select Tularemia; retaliatory, strategic, or exact desperate programs begin with Anthrax; strategic or exact desperate programs may advance from an early project to Plague; Smallpox requires Plague and either an exact desperate route or an unrestricted, major-power strategic program with fail-safe containment. Japan's China route selects Anthrax before Plague and receives no tag-only preference for Tularemia or Smallpox.
+- `cbrn_ai_can_expand_safe_biological_production` requires normal industry, conventional supply, Pathogen Handling, Rapid Outbreak Response, stable protection, and a complete Controlled or Strained arsenal context. `cbrn_ai_can_expand_desperate_biological_production` is the sole Dangerous or Critical override and still requires an exact risk context, Pathogen Handling, and the explicit desperate route. `cbrn_ai_can_expand_biological_production` combines only those two accepted branches.
+- `cbrn_ai_should_prioritize_countermeasures` responds to confirmed chemical emergency, actual contamination, or an active/detected outbreak.
+- `cbrn_ai_should_prioritize_sanction_response` reads only the country's own active inspection demand or its own Condemnation plus import-vulnerability variables. It is not an enemy-capability or weapon-use proxy.
+- `cbrn_ai_has_democratic_import_dependent_sanction_profile` requires democratic government, formal censure, the centralized import-vulnerability threshold, no unrestricted route, and no near-capitulation state. It favors inspections, verified stockpile reduction, compensation, observers, non-use pledges, and command reform.
+- `cbrn_ai_has_authoritarian_industrial_sanction_profile` requires a non-democratic industrial major, formal censure, no unrestricted route, and no near-capitulation state. It favors denial, partial compliance, and autarky.
+- `cbrn_ai_has_radical_high_chaos_sanction_profile` requires formal censure and an explicit unrestricted-use route while excluding a country already near capitulation. It favors defiance, hardline mobilization, black-market procurement, and the existing faction-shield path.
+- `cbrn_ai_has_desperate_near_victory_sanction_profile` adds an exact active war and at least one enemy whose native surrender progress has reached the centralized threshold. It strengthens continued defiance without estimating war-score or fabricating a war goal.
+- `cbrn_ai_is_losing_near_capitulation` reads the country's exact native surrender progress. `cbrn_ai_should_destroy_stockpiles_during_collapse` accepts that state only when the actor lacks the explicit doomsday route or extreme-use policy; doomsday authorization remains owned by the separate biological doomsday gate.
+
+All triggers are country scoped, side-effect free, and return false when required variables or proof are missing. They do not authorize a target, create activity evidence, infer an operation, inspect idle aircraft, refresh a biological arsenal snapshot, or provide any fallback.
 
 ## Biological subsystem-private operation triggers
 
@@ -86,8 +127,10 @@ Source: `common/scripted_triggers/cbrn_diplomacy_triggers.txt`.
 - `cbrn_country_has_active_retaliation_right_against_target_id` is country-scoped and requires the caller to supply `cbrn_retaliation_target_id`. It proves an unexpired country-ID-keyed right against that exact opponent, Retaliation Authority policy, and an active war with the saved offender.
 - `cbrn_policy_allows_battlefield_use_against_from` and `cbrn_policy_allows_strategic_use_against_from` validate a live `FROM` country. Their target-ID variants perform the same policy check after another exact scope has supplied the ID.
 - `cbrn_chemical_action_policy_allows_exact_target` validates the temporary chemical action's exact victim before payload debit. Retaliation Authority accepts only the bilateral offender proved above; broader first-use policies retain their own institution and readiness gates.
-- `cbrn_state_has_observable_chemical_evidence` is state-scoped and requires an exact recorded actor, action date, evidence value, and unpaid action liability. It does not infer an actor or derive the action amount from an aggregate Chemical bucket.
-- The forensic-publication triggers require a recorded state action or ordinary-pathogen episode whose publication date differs from its action or seed date. They fail closed for missing actors, missing dates, exhausted exact liability, or ineligible evidence.
+- `cbrn_target_can_receive_inspection_demand_from_root` is target-country-scoped. The target must be formally censured and list `ROOT` in its active sanctions-participant array, while the sender must be outside its inspection-demand cooldown.
+- `cbrn_state_has_shareable_chemical_evidence` and `cbrn_state_has_observable_chemical_evidence` are state-scoped and require at least one open exact chemical-action or explicit no-release attempt row with unpaid liability. They do not infer an actor or derive an action amount from the aggregate Chemical bucket.
+- The forensic-publication triggers require an open exact chemical row or a detected ordinary-pathogen episode. Chemical records remain historically publishable when their exact actor no longer exists; publication records and closes that actor without transferring penalties to another country.
+- `cbrn_state_can_receive_international_decontamination_from_root` accepts ordinary alliance, subject, inspection, and observer access or an exact humanitarian carve-out relationship. `cbrn_state_retains_international_decontamination_access` revalidates the recorded provider, original recipient-controller, peace, and one of those exact access routes without repeating entry-only contamination or cooldown gates. `cbrn_target_can_receive_exported_masks` uses the same carve-out relationship while retaining its own stock and recipient-validity checks.
 
 The bilateral right lasts 365 days from confirmation. The record compares the earliest exact action date in both directions; same-day ties are contested because current script exposes day precision only. None of these triggers modifies Condemnation, evidence, harm, stock, or history, and none scans all countries periodically.
 
@@ -128,6 +171,7 @@ These side-effect-free triggers validate temporary action context:
 - `cbrn_action_severity_is_valid`
 - `cbrn_action_payload_debit_is_valid`
 - `cbrn_action_protection_is_resolved`
+- `cbrn_action_release_is_resolved`
 - `cbrn_action_conditions_are_resolved`
 - `cbrn_chemical_action_static_metadata_is_valid`
 
@@ -143,7 +187,7 @@ Outputs: boolean trigger result only. Side effects: none.
 
 ## cbrn_chemical_action_metadata_is_valid
 
-Composite country-chain trigger requiring the static preflight plus real payload-debit proof, resolved protection, and resolved conditions.
+Composite country-chain trigger requiring the static preflight plus real payload-debit proof, resolved protection, and a positive native release receipt. Environmental conditions are a separate optional verified receipt and are never synthesized to satisfy this composite.
 
 Inputs: complete temporary action contract. Defaults: fail closed. Outputs: boolean result. Side effects: none.
 
@@ -186,14 +230,14 @@ Inputs are live equipment, snapshot, ledger, and controlled-state queries. Outpu
 ### Production signals and stop conditions
 
 - `cbrn_country_faces_enemy_chemical_capability`: a current enemy has researched a choking, blister, or nerve agent.
-- `cbrn_world_has_confirmed_chemical_use`: the shared dispatcher has recorded confirmed chemical use, or an older save contains at least one country with positive public chemical Condemnation.
+- `cbrn_world_has_confirmed_chemical_use`: the shared dispatcher has recorded confirmed chemical use through its dedicated global history flag. Aggregate Condemnation is never accepted as a proxy for weapon use.
 - `cbrn_country_has_priority_civilian_protection_gap` and `cbrn_country_has_full_civilian_protection_gap`: a controlled core state's effective coverage remains below its corresponding target.
 - `cbrn_country_has_mask_production_signal`: reserve program, allied request, Chaos Warfare posture, enemy capability/use, public world use, or an exact controlled-state alert.
 - `cbrn_country_below_mask_ai_target`: military coverage, reserve plus replacement stock, or eligible civilian distribution remains below the current profile target.
 - `cbrn_country_should_produce_masks`: Basic Service Respirators plus both a valid signal/shortage and an unmet target.
 - `cbrn_country_has_urgent_mask_production_need`: confirmed enemy use, field coverage below 50 percent, or an exact raid alert.
 
-These triggers drive `common/ai_strategy/cbrn_protection_production.txt`. They are read-only trigger queries, not periodic country effects. The world-use query reads existing public Condemnation and does not expose latent evidence.
+These triggers drive `common/ai_strategy/cbrn_protection_production.txt`. They are read-only trigger queries, not periodic country effects. The world-use query reads only confirmed shared-dispatch history and does not expose latent evidence.
 
 ### National action gates
 
@@ -270,13 +314,13 @@ available = {
 }
 ```
 
-## CBRN allied procurement and AI profiles
+## CBRN protection procurement and AI profiles
 
-### Allied partner triggers
+### Procurement partner triggers
 
 - `cbrn_target_is_valid_allied_protection_partner`: existing, non-self, non-capitulated country in ROOT's faction.
 - `cbrn_target_can_supply_imported_masks`: valid partner with at least the tuned shipment amount.
-- `cbrn_target_can_receive_exported_masks`: valid partner at or below the low-reserve threshold.
+- `cbrn_target_can_receive_exported_masks`: existing, non-self, non-capitulated country outside war with ROOT that is either a valid faction partner or lists ROOT in its exact humanitarian-carve-out array, and remains at or below the low-reserve threshold.
 - `cbrn_target_can_license_respirator_design`: valid partner with a higher gas-mask technology than ROOT.
 
 Scope: candidate country with ROOT as the acting country. Defaults: stale or invalid candidates return false. Outputs: boolean only; side effects: none.
@@ -414,7 +458,8 @@ These temporary-record triggers live in `cbrn_chemical_raid_triggers.txt` and ar
 
 - `cbrn_chemical_air_raid_result_has_no_release`: true only for the accepted aborted or failed result codes.
 - `cbrn_chemical_air_raid_result_has_release`: true only for partial, successful, or catastrophic releases.
-- `cbrn_chemical_air_raid_reservation_is_resolved`: requires the exact 120-lot reservation, positive net consumption no greater than that reservation, native reservation/debit proof, and a release-efficiency proof that agrees with the result class.
+- `cbrn_chemical_air_raid_reservation_is_resolved`: requires the exact 120-lot ordinary reservation or 240-lot strategic-rocket reservation, positive net consumption no greater than that reservation, native reservation/debit proof, and a release-efficiency proof that agrees with the result class.
+- `cbrn_chemical_air_raid_native_condition_receipt_is_valid`: validates the named native-outcome condition receipt supplied by the selected-state raid adapter.
 
 Scope: enclosing raid outcome chain after the actor-country effect has called `cbrn_resolve_chemical_air_raid_reservation`. Inputs are temporary `cbrn_raid_*` and `cbrn_action_*` values. Defaults: false; missing or contradictory proof fails closed. Outputs: boolean only. Side effects: none. These triggers do not infer weather, terrain, release, or aircraft activity.
 
@@ -426,6 +471,54 @@ if = {
 	# Continue to the no-release attempt record or the proven-release adapter.
 }
 ```
+
+## CBRN occupation and nerve-suppression triggers
+
+These subsystem-specific, side-effect-free triggers live in `cbrn_occupation_triggers.txt`. They remain outside the generic dynamic-trigger library because only the occupation CBRN decision, law, delayed-event, and control-change surfaces consume them.
+
+### Authorization, visibility, and stock gates
+
+- `cbrn_occupation_coercive_security_authorization_requirements` requires Armor mastery 3, Armored Agent Delivery, a completed Sarin or Soman project, and advanced protection.
+- `cbrn_occupation_protected_administration_authorization_requirements` requires Basic Gas Masks and advanced protection.
+- `cbrn_occupation_category_visible` accepts an authorization route, established program, persistent nerve-suppression history, or a real occupied non-core state.
+- `cbrn_occupation_country_has_sarin_suppression_stock` and `cbrn_occupation_country_has_soman_suppression_stock` require the exact technology, completed project, and complete shared route payload debit.
+- `cbrn_occupation_country_has_non_payload_operation_costs` requires the full mask, decontamination, instrument, support-equipment, truck, and Command Power package.
+- `cbrn_occupation_country_has_adequate_protection` requires advanced protection plus high military mask, respiratory, skin, antidote, decontamination, and medical coverage.
+
+Scope is country unless named as a state trigger. Missing stock, project, technology, readiness, or protection fails closed. These checks never grant authorization, create payload, or populate an absent variable.
+
+### Exact operation-input and target gates
+
+`cbrn_occupation_current_version_condition_hook_verified` is the hard current-version provider gate. It returns false because installed documentation exposes weather and terrain only in combatant scope and no exact selected-state target-loss forecast provider is available.
+
+`cbrn_occupation_action_conditions_are_supplied` requires that verified-provider gate and validates every explicit release-efficiency, weather, terrain, target-density, command, evidence-control, forecast-confidence, command-integration, and friendly-risk input against the shared bounds. It does not calculate, infer, or default any condition.
+
+`cbrn_occupation_country_can_prepare_nerve_suppression` requires both occupation authorizations, the doctrine and formation unlocks, extreme-use policy, Chemical Readiness 70, command integration, all non-payload costs, advanced protection, and the complete explicit condition package. `cbrn_occupation_country_can_execute_nerve_suppression` additionally requires an exact regular event target, one valid and eligible Sarin or Soman agent, complete payload stock, a still-valid occupied target, and continued war with the state's owner.
+
+The state target chain also requires the explicit `cbrn_occupation_target_loss_risk_cleared` state record. No active writer supplies that record; state control changes clear it.
+
+- `cbrn_occupation_state_is_occupied_non_core`: ROOT controls a populated state owned by another existing country and does not own or core it.
+- `cbrn_occupation_state_has_ready_nerve_detachment`: ROOT has a physically present Nerve Suppression Detachment at or above the centralized strength and organization thresholds.
+- `cbrn_occupation_state_has_allied_force_risk`: an allied non-ROOT division is physically present.
+- `cbrn_occupation_state_cooldown_is_clear`: neither timed flag nor stored due day blocks reuse.
+- `cbrn_occupation_state_is_valid_nerve_target`: combines the exact occupation law, resistance, cooldown, ready detachment, allied-risk exclusion, and positive target-loss clearance.
+
+The target-loss clearance flag is not synthesized by this file. Until a verified current-version native forecast hook supplies it and the required weather and terrain variables, the release path remains unavailable rather than estimating the result.
+
+### Route-aware AI gates
+
+`cbrn_occupation_ai_coercive_route_requirements` and `cbrn_occupation_ai_can_select_coercive_law` require real doctrine, extreme policy, advanced protection, an eligible nerve stockpile, one fielded suppression detachment, tolerable Condemnation and import vulnerability, no mask replacement backlog, and an accepted aggressive route. `cbrn_occupation_ai_can_prepare_nerve_suppression` applies the same political and material restraint to the timed operation.
+
+`cbrn_occupation_state_is_ai_target` adds high resistance plus explicit strategic-priority and ordinary-garrison-failure state flags. `cbrn_occupation_ai_can_use_nerve_suppression` adds exact target material gates, control-risk clearance, no allied force risk, no defensive or censured refusal state unless an accepted route relaxes it, and no compliance or inspection agreement. Missing strategic, garrison-failure, agreement, or loss-risk proof is never inferred.
+
+### Protective aid, exact records, and aftermath
+
+- `cbrn_occupation_country_can_supply_external_protective_aid` requires an established program, real mask stock, and two available Civilian Factories.
+- `cbrn_occupation_state_can_receive_external_protective_aid` requires a populated state controlled by another country, non-core status under that controller, no conflicting project, and a real occupied-distribution gap.
+- `cbrn_occupation_state_can_start_coverup`, `cbrn_occupation_state_can_admit_release`, and `cbrn_occupation_state_can_permit_inspection` require a stored exact nerve-suppression record belonging to ROOT and enforce their distinct control and prior-response exclusions.
+- `cbrn_occupation_state_can_record_discovery` permits one discovery against a stored exact record; `cbrn_occupation_state_delayed_backlash_is_due` and `cbrn_occupation_state_can_decay_trauma` gate only the exact state's self-scheduled aftermath events.
+
+These record gates read the stored responsible-country pointer and exact chemical-record UID. They do not choose a replacement record, erase history, or scan countries periodically.
 
 ## Chaos Warfare doctrine triggers
 
@@ -604,3 +697,17 @@ allowed = {
 	cbrn_hq_can_activate_mass_antidote_response = yes
 }
 ```
+
+## Exact-state CBRN battlefield operation triggers
+
+The battlefield trigger family is defined in `cbrn_battlefield_operation_triggers.txt`. It is deliberately CBRN-specific because these inputs are used by route decisions and a shared ground-operation resolver rather than frequently by unrelated event families.
+
+The common actor gate `cbrn_battlefield_actor_base_can_prepare` requires a valid war, operational readiness, battlefield-use policy, active HQ chemical operation receipt, selected unlocked agent, military masks, and field decontamination capacity. The four route gates add the route's readiness and Command Power commitment bill plus its essential equipment.
+
+Route equipment checks are model-aware and fail closed when full stock is unavailable. Shortage-ready branches use explicit shortage floors and are surfaced through the condition receipt; Artillery Fire Plan additionally requires and debits `chemical_shell_lot_1`.
+
+The exact target helpers are `cbrn_battlefield_cylinder_target_state`, `cbrn_battlefield_projector_target_state`, `cbrn_battlefield_artillery_target_state`, and `cbrn_battlefield_armored_target_state`. They require a real state, a real enemy controller, a valid wartime relationship, population, and the route-specific supply, fort, industry, or enemy-division evidence. They never search a neighboring state or infer a combat target.
+
+`cbrn_battlefield_decision_record_is_valid` validates the committed state ledger for timed decisions through the persistent `cbrn_battlefield_active_state` scope variable, not the short-lived setup event target. `cbrn_battlefield_requested_operation_is_valid` and `cbrn_battlefield_requested_target_is_valid` are rechecked immediately before payload and equipment debit. `cbrn_battlefield_cylinder_commit_cost_is_available`, `cbrn_battlefield_projector_commit_cost_is_available`, `cbrn_battlefield_artillery_commit_cost_is_available`, and `cbrn_battlefield_armored_commit_cost_is_available` prevent a commitment with insufficient Chemical Readiness or Command Power.
+
+No battlefield trigger reads aircraft presence, continuous-air missions, a combat estimator, a global dynamic effect, or an all-country periodic event.
