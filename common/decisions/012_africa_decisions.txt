@@ -1973,26 +1973,40 @@ africa_world_order_actions_category = {
 }
 
 africa_world_polity_actions_category = {
-	africa_world_accept_constituent_consent = {
+	# Package actor: select one frozen constituent and send the formal compact.
+	africa_world_invite_constituent_to_compact = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_constituent_countries
 		activation = { africa_world_package_is_installed = yes }
 		target_root_trigger = { africa_world_package_is_installed = yes }
-		target_trigger = { FROM = { africa_world_constituent_can_consent = yes } }
-		cost = constant:africa_world_roster.constituent_consent_pp
-		complete_effect = { FROM = { africa_world_record_constituent_consent = yes } }
-		ai_will_do = { base = constant:africa_world_order.ai_normal }
+		target_trigger = { FROM = { africa_world_constituent_invitation_is_available = yes } }
+		cost = constant:africa_world_package_protocol.invitation_pp_cost
+		complete_effect = {
+			save_event_target_as = africa_world_protocol_package
+			FROM = {
+				save_event_target_as = africa_world_protocol_constituent
+				africa_world_open_constituent_invitation = yes
+				country_event = { id = africa_world_package.1 days = 1 }
+			}
+		}
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_accept }
 	}
 
-	africa_world_record_constituent_refusal = {
+	# Constituent-owned: a member opens a time-bounded withdrawal notice.
+	africa_world_submit_constituent_withdrawal_notice = {
 		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_constituent_countries
-		activation = { africa_world_package_is_installed = yes }
-		target_root_trigger = { africa_world_package_is_installed = yes }
-		target_trigger = { FROM = { africa_world_constituent_can_consent = yes } }
-		cost = constant:africa_world_roster.constituent_refusal_pp
-		complete_effect = { FROM = { africa_world_record_constituent_refusal = yes } }
-		ai_will_do = { base = constant:africa_world_order.ai_low }
+		target_array = africa_world_constituent_package_actors
+		activation = { africa_world_constituent_withdrawal_notice_is_available = yes }
+		target_root_trigger = { africa_world_constituent_withdrawal_notice_is_available = yes }
+		target_trigger = { FROM = { africa_world_package_is_installed = yes } }
+		cost = constant:africa_world_package_protocol.withdrawal_notice_pp_cost
+		complete_effect = {
+			FROM = { save_event_target_as = africa_world_protocol_package }
+			save_event_target_as = africa_world_protocol_constituent
+			africa_world_open_constituent_withdrawal_notice = yes
+			FROM = { country_event = { id = africa_world_package.6 days = 1 } }
+		}
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_withdrawal_accept }
 	}
 
 	africa_world_coerce_constituent_compact = {
@@ -2003,18 +2017,7 @@ africa_world_polity_actions_category = {
 		target_trigger = { FROM = { africa_world_constituent_can_coerce = yes } }
 		cost = constant:africa_world_roster.constituent_coercion_pp
 		complete_effect = { FROM = { africa_world_record_constituent_coercion = yes } }
-		ai_will_do = { base = constant:africa_world_order.ai_low }
-	}
-
-	africa_world_accept_constituent_withdrawal = {
-		icon = GFX_decision_012_africa_charter_ledger
-		target_array = africa_world_constituent_countries
-		activation = { africa_world_package_is_installed = yes }
-		target_root_trigger = { africa_world_package_is_installed = yes }
-		target_trigger = { FROM = { africa_world_constituent_can_withdraw = yes } }
-		cost = constant:africa_world_roster.constituent_withdrawal_pp
-		complete_effect = { FROM = { africa_world_record_constituent_withdrawal = yes } }
-		ai_will_do = { base = constant:africa_world_order.ai_normal }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_withdrawal_contest }
 	}
 
 	africa_world_commit_package_successor = {

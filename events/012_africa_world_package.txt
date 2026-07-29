@@ -1,0 +1,359 @@
+add_namespace = africa_world_package
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 CONSTITUENT AGENCY AND PACKAGE RATIFICATION PROTOCOL
+# ============================================================================
+# The package actor can invite, negotiate, or contest a response, but the
+# constituent owns every acceptance, refusal, and withdrawal answer. Event
+# targets preserve the exact package/constituent pair for this bounded chain.
+# No event creates a tag, subject, territorial transfer, recurring scan, or
+# final package readiness flag.
+# ============================================================================
+
+# Constituent receives a package invitation.
+country_event = {
+	id = africa_world_package.1
+	title = africa_world_package.1.t
+	desc = africa_world_package.1.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_invitation_is_open = yes
+	}
+	immediate = { save_event_target_as = africa_world_protocol_constituent }
+
+	option = {
+		name = africa_world_package.1.a
+		custom_effect_tooltip = africa_world_package.1.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_accept }
+		set_country_flag = africa_world_constituent_protocol_accept
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.2 } }
+	}
+	option = {
+		name = africa_world_package.1.b
+		custom_effect_tooltip = africa_world_package.1.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_negotiate }
+		africa_world_open_constituent_counterterms = yes
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.3 } }
+	}
+	option = {
+		name = africa_world_package.1.c
+		custom_effect_tooltip = africa_world_package.1.c.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		set_country_flag = africa_world_constituent_protocol_refuse
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.4 } }
+	}
+}
+
+# Package actor records an acceptance owned by the constituent.
+country_event = {
+	id = africa_world_package.2
+	title = africa_world_package.2.t
+	desc = africa_world_package.2.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = {
+			has_country_flag = africa_world_constituent_protocol_accept
+			africa_world_constituent_invitation_is_open = yes
+		}
+	}
+	immediate = {
+		event_target:africa_world_protocol_constituent = {
+			clr_country_flag = africa_world_constituent_protocol_accept
+			africa_world_record_constituent_consent = yes
+		}
+	}
+	option = { name = africa_world_package.2.a }
+}
+
+# Package actor answers a constituent counterterm proposal.
+country_event = {
+	id = africa_world_package.3
+	title = africa_world_package.3.t
+	desc = africa_world_package.3.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { africa_world_constituent_counterterms_are_open = yes }
+	}
+
+	option = {
+		name = africa_world_package.3.a
+		trigger = { political_power > constant:africa_world_package_protocol.counterterm_pp_cost }
+		custom_effect_tooltip = africa_world_package.3.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_accept }
+		set_temp_variable = { africa_world_protocol_cost = constant:africa_world_package_protocol.counterterm_pp_cost }
+		africa_world_spend_protocol_political_power = yes
+		event_target:africa_world_protocol_constituent = {
+			africa_world_apply_local_command_safeguard = yes
+			set_country_flag = africa_world_constituent_protocol_accept
+		}
+		country_event = { id = africa_world_package.2 }
+	}
+	option = {
+		name = africa_world_package.3.b
+		custom_effect_tooltip = africa_world_package.3.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_negotiate }
+		event_target:africa_world_protocol_constituent = { country_event = { id = africa_world_package.5 } }
+	}
+	option = {
+		name = africa_world_package.3.c
+		custom_effect_tooltip = africa_world_package.3.c.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		event_target:africa_world_protocol_constituent = {
+			set_country_flag = africa_world_constituent_protocol_refuse
+		}
+		country_event = { id = africa_world_package.4 }
+	}
+}
+
+# Package actor records a refusal or a rejected counterterm settlement.
+country_event = {
+	id = africa_world_package.4
+	title = africa_world_package.4.t
+	desc = africa_world_package.4.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { has_country_flag = africa_world_constituent_protocol_refuse }
+	}
+	immediate = {
+		event_target:africa_world_protocol_constituent = {
+			clr_country_flag = africa_world_constituent_protocol_refuse
+			africa_world_record_constituent_refusal = yes
+		}
+	}
+	option = { name = africa_world_package.4.a }
+}
+
+# Constituent makes the final answer after the package revises its offer.
+country_event = {
+	id = africa_world_package.5
+	title = africa_world_package.5.t
+	desc = africa_world_package.5.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_counterterms_are_open = yes
+	}
+	option = {
+		name = africa_world_package.5.a
+		custom_effect_tooltip = africa_world_package.5.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_accept }
+		set_country_flag = africa_world_constituent_protocol_accept
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.2 } }
+	}
+	option = {
+		name = africa_world_package.5.b
+		custom_effect_tooltip = africa_world_package.5.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		set_country_flag = africa_world_constituent_protocol_refuse
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.4 } }
+	}
+}
+
+# Package actor receives a constituent withdrawal notice.
+country_event = {
+	id = africa_world_package.6
+	title = africa_world_package.6.t
+	desc = africa_world_package.6.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { africa_world_constituent_withdrawal_notice_is_open = yes }
+	}
+	option = {
+		name = africa_world_package.6.a
+		trigger = { political_power > constant:africa_world_package_protocol.withdrawal_accept_pp_cost }
+		custom_effect_tooltip = africa_world_package.6.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_withdrawal_accept }
+		set_temp_variable = { africa_world_protocol_cost = constant:africa_world_package_protocol.withdrawal_accept_pp_cost }
+		africa_world_spend_protocol_political_power = yes
+		event_target:africa_world_protocol_constituent = { country_event = { id = africa_world_package.7 } }
+	}
+	option = {
+		name = africa_world_package.6.b
+		trigger = { political_power > constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost }
+		custom_effect_tooltip = africa_world_package.6.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_withdrawal_safeguard }
+		set_temp_variable = { africa_world_protocol_cost = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost }
+		africa_world_spend_protocol_political_power = yes
+		event_target:africa_world_protocol_constituent = { country_event = { id = africa_world_package.8 } }
+	}
+	option = {
+		name = africa_world_package.6.c
+		trigger = { political_power > constant:africa_world_package_protocol.withdrawal_contest_pp_cost }
+		custom_effect_tooltip = africa_world_package.6.c.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_withdrawal_contest }
+		set_temp_variable = { africa_world_protocol_cost = constant:africa_world_package_protocol.withdrawal_contest_pp_cost }
+		africa_world_spend_protocol_political_power = yes
+		africa_world_contest_withdrawal_notice = yes
+		event_target:africa_world_protocol_constituent = { country_event = { id = africa_world_package.9 } }
+	}
+}
+
+# Constituent confirms orderly exit after the package accepts it.
+country_event = {
+	id = africa_world_package.7
+	title = africa_world_package.7.t
+	desc = africa_world_package.7.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_withdrawal_notice_is_open = yes
+	}
+	immediate = {
+		save_event_target_as = africa_world_protocol_constituent
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.13 } }
+	}
+	option = { name = africa_world_package.7.a }
+}
+
+# Package safeguards are offered to the constituent before coercive action.
+country_event = {
+	id = africa_world_package.8
+	title = africa_world_package.8.t
+	desc = africa_world_package.8.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_withdrawal_notice_is_open = yes
+	}
+	option = {
+		name = africa_world_package.8.a
+		custom_effect_tooltip = africa_world_package.8.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_withdrawal_safeguard }
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.10 } }
+	}
+	option = {
+		name = africa_world_package.8.b
+		custom_effect_tooltip = africa_world_package.8.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.11 } }
+	}
+}
+
+# Constituent reviews a contested withdrawal after the package spent its
+# contest cost. The answer remains constituent-owned.
+country_event = {
+	id = africa_world_package.9
+	title = africa_world_package.9.t
+	desc = africa_world_package.9.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		has_country_flag = africa_world_constituent_withdrawal_contested
+		africa_world_constituent_withdrawal_notice_is_open = yes
+	}
+	option = {
+		name = africa_world_package.9.a
+		custom_effect_tooltip = africa_world_package.9.a.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_withdrawal_safeguard }
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.10 } }
+	}
+	option = {
+		name = africa_world_package.9.b
+		custom_effect_tooltip = africa_world_package.9.b.tt
+		ai_chance = { base = constant:africa_world_package_protocol.ai_refuse }
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.11 } }
+	}
+}
+
+# Constituent accepts safeguards and remains a sovereign member.
+country_event = {
+	id = africa_world_package.10
+	title = africa_world_package.10.t
+	desc = africa_world_package.10.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { africa_world_constituent_withdrawal_notice_is_open = yes }
+	}
+	immediate = { event_target:africa_world_protocol_constituent = { africa_world_accept_withdrawal_safeguards = yes } }
+	option = { name = africa_world_package.10.a }
+}
+
+# Constituent rejects safeguards; the contested status exposes coercion but
+# never silently changes the constituent's membership.
+country_event = {
+	id = africa_world_package.11
+	title = africa_world_package.11.t
+	desc = africa_world_package.11.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { africa_world_constituent_withdrawal_notice_is_open = yes }
+	}
+	immediate = { event_target:africa_world_protocol_constituent = { africa_world_reject_withdrawal_safeguards = yes } }
+	option = { name = africa_world_package.11.a }
+}
+
+# Withdrawal notice timeout. Peaceful exit is the default only while the
+# constituent remains independent, at peace, and uncontested.
+country_event = {
+	id = africa_world_package.12
+	title = africa_world_package.12.t
+	desc = africa_world_package.12.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_withdrawal_notice_is_open = yes
+	}
+	immediate = { africa_world_mark_protocol_timeout = yes }
+	option = { name = africa_world_package.12.a }
+}
+
+# Hidden package-side finalizer for orderly withdrawal. It runs with the
+# package actor as ROOT so the existing ledger effect has an unambiguous ROOT.
+country_event = {
+	id = africa_world_package.13
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_event_target = africa_world_protocol_constituent
+		event_target:africa_world_protocol_constituent = { africa_world_constituent_can_complete_orderly_withdrawal = yes }
+	}
+	immediate = { event_target:africa_world_protocol_constituent = { africa_world_record_constituent_withdrawal = yes } }
+}
+
+# Invitation silence is a refusal, preserving pending-response accounting.
+country_event = {
+	id = africa_world_package.16
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = africa_world_protocol_package
+		event_target:africa_world_protocol_package = { africa_world_package_is_installed = yes }
+		africa_world_constituent_invitation_is_open = yes
+	}
+	immediate = {
+		set_country_flag = africa_world_constituent_protocol_refuse
+		event_target:africa_world_protocol_package = { country_event = { id = africa_world_package.4 } }
+	}
+}

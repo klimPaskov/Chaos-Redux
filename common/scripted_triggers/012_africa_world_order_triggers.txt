@@ -145,12 +145,281 @@ africa_world_package_constituent_settlement_is_proven = {
 		value = constant:africa_world_roster.minimum_constituents
 		compare = greater_than_or_equals
 	}
+	africa_world_package_protocol_pending_is_clear = yes
+	OR = {
+		AND = {
+			check_variable = {
+				var = africa_world_package_external_eligible_count
+				value = constant:africa_world_package_protocol.sparse_external_cutoff
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_world_package_voluntary_external_count
+				value = constant:africa_world_package_protocol.voluntary_external_minimum
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = africa_world_package_external_eligible_count
+				value = constant:africa_world_package_protocol.sparse_external_cutoff
+				compare = less_than
+			}
+			check_variable = {
+				var = africa_world_package_voluntary_external_count
+				value = constant:africa_value.one
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope on an installed package actor. This is the narrow gate used
+# by the six constituent decisions and by the package capstone. The roster is
+# frozen at installation; no recurring world scan can add a new constituent.
+africa_world_package_protocol_pending_is_clear = {
+	check_variable = {
+		var = africa_world_package_pending_response_count
+		value = constant:africa_value.zero
+	}
 	NOT = {
 		any_of_scopes = {
 			array = africa_world_constituent_countries
-			has_country_flag = africa_world_constituent_pending
+			OR = {
+				has_country_flag = africa_world_constituent_pending
+				has_country_flag = africa_world_constituent_invitation_pending
+				has_country_flag = africa_world_constituent_counterterms_pending
+				has_country_flag = africa_world_constituent_withdrawal_notice
+			}
 		}
 	}
+}
+
+africa_world_constituent_invitation_is_available = {
+	has_country_flag = africa_world_constituent_registered
+	has_country_flag = africa_world_constituent_pending
+	NOT = { has_country_flag = africa_world_constituent_invitation_pending }
+	NOT = { has_country_flag = africa_world_constituent_counterterms_pending }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_notice }
+	NOT = { has_country_flag = africa_world_constituent_consented }
+	NOT = { has_country_flag = africa_world_constituent_refused }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { has_country_flag = africa_world_constituent_coerced }
+	is_subject = no
+	has_capitulated = no
+}
+
+africa_world_constituent_invitation_is_open = {
+	has_country_flag = africa_world_constituent_invitation_pending
+	has_country_flag = africa_world_constituent_registered
+	NOT = { has_country_flag = africa_world_constituent_consented }
+	NOT = { has_country_flag = africa_world_constituent_refused }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+}
+
+africa_world_constituent_counterterms_are_open = {
+	has_country_flag = africa_world_constituent_counterterms_pending
+	has_country_flag = africa_world_constituent_invitation_pending
+	has_country_flag = africa_world_constituent_registered
+	NOT = { has_country_flag = africa_world_constituent_consented }
+	NOT = { has_country_flag = africa_world_constituent_refused }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+}
+
+africa_world_constituent_withdrawal_notice_is_available = {
+	has_country_flag = africa_world_constituent_member
+	has_country_flag = africa_world_constituent_registered
+	NOT = { has_country_flag = africa_world_package_actor }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_notice }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_contested }
+	is_subject = no
+	has_capitulated = no
+}
+
+africa_world_constituent_withdrawal_notice_is_open = {
+	has_country_flag = africa_world_constituent_withdrawal_notice
+	has_country_flag = africa_world_constituent_member
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+}
+
+africa_world_constituent_can_accept_counterterms = {
+	africa_world_constituent_counterterms_are_open = yes
+}
+
+africa_world_constituent_can_refuse_counterterms = {
+	africa_world_constituent_counterterms_are_open = yes
+}
+
+africa_world_package_route_is_grounded = {
+	africa_world_package_is_installed = yes
+	OR = {
+		AND = {
+			has_country_flag = africa_world_middle_east_package
+			OR = {
+				has_country_flag = africa_crossroads_command_settlement_ratified
+				has_country_flag = africa_middle_east_arab_federal_route
+				has_country_flag = africa_middle_east_plural_crossroads_route
+				has_country_flag = africa_middle_east_royal_concert_route
+				has_country_flag = africa_middle_east_socialist_republics_route
+			}
+		}
+		AND = {
+			has_country_flag = africa_world_europe_package
+			OR = {
+				has_country_flag = africa_europe_common_defence_ratified
+				has_country_flag = africa_europe_democratic_federation_route
+				has_country_flag = africa_europe_socialist_union_route
+				has_country_flag = africa_europe_royal_concert_route
+				has_country_flag = africa_europe_continental_command_route
+				has_country_flag = africa_europe_neutral_confederation_route
+			}
+		}
+		AND = {
+			has_country_flag = africa_world_asia_package
+			OR = {
+				has_country_flag = africa_asia_food_river_board_ratified
+				has_country_flag = africa_asia_plural_federation_route
+				has_country_flag = africa_asia_revolutionary_union_route
+				has_country_flag = africa_asia_imperial_congress_route
+				has_country_flag = africa_asia_anti_colonial_front_route
+			}
+		}
+		AND = {
+			has_country_flag = africa_world_north_america_package
+			OR = {
+				has_country_flag = africa_north_america_two_ocean_defence_ratified
+				has_country_flag = africa_north_america_republics_route
+				has_country_flag = africa_north_america_commonwealth_route
+				has_country_flag = africa_north_america_command_route
+				has_country_flag = africa_north_america_socialist_union_route
+			}
+		}
+		AND = {
+			has_country_flag = africa_world_south_america_package
+			OR = {
+				has_country_flag = africa_south_america_resource_debt_law_ratified
+				has_country_flag = africa_south_america_republics_route
+				has_country_flag = africa_south_america_federation_route
+				has_country_flag = africa_south_america_socialist_union_route
+				has_country_flag = africa_south_america_command_route
+				has_country_flag = africa_south_america_royal_concert_route
+			}
+		}
+		AND = {
+			has_country_flag = africa_world_oceania_package
+			OR = {
+				has_country_flag = africa_oceania_pacific_reserve_ratified
+				has_country_flag = africa_oceania_maritime_federation_route
+				has_country_flag = africa_oceania_dominion_route
+				has_country_flag = africa_oceania_indigenous_union_route
+				has_country_flag = africa_oceania_socialist_commonwealth_route
+			}
+		}
+	}
+}
+
+africa_world_package_shared_lanes_are_proven = {
+	africa_world_package_is_installed = yes
+	OR = {
+		AND = {
+			has_country_flag = africa_world_middle_east_package
+			has_country_flag = africa_crossroads_command_settlement_ratified
+			has_country_flag = africa_crossroads_red_sea_nile_treaty_ratified
+			has_country_flag = africa_crossroads_settlement_congress_complete
+		}
+		AND = {
+			has_country_flag = africa_world_europe_package
+			has_country_flag = africa_europe_common_defence_ratified
+			has_country_flag = africa_europe_post_colonial_treaty_ratified
+		}
+		AND = {
+			has_country_flag = africa_world_asia_package
+			has_country_flag = africa_asia_food_river_board_ratified
+			has_country_flag = africa_asia_corridor_settlement_ratified
+			has_country_flag = africa_asia_indian_ocean_partnership_ratified
+		}
+		AND = {
+			has_country_flag = africa_world_north_america_package
+			has_country_flag = africa_north_america_two_ocean_defence_ratified
+			has_country_flag = africa_north_america_islands_settlement_ratified
+			has_country_flag = africa_north_america_africa_diaspora_treaty_ready
+		}
+		AND = {
+			has_country_flag = africa_world_south_america_package
+			has_country_flag = africa_south_america_resource_debt_law_ratified
+			has_country_flag = africa_south_america_continental_defence_settled
+			has_country_flag = africa_south_america_south_atlantic_partnership_ratified
+		}
+		AND = {
+			has_country_flag = africa_world_oceania_package
+			has_country_flag = africa_oceania_pacific_reserve_ratified
+			has_country_flag = africa_oceania_africa_sea_treaty_ratified
+		}
+	}
+}
+
+africa_world_package_crisis_is_resolved = {
+	OR = {
+		check_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+		check_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	}
+}
+
+africa_world_package_ratification_is_proven = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_polity_foundation_initialised
+	africa_world_package_heartland_is_proven = yes
+	africa_world_package_route_is_grounded = yes
+	africa_world_package_crisis_is_resolved = yes
+	africa_world_package_shared_lanes_are_proven = yes
+	has_country_flag = africa_world_package_withdrawal_law_ratified
+	africa_world_package_protocol_pending_is_clear = yes
+	OR = {
+		AND = {
+			check_variable = {
+				var = africa_world_package_external_eligible_count
+				value = constant:africa_world_package_protocol.sparse_external_cutoff
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = africa_world_package_voluntary_external_count
+				value = constant:africa_world_package_protocol.voluntary_external_minimum
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = africa_world_package_external_eligible_count
+				value = constant:africa_world_package_protocol.sparse_external_cutoff
+				compare = less_than
+			}
+			check_variable = {
+				var = africa_world_package_voluntary_external_count
+				value = constant:africa_value.one
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	check_variable = {
+		var = africa_world_package_authority
+		value = constant:africa_world_package_protocol.authority_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_world_package_legitimacy
+		value = constant:africa_world_package_protocol.legitimacy_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = africa_world_package_capacity
+		value = constant:africa_world_package_protocol.capacity_threshold
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = africa_world_package_successor_review_open }
+	NOT = { has_country_flag = africa_world_package_exile_path_open }
+	NOT = { has_country_flag = africa_world_package_breakup_review_open }
+	NOT = { has_country_flag = africa_continental_war_active }
 }
 
 africa_world_package_terminal_resolution_is_proven = {
@@ -224,28 +493,54 @@ africa_world_package_successor_candidate_is_valid = {
 africa_world_constituent_can_consent = {
 	has_country_flag = africa_world_constituent_registered
 	has_country_flag = africa_world_constituent_pending
+	has_country_flag = africa_world_constituent_invitation_pending
 	NOT = { has_country_flag = africa_world_constituent_consented }
 	NOT = { has_country_flag = africa_world_constituent_refused }
 	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { has_country_flag = africa_world_constituent_counterterms_pending }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_notice }
 	is_subject = no
 }
 
 africa_world_constituent_can_coerce = {
 	has_country_flag = africa_world_constituent_registered
 	OR = {
-		has_country_flag = africa_world_constituent_pending
 		has_country_flag = africa_world_constituent_refused
+		has_country_flag = africa_world_constituent_withdrawal_contested
+		has_country_flag = africa_world_constituent_counterterms_rejected
 	}
 	NOT = { has_country_flag = africa_world_constituent_coerced }
 	NOT = { has_country_flag = africa_world_constituent_withdrawn }
 	has_capitulated = no
+	NOT = { has_country_flag = africa_world_package_actor }
+	is_subject = no
+	NOT = { has_war_with = ROOT }
 }
 
 africa_world_constituent_can_withdraw = {
 	has_country_flag = africa_world_constituent_member
 	NOT = { has_country_flag = africa_world_package_actor }
 	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_notice }
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_contested }
 	is_subject = no
+}
+
+africa_world_constituent_can_record_refusal = {
+	has_country_flag = africa_world_constituent_registered
+	OR = {
+		africa_world_constituent_can_consent = yes
+		africa_world_constituent_counterterms_are_open = yes
+	}
+}
+
+africa_world_constituent_can_complete_orderly_withdrawal = {
+	has_country_flag = africa_world_constituent_member
+	has_country_flag = africa_world_constituent_withdrawal_notice
+	NOT = { has_country_flag = africa_world_constituent_withdrawal_contested }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	is_subject = no
+	has_capitulated = no
 }
 
 africa_world_package_successor_resolution_is_possible = {

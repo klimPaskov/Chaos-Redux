@@ -168,6 +168,7 @@ africa_world_order = {
 	package_start_capacity = 25
 	package_major_gain = 20
 	package_minor_gain = 10
+	package_minor_loss = 5
 	package_major_loss = 15
 	package_maximum = 100
 	package_minimum = 0
@@ -239,6 +240,94 @@ africa_world_roster = {
 	withdrawal_authority_loss = -10
 	successor_authority_gain = 10
 	breakup_authority_loss = -20
+}
+
+# The constituent protocol is deliberately shared by package decisions and
+# the package event chain. Keep costs, deadlines, quorum bands, and public
+# legitimacy penalties here so that a package cannot drift between surfaces.
+africa_world_package_protocol = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	invitation_pp_cost = 25
+	counterterm_pp_cost = 35
+	withdrawal_notice_pp_cost = 25
+	withdrawal_accept_pp_cost = 25
+	withdrawal_safeguard_pp_cost = 35
+	withdrawal_contest_pp_cost = 75
+	invitation_response_days = 45
+	withdrawal_window_days = 60
+	authority_threshold = 50
+	legitimacy_threshold = 50
+	capacity_threshold = 50
+	voluntary_external_minimum = 2
+	sparse_external_cutoff = 3
+	refusal_legitimacy_loss = -10
+	refusal_authority_loss = -5
+	coercion_legitimacy_loss = -15
+	withdrawal_legitimacy_loss = -5
+	contested_authority_loss = -10
+	grievance_gain = 15
+	ai_accept = 200
+	ai_negotiate = 100
+	ai_refuse = 25
+	ai_withdrawal_accept = 150
+	ai_withdrawal_safeguard = 100
+	ai_withdrawal_contest = 25
+}
+
+# Public protocol phase values are stored on the package actor. They are
+# intentionally separate from the older focus-step ledger.
+africa_world_package_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	opening_congress = 0
+	constituent_bargaining = 1
+	route_committed = 2
+	shared_lanes = 3
+	ratification = 4
+	sovereign = 5
+	union_convention = 6
+	union_active = 7
+	war_active = 8
+	successor_review = 9
+	breakup_review = 10
+	terminally_resolved = 11
+}
+
+# Crisis outcomes are written by the route-specific W2/W3 event chains and
+# consumed by the shared ratification proof.
+africa_world_package_crisis_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	success = 1
+	compromise = 2
+	failure = 3
+}
+
+# Safeguard variants remain visible in the constituent ledger. The protocol
+# only grants a safeguard after a constituent has opened a counterterm or
+# withdrawal negotiation; this enum does not itself grant membership.
+africa_world_constituent_safeguard = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	local_command = 1
+	resource_veto = 2
+	language_guarantee = 3
+	basing_restriction = 4
 }
 
 africa_world_package_reward = {
