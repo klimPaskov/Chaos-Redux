@@ -68,9 +68,9 @@ The event-log detail body is `chaosx.events_log.window.event_details.tensions_ri
 
 `Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with medium danger and a Calm World minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
 
-## Super-Event
+## Terminal scope
 
-Event 008 has no super-event branch. Stage IV remains a strong non-terminal evolution stage, but it does not set `super_event_visible`, does not set a super-event audio id, and does not set `world_end`.
+Stage IV is Event 008's strongest state and remains non-terminal. It leaves diplomacy under extended alert rather than transitioning into a world-end branch, so the event does not own a super-event package.
 
 ## Achievements
 
@@ -90,9 +90,9 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 - News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/008_tensions_rising/news_event_tensions_red_line.dds`, remains registered as an available news asset; follow-up incidents use the report image instead of a news image.
 - Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
 
-## Boundary Rules
+## System boundary
 
-Event 008 does not add direct war goals, declare wars, create countries, load focus trees, add cores, create formables, fire a super-event, or start a world-end scenario. Its pressure surfaces are world tension, chaos, temporary timer compression, timed opinion damage, follow-up incidents, AI posture ideas, event-log milestones, cluster history, achievements, and rare safe non-transfer border wars.
+Event 008 owns diplomatic pressure: international tension, chaos, temporary crisis pacing, timed relation damage, follow-up reports, AI readiness, event-log milestones, cluster history, achievements, and bounded frontier clashes. Territorial conquest, country creation, national routes, and terminal scenarios remain owned by their dedicated event systems.
 
 ## Future Plans
 

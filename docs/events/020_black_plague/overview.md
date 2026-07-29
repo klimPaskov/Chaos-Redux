@@ -2,6 +2,8 @@
 
 Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live core contract. Additional narrative content and bespoke 3D models remain later production tranches.
 
+The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Doctor Wu remains a separate Event 163 companion registration. Shared completion remains partial: the accepted Diseases cluster and the public Black Plague world-end row are not yet registered, and the paid Rat absorption decision still awaits a design-backed payoff.
+
 ## Natural origin
 
 The natural entry event chooses one eligible mainland state through a weighted ticket pool. It favors population, crowding, underdevelopment, occupation, resistance, troops, refugees, war, ports, railways, and weak protection. Prevention, field hospitals, stability, infrastructure, and response capacity reduce the weight. The chosen state begins Incubating, nearby eligible states begin Threatened, and the system records the historical owner and controller.
@@ -86,8 +88,8 @@ Primary implementation surfaces include:
 
 ## Core-readiness boundary
 
-The scripted core is source-complete for the stabilization tranche. Static audits resolve all Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths. The package includes final runtime icons, country flags and portraits, super-event images, and licensed 44.1 kHz music.
+The scripted core is source-complete for the stabilization tranche. Static audits resolve the Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths covered by that tranche. The package includes final runtime icons, country flags and portraits, super-event images, and licensed 44.1 kHz music.
 
-Later content production remains intentionally separate: bespoke rat 3D units and animations, additional scenario variants, more narrative events, deeper country routes and crises, visible achievement presentation, source-frame UI animation packages, a unique Doctor Wu report image, and a dedicated weapon-delivery icon. These omissions do not leave active gameplay references unresolved.
+Later content production remains intentionally separate: bespoke rat 3D units and animations, additional scenario variants, more narrative events, deeper country routes and crises, visible achievement presentation, source-frame UI animation packages, a unique Doctor Wu report image, and a dedicated weapon-delivery icon. Shared registry work also remains open for the Diseases cluster, the public Black Plague terminal world-end row, and the design-backed Rat absorption payoff.
 
 The full audit and deferral record is `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`.
