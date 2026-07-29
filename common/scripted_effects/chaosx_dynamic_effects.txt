@@ -313,27 +313,6 @@ damage_buildings_in_random_states = {
     # clear_variable = state_population_percent
 }
 
-
-###############################################################################################################
-
-
-# Can take a specified percentage of the state's population and reduce/increase it. Defaults to -0.1% (one thousandth of the population).
-# STATE SCOPE
-modify_state_population_by_percent = {
-    multiply_temp_variable = { state_population_percent = 1000 }
-    if = {
-        limit = { check_variable = { state_population_percent < 1 } }
-        set_temp_variable = { state_population_percent = -1 }
-    }
-
-    set_temp_variable = { pop_loss = state_population_k }
-    multiply_temp_variable = { pop_loss = state_population_percent }
-    log = "Population loss: [?pop_loss]"
-    add_manpower = pop_loss
-}
-
-
-
 ###############################################################################################################
 
 
@@ -446,7 +425,9 @@ get_random_sea_region = {
 
 ###############################################################################################################
 
-clear_special_chaos_country_civilian_effects = { # TODO: add more
+# Reserved cleanup hook for special non-human countries. The whole-world weekly
+# caller remains intentionally disabled until a bounded invocation owns it.
+clear_special_chaos_country_civilian_effects = {
     if = {
         limit = { has_country_flag = mass_panic }
         clr_country_flag = mass_panic

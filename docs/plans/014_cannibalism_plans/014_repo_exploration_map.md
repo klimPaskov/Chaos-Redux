@@ -152,10 +152,7 @@ host.
   `chaos_deaths_target_country = OWNER`, set
   `chaos_deaths_has_target_country = 1`, and call
   `chaos_meter_register_deaths`.
-- At approximately lines 2489-2495 the API applies the corresponding negative
-  state manpower change and updates state deaths. Event 014 must not also call
-  `add_manpower` or `modify_state_population_by_percent` for the same people,
-  or the population will be removed twice.
+- At approximately lines 2489-2495 the API applies the corresponding negative state manpower change and updates state deaths. Event 014 must not also call a second `add_manpower` path for the same people, or the population will be removed twice. No standalone population-only helper belongs in the shared API.
 - `common/scripted_effects/010_death_effects.txt:394-403`
   (`death_register_consumed_population_deaths`) is the nearest exact precedent.
 - The generic percent wrapper

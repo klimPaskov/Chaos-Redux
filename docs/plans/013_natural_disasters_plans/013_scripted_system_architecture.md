@@ -509,7 +509,7 @@ set_variable = {
 
 The Deaths helper's default state cap factor is too restrictive for catastrophic and abnormal disaster paths. Event 013 must calculate a severity-specific cap factor and still respect the shared hard maximum. Family lethality, severity fraction, warning result, preparedness, war, stability, unresolved aftermath, evolution, neighbor falloff, and explicit override all feed the calculated percentage before registration.
 
-Do not use `modify_state_population_by_percent`. Its current dynamic-effect documentation marks Deaths integration as unfinished, so it would create population loss without the required Deaths attribution.
+Event 013 casualties must use the shared Deaths transaction. A standalone population-only helper would bypass required Deaths attribution and does not belong in the shared API.
 
 ## Aftermath card ownership
 

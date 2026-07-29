@@ -23,8 +23,8 @@ Use this registry only for effects with demonstrated call-site breadth across un
 - [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
-- [modify_state_population_by_percent](#modify_state_population_by_percent)
 - [get_random_sea_region](#get_random_sea_region)
+- [clear_special_chaos_country_civilian_effects](#clear_special_chaos_country_civilian_effects)
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [Liberations release coordinator](#liberations-release-coordinator)
 - [apply_crisis_rescue_event_weight_adjustments](#apply_crisis_rescue_event_weight_adjustments)
@@ -637,27 +637,6 @@ set_temp_variable = { percent_of_states_to_target = 0.1 }
 damage_buildings_in_random_states = yes
 ```
 
-## modify_state_population_by_percent
-
-TODO: needs integration with the deaths system
-
-This is a focused state-scope utility for population-to-manpower delta. It converts `state_population_percent` into per-thousand scale, applies fallback behavior when value is too low, computes `pop_loss` from `state_population_k`, then applies it with `add_manpower`. It also logs the computed value for debugging.
-
-Use this when you already have a state scope and only need the population math, without the building-damage pipeline from `damage_buildings_in_random_states`.
-
-Input: `state_population_percent` (optional; decimal fraction like `-0.001`).  
-Fallback behavior: defaults to `-0.001` effective result when unset/too low.  
-Output/result: manpower change on the current state scope and a debug log line.
-
-Example:
-
-```txt
-random_owned_controlled_state = {
- set_temp_variable = { state_population_percent = -0.001 }
- modify_state_population_by_percent = yes
-}
-```
-
 ## get_random_sea_region
 
 This effect picks one sea-region ID from a curated `random_list` and writes it to `global.rand_sea_region`. It is used as a helper before a second step that needs to inject a dynamic region token via `meta_effect`.
@@ -681,6 +660,25 @@ meta_effect = {
 }
 ```
 
+## clear_special_chaos_country_civilian_effects
+
+This country-scope helper removes the `mass_panic` flag and `galaxies_mix` idea from a special non-human country when a bounded caller explicitly invokes it.
+
+Inputs: none.
+
+Side effects: clears only those two civilian effects when present.
+
+The existing `on_weekly` caller remains commented out because it would iterate every country and the cleanup contract is incomplete. The helper is retained as an explicit future hook rather than treated as live periodic infrastructure.
+
+Example:
+
+```txt
+if = {
+	limit = { is_special_chaos_country = yes }
+	clear_special_chaos_country_civilian_effects = yes
+}
+```
+
 ## refresh_world_threat_state
 
 This is the shared global aggregator for the mod-wide world-threat flag. It rebuilds `global.world_threat_source_count` from registered source flags and then sets or clears the global flag `world_in_threat`.
@@ -693,6 +691,7 @@ Use this whenever a threat-specific system changes whether its own source flag s
 - `world_threat_source_fury`
 - `world_threat_source_death`
 - `world_threat_source_cannibalism`
+- `world_threat_source_black_plague`
 - `world_threat_source_resources_found_caves`
 - `world_threat_source_brilliant_scientist`
 

@@ -215,7 +215,7 @@ Event 013 should set, in state scope:
 
 Then call `chaos_meter_register_state_civilian_deaths_percent = yes`.
 
-Do not use `modify_state_population_by_percent` or the population branch inside `damage_buildings_in_random_states` for disaster casualties. Those helpers directly change manpower but bypass the shared Deaths ledger.
+Do not use the population branch inside `damage_buildings_in_random_states` for disaster casualties. It directly changes manpower but bypasses the shared Deaths ledger. No standalone population-only helper belongs in the shared API.
 
 ### New Deaths reason ripple
 

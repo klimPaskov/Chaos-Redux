@@ -20,6 +20,9 @@ Current registered source flags:
 - `world_threat_source_fury`
 - `world_threat_source_death`
 - `world_threat_source_cannibalism`
+- `world_threat_source_black_plague`
+- `world_threat_source_resources_found_caves`
+- `world_threat_source_brilliant_scientist`
 
 Shared aggregate flag:
 
@@ -29,7 +32,7 @@ Shared bookkeeping variable:
 
 - `global.world_threat_source_count`
 
-Note: Currently this mechanic is a placeholder and doesn't actually do anything. Its real effects will be added later.
+The aggregate flag has live consumers. Event 015 uses `world_in_threat` when weighting several narrative choices and an urgent decision response, while other systems may read the individual source flags for source-aware pressure.
 
 ## How it works
 
@@ -63,7 +66,7 @@ Current flow:
 
 This keeps the high-level flag generic and future-proof.
 
-### 3. Zombies Example
+### 3. Source ownership
 
 The zombie source uses `refresh_zombie_world_threat_source` in `common/scripted_effects/002_zombie_outbreak_effects.txt`.
 
@@ -77,7 +80,13 @@ The Death source uses `death_refresh_world_threat_source` in `common/scripted_ef
 
 The Cannibalism source uses `cannibalism_refresh_world_threat_source` in `common/scripted_effects/014_cannibalism_core_effects.txt`. It activates only when the Event 014 system has reached meaningful military scale through multiple warlord countries, a mature international network, the unified Host, or the merged Wendigo route. It clears after those conditions disappear or global Event 014 cleanup completes.
 
-That effect:
+The Black Plague source is refreshed by `black_plague_scenario_refresh_shared_threat` in `common/scripted_effects/020_black_plague_scenario_effects.txt`. It activates for Evolution III, the Rat King state, or the configured established-state threshold, and clears when none of those conditions remain.
+
+The Resources Found source is owned by the Oth-Kesh cave-country lifecycle in `common/scripted_effects/018_resources_found_cave_effects.txt`. It activates when the cave country completes its opening emergence and clears during the matching defeat or global cleanup paths.
+
+The Brilliant Scientist source is owned by `brilliant_scientist_refresh_world_threat_source` in `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`. It uses the project-state threat score and authored reach thresholds, then clears through the matching defeat and cleanup paths.
+
+The zombie refresh:
 
 1. recalculates total zombie strength
 2. recalculates continent presence
@@ -107,6 +116,10 @@ Shared triggers:
 - `has_world_threat_source_fury`
 - `has_world_threat_source_death`
 - `has_world_threat_source_cannibalism`
+- `has_world_threat_source_resources_found_caves`
+- `has_world_threat_source_brilliant_scientist`
+
+The Black Plague source currently has no dedicated public wrapper trigger because no caller requires one; its owner and the aggregate refresh read the source flag directly.
 
 Registered world-end flags under the Mengele source:
 
@@ -128,7 +141,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Zombies, the Holy Realm, Fury, Death, Cannibalism at meaningful military scale, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
+- Zombies, the Holy Realm, Fury, Death, Cannibalism at meaningful military scale, Black Plague, the Oth-Kesh cave-country threat route, Brilliant Scientist project-state escalation, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files
@@ -136,7 +149,14 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/chaosx_dynamic_effects.txt`
 - `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/002_zombie_outbreak_effects.txt`
+- `common/scripted_effects/003_holy_realm_effects.txt`
+- `common/scripted_effects/010_death_effects.txt`
 - `common/scripted_effects/014_cannibalism_core_effects.txt`
+- `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`
+- `common/scripted_effects/018_resources_found_cave_effects.txt`
+- `common/scripted_effects/020_black_plague_scenario_effects.txt`
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 - `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/decisions/002_zombie_outbreak_decisions.txt`
+- `common/decisions/015_utopia_manifesto_decisions.txt`
+- `events/015_utopia_manifesto.txt`
