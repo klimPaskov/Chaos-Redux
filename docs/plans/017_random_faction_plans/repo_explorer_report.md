@@ -469,7 +469,7 @@ These precedents support Event 017's required direction: resolve and validate th
 - `random_scope_in_array` supports a validity limit and is suitable for weighted ticket arrays.
 - Temporary variables are unscoped.
 - Script constants are global but are not accepted by every field. Duration and opinion-value exceptions need documented file constants or an intermediate variable.
-- Scripted GUI cannot read event targets directly, so persistent UI state must use supported variables, flags, arrays, or variable scopes.
+- Scripted GUI can use event targets as scope pointers. Persistent GUI targets must still use the appropriate regular or global lifetime, clear global targets explicitly, and guard against stale or invalid scopes; variables, flags, and arrays remain suitable for non-pointer state.
 
 ## Concrete implementation order
 

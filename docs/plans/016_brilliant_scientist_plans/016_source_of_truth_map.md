@@ -19,14 +19,14 @@ When Event 016 sources disagree, use this order:
 3. The reconciled ten-part specification, matrices, acceptance files, and active prompts under `docs/specs/016_brilliant_scientist_specs/`.
 4. Promoted portions of `016_brilliant_scientist_improvement_loop_addendum.md`.
 5. The repository integration and vanilla precedent handoffs as implementation evidence.
-6. Current gameplay files as evidence of the placeholder baseline only.
+6. Current gameplay files as evidence of the then-current placeholder baseline only.
 7. Superseded prompts and historical planning notes.
 
 Rejected recommendations remain useful evidence of alternatives considered. They do not control inventories or implementation.
 
 ## Current implementation evidence
 
-Event 016 remains a placeholder:
+The following subsection is a 2026-07-14 snapshot. At that snapshot, Event 016 remained a placeholder:
 
 - `events/016_brilliant_scientist.txt` contains the small existing event chain.
 - `common/ideas/016_brilliant_scientist_ideas.txt` contains the existing `+50%` idea rather than the specified opening package.
@@ -34,7 +34,7 @@ Event 016 remains a placeholder:
 - `events/_chaosx_news.txt` contains the existing opening news event.
 - Event 16 is registered in the fire-once system and has base event-name and log-name mappings.
 
-Event 016 remains outside the default-enabled allowlist and gameplay implementation is incomplete. Concurrent gameplay work does not change that completion boundary. The entry event, final lifecycle, Directorate, portfolio, country, focus, AI, achievement, localisation, spreadsheet, and terminal systems still require implementation and audit before any completion claim.
+At that snapshot, Event 016 remained outside the default-enabled allowlist and gameplay implementation was incomplete. The current core-runtime disposition is recorded in `016_core_runtime_handoff_map.md`; do not use this historical paragraph to override that map or to claim whole-event completion.
 
 Two bounded presentation tranches are complete. Six final Event 016-owned WAVs exist at visible IDs `90` through `95`. The exact stage-0 leader or scientist DDS and advisor DDS exist and are registered in `interface/016_brilliant_scientist.gfx`. Later portrait sprite contracts are pre-registered, but their source art and runtime files do not exist.
 

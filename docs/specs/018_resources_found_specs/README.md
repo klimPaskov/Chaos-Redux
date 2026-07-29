@@ -1,5 +1,7 @@
 # Event 018 Resources Found Planning Package
 
+> Documentation reconciliation, 2026-07-29: this package remains the accepted design and provenance source. The implemented static baseline and explicit no-live-engine proof boundary are recorded in [`docs/events/018_resources_found/overview.md`](../../events/018_resources_found/overview.md), [`docs/plans/018_resources_found_plans/documentation_curator_handoff.md`](../../plans/018_resources_found_plans/documentation_curator_handoff.md), and the static acceptance report. The planning-era requirement language below remains useful for design traceability and is not a statement that no implementation exists.
+
 This package is the source design handoff for Chaos Redux Event 018, Resources Found.
 
 The event remains a Minor Repeatable member of the Economy (pos) cluster with Medium member severity. Its ordinary firing is a large strategic-resource discovery. Repeated investment can turn that discovery into a trade center, a concession struggle, a border crisis, a lethal excavation, a public monster emergency, and finally a playable nonhuman cave country. The world-end branch begins only after the cave country consumes a continent and global chaos is above 1000.
