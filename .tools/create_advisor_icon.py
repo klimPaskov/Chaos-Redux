@@ -14,14 +14,16 @@ DDS.
 from __future__ import annotations
 
 import argparse
+import math
 import struct
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageOps
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
 
 CARD_SIZE = (65, 67)
 PORTRAIT_WINDOW = ((10, 8), (40, 8), (40, 56), (11, 57))
+DEFAULT_PORTRAIT_CENTER = (25.0, 32.5)
 MOD_ROOT = Path(__file__).resolve().parent.parent
 ADVISOR_REFERENCE_ROOT = (
 	MOD_ROOT
@@ -52,23 +54,32 @@ def parse_args() -> argparse.Namespace:
 		default=None,
 	)
 	parser.add_argument(
-		"--portrait-offset",
-		type=int,
-		nargs=2,
-		metavar=("X", "Y"),
-		default=None,
-		help="Optional top-left override after rotation.",
-	)
-	parser.add_argument(
 		"--portrait-center",
 		type=float,
 		nargs=2,
 		metavar=("X", "Y"),
-		default=(24.5, 35.5),
-		help="Stable portrait center inside the frame (default: 24.5 35.5).",
+		default=DEFAULT_PORTRAIT_CENTER,
+		help="Stable center of the frame opening (default: 25 32.5).",
 	)
-	parser.add_argument("--portrait-size", type=int, nargs=2, default=(34, 57))
-	parser.add_argument("--rotation", type=float, default=-1.5)
+	parser.add_argument(
+		"--portrait-size",
+		type=int,
+		nargs=2,
+		default=None,
+		metavar=("MIN_WIDTH", "MIN_HEIGHT"),
+		help=(
+			"Optional minimum cover box before rotation. The automatic "
+			"corner-to-corner frame fit remains active and aspect ratio is "
+			"always preserved."
+		),
+	)
+	parser.add_argument("--rotation", type=float, default=-3.0)
+	parser.add_argument(
+		"--portrait-zoom",
+		type=float,
+		default=1.02,
+		help="Extra proportional cover margin after corner fitting (default: 1.02).",
+	)
 	parser.add_argument(
 		"--sepia-strength",
 		type=float,
@@ -86,11 +97,48 @@ def validate_crop(image: Image.Image, crop: tuple[int, int, int, int]) -> None:
 		raise ValueError(f"Crop has no area: {crop}")
 
 
+def calculate_corner_cover_scale(
+	source_size: tuple[int, int],
+	minimum_size: tuple[int, int] | None,
+	center: tuple[float, float],
+	rotation: float,
+	zoom: float,
+) -> float:
+	if zoom < 1.0:
+		raise ValueError("--portrait-zoom must be at least 1.0")
+
+	angle = math.radians(rotation)
+	cosine = math.cos(angle)
+	sine = math.sin(angle)
+	max_local_x = 0.0
+	max_local_y = 0.0
+	for corner_x, corner_y in PORTRAIT_WINDOW:
+		delta_x = corner_x - center[0]
+		delta_y = corner_y - center[1]
+		local_x = cosine * delta_x + sine * delta_y
+		local_y = -sine * delta_x + cosine * delta_y
+		max_local_x = max(max_local_x, abs(local_x))
+		max_local_y = max(max_local_y, abs(local_y))
+
+	scale = max(
+		(2.0 * max_local_x) / source_size[0],
+		(2.0 * max_local_y) / source_size[1],
+	)
+	if minimum_size is not None:
+		minimum_width, minimum_height = minimum_size
+		if minimum_width < 1 or minimum_height < 1:
+			raise ValueError("--portrait-size values must be positive")
+		scale = max(
+			scale,
+			minimum_width / source_size[0],
+			minimum_height / source_size[1],
+		)
+	return scale * zoom
+
+
 def prepare_portrait(
 	source: Image.Image,
 	crop: tuple[int, int, int, int] | None,
-	size: tuple[int, int],
-	rotation: float,
 	sepia_strength: float,
 ) -> Image.Image:
 	if crop is None:
@@ -109,8 +157,40 @@ def prepare_portrait(
 	)
 	portrait = Image.blend(portrait.convert("RGB"), sepia, sepia_strength)
 	portrait.putalpha(alpha)
-	portrait = portrait.resize(size, Image.Resampling.LANCZOS)
-	return portrait.rotate(rotation, Image.Resampling.BICUBIC, expand=True)
+	return portrait
+
+
+def render_portrait_layer(
+	portrait: Image.Image,
+	minimum_size: tuple[int, int] | None,
+	center: tuple[float, float],
+	rotation: float,
+	zoom: float,
+) -> Image.Image:
+	scale = calculate_corner_cover_scale(
+		portrait.size,
+		minimum_size,
+		center,
+		rotation,
+		zoom,
+	)
+	angle = math.radians(rotation)
+	cosine = math.cos(angle)
+	sine = math.sin(angle)
+	inverse_scale = 1.0 / scale
+	a = cosine * inverse_scale
+	b = sine * inverse_scale
+	d = -sine * inverse_scale
+	e = cosine * inverse_scale
+	c = portrait.width / 2.0 - a * center[0] - b * center[1]
+	f = portrait.height / 2.0 - d * center[0] - e * center[1]
+	return portrait.transform(
+		CARD_SIZE,
+		Image.Transform.AFFINE,
+		(a, b, c, d, e, f),
+		resample=Image.Resampling.BICUBIC,
+		fillcolor=(0, 0, 0, 0),
+	)
 
 
 def load_layer(path: Path, label: str) -> Image.Image:
@@ -128,27 +208,41 @@ def compose(
 	frame: Image.Image,
 	paper: Image.Image,
 	crop: tuple[int, int, int, int] | None,
-	offset: tuple[int, int] | None,
 	center: tuple[float, float],
-	size: tuple[int, int],
+	minimum_size: tuple[int, int] | None,
 	rotation: float,
+	zoom: float,
 	sepia_strength: float,
 ) -> Image.Image:
 	card = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
 	card.alpha_composite(frame)
 
-	portrait = prepare_portrait(source, crop, size, rotation, sepia_strength)
-	if offset is None:
-		offset = (
-			round(center[0] - portrait.width / 2),
-			round(center[1] - portrait.height / 2),
-		)
-	portrait_layer = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
-	portrait_layer.alpha_composite(portrait, offset)
+	portrait = prepare_portrait(source, crop, sepia_strength)
+	portrait_layer = render_portrait_layer(
+		portrait,
+		minimum_size,
+		center,
+		rotation,
+		zoom,
+	)
 	window = Image.new("L", CARD_SIZE, 0)
 	ImageDraw.Draw(window).polygon(PORTRAIT_WINDOW, fill=255)
+	frame_footprint = frame.getchannel("A").point(
+		lambda alpha: 255 if alpha > 0 else 0
+	)
+	paper_footprint = paper.getchannel("A").point(
+		lambda alpha: 255 if alpha > 8 else 0
+	)
+	paper_footprint = paper_footprint.filter(ImageFilter.MaxFilter(3))
+	portrait_visibility = ImageChops.subtract(
+		window,
+		ImageChops.lighter(frame_footprint, paper_footprint),
+	)
 	portrait_layer.putalpha(
-		ImageChops.multiply(portrait_layer.getchannel("A"), window)
+		ImageChops.multiply(
+			portrait_layer.getchannel("A"),
+			portrait_visibility,
+		)
 	)
 	card.alpha_composite(portrait_layer)
 	card.alpha_composite(paper)
@@ -204,10 +298,10 @@ def main() -> None:
 		frame,
 		paper,
 		tuple(args.crop) if args.crop is not None else None,
-		tuple(args.portrait_offset) if args.portrait_offset is not None else None,
 		tuple(args.portrait_center),
-		tuple(args.portrait_size),
+		tuple(args.portrait_size) if args.portrait_size is not None else None,
 		args.rotation,
+		args.portrait_zoom,
 		args.sepia_strength,
 	)
 	args.preview.parent.mkdir(parents=True, exist_ok=True)
