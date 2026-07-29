@@ -175,10 +175,11 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 5 }   # SOV COLLAPSE
     add_to_array = { global.fire_once_events = 10 }  # DEATH
     add_to_array = { global.fire_once_events = 11 }  # SECRET ALLIANCE
-    add_to_array = { global.fire_once_events = 12 }  # AFRICA IS ONE PLACEHOLDER
+	add_to_array = { global.fire_once_events = constant:africa_event.id }  # AFRICA
 	add_to_array = { global.fire_once_events = constant:cannibalism_event.id }  # CANNIBALISM
 	add_to_array = { global.fire_once_events = constant:utopia_manifesto_event.id }  # UTOPIA MANIFESTO
 	add_to_array = { global.fire_once_events = constant:brilliant_scientist_event.id }  # BRILLIANT SCIENTIST
+	add_to_array = { global.fire_once_events = constant:doctor_wu_event.id }  # DOCTOR WU
     add_to_array = { global.fire_once_events = 20 }  # BLACK DEATH
     add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
     add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
@@ -560,6 +561,10 @@ evaluate_random_event_active_pool_candidate = {
 					NOT = { brilliant_scientist_automatic_event_is_available = yes }
 				}
 				AND = {
+					check_variable = { event_id = constant:doctor_wu_event.id }
+					NOT = { doctor_wu_automatic_event_is_available = yes }
+				}
+				AND = {
 					check_variable = { event_id = constant:secret_alliance_event.id }
 					NOT = { secret_alliance_automatic_event_is_available = yes }
 				}
@@ -579,7 +584,10 @@ evaluate_random_event_active_pool_candidate = {
 					check_variable = { event_id = constant:independence_wave_event.id }
 					NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
 				}
-				check_variable = { event_id = 12 }
+				AND = {
+					check_variable = { event_id = constant:africa_event.id }
+					NOT = { africa_automatic_event_is_available = yes }
+				}
 				AND = {
 					is_in_array = { global.fired_events = event_id }
 					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
@@ -1092,8 +1100,18 @@ count_unfired_repeatable_events = {
 
 # Count total unique events available
 count_total_events_plus_one = {
-    set_variable = { global.total_events = global.all_events^num }
-    add_to_variable = { global.total_events = 1 }
+	set_variable = { global.total_events = 0 }
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = i
+		set_temp_variable = { event_system_registered_id = global.all_events^i }
+		if = {
+			limit = { check_variable = { event_system_registered_id > global.total_events } }
+			set_variable = { global.total_events = event_system_registered_id }
+		}
+	}
+	add_to_variable = { global.total_events = 1 }
 }
 
 # ============================================================================

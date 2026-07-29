@@ -1,0 +1,236 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE WEAPONIZATION SPECIAL PROJECT
+# ============================================================================
+# Six long prototype phases, three distinct iteration roles per phase, and
+# four in-board policy approaches. The project reuses native biowarfare
+# delivery technology; all content remains abstract and nonprocedural. The
+# prototype-reward threshold schema accepts only literal integers, so its six
+# ranges mirror the shared script constants rather than interpolating them.
+# ============================================================================
+
+black_plague_weaponization_program = {
+	specialization = specialization_biowarfare
+
+	allowed = { }
+	available = { black_plague_weaponization_project_is_available = yes }
+	visible = { black_plague_weaponization_actor_is_valid = yes }
+
+	breakthrough_cost = {
+		specialization_biowarfare = 2
+	}
+
+	icon = GFX_sp_black_plague_weaponization
+	prototype_time = sp_time.prototype.very_long
+
+	resource_cost = {
+		resources = {
+			steel = 8
+			tungsten = 5
+			chromium = 4
+			rubber = 4
+		}
+	}
+
+	complexity = sp_complexity.black_plague_weaponization
+
+	ai_will_do = {
+		base = 0.25
+		modifier = {
+			factor = 0
+			ROOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+		}
+		modifier = {
+			factor = 2
+			ROOT = { has_war = yes }
+		}
+		modifier = {
+			factor = 2
+			ROOT = { black_plague_country_has_active_severe_state = yes }
+		}
+	}
+
+	project_output = {
+		country_effects = {
+			black_plague_weaponization_complete_program = yes
+		}
+		facility_state_effects = {
+			set_state_flag = black_plague_weaponization_facility_history
+		}
+	}
+
+	unique_prototype_rewards = {
+		black_plague_weaponization_phase_one = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 0
+				max = 17
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_field_surveillance
+				default = yes
+				narrative = { name = black_plague_weaponization_role_field_surveillance }
+				iteration_output = {
+					country_effects = {
+						set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.field_surveillance }
+						black_plague_weaponization_apply_iteration_role = yes
+						FROM = { set_project_flag = black_plague_weaponization_role_field_surveillance_done add_project_progress_ratio = constant:sp_progress.gain.low }
+					}
+				}
+			}
+			option = {
+				token = black_plague_weaponization_role_clinical_sampling
+				narrative = { name = black_plague_weaponization_role_clinical_sampling }
+				iteration_output = {
+					country_effects = {
+						set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.clinical_sampling }
+						black_plague_weaponization_apply_iteration_role = yes
+						FROM = { set_project_flag = black_plague_weaponization_role_clinical_sampling_done add_project_progress_ratio = constant:sp_progress.gain.low }
+					}
+				}
+			}
+			option = {
+				token = black_plague_weaponization_role_logistics_mapping
+				narrative = { name = black_plague_weaponization_role_logistics_mapping }
+				iteration_output = {
+					country_effects = {
+						set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.logistics_mapping }
+						black_plague_weaponization_apply_iteration_role = yes
+						FROM = { set_project_flag = black_plague_weaponization_role_logistics_mapping_done add_project_progress_ratio = constant:sp_progress.gain.low }
+					}
+				}
+			}
+		}
+
+		black_plague_weaponization_phase_two = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 17
+				max = 34
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_vector_ecology
+				default = yes
+				narrative = { name = black_plague_weaponization_role_vector_ecology }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.vector_ecology } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_vector_ecology_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_public_health
+				narrative = { name = black_plague_weaponization_role_public_health }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.public_health } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_public_health_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_military_quarantine
+				narrative = { name = black_plague_weaponization_role_military_quarantine }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.military_quarantine } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_military_quarantine_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+		}
+
+		black_plague_weaponization_phase_three = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 34
+				max = 51
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_rail_inspection
+				default = yes
+				narrative = { name = black_plague_weaponization_role_rail_inspection }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.rail_inspection } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_rail_inspection_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_port_security
+				narrative = { name = black_plague_weaponization_role_port_security }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.port_security } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_port_security_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_refugee_tracking
+				narrative = { name = black_plague_weaponization_role_refugee_tracking }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.refugee_tracking } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_refugee_tracking_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+		}
+
+		black_plague_weaponization_phase_four = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 51
+				max = 68
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_countermeasure_modelling
+				default = yes
+				narrative = { name = black_plague_weaponization_role_countermeasure_modelling }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.countermeasure_modelling } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_countermeasure_modelling_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_industrial_protection
+				narrative = { name = black_plague_weaponization_role_industrial_protection }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.industrial_protection } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_industrial_protection_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_foreign_exchange
+				narrative = { name = black_plague_weaponization_role_foreign_exchange }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.foreign_exchange } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_foreign_exchange_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+		}
+
+		black_plague_weaponization_phase_five = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 68
+				max = 85
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_intelligence_theft
+				default = yes
+				narrative = { name = black_plague_weaponization_role_intelligence_theft }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.intelligence_theft } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_intelligence_theft_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_ethics_review
+				narrative = { name = black_plague_weaponization_role_ethics_review }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.ethics_review } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_ethics_review_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_sterilization_engineering
+				narrative = { name = black_plague_weaponization_role_sterilization_engineering }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.sterilization_engineering } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_sterilization_engineering_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+		}
+
+		black_plague_weaponization_phase_six = {
+			icon = GFX_sp_black_plague_weaponization
+			fire_only_once = yes
+			threshold = {
+				min = 85
+				max = 100
+			}
+			weight = { base = 10 }
+			option = {
+				token = black_plague_weaponization_role_burrow_cartography
+				default = yes
+				narrative = { name = black_plague_weaponization_role_burrow_cartography }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.burrow_cartography } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_burrow_cartography_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_royal_cryptography
+				narrative = { name = black_plague_weaponization_role_royal_cryptography }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.royal_cryptography } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_royal_cryptography_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+			option = {
+				token = black_plague_weaponization_role_terminal_campaign
+				narrative = { name = black_plague_weaponization_role_terminal_campaign }
+				iteration_output = { country_effects = { set_temp_variable = { black_plague_weaponization_role = constant:black_plague_evolution_role.terminal_campaign } black_plague_weaponization_apply_iteration_role = yes FROM = { set_project_flag = black_plague_weaponization_role_terminal_campaign_done add_project_progress_ratio = constant:sp_progress.gain.low } } }
+			}
+		}
+	}
+}

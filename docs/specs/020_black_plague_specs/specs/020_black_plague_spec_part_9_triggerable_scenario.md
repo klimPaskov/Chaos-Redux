@@ -25,7 +25,7 @@ The scenario is separate from the Rat King terminal world-end scenario. Manual l
 
 | Field | Planning direction |
 | --- | --- |
-| Scenario catalog ID | next verified free ID, planning candidate `SCN-008` |
+| Scenario catalog ID | `SCN-012` |
 | Working scenario label | Black Plague Unbound |
 | Scenario role | instant global disease and rat-kingdom challenge |
 | Type options | one fixed profile, working label Instant Plague Kingdoms |

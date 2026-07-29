@@ -58,6 +58,7 @@ initialize_triggerable_scenarios_settings = {
 	}
 	triggerable_scenarios_initialize_registry = yes
 	triggerable_scenarios_rebuild_view = yes
+	black_plague_scenario_register_commit_provider = yes
 }
 
 triggerable_scenarios_initialize_registry = {
@@ -153,6 +154,14 @@ triggerable_scenarios_initialize_registry = {
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.black_plague
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.black_plague_name
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
 		value = constant:triggerable_scenario_id.infantry_spawn
 	}
 	add_to_array = {
@@ -177,6 +186,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.black_plague
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.black_plague_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -363,6 +380,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.black_plague
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.black_plague_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.africa_is_one
 		}
 		add_to_array = {
@@ -382,6 +407,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.black_plague
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.black_plague_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -560,6 +593,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.black_plague
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.black_plague_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -1032,6 +1073,16 @@ trigger_selected_chaosx_scenario = {
 			infantry_spawn_scenario_launch_intensity_input = triggerable_scenarios_intensity
 		}
 		infantry_spawn_scenario_launch_unregistered = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.black_plague
+				compare = equals
+			}
+		}
+		black_plague_triggerable_scenario_launch = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }

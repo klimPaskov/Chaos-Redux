@@ -1,0 +1,125 @@
+# ============================================================================
+# CHAOS REDUX - BLACK PLAGUE TRIGGERABLE SCENARIO BRIDGE
+# ============================================================================
+# SCN-012 is available only when the complete Rat Nation/Rat King package and
+# the atomic transaction are present. It never substitutes a disease-only
+# launch and never treats the ordinary Event 020 start as a scenario launch.
+# ============================================================================
+
+black_plague_scenario_rat_country_package_is_ready = {
+	RTA = { exists = yes }
+	RTM = { exists = yes }
+}
+
+black_plague_scenario_rat_king_package_is_ready = {
+	RTX = { exists = yes }
+}
+
+black_plague_scenario_commit_provider_is_ready = {
+	has_global_flag = black_plague_scenario_commit_provider_ready
+}
+
+black_plague_scenario_valid_human_state = {
+	impassable = no
+	NOT = { has_state_category = wasteland }
+	NOT = { has_state_category = enclave }
+	check_variable = { state_population_k > 0 }
+	OWNER = { black_plague_country_is_human_host = yes }
+	CONTROLLER = { black_plague_country_is_human_host = yes }
+}
+
+black_plague_scenario_has_europe = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = europe
+	}
+}
+
+black_plague_scenario_has_asia = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = asia
+	}
+}
+
+black_plague_scenario_has_africa = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = africa
+	}
+}
+
+black_plague_scenario_has_north_america = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = north_america
+	}
+}
+
+black_plague_scenario_has_south_america = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = south_america
+	}
+}
+
+black_plague_scenario_has_australia = {
+	any_state = {
+		black_plague_scenario_valid_human_state = yes
+		is_on_continent = australia
+	}
+}
+
+black_plague_scenario_has_two_eligible_continents = {
+	OR = {
+		AND = { black_plague_scenario_has_europe = yes black_plague_scenario_has_asia = yes }
+		AND = { black_plague_scenario_has_europe = yes black_plague_scenario_has_africa = yes }
+		AND = { black_plague_scenario_has_europe = yes black_plague_scenario_has_north_america = yes }
+		AND = { black_plague_scenario_has_europe = yes black_plague_scenario_has_south_america = yes }
+		AND = { black_plague_scenario_has_europe = yes black_plague_scenario_has_australia = yes }
+		AND = { black_plague_scenario_has_asia = yes black_plague_scenario_has_africa = yes }
+		AND = { black_plague_scenario_has_asia = yes black_plague_scenario_has_north_america = yes }
+		AND = { black_plague_scenario_has_asia = yes black_plague_scenario_has_south_america = yes }
+		AND = { black_plague_scenario_has_asia = yes black_plague_scenario_has_australia = yes }
+		AND = { black_plague_scenario_has_africa = yes black_plague_scenario_has_north_america = yes }
+		AND = { black_plague_scenario_has_africa = yes black_plague_scenario_has_south_america = yes }
+		AND = { black_plague_scenario_has_africa = yes black_plague_scenario_has_australia = yes }
+		AND = { black_plague_scenario_has_north_america = yes black_plague_scenario_has_south_america = yes }
+		AND = { black_plague_scenario_has_north_america = yes black_plague_scenario_has_australia = yes }
+		AND = { black_plague_scenario_has_south_america = yes black_plague_scenario_has_australia = yes }
+	}
+}
+
+black_plague_scenario_has_free_rat_slot = {
+	OR = {
+		NOT = { has_global_flag = black_plague_rat_slot_rta_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtb_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtc_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtd_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rte_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtf_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtg_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rth_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rti_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtj_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtk_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtl_in_use }
+		NOT = { has_global_flag = black_plague_rat_slot_rtm_in_use }
+	}
+}
+
+black_plague_scenario_has_minimum_state_candidates = {
+	any_state = { black_plague_scenario_valid_human_state = yes }
+}
+
+black_plague_scenario_can_launch_from_triggerable_scenarios = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = black_plague_triggerable_scenario_launched }
+	NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+	black_plague_scenario_rat_country_package_is_ready = yes
+	black_plague_scenario_rat_king_package_is_ready = yes
+	black_plague_scenario_commit_provider_is_ready = yes
+	black_plague_scenario_has_two_eligible_continents = yes
+	black_plague_scenario_has_minimum_state_candidates = yes
+	black_plague_scenario_has_free_rat_slot = yes
+}

@@ -63,6 +63,43 @@ black_plague_calculate_current_source_exposure = {
 		limit = { has_global_flag = black_plague_evolution_i_active }
 		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.evolution_i_factor }
 	}
+	if = {
+		limit = { has_state_flag = black_plague_cordon_active }
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.cordon_route_factor }
+	}
+	else_if = {
+		limit = { has_state_flag = black_plague_quarantine_active }
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.quarantine_route_factor }
+	}
+	if = {
+		limit = {
+			has_state_flag = black_plague_transport_purge_active
+			check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.transport_internal_route_factor }
+	}
+	else_if = {
+		limit = {
+			has_state_flag = black_plague_transport_purge_active
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.transport_port_route_factor }
+	}
+	if = {
+		limit = {
+			CONTROLLER = {
+				check_variable = {
+					var = black_plague_countermeasure_progress
+					value = constant:black_plague_response_threshold.countermeasure_spread_bonus
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.countermeasure_source_spread_factor }
+	}
 
 	set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.natural }
 	if = {
@@ -109,6 +146,14 @@ black_plague_adjust_exposure_for_current_target = {
 	subtract_from_temp_variable = { black_plague_exposure_amount = black_plague_target_countermeasure_reduction }
 
 	if = {
+		limit = { has_state_flag = black_plague_cordon_active }
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.cordon_route_factor }
+	}
+	else_if = {
+		limit = { has_state_flag = black_plague_quarantine_active }
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.quarantine_route_factor }
+	}
+	else_if = {
 		limit = { has_state_flag = quarantine_measures_active }
 		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.quarantine_factor }
 	}
@@ -149,6 +194,17 @@ black_plague_adjust_exposure_for_current_target = {
 	}
 	if = {
 		limit = {
+			has_state_flag = black_plague_transport_purge_active
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.refugee_movement }
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.transport_internal_route_factor }
+	}
+	if = {
+		limit = {
 			OR = {
 				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
 				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
@@ -159,6 +215,16 @@ black_plague_adjust_exposure_for_current_target = {
 			}
 		}
 		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.port_inspection_factor }
+	}
+	if = {
+		limit = {
+			has_state_flag = black_plague_transport_purge_active
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.transport_port_route_factor }
 	}
 	round_temp_variable = black_plague_exposure_amount
 	clamp_temp_variable = {

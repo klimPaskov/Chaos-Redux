@@ -1,0 +1,1021 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 RAT NATION AND RAT KING EFFECTS
+# ============================================================================
+# Event-owned finite-pool runtime for Evolutions I-IV. The state scheduler
+# calls black_plague_rat_run_runtime_pulse once per disease pulse; all country
+# work is then limited to the maintained rat-country array. No world on_action
+# or duplicate disease category is introduced here.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Runtime registries and clocks
+# ---------------------------------------------------------------------------
+
+black_plague_rat_initialize_runtime = {
+	if = {
+		limit = { NOT = { has_variable = global.black_plague_rat_runtime_generation } }
+		set_variable = { global.black_plague_rat_runtime_generation = constant:black_plague_value.one }
+		set_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_next_evolution_check_date = global.date }
+		set_variable = { global.black_plague_rat_next_growth_date = global.date }
+		clear_array = global.black_plague_rat_countries
+		clear_array = global.black_plague_rat_king_countries
+		clear_array = global.black_plague_rat_controlled_states
+		clear_array = global.black_plague_rat_occupied_states
+		clr_global_flag = black_plague_rat_king_active
+		clr_global_flag = black_plague_rat_runtime_failure
+		clr_global_flag = black_plague_evolution_i_active
+		clr_global_flag = black_plague_evolution_ii_active
+		clr_global_flag = black_plague_evolution_iii_active
+		clr_global_flag = black_plague_evolution_iv_active
+		clr_global_flag = black_plague_evolution_v_active
+		clr_global_flag = black_plague_evolution_i_recorded
+		clr_global_flag = black_plague_evolution_ii_recorded
+		clr_global_flag = black_plague_evolution_iii_recorded
+		clr_global_flag = black_plague_evolution_iv_recorded
+		clr_global_flag = black_plague_evolution_v_recorded
+	}
+	if = {
+		limit = { NOT = { has_variable = global.black_plague_rat_pool_generation } }
+		set_variable = { global.black_plague_rat_pool_generation = constant:black_plague_value.one }
+	}
+}
+
+black_plague_rat_set_initial_evolution_ready_day = {
+	if = {
+		limit = { NOT = { has_variable = global.black_plague_evolution_i_ready_day } }
+		set_variable = { global.black_plague_evolution_i_ready_day = global.date }
+		add_to_variable = { global.black_plague_evolution_i_ready_day = constant:black_plague_rat_evolution.establishment_days }
+	}
+}
+
+black_plague_rat_schedule_next_evolution_check = {
+	set_temp_variable = { black_plague_rat_evolution_delay_days = constant:black_plague_rat_evolution.check_retry_days }
+	if = {
+		limit = { NOT = { has_global_flag = black_plague_evolution_i_active } }
+		set_temp_variable = { black_plague_rat_evolution_delay_days = mtth:black_plague_rat_evolution_i_interval }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_evolution_ii_active } }
+		set_temp_variable = { black_plague_rat_evolution_delay_days = mtth:black_plague_rat_evolution_ii_interval }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_evolution_iii_active } }
+		set_temp_variable = { black_plague_rat_evolution_delay_days = mtth:black_plague_rat_evolution_iii_interval }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_evolution_iv_active } }
+		set_temp_variable = { black_plague_rat_evolution_delay_days = mtth:black_plague_rat_evolution_iv_interval }
+	}
+	clamp_temp_variable = {
+		var = black_plague_rat_evolution_delay_days
+		min = constant:black_plague_rat_evolution.minimum_interval_days
+		max = constant:black_plague_rat_evolution.maximum_interval_days
+	}
+	set_variable = { global.black_plague_rat_next_evolution_check_date = global.date }
+	add_to_variable = { global.black_plague_rat_next_evolution_check_date = black_plague_rat_evolution_delay_days }
+}
+
+black_plague_rat_schedule_next_growth_pulse = {
+	set_variable = { global.black_plague_rat_next_growth_date = global.date }
+	add_to_variable = { global.black_plague_rat_next_growth_date = constant:black_plague_rat_pool.rat_pulse_days }
+}
+
+black_plague_rat_run_runtime_pulse = {
+	black_plague_rat_initialize_runtime = yes
+	if = {
+		limit = {
+			has_global_flag = black_plague_evolution_iii_active
+			check_variable = {
+				var = global.date
+				value = global.black_plague_rat_next_growth_date
+				compare = greater_than_or_equals
+			}
+		}
+		black_plague_rat_run_country_pulses = yes
+		black_plague_rat_schedule_next_growth_pulse = yes
+	}
+	if = {
+		limit = { has_global_flag = black_plague_evolution_iii_active }
+		black_plague_rat_run_merger_pulses = yes
+	}
+	if = {
+		limit = { has_global_flag = black_plague_rat_king_active }
+		black_plague_rat_king_absorb_one_adjacent_brood = yes
+	}
+	if = {
+		limit = { has_global_flag = black_plague_rat_king_active }
+		RTX = {
+			if = {
+				limit = { exists = yes has_country_flag = black_plague_rat_king_country }
+				add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_pool.king_dominion_pulse_gain }
+				add_to_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_pool.king_sentience_pulse_gain }
+				add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_pool.king_cohesion_pulse_gain }
+				add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_pool.king_hunger_pulse_gain }
+				clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+				clamp_variable = { var = black_plague_rat_king_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+				clamp_variable = { var = black_plague_rat_king_cohesion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+				clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Event Log evolution context
+# ---------------------------------------------------------------------------
+
+black_plague_rat_load_evolution_log_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:black_plague_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:black_plague_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = black_plague_rat_evolution_stage }
+	set_temp_variable = { events_log_evolution_tier = black_plague_rat_evolution_stage }
+	set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.zero }
+	if = {
+		limit = {
+			has_event_target = black_plague_rat_evolution_actor
+			event_target:black_plague_rat_evolution_actor = { exists = yes }
+		}
+		event_target:black_plague_rat_evolution_actor = { save_event_target_as = events_log_evolution_actor }
+		set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.one }
+	}
+}
+
+black_plague_rat_record_current_evolution = {
+	black_plague_rat_load_evolution_log_context = yes
+	if = {
+		limit = { check_variable = { events_log_evolution_has_actor = constant:black_plague_value.one } }
+		record_events_log_evolution_entry = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Finite pool allocation and state selection
+# ---------------------------------------------------------------------------
+
+black_plague_rat_select_free_slot = {
+	set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.zero }
+	if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rta_in_use } }
+		RTA = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rta_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 1 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtb_in_use } }
+		RTB = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtb_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 2 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtc_in_use } }
+		RTC = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtc_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 3 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtd_in_use } }
+		RTD = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtd_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 4 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rte_in_use } }
+		RTE = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rte_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 5 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtf_in_use } }
+		RTF = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtf_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 6 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtg_in_use } }
+		RTG = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtg_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 7 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rth_in_use } }
+		RTH = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rth_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 8 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rti_in_use } }
+		RTI = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rti_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 9 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtj_in_use } }
+		RTJ = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtj_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 10 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtk_in_use } }
+		RTK = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtk_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 11 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtl_in_use } }
+		RTL = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtl_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 12 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+	else_if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtm_in_use } }
+		RTM = { save_event_target_as = black_plague_rat_selected_country }
+		set_global_flag = black_plague_rat_slot_rtm_in_use
+		set_temp_variable = { black_plague_rat_selected_slot = 13 }
+		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+	}
+}
+
+black_plague_rat_select_spawn_state = {
+	set_temp_variable = { black_plague_rat_spawn_state_result = constant:black_plague_value.zero }
+	clear_temp_array = black_plague_rat_spawn_pool
+	for_each_scope_loop = {
+		array = global.black_plague_active_states
+		if = {
+			limit = { black_plague_rat_state_can_spawn = yes }
+			add_to_temp_array = { black_plague_rat_spawn_pool = THIS }
+		}
+	}
+	if = {
+		limit = { check_variable = { black_plague_rat_spawn_pool^num > constant:black_plague_value.zero } }
+		random_scope_in_array = {
+			array = black_plague_rat_spawn_pool
+			save_event_target_as = black_plague_rat_spawn_state
+			set_state_flag = black_plague_rat_spawn_reserved
+			set_temp_variable = { black_plague_rat_spawn_state_result = constant:black_plague_value.one }
+		}
+	}
+	clear_temp_array = black_plague_rat_spawn_pool
+}
+
+# ---------------------------------------------------------------------------
+# Rat Nation country package
+# ---------------------------------------------------------------------------
+
+black_plague_rat_assign_archetype = {
+	clr_country_flag = black_plague_rat_archetype_urban
+	clr_country_flag = black_plague_rat_archetype_field
+	clr_country_flag = black_plague_rat_archetype_dock
+	clr_country_flag = black_plague_rat_archetype_war
+	if = {
+		limit = { event_target:black_plague_rat_spawn_state = { black_plague_rat_state_has_dock_archetype_signal = yes } }
+		set_country_flag = black_plague_rat_archetype_dock
+		set_variable = { black_plague_rat_archetype = constant:black_plague_rat_archetype.dock_brood }
+	}
+	else_if = {
+		limit = { event_target:black_plague_rat_spawn_state = { black_plague_rat_state_has_urban_archetype_signal = yes } }
+		set_country_flag = black_plague_rat_archetype_urban
+		set_variable = { black_plague_rat_archetype = constant:black_plague_rat_archetype.urban_warren }
+	}
+	else_if = {
+		limit = { event_target:black_plague_rat_spawn_state = { black_plague_rat_state_has_war_archetype_signal = yes } }
+		set_country_flag = black_plague_rat_archetype_war
+		set_variable = { black_plague_rat_archetype = constant:black_plague_rat_archetype.war_brood }
+	}
+	else = {
+		set_country_flag = black_plague_rat_archetype_field
+		set_variable = { black_plague_rat_archetype = constant:black_plague_rat_archetype.field_brood }
+	}
+}
+
+black_plague_rat_create_division_template = {
+	if = {
+		limit = { NOT = { has_template = "Rat Brood" } }
+		division_template = {
+			name = "Rat Brood"
+			regiments = {
+				rat_swarm = { x = 0 y = 0 }
+				rat_swarm = { x = 0 y = 1 }
+				rat_swarm = { x = 1 y = 0 }
+				rat_swarm = { x = 1 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Rat Shock Brood" } }
+		division_template = {
+			name = "Rat Shock Brood"
+			regiments = {
+				rat_swarm = { x = 0 y = 0 }
+				rat_swarm = { x = 0 y = 1 }
+				rat_swarm = { x = 0 y = 2 }
+				rat_swarm = { x = 1 y = 0 }
+				rat_swarm = { x = 1 y = 1 }
+				rat_swarm = { x = 1 y = 2 }
+			}
+			support = {
+				rat_tunnelers = { x = 0 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Royal Rat Guard" } }
+		division_template = {
+			name = "Royal Rat Guard"
+			regiments = {
+				rat_brutes = { x = 0 y = 0 }
+				rat_brutes = { x = 0 y = 1 }
+				rat_carrion_guard = { x = 1 y = 0 }
+				rat_carrion_guard = { x = 1 y = 1 }
+				rat_burrowers = { x = 2 y = 0 }
+				rat_burrowers = { x = 2 y = 1 }
+			}
+			support = {
+				rat_tunnelers = { x = 0 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Rat Burrow Column" } }
+		division_template = {
+			name = "Rat Burrow Column"
+			regiments = {
+				rat_burrowers = { x = 0 y = 0 }
+				rat_burrowers = { x = 0 y = 1 }
+				rat_burrowers = { x = 1 y = 0 }
+				rat_burrowers = { x = 1 y = 1 }
+			}
+			support = {
+				rat_tunnelers = { x = 0 y = 0 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Rat Carrion Guard" } }
+		division_template = {
+			name = "Rat Carrion Guard"
+			regiments = {
+				rat_carrion_guard = { x = 0 y = 0 }
+				rat_carrion_guard = { x = 0 y = 1 }
+				rat_carrion_guard = { x = 1 y = 0 }
+				rat_carrion_guard = { x = 1 y = 1 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "Rat Dock Stowaways" } }
+		division_template = {
+			name = "Rat Dock Stowaways"
+			regiments = {
+				rat_dock_stowaways = { x = 0 y = 0 }
+				rat_dock_stowaways = { x = 0 y = 1 }
+				rat_dock_stowaways = { x = 1 y = 0 }
+				rat_dock_stowaways = { x = 1 y = 1 }
+			}
+			support = {
+				rat_tunnelers = { x = 0 y = 0 }
+			}
+		}
+	}
+	country_lock_all_division_template = yes
+	set_division_template_lock = { division_template = "Rat Brood" is_locked = yes }
+	set_division_template_lock = { division_template = "Rat Shock Brood" is_locked = yes }
+	set_division_template_lock = { division_template = "Royal Rat Guard" is_locked = yes }
+	set_division_template_lock = { division_template = "Rat Burrow Column" is_locked = yes }
+	set_division_template_lock = { division_template = "Rat Carrion Guard" is_locked = yes }
+	set_division_template_lock = { division_template = "Rat Dock Stowaways" is_locked = yes }
+	set_division_force_allow_recruiting = { division_template = "Rat Brood" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Rat Shock Brood" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Royal Rat Guard" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Rat Burrow Column" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Rat Carrion Guard" force_allow_recruiting = no }
+	set_division_force_allow_recruiting = { division_template = "Rat Dock Stowaways" force_allow_recruiting = no }
+}
+
+# COUNTRY scope. Origin archetypes receive distinct locked force packages; all
+# variants still use zero manpower and zero normal equipment at creation.
+black_plague_rat_create_archetype_division = {
+	if = {
+		limit = { has_country_flag = black_plague_rat_archetype_dock }
+		create_unit = {
+			division = "name = \"Dock Stowaway Brood\" division_template = \"Rat Dock Stowaways\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00"
+			owner = THIS
+			count = black_plague_rat_starting_divisions
+			allow_spawning_on_enemy_provs = no
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_urban }
+		create_unit = {
+			division = "name = \"Urban Shock Brood\" division_template = \"Rat Shock Brood\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00"
+			owner = THIS
+			count = black_plague_rat_starting_divisions
+			allow_spawning_on_enemy_provs = no
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_war }
+		create_unit = {
+			division = "name = \"Carrion Guard Brood\" division_template = \"Rat Carrion Guard\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00"
+			owner = THIS
+			count = black_plague_rat_starting_divisions
+			allow_spawning_on_enemy_provs = no
+		}
+	}
+	else = {
+		create_unit = {
+			division = "name = \"Burrow Column\" division_template = \"Rat Burrow Column\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00"
+			owner = THIS
+			count = black_plague_rat_starting_divisions
+			allow_spawning_on_enemy_provs = no
+		}
+	}
+}
+
+# COUNTRY scope. Growth pulses preserve the origin package identity.
+black_plague_rat_create_growth_division = {
+	if = {
+		limit = { has_country_flag = black_plague_rat_archetype_dock }
+		create_unit = { division = "name = \"Dock Stowaway Brood\" division_template = \"Rat Dock Stowaways\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = constant:black_plague_rat_pool.reinforcement_batch allow_spawning_on_enemy_provs = no }
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_urban }
+		create_unit = { division = "name = \"Urban Shock Brood\" division_template = \"Rat Shock Brood\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = constant:black_plague_rat_pool.reinforcement_batch allow_spawning_on_enemy_provs = no }
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_war }
+		create_unit = { division = "name = \"Carrion Guard Brood\" division_template = \"Rat Carrion Guard\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = constant:black_plague_rat_pool.reinforcement_batch allow_spawning_on_enemy_provs = no }
+	}
+	else = {
+		create_unit = { division = "name = \"Burrow Column\" division_template = \"Rat Burrow Column\" start_experience_factor = 0.00 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = constant:black_plague_rat_pool.reinforcement_batch allow_spawning_on_enemy_provs = no }
+	}
+}
+
+black_plague_rat_initialize_country = {
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = black_plague_rat_slot_release_pending
+		}
+		clr_country_flag = black_plague_rat_slot_release_pending
+	}
+	set_country_flag = black_plague_rat_country
+	set_country_flag = black_plague_rat_no_normal_recruitment
+	set_country_flag = black_plague_rat_brood_system_active
+	set_country_flag = black_plague_rat_disease_immune
+	set_country_flag = black_plague_rat_plague_immune
+	clr_country_flag = black_plague_rat_country_retired
+	set_variable = { black_plague_rat_slot_id = black_plague_rat_selected_slot }
+	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
+	set_variable = { black_plague_rat_division_count = black_plague_rat_starting_divisions }
+	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_base }
+	set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.undecided }
+	set_variable = { black_plague_rat_last_pulse_date = global.date }
+	set_variable = { black_plague_rat_merger_ready_date = global.date }
+	add_to_variable = { black_plague_rat_merger_ready_date = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+	set_stability = constant:black_plague_rat_pool.starting_stability
+	set_war_support = constant:black_plague_rat_pool.starting_war_support
+	set_research_slots = constant:black_plague_rat_pool.starting_research_slots
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = { democratic = 0 fascism = 0 communism = 0 neutrality = 100 }
+	set_variable = { black_plague_rat_brood_mass_threshold = constant:black_plague_rat_pool.brood_mass_raise_cost }
+	black_plague_rat_assign_archetype = yes
+	black_plague_rat_create_division_template = yes
+	retire_country_leader = yes
+	if = {
+		limit = { has_country_flag = black_plague_rat_archetype_urban }
+		create_country_leader = {
+			name = "The Brood Voice"
+			picture = GFX_portrait_black_plague_rat_urban_brood
+			ideology = despotism
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_field }
+		create_country_leader = {
+			name = "The Brood Voice"
+			picture = GFX_portrait_black_plague_rat_field_brood
+			ideology = despotism
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = black_plague_rat_archetype_dock }
+		create_country_leader = {
+			name = "The Brood Voice"
+			picture = GFX_portrait_black_plague_rat_dock_brood
+			ideology = despotism
+		}
+	}
+	else = {
+		create_country_leader = {
+			name = "The Brood Voice"
+			picture = GFX_portrait_black_plague_rat_war_brood
+			ideology = despotism
+		}
+	}
+	add_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy }
+	load_focus_tree = { tree = black_plague_rat_focus_tree keep_completed = no }
+	add_ai_strategy = { type = template_prio id = rat_swarm value = 2500 }
+	add_ai_strategy = { type = template_prio id = infantry value = -1000 }
+	add_ai_strategy = { type = template_prio id = cavalry value = -1000 }
+	add_ai_strategy = { type = role_ratio id = rat_swarm value = 1 }
+	if = {
+		limit = { NOT = { is_in_array = { array = global.black_plague_rat_countries value = THIS } } }
+		add_to_array = { array = global.black_plague_rat_countries value = THIS }
+		add_to_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one }
+	}
+}
+
+black_plague_rat_calculate_starting_divisions = {
+	set_temp_variable = { black_plague_rat_starting_divisions = constant:black_plague_rat_pool.starting_divisions_minimum }
+	set_temp_variable = { black_plague_rat_population_divisions = state_population_k }
+	divide_temp_variable = { black_plague_rat_population_divisions = constant:black_plague_origin.population_weight_divisor_k }
+	round_temp_variable = black_plague_rat_population_divisions
+	add_to_temp_variable = { black_plague_rat_starting_divisions = black_plague_rat_population_divisions }
+	if = {
+		limit = { black_plague_state_is_collapsed = yes }
+		add_to_temp_variable = { black_plague_rat_starting_divisions = constant:black_plague_rat_pool.starting_divisions_collapsed_bonus }
+	}
+	if = {
+		limit = {
+			has_global_flag = black_plague_triggerable_scenario_bootstrap
+			has_variable = global.black_plague_scenario_division_bonus
+		}
+		add_to_temp_variable = { black_plague_rat_starting_divisions = global.black_plague_scenario_division_bonus }
+	}
+	clamp_temp_variable = {
+		var = black_plague_rat_starting_divisions
+		min = constant:black_plague_rat_pool.starting_divisions_minimum
+		max = constant:black_plague_rat_pool.starting_divisions_maximum
+	}
+}
+
+black_plague_rat_create_from_state = {
+	set_temp_variable = { black_plague_rat_creation_result = constant:black_plague_value.zero }
+	if = {
+		limit = {
+			has_event_target = black_plague_rat_selected_country
+			black_plague_rat_state_can_spawn = yes
+		}
+		OWNER = { save_event_target_as = black_plague_rat_former_owner }
+		CONTROLLER = { save_event_target_as = black_plague_rat_former_controller }
+		black_plague_rat_calculate_starting_divisions = yes
+		set_state_flag = black_plague_rat_spawn_reserved
+		event_target:black_plague_rat_selected_country = {
+			transfer_state = PREV
+			add_state_core = PREV
+			set_capital = { state = event_target:black_plague_rat_spawn_state remember_old_capital = no }
+			black_plague_rat_initialize_country = yes
+		}
+		set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+		set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
+		black_plague_set_current_state_phase = yes
+		set_state_flag = black_plague_rat_nation_state
+		clr_state_flag = black_plague_rat_spawn_reserved
+		if = {
+			limit = { NOT = { is_in_array = { array = global.black_plague_rat_controlled_states value = THIS } } }
+			add_to_array = { array = global.black_plague_rat_controlled_states value = THIS }
+			add_to_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.one }
+		}
+		event_target:black_plague_rat_selected_country = {
+			black_plague_rat_create_archetype_division = yes
+		}
+		if = {
+			limit = {
+				has_event_target = black_plague_rat_former_controller
+				event_target:black_plague_rat_former_controller = {
+					exists = yes
+					black_plague_country_is_human_host = yes
+				}
+			}
+			event_target:black_plague_rat_selected_country = {
+				if = {
+					limit = { NOT = { has_war_with = event_target:black_plague_rat_former_controller } }
+					declare_war_on = { target = event_target:black_plague_rat_former_controller type = annex_everything }
+				}
+			}
+		}
+		set_temp_variable = { black_plague_rat_creation_result = constant:black_plague_value.one }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution III: finite Rat Nation emergence
+# ---------------------------------------------------------------------------
+
+black_plague_rat_calculate_spawn_count = {
+	set_temp_variable = { black_plague_rat_spawn_count = constant:black_plague_rat_pool.minimum_spawn_count }
+	set_temp_variable = { black_plague_rat_spawn_capacity = global.black_plague_established_state_count }
+	divide_temp_variable = { black_plague_rat_spawn_capacity = constant:black_plague_rat_pool.states_per_nation }
+	round_temp_variable = black_plague_rat_spawn_capacity
+	add_to_temp_variable = { black_plague_rat_spawn_count = black_plague_rat_spawn_capacity }
+	clamp_temp_variable = {
+		var = black_plague_rat_spawn_count
+		min = constant:black_plague_rat_pool.minimum_spawn_count
+		max = constant:black_plague_rat_pool.maximum_spawn_count
+	}
+}
+
+black_plague_rat_spawn_finite_pool = {
+	black_plague_rat_calculate_spawn_count = yes
+	for_loop_effect = {
+		start = 0
+		end = black_plague_rat_spawn_count
+		value = black_plague_rat_spawn_index
+		black_plague_rat_select_free_slot = yes
+		if = {
+			limit = {
+				check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+			}
+			black_plague_rat_select_spawn_state = yes
+			if = {
+				limit = { check_variable = { black_plague_rat_spawn_state_result = constant:black_plague_value.one } }
+				event_target:black_plague_rat_spawn_state = { black_plague_rat_create_from_state = yes }
+			}
+			else = {
+				if = { limit = { check_variable = { black_plague_rat_selected_slot = 1 } } clr_global_flag = black_plague_rat_slot_rta_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 2 } } clr_global_flag = black_plague_rat_slot_rtb_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 3 } } clr_global_flag = black_plague_rat_slot_rtc_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 4 } } clr_global_flag = black_plague_rat_slot_rtd_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 5 } } clr_global_flag = black_plague_rat_slot_rte_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 6 } } clr_global_flag = black_plague_rat_slot_rtf_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 7 } } clr_global_flag = black_plague_rat_slot_rtg_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 8 } } clr_global_flag = black_plague_rat_slot_rth_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 9 } } clr_global_flag = black_plague_rat_slot_rti_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 10 } } clr_global_flag = black_plague_rat_slot_rtj_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 11 } } clr_global_flag = black_plague_rat_slot_rtk_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 12 } } clr_global_flag = black_plague_rat_slot_rtl_in_use }
+				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 13 } } clr_global_flag = black_plague_rat_slot_rtm_in_use }
+			}
+		}
+	}
+}
+
+black_plague_rat_activate_evolution_iii = {
+	set_global_flag = black_plague_evolution_iii_active
+	set_global_flag = black_plague_evolution_iii_recorded
+	set_variable = { global.black_plague_evolution_iii_date = global.date }
+	if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } black_plague_rat_spawn_finite_pool = yes }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.black_plague_rat_countries_count
+				value = constant:black_plague_rat_pool.minimum_spawn_count
+				compare = greater_than_or_equals
+			}
+		}
+		if = {
+			limit = { check_variable = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } }
+			for_each_scope_loop = {
+				array = global.black_plague_rat_countries
+				if = {
+					limit = { black_plague_rat_country_is_active = yes }
+					save_event_target_as = black_plague_rat_evolution_actor
+				}
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Rat Nation pulse and non-human reinforcement
+# ---------------------------------------------------------------------------
+
+black_plague_rat_refresh_division_cap = {
+	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_base }
+	set_temp_variable = { black_plague_rat_state_count = num_of_controlled_states }
+	multiply_temp_variable = { black_plague_rat_state_count = constant:black_plague_rat_pool.division_cap_per_state }
+	add_to_variable = { black_plague_rat_division_cap = black_plague_rat_state_count }
+	clamp_variable = {
+		var = black_plague_rat_division_cap
+		min = constant:black_plague_rat_pool.division_cap_base
+		max = constant:black_plague_rat_pool.division_cap_maximum
+	}
+}
+
+black_plague_rat_raise_brood_units = {
+	black_plague_rat_refresh_division_cap = yes
+	if = {
+		limit = { black_plague_rat_country_can_raise_brood = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_raise_cost }
+		black_plague_rat_create_growth_division = yes
+		add_to_variable = { black_plague_rat_division_count = constant:black_plague_rat_pool.reinforcement_batch }
+		set_temp_variable = { black_plague_rat_reinforcement_cooldown_days = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_reinforcement_cooldown days = black_plague_rat_reinforcement_cooldown_days }
+	}
+}
+
+black_plague_rat_process_country_pulse = {
+	if = {
+		limit = { black_plague_rat_country_is_active = yes }
+		black_plague_rat_refresh_division_cap = yes
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_pulse_gain }
+		set_temp_variable = { black_plague_rat_controlled_state_gain = num_of_controlled_states }
+		multiply_temp_variable = { black_plague_rat_controlled_state_gain = constant:black_plague_rat_pool.brood_mass_state_gain }
+		add_to_variable = { black_plague_rat_brood_mass = black_plague_rat_controlled_state_gain }
+		clamp_variable = {
+			var = black_plague_rat_brood_mass
+			min = constant:black_plague_value.minimum
+			max = constant:black_plague_rat_pool.brood_mass_cap
+		}
+		if = { limit = { black_plague_rat_country_can_raise_brood = yes } black_plague_rat_raise_brood_units = yes }
+		if = {
+			limit = {
+				check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_pool.brood_mass_dominance_gate compare = greater_than_or_equals }
+				num_of_controlled_states > constant:black_plague_rat_pool.minimum_states_for_dominance
+			}
+			set_country_flag = black_plague_rat_dominance_ready
+		}
+		set_variable = { black_plague_rat_last_pulse_date = global.date }
+	}
+}
+
+black_plague_rat_run_country_pulses = {
+	for_each_scope_loop = {
+		array = global.black_plague_rat_countries
+		if = { limit = { black_plague_rat_country_is_active = yes } black_plague_rat_process_country_pulse = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Rat-rat dominance and finite-slot retirement
+# ---------------------------------------------------------------------------
+
+black_plague_rat_try_absorb_adjacent_brood = {
+	if = {
+		limit = {
+			black_plague_rat_country_is_active = yes
+			has_country_flag = black_plague_rat_dominance_ready
+			NOT = { has_country_flag = black_plague_rat_merger_lock }
+		}
+		every_owned_state = {
+			limit = { black_plague_state_is_rat_controlled = yes }
+			every_neighbor_state = {
+				limit = {
+					black_plague_rat_state_is_valid_merger_state = yes
+					NOT = { CONTROLLER = { tag = ROOT } }
+				}
+				set_state_flag = black_plague_rat_merger_reserved
+				CONTROLLER = { save_event_target_as = black_plague_rat_merger_source }
+				ROOT = { save_event_target_as = black_plague_rat_merger_recipient }
+				ROOT = {
+					transfer_state = PREV
+					add_state_core = PREV
+					subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_merge_cost }
+					set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+					set_country_flag = { flag = black_plague_rat_merger_lock days = black_plague_rat_merger_cooldown_days }
+				}
+				if = {
+					limit = { has_event_target = black_plague_rat_merger_source has_event_target = black_plague_rat_merger_recipient }
+					event_target:black_plague_rat_merger_source = {
+						transfer_units_fraction = {
+							target = event_target:black_plague_rat_merger_recipient
+							size = 1
+							stockpile_ratio = 0
+							army_ratio = 1
+							navy_ratio = 0
+							air_ratio = 0
+						}
+					}
+				}
+				if = {
+					limit = { has_event_target = black_plague_rat_merger_source }
+					event_target:black_plague_rat_merger_source = {
+						if = { limit = { num_of_controlled_states < 1 } set_country_flag = black_plague_rat_country_retired }
+					}
+				}
+				if = { limit = { has_event_target = black_plague_rat_merger_recipient } event_target:black_plague_rat_merger_recipient = { set_variable = { black_plague_rat_division_count = num_of_divisions } } }
+				clr_state_flag = black_plague_rat_merger_reserved
+			}
+		}
+	}
+}
+
+black_plague_rat_cleanup_retired_country = {
+	if = {
+		limit = {
+			has_country_flag = black_plague_rat_country_retired
+			num_of_controlled_states < 1
+		}
+		clr_country_flag = black_plague_rat_country
+		clr_country_flag = black_plague_rat_brood_system_active
+		clr_country_flag = black_plague_rat_no_normal_recruitment
+		remove_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_dominion }
+		delete_unit_template_and_units = { division_template = "Rat Brood" disband = no }
+		delete_unit_template_and_units = { division_template = "Rat Shock Brood" disband = no }
+		delete_unit_template_and_units = { division_template = "Royal Rat Guard" disband = no }
+		delete_unit_template_and_units = { division_template = "Rat Burrow Column" disband = no }
+		delete_unit_template_and_units = { division_template = "Rat Carrion Guard" disband = no }
+		delete_unit_template_and_units = { division_template = "Rat Dock Stowaways" disband = no }
+		if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 1 compare = equals } } clr_global_flag = black_plague_rat_slot_rta_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 2 compare = equals } } clr_global_flag = black_plague_rat_slot_rtb_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 3 compare = equals } } clr_global_flag = black_plague_rat_slot_rtc_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 4 compare = equals } } clr_global_flag = black_plague_rat_slot_rtd_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 5 compare = equals } } clr_global_flag = black_plague_rat_slot_rte_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 6 compare = equals } } clr_global_flag = black_plague_rat_slot_rtf_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 7 compare = equals } } clr_global_flag = black_plague_rat_slot_rtg_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 8 compare = equals } } clr_global_flag = black_plague_rat_slot_rth_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 9 compare = equals } } clr_global_flag = black_plague_rat_slot_rti_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 10 compare = equals } } clr_global_flag = black_plague_rat_slot_rtj_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 11 compare = equals } } clr_global_flag = black_plague_rat_slot_rtk_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 12 compare = equals } } clr_global_flag = black_plague_rat_slot_rtl_in_use }
+		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 13 compare = equals } } clr_global_flag = black_plague_rat_slot_rtm_in_use }
+		if = { limit = { is_in_array = { array = global.black_plague_rat_countries value = THIS } } remove_from_array = { array = global.black_plague_rat_countries value = THIS } }
+		if = { limit = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
+		set_variable = { black_plague_rat_retirement_date = global.date }
+		add_to_variable = { black_plague_rat_retirement_date = constant:black_plague_rat_pool.retirement_quarantine_days }
+	}
+}
+
+black_plague_rat_run_merger_pulses = {
+	for_each_scope_loop = {
+		array = global.black_plague_rat_countries
+		if = {
+			limit = { black_plague_rat_country_is_active = yes }
+			black_plague_rat_try_absorb_adjacent_brood = yes
+		}
+		if = { limit = { has_country_flag = black_plague_rat_country_retired } black_plague_rat_cleanup_retired_country = yes }
+	}
+}
+
+black_plague_rat_king_absorb_one_adjacent_brood = {
+	if = {
+		limit = {
+			has_global_flag = black_plague_rat_king_active
+			has_global_flag = black_plague_rat_king_grace_period
+			check_variable = {
+				var = global.date
+				value = global.black_plague_rat_king_grace_end_date
+				compare = greater_than_or_equals
+			}
+		}
+		clr_global_flag = black_plague_rat_king_grace_period
+	}
+	if = {
+		limit = { has_global_flag = black_plague_rat_king_active NOT = { has_global_flag = black_plague_rat_king_grace_period } }
+		RTX = { set_variable = { black_plague_rat_king_absorption_count = constant:black_plague_value.zero } }
+		for_each_scope_loop = {
+			array = global.black_plague_rat_countries
+			if = {
+				limit = {
+					black_plague_rat_country_is_active = yes
+					NOT = { has_country_flag = black_plague_rat_king_country }
+				}
+				every_owned_state = {
+					limit = { black_plague_state_is_rat_controlled = yes }
+					every_neighbor_state = {
+						limit = {
+							black_plague_state_is_rat_controlled = yes
+							CONTROLLER = { black_plague_rat_country_is_active = yes }
+							RTX = { check_variable = { var = black_plague_rat_king_absorption_count value = constant:black_plague_value.zero compare = equals } }
+						}
+						set_state_flag = black_plague_rat_king_royal_node
+						set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+						set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
+						black_plague_set_current_state_phase = yes
+						RTX = {
+							transfer_state = PREV
+							add_state_core = PREV
+							set_variable = { black_plague_rat_king_absorption_count = constant:black_plague_value.one }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution IV: sentient Rat King transfer
+# ---------------------------------------------------------------------------
+
+black_plague_rat_select_king_source = {
+	set_temp_variable = { black_plague_rat_best_king_score = constant:black_plague_value.zero }
+	for_each_scope_loop = {
+		array = global.black_plague_rat_countries
+		if = {
+			limit = { black_plague_rat_country_is_active = yes }
+			set_temp_variable = { black_plague_rat_king_score = num_of_controlled_states }
+			multiply_temp_variable = { black_plague_rat_king_score = constant:black_plague_rat_pool.state_share_for_king }
+			add_to_temp_variable = { black_plague_rat_king_score = black_plague_rat_brood_mass }
+			if = {
+				limit = { check_variable = { var = black_plague_rat_king_score value = black_plague_rat_best_king_score compare = greater_than } }
+				set_temp_variable = { black_plague_rat_best_king_score = black_plague_rat_king_score }
+				save_event_target_as = black_plague_rat_king_source
+			}
+		}
+	}
+}
+
+black_plague_rat_initialize_king_country = {
+	set_country_flag = black_plague_rat_king_country
+	set_country_flag = black_plague_rat_no_normal_recruitment
+	set_country_flag = black_plague_rat_king_active
+	set_country_flag = black_plague_rat_disease_immune
+	set_country_flag = black_plague_rat_plague_immune
+	clr_country_flag = black_plague_rat_king_country_retired
+	set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.undecided }
+	set_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_pool.king_dominion_initial }
+	set_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_pool.king_sentience_initial }
+	set_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_pool.king_cohesion_initial }
+	set_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_pool.king_hunger_initial }
+	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
+	set_variable = { black_plague_rat_division_count = num_of_divisions }
+	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_maximum }
+	set_variable = { black_plague_rat_last_pulse_date = global.date }
+	set_stability = constant:black_plague_rat_pool.starting_stability
+	set_war_support = constant:black_plague_rat_pool.starting_war_support
+	set_research_slots = constant:black_plague_rat_pool.starting_research_slots
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = { democratic = 0 fascism = 0 communism = 0 neutrality = 100 }
+	black_plague_rat_create_division_template = yes
+	retire_country_leader = yes
+	create_country_leader = {
+		name = "The Rat King"
+		picture = GFX_portrait_black_plague_rat_king
+		ideology = despotism
+	}
+	add_ideas = { black_plague_rat_king_dominion black_plague_rat_no_civilian_economy }
+	load_focus_tree = { tree = black_plague_rat_king_focus_tree keep_completed = no }
+	add_ai_strategy = { type = template_prio id = rat_swarm value = 3000 }
+	add_ai_strategy = { type = role_ratio id = rat_swarm value = 2 }
+	if = { limit = { NOT = { is_in_array = { array = global.black_plague_rat_king_countries value = THIS } } } add_to_array = { array = global.black_plague_rat_king_countries value = THIS } }
+}
+
+black_plague_rat_select_royal_basin_state = {
+	clear_temp_array = black_plague_rat_royal_basin_pool
+	for_each_scope_loop = {
+		array = global.black_plague_active_states
+		if = {
+			limit = {
+				black_plague_state_is_established = yes
+				NOT = { black_plague_state_is_rat_controlled = yes }
+				CONTROLLER = { black_plague_country_is_human_host = yes }
+				NOT = { has_state_flag = black_plague_rat_royal_basin_reserved }
+			}
+			add_to_temp_array = { black_plague_rat_royal_basin_pool = THIS }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = black_plague_rat_royal_basin_pool^num value = constant:black_plague_value.zero compare = greater_than } }
+		random_scope_in_array = {
+			array = black_plague_rat_royal_basin_pool
+			save_event_target_as = black_plague_rat_royal_basin_state
+			set_state_flag = black_plague_rat_royal_basin_reserved
+		}
+	}
+	clear_temp_array = black_plague_rat_royal_basin_pool
+}
+
+black_plague_rat_transfer_to_king = {
+	if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_king_active } }
+		black_plague_rat_select_royal_basin_state = yes
+		if = {
+			limit = { has_event_target = black_plague_rat_royal_basin_state }
+			RTX = {
+				set_country_flag = black_plague_rat_slot_release_pending
+				set_capital = { state = event_target:black_plague_rat_royal_basin_state remember_old_capital = no }
+				black_plague_rat_initialize_king_country = yes
+			}
+			event_target:black_plague_rat_royal_basin_state = {
+				set_state_flag = black_plague_rat_king_royal_node
+				set_state_flag = black_plague_rat_royal_basin
+				set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+				set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
+				black_plague_set_current_state_phase = yes
+				RTX = { transfer_state = PREV add_state_core = PREV }
+			}
+			set_variable = { global.black_plague_rat_king_grace_end_date = global.date }
+			add_to_variable = { global.black_plague_rat_king_grace_end_date = constant:black_plague_evolution_runtime.royal_grace_period_days }
+			set_global_flag = black_plague_rat_king_grace_period
+			set_global_flag = black_plague_rat_king_active
+			set_global_flag = black_plague_mapmode_dirty
+		}
+		else = {
+			set_global_flag = black_plague_rat_king_activation_failed
+		}
+	}
+}
+
+black_plague_rat_activate_evolution_iv = {
+	set_global_flag = black_plague_evolution_iv_active
+	set_global_flag = black_plague_evolution_iv_recorded
+	set_variable = { global.black_plague_evolution_iv_date = global.date }
+	black_plague_rat_select_king_source = yes
+	if = { limit = { has_event_target = black_plague_rat_king_source } black_plague_rat_transfer_to_king = yes }
+	if = { limit = { has_event_target = black_plague_rat_king_source } event_target:black_plague_rat_king_source = { save_event_target_as = black_plague_rat_evolution_actor } }
+}

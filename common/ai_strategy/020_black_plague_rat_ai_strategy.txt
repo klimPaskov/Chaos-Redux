@@ -1,0 +1,242 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 RAT AI STRATEGIES
+# ============================================================================
+# Runtime profiles are enabled by the country flags set by the Event 020 rat
+# package. The finite pool shares the common profile, while archetype and King
+# profiles bias template selection and front requests without introducing
+# conventional production or diplomacy behavior.
+# ============================================================================
+
+black_plague_rat_common_ai = {
+	allowed = {
+		OR = {
+			original_tag = RTA
+			original_tag = RTB
+			original_tag = RTC
+			original_tag = RTD
+			original_tag = RTE
+			original_tag = RTF
+			original_tag = RTG
+			original_tag = RTH
+			original_tag = RTI
+			original_tag = RTJ
+			original_tag = RTK
+			original_tag = RTL
+			original_tag = RTM
+			original_tag = RTX
+		}
+	}
+	enable = {
+		OR = {
+			has_country_flag = black_plague_rat_country
+			has_country_flag = black_plague_rat_king_country
+		}
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = { type = force_build_armies value = 1000 }
+	ai_strategy = { type = ai_wanted_divisions_factor value = 1000 }
+	ai_strategy = { type = ignore_army_incompetence value = 1000 }
+	ai_strategy = { type = equipment_stockpile_surplus_ratio value = -1000 }
+	ai_strategy = { type = spare_unit_factor value = 100 }
+	ai_strategy = { type = force_concentration_factor value = 100 }
+	ai_strategy = { type = template_prio id = rat_swarm value = 2500 }
+	ai_strategy = { type = template_prio id = infantry value = -1000 }
+	ai_strategy = { type = template_prio id = cavalry value = -1000 }
+	ai_strategy = { type = template_prio id = motorized value = -1000 }
+	ai_strategy = { type = template_prio id = armor value = -1000 }
+	ai_strategy = { type = role_ratio id = rat_swarm value = 1 }
+	ai_strategy = { type = role_ratio id = infantry value = -1000 }
+	ai_strategy = { type = role_ratio id = cavalry value = -1000 }
+	ai_strategy = { type = role_ratio id = motorized value = -1000 }
+	ai_strategy = { type = role_ratio id = armor value = -1000 }
+
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = black_plague_rat_nation_state is_controlled_by = ROOT }
+		ratio = 0
+		priority = 300
+		ordertype = front
+		execution_type = careful
+		execute_order = yes
+		manual_attack = yes
+	}
+
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = { has_state_flag = black_plague_rat_nation_state is_controlled_by = ROOT }
+		value = 300
+	}
+}
+
+black_plague_rat_urban_ai = {
+	allowed = {
+		OR = {
+			original_tag = RTA
+			original_tag = RTB
+			original_tag = RTC
+			original_tag = RTD
+			original_tag = RTE
+			original_tag = RTF
+			original_tag = RTG
+			original_tag = RTH
+			original_tag = RTI
+			original_tag = RTJ
+			original_tag = RTK
+			original_tag = RTL
+			original_tag = RTM
+		}
+	}
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_archetype_urban
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = 400 }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 1 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			has_state_category = city
+		}
+		value = 260
+	}
+}
+
+black_plague_rat_field_ai = {
+	allowed = {
+		OR = {
+			original_tag = RTA
+			original_tag = RTB
+			original_tag = RTC
+			original_tag = RTD
+			original_tag = RTE
+			original_tag = RTF
+			original_tag = RTG
+			original_tag = RTH
+			original_tag = RTI
+			original_tag = RTJ
+			original_tag = RTK
+			original_tag = RTL
+			original_tag = RTM
+		}
+	}
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_archetype_field
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = 300 }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 1 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			NOT = { has_state_category = city }
+		}
+		value = 240
+	}
+}
+
+black_plague_rat_dock_ai = {
+	allowed = {
+		OR = {
+			original_tag = RTA
+			original_tag = RTB
+			original_tag = RTC
+			original_tag = RTD
+			original_tag = RTE
+			original_tag = RTF
+			original_tag = RTG
+			original_tag = RTH
+			original_tag = RTI
+			original_tag = RTJ
+			original_tag = RTK
+			original_tag = RTL
+			original_tag = RTM
+		}
+	}
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_archetype_dock
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = 500 }
+	ai_strategy = { type = role_ratio id = rat_dock_stowaways value = 1 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			is_coastal = yes
+		}
+		value = 300
+	}
+}
+
+black_plague_rat_war_ai = {
+	allowed = {
+		OR = {
+			original_tag = RTA
+			original_tag = RTB
+			original_tag = RTC
+			original_tag = RTD
+			original_tag = RTE
+			original_tag = RTF
+			original_tag = RTG
+			original_tag = RTH
+			original_tag = RTI
+			original_tag = RTJ
+			original_tag = RTK
+			original_tag = RTL
+			original_tag = RTM
+		}
+	}
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_archetype_war
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_brutes value = 500 }
+	ai_strategy = { type = role_ratio id = rat_brutes value = 1 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			black_plague_state_has_army_presence = yes
+		}
+		value = 320
+	}
+}
+
+black_plague_rat_king_ai = {
+	allowed = { original_tag = RTX }
+	enable = { has_country_flag = black_plague_rat_king_country }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_brutes value = 600 }
+	ai_strategy = { type = template_prio id = rat_burrowers value = 450 }
+	ai_strategy = { type = template_prio id = rat_carrion_guard value = 450 }
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = 300 }
+	ai_strategy = { type = role_ratio id = rat_brutes value = 2 }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 1 }
+	ai_strategy = { type = role_ratio id = rat_carrion_guard value = 1 }
+	ai_strategy = {
+		type = front_control
+		state_trigger = { has_state_flag = black_plague_rat_king_royal_node is_controlled_by = ROOT }
+		ratio = 0
+		priority = 500
+		ordertype = front
+		execution_type = careful
+		execute_order = yes
+		manual_attack = yes
+	}
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = { has_state_flag = black_plague_rat_king_royal_node is_controlled_by = ROOT }
+		value = 500
+	}
+}

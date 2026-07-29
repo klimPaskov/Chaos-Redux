@@ -1,0 +1,55 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 RAT EVOLUTION MTTH
+# ============================================================================
+# The event-owned weekly callback consumes these clocks only after the
+# matching chaos gate and eligibility predicate pass. No global on_action is
+# used and no clock can advance a disabled evolution.
+# ============================================================================
+
+black_plague_rat_evolution_i_interval = {
+	base = constant:black_plague_rat_evolution.evolution_i_minimum_days
+	modifier = {
+		factor = 0.75
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = 0.70
+		check_variable = { var = global.black_plague_deaths_total value = constant:black_plague_rat_evolution.evolution_i_deaths_gate compare = greater_than_or_equals }
+	}
+}
+
+black_plague_rat_evolution_ii_interval = {
+	base = constant:black_plague_rat_evolution.evolution_ii_minimum_days
+	modifier = {
+		factor = 0.75
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = 0.70
+		check_variable = { var = global.black_plague_established_state_count value = constant:black_plague_rat_evolution.evolution_ii_established_gate compare = greater_than_or_equals }
+	}
+}
+
+black_plague_rat_evolution_iii_interval = {
+	base = constant:black_plague_rat_evolution.evolution_iii_minimum_days
+	modifier = {
+		factor = 0.80
+		check_variable = { var = global.black_plague_established_state_count value = constant:black_plague_rat_evolution.evolution_iii_established_gate compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = 0.70
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
+	}
+}
+
+black_plague_rat_evolution_iv_interval = {
+	base = constant:black_plague_rat_evolution.evolution_iv_minimum_days
+	modifier = {
+		factor = 0.75
+		check_variable = { var = global.black_plague_rat_countries_count value = constant:black_plague_rat_evolution.minimum_rat_nations_for_king compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = 0.70
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
+	}
+}

@@ -226,6 +226,8 @@ black_plague_initialize_runtime = {
 		set_variable = { global.black_plague_scheduler_ticket = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_pulse_sequence = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_deaths_total = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_starting_world_population_k = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_evolution_v_death_threshold = constant:black_plague_evolution_runtime.minimum_king_deaths_for_v }
 		set_variable = { global.black_plague_active_state_count = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_established_state_count = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_source_state_count = constant:black_plague_value.zero }
@@ -236,6 +238,30 @@ black_plague_initialize_runtime = {
 		clear_array = global.black_plague_affected_countries
 		clear_array = global.black_plague_port_states
 		clear_array = global.black_plague_transport_states
+		clear_array = global.black_plague_response_states
+		clear_array = global.black_plague_response_countries
+		black_plague_evolution_initialize_terminal_targets = yes
+		every_state = {
+			limit = {
+				black_plague_state_can_receive_exposure = yes
+				check_variable = { state_population_k > constant:black_plague_value.zero }
+			}
+			add_to_variable = { global.black_plague_starting_world_population_k = state_population_k }
+		}
+		set_temp_variable = { black_plague_population_threshold_people = global.black_plague_starting_world_population_k }
+		multiply_temp_variable = { black_plague_population_threshold_people = constant:black_plague_value.people_per_thousand }
+		multiply_temp_variable = { black_plague_population_threshold_people = constant:black_plague_evolution_runtime.terminal_death_population_share }
+		round_temp_variable = black_plague_population_threshold_people
+		if = {
+			limit = {
+				check_variable = {
+					var = black_plague_population_threshold_people
+					value = global.black_plague_evolution_v_death_threshold
+					compare = greater_than
+				}
+			}
+			set_variable = { global.black_plague_evolution_v_death_threshold = black_plague_population_threshold_people }
+		}
 		every_state = {
 			limit = { black_plague_state_can_receive_exposure = yes }
 			if = {
@@ -251,6 +277,7 @@ black_plague_initialize_runtime = {
 			}
 		}
 	}
+	black_plague_achievement_initialize_runtime = yes
 }
 
 black_plague_ensure_current_state_values = {
@@ -315,11 +342,29 @@ black_plague_register_current_state = {
 		add_to_array = { array = global.black_plague_monitored_states value = THIS }
 	}
 	if = {
+		limit = { OWNER = { exists = yes } }
+		OWNER = {
+			if = {
+				limit = { NOT = { is_in_array = { array = global.black_plague_affected_countries value = THIS } } }
+				add_to_array = { array = global.black_plague_affected_countries value = THIS }
+				if = {
+					limit = { black_plague_country_is_human_host = yes }
+					black_plague_recompute_country_response_capacity = yes
+				}
+			}
+			set_country_flag = black_plague_crisis_board_available
+		}
+	}
+	if = {
 		limit = { CONTROLLER = { exists = yes } }
 		CONTROLLER = {
 			if = {
 				limit = { NOT = { is_in_array = { array = global.black_plague_affected_countries value = THIS } } }
 				add_to_array = { array = global.black_plague_affected_countries value = THIS }
+				if = {
+					limit = { black_plague_country_is_human_host = yes }
+					black_plague_recompute_country_response_capacity = yes
+				}
 			}
 			set_country_flag = black_plague_crisis_board_available
 		}
@@ -431,6 +476,16 @@ black_plague_set_current_state_phase = {
 					compare = equals
 				}
 			}
+		}
+		if = {
+			limit = {
+				check_variable = { black_plague_next_phase = constant:black_plague_phase.threatened }
+				OR = {
+					check_variable = { black_plague_phase = constant:black_plague_phase.clear }
+					black_plague_state_is_cured = yes
+				}
+			}
+			black_plague_reset_current_state_response_episode = yes
 		}
 		if = {
 			limit = {
@@ -1079,6 +1134,7 @@ black_plague_apply_current_state_mortality_once = {
 }
 
 black_plague_restore_liberated_rat_state_phase = {
+	set_state_flag = black_plague_liberated_rat_state
 	set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.severe_crisis }
 	if = {
 		limit = {
@@ -1248,6 +1304,16 @@ black_plague_process_current_state_pulse = {
 			}
 			black_plague_apply_current_state_response = yes
 		}
+		if = {
+			limit = {
+				CONTROLLER = {
+					exists = yes
+					black_plague_country_is_human_host = yes
+				}
+			}
+			save_event_target_as = black_plague_response_pulse_state
+			CONTROLLER = { country_event = { id = chaosx.nr20.903 } }
+		}
 		black_plague_apply_current_state_mortality_once = yes
 		black_plague_resolve_current_state_transition = yes
 
@@ -1280,6 +1346,7 @@ black_plague_process_current_state_pulse = {
 			limit = { black_plague_state_is_tracked = yes }
 			black_plague_register_current_state = yes
 		}
+		black_plague_achievement_process_state_pulse = yes
 	}
 }
 
@@ -1320,6 +1387,34 @@ black_plague_run_weekly_pulse = {
 		}
 		add_to_variable = { global.black_plague_pulse_sequence = constant:black_plague_value.one }
 		set_global_flag = black_plague_mapmode_dirty
+		clear_temp_array = black_plague_response_country_snapshot
+		for_each_scope_loop = {
+			array = global.black_plague_affected_countries
+			if = {
+				limit = {
+					exists = yes
+					black_plague_country_is_human_host = yes
+				}
+				add_to_temp_array = { black_plague_response_country_snapshot = THIS }
+			}
+		}
+		for_each_scope_loop = {
+			array = global.black_plague_response_countries
+			if = {
+				limit = {
+					exists = yes
+					black_plague_country_is_human_host = yes
+					NOT = { is_in_array = { array = black_plague_response_country_snapshot value = THIS } }
+				}
+				add_to_temp_array = { black_plague_response_country_snapshot = THIS }
+			}
+		}
+		for_each_scope_loop = {
+			array = black_plague_response_country_snapshot
+			country_event = { id = chaosx.nr20.902 }
+		}
+		clear_temp_array = black_plague_response_country_snapshot
+		black_plague_rebuild_response_registries = yes
 		clear_temp_array = black_plague_pulse_state_snapshot
 		for_each_scope_loop = {
 			array = global.black_plague_active_states
@@ -1341,6 +1436,15 @@ black_plague_run_weekly_pulse = {
 		black_plague_rebuild_runtime_counts = yes
 		black_plague_run_spread_phase = yes
 		black_plague_rebuild_runtime_counts = yes
+		black_plague_evolution_runtime_pulse = yes
+		black_plague_rat_run_runtime_pulse = yes
+		black_plague_achievement_process_runtime_pulse = yes
+		black_plague_refresh_air_cleanliness_source = yes
+		black_plague_scenario_refresh_shared_threat = yes
+		if = {
+			limit = { check_variable = { global.disease_containment_board_open_countries^num > constant:black_plague_value.zero } }
+			disease_containment_board_refresh_open_black_plague_boards = yes
+		}
 		if = {
 			limit = { has_global_flag = black_plague_mapmode_dirty }
 			black_plague_refresh_mapmode_once = yes
@@ -1432,6 +1536,10 @@ black_plague_start_natural_outbreak = {
 				black_plague_schedule_next_pulse = yes
 			}
 			set_global_flag = black_plague_natural_outbreak_started
+			if = {
+				limit = { doctor_wu_has_current_host = yes }
+				event_target:doctor_wu_current_host = { black_plague_on_doctor_wu_host_committed = yes }
+			}
 			set_temp_variable = { black_plague_start_result = constant:black_plague_value.one }
 			black_plague_rebuild_runtime_counts = yes
 			black_plague_refresh_mapmode_once = yes

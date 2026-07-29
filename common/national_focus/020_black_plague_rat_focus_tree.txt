@@ -1,0 +1,311 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 RAT NATION FOCUS TREE
+# ============================================================================
+# Four origin archetypes share a single non-human trunk. The branches alter
+# brood growth, occupation, transport infection, and royal eligibility rather
+# than pretending that a Rat Nation has human industry or manpower.
+# ============================================================================
+
+@rat_focus_short = 5
+@rat_focus_normal = 7
+@rat_focus_long = 8
+@rat_focus_ai_factor = 100
+@rat_mass_gain_minor = 10
+@rat_mass_gain_first_warren = 15
+@rat_mass_gain_urban = 20
+@rat_mass_gain_field = 18
+@rat_mass_gain_field_large = 22
+@rat_mass_gain_dock = 16
+@rat_mass_gain_signal = 25
+@rat_mass_gain_royal = 30
+@rat_mass_gain_crown = 35
+@rat_cap_gain_urban = 15
+@rat_cap_gain_urban_large = 20
+@rat_cap_gain_field = 18
+@rat_cap_gain_dock = 14
+@rat_cap_gain_war = 20
+@rat_cap_gain_war_large = 22
+@rat_cap_gain_global = 25
+
+focus_tree = {
+	id = black_plague_rat_focus_tree
+	country = {
+		factor = 0
+		modifier = {
+			add = @rat_focus_ai_factor
+			has_country_flag = black_plague_rat_country
+		}
+	}
+	default = no
+	continuous_focus_position = { x = 30 y = 1000 }
+	initial_show_position = { x = 0 y = 0 }
+
+	focus = {
+		id = black_plague_rat_first_warren
+		icon = GFX_goal_generic_construct_infrastructure
+		cost = @rat_focus_short
+		position = { x = 0 y = 0 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_first_warren_complete
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_first_warren }
+		}
+	}
+	focus = {
+		id = black_plague_rat_listen_to_the_drains
+		icon = GFX_focus_generic_secret_service_agency
+		cost = @rat_focus_short
+		prerequisite = { focus = black_plague_rat_first_warren }
+		position = { x = 0 y = 1 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_drains_mapped
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_minor }
+		}
+	}
+	focus = {
+		id = black_plague_rat_feral_quarantine
+		icon = GFX_goal_generic_fortify_city
+		cost = @rat_focus_short
+		prerequisite = { focus = black_plague_rat_listen_to_the_drains }
+		position = { x = -2 y = 2 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_feral_quarantine
+			add_ideas = black_plague_rat_brood_instinct
+		}
+	}
+	focus = {
+		id = black_plague_rat_no_human_rations
+		icon = GFX_goal_black_plague_rat_urban_warren
+		cost = @rat_focus_short
+		prerequisite = { focus = black_plague_rat_listen_to_the_drains }
+		position = { x = 2 y = 2 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_no_human_rations
+			add_ideas = black_plague_rat_no_civilian_economy
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_urban_warren
+		icon = GFX_goal_generic_construct_civ_factory
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_feral_quarantine }
+		position = { x = -7 y = 3 }
+		available = { has_country_flag = black_plague_rat_archetype_urban }
+		completion_reward = {
+			set_country_flag = black_plague_rat_urban_doctrine
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_urban }
+		}
+	}
+	focus = {
+		id = black_plague_rat_cellar_cities
+		icon = GFX_goal_generic_construct_infrastructure
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_urban_warren }
+		position = { x = -7 y = 4 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_cellar_network
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_urban }
+		}
+	}
+	focus = {
+		id = black_plague_rat_city_breachers
+		icon = GFX_goal_generic_attack_allies
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_cellar_cities }
+		position = { x = -7 y = 5 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_city_breachers
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_urban_large }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_field_brood
+		icon = GFX_goal_generic_construct_infrastructure
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_feral_quarantine }
+		position = { x = -3 y = 3 }
+		available = { has_country_flag = black_plague_rat_archetype_field }
+		completion_reward = {
+			set_country_flag = black_plague_rat_field_doctrine
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_field }
+		}
+	}
+	focus = {
+		id = black_plague_rat_grain_pockets
+		icon = GFX_goal_generic_construct_civ_factory
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_field_brood }
+		position = { x = -3 y = 4 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_grain_pockets
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_field_large }
+		}
+	}
+	focus = {
+		id = black_plague_rat_long_grass_ambush
+		icon = GFX_goal_generic_major_war
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_grain_pockets }
+		position = { x = -3 y = 5 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_long_grass_ambush
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_field }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_dock_brood
+		icon = GFX_goal_black_plague_rat_dock_brood
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_no_human_rations }
+		position = { x = 3 y = 3 }
+		available = { has_country_flag = black_plague_rat_archetype_dock }
+		completion_reward = {
+			set_country_flag = black_plague_rat_dock_doctrine
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_dock }
+		}
+	}
+	focus = {
+		id = black_plague_rat_tide_pipes
+		icon = GFX_goal_generic_construct_infrastructure
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_dock_brood }
+		position = { x = 3 y = 4 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_tide_pipes
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_dock }
+		}
+	}
+	focus = {
+		id = black_plague_rat_wharf_raids
+		icon = GFX_goal_black_plague_rat_dock_brood
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_tide_pipes }
+		position = { x = 3 y = 5 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_wharf_raids
+			set_global_flag = black_plague_overseas_spread_enabled
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_war_brood
+		icon = GFX_goal_generic_army_doctrines
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_no_human_rations }
+		position = { x = 7 y = 3 }
+		available = { has_country_flag = black_plague_rat_archetype_war }
+		completion_reward = {
+			set_country_flag = black_plague_rat_war_doctrine
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_urban_large }
+		}
+	}
+	focus = {
+		id = black_plague_rat_rail_hunters
+		icon = GFX_goal_generic_occupy_start_war
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_war_brood }
+		position = { x = 7 y = 4 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_rail_hunters
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_field }
+		}
+	}
+	focus = {
+		id = black_plague_rat_frontline_burrows
+		icon = GFX_goal_generic_position_armies
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_rail_hunters }
+		position = { x = 7 y = 5 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_frontline_burrows
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_war_large }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_brood_signal
+		icon = GFX_goal_black_plague_rat_brood_signal
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_no_human_rations }
+		position = { x = 0 y = 3 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_brood_signal
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_signal }
+		}
+	}
+	focus = {
+		id = black_plague_rat_four_mouths
+		icon = GFX_goal_generic_alliance
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_brood_signal }
+		position = { x = 0 y = 4 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_four_mouths
+			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.distributed }
+		}
+	}
+	focus = {
+		id = black_plague_rat_choose_a_voice
+		icon = GFX_goal_black_plague_rat_brood_signal
+		cost = @rat_focus_normal
+		prerequisite = { focus = black_plague_rat_four_mouths }
+		position = { x = 0 y = 5 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_voice_chosen
+			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.dominant }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_capped_pulses
+		icon = GFX_focus_generic_manpower
+		cost = @rat_focus_long
+		# Each rat country receives one fixed archetype at emergence, so only one origin terminal can be completed.
+		prerequisite = {
+			focus = black_plague_rat_city_breachers
+			focus = black_plague_rat_long_grass_ambush
+			focus = black_plague_rat_wharf_raids
+			focus = black_plague_rat_frontline_burrows
+		}
+		position = { x = 0 y = 6 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_capped_pulses
+			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_global }
+		}
+	}
+	focus = {
+		id = black_plague_rat_immune_blood
+		icon = GFX_focus_generic_home_defense
+		cost = @rat_focus_long
+		prerequisite = { focus = black_plague_rat_capped_pulses }
+		position = { x = 0 y = 7 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_disease_immune
+			set_country_flag = black_plague_rat_plague_immune
+		}
+	}
+	focus = {
+		id = black_plague_rat_annex_the_weak
+		icon = GFX_goal_black_plague_rat_war_brood
+		cost = @rat_focus_long
+		prerequisite = { focus = black_plague_rat_immune_blood }
+		position = { x = 0 y = 8 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_annex_doctrine
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_royal }
+		}
+	}
+	focus = {
+		id = black_plague_rat_prepare_the_crown
+		icon = GFX_focus_generic_monarchy_1
+		cost = @rat_focus_long
+		prerequisite = { focus = black_plague_rat_annex_the_weak }
+		position = { x = 0 y = 9 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_king_candidate
+			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_crown }
+		}
+	}
+}

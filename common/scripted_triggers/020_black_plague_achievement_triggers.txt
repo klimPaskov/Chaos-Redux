@@ -1,0 +1,237 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 ACHIEVEMENT CONTRACTS
+# ============================================================================
+# Player-facing completion contracts for the fourteen Black Plague
+# achievements. The event-owned pulse writes the historical flags and
+# variables consumed below; no achievement is unlocked merely because Event
+# 020 fired.
+# ============================================================================
+
+black_plague_achievement_is_player = {
+	is_ai = no
+	NOT = { has_country_flag = black_plague_achievement_forced_setup_used }
+	NOT = { has_country_flag = black_plague_achievement_debug_completion_used }
+}
+
+black_plague_achievement_natural_campaign_is_valid = {
+	black_plague_achievement_is_player = yes
+	NOT = { has_global_flag = black_plague_scenario_shortcut_disqualifier }
+	NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+	NOT = { has_global_flag = black_plague_triggerable_scenario_launched }
+	NOT = { has_global_flag = black_plague_triggerable_scenario_history_recorded }
+}
+
+black_plague_achievement_rat_actor_is_player = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	OR = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_king_country
+	}
+}
+
+black_plague_achievement_human_actor_is_player = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+}
+
+black_plague_achievement_first_cordon_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	check_variable = {
+		var = THIS.id
+		value = global.black_plague_achievement_origin_owner_id
+		compare = equals
+	}
+	has_global_flag = black_plague_achievement_origin_cured
+	NOT = { has_global_flag = black_plague_achievement_second_infection_seen }
+	NOT = { has_global_flag = black_plague_achievement_rat_emergence_seen }
+	NOT = { has_global_flag = black_plague_rat_king_active }
+	NOT = { has_country_flag = black_plague_achievement_weaponization_started }
+	has_variable = global.black_plague_achievement_origin_death_limit_people
+	check_variable = {
+		var = global.black_plague_achievement_origin_deaths_people
+		value = global.black_plague_achievement_origin_death_limit_people
+		compare = less_than
+	}
+}
+
+black_plague_achievement_forty_days_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	has_country_flag = black_plague_achievement_corridor_held
+	NOT = { has_country_flag = black_plague_achievement_corridor_reopened_early }
+	NOT = { has_country_flag = black_plague_achievement_corridor_target_infected }
+	has_country_flag = black_plague_achievement_corridor_wartime_seen
+	has_country_flag = black_plague_achievement_corridor_supply_seen
+}
+
+black_plague_achievement_open_roads_closed_graves_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	has_country_flag = black_plague_achievement_first_infected_country
+	has_country_flag = black_plague_achievement_domestic_cure_complete
+	has_global_flag = black_plague_achievement_global_eradication_complete
+	NOT = { has_country_flag = black_plague_achievement_prohibited_restriction_used }
+	NOT = { has_country_flag = black_plague_rat_country }
+	NOT = { has_country_flag = black_plague_rat_king_country }
+	has_variable = black_plague_achievement_country_deaths_people
+	has_variable = black_plague_achievement_open_roads_death_limit_people
+	check_variable = {
+		var = black_plague_achievement_country_deaths_people
+		value = black_plague_achievement_open_roads_death_limit_people
+		compare = less_than
+	}
+}
+
+black_plague_achievement_physician_against_night_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_country_flag = black_plague_achievement_countermeasure_before_evolution_i
+	has_country_flag = black_plague_achievement_domestic_cure_complete
+	has_country_flag = black_plague_achievement_findings_published
+	NOT = { has_country_flag = black_plague_achievement_weaponization_started }
+	NOT = { has_global_flag = black_plague_evolution_i_active }
+	NOT = { has_global_flag = black_plague_evolution_i_recorded }
+}
+
+black_plague_achievement_common_remedy_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_country_flag = black_plague_achievement_global_eradication_contributor
+	has_global_flag = black_plague_achievement_global_eradication_complete
+	has_variable = global.black_plague_achievement_aid_countries_count
+	check_variable = {
+		var = global.black_plague_achievement_aid_countries_count
+		value = constant:black_plague_achievement_threshold.common_remedy_country_count
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = black_plague_weaponization_delivery_history }
+	NOT = { has_country_flag = used_bioweapon }
+	NOT = { has_country_flag = used_unconventional_weapon }
+}
+
+black_plague_achievement_black_glass_cabinet_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_country_flag = black_plague_weaponization_safety_first
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_achievement_stockpile_held
+	has_country_flag = black_plague_achievement_domestic_cure_complete
+	has_global_flag = black_plague_achievement_global_eradication_complete
+	NOT = { has_country_flag = black_plague_achievement_stockpile_lost_before_hold }
+	NOT = { has_country_flag = black_plague_weaponization_accident_history }
+	NOT = { has_country_flag = black_plague_weaponization_delivery_history }
+	NOT = { has_country_flag = used_bioweapon }
+}
+
+black_plague_achievement_physicians_folly_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_country_flag = black_plague_achievement_return_outbreak_recorded
+	has_country_flag = black_plague_achievement_return_outbreak_cured
+	has_country_flag = black_plague_weaponization_delivery_history
+	check_variable = {
+		var = THIS.id
+		value = black_plague_achievement_return_outbreak_owner_id
+		compare = equals
+	}
+	has_capitulated = no
+	NOT = { has_civil_war = yes }
+	NOT = { has_country_flag = black_plague_achievement_government_replaced }
+}
+
+black_plague_achievement_burn_warrens_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_global_flag = black_plague_achievement_rat_nations_cleared_pre_king
+	has_global_flag = black_plague_achievement_burrows_cleared
+	has_global_flag = black_plague_achievement_global_eradication_complete
+	NOT = { has_global_flag = black_plague_rat_king_active }
+	NOT = { has_global_flag = black_plague_evolution_iv_recorded }
+}
+
+black_plague_achievement_no_census_required_is_complete = {
+	black_plague_achievement_rat_actor_is_player = yes
+	has_country_flag = black_plague_rat_country
+	NOT = { has_country_flag = black_plague_rat_king_country }
+	has_country_flag = black_plague_rat_no_normal_recruitment
+	NOT = { has_country_flag = black_plague_rat_normal_manpower_used }
+	NOT = { has_country_flag = black_plague_rat_normal_equipment_used }
+	check_variable = {
+		var = black_plague_achievement_rat_divisions_raised
+		value = constant:black_plague_achievement_threshold.rat_division_count
+		compare = greater_than_or_equals
+	}
+	num_of_controlled_states > constant:black_plague_achievement_threshold.rat_controlled_state_count
+}
+
+black_plague_achievement_one_crown_many_tails_is_complete = {
+	black_plague_achievement_rat_actor_is_player = yes
+	has_country_flag = black_plague_rat_king_country
+	has_global_flag = black_plague_evolution_iv_recorded
+	has_global_flag = black_plague_rat_king_active
+	check_variable = {
+		var = black_plague_achievement_absorbed_rat_nations
+		value = constant:black_plague_achievement_threshold.rat_absorbed_nation_count
+		compare = greater_than_or_equals
+	}
+	NOT = { has_global_flag = black_plague_rat_king_activation_failed }
+}
+
+black_plague_achievement_rat_that_read_is_complete = {
+	black_plague_achievement_rat_actor_is_player = yes
+	has_country_flag = black_plague_rat_king_country
+	has_country_flag = black_plague_rat_brood_council_route
+	has_country_flag = black_plague_rat_king_route_completed
+	check_variable = {
+		var = black_plague_rat_king_sentience
+		value = constant:black_plague_achievement_threshold.rat_sentience_maximum
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_capital_targets_controlled
+		value = constant:black_plague_achievement_threshold.rat_research_capital_count
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_achievement_preserved_human_population_k
+		value = constant:black_plague_achievement_threshold.rat_preserved_human_population_k
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = black_plague_rat_empty_cities_route }
+}
+
+black_plague_achievement_crown_one_continent_is_complete = {
+	black_plague_achievement_rat_actor_is_player = yes
+	has_country_flag = black_plague_rat_king_country
+	has_global_flag = black_plague_evolution_v_recorded
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	NOT = { has_global_flag = world_end }
+	check_variable = {
+		var = global.black_plague_rat_king_best_continent_ratio
+		value = constant:black_plague_achievement_threshold.crown_continent_ratio
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_achievement_pale_sovereign_is_complete = {
+	black_plague_achievement_rat_actor_is_player = yes
+	has_country_flag = black_plague_rat_king_country
+	has_country_flag = black_plague_rat_terminal_sovereign
+	has_global_flag = black_plague_evolution_v_recorded
+	has_global_flag = black_plague_terminal_takeover_complete
+	has_global_flag = world_end_black_plague
+}
+
+black_plague_achievement_doctor_wu_last_call_is_complete = {
+	black_plague_achievement_natural_campaign_is_valid = yes
+	black_plague_country_is_human_host = yes
+	has_country_flag = black_plague_achievement_doctor_wu_link_received
+	has_country_flag = black_plague_achievement_doctor_wu_protocol_after_evolution_ii
+	has_country_flag = black_plague_achievement_doctor_wu_cured_europe
+	OR = {
+		has_country_flag = black_plague_achievement_doctor_wu_cured_asia
+		has_country_flag = black_plague_achievement_doctor_wu_cured_africa
+		has_country_flag = black_plague_achievement_doctor_wu_cured_north_america
+		has_country_flag = black_plague_achievement_doctor_wu_cured_south_america
+		has_country_flag = black_plague_achievement_doctor_wu_cured_australia
+	}
+	NOT = { has_global_flag = black_plague_rat_king_active }
+}

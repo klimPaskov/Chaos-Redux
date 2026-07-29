@@ -6,229 +6,272 @@ defined_text = {
 	name = GetDiseaseContainmentSelectedDiseaseName
 	text = {
 		trigger = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.black_plague } }
-		localisation_key = disease_containment_agent_black_plague
+		localization_key = disease_containment_agent_black_plague
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox } }
-		localisation_key = disease_containment_agent_smallpox
+		localization_key = disease_containment_agent_smallpox
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia } }
-		localisation_key = disease_containment_agent_tularemia
+		localization_key = disease_containment_agent_tularemia
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague } }
-		localisation_key = disease_containment_agent_plague
+		localization_key = disease_containment_agent_plague
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax } }
-		localisation_key = disease_containment_agent_anthrax
+		localization_key = disease_containment_agent_anthrax
 	}
-	text = { localisation_key = disease_containment_agent_none }
+	text = { localization_key = disease_containment_agent_none }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentCountryPhase
 	text = {
+		trigger = { NOT = { disease_containment_board_is_black_plague_selected = yes } }
+		localization_key = disease_containment_country_phase_ordinary
+	}
+	text = {
 		trigger = { check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.recovered } }
-		localisation_key = disease_containment_country_phase_recovered
+		localization_key = disease_containment_country_phase_recovered
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.containment } }
-		localisation_key = disease_containment_country_phase_containment
+		localization_key = disease_containment_country_phase_containment
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.infected } }
-		localisation_key = disease_containment_country_phase_infected
+		localization_key = disease_containment_country_phase_infected
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_country_phase = constant:disease_containment_country_phase.exposed } }
-		localisation_key = disease_containment_country_phase_exposed
+		localization_key = disease_containment_country_phase_exposed
 	}
-	text = { localisation_key = disease_containment_country_phase_prepared }
+	text = { localization_key = disease_containment_country_phase_prepared }
+}
+
+defined_text = {
+	name = GetDiseaseContainmentRegionFilter
+	text = {
+		trigger = {
+			check_variable = { disease_containment_board_region_filter = constant:disease_containment_region_filter.selected_region }
+			has_variable = disease_containment_board_selected_region_id
+		}
+		localization_key = disease_containment_filter_region_selected
+	}
+	text = { localization_key = disease_containment_filter_region_all }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentStatusFilter
 	text = {
 		trigger = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.monitoring } }
-		localisation_key = disease_containment_filter_status_monitoring
+		localization_key = disease_containment_filter_status_monitoring
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.containment } }
-		localisation_key = disease_containment_filter_status_containment
+		localization_key = disease_containment_filter_status_containment
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.active } }
-		localisation_key = disease_containment_filter_status_active
+		localization_key = disease_containment_filter_status_active
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_status_filter = constant:disease_containment_status_filter.critical } }
-		localisation_key = disease_containment_filter_status_critical
+		localization_key = disease_containment_filter_status_critical
 	}
-	text = { localisation_key = disease_containment_filter_all }
+	text = { localization_key = disease_containment_filter_all }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentOwnershipFilter
 	text = {
 		trigger = { check_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.public_foreign } }
-		localisation_key = disease_containment_filter_ownership_foreign
+		localization_key = disease_containment_filter_ownership_foreign
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_ownership_filter = constant:disease_containment_ownership_filter.controlled } }
-		localisation_key = disease_containment_filter_ownership_controlled
+		localization_key = disease_containment_filter_ownership_controlled
 	}
-	text = { localisation_key = disease_containment_filter_ownership_all_visible }
+	text = { localization_key = disease_containment_filter_ownership_all_visible }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentUrgencyFilter
 	text = {
 		trigger = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.critical_only } }
-		localisation_key = disease_containment_filter_urgency_critical
+		localization_key = disease_containment_filter_urgency_critical
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_urgency_filter = constant:disease_containment_urgency_filter.high_or_worse } }
-		localisation_key = disease_containment_filter_urgency_high
+		localization_key = disease_containment_filter_urgency_high
 	}
-	text = { localisation_key = disease_containment_filter_all }
+	text = { localization_key = disease_containment_filter_all }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentBoardStateStatus
 	text = {
-		trigger = { black_plague_state_is_tracked = yes }
-		localisation_key = disease_containment_state_status_black_plague
+		trigger = {
+			ROOT = { disease_containment_board_is_black_plague_selected = yes }
+			black_plague_state_is_tracked = yes
+		}
+		localization_key = disease_containment_state_status_black_plague
 	}
 	text = {
-		trigger = { has_dynamic_modifier = { modifier = smallpox_contaminated_state } }
-		localisation_key = disease_containment_agent_smallpox
+		trigger = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.smallpox } }
+			has_dynamic_modifier = { modifier = smallpox_contaminated_state }
+		}
+		localization_key = disease_containment_agent_smallpox
 	}
 	text = {
-		trigger = { has_dynamic_modifier = { modifier = tularemia_contaminated_state } }
-		localisation_key = disease_containment_agent_tularemia
+		trigger = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.tularemia } }
+			has_dynamic_modifier = { modifier = tularemia_contaminated_state }
+		}
+		localization_key = disease_containment_agent_tularemia
 	}
 	text = {
-		trigger = { has_dynamic_modifier = { modifier = plague_contaminated_state } }
-		localisation_key = disease_containment_agent_plague
+		trigger = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.plague } }
+			has_dynamic_modifier = { modifier = plague_contaminated_state }
+		}
+		localization_key = disease_containment_agent_plague
 	}
 	text = {
-		trigger = { has_dynamic_modifier = { modifier = anthrax_contaminated_state } }
-		localisation_key = disease_containment_agent_anthrax
+		trigger = {
+			ROOT = { check_variable = { disease_containment_selected_disease = constant:disease_containment_agent.anthrax } }
+			has_dynamic_modifier = { modifier = anthrax_contaminated_state }
+		}
+		localization_key = disease_containment_agent_anthrax
 	}
-	text = { localisation_key = disease_containment_agent_none }
+	text = { localization_key = disease_containment_agent_none }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentBoardStateUrgency
 	text = {
 		trigger = { check_variable = { disease_containment_board_urgency = constant:disease_containment_urgency.critical } }
-		localisation_key = disease_containment_urgency_critical
+		localization_key = disease_containment_urgency_critical
 	}
 	text = {
 		trigger = { check_variable = { disease_containment_board_urgency = constant:disease_containment_urgency.high } }
-		localisation_key = disease_containment_urgency_high
+		localization_key = disease_containment_urgency_high
 	}
-	text = { localisation_key = disease_containment_urgency_monitor }
+	text = { localization_key = disease_containment_urgency_monitor }
 }
 
 defined_text = {
 	name = GetBlackPlagueCountermeasureStage
 	text = {
 		trigger = { check_variable = { black_plague_countermeasure_progress = constant:disease_containment_board_value.maximum } }
-		localisation_key = black_plague_countermeasure_stage_complete
+		localization_key = black_plague_countermeasure_stage_complete
 	}
 	text = {
 		trigger = { check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.extreme_band compare = greater_than_or_equals } }
-		localisation_key = black_plague_countermeasure_stage_final
+		localization_key = black_plague_countermeasure_stage_final
 	}
 	text = {
 		trigger = { check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.high_band compare = greater_than_or_equals } }
-		localisation_key = black_plague_countermeasure_stage_advanced
+		localization_key = black_plague_countermeasure_stage_advanced
 	}
 	text = {
 		trigger = { check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.medium_band compare = greater_than_or_equals } }
-		localisation_key = black_plague_countermeasure_stage_fielded
+		localization_key = black_plague_countermeasure_stage_fielded
 	}
 	text = {
 		trigger = { check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.low_band compare = greater_than_or_equals } }
-		localisation_key = black_plague_countermeasure_stage_studied
+		localization_key = black_plague_countermeasure_stage_studied
 	}
-	text = { localisation_key = black_plague_countermeasure_stage_unprepared }
+	text = { localization_key = black_plague_countermeasure_stage_unprepared }
 }
 
 defined_text = {
 	name = GetBlackPlagueEvolutionStatus
 	text = {
 		trigger = { has_global_flag = black_plague_evolution_v_active }
-		localisation_key = black_plague_evolution_status_v
+		localization_key = black_plague_evolution_status_v
 	}
 	text = {
 		trigger = { has_global_flag = black_plague_evolution_iv_active }
-		localisation_key = black_plague_evolution_status_iv
+		localization_key = black_plague_evolution_status_iv
 	}
 	text = {
 		trigger = { has_global_flag = black_plague_evolution_iii_active }
-		localisation_key = black_plague_evolution_status_iii
+		localization_key = black_plague_evolution_status_iii
 	}
 	text = {
 		trigger = { has_global_flag = black_plague_evolution_ii_active }
-		localisation_key = black_plague_evolution_status_ii
+		localization_key = black_plague_evolution_status_ii
 	}
 	text = {
 		trigger = { has_global_flag = black_plague_evolution_i_active }
-		localisation_key = black_plague_evolution_status_i
+		localization_key = black_plague_evolution_status_i
 	}
-	text = { localisation_key = black_plague_evolution_status_baseline }
+	text = { localization_key = black_plague_evolution_status_baseline }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentGlobalSummary
 	text = {
 		trigger = { disease_containment_board_is_black_plague_selected = yes }
-		localisation_key = disease_containment_global_summary_black_plague
+		localization_key = disease_containment_global_summary_black_plague
 	}
-	text = { localisation_key = disease_containment_global_summary_ordinary }
+	text = { localization_key = disease_containment_global_summary_ordinary }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentCountrySummary
 	text = {
 		trigger = { disease_containment_board_is_black_plague_selected = yes }
-		localisation_key = disease_containment_country_summary_black_plague
+		localization_key = disease_containment_country_summary_black_plague
 	}
-	text = { localisation_key = disease_containment_country_summary_ordinary }
+	text = { localization_key = disease_containment_country_summary_ordinary }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentBoardStateEntryDetail
 	text = {
-		trigger = { black_plague_state_is_tracked = yes }
-		localisation_key = disease_containment_state_entry_black_plague
+		trigger = {
+			ROOT = { disease_containment_board_is_black_plague_selected = yes }
+			black_plague_state_is_tracked = yes
+		}
+		localization_key = disease_containment_state_entry_black_plague
 	}
-	text = { localisation_key = disease_containment_state_entry_ordinary }
+	text = { localization_key = disease_containment_state_entry_ordinary }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentBoardStateControllerSummary
-	text = { localisation_key = disease_containment_state_controller_summary }
+	text = { localization_key = disease_containment_state_controller_summary }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentSelectedPrivateValues
 	text = {
 		trigger = { disease_containment_board_is_black_plague_selected = yes }
-		localisation_key = disease_containment_selected_private_black_plague
+		localization_key = disease_containment_selected_private_black_plague
 	}
-	text = { localisation_key = disease_containment_selected_private_ordinary }
+	text = { localization_key = disease_containment_selected_private_ordinary }
 }
 
 defined_text = {
 	name = GetDiseaseContainmentSelectedPublicValues
 	text = {
 		trigger = { disease_containment_board_is_black_plague_selected = yes }
-		localisation_key = disease_containment_selected_public_black_plague
+		localization_key = disease_containment_selected_public_black_plague
 	}
-	text = { localisation_key = disease_containment_selected_public_ordinary }
+	text = { localization_key = disease_containment_selected_public_ordinary }
+}
+
+defined_text = {
+	name = GetDiseaseContainmentSelectedBlackPlagueMetrics
+	text = {
+		trigger = { disease_containment_board_view_state_has_private_access = yes }
+		localization_key = disease_containment_selected_private_black_plague
+	}
+	text = { localization_key = disease_containment_selected_public_black_plague }
 }

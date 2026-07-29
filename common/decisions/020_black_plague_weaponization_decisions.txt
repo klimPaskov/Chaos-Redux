@@ -1,0 +1,168 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE WEAPONIZATION DECISIONS
+# ============================================================================
+# The four project postures and the native plague-bomb delivery action live
+# inside the shared disease-containment category. No dedicated Black Plague
+# category is created; the existing disease board remains the single surface.
+# ============================================================================
+
+chaosx_disease_containment_category = {
+	black_plague_weaponization_safety_first = {
+		name = black_plague_weaponization_safety_first
+		desc = black_plague_weaponization_safety_first_desc
+		icon = GFX_decision_black_plague_weapon_safety_first
+		visible = { black_plague_weaponization_project_is_active = yes }
+		available = {
+			black_plague_weaponization_can_choose_approach = yes
+			NOT = {
+				OR = {
+					has_decision = black_plague_weaponization_military_acceleration
+					has_decision = black_plague_weaponization_dual_use
+					has_decision = black_plague_weaponization_defensive_conversion
+				}
+			}
+		}
+		cancel_trigger = { NOT = { black_plague_weaponization_approach_can_continue = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
+		custom_cost_text = black_plague_weaponization_approach_cost
+		days_remove = constant:black_plague_weaponization_program.approach_duration_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.delivery_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_safety_first_effect
+			hidden_effect = { black_plague_weaponization_choose_safety_first = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.approach
+			modifier = { factor = constant:black_plague_weaponization_ai.defensive_factor has_government = democratic }
+			modifier = { factor = constant:black_plague_weaponization_ai.active_outbreak_factor black_plague_country_has_active_severe_state = yes }
+		}
+	}
+
+	black_plague_weaponization_military_acceleration = {
+		name = black_plague_weaponization_military_acceleration
+		desc = black_plague_weaponization_military_acceleration_desc
+		icon = GFX_decision_black_plague_weapon_military_acceleration
+		visible = { black_plague_weaponization_project_is_active = yes }
+		available = {
+			black_plague_weaponization_can_choose_approach = yes
+			NOT = {
+				OR = {
+					has_decision = black_plague_weaponization_safety_first
+					has_decision = black_plague_weaponization_dual_use
+					has_decision = black_plague_weaponization_defensive_conversion
+				}
+			}
+		}
+		cancel_trigger = { NOT = { black_plague_weaponization_approach_can_continue = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
+		custom_cost_text = black_plague_weaponization_approach_cost
+		days_remove = constant:black_plague_weaponization_program.approach_duration_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.delivery_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_military_acceleration_effect
+			hidden_effect = { black_plague_weaponization_choose_military_acceleration = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.approach
+			modifier = { factor = constant:black_plague_weaponization_ai.war_factor has_war = yes }
+			modifier = { factor = constant:black_plague_weaponization_ai.active_outbreak_factor black_plague_country_has_active_severe_state = yes }
+		}
+	}
+
+	black_plague_weaponization_dual_use = {
+		name = black_plague_weaponization_dual_use
+		desc = black_plague_weaponization_dual_use_desc
+		icon = GFX_decision_black_plague_weapon_dual_use
+		visible = { black_plague_weaponization_project_is_active = yes }
+		available = {
+			black_plague_weaponization_can_choose_approach = yes
+			NOT = {
+				OR = {
+					has_decision = black_plague_weaponization_safety_first
+					has_decision = black_plague_weaponization_military_acceleration
+					has_decision = black_plague_weaponization_defensive_conversion
+				}
+			}
+		}
+		cancel_trigger = { NOT = { black_plague_weaponization_approach_can_continue = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
+		custom_cost_text = black_plague_weaponization_approach_cost
+		days_remove = constant:black_plague_weaponization_program.approach_duration_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.delivery_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_dual_use_effect
+			hidden_effect = { black_plague_weaponization_choose_dual_use = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.approach
+			modifier = { factor = constant:black_plague_weaponization_ai.active_outbreak_factor black_plague_country_has_active_severe_state = yes }
+		}
+	}
+
+	black_plague_weaponization_defensive_conversion = {
+		name = black_plague_weaponization_defensive_conversion
+		desc = black_plague_weaponization_defensive_conversion_desc
+		icon = GFX_decision_black_plague_weapon_defensive_conversion
+		visible = { black_plague_weaponization_project_is_active = yes }
+		available = {
+			black_plague_weaponization_can_choose_approach = yes
+			NOT = {
+				OR = {
+					has_decision = black_plague_weaponization_safety_first
+					has_decision = black_plague_weaponization_military_acceleration
+					has_decision = black_plague_weaponization_dual_use
+				}
+			}
+		}
+		cancel_trigger = { NOT = { black_plague_weaponization_approach_can_continue = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_choose_approach = yes }
+		custom_cost_text = black_plague_weaponization_approach_cost
+		days_remove = constant:black_plague_weaponization_program.approach_duration_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.delivery_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_defensive_conversion_effect
+			hidden_effect = { black_plague_weaponization_choose_defensive_conversion = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.approach
+			modifier = { factor = constant:black_plague_weaponization_ai.defensive_factor has_government = democratic }
+			modifier = { factor = constant:black_plague_weaponization_ai.defensive_factor NOT = { has_war = yes } }
+		}
+	}
+
+	black_plague_weaponization_deliver_payload = {
+		name = black_plague_weaponization_deliver_payload
+		desc = black_plague_weaponization_deliver_payload_desc
+		icon = GFX_decision_black_plague_weapon_delivery
+		state_target = any_state
+		on_map_mode = decision_view_only
+		visible = { black_plague_weaponization_delivery_is_ready = yes }
+		target_root_trigger = { black_plague_weaponization_delivery_is_ready = yes }
+		target_trigger = { FROM = { black_plague_weaponization_delivery_state_is_valid = yes } }
+		available = {
+			black_plague_weaponization_delivery_is_ready = yes
+			FROM = { black_plague_weaponization_delivery_state_is_valid = yes }
+			NOT = { has_decision = black_plague_weaponization_deliver_payload }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_weaponization_delivery_is_ready = yes }
+				FROM = { NOT = { black_plague_weaponization_delivery_state_is_valid = yes } }
+			}
+		}
+		custom_cost_trigger = { black_plague_weaponization_delivery_is_ready = yes }
+		custom_cost_text = black_plague_weaponization_delivery_cost
+		days_remove = constant:black_plague_weaponization_program.delivery_duration_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.delivery_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_deliver_payload_effect
+			hidden_effect = { black_plague_weaponization_deliver_to_state = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.delivery
+			modifier = { factor = constant:black_plague_weaponization_ai.war_factor has_war = yes }
+			modifier = { factor = constant:black_plague_weaponization_ai.active_outbreak_factor FROM = { black_plague_state_is_infected_or_worse = yes } }
+			modifier = { factor = 0 FROM = { black_plague_state_is_rat_controlled = yes } }
+		}
+	}
+}

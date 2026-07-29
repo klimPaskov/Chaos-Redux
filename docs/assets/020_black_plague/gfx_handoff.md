@@ -1,25 +1,15 @@
-# Event 020 Black Plague response decision-icon GFX handoff
+# Event 020 Rat identity sprite handoff
 
-The parent implementation owner should keep the existing sprite declarations in `interface/020_black_plague_response.gfx` and verify only the runtime files listed below. No `.gfx` or gameplay file was edited in this asset tranche.
+Runtime-ready DDS and TGA paths are recorded in `rat_identity_asset_manifest.md`. The main agent should add the sprite definitions to the existing Event 020 or shared asset `.gfx` files; this asset tranche does not edit `.gfx` or gameplay files.
 
-```txt
-spriteTypes = {
-	spriteType = { name = "GFX_decision_black_plague_medical_reserve" texturefile = "gfx/interface/decisions/020_black_plague/decision_medical_reserve.dds" }
-	spriteType = { name = "GFX_decision_black_plague_clean_city_rats" texturefile = "gfx/interface/decisions/020_black_plague/decision_clean_city_rats.dds" }
-	spriteType = { name = "GFX_decision_black_plague_seal_food_stores" texturefile = "gfx/interface/decisions/020_black_plague/decision_seal_food_stores.dds" }
-	spriteType = { name = "GFX_decision_black_plague_clear_sewers" texturefile = "gfx/interface/decisions/020_black_plague/decision_clear_sewers.dds" }
-	spriteType = { name = "GFX_decision_black_plague_flea_control" texturefile = "gfx/interface/decisions/020_black_plague/decision_flea_control.dds" }
-	spriteType = { name = "GFX_decision_black_plague_transport_purge" texturefile = "gfx/interface/decisions/020_black_plague/decision_transport_purge.dds" }
-	spriteType = { name = "GFX_decision_black_plague_demolition" texturefile = "gfx/interface/decisions/020_black_plague/decision_demolition.dds" }
-	spriteType = { name = "GFX_decision_black_plague_emergency_hospital" texturefile = "gfx/interface/decisions/020_black_plague/decision_emergency_hospital.dds" }
-	spriteType = { name = "GFX_decision_black_plague_quarantine" texturefile = "gfx/interface/decisions/020_black_plague/decision_quarantine.dds" }
-	spriteType = { name = "GFX_decision_black_plague_cordon" texturefile = "gfx/interface/decisions/020_black_plague/decision_cordon.dds" }
-	spriteType = { name = "GFX_decision_black_plague_treatment_reserves" texturefile = "gfx/interface/decisions/020_black_plague/decision_treatment_reserves.dds" }
-	spriteType = { name = "GFX_decision_black_plague_warren_purge" texturefile = "gfx/interface/decisions/020_black_plague/decision_warren_purge.dds" }
-	spriteType = { name = "GFX_decision_black_plague_countermeasure_program" texturefile = "gfx/interface/decisions/020_black_plague/decision_countermeasure_program.dds" }
-	spriteType = { name = "GFX_decision_black_plague_doctor_wu_protocol" texturefile = "gfx/interface/decisions/020_black_plague/decision_doctor_wu_protocol.dds" }
-	spriteType = { name = "GFX_decision_black_plague_doctor_wu_foreign_access" texturefile = "gfx/interface/decisions/020_black_plague/decision_doctor_wu_foreign_access.dds" }
-}
-```
+Special project: `GFX_sp_black_plague_weaponization` -> `gfx/interface/special_project/project_icons/sp_black_plague_weaponization.dds` (161x98).
 
-All textures are exact 33×32 uncompressed BGRA DDS files with real alpha and one mip level. The review contact sheet is `docs/assets/020_black_plague/contact_sheets/decision_icons_contact_sheet.png`. The source and processed evidence are listed in `decision_icons_manifest.md`.
+Weaponization decisions: `GFX_decision_black_plague_weapon_safety_first`, `GFX_decision_black_plague_weapon_military_acceleration`, `GFX_decision_black_plague_weapon_dual_use`, and `GFX_decision_black_plague_weapon_defensive_conversion` -> matching files under `gfx/interface/decisions/020_black_plague/` (33x32). These names match the live decision icons in `common/decisions/020_black_plague_weaponization_decisions.txt`.
+
+Rat idea pictures should use `GFX_idea_black_plague_rat_brood_instinct`, `GFX_idea_black_plague_rat_no_civilian_economy`, `GFX_idea_black_plague_rat_dominion`, and `GFX_idea_black_plague_rat_king_dominion` from `gfx/interface/ideas/020_black_plague/` (64x64).
+
+Critical Rat focus sprites use the `GFX_goal_black_plague_rat_*` names listed in the plan handoff and `gfx/interface/goals/020_black_plague/` (94x86).
+
+Leader portraits are under `gfx/leaders/020_black_plague/` at 156x210. Add dedicated character portrait definitions before changing the current generic Rat leader consumer. Flags remain root-only and have normal, medium, and small TGA ladders for RTA, RTB, RTC, RTD, RTE, RTF, RTG, RTH, RTI, RTJ, RTK, RTL, RTM, and RTX.
+
+The complete manifest, source PNGs, processed previews, and review contact sheets remain under this active event workspace for parent review.

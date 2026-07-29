@@ -15,14 +15,14 @@ Create the complete visual asset package for Chaos Redux Event 20 Black Plague. 
 
 Inspect these folders before work:
 
-- idea and national spirit icons: `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- focus icons: `.agents/skills/chaos-redux-event-assets/assets/focuses`
-- decision and decision category icons: `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- report event images: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- news event images: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/achievements`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/flags`
+- idea and national spirit icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- focus icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
+- decision and decision category icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- report event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- news event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- flags: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
 
 ## Disease and crisis-board package
 
