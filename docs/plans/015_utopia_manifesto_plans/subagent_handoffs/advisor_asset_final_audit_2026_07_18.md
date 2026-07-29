@@ -1,5 +1,7 @@
 # Event 015 advisor and visual-asset final audit — 2026-07-18
 
+> Advisor workflow supersession, 2026-07-29: the advisor pixels, processor contract, hashes, metadata, approvals, and review sheets in this audit are historical. Current runtime advisor authority is `docs/plans/gfx_icon_flag_mapmode_cleanup_plans/advisor_template_runtime_migration_2026_07_29.md`. The flag, institutional portrait, Choice, and Assignment findings remain unchanged.
+
 ## Verdict
 
 **PASS.** I found no P0/P1/P2 asset defect and made no correction to the visual package. The active v5 advisor package is independently visually approved, processed through the required reusable renderer, decoded from the installed DDS files, and exact-pixel verified. The 21 active ImageGen flag compositions and four institutional tableau masters have independent built-in ImageGen source evidence. The Choice and Assignment balance-transition packages meet the frame-by-frame animation contract.

@@ -861,7 +861,7 @@ The July 16 requirement-first asset report passes all `24/24` accepted rows. Its
 
 Every active route flag has a genuine built-in ImageGen source and a flat heraldic flag design in the runtime package. Twenty-one independent designs plus four intentional engine-lookup aliases produce 75 runtime TGAs. These are ImageGen-authored designs, not simple-shape substitutes. The finishing pipeline preserves generated geometry and tonal detail without quantization, tracing, primitive redraw, motif substitution, or a palette ceiling.
 
-Four people-free built-in ImageGen, vanilla-HOI4-style institutional tableaux are 156x210. Eight founder and successor institutional entries share those four images by durable institution. Sixteen advisors use distinct 65x67 dossier cards built from independent fictional ImageGen portrait masters plus separate generated frame and paper/seal overlays. Processor v5.0 only crops, grades, angles, derives alpha shadows, composites the generated layers, validates, and exports. It does not draw the advisor card. Advisor cards are not square portraits or resized institutional leaders.
+Four people-free built-in ImageGen, vanilla-HOI4-style institutional tableaux are 156x210. Eight founder and successor institutional entries share those four images by durable institution. Sixteen advisors use distinct 65x67 dossier cards built from independent fictional ImageGen portrait masters. Each complete source is resized to the native advisor canvas and uniformly fitted without warping beneath the unchanged canonical `advisor_template.png`, which is applied once as the top layer. Advisor cards are not square portraits or resized institutional leaders.
 
 ### Localisation and audit state
 
