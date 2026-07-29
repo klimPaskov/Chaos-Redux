@@ -168,10 +168,12 @@ small sizes. `LCX` is a cosmetic identity whose accepted shared base ladder is
 resolved through its carrier. No route recolour or locally redrawn flag art was
 introduced.
 
-The remaining `FORM-05` through `FORM-48` flag identities and the per-family UI
-emblem set remain blocked until each family has a final gameplay tag, public
-identity, researched motif, approved palette, and stable UI consumer. Creating
-generic emblems would be a prohibited substitute.
+`FORM-05` and `FORM-48` now have separate researched flag/emblem packages and
+stable runtime consumers; their package manifests below are authoritative for
+those families. The remaining `FORM-06` through `FORM-47` identities and the
+per-family UI emblem set remain blocked until each family has a final gameplay
+tag, public identity, researched motif, approved palette, and stable UI consumer.
+Creating generic emblems would be a prohibited substitute.
 
 Reserved stable naming contract after those inputs are approved:
 
@@ -497,16 +499,20 @@ contain no advisor or dossier asset.
 ## Central pre-DDS source portrait shelf
 
 The reference-only shelf for source-based HOI4-style portrait PNGs is
-`portraits_generated_png/`. It contains exactly 54 original-size RGB source-locked
+`portraits_generated_png/`. It contains exactly 56 original-size RGB source-locked
 HOI4 repaint masters, each directly in that directory with no nested folders or
 normalized 156x210 copies. The masters were produced by the grounded source
 workflow and include protected BAY/RHI portraits,
 sourced refinishes and replacement attempts, rejected-style treatment evidence,
 withdrawn IW-093 historical attempts, and the candidate-only IW-018 Vernè
 commander and Pietro Pinna Parpaglia crown-route repaints. Raw source photographs
-and exact crops remain in their dated provenance workspaces; generated-only fictional or institutional
-portraits, DDS files, advisor icons, dossier/small derivatives, and contact
-sheets are excluded from this shelf. Use its `README.md`, `MANIFEST.md`, and
+and exact crops remain in their dated provenance workspaces. The Musa Dzhalil
+and Ahmet Zeki Velidi Togan masters have independent visual likeness/style/
+framing PASS results but remain rights/provenance/role-gated evidence only; no
+DDS or `.gfx` consumer is authorized for either candidate. Generated-only
+fictional or institutional portraits, DDS files, advisor icons, dossier/small
+derivatives, and contact sheets are excluded from this shelf. Use its
+`README.md`, `MANIFEST.md`, and
 `PRE_RESIZE_MANIFEST.md` for the status, source path, SHA-256, dimensions, and
 provenance boundary of every master; processed copies remain in their originating
 package workspaces rather than this shelf. The original package manifests and

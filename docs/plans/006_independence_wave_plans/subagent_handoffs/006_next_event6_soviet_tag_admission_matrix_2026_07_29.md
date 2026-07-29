@@ -1,6 +1,6 @@
 # Event 006 next Soviet-tag admission matrix
 
-Audit date: 2026-07-29. Audited HEAD: `81a3acb99` (`docs: reconcile Event 006 doubled ladder and crisis scope`). Scope is the documented Event 006/Soviet-origin tag system only. CBB, CBD, Fallout, and Random Events are excluded. This is a static repository audit; no live game was launched and no save was exercised.
+Audit date: 2026-07-29. Baseline audited snapshot: the pre-reconciliation Event 006/Soviet source tree. Scope is the documented Event 006/Soviet-origin tag system only. CBB, CBD, Fallout, and Random Events are excluded. This is a static repository audit; no live game was launched and no save was exercised. Later documentation-only reconciliations do not change the admission decisions below.
 
 ## Decision
 
@@ -21,6 +21,19 @@ The ranking is by package completeness and unique reservation-group value, not b
 | 5 | `IW-098` Sokoto / `SOK` | State `558`; `RG-NIGERIA-COARSE`; automatic if not living | Focus, decisions, ideas, force and command setup, date-aware leadership branches, politics, host settlement, AI, cleanup, and icon/localisation surfaces are implemented in the combined DOX/SOK package. | The current Muhammadu Dikko treatment fails the painted-style gate, vanilla Siddiq remains generic, Hasan/Siddiq/Bello Rabah still need sourced real portraits, the exact Sokoto flag treatment is unresolved, and the FORM-25 member/sovereignty contract is not complete. | Use the DOX/SOK script surfaces listed for `IW-093` and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw093_iw098_postforce_country_package_reaudit_2026_07_19.md`. Clear the portrait and flag rows, complete FORM-25, and rerun all final audits. |
 | 6 | `IW-002` Wales / `WLS` and `IW-018` Sardinia / `ARX` | States `122` / `114`; `RG-122` / `RG-114` | Both have registered exact-tag adapters, generic focus/decision/AI or regional package surfaces, and registry reservation rows. | Both packages are explicitly visually withdrawn from Event 006 admission and do not have a current production-safe full leader and asset package accepted by the resume packet. They are lower-value for a Soviet-tag tranche because their unique reservation groups are outside the Volga/Urals/Siberia system. | `common/scripted_triggers/006_independence_wave_scotland_wales_package_triggers.txt`, `common/scripted_effects/006_independence_wave_scotland_wales_package_effects.txt`, `common/ai_strategy/006_independence_wave_scotland_wales.txt`, `common/scripted_triggers/006_independence_wave_mediterranean_package_triggers.txt`, `common/scripted_effects/006_independence_wave_mediterranean_package_effects.txt`, `common/ai_strategy/006_independence_wave_mediterranean.txt`, and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`. Do not admit from adapter presence; complete the withdrawn visual and package audits first. |
 | 7 | `IW-173` Hawaii / `HAW` and `IW-179` Micronesian federation / `FSM` | States `629` / `684`; shared `RG-PACIFIC-ISLANDS` | Pacific package triggers/effects, focus/decision/AI, FORM-48 member framework, flags/localisation, force setup, and cleanup hooks are present. | HAW has a source/rights/likeness blocker against the vanilla generic portrait, and FSM has no production-safe Henry Nanpei source. Both remain outside attestation and are not Soviet-tag reservation opportunities. | `common/scripted_triggers/006_independence_wave_pacific_package_triggers.txt`, `common/scripted_effects/006_independence_wave_pacific_package_effects.txt`, `common/scripted_triggers/006_independence_wave_form48_triggers.txt`, `common/scripted_effects/006_independence_wave_form48_effects.txt`, `common/decisions/006_independence_wave_pacific_decisions.txt`, and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`. Resolve portrait/source gates and rerun the Pacific and FORM-48 audits before any readiness change. |
+
+### Post-snapshot evidence correction
+
+The current portrait tranche supersedes the older wording in row 1 without
+changing its admission result. The Musa Dzhalil Bolgar civic-presidium and
+Ahmet Zeki Velidi Togan river-security-directorate candidates each have an
+independent visual likeness/style/framing PASS, but both remain
+`NEEDS_USER_REVIEW` for source rights/provenance and the Togan Bashkir-to-CHU
+role decision. Neither candidate has a DDS or `.gfx` consumer, so `IW-043`
+remains unadmitted. The FORM-39 source tranche likewise has named FIJ/PNG/WPG
+member/consent transactions, MFX identity/flag evidence, and source-level
+effects, but still fails closed on member research, identity/flag review,
+package admission, and runtime proof; `IW-177` remains unadmitted.
 
 ## Soviet-tag and reservation-group boundary
 

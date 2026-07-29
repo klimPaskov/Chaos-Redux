@@ -1,9 +1,15 @@
 # Event 6 FORM-03 post-charter progression addendum
 
 Date: 2026-07-15
-Status: implementation-ready design addendum, pending parent acceptance and implementation
+Status: accepted and source-implemented; live validation and route-readiness evidence remain queued
 Scope: `FORM-03`, the `LCX` Confederation of the Low Countries carried by `AFX` or `AGX`
 Working labels in this document are not final localisation.
+
+Current disposition (2026-07-29): the `.300-.308` event chain, FORM-03 focus,
+decision, idea, modifier, report-art, localisation, and runtime consumers are
+implemented in the current tree. The remaining work is bounded validation of
+formation reachability, carrier/package admission, save/load, AI, and live
+outcomes; this addendum is no longer pending implementation.
 
 ## 1. Decision and acceptance status
 
