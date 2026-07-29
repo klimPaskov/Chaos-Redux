@@ -122,19 +122,207 @@ africa_world_nominate_missing_package_candidates = {
 		}
 	}
 
+	africa_world_finalize_package_roster = yes
+}
+
+# COUNTRY scope on the Event 12 host. Records one explicit disposition for
+# each external continent after the one-time nomination pass. Installed actors
+# are resolved, candidates remain pending, and an empty slot is documented as
+# absent; no placeholder country is manufactured.
+africa_world_finalize_package_roster = {
 	if = {
-		limit = {
-			check_variable = {
-				var = africa_world_package_candidate_count
-				value = constant:africa_world_order.required_package_count
-				compare = less_than
+		limit = { africa_is_current_host = yes }
+		clear_array = africa_world_package_pending_continents
+		clear_array = africa_world_package_absent_continents
+		clear_array = africa_world_package_resolved_continents
+		set_variable = { africa_world_package_roster_disposition_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_pending_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_absent_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_resolved_count = constant:africa_value.zero }
+		clr_country_flag = africa_world_package_roster_partial
+		clr_country_flag = africa_world_package_roster_absence_documented
+		clr_country_flag = africa_world_package_roster_complete
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.middle_east }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.middle_east }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
 			}
 		}
-		set_country_flag = africa_world_package_roster_incomplete
-	}
-	else = {
-		clr_country_flag = africa_world_package_roster_incomplete
-		set_country_flag = africa_world_package_roster_complete
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.middle_east }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.europe }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.europe }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.europe }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			}
+		}
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.europe }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.asia }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.asia }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.asia }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			}
+		}
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.asia }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.north_america }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.north_america }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			}
+		}
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.north_america }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.south_america }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.south_america }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			}
+		}
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.south_america }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_country_flag = africa_world_package_candidate
+						has_country_flag = africa_world_package_actor
+					}
+					check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania }
+				}
+			}
+			if = {
+				limit = { any_country = { has_country_flag = africa_world_package_actor check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } } }
+				add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.oceania }
+				add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one }
+			}
+			else = {
+				add_to_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.oceania }
+				add_to_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			}
+		}
+		else = {
+			add_to_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.oceania }
+			add_to_variable = { africa_world_package_absent_count = constant:africa_value.one }
+		}
+		add_to_variable = { africa_world_package_roster_disposition_count = constant:africa_value.one }
+
+		set_country_flag = africa_world_package_roster_documented
+		if = {
+			limit = { check_variable = { africa_world_package_pending_count > constant:africa_value.zero } }
+			set_country_flag = africa_world_package_roster_partial
+		}
+		if = {
+			limit = { check_variable = { africa_world_package_absent_count > constant:africa_value.zero } }
+			set_country_flag = africa_world_package_roster_absence_documented
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_world_package_resolved_count
+					value = constant:africa_world_order.required_package_count
+					compare = greater_than_or_equals
+				}
+			}
+			clr_country_flag = africa_world_package_roster_incomplete
+			set_country_flag = africa_world_package_roster_complete
+		}
+		else = {
+			set_country_flag = africa_world_package_roster_incomplete
+			clr_country_flag = africa_world_package_roster_complete
+		}
 	}
 }
 
@@ -187,12 +375,22 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { africa_world_packages_settled_count = constant:africa_value.zero }
 		set_variable = { africa_world_packages_sovereign_complete_count = constant:africa_value.zero }
 		set_variable = { africa_world_terminal_resolved_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_roster_disposition_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_pending_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_absent_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_resolved_count = constant:africa_value.zero }
 		set_variable = { africa_world_sponsorship_overextension = constant:africa_value.zero }
 		set_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
 		clear_array = africa_scramble_participants
 		clear_array = africa_world_package_candidates
 		clear_array = africa_world_package_actors
 		clear_array = africa_world_sponsorship_targets
+		clear_array = africa_world_package_pending_continents
+		clear_array = africa_world_package_absent_continents
+		clear_array = africa_world_package_resolved_continents
+		clr_country_flag = africa_world_package_roster_documented
+		clr_country_flag = africa_world_package_roster_partial
+		clr_country_flag = africa_world_package_roster_absence_documented
 
 		# This explicit post-unification census is the only global participant
 		# discovery pass. It never repeats on a daily/weekly/monthly on_action.
@@ -459,12 +657,408 @@ africa_scramble_close_continental_docket = {
 		set_variable = { africa_selected_action_id = constant:africa_action.none }
 		africa_clear_action_quote = yes
 		africa_ai_refresh_host_policy_snapshot = yes
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = africa_world_package_roster_partial
+					has_country_flag = africa_world_package_roster_absence_documented
+				}
+			}
+			country_event = { id = africa_world_order.110 }
+		}
 	}
 }
 
 # ---------------------------------------------------------------------------
 # Six unique continent packages and sponsorship obligations
 # ---------------------------------------------------------------------------
+
+# COUNTRY scope on a newly installed package actor. The package keeps the
+# original sovereign country and host relationship while recording its own
+# constituent roster and controlled heartland. This is a bounded census tied
+# to installation, not a recurring world scan.
+africa_world_initialise_package_polity_foundation = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_polity_foundation_initialised }
+		}
+		set_country_flag = africa_world_package_polity_foundation_initialised
+		set_country_flag = africa_world_package_original_actor_preserved
+		set_country_flag = africa_world_package_host_preserved
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.active }
+		set_variable = { africa_world_package_required_heartland_state_count = constant:africa_world_roster.minimum_heartland_states }
+		set_variable = { africa_world_package_heartland_state_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_constituent_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_constituent_consent_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_constituent_refusal_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_constituent_coercion_count = constant:africa_value.zero }
+		set_variable = { africa_world_package_constituent_withdrawal_count = constant:africa_value.zero }
+		clear_array = africa_world_constituent_countries
+		clear_array = africa_world_constituent_consented_countries
+		clear_array = africa_world_constituent_refused_countries
+		clear_array = africa_world_constituent_coerced_countries
+		clear_array = africa_world_constituent_withdrawn_countries
+		clear_array = africa_world_package_heartland_states
+		clear_array = africa_world_package_successor_candidates
+		set_country_flag = africa_world_constituent_registered
+		set_country_flag = africa_world_constituent_consented
+		set_country_flag = africa_world_constituent_member
+		set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.consented }
+		add_to_array = { array = africa_world_constituent_countries value = THIS }
+		add_to_array = { array = africa_world_constituent_consented_countries value = THIS }
+		add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one }
+		add_to_variable = { africa_world_package_constituent_consent_count = constant:africa_value.one }
+
+		if = {
+			limit = { has_country_flag = africa_world_middle_east_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = middle_east }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_europe_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = europe }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_asia_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = asia }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_north_america_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = north_america }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_south_america_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = south_america }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_oceania_package }
+			every_country = {
+				limit = {
+					exists = yes
+					is_subject = no
+					has_capitulated = no
+					NOT = { has_country_flag = africa_unifier_host }
+					NOT = { has_country_flag = africa_world_package_actor }
+					NOT = { has_country_flag = africa_world_package_candidate }
+					NOT = { is_actual_nonhuman_country = yes }
+					capital_scope = { is_controlled_by = PREV is_on_continent = australia }
+				}
+				set_country_flag = africa_world_constituent_registered
+				set_country_flag = africa_world_constituent_pending
+				set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.pending }
+				ROOT = {
+					if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_countries value = PREV } } } add_to_array = { array = africa_world_constituent_countries value = PREV } add_to_variable = { africa_world_package_constituent_count = constant:africa_value.one } }
+				}
+			}
+		}
+
+		africa_world_refresh_package_polity_proof = yes
+	}
+}
+
+# COUNTRY scope on a package actor. Rebuilds only the actor's heartland proof
+# after a state-control transition and leaves the constituent ledger intact.
+africa_world_refresh_package_polity_proof = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		if = { limit = { has_country_flag = africa_world_package_heartland_proof } set_country_flag = africa_world_package_heartland_proof_ever }
+		clear_array = africa_world_package_heartland_states
+		set_variable = { africa_world_package_heartland_state_count = constant:africa_value.zero }
+		if = {
+			limit = { has_country_flag = africa_world_middle_east_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = middle_east } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_europe_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = europe } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_asia_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = asia } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_north_america_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = north_america } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_south_america_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = south_america } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		else_if = {
+			limit = { has_country_flag = africa_world_oceania_package }
+			every_owned_state = { limit = { is_controlled_by = ROOT is_on_continent = australia } ROOT = { add_to_array = { array = africa_world_package_heartland_states value = PREV } add_to_variable = { africa_world_package_heartland_state_count = constant:africa_value.one } } }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_world_package_heartland_state_count
+					value = constant:africa_world_roster.minimum_heartland_states
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = africa_world_package_heartland_proof
+			clr_country_flag = africa_world_package_heartland_lost
+		}
+		else = {
+			clr_country_flag = africa_world_package_heartland_proof
+			set_country_flag = africa_world_package_heartland_lost
+		}
+	}
+}
+
+# COUNTRY scope on a registered constituent. ROOT is the package actor when
+# called by a package-polity decision.
+africa_world_record_constituent_consent = {
+	if = {
+		limit = { africa_world_constituent_can_consent = yes }
+		clr_country_flag = africa_world_constituent_pending
+		clr_country_flag = africa_world_constituent_refused
+		clr_country_flag = africa_world_constituent_withdrawn
+		set_country_flag = africa_world_constituent_consented
+		set_country_flag = africa_world_constituent_member
+		set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.consented }
+		ROOT = {
+			if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_consented_countries value = PREV } } } add_to_array = { array = africa_world_constituent_consented_countries value = PREV } add_to_variable = { africa_world_package_constituent_consent_count = constant:africa_value.one } }
+			remove_from_array = { array = africa_world_constituent_refused_countries value = PREV }
+			remove_from_array = { array = africa_world_constituent_withdrawn_countries value = PREV }
+			add_to_variable = { africa_world_package_authority = constant:africa_world_roster.constituent_authority_gain }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+	}
+}
+
+africa_world_record_constituent_refusal = {
+	if = {
+		limit = { africa_world_constituent_can_consent = yes }
+		clr_country_flag = africa_world_constituent_pending
+		clr_country_flag = africa_world_constituent_consented
+		clr_country_flag = africa_world_constituent_member
+		set_country_flag = africa_world_constituent_refused
+		set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.refused }
+		ROOT = {
+			if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_refused_countries value = PREV } } } add_to_array = { array = africa_world_constituent_refused_countries value = PREV } add_to_variable = { africa_world_package_constituent_refusal_count = constant:africa_value.one } }
+			add_to_variable = { africa_world_package_authority = constant:africa_world_roster.constituent_authority_loss }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+	}
+}
+
+africa_world_record_constituent_coercion = {
+	if = {
+		limit = { africa_world_constituent_can_coerce = yes }
+		clr_country_flag = africa_world_constituent_pending
+		clr_country_flag = africa_world_constituent_refused
+		clr_country_flag = africa_world_constituent_withdrawn
+		set_country_flag = africa_world_constituent_coerced
+		set_country_flag = africa_world_constituent_member
+		set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.coerced }
+		ROOT = {
+			if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_coerced_countries value = PREV } } } add_to_array = { array = africa_world_constituent_coerced_countries value = PREV } add_to_variable = { africa_world_package_constituent_coercion_count = constant:africa_value.one } }
+			remove_from_array = { array = africa_world_constituent_refused_countries value = PREV }
+			add_to_variable = { africa_world_package_authority = constant:africa_world_roster.coercion_authority_loss }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+	}
+}
+
+africa_world_record_constituent_withdrawal = {
+	if = {
+		limit = { africa_world_constituent_can_withdraw = yes }
+		clr_country_flag = africa_world_constituent_consented
+		clr_country_flag = africa_world_constituent_coerced
+		clr_country_flag = africa_world_constituent_member
+		set_country_flag = africa_world_constituent_withdrawn
+		set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
+		ROOT = {
+			remove_from_array = { array = africa_world_constituent_consented_countries value = PREV }
+			remove_from_array = { array = africa_world_constituent_coerced_countries value = PREV }
+			if = { limit = { NOT = { is_in_array = { array = africa_world_constituent_withdrawn_countries value = PREV } } } add_to_array = { array = africa_world_constituent_withdrawn_countries value = PREV } add_to_variable = { africa_world_package_constituent_withdrawal_count = constant:africa_value.one } }
+			add_to_variable = { africa_world_package_authority = constant:africa_world_roster.withdrawal_authority_loss }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+	}
+}
+
+# COUNTRY scope on a package actor after capitulation or annexation. A single
+# successor candidate is nominated if one exists; otherwise the ledger opens a
+# visible exile or breakup certification path.
+africa_world_handle_package_actor_loss = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_successor_recorded }
+			NOT = { has_country_flag = africa_world_package_exile_path_resolved }
+			NOT = { has_country_flag = africa_world_package_breakup_recorded }
+		}
+		set_country_flag = africa_world_package_successor_review_open
+		africa_world_refresh_package_polity_proof = yes
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.broken }
+		clear_array = africa_world_package_successor_candidates
+		random_country = {
+			limit = { africa_world_package_successor_candidate_is_valid = yes }
+			set_country_flag = africa_world_package_successor_candidate
+			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.successor }
+			ROOT = { add_to_array = { array = africa_world_package_successor_candidates value = PREV } }
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_of_scopes = {
+						array = africa_world_package_successor_candidates
+						has_country_flag = africa_world_package_successor_candidate
+					}
+				}
+			}
+			if = {
+				limit = { is_government_in_exile = yes }
+				set_country_flag = africa_world_package_exile_path_open
+			}
+			else = {
+				set_country_flag = africa_world_package_breakup_review_open
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a package actor. FROM is the selected successor candidate.
+africa_world_commit_package_successor = {
+	if = {
+		limit = {
+			africa_world_package_successor_resolution_is_possible = yes
+			FROM = { has_country_flag = africa_world_package_successor_candidate }
+		}
+		set_country_flag = africa_world_package_successor_recorded
+		clr_country_flag = africa_world_package_successor_review_open
+		clr_country_flag = africa_world_package_heartland_lost
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.successor }
+		add_to_variable = { africa_world_package_authority = constant:africa_world_roster.successor_authority_gain }
+		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		FROM = {
+			clr_country_flag = africa_world_package_successor_candidate
+			set_country_flag = africa_world_package_successor_recorded
+			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.successor }
+		}
+		for_each_scope_loop = { array = africa_world_package_successor_candidates clr_country_flag = africa_world_package_successor_candidate }
+	}
+}
+
+africa_world_record_exile_resolution = {
+	if = {
+		limit = { africa_world_package_exile_resolution_is_possible = yes }
+		set_country_flag = africa_world_package_exile_path_resolved
+		clr_country_flag = africa_world_package_exile_path_open
+		clr_country_flag = africa_world_package_successor_review_open
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.exile }
+		set_country_flag = africa_world_constituent_exile_recorded
+	}
+}
+
+africa_world_record_package_breakup = {
+	if = {
+		limit = { africa_world_package_breakup_resolution_is_possible = yes }
+		set_country_flag = africa_world_package_breakup_recorded
+		set_country_flag = africa_world_package_terminally_resolved
+		clr_country_flag = africa_world_package_breakup_review_open
+		clr_country_flag = africa_world_package_successor_review_open
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.terminally_resolved }
+		subtract_from_variable = { africa_world_package_authority = constant:africa_world_roster.breakup_authority_loss }
+		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		for_each_scope_loop = {
+			array = africa_world_constituent_countries
+			limit = { has_country_flag = africa_world_constituent_member }
+			clr_country_flag = africa_world_constituent_member
+			clr_country_flag = africa_world_constituent_consented
+			clr_country_flag = africa_world_constituent_coerced
+			set_country_flag = africa_world_constituent_withdrawn
+			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
+		}
+	}
+}
 
 # COUNTRY scope on a nominated package candidate. Inputs are temporary
 # africa_world_install_status and africa_world_install_outcome values.
@@ -509,6 +1103,45 @@ africa_world_install_current_package = {
 				add_to_variable = { africa_world_packages_installed_count = constant:africa_value.one }
 			}
 			if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.middle_east }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.middle_east } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.middle_east } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			else_if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.europe }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.europe } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.europe } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			else_if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.asia }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.asia } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.asia } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			else_if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.north_america }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.north_america } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.north_america } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			else_if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.south_america }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.south_america } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.south_america } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			else_if = {
+				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } } }
+				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.oceania }
+				if = { limit = { NOT = { is_in_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.oceania } } } add_to_array = { array = africa_world_package_resolved_continents value = constant:africa_world_continent.oceania } add_to_variable = { africa_world_package_resolved_count = constant:africa_value.one } }
+			}
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.middle_east } }
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.europe } }
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.asia } }
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.north_america } }
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.south_america } }
+			if = { limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } } } remove_from_array = { array = africa_world_package_absent_continents value = constant:africa_world_continent.oceania } }
+			subtract_from_variable = { africa_world_package_pending_count = constant:africa_value.one }
+			clamp_variable = { var = africa_world_package_pending_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
+			set_country_flag = africa_world_package_roster_documented
+			if = {
 				limit = { PREV = { has_country_flag = africa_world_package_sponsored } }
 				add_to_variable = { africa_world_sponsorship_overextension = constant:africa_world_order.sponsorship_overextension_per_package }
 				add_to_array = { array = africa_world_sponsorship_targets value = PREV }
@@ -547,6 +1180,8 @@ africa_world_install_current_package = {
 			load_focus_tree = { tree = africa_oceania_world_focus_tree keep_completed = yes }
 		}
 		africa_world_initialise_distinct_package_mechanic = yes
+		africa_world_initialise_package_polity_foundation = yes
+		event_target:africa_host = { africa_world_finalize_package_roster = yes }
 		mark_focus_tree_layout_dirty = yes
 	}
 }
@@ -637,6 +1272,7 @@ africa_world_complete_sovereign_package = {
 		set_country_flag = africa_world_order_partner
 		clr_country_flag = africa_world_package_rival
 		set_variable = { africa_world_package_status = constant:africa_world_package_status.settled }
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.sovereign }
 		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
 		add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
 		clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
@@ -645,6 +1281,7 @@ africa_world_complete_sovereign_package = {
 			add_to_variable = { africa_world_packages_settled_count = constant:africa_value.one }
 			add_to_variable = { africa_world_packages_sovereign_complete_count = constant:africa_value.one }
 		}
+		africa_world_record_terminal_resolution = yes
 	}
 }
 
@@ -1400,6 +2037,7 @@ africa_world_order_apply_full_result = {
 		clr_country_flag = africa_continental_war_opponent
 		clr_country_flag = africa_world_package_rival
 		set_variable = { africa_world_package_status = constant:africa_world_package_status.submission_settlement }
+		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.sovereign }
 		africa_world_record_terminal_resolution = yes
 	}
 	else_if = {
@@ -1617,7 +2255,10 @@ africa_world_order_apply_failure_result = {
 # continent identity in the host's terminal ledger.
 africa_world_record_terminal_resolution = {
 	if = {
-		limit = { NOT = { has_country_flag = africa_world_terminal_resolution_counted } }
+		limit = {
+			africa_world_package_terminal_resolution_is_proven = yes
+			NOT = { has_country_flag = africa_world_terminal_resolution_counted }
+		}
 		set_country_flag = africa_world_terminal_resolution_counted
 		event_target:africa_host = { add_to_variable = { africa_world_terminal_resolved_count = constant:africa_value.one } }
 	}

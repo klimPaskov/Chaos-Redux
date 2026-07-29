@@ -156,6 +156,7 @@ africa_commit_covenant_route = {
 		}
 		set_country_flag = africa_covenant_route_revealed
 		set_country_flag = africa_covenant_route_committed
+		set_global_flag = africa_achievement_covenant_route_used
 		set_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
 		if = {
 			limit = { check_variable = { africa_current_phase < constant:africa_action_phase.high_chaos } }
@@ -2141,6 +2142,30 @@ africa_complete_continental_milestone = {
 	if = {
 		limit = { africa_focus_can_complete_continental_settlement = yes }
 		africa_achievement_capture_pre_unification_food_snapshot = yes
+		if = {
+			limit = { NOT = { has_global_flag = africa_achievement_food_secured_before_unification } }
+			set_global_flag = africa_achievement_formed_before_food_security
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.africa_achievement_represented_regions^num
+					value = constant:africa_achievement_count.continental_regions
+					compare = less_than
+				}
+			}
+			set_global_flag = africa_achievement_region_unrepresented
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.africa_achievement_overlap_settled_regions^num
+					value = constant:africa_achievement_count.continental_regions
+					compare = less_than
+				}
+			}
+			set_global_flag = africa_achievement_region_overlap_unresolved
+		}
 		set_global_flag = africa_is_one
 		set_global_flag = africa_scramble_response_pending
 		set_country_flag = africa_one_continent_many_peoples
