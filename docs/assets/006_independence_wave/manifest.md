@@ -497,7 +497,7 @@ contain no advisor or dossier asset.
 ## Central pre-DDS source portrait shelf
 
 The reference-only shelf for source-based HOI4-style portrait PNGs is
-`portraits_generated_png/`. It contains exactly 49 original-size RGB source-locked
+`portraits_generated_png/`. It contains exactly 54 original-size RGB source-locked
 HOI4 repaint masters, each directly in that directory with no nested folders or
 normalized 156x210 copies. The masters were produced by the grounded source
 workflow and include protected BAY/RHI portraits,
