@@ -1,6 +1,6 @@
 # Event 016 Brilliant Scientist planning package
 
-> Reconciled 2026-07-14. The binding disposition and implementation-status map is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`. Event 016 remains default-disabled and gameplay-incomplete. The stage-0 portrait package and all six Event 016-owned audio packages are complete at file level, with the remaining wiring limits recorded below.
+> Reconciled 2026-07-29. The binding current-runtime map is [`docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`](../../plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md). Event 016 has a default-enabled core runtime milestone, but it is not a whole-event completion claim: deferred scenarios, flavor, report/news expansion, Event 016-specific 3D production, and live consumer validation remain open. The older 2026-07-14 default-disabled and placeholder statements below are historical snapshot wording.
 
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
@@ -12,7 +12,7 @@ The event can remain a powerful scientific success story. It can become a secret
 
 - `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` records binding dispositions and authority.
 - `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md` records the exact continuation point.
-- `docs/events/016_brilliant_scientist/overview.md` separates the live placeholder from planned mechanics.
+- `docs/events/016_brilliant_scientist/overview.md` records the current core runtime and its deferred-content boundary.
 - `docs/assets/016_brilliant_scientist/manifest.md` records visual and audio production status.
 - `docs/super_events/016_brilliant_scientist/text_research.md` contains the completed six-package text research.
 - `docs/super_events/016_brilliant_scientist/audio_research.md` contains the completed six-package audio research and final WAV manifest.

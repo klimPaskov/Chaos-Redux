@@ -1,5 +1,7 @@
 # Event 008: Tensions Rising  -  Source Specification
 
+> Documentation reconciliation, 2026-07-29: `docs/events/008_tensions_rising/overview.md` is the current implementation-facing record for Event 008. The planning-era `To Be Reworked` label and open implementation decisions below are retained as historical intake context; they are not an active rework queue unless the parent explicitly reopens Event 008.
+
 ## Event identity
 
 **Event ID:** `8`  

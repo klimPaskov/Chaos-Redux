@@ -29,8 +29,9 @@ variables. The relevant vanilla contracts are:
 - a focus tree needs unique IDs, visible prerequisite and mutual-exclusion
   structure, completion rewards, AI weights, localisation, icons, and a clear
   route payoff;
-- event targets must not be used in scripted GUIs. Event 014 uses country
-  variables, country flags, arrays, and scripted effects for GUI state instead.
+- event targets are valid scope pointers in scripted GUIs when their scope and
+  lifecycle are safe. Event 014 happens to use country variables, country
+  flags, arrays, and scripted effects for its persistent GUI state.
 
 ## Current implementation evidence
 
@@ -143,4 +144,3 @@ This addendum is documentation-only. The parent completion audit should cite
 this verdict alongside the consolidated focus audit and the existing interface
 visual-quality audit. No gameplay or interface patch is requested from this
 pass.
-

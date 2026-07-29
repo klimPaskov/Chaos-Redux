@@ -1,5 +1,7 @@
 # Event 20 Black Plague Planning Package
 
+> Documentation reconciliation, 2026-07-29: this package remains the accepted full-design source. The core-stabilization runtime is source-complete for its declared tranche, but shared completion remains partial because the Diseases cluster, public Black Plague world-end row, and paid Rat absorption payoff still require disposition. Current status is documented in [`docs/events/020_black_plague/overview.md`](../../events/020_black_plague/overview.md) and [`docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`](../../plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md). The report's deferred narrative, presentation, and bespoke 3D surfaces remain queued; the package must not be read as either a no-code claim or a whole-spec completion claim.
+
 This folder is the complete source specification for the Black Plague rework.
 
 ## Core design
@@ -44,4 +46,4 @@ The later correction in `corrections/2026-07-29_two_rat_tags.md` supersedes all 
 
 ## Package status
 
-This is a complete planning handoff. It does not claim gameplay code, assets, audio, workbook updates, or in-game balance testing are complete.
+This is a complete planning handoff for the full design, with a separate core-stabilization implementation tranche documented by the current Event 020 overview and readiness report. It does not claim that the shared registry gaps, deferred narrative, presentation, bespoke 3D, workbook, or live balance-validation surfaces are complete.

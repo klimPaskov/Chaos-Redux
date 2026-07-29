@@ -25,11 +25,11 @@ Fallout is an independent unnumbered world-end system. It has no Event 2 event, 
 
 Primary script and data files:
 
-- `events/chaosx_events.txt`
 - `common/on_actions/002_zombie_outbreak_on_actions.txt`
-- `common/scripted_effects/chaosx_effects.txt`
-- `common/scripted_triggers/chaosx_scripted_triggers.txt`
-- `common/script_constants/zombie_constants.txt`
+- `events/002_zombie_outbreak.txt`
+- `common/scripted_effects/002_zombie_outbreak_effects.txt`
+- `common/scripted_triggers/002_zombie_outbreak_triggers.txt`
+- `common/script_constants/002_zombie_constants.txt`
 - `common/decisions/002_zombie_outbreak_decisions.txt`
 - `common/decisions/categories/002_zombie_outbreak_categories.txt`
 - `common/ai_strategy/ZZZ.txt`
@@ -39,11 +39,11 @@ Primary script and data files:
 - `common/technology_sharing/chaosx_tech_sharing.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `interface/chaosx_super_events.gfx`
-- `localisation/english/chaosx_events_l_english.yml`
+- `localisation/english/002_zombie_outbreak_l_english.yml`
 
 Related non-zombie UI documentation:
 
-- `docs/chaosx_systems/events_log_evolutions_and_clusters.md`
+- `docs/systems/events_log_evolutions_and_clusters.md`
 
 ## Events Log Integration
 
@@ -477,7 +477,7 @@ Important helpers:
 
 #### League tuning
 
-Shared league tuning lives in `common/script_constants/zombie_constants.txt` under `anti_zombie_league`.
+Shared league tuning lives in `common/script_constants/002_zombie_constants.txt` under `anti_zombie_league`.
 
 Exposed values include:
 
@@ -875,7 +875,7 @@ Anti-Zombie League membership keeps its direct targeted bonus against the litera
 
 ## Script Constants
 
-Shared tuning lives in `common/script_constants/zombie_constants.txt`.
+Shared tuning lives in `common/script_constants/002_zombie_constants.txt`.
 
 ### `zombie_outbreak`
 

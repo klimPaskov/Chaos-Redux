@@ -1,5 +1,7 @@
 # Event 12 Africa planning package, expanded second edition
 
+> Documentation reconciliation, 2026-07-29: this package remains the accepted Event 012 design source. The current release-candidate status, installed/deferred asset boundaries, and open owner decisions are recorded in [`docs/events/012_africa/overview.md`](../../events/012_africa/overview.md) and [`docs/plans/012_africa_plans/documentation_cleanup_handoff.md`](../../plans/012_africa_plans/documentation_cleanup_handoff.md). The package's planning-only wording is provenance, not a claim that no implementation exists.
+
 ## Purpose
 
 This is the source planning package for the Chaos Redux Event 12 Africa rework.
