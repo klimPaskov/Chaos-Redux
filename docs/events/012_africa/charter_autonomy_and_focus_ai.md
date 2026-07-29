@@ -54,6 +54,11 @@ Focus weights are centralized in the AI-plan file and express an order rather th
 The focus-local `ai_will_do` blocks remain responsible for live League values, member conditions, route choices, and mutually exclusive outcomes.
 The plans supply sequence and urgency without bypassing focus availability or completion rules.
 
+The continental tree is installed through `africa_load_continental_focus_tree`.
+That helper checks the active tree before loading, preserves completed-focus history during replacement, records `africa_continental_focus_tree_loaded` only after the new tree is active, and refreshes the layout once.
+`africa_focus_route_ensure_continental_tree_loaded` is a compatibility wrapper around the canonical helper rather than a second implementation.
+Priority packages keep their existing-tree safeguard and also preserve completed-focus history.
+
 ## Interactions
 
 - The relationship state machine remains the sole writer of the member relationship stage and its country arrays.

@@ -24,7 +24,7 @@ The subsystem documents remain separate rather than being deleted or merged: `do
 | --- | --- | --- | --- |
 | Core event identity | Event 12 constants, registry, entry event, and cluster 6 references | Active evidence | Workbook and final catalog wording remain parent-owned. |
 | Host campaign | 51 host playbooks, with 22 full and 29 compact signatures | Active evidence | Three exact host exceptions remain blocked in the acceptance ledger, and whole-event runtime acceptance is open. |
-| Focus loader | Host tree loader restricts replacement to generic focus trees | Active evidence | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
+| Focus loader | Host and priority loaders restrict replacement to generic or explicitly approved trees, preserve completed-focus history, and use one canonical continental loader | Active evidence | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
 | Action system | 102 parameterized action IDs use the shared quote, payment, outcome, AI, and cleanup kernel | Active evidence | Weighted campaign and live-save acceptance remain open. |
 | Strange formations | Stone cohort, Gorilla heavy infantry, and Pan sappers are gated by `africa_strange_formation_package_ready` | Deferred safely | No model-dependent formation is claimed as spawned or complete. |
 | World order | Actions 85-92 and the six external packages plus The World are gated by `africa_world_package_implementation_ready` | Deferred safely | Unique continent packages and presentation/audio barriers remain open. |
