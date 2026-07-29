@@ -2,12 +2,14 @@
 
 The bottom-to-top layer order is:
 
-1. advisor frame
+1. advisor frame with a soft generated shadow
 2. resized, rotated, lightly sepia-treated portrait
-3. advisor paper
+3. advisor paper with a soft generated shadow
 
 The portrait is clipped to the frame opening so it cannot cover the visible
-frame. The script writes both a review PNG and a legacy one-level 32-bit BGRA
+frame. The source frame and paper pixels remain unchanged; their generated
+shadows smooth the transition into the portrait without a transparent or light
+fringe. The script writes both a review PNG and a legacy one-level 32-bit BGRA
 DDS.
 """
 
@@ -73,12 +75,24 @@ def parse_args() -> argparse.Namespace:
 			"always preserved."
 		),
 	)
-	parser.add_argument("--rotation", type=float, default=-3.0)
+	parser.add_argument("--rotation", type=float, default=4.0)
 	parser.add_argument(
 		"--portrait-zoom",
 		type=float,
-		default=1.02,
-		help="Extra proportional cover margin after corner fitting (default: 1.02).",
+		default=1.06,
+		help="Extra proportional cover margin after corner fitting (default: 1.06).",
+	)
+	parser.add_argument(
+		"--shadow-radius",
+		type=float,
+		default=1.05,
+		help="Gaussian radius for generated frame and paper shadows (default: 1.05).",
+	)
+	parser.add_argument(
+		"--shadow-opacity",
+		type=float,
+		default=0.36,
+		help="Maximum opacity for generated frame and paper shadows (default: 0.36).",
 	)
 	parser.add_argument(
 		"--sepia-strength",
@@ -203,6 +217,34 @@ def load_layer(path: Path, label: str) -> Image.Image:
 	return layer
 
 
+def create_soft_shadow(
+	layer: Image.Image,
+	radius: float,
+	opacity: float,
+) -> Image.Image:
+	if radius < 0.0:
+		raise ValueError("--shadow-radius cannot be negative")
+	if not 0.0 <= opacity <= 1.0:
+		raise ValueError("--shadow-opacity must be between 0.0 and 1.0")
+
+	core = layer.getchannel("A").point(
+		lambda alpha: 255 if alpha > 160 else 0
+	)
+	core = core.filter(ImageFilter.MaxFilter(3))
+	core = core.filter(ImageFilter.GaussianBlur(radius))
+	core = core.transform(
+		CARD_SIZE,
+		Image.Transform.AFFINE,
+		(1, 0, 0, 0, 1, -1),
+		resample=Image.Resampling.BICUBIC,
+		fillcolor=0,
+	)
+	shadow_alpha = core.point(lambda alpha: round(alpha * opacity))
+	shadow = Image.new("RGBA", CARD_SIZE, (7, 6, 5, 0))
+	shadow.putalpha(shadow_alpha)
+	return shadow
+
+
 def compose(
 	source: Image.Image,
 	frame: Image.Image,
@@ -212,9 +254,12 @@ def compose(
 	minimum_size: tuple[int, int] | None,
 	rotation: float,
 	zoom: float,
+	shadow_radius: float,
+	shadow_opacity: float,
 	sepia_strength: float,
 ) -> Image.Image:
 	card = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
+	card.alpha_composite(create_soft_shadow(frame, shadow_radius, shadow_opacity))
 	card.alpha_composite(frame)
 
 	portrait = prepare_portrait(source, crop, sepia_strength)
@@ -230,13 +275,9 @@ def compose(
 	frame_footprint = frame.getchannel("A").point(
 		lambda alpha: 255 if alpha > 0 else 0
 	)
-	paper_footprint = paper.getchannel("A").point(
-		lambda alpha: 255 if alpha > 8 else 0
-	)
-	paper_footprint = paper_footprint.filter(ImageFilter.MaxFilter(3))
 	portrait_visibility = ImageChops.subtract(
 		window,
-		ImageChops.lighter(frame_footprint, paper_footprint),
+		frame_footprint,
 	)
 	portrait_layer.putalpha(
 		ImageChops.multiply(
@@ -245,6 +286,7 @@ def compose(
 		)
 	)
 	card.alpha_composite(portrait_layer)
+	card.alpha_composite(create_soft_shadow(paper, shadow_radius, shadow_opacity))
 	card.alpha_composite(paper)
 	return card
 
@@ -302,6 +344,8 @@ def main() -> None:
 		tuple(args.portrait_size) if args.portrait_size is not None else None,
 		args.rotation,
 		args.portrait_zoom,
+		args.shadow_radius,
+		args.shadow_opacity,
 		args.sepia_strength,
 	)
 	args.preview.parent.mkdir(parents=True, exist_ok=True)
