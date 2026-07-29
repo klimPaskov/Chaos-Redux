@@ -60,7 +60,7 @@ The retained review sheet `review/WLS_lewis_pugh_evans_commander_style_sheet.png
 
 All entries in trial 02 `hashes.sha256` match current bytes, and the trial master and crop are byte-identical to the source-package copies.
 
-`processing_metadata.json` records processor `advisor_icon_processing.py` version `5.0`, `mode: leader` for the backward-compatible full-size export, `role_family: commander`, commander reference directory, normalized commander references, and output size `156x210`.
+`processing_metadata.json` records processor `the retired portrait-processing utility` version `5.0`, `mode: leader` for the backward-compatible full-size export, `role_family: commander`, commander reference directory, normalized commander references, and output size `156x210`.
 
 ## Country-package and runtime surface boundary
 

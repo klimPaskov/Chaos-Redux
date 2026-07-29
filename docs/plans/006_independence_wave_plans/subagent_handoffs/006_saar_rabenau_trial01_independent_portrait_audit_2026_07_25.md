@@ -68,7 +68,7 @@ All SHA-256 values listed by the trial `manifest.md` were recomputed independent
 
 The crop was independently decoded with Pillow from the trial master using the recorded half-open rectangle `(20, 30, 540, 730)`. The result is `520x700`, `364000` pixels, and `decoded_pixels_equal: true`; both RGBA byte digests are `fe18eb7636ddc8ec8ac3e078da7746f00bf451822c8c2b0d8e1d071f20be9bb8`. The trial equality JSON points to the canonical clearance paths, but the trial master, crop, and JSON bytes and hashes match those canonical files exactly.
 
-The processor's domain-separated decoded-RGBA scheme was independently recomputed from the tool README and `advisor_icon_processing.py`. The raw ImageGen digest is `f4d90e00aa986afc14f9390337d7760e75d3c6a09331f99c6923a48c2a9b121b`, matching metadata `determinism.decoded_rgba_sha256`. The candidate digest is `96c790a415e354aea836b40dedbcc4f3df6f8f014b01e654841fb11b7ae6f62f`, matching both metadata and the trial manifest. The review-sheet digest is `7056fd2be48dcee1510ec0e7d8f1cf964d5bba7ebdad5860067b14e7f5debdf2`, matching metadata.
+The processor's domain-separated decoded-RGBA scheme was independently recomputed from the tool README and `the retired portrait-processing utility`. The raw ImageGen digest is `f4d90e00aa986afc14f9390337d7760e75d3c6a09331f99c6923a48c2a9b121b`, matching metadata `determinism.decoded_rgba_sha256`. The candidate digest is `96c790a415e354aea836b40dedbcc4f3df6f8f014b01e654841fb11b7ae6f62f`, matching both metadata and the trial manifest. The review-sheet digest is `7056fd2be48dcee1510ec0e7d8f1cf964d5bba7ebdad5860067b14e7f5debdf2`, matching metadata.
 
 ## Native and 4x nearest-neighbour visual review
 

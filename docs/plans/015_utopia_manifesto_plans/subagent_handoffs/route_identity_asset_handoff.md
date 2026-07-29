@@ -119,7 +119,7 @@ The shared root file `docs/assets/015_utopia_manifesto/manifest.md` was delibera
 
 - `39` uncompressed bottom-left-origin 32-bit TGA flags at exact normal/medium/small dimensions
 - `4` uncompressed one-level BGRA institutional portrait DDS files at `156x210`
-- `16` uncompressed one-level BGRA advisor portrait DDS files at `65x67`, rebuilt through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`
+- `16` uncompressed one-level BGRA advisor portrait DDS files at `65x67`, rebuilt through `the retired portrait-processing utility advisor`
 - `5` uncompressed one-level BGRA league emblem DDS files at `64x64`, with alpha spanning `0..255`
 
 Every runtime file decoded successfully and was pixel-identical to its processed PNG. File lengths, DDS masks/caps, TGA origin and bit depth, dimensions, and alpha ranges match the required contracts. Hash-based family checks confirmed four distinct Practical Commonwealth ideology variants, four distinct institutional portraits, sixteen distinct advisor portraits, and five distinct league emblems. The four documented fixed-ideology flag aliases are the only intended duplicates.

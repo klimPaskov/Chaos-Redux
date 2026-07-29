@@ -31,7 +31,7 @@ The raw ImageGen result is `imagegen_results/AFX_herman_baltia_identity_preserve
 
 The prompt is `identity_repaint_prompt.md` with SHA-256 `68710A71B2D3EEFE15AA38B7DF0B7220B2BDF0CA106FD12503B32D85A4466B2A`.
 
-The deterministic processor is `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version 5.0 with SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`, positional mode `leader`, role family `commander`, and recorded Python `3.9.12` / Pillow `11.1.0` runtime.
+The deterministic processor is `the retired portrait-processing utility` version 5.0 with SHA-256 `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`, positional mode `leader`, role family `commander`, and recorded Python `3.9.12` / Pillow `11.1.0` runtime.
 
 The processed candidate is `processed_png/portrait_AFX_walloon_reserve_commander.png` at `156 x 210` with SHA-256 `A0ABD0E129F150F534B024C06FFB66D14D8E4DFDC86BDB581252588D769244A7`.
 

@@ -64,7 +64,7 @@ An independent uniqueness audit then identified the earlier `leader_CBH_warlord_
 
 ## Deterministic finishing
 
-Every portrait was processed with `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and an individual comparison sheet. Every processed PNG is 156x210. Every DDS was created with `.tools/convert_to_dds.py --width 156 --height 210`.
+Every portrait was processed with `the retired portrait-processing utility leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and an individual comparison sheet. Every processed PNG is 156x210. Every DDS was created with `.tools/convert_to_dds.py --width 156 --height 210`.
 
 The crop geometry recorded in metadata is:
 

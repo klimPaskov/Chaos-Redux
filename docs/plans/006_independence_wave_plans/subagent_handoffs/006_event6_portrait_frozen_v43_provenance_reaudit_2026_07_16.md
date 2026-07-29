@@ -30,7 +30,7 @@ The retained files comprise the v4.3 processor, overlay manifest, six canonical 
 
 All **30/30** portrait metadata records were traversed independently.
 
-- Unique `processor` path: `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/_tooling/v4_3_frozen_inputs/.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+- Unique `processor` path: `docs/assets/006_independence_wave/portrait_regeneration_male_hoi4_2026_07_16/_tooling/v4_3_frozen_inputs/the retired portrait-processing utility`
 - Resolved processor files: **30/30**
 - `processor_sha256` values equal the v4.3 pin: **30/30**
 - Resolved processor byte hashes equal the v4.3 pin: **30/30**

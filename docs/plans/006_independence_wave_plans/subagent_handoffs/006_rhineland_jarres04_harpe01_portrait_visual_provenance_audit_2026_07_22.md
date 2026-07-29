@@ -46,7 +46,7 @@ All paths below are relative to `docs/assets/006_independence_wave/sourced_portr
 | `contact_sheets/RHI_josef_harpe_full_source_result_comparison.png` | `1560x458`, RGB; 461,142 bytes | `a3461d383a8e6fb61780214e662a7adc33eb9e9cf6ceee307bfea6680a346ef7` | Panels: unchanged source, neutralized moderation crop, ImageGen result, native candidate, style reference. |
 | `contact_sheets/RHI_josef_harpe_source_result_reference.png` | `1344x464`, RGBA; 729,317 bytes | `ea15febfa7ea96222785b1bf1204c3e9a0033263f251a8a0e83301de222d5fe1` | Panels: source crop, processed candidate, Stauning, Mannerheim. |
 | `prompts/RHI_josef_harpe_identity_preserve_trial_01.txt` | 1,472 bytes | `18cecfe24f2b6ac05c10ab5c8e6eb0f522372988cb1e36527f54c999ade8428d` | Explicitly prohibits a political cap symbol, face replacement, beautification, de-aging, extra people, and advisor framing. |
-| `metadata/RHI_josef_harpe_processing.json` | 5,314 bytes | `3fcda0cffdb4ce65029f5209a8d419282407907d1980df4bd1d6135df45ecb6a` | `advisor_icon_processing.py` v5.0, leader mode, `source_kind=real`, crop `(1,0,1081,1454)`, `face_box=null`, `status=candidate_requires_visual_approval`; output and review hashes match the PNGs. |
+| `metadata/RHI_josef_harpe_processing.json` | 5,314 bytes | `3fcda0cffdb4ce65029f5209a8d419282407907d1980df4bd1d6135df45ecb6a` | `the retired portrait-processing utility` v5.0, leader mode, `source_kind=real`, crop `(1,0,1081,1454)`, `face_box=null`, `status=candidate_requires_visual_approval`; output and review hashes match the PNGs. |
 
 The metadata's processor hash is the current leader processor (`c6e78c01c025ad57fef8dc25eb79bd216ff9809df27e4c758eb9ec72594a3963`) and its leader render version is `2.0`; the advisor-only v5 overlay/provenance contract is not applicable to this full leader texture.
 
@@ -110,7 +110,7 @@ All paths below are relative to `docs/assets/006_independence_wave/sourced_portr
 | `contact_sheets/RHI_karl_jarres_full_source_result_comparison.png` | `1560x458`, RGB; 488,321 bytes | `0c24f10c2799a050928a2c5efb17e818709f31b4477e7e2ff27309cd640aac37` | Panels: LOC face source, Bundesarchiv attire source, ImageGen result, native candidate, Stauning style reference. |
 | `contact_sheets/RHI_karl_jarres_processor_style_comparison.png` | `1344x464`, RGBA; 684,195 bytes | `223c94ce6d3d2dc079965cb7dd03dd9e0e646293d3ef55c7c405eae8a1e12773` | Panels: source crop, processed candidate, Stauning, Mannerheim. |
 | `prompts/RHI_karl_jarres_identity_preserve_trial_04.txt` | 1,694 bytes | `4bd6cc0c3bbab6e5aec19289ff05f1fdbb600d175b4ba5c56d5b284449c19378` | Explicitly locks long/narrow face, low hooded eyes, long nose, narrow jaw, guarded expression, hat/coat, and no invented props/insignia. |
-| `metadata/RHI_karl_jarres_processing.json` | 5,354 bytes | `8b670f8862162f7d3ebc22fedd801e83413f1eb474173173b56070d6cad05a14` | `advisor_icon_processing.py` v5.0, leader mode, `source_kind=real`, crop `(1,0,1081,1454)`, `face_box=null`, `status=candidate_requires_visual_approval`; output and review hashes match the PNGs. |
+| `metadata/RHI_karl_jarres_processing.json` | 5,354 bytes | `8b670f8862162f7d3ebc22fedd801e83413f1eb474173173b56070d6cad05a14` | `the retired portrait-processing utility` v5.0, leader mode, `source_kind=real`, crop `(1,0,1081,1454)`, `face_box=null`, `status=candidate_requires_visual_approval`; output and review hashes match the PNGs. |
 
 ### Archival provenance, rights, date, and role
 

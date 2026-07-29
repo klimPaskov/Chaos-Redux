@@ -15,10 +15,10 @@
 
 - ImageGen handle: `exec-a4228463-4201-499a-b1e4-aafb79d7b987`
 - Generation route: OpenAI built-in ImageGen, `precise-object-edit`
-- Source: `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_texture_refinement_iteration_exec-a4228463-4201-499a-b1e4-aafb79d7b987_source.png`
+- Source: the retired advisor dossier asset kit
 - Source dimensions: `1254x1254`
 - Source SHA-256: `a68cac5f19b2dc81b8d349b51d81092b86a2d0c739a60b18e89d02f33f93b922`
-- Transparent overlay: `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_texture_refinement_iteration_exec-a4228463-4201-499a-b1e4-aafb79d7b987_overlay.png`
+- Transparent overlay: the retired advisor dossier asset kit
 - Overlay dimensions: `1254x1254`
 - Overlay SHA-256: `4c6ff6274020f24b3ff73b085ba02963737eea26aa988bff31a0b562ab07e7eb`
 
@@ -27,11 +27,11 @@ Rejected refinement attempts were removed from the repository working tree. Thei
 ## Generation inputs
 
 1. Edit target and geometry/palette authority:
-   `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_texture_iteration_exec-184ae8ce_source.png`
+   the retired advisor dossier asset kit
    
    SHA-256: `530ca1e7eeb24001efecf939f001aa0ba14159ae6e789422b6260b357669538b`
 2. Frozen vanilla style-reference contact sheet:
-   `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/vanilla_advisor_contact_sheet_imagegen_reference_b26a3d57.png`
+   the retired advisor dossier asset kit
    
    SHA-256: `b26a3d57cf1579bbe2c2862ab63c1040b6a0e947ad197ae4f6afbd661930bac6`
 
@@ -66,8 +66,8 @@ Invocation:
 
 ```powershell
 python -B C:/Users/klimp/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py `
-	--input .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_texture_refinement_iteration_exec-a4228463-4201-499a-b1e4-aafb79d7b987_source.png `
-	--out .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_texture_refinement_iteration_exec-a4228463-4201-499a-b1e4-aafb79d7b987_overlay.png `
+	--input the retired advisor dossier asset kit `
+	--out the retired advisor dossier asset kit `
 	--auto-key border --soft-matte `
 	--transparent-threshold 12 --opaque-threshold 220 `
 	--despill --force

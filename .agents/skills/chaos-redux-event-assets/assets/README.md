@@ -95,30 +95,31 @@ symbol, empty chamber, desk, machine, seal, or document arrangement with no
 human figure, face, silhouette, or crowd. Use institutional names rather than
 personal random-name pools.
 
-## Advisor dossier-card workflow
+## Advisor and high-command dossier portraits
 
 Advisor, theorist, military-high-command, officer-corps, and army-small dossier
-portraits are a separate, explicitly authorized asset family. The canonical
-style references live under `vanilla_reference/portraits/advisors/`; they are
-native `65x67` review inputs and are not runtime art. Never infer this family
-from a character or small-portrait consumer when the accepted requirement does
-not request it.
+portraits are a separate, explicitly authorized asset family. The canonical style
+references live under `vanilla_reference/portraits/advisors/`; they are native
+`65x67` review inputs and are not runtime art. Never infer this family from a
+character or small-portrait consumer when the accepted requirement does not request
+it.
 
-The reusable generated dossier kit is kept under
-`advisor_dossier_overlays/`. Its top-level
-`advisor_dossier_overlay_manifest.json` is the schema-4 provenance authority;
-the `v3/` files retain the approved shadowless frame and opaque paper sources,
-alpha-extracted overlays, prompts, generation inputs, and review contact sheet.
-These files are workflow inputs, not final advisor icons. Do not draw, repair,
-or synthesize visible card artwork locally, and do not provide an overlay without
-its retained generated source.
+There is no bundled dossier compositor or reusable card-art package. Prepare each
+native `65x67` candidate with a deterministic, task-specific/manual image workflow.
+Retain source and processed PNGs, exact dimensions, crop/composition notes, hashes,
+provenance, comparison sheet, stable sprite name, and runtime path in distinct
+repo-contained artifacts. Grounded real people must complete the sourced identity
+gate through an independently approved `156x210` candidate first; fictional
+high-chaos or impossible/supernatural subjects may use an approved generated master.
+Never directly resize a full portrait into the card or draw replacement card art
+from primitive geometry.
 
-Use `tools/advisor_icon_processing.py advisor` with a schema-1 portrait
-provenance manifest, an explicit crop and face box, the schema-4 overlay
-manifest, both retained frame/paper source-and-overlay pairs, and an independent
-visual review. The processor exports native `65x67` candidates only; convert a
-candidate to DDS after separate approval. Keep this generic kit independent of
-event-owned portraits, advisor names, and runtime `.gfx` wiring.
+Review every candidate against the canonical advisor/high-command references at
+native size and at `4x` nearest-neighbour size. Check face readability, frame
+silhouette and palette, paper geometry and opacity where present, transparent
+corners, texture continuity, and holes or fringe. The producer may not approve the
+candidate. Convert only an independently approved PNG to DDS with the repository
+converter, then wire the stable sprite in the appropriate `.gfx` file.
 
 ## Flags and event art
 

@@ -19,7 +19,7 @@ recommendation.
 The experiment created one separate leader-only processor and an event-scoped
 trial workspace. It did not modify:
 
-- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+- `the retired portrait-processing utility`
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - gameplay, `.gfx`, DDS, localisation, specs, existing manifests, or protected
   runtime portraits

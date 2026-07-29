@@ -271,7 +271,7 @@ Production constraints:
 - Each one-person master serves the civilian/army large slot at 156x210. Its
   army-small consumer is a separately composed 65x67 dossier card, not a resize.
 - New army-small work must use the current processor v4.4 contract in
-  `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+  `the retired portrait-processing utility`
   with the manifest-pinned ImageGen frame/paper overlays, explicit crop and
   face box, full metadata, native and 4x comparison sheet, and approval of the
   exact candidate hash by a reviewer other than the producer.

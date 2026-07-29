@@ -49,7 +49,7 @@ Each face, cranial silhouette, expression, build, garment arrangement, and prop 
 
 ## Deterministic finishing
 
-All portraits were processed with `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and a per-portrait review sheet.
+All portraits were processed with `the retired portrait-processing utility leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and a per-portrait review sheet.
 
 - Thirteen 1080x1456 masters use crop `0 1 1080 1455`.
 - `leader_CBF_warlord_south_america_source.png` is 1079x1457 and uses crop `0 2 1079 1455`.

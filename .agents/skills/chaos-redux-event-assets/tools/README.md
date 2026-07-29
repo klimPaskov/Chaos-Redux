@@ -12,21 +12,18 @@ are review-only copies and are never processor or runtime inputs. Advisor dossie
 cards use the separate canonical references under
 `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
-`advisor_icon_processing.py leader` remains the processor's full-size `156x210` export mode for both country leaders and commanders; the positional mode name does not classify the character as a political leader. The full-size role family defaults to `leader` for backward compatibility.
+There is no bundled full-size portrait processor. After the immutable crop, create
+the deterministic `156x210` country-leader, commander, operative, or named-officeholder
+candidate with a reproducible task-specific/manual image workflow. Inspect the
+canonical role family (`leaders/`, `commanders/`, or `operatives/`) plus the
+male-only quick-reference pack where applicable. Retain the processed source or
+ImageGen result, candidate PNG, exact dimensions, crop metadata, hashes, role-specific
+comparison sheet, and independent likeness/style/provenance review. Do not hand off
+a raw, filtered, or merely resized photograph as runtime art.
 
-Commanders must pass `--role-family commander` on the full-size command. That selector uses the canonical `assets/vanilla_reference/portraits/commanders/` directory and the deterministic land-command references `eng_bernard_montgomery.png` and `ger_erwin_von_witzleben.png`. Country leaders retain the canonical leader directory and `den_thorvald_stauning.png` / `fin_carl_mannerheim.png` defaults. A custom `--reference-dir` must still contain the exact selected filenames and remain inside the repository.
-
-The review sheet's first panel is labelled `processor input crop`; it is the crop of the supplied processed source or ImageGen result, not the immutable archival crop. Use the role-family references for style review only. An independent auditor must separately compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references; the processor sheet cannot replace provenance evidence or the independent likeness/style/provenance audit.
-
-The processor's `decoded_rgba_sha256` fields are domain-separated evidence hashes, not plain hashes of `RGBA.tobytes()`. Recompute them exactly as SHA-256 over the ASCII prefix `chaos-redux-decoded-rgba-v1` followed by one NUL byte, the width and height as four-byte little-endian unsigned integers, and the decoded RGBA bytes. A plain pixel-payload hash is useful only when it is labelled separately and must not be compared directly with `decoded_rgba_sha256`.
-
-The commander boundary is explicit in the full-size invocation:
-
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader `
-	<processed_source_or_imagegen_result.png> <candidate.png> --role-family commander `
-	--source-kind real --crop <left> <top> <right> <bottom> --review-sheet <review.png>
-```
+Use the canonical role-specific references as style-family controls only. An
+independent auditor must compare the archival master, explicit archival crop, raw
+ImageGen result, processed candidate, and role-specific references separately.
 
 ## `extract_portrait_source_crop.py`
 
@@ -58,39 +55,31 @@ The command above is the supported converter; `.tools/convert_to_dds.py` is
 obsolete and must not be restored or used by active workflows. Follow the matching vanilla
 catalog entry for dimensions and compression.
 
-## `advisor_icon_processing.py`
+## Advisor and high-command dossier portraits
 
-The reusable advisor/high-command dossier processor composes an approved portrait
-master into the native `65x67` HOI4 card footprint. It is a finishing and
-validation tool, not a source generator and not a card-art drawing fallback. Advisor
-mode requires an explicit source crop and face box, a schema-1 portrait-provenance
-manifest, the schema-4 reusable overlay manifest, both retained generated
-frame/paper sources, and both alpha-processed overlays. The processor validates the
-canonical six-reference style family and writes a candidate that still requires
-independent visual approval.
+Advisor, theorist, military-high-command, officer-corps, and army-small portraits
+are a separate, explicitly authorized asset family. Inspect the canonical native
+`65x67` references under
+`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`
+and use them as style precedents only. Do not infer this family from a character or
+small-portrait consumer when the accepted requirement does not request it.
 
-Run it from the mod root only after the accepted requirement authorizes the advisor
-family:
+There is no bundled dossier compositor or reusable card-art package. Prepare each native `65x67`
+PNG with a deterministic, task-specific/manual image workflow. Retain source and
+processed PNGs, exact dimensions, crop/composition notes, hashes, provenance,
+comparison sheet, stable sprite name, and runtime path in distinct repo-contained
+artifacts. For grounded real people, complete the shared sourced identity gate
+through an independently approved `156x210` candidate first; fictional high-chaos
+or impossible/supernatural subjects may use an approved generated master. Never
+directly resize a full portrait into the card, draw replacement card art from
+primitive geometry, or advertise a missing shared processor.
 
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor `
-	<portrait_master.png> <advisor_icon.png> --source-kind fictional `
-	--crop <left> <top> <right> <bottom> `
-	--face-box <left> <top> <right> <bottom> `
-	--portrait-provenance-manifest <portrait_provenance_manifest.json> `
-	--advisor-overlay-manifest .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json `
-	--advisor-frame-source .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_frame_shadowless_imagegen_source.png `
-	--advisor-frame-overlay .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_frame_shadowless_overlay.png `
-	--advisor-paper-source .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_imagegen_source.png `
-	--advisor-paper-overlay .agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/v3/advisor_paper_shadowless_overlay.png `
-	--review-sheet <advisor_review.png> `
-	--metadata <advisor_icon.json>
-```
-
-Keep the generated source/overlay pairs and manifests immutable. Do not draw,
-repair, recolour, paperless-compose, or directly resize a `156x210` leader or
-commander into an advisor card. Convert to DDS only after the separate review
-record approves the native PNG.
+Review the candidate against the canonical advisor/high-command references at native
+size and at `4x` nearest-neighbour size. Check face readability, frame silhouette and
+palette, paper geometry and opacity where present, transparent corners, texture
+continuity, and holes or fringe. The producer may not approve the candidate. Convert
+only an independently approved PNG with `convert_to_dds.py --width 65 --height 67`
+and wire the stable sprite in the appropriate `.gfx` file.
 
 ## `process_report_event_image.py`
 

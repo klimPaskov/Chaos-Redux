@@ -63,7 +63,7 @@ The move used native PowerShell `Move-Item -LiteralPath` after resolving and ass
 - `docs/assets/015_utopia_manifesto/value_calling_icon_repair_2026_07_16/_tooling/process_value_calling_icons.py`
 - `docs/assets/015_utopia_manifesto/ledger_case_cards_2026_07_16/tooling/process_case_cards.py`
 
-Only converter path constants or converter-attribution comments changed in the Event 15 tooling files above. No Event 15 runtime asset, manifest, metadata file, or `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` was edited by this migration.
+Only converter path constants or converter-attribution comments changed in the Event 15 tooling files above. No Event 15 runtime asset, manifest, metadata file, or `the retired portrait-processing utility` was edited by this migration.
 
 ### Current asset documentation
 

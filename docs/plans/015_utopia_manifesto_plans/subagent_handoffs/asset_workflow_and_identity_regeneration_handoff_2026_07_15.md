@@ -24,7 +24,7 @@ The reusable rules are recorded in:
 
 The skill now treats flags as flat identity designs and assets rather than scene artwork while still requiring ImageGen authorship and preservation of generated heraldic detail. It separately defines the advisor master-plus-overlay workflow and the people-free institutional-leader workflow.
 
-`.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` is version 2.0. Advisor mode requires both `--advisor-frame-overlay` and `--advisor-paper-overlay`. Its metadata contract is:
+`the retired portrait-processing utility` is version 2.0. Advisor mode requires both `--advisor-frame-overlay` and `--advisor-paper-overlay`. Its metadata contract is:
 
 `crop_grade_angle_alpha_shadow_composite_export_only; no programmatically drawn advisor-card artwork`
 
@@ -74,7 +74,7 @@ The sixteen roles each have a distinct built-in ImageGen fictional portrait mast
 
 Overlay sources and their manifest live under:
 
-`.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/`
+the retired advisor dossier asset kit
 
 The approved role-master handles, prompts, hashes, crop metadata, package paths, and runtime paths are recorded in the route-identity prompt and asset-record files. Runtime DDS files remain at:
 
@@ -122,14 +122,14 @@ Current registry proof:
 - `advisor_validation_2026_07_15.json`: all 16 corrected advisor dossier icons validate at `65x67`; all 16 recorded portrait masters and both generated overlay masters exactly match their recorded built-in ImageGen objects.
 - `validation.json`: 100 runtime route-identity outputs validate: 75 flags, 4 institutional leaders, 16 advisors, and 5 League emblems.
 - `final_icon_frame_audit.json`: all 427 current Event 15 registrations resolve with zero duplicate sprite names.
-- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, the flag processor, and the asset validators compile or execute successfully; the skill validator passes.
+- `the retired portrait-processing utility`, the flag processor, and the asset validators compile or execute successfully; the skill validator passes.
 
 ## Files changed
 
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `.agents/skills/chaos-redux-event-assets/assets/README.md`
-- `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/**`
-- `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+- the retired advisor dossier asset kit
+- `the retired portrait-processing utility`
 - `assets/vanilla_reference/portraits/advisors/`
 - `assets/vanilla_reference/portraits/leaders/`
 - `gfx/flags/UTOPIA_MANIFESTO_*.tga`

@@ -21,7 +21,7 @@ The three packages were inspected directly, including each `manifest.md`, `gfx_h
 - `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
 - leader contact sheet and the canonical `den_thorvald_stauning.png` / `fin_carl_mannerheim.png` leader-family examples shown in the package processor sheets
 
-All three metadata records use `advisor_icon_processing.py` v5.0, `leader` mode, `source_kind = real`, a full-portrait crop, canonical leader references, and `status = candidate_requires_visual_approval`. No metadata status was rewritten. Each processed PNG is exactly `156x210`, RGBA, and fully opaque (`alpha = 255` for every pixel):
+All three metadata records use `the retired portrait-processing utility` v5.0, `leader` mode, `source_kind = real`, a full-portrait crop, canonical leader references, and `status = candidate_requires_visual_approval`. No metadata status was rewritten. Each processed PNG is exactly `156x210`, RGBA, and fully opaque (`alpha = 255` for every pixel):
 
 | Package | ImageGen result | Native processed PNG | Full comparison sheet | Processor/style sheet |
 |---|---|---|---|---|

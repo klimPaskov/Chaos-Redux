@@ -59,7 +59,7 @@ docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/prompts/warlord_pro
 
 Every selected source was processed with:
 
-- .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader
+- the retired portrait-processing utility leader
 - explicit full-source crop from the selected master dimensions
 - source-kind fictional
 - the canonical leader reference directory

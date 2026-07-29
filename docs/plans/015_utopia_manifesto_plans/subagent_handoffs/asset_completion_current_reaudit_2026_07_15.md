@@ -41,7 +41,7 @@ Authority: `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/instituti
 
 Sixteen distinct `65x67` HOI4 advisor dossiers use sixteen independent fictional built-in ImageGen portrait masters plus two separate built-in ImageGen overlay masters: the dossier frame and the paper/seal layer. All eighteen source masters are exact byte copies of their recorded ImageGen objects.
 
-`.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` performs crop, grade, angle, alpha-derived shadow, generated-layer composition, resize, validation, and export only. It requires the generated overlay kit and contains no code path that draws the visible dossier card as simple shapes. Every runtime DDS is a one-level uncompressed BGRA image with real transparency, byte equality to the packaged runtime copy, and decoded-pixel equality to its processed PNG.
+`the retired portrait-processing utility` performs crop, grade, angle, alpha-derived shadow, generated-layer composition, resize, validation, and export only. It requires the generated overlay kit and contains no code path that draws the visible dossier card as simple shapes. Every runtime DDS is a one-level uncompressed BGRA image with real transparency, byte equality to the packaged runtime copy, and decoded-pixel equality to its processed PNG.
 
 Authority: `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/advisor_validation_2026_07_15.json`, SHA-256 `9e261b1ccd51249bdaebcd4cc2335a45988014e8aa740b43fad7c7dc8e25b02f`.
 
