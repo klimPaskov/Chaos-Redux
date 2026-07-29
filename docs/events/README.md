@@ -24,7 +24,5 @@ Each event chain has one folder with `overview.md` as its canonical implementati
 | 018 Resources Found | [`018_resources_found/overview.md`](018_resources_found/overview.md) | Cave-country and helper contracts |
 | 019 Infantry Spawn | [`019_infantry_spawn/overview.md`](019_infantry_spawn/overview.md) | [`systems/`](019_infantry_spawn/systems/) |
 | 020 Black Plague | [`020_black_plague/overview.md`](020_black_plague/overview.md) | Shared disease response |
-| 163 Doctor Wu | [`163_doctor_wu/overview.md`](163_doctor_wu/overview.md) | Cross-event clinical chain |
-| 269 Names for the Missing | [`269_names_for_missing/overview.md`](269_names_for_missing/overview.md) | Fallout scheduler chain |
 | Germany Mengele chain | [`germany_mengele/overview.md`](germany_mengele/overview.md) | Country event chain outside the random-event pool |
 
