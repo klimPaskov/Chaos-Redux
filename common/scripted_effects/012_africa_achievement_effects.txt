@@ -26,6 +26,7 @@ africa_achievement_initialize_normal_host = {
 	set_variable = { global.africa_achievement_union_socialised_projects = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_maritime_polity_count = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_maritime_port_count = constant:africa_value.zero }
+	set_variable = { global.africa_achievement_rival_bloc_member_count = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_savanna_court_count = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_nile_identity_count = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_plateau_polity_count = constant:africa_value.zero }
@@ -94,6 +95,7 @@ africa_achievement_initialize_normal_host = {
 	clear_array = global.africa_achievement_nonhuman_unit_families
 	clear_array = global.africa_achievement_elephant_terrain_regions
 	clear_array = global.africa_achievement_restoration_identities
+	clear_array = global.africa_achievement_medium_confidence_regions
 	africa_achievement_record_initial_host_profiles = yes
 }
 
@@ -220,6 +222,49 @@ africa_achievement_record_milestone = {
 		set_global_flag = africa_achievement_weather_war_won
 	}
 	africa_achievement_refresh_host_duration_windows = yes
+}
+
+# COUNTRY scope on the host after both priority-member corridor settlements
+# are live. Aksum's heritage consent and Harar's diversified guarantees are
+# the two existing owner outcomes; this helper only joins those outcomes and
+# never infers a corridor from a package name or regional overlay.
+africa_achievement_record_horn_corridor_operational = {
+	if = {
+		limit = { NOT = { has_global_flag = africa_achievement_horn_corridors_operational } }
+		set_temp_variable = { africa_achievement_horn_aksum_ready = constant:africa_value.zero }
+		set_temp_variable = { africa_achievement_horn_harar_ready = constant:africa_value.zero }
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			limit = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				africa_member_host_generation_is_current = yes
+				has_country_flag = africa_priority_member_politics_settled
+			}
+			if = {
+				limit = {
+					africa_priority_member_package_is_aksum = yes
+					has_country_flag = africa_priority_aksum_heritage_consent_separated
+				}
+				add_to_temp_variable = { africa_achievement_horn_aksum_ready = constant:africa_value.one }
+			}
+			if = {
+				limit = {
+					africa_priority_member_package_is_harar = yes
+					has_country_flag = africa_priority_harar_corridor_guarantees_diversified
+				}
+				add_to_temp_variable = { africa_achievement_horn_harar_ready = constant:africa_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = africa_achievement_horn_aksum_ready value = constant:africa_value.one compare = greater_than_or_equals }
+				check_variable = { var = africa_achievement_horn_harar_ready value = constant:africa_value.one compare = greater_than_or_equals }
+			}
+			set_global_flag = africa_achievement_horn_corridors_operational
+		}
+		africa_achievement_refresh_survival_windows = yes
+	}
 }
 
 # COUNTRY scope on an action target immediately after the immutable active
@@ -1022,6 +1067,31 @@ africa_achievement_record_region_proof = {
 		}
 		add_to_array = { array = global.africa_achievement_developed_regions value = africa_achievement_region_id }
 	}
+	if = {
+		limit = {
+			check_variable = { africa_achievement_region_id > constant:africa_overlay.none }
+			NOT = { check_variable = { africa_achievement_region_id > constant:africa_overlay.madagascar_islands } }
+			check_variable = { africa_achievement_region_proof_id = constant:africa_achievement_region_proof.development_project }
+			has_variable = africa_member_confidence
+			check_variable = {
+				var = africa_member_confidence
+				value = constant:africa_measure.medium
+				compare = greater_than_or_equals
+			}
+			NOT = { is_in_array = { array = global.africa_achievement_medium_confidence_regions value = africa_achievement_region_id } }
+		}
+		add_to_array = { array = global.africa_achievement_medium_confidence_regions value = africa_achievement_region_id }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_achievement_medium_confidence_regions^num
+				value = constant:africa_achievement_count.continental_regions
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = africa_achievement_all_regions_medium_confidence
+	}
 	africa_achievement_refresh_host_duration_windows = yes
 }
 
@@ -1093,6 +1163,41 @@ africa_achievement_record_elephant_terrain_region = {
 	}
 }
 
+# COUNTRY scope on a completed Event 012 priority-member package. Maps only
+# existing package mechanic outcomes to the shared achievement identity ledger.
+africa_achievement_record_priority_member_identity = {
+	if = {
+		limit = { africa_priority_member_package_is_luba = yes has_country_flag = africa_priority_luba_mining_revenue_settled }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.luba }
+		africa_achievement_record_restoration_identity = yes
+	}
+	if = {
+		limit = { africa_priority_member_package_is_lunda = yes has_country_flag = africa_priority_lunda_cross_border_access_settled }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.lunda }
+		africa_achievement_record_restoration_identity = yes
+	}
+	if = {
+		limit = { africa_priority_member_package_is_nubia = yes has_country_flag = africa_priority_nubia_river_rights_recognised }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.nubia }
+		africa_achievement_record_restoration_identity = yes
+	}
+	if = {
+		limit = { africa_priority_member_package_is_aksum = yes has_country_flag = africa_priority_aksum_heritage_consent_separated }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.aksum }
+		africa_achievement_record_restoration_identity = yes
+	}
+	if = {
+		limit = { africa_priority_member_package_is_harar = yes has_country_flag = africa_priority_harar_corridor_guarantees_diversified }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.harar }
+		africa_achievement_record_restoration_identity = yes
+	}
+	if = {
+		limit = { africa_priority_member_package_is_great_zimbabwe = yes has_country_flag = africa_priority_great_zimbabwe_restoration_mandate_balanced }
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.great_zimbabwe }
+		africa_achievement_record_restoration_identity = yes
+	}
+}
+
 # Any scope. Records a researched restoration identity after the package owns
 # local consent and a valid constitutional settlement.
 africa_achievement_record_restoration_identity = {
@@ -1103,6 +1208,18 @@ africa_achievement_record_restoration_identity = {
 			NOT = { is_in_array = { array = global.africa_achievement_restoration_identities value = africa_achievement_restoration_identity_id } }
 		}
 		add_to_array = { array = global.africa_achievement_restoration_identities value = africa_achievement_restoration_identity_id }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.luba } } set_country_flag = africa_achievement_restoration_identity_luba_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.lunda } } set_country_flag = africa_achievement_restoration_identity_lunda_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.kuba } } set_country_flag = africa_achievement_restoration_identity_kuba_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.kush } } set_country_flag = africa_achievement_restoration_identity_kush_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.nubia } } set_country_flag = africa_achievement_restoration_identity_nubia_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.makuria } } set_country_flag = africa_achievement_restoration_identity_makuria_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.alodia } } set_country_flag = africa_achievement_restoration_identity_alodia_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.aksum } } set_country_flag = africa_achievement_restoration_identity_aksum_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.harar } } set_country_flag = africa_achievement_restoration_identity_harar_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.great_zimbabwe } } set_country_flag = africa_achievement_restoration_identity_great_zimbabwe_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.mutapa } } set_country_flag = africa_achievement_restoration_identity_mutapa_recorded }
+		if = { limit = { check_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.rozwi } } set_country_flag = africa_achievement_restoration_identity_rozwi_recorded }
 		if = {
 			limit = {
 				OR = {
@@ -1212,6 +1329,7 @@ africa_achievement_refresh_live_duration_counts = {
 	set_variable = { global.africa_achievement_snapshot_high_confidence = africa_achievement_live_high_confidence }
 	set_variable = { global.africa_achievement_snapshot_sovereign_members = africa_achievement_live_sovereign_members }
 	set_variable = { global.africa_achievement_snapshot_nonhuman_members = africa_achievement_live_nonhuman_members }
+	set_variable = { global.africa_achievement_rival_bloc_member_count = africa_rival_bloc_countries^num }
 }
 
 # Any Event 12 scope with the persistent host target available.
@@ -2026,6 +2144,46 @@ africa_achievement_record_coercive_annexation = {
 	if = { limit = { has_country_flag = africa_achievement_counted_protected_partner } set_global_flag = africa_achievement_counted_partner_annexed }
 	if = { limit = { has_country_flag = africa_achievement_counted_guarantee } set_global_flag = africa_achievement_guaranteed_partner_coercively_annexed }
 	if = { limit = { has_country_flag = africa_achievement_archive_evacuated } set_global_flag = africa_achievement_archive_partner_annexed }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_luba_recorded
+				has_country_flag = africa_achievement_restoration_identity_lunda_recorded
+				has_country_flag = africa_achievement_restoration_identity_kuba_recorded
+			}
+		}
+		set_global_flag = africa_achievement_savanna_court_annexed
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_kush_recorded
+				has_country_flag = africa_achievement_restoration_identity_nubia_recorded
+				has_country_flag = africa_achievement_restoration_identity_makuria_recorded
+				has_country_flag = africa_achievement_restoration_identity_alodia_recorded
+			}
+		}
+		set_global_flag = africa_achievement_nile_identity_erased
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_aksum_recorded
+				has_country_flag = africa_achievement_restoration_identity_harar_recorded
+			}
+		}
+		set_global_flag = africa_achievement_horn_package_war
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_great_zimbabwe_recorded
+				has_country_flag = africa_achievement_restoration_identity_mutapa_recorded
+				has_country_flag = africa_achievement_restoration_identity_rozwi_recorded
+			}
+		}
+		set_global_flag = africa_achievement_plateau_polity_annexed
+	}
 }
 
 # COUNTRY scope on the affected guarantee partner.
@@ -2039,6 +2197,46 @@ africa_achievement_record_member_capitulation = {
 	set_global_flag = africa_achievement_league_member_capitulated
 	if = { limit = { has_country_flag = africa_achievement_counted_protected_partner } set_global_flag = africa_achievement_protected_partner_destroyed }
 	if = { limit = { has_country_flag = africa_achievement_last_convoy_candidate } set_global_flag = africa_achievement_last_convoy_partner_capitulated set_country_flag = africa_achievement_last_convoy_disqualified }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_luba_recorded
+				has_country_flag = africa_achievement_restoration_identity_lunda_recorded
+				has_country_flag = africa_achievement_restoration_identity_kuba_recorded
+			}
+		}
+		set_global_flag = africa_achievement_savanna_court_destroyed
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_kush_recorded
+				has_country_flag = africa_achievement_restoration_identity_nubia_recorded
+				has_country_flag = africa_achievement_restoration_identity_makuria_recorded
+				has_country_flag = africa_achievement_restoration_identity_alodia_recorded
+			}
+		}
+		set_global_flag = africa_achievement_nile_identity_erased
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_aksum_recorded
+				has_country_flag = africa_achievement_restoration_identity_harar_recorded
+			}
+		}
+		set_global_flag = africa_achievement_horn_package_war
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_achievement_restoration_identity_great_zimbabwe_recorded
+				has_country_flag = africa_achievement_restoration_identity_mutapa_recorded
+				has_country_flag = africa_achievement_restoration_identity_rozwi_recorded
+			}
+		}
+		set_global_flag = africa_achievement_plateau_polity_annexed
+	}
 }
 
 africa_achievement_reset_congress_retention_for_member_loss = {
@@ -2076,6 +2274,7 @@ africa_achievement_record_integration_burden_breach = {
 africa_achievement_record_region_confidence_collapse = {
 	set_global_flag = africa_achievement_region_confidence_collapsed
 	clr_global_flag = africa_achievement_all_regions_medium_confidence
+	clear_array = global.africa_achievement_medium_confidence_regions
 	set_variable = { global.africa_achievement_development_stability_start_day = constant:africa_value.invalid }
 	set_variable = { global.africa_achievement_development_stability_deadline_day = constant:africa_achievement_days.unset_deadline }
 }
