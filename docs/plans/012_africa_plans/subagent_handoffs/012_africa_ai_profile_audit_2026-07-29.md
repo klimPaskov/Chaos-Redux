@@ -231,4 +231,5 @@ No GUI inspection was required because the audited profile controller has no dec
 - Accepted the exact 64-profile and 102-action source coverage findings.
 - Added `africa_ai_refresh_host_policy_snapshot` and called it at Scramble initialization, every Scramble phase transition, world-order opening, and the Africa-only deferred closure. This closes the reported snapshot-cadence lag.
 - Superseded the stale missing-dispatch wording in `012_africa_ai_actions_77_92_handoff_2026_07_18.md`.
-- Kept country-specific focus-plan differentiation open for a separately reviewed implementation tranche.
+- Added 22 exact country-specific focus plans in `common/ai_strategy_plans/012_africa_focus_plans.txt`; `012_africa_specific_focus_ai_patch_2026-07-29.md` records the one-to-one matrix mapping and distinct-vector validation.
+- Campaign simulation remains open, but the source-level profile-to-focus-plan binding reported here is no longer missing.
