@@ -11,7 +11,7 @@ Scope: bounded research of verified main quotations and short cultural/button re
 | Rat King coronation | Global transformation from scattered broods to one sentient sovereign | “And out of the houses the rats came tumbling.” — Robert Browning, *The Pied Piper of Hamelin* | “Sic transit gloria mundi.” — traditional papal-coronation admonition |
 | Rat King world end | Terminal takeover after the completed world-end path | “And I looked, and behold a pale horse: and his name that sat on him was Death.” — Revelation 6:8, KJV | “A plague o’ both houses!” — Mercutio, Shakespeare, *Romeo and Juliet* |
 
-The canonical evidence and candidate comparisons are appended to `docs/super_events/020_black_plague_super_event_research.md` under `## Text research package`.
+The canonical evidence and candidate comparisons are appended to `docs/super_events/020_black_plague/research.md` under `## Text research package`.
 
 ## Coronation evidence
 

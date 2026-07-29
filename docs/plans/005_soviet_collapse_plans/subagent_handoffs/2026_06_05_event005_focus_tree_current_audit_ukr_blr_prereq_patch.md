@@ -57,7 +57,7 @@ No direct idea-spam reward remains in the audited focus completion rewards. The 
 | `CFR_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt` | 47 | 45 | 0.96 | `soviet_collapse_apply_cfr_focus_public_works` x4, `soviet_collapse_apply_cfr_focus_housing_city_program` x2, `soviet_collapse_apply_cfr_focus_contracting_office` x2 |
 | `MFR_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt` | 58 | 57 | 0.98 | `soviet_collapse_apply_mfr_focus_security_state` x4, `soviet_collapse_apply_mfr_focus_client_arms_network` x4, `soviet_collapse_apply_mfr_focus_unsafe_output` x4 |
 
-Lower-density trees not expanded above: `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `OGB`, `KZR`, `SOG`, `KHW`, and `ALN` are between 0.36 and 0.91 helper calls per focus except ancient restorations at 0.62. Their worst repeated helpers are mostly route-specific or low-count generic helpers.
+Lower-density trees not expanded above: `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `OGB`, `APX`, `SOG`, `ANX`, and `ABX` are between 0.36 and 0.91 helper calls per focus except ancient restorations at 0.62. Their worst repeated helpers are mostly route-specific or low-count generic helpers.
 
 ## Layout And Pathline Findings
 
@@ -69,7 +69,7 @@ Worst post-patch clusters:
 - Belarus: `blr_soviet_collapse_forest_ammunition_hides` at `(17,15)` to `blr_soviet_collapse_the_forest_state_rumor` at `(30,18)` remains a long high-chaos line across the late forest branch.
 - Ukraine: `ukr_soviet_collapse_open_the_liaison_offices` at `(25,5)` to `ukr_soviet_collapse_ports_need_soldiers` at `(32,10)` remains the worst Ukraine edge after patch. A safe fix likely requires a wider foreign-supply lane cleanup.
 - Ukraine: `ukr_soviet_collapse_open_the_liaison_offices` at `(25,5)` to `ukr_soviet_collapse_foreign_advisers_in_plain_coats` at `(37,7)` remains long, but it is now the explicit bridge into the foreign-adviser/protectorate lane.
-- Other high-risk clusters still visible by heuristic: breakaway `soviet_collapse_a_small_state_with_teeth` to `soviet_collapse_rail_hub_or_mountain_pass`, Baltic `baltic_soviet_collapse_the_baltic_question_resolved`, Moldova `moldova_soviet_collapse_black_soil_recovery_boards`, and BAC `BAC_militia_training_yards` to `BAC_taiga_watch_posts`.
+- Other high-risk clusters still visible by heuristic: breakaway `soviet_collapse_a_small_state_with_teeth` to `soviet_collapse_rail_hub_or_mountain_pass`, Baltic `baltic_soviet_collapse_the_baltic_question_resolved`, Moldova `moldova_soviet_collapse_black_soil_recovery_boards`, and ADX `ADX_militia_training_yards` to `ADX_taiga_watch_posts`.
 
 No mutex asymmetry was found inside the audited current-state trees.
 

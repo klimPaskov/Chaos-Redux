@@ -191,7 +191,7 @@ The official `add_days_mission_timeout` contract remains satisfied: it is used i
 
 ### Documentation verification
 
-- `docs/systems/006_independence_wave_iw005_flanders_overlay.md:36-51` accurately describes preservation of the same mission and running flag, first-and-later suspended-tick extension, frozen hold progress, and continuation without a restart. Line 51 explicitly states that official documentation does not establish timeout-versus-on-action order, identifies the one-day-remaining edge, and states that no fresh-deadline fallback is used.
+- `docs/events/006_independence_wave/systems/iw005_flanders_overlay.md:36-51` accurately describes preservation of the same mission and running flag, first-and-later suspended-tick extension, frozen hold progress, and continuation without a restart. Line 51 explicitly states that official documentation does not establish timeout-versus-on-action order, identifies the one-day-remaining edge, and states that no fresh-deadline fallback is used.
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw005_flanders_overlay_implementation_2026_07_16.md:115-132` matches the implemented lifecycle and carries the same ordering limitation. Lines 200-204 repeat it under remaining risks rather than claiming executable engine certification.
 - The implementation handoff's refreshed validation counts match the live source: 40 unique scripted trigger/effect definitions and 91 unique referenced constant keys.
 

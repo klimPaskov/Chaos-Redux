@@ -45,7 +45,7 @@ different contexts. Their wording differences are not stale localisation:
   `chaosx.scenarios.infantry_spawn.impact.*` are selected by
   `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`
   for the shared Triggerable Scenarios row and shared confirmation.
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md:126` documents that
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md:126` documents that
   ownership split. The direct path uses atmospheric pattern/reach wording;
   the shared launcher uses its standard type/intensity vocabulary and an
   explicit immediate-war warning.

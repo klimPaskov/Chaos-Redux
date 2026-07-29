@@ -78,7 +78,7 @@ The spec requires distinct political, industry, and expansion branches. This tab
 | `CFR_soviet_collapse_focus_tree` | 47 | 34 | 30 | 3 | Present but helper-heavy. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 17 | 6 | 3 | Shallow for a high-chaos successor. |
 | `MFR_soviet_collapse_focus_tree` | 58 | 42 | 38 | 1 | Present but expansion route is thin. |
-| Ancient restoration trees `KZR/SOG/KHW/ALN` | 16 each | Present | 2-3 | 5 | Too shallow for ancient-restoration identity depth. |
+| Ancient restoration trees `APX/SOG/ANX/ABX` | 16 each | Present | 2-3 | 5 | Too shallow for ancient-restoration identity depth. |
 
 ## Worst 10 Trees Or Routes By Shallow Reward Pattern
 
@@ -92,10 +92,10 @@ Columns: focus count, focuses without an obvious concrete reward token, focuses 
 | `TSC_soviet_collapse_focus_tree` | 18 | 13 | 10 | 10 |
 | `NRF_soviet_collapse_focus_tree` | 18 | 8 | 14 | 7 |
 | `DSC_soviet_collapse_focus_tree` | 18 | 8 | 13 | 7 |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 10 | 7 | 9 |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 10 | 7 | 9 |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 9 | 7 | 9 |
 | `PRA_soviet_collapse_focus_tree` | 22 | 7 | 14 | 7 |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 9 | 6 | 9 |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 9 | 6 | 9 |
 
 Also high priority despite larger size: `soviet_collapse_ukraine_focus_tree`, `soviet_collapse_belarus_focus_tree`, `UDC_soviet_collapse_focus_tree`, and `GAC_soviet_collapse_focus_tree` score poorly because many rewards are helper-only or generic and route payoffs are hard to inspect from the focus surface.
 
@@ -119,7 +119,7 @@ These helpers are useful, but the current volume makes many focus rewards read a
 | Tree group | Icon status |
 |---|---|
 | All 41 trees | Every focus has an icon assignment. |
-| Full unique icon coverage | `soviet_collapse_kazakhstan_focus_tree`, `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `UDC`, `SDZ`, `GAC`, `OGB`, `MFR`, `KZR`, `SOG`, `KHW`, `ALN`. |
+| Full unique icon coverage | `soviet_collapse_kazakhstan_focus_tree`, `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `UDC`, `SDZ`, `GAC`, `OGB`, `MFR`, `APX`, `SOG`, `ANX`, `ABX`. |
 | Worst reuse | `IUL` 24/47 unique, `UWD` 28/47, `MRC` 31/47, `FEV` 32/47, `SZA` 32/47, `CFR` 32/47. |
 | Moderate reuse | Ukraine 76/83, breakaway 34/36, internal republic 56/62, Baltic 37/42, Caucasus 37/40, Central Asia 39/45, Moldova 43/48, Belarus 51/53, most custom splinters 44/47. |
 

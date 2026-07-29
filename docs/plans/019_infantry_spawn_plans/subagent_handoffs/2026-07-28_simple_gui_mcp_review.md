@@ -18,7 +18,7 @@ The GUI owns the title, tabs, dynamic text, list rows, army scene, and functiona
 - Overview, lots, command, anomalous, and history surfaces share the same margins and button rhythm while retaining their existing scripted GUI element names and decision effects.
 - The seal and critical-command animation/static nodes remain registered for the existing scripted GUI references and are transparent interaction-free art layers.
 - The anomalous animation/static nodes remain registered but are scaled to zero so the empty anomalous surface does not paint a small emblem that reads as an unintended slot; the anomalous tab and content remain state-driven.
-- `docs/events/019_infantry_spawn.md` and `docs/assets/019_infantry_spawn/gfx_handoff.md` now describe the simple field/header/action-band composition and explicitly exclude decorative wells and slot grids.
+- `docs/events/019_infantry_spawn/overview.md` and `docs/assets/019_infantry_spawn/gfx_handoff.md` now describe the simple field/header/action-band composition and explicitly exclude decorative wells and slot grids.
 - `docs/plans/019_infantry_spawn_plans/subagent_handoffs/2026-07-28_muster_board_layout_refinement.md` is marked historical and points to this superseding correction.
 
 ## MCP review evidence

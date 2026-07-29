@@ -69,11 +69,11 @@ Tree inventory:
 | `FTH_soviet_collapse_focus_tree` | custom 15-1379 | 47 | Better custom splinter depth; still uses shared tooltip/helper families heavily. |
 | `PRA_soviet_collapse_focus_tree` | custom 1381-2019 | 22 | Compact but mechanically connected with many decisions; needs layout risk review. |
 | `TSC/RMC/DSC/NRF/ICD_soviet_collapse_focus_tree` | custom 2021-4523 | 18 each | Shallow compact high-chaos/special trees; direct wargoal exists, but branch depth is thin. |
-| `BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC_soviet_collapse_focus_tree` | custom 4525-25768 | 47 each | Most have political, logistics, war, diplomacy, industry, expansion, hidden doctrine, and high-chaos lanes; repeated shared reward tooltips/helpers are the main quality risk. |
+| `AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC_soviet_collapse_focus_tree` | custom 4525-25768 | 47 each | Most have political, logistics, war, diplomacy, industry, expansion, hidden doctrine, and high-chaos lanes; repeated shared reward tooltips/helpers are the main quality risk. |
 | `CFR_soviet_collapse_focus_tree` | factory 18-1045 | 47 | Strong construction-state depth and decisions; only one direct building focus in parsed focus file because most reward work is helper-driven. |
 | `OGB_soviet_collapse_focus_tree` | factory 1047-1608 | 23 | Compact ancient/factory successor; has direct SOV wargoal and decision hooks; pathline risk remains. |
 | `MFR_soviet_collapse_focus_tree` | factory 1610-2994 | 58 | Strong factory-war tree; pathline density risk around war-market and production branches. |
-| `KZR/SOG/KHW/ALN_soviet_collapse_ancient_focus_tree` | ancient 13-1641 | 16 each | Very compact but complete minimum lanes: council, toll/law, workshop/market, guard, claim/charter, symbolic vs expansion, endgame. Needs depth if treated as full playable country packages. |
+| `APX/SOG/ANX/ABX_soviet_collapse_ancient_focus_tree` | ancient 13-1641 | 16 each | Very compact but complete minimum lanes: council, toll/law, workshop/market, guard, claim/charter, symbolic vs expansion, endgame. Needs depth if treated as full playable country packages. |
 
 ## High-Priority Findings
 
@@ -273,8 +273,8 @@ Flat-vs-modified AI counts:
 - Ukraine: 27 flat, 56 modified.
 - Belarus: 12 flat, 41 modified.
 - Kazakhstan: 61 flat, 31 modified.
-- Ancient KZR/SOG/KHW/ALN: 12 flat, 4 modified each.
-- Most 47-focus custom splinter trees have modified AI on every focus, but FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC still have some flat AI.
+- Ancient APX/SOG/ANX/ABX: 12 flat, 4 modified each.
+- Most 47-focus custom splinter trees have modified AI on every focus, but FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC still have some flat AI.
 
 Priority:
 
@@ -332,7 +332,7 @@ rg -n "add_ideas|swap_ideas|remove_ideas|add_timed_idea|modify_timed_idea|custom
 Related system tracing:
 
 ```bash
-find common/decisions common/scripted_effects common/scripted_triggers common/ideas localisation -type f | rg '005|soviet_collapse|UKR|KAZ|BLR|KZR|SOG|collapse'
+find common/decisions common/scripted_effects common/scripted_triggers common/ideas localisation -type f | rg '005|soviet_collapse|UKR|KAZ|BLR|APX|SOG|collapse'
 rg -n "^\\s*(ukr_|kaz_|blr_|soviet_collapse_apply_focus|soviet_collapse_apply_kazakhstan|soviet_collapse_apply_belarus|ukr_soviet|kaz_soviet|blr_soviet).*=( yes| \\{)|^\\s*soviet_collapse_.*focus.*= \\{" common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt common/decisions/005_soviet_collapse_*.txt common/decisions/categories/005_soviet_collapse_categories.txt
 rg -n "add_ideas|swap_ideas|remove_ideas|add_timed_idea|modify_timed_idea|remove_timed_idea|soviet_collapse_.*tension|idea|soviet_collapse_.*_idea" common/scripted_effects/005_soviet_collapse_effects.txt common/ideas/005_soviet_collapse_ideas.txt localisation/english/005_soviet_collapse*_l_english.yml
 ```

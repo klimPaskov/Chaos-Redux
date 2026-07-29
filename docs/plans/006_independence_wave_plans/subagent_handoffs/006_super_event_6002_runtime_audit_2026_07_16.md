@@ -67,7 +67,7 @@ Final media verification:
 
 | Asset | Verified profile | SHA-256 |
 | --- | --- | --- |
-| `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg` | Vorbis, 44.1 kHz stereo, 109.992517 s | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
+| `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | Vorbis, 44.1 kHz stereo, 109.992517 s | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
 | `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | PCM S16LE, 44.1 kHz stereo, 109.992517 s | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
 | `gfx/super_events/006_independence_wave/super_event_006_asset_006_revisionist_milestone.dds` | registered 457 x 328 BGRA DDS | `A7ABEC9C821A709BBD6412B2904DB6124E59914D739F79944CF0FD40D5187542` |
 

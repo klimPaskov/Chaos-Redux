@@ -2,7 +2,7 @@
 
 Status: implemented and closed by the parent Event 010 Death implementation.
 
-Closure note: this plan is retained as design and audit history. The named route packages were implemented and promoted into `docs/events/010_death.md`, `docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md`, `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, and `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md`.
+Closure note: this plan is retained as design and audit history. The named route packages were implemented and promoted into `docs/events/010_death/overview.md`, `docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md`, `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, and `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md`.
 
 Scope: Dark Methods, Black Oath, Herald of Zol, Black Apostolate, Black Atlas UI, route achievements, asset and animation handoffs, and route connections that deepen the existing Death package without turning it into a second event.
 
@@ -71,7 +71,7 @@ Likely files to touch if this addendum is accepted:
 - `localisation/english/010_death_l_english.yml`
 - `localisation/english/*achievement*` files used by Chaos Redux
 - `docs/assets/010_death/generated_art_manifest.md`
-- `docs/events/010_death.md`
+- `docs/events/010_death/overview.md`
 - `docs/specs/010_death_specs/010_death_decisions_ui_ai.md`
 - `docs/specs/010_death_specs/010_death_country_package_and_focus_tree.md`
 - `docs/specs/010_death_specs/010_death_assets_super_events_achievements.md`
@@ -460,7 +460,7 @@ The implementation should not be considered complete until these are true:
 - No new broad daily/world iteration is introduced.
 - Existing Death defeat and world-consumed cleanup removes or freezes forbidden-route state correctly.
 - AI has explicit weights or hard blocks for every AI-visible route decision.
-- Docs under `docs/events/010_death.md` and `docs/specs/010_death_specs/` are updated after implementation.
+- Docs under `docs/events/010_death/overview.md` and `docs/specs/010_death_specs/` are updated after implementation.
 
 ## Promotion Closure
 
@@ -469,6 +469,6 @@ The parent accepted and implemented each route package. The design has been prom
 - `docs/specs/010_death_specs/specs/010_death_decisions_ui_ai.md` for Dark Methods, Black Oath, Herald, Black Atlas, and AI details.
 - `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md` for Black Apostolate identity and route boundaries.
 - `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md` for assets, animation, achievements, and the Black Oath super-event role.
-- `docs/events/010_death.md` for the final player-facing systems.
+- `docs/events/010_death/overview.md` for the final player-facing systems.
 
 No named route item was rejected as bloat. A further improvement-loop pass is not needed for this addendum.

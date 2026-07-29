@@ -47,7 +47,7 @@
 - Read and aligned against:
   - `docs/specs/009_white_peace_specs/specs/009_white_peace_event_text_log_cluster.md`
   - `docs/specs/009_white_peace_specs/specs/009_white_peace_spec.md`
-  - `docs/events/009_white_peace.md`
+  - `docs/events/009_white_peace/overview.md`
   - `localisation/english/009_white_peace_l_english.yml`
   - `localisation/english/chaosx_gui_l_english.yml`
 - Reopened the workbook after saving and verified the edited cells contained the intended values.

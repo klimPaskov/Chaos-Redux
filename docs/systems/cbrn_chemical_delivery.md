@@ -6,7 +6,7 @@ This system provides the shared logistics and consequence contract used by every
 
 Doctrine may reduce the Condemnation impact of an accepted action. That reduction applies only to Condemnation. It does not reduce payload expenditure, protection failure, disruption, deaths, contamination, medical saturation, mask loss, evidence, attribution, confirmed-use history, treaty response, or first-exposure adaptation. Confirmed strategic and mass-casualty actions retain public-harm floors after doctrine is applied.
 
-The current implementation establishes the shared core, exact chemical-air design eligibility, native payload reservation/outcome accounting, and a dedicated no-release attempt path. Ground releases, exact-state air exposure, biological actions, and nerve-agent suppression remain separate delivery adapters until their exact route and condition gates are implemented and validated.
+The current implementation establishes the shared core, exact chemical-air design eligibility, native payload reservation/outcome accounting, selected-state chemical air and strategic rocket raid adapters, the doomsday batch adapter, and a dedicated no-release attempt path. Ground releases, biological actions, camp escalation, and nerve-agent suppression remain separate exact delivery adapters that enter the shared consequence contract only after their own route gates pass.
 
 ## Source-of-truth map
 
@@ -18,8 +18,12 @@ The current implementation establishes the shared core, exact chemical-air desig
 | Profile changes, conversion, debit proof, and legacy migration | `common/scripted_effects/cbrn_payload_effects.txt` |
 | Exposure calculation contract | `common/scripted_effects/cbrn_exposure_effects.txt` |
 | Exact-state consequence dispatch | `common/scripted_effects/cbrn_consequence_effects.txt` |
+| Selected-state chemical air and strategic rocket raids | `common/raids/cbrn_chemical_air_raids.txt` and `common/scripted_effects/cbrn_chemical_raid_effects.txt` |
 | Military and civilian protection resolution | `common/scripted_effects/cbrn_protection_effects.txt` |
 | Targeted contamination, medical, and evidence recovery | `events/cbrn_chemical_delivery_events.txt` |
+| Canonical chemical state ledger and Air Cleanliness receipts | `common/scripted_effects/cbrn_chemical_state_effects.txt` and `common/scripted_effects/cbrn_biological_air_effects.txt` |
+| Doomsday batch preparation and release | `common/scripted_effects/cbrn_chemical_doomsday_effects.txt` and `common/script_constants/cbrn_chemical_doomsday_constants.txt` |
+| Exact ground, camp, and occupation adapters | `common/scripted_effects/cbrn_battlefield_operation_effects.txt`, `common/scripted_effects/cbrn_camp_effects.txt`, and `common/scripted_effects/cbrn_occupation_effects.txt` |
 | Sanctions stock detection and destruction | `common/scripted_triggers/condemnation_sanctions_triggers.txt` and `common/scripted_effects/condemnation_response_effects.txt` |
 | Chemical payload and air-delivery MIOs | `common/military_industrial_organization/organizations/cbrn_organizations.txt` |
 | Completed designer-trait checks and tuning | `common/scripted_triggers/cbrn_designer_triggers.txt` and `common/script_constants/cbrn_designer_constants.txt` |
@@ -77,7 +81,7 @@ The Chemical Munitions Combine is restricted to strategic-agent and chemical-she
 
 Neither organization applies a bonus to ordinary artillery, CAS, tactical-bomber, or support-equipment archetypes. Designer effects do not reduce evidence or Condemnation and do not bypass payload, route, protection, condition, policy, readiness, or confirmed-use floors.
 
-Current MIO filters cannot prove that an assigned aircraft variant carries one exact chemical rack. Module-specific airframe weight, agility, and range bonuses are therefore unsupported without also benefiting conventional variants. No broad-airframe bonus is present. The current Lightweight and Long-Range route/payload mappings remain disclosed, unaccepted proxies pending explicit user direction; they are not completion evidence.
+Current MIO filters cannot prove that an assigned aircraft variant carries one exact chemical rack. Module-specific airframe weight, agility, and range bonuses are therefore implemented through grant-only technologies that unlock exact agent-specific lightweight, long-range, or combined rack modules. Their native stats apply only when that exact rack is installed. No broad-airframe bonus, payload-line proxy, strategic-dose proxy, friendly-risk proxy, neutral multiplier, or estimator remains.
 
 ## Standing formation loads
 
@@ -103,7 +107,7 @@ Every chemical delivery adapter must use this order:
 5. Call `cbrn_try_debit_action_payload`.
 6. Continue only when `cbrn_action_payload_consumed_proof` confirms the exact equipment removal.
 7. Resolve the target's military and civilian protection with `cbrn_resolve_action_target_protection`.
-8. Resolve the route's verified conditions and set condition proof.
+8. Record the route's native release efficiency. Add environmental condition proof only when a verified current-version hook supplies it; explicit Chemical raids have no such weather or terrain hook, so those optional modifiers remain absent. Continuous-air activity remains rejected.
 9. Call `cbrn_prepare_chemical_action_record`.
 10. If accepted, immediately call `cbrn_dispatch_chemical_action_record` exactly once.
 11. Clear route-specific locks and targets through the adapter's cleanup path.
@@ -129,7 +133,7 @@ The figures are gameplay tuning and do not claim a precise historical tonnage co
 
 ## Native chemical-air reservation and outcomes
 
-Each explicit chemical-air raid reserves 120 units from exactly one class archetype through native `essential_equipment`. Native collection is the real debit. The shared raid helper then refunds only the unused model and records the resulting net consumption; it never performs a second stock debit.
+Each ordinary explicit chemical-air raid reserves 120 units from exactly one class archetype through native `essential_equipment`. Each strategic chemical rocket raid reserves 240 nerve-class units through the same native field. Native collection is the real debit. The shared raid helper then refunds only the unused model and records the resulting net consumption; it never performs a second stock debit.
 
 The engine exposes four outcome blocks, while the accepted design has five results. The failure block is therefore split evenly between Aborted and Failed. All bands are centralized:
 
@@ -143,9 +147,9 @@ The engine exposes four outcome blocks, while the accepted design has five resul
 
 Consumption and delivered dose are intentionally separate. `cbrn_action_release_efficiency_mult` reconciles them before the shared exposure calculation, so a partial operation does not fabricate a full release merely because most of the reserved payload was lost or expended. Aborted and failed attempts cannot enter exposure because they return no release proof. `cbrn_dispatch_failed_chemical_air_raid_attempt` instead records only exact-state evidence, cumulative attribution, separate attempted-operation history, and Condemnation. A Failed result establishes at least 35 evidence from recovered aircraft or payload wreckage; an Aborted result adds 8 latent evidence. Neither path creates deaths, contamination, medical saturation, mask loss, treaty use, a chemical-use achievement, or confirmed-use history. Doctrine scales only the 2-point Aborted or 8-point Failed Condemnation base.
 
-This reservation subsystem is not yet wired to active raid IDs: live weather/terrain inputs still require the explicit policy recorded under Engine boundaries.
+The active raid adapter is wired to eleven selected-state identifiers: Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, Behavioral-Agent, Sarin Rocket, and Soman Rocket. Every native outcome preserves `var:target_state`, routes through `cbrn_resolve_chemical_air_raid_outcome`, and dispatches either one exact-state exposure or one exact-state no-release attempt. Ordinary chemical agents share the same native success-factor profile; agent identity changes only the payload class, preparation, protection burden, and downstream exposure profile.
 
-The six retained direct raid IDs are therefore migration-only surfaces: `chemical_sarin_strike`, `chemical_sarin_rocket_strike`, `chemical_soman_strike`, `chemical_soman_rocket_strike`, `chemical_malodor_strike`, and `chemical_aphrodisiac_strike`. Each has an explicit `always = no` gate in `visible`, `available`, and `launchable`. This triple gate prevents both player and AI access while preserving stable identifiers for the replacement pass. None of their legacy outcome blocks is an accepted exposure adapter.
+The installed raid surface does not expose live target weather or state terrain to the outcome effect. The adapter therefore derives only release efficiency from the native partial, success, or catastrophic result and leaves the optional environmental receipt absent. It does not translate outcome tiers into weather, terrain, density, forecast, command, evidence-control, Condemnation-context, or friendly-risk values. Continuous ordinary-air contamination remains unavailable.
 
 ## Consequence dispatch
 
@@ -157,7 +161,7 @@ An accepted record is applied to the selected state once.
 
 ### Civilian deaths and contamination
 
-The exact civilian death fraction enters the shared state Deaths ledger once. The dispatcher then writes the CBRN contamination ledger and the legacy contamination dynamic modifier under a guard that suppresses the legacy helper's second death registration. Overlapping contamination extends the exact expiry, and an older cleanup event cannot erase a later exposure.
+The exact civilian death fraction enters the shared state Deaths ledger once. The dispatcher then writes the canonical CBRN contamination ledger and its `chem_state_contamination` presentation modifier through the same exact-state helper; it does not call the retired legacy contamination or continuing-death helper. Overlapping contamination extends the exact expiry, and an older cleanup event cannot erase a later exposure.
 
 ### Medical saturation and evidence
 
@@ -179,7 +183,7 @@ Compliance actions recognize strategic-agent lots, filled shells, prepared air p
 
 `cbrn_migrate_legacy_payload_stockpiles` is idempotent and converts legacy cylinders, malodor bombs, and behavioral bombs to their exact strategic-agent lots at the centralized recovery ratio. It also chooses an initial shell and air profile when none exists.
 
-The migration helper is deliberately not called while legacy delivery consumers remain active. The six legacy direct raids are already fail-closed, but other old route consumers still reference compatibility equipment. Until each old route is retired, doctrine reserves, AI readiness checks, and sanctions accept both old and new stock. Activating migration earlier would remove equipment still referenced by legacy mechanics.
+The migration helper is deliberately not called while legacy delivery consumers remain active. The formerly direct Sarin, Soman, Malodor, and Behavioral-Agent raid identifiers are now selected-state adapter surfaces. Older compatibility effect definitions remain load-safe for identifier and save compatibility, but their direct delivery callers are closed or inactive and do not mutate the canonical contamination ledger. Until each old route is retired, doctrine reserves, AI readiness checks, and sanctions accept both old and new stock. Activating migration earlier would remove equipment still referenced by legacy mechanics.
 
 ## Engine boundaries
 
@@ -188,7 +192,7 @@ The migration helper is deliberately not called while legacy delivery consumers 
 - The available scopes do not prove that a particular active Army Headquarters commands that adjacent formation. Headquarters therefore remains the theater authorization and preparation layer; the adjacent formation remains the delivery proof. This distinction must remain visible in route documentation.
 - No verified current-version hook proves eligible activity by an ordinary continuous air mission. The continuous-air route is rejected fail-closed. No aircraft-presence, mission-assignment, or idle-module estimator is retained.
 - The former combat-heat/deployed-aircraft estimator has been removed from army combat hooks. Its stable event ID now only clears legacy heat/flag state and never reschedules or dispatches exposure.
-- Current selected-state decision and raid scopes expose no verified live target-weather or state-terrain trigger. Ground and explicit-air condition handling remain unresolved until an accepted, disclosed model or a verified engine hook is selected. Density and fortification can be read from state structure, but they must not be described as terrain or weather.
+- Current selected-state decision and raid scopes expose no verified live target-weather or state-terrain trigger. The explicit Chemical raid adapter therefore supplies no environmental receipt. Density and fortification can be read from state structure, but they must not be described as terrain or weather. Ground routes remain responsible for their own verified condition receipts.
 
 ## Assets
 
@@ -212,17 +216,15 @@ The nine exact aircraft-module packages live under `docs/assets/chaos_warfare_sy
 
 The two independent Stage 6 designer packages live under `docs/assets/chaos_warfare_system/stage_6_chemical_designers/`. Their final 64x64 uncompressed BGRA DDS files are registered by `interface/cbrn_designers.gfx` as `GFX_cbrn_chemical_munitions_combine` and `GFX_cbrn_aerosol_air_delivery_bureau`. The package includes independent source renders, processed PNGs, archive copies, prompt records, a checkerboard contact sheet, manifest, validation record, and GFX handoff; no icon is a placeholder or resized cross-type substitute.
 
-## Pending implementation and future depth
+## Remaining engine-boundary work and future depth
 
-The following work is intentionally not represented as complete:
+The following items remain intentionally open and are not represented as complete:
 
-- exact-state cylinder, projector, artillery, and armored operations with route-specific formation proof, costs, preparation, cooldown, cleanup, and AI;
-- an accepted and disclosed ground condition model or a newly verified live weather/terrain hook;
-- active selected-state chemical air raid IDs and the accepted weather/terrain condition adapter; native reservation, outcome bands, and no-release attempt consequences are already implemented;
-- live aircraft-designer and raid-eligibility scenarios for the implemented exact CAS/tactical modules;
-- replacement of the six fail-closed legacy raid bodies, retirement of remaining legacy route effects, and only then activation of idempotent stock migration;
-- biological-agent logistics, incubation, spread, detection, treatment, accidents, and containment;
-- equipment-backed nerve-agent suppression with resistance trauma and severe consequence floors;
-- resolution of the two disclosed Aerosol and Air Delivery Bureau proxy directions, the remaining four designer families, differentiated country assignments, route-aware country AI profiles, achievements, final localisation, and specialist completion audits.
+- a verified current-version condition hook for any route that claims live weather or terrain, plus the exact active Army Headquarters-to-formation command relationship that the engine does not currently expose;
+- live aircraft-designer and raid-eligibility package scenarios for the implemented exact CAS/tactical modules;
+- replacement or retirement of every remaining legacy direct route definition before broad stock migration is enabled;
+- final scenario evidence for biological lifecycle, countermeasure, treatment, sabotage, China campaign, and doomsday routes;
+- the unsupported Hardened Mobile Plant bombing/capture loss transaction and any static MIO country-assignment behavior, which remain fail-closed without a verified hook or newly accepted design;
+- the mapped specialist audits, improvement-loop closure, package scenarios, and final completion checklist.
 
 Possible later extensions, after the accepted package is complete, include richer depot-accident chains, captured-stock disposal, and state-specific handling infrastructure. They must reuse the exact payload and consequence contracts rather than creating parallel release paths.

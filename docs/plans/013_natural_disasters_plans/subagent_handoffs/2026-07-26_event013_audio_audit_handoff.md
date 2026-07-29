@@ -8,15 +8,15 @@ Skill used: `chaos-redux-super-events` (audio research and validation sections)
 
 ## Scope and disposition
 
-This audit covered the Event 013 audio source archive, six event-scoped OGG/WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. The original audit did not edit shared sound or music definitions, event scripts, gameplay files, localisation, GFX, GUI, or UI. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
+This audit covered the Event 013 audio source archive, six event-scoped WAV pairs, the Event 013 audio manifest, the permanent super-event audio production record, and the narrow audio-registration crosswalk needed for runtime handoff. The original audit did not edit shared sound or music definitions, event scripts, gameplay files, localisation, GFX, GUI, or UI. Final media files were not changed because the existing derivatives passed the current metadata and hash checks.
 
 Follow-up cleanup on 2026-07-26 removed the 60 unnamed sound-effect blocks that still pointed at the deleted Soviet Collapse IDs 16 and 19-27. This touched only `sound/chaosx_sound.asset`; the shared super-event presentation files remain baseline-exact, and unrelated Event 016 sound additions in the worktree were preserved outside the cleanup commit.
 
 ## Final Event 013 media
 
-The six completed super-events remain mapped to UI slots 67-72 and audio IDs 37-42. Every final OGG and WAV is stereo, 44.1 kHz, one-shot material between 110 and 118 seconds. The exact source paths, source SHA-256 values, final hashes, wrapper names, and representative station song IDs are recorded in `docs/super_events/013_natural_disasters_super_event_audio_production.md` and `docs/assets/013_natural_disasters/audio_manifest.md`.
+The six completed super-events remain mapped to UI slots 67-72 and audio IDs 37-42. Every final WAV and WAV is stereo, 44.1 kHz, one-shot material between 110 and 118 seconds. The exact source paths, source SHA-256 values, final hashes, wrapper names, and representative station song IDs are recorded in `docs/super_events/013_natural_disasters/audio_production.md` and `docs/assets/013_natural_disasters/audio_manifest.md`.
 
-| Audio ID | Role | Final duration | Final OGG SHA-256 | Final WAV SHA-256 | Source archive file |
+| Audio ID | Role | Final duration | Final WAV SHA-256 | Final WAV SHA-256 | Source archive file |
 | ---: | --- | ---: | --- | --- | --- |
 | 37 | No Firm Ground | 118 s | `189AF2FD28DEFD122CDF80CA0CCBF34317268148B3379C0BEE382285F17346A8` | `1D527BAD4BC93D77AC4265D4791D3B8ADABBA88C38C745F9A7623D554B6B7CFF` | `audio_source/earth_rupture_grieg_mountain_king_source.flac` |
 | 38 | Ash at Noon | 115 s | `3744B32D01E4F6DA4660ECCC556A35FD871855CDA28F4CF0C84AB00C01883A84` | `5C0669A5E5700C9F8A14F5E691AB721A683EAF4C360A5487A78CDD2D48FCD7B3` | `audio_source/massive_eruption_pathetique_iv_source.ogg` |
@@ -33,7 +33,7 @@ The superseded ID 37 Egmont source remains in the archive for collision history 
 
 ## Uniqueness validation
 
-The current repository has 56 `music/**/super_event_*.ogg` files and 56 `sound/**/super_event_*.wav` files. A SHA-256 grouping pass found no exact duplicate in either format, and each Event 013 file has zero same-hash matches outside its own path. The archived minimum-offset Chromaprint comparison covers the harder OGG/WAV alternate-encoding case: the superseded ID 37/Soviet14 pair scored `0.993730-0.994434`, while final Event 013 maxima against the registered non-Event-013 catalogue were `0.572875-0.596505`. No final Event 013 cue remains in the confirmed reuse cluster.
+The current repository has 56 `sound/**/super_event_*.wav` files and 56 `sound/**/super_event_*.wav` files. A SHA-256 grouping pass found no exact duplicate in either format, and each Event 013 file has zero same-hash matches outside its own path. The archived minimum-offset Chromaprint comparison covers the harder WAV alternate-encoding case: the superseded ID 37/Soviet14 pair scored `0.993730-0.994434`, while final Event 013 maxima against the registered non-Event-013 catalogue were `0.572875-0.596505`. No final Event 013 cue remains in the confirmed reuse cluster.
 
 ## Runtime wiring handoff
 
@@ -41,11 +41,11 @@ The shared registration audit confirms, without editing those files, that each I
 
 ## Soviet Collapse cleanup disposition
 
-The clearly unreferenced audio set already removed from the accepted scope is IDs 16 and 19-27: 20 files consisting of the matching OGG/WAV stems `super_event_16_northern_signals_break`, `super_event_19_map_larger_than_union`, `super_event_20_steppe_beyond_history`, `super_event_21_corridors_decide`, `super_event_22_bread_state`, `super_event_23_league_of_equal_republics`, `super_event_24_steppe_federation`, `super_event_25_baltic_league`, `super_event_26_caucasus_league`, and `super_event_27_eastern_buffer_coalition` under `music/005_soviet_collapse/` and `sound/005_soviet_collapse/`. The current narrow scan finds no remaining media, station entry, sound registration, or HTML catalogue row for those IDs. IDs 14, 15, 17, and 18 remain present; ID 17 is intentionally not deleted because its gameplay helper caller was outside this audio-only audit boundary.
+The clearly unreferenced audio set already removed from the accepted scope is IDs 16 and 19-27: 20 files consisting of the matching WAV stems `super_event_16_northern_signals_break`, `super_event_19_map_larger_than_union`, `super_event_20_steppe_beyond_history`, `super_event_21_corridors_decide`, `super_event_22_bread_state`, `super_event_23_league_of_equal_republics`, `super_event_24_steppe_federation`, `super_event_25_baltic_league`, `super_event_26_caucasus_league`, and `super_event_27_eastern_buffer_coalition` under `music/005_soviet_collapse/` and `sound/005_soviet_collapse/`. The current narrow scan finds no remaining media, station entry, sound registration, or HTML catalogue row for those IDs. IDs 14, 15, 17, and 18 remain present; ID 17 is intentionally not deleted because its gameplay helper caller was outside this audio-only audit boundary.
 
 ## Files changed by this audit
 
-- `docs/super_events/013_natural_disasters_super_event_audio_production.md`
+- `docs/super_events/013_natural_disasters/audio_production.md`
 - `docs/assets/013_natural_disasters/audio_manifest.md`
 - `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-26_event013_audio_audit_handoff.md`
 

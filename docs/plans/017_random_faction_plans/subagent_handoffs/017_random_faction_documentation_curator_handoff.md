@@ -16,7 +16,7 @@ The required offline Paradox wiki pages and relevant vanilla documentation were 
 
 | File | Disposition |
 | --- | --- |
-| `docs/events/017_random_faction.md` | Rewritten as the canonical implementation record. It covers automatic dynamic minor selection, the shared human and AI saved targets, baseline and all evolutions, Bloc Pressure, AI, cleanup, sequence-bound history results, assets, achievements, and the implementation file map. |
+| `docs/events/017_random_faction/overview.md` | Rewritten as the canonical implementation record. It covers automatic dynamic minor selection, the shared human and AI saved targets, baseline and all evolutions, Bloc Pressure, AI, cleanup, sequence-bound history results, assets, achievements, and the implementation file map. |
 | `docs/systems/events_log_window.md` | Added the secondary-actor source, view, selected, and open-detail state plus the Event 17 bound, lost-leader, and unresolved branches. |
 | `docs/systems/events_log_evolutions_and_clusters.md` | Added Event 17's exact historical result context and three ordered evolution previews. |
 | `docs/systems/event_clusters.md` | Retained Event 17 as the optional low-danger Diplomatic Panic member at 65% participation and documented that its cluster route still selects its own weighted minor. |

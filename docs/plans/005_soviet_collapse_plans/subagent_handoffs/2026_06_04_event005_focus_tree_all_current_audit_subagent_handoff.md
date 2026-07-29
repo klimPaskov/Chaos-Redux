@@ -11,7 +11,7 @@ Scope: all Soviet Collapse focus trees in `common/national_focus/005_soviet_coll
 - Offline wiki snapshot: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding
 - Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md`, `effects_documentation.md`, `triggers_documentation.md`
 - Vanilla focus precedents: `common/national_focus/soviet.txt`, `china_warlord.txt`, `italy.txt`
-- Event005 design docs: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`, `docs/events/005_soviet_collapse.md`
+- Event005 design docs: `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`, `docs/events/005_soviet_collapse/overview.md`
 
 No web references were used. No flag sprites or flag asset files were touched.
 
@@ -79,10 +79,10 @@ Validation:
 | `NRF_soviet_collapse_focus_tree` | 18 | 0 | 6 | 1 | clean |
 | `ICD_soviet_collapse_focus_tree` | 18 | 0 | 1 | 1 | clean |
 | 18 shared custom splinter trees | 47 each | 0 | 0-3 | mostly 0 | clean |
-| `KZR_soviet_collapse_focus_tree` | 16 | 0 | 4 | 9 | clean |
+| `APX_soviet_collapse_focus_tree` | 16 | 0 | 4 | 9 | clean |
 | `SOG_soviet_collapse_focus_tree` | 16 | 0 | 4 | 9 | clean |
-| `KHW_soviet_collapse_focus_tree` | 16 | 0 | 4 | 9 | clean |
-| `ALN_soviet_collapse_focus_tree` | 16 | 0 | 4 | 12 | clean |
+| `ANX_soviet_collapse_focus_tree` | 16 | 0 | 4 | 9 | clean |
+| `ABX_soviet_collapse_focus_tree` | 16 | 0 | 4 | 12 | clean |
 | `CFR_soviet_collapse_focus_tree` | 47 | 0 | 10 | 0 | clean |
 | `OGB_soviet_collapse_focus_tree` | 23 | 0 | 5 | 2 | clean |
 | `MFR_soviet_collapse_focus_tree` | 58 | 0 | 8 | 2 | clean |
@@ -248,7 +248,7 @@ Recommended fixes:
 - Give each compact chaos tree a signature aggressive mechanic: TSC impact-zone mandates, RMC martyr processions and shrine states, ICD grave-front commissariats, DSC retreat depot state, NRF frozen-line offensive, PRA railway emergency authority.
 - Add named units, decision categories, claim/core conversion, and high-chaos AI war plans to endpoint focuses.
 
-### Shared Custom Splinter Family: BSC, TNC, ALA, BBH, KRS, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, BAC, ARD, NLC
+### Shared Custom Splinter Family: AEX, TNC, AAX, BBH, AOX, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, ADX, ARD, NLC
 
 Severity: High
 
@@ -257,8 +257,8 @@ Relevant focus ids:
 - `BBH_war_plan`
 - `BBH_endgame`
 - `BBH_extreme_path`
-- `KRS_war_plan`
-- `KRS_endgame`
+- `AOX_war_plan`
+- `AOX_endgame`
 - `UDC_war_plan`
 - `UDC_endgame`
 - `SDZ_war_plan`
@@ -276,7 +276,7 @@ Relevant focus ids:
 - `UWD_war_plan`
 - `MRC_war_plan`
 - `IUL_war_plan`
-- `BAC_war_plan`
+- `ADX_war_plan`
 - `ARD_war_plan`
 - `NLC_war_plan`
 
@@ -292,29 +292,29 @@ Recommended fixes:
 - Add tag-specific special mechanics where the concept demands it, such as ARD artillery orders, NLC tundra watch, DHC death-state evacuation, FEV far-eastern arsenal, or KHC fortress-carrier logistics.
 - Increase high-chaos AI aggression with local strategy plans and route flags, not whole-world on-actions.
 
-### Ancient Restorations: KZR, SOG, KHW, ALN
+### Ancient Restorations: APX, SOG, ANX, ABX
 
 Severity: High
 
 Relevant focus ids:
 
-- `KZR_old_border_files`
-- `KZR_expansionist_steppe_levy`
-- `KZR_khazar_charter`
-- `KZR_returned_names_endgame`
-- `KZR_road_beyond_the_caspian`
+- `APX_old_border_files`
+- `APX_expansionist_steppe_levy`
+- `APX_khazar_charter`
+- `APX_returned_names_endgame`
+- `APX_road_beyond_the_caspian`
 - `SOG_old_city_border_files`
 - `SOG_expansionist_merchant_claims`
 - `SOG_sogdian_city_charter`
 - `SOG_cities_beyond_the_desert`
-- `KHW_old_oasis_border_files`
-- `KHW_expansionist_water_claims`
-- `KHW_khwarazmian_water_charter`
-- `KHW_delta_without_a_center`
-- `ALN_old_pass_border_files`
-- `ALN_expansionist_mountain_claims`
-- `ALN_alan_pass_charter`
-- `ALN_every_pass_a_border`
+- `ANX_old_oasis_border_files`
+- `ANX_expansionist_water_claims`
+- `ANX_khwarazmian_water_charter`
+- `ANX_delta_without_a_center`
+- `ABX_old_pass_border_files`
+- `ABX_expansionist_mountain_claims`
+- `ABX_alan_pass_charter`
+- `ABX_every_pass_a_border`
 
 Assessment:
 

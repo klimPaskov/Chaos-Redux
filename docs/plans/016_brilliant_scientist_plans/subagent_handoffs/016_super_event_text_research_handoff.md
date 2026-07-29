@@ -10,7 +10,7 @@ The selected text remains unchanged. Event 016 now uses visible IDs 90 recogniti
 
 ## Result
 
-The six-package Event 016 text research assignment is complete. The full evidence and candidate matrix is in `docs/super_events/016_brilliant_scientist_super_event_research.md`.
+The six-package Event 016 text research assignment is complete. The full evidence and candidate matrix is in `docs/super_events/016_brilliant_scientist/text_research.md`.
 
 Binding parent dispositions were preserved:
 
@@ -81,7 +81,7 @@ No in-game, localisation-render, audio, image, or GUI validation was performed b
 
 ## Files changed
 
-- `docs/super_events/016_brilliant_scientist_super_event_research.md`
+- `docs/super_events/016_brilliant_scientist/text_research.md`
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_super_event_text_research_handoff.md`
 
 ## Simplifications, omissions, and blockers

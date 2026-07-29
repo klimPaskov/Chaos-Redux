@@ -51,7 +51,7 @@ The broad focus-tree goal is not complete. Current audit still reports remaining
 - `soviet_collapse_central_asia_focus_tree`: 5 through-lines, 3 same-row adjacent pairs.
 - `soviet_collapse_internal_republic_focus_tree`: 4 through-lines, 1 same-row adjacent pair.
 - `soviet_collapse_breakaway_focus_tree`: 3 through-lines.
-- Several custom/factory successor trees still have 1-6 through-lines each, especially `UWD`, `NLC`, and `BAC`.
+- Several custom/factory successor trees still have 1-6 through-lines each, especially `UWD`, `NLC`, and `ADX`.
 
 Kazakhstan needs a manual branch re-layout rather than accepting the generated coordinate candidate, because the generated candidate reduced collisions but moved several route anchors into odd lanes.
 

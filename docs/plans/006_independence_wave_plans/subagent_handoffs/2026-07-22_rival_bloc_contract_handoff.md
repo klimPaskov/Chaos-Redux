@@ -15,7 +15,7 @@ Implemented the accepted post-expulsion rival-bloc boundary as a separate, gener
 - `common/scripted_localisation/006_independence_wave_rival_bloc_scripted_localisation.txt`
 - `localisation/english/006_independence_wave_rival_bloc_l_english.yml` (UTF-8 BOM)
 - `common/ai_strategy/006_independence_wave_rival_bloc.txt`
-- `docs/systems/006_independence_wave_rival_bloc.md`
+- `docs/events/006_independence_wave/systems/rival_bloc.md`
 
 ## Identifiers and behavior
 

@@ -70,7 +70,7 @@ Current evidence points to guarded or swapping helpers rather than duplicate-add
 - `common/scripted_effects/005_soviet_collapse_effects.txt:11964-11969`: `soviet_collapse_apply_mfr_audit_arsenal_orders` only adds `mfr_arsenal_quotas` if missing.
 - `common/scripted_effects/005_soviet_collapse_effects.txt:11978-11983`: `soviet_collapse_apply_mfr_convert_depots_to_arms_lines` only adds `mfr_factory_guard_state` if missing.
 - `common/scripted_effects/005_soviet_collapse_effects.txt:17014-17022`: DSC dead-army updater removes prior staged ideas before adding `dsc_dead_army_politics`.
-- `common/scripted_effects/005_soviet_collapse_effects.txt:17391-17980`: high-chaos setup ideas use guarded `add_ideas` blocks for CFR, MFR, KRS, FTH, BBH, BSC, RMC, DSC, TNC, ALA, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, OGB, BAC, TSC, ICD, ARD, NRF, and NLC.
+- `common/scripted_effects/005_soviet_collapse_effects.txt:17391-17980`: high-chaos setup ideas use guarded `add_ideas` blocks for CFR, MFR, AOX, FTH, BBH, AEX, RMC, DSC, TNC, AAX, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, OGB, ADX, TSC, ICD, ARD, NRF, and NLC.
 
 Remaining risk:
 
@@ -100,11 +100,11 @@ Legend: `F` focus count. `Pol/Ind/Ann/Mil` are focus-filter counts. `Map` is dir
 | DSC | 18 | 13 | 3 | 4 | 14 | 2 | 9 | 33 | 4 | Improved dead-army aggression, but still too small for the concept. Key node `DSC_grave_ordnance_claims` at `custom_splinters.txt:3007`. |
 | NRF | 18 | 13 | 4 | 3 | 3 | 3 | 10 | 20 | 4 | Naval/dead fleet concept has weak military-filter count and shallow branch depth. |
 | ICD | 18 | 13 | 4 | 3 | 9 | 3 | 3 | 19 | 4 | Death-state concept still very shallow; `ICD_claim_the_unburied_front` (`custom_splinters.txt:4228`) and `ICD_grave_columns_march` (`:4249`) are narrow. |
-| BSC | 47 | 30 | 12 | 0 | 22 | 0 | 14 | 58 | 2 | Oasis/confederation identity exists, but no direct expansion evidence and high helper reliance. |
+| AEX | 47 | 30 | 12 | 0 | 22 | 0 | 14 | 58 | 2 | Oasis/confederation identity exists, but no direct expansion evidence and high helper reliance. |
 | TNC | 47 | 30 | 13 | 0 | 21 | 0 | 17 | 45 | 2 | Generic 47-focus shape; city-council concept needs stronger municipal mechanics. |
-| ALA | 47 | 30 | 12 | 0 | 19 | 0 | 11 | 40 | 2 | Restoration concept is political-heavy but not payoff-heavy. |
+| AAX | 47 | 30 | 12 | 0 | 19 | 0 | 11 | 40 | 2 | Restoration concept is political-heavy but not payoff-heavy. |
 | BBH | 47 | 26 | 13 | 0 | 28 | 0 | 12 | 51 | 2 | Militia concept should be more threatening; direct building/map evidence is modest. |
-| KRS | 47 | 25 | 10 | 0 | 19 | 0 | 21 | 51 | 2 | Better infrastructure count, but route identity still helper-dependent. |
+| AOX | 47 | 25 | 10 | 0 | 19 | 0 | 21 | 51 | 2 | Better infrastructure count, but route identity still helper-dependent. |
 | UDC | 47 | 25 | 11 | 0 | 26 | 0 | 6 | 82 | 2 | High helper count and low direct building/map evidence; priority for reward specificity. |
 | SDZ | 47 | 25 | 11 | 0 | 26 | 0 | 7 | 72 | 2 | Archive/security concept has weak visible industry/expansion payloads. |
 | GAC | 47 | 26 | 15 | 0 | 24 | 0 | 11 | 45 | 2 | Village congress concept needs mechanical differentiation beyond helper deltas. |
@@ -115,24 +115,24 @@ Legend: `F` focus count. `Pol/Ind/Ann/Mil` are focus-filter counts. `Map` is dir
 | UWD | 47 | 25 | 17 | 0 | 24 | 0 | 29 | 48 | 2 | Factory-guard concept is stronger than most generic chaos trees; expansion still absent. |
 | MRC | 47 | 25 | 13 | 0 | 26 | 0 | 22 | 49 | 2 | Mountain council has some building support, but no direct map branch evidence. |
 | IUL | 47 | 26 | 16 | 0 | 26 | 0 | 15 | 47 | 2 | League concept needs diplomacy/expansion mechanics beyond helpers. |
-| BAC | 47 | 26 | 16 | 0 | 25 | 0 | 18 | 47 | 2 | Settlement-defense concept moderately supported, not overpowered. |
+| ADX | 47 | 26 | 16 | 0 | 25 | 0 | 18 | 47 | 2 | Settlement-defense concept moderately supported, not overpowered. |
 | ARD | 47 | 26 | 16 | 0 | 25 | 0 | 30 | 49 | 2 | Stronger construction count; port-directorate identity can still be more distinctive. |
 | NLC | 47 | 29 | 14 | 1 | 22 | 0 | 33 | 70 | 4 | Stronger building count, but late mutual exclusion/pathline risk around polar/extreme endpoints. |
 | CFR | 47 | 34 | 30 | 3 | 8 | 0 | 4 | 53 | 24 | Construction concept has good idea guard but too little direct construction in focus file and many route locks/mutexes. |
 | OGB | 23 | 17 | 7 | 6 | 10 | 1 | 6 | 17 | 4 | Better annex filters than most short trees, but only 23 focuses for restored-name successor. |
 | MFR | 58 | 42 | 38 | 2 | 28 | 2 | 16 | 58 | 0 | Stronger overall, but the four-way route split is hidden via `available` instead of visible mutual exclusions (`factory_successors.txt:1739-1842`). |
-| KZR | 16 | 9 | 4 | 5 | 5 | 10 | 8 | 22 | 2 | Very compact; symbolic/expansion fork joins into an annexation-filter charter without direct annex effect at `ancient_restorations.txt:288-294`. |
+| APX | 16 | 9 | 4 | 5 | 5 | 10 | 8 | 22 | 2 | Very compact; symbolic/expansion fork joins into an annexation-filter charter without direct annex effect at `ancient_restorations.txt:288-294`. |
 | SOG | 16 | 9 | 3 | 5 | 5 | 10 | 3 | 21 | 2 | Very compact; weakest ancient industry footprint. Charter pattern at `ancient_restorations.txt:697-703`. |
-| KHW | 16 | 10 | 3 | 5 | 5 | 10 | 9 | 21 | 2 | Very compact; water/oasis identity needs deeper infrastructure decisions. Charter pattern at `ancient_restorations.txt:1096-1102`. |
-| ALN | 16 | 9 | 2 | 5 | 5 | 13 | 11 | 21 | 2 | Very compact; mountain/pass identity has payload but no real route depth. Charter pattern at `ancient_restorations.txt:1508-1514`. |
+| ANX | 16 | 10 | 3 | 5 | 5 | 10 | 9 | 21 | 2 | Very compact; water/oasis identity needs deeper infrastructure decisions. Charter pattern at `ancient_restorations.txt:1096-1102`. |
+| ABX | 16 | 9 | 2 | 5 | 5 | 13 | 11 | 21 | 2 | Very compact; mountain/pass identity has payload but no real route depth. Charter pattern at `ancient_restorations.txt:1508-1514`. |
 
 ## Chaos-Country Priority List
 
 1. `ICD`, `DSC`, `NRF`, `RMC`, `TSC`: these 18-focus chaos trees still read like compact side trees rather than overpowered collapse nightmares. `DSC` has useful aggression now, but the concept still deserves a larger political-dead-army/war-economy/expansion route structure.
 2. `PRA`: the rail identity is coherent and the authority idea updater is clean, but 22 focuses is too small for a moving railway authority. It needs deeper rail seizure, corridor taxation, armored train, supply-node, and branch-line decisions.
 3. `CFR` and `MFR`: construction/factory successor concepts should be visibly overpowered. CFR relies on helpers while showing only 4 direct building payloads in the focus file; MFR has stronger payloads but uses hidden route exclusion instead of visible mutually-exclusive branches.
-4. `KZR`, `SOG`, `KHW`, `ALN`: ancient restorations are only 16 focuses each, with one symbolic-vs-expansion fork and a shared charter. They need distinctive starting ideas, deeper old-name legitimacy mechanics, and route-specific end states.
-5. `UDC`, `SDZ`, `BBH`, `GAC`, `BSC`: these 47-focus chaos trees have high helper counts, low direct map/building evidence, and concepts that should create pressure on neighbors, not just internal variable growth.
+4. `APX`, `SOG`, `ANX`, `ABX`: ancient restorations are only 16 focuses each, with one symbolic-vs-expansion fork and a shared charter. They need distinctive starting ideas, deeper old-name legitimacy mechanics, and route-specific end states.
+5. `UDC`, `SDZ`, `BBH`, `GAC`, `AEX`: these 47-focus chaos trees have high helper counts, low direct map/building evidence, and concepts that should create pressure on neighbors, not just internal variable growth.
 6. `FTH`, `NLC`, `ARD`, `UWD`, `FEV`, `SZA`: comparatively better payload density, but still need stronger route-specific political/industry/expansion divergence.
 
 ## Reward and Branch Depth Findings
@@ -156,14 +156,14 @@ Impact:
 
 Lowest depth offenders:
 
-- Ancient trees (`KZR`, `SOG`, `KHW`, `ALN`): 16 focuses each; one compact opening, one symbolic-vs-expansion fork, one shared charter, two endings.
+- Ancient trees (`APX`, `SOG`, `ANX`, `ABX`): 16 focuses each; one compact opening, one symbolic-vs-expansion fork, one shared charter, two endings.
 - Compact custom splinters (`TSC`, `RMC`, `DSC`, `NRF`, `ICD`): 18 focuses each; not enough room for real political, industrial, and expansion branches.
 - `PRA`: 22 focuses; rail theme is present but needs route depth.
 - `OGB`: 23 focuses; has more annexation flavor, still too small for a chaos successor.
 
 Medium-depth but still generic:
 
-- Most 47-focus custom splinters (`FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`) have better size but use similar branch silhouettes and many helper-only rewards.
+- Most 47-focus custom splinters (`FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`) have better size but use similar branch silhouettes and many helper-only rewards.
 
 ## Layout and Pathline Findings
 
@@ -182,10 +182,10 @@ Remaining risks:
 
 Hard mismatches:
 
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:288-294`: `KZR_khazar_charter` uses `FOCUS_FILTER_ANNEXATION`, but the visible payload is charter flags, decisions, variables, train equipment, rail, and supply node rather than direct annexation/claims/cores.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:288-294`: `APX_khazar_charter` uses `FOCUS_FILTER_ANNEXATION`, but the visible payload is charter flags, decisions, variables, train equipment, rail, and supply node rather than direct annexation/claims/cores.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt:697-703`: `SOG_sogdian_city_charter` uses the same annexation-filter charter pattern.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1096-1102`: `KHW_khwarazmian_water_charter` uses the same annexation-filter charter pattern.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1508-1514`: `ALN_alan_pass_charter` uses the same annexation-filter charter pattern.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1096-1102`: `ANX_khwarazmian_water_charter` uses the same annexation-filter charter pattern.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1508-1514`: `ABX_alan_pass_charter` uses the same annexation-filter charter pattern.
 
 Review-needed helper filters:
 
@@ -201,7 +201,7 @@ These are patch recommendations, not applied here.
 2. Replace duplicate bunker calls in `MFR_gates_sirens_rifles` (`factory_successors.txt:2527-2542`) with either one `level = 2` bunker call if supported by the target behavior, or a named helper that clearly communicates “two defensive levels”.
 3. For ancient charter focuses (`ancient_restorations.txt:288`, `:697`, `:1096`, `:1508`), either remove `FOCUS_FILTER_ANNEXATION` or add direct, route-appropriate claim/core/wargoal/annexation payloads. Do not leave annexation filters on logistics/charter rewards.
 4. Split ancient charter joins into route-specific continuation focuses or add clearer visible route gating. The current single prerequisite block after a mutually exclusive fork is legal, but it is pathline-hostile.
-5. Add starting or staged idea carriers for KZR/SOG/KHW/ALN setup in `common/scripted_effects/005_soviet_collapse_effects.txt` near the ancient setup block. Use guarded add/swap behavior like PRA/CFR, not raw repeated `add_ideas`.
+5. Add starting or staged idea carriers for APX/SOG/ANX/ABX setup in `common/scripted_effects/005_soviet_collapse_effects.txt` near the ancient setup block. Use guarded add/swap behavior like PRA/CFR, not raw repeated `add_ideas`.
 6. Expand the 18-focus chaos trees before tuning numbers. `ICD`, `DSC`, `NRF`, `RMC`, and `TSC` need more branch nodes, not just stronger helper constants.
 7. For the 47-focus generic chaos countries, replace repeated “flag plus helper” focus rewards with a visible mix of decisions, claims/cores, building targets, unit templates, railway/supply construction, timed missions, and staged idea swaps.
 8. For all helper-only rewards, ensure each custom tooltip names the actual player-facing change. Avoid tooltip text that only describes abstract “authority”, “mandate”, or “pressure” when the effect is factories, rails, claims, or units.
@@ -229,7 +229,7 @@ sed -n '1,120p' "paradox_wiki/Idea modding - Hearts of Iron 4 Wiki.md"
 sed -n '1,120p' "paradox_wiki/AI modding - Hearts of Iron 4 Wiki.md"
 rg -n "add_ideas|swap_ideas|remove_ideas|add_timed_idea" common/scripted_effects/005_soviet_collapse_effects.txt common/decisions/005_soviet_collapse_decisions.txt common/national_focus/005_soviet_collapse_*.txt
 rg -n "id = MFR_(officers_chair_the_board|armorers_elect_delegates|merchants_of_ammunition|eternal_arsenal)|has_completed_focus = MFR_" common/national_focus/005_soviet_collapse_factory_successors.txt
-rg -n "id = (KZR_khazar_charter|SOG_sogdian_city_charter|KHW_khwarazmian_water_charter|ALN_alan_pass_charter)|FOCUS_FILTER_ANNEXATION" common/national_focus/005_soviet_collapse_ancient_restorations.txt
+rg -n "id = (APX_khazar_charter|SOG_sogdian_city_charter|ANX_khwarazmian_water_charter|ABX_alan_pass_charter)|FOCUS_FILTER_ANNEXATION" common/national_focus/005_soviet_collapse_ancient_restorations.txt
 wc -l common/national_focus/005_soviet_collapse_republics.txt common/national_focus/005_soviet_collapse_custom_splinters.txt common/national_focus/005_soviet_collapse_factory_successors.txt common/national_focus/005_soviet_collapse_ancient_restorations.txt common/ideas/005_soviet_collapse_ideas.txt common/scripted_effects/005_soviet_collapse_effects.txt common/scripted_triggers/005_soviet_collapse_triggers.txt common/decisions/005_soviet_collapse_decisions.txt localisation/english/005_soviet_collapse*.yml
 git status --short
 ```

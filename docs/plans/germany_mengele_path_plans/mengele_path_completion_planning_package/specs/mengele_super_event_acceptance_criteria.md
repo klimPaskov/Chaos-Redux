@@ -34,7 +34,7 @@ These criteria apply to the Angel Directorate reveal super-event and any later w
 
 ## Audio
 
-- Final OGG exists at the documented path or at a verified repo path.
+- Final WAV exists at the documented path or at a verified repo path.
 - OGG is 44.1 kHz and game-ready.
 - Source file is preserved in an asset documentation area.
 - Track title, creator, performer or recording source, source URL, license, usage terms, duration, conversion notes, and uncertainty are documented.

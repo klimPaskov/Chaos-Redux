@@ -76,7 +76,7 @@ No fallback, placeholder, omitted route, or simplified substitute was used.
 - `common/scripted_triggers/018_resources_found_triggers.txt`
 - `events/018_random_resource.txt`
 - `localisation/english/018_resources_found_decisions_l_english.yml`
-- `docs/events/018_resources_found.md`
+- `docs/events/018_resources_found/overview.md`
 - this handoff
 
 ## Meaningful validation evidence

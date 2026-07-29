@@ -18,7 +18,7 @@ Event 15 is not claimed complete. Focus, English localisation, country-package, 
 
 ### Current mechanic authority
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
   - rewritten as the current mechanic entry point
   - records exact inventory, route architecture, Ledger and callings, districts, Penal Works, Necessary Ground, stewardship, evolutions, AI, assets, super-events, achievements, and audit state
   - removes stale visual and country-package gaps
@@ -144,7 +144,7 @@ These banners preserve the original records while preventing them from being mis
 
 Current authority and visual handoff files:
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/assets/015_utopia_manifesto/manifest.md`
 - `docs/assets/015_utopia_manifesto/gfx_handoff.md`
 - `docs/assets/015_utopia_manifesto/icon_animation_handoff.md`
@@ -152,7 +152,7 @@ Current authority and visual handoff files:
 - `docs/assets/015_utopia_manifesto/final_non_icon_2026_07_14/manifest.md`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/manifest.md`
 - `docs/assets/015_utopia_manifesto/route_identity_2026_07_14/gfx_handoff.md`
-- `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`
+- `docs/super_events/015_utopia_manifesto/audio_research.md`
 
 Specification authority and proof files:
 

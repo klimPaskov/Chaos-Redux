@@ -16,7 +16,7 @@ Added:
 - `common/decisions/016_brilliant_scientist_containment_decisions.txt`
 - `events/016_brilliant_scientist_containment_events.txt`
 - `localisation/english/016_brilliant_scientist_containment_l_english.yml`
-- `docs/systems/016_brilliant_scientist_containment.md`
+- `docs/events/016_brilliant_scientist/systems/containment.md`
 - this handoff
 
 Modified:

@@ -113,6 +113,6 @@ The parent visually reviewed `contact_sheets/processed_decoded_contact_sheet.png
 
 `interface/016_brilliant_scientist_idea_icons.gfx` registers all thirteen exact sprite names and runtime paths. The five Kruger State starting liabilities consume their matching pictures in `common/ideas/016_brilliant_scientist_country_ideas.txt`. The seven mutually exclusive host relationship states and the independent world-threat state consume their matching pictures in `common/ideas/016_brilliant_scientist_host_ideas.txt`.
 
-The host lifecycle is reconciled by `brilliant_scientist_refresh_directorate_idea_lifecycle`. Its priority order, thresholds, modifier tuning, and refresh callers are documented in `docs/systems/016_brilliant_scientist_idea_lifecycle.md` and centralized in `common/script_constants/016_brilliant_scientist_idea_constants.txt`.
+The host lifecycle is reconciled by `brilliant_scientist_refresh_directorate_idea_lifecycle`. Its priority order, thresholds, modifier tuning, and refresh callers are documented in `docs/events/016_brilliant_scientist/systems/idea_lifecycle.md` and centralized in `common/script_constants/016_brilliant_scientist_idea_constants.txt`.
 
 Parent validation confirmed thirteen unique sprite registrations, thirteen unique runtime paths, all referenced DDS files present, balanced braces in the wired script and GFX files, a UTF-8 BOM on the lifecycle localisation file, and no second positive research-speed source competing with Kruger's advisor trait.

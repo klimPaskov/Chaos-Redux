@@ -385,7 +385,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] World-end super-event has unique final track and audio ID.
 - [x] Defeat super-event has unique final track and audio ID if used.
 - [x] Audio source, creator, license, duration, and final path are documented.
-- [x] Final OGG files are 44.1 kHz.
+- [x] Final WAV files are 44.1 kHz.
 - [x] Music HTML table lists every track and super-event ID.
 - [x] No placeholder, default, generated tone, or undocumented audio remains.
 - [x] Quotes and cultural remarks are researched and sourced.

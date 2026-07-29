@@ -196,13 +196,13 @@ Recommended action: build a naval directorate branch with port seizures, convoy/
 
 Safe for parent to patch now: no, new content.
 
-### KRS and Other Naval/Port Custom Trees
+### AOX and Other Naval/Port Custom Trees
 
 File: `common/national_focus/005_soviet_collapse_custom_splinters.txt`
-Tree: `KRS_soviet_collapse_focus_tree`
+Tree: `AOX_soviet_collapse_focus_tree`
 Current size: 47 focuses
 
-KRS has more depth than PRA/DSC/NRF, but reward helper use is heavy and its military/depot lanes need stronger concept separation. If KRS is meant to be the main naval directorate, it should visibly own port assembly, fleet doctrine, maritime diplomacy, and coastal expansion lanes rather than presenting as another generic 47-focus custom skeleton.
+AOX has more depth than PRA/DSC/NRF, but reward helper use is heavy and its military/depot lanes need stronger concept separation. If AOX is meant to be the main naval directorate, it should visibly own port assembly, fleet doctrine, maritime diplomacy, and coastal expansion lanes rather than presenting as another generic 47-focus custom skeleton.
 
 Recommended action: keep the 47-focus base but re-label and rewire rewards into port, fleet, diplomacy, and conquest capstones.
 
@@ -292,7 +292,7 @@ Content patches that should wait for parent design:
 4. DSC dead soldiers congress expansion.
 5. NRF naval/revenant fleet expansion.
 6. OGB Volga/Bolghar expansion tranche.
-7. KRS naval-directorate branch identity pass.
+7. AOX naval-directorate branch identity pass.
 
 ## Validation
 

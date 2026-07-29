@@ -196,7 +196,7 @@ Accepted Last Transformer disposition:
 Current implementation authority:
 
 - `docs/systems/air_contamination_mechanic.md` describes the live Air Contamination system.
-- `docs/air_cleanliness_winter.md` describes the live Air Winter implementation and its reported gaps.
+- `docs/systems/air_cleanliness/winter.md` describes the live Air Winter implementation and its reported gaps.
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md` records the overall partial status and hard blockers.
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md` owns Fallout file, namespace, asset, and audio boundaries.
 

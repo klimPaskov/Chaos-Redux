@@ -246,7 +246,7 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] Dynamic names and states are shown where needed.
 - [ ] Hidden routes, values, and achievements are not spoiled.
 - [ ] Event log, evolution views, selected details, docs, and catalog wording agree.
-- [ ] `docs/events/016_brilliant_scientist.md` is complete.
+- [ ] `docs/events/016_brilliant_scientist/overview.md` is complete.
 - [ ] Event catalog workbook is updated only after final in-game wording exists.
 - [ ] The unnumbered `Crazy Scientist` catalog idea is marked absorbed, superseded, or redesigned distinctly.
 - [ ] Cluster field remains empty.

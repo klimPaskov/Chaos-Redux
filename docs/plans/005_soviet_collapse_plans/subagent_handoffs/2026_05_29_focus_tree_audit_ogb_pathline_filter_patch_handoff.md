@@ -45,7 +45,7 @@ No localisation keys or icon ids were changed.
 | Full custom splinters | Most full custom splinters sit near 47 focuses each. | Partial | Better than the compact trees but still depend heavily on helper identity ideas and repeated route scaffolds. |
 | Compact crisis splinters | PRA has 22 focuses; TSC, RMC, DSC, NRF, and ICD have 18 each. | Shallow | Need real political, industry, military, expansion, and special-mechanic branches. These still read as compact placeholders. |
 | Factory successors | CFR has 47, MFR has 58, OGB has 23. | Mixed | CFR/MFR have workable structure; OGB remains shallow and needs a real full route family after this local cleanup. |
-| Ancient restorations | KZR, SOG, KHW, and ALN each have 16 focuses. | Shallow | Need full lore-matching political, industrial, military, expansion, diplomacy, and endgame branches. |
+| Ancient restorations | APX, SOG, ANX, and ABX each have 16 focuses. | Shallow | Need full lore-matching political, industrial, military, expansion, diplomacy, and endgame branches. |
 
 ## Missing or Simplified Content
 
@@ -53,7 +53,7 @@ No localisation keys or icon ids were changed.
 | --- | --- | --- | --- |
 | High | Helper-call idea spam remains outside direct focus rewards. | Focus files have no direct duplicate `add_ideas`, but 27 called helpers in `common/scripted_effects/005_soviet_collapse_effects.txt` add ideas. `soviet_collapse_update_consolidated_republic_ideas` is called 111 times from focus files. | Parent should audit helper rewards and convert repeated tier-updater idea calls into route-specific decisions, modifiers, claims, cores, units, laws, or one-time endgame ideas. |
 | High | Compact crisis splinters are still shallow. | PRA has 22 focuses; TSC/RMC/DSC/NRF/ICD each have 18. | Add full route families or queue a separate focus rework plan. |
-| High | Ancient restoration trees are shallow and lore-light. | KZR/SOG/KHW/ALN each have 16 focuses and share repeated ancient-restoration icon families. | Add distinct restoration mechanics, claims, diplomacy, army, industry, and endgame paths. |
+| High | Ancient restoration trees are shallow and lore-light. | APX/SOG/ANX/ABX each have 16 focuses and share repeated ancient-restoration icon families. | Add distinct restoration mechanics, claims, diplomacy, army, industry, and endgame paths. |
 | High | OGB is still too shallow. | OGB has 23 focuses. This patch only cleaned linework, filters, and one obvious claim reward mismatch. | Give OGB real political/clerical/scholarly, Volga trade, heritage army, diplomacy, and conquest branches. |
 | Medium | Route-special mechanics are often helper driven. | Many focuses call consolidation/custom-splinter helper effects rather than exposing unique route unlocks in the focus file. | Parent should inspect helpers after current scripted-effect work settles. |
 | Medium | Focus filters have improved locally but still need a full semantic review. | This patch corrected five obvious filter mismatches; a heuristic scan cannot prove all filters match every helper-side reward. | Re-run after helper reward changes. |

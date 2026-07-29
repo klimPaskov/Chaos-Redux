@@ -68,11 +68,11 @@ All five route-specific masters, processed PNGs, final DDS files, source records
 
 Text and audio research are complete and integrated.
 
-- title and cultural remark: original Chaos Redux wording, documented in `docs/super_events/015_utopia_manifesto_super_event_text_research.md`
+- title and cultural remark: original Chaos Redux wording, documented in `docs/super_events/015_utopia_manifesto/text_research.md`
 - main quote: exact closing sentence from Thomas More's *Utopia*, Gilbert Burnet translation, verified against the Project Gutenberg primary text and public-domain compatible
 - audio: Brahms, *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, Musopen Symphony Orchestra
 - recording rights: file-specific CC0 1.0 Universal; source file matches the Commons SHA-1 and byte size
-- runtime: exclusive playback audio ID `57`, final `116 s` OGG and WAV, six music helpers, six sound wrappers, and display slots `96`-`100`
+- runtime: exclusive playback audio ID `57`, final `116 s` OGG and WAV, six sound wrappers, six sound wrappers, and display slots `96`-`100`
 - catalogue: active row in `music/chaosx_music_track_list.html`
 - uniqueness: no matching cue under any other event in the current `54`-OGG and `52`-WAV scan; the only WAV match is the expected Event 015 mirror
 

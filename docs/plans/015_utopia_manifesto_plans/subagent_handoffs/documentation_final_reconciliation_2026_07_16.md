@@ -17,7 +17,7 @@ No gameplay, localisation, interface, visual asset, audio, workbook, spreadsheet
 Use this order when records disagree:
 
 1. Live HOI4 sources are authoritative for runtime behavior and identifiers.
-2. `docs/events/015_utopia_manifesto.md` is the canonical current mechanic description.
+2. `docs/events/015_utopia_manifesto/overview.md` is the canonical current mechanic description.
 3. Accepted specifications under `docs/specs/015_utopia_manifesto_specs/specs/` are the design authority.
 4. `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md` is the current proof and gate matrix.
 5. `docs/assets/015_utopia_manifesto/manifest.md`, `gfx_handoff.md`, `icon_animation_handoff.md`, and `requirement_to_runtime_coverage_2026_07_16.md` are the asset authority owned by the asset auditor.
@@ -104,7 +104,7 @@ The final localisation audit was also static and English-only. No runtime render
 
 ## Files changed by this curator
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/asset_manifest_plan.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_8_assets_localisation_and_acceptance.md`

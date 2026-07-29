@@ -111,7 +111,7 @@ The existing `GetNaturalDisasterReportFollowupRoute` remains the route-name reso
 - `common/scripted_localisation/013_natural_disasters_scripted_localisation.txt`
 - `events/013_natural_disasters.txt`
 - `localisation/english/013_natural_disasters_l_english.yml`
-- `docs/events/013_natural_disasters.md`
+- `docs/events/013_natural_disasters/overview.md`
 
 ### Acceptance cases
 
@@ -178,7 +178,7 @@ The source spec permits an unfired Event 013 to open at the current higher evolu
 - `common/scripted_triggers/013_natural_disasters_triggers.txt`
 - the narrow existing evolution-recording call site
 - `localisation/english/013_natural_disasters_l_english.yml` only if visible card wording changes
-- `docs/events/013_natural_disasters.md`
+- `docs/events/013_natural_disasters/overview.md`
 
 ### Acceptance cases
 
@@ -350,7 +350,7 @@ Do not duplicate a preparation or recovery effect inside scripted GUI code.
 - `common/scripted_triggers/013_natural_disasters_triggers.txt`
 - `common/scripted_localisation/013_natural_disasters_scripted_localisation.txt`
 - `localisation/english/013_natural_disasters_l_english.yml`
-- `docs/events/013_natural_disasters.md`
+- `docs/events/013_natural_disasters/overview.md`
 - `docs/assets/013_natural_disasters/gfx_handoff.md`
 
 No replacement art is required. Reuse the completed animated layers, static fallbacks, marker sprites, card frames, and recovery assets.
@@ -434,7 +434,7 @@ Balance findings must change constants, weights, or effects when outcomes miss t
 After implementation and runtime proof:
 
 1. Promote accepted clarifications from this plan into the relevant Event 013 source specs.
-2. Update `docs/events/013_natural_disasters.md` with the verified report, active-card, Skyfall, and physical-map behavior.
+2. Update `docs/events/013_natural_disasters/overview.md` with the verified report, active-card, Skyfall, and physical-map behavior.
 3. Update `docs/systems/event_clusters.md` with verified five-role dispatch behavior.
 4. Update Event 013 super-event documentation only for gates that passed their scenarios.
 5. Update `docs/assets/013_natural_disasters/gfx_handoff.md` with final marker and timeline wiring. Do not request replacement art.

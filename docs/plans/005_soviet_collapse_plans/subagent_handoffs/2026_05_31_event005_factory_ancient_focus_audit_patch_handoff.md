@@ -18,10 +18,10 @@ No flags or `gfx/flags` files were touched.
 | CFR construction/factory identity | `CFR_*` opening spine, governance selector, construction strategy selector, coercive/foreign/worker branches, eastern expansion endgame | Partially improved | Selector mutual exclusions are now visible/currently complete, and one repeated mandate helper stack was removed. CFR still needs an icon pass and deeper distinction among repeated construction icon families. |
 | MFR military factory identity | `MFR_*` opening spine, four-way rifle ownership selector, arms production routes, foreign arms market, arsenal endgame | Partially improved | Selector mutual exclusions are now visible/currently complete, and one duplicate rail-authority reward stack was removed. Several MFR helpers still share arms/equipment rhythm by design. |
 | OGB ancient/factory successor restoration | `OGB_*` Volga legitimacy, trade, guard, Idel-Ural diplomacy/rivalry, restoration state endgame | Audit only | Current 23-focus shape is playable but still shallow versus the spec's OP chaos-country branch-depth target. No bounded safe patch found without broader route design. |
-| KZR ancient restoration | `KZR_*` toll authority, trade/guard, symbolic vs expansionist, charter, endgame | Patched | `KZR_expansionist_steppe_levy` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
+| APX ancient restoration | `APX_*` toll authority, trade/guard, symbolic vs expansionist, charter, endgame | Patched | `APX_expansionist_steppe_levy` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
 | SOG ancient restoration | `SOG_*` city authority, oasis trade/guard, symbolic vs expansionist, charter, endgame | Patched | `SOG_expansionist_merchant_claims` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
-| KHW ancient restoration | `KHW_*` water authority, caravan/canal guard, symbolic vs expansionist, charter, endgame | Patched | `KHW_expansionist_water_claims` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
-| ALN ancient restoration | `ALN_*` pass authority, Darial road/guard, symbolic vs expansionist, charter, endgame | Patched | `ALN_expansionist_mountain_claims` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
+| ANX ancient restoration | `ANX_*` water authority, caravan/canal guard, symbolic vs expansionist, charter, endgame | Patched | `ANX_expansionist_water_claims` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
+| ABX ancient restoration | `ABX_*` pass authority, Darial road/guard, symbolic vs expansionist, charter, endgame | Patched | `ABX_expansionist_mountain_claims` now grants a guarded SOV annexation war goal when legal, matching existing conquest AI. |
 
 ## High-Priority Fixes Made
 
@@ -30,7 +30,7 @@ No flags or `gfx/flags` files were touched.
 | High | `005_soviet_collapse_factory_successors.txt` | `CFR_elect_the_site_committees`, `CFR_publish_the_planners_charter`, `CFR_invite_the_foreign_contract_board`, `CFR_the_concrete_committee` | Hidden `available` locks made the four governance routes exclusive, but visible `mutually_exclusive` entries were incomplete. | The current file has visible pairwise mutual exclusions across the four governance choices. |
 | High | `005_soviet_collapse_factory_successors.txt` | `CFR_cities_first`, `CFR_rails_first`, `CFR_factories_first`, `CFR_contracts_first` | Hidden locks made the four construction strategy choices exclusive, but visible `mutually_exclusive` entries were incomplete. | The current file has visible pairwise mutual exclusions across the four strategy choices. |
 | High | `005_soviet_collapse_factory_successors.txt` | `MFR_officers_chair_the_board`, `MFR_armorers_elect_delegates`, `MFR_merchants_of_ammunition`, `MFR_eternal_arsenal` | Hidden `available` locks made the four MFR route choices exclusive, but visible `mutually_exclusive` entries were incomplete. | The current file has visible pairwise mutual exclusions across the four route choices. |
-| High | `005_soviet_collapse_ancient_restorations.txt` | `KZR_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, `ALN_expansionist_mountain_claims` | Expansionist branches granted claims, war support, units/equipment, and hidden conquest AI against SOV, but no direct war goal. | Each expansionist branch now grants a guarded `annex_everything` war goal against SOV if SOV exists, the country is not already at war, has no SOV war goal, and can declare. |
+| High | `005_soviet_collapse_ancient_restorations.txt` | `APX_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, `ABX_expansionist_mountain_claims` | Expansionist branches granted claims, war support, units/equipment, and hidden conquest AI against SOV, but no direct war goal. | Each expansionist branch now grants a guarded `annex_everything` war goal against SOV if SOV exists, the country is not already at war, has no SOV war goal, and can declare. |
 | Medium | `005_soviet_collapse_factory_successors.txt` | `CFR_emergency_cement_accounts` | Called both `soviet_collapse_apply_cfr_focus_mandate_gain` and `soviet_collapse_apply_cfr_focus_public_works`; `public_works` already grants construction mandates and map construction. | Removed the separate mandate helper call to reduce repeated reward spam while keeping the concrete/public-works payoff. |
 | Medium | `005_soviet_collapse_factory_successors.txt` | `MFR_armored_train_workshops` | Called `soviet_collapse_apply_mfr_focus_armored_train_workshops` and then `soviet_collapse_apply_focus_rail_authority_reward`; the MFR helper already calls the rail-authority reward. | Removed the duplicate direct rail-authority helper call. |
 
@@ -41,17 +41,17 @@ No flags or `gfx/flags` files were touched.
 | `005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 43 | 30 | `GFX_focus_CFR_cement_allocation_boards` (2), `GFX_focus_CFR_reconstruction_contract_state` (2), `GFX_focus_CFR_municipal_board_elections` (3), `GFX_focus_CFR_contract_dependency_web` (2), `GFX_focus_CFR_the_builder_state` (3), `GFX_focus_CFR_housing_before_flags` (2), `GFX_focus_CFR_civilian_hegemony_project` (3), `GFX_focus_CFR_forced_labor_barracks` (2), `GFX_focus_CFR_silent_site_guards` (2), `GFX_focus_CFR_concrete_republic` (2) |
 | `005_soviet_collapse_factory_successors.txt` | `OGB_soviet_collapse_focus_tree` | 23 | 23 | None |
 | `005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 55 | 55 | None |
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
-| `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
-| `005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
+| `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
+| `005_soviet_collapse_ancient_restorations.txt` | `ABX_soviet_collapse_ancient_focus_tree` | 16 | 16 | None |
 
 No icon ids were changed because the parent forbade asset/flag work and this subtask did not own `.gfx` edits.
 
 ## Missing or Simplified Content
 
 - `OGB_soviet_collapse_focus_tree` remains shallow at 23 focuses. It has real Volga restoration hooks, but not the full political/industry/military/diplomacy/expansion/special OP route depth requested by the user.
-- `KZR`, `SOG`, `KHW`, and `ALN` remain compact 16-focus ancient trees. The expansionist selectors now have direct SOV war goals, but broader identity-specific route depth still needs parent-level design.
+- `APX`, `SOG`, `ANX`, and `ABX` remain compact 16-focus ancient trees. The expansionist selectors now have direct SOV war goals, but broader identity-specific route depth still needs parent-level design.
 - `CFR_soviet_collapse_focus_tree` still has repeated icon ids and several focuses with similar construction/factory reward rhythm. Fixing that cleanly needs either new registered icon ids or broader route reward design outside this bounded patch.
 - `MFR_soviet_collapse_focus_tree` is deeper and icon-complete, but several helper rewards still revolve around quotas, stockpile equipment, war support, and arms-factory construction. A larger pass should add more distinct production decisions, client-state consequences, or arsenal route mechanics.
 

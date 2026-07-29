@@ -10,7 +10,7 @@ The static background is promoted from `docs/assets/019_infantry_spawn/gui_backg
 
 - `interface/019_infantry_spawn_muster_board.gui` removes centered `buttonText` and `buttonFont` fields from all direct Event 019 buttons and adds 39 left-aligned label overlays with compact padding. Overlay coordinates account for the `scale` applied to dense lot, claimant, and anomalous rows, so the left inset remains visually consistent instead of drifting toward the center. Dense scaled captions use the existing `hoi_12mbs` font; larger tabs and overview/request controls retain `hoi_14mbs`. Dynamic lot, family, and history entries retain their existing left-aligned text and transparent selection hitboxes.
 - `gfx/interface/019_infantry_spawn/infantry_spawn_muster_board_background.dds` now uses the richer 960 by 640 runtime DDS. SHA-256: `758a9ec88a7f329b9a3aaf7a6570135e1e15becb75ef1bfd8f1a8db8439aa849`.
-- `docs/events/019_infantry_spawn.md`, `docs/assets/019_infantry_spawn/gfx_handoff.md`, and `docs/assets/019_infantry_spawn/manifest.md` now describe the richer composition.
+- `docs/events/019_infantry_spawn/overview.md`, `docs/assets/019_infantry_spawn/gfx_handoff.md`, and `docs/assets/019_infantry_spawn/manifest.md` now describe the richer composition.
 
 ## Tooltip audit
 

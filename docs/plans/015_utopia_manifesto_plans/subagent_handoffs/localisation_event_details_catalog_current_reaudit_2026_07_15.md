@@ -72,7 +72,7 @@ Catalog authority:
 
 Historical-label context:
 
-- docs/events/015_utopia_manifesto.md
+- docs/events/015_utopia_manifesto/overview.md
 - docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md
 
 ## Stale identity and ID 15 mapping audit
@@ -87,7 +87,7 @@ The exact case-insensitive repository and runtime search produced:
 | 015_placeholder | 5 | 0 |
 | 015_world_tension_falls | 1 | 0 |
 
-Every surviving repository hit is in documentation that preserves migration, recovery, or asset provenance. The canonical event document states at docs/events/015_utopia_manifesto.md:353-355 that these are historical labels and not current names or runtime fallbacks. The source-of-truth resume states at line 189 that World Tension Subsides and placeholder language are historical catalog provenance only.
+Every surviving repository hit is in documentation that preserves migration, recovery, or asset provenance. The canonical event document states at docs/events/015_utopia_manifesto/overview.md:353-355 that these are historical labels and not current names or runtime fallbacks. The source-of-truth resume states at line 189 that World Tension Subsides and placeholder language are historical catalog provenance only.
 
 The workbook XML contains zero instances of all five legacy patterns.
 
@@ -130,7 +130,7 @@ A brace-depth parse found:
 | Duplicate IDs | 0 |
 | Definitions without IDs | 0 |
 
-This exactly matches the 99-definition statement in docs/events/015_utopia_manifesto.md.
+This exactly matches the 99-definition statement in docs/events/015_utopia_manifesto/overview.md.
 
 common/script_constants/015_utopia_manifesto_constants.txt:16-18 defines:
 

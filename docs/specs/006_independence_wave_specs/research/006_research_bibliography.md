@@ -61,7 +61,7 @@ The full machine-readable register is `research/006_source_register.csv`. It cov
 
 - Creator or institution: Chaos Redux repository
 - Date or period: commit 8044d232376fef3a1a3ca1ea3e0d487523924cc6
-- Source: https://github.com/klimPaskov/Chaos-Redux/blob/master/docs/events/005_soviet_collapse.md
+- Source: https://github.com/klimPaskov/Chaos-Redux/blob/master/docs/events/005_soviet_collapse/overview.md
 - Design use: Event 5 overlap and origin separation
 - Confidence: high
 - Rights or caution: Repository source

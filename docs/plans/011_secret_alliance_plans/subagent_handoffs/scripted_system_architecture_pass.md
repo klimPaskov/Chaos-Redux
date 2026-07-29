@@ -128,7 +128,7 @@ During the architecture pass, parallel uncommitted files appeared at `common/scr
 - scenario scripted GUI, GUI, and scripted localisation registry files.
 - `common/achievements/chaos_redux_achievements.txt` and `interface/chaosx_achievements.gfx`.
 - Event Logs name, detail, evolution, actor, and weight mappings.
-- `docs/events/011_secret_alliance.md`, `docs/systems/triggerable_scenarios.md`, `docs/systems/custom_achievements.md`, the Event 011 asset manifest, and spreadsheet rows.
+- `docs/events/011_secret_alliance/overview.md`, `docs/systems/triggerable_scenarios.md`, `docs/systems/custom_achievements.md`, the Event 011 asset manifest, and spreadsheet rows.
 
 ## One-context state contract
 

@@ -405,7 +405,7 @@ Required Event 016 bridge:
 6. Event 016 sets `world_end_strategic_singularity` and its terminal, evolution, and achievement state only after the Fallout request is accepted.
 7. Event 016 clears its request context on success, cancellation, invalid ownership, disarmament, and every aborted attempt.
 
-Fallout does not use the Strategic Singularity image or track. Strategic Singularity does not replace the Fallout blackout GUI, dedicated music wrappers, sound wrappers, or final audio files. The exact Event 016 request-source constant remains parent-owned because the current Fallout source enum has no Event 016-specific entry.
+Fallout does not use the Strategic Singularity image or track. Strategic Singularity does not replace the Fallout blackout GUI, dedicated sound wrappers, sound wrappers, or final audio files. The exact Event 016 request-source constant remains parent-owned because the current Fallout source enum has no Event 016-specific entry.
 
 Canonical shared effects to call rather than reimplement:
 

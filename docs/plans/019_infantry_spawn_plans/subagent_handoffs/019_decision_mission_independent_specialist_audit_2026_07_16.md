@@ -361,9 +361,9 @@ Current documentation patches:
 
 - `docs/specs/019_infantry_spawn_specs/matrices/019_decision_mission_map.md`
 - `docs/specs/019_infantry_spawn_specs/matrices/019_achievement_matrix.md`
-- `docs/events/019_infantry_spawn.md`
-- `docs/achievements/019_infantry_spawn_achievements.md`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/overview.md`
+- `docs/achievements/019_infantry_spawn/achievements.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 - `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
 - this dated specialist handoff
 

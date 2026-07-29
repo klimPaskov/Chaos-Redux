@@ -2,7 +2,7 @@
 
 Status: in progress; the overall Chaos Warfare goal remains incomplete
 
-Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, no-release attempt consequences, six CBRN designer families, twenty-seven exact agent-and-rack aircraft variants, and matching asset foundations are implemented or under final review. No new ground or air release route is active yet, and the idempotent legacy stock migration has no caller while old consumers remain. Exact-state condition adapters, active route decisions/raids, remaining legacy retirement, route AI, differentiated country assignments, and specialist audits remain open.
+Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, selected-state chemical air and strategic rocket raid adapters, no-release attempt consequences, six CBRN designer families, twenty-seven exact agent-and-rack aircraft variants, and matching asset foundations are implemented or under final review. Exact-state ground condition adapters, remaining legacy retirement, route AI, differentiated country assignments, and specialist audits remain open while the overall Chaos Warfare goal remains incomplete.
 
 ## Accepted sources and conflict resolution
 
@@ -17,6 +17,7 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 - No verified current-version hook proves that an ordinary continuous air mission with a chemical module is presently executing eligible activity. Continuous-air contamination remains disabled. No estimator, aircraft-presence proxy, front-heat proxy, or region-wide contamination fallback will be retained.
 - Vanilla's current `divisions_in_state` trigger accepts a scoped state (`state = PREV`) or a state-valued variable and can filter a specific subunit. Ground operations can therefore prove that the required projector, ammunition-train, or armored-delivery formation is physically present in a friendly state adjacent to the selected target. Army Headquarters abilities still do not expose an exact command-assignment relationship, so the engine cannot prove that the particular prepared headquarters commands that particular border. The Headquarters remains the theater authorization layer and the adjacent formation remains the delivery layer; no stronger association may be claimed.
 - Current selected-state decision and raid scopes expose no verified live target-weather or province-terrain trigger. `is_fighting_in_weather`, `is_fighting_in_terrain`, and `temperature` are documented for combatant scope, while state structure can prove only state category, buildings, supply nodes, ports, airfields, victory points, population, and control. No forecast estimator, structure-as-terrain substitution, or neutral condition fallback may be activated without explicit approval.
+- The explicit selected-state air adapter records the native outcome and derives release efficiency from it. Because the raid outcome exposes no verified live target-weather or province-terrain value, the adapter supplies no environmental receipt and the shared calculator omits those optional modifiers.
 - Combat tactics expose no verified activation effect capable of consuming payload before dispatch. The legacy Chemical Barrage tactic remains weight zero and fail-closed.
 - Strategic-bomber eligibility will not be added unless an exact local current-version module/mission precedent is verified. Chemical air modules remain limited to the verified CAS/tactical surface.
 
@@ -60,7 +61,7 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 
 ### 5. Exact-state chemical air raids
 
-- Implement Chemical Air Interdiction and mapped strategic chemical raid types only on verified aircraft/module surfaces.
+- Implemented Chemical Air Interdiction and mapped strategic chemical raid types on the verified CAS/tactical aircraft and strategic rocket surfaces.
 - Reserve Chemical Air Payload Lots as essential raid equipment at creation. Resolve aborted, failed, partial, success, and catastrophic outcomes with centralized payload salvage and dose bands:
   - aborted: 10–25 percent net payload use, no target exposure, at most trace friendly risk;
   - failed: 40–80 percent net payload use, no target exposure, possible crash evidence;
@@ -70,7 +71,7 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 - Every exposing result dispatches against `var:target_state`. No result may contaminate an arbitrary state or whole air region.
 - Idle chemical-capable aircraft and ordinary continuous missions never call the exposure system.
 
-Reservation/outcome foundation completed before activation: native `essential_equipment` now has one exact archetype per agent class; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. Active raid IDs remain unwired until the approved weather/terrain condition policy is available.
+Reservation/outcome foundation and selected-state raid activation completed: native `essential_equipment` has one exact archetype per ordinary agent class and a 240-unit nerve reservation for strategic rockets; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. The active adapter preserves the native selected state and does not manufacture unavailable environmental inputs.
 
 Unsupported continuous-air estimator retired: army combat no longer creates `chem_air_ground_ops_heat`; the deployed-aircraft/region estimator and its tuning tables are removed. The stable `chemical_air_bomb.1` event is retained only as a one-shot cleanup endpoint for a previously queued tick and cannot calculate exposure or reschedule itself.
 
@@ -78,14 +79,14 @@ Aircraft eligibility foundation completed before activation: all seven standard 
 
 No-release consequence foundation completed before activation: Aborted and Failed outcomes keep zero release proof, retain exact native payload loss, and call a one-shot path that can add exact-state evidence, cumulative attribution, separate attempt history, and doctrine-mitigated Condemnation. The path cannot call exposure or write casualties, contamination, medical saturation, mask loss, treaty use, confirmed-use history, or a chemical-use achievement. A separate Condemnation proof prevents no-release attempts from masquerading as actual unconventional-weapon use.
 
-Interim legacy shutdown completed before replacement activation: `chemical_sarin_strike`, `chemical_sarin_rocket_strike`, `chemical_soman_strike`, `chemical_soman_rocket_strike`, `chemical_malodor_strike`, and `chemical_aphrodisiac_strike` are retained as stable parse/save identifiers but fail closed in `visible`, `available`, and `launchable`. Their direct outcome bodies bypass payload-class reservation and the shared record, so none may be exposed to the player or AI during migration.
+Legacy raid replacement completed for `chemical_sarin_strike`, `chemical_sarin_rocket_strike`, `chemical_soman_strike`, `chemical_soman_rocket_strike`, `chemical_malodor_strike`, and `chemical_aphrodisiac_strike`, which now use the selected-state payload reservation and shared consequence record. Chlorine, Phosgene, Mustard, Lewisite, and Tabun air identifiers use the same adapter, while the old non-raid route consumers remain subject to the retirement work below.
 
 ### 6. Legacy route retirement
 
 - Remove passive daily cylinder dispersal, Livens/projector contamination, chemical-tank contamination, attacker First Use effects, and ground-operations heat registration from on-actions.
 - Make legacy cylinder commander abilities inert compatibility wrappers or redirect them only into the prepared headquarters path. They may not grant free general-wide attack buffs or emit exposure directly.
 - Make the old chemical-air estimator event and helper cleanup-only compatibility surfaces with no self-scheduling, region scan, aircraft-presence inference, or contamination effect.
-- Keep every direct legacy Sarin, Soman, Malodor, and Behavioral-Agent raid ID fail-closed until its body is replaced by the exact selected-state reservation and shared consequence contract.
+- Keep every non-raid legacy chemical consumer fail-closed until its body is replaced by the exact selected-state reservation and shared consequence contract.
 - Keep the automatic Chemical Barrage tactic at zero weight until an exact activation/debit adapter exists.
 
 ### 7. Route-aware AI and differentiated profiles

@@ -21,7 +21,7 @@ Exact 10-country coverage is still structurally blocked by nine compatible admit
 
 ## Changed documentation
 
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - this handoff

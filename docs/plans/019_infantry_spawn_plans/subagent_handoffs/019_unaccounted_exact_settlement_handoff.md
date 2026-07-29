@@ -84,7 +84,7 @@ gaps.
 - `common/decisions/019_infantry_spawn_decisions.txt`
 - `common/ideas/019_infantry_spawn_ideas.txt`
 - `localisation/english/019_infrantry_spawn_l_english.yml`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_unaccounted_exact_settlement_handoff.md`
 
 ## Assets

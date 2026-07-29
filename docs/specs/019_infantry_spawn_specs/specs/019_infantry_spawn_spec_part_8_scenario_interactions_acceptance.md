@@ -439,7 +439,7 @@ No super-event image or audio package is required.
 
 Implementation must update:
 
-- one canonical Event 19 document under `docs/events/019_infantry_spawn.md`
+- one canonical Event 19 document under `docs/events/019_infantry_spawn/overview.md`
 - event name and Event Details localisation
 - event history and evolution display selectors
 - triggerable scenario system documentation

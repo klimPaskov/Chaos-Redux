@@ -82,7 +82,7 @@ behavior, localisation, and this proof writer are implemented and audited.
 - `common/scripted_effects/006_independence_wave_achievement_effects.txt`
 - `common/on_actions/006_independence_wave_achievement_on_actions.txt`
 - `localisation/english/006_independence_wave_achievements_l_english.yml`
-- `docs/systems/006_independence_wave_achievements.md`
+- `docs/achievements/006_independence_wave/achievements.md`
 - `docs/assets/006_independence_wave/manifest.md`
 
 ## Meaningful validation

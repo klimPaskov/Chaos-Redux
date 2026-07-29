@@ -33,7 +33,7 @@ preventing a stale tab or frame from leaking into a later Event 006 generation.
 - `interface/006_independence_wave.gfx`
 - `interface/006_independence_wave.gui`
 - `docs/assets/006_independence_wave/manifest.md`
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 
 ## Validation
 

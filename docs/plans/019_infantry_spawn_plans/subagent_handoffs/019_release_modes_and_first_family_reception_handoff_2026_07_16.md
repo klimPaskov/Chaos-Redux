@@ -157,7 +157,7 @@ fixed tag, hardcoded family dispatch, or fabricated claimant is used.
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_5_evolution_iv.md`
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md`
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_8_scenario_interactions_acceptance.md`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 
 No workbook, generated catalog, asset, sprite definition, or asset manifest was
 changed by this tranche.

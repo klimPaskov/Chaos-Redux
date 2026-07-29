@@ -113,7 +113,7 @@ Top affected trees:
 - Moldova republic tree: 22
 - UWD custom splinter tree: 22
 - MFR factory successor tree: 22
-- BAC custom splinter tree: 18
+- ADX custom splinter tree: 18
 - Internal republic tree: 17
 - Caucasus republic tree: 17
 - KHC custom splinter tree: 17

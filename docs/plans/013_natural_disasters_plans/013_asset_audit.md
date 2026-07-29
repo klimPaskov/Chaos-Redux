@@ -19,7 +19,7 @@ Scope: visual assets only. This audit compares the accepted Event 013 source-of-
 - `docs/specs/013_natural_disasters_specs/matrices/013_super_event_research_handoff_matrix.md`
 - all Markdown files, source PNGs, processed PNGs, animation frames, sheets, previews, contact sheets, and package DDS files under `docs/assets/013_natural_disasters/`
 - all live Event 013 DDS files under `gfx/`
-- `docs/super_events/013_natural_disasters_super_event_text_research.md` for current image-path and provenance claims
+- `docs/super_events/013_natural_disasters/archive/text_research.md` for current image-path and provenance claims
 - the offline graphical asset, interface, and scripted-GUI wiki pages and vanilla `frameAnimatedSpriteType` examples for the animation acceptance model
 
 The accepted source-of-truth map says Parts 1 through 10 remain authoritative. Where the later super-event text research note conflicts with Part 6, this audit retains Part 6 as the acceptance baseline and records the conflict for parent disposition.
@@ -485,7 +485,7 @@ The following claims are not supported by the current filesystem and should be c
 8. `notes/report_news_validation.md` explicitly validates only 14 reports and 5 broad news images. It does not validate the later 24 specific-family news images, super-event images, icons, achievements, or animations.
 9. The manifest's `Complete` heading obscures missing accepted GUI, achievement, super-event, idea, report, decision, and animation coverage.
 10. The manifest does not inventory achievements individually and omits their missing processed PNGs.
-11. `docs/super_events/013_natural_disasters_super_event_text_research.md` gives old super-event paths without the required `013_natural_disasters/` folder. The actual final paths are under `gfx/super_events/013_natural_disasters/`.
+11. `docs/super_events/013_natural_disasters/archive/text_research.md` gives old super-event paths without the required `013_natural_disasters/` folder. The actual final paths are under `gfx/super_events/013_natural_disasters/`.
 12. The text-research note correctly identifies the missing storm-corridor prompt, but its statement that only four abnormal outcomes are accepted conflicts with the accepted Part 6 six-role table.
 
 ## Provenance and rights audit

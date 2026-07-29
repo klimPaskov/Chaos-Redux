@@ -4,7 +4,7 @@
 
 This is a read-only implementation map for replacing the disabled Event 15 placeholder with the accepted Utopia Manifesto package. It does not change gameplay, localisation, UI, art, audio, or the workbook.
 
-The live repository was inspected at HEAD `b89d2e543` (`Update event catalog functional status labels`) while unrelated work was active. The required offline wiki core pages, the additional focus/country/autonomy/cosmetic-tag/achievement/interface/scripted-GUI/music/sound/division/state pages, relevant installed-game documentation, live Chaos Redux precedents, the complete Event 15 specification package, and the live workbook row were consulted.
+The live repository was inspected at HEAD `b89d2e543` (`Update event catalog functional status labels`) while unrelated work was active. The required offline wiki core pages, the additional focus/country/autonomy/cosmetic-tag/achievement/interface/scripted-GUI/sound/division/state pages, relevant installed-game documentation, live Chaos Redux precedents, the complete Event 15 specification package, and the live workbook row were consulted.
 
 The decisive repository fact is that Event 15 has three distinct layers which must not be confused:
 
@@ -58,7 +58,7 @@ The decisive repository fact is that Event 15 has three distinct layers which mu
 | `interface/chaosx_achievements.gfx` | No Event 15 sprites. | Add 14 completed/grey/not-eligible triplets after final DDS names are frozen. |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, Events row 16 | ID 15, name `Event 015 Placeholder`, status `Reserved Disabled`, type `Placeholder`, and details stating no active systems. | Spreadsheet worker updates only after final in-game wording and identifiers stabilize. Details/evolution fields must match localisation. |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx.inspect.ndjson` | Contains the same placeholder row. | Regenerate with the workbook through the repository's established inspection workflow after workbook update. |
-| `docs/events/015_utopia_manifesto.md` | Missing. | Create the canonical implementation document with mechanic flow, variables/flags, interactions, all icon/sprite paths, super-event/audio provenance, cleanup, validation, and future plans. |
+| `docs/events/015_utopia_manifesto/overview.md` | Missing. | Create the canonical implementation document with mechanic flow, variables/flags, interactions, all icon/sprite paths, super-event/audio provenance, cleanup, validation, and future plans. |
 
 There are no live `World Tension Subsides` strings outside the current planning/spec package. The accepted instruction to replace every stale World Tension Subsides mapping resolves in the current tree to replacing the placeholder surfaces above and avoiding resurrection of `events/015_world_tension_falls.txt` or its old localisation.
 
@@ -69,7 +69,7 @@ Super-event visible ID 15 is occupied and unrelated to Event 15:
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt:108-110` maps image slot 15 to `GFX_super_event_black_banner_returns`.
 - The same file maps slot 15 title at `478-480`, quote at `719-721`, button at `960-962`, and description at `1201-1203`.
 - `localisation/english/005_soviet_collapse_l_english.yml:1926-1929` owns `chaosx_super_event.15.{t,d,a,q}`.
-- `music/chaosx_super_event_music.asset:448-479` owns `chaosx_super_event_15_0_5` through `_3_0` and `005_soviet_collapse/super_event_15_black_banner_returns.ogg`.
+- `sound/chaosx_sound.asset` owns the settings-scaled sound wrappers and `sound/005_soviet_collapse/super_event_15_black_banner_returns.wav`.
 - `music/chaosx_super_event_music.txt:127-131` registers the 1.5-volume song.
 - `sound/chaosx_sound.asset:92-97,447,1157-1199` owns the corresponding sound list, WAV, and volume variants.
 - `localisation/english/chaosx_music_l_english.yml:92-97` and `music/chaosx_music_track_list.html:267-269` document the track.
@@ -104,7 +104,7 @@ The following files exist in `0bce9e9a4` and may be inspected or selectively res
 - `interface/015_utopia_manifesto.gfx`
 - `interface/015_utopia_manifesto_ledger.gui`
 - `localisation/english/015_utopia_manifesto_l_english.yml`
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - historical Event 15 handoffs under `docs/plans/015_utopia_manifesto_plans/`
 - historical source/processed animation packages under `docs/assets/015_utopia_manifesto/`
 - historical super-event source/final audio and images under `docs/super_events/source_audio/015_utopia_manifesto/`, `gfx/super_events/015_utopia_manifesto/`, `music/`, and `sound/`.
@@ -450,7 +450,7 @@ The exact split may be adjusted by the parent/architect, but the following owner
 | Dynamic text | `common/scripted_localisation/015_utopia_manifesto_scripted_localisation.txt` |
 | Localisation | `localisation/english/015_utopia_manifesto_l_english.yml` with UTF-8 BOM |
 | Opinions | `common/opinion_modifiers/015_utopia_manifesto_opinion_modifiers.txt` if reactions need durable named modifiers |
-| Documentation/assets | `docs/events/015_utopia_manifesto.md`; `docs/assets/015_utopia_manifesto/manifest.md` and subagent handoffs; `docs/super_events/` research/provenance updates |
+| Documentation/assets | `docs/events/015_utopia_manifesto/overview.md`; `docs/assets/015_utopia_manifesto/manifest.md` and subagent handoffs; `docs/super_events/` research/provenance updates |
 
 Potential additions to `chaosx_dynamic_effects.txt` or shared triggers must first prove they are reusable beyond Event 15 and must update `chaosx_dynamic_effects.md` in the same change. Event-specific helpers belong in Event 15 files.
 
@@ -470,7 +470,7 @@ Potential additions to `chaosx_dynamic_effects.txt` or shared triggers must firs
 | AI strategy lifecycle | `common/ai_strategy/003_holy_realm.txt` and Event 11/14/18 AI files, especially allowed/enable/abort and emergency-state behavior. |
 | Timed decision-to-mission flow | `common/decisions/007_fury_decisions.txt` and current Event 14/17 mission families. |
 | Achievements | `common/achievements/chaos_redux_achievements.txt`; triplet sprites in `interface/014_cannibalism_achievements.gfx` and `interface/chaosx_achievements.gfx`; localisation in `chaosx_achievements_l_english.yml`. |
-| Super-event/audio | Settings-aware launch in `007_fury_effects.txt`; selectors in `chaosx_scripted_localisation_super_events.txt`; audio helpers in `chaosx_settings_effects.txt:4741+`; music/sound registration files listed above. |
+| Super-event/audio | Settings-aware launch in `007_fury_effects.txt`; selectors in `chaosx_scripted_localisation_super_events.txt`; audio helpers in `chaosx_settings_effects.txt:4741+`; sound registration files listed above. |
 
 ## Vanilla and official-documentation precedents
 

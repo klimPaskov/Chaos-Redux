@@ -28,7 +28,7 @@ This tranche closes accepted improvement-loop Parts 7 and 8 for casualty vulnera
 - `localisation/english/013_natural_disasters_l_english.yml`
   - adds player-facing group, driver, relief, and timing text;
   - expands the live aftermath and abnormal selected-record details;
-- `docs/events/013_natural_disasters.md`
+- `docs/events/013_natural_disasters/overview.md`
   - documents casualty tuning, latest versus cumulative deaths, combined damage-summary disposition, relief states, snapshot fields, and direct versus internal causal API authority;
 - `docs/plans/013_natural_disasters_plans/013_event_completion_final_audit.md`
   - records Parts 7 and 8 closure;

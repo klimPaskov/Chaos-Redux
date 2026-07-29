@@ -130,6 +130,9 @@
 - `specs/66_reviewed_regional_second_dust_bowl.md`
 - `specs/67_reviewed_regional_great_lakes_lock_winter.md`
 - `specs/68_fallout_consequence_boundary.md`
+- `specs/69_fallout_tag_preservation_technology_and_fracture.md`
+- `specs/69_reviewed_archetype_work_for_rations.md`
+- `specs/70_reviewed_archetype_the_hungry_battalion.md`
 
 ## Matrices
 
@@ -154,7 +157,7 @@ The full corrected implementation plan is included under:
 
 `../../plans/air_cleanliness_fallout_plans/`
 
-Read `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`, `MANUAL_FALLOUT_SCENARIO_PLAN.md`, `AIR_WINTER_ARCHITECTURE.md`, `FALLOUT_TRANSITION_ARCHITECTURE.md`, `IMPLEMENTATION_TRANCHE_PLAN.md`, and `LIVING_WORLD_IMPLEMENTATION_ADDENDUM.md` before implementation.
+Read the corresponding files in `../../plans/air_cleanliness_fallout_plans/`: `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`, `MANUAL_FALLOUT_SCENARIO_PLAN.md`, `AIR_WINTER_ARCHITECTURE.md`, `FALLOUT_TRANSITION_ARCHITECTURE.md`, `IMPLEMENTATION_TRANCHE_PLAN.md`, and `LIVING_WORLD_IMPLEMENTATION_ADDENDUM.md`.
 
 ## Research
 
@@ -172,10 +175,6 @@ Read `FALLOUT_EVENT_AND_ASSET_OWNERSHIP.md`, `MANUAL_FALLOUT_SCENARIO_PLAN.md`, 
 ## Working implementation handoff
 
 - `../../plans/air_cleanliness_fallout_plans/subagent_handoffs/manual_improvement_loop_pass_living_world.md`
-
-## Resume
-
-- Package root: `CONTINUATION_PROMPT.md`
 
 ## Relationship to earlier packages
 

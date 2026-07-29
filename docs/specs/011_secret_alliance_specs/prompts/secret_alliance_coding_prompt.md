@@ -126,7 +126,7 @@ Update:
 - event names and debug mapping
 - event-log details and evolution details
 - decisions, missions, ideas, GUI, scenario, faction, achievement, and super-event text
-- `docs/events/011_secret_alliance.md`
+- `docs/events/011_secret_alliance/overview.md`
 - triggerable-scenario docs
 - super-event and audio docs
 - asset manifest and GFX handoff

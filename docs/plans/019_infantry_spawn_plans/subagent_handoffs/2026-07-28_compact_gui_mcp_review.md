@@ -15,7 +15,7 @@ The presentation deliberately has no authored slots, wells, rails, ledger cards,
 - `interface/019_infantry_spawn_muster_board.gui` now owns the 960 by 640 geometry, compact panel bounds, shortened action rows, and reduced text areas.
 - `localisation/english/019_infrantry_spawn_l_english.yml` carries the compact player-facing labels and summaries.
 - `gfx/interface/019_infantry_spawn/infantry_spawn_muster_board_background.dds` is the promoted 960 by 640 static background. Its authored source, processing proof, and manifest are in `docs/assets/019_infantry_spawn/gui_background_compact_2026_07/`.
-- `docs/events/019_infantry_spawn.md`, `docs/assets/019_infantry_spawn/gfx_handoff.md`, and `docs/assets/019_infantry_spawn/manifest.md` describe the compact runtime contract.
+- `docs/events/019_infantry_spawn/overview.md`, `docs/assets/019_infantry_spawn/gfx_handoff.md`, and `docs/assets/019_infantry_spawn/manifest.md` describe the compact runtime contract.
 
 ## MCP visual review
 

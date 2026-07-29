@@ -373,7 +373,7 @@ All scenarios must inspect exact frozen rows and event-specific registries. A lo
 
 These current statements explicitly endorse non-rollbackable ownership and must be revised with the implementation:
 
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_joint_event5_event6_collision_implementation_handoff.md`
 
 The earlier handoff states that Clausewitz cannot roll back ownership after the first release. The correct limitation is narrower: Clausewitz has no automatic transaction primitive. The frozen owner, controller, core, and capital ledger can still drive explicit compensating effects.

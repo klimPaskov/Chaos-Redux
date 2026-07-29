@@ -149,7 +149,7 @@ Each ID has its own music asset and sound wrapper; no cue is reused:
 | 52 | Fauré `Élégie`, Goldstein/Kalman | 116.1 s | Vorbis, 44.1 kHz stereo | CC BY-SA 2.0 attribution/change notice retained |
 | 53 | Grieg `Death of Åse`, Musopen performance | 118.0 s | Vorbis, 44.1 kHz stereo | worldwide public-domain disposition documented |
 
-The four archival WAVs are PCM s16le, 44.1 kHz stereo; all four WAV hashes and all four OGG hashes are unique. Each ID resolves through six expected music helpers, six sound wrappers, its own scripted-localisation image/title/quote/button/description mapping, and a zero-chance 1.5 station entry. The track table has four rows. Five preserved rights/evidence HTML files cover the four sources and the CC BY-SA legal code. The canonical research record is `docs/super_events/014_cannibalism_super_event_audio_research.md`. No generated audio, default cue, reused cue, or undocumented fallback is present.
+The four archival WAVs are PCM s16le, 44.1 kHz stereo; all four WAV hashes and all four OGG hashes are unique. Each ID resolves through six expected sound wrappers, six sound wrappers, its own scripted-localisation image/title/quote/button/description mapping, and a zero-chance 1.5 station entry. The track table has four rows. Five preserved rights/evidence HTML files cover the four sources and the CC BY-SA legal code. The canonical research record is `docs/super_events/014_cannibalism/audio_research.md`. No generated audio, default cue, reused cue, or undocumented fallback is present.
 
 ## GFX and localisation registry closure
 

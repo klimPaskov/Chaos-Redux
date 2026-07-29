@@ -143,7 +143,7 @@ Recommendation for `chaosx_improvement_loop_planner`: **do not spawn another pla
 - Flags: 21 independent built-in ImageGen designs plus 4 intentional engine-lookup aliases produce 75 runtime TGA files.
 - Institutions: four people-free built-in ImageGen tableaux at 156x210 serve eight founder/successor entries.
 - Non-icon presentation: 14 report images, 3 news images, and 5 route-super-event images are recorded in the current generated package. Older unused files are not registered as fallbacks.
-- Super-events: five distinct 457x328 route images occupy slots 96–100. All routes use the unique Event 15 audio edit `super_event_57_utopia_has_neighbors`; the package records the CC0 Musopen Brahms source and current OGG/WAV/register wiring.
+- Super-events: five distinct 457x328 route images occupy slots 96–100. All routes use the unique Event 15 audio edit `super_event_57_utopia_has_neighbors`; the package records the CC0 Musopen Brahms source and current WAV/register wiring.
 
 The frozen `final_icon_frame_audit.json` remains valid for registry, GUI, Ledger, and animation evidence. Its 173-row/43-mission/164-assignment subsection is explicitly historical and superseded for those counts only by the current CSV; no current-authority document presents those older values as live.
 

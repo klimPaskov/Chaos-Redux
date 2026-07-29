@@ -29,7 +29,7 @@ The classification used these Event 014 boundaries:
 1. Any path segment or basename beginning 014_cannibalism.
 2. Any basename beginning zz_014_cannibalism.
 3. The exact Event 014 flag ladder:
-   - CBA, CBB, CBC, CBD, CBE, CBF, CBG, CBH;
+   - CBA, AHX, CBC, AIX, CBE, CBF, AMX, CBH;
    - CBL, CBL_CENTRAL_COMMAND, CBL_HOST_CONFEDERATION, CBL_RITUAL_STATE;
    - ZZZ_CANNIBALISM_HANNIBAL;
    - each root plus the empty, _communism, _democratic, _fascism, and _neutrality suffixes;

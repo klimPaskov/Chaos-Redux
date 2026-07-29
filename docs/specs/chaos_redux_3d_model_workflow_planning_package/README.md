@@ -23,20 +23,20 @@ The package is planning and bootstrap material. It does not claim that Meshy, Bl
 ## Package map
 
 - `PACKAGE_VALIDATION.md` records completed structural checks and the remaining local pilot gates.
-- `research/` records the tutorial extraction, full source-file reading evidence, current external research, and catalog demand.
-- `specs/` defines architecture, installation, profiles, rigging, state transitions, security, output layout, and completion proof.
-- `skills/` contains a reusable Chaos Redux skill in folder and flat-copy form.
-- `subagents/` contains a production subagent and a read-only completion auditor.
+- Numbered root documents `00` through `14` define architecture, installation, profiles, rigging, state transitions, security, output layout, and completion proof.
+- `research/`, `references/`, and `mcp/` record source reading, current external research, catalog demand, tool mapping, and security constraints.
+- `proposed_skill/` contains the proposed reusable Chaos Redux skill.
+- `proposed_subagent/` contains the proposed production subagent.
 - `config/` contains environment, MCP, pipeline profile, and job examples.
 - `schemas/` contains JSON Schemas for model jobs and model manifests.
 - `prompts/` contains reusable request, Meshy, Blender, audit, implementation, and goal prompts.
-- `scripts/` contains a dry-run-first Windows bootstrap, a Blender add-on installer, a Blender scene validator, and a package validator.
+- `bootstrap/`, `wrappers/`, and `tools/` contain the dry-run-first bootstrap material, tool wrappers, and package-local tool notes.
 - `templates/` contains manifest, HOI4 handoff, and QA report templates.
 
 ## Recommended implementation order
 
-1. Review `PACKAGE_VALIDATION.md`, `specs/workflow_spec.md`, and `specs/security_and_cost_controls.md`.
-2. Install the two MCP servers and both Blender add-ons with `scripts/bootstrap_mcp.ps1` on a local Windows machine.
+1. Review `PACKAGE_VALIDATION.md`, `01_system_architecture.md`, `02_mcp_installation_and_security.md`, and `09_failure_recovery_cost_and_security.md`.
+2. Review the bootstrap material under `bootstrap/` before any local installation work.
 3. Run one static prop pilot and one animated humanoid pilot before enabling batch work.
 4. Inspect the required offline Paradox wiki pages, local HOI4 documentation, vanilla model files, and a direct vanilla model precedent during the pilot.
 5. Promote the skill and subagent files into the repository only after the pilot proves the exact Blender and exporter versions.

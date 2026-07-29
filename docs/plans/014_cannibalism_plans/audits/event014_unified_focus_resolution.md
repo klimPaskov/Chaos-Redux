@@ -1,5 +1,10 @@
 # Event 014 Unified-Focus Gameplay Resolution
 
+> **Superseded snapshot (2026-07-15).** The historical missing-icon and
+> incomplete-contract notes in this plan were resolved and consolidated. Use
+> the current Event 014 package status and consolidated focus audit as the
+> source of truth; this file remains as an implementation-resolution record.
+
 ## Status
 
 The unified CBL focus audit findings are resolved in gameplay script. The public reveal loads the CBL focus tree explicitly, all 108 focus rewards refresh a concrete operational contract ledger, the previously inert reward flags have consumers, and the four terminal capstones require proof from paid gameplay instead of focus completion alone.

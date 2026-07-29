@@ -10,7 +10,7 @@ change the authoritative whole-event completion verdict. Event 006 remains
 
 ## Reconciled surfaces
 
-- `docs/events/006_independence_wave.md` records FIJ as a fail-closed Pacific
+- `docs/events/006_independence_wave/overview.md` records FIJ as a fail-closed Pacific
   gameplay tranche using vanilla `FIJ`, state 636, and
   `RG-PACIFIC-ISLANDS`, with the Sukuna source/date gate and FORM-39 adapter
   blocker preserved.

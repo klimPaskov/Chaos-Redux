@@ -77,7 +77,7 @@ All focuses in the audited files have `ai_will_do`, but many remain flat base we
 1. Full route rework is still too broad for this subagent. The spec requires meaningful political, industrial, expansion, diplomacy, military, and late-game branches. Existing broad plan remains: `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`.
 2. Repeated icons violate the spec's unique-icon requirement. Do not solve this by touching flags; route focus icons need a dedicated icon asset pass.
 3. Many 47-focus custom splinters still have identity-helper-only or small one-off reward focuses. Patch candidates for the parent: `FEV_siberian_factory_letters`, `SZA_ural_factory_letters`, `UWD_industrial_neutrality_statute`, `ARD_murmansk_port_records`, `NLC_polar_neutrality_statute`, and the old-movement mobile/cavalry support nodes.
-4. Ancient restoration trees (`KZR`, `SOG`, `KHW`, `ALN`) are only 16 focuses each. They need route depth and AI behavior before completion claims.
+4. Ancient restoration trees (`APX`, `SOG`, `ANX`, `ABX`) are only 16 focuses each. They need route depth and AI behavior before completion claims.
 5. `OGB_soviet_collapse_focus_tree` has only 23 focuses. Parent should either deepen it as a real overpowered successor or explicitly classify it as compact.
 
 ## Validation Run

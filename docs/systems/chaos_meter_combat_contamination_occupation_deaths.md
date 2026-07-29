@@ -59,8 +59,8 @@ Monthly contaminated-state deaths are now population-percentage based instead of
 
 Severity order:
 
-- anthrax (lower),
-- tularemia (mid),
+- tularemia (lowest),
+- anthrax (moderate),
 - plague (high),
 - smallpox (highest).
 

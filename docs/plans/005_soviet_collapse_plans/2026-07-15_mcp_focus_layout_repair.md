@@ -4,7 +4,7 @@
 
 This pass covers the 43 national focus trees loaded from the Soviet-collapse focus sources:
 
-- `005_soviet_collapse_ancient_restorations.txt`: KZR, SOG, KHW, ALN (4 trees).
+- `005_soviet_collapse_ancient_restorations.txt`: APX, SOG, ANX, ABX (4 trees).
 - `005_soviet_collapse_factory_successors.txt`: CFR, OGB, MFR (3 trees).
 - `005_soviet_collapse_republics.txt`: Ukraine, Breakaway, Internal Republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan (9 trees).
 - `005_soviet_collapse_custom_splinters.txt`: 27 custom splinter trees.
@@ -30,7 +30,7 @@ The MCP per-tree inspections completed for all 27 custom splinter trees. Each re
 
 | Tree | Focuses | Crossings | Node intersections | Long connectors | Max horizontal span |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| KZR | 16 | 2 | 0 | 0 | 6 |
+| APX | 16 | 2 | 0 | 0 | 6 |
 | CFR | 47 | 0 | 0 | 0 | 8 |
 | OGB | 23 | 0 | 1 | 0 | 8 |
 | MFR | 58 | 8 | 5 | 0 | 8 |
@@ -44,7 +44,7 @@ MCP render checks completed for Ukraine, Holy Realm, and dense custom UDC, retur
 
 ## Remaining MCP limitations
 
-The automatic MCP compact rewrite was attempted on Ukraine, KZR, and UDC. It was quality-gate blocked and wrote no files, so the final coordinate patch was applied in the repository and re-inspected through MCP.
+The automatic MCP compact rewrite was attempted on Ukraine, APX, and UDC. It was quality-gate blocked and wrote no files, so the final coordinate patch was applied in the repository and re-inspected through MCP.
 
 Some connector crossings and through-node warnings remain in dense, semantically convergent branches. Removing those completely would require a route redesign or additional rows, not a safe layout-only adjustment. MCP also reports existing partial helper inventories and several truncated DDS pixel-data references in focus icons; those are outside this coordinate-only pass and are not changed here.
 

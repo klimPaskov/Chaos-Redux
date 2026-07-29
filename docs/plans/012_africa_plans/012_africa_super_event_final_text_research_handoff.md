@@ -66,12 +66,12 @@ These findings are not an engine-readable reservation. The implementation owner 
 
 ### Required paths and stable names
 
-| Role | Slot | Audio ID | OGG path | WAV path | Stable raw-sound name |
-| --- | ---: | ---: | --- | --- | --- |
-| Africa is one | `101` | `58` | `music/012_africa/super_event_58_africa_is_one.ogg` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
-| Scramble response | `102` | `59` | `music/012_africa/super_event_59_scramble_response.ogg` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
-| Continental wars | `103` | `60` | `music/012_africa/super_event_60_continental_wars.ogg` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
-| The World | `104` | `61` | `music/012_africa/super_event_61_the_world.ogg` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
+| Role | Slot | Audio ID | WAV path | Stable raw-sound name |
+| --- | ---: | ---: | --- | --- |
+| Africa is one | `101` | `58` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
+| Scramble response | `102` | `59` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
+| Continental wars | `103` | `60` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
+| The World | `104` | `61` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
 
 Audio IDs here are identifier requirements only. Track choice, cue selection, frozen source files, audio rights, loudness, uniqueness analysis, and derivative production remain the audio research and production worker's scope. The earlier handoff records provisional track candidates, but this final-text handoff neither approves nor replaces them.
 

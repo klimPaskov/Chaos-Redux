@@ -22,9 +22,9 @@ Scope:
 | --- | --- | --- | --- |
 | `OGB_reopen_volga_trade_tolls` | `005_soviet_collapse_factory_successors.txt` | Reopened Volga tolls with train and infantry stockpile rewards plus one infrastructure build. | Removed the generic stockpiles and added rail and supply-node construction to the existing Volga logistics state reward. |
 | `MFR_workers_own_the_arsenal` | `005_soviet_collapse_factory_successors.txt` | Worker arsenal route added three separate stockpile rewards. | Replaced the stockpile list with a core-state arms factory and shared slot while keeping manpower, XP, quotas, depot control, and worker route variables. |
-| `KZR_caspian_patrol_letters` | `005_soviet_collapse_ancient_restorations.txt` | Caspian patrol focus included a small convoy stockpile and only political filter. | Removed the convoy stockpile and added `FOCUS_FILTER_NAVY_XP` to match the navy XP reward. |
-| `KZR_khazar_charter` | `005_soviet_collapse_ancient_restorations.txt` | Charter payoff added train and convoy stockpiles. | Replaced the convoy reward with rail and supply-node construction while keeping train support for the transit state. |
-| `ALN_symbolic_pass_principality` | `005_soviet_collapse_ancient_restorations.txt` | Symbolic pass route gave a small motorized stockpile. | Replaced it with capital pass infrastructure and fort construction. |
+| `APX_caspian_patrol_letters` | `005_soviet_collapse_ancient_restorations.txt` | Caspian patrol focus included a small convoy stockpile and only political filter. | Removed the convoy stockpile and added `FOCUS_FILTER_NAVY_XP` to match the navy XP reward. |
+| `APX_khazar_charter` | `005_soviet_collapse_ancient_restorations.txt` | Charter payoff added train and convoy stockpiles. | Replaced the convoy reward with rail and supply-node construction while keeping train support for the transit state. |
+| `ABX_symbolic_pass_principality` | `005_soviet_collapse_ancient_restorations.txt` | Symbolic pass route gave a small motorized stockpile. | Replaced it with capital pass infrastructure and fort construction. |
 
 ## Route-Depth Table
 
@@ -48,11 +48,11 @@ Counts are static focus-block scans. Branch columns are filter/effect coverage c
 | `DSC` | 18 | 13 | 3 | 12 | 3 | 18 | 3 | 4 stockpile focuses | Low static layout risk | Aggression exists, but Dead Soldiers Congress remains too shallow for the requested war-goal/core/unit identity. |
 | `NRF` | 18 | 13 | 4 | 13 | 3 | 18 | 2 | 11 stockpile focuses | Low static layout risk | Highest remaining reward-spam risk among crisis splinters. |
 | `ICD` | 18 | 13 | 4 | 9 | 3 | 18 | 1 | 5 stockpile focuses | Low static layout risk | Shallow memorial/death route. |
-| `BSC` | 47 | 32 | 12 | 22 | 0 | 47 | 0 | 9 stockpile focuses | Low static layout risk | Mountain route rewards still equipment-heavy. |
+| `AEX` | 47 | 32 | 12 | 22 | 0 | 47 | 0 | 9 stockpile focuses | Low static layout risk | Mountain route rewards still equipment-heavy. |
 | `TNC` | 47 | 33 | 13 | 21 | 0 | 47 | 0 | 2 stockpile focuses | Low static layout risk | Route depth acceptable, identity payoff needs review. |
-| `ALA` | 47 | 31 | 12 | 20 | 0 | 47 | 0 | 4 stockpile focuses | Low static layout risk | Needs expansion/mechanic payoff. |
+| `AAX` | 47 | 31 | 12 | 20 | 0 | 47 | 0 | 4 stockpile focuses | Low static layout risk | Needs expansion/mechanic payoff. |
 | `BBH` | 47 | 27 | 13 | 28 | 0 | 47 | 0 | 8 stockpile focuses | Low static layout risk | Military column identity still stockpile-heavy. |
-| `KRS` | 47 | 25 | 10 | 32 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Naval/port branch needs stronger decision hooks. |
+| `AOX` | 47 | 25 | 10 | 32 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Naval/port branch needs stronger decision hooks. |
 | `UDC` | 47 | 30 | 11 | 26 | 0 | 47 | 0 | 4 stockpile focuses | Low static layout risk | Route payoffs still generic. |
 | `SDZ` | 47 | 30 | 11 | 26 | 0 | 47 | 0 | 6 stockpile focuses | Low static layout risk | Security/archive mechanics need depth. |
 | `GAC` | 47 | 29 | 15 | 24 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Green/forest branch needs more map pressure. |
@@ -63,16 +63,16 @@ Counts are static focus-block scans. Branch columns are filter/effect coverage c
 | `UWD` | 47 | 26 | 16 | 25 | 0 | 47 | 0 | 11 stockpile focuses | 5 line-hit risks | Ural factory tree remains stockpile-heavy despite layout improvements. |
 | `MRC` | 47 | 26 | 13 | 26 | 0 | 47 | 0 | 4 stockpile focuses | Low static layout risk | Expansion/payoff hooks need review. |
 | `IUL` | 47 | 27 | 16 | 26 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Volga federation route should interact more with OGB. |
-| `BAC` | 47 | 27 | 16 | 25 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Autonomy route needs mechanics. |
+| `ADX` | 47 | 27 | 16 | 25 | 0 | 47 | 0 | 7 stockpile focuses | Low static layout risk | Autonomy route needs mechanics. |
 | `ARD` | 47 | 27 | 16 | 26 | 0 | 47 | 0 | 13 stockpile focuses | 1 line-hit risk | Arctic/naval route remains convoy-stockpile heavy. |
 | `NLC` | 47 | 30 | 14 | 22 | 0 | 47 | 0 | 5 stockpile focuses | 4 line-hit risks | Polar logistics needs more mission/decision depth. |
 | `CFR` | 47 | 41 | 30 | 7 | 3 | 47 | 2 | No direct ideas; no direct stockpile rewards | Multi-choice mutual-exclusion rows have intermediate route choices | Stronger but still needs governance/strategy route layout rewrite. |
 | `OGB` | 23 | 19 | 6 | 8 | 2 | 23 | 2 | No direct ideas; 1 stockpile focus after patch | Low static layout risk | Still shallow and needs fuller Old Great Bulgaria route family. |
 | `MFR` | 58 | 48 | 38 | 27 | 1 | 58 | 3 | No direct ideas; 1 stockpile focus after patch | Multi-choice mutual-exclusion rows have intermediate route choices | Strong identity, but route selector pathline cleanup remains. |
-| `KZR` | 16 | 9 | 3 | 6 | 5 | 16 | 3 | No direct ideas; 3 stockpile focuses after patch | Low static layout risk | Shallow ancient restoration; needs broader route depth. |
+| `APX` | 16 | 9 | 3 | 6 | 5 | 16 | 3 | No direct ideas; 3 stockpile focuses after patch | Low static layout risk | Shallow ancient restoration; needs broader route depth. |
 | `SOG` | 16 | 9 | 3 | 5 | 5 | 16 | 3 | No direct ideas; 1 stockpile focus | Low static layout risk | Shallow ancient restoration. |
-| `KHW` | 16 | 10 | 3 | 5 | 5 | 16 | 3 | No direct ideas; 4 stockpile focuses | Low static layout risk | Shallow ancient restoration. |
-| `ALN` | 16 | 9 | 2 | 5 | 5 | 16 | 3 | No direct ideas; no stockpile focuses after patch | Low static layout risk | Shallow ancient restoration. |
+| `ANX` | 16 | 10 | 3 | 5 | 5 | 16 | 3 | No direct ideas; 4 stockpile focuses | Low static layout risk | Shallow ancient restoration. |
+| `ABX` | 16 | 9 | 2 | 5 | 5 | 16 | 3 | No direct ideas; no stockpile focuses after patch | Low static layout risk | Shallow ancient restoration. |
 
 ## Duplicate or Repeated Idea Rewards
 
@@ -86,8 +86,8 @@ Counts are static focus-block scans. Branch columns are filter/effect coverage c
 Patched stockpile-heavy focus ids are listed in the high-priority fixes section. Remaining direct stockpile focuses include:
 
 - Republic/shared: `ukr_soviet_collapse_count_the_depot_keys`, `soviet_collapse_military_defense_council`, `soviet_collapse_foreign_liaison_government`, `internal_soviet_collapse_far_eastern_port_authority`, `internal_soviet_collapse_republic_volunteer_standards`, Baltic/Caucasus/Central Asia/Moldova/Kazakhstan stockpile support focuses.
-- Crisis/high-chaos stockpile-heavy trees: `NRF` 11 focuses, `KHC` 13, `ARD` 13, `UWD` 11, `DHC` 10, `BSC` 9, `BBH` 8, `FEV` 8.
-- Ancient restorations after patch: `KZR_old_border_files`, `KZR_expansionist_steppe_levy`, `KZR_khazar_charter`, `SOG_expansionist_merchant_claims`, `KHW_canal_recognition_letters`, `KHW_expansionist_water_claims`, `KHW_khwarazmian_water_charter`, `KHW_delta_without_a_center`.
+- Crisis/high-chaos stockpile-heavy trees: `NRF` 11 focuses, `KHC` 13, `ARD` 13, `UWD` 11, `DHC` 10, `AEX` 9, `BBH` 8, `FEV` 8.
+- Ancient restorations after patch: `APX_old_border_files`, `APX_expansionist_steppe_levy`, `APX_khazar_charter`, `SOG_expansionist_merchant_claims`, `ANX_canal_recognition_letters`, `ANX_expansionist_water_claims`, `ANX_khwarazmian_water_charter`, `ANX_delta_without_a_center`.
 
 I left these for parent or a broader pass because replacing them cleanly requires route-by-route design, state targeting, or decision system expansion rather than a safe local cleanup.
 
@@ -119,7 +119,7 @@ I left these for parent or a broader pass because replacing them cleanly require
 | --- | --- |
 | Focus icon field presence | 1,698/1,698 focus blocks have an `icon =` assignment. |
 | Changed icon ids | None. |
-| Changed search filters | `KZR_caspian_patrol_letters` now includes `FOCUS_FILTER_NAVY_XP` to match its navy XP reward. |
+| Changed search filters | `APX_caspian_patrol_letters` now includes `FOCUS_FILTER_NAVY_XP` to match its navy XP reward. |
 | Missing icon sprite definitions | Not revalidated against interface sprite files in this bounded pass. Earlier file-level icon assignment scan passed. |
 
 ## Localisation and Reward Mismatch List
@@ -127,9 +127,9 @@ I left these for parent or a broader pass because replacing them cleanly require
 - No localisation keys were added, renamed, or edited.
 - `OGB_reopen_volga_trade_tolls`: reward now matches Volga trade/toll logistics better by building infrastructure, rail, and supply.
 - `MFR_workers_own_the_arsenal`: reward now matches arsenal identity better by adding an arms factory instead of a generic equipment bundle.
-- `KZR_caspian_patrol_letters`: no longer pays a small convoy stockpile for patrol letters; filter now matches navy XP.
-- `KZR_khazar_charter`: transit charter now adds actual rail/supply infrastructure instead of a convoy reward.
-- `ALN_symbolic_pass_principality`: pass principality now reinforces the pass rather than handing out motorized equipment.
+- `APX_caspian_patrol_letters`: no longer pays a small convoy stockpile for patrol letters; filter now matches navy XP.
+- `APX_khazar_charter`: transit charter now adds actual rail/supply infrastructure instead of a convoy reward.
+- `ABX_symbolic_pass_principality`: pass principality now reinforces the pass rather than handing out motorized equipment.
 
 ## AI Behavior Gaps
 

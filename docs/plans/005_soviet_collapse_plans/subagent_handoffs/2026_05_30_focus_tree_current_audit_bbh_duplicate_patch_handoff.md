@@ -79,7 +79,7 @@ High priority first:
    - 23 focuses, with political, industry, military, and expansion elements present.
    - Still shallow for an OP successor: only 1 decision hook, 3 building foci, and 1 direct equipment focus. It needs a broader Volga restoration mechanic or a documented narrow classification.
 
-3. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `KZR`, `SOG`, `KHW`, `ALN`
+3. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `APX`, `SOG`, `ANX`, `ABX`
    - Each has 16 focuses.
    - They contain political, industry, military, expansion-filtered, claims, and old-name decision hooks, but they are compact stubs compared with the ancient-restoration identity standard.
    - No full route family should be added by this subagent; this remains improvement-loop scope.
@@ -94,7 +94,7 @@ High priority first:
    - This makes several trees play as helper/variable ladders instead of visible diplomatic or expansion branches.
 
 6. Repeated low-value reward patterns remain
-   - Direct equipment-stockpile foci remain high in `ARD` 16 lines, `KHC` 15, `UWD` 14, `DSC` 13, `NRF` 13, `DHC` 12, `PRA` 11, `BSC` 11, `BBH` 11 before this patch and 10 after, and `moldova` 10.
+   - Direct equipment-stockpile foci remain high in `ARD` 16 lines, `KHC` 15, `UWD` 14, `DSC` 13, `NRF` 13, `DHC` 12, `PRA` 11, `AEX` 11, `BBH` 11 before this patch and 10 after, and `moldova` 10.
    - These are not all bugs, but they should be converted where possible into route-specific decisions, missions, claims, construction programs, advisors, laws, templates, or mechanic thresholds.
 
 ## Idea-Spam Audit
@@ -130,7 +130,7 @@ Notable repeated icon clusters:
 | Focus title localisation | 1698 / 1698 present | Parsed `localisation/**/*.yml`; no missing focus title keys. |
 | Focus description localisation | 1698 / 1698 present | Parsed `localisation/**/*.yml`; no missing `_desc` keys. |
 | Duplicate direct equipment in one focus reward | Fixed one issue | `BBH_column_schools` no longer grants `support_equipment_1` twice. |
-| Focus reward/title semantic mismatch | Remaining design risk | Repeated tiny equipment, trains, convoy, AA, and generic construction rewards still make several route titles feel stronger than their mechanical payoff. Examples: `NRF_dead_convoy_supply_board`, `NRF_ghost_convoy_escorts`, `ARD_winter_convoy_columns`, `ARD_white_sea_port_tolls`, `DHC_grain_convoy_escorts`, `KRS_icebound_supply_ledger`, `IUL_rail_and_river_patrols`. |
+| Focus reward/title semantic mismatch | Remaining design risk | Repeated tiny equipment, trains, convoy, AA, and generic construction rewards still make several route titles feel stronger than their mechanical payoff. Examples: `NRF_dead_convoy_supply_board`, `NRF_ghost_convoy_escorts`, `ARD_winter_convoy_columns`, `ARD_white_sea_port_tolls`, `DHC_grain_convoy_escorts`, `AOX_icebound_supply_ledger`, `IUL_rail_and_river_patrols`. |
 | Noisy idea hover spam | Mostly clean in focus files | Direct focus rewards no longer add idea spam. Remaining risk is helper-side visible recovery idea noted above. |
 
 ## AI Behavior Gaps
@@ -144,7 +144,7 @@ Every audited focus has an `ai_will_do`, but many are base-only and do not react
 | `soviet_collapse_internal_republic_focus_tree` | 25 | `internal_soviet_collapse_convene_republic_presidium`, `internal_soviet_collapse_write_the_autonomy_statute` |
 | `soviet_collapse_caucasus_focus_tree` | 23 | `caucasus_soviet_collapse_mountain_federal_compact`, `caucasus_soviet_collapse_hold_the_passes` |
 | Ancient restoration trees | 12 each | Opening, law, register, market/workshop, and end-state focuses in each ancient tree. |
-| Custom 47-focus trees | 5-13 each in weaker cases | `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` still need more route-aware AI. |
+| Custom 47-focus trees | 5-13 each in weaker cases | `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` still need more route-aware AI. |
 
 ## Layout and Prerequisite Audit
 

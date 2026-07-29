@@ -30,10 +30,10 @@ Patch rationale: this is a safe local improvement because both helper IDs alread
 | Required route or family | Implemented route or focus branch | Status | Notes |
 | --- | --- | --- | --- |
 | Republic successor trees | Ukraine, breakaway/shared, internal republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan in `005_soviet_collapse_republics.txt` | Implemented but uneven | 501 focuses across 9 trees. Kazakhstan and Ukraine are large, but dense rows and some reward-light focuses remain. |
-| Full custom splinter trees | `FTH/BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC` | Implemented but still generic in places | Most have 47 focuses. Many branches use helpers, but 47-focus bodies still include repeated random state-building, equipment, XP, and support rewards. |
+| Full custom splinter trees | `FTH/AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC` | Implemented but still generic in places | Most have 47 focuses. Many branches use helpers, but 47-focus bodies still include repeated random state-building, equipment, XP, and support rewards. |
 | Compact chaos or crisis splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` | Simplified | 18-22 focuses each. They need stronger special mechanics, unit/template hooks, and route-specific aggression to meet the full rework objective. |
 | Factory successors | `CFR`, `MFR`, `OGB` in `005_soviet_collapse_factory_successors.txt` | Partly implemented | `CFR` has 47 focuses and `MFR` has 58. `OGB` has 23 and remains shallow for an overpowered restored-memory successor. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` in `005_soviet_collapse_ancient_restorations.txt` | Simplified | 16 focuses each. Current branches include claims and identity hooks but need deeper route identity and payoff if treated as full playable countries. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` in `005_soviet_collapse_ancient_restorations.txt` | Simplified | 16 focuses each. Current branches include claims and identity hooks but need deeper route identity and payoff if treated as full playable countries. |
 | Chaos countries overpowered/aggressive enough | Crisis splinters, factory successors, ancient restorations, high-chaos custom branches | Not complete | Direct `create_wargoal` appears in only 11 focuses across all four files; direct claims appear in 14 focuses; direct cores appear in 0 focuses. |
 
 ## Audit Counts
@@ -84,7 +84,7 @@ High-priority gaps:
 
 1. `OGB_soviet_collapse_focus_tree` in `005_soviet_collapse_factory_successors.txt` has only 23 focuses. It has restoration flavor but not enough Volga legitimacy, heritage guard, expansion, settlement, or decision-loop depth for the requested overpowered successor role.
 2. `TSC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, and `ICD_soviet_collapse_focus_tree` in `005_soviet_collapse_custom_splinters.txt` are 18-focus crisis trees. They need special mechanics and route payoff, not only stronger numbers.
-3. Ancient restoration trees `KZR/SOG/KHW/ALN` in `005_soviet_collapse_ancient_restorations.txt` are 16-focus stubs. Their symbolic-versus-expansion routes exist, but they are not full route families.
+3. Ancient restoration trees `APX/SOG/ANX/ABX` in `005_soviet_collapse_ancient_restorations.txt` are 16-focus stubs. Their symbolic-versus-expansion routes exist, but they are not full route families.
 4. Direct cores are absent across all four files. This may be intentional to avoid instant snowballing, but it weakens expansion branch payoff unless staged integration decisions or scripted helpers supply the postwar handling elsewhere.
 5. Direct unit/template hooks are absent in focus rewards. `DHC_winter_road_columns` now uses the existing mobile-column helper, but broader chaos-country aggression still needs a full pass.
 
@@ -98,10 +98,10 @@ Worst shallow reward candidates still visible after this patch include:
 | `PRA_armored_train_schools` | `005_soviet_collapse_custom_splinters.txt:1520` | Equipment, XP, command power, but no train/unit/template/decision hook in direct reward. |
 | `NRF_living_harbor_committees` | `005_soviet_collapse_custom_splinters.txt:3411` | Equipment-only by heuristic, weak for a fleet identity branch. |
 | `ICD_black_seal_requisitions` | `005_soviet_collapse_custom_splinters.txt:3970` | Equipment plus random state building, no direct helper/decision/unit hook. |
-| `BSC_caravan_supply_hubs` | `005_soviet_collapse_custom_splinters.txt:4805` | One random state building, no helper/decision/map hook. |
+| `AEX_caravan_supply_hubs` | `005_soviet_collapse_custom_splinters.txt:4805` | One random state building, no helper/decision/map hook. |
 | `CFR_construction_battalions` | `005_soviet_collapse_factory_successors.txt:671` | Manpower plus XP, weak for construction battalions. |
-| `KZR_caspian_patrol_letters` | `005_soviet_collapse_ancient_restorations.txt:129` | XP-only by heuristic. |
-| `KHW_canal_recognition_letters` | `005_soviet_collapse_ancient_restorations.txt:864` | Equipment plus random state building, no direct helper/decision/map hook. |
+| `APX_caspian_patrol_letters` | `005_soviet_collapse_ancient_restorations.txt:129` | XP-only by heuristic. |
+| `ANX_canal_recognition_letters` | `005_soviet_collapse_ancient_restorations.txt:864` | Equipment plus random state building, no direct helper/decision/map hook. |
 
 ## Layout Red Flags
 
@@ -127,7 +127,7 @@ Mutual-exclusion midpoint/pathline suspects:
 | `soviet_collapse_central_asia_focus_tree` | `central_asia_soviet_collapse_turkestan_federation_road` sits below midpoint between `central_asia_soviet_collapse_local_republic_council` and `central_asia_soviet_collapse_military_border_authority`. |
 | `soviet_collapse_kazakhstan_focus_tree` | `kaz_soviet_collapse_socialist_steppe_republic` sits below midpoint between `kaz_soviet_collapse_alash_memory_restored` and `kaz_soviet_collapse_resource_defense_directorate`. |
 | `ARD_soviet_collapse_focus_tree` | `ARD_industry_plan` sits below midpoint between `ARD_settlement` and `ARD_radical_turn`. |
-| `KZR/SOG/KHW/ALN ancient trees` | Charter focus sits below midpoint between symbolic and expansionist mutually exclusive siblings in all four 16-focus ancient trees. This may be intentional convergence, but the line geometry should be visually checked. |
+| `APX/SOG/ANX/ABX ancient trees` | Charter focus sits below midpoint between symbolic and expansionist mutually exclusive siblings in all four 16-focus ancient trees. This may be intentional convergence, but the line geometry should be visually checked. |
 
 ## Icon Coverage
 
@@ -176,7 +176,7 @@ Reward mismatch risks:
 
 1. Full route rework for `OGB_soviet_collapse_focus_tree`: add restoration decisions, Volga legitimacy pressure, heritage guard or unit hooks, old-border settlement, and aggressive AI behavior.
 2. Compact chaos tree deepening for `TSC`, `DSC`, `NRF`, `ICD`, and the remaining 18-22 focus crisis trees. Prioritize mechanics and unit/decision hooks over more flat equipment.
-3. Ancient restoration depth pass for `KZR/SOG/KHW/ALN`, or explicitly document them as compact crisis trees. If kept playable, they need more than 16 focuses each.
+3. Ancient restoration depth pass for `APX/SOG/ANX/ABX`, or explicitly document them as compact crisis trees. If kept playable, they need more than 16 focuses each.
 4. Replace the remaining shallow reward candidates with existing helpers, decision unlocks, staged claims/settlements, or unit/template hooks. Do not add direct idea stacks.
 5. Layout pass for dense rows and the 10 midpoint suspects after the route design is settled.
 6. Icon reuse pass only after asset/interface work is allowed again.

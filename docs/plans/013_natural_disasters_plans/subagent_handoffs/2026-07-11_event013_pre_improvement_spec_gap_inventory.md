@@ -89,7 +89,7 @@ Part 8 defines many family/context routes beyond the seven playable prevention m
 
 - `natural_disaster_chain` contains only `none`, `aftershock`, `tsunami`, `famine`, `disease`, `wildfire_spread`, `refugee_pressure`, `supply_collapse`, `lahar`, and `political_shock`: `common/script_constants/013_natural_disasters_constants.txt:296-312`.
 - `natural_disaster_execute_chain_followup` branches on only those generic values: `common/scripted_effects/013_natural_disasters_effects.txt:5024-5119`.
-- The documentation itself describes only seven playable objectives plus refugee/political consequences: `docs/events/013_natural_disasters.md:122`.
+- The documentation itself describes only seven playable objectives plus refugee/political consequences: `docs/events/013_natural_disasters/overview.md:122`.
 
 **Consequence**
 
@@ -114,7 +114,7 @@ Add a fine-grained `natural_disaster_followup_route` token distinct from the gen
   - `natural_disaster_pay_warning_shelter` 16 times.
 - Across the warning decision block (`:54-3020`) there are zero uses of `add_air_experience`, `add_navy_experience`, `add_army_experience`, `add_command_power`, `add_political_power`, `add_war_support`, or `add_timed_idea`.
 - The three shared helpers are defined at `common/scripted_effects/013_natural_disasters_effects.txt:3632-3692` and reduce costs to support equipment/trucks, trains/convoys/fuel, or support equipment, with manpower/stability.
-- The current event doc overclaims war-support costs at `docs/events/013_natural_disasters.md:109`.
+- The current event doc overclaims war-support costs at `docs/events/013_natural_disasters/overview.md:109`.
 
 **Consequence**
 
@@ -211,7 +211,7 @@ Part 9 requires:
 - The only bottom actions are Refresh, Motion/Static, and Return: `:204-230`.
 - Scripted GUI effects support close/return/refresh/animation toggle and five card indices only: `common/scripted_guis/013_natural_disasters_scripted_gui.txt:23-47`. There is no state-marker click, hover record, camera focus, decision/mission route, or timeline-marker action.
 - Localisation exposes the queue as `Hazard priority`, not physical path order: `localisation/english/013_natural_disasters_l_english.yml:397-403`.
-- Other text nevertheless promises threatened states and expected order of impact: `:343`, `:370`, and the event doc at `docs/events/013_natural_disasters.md:130`.
+- Other text nevertheless promises threatened states and expected order of impact: `:343`, `:370`, and the event doc at `docs/events/013_natural_disasters/overview.md:130`.
 
 **Consequence**
 
@@ -235,7 +235,7 @@ Preserve the working urgency/history ledger and eight animation/static packages.
 - No member-variant/evolution identity is carried through the randomized member queue or Event 013 call.
 - Event 013 then derives severity/sequence/family pool from the current global evolution, so at tier 4 the required opening slot can become an Evolution III/abnormal-capable season instead of a low baseline season.
 - Cluster details show five rows with the same Event 13 name and only status/danger; the live member text cannot identify opening/early/varied/regional/abnormal roles: `localisation/english/chaosx_gui_l_english.yml:376-377`.
-- The event doc overclaims the preserved logical role behavior at `docs/events/013_natural_disasters.md:175`.
+- The event doc overclaims the preserved logical role behavior at `docs/events/013_natural_disasters/overview.md:175`.
 
 **Consequence**
 
@@ -271,9 +271,9 @@ Introduce meteor-origin context. Allow fire-bearing hail as a linked ordinary se
 
 **Exact misalignment**
 
-- `docs/events/013_natural_disasters.md:109` says warning costs include war support as appropriate; the 75-warning block has no war-support cost.
-- `docs/events/013_natural_disasters.md:130` says the selected GUI card shows sequence id; the selected-card localisation does not display it, and the GUI has no sequence-id text field.
-- `docs/events/013_natural_disasters.md:175` and `docs/systems/event_clusters.md:80-84` describe five distinct logical cluster season roles that are not carried through dispatch.
+- `docs/events/013_natural_disasters/overview.md:109` says warning costs include war support as appropriate; the 75-warning block has no war-support cost.
+- `docs/events/013_natural_disasters/overview.md:130` says the selected GUI card shows sequence id; the selected-card localisation does not display it, and the GUI has no sequence-id text field.
+- `docs/events/013_natural_disasters/overview.md:175` and `docs/systems/event_clusters.md:80-84` describe five distinct logical cluster season roles that are not carried through dispatch.
 - `localisation/english/013_natural_disasters_l_english.yml:343`, `:370`, and workbook Evolution III prose call the urgency list a path/expected next-hit order, while `:397-403` accurately identifies it as hazard priority.
 - Read-only workbook inspection found `Events!G14 = Needs Testing` and `Scenarios!G8 = Needs Testing`, but `Clusters!G6 = Implemented`. The improvement handoff explicitly says Cluster 5 must remain incomplete until the scenario matrix passes: `docs/plans/013_natural_disasters_plans/013_improvement_loop_handoff.md:115-119`.
 - `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md:60` and `013_event_completion_final_audit.md:13` correctly acknowledge that no live-engine scenarios were executed, but both documents also claim no accepted-surface simplification remains. The P0/P1 findings above contradict that closure wording.

@@ -31,7 +31,7 @@ Changed file: `common/scripted_effects/005_soviet_collapse_effects.txt`.
 | `soviet_collapse_apply_cfr_reconstruction_contracts` | `common/scripted_effects/005_soviet_collapse_effects.txt:9383` | Repeatable decision at `common/decisions/005_soviet_collapse_decisions.txt:4669` | Re-applied `cfr_housing_ration_boards` on every use. | Adds the idea only if absent, while still advancing CFR contract depth and construction payoff. |
 | `soviet_collapse_apply_custom_splinter_doctrine_identity` | `common/scripted_effects/005_soviet_collapse_effects.txt:12943` | 19 `*_doctrine` focuses in `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Re-added setup/internal identity ideas for all handled tags. | Keeps doctrine rewards but avoids duplicate idea application. |
 
-Changed focus ids, via helper behavior only: `FTH_doctrine`, `BSC_doctrine`, `TNC_doctrine`, `ALA_doctrine`, `BBH_doctrine`, `KRS_doctrine`, `UDC_doctrine`, `SDZ_doctrine`, `GAC_doctrine`, `DHC_doctrine`, `KHC_doctrine`, `FEV_doctrine`, `SZA_doctrine`, `UWD_doctrine`, `MRC_doctrine`, `IUL_doctrine`, `BAC_doctrine`, `ARD_doctrine`, `NLC_doctrine`.
+Changed focus ids, via helper behavior only: `FTH_doctrine`, `AEX_doctrine`, `TNC_doctrine`, `AAX_doctrine`, `BBH_doctrine`, `AOX_doctrine`, `UDC_doctrine`, `SDZ_doctrine`, `GAC_doctrine`, `DHC_doctrine`, `KHC_doctrine`, `FEV_doctrine`, `SZA_doctrine`, `UWD_doctrine`, `MRC_doctrine`, `IUL_doctrine`, `ADX_doctrine`, `ARD_doctrine`, `NLC_doctrine`.
 
 Guarded idea ids: `fth_internal_factions`, `bsc_internal_factions`, `tnc_oasis_bureau_rivalries`, `ala_steppe_congress_rivalries`, `bbh_commune_war_councils`, `krs_sailors_assembly`, `udc_internal_factions`, `sdz_internal_factions`, `gac_internal_factions`, `dhc_internal_factions`, `khc_stanitsa_committee_rivalries`, `fev_liaison_office_tensions`, `sza_city_guard_compromises`, `uwd_manager_officer_rivalries`, `mrc_pass_confederation_rivalries`, `iul_tatar_bashkir_committees`, `bac_refugee_archive_tensions`, `ard_convoy_officer_tensions`, `nlc_scientific_refuge_council`.
 
@@ -49,7 +49,7 @@ Icon ids changed: none.
 | Custom splinter doctrine helper at `common/scripted_effects/005_soviet_collapse_effects.txt:12943` | Duplicated many setup/internal faction idea ids already added by setup helpers around `common/scripted_effects/005_soviet_collapse_effects.txt:14564-15102`. | Real duplicate focus reward surface. | Patched with per-idea `has_idea` guards. |
 | Endgame generic reward trio | 10 focuses call all of `soviet_collapse_apply_focus_legal_recognition`, `soviet_collapse_apply_focus_depot_and_supply_control`, and `soviet_collapse_apply_focus_military_consolidation`. | Cadence is broad and generic for high-chaos endpoint lore. | Needs route-specific endpoint rewards in the parent rework rather than a small helper guard. |
 
-Endgame generic-trio focus ids: `FTH_endgame` (`custom_splinters.txt:1186`), `KRS_endgame` (`:10045`), `FEV_endgame` (`:17236`), `SZA_endgame` (`:18416`), `IUL_volga_ural_endurance` (`:21717`), `IUL_endgame` (`:21971`), `BAC_amur_commune_endurance` (`:23016`), `BAC_endgame` (`:23105`), `ARD_arctic_port_endurance` (`:24194`), `ARD_endgame` (`:24290`).
+Endgame generic-trio focus ids: `FTH_endgame` (`custom_splinters.txt:1186`), `AOX_endgame` (`:10045`), `FEV_endgame` (`:17236`), `SZA_endgame` (`:18416`), `IUL_volga_ural_endurance` (`:21717`), `IUL_endgame` (`:21971`), `ADX_amur_commune_endurance` (`:23016`), `ADX_endgame` (`:23105`), `ARD_arctic_port_endurance` (`:24194`), `ARD_endgame` (`:24290`).
 
 ## Route Coverage Table
 
@@ -58,7 +58,7 @@ Endgame generic-trio focus ids: `FTH_endgame` (`custom_splinters.txt:1186`), `KR
 | Construction Directorate major civilian construction payoff | CFR tree has crane/site committee/contract/cities/rails/factories/protectorate/endgame branches in `005_soviet_collapse_factory_successors.txt:33-1094`; repeatable construction decisions call CFR helpers. | Strongest match to requested direction. Patched repeatable idea spam; civilian payoff depth remains present. |
 | Dead Soldiers Congress war goals, cores, and zombie-like expansion | DSC tree exists at `005_soviet_collapse_custom_splinters.txt:2725-3246` with roll-call, revenant staff, grave ordnance, lost armies, soldier road, and end-state branches. | Thematic coverage exists. Needs parent-level review of actual cores/war goals versus lore promises; no safe small patch made. |
 | Pale Railway rails and supply | PRA tree exists at `005_soviet_collapse_custom_splinters.txt:1220-1749` with timetable law, station guard, mobile workshops, armored train schools, corridors, junction claims, and rail endpoints. | Coverage matches requested rails/supply identity. No duplicate idea issue found in this route. |
-| Naval/directorate tags naval/logistics | KRS, FEV, ARD, NRF, and related custom-splinter helpers award navy/logistics resources; KRS/FEV/ARD doctrine helper branches now guard identity ideas while preserving convoy/navy rewards. | Coverage exists but some endpoints still use generic reward trio. |
+| Naval/directorate tags naval/logistics | AOX, FEV, ARD, NRF, and related custom-splinter helpers award navy/logistics resources; AOX/FEV/ARD doctrine helper branches now guard identity ideas while preserving convoy/navy rewards. | Coverage exists but some endpoints still use generic reward trio. |
 | Chaos countries tag-specific expansion, decisions, templates, cores/claims/war goals, factories, aggressive AI | 19 custom-splinter doctrine route hooks are tag-specific and there are many tag-specific trees. | Breadth exists, but reward cadence still leans on shared helpers. Parent rework should prioritize endpoint war-goal/core/template review per tag. |
 | Ukraine geometry and depth | 83 Ukraine focuses, x range 4-34, y range 0-18, no duplicate coordinates, no missing reciprocal mutual exclusions. | Geometry is broad and busy but mechanically clean in this audit. Pathlines may still look crossed due wide political/military/industrial interleaving. |
 | Belarus geometry and depth | 53 Belarus focuses, x range 3-28, y range 0-16, no duplicate coordinates, no missing reciprocal mutual exclusions. | Mechanically clean in this audit. Several long OR-gated links can still make pathlines visually busy. |
@@ -68,7 +68,7 @@ Endgame generic-trio focus ids: `FTH_endgame` (`custom_splinters.txt:1186`), `KR
 | Area | Missing or simplified content | File/id references |
 | --- | --- | --- |
 | High-chaos endpoint payoff | Several endgames still use the same generic recognition/depot/military helper trio instead of tag-specific final mechanics. | Listed in Deep Reward Audit Findings. |
-| Expansion verification | The requested "not OP/aggressive enough" goal needs a tag-by-tag check of decisions, cores, claims, war goals, and AI weights, not only focus reward parsing. | Start with DSC (`custom_splinters.txt:2725`), PRA (`:1220`), KRS (`:8842` approx route block), CFR (`factory_successors.txt:33`). |
+| Expansion verification | The requested "not OP/aggressive enough" goal needs a tag-by-tag check of decisions, cores, claims, war goals, and AI weights, not only focus reward parsing. | Start with DSC (`custom_splinters.txt:2725`), PRA (`:1220`), AOX (`:8842` approx route block), CFR (`factory_successors.txt:33`). |
 | Ukraine/Belarus visual layout polish | No coordinate duplicates or reciprocal mutex defects found, but both trees remain wide enough that in-game pathline readability should be visually checked. | Ukraine focus ids prefix `ukr_soviet_collapse_`; Belarus focus ids prefix `blr_soviet_collapse_`. |
 
 ## Icon Coverage Table
@@ -93,7 +93,7 @@ Endgame generic-trio focus ids: `FTH_endgame` (`custom_splinters.txt:1186`), `KR
 
 | Gap | Evidence | Recommendation |
 | --- | --- | --- |
-| All audited focuses have `ai_will_do`, but aggression may still be weak. | Mechanical audit found 0 focuses without `ai_will_do`; user goal says chaos countries are not aggressive enough. | Parent rework should inspect AI factors and decision AI for expansion, especially DSC/PRA/KRS/FEV/ARD and CFR protectorate routes. |
+| All audited focuses have `ai_will_do`, but aggression may still be weak. | Mechanical audit found 0 focuses without `ai_will_do`; user goal says chaos countries are not aggressive enough. | Parent rework should inspect AI factors and decision AI for expansion, especially DSC/PRA/AOX/FEV/ARD and CFR protectorate routes. |
 | Generic endpoint reward helpers can make AI route outcomes feel similar. | 10 endgame/endpoint focuses use the same recognition/depot/military trio. | Replace with route-aware endpoint AI and effects in a broader pass. |
 
 ## Validation Run

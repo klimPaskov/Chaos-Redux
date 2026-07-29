@@ -54,8 +54,8 @@ There is already a scripted-system architecture handoff at `docs/plans/010_death
 | `localisation/english/chaosx_achievements_l_english.yml` | Achievement names/descriptions/tooltips. | Existing achievement loc uses triplets such as Fury keys at lines 344-373. Death achievements need matching keys. |
 | `interface/chaosx_achievements.gfx` | Achievement sprite aliases. | Existing pattern is `GFX_achievement_<id>` with normal/grey/not-eligible variants; Death icon files need matching aliases if the UI requires them. |
 | `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md` | Source-of-truth asset/super-event/achievement requirements. | Lists required Death report/news/super-event images, icons, and first-priority achievements; acceptance criteria include triggerable scenario, docs, and spreadsheet. |
-| `docs/super_events/010_death_super_event_text_research.md` | Researched Death super-event text source. | Contains final/backup title, button, and quote selections for Death roles. Use this rather than inventing final text. |
-| `docs/super_events/010_death_super_event_audio_research.md` | Researched Death super-event audio source. | Lines 35-39, 63-67, 91-95, and 119-123 specify final `.ogg` paths and suggested music/sound IDs for reveal, world-end, defeat aftermath, and world consumed. |
+| `docs/super_events/010_death/text_research.md` | Researched Death super-event text source. | Contains final/backup title, button, and quote selections for Death roles. Use this rather than inventing final text. |
+| `docs/super_events/010_death/audio_research.md` | Researched Death super-event audio source. | Lines 35-39, 63-67, 91-95, and 119-123 specify final `.ogg` paths and suggested sound IDs for reveal, world-end, defeat aftermath, and world consumed. |
 | `docs/assets/010_death/` | Partial asset staging. | Found only Zol contact sheets and `idea_country_without_breath` source/processed PNGs. No final DDS, flags, report/news/super-event images, or achievement icons were found in the searched Death asset folders. |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | Event catalog spreadsheet. | `chaos-redux-events` skill names it as required after implementation. Update Event 010 row only after final Event Details/evolution wording exists. |
 
@@ -102,10 +102,10 @@ No Kaiserreich or other large-mod reference was needed for the repo map; vanilla
 9. Add decisions and state decisions: containment, quarantine, wither blocking/purification, Dark Methods, Black Oath if implemented; otherwise hide/queue clearly rather than shipping placeholder buttons.
 10. Add `SCN-006` integration: constants, registry, sorting, GUI branch lists, scripted localisation, launch trigger, launch effect, result event `chaosx.triggerable_scenarios.6`, docs, and settings export/import if scenario type persistence matters.
 11. Wire event log and evolution details: event name, debug selector, default actor mapping, event-details body, five mutation/evolution rows, evolution detail titles/bodies, and history/evolution logging calls.
-12. Wire super-events from research docs: allocate unused slots, add localisation, sprite(s), music/sound definitions, scripted localisation selectors, display effects, audio IDs, quote-source/audio docs, and final image/audio files or explicit blockers.
+12. Wire super-events from research docs: allocate unused slots, add localisation, sprite(s), sound definitions, scripted localisation selectors, display effects, audio IDs, quote-source/audio docs, and final image/audio files or explicit blockers.
 13. Wire assets: `.gfx` sprites for report/news/super-event images, ideas, decisions, focus icons, achievements, leaders/flags; produce/copy placeholders only where required by repo asset rules.
 14. Add achievements and achievement flags after gameplay facts exist: definitions, loc triplets, icon variants, `.gfx` if required, and scenario/world-end/containment trigger flags.
-15. Update docs after implementation facts stabilize: `docs/events/010_death.md`, world threat docs, triggerable scenario docs, asset manifests, super-event audio/quote docs, helper docs if shared dynamic helpers changed.
+15. Update docs after implementation facts stabilize: `docs/events/010_death/overview.md`, world threat docs, triggerable scenario docs, asset manifests, super-event audio/quote docs, helper docs if shared dynamic helpers changed.
 16. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` last, using final in-game Event Details/evolution wording and the `xlsx` workflow.
 
 ## Validation checks

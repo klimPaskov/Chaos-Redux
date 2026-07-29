@@ -54,19 +54,19 @@ Added:
 
 This removes repeated helper-level idea churn while preserving the one-active-authority-idea design.
 
-### BSC/TNC/ALA Decision And War-Plan Wiring
+### AEX/TNC/AAX Decision And War-Plan Wiring
 
-The focus-tree audit identified BSC, TNC, and ALA as three template-shaped custom splinter trees with weak focus-to-decision signalling.
+The focus-tree audit identified AEX, TNC, and AAX as three template-shaped custom splinter trees with weak focus-to-decision signalling.
 
 Patched:
 
-- `BSC_special_arm` now shows `unlock_decision_tooltip = bsc_mobilize_signature_forces`.
-- `BSC_extreme_gate` now shows `unlock_decision_tooltip = bsc_push_extreme_route`.
+- `AEX_special_arm` now shows `unlock_decision_tooltip = bsc_mobilize_signature_forces`.
+- `AEX_extreme_gate` now shows `unlock_decision_tooltip = bsc_push_extreme_route`.
 - `TNC_special_arm` now shows `unlock_decision_tooltip = tnc_mobilize_signature_forces`.
 - `TNC_extreme_gate` now shows `unlock_decision_tooltip = tnc_push_extreme_route`.
-- `ALA_special_arm` now shows `unlock_decision_tooltip = ala_mobilize_signature_forces`.
-- `ALA_extreme_gate` now shows `unlock_decision_tooltip = ala_push_extreme_route`.
-- `ALA_war_plan` now calls `soviet_collapse_apply_custom_splinter_war_plan_bonus`, matching the existing BSC/TNC war-plan payoff path and converting the focus into a real war-plan/assault/claim reward instead of only a generic assault helper.
+- `AAX_special_arm` now shows `unlock_decision_tooltip = ala_mobilize_signature_forces`.
+- `AAX_extreme_gate` now shows `unlock_decision_tooltip = ala_push_extreme_route`.
+- `AAX_war_plan` now calls `soviet_collapse_apply_custom_splinter_war_plan_bonus`, matching the existing AEX/TNC war-plan payoff path and converting the focus into a real war-plan/assault/claim reward instead of only a generic assault helper.
 
 This does not fully redesign those three trees, but it connects their military and high-chaos routes to actual decisions and a stronger expansion payoff.
 

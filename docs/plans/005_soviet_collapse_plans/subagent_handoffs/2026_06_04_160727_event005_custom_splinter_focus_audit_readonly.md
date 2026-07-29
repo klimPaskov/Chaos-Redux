@@ -43,7 +43,7 @@ The biggest remaining blocker is no longer FTH/SDZ. It is the untouched or only-
 Worst current cases:
 
 - `BBH_soviet_collapse_focus_tree` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:7726`: 47 focuses, 22 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
-- `KRS_soviet_collapse_focus_tree` at line 8921: 47 focuses, 20 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
+- `AOX_soviet_collapse_focus_tree` at line 8921: 47 focuses, 20 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 - `GAC_soviet_collapse_focus_tree` at line 12615: 47 focuses, 22 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 - `DHC_soviet_collapse_focus_tree` at line 13785: 47 focuses, 20 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 - `KHC_soviet_collapse_focus_tree` at line 14984: 47 focuses, 20 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
@@ -52,7 +52,7 @@ Worst current cases:
 - `UWD_soviet_collapse_focus_tree` at line 18505: 47 focuses, 22 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 - `MRC_soviet_collapse_focus_tree` at line 19692: 47 focuses, 21 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 - `IUL_soviet_collapse_focus_tree` at line 20865: 47 focuses, 20 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
-- `BAC_soviet_collapse_focus_tree` at line 22005: 47 focuses, 21 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
+- `ADX_soviet_collapse_focus_tree` at line 22005: 47 focuses, 21 generic helper references, 0 decision focuses, 0 map/war focuses, 0 `add_ai_strategy` focuses.
 
 Patch direction: do one tree at a time. For each tree, replace generic route-helper focuses with identity-specific tooltips plus at least one concrete mechanic per branch family: decision unlocks, claims/cores/war plans, units/equipment, construction packages, route variables, and route-specific AI strategies.
 
@@ -82,17 +82,17 @@ Severity: high.
 Highest generic-reference counts in `005_soviet_collapse_custom_splinters.txt`:
 
 - `NLC_soviet_collapse_focus_tree`: 29 generic helper references.
-- `BSC_soviet_collapse_focus_tree`: 24 generic helper references.
+- `AEX_soviet_collapse_focus_tree`: 24 generic helper references.
 - `FEV_soviet_collapse_focus_tree`: 24 generic helper references.
 - `ARD_soviet_collapse_focus_tree`: 24 generic helper references.
-- `ALA_soviet_collapse_focus_tree`: 22 generic helper references.
+- `AAX_soviet_collapse_focus_tree`: 22 generic helper references.
 - `BBH_soviet_collapse_focus_tree`: 22 generic helper references.
 - `GAC_soviet_collapse_focus_tree`: 22 generic helper references.
 - `UWD_soviet_collapse_focus_tree`: 22 generic helper references.
 
 Typical repeated nodes are `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `inner_faction`, `special_arm`, `supply`, `enemy_front`, `war_plan`, `civil_rule`, `propaganda`, `settlement`, `industry_plan`, `hidden_doctrine`, and `extreme_gate`.
 
-Patch direction: the parent should prioritize NLC, BSC, FEV, and ARD after UDC because they have the densest remaining generic scaffold.
+Patch direction: the parent should prioritize NLC, AEX, FEV, and ARD after UDC because they have the densest remaining generic scaffold.
 
 ### 4. Idea spam is not focus-level now, but helper-side lifecycle risk remains
 
@@ -135,8 +135,8 @@ These are not the current parent priority file, but they remain blockers for the
 ## Recommended Next Tranches
 
 1. Finish UDC cleanup first because it was recently reported as improved but still has ten current generic route nodes.
-2. Deepen NLC or BSC next. They have the highest generic-helper density and still lack route-specific AI/map payloads.
-3. Continue one-tree custom-splinter tranches in this order unless the parent has a newer priority: NLC, BSC, FEV, ARD, ALA, BBH, GAC, UWD, MRC, IUL, BAC, KRS, DHC, KHC, SZA, TNC.
+2. Deepen NLC or AEX next. They have the highest generic-helper density and still lack route-specific AI/map payloads.
+3. Continue one-tree custom-splinter tranches in this order unless the parent has a newer priority: NLC, AEX, FEV, ARD, AAX, BBH, GAC, UWD, MRC, IUL, ADX, AOX, DHC, KHC, SZA, TNC.
 4. After the custom-splinter pass, run a republic layout tranche for Ukraine, Central Asia, and Moldova pathlines.
 
 ## Validation

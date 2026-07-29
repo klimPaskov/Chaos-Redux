@@ -839,7 +839,7 @@ The route presentation uses five display slots and five distinct 457x328 images:
 
 All five use the final title `UTOPIA HAS NEIGHBORS`, route-specific descriptions, Thomas More quotation text, and the response `Nowhere has a timetable.` The route effect selects the matching slot through Event 15 script constants.
 
-Audio ID 57 uses `super_event_57_utopia_has_neighbors`. The source is the Musopen performance of Johannes Brahms, *Symphony No. 3 in F major, Op. 90*, third movement, published through Wikimedia Commons under CC0. The frozen source, license evidence, hashes, edit record, music file, sound file, registries, and uniqueness proof are documented in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md` and `docs/super_events/super_event_audio_packages.md`.
+Audio ID 57 uses `super_event_57_utopia_has_neighbors`. The source is the Musopen performance of Johannes Brahms, *Symphony No. 3 in F major, Op. 90*, third movement, published through Wikimedia Commons under CC0. The frozen source, license evidence, hashes, edit record, music file, sound file, registries, and uniqueness proof are documented in `docs/super_events/015_utopia_manifesto/audio_research.md` and `docs/super_events/super_event_audio_packages.md`.
 
 ### Current visual inventory
 

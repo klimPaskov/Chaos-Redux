@@ -13,7 +13,7 @@
 | World-order super-event | Final launch surface and Aryan title variant verified if live | Implementation required if live | Super-event audit |
 | Localisation | No missing keys, no placeholder prose, no hidden-route spoilers, and sensitivity standards met | Implementation required | Localisation auditor |
 | Assets | No default or placeholder super-event art remains, manifests exist | Implementation required | Asset subagents, main agent |
-| Audio | Final OGG and source docs verified, no undocumented placeholder audio | Implementation required | Audio researcher, main agent |
+| Audio | Final WAV and source docs verified, no undocumented placeholder audio | Implementation required | Audio researcher, main agent |
 | Docs | Current docs, manifests, handoffs, and plan dispositions align with implementation | Implementation required | Documentation curator |
 | Spreadsheet | Catalog updated only after final in-game wording exists | Implementation required after implementation | Spreadsheet worker |
 | Improvement loop | Addendum or closure resolved before completion | Required | Improvement loop planner, main agent |

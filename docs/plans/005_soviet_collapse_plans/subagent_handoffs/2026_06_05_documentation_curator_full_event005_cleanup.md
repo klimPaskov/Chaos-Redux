@@ -10,14 +10,14 @@ This is not an Event005 completion claim. Event005 remains incomplete and in urg
 
 This refresh touched exactly:
 
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_full_event005_cleanup.md`
 
 Earlier documentation-curator cleanup in the same dirty worktree also included:
 
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`
@@ -28,7 +28,7 @@ No gameplay, localisation, scripted effect, scripted trigger, decision, focus, G
 
 ## What Changed
 
-- Reframed `docs/events/005_soviet_collapse.md` as a compact current overview and evidence router, not a blanket replacement for older handoffs.
+- Reframed `docs/events/005_soviet_collapse/overview.md` as a compact current overview and evidence router, not a blanket replacement for older handoffs.
 - Added an explicit incomplete-status note and urgent playability priorities to the event overview.
 - Added existing-country focus-tree eligibility as a current validation target. Current script evidence uses `soviet_collapse_event_created_republic` gating, but that is not treated as final proof.
 - Removed implementation-history phrasing from the current overview's Dead Soldiers' Congress and Civilian Factory of Russia route summaries.
@@ -62,7 +62,7 @@ Do not mark spreadsheet parity complete until the in-game event-detail/evolution
 
 Accepted current docs:
 
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - seven source specs under `docs/specs/005_soviet_collapse_specs/`, read through the current no-flag urgent-playability constraint
@@ -90,7 +90,7 @@ Known contradictions preserved for parent handling:
 
 ## Validation
 
-- `git diff --check -- docs/events/005_soviet_collapse.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_7_assets_achievements_validation.md`
+- `git diff --check -- docs/events/005_soviet_collapse/overview.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_7_assets_achievements_validation.md`
   - Result: passed with no output.
 - `git diff --check --no-index /dev/null docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_documentation_curator_full_event005_cleanup.md`
   - Result: no whitespace errors.
@@ -106,7 +106,7 @@ Known contradictions preserved for parent handling:
   - `rg -n 'This overview is not a completion report|Event005 remains incomplete|Urgent Playability Resume Packet|Doc Disposition Summary|Accepted Current Docs|Queued Docs|Superseded Current-State Findings|Known Contradictions|soviet_collapse_event_created_republic|no active work|do not edit `gfx/flags`|final-validation requirements' ...`
   - Result: found the expected incomplete-status, disposition-map, queued/superseded/contradiction, event-created focus-tree gating, and no-flag/final-validation markers.
 - Implementation-history wording check:
-  - `rg -n '\bnow\b|\bnewly\b|\breworked\b|\badded\b|\bchanged\b|\bcurrent implementation problem\b|no longer' docs/events/005_soviet_collapse.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/specs/005_soviet_collapse_specs/*.md docs/plans/005_soviet_collapse_plans/*.md`
+  - `rg -n '\bnow\b|\bnewly\b|\breworked\b|\badded\b|\bchanged\b|\bcurrent implementation problem\b|no longer' docs/events/005_soviet_collapse/overview.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/specs/005_soviet_collapse_specs/*.md docs/plans/005_soviet_collapse_plans/*.md`
   - Result: remaining matches are either player-facing sample text (`now test`) or implementation/status/legacy-plan contexts; the current event overview no longer uses `now` for DSC/CFR route summaries.
 
 ## Remaining Risks

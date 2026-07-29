@@ -110,7 +110,7 @@ The same generic skeleton appears across many 47-focus custom splinters. Summary
 
 - `FTH_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
 - `BBH_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
-- `KRS_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
+- `AOX_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
 - `UDC_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
 - `SDZ_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
 - `GAC_soviet_collapse_focus_tree`: 47 focuses, 0 decision unlocks detected, 0 claims/cores/wargoals detected.
@@ -156,10 +156,10 @@ The concepts imply special mechanics, unique recruitment, expansion consequences
 
 Ancient restoration trees also remain shallow for their concepts:
 
-- `KZR_soviet_collapse_ancient_focus_tree`
+- `APX_soviet_collapse_ancient_focus_tree`
 - `SOG_soviet_collapse_ancient_focus_tree`
-- `KHW_soviet_collapse_ancient_focus_tree`
-- `ALN_soviet_collapse_ancient_focus_tree`
+- `ANX_soviet_collapse_ancient_focus_tree`
+- `ABX_soviet_collapse_ancient_focus_tree`
 
 They are each 16 focuses and strongly mirror one another structurally. They do have claims and a few decision unlocks, but they need sharper political identity, diplomacy, postwar settlement, and country-specific economic/military branches.
 
@@ -176,14 +176,14 @@ They are each 16 focuses and strongly mirror one another structurally. They do h
 
 3. Rework one custom splinter archetype at a time, then propagate the pattern manually.
    - Start with `FTH` because it cleanly shows the problem: many 47-focus branches but no decision unlocks or expansion consequences.
-   - Add decisions and route-specific consequences first, then adapt BBH/KRS/UDC/SDZ/GAC only where their concept supports it.
+   - Add decisions and route-specific consequences first, then adapt BBH/AOX/UDC/SDZ/GAC only where their concept supports it.
 
 4. Deepen chaos-country special mechanics.
    - TSC/RMC/DSC/NRF/ICD should each get at least one unique mechanic or decision family, not just a compact focus package.
    - Suggested surfaces: special recruitment, containment/recognition pressure, unique expansion rules, enemy reactions, and crisis escalation missions.
 
 5. Upgrade the ancient restorations from mirrored compact trees to distinct country packages.
-   - Keep shared structure where useful, but add tag-specific branch payoffs: KZR toll/transit authority, SOG city-road diplomacy, KHW irrigation/oasis legitimacy, ALN pass/mountain defense.
+   - Keep shared structure where useful, but add tag-specific branch payoffs: APX toll/transit authority, SOG city-road diplomacy, ANX irrigation/oasis legitimacy, ABX pass/mountain defense.
    - Add postwar handling for claims: integration, puppet/protectorate options, resistance risk, and League/neighbor reactions.
 
 6. Run audit gates after each tranche.

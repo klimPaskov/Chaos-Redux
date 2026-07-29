@@ -55,9 +55,9 @@ No localisation keys or icon ids were changed.
 | Moldova | `soviet_collapse_moldova_focus_tree`, 48 focuses, line 7562 | Present; one layout patch applied | Route structure exists; remaining rewards still lean on standard helpers and flat support. |
 | Belarus | `soviet_collapse_belarus_focus_tree`, 53 focuses, line 8731 | Present but needs payoff variety | Needs more distinct military/security/foreign route outcomes. |
 | Kazakhstan | `soviet_collapse_kazakhstan_focus_tree`, 92 focuses, line 10052 | Broad but reward-heavy | Largest republic tree; still has many flat construction/equipment/stat payoffs and repeated helper use. |
-| Full custom splinter trees | FTH, BSC, TNC, ALA, BBH, KRS, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, BAC, ARD, NLC each have 47 focuses | Partially present | These trees are playable shells but should become much more dangerous: factories, neighbor aggression, cores/claims, war goals, route-specific decision hooks, and AI strategy. |
+| Full custom splinter trees | FTH, AEX, TNC, AAX, BBH, AOX, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, ADX, ARD, NLC each have 47 focuses | Partially present | These trees are playable shells but should become much more dangerous: factories, neighbor aggression, cores/claims, war goals, route-specific decision hooks, and AI strategy. |
 | Shallow crisis splinters | PRA has 22 focuses; TSC, RMC, DSC, NRF, ICD each have 18 focuses | Missing depth | These are the weakest route families. They need full political or fixed-purpose hierarchy, industry, military, expansion, and endgame branches instead of short ladders. |
-| Chaos/death/zombie-like splinters | RMC, DSC, NRF, ICD, TSC, ARD, NLC, BBH, FTH, BSC, PRA, BAC, GAC, DHC, KHC | Missing dangerous behavior | `common/national_focus/005_soviet_collapse_custom_splinters.txt` contains no direct `create_wargoal`, `declare_war_on`, `add_state_core`, `add_state_claim`, `transfer_state_to`, or `annex_country` effects. |
+| Chaos/death/zombie-like splinters | RMC, DSC, NRF, ICD, TSC, ARD, NLC, BBH, FTH, AEX, PRA, ADX, GAC, DHC, KHC | Missing dangerous behavior | `common/national_focus/005_soviet_collapse_custom_splinters.txt` contains no direct `create_wargoal`, `declare_war_on`, `add_state_core`, `add_state_claim`, `transfer_state_to`, or `annex_country` effects. |
 
 ## Missing or Simplified Content
 
@@ -102,7 +102,7 @@ Repeated icons are not load-breaking, but the 29 repeated icon groups are a visu
 
 1. Reflow Ukraine's opening and political/military junctions first. Remove the long diagonal lines out of `ukr_soviet_collapse_question_of_statehood` and keep mutually exclusive markers out of active branch paths.
 2. Redesign PRA, TSC, RMC, DSC, NRF, and ICD into full fixed-purpose crisis trees with hierarchy, industry, military, expansion, and endgame branches.
-3. Add overpowered chaos-country expansion packages for RMC, DSC, NRF, ICD, TSC, ARD, NLC, BBH, FTH, BSC, PRA, BAC, GAC, DHC, and KHC. Use claims, cores, war goals, neighbor-specific decisions, special units, factories, AI strategy, and postwar settlement hooks.
+3. Add overpowered chaos-country expansion packages for RMC, DSC, NRF, ICD, TSC, ARD, NLC, BBH, FTH, AEX, PRA, ADX, GAC, DHC, and KHC. Use claims, cores, war goals, neighbor-specific decisions, special units, factories, AI strategy, and postwar settlement hooks.
 4. Replace repeated flat reward ladders with mechanic and decision payoffs. Keep small factories/equipment as support rewards, not the identity of a branch.
 5. Reduce helper-tooltip noise around consolidated republic ideas. Consider hidden helper refreshes plus custom effect tooltips for the player-facing payoff.
 6. Add route-specific AI strategy plans after route content is real. High-chaos tags should actively choose aggression and not sit on generic development ladders.

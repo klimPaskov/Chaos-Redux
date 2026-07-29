@@ -83,11 +83,11 @@ After:
 | Moldova | `soviet_collapse_moldova_focus_tree`, `common/national_focus/005_soviet_collapse_republics.txt:7572`, 48 focuses | Partial | Dniester, Romania/Ukraine, agrarian, and observer-route content exists, but 22 likely pathline hits remain. |
 | Belarus | `soviet_collapse_belarus_focus_tree`, `common/national_focus/005_soviet_collapse_republics.txt:8715`, 53 focuses | Partial | Rail/forest/corridor identity is visible, but it still has 25 likely pathline hits and repeated small rewards. |
 | Kazakhstan | `soviet_collapse_kazakhstan_focus_tree`, `common/national_focus/005_soviet_collapse_republics.txt:10033`, 92 focuses | Broad but cramped | Strong route surface by count, but the tree spans 35 columns and still has 45 likely pathline hits. No edit made. |
-| Full custom splinters | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` trees in `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Present but template-heavy | Most have 47 focuses and full basic route families. Many still share repeated branch shapes, repeated icon groups, and helper-based generic reward flow. |
+| Full custom splinters | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` trees in `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Present but template-heavy | Most have 47 focuses and full basic route families. Many still share repeated branch shapes, repeated icon groups, and helper-based generic reward flow. |
 | Compact crisis splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` in `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Mixed | PRA is now cleaner by layout/filter. TSC/RMC/DSC/NRF/ICD remain 18-focus compact trees and need deeper high-chaos identity if expected to be overpowered/aggressive actors. |
 | Old Great Bulgaria | `OGB_soviet_collapse_focus_tree`, `common/national_focus/005_soviet_collapse_factory_successors.txt:1176`, 23 focuses | Shallow | Has Volga legitimacy and restored-name content, but remains under-depth for the spec's Volga restoration expectations. |
 | Military Factory of Russia | `MFR_soviet_collapse_focus_tree`, `common/national_focus/005_soviet_collapse_factory_successors.txt:1784`, 58 focuses | Stronger but layout-risky | Arsenal identity and direct mechanics are stronger than OGB, but it still has 14 likely pathline hits and helper-heavy rewards. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` in `common/national_focus/005_soviet_collapse_ancient_restorations.txt:14`, `:383`, `:753`, `:1126` | Compact/shallow | Each has 16 focuses with claims and route flags, but they are still compact restorations rather than full political/industry/military/diplomacy/expansion packages. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` in `common/national_focus/005_soviet_collapse_ancient_restorations.txt:14`, `:383`, `:753`, `:1126` | Compact/shallow | Each has 16 focuses with claims and route flags, but they are still compact restorations rather than full political/industry/military/diplomacy/expansion packages. |
 
 ## Missing or Simplified Content
 
@@ -111,7 +111,7 @@ After:
 Repeated icon clusters to prioritize later without touching assets in this pass:
 
 - Republics: `GFX_focus_soviet_collapse_guard_the_radio_stations`, `GFX_ukr_soviet_collapse_democratic`, `GFX_focus_soviet_collapse_no_masters_in_kyiv_or_moscow`, `GFX_focus_soviet_collapse_steppe_supply_congress`, `GFX_central_asia_soviet_collapse_rail_and_irrigation_boards`, `GFX_moldova_soviet_collapse_ukrainian_corridor`.
-- Custom splinters: repeated generic route icons in `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, plus smaller repeats in `BAC`, `ARD`, `NLC`.
+- Custom splinters: repeated generic route icons in `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, plus smaller repeats in `ADX`, `ARD`, `NLC`.
 - Ancient restorations: `GFX_focus_soviet_collapse_ancient_workshop_compact`, `GFX_focus_soviet_collapse_ancient_guard_old_routes`, `GFX_focus_soviet_collapse_ancient_league_bargain`, `GFX_focus_soviet_collapse_ancient_old_border_files`, `GFX_focus_soviet_collapse_ancient_symbolic_state`.
 
 ## Layout Findings

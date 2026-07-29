@@ -244,8 +244,8 @@ The live Event 019 decision inventory is now 68 decisions and 14 missions:
 The four controlled-trial decisions and one controlled-trial mission are owner-approved additions. Reconciled on 2026-07-16:
 
 - `docs/specs/019_infantry_spawn_specs/matrices/019_decision_mission_map.md` is the live 68-decision/14-mission authority and identifies all four trial decisions plus `infantry_spawn_achievement_combat_trial_mission`;
-- `docs/specs/019_infantry_spawn_specs/matrices/019_achievement_matrix.md` and `docs/achievements/019_infantry_spawn_achievements.md` record the 14-day minimum, 45-day mission timeout, 90-day cooldown, exact participant proof, and scenario-host isolation;
-- `docs/events/019_infantry_spawn.md` records the same controlled-trial lifecycle and scenario isolation;
+- `docs/specs/019_infantry_spawn_specs/matrices/019_achievement_matrix.md` and `docs/achievements/019_infantry_spawn/achievements.md` record the 14-day minimum, 45-day mission timeout, 90-day cooldown, exact participant proof, and scenario-host isolation;
+- `docs/events/019_infantry_spawn/overview.md` records the same controlled-trial lifecycle and scenario isolation;
 - older audit handoffs remain untouched as dated historical evidence.
 
 ### Superseding visual contract
@@ -269,7 +269,7 @@ When the final evidence arrives, align the current source-of-truth documentation
 - current Event 019 asset prompt and reproduction-spec surfaces
 - `docs/assets/019_infantry_spawn/manifest.md`
 - claimant identity crosswalk, provenance, source, processed PNG, DDS, hash, contact-sheet, and comparison-sheet records
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 
 Do not rewrite historical human-portrait audits as though they had tested the superseding scene package. Add an explicit superseded notice where a historical file could otherwise be mistaken for current proof.
 

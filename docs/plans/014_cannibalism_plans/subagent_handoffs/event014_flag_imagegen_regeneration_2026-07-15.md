@@ -14,7 +14,7 @@ All 65 live Event 014 fictional flag designs were regenerated successfully. Ever
 
 The exact design inventory is the cross-product of these 13 roots and five suffixes:
 
-- Roots: `CBA`, `CBB`, `CBC`, `CBD`, `CBE`, `CBF`, `CBG`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
+- Roots: `CBA`, `AHX`, `CBC`, `AIX`, `CBE`, `CBF`, `AMX`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
 - Suffixes: no suffix, `_communism`, `_democratic`, `_fascism`, `_neutrality`
 
 `ZZZ_weaponized_wendigo` was deliberately excluded, does not appear in the prompt/evidence inventories, and has no scoped working-tree change.

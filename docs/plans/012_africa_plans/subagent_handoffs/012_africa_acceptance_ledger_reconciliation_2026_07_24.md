@@ -1,6 +1,6 @@
 # Event 012 acceptance-ledger reconciliation handoff
 
-> Superseded for release-candidate status by `docs/events/012_africa.md` and `docs/plans/012_africa_plans/documentation_cleanup_handoff.md`. Retained as the 2026-07-24 ledger baseline; its asset and achievement dispositions predate the current filesystem evidence.
+> Superseded for release-candidate status by `docs/events/012_africa/overview.md` and `docs/plans/012_africa_plans/documentation_cleanup_handoff.md`. Retained as the 2026-07-24 ledger baseline; its asset and achievement dispositions predate the current filesystem evidence.
 
 Date: 2026-07-24
 

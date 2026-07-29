@@ -38,7 +38,7 @@ Four exact-division battle achievements remain deliberately hidden and unawarded
   - reevaluates the defeated country immediately so capitulation disqualification is durable.
 - `localisation/english/chaosx_achievements_l_english.yml`
   - supplies one name, one description, and one exact tooltip for every identifier.
-- `docs/achievements/019_infantry_spawn_achievements.md`
+- `docs/achievements/019_infantry_spawn/achievements.md`
   - documents all eleven contracts, exploit protections, the exact battle limitation, and the custom-achievement icon convention.
 
 ## Narrow source hooks

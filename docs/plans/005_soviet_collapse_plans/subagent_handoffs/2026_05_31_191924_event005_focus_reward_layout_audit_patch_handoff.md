@@ -44,14 +44,14 @@ No scripted effects, decisions, localisation, icon definitions, GFX, or flags we
 | Major republic runtime trees | Ukraine, breakaway/internal republics, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan in `005_soviet_collapse_republics.txt` | Implemented but uneven | 9 trees / 501 focuses. No missing basic focus surfaces found. Several rewards remain helper-heavy and need parent-level route review against the full spec. |
 | Custom high-chaos splinters | 25 trees in `005_soviet_collapse_custom_splinters.txt` | Implemented but still repetitive | 1005 focuses. Many 47-focus trees exist, while PRA/TSC/RMC/DSC/NRF/ICD remain compact. Some compact trees are intentionally focused, but route depth still needs parent review. |
 | Factory successors | CFR, OGB, MFR in `005_soviet_collapse_factory_successors.txt` | Implemented; OGB compact | 128 focuses. CFR/MFR have deeper trees; OGB remains 23 focuses and should be explicitly accepted as compact or expanded. |
-| Ancient restorations | KZR, SOG, KHW, ALN in `005_soviet_collapse_ancient_restorations.txt` | Implemented but shallow by major-depth standards | 64 focuses total. These are still 16-focus compact trees and are not enough for a full route-depth completion claim. |
+| Ancient restorations | APX, SOG, ANX, ABX in `005_soviet_collapse_ancient_restorations.txt` | Implemented but shallow by major-depth standards | 64 focuses total. These are still 16-focus compact trees and are not enough for a full route-depth completion claim. |
 
 ## Missing Or Simplified Content
 
 | Issue | File / identifiers | Priority | Notes |
 | --- | --- | --- | --- |
 | Broad helper-heavy rewards remain | Examples: `ukr_soviet_collapse_border_states_accept_kyiv`, `FTH_endgame`, `PRA_rails_over_capitals`, `DSC_congress_of_the_dead_army`, `SZA_station_fortress_line`, `OGB_the_old_name_survives_modern_war` | High | Focus-file callsite audit found many focuses with three or more major helper calls. That can still produce visible reward stacks or idea-update spam depending on helper internals. Full cleanup requires scripted-effect inspection and helper consolidation outside this subagent scope. |
-| Ancient restoration depth remains compact | `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree` | High | No whole-tree redesign was attempted. These should be expanded or explicitly classified as compact restoration packets. |
+| Ancient restoration depth remains compact | `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree` | High | No whole-tree redesign was attempted. These should be expanded or explicitly classified as compact restoration packets. |
 | OGB depth remains compact | `OGB_soviet_collapse_focus_tree` | Medium | 23 focuses; likely underpowered compared with CFR/MFR unless the parent accepts the compact role. |
 | Generic identity-helper-only nodes remain | Examples include `ARD_special_arm`, `ARD_supply`, `NLC_civil_rule`, repeated 47-focus generic route openers | Medium | Many route identity focuses still rely on `custom_effect_tooltip` plus hidden identity helper only. Replacing all of these is a broad route-reward pass. |
 

@@ -79,7 +79,7 @@ Spawn separately:
 - `chaosx_super_event_text_researcher` for quotes, attribution, title and remark research
 - `chaosx_super_event_audio_researcher` for unique licensed music, source verification, conversion, and documentation
 
-Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Six-package title, button, quotation, and audio research is complete. Six final Event 016-owned OGGs are ready at IDs `90` through `95`. Images, final descriptions, localisation, shared music and sound definitions, settings-aware playback, and live presentation wiring remain blocked until their dedicated handoffs and implementation exist.
+Use `prompts/016_brilliant_scientist_super_event_prompt.md`. Six-package title, button, quotation, and audio research is complete. Six final Event 016-owned OGGs are ready at IDs `90` through `95`. Images, final descriptions, localisation, shared sound definitions, settings-aware playback, and live presentation wiring remain blocked until their dedicated handoffs and implementation exist.
 
 ## Documentation, catalog, and final audit
 

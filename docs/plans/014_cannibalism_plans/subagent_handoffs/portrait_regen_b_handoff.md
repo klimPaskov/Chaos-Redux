@@ -4,8 +4,8 @@
 
 - Regenerated all 28 Event 014 CBE-CBH Europe/default and regional warlord portraits as separate fictional built-in image-generation sources.
 - Installed all 28 at their exact existing 156x210 live DDS paths.
-- Enforced a fully bald, hairless final set across CBE, CBF, CBG, and CBH.
-- Removed every prison, cell, bar, restraint, prisoner-uniform, and confinement cue from the CBG-CBH visual language.
+- Enforced a fully bald, hairless final set across CBE, CBF, AMX, and CBH.
+- Removed every prison, cell, bar, restraint, prisoner-uniform, and confinement cue from the AMX-CBH visual language.
 - Generated a separate transformed Wendigo Hannibal static master with an open snowy battlefield backdrop, invented frost-collar anatomy, no antlers, and no actor likeness.
 - Built 16 real generated source frames covering turn, inhale, jaw opening, full gape, distinct peak hold, staged close, locked stare, and loop bridge.
 - Assembled the exact 2496x210 horizontal sheet and a looping near-6-fps GIF review.

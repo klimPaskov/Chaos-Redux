@@ -60,10 +60,10 @@ Skills used:
 | Central Asian local council, southern defense, old movement/Basmachi pressure, mediation, cotton/water/rail/pass/resource economy, League, ancient/high-chaos pressure | `soviet_collapse_central_asia_focus_tree`, 45 focuses | Partial | Regional economy exists, but `GFX_central_asia_soviet_collapse_rail_and_irrigation_boards` and `GFX_central_asia_soviet_collapse_steppe_federation` each repeat 4 times, and compact route helper use remains generic. |
 | Moldova Chisinau council, Dniester defense, Romanian diplomacy, Ukraine settlement, agrarian/river economy, League observers, Dniester chaos | `soviet_collapse_moldova_focus_tree`, 48 focuses | Partial | Route coverage exists, but helper pattern is still generic and `GFX_moldova_soviet_collapse_ukrainian_corridor` repeats 4 times. |
 | Internal republic compact meaningful trees | `soviet_collapse_internal_republic_focus_tree`, 62 focuses | Partial | Content exists, but shared rewards and repeated icons make tags less country-specific than required. |
-| High-chaos splinters: KRS/FTH/BBH/BSC/RMC/TSC/PRA/DSC/NRF/ICD/UDC/SDZ/GAC and others | `005_soviet_collapse_custom_splinters.txt`, 25 trees | Partial | 47-focus trees have real branches; 18-22 focus actors remain shallow. Dead-state, rail-state, naval-state, and cult actors are more identity-specific than before but still need stronger OP payoffs and route-specific AI. |
+| High-chaos splinters: AOX/FTH/BBH/AEX/RMC/TSC/PRA/DSC/NRF/ICD/UDC/SDZ/GAC and others | `005_soviet_collapse_custom_splinters.txt`, 25 trees | Partial | 47-focus trees have real branches; 18-22 focus actors remain shallow. Dead-state, rail-state, naval-state, and cult actors are more identity-specific than before but still need stronger OP payoffs and route-specific AI. |
 | Factory states | `CFR_soviet_collapse_focus_tree` and `MFR_soviet_collapse_focus_tree` | Partial | MFR has 58 focuses and strong arsenal identity. CFR has 47 focuses and strong construction identity, but CFR repeats 11 icon IDs and several construction helpers. |
 | Old Great Bulgaria | `OGB_soviet_collapse_focus_tree`, 23 focuses | Shallow | Exists with Volga legitimacy/restoration branches, but 10 standalone small rewards and only 23 focuses leave it under the requested successor depth. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` ancient focus trees, 16 focuses each | Shallow | All have compact skeletons and unique icons, but they remain stub-scale compared with the required restoration, legitimacy, army, diplomacy, expansion, and myth routes. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` ancient focus trees, 16 focuses each | Shallow | All have compact skeletons and unique icons, but they remain stub-scale compared with the required restoration, legitimacy, army, diplomacy, expansion, and myth routes. |
 
 ## Idea Spam and Duplicate Reward Findings
 
@@ -97,14 +97,14 @@ No narrow safe focus-file duplicate idea grant was available to patch because th
 | Belarus | `soviet_collapse_belarus_focus_tree`; helpers `soviet_collapse_apply_focus_depot_and_supply_control`, `soviet_collapse_apply_focus_legal_recognition`, `soviet_collapse_apply_focus_security_supply_plan`, `soviet_collapse_apply_focus_foreign_channel` | Rail/corridor flavor exists but still repeats generic route helpers. |
 | Kazakhstan | `soviet_collapse_kazakhstan_focus_tree`; helpers `soviet_collapse_apply_focus_depot_and_supply_control`, `soviet_collapse_apply_focus_military_consolidation`, `soviet_collapse_apply_focus_league_preparation`, `soviet_collapse_apply_focus_socialist_sovereignty` | Strong focus count but overuses same reward families. |
 | Shared republics | `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_caucasus_focus_tree`, `soviet_collapse_central_asia_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_moldova_focus_tree` | Multiple regional trees exist, but many route payoffs remain generic legal/military/depot/foreign helper calls. |
-| Custom splinter 47-focus trees | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | Branch skeletons are large, but many trees repeat `first_guard`, `stores`, `legitimacy`, `doctrine`, `economy`, `foreign`, `league`, `enemy_front`, and `hidden_doctrine` helper identity patterns. |
+| Custom splinter 47-focus trees | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | Branch skeletons are large, but many trees repeat `first_guard`, `stores`, `legitimacy`, `doctrine`, `economy`, `foreign`, `league`, `enemy_front`, and `hidden_doctrine` helper identity patterns. |
 | Crisis/high-chaos short trees | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` | Some identity hooks exist, but 18-22 focuses still under-deliver compared with the requested OP rail/dead/naval/cult mechanics. |
-| Factory/ancient successors | `CFR`, `OGB`, `KZR`, `SOG`, `KHW`, `ALN` | CFR is strong but repeats icon/reward motifs; OGB and ancient restorations remain shallow. |
+| Factory/ancient successors | `CFR`, `OGB`, `APX`, `SOG`, `ANX`, `ABX` | CFR is strong but repeats icon/reward motifs; OGB and ancient restorations remain shallow. |
 
 Highest standalone-small-reward counts from parser:
 
 - `OGB_soviet_collapse_focus_tree`: 10 focuses with small one-off rewards not offset by helpers/decisions/claims/buildings.
-- `BSC_soviet_collapse_focus_tree`: 5.
+- `AEX_soviet_collapse_focus_tree`: 5.
 - `KHC_soviet_collapse_focus_tree`: 4.
 - `TNC_soviet_collapse_focus_tree`: 4.
 - `soviet_collapse_ukraine_focus_tree`: 4.
@@ -156,7 +156,7 @@ Every parsed focus has an `icon =` assignment. Missing assignments: 0.
 | `CFR_soviet_collapse_focus_tree` | 47 | 0 | 11 | `GFX_focus_CFR_municipal_board_elections` x3, `GFX_focus_CFR_concrete_republic` x3 |
 | `MFR_soviet_collapse_focus_tree` | 58 | 0 | 0 | None detected |
 | `OGB_soviet_collapse_focus_tree` | 23 | 0 | 0 | None detected |
-| Ancient trees `KZR`, `SOG`, `KHW`, `ALN` | 64 | 0 | 0 | None detected |
+| Ancient trees `APX`, `SOG`, `ANX`, `ABX` | 64 | 0 | 0 | None detected |
 | 47-focus custom splinters | 893 | 0 | Many | Worst examples: `IUL` repeated icon ids 15, `UWD` 15, `FEV` 13, `MRC` 12, `SZA` 12 |
 | Short crisis splinters `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` | 112 | 0 | 0 | None detected |
 
@@ -197,7 +197,7 @@ Reward mismatch risks to parent:
    - MFR: more military factories, equipment production, armored train/guard units, and proxy arming.
    - PRA: railways, supply hubs, rail decisions, mobile supply columns, and rail-state expansion.
    - DSC/ICD/RMC: manpower, cores/claims, war goals, aggressive AI strategies, and dead-state expansion decisions.
-   - NRF/KRS/ARD: ports, dockyards, naval militia, coastal forts, and naval aggression.
+   - NRF/AOX/ARD: ports, dockyards, naval militia, coastal forts, and naval aggression.
 3. Rework OGB and ancient restoration depth before claiming completion. OGB should not stay a 23-focus shallow successor; the ancient trees should not stay 16-focus skeletons if they are intended as meaningful playable countries.
 4. Reduce repeated icon IDs in CFR, IUL, UWD, FEV, MRC, SZA, and shared republic trees. This needs asset workflow or approved icon reuse documentation, not a focus-only patch.
 5. Keep mutual exclusions only where route identity changes. Several current route locks are meaningful, but repeated generic rewards make some exclusivity feel decorative in practice.

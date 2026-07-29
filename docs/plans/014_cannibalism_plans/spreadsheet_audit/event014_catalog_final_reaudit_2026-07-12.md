@@ -15,7 +15,7 @@ The wording sources were:
 - `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt` for the five live scenario type branches.
 - `common/scripted_effects/chaosx_logic_effects.txt` for Event 014 registration in `global.fire_once_events`.
 - `common/scripted_effects/chaosx_events_log_effects.txt` for the separate `world_is_the_larder` and `no_thaw_will_come` public terminal registry rows.
-- `docs/events/014_cannibalism.md` for the public classification, cluster status, terminal row identities, and catalog status boundary.
+- `docs/events/014_cannibalism/overview.md` for the public classification, cluster status, terminal row identities, and catalog status boundary.
 
 ## Workbook change
 

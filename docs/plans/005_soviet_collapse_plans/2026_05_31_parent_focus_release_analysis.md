@@ -51,7 +51,7 @@ Layout audit found dense focus coordinates and likely pathline issues in:
 
 - Ukraine: many close pairs and broad mutually exclusive political forks.
 - Belarus: recent patches improved some visible prerequisites, but dense sections remain.
-- DHC, KHC, FEV, SZA, UWD, MRC, IUL, BAC, ARD, NLC: many one-tile-neighbor focus clusters that can produce compressed pathlines.
+- DHC, KHC, FEV, SZA, UWD, MRC, IUL, ADX, ARD, NLC: many one-tile-neighbor focus clusters that can produce compressed pathlines.
 - Ancient restorations: compact, mostly readable, but endgame and expansion choices sit very close in multiple mini-trees.
 
 Mutual exclusions are frequent. Ukraine has a large five-route exclusivity cluster plus smaller follow-up exclusivity pairs. Several shared route trees also rely on exclusivity clusters. These need manual layout review because mutually exclusive symbols can cross or sit on intervening focuses if the path is centered too tightly.

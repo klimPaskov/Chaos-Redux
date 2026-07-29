@@ -20,8 +20,8 @@ This is a source-driven acceptance clarification. It adds no scenario family and
 | --- | --- | --- |
 | Accepted scenario design | `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md` | Patched with the six-family/eight-mode/32-cell clarification and separate Universal Belligerence rules. |
 | Acceptance criteria | `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md` | Patched to require all 32 mode/intensity cells and separate Universal Belligerence result rows. |
-| Current gameplay-facing event map | `docs/events/006_independence_wave.md` | Patched to record the eight-mode/32-cell authority while retaining the whole-event HOLD boundary. |
-| Current scenario system docs | `docs/systems/triggerable_scenarios.md` and `docs/systems/independence_wave_triggerable_scenario.md` | Patched to distinguish six numeric families from eight selectable modes and to retain the existing 32-cell validation target. |
+| Current gameplay-facing event map | `docs/events/006_independence_wave/overview.md` | Patched to record the eight-mode/32-cell authority while retaining the whole-event HOLD boundary. |
+| Current scenario system docs | `docs/systems/triggerable_scenarios.md` and `docs/events/006_independence_wave/systems/triggerable_scenario.md` | Patched to distinguish six numeric families from eight selectable modes and to retain the existing 32-cell validation target. |
 | Catalog mirror design note | `docs/specs/006_independence_wave_specs/quality/catalog_alignment_handoff.md` | Patched from an unqualified six-family list to the numeric-family plus eight-player-mode crosswalk. Its old catalog status remains a planning snapshot. |
 | Current routing ledger | `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` | Patched with the current cardinality row, v27 handoff disposition, catalog mirror evidence, and historical-shorthand contradiction note. |
 | Current resume packet | `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` | Patched with the 32-cell acceptance boundary and this handoff path. Existing portrait-shelf sections were left unchanged. |
@@ -47,7 +47,7 @@ This is a source-driven acceptance clarification. It adds no scenario family and
 
 ## Duplicate or superseded document list
 
-- `docs/systems/triggerable_scenarios.md` and `docs/systems/independence_wave_triggerable_scenario.md` intentionally overlap. The former is the cross-scenario index, and the latter is the SCN-008 implementation contract. Both were retained and clarified.
+- `docs/systems/triggerable_scenarios.md` and `docs/events/006_independence_wave/systems/triggerable_scenario.md` intentionally overlap. The former is the cross-scenario index, and the latter is the SCN-008 implementation contract. Both were retained and clarified.
 - The v27 improvement handoff and this handoff both record 32 cells. The v27 file is the bounded closure plan, while this file is the documentation authority and patch ledger. Neither replaces the other.
 - The v27 catalog audit remains the workbook/localisation evidence record. This handoff records the no-workbook-change disposition and the current doc crosswalk.
 - v23/v27 completion snapshots and older six-by-four plans remain historical evidence. No file was deleted or rewritten to hide the old shorthand.
@@ -75,9 +75,9 @@ Files changed:
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md`
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`
 - `docs/specs/006_independence_wave_specs/quality/catalog_alignment_handoff.md`
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/systems/triggerable_scenarios.md`
-- `docs/systems/independence_wave_triggerable_scenario.md`
+- `docs/events/006_independence_wave/systems/triggerable_scenario.md`
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - this handoff

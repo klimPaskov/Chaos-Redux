@@ -75,7 +75,7 @@ This matrix turns the expanded specs into implementation gates. A coding agent s
 
 | Gate | Must be true | Failure signal | Evidence expected |
 | --- | --- | --- | --- |
-| Event docs | Event doc describes actual implemented behavior. | Docs repeat old deleted behavior or planning-only text. | `docs/events/013_natural_disasters.md` aligns with implementation. |
+| Event docs | Event doc describes actual implemented behavior. | Docs repeat old deleted behavior or planning-only text. | `docs/events/013_natural_disasters/overview.md` aligns with implementation. |
 | Spreadsheet | Catalog fields match final in-game wording after localisation exists. | Spreadsheet uses spec directions as final copy. | Spreadsheet worker handoff records changed rows and fields. |
 | Localisation audit | Visible text is complete and follows style rules. | Missing keys, duplicate keys, process notes, or raw triggers remain. | Localisation auditor handoff lists key checks and changes. |
 | Completion audit | A completion auditor checks spec versus implementation. | Main agent claims completion without independent audit. | Completion audit lists finished, partial, blocked, and missing surfaces. |

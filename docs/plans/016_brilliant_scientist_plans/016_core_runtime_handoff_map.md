@@ -41,7 +41,7 @@ The following are accepted bounded packages because their handoffs record comple
 
 ## Event 019 provider integration contract
 
-The reusable Event 019 provider API is documented in `docs/systems/019_infantry_spawn_triggerable_scenario.md` and implemented in `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`. Its current nonhuman providers are `501` zombie, `502` ghost, and `503` coal golem. The callback family includes registration, eligibility, template construction, spawn, sustainment, management evaluation, payment, refund, derivative setup, derivative cleanup, and public-addition removal.
+The reusable Event 019 provider API is documented in `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` and implemented in `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`. Its current nonhuman providers are `501` zombie, `502` ghost, and `503` coal golem. The callback family includes registration, eligibility, template construction, spawn, sustainment, management evaluation, payment, refund, derivative setup, derivative cleanup, and public-addition removal.
 
 Event 016 implements collision-free family/provider IDs `504` through `508` and the complete Event 019 callback contract for these reusable consumers:
 
@@ -91,7 +91,7 @@ The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` p
 
 | File or evidence | Contradiction | Reconciliation status |
 | --- | --- | --- |
-| `docs/events/016_brilliant_scientist.md` | Earlier presentation and blocker prose said all super-event images, later portraits, and severe animations were missing. | Status and presentation paragraphs now point to current accepted packages and the default-enabled core boundary. |
+| `docs/events/016_brilliant_scientist/overview.md` | Earlier presentation and blocker prose said all super-event images, later portraits, and severe animations were missing. | Status and presentation paragraphs now point to current accepted packages and the default-enabled core boundary. |
 | `016_source_of_truth_map.md`, `016_brilliant_scientist_resume_packet.md`, and `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md` | 2026-07-14 text described the placeholder opening and no Directorate, project, country, focus, or asset implementation. | The old records are explicitly historical; current bounded tranches are mapped here. The specs themselves remain unmodified design snapshots. |
 | `docs/assets/016_brilliant_scientist/manifest.md` and `matrices/016_asset_inventory.md` | Counters still show zero for several packages that now have runtime files and accepted handoffs. | Unresolved in those source files because concurrent asset edits are active; this map is the current status pointer. |
 | Event 019 registry and Event 016 route forces | Event 019 providers 504-508 now expose clone, robot, paleo, xeno, and alien-interface families from Event 016 history. | Resolved statically; live Anomalous Rising, management, defeat, and final-cleanup validation remains user-owned. |

@@ -51,13 +51,24 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_registry_surface_registered`, and
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
-FORM-42, and the parent Event 006 completion audit remains pending.
+FORM-42. The current whole-event authority is
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md`,
+which retains **HOLD / PARTIAL** while HAW/FSM admission, live allocation,
+scenario, focus geometry, AI, and synchronized transaction evidence remain open.
+IW-012 Iceland belongs to the Northern and Western Europe scope and its static
+admission is documented in `northern_western_europe_packages.md` and the
+dedicated Iceland package reference rather than duplicated in this Pacific
+package document.
 
-The allocator audit passes 149 publishers, 126 automatic/high-chaos selectable
-packages, 138 SCN-008 ranked packages, the exact 3/4/5/7/10 ladder, and Event
-005-first joint reservation ordering. The current installed scan covers 108
-Event 006-owned identifiers, 122 Workshop directories, three sibling local
-mods, archives, and reports zero collisions.
+The current v31 allocator audit passes 149 publishers, 126 automatic/high-chaos
+selectable packages, 138 SCN-008 ranked packages, eleven exact attestations
+across ten compatible reservation groups, the doubled 6/8/10/14/20 ladder, and
+Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
+covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
+local mods, archives, and reports zero collisions; it remains historical scan
+evidence rather than current environment proof. The durable Event 006 portrait
+shelf now contains 54 original-size masters with no normalized or advisor
+derivatives.
 
 ## Availability and release safety
 

@@ -15,7 +15,7 @@ Required project guidance was read before inspecting or patching the backend:
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `.agents/skills/hoi4-decisions-missions/SKILL.md`
 - `docs/plans/010_death_plans/2026_07_11_death_improvement_loop_addendum.md`
-- the current Event 010 specs, matrices, README, and `docs/events/010_death.md`
+- the current Event 010 specs, matrices, README, and `docs/events/010_death/overview.md`
 
 The required offline wiki pages were consulted: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding. Relevant official vanilla documentation and precedents were checked for script constants, variables, meta triggers, `distance_to`, dynamic modifiers, event targets, state control changes, and targeted decisions.
 

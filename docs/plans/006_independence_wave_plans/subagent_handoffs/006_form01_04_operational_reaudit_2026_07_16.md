@@ -55,12 +55,12 @@ This is a localisation-completion blocker, not a FORM-03 territory-mutation defe
 
 ### F03-P2: the report-scene submanifest contains a stale merge instruction
 
-`docs/assets/006_independence_wave/low_countries_form03_progression/report_scene/submanifest.md:83-84` says that the package-root manifest was not edited and that `docs/systems/006_independence_wave_form03_progression.md` still claims there is no distinct art.
+`docs/assets/006_independence_wave/low_countries_form03_progression/report_scene/submanifest.md:83-84` says that the package-root manifest was not edited and that `docs/events/006_independence_wave/systems/form03_progression.md` still claims there is no distinct art.
 
 Both statements are stale in the current tree:
 
 - `docs/assets/006_independence_wave/manifest.md:191-210` records ASSET-048, its runtime texture, sprite, and `.300-.308` consumers; and
-- `docs/systems/006_independence_wave_form03_progression.md:98-110` documents the six focus icons, six ideas, six decision icons, dedicated report scene, registrations, and consumers.
+- `docs/events/006_independence_wave/systems/form03_progression.md:98-110` documents the six focus icons, six ideas, six decision icons, dedicated report scene, registrations, and consumers.
 
 Update the submanifest's merge notes to describe the completed reconciliation, then refresh any manifest checksum that intentionally covers the file. The runtime DDS and sprite are valid; the blocker is stale asset-package documentation.
 

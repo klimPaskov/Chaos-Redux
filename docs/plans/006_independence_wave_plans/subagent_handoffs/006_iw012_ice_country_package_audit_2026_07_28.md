@@ -43,7 +43,7 @@ No gameplay file was patched by this audit. The adapter is statically admitted; 
 - `common/ai_strategy/006_independence_wave_ice.txt` owns origin-aware AI plans using the documented strategy types checked in this re-audit.
 - `common/script_constants/006_independence_wave_ice_constants.txt` owns values, durations, politics, route thresholds, and AI tuning.
 - `localisation/english/006_independence_wave_ice_l_english.yml` owns direct player-facing strings.
-- `docs/events/006_independence_wave_iw012_ice_package.md` and `docs/assets/006_independence_wave/iw012_ice_package_2026_07_28/manifest.md` describe the intended package and source-reuse asset policy.
+- `docs/events/006_independence_wave/iw012_ice_package.md` and `docs/assets/006_independence_wave/iw012_ice_package_2026_07_28/manifest.md` describe the intended package and source-reuse asset policy.
 
 ### Direct shared surfaces
 

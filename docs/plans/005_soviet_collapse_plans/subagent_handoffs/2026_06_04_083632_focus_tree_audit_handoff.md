@@ -31,7 +31,7 @@ The requested `common/national_focus/005_soviet_collapse_ukraine.txt` and `commo
 
 Parsed 1,698 focuses across:
 
-- `005_soviet_collapse_ancient_restorations.txt`: KZR, SOG, KHW, ALN; 16 focuses each.
+- `005_soviet_collapse_ancient_restorations.txt`: APX, SOG, ANX, ABX; 16 focuses each.
 - `005_soviet_collapse_custom_splinters.txt`: 26 custom splinter trees; most large splinters use a 47-focus template, with PRA/TSC/RMC/DSC/NRF/ICD smaller variants.
 - `005_soviet_collapse_factory_successors.txt`: CFR 47, OGB 23, MFR 58.
 - `005_soviet_collapse_republics.txt`: Ukraine 83, generic breakaway 36, internal republic 62, Baltic 42, Caucasus 40, Central Asia 45, Moldova 48, Belarus 53, Kazakhstan 92.
@@ -57,8 +57,8 @@ Most repeated completion reward helpers:
 
 High-confidence repeated bundle examples:
 
-- Depot/supply bundle: `add_building_construction`, `set_country_flag`, `soviet_collapse_apply_focus_depot_and_supply_control`; 25 identical reward signatures. Examples include `FTH_free_rail_communes`, `ALA_rail_spine_to_south`, `BBH_scorched_prison_roads`, `BBH_captured_rail_stores`, `KRS_red_fleet_signal_posts`, `DHC_grain_convoy_escorts`, `KHC_winter_corridor_columns`, `UWD_rail_yard_repair_trust`, `MRC_caucasus_pack_train_board`, `IUL_oilfield_security_cordon`, `ARD_fuel_and_convoy_escorts`, `internal_soviet_collapse_pechora_rail_survival`, `internal_soviet_collapse_kazan_ufa_workshop_board`, and `internal_soviet_collapse_sevastopol_road_watch`.
-- Enemy-front identity bundle: `set_country_flag`, `soviet_collapse_apply_custom_splinter_enemy_front_identity`; 20 matching signatures. Examples include `FTH_enemy_front`, `BSC_enemy_front`, `TNC_enemy_front`, `ALA_enemy_front`, `BBH_enemy_front`, `KRS_enemy_front`, `UDC_enemy_front`, `SDZ_enemy_front`, `GAC_enemy_front`, `DHC_enemy_front`, `KHC_enemy_front`, `FEV_enemy_front`, `SZA_enemy_front`, `UWD_enemy_front`, `MRC_enemy_front`, `IUL_enemy_front`, `BAC_enemy_front`.
+- Depot/supply bundle: `add_building_construction`, `set_country_flag`, `soviet_collapse_apply_focus_depot_and_supply_control`; 25 identical reward signatures. Examples include `FTH_free_rail_communes`, `AAX_rail_spine_to_south`, `BBH_scorched_prison_roads`, `BBH_captured_rail_stores`, `AOX_red_fleet_signal_posts`, `DHC_grain_convoy_escorts`, `KHC_winter_corridor_columns`, `UWD_rail_yard_repair_trust`, `MRC_caucasus_pack_train_board`, `IUL_oilfield_security_cordon`, `ARD_fuel_and_convoy_escorts`, `internal_soviet_collapse_pechora_rail_survival`, `internal_soviet_collapse_kazan_ufa_workshop_board`, and `internal_soviet_collapse_sevastopol_road_watch`.
+- Enemy-front identity bundle: `set_country_flag`, `soviet_collapse_apply_custom_splinter_enemy_front_identity`; 20 matching signatures. Examples include `FTH_enemy_front`, `AEX_enemy_front`, `TNC_enemy_front`, `AAX_enemy_front`, `BBH_enemy_front`, `AOX_enemy_front`, `UDC_enemy_front`, `SDZ_enemy_front`, `GAC_enemy_front`, `DHC_enemy_front`, `KHC_enemy_front`, `FEV_enemy_front`, `SZA_enemy_front`, `UWD_enemy_front`, `MRC_enemy_front`, `IUL_enemy_front`, `ADX_enemy_front`.
 - Legal-recognition bundle: `add_stability`, `set_country_flag`, `soviet_collapse_apply_focus_legal_recognition`; 19 matching signatures. Examples include `ukr_soviet_collapse_question_of_statehood` at `005_soviet_collapse_republics.txt:146`, `ukr_soviet_collapse_elections_under_shellfire`, `ukr_soviet_collapse_republic_of_laws`, `soviet_collapse_neutrality_under_pressure`, `internal_soviet_collapse_write_the_autonomy_statute`, `caucasus_soviet_collapse_mountain_federal_compact`, `moldova_soviet_collapse_bessarabian_legal_files`, `blr_soviet_collapse_minsk_emergency_office`, and `kaz_soviet_collapse_lone_steppe_state`.
 - Custom splinter identity bundles repeat almost one-for-one across large splinters: `soviet_collapse_apply_custom_splinter_first_guard_identity`, `stores_identity`, `legitimacy_identity`, `rival_identity`, `doctrine_identity`, `foreign_identity`, `inner_faction_identity`, `special_arm_identity`, `supply_identity`, `civil_rule_identity`, `propaganda_identity`, `settlement_identity`, `industry_plan_identity`, and `hidden_doctrine_identity`. Each appears around 19 times.
 
@@ -72,9 +72,9 @@ The major systemic issue is that many trees have the visual size of a bespoke fo
 - `soviet_collapse_moldova_focus_tree`: 48 focuses, 0 decision unlocks, 0 claim/core/wargoal packages, about 35 generic rewards. Dniester, Romanian alignment, and independent republic paths lack a matching decision or map system.
 - `soviet_collapse_kazakhstan_focus_tree`: 92 focuses, only 4 decision unlocks, 0 claim/core/wargoal packages, about 70 generic rewards. The tree is large, but the steppe empire/high-chaos routes are not mechanically overpowered or aggressive enough.
 - `ukr_soviet_collapse_focus_tree`: 83 focuses, 7 decision unlocks, 3 claim/core/wargoal packages, about 69 generic rewards. Ukraine has better route identity than most republics, but many focuses still resolve to legal/depot/military helper calls.
-- Custom 47-focus splinters such as BSC, TNC, ALA, BBH, KRS, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and BAC have 0 decision unlocks and usually 0-2 claim/core/wargoal packages. Most of their content is the repeated identity-helper template.
+- Custom 47-focus splinters such as AEX, TNC, AAX, BBH, AOX, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and ADX have 0 decision unlocks and usually 0-2 claim/core/wargoal packages. Most of their content is the repeated identity-helper template.
 - TSC, RMC, and ICD have only 18 focuses each, 1 decision unlock, 1 wargoal/claim/core package, and 12-13 generic rewards.
-- Ancient restoration trees KZR/SOG/KHW/ALN have 16 focuses each. They have some conquest/restoration hooks, but the political/industrial/military/diplomatic layers are too thin for the concept.
+- Ancient restoration trees APX/SOG/ANX/ABX have 16 focuses each. They have some conquest/restoration hooks, but the political/industrial/military/diplomatic layers are too thin for the concept.
 - Factory successors are stronger than most but uneven: CFR has 47 focuses and 8 decisions yet starts with a flat root ladder; OGB has only 23 focuses; MFR has 58 focuses but about 47 generic rewards.
 
 ## Finding 3: Layout and Pathline Risks
@@ -83,10 +83,10 @@ These are geometric risks inferred from focus x/y coordinates, prerequisite link
 
 Ancient restoration trees repeat the same convergence problem:
 
-- KZR: `KZR_caspian_road_markets` (`x=0 y=3`) to `KZR_league_transit_bargain` (`x=6 y=4`, line 162) likely passes through `KZR_customs_workshop_compact` (`x=3 y=3`, line 85). `KZR_caspian_patrol_letters` (`x=12 y=3`, line 130) to `KZR_league_transit_bargain` likely passes through `KZR_guard_the_crossings` (`x=8 y=3`, line 116). Convergence into `KZR_old_border_files` (`x=6 y=5`, line 177) likely passes through `KZR_league_transit_bargain`.
+- APX: `APX_caspian_road_markets` (`x=0 y=3`) to `APX_league_transit_bargain` (`x=6 y=4`, line 162) likely passes through `APX_customs_workshop_compact` (`x=3 y=3`, line 85). `APX_caspian_patrol_letters` (`x=12 y=3`, line 130) to `APX_league_transit_bargain` likely passes through `APX_guard_the_crossings` (`x=8 y=3`, line 116). Convergence into `APX_old_border_files` (`x=6 y=5`, line 177) likely passes through `APX_league_transit_bargain`.
 - SOG: same pattern around `SOG_oasis_merchant_roads`, `SOG_bazaar_workshop_compact`, `SOG_scholar_envoy_rooms`, `SOG_oasis_checkpoint_guard`, `SOG_league_city_bargain`, and `SOG_old_city_border_files`.
-- KHW: same pattern around `KHW_caravan_well_compact`, `KHW_oasis_workshop_compact`, `KHW_guard_the_pumps`, `KHW_canal_recognition_letters`, `KHW_league_irrigation_bargain`, and `KHW_old_oasis_border_files`.
-- ALN: same pattern around `ALN_darial_road_offices`, `ALN_mountain_workshop_compact`, `ALN_guard_the_pass_line`, `ALN_mountain_envoy_guarantees`, `ALN_league_pass_bargain`, and `ALN_old_pass_border_files`.
+- ANX: same pattern around `ANX_caravan_well_compact`, `ANX_oasis_workshop_compact`, `ANX_guard_the_pumps`, `ANX_canal_recognition_letters`, `ANX_league_irrigation_bargain`, and `ANX_old_oasis_border_files`.
+- ABX: same pattern around `ABX_darial_road_offices`, `ABX_mountain_workshop_compact`, `ABX_guard_the_pass_line`, `ABX_mountain_envoy_guarantees`, `ABX_league_pass_bargain`, and `ABX_old_pass_border_files`.
 
 Custom splinter template risks:
 
@@ -129,7 +129,7 @@ These focuses or branches read as event/mechanic hooks but currently mostly prov
 - Kazakhstan high-chaos route: `kaz_soviet_collapse_the_southern_republics_do_not_kneel` should do more than league/security/high-chaos helper calls; it should create aggressive steppe-map pressure, claims, puppet demands, border-war decisions, or chaos escalation.
 - Ukraine empire/hegemony route: `ukr_soviet_collapse_black_sea_hegemony`, `ukr_soviet_collapse_breadbasket_empire`, and `ukr_soviet_collapse_great_steppe_and_sea_plan` should tie into Soviet Collapse objective pressure, expansion decisions, naval/Black Sea control, grain leverage, or route-specific wars.
 - Custom splinter identity routes: repeated `*_first_guard`, `*_stores`, `*_legitimacy`, `*_rival`, `*_doctrine`, `*_foreign`, `*_league`, `*_enemy_front`, `*_settlement`, and `*_industry_plan` focuses should produce country-specific mechanics, target choices, decisions, or neighbor pressure rather than only identity helpers.
-- Ancient restorations KZR/SOG/KHW/ALN should have stronger restoration mechanics: old-border claims, legitimacy contests, caravan/pass/canal control decisions, and aggressive high-chaos conquest loops.
+- Ancient restorations APX/SOG/ANX/ABX should have stronger restoration mechanics: old-border claims, legitimacy contests, caravan/pass/canal control decisions, and aggressive high-chaos conquest loops.
 
 ## Top 20 Actionable Fixes for Parent
 
@@ -149,7 +149,7 @@ These focuses or branches read as event/mechanic hooks but currently mostly prov
 ### `005_soviet_collapse_custom_splinters.txt`
 
 11. Large 47-focus splinters: break the repeated identity-template chain. Focuses named `*_first_guard`, `*_stores`, `*_legitimacy`, `*_rival`, `*_doctrine`, `*_foreign`, `*_league`, `*_enemy_front`, `*_settlement`, and `*_industry_plan` should not all resolve to the same helper families.
-12. Large custom splinters: add real decision/mechanic/map payoff. Most BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC-style trees have 0 decision unlocks and 0-2 expansion packages.
+12. Large custom splinters: add real decision/mechanic/map payoff. Most AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX-style trees have 0 decision unlocks and 0-2 expansion packages.
 13. High-chaos custom splinters: make aggressive countries meaningfully dangerous. Add claims, wargoals, raids, destabilization, puppet demands, objective pressure, or scripted escalation rather than only `soviet_collapse_apply_focus_high_chaos_identity`.
 14. TSC/RMC/ICD: deepen the 18-focus death/revenant trees with distinct political, military, industrial, diplomacy, and expansion routes; they currently read like short variants with 12-13 generic rewards.
 15. Custom splinter layout: re-lay the repeated 47-focus template around `FTH_rival`/`FTH_league`/`FTH_foreign`, `FTH_inner_faction`/`FTH_special_arm`/`FTH_civil_rule`, and `FTH_inner_faction`/`FTH_enemy_front`/`FTH_supply`; this likely repeats across sibling splinters.
@@ -163,7 +163,7 @@ These focuses or branches read as event/mechanic hooks but currently mostly prov
 
 ### `005_soviet_collapse_ancient_restorations.txt`
 
-20. KZR/SOG/KHW/ALN: deepen each 16-focus ancient restoration tree and re-lay the repeated crossing-prone convergence pattern around road/workshop/guard/envoy/league/old-border focuses. Add old-border restoration, pass/canal/caravan control, legitimacy contest, and aggressive high-chaos mechanics.
+20. APX/SOG/ANX/ABX: deepen each 16-focus ancient restoration tree and re-lay the repeated crossing-prone convergence pattern around road/workshop/guard/envoy/league/old-border focuses. Add old-border restoration, pass/canal/caravan control, legitimacy contest, and aggressive high-chaos mechanics.
 
 ## Remaining Risks
 

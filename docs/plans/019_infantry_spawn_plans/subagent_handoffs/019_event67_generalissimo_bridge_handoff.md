@@ -99,7 +99,7 @@ New localisation keys:
 - `common/decisions/019_infantry_spawn_claimant_decisions.txt`
 - `common/scripted_localisation/019_infantry_spawn_scripted_localisation.txt`
 - `localisation/english/019_infrantry_spawn_l_english.yml`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - this handoff
 
 ## Review and validation evidence

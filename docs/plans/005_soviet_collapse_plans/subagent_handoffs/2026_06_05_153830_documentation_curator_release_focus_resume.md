@@ -8,7 +8,7 @@ This is not an Event005 completion claim. Event005 remains incomplete.
 
 ## Files Changed
 
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
@@ -47,11 +47,11 @@ No gameplay files, localisation files, scripted effects or triggers, focuses, de
 
 ## Validation Run
 
-- `git diff --check -- docs/events/005_soviet_collapse.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
+- `git diff --check -- docs/events/005_soviet_collapse/overview.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
   - Result: passed with no output.
-- `git status --short -- docs/events/005_soviet_collapse.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
+- `git status --short -- docs/events/005_soviet_collapse/overview.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
   - Result: showed only the four documentation surfaces changed by this pass: three modified Markdown files and this new handoff.
-- `rg -n "Event005 remains incomplete|gradual|pressure-gated|standalone|Tajikistan|hardcoded tag lists|no active flag work|no-touch|spreadsheet" docs/events/005_soviet_collapse.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
+- `rg -n "Event005 remains incomplete|gradual|pressure-gated|standalone|Tajikistan|hardcoded tag lists|no active flag work|no-touch|spreadsheet" docs/events/005_soviet_collapse/overview.md docs/plans/005_soviet_collapse_plans/documentation_state.md docs/plans/005_soviet_collapse_plans/source_of_truth_map.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05_153830_documentation_curator_release_focus_resume.md`
   - Result: found the expected markers for incomplete status, gradual/pressure-gated releases, standalone scenarios, Tajikistan/no-hardcoded-tag-list visibility work, no-active-flag/no-touch scope, and spreadsheet parity.
 
 ## Remaining Doc Risks

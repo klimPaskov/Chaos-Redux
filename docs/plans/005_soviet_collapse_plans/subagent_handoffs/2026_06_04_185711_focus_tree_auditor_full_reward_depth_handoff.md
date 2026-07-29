@@ -21,10 +21,10 @@ Vanilla precedent supports the main audit standard: route mutexes should be read
 
 | File | Focus tree id | Focuses |
 |---|---:|---:|
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | 16 |
 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ABX_soviet_collapse_ancient_focus_tree` | 16 |
 | `005_soviet_collapse_custom_splinters.txt` | `FTH_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | 22 |
 | `005_soviet_collapse_custom_splinters.txt` | `TSC_soviet_collapse_focus_tree` | 18 |
@@ -32,11 +32,11 @@ Vanilla precedent supports the main audit standard: route mutexes should be read
 | `005_soviet_collapse_custom_splinters.txt` | `DSC_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `ICD_soviet_collapse_focus_tree` | 18 |
-| `005_soviet_collapse_custom_splinters.txt` | `BSC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AEX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `TNC_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `ALA_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AAX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `BBH_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `KRS_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AOX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `UDC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `SDZ_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `GAC_soviet_collapse_focus_tree` | 47 |
@@ -47,7 +47,7 @@ Vanilla precedent supports the main audit standard: route mutexes should be read
 | `005_soviet_collapse_custom_splinters.txt` | `UWD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `MRC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `IUL_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `BAC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `ADX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `ARD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `NLC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
@@ -106,12 +106,12 @@ Highest-volume non-idea helpers from focuses: `soviet_collapse_apply_focus_depot
 
 High-risk by focus count and branch/mechanic scan:
 
-- `KZR`, `SOG`, `KHW`, `ALN` ancient restoration trees: only 16 focuses each. They have symbolic/expansion choices and some claim decisions, but no full political, industry, military, diplomacy, expansion, and endgame branch set.
+- `APX`, `SOG`, `ANX`, `ABX` ancient restoration trees: only 16 focuses each. They have symbolic/expansion choices and some claim decisions, but no full political, industry, military, diplomacy, expansion, and endgame branch set.
 - `TSC`, `RMC`, `DSC`, `NRF`, `ICD`: 18-focus high-chaos/special trees. These are too short for their concepts. They read as opener, two mutex choices, a few support focuses, second mutex, endpoint.
 - `PRA`: 22 focuses and the strongest unique mechanic surface in the short group, but expansion count is thin and the authority idea lifecycle is noisy.
 - `OGB`: 23 focuses; it has restored-name flavor and Volga hooks, but industry and diplomacy are shallow.
 - `soviet_collapse_breakaway_focus_tree`: 36 focuses with broad political wording, but only one expansion-keyed focus and no strong branch-specific map mechanics.
-- Large 47-focus custom splinters are better by count, but many have weak mechanic counts: `FTH`, `BBH`, `KRS`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC` showed zero direct "mechanicish" rewards by the parser criteria. They rely on generic helpers and flat map/building rewards.
+- Large 47-focus custom splinters are better by count, but many have weak mechanic counts: `FTH`, `BBH`, `AOX`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX` showed zero direct "mechanicish" rewards by the parser criteria. They rely on generic helpers and flat map/building rewards.
 
 ## Mutex And Pathline Risks
 
@@ -131,7 +131,7 @@ The following need stronger lore-driven mechanics, not just more stats:
 - `DSC`: has some stronger hooks than peers, but still needs death-army escalation, recurring revenant units, grave-front claims, and post-victory occupation/terror mechanics.
 - `NRF`: needs fleet/port mechanics, ghost convoy raids, Arctic naval buildup, White Sea claims, and port integration decisions.
 - `ICD`: needs dead commissariat authority, political terror, roll-call conscription, internal purge decisions, and direct offensive pressure.
-- Ancient restorations: `KZR`, `SOG`, `KHW`, `ALN` need cores/claims/wargoals tied to their historical restoration thesis, stronger regional integration decisions, elite units, and final formable/end-state payoffs.
+- Ancient restorations: `APX`, `SOG`, `ANX`, `ABX` need cores/claims/wargoals tied to their historical restoration thesis, stronger regional integration decisions, elite units, and final formable/end-state payoffs.
 - `OGB`: needs Volga-Idel regional mechanics, stronger conflict/settlement with Idel-Ural, and a real expansion or confederation branch.
 - `PRA`: should turn railway authority into a reusable moving-state mechanic with route permits, armored train deployment, corridor taxation, and coercive rail war goals.
 
@@ -140,7 +140,7 @@ The following need stronger lore-driven mechanics, not just more stats:
 Findings:
 
 - Focus files set 1,696 distinct country flags. A script-token scan outside the audited focus files found 1,379 with no occurrence elsewhere. This is not automatically a bug because focus flags can be used only for focus prerequisites/AI, but it is a strong sign that many focuses do not unlock mechanics beyond the tree itself.
-- Ancient restoration flags are especially suspect: most `KZR_*`, `SOG_*`, `KHW_*`, and `ALN_*` focus flags are not read outside the audited focus file. Examples: `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_alan_pass_charter`.
+- Ancient restoration flags are especially suspect: most `APX_*`, `SOG_*`, `ANX_*`, and `ABX_*` focus flags are not read outside the audited focus file. Examples: `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_alan_pass_charter`.
 - Per-tag custom splinter flags like `ala_focus_*`, `ard_focus_*`, and similar are mostly focus-internal. This makes the 47-focus trees look large while many route milestones have no external decision/mechanic consequences.
 - Decision scan found only 71 focus reward lines using `unlock_decision_tooltip` or `activate_decision` across 1,698 focuses. Many decisions are gated by flags instead of explicit unlock tooltips, which works mechanically but hides the connection from the player.
 - `common/decisions/005_soviet_collapse_kazakhstan_route_decisions.txt` route decisions are gated by focus-set route flags but are not directly exposed by focus unlock tooltips. The `*_recent` flags are decision cooldown flags, not focus gaps.
@@ -152,7 +152,7 @@ Findings:
 1. **Idea helper cleanup tranche:** Replace focus reward calls to `soviet_collapse_update_pra_authority_idea`, `soviet_collapse_clear_focus_starting_tension_ideas`, and `soviet_collapse_add_republic_focus_recovery_progress` with clearer route-specific helpers or custom tooltips where needed. Keep hidden lifecycle cleanup, but prevent repeated visible reward churn.
 2. **Top 20 reward spam tranche:** Patch the ranked reward sites by moving repeated building/equipment payloads behind custom tooltips, adding route-specific decision unlocks, units, claims, or dynamic mechanics, and removing duplicate random-state construction where it has no clear geography.
 3. **Short chaos tree depth tranche:** Expand `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `PRA`, and `OGB` into real political/industry/military/diplomacy/expansion/endgame branches. Do not bulk-copy a 47-focus template.
-4. **Ancient restoration mechanics tranche:** Give `KZR`, `SOG`, `KHW`, and `ALN` concrete restoration systems: claims/cores, integration decisions, historic legitimacy pressure, elite units, and end-state choices.
+4. **Ancient restoration mechanics tranche:** Give `APX`, `SOG`, `ANX`, and `ABX` concrete restoration systems: claims/cores, integration decisions, historic legitimacy pressure, elite units, and end-state choices.
 5. **Decision visibility tranche:** For Kazakhstan, Moldova, returned names, PRA, MFR, CFR, and custom splinter route decisions, add focus unlock tooltips where a focus is intended to open a decision category/action. Do not add fallback decisions without parent design approval.
 6. **Layout/mutex cleanup tranche:** Review CFR, MFR, Moldova, and the 18-focus special trees in the focus UI. Keep meaningful choices, but reduce repeated mutex clusters and pathline clutter.
 

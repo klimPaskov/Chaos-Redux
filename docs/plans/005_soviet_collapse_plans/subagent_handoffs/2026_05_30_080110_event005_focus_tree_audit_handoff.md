@@ -91,7 +91,7 @@ Examples of repeated small reward patterns:
 | Small equipment in custom splinters | `PRA_omsk_station_guard`, `PRA_count_the_locomotives`, `PRA_the_board_overrules_ministers`, `DSC_grave_ordnance_claims`, `DSC_rearguard_supply_bureau`, `NRF_salvage_the_dark_berths` |
 | One-state construction as main payoff | `ukr_soviet_collapse_first_republican_line`, `blr_soviet_collapse_seal_the_minsk_junction`, `kaz_soviet_collapse_airstrips_on_the_steppe`, `PRA_repair_crews_without_ministries`, `CFR_emergency_cement_accounts` |
 | Political/stability filler | `ukr_soviet_collapse_workers_congress_in_kharkiv`, `ukr_soviet_collapse_coalition_of_three_ministries`, `PRA_ticket_courts_for_every_platform`, `OGB_restore_the_bolghar_name` |
-| Naval/convoy repeats | `kaz_soviet_collapse_caspian_security_detachments`, `kaz_soviet_collapse_iranian_caspian_notes`, ARD and NRF convoy/port focuses, several KRS dockyard/naval focuses |
+| Naval/convoy repeats | `kaz_soviet_collapse_caspian_security_detachments`, `kaz_soviet_collapse_iranian_caspian_notes`, ARD and NRF convoy/port focuses, several AOX dockyard/naval focuses |
 
 The best next pass should replace some repeated reward dumps with existing decisions, missions, route locks, AI strategy changes, postwar settlement hooks, claims/cores where intended, or country-specific mechanics. Do not solve this by adding new ideas to every focus.
 
@@ -132,8 +132,8 @@ The parser found 35 focuses whose prerequisite group OR-joins mutually exclusive
 | `DSC_field_hospital_memorials` | `005_soviet_collapse_custom_splinters.txt:2996` | `DSC_revenant_staff_line` (6,3) and `DSC_witness_officers` (2,3) | Converges incompatible identity fork immediately after choice. |
 | `DSC_maps_of_lost_armies` | `005_soviet_collapse_custom_splinters.txt:3083` | Same DSC fork | Same risk; map line may visually erase the choice. |
 | `CFR_apartment_blocks_for_loyalty` | `005_soviet_collapse_factory_successors.txt:517` | `CFR_cities_first` (3,8) and `CFR_rails_first` (8,9) | Strategic choices are mutually exclusive but child visibly joins both. |
-| `BSC_industry_plan`, `TNC_industry_plan`, `ALA_industry_plan`, `BBH_industry_plan`, `KRS_industry_plan`, `FEV_industry_plan`, `SZA_industry_plan`, `UWD_industry_plan`, `MRC_industry_plan`, `IUL_industry_plan`, `BAC_industry_plan`, `ARD_industry_plan`, `NLC_industry_plan` | `005_soviet_collapse_custom_splinters.txt` various | `radical_turn` and `settlement` pairs | Repeated template pattern: industry child often joins mutually exclusive ideological/settlement forks. This needs a design decision: visible convergence, duplicate route-specific industry child, or hidden availability only. |
-| `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_alan_pass_charter` | `005_soviet_collapse_ancient_restorations.txt` | symbolic vs expansionist fork pairs | Ancient restoration trees deliberately converge, but this undercuts route exclusivity and line clarity. |
+| `AEX_industry_plan`, `TNC_industry_plan`, `AAX_industry_plan`, `BBH_industry_plan`, `AOX_industry_plan`, `FEV_industry_plan`, `SZA_industry_plan`, `UWD_industry_plan`, `MRC_industry_plan`, `IUL_industry_plan`, `ADX_industry_plan`, `ARD_industry_plan`, `NLC_industry_plan` | `005_soviet_collapse_custom_splinters.txt` various | `radical_turn` and `settlement` pairs | Repeated template pattern: industry child often joins mutually exclusive ideological/settlement forks. This needs a design decision: visible convergence, duplicate route-specific industry child, or hidden availability only. |
+| `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_alan_pass_charter` | `005_soviet_collapse_ancient_restorations.txt` | symbolic vs expansionist fork pairs | Ancient restoration trees deliberately converge, but this undercuts route exclusivity and line clarity. |
 
 ## Icon Coverage Table
 
@@ -142,7 +142,7 @@ This audit checked icon assignment strings only. It did not inspect, edit, or re
 | File | Missing `icon =` | Repeated icon ids | Notes |
 | --- | ---: | ---: | --- |
 | `005_soviet_collapse_republics.txt` | 0 | 22 | Reuse includes `GFX_ukr_soviet_collapse_democratic`, `GFX_ukr_soviet_collapse_industry`, `GFX_focus_soviet_collapse_guard_the_radio_stations`, and other shared families. Some reuse may be intentional; major route payoffs need unique icons. |
-| `005_soviet_collapse_custom_splinters.txt` | 0 | 99 | Reuse is widespread in shared template trees (`GFX_focus_BSC_legitimacy`, `GFX_focus_TNC_legitimacy`, etc.). This supports the user's complaint that many trees still read generically. |
+| `005_soviet_collapse_custom_splinters.txt` | 0 | 99 | Reuse is widespread in shared template trees (`GFX_focus_AEX_legitimacy`, `GFX_focus_TNC_legitimacy`, etc.). This supports the user's complaint that many trees still read generically. |
 | `005_soviet_collapse_factory_successors.txt` | 0 | 11 | CFR reuses several icon identities across related construction focuses; acceptable for families, but final route payoffs should be unique. |
 | `005_soviet_collapse_ancient_restorations.txt` | 0 | 8 | Four 16-focus ancient trees intentionally share icon families. This reinforces that they are still stub-like. |
 

@@ -2,21 +2,21 @@
 
 ## Final disposition
 
-Audio research, rights repair, production, and downstream documentation are complete for all three Event 018 Oth-Kesh super-event roles. Three distinct source recordings are preserved, rights-checked, edited into 60-to-120-second musical arcs, and exported as paired 44.1 kHz stereo OGG/WAV files.
+Audio research, rights repair, production, and downstream documentation are complete for all three Event 018 Oth-Kesh super-event roles. Three distinct source recordings are preserved, rights-checked, edited into 60-to-120-second musical arcs, and exported as paired 44.1 kHz stereo WAV files.
 
 Detailed provenance, licence evidence, musical rationale, attribution, edit parameters, and hashes live in:
 
-- `docs/super_events/018_resources_found_super_event_audio_research.md`
+- `docs/super_events/018_resources_found/audio_research.md`
 - `docs/assets/018_resources_found/audio_manifest.md`
 - `docs/assets/018_resources_found/source/audio/license_evidence/README.md`
 
 ## Stable identifier map
 
-| Role | Visible slot | Audio ID | Final OGG | Final WAV | Stable underlying sound ID |
+| Role | Visible slot | Audio ID | Final WAV | Final WAV | Stable underlying sound ID |
 | --- | ---: | ---: | --- | --- | --- |
-| `THE OTH-KESH HOST RISES` | `82` | `54` | `music/018_resources_found/super_event_54_oth_kesh_emergence.ogg` | `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav` | `chaosx_super_event_resources_found_oth_kesh_emergence_track` |
-| `THE DEEP WAR CROSSES THE SEAS` | `83` | `55` | `music/018_resources_found/super_event_55_deep_war_crosses_seas.ogg` | `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav` | `chaosx_super_event_resources_found_deep_war_crosses_seas_track` |
-| Conditional `THE LAST DEPTH IS SEALED` | `84` | `56` | `music/018_resources_found/super_event_56_last_depth_sealed.ogg` | `sound/018_resources_found/super_event_56_last_depth_sealed.wav` | `chaosx_super_event_resources_found_last_depth_sealed_track` |
+| `THE OTH-KESH HOST RISES` | `82` | `54` | `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav` | `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav` | `chaosx_super_event_resources_found_oth_kesh_emergence_track` |
+| `THE DEEP WAR CROSSES THE SEAS` | `83` | `55` | `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav` | `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav` | `chaosx_super_event_resources_found_deep_war_crosses_seas_track` |
+| Conditional `THE LAST DEPTH IS SEALED` | `84` | `56` | `sound/018_resources_found/super_event_56_last_depth_sealed.wav` | `sound/018_resources_found/super_event_56_last_depth_sealed.wav` | `chaosx_super_event_resources_found_last_depth_sealed_track` |
 
 The duration and rights repair changed no ID, helper, wrapper, sound ID, runtime filename, or visible-slot pairing.
 
@@ -64,7 +64,7 @@ All six outputs decode, are stereo, use exactly 44,100 Hz, and are 60-to-120 sec
 | `55` | `110.000000 / -18.47 / -2.27 / 18.50` | `110.000000 / -18.44 / -2.26 / 18.60` | `b6888c95658dafbf40dd822550d05c505e9a653ce4daa01191e00a6500c28215` | `f0ee745abfbe432cd26b37ad14fb800ab4bcbf77e442eb11d06f8f8f991e1266` |
 | `56` | `109.000000 / -21.86 / -2.32 / 14.20` | `109.000000 / -21.88 / -2.27 / 14.20` | `b1131b009a715c20598bf720d485c05038d583accbc1e46744dbc182d1f7631e` | `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9` |
 
-The three final OGG file hashes and decoded-PCM hashes are mutually unique. ID `56` intentionally remains quieter because its complete piano dynamic range was preserved without compression or limiting.
+The three final WAV file hashes and decoded-PCM hashes are mutually unique. ID `56` intentionally remains quieter because its complete piano dynamic range was preserved without compression or limiting.
 
 ## Runtime and catalogue alignment
 
@@ -72,7 +72,7 @@ The three final OGG file hashes and decoded-PCM hashes are mutually unique. ID `
 - `sound/chaosx_sound.asset` still points every base sound and wrapper to the exact stable WAV filename.
 - `music/chaosx_super_event_music.txt` still contains one representative zero-chance helper per cue.
 - `localisation/english/chaosx_music_l_english.yml` identifies ID `55` as Brahms rather than the superseded Debussy source.
-- `music/chaosx_music_track_list.html`, `docs/super_events/super_event_audio_packages.md`, `docs/assets/018_resources_found/manifest.md`, and `docs/events/018_resources_found.md` carry the active sources, rights, and durations.
+- `music/chaosx_music_track_list.html`, `docs/super_events/super_event_audio_packages.md`, `docs/assets/018_resources_found/manifest.md`, and `docs/events/018_resources_found/overview.md` carry the active sources, rights, and durations.
 
 ## Files added or replaced
 

@@ -21,7 +21,7 @@ The controlling design sources remain the accepted files under `docs/specs/013_n
 - Part 10 controls aftermath decision and mission depth.
 - `matrices/013_disaster_call_contract.md` controls the caller contract.
 - `implementation_readiness/013_acceptance_gate_matrix.md` and `013_validation_scenario_matrix.md` control completion proof.
-- `docs/super_events/013_natural_disasters_super_event_research_addendum.md` supersedes the earlier four-route disposition wherever the two documents conflict; the accepted package contains six super-event roles.
+- `docs/super_events/013_natural_disasters/research_addendum.md` supersedes the earlier four-route disposition wherever the two documents conflict; the accepted package contains six super-event roles.
 
 Working architecture notes and old subagent handoffs are evidence of intent or prior state, not proof that the live implementation satisfies the accepted sources.
 
@@ -318,7 +318,7 @@ Documentation must describe the live state honestly during implementation.
 
 ### Current overclaims to correct
 
-`docs/events/013_natural_disasters.md` exists, but several statements currently outrun the code:
+`docs/events/013_natural_disasters/overview.md` exists, but several statements currently outrun the code:
 
 - it says the API validates all presentation policies and scaling overrides, while several enums/bounds are not validated and recovery scale is unused;
 - it presents all family target priorities as implemented, while most target selection remains random beyond coast/heat gates;

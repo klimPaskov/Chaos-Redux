@@ -50,7 +50,7 @@ After:
 - The parent-cited `PRA_armored_train_directorate` duplicate helper call is no longer present in the current file. Current call count for `soviet_collapse_update_pra_authority_idea` inside that focus is one.
 - Large visible reward offenders remain outside this bounded patch. Current high-risk examples:
   - `OGB_the_old_name_survives_modern_war`
-  - ancient restoration expansion focuses: `KZR_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, `ALN_expansionist_mountain_claims`
+  - ancient restoration expansion focuses: `APX_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, `ABX_expansionist_mountain_claims`
   - other helper-heavy or long rewards already partly wrapped but still worth parent review: `PRA_rails_over_capitals`, `DSC_congress_of_the_dead_army`, `NRF_northern_revenant_fleet`, `ICD_commissariat_without_end`
 - Focus tree size audit confirms several trees are too small for the requested full-depth country identity standard:
   - `PRA_soviet_collapse_focus_tree`: 22 focuses
@@ -60,7 +60,7 @@ After:
   - `NRF_soviet_collapse_focus_tree`: 18 focuses
   - `ICD_soviet_collapse_focus_tree`: 18 focuses
   - `OGB_soviet_collapse_focus_tree`: 23 focuses
-  - `KZR`, `SOG`, `KHW`, and `ALN` ancient restoration trees: 16 focuses each
+  - `APX`, `SOG`, `ANX`, and `ABX` ancient restoration trees: 16 focuses each
 - OR prerequisite blocks still frequently merge mutually exclusive choices into shared follow-up pathlines. This is likely visible in game and needs visual/layout review before a completion claim. Examples:
   - `PRA_passport_of_the_moving_state`
   - `DSC_field_hospital_memorials`
@@ -68,7 +68,7 @@ After:
   - `NRF_icebound_marine_guard`
   - `NRF_maps_of_sunken_routes`
   - all template-like `*_industry_plan` convergence focuses in many custom splinter trees
-  - ancient restoration charter focuses such as `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, and `ALN_alan_pass_charter`
+  - ancient restoration charter focuses such as `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, and `ABX_alan_pass_charter`
 - Same-file coordinate collision counts are high, but many are across separate focus trees stored in the same file. The more actionable pathline audit found nine child focuses with `y` not below their parent, including:
   - `ukr_soviet_collapse_appointed_governors`
   - `ukr_soviet_collapse_breadbasket_empire`

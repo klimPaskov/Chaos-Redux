@@ -36,7 +36,7 @@ remaining live gameplay, localisation, or active route-identity asset blocker.
 | Exact leader restoration passed an ideology-group token to `promote_character` | **CLOSED** | `:64-161` enumerates all 24 loaded subtypes; `:278-285` injects the saved subtype into `promote_character`. The group token is used only by `set_politics` at `:263-267`. |
 | Event 015 overwrote or rescheduled recipient politics | **CLOSED** | No Event 015 source call to `set_party_name`, `hold_election`, `last_election`, or `election_frequency` remains. Formed identities keep native elections disabled, and scripted succession does not advance the pre-event election clock. |
 | Sixty obsolete lower-case runtime flag files remained deployed | **CLOSED** | Fresh enumeration found zero `utopia_new_utopia`, `utopia_necessary_commonwealth`, `utopia_league_of_need`, or `utopia_marked_bounds_state` TGAs in `gfx/flags/`, including medium/small and ideology variants. |
-| Current documentation described those obsolete flags as live | **OPEN, DOCUMENTATION ONLY** | `docs/assets/015_utopia_manifesto/manifest.md:50-52` and `:345-375`, plus `docs/events/015_utopia_manifesto.md:117-125`, still describe the removed package as current. |
+| Current documentation described those obsolete flags as live | **OPEN, DOCUMENTATION ONLY** | `docs/assets/015_utopia_manifesto/manifest.md:50-52` and `:345-375`, plus `docs/events/015_utopia_manifesto/overview.md:117-125`, still describe the removed package as current. |
 
 ## Exact political lifecycle audit
 
@@ -241,7 +241,7 @@ accurate and remains the correct visual-package authority.
 
 ### D2 - Event 015 mechanic document describes removed identities and missing visuals
 
-`docs/events/015_utopia_manifesto.md` is also stale:
+`docs/events/015_utopia_manifesto/overview.md` is also stale:
 
 - `:117-125` describes the four removed lower-case cosmetic identities as the
   live late package instead of the five current identities.

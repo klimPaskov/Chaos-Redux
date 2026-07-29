@@ -64,7 +64,7 @@ Current implementation facts are read in this order:
 
 1. Live gameplay, localisation, GFX, audio, and asset files.
 2. The twelve Event 014 source specification parts and current matrices.
-3. `docs/events/014_cannibalism.md`.
+3. `docs/events/014_cannibalism/overview.md`.
 4. Current manifests under `docs/assets/014_cannibalism/`.
 5. Final audits and remediation handoffs under `docs/plans/014_cannibalism_plans/subagent_handoffs/`.
 
@@ -134,7 +134,7 @@ The package validation record is deliberately definition-level, filesystem-level
 
 ## Files reconciled
 
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/specs/014_cannibalism_specs/README.md`
 - `docs/specs/014_cannibalism_specs/PACKAGE_MANIFEST.md`
 - source spec parts 4 through 12

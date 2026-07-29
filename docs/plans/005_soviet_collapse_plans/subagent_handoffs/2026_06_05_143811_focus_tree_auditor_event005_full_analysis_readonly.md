@@ -77,11 +77,11 @@ Relevant reference implications:
 | custom splinters | `DSC_soviet_collapse_focus_tree` | 2843 | 18 |
 | custom splinters | `NRF_soviet_collapse_focus_tree` | 3377 | 18 |
 | custom splinters | `ICD_soviet_collapse_focus_tree` | 3881 | 18 |
-| custom splinters | `BSC_soviet_collapse_focus_tree` | 4349 | 47 |
+| custom splinters | `AEX_soviet_collapse_focus_tree` | 4349 | 47 |
 | custom splinters | `TNC_soviet_collapse_focus_tree` | 5493 | 47 |
-| custom splinters | `ALA_soviet_collapse_focus_tree` | 6628 | 47 |
+| custom splinters | `AAX_soviet_collapse_focus_tree` | 6628 | 47 |
 | custom splinters | `BBH_soviet_collapse_focus_tree` | 7739 | 47 |
-| custom splinters | `KRS_soviet_collapse_focus_tree` | 8933 | 47 |
+| custom splinters | `AOX_soviet_collapse_focus_tree` | 8933 | 47 |
 | custom splinters | `UDC_soviet_collapse_focus_tree` | 10158 | 47 |
 | custom splinters | `SDZ_soviet_collapse_focus_tree` | 11366 | 47 |
 | custom splinters | `GAC_soviet_collapse_focus_tree` | 12616 | 47 |
@@ -92,16 +92,16 @@ Relevant reference implications:
 | custom splinters | `UWD_soviet_collapse_focus_tree` | 18507 | 47 |
 | custom splinters | `MRC_soviet_collapse_focus_tree` | 19694 | 47 |
 | custom splinters | `IUL_soviet_collapse_focus_tree` | 20867 | 47 |
-| custom splinters | `BAC_soviet_collapse_focus_tree` | 22007 | 47 |
+| custom splinters | `ADX_soviet_collapse_focus_tree` | 22007 | 47 |
 | custom splinters | `ARD_soviet_collapse_focus_tree` | 23140 | 47 |
 | custom splinters | `NLC_soviet_collapse_focus_tree` | 24339 | 47 |
 | factory successors | `CFR_soviet_collapse_focus_tree` | 18 | 47 |
 | factory successors | `OGB_soviet_collapse_focus_tree` | 1018 | 23 |
 | factory successors | `MFR_soviet_collapse_focus_tree` | 1579 | 58 |
-| ancient restorations | `KZR_soviet_collapse_ancient_focus_tree` | 13 | 16 |
+| ancient restorations | `APX_soviet_collapse_ancient_focus_tree` | 13 | 16 |
 | ancient restorations | `SOG_soviet_collapse_ancient_focus_tree` | 423 | 16 |
-| ancient restorations | `KHW_soviet_collapse_ancient_focus_tree` | 827 | 16 |
-| ancient restorations | `ALN_soviet_collapse_ancient_focus_tree` | 1235 | 16 |
+| ancient restorations | `ANX_soviet_collapse_ancient_focus_tree` | 827 | 16 |
+| ancient restorations | `ABX_soviet_collapse_ancient_focus_tree` | 1235 | 16 |
 
 ## 2. Idea Reward Audit
 
@@ -197,10 +197,10 @@ The user explicitly does not want meaningless mutual exclusion symbols or visual
 - `MFR_armorers_elect_delegates` at `factory_successors.txt:1735` mutually excludes `MFR_merchants_of_ammunition` and `MFR_eternal_arsenal`; spans 8-12 columns.
 - `GAC_settlement` / `GAC_radical_turn`, `DHC_settlement` / `DHC_radical_turn`, `KHC_settlement` / `KHC_radical_turn`, and `ARD_settlement` / `ARD_radical_turn` are same-row, 6-7 column mutual exclusions in `custom_splinters.txt`.
 - Ancient restorations use same-row symbolic/expansionist exclusions:
-  - `KZR_symbolic_crossing_state` / `KZR_expansionist_steppe_levy` at `ancient_restorations.txt:210` and `:239`
+  - `APX_symbolic_crossing_state` / `APX_expansionist_steppe_levy` at `ancient_restorations.txt:210` and `:239`
   - `SOG_symbolic_city_league` / `SOG_expansionist_merchant_claims` at `:619` and `:647`
-  - `KHW_symbolic_oasis_authority` / `KHW_expansionist_water_claims` at `:1018` and `:1045`
-  - `ALN_symbolic_pass_principality` / `ALN_expansionist_mountain_claims` at `:1427` and `:1453`
+  - `ANX_symbolic_oasis_authority` / `ANX_expansionist_water_claims` at `:1018` and `:1045`
+  - `ABX_symbolic_pass_principality` / `ABX_expansionist_mountain_claims` at `:1427` and `:1453`
   - These are lore-meaningful choices, but the same-row long-line presentation still risks visual clutter.
 
 ### Continuous focus panel overlap
@@ -332,7 +332,7 @@ Strengths:
 Risks:
 
 - 16 focuses per tree is too shallow for the user's requested aggressive/overpowered chaos-country trees.
-- `KZR_old_border_files`, `SOG_old_city_border_files`, `KHW_old_oasis_border_files`, and `ALN_old_pass_border_files` are direct claim-dump nodes with 4-5 claims plus decision unlocks.
+- `APX_old_border_files`, `SOG_old_city_border_files`, `ANX_old_oasis_border_files`, and `ABX_old_pass_border_files` are direct claim-dump nodes with 4-5 claims plus decision unlocks.
 - Political, industry, and expansion branches are not distinct enough; industry is mostly a few workshop/road/support nodes.
 
 Assessment: good flavor skeleton, insufficient depth for full branch families.
@@ -458,11 +458,11 @@ Risk:
    - Recommended mechanics: Arctic port seizure decisions, convoy raiding missions, naval-base buildout, special marine/ghost convoy units, and postwar port integration.
 
 6. Reduce ancient restoration claim dumps.
-   - Touch focus IDs: `KZR_old_border_files`, `SOG_old_city_border_files`, `KHW_old_oasis_border_files`, `ALN_old_pass_border_files`, plus `central_asia_soviet_collapse_khwarazm_restoration_debate`.
+   - Touch focus IDs: `APX_old_border_files`, `SOG_old_city_border_files`, `ANX_old_oasis_border_files`, `ABX_old_pass_border_files`, plus `central_asia_soviet_collapse_khwarazm_restoration_debate`.
    - Recommended mechanics: split claim discovery from claim activation; use decisions or missions to validate border claims and add integration/postwar handling.
 
 7. Give custom splinter 47-focus templates more bespoke payoffs.
-   - Priority tags: `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`.
+   - Priority tags: `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`.
    - Recommended mechanics: replace some generic calls to `soviet_collapse_apply_focus_depot_and_supply_control`, `soviet_collapse_apply_focus_military_consolidation`, and `soviet_collapse_apply_focus_legal_recognition` with tag-specific state construction, targeted decisions, route AI, and unique mission unlocks.
 
 8. Clean Ukraine's far-right diplomatic/foreign branch.

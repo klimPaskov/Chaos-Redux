@@ -19,7 +19,7 @@ Final severity counts: **P0 0 / P1 0 / P2 0 / P3 0**.
 
 Changed `docs/assets/014_cannibalism/achievements_imagegen/process_achievement_icons.py`:
 
-- Declares the mandatory overlay at `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`.
+- Declares the mandatory overlay at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`.
 - Refuses execution if the overlay does not exist, is not exactly 64x64, or is not RGBA.
 - Copies each 64x64 RGBA grey variant without applying brightness, contrast, recolour, filter, scale, or any locally drawn marks.
 - Uses `Image.alpha_composite(grey_copy, overlay)` for the not-eligible state.

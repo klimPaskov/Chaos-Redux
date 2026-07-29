@@ -81,7 +81,7 @@ Representative cleaned ids:
 - `kaz_soviet_collapse_rail_guard_brigades`
 - `PRA_coal_water_and_spare_parts`
 - `FTH_doctrine`
-- `BSC_doctrine`
+- `AEX_doctrine`
 - `TNC_doctrine`
 - `TNC_economy`
 - `UDC_doctrine`

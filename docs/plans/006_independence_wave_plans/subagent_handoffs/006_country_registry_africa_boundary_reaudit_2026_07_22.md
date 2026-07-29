@@ -39,7 +39,7 @@ Source of truth: `docs/specs/006_independence_wave_specs/matrices/006_candidate_
 
 The 14 resolved-tag group counts are 11, 9, 9, 9, 14, 14, 10, 9, 11,
 13, 12, 17, 29, and 24 in the order documented by
-`docs/systems/006_independence_wave_country_registry.md:28-48`.
+`docs/events/006_independence_wave/systems/country_registry.md:28-48`.
 
 ## Africa overlap and map boundary
 

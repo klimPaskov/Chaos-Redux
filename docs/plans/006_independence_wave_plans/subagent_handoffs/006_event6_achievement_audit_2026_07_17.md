@@ -94,7 +94,7 @@ FORM03 post-charter start and cleanup clear both generic achievement receipts. E
 - `common/scripted_effects/006_independence_wave_scenario_effects.txt`
 - `common/scripted_effects/006_independence_wave_form03_effects.txt`
 - `localisation/english/006_independence_wave_achievements_l_english.yml`
-- `docs/systems/006_independence_wave_achievements.md`
+- `docs/achievements/006_independence_wave/achievements.md`
 - this handoff
 
 The achievement definition file and achievement constants were audited but not edited by this subagent. No FORM48 or Pacific file was touched. Existing unrelated dirty-worktree changes were preserved. No commit was created.

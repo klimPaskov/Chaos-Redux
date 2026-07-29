@@ -17,7 +17,7 @@ No gfx, flags, or flag sprites were touched.
 | Custom splinter full trees | 19 full 47-focus trees | Partial | Most have more depth than crisis trees, but many still repeat direct equipment stockpiles and scalar rewards. I patched only five existing settlement/radical hidden-lock pairs. |
 | Custom crisis trees | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, 18-22 focuses | Simplified | These are still shallow relative to the OP identity target and need route design, not small patching. |
 | Factory successors | `CFR` 47, `MFR` 58, `OGB` 23 focuses | Partial | CFR/MFR have forks; OGB remains shallow. No safe bounded patch beyond audit in this pass. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN`, 16 focuses each | Simplified | Existing trees are compact stubs for the requested ancient-restoration identity depth. Needs broad redesign. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX`, 16 focuses each | Simplified | Existing trees are compact stubs for the requested ancient-restoration identity depth. Needs broad redesign. |
 
 ## High-Priority Fixes Applied
 
@@ -44,11 +44,11 @@ Repeated low-impact direct equipment rewards remain broad and should be redesign
 |---|---|
 | `ARD_soviet_collapse_focus_tree` | `ARD_first_guard`, `ARD_war_plan`, `ARD_diplomatic_plan`, `ARD_kola_denial_posts`, `ARD_convoy_court_registers`, `ARD_naval_infantry_yards`, `ARD_fuel_and_convoy_escorts`, `ARD_winter_convoy_columns`, `ARD_white_sea_port_tolls`, `ARD_league_convoy_bargain`, `ARD_port_neutrality_statute`, `ARD_arctic_port_endurance` |
 | `DHC_soviet_collapse_focus_tree` | `DHC_host_court_registers`, `DHC_grain_convoy_escorts`, `DHC_convoy_autonomy_guarantees`, `DHC_river_port_tolls`, `DHC_league_passage_bargain`, `DHC_river_and_steppe_compact` |
-| `KRS_soviet_collapse_focus_tree` | `KRS_baltic_worker_letters`, `KRS_anti_party_soviet_clause`, `KRS_icebound_supply_ledger`, `KRS_naval_infantry_oaths`, `KRS_gulf_mine_watch`, `KRS_free_port_conference` |
+| `AOX_soviet_collapse_focus_tree` | `AOX_baltic_worker_letters`, `AOX_anti_party_soviet_clause`, `AOX_icebound_supply_ledger`, `AOX_naval_infantry_oaths`, `AOX_gulf_mine_watch`, `AOX_free_port_conference` |
 | `FEV_soviet_collapse_focus_tree` | `FEV_customs_house_ledger`, `FEV_razdolnoye_rear_area`, `FEV_pacific_observer_missions`, `FEV_sakhalin_ferry_protocols` |
 | `IUL_soviet_collapse_focus_tree` | `IUL_volga_fortified_crossings`, `IUL_no_requisition_without_federal_vote`, `IUL_rail_and_river_patrols`, `IUL_volga_trade_letters` |
 | `NRF_soviet_collapse_focus_tree` | `NRF_salvage_the_dark_berths`, `NRF_dead_convoy_supply_board`, `NRF_ghost_convoy_escorts`, `NRF_northern_revenant_fleet` |
-| Other exact ids | `FTH_ukrainian_border_letters`, `BSC_mountain_route_envoys`, `NLC_diplomatic_plan`, `NLC_ice_port_tolls`, `baltic_soviet_collapse_the_baltic_customs_desk`, `internal_soviet_collapse_far_eastern_port_authority`, `kaz_soviet_collapse_caspian_security_detachments`, `kaz_soviet_collapse_iranian_caspian_notes`, `moldova_soviet_collapse_neutral_bridge_statute`, `KZR_caspian_patrol_letters`, `KZR_khazar_charter` |
+| Other exact ids | `FTH_ukrainian_border_letters`, `AEX_mountain_route_envoys`, `NLC_diplomatic_plan`, `NLC_ice_port_tolls`, `baltic_soviet_collapse_the_baltic_customs_desk`, `internal_soviet_collapse_far_eastern_port_authority`, `kaz_soviet_collapse_caspian_security_detachments`, `kaz_soviet_collapse_iranian_caspian_notes`, `moldova_soviet_collapse_neutral_bridge_statute`, `APX_caspian_patrol_letters`, `APX_khazar_charter` |
 
 Additional current parser counts showing the scale of the reward spam:
 

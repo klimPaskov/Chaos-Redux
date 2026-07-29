@@ -16,7 +16,7 @@
   identity remains Tigray, not Aksum.
 - Changed Event 012 focus loading to generic-tree-only replacement with an
   additive preserved-tree mode; Event 006/Soviet origin gates fail closed.
-- Added the canonical field guide at `docs/systems/006_independence_wave_country_registry.md`.
+- Added the canonical field guide at `docs/events/006_independence_wave/systems/country_registry.md`.
 
 ## Files changed
 
@@ -28,7 +28,7 @@
 - `common/scripted_effects/006_independence_wave_effects.txt`
 - `common/scripted_triggers/012_africa_priority_member_triggers.txt`
 - `common/scripted_effects/012_africa_priority_member_effects.txt`
-- `docs/systems/006_independence_wave_country_registry.md`
+- `docs/events/006_independence_wave/systems/country_registry.md`
 
 ## Exact Event 012 hunks
 

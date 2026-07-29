@@ -31,13 +31,13 @@ Changed `common/national_focus/005_soviet_collapse_republics.txt`:
 
 Changed `common/national_focus/005_soviet_collapse_custom_splinters.txt`:
 - `FTH_radical_turn`: moved to `x = 3`, `y = 7`
-- `BSC_radical_turn`: moved to `x = 5`, `y = 7`
+- `AEX_radical_turn`: moved to `x = 5`, `y = 7`
 - `TNC_radical_turn`: moved to `x = 5`, `y = 7`
-- `ALA_radical_turn`: moved to `x = 5`, `y = 7`
+- `AAX_radical_turn`: moved to `x = 5`, `y = 7`
 - `BBH_radical_turn`: moved to `x = 3`, `y = 7`
-- `KRS_radical_turn`: moved to `x = 3`, `y = 7`
+- `AOX_radical_turn`: moved to `x = 3`, `y = 7`
 - `IUL_radical_turn`: moved to `x = 4`, `y = 7`
-- `BAC_radical_turn`: moved to `x = 3`, `y = 7`
+- `ADX_radical_turn`: moved to `x = 3`, `y = 7`
 
 Changed `common/national_focus/005_soviet_collapse_factory_successors.txt`:
 - `OGB_scholars_guard_the_charter`: moved to `x = 3`, `y = 3`

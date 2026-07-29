@@ -32,7 +32,7 @@ owned by the separate asset handoff.
 - `common/on_actions/chaosx_on_actions_chaos_meter.txt`
 - `common/on_actions/019_infantry_spawn_derivative_on_actions.txt`
 - `common/on_actions/019_infantry_spawn_achievement_on_actions.txt`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/specs/019_infantry_spawn_specs/matrices/019_evolution_entry_cleanup_matrix.md`
 - `docs/specs/019_infantry_spawn_specs/review/blockers_and_uncertainty.md`
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md`

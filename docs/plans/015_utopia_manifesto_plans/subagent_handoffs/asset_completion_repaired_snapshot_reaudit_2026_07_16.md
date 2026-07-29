@@ -68,10 +68,10 @@ The five route pictures are registered and selected for slots `96`-`100`; visual
 
 ### Audio
 
-- Runtime OGG: SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`; Vorbis, 44.1 kHz, stereo, `116.000000 s`.
+- Runtime WAV: SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`; Vorbis, 44.1 kHz, stereo, `116.000000 s`.
 - Runtime WAV: SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`; PCM s16le, 44.1 kHz, stereo, `116.000000 s`.
 - Each container hash is unique in its runtime folder (`55` OGG, `53` WAV).
-- Six music helpers, six sound wrappers, localisation, zero-chance station entry, audio ID `57`, and settings-aware playback remain registered.
+- Six sound wrappers, six sound wrappers, localisation, zero-chance station entry, audio ID `57`, and settings-aware playback remain registered.
 - Frozen source, source page, metadata, CC0 deed, CC0 legal code, attribution, and processing evidence match the audio research record.
 
 Audio research SHA-256: `2c87617e505064368af282bf885664e47e78494efca80f137d9a76ec6d54d655`.

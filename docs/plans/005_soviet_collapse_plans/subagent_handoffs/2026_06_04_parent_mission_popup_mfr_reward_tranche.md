@@ -77,4 +77,4 @@ Added concise tooltips:
 
 ## Remaining work
 
-This tranche does not complete the active Event005 goal. Remaining audited focus work includes Kazakhstan early fork geometry, Ukraine high-chaos bread-state reward uniqueness, OGB future-Bulgaria payoff depth, and DHC/UWD/BAC long lateral pathlines.
+This tranche does not complete the active Event005 goal. Remaining audited focus work includes Kazakhstan early fork geometry, Ukraine high-chaos bread-state reward uniqueness, OGB future-Bulgaria payoff depth, and DHC/UWD/ADX long lateral pathlines.

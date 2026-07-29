@@ -181,7 +181,7 @@ Add a hard host-capital logistics/coherence contract with a player-safe exceptio
 
 ### Reusable tag and territory design before unification
 
-- `common/country_tags/014_cannibalism_countries.txt:8-16` provides eight unique regional slots plus CBL: CBA/CBB Island, CBC/CBD Siege, CBE/CBF March, and CBG/CBH Prison.
+- `common/country_tags/014_cannibalism_countries.txt:8-16` provides eight unique regional slots plus CBL: CBA/AHX Island, CBC/AIX Siege, CBE/CBF March, and AMX/CBH Prison.
 - Origin selection and allocation keep each archetype inside its two-slot pair (`common/scripted_effects/014_cannibalism_country_effects.txt:66-93, 1017-1034`).
 - Formation transfers the origin plus at most two directly adjacent active-cell states (`lines 864-901`; constants `maximum_starting_states = 3`, `maximum_neighbor_states = 2`). The resulting ordinary package is connected to the origin rather than a disconnected state sweep.
 - Unsupported regions block formation rather than selecting a generic identity (`common/scripted_triggers/014_cannibalism_triggers.txt:506-558`).

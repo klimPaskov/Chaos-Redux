@@ -18,7 +18,7 @@ Added:
 - `common/opinion_modifiers/016_brilliant_scientist_foreign_opinion_modifiers.txt`
 - `events/016_brilliant_scientist_foreign_events.txt`
 - `localisation/english/016_brilliant_scientist_foreign_l_english.yml`
-- `docs/systems/016_brilliant_scientist_foreign_operations.md`
+- `docs/events/016_brilliant_scientist/systems/foreign_operations.md`
 - this handoff
 
 Modified integration:

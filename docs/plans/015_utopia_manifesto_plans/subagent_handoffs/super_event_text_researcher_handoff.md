@@ -8,7 +8,7 @@ The bounded Event 15 text research pass is complete. It produced final original 
 
 ## Files created
 
-- docs/super_events/015_utopia_manifesto_super_event_text_research.md
+- docs/super_events/015_utopia_manifesto/text_research.md
 - docs/plans/015_utopia_manifesto_plans/subagent_handoffs/super_event_text_researcher_handoff.md
 
 ## Selected wording

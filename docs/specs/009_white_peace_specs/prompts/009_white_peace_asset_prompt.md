@@ -20,7 +20,7 @@ Use `chaos-redux-event-assets` for all visual asset work. Route sourced real/arc
 - Suggested sprite: `GFX_report_event_009_white_peace`
 - Suggested final folder: follow existing report-event image folder pattern.
 - Source mode: generated period-documentary image unless a strong public-domain/source image is found.
-- Reference folder to inspect first: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
+- Reference folder to inspect first: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
 - Required processing: report-event card treatment with `tools/process_report_event_image.py` if that tool exists in the repo.
 
 Visual direction:
@@ -45,7 +45,7 @@ Create only if implementation adds a news popup for the broad settlement branch.
 - Suggested filename: `news_event_009_white_peace_circular.dds`
 - Suggested sprite: `GFX_news_event_009_white_peace_circular`
 - Source mode: generated period-news/documentary image or sourced archival telegraph/newsroom image.
-- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
+- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
 - Required final style: black-and-white.
 
 Visual direction:
@@ -60,7 +60,7 @@ General achievement icon rules:
 
 - Target size: `64x64`
 - Source mode: generated icon art.
-- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/achievements`
+- Reference folder: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
 - Create completed icon first.
 - Grey and not-eligible variants can be generated/processed according to the achievement system pattern.
 

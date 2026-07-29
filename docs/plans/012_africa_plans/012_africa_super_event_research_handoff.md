@@ -47,20 +47,20 @@ The unique IDs registered in both `music/chaosx_super_event_music.asset` and `so
 
 `1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 55, 56, 57, 6002`.
 
-Event 016's six source OGG filenames additionally reserve the `90` through `95` audio namespace even though their wrapper registration is not yet present in the shared live asset files. A namespace-specific search found no music wrapper, sound wrapper, raw sound, or `current_super_event_audio_id` assignment for `58`, `59`, `60`, or `61`.
+Event 016's six source OGG filenames additionally reserve the `90` through `95` audio namespace even though their wrapper registration is not yet present in the shared live asset files. A namespace-specific search found no sound wrapper, sound wrapper, raw sound, or `current_super_event_audio_id` assignment for `58`, `59`, `60`, or `61`.
 
 Display and audio identifiers are separate namespaces. Consequently, audio IDs `59`, `60`, and `61` are free even though presentation slots `59`, `60`, and `61` are occupied.
 
 ### Proposed allocation
 
-| Role | Presentation slot | Audio ID | Proposed final OGG | Proposed final WAV | Stable raw sound name |
-| --- | ---: | ---: | --- | --- | --- |
-| Africa is one | `101` | `58` | `music/012_africa/super_event_58_africa_is_one.ogg` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
-| Scramble response | `102` | `59` | `music/012_africa/super_event_59_scramble_response.ogg` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
-| Continental wars | `103` | `60` | `music/012_africa/super_event_60_continental_wars.ogg` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
-| The World | `104` | `61` | `music/012_africa/super_event_61_the_world.ogg` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
+| Role | Presentation slot | Audio ID | Proposed final WAV | Stable raw sound name |
+| --- | ---: | ---: | --- | --- |
+| Africa is one | `101` | `58` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
+| Scramble response | `102` | `59` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
+| Continental wars | `103` | `60` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
+| The World | `104` | `61` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
 
-Future registration should create all six established settings-scaled music wrappers `chaosx_super_event_<ID>_0_5` through `chaosx_super_event_<ID>_3_0`, all six sound wrappers `chaosx_super_event_<ID>_sound_0_5` through `chaosx_super_event_<ID>_sound_3_0`, and a zero-random-play station entry for the `1_5` music wrapper. This document does **not** reserve those identifiers in engine-readable code. The implementation agent must repeat the shared-registry scan immediately before registering all four roles atomically.
+Future registration should create all six established settings-scaled sound wrappers `chaosx_super_event_<ID>_sound_0_5` through `chaosx_super_event_<ID>_sound_3_0`. This document does **not** reserve those identifiers in engine-readable code. The implementation agent must repeat the shared-registry scan immediately before registering all four roles atomically.
 
 ## Rights and wording policy
 
@@ -169,7 +169,7 @@ Description direction: name the outside actor and concrete response without expo
 - **Licence confidence:** high as source-page evidence. Freeze the exact FLAC and verify its hash before processing.
 - **Courtesy attribution:** `Ludwig van Beethoven, Symphony No. 3 "Eroica", II. "Marcia funebre"; Czech National Symphony Orchestra (Musopen Symphony); source via Wikimedia Commons/Musopen. Recording released to the public domain. Chaos Redux excerpted and processed the source.`
 - **Proposed preserved source:** `docs/assets/012_africa/source_audio/scramble_response_beethoven_eroica_ii_musopen_source.flac`.
-- **Editing plan:** audition the full movement and select a continuous `80-115 s` passage that begins with legible funeral-march gravity and reaches a clear rise in pressure. Avoid a cue that remains only mournful or ends mid-phrase. Apply phrase-safe fades, the project loudness target, and `44,100 Hz` stereo OGG/WAV delivery.
+- **Editing plan:** audition the full movement and select a continuous `80-115 s` passage that begins with legible funeral-march gravity and reaches a clear rise in pressure. Avoid a cue that remains only mournful or ends mid-phrase. Apply phrase-safe fades, the project loudness target, and `44,100 Hz` stereo WAV delivery.
 - **Why it fits:** the funeral march treats the old order's reaction as grave and destabilizing rather than adventurous, while its internal escalation can carry a shift from diplomatic panic to containment or war.
 - **Unresolved blocker:** the cue point is not selected. No derivative may be made until a human audition confirms that the retained arc supports both non-war and war reaction states.
 
@@ -268,9 +268,9 @@ Description direction: name the surviving institution, state how the final rival
 - **Licence confidence:** high for the grant stated on the frozen page; production/legal review is still required because the mod must distribute an edited derivative while preserving the required attribution, tags, and terms.
 - **Required attribution direction:** retain the original source tags intact, add separate derivative/edit tags without overwriting them, identify the Fulda Symphonic Orchestra and Simon Schindler, preserve Johannes Volker Schmidt exactly as present in the source metadata, name the EFF Open Audio License v1, link its terms, state the retained interval and processing, and avoid any endorsement implication.
 - **Proposed preserved source:** `docs/assets/012_africa/source_audio/the_world_schubert_unfinished_ii_fulda_source.ogg`.
-- **Editing plan:** select a continuous `85-115 s` passage whose restrained opening develops toward a complete, exhausted cadence. Modification is allowed, but processing must copy every original Vorbis attribution/licence field into the final OGG and retain a sidecar rights record for the WAV, which cannot carry the same Vorbis comments. Apply phrase-safe fades and `44,100 Hz` stereo delivery at project loudness.
+- **Editing plan:** select a continuous `85-115 s` passage whose restrained opening develops toward a complete, exhausted cadence. Modification is allowed, but processing must copy every original Vorbis attribution/licence field into the final WAV and retain a sidecar rights record for the WAV, which cannot carry the same Vorbis comments. Apply phrase-safe fades and `44,100 Hz` stereo delivery at project loudness.
 - **Why it fits:** the `Unfinished` work's measured, unresolved character supports terminal political exhaustion without turning the moment into a coronation or conventional victory march.
-- **Unresolved blocker:** the project must explicitly accept the EFF Open Audio License obligations and prove that its final OGG/WAV and distribution documentation preserve them. If not, replace this recording with a file-specific CC0/public-domain recording before production.
+- **Unresolved blocker:** the project must explicitly accept the EFF Open Audio License obligations and prove that its final WAV and distribution documentation preserve them. If not, replace this recording with a file-specific CC0/public-domain recording before production.
 
 ## Production and final-wiring gates
 

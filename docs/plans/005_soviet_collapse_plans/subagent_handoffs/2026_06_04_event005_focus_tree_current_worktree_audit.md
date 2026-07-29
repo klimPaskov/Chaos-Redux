@@ -158,12 +158,12 @@ Needed helper surfaces:
 Specific candidates:
 
 - `FTH` / `BBH`: black-banner raids, anti-state commune spread, mobile tachanka columns, anti-puppet war goals, hostile AI against neighbors and SOV.
-- `KRS`: naval mutiny, port seizure, convoy interdiction, dockyard/raiding decisions, maritime claims.
+- `AOX`: naval mutiny, port seizure, convoy interdiction, dockyard/raiding decisions, maritime claims.
 - `TSC`: anomaly research meter, radar/airbase spread, science missions that escalate into Siberian claims.
 - `RMC`, `DSC`, `ICD`, `NRF`: death-state/revenant mobilization, casualty or memorial fuel, forced-march columns, aggressive anti-SOV and neighbor war helpers.
-- `BSC`, `TNC`, `ALA`, `MRC`, `IUL`: regional federation or restoration mechanics with claims, protectorate offers, and pass/steppe/corridor wars.
+- `AEX`, `TNC`, `AAX`, `MRC`, `IUL`: regional federation or restoration mechanics with claims, protectorate offers, and pass/steppe/corridor wars.
 - `UDC`, `SDZ`: loyalist/security reconquest tools, coups, archive blackmail decisions, stronger AI aggression.
-- `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `BAC`, `ARD`, `NLC`: each needs a specific economy/war/diplomacy loop instead of only the shared 47-focus scaffold.
+- `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `ADX`, `ARD`, `NLC`: each needs a specific economy/war/diplomacy loop instead of only the shared 47-focus scaffold.
 - `CFR` and `MFR`: already closest to mechanic-backed OP successors; deepen their construction/arms-market decision loops and make route capstones visibly aggressive.
 
 ## Good Helper Patterns To Reuse

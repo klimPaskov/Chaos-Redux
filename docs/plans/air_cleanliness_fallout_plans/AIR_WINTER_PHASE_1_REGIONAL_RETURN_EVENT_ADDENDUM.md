@@ -377,7 +377,7 @@ Update the Fallout asset manifest and Air Winter report-event handoff so the Pha
 
 Update:
 
-- `docs/air_cleanliness_winter.md`
+- `docs/systems/air_cleanliness/winter.md`
 - `AIR_WINTER_ARCHITECTURE.md`
 - `AIR_WINTER_EVENT_PILOT_DEPTH_REVIEW.md`
 - `AIR_WINTER_EVENT_SCHEDULER_PROOF.md`

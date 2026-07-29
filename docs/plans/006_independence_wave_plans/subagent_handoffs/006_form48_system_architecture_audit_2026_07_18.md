@@ -213,7 +213,7 @@ FORM-48 decision.
   - added the generation- and family-bound autonomous-binding proof;
 - `common/scripted_effects/006_independence_wave_form48_effects.txt`
   - gated reciprocal relation mutation behind that proof;
-- `docs/systems/006_independence_wave_formable_registry.md`
+- `docs/events/006_independence_wave/systems/formable_registry.md`
   - documented the helper contract, call site, and stale-binding behavior; and
 - this handoff.
 

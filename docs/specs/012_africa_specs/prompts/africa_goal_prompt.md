@@ -1,5 +1,3 @@
-# Event 12 Africa goal prompt
-
 Implement the complete Chaos Redux Event 12 Africa package. Read all specs, matrices, diagrams, research, handoffs, and prompts. Matrix rows are acceptance criteria.
 
 Keep Event 12 a severe Fire-Once Formables member. Select one valid African-capital country, preserve the original host, and apply one of 22 full or 29 compact playbooks. Each opening needs its mapped weakness, proof mission, leverage, and rival risk. Promote compact hosts only when documented conditions are met.

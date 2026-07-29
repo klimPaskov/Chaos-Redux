@@ -66,11 +66,11 @@ Coverage checks:
 | Dead Soldiers' Congress | `DSC_soviet_collapse_focus_tree` | 18 | 5 | 6 | Shallow but dangerous | Best compact chaos package for direct war/core hooks, but still too small and equipment-heavy. |
 | Northern Revenant Fleet | `NRF_soviet_collapse_focus_tree` | 18 | 5 | 3 | Shallow but dangerous | Needs naval war, port control, fleets, and sea-lane mechanics. |
 | Iron Commissariat of the Dead | `ICD_soviet_collapse_focus_tree` | 18 | 0 | 3 | Shallow | Death-state idea exists; no decision loop or direct unit system. |
-| Basmachi Confederation | `BSC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Full-size template tree with no direct decision/war/core hooks. |
+| Basmachi Confederation | `AEX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Full-size template tree with no direct decision/war/core hooks. |
 | Turkestan National Council | `TNC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Full-size template tree with no direct decision/war/core hooks. |
-| Alash Restoration Authority | `ALA_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Identity exists; route payoffs remain generic. |
+| Alash Restoration Authority | `AAX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Identity exists; route payoffs remain generic. |
 | Black Banner Host | `BBH_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Stronger lore tone, but no direct decision/war/core hooks. |
-| Kronstadt Council | `KRS_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Naval/port titles need port-control and fleet mechanics. |
+| Kronstadt Council | `AOX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Naval/port titles need port-control and fleet mechanics. |
 | Union Defense Committee | `UDC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Military theme exists but lacks expansion and decision integration. |
 | Security Directorate Zone | `SDZ_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Security-state route lacks decision, repression, intelligence, or war hooks in focuses. |
 | Green Army Congress | `GAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Peasant/partisan identity needs village, supply, and territorial mechanics. |
@@ -81,7 +81,7 @@ Coverage checks:
 | Ural Workers Directorate | `UWD_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Industrial theme is reward-heavy: 18 building focuses and 11 equipment focuses. |
 | Mountain Republic of the Caucasus | `MRC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Pass/confederation identity exists; lacks territorial and decision hooks. |
 | Idel-Ural League | `IUL_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Volga/Ural identity lacks direct formable/war/core/decision integration. |
-| Birobidzhan Autonomous Commune | `BAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Amur/relief identity lacks direct route mechanics. |
+| Birobidzhan Autonomous Commune | `ADX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Amur/relief identity lacks direct route mechanics. |
 | Arctic Naval Directorate | `ARD_soviet_collapse_focus_tree` | 47 | 3 | 0 | Partial | Has naval identity and some decisions, but no direct claim/war/core hooks. |
 | Northern Lights Commune | `NLC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Simplified | Polar/science identity lacks decision, expansion, or OP mechanics. |
 | Construction Factory Republic | `CFR_soviet_collapse_focus_tree` | 47 | 5 | 2 | Partial | Stronger governance/industry structure; still has convergence risk and repeated construction rewards. |
@@ -148,7 +148,7 @@ Content-level mismatch risks:
 - `internal_soviet_collapse_ukraine_settlement_commission` at `005_soviet_collapse_republics.txt:3983` has a real claim reward. Search filter now matches this.
 - `central_asia_soviet_collapse_khwarazm_restoration_debate` at `005_soviet_collapse_republics.txt:7534` has real conditional claim rewards. Search filter now matches this.
 - `soviet_collapse_baltic_focus_tree` and `soviet_collapse_moldova_focus_tree` titles imply restoration, ports, river routes, union questions, and corridors, but the scan found 0 direct decision hooks and 0 direct war/claim/core hooks.
-- `KRS`, `ARD`, and `NRF` use port/naval language; only `NRF` has direct war/claim hooks, while `KRS` and `ARD` still need direct port-control, fleet, sea-lane, or postwar mechanics.
+- `AOX`, `ARD`, and `NRF` use port/naval language; only `NRF` has direct war/claim hooks, while `AOX` and `ARD` still need direct port-control, fleet, sea-lane, or postwar mechanics.
 - `UWD` uses worker/industrial state language but remains heavy on direct construction/equipment rewards rather than a production or arsenal decision loop.
 - `NLC` uses polar/science route language but has 0 direct decision hooks and 0 direct expansion hooks.
 

@@ -18,8 +18,8 @@ Implemented the bounded, charter-governed patron-client expulsion action. It del
 | `common/scripted_effects/006_independence_wave_achievement_effects.txt` | Adds `independence_wave_achievement_record_member_expulsion`, the missing writer for `independence_wave_achievement_member_expulsion_during_term`. |
 | `common/script_constants/006_independence_wave_decision_constants.txt` | Adds named DM-60 duration, cooldown, member minimum, success losses, and failure losses. |
 | `localisation/english/006_independence_wave_decisions_l_english.yml` | Adds DM-60 name, description, cost, start, success, and failure text. |
-| `docs/events/006_independence_wave.md` | Documents the captured-member enforcement window and its bounded outcome. |
-| `docs/systems/006_independence_wave_achievements.md` | Records the completed-expulsion disqualifier and its validation coverage. |
+| `docs/events/006_independence_wave/overview.md` | Documents the captured-member enforcement window and its bounded outcome. |
+| `docs/achievements/006_independence_wave/achievements.md` | Records the completed-expulsion disqualifier and its validation coverage. |
 
 ## Before and after behavior
 

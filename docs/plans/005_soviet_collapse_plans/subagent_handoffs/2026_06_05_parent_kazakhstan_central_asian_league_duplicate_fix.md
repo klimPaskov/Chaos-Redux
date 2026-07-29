@@ -16,7 +16,7 @@ Fixed the case where Kazakhstan could found a second Central Asian League after 
 
 - Added `has_soviet_collapse_existing_central_asian_league_leader`.
   - It detects an existing Central Asian League founder that is still the faction leader.
-  - It uses the same regional country set already used by the Central Asian league system: `UZB`, `KYR`, `TAJ`, `TMS`, `KAZ`, `BSC`, `TNC`, and `ALA`.
+  - It uses the same regional country set already used by the Central Asian league system: `UZB`, `KYR`, `TAJ`, `TMS`, `KAZ`, `AEX`, `TNC`, and `AAX`.
 - Updated `can_found_soviet_collapse_central_asian_league` so a new league cannot be founded while an existing Central Asian League leader exists.
 - Updated `can_found_soviet_collapse_central_asian_league` so a new league also cannot be founded after the Central Asian League announcement flag is set.
 - Added `can_join_soviet_collapse_existing_central_asian_league`.

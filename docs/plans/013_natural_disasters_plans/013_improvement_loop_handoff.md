@@ -116,7 +116,7 @@ The live numeric thresholds are now balance-validation gates rather than missing
 1. Trace normal, cluster, scenario, and external calls to prove one logical history row and correct affected-country reports.
 2. Exercise overlapping sequences, all 25 families, all evolutions, all five Barrage types, and all four Barrage intensities.
 3. Keep Cluster 5 and SCN-007 statuses incomplete until those scenarios pass.
-4. Correct `docs/events/013_natural_disasters.md`; it currently overclaims API validation/scaling, family target priorities, path order, six installed super-event images, achievement icon files, and sprite registration.
+4. Correct `docs/events/013_natural_disasters/overview.md`; it currently overclaims API validation/scaling, family target priorities, path order, six installed super-event images, achievement icon files, and sprite registration.
 5. Mark stale plans/handoffs as superseded or partially resolved instead of using them as current evidence.
 6. Align the workbook only after implementation facts stabilize.
 7. Run the event-completion, decision/mission, localisation, and asset audit routes before a completion claim.
@@ -163,7 +163,7 @@ If runtime state is ambiguous, add narrow temporary debug lines for the exact se
 - `013_decision_mission_handoff.md` contains stale hook and variable claims.
 - `subagent_handoffs/013_achievement_registry_handoff.md` correctly identifies icon/route requirements but its claim that runtime hooks do not exist is stale.
 - `013_asset_audit.md` predates live animation GFX/GUI wiring; retain its missing-static, accepted-icon, missing-super-image, DDS-format, and provenance findings.
-- `docs/super_events/013_natural_disasters_super_event_research_addendum.md` controls the accepted six-role package over the earlier four-role research recommendation.
+- `docs/super_events/013_natural_disasters/research_addendum.md` controls the accepted six-role package over the earlier four-role research recommendation.
 
 ## Files added by this planning pass
 

@@ -8,7 +8,7 @@ This plan covers the gap between the current `THR_focus` implementation and the 
 
 `common/national_focus/003_holy_realm.txt` contains 111 Holy Realm focus blocks and a complete Holy Realm Buddhahood route built around refuge survival, teaching, Dhyana meditation, mutually exclusive governance choices, Arhat administration, sanctuary logistics, guardian defense, Sangha Compact diplomacy, pilgrimage-protection expansion, anti-chaos Buddhahood powers, Final Silence, Empty Seat aftermath, and the hidden False Buddha Schism outcomes. It hooks into Buddhahood systems through `THR_buddha_mandate`, which is localized as `The Unshaken Seat`, and through decisions in `common/decisions/003_holy_realm_decisions.txt`.
 
-The route-coverage evidence is recorded in `docs/events/003_holy_realm.md` under `Focus Route Coverage`. The required route list remains in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`.
+The route-coverage evidence is recorded in `docs/events/003_holy_realm/overview.md` under `Focus Route Coverage`. The required route list remains in `docs/specs/003_holy_realm_buddhahood_specs/specs/holy_realm_buddhahood_focus_tree.md`.
 
 ## Implemented Tranche - 2026-06-11
 

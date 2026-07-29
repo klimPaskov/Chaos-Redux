@@ -53,7 +53,7 @@ Historical handoffs are used only within their dated scope.
 | League, rival bloc, and network | **Materially implemented; runtime proof missing** | Charter values, leadership, membership, votes, rescue, arbitration, sponsorship, rival-bloc invitations, response expiry, cleanup, and danger predicates exist. Multi-country human/AI lifecycle and failure evidence remains missing. |
 | Formables | **Partial and broadly blocked** | FORM-01 through FORM-05 are implemented and readiness-promoted. FORM-06 through FORM-47 remain fail-closed, including the legal-map blocker for FORM-42. FORM-12/13/18 source exists but its CHU/ASY carriers are unadmitted. FORM-48 source exists, but HAW/FSM are unadmitted and the family is unreachable. |
 | SCN-008 Every Banner Rises | **Partial** | All four intensities and accepted scenario types are present, with the same attestation, host, anchor, and collision gates as ordinary execution. It attempts 138 ranked rows but only content-attested, map-valid, collision-free rows can commit. Current maximum distinct capacity is nine, and no full intensity/type runtime matrix exists. |
-| Super-event 6002 | **Implemented at source level; reachability partial and unproved** | Slot 24, audio ID 6002, exact OGG/WAV, five qualification predicates, Event Log payload, FIFO submission, localisation, and ASSET-006 are wired. The ten-country and hidden-formable predicates are currently unreachable, and no exact predicate scenario has runtime evidence. |
+| Super-event 6002 | **Implemented at source level; reachability partial and unproved** | Slot 24, audio ID 6002, exact WAV, five qualification predicates, Event Log payload, FIFO submission, localisation, and ASSET-006 are wired. The ten-country and hidden-formable predicates are currently unreachable, and no exact predicate scenario has runtime evidence. |
 | Super-event 6001 | **Blocked** | ASSET-005 DDS and sprite registration are retained, but no slot-23 firing, audio ID 6001 runtime package, or exact recording exists. Exact-recording rights remain the disclosed blocker; no substitute is authorized. |
 | Achievements | **Partial** | The accepted matrix has sixteen rows, runtime has sixteen definitions and sixteen completion triggers, localisation has sixteen name/description pairs, and forty-eight DDS files provide the three icon states. IW-043 Volga Bulgaria, IW-058 Assyria, Radical Bloc, several formable, and full-scenario proofs remain unreachable or unproved under current admission. |
 | Static assets | **Materially produced but incomplete** | Reports, news scenes, super-event art, icons, flags, portraits for admitted packages, and achievement icons exist and are registered. Grounded portrait gates still block multiple packages; most formable families lack final identity assets. |
@@ -269,7 +269,7 @@ The dangerous milestone source is materially complete.
 
 The exact files exist:
 
-- `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg`;
+- `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`;
 - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`;
 - `gfx/super_events/006_independence_wave/super_event_006_asset_006_revisionist_milestone.dds`.
 
@@ -360,7 +360,7 @@ The workbook and CSVs are synchronized with each other, but they are not a compl
 7. Reused the latest focus MCP artifacts because the only current focus changes add a treasury idea and an authorization flag without changing coordinates or connector endpoints.
 8. Called `hoi4.event_inspect` for `chaosx.nr6.1` with helper tracing. It returned `EVENT_INSPECTED_PARTIAL` and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4ee792a8e2e3047e21a35c01d902fb6d3960810e84bc6001cf085f8dd3761a6d/d80781d7312a0e318602d746424054da4e3671cb30fd1b0bfefa210b85cfd04e/event-trace-b9b7ba33ea3c.json`. The workspace-wide graph has 8,826 events and 23,787 unresolved nodes, so that result is useful trace evidence but not a validation PASS.
 9. Counted achievement matrix rows, definitions, completion triggers, localisation pairs, and DDS triplets.
-10. Verified the exact 6002 OGG/WAV and both Event 6 super-event DDS files exist and inspected their sound and FIFO registrations.
+10. Verified the exact 6002 WAV and both Event 6 super-event DDS files exist and inspected their sound and FIFO registrations.
 11. Inspected the authoritative workbook read-only and compared its Event 6, cluster, and SCN-008 rows with the synchronized CSV exports.
 
 ## Meaningful validation still missing

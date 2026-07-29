@@ -62,7 +62,7 @@ Route odds, action reserves, command ceilings, identity guarantees, consent, gua
 - Added UTF-8 BOM English localisation in `localisation/english/006_independence_wave_iw043_iw058_country_core_l_english.yml`.
 - Covered all eight character names and biographies, eight traits, nineteen ideas, route parties and long names, accepted cosmetic names/definitions/adjectives, and sixteen AI profile labels.
 - IW-058 text preserves distinct Assyrian, Chaldean, Syriac, and Aramean self-identification and does not present one church as the identity of every community.
-- Added the bounded system document `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` with character, idea, AI, identity, and asset-consumer handoff sections.
+- Added the bounded system document `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` with character, idea, AI, identity, and asset-consumer handoff sections.
 
 ## Stable future asset consumers
 

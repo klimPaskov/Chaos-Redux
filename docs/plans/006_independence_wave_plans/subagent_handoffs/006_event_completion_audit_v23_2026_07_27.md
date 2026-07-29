@@ -162,7 +162,7 @@ The accepted row-level package, decision, AI, formable, asset, achievement, and 
 The exact-capacity repair is correctly recorded in both reservation matrices and the v22 bounded handoff.
 Several higher-level documentation surfaces still contradict it:
 
-1. `docs/events/006_independence_wave.md:34`, `docs/events/006_independence_wave.md:119`, and `docs/events/006_independence_wave.md:234` still say the exact-ten bands require a tenth unique group or remain blocked by nine mutually compatible groups.
+1. `docs/events/006_independence_wave/overview.md:34`, `docs/events/006_independence_wave/overview.md:119`, and `docs/events/006_independence_wave/overview.md:234` still say the exact-ten bands require a tenth unique group or remain blocked by nine mutually compatible groups.
 2. `docs/events/006_independence_wave/northern_western_europe_packages.md:555`, `docs/events/006_independence_wave/northern_western_europe_packages.md:787`, and `docs/events/006_independence_wave/northern_western_europe_packages.md:1018` still describe IW-008 and IW-010 as mutually exclusive within the shared group.
 3. `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:346` and `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:420` still describe super-event 6002's ten-country predicate as unreachable because of nine compatible groups.
 4. `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:397` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md:50` still identify v21 as the whole-event authority and generically carry forward its exact-ten gap.

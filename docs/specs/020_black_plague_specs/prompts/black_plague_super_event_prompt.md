@@ -79,7 +79,7 @@ Prepare this package only if implementation retains the eligibility gate for a g
 
 ## Required output note
 
-Create or update `docs/super_events/020_black_plague_super_event_research.md` with:
+Create or update `docs/super_events/020_black_plague/research.md` with:
 
 - super-event role and trigger
 - final title recommendation
@@ -90,7 +90,7 @@ Create or update `docs/super_events/020_black_plague_super_event_research.md` wi
 - selected remark and source note
 - image asset manifest path
 - audio candidates
-- selected track title, creator, performer, source, license, duration, attribution, source path, final OGG path, edit steps, and unique audio ID recommendation
+- selected track title, creator, performer, source, license, duration, attribution, source path, final WAV path, edit steps, and unique audio ID recommendation
 - uncertainties and blockers
 
 For selected audio, preserve the original download, create a 44.1 kHz OGG in `music/020_black_plague/`, and report final duration. Do not edit sound definitions or gameplay wiring.

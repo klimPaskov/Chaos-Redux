@@ -25,7 +25,7 @@ No localisation keys were changed.
 | Required route family | Implemented coverage | Status | Notes |
 |---|---|---|---|
 | Political/state identity | Present in all four files, strongest in republics and 47-focus custom splinters | Partial | Several crisis trees are identity-forward but short. OGB remains a 23-focus tree. |
-| Industry/economy | Present broadly | Partial | Many trees use repeated one-state building rewards instead of a developed production loop. Worst clusters remain in `internal_soviet_collapse_*`, `KRS`, `DHC`, `KHC`, `UWD`, `ARD`, `NLC`. |
+| Industry/economy | Present broadly | Partial | Many trees use repeated one-state building rewards instead of a developed production loop. Worst clusters remain in `internal_soviet_collapse_*`, `AOX`, `DHC`, `KHC`, `UWD`, `ARD`, `NLC`. |
 | Military/security | Present broadly | Partial | DSC is now strongly aggressive; NRF has stronger naval/port payoffs after this patch. Several security/directorate trees still lean on repeated equipment/building payoffs. |
 | Expansion/map ambition | Present in many endgames | Partial | Many branches defer real map aggression to late helpers. Some middle branches still have only one claim or no postwar handling. |
 | Decisions/mechanics | Uneven | Partial | PRA/DSC/NRF/OGB/CFR have decision hooks; many 47-focus splinters still have zero or one direct decision/map hook in the focus parser. |
@@ -39,7 +39,7 @@ No localisation keys were changed.
 | `005_soviet_collapse_custom_splinters.txt`, `DSC_soviet_collapse_focus_tree` | 18 focuses; parser found 7 equipment rewards, 4 building rewards, 7 map/decision hooks. `DSC_grave_ordnance_claims`, `DSC_dead_regiment_columns`, `DSC_armies_that_do_not_demobilize`, and `DSC_congress_of_the_dead_army` are the danger core. | Much better than the complaint baseline, but still compact for a high-chaos military threat. |
 | `005_soviet_collapse_factory_successors.txt`, `OGB_soviet_collapse_focus_tree` | 23 focuses versus 47 for CFR and 58 for MFR. `OGB_claim_the_old_trade_cities` only added claims before this patch. | Shallow compared with other successors; expansion payoff needed stronger controlled-state handling. |
 | `005_soviet_collapse_factory_successors.txt`, `CFR_soviet_collapse_focus_tree` | 47 focuses, 9 building rewards, 6 map/decision hooks. Existing dirty diff shows broader CFR construction payoff edits already present before this handoff. | High-impact construction identity is underway, but broad review is needed to separate parent edits from final intended design. |
-| `005_soviet_collapse_custom_splinters.txt`, 47-focus trees | Parser found flat reward clusters in `KRS` 18, `DHC` 15, `KHC` 16, `UWD` 23, `ARD` 20, `NLC` 16. | These remain the worst repeated building/equipment reward offenders after this narrow patch. |
+| `005_soviet_collapse_custom_splinters.txt`, 47-focus trees | Parser found flat reward clusters in `AOX` 18, `DHC` 15, `KHC` 16, `UWD` 23, `ARD` 20, `NLC` 16. | These remain the worst repeated building/equipment reward offenders after this narrow patch. |
 | `005_soviet_collapse_republics.txt` | Flat reward clusters remain high in `internal_soviet_collapse_focus_tree` 29, `kazakhstan` 19, `central_asia` 17, `moldova` 14. | Needs a separate republic-route reward pass. |
 | `005_soviet_collapse_ancient_restorations.txt` | Four trees, 16 focuses each. No direct idea spam, but branch depth is shallow by the Event 005 focus spec. | Needs expansion plan or explicit crisis-tree classification. |
 
@@ -51,7 +51,7 @@ Direct duplicate scan result: no repeated `add_ideas` entries inside the same `c
 |---|---|---|
 | `soviet_collapse_ukraine_focus_tree` | Coordinate audit found path risks around `ukr_soviet_collapse_black_banner_compact` and route selectors under `ukr_soviet_collapse_question_of_statehood`. | Possible lines through route blocks; needs visual review. |
 | `PRA_soviet_collapse_focus_tree` | Path risks around `PRA_armored_train_directorate` and the late moving-state branch; compact continuous panel position remains at x=1536. | Mobile rail branch can still read crowded. |
-| `KRS`, `UDC`, `SDZ`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `BAC`, `ARD`, `NLC` | Coordinate audit found multiple possible parent-child line crossings. | Broad layout pass still required; not safe to solve in this narrow patch. |
+| `AOX`, `UDC`, `SDZ`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `ADX`, `ARD`, `NLC` | Coordinate audit found multiple possible parent-child line crossings. | Broad layout pass still required; not safe to solve in this narrow patch. |
 
 No same-coordinate focus collisions were found in the mechanical coordinate audit.
 

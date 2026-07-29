@@ -25,7 +25,7 @@ It owns documentation only. Gameplay, assets, localisation source, workbook, and
 
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
-- `docs/events/006_independence_wave.md` (verified against the current gate and count wording)
+- `docs/events/006_independence_wave/overview.md` (verified against the current gate and count wording)
 
 The resume packet's Mediterranean summary now records the admitted ASX role-correct Sturzo/Lanza/Rizzo/Di Benedetto roster rather than the superseded “commander still to be sourced” wording.
 

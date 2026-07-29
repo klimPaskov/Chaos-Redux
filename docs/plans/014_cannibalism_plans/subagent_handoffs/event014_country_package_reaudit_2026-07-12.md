@@ -51,7 +51,7 @@ No replacement P0–P2 issue was found in those repaired paths.
 
 ### Eight reusable slots, origin territory, and reincarnation safety
 
-- `common/country_tags/014_cannibalism_countries.txt` registers CBA/CBB for Island, CBC/CBD for Siege, CBE/CBF for March, CBG/CBH for Prison, and CBL for ordinary unification. Matching country and dormant history files exist for all nine tags.
+- `common/country_tags/014_cannibalism_countries.txt` registers CBA/AHX for Island, CBC/AIX for Siege, CBE/CBF for March, AMX/CBH for Prison, and CBL for ordinary unification. Matching country and dormant history files exist for all nine tags.
 - Allocation remains inside each origin's two-slot pool. Formation transfers the origin plus at most two directly adjacent same-controller active-cell states, then cores and annotates those exact states for the allocated incarnation.
 - Unsupported regions do not receive a generic identity. The region/name/portrait system covers Europe, Asia, Africa, Middle East, North America, South America, and Oceania.
 - Release clears focus contracts, route/origin flags, ideas, templates, modifiers, actor and spread references, state cores, state slot variables, node-source references, and scheduled callbacks before reuse. Finalisation waits for the dead-country/reference audit and quarantine.

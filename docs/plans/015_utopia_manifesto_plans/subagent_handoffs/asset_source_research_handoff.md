@@ -12,7 +12,7 @@ The Event 015 report image, news image, and two installed legacy super-event ima
 
 The Thomas More quotation is accurately reproduced and attributed to Thomas More, *Utopia*, translated by Gilbert Burnet. The wording matches the closing sentence in Project Gutenberg ebook 2130, and that edition's introduction explicitly identifies Burnet's 1684 translation. More died in 1535, Burnet in 1715, and editor Henry Morley in 1894, so the quoted text and edition chain are public-domain compatible. The five current localisation entries for slots `96`-`100` all reproduce the same exact sentence and attribution.
 
-Playback audio ID `57` is a unique, documented, compatible cue. It uses Johannes Brahms's *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, performed by the Musopen Symphony Orchestra. The specific Commons recording is dedicated under CC0 1.0 Universal. The source master, frozen Commons page, structured metadata, CC0 deed, CC0 legal code, final OGG, and Event 015 WAV mirror are all present and checksum-backed. The HTML music catalogue now contains the missing active row.
+Playback audio ID `57` is a unique, documented, compatible cue. It uses Johannes Brahms's *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, performed by the Musopen Symphony Orchestra. The specific Commons recording is dedicated under CC0 1.0 Universal. The source master, frozen Commons page, structured metadata, CC0 deed, CC0 legal code, final WAV, and Event 015 WAV mirror are all present and checksum-backed. The HTML music catalogue now contains the missing active row.
 
 The overall super-event visual package is incomplete. Five route-specific sprites are registered and selected for display slots `96`-`100`, but none of their generated source PNGs or runtime DDS files exists. The two installed legacy super-event images are not accepted as fallbacks.
 
@@ -48,7 +48,7 @@ Evidence:
 - primary text and translation statement: <https://www.gutenberg.org/files/2130/2130-h/2130-h.htm>
 - Project Gutenberg catalogue record: <https://www.gutenberg.org/ebooks/2130>
 - independent bibliographic cross-check identifying Burnet as translator and Morley as editor: <https://onlinebooks.library.upenn.edu/webbin/gutbook/lookup?num=2130>
-- canonical repo research note: `docs/super_events/015_utopia_manifesto_super_event_text_research.md`
+- canonical repo research note: `docs/super_events/015_utopia_manifesto/text_research.md`
 
 The quote is exact, not paraphrased or modernized. The source page identifies Burnet's translation and Project Gutenberg marks ebook 2130 public domain in the United States. The author, translator, and editor death dates also place this text beyond ordinary life-plus-70 terms. No quote-source or attribution blocker remains.
 
@@ -71,7 +71,7 @@ Identity chain:
 - preserved source: `docs/super_events/source_audio/015_utopia_manifesto/brahms_symphony_3_iii_poco_allegretto_musopen_cc0_original.ogg`
 - Commons size and SHA-1: `8,770,243` bytes; `38f129111cb55461c7749a52b7ac608a13709b11`
 - preserved source SHA-256: `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df`
-- final OGG: `music/015_utopia_manifesto/super_event_57_utopia_has_neighbors.ogg`, `116.000000 s`, stereo, `44,100 Hz`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`
+- final WAV: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`, `116.000000 s`, stereo, `44,100 Hz`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`
 - final WAV mirror: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`, `116.000000 s`, stereo PCM s16le, `44,100 Hz`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`
 - embedded OGG tags name the title, performer, composer, Event 015, CC0 licence, Commons source, and edit interval
 
@@ -79,7 +79,7 @@ Runtime/catalog identity:
 
 - playback audio ID: `57`
 - display slots using it: `96`-`100`
-- six Event 015 music helpers point only to the Event 015 OGG
+- six Event 015 sound wrappers point only to the Event 015 OGG
 - six Event 015 sound wrappers point only to the Event 015 WAV base sound
 - `utopia_manifesto_emit_regional_proclamation` assigns audio ID `57` before settings-aware playback
 - `music/chaosx_music_track_list.html` has one Event 015 row for playback audio ID `57`, with source, performer, CC0 link, duration, edit notice, and display-slot use
@@ -125,15 +125,15 @@ No fallback, placeholder, legacy-image substitution, or unverified source is app
   - added generated-source provenance and current route-image status
 - `docs/assets/015_utopia_manifesto/prompts/generated_event_art_final_prompts.md`
   - clarified that prompt text is not generation evidence
-- `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`
-  - reconciled current OGG/WAV integration, hashes, runtime keys, catalogue row, and uniqueness scan
+- `docs/super_events/015_utopia_manifesto/audio_research.md`
+  - reconciled current WAV integration, hashes, runtime keys, catalogue row, and uniqueness scan
 - `docs/super_events/super_event_audio_packages.md`
   - added the active Event 015 audio package with source, CC0 rights, paths, checksums, edit record, slots, audio ID, and uniqueness status
 - `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/super_event_audio_researcher_handoff.md`
   - added a current integration/source re-audit that supersedes proposal-era pending language
 - `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/super_event_text_researcher_handoff.md`
   - recorded current localisation integration and primary-text recheck
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
   - replaced the stale two-super-event account with display slots `96`-`100`, audio ID `57`, source records, and the exact image blocker
 - `docs/specs/015_utopia_manifesto_specs/handoffs/unresolved_verification_blockers.md`
   - replaced stale claims that no art/text/audio existed with the current resolved and unresolved state
@@ -155,7 +155,7 @@ Meaningful validation performed:
 - recalculated the source-audio, OGG, WAV, and frozen-evidence hashes
 - decoded and profiled the source, OGG, and WAV with FFprobe
 - verified six music definitions, six sound wrappers, one station entry, one catalogue row, and the Event 015 audio constant
-- ran repository-wide OGG/WAV hash and Chromaprint uniqueness scans
+- ran repository-wide WAV hash and Chromaprint uniqueness scans
 
 No commit was created. The five-file route-image blocker prevents a clean overall super-event completion claim, and most Event 015 documentation surfaces in this handoff were already untracked shared-plan outputs. The parent should review and commit the integrated Event 015 plan without folding unrelated concurrent changes into this bounded audit.
 

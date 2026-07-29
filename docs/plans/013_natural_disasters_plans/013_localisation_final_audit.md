@@ -96,7 +96,7 @@ All six Event 013 super-event roles have complete title, quote, remark, and desc
 
 Evidence:
 
-- The meteor-impact research proposes "Who is able to stand?" at `docs/super_events/013_natural_disasters_super_event_text_research.md:200-204`.
+- The meteor-impact research proposes "Who is able to stand?" at `docs/super_events/013_natural_disasters/archive/text_research.md:200-204`.
 - The storm-corridor research proposes "Here's a night pities neither wise men nor fools." at lines 268-277.
 - Live slot 69 uses "Mark every fall." at `localisation/english/013_natural_disasters_l_english.yml:351`. This is shortened from the ordinary meteor-shower report button at line 132.
 - Live slot 70 uses "The path is still moving." at line 355. The same line is the ordinary storm-corridor news button at line 153.

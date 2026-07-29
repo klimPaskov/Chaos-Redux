@@ -72,7 +72,7 @@ Worst reward-helper stack/churn areas still needing parent cleanup:
 
 - Kazakhstan resource/Alash/socialist/resource branches repeatedly call generic staged reward helpers such as `soviet_collapse_apply_focus_depot_and_supply_control`, `soviet_collapse_apply_focus_socialist_sovereignty`, `soviet_collapse_apply_focus_legal_recognition`, and `soviet_collapse_apply_focus_lawful_supply_plan`. Examples: `kaz_soviet_collapse_mining_workers_councils` at `common/national_focus/005_soviet_collapse_republics.txt:11477`, `kaz_soviet_collapse_planned_economy_without_center` at line 11532, and `kaz_soviet_collapse_resource_sovereignty` at line 11701.
 - Compact chaos trees repeatedly stack `soviet_collapse_apply_focus_chaos_assault_plan`, `soviet_collapse_apply_objective_source_pressure_delta`, `soviet_collapse_apply_focus_high_chaos_identity`, and custom expansion helpers. Examples: `TSC_sky_over_siberia` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:2233`, `NRF_northern_revenant_fleet` at line 3833, and `ICD_grave_columns_march` at line 4250.
-- Ancient restoration expansion/endgame focuses still rely on generic aggressive helper stacks instead of route-specific wrappers, especially the expansionist and beyond-border focuses in `KZR`, `SOG`, `KHW`, and `ALN`.
+- Ancient restoration expansion/endgame focuses still rely on generic aggressive helper stacks instead of route-specific wrappers, especially the expansionist and beyond-border focuses in `APX`, `SOG`, `ANX`, and `ABX`.
 
 Recommended smallest reward fix:
 
@@ -82,7 +82,7 @@ Create route-specific wrapper helpers for the worst repeated reward families ins
 
 Worst shallow trees:
 
-- `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`: 16 focuses each. They have symbolic politics, a narrow industry/support lane, expansion claims/wargoals, and an end state, but lack full military, diplomacy, internal politics, and special mechanics depth.
+- `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`: 16 focuses each. They have symbolic politics, a narrow industry/support lane, expansion claims/wargoals, and an end state, but lack full military, diplomacy, internal politics, and special mechanics depth.
 - `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`: 18 focuses each. They are stronger than before and suitably aggressive, but still compact fixed-purpose packages rather than full trees. Missing or thin families: diplomacy, industrial identity beyond one support lane, non-expansion political alternatives, and special mechanics with multi-focus progression.
 - `PRA_soviet_collapse_focus_tree`: 22 focuses. Its railway identity is good, but repeated authority-idea updates should stop being the visible reward center. It needs more visible rail corridor, logistics, rail-guard, transit bargaining, and war-routing payoffs.
 - `OGB_soviet_collapse_focus_tree`: 23 focuses. It is moderate depth but still light on military/diplomacy branch depth compared with the active objective.
@@ -134,14 +134,14 @@ Worst long prerequisite edges still present:
 - Moldova: `moldova_soviet_collapse_republic_of_crossings` has multiple dy 6-10 convergence lines.
 - Belarus: remaining long edges include `blr_soviet_collapse_eastern_line_watch`, `blr_soviet_collapse_league_supply_timetables`, `blr_soviet_collapse_baltic_wire_rooms`, and `blr_soviet_collapse_the_league_depot_at_minsk`.
 - CFR/MFR: `CFR_the_concrete_committee`, `CFR_the_debt_map`, `MFR_officers_chair_the_board`, `MFR_artillery_from_broken_foundries`.
-- FEV/SZA/BAC/ARD: endgame convergence still produces long fan-in pathlines.
+- FEV/SZA/ADX/ARD: endgame convergence still produces long fan-in pathlines.
 
 ## Smallest Safe Next Fixes
 
 1. Kazakhstan layout tranche first. Keep the existing focus IDs and flags; move only coordinates/prerequisite layout where necessary. Separate the Alash, socialist, resource, southern congress, and military lanes so same-row adjacency and through-lines disappear. Do not redesign rewards in the same tranche.
 2. Add route-specific wrapper helpers for Kazakhstan resource/socialist rewards. Keep existing variable gains and hidden effects, but replace repeated generic helper presentation with one route-specific tooltip per branch.
 3. Fix compact chaos template pathline pattern in one small shared layout tranche for `TSC`, `RMC`, `DSC`, `NRF`, and `ICD`. The repeated diagonal through midpoint focus can be fixed without changing flags or route semantics.
-4. Ancient restoration reward wrapper tranche. Wrap the aggressive expansion/endgame helper stacks for `KZR`, `SOG`, `KHW`, and `ALN` so the player sees one country-specific expansion payoff, while preserving overpowered/aggressive behavior.
+4. Ancient restoration reward wrapper tranche. Wrap the aggressive expansion/endgame helper stacks for `APX`, `SOG`, `ANX`, and `ABX` so the player sees one country-specific expansion payoff, while preserving overpowered/aggressive behavior.
 5. CFR/MFR pathline cleanup. Fix the few worst factory-successor crosslines without changing construction/factory reward identity.
 
 ## Validation

@@ -108,7 +108,7 @@ Exact external consumption by profile and intensity:
 
 Updated:
 
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_reaudit_2026-07-15.md`
 - this handoff
 

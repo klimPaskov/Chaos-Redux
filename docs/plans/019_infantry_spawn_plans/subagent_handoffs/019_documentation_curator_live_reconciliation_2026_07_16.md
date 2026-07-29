@@ -58,11 +58,11 @@ handoffs available through 2026-07-16.
    - documented the exact claimant and nonhuman Event 19 classifier proofs;
    - recorded list-free future-provider behavior and the clean v4 classifier
      reaudit.
-2. `docs/achievements/019_infantry_spawn_achievements.md`
+2. `docs/achievements/019_infantry_spawn/achievements.md`
    - identified controlled trials as one of exactly two approved substitutes;
    - reconciled filename-driven custom-achievement loading with the 33 explicit
      aliases in `interface/chaosx_achievements.gfx`.
-3. `docs/events/019_infantry_spawn.md`
+3. `docs/events/019_infantry_spawn/overview.md`
    - replaced the vague final-audit statement with named clean scopes and
      precise pending gates;
    - documented the two approved substitutes, `female = no` character contract,
@@ -101,7 +101,7 @@ handoffs available through 2026-07-16.
 12. `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md`
     - reconciled personal leaders and institutional council carriers with the
       implemented `female = no` contract.
-13. `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+13. `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
     - recorded the clean scoped reaudit, catalog status, implemented evolution
       lock integration, leader/council metadata, fixed-scene scope, and pending
       flag gate.

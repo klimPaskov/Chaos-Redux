@@ -57,11 +57,11 @@ The remaining issues are broad route depth, reward rhythm, and layout/pathline d
 | `005_soviet_collapse_republics.txt` | 9 | 501 | Ukraine, generic breakaway, internal republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan. |
 | `005_soviet_collapse_custom_splinters.txt` | 25 | 1005 | 19 full 47-focus custom splinters, 1 22-focus PRA compact tree, 5 18-focus compact crisis trees. |
 | `005_soviet_collapse_factory_successors.txt` | 3 | 128 | CFR 47, OGB 23, MFR 58. |
-| `005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | KZR, SOG, KHW, ALN at 16 focuses each. |
+| `005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | APX, SOG, ANX, ABX at 16 focuses each. |
 | Total | 41 | 1698 | Current workspace state. |
 
 Smallest current trees:
-- `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`: 16 focuses each.
+- `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`: 16 focuses each.
 - `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`: 18 focuses each.
 - `PRA_soviet_collapse_focus_tree`: 22 focuses.
 - `OGB_soviet_collapse_focus_tree`: 23 focuses.
@@ -115,15 +115,15 @@ Factory successors:
 - `OGB_soviet_collapse_focus_tree` is still the weakest factory successor at 23 focuses. Worst concrete anchors: `OGB_scholars_guard_the_charter`, `OGB_clerics_guard_the_charter`, `OGB_treat_with_idel_ural`, `OGB_the_volga_cannot_have_two_seals`, `OGB_claim_the_old_trade_cities`, `OGB_future_bulgaria_file`, `OGB_volga_restoration_state`, `OGB_the_old_name_survives_modern_war`. It has IUL/SOV aggression and decision unlocks, but not enough second-stage Volga/Idel-Ural settlement, scholar-vs-cleric consequences, or postwar integration.
 
 Custom splinters:
-- Full 47-focus trees exist for `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`.
+- Full 47-focus trees exist for `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`.
 - The 47-focus architecture provides political/industry/war/diplomatic/high-chaos lanes, but many IDs still prove a template spine: `*_industry_plan`, `*_hidden_doctrine`, `*_extreme_gate`, `*_extreme_path`, `*_war_plan`, `*_enemy_front`, `*_diplomatic_plan`, and `*_endgame`.
 - Weakest compact crisis trees: `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree` at 18 focuses, plus `PRA_soviet_collapse_focus_tree` at 22.
 - Worst compact anchors needing deeper mechanics: `TSC_starfall_mandate`, `RMC_resurrection_without_state`, `DSC_grave_ordnance_claims`, `NRF_northern_revenant_fleet`, `ICD_commissariat_without_end`, `PRA_rails_over_capitals`, `PRA_the_pale_line_endures`.
 
 Ancient restorations:
-- `KZR`, `SOG`, `KHW`, and `ALN` each have a clean 16-focus compact tree and now have aggressive endgame hooks. They remain too short for long-lived playable countries unless intentionally treated as compact high-chaos actors.
-- Worst shallow payoff IDs: `KZR_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `KHW_restoration_survives_modern_war`, `ALN_restoration_survives_modern_war`.
-- Stronger but still compact aggressive IDs: `KZR_returned_names_endgame`, `KZR_road_beyond_the_caspian`, `SOG_returned_names_endgame`, `SOG_cities_beyond_the_desert`, `KHW_returned_names_endgame`, `KHW_delta_without_a_center`, `ALN_returned_names_endgame`, `ALN_every_pass_a_border`.
+- `APX`, `SOG`, `ANX`, and `ABX` each have a clean 16-focus compact tree and now have aggressive endgame hooks. They remain too short for long-lived playable countries unless intentionally treated as compact high-chaos actors.
+- Worst shallow payoff IDs: `APX_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `ANX_restoration_survives_modern_war`, `ABX_restoration_survives_modern_war`.
+- Stronger but still compact aggressive IDs: `APX_returned_names_endgame`, `APX_road_beyond_the_caspian`, `SOG_returned_names_endgame`, `SOG_cities_beyond_the_desert`, `ANX_returned_names_endgame`, `ANX_delta_without_a_center`, `ABX_returned_names_endgame`, `ABX_every_pass_a_border`.
 
 ## Layout and Pathline Risks
 
@@ -139,15 +139,15 @@ Mutual-exclusion geometry risks:
 - `soviet_collapse_central_asia_focus_tree`: `central_asia_soviet_collapse_local_republic_council`, `central_asia_soviet_collapse_military_border_authority`, and `central_asia_soviet_collapse_foreign_border_patronage` are wide/diagonal selectors.
 - `soviet_collapse_moldova_focus_tree`: `moldova_soviet_collapse_alliance_not_union`, `moldova_soviet_collapse_conditional_union`, and `moldova_soviet_collapse_reject_the_union_question` still need visual review.
 - `CFR_soviet_collapse_focus_tree`: political/economic selectors including `CFR_elect_the_site_committees`, `CFR_publish_the_planners_charter`, `CFR_invite_the_foreign_contract_board`, `CFR_the_concrete_committee`, `CFR_rails_first`, `CFR_factories_first`, and `CFR_contracts_first` have the worst same-row mutual-exclusion line risks.
-- Ancient restorations: symbolic-vs-expansion forks (`KZR_symbolic_crossing_state` vs `KZR_expansionist_steppe_levy`, equivalent SOG/KHW/ALN pairs) are horizontally separated but clean enough to keep unless the parent expands the trees.
+- Ancient restorations: symbolic-vs-expansion forks (`APX_symbolic_crossing_state` vs `APX_expansionist_steppe_levy`, equivalent SOG/ANX/ABX pairs) are horizontally separated but clean enough to keep unless the parent expands the trees.
 
 Pathline crossing examples found by coordinate scan:
 - Ukraine has dense crossing lines around early statehood and political/military route geometry, including `ukr_soviet_collapse_guard_the_telegraph_house -> ukr_soviet_collapse_question_of_statehood` crossing grain/industry lines, and multiple crossings around `ukr_soviet_collapse_foreign_courts_notice_kyiv -> ukr_soviet_collapse_army_supremacy`.
 - `UDC_soviet_collapse_focus_tree` and `SDZ_soviet_collapse_focus_tree` show repeated crossing patterns around `*_supply`, `*_civil_rule`, `*_proaganda`, `*_radical_turn`, `*_war_plan`, and `*_industry_plan`.
 - `DHC_soviet_collapse_focus_tree` and `KHC_soviet_collapse_focus_tree` show crossing clusters around `*_enemy_front`, `*_river_customs`, `*_league_passage/corridor_bargain`, and winter road/settlement branches.
-- `FEV`, `SZA`, `UWD`, `BAC`, `ARD`, and `NLC` have late-tree crossing clusters, especially where settlement/diplomacy/industry/war lanes converge into `*_endgame`.
+- `FEV`, `SZA`, `UWD`, `ADX`, `ARD`, and `NLC` have late-tree crossing clusters, especially where settlement/diplomacy/industry/war lanes converge into `*_endgame`.
 - Factory successor examples: `CFR_the_board_becomes_the_cabinet -> CFR_cities_first` crosses the `CFR_rails_first -> CFR_apartment_blocks_for_loyalty` line; `MFR_factory_war_cabinet -> MFR_artillery_from_broken_foundries` crosses `MFR_rifles_before_speeches -> MFR_standardize_the_rifle_line`.
-- Ancient examples: `KZR_caspian_road_markets -> KZR_league_transit_bargain` crosses `KZR_customs_workshop_compact -> KZR_old_border_files`; equivalent compact diamond crossings exist in SOG/KHW/ALN.
+- Ancient examples: `APX_caspian_road_markets -> APX_league_transit_bargain` crosses `APX_customs_workshop_compact -> APX_old_border_files`; equivalent compact diamond crossings exist in SOG/ANX/ABX.
 
 These are not single-line safe fixes because moving any one focus would disturb branch spacing and often requires route layout redesign.
 

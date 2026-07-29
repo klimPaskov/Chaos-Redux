@@ -66,7 +66,7 @@ still gated against the 1936-centered event baseline. FIJ selects FORM-39
 Melanesian Federation. The named FIJ/PNG/WPG consent-led adapter, exact member
 and anchor arrays, MFX X-tag identity surface, autonomous-member cleanup,
 staged anchor integration, and paid post-formation projects are implemented
-and documented in `docs/events/006_form39_melanesian_federation.md`. FIJ is not
+and documented in `docs/events/006_independence_wave/form39_melanesian_federation.md`. FIJ is not
 in runtime attestation until the IW-157/IW-178 research flags, MFX collision
 reservation and flat-flag review, and the source/date decision are accepted.
 The durable pre-DDS portrait shelf now contains exactly 56 original-size
@@ -257,7 +257,7 @@ they are not current routing documents.
   super-event art, and final `6002` audio files materially exist. Gameplay
   advisor offices are asset-neutral after the user-directed withdrawal of all
   custom Event 006 advisor icons.
-- `6002` OGG, WAV, music wrappers, sound wrappers, zero-random station entry,
+- `6002` OGG, WAV, sound wrappers, sound wrappers, zero-random station entry,
   slot-24 localisation/image dispatch, five factual predicates, Event Log
   payload, and settings-aware queued presentation are implemented. Packages 1,
   2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted

@@ -116,6 +116,6 @@ Results:
 This tranche does not complete the full focus-tree rework. The next priorities from the audit are:
 
 - Replace repeated generic route tooltip/helper usage in the 47-focus custom splinter scaffolds.
-- Add decision families and concept-specific payoffs to UDC, FTH, BBH, KRS, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and BAC.
+- Add decision families and concept-specific payoffs to UDC, FTH, BBH, AOX, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and ADX.
 - Patch the concrete Ukraine, Belarus, Moldova, Central Asia, internal republic, and UDC pathline/spacing blockers.
 - Review helper-side staged idea updates so focus rewards do not feel like repeated idea churn even when direct focus-level `add_ideas` is gone.

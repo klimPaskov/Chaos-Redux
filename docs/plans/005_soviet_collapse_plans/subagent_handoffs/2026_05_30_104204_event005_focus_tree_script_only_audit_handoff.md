@@ -44,10 +44,10 @@ Icon ids changed: none.
 | Generic breakaway fallback | `soviet_collapse_breakaway_focus_tree`, 36 focuses | Present fallback emergency tree. | Acceptable as fallback only; not a bespoke long-lived identity tree. |
 | Internal republics | `soviet_collapse_internal_republic_focus_tree`, 62 focuses | Present with internal-regional hooks. | Needs less shared-helper feel and more regional route payoff if used for important tags. |
 | Baltic/Caucasus/Central Asia/Moldova/Belarus/Kazakhstan republics | Republic file, 40-92 focuses per tree | Present and localized. Ukraine, Belarus, Kazakhstan are the strongest. | Belarus/corridor and Moldova/Central Asia routes still need more concrete decision and postwar mechanics. |
-| Full custom splinters | FTH, BSC, TNC, ALA, BBH, KRS, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, BAC, ARD, NLC; 47 focuses each | Present. | Still templated across many countries. Needs identity-specific mechanics, aggression, claims/cores, postwar handling, and route AI beyond shared helpers. |
+| Full custom splinters | FTH, AEX, TNC, AAX, BBH, AOX, UDC, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, ADX, ARD, NLC; 47 focuses each | Present. | Still templated across many countries. Needs identity-specific mechanics, aggression, claims/cores, postwar handling, and route AI beyond shared helpers. |
 | Crisis/special splinters | PRA 22 focuses; TSC/RMC/DSC/NRF/ICD 18 focuses | Present but compact. | Too shallow for the user's requested overpowered chaos countries unless explicitly reclassified as short crisis trees. |
 | Factory successors | CFR 47, OGB 23, MFR 58 focuses | CFR/MFR have real forks and stronger identity; OGB remains compact. | OGB is too shallow; CFR/MFR still need more operating-model mechanics, not only factory/war-goal payoffs. |
-| Ancient restorations | KZR/SOG/KHW/ALN, 16 focuses each | Present as compact restoration packages. | Shallow by focus-tree skill standard; needs broader route plan before claiming full depth. |
+| Ancient restorations | APX/SOG/ANX/ABX, 16 focuses each | Present as compact restoration packages. | Shallow by focus-tree skill standard; needs broader route plan before claiming full depth. |
 
 ## Mechanical Audit Results
 
@@ -102,7 +102,7 @@ The broader complaint remains valid as a design/reward issue:
 | 7 | `CFR_soviet_collapse_focus_tree`, `common/national_focus/005_soviet_collapse_factory_successors.txt:17` | Stronger than most, but still relies on public-works helpers and a limited construction-decision layer. | Civilian construction directorate system: escalating build queues, client-city protectorates, building-debt decisions, factory-in-every-capital route, and map-targeted reconstruction/conquest choices. |
 | 8 | `MFR_soviet_collapse_focus_tree`, `005_soviet_collapse_factory_successors.txt:1777` | 58 focuses and many arsenal rewards, but the state concept should be more oppressive and mechanically distinct. | Arms-order economy: production-line decisions, arms-for-recognition diplomacy, client arming, forced procurement, armored train/arsenal units, and war-market escalation AI. |
 | 9 | `ARD_soviet_collapse_focus_tree` / `NLC_soviet_collapse_focus_tree`, custom splinter file | 47-focus shapes exist, but naval/polar identities still share generic helper rhythms. | Naval directorate/polar warfare mechanics: dockyard expansion, convoy control, Arctic port missions, naval invasion routes, coastal fortification, and postwar port settlement. |
-| 10 | Ancient restorations KZR/SOG/KHW/ALN | 16-focus packages, repeated ancient icon families and compact rewards. | Distinct restoration identity per tag: old-border proof, symbolic legitimacy, route-specific claims, patron bargains, integration missions, and non-generic ancient-state AI. |
+| 10 | Ancient restorations APX/SOG/ANX/ABX | 16-focus packages, repeated ancient icon families and compact rewards. | Distinct restoration identity per tag: old-border proof, symbolic legitimacy, route-specific claims, patron bargains, integration missions, and non-generic ancient-state AI. |
 
 ## Icon Coverage Table
 

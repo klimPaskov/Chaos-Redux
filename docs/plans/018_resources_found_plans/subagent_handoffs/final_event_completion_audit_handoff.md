@@ -98,9 +98,9 @@ Live evidence from `ffprobe`:
 
 | Audio ID | Runtime file | Duration |
 | --- | --- | ---: |
-| 54 | `music/018_resources_found/super_event_54_oth_kesh_emergence.ogg` | 34.000 seconds |
-| 55 | `music/018_resources_found/super_event_55_deep_war_crosses_seas.ogg` | 34.000 seconds |
-| 56 | `music/018_resources_found/super_event_56_last_depth_sealed.ogg` | 34.000 seconds |
+| 54 | `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav` | 34.000 seconds |
+| 55 | `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav` | 34.000 seconds |
+| 56 | `sound/018_resources_found/super_event_56_last_depth_sealed.wav` | 34.000 seconds |
 
 All are unique, real-music Vorbis tracks at 44.1 kHz stereo, but none satisfies the specified duration and no approved exception exists.
 
@@ -135,7 +135,7 @@ Repair contract:
 
 Requirement:
 
-- `prompts/resources_found_super_event_prompt.md:27-35` mandates `docs/super_events/018_resources_found_super_event_research.md`, containing considered candidates, selected sources, confidence, licensing, final paths, implementation IDs, and open blockers.
+- `prompts/resources_found_super_event_prompt.md:27-35` mandates `docs/super_events/018_resources_found/overview.md`, containing considered candidates, selected sources, confidence, licensing, final paths, implementation IDs, and open blockers.
 
 Live evidence:
 
@@ -158,7 +158,7 @@ Live file:
 Incorrect documentation:
 
 - `docs/assets/018_resources_found/audio_manifest.md:43`
-- `docs/super_events/018_resources_found_super_event_audio_research.md:185`
+- `docs/super_events/018_resources_found/audio_research.md:185`
 
 Both documented hashes omit the `f` in `...46acf510...`.
 

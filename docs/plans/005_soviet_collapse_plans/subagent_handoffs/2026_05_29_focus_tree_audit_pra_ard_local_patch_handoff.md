@@ -47,7 +47,7 @@ Subagent scope: focus-tree audit and small local patch for the four Soviet Colla
 ## Missing Or Simplified Content
 
 - `OGB_soviet_collapse_focus_tree` remains a 23-focus successor and is not deep enough for a full overpowered restoration/state route.
-- Ancient restorations `KZR`, `SOG`, `KHW`, and `ALN` remain 16-focus packages; they need route identity and existing-mechanic hooks before completion can be claimed.
+- Ancient restorations `APX`, `SOG`, `ANX`, and `ABX` remain 16-focus packages; they need route identity and existing-mechanic hooks before completion can be claimed.
 - Crisis custom trees `PRA`, `DSC`, `TSC`, `RMC`, `NRF`, and `ICD` are shallower than the 47-focus custom-splinter standard; decide whether they are intentionally compact crisis actors or deepen them.
 - Direct tiny convoy/support equipment rewards remain in many custom-splinter focuses. This patch only touched the high-confidence PRA/ARD cases.
 - Ukraine and Belarus have broad depth, but route readability and route-specific AI remain uneven and need a focused pass.
@@ -62,7 +62,7 @@ Subagent scope: focus-tree audit and small local patch for the four Soviet Colla
 ## AI Behavior Gaps
 
 - `ARD_murmansk_dockyard_contracts` received simple war/depot-aware AI modifiers.
-- Many shallow or crisis trees still use simple `base` AI weights; broader route-aware AI should prioritize DSC aggression, PRA rail buildout, NRF/KRS/ARD naval pressure, and Ukraine/Belarus political route decisions.
+- Many shallow or crisis trees still use simple `base` AI weights; broader route-aware AI should prioritize DSC aggression, PRA rail buildout, NRF/AOX/ARD naval pressure, and Ukraine/Belarus political route decisions.
 - Focus AI was audited statically only; decision AI for war goals, cores, and unit decisions remains a parent-level validation surface.
 
 ## High-Priority Follow-Up

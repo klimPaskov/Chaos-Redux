@@ -54,7 +54,7 @@ Surface coverage is mechanically complete at the key level:
 | Full custom splinter family | 19 full 47-focus custom splinter trees | Present, repetitive | Many have the same first-guard/stores/legitimacy/rival/doctrine/economy/League/foreign skeleton; route-specific later content varies, but early/mid play remains template-like. |
 | Compact high-chaos splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `OGB` | Mixed | PRA/DSC/NRF have stronger recent high-chaos payoffs; TSC/RMC/ICD remain mechanically shallow for special actors; OGB is still only 23 focuses. |
 | Factory states | `CFR_soviet_collapse_focus_tree`, `MFR_soviet_collapse_focus_tree` | Present, needs direct projects | CFR has 47 focuses and MFR 58, but many construction/arsenal focuses call one helper and no direct decision/project/building/AI surface. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` ancient trees | Present but compact | Each is 16 focuses with symbolic/expansion fork. Meets compact skeleton, but not enough depth for major high-chaos restoration play. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` ancient trees | Present but compact | Each is 16 focuses with symbolic/expansion fork. Meets compact skeleton, but not enough depth for major high-chaos restoration play. |
 
 ## Reward Spam And Idea Churn
 
@@ -102,11 +102,11 @@ High-helper-count focuses that should be reviewed first:
 | `ICD` Iron Commissariat of the Dead | 18 focuses, death-state theme and one late war goal/AI. | Much weaker than DSC. Many dead-state focuses have no direct unit, core, war, or special recruitment payoff: `ICD_open_the_dead_rolls` `:3804`, `ICD_ryazan_grave_commissariat` `:3825`, `ICD_commissars_who_do_not_die` `:3928`, `ICD_funeral_guard` `:3980`, `ICD_grave_columns_march` `:4148`, `ICD_state_of_last_addresses` `:4240`. |
 | `RMC` Red Martyrs | 18 focuses, theme present, one late high-chaos war route. | Route is still thin: `RMC_reliquary_guard` `:2440`, `RMC_dead_volunteer_columns` `:2491`, `RMC_claim_the_burial_roads` `:2590`, `RMC_procession_columns` `:2611`, `RMC_shrine_state` `:2706` need recruitment, cores, unit spawn, or aggressive AI hooks comparable to DSC. |
 | `NRF` Northern Revenant Fleet | 18 focuses, good naval XP, port mechanics, late war goal/AI, several naval/convoy rewards. | Strongest compact naval death actor, but `NRF_claim_the_white_sea_lane` `:3654` has only high-chaos identity helper and should directly claim/target lanes or unlock port/convoy missions. |
-| `KRS` Kronstadt Free Soviet | 47 focuses and many naval/port focuses. | Naval identity exists, but key skeleton focuses still generic; `KRS_endgame` `:10007` is helper-only and should have port/fleet/faction payoff. |
+| `AOX` Kronstadt Free Soviet | 47 focuses and many naval/port focuses. | Naval identity exists, but key skeleton focuses still generic; `AOX_endgame` `:10007` is helper-only and should have port/fleet/faction payoff. |
 | `ARD` Arctic Directorate | 47-focus generic skeleton with Arctic flavor later. | Directorate/naval-port identity is still too template-like in early/mid branches: `ARD_first_guard`, `ARD_stores`, `ARD_legitimacy`, `ARD_rival`, `ARD_doctrine`, `ARD_economy`, `ARD_league`, `ARD_foreign`, `ARD_supply`, `ARD_enemy_front` around `:23026`-`:23265` mainly call generic custom-splinter helpers. |
 | `NLC` Northern Lights Committee | 47 focuses, polar/ice-road industry flavor. | `NLC_war_plan` `:24556` is helper-heavy but not directly aggressive enough; `NLC_extreme_gate` `:25333` and `NLC_extreme_path` `:25401` need clearer high-chaos payoff or special mechanic. |
 | `OGB` Old Great Bulgaria | 23 focuses, claims/war goal/AI at late route. | Still too shallow for required Volga restoration. Missing real depth for restoration trunk, legitimacy fork, trade/river, religion/society, future event hook, rival branch, and expansion aftermath. |
-| `KZR`, `SOG`, `KHW`, `ALN` ancient restorations | Each 16 focuses, symbolic/expansion fork, direct claims/war goal in expansion route. | Meets compact skeleton but not high-chaos restoration depth. Late `*_returned_names_endgame` focuses are mostly helper stacks and need distinct diplomacy, old-border integration, League/republic interactions, or mythic failure states. |
+| `APX`, `SOG`, `ANX`, `ABX` ancient restorations | Each 16 focuses, symbolic/expansion fork, direct claims/war goal in expansion route. | Meets compact skeleton but not high-chaos restoration depth. Late `*_returned_names_endgame` focuses are mostly helper stacks and need distinct diplomacy, old-border integration, League/republic interactions, or mythic failure states. |
 
 ## Missing Or Simplified Content
 
@@ -119,7 +119,7 @@ Highest-priority route families lacking payoff:
    - ICD and RMC need unit spawning, special recruitment, cores/claims, aggressive AI, and neighbor-war equivalents comparable to DSC.
 3. OGB and ancient restoration depth:
    - OGB needs a broader Volga restoration pass.
-   - KZR/SOG/KHW/ALN need more than a symbolic/expansion fork if they are expected to play as high-chaos restoration states.
+   - APX/SOG/ANX/ABX need more than a symbolic/expansion fork if they are expected to play as high-chaos restoration states.
 4. Republic route payoffs:
    - Ukraine political endpoints, Black Sea branch, Belarus forest/rail route, Kazakhstan resource/rail/steppe branches, and Caucasus oil routes need more state-targeted and decision-linked rewards.
 5. Generic custom splinter skeleton:
@@ -142,7 +142,7 @@ All focus icons are assigned and all assigned icon ids resolve to sprite definit
 | IUL | 47 focuses, 24 unique icons, 38 repeated uses | Worst custom-splinter icon reuse. |
 | FEV/SZA/MRC/UWD | 47 focuses each, 27-34 repeated uses | These need icon diversification alongside route-depth work. |
 | Compact chaos splinters `PRA/DSC/ICD/NRF/RMC/TSC/OGB` | No missing icons, no duplicate icon uses in compact trees | Icon coverage is fine; content depth is the blocker. |
-| Ancient restorations `KZR/SOG/KHW/ALN` | 16 unique icons each | Icon coverage is fine; route depth is the blocker. |
+| Ancient restorations `APX/SOG/ANX/ABX` | 16 unique icons each | Icon coverage is fine; route depth is the blocker. |
 
 ## Localisation And Reward Mismatch List
 
@@ -208,7 +208,7 @@ Do not add fake mutual exclusions to solve these. The route locks are mostly mea
    - Keep helper stacks behind clean custom tooltips to avoid hover spam.
 3. OGB and ancient restoration route-depth tranche:
    - Expand OGB beyond 23 focuses or explicitly document it as intentionally compact.
-   - Add old-border integration, modern-republic diplomacy, League interaction, and symbolic-vs-expansionist failure states for `KZR/SOG/KHW/ALN`.
+   - Add old-border integration, modern-republic diplomacy, League interaction, and symbolic-vs-expansionist failure states for `APX/SOG/ANX/ABX`.
 4. Republic payoff tranche:
    - Ukraine military/Black Sea/Bread route, Belarus forest/rail, Kazakhstan resource/rail/federation, Caucasus oil, Central Asian water/pass, and Moldova Dniester/Romanian route need direct mechanics tied to existing decision/effect systems.
 5. Layout tranche:

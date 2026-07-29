@@ -117,7 +117,7 @@ Primary evidence:
 - `common/scripted_triggers/019_infantry_spawn_triggers.txt`
 - `common/scripted_effects/019_infantry_spawn_evolution_effects.txt`
 - `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_8_scenario_interactions_acceptance.md`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 
 ### Identity matrix and public presentation
 

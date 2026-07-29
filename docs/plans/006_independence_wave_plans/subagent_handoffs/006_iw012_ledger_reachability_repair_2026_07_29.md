@@ -27,7 +27,7 @@ The other three ledgers remain within the same 0–100 clamp and preserve their 
 ## Files
 
 - `common/decisions/006_independence_wave_ice_decisions.txt`
-- `docs/events/006_independence_wave_iw012_ice_package.md`
+- `docs/events/006_independence_wave/iw012_ice_package.md`
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 
 ## Validation boundary

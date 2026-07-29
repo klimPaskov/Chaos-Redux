@@ -87,7 +87,7 @@ Animations must follow the frame-animation workflow: source frames, processed fr
 
 Super-event title text, button text, cultural remarks, and quotes are not selected by this planning spec. They must be researched by the super-event text workflow before implementation. The implementation agent must not use invented sample lines, working titles, or placeholder quotes as final localisation.
 
-Each super-event below uses a functional role label only. The role label is for planning and asset routing, not a final title. The final title, button text, cultural remark, and quote must come from `docs/super_events/010_death_super_event_research.md` after source-backed research.
+Each super-event below uses a functional role label only. The role label is for planning and asset routing, not a final title. The final title, button text, cultural remark, and quote must come from `docs/super_events/010_death/README.md` and its linked source-backed research.
 
 ### Super-event role 1 - Mainland reveal
 
@@ -167,7 +167,7 @@ This role is implemented because the Herald route is implemented.
 | Button or cultural remark requirement | Research a short line or allusion about signatures, names, bargains, betrayal, or state surrender. Do not use invented sample text. |
 | Quote requirement | Research and verify a quote about bargains, names, betrayal, vows, or death. |
 | Image | `super_event_death_black_oath` generated. |
-| Implemented package | Title `A Covenant with Death`. Option `We are at agreement.` Quote from Isaiah 28:15 KJV, documented as public domain in `docs/super_events/010_death_super_event_black_oath_research.md`. Audio uses the documented Moonlight Sonata source package. |
+| Implemented package | Title `A Covenant with Death`. Option `We are at agreement.` Quote from Isaiah 28:15 KJV, documented as public domain in `docs/super_events/010_death/black_oath_research.md`. Audio uses the documented Moonlight Sonata source package. |
 
 ## Achievement plan
 
@@ -218,7 +218,7 @@ Type remains `Minor Fire-Once`. Cluster fields remain blank / no cluster. Status
 
 Create or update a canonical event doc after implementation:
 
-`docs/events/010_death.md`
+`docs/events/010_death/overview.md`
 
 The doc should cover:
 

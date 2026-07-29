@@ -31,14 +31,14 @@
   - `MFR_shop_floor_committees`
   - `MFR_the_arsenal_state`
 - Ancient restorations:
-  - `KZR_symbolic_crossing_state`
-  - `KZR_expansionist_steppe_levy`
+  - `APX_symbolic_crossing_state`
+  - `APX_expansionist_steppe_levy`
   - `SOG_symbolic_city_league`
   - `SOG_expansionist_merchant_claims`
-  - `KHW_symbolic_oasis_authority`
-  - `KHW_expansionist_water_claims`
-  - `ALN_symbolic_pass_principality`
-  - `ALN_expansionist_mountain_claims`
+  - `ANX_symbolic_oasis_authority`
+  - `ANX_expansionist_water_claims`
+  - `ABX_symbolic_pass_principality`
+  - `ABX_expansionist_mountain_claims`
 
 ## Route Behavior Before and After
 - `soviet_collapse_rail_hub_or_mountain_pass`

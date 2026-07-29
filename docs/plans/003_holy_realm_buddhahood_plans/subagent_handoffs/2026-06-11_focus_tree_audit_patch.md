@@ -2,7 +2,7 @@
 
 ## Superseded Status
 
-This handoff records the first focus-tree audit before the later Holy Realm Buddhahood route implementation tranches. Its route-gap findings were resolved or replaced by subsequent work recorded in [holy_realm_focus_tree_completion_plan.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/plans/003_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md) and the current route coverage table in [003_holy_realm.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/events/003_holy_realm.md). Keep the original findings below as historical context for what the first audit saw, not as the current focus-tree completion state.
+This handoff records the first focus-tree audit before the later Holy Realm Buddhahood route implementation tranches. Its route-gap findings were resolved or replaced by subsequent work recorded in [holy_realm_focus_tree_completion_plan.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/plans/003_holy_realm_buddhahood_plans/holy_realm_focus_tree_completion_plan.md) and the current route coverage table in [003_holy_realm.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/events/003_holy_realm/overview.md). Keep the original findings below as historical context for what the first audit saw, not as the current focus-tree completion state.
 
 ## Patch Summary
 

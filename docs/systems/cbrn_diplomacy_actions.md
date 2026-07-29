@@ -8,18 +8,18 @@ The accepted design source is `docs/specs/chaos_warfare_system_specs/specs/09_co
 
 ## Demand Inspections
 
-`cbrn_demand_inspections` targets one existing country at Formal Censure or above. The target must not already have active international inspections, an active refused-inspection policy, or another active CBRN inspection demand, and the two countries must not be at war.
+`cbrn_demand_inspections` targets one existing country at Formal Censure or above. The demanding country must be present in that target's exact active sanctions-participant array. The target must not already have active international inspections, an active refused-inspection policy, or another active CBRN inspection demand, the two countries must not be at war, and the sender must not be inside its 60-day inspection-demand cooldown.
 
 The demanding country consumes:
 
 - 10 CBRN instruments;
 - 10 support equipment.
 
-The target receives the 30-day `cbrn_answer_inspection_demand_mission`. Accepting the existing international-inspection decision grants inspectors access and clears the demand. Refusing inspections or allowing a still-valid demand to time out clears the demand and records the normal public blocked-inspection Coverup source. If the demanding country no longer exists, the deadline only clears the stale demand. The timeout guard prevents mission removal from recursively resolving the same refusal twice.
+The target receives the 30-day `cbrn_answer_inspection_demand_mission`. The mission directs the target to `Accept International Inspections` or `Refuse the Inspectors` in the `Condemnation Response` category. Accepting grants inspectors access and clears the demand. Refusing inspections or allowing a still-valid demand to time out clears the demand and records the normal public blocked-inspection Coverup source. If the demanding country no longer exists, the deadline only clears the stale demand. The timeout guard prevents mission removal from recursively resolving the same refusal twice.
 
 ## Share Forensic Evidence
 
-`cbrn_share_forensic_evidence` targets one state controlled by the publishing country. The state must hold at least one unpublished chemical action record or detected ordinary-pathogen episode with a live recorded actor, an action or seed date, and enough evidence to support publication.
+`cbrn_share_forensic_evidence` targets one state controlled by the publishing country. The state must hold at least one open exact chemical-action row with unpaid liability or a detected ordinary-pathogen episode with an eligible seed date and enough evidence to support publication. A chemical row remains historically publishable if its exact actor no longer exists.
 
 The publishing country consumes:
 
@@ -27,22 +27,27 @@ The publishing country consumes:
 - 15 support equipment;
 - one civilian factory for 21 days.
 
-At completion the system selects the eligible record with the greatest evidence value. Equal evidence keeps the earlier candidate in the fixed inspection order. Biological weapon potency never affects selection: Tularemia, Anthrax, Plague, and Smallpox receive no different publication priority, just as their delivery success remains separate from their consequence hierarchy.
+When the action begins, the system selects and locks the eligible record with the greatest evidence value. Equal evidence keeps the earlier candidate in the fixed inspection order. A later attack or outbreak cannot replace the locked record while the timer is active. Biological weapon potency never affects selection: Tularemia, Anthrax, Plague, and Smallpox receive no different publication priority, just as their delivery success remains separate from their consequence hierarchy.
+
+Each accepted chemical action appends one exact row to aligned persistent state arrays. A failed or aborted chemical air raid that releases no agent also appends an exact attempt row when it creates evidence or Condemnation, rather than leaving aggregate liability without an accountable action. The row stores its UID, actor, victim, date, agent, agent class, route, severity, source label, explicit release status, native raid result where applicable, civilian deaths, contamination, medical load, evidence, attribution, retaliation status, exact public and hidden Condemnation, exact public and hidden retaliation relief, status, and confirmation-registration state. Rows are never overwritten or deleted; only their evidence, attribution, settlement, confirmation, and status fields advance. No-release rows can expose responsibility for the attempt but cannot create confirmed weapon-use history, treaty callbacks, or retaliation authority. The `cbrn_last_chemical_*` values remain compatibility and latest-display mirrors; forensic selection and settlement use only the append-only rows.
+
+The actor also stores an aligned state-and-UID registry for those rows. Existing targeted inspection and observer disclosures apply their normal fraction independently to every registered exact row and expose only the amount actually reconciled to those rows. Aggregate hidden Chemical liability that has no exact row remains hidden; the system does not assign it to a guessed action, state, victim, or actor.
 
 For a chemical record, publication:
 
 - adds 15 state evidence;
 - recalculates attribution through the shared chemical evidence resolver;
-- records the action date as published;
+- advances only the locked exact row;
 - calculates the published share from that exact action's recorded paid and unpaid Chemical liability;
 - exposes only the additional unpaid liability justified by the resulting attribution band;
 - uses the actor's aggregate latent Chemical bucket only as a settlement ceiling, never as the source of the amount;
+- records and closes a confirmed inactive historical actor without applying country effects to a successor, controller, or proxy;
 - never adds the original use source a second time.
 
 For a biological record, publication:
 
 - adds 15 evidence to the selected agent episode;
-- records that episode's seed date as published;
+- advances only if the locked episode's seed date remains current;
 - re-enters the selected agent's exact attribution and unpaid-Condemnation path;
 - never changes the agent, raid outcome, delivery success, deaths, spread, or contamination history.
 
@@ -50,7 +55,7 @@ The 90-day state cooldown limits repeated publication work. A new action or a ne
 
 ## Sponsor Decontamination Mission
 
-`cbrn_sponsor_decontamination_mission` targets one chemically contaminated foreign-controlled state. Access must be supported by a shared faction, subject relationship, active international inspections, or active foreign observers. The sponsor and recipient must not be at war.
+`cbrn_sponsor_decontamination_mission` targets one chemically contaminated foreign-controlled state. Access must be supported by a shared faction, subject relationship, active international inspections, active foreign observers, or an exact bilateral humanitarian carve-out. The sponsor and recipient must not be at war. The same humanitarian carve-out authorizes protective-equipment exports through the existing model-aware mask decision when its separate stock and recipient checks pass.
 
 The sponsor consumes:
 
@@ -62,7 +67,7 @@ The sponsor consumes:
 - 10 convoys;
 - two civilian factories for 45 days.
 
-Masks, decontamination sets, and instruments are removed oldest model first through the established equipment-family debit helpers. The state stores the exact provider, initial recipient controller, and start date. A controller change or war with the provider cancels the mission without refund or cleanup.
+Masks, decontamination sets, and instruments are removed oldest model first through the established equipment-family debit helpers. The state stores the exact provider, initial recipient controller, and start date. Cancellation and completion revalidate that exact provider and original recipient-controller, peace between them, and at least one continuing alliance, subject, inspection, observer, or exact humanitarian-corridor access route. A controller change, war, or loss of every authorized access route cancels the mission without refund or cleanup.
 
 At completion the mission removes contamination according to the current state band:
 
@@ -129,7 +134,9 @@ The source PNGs, transparent intermediates, processed PNGs, final-DDS contact sh
 
 ## Engine Boundaries
 
-The implementation does not estimate responsibility from country history, substitute a nearby state, infer a missing actor, approximate a bilateral record, or derive one action's liability from an aggregate source bucket. Every chemical action records its own paid, unpaid, and total Chemical liability before publication. The aggregate latent Chemical bucket is used only to settle the exact recorded amount and cannot increase it.
+The implementation does not estimate responsibility from country history, substitute a nearby state, infer a missing actor, approximate a bilateral record, or derive one action's liability from an aggregate source bucket. Every chemical action appends its own actor, victim, physical consequences, evidence, retaliation classification, and paid, unpaid, and total Chemical liability before a later action can overwrite the compatibility mirrors. The aggregate latent Chemical bucket is used only to settle the exact recorded amount and cannot increase it.
+
+The International Response section of the selected country's Condemnation detail view displays its latest chemical or ordinary-biological action context, action date, target state, evidence, attribution, inspection state, sanctions participation, humanitarian carve-out, and exact bilateral retaliation expiry for the viewing country. It is a read-only projection and does not scan or mutate other countries.
 
 No broad daily, weekly, or monthly all-country mutation pulse was added. Target and state eligibility are evaluated by the decision system, while selected actions mutate only their recorded targets.
 

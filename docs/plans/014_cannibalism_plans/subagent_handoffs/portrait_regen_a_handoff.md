@@ -2,7 +2,7 @@
 
 ## Completed scope
 
-- Regenerated all 28 Event 014 CBA-CBD regional/default warlord portraits as separate fictional image-generation sources.
+- Regenerated all 28 Event 014 CBA-AIX regional/default warlord portraits as separate fictional image-generation sources.
 - Installed all 28 at their exact existing 156x210 live DDS paths.
 - Rejected and replaced nine close-shave/buzz-cut/stubble sources after an enlarged scalp audit; the final source set is 28/28 smooth bald.
 - Made `leader_CBA_warlord_south_america` the required regional skull-lick portrait with unambiguous tongue-to-skull contact.

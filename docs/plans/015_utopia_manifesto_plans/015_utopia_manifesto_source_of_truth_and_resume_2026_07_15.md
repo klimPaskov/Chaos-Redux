@@ -14,7 +14,7 @@ Current focus-tree, country-package, decision-and-mission, English-localisation,
 Use this order when sources disagree:
 
 1. Live HOI4 source files are authoritative for implemented behavior and current identifiers.
-2. `docs/events/015_utopia_manifesto.md` is the canonical current mechanic description.
+2. `docs/events/015_utopia_manifesto/overview.md` is the canonical current mechanic description.
 3. `docs/specs/015_utopia_manifesto_specs/specs/` is the accepted design authority, including the promoted implementation records in Parts 2, 4, 6, 7, and 8.
 4. `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md` is the current implementation proof matrix, and `docs/plans/015_utopia_manifesto_plans/completion_audit.md` is the current whole-event completion verdict.
 5. `docs/assets/015_utopia_manifesto/manifest.md` and `docs/assets/015_utopia_manifesto/gfx_handoff.md` are the visual index and wiring records. `subagent_handoffs/advisor_asset_final_audit_2026_07_18.md` is the current final asset audit authority.

@@ -44,7 +44,7 @@ Current source specifications and asset authority do not present a fourth origin
 
 ## Files reconciled
 
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/assets/014_cannibalism/manifest.md`
 - `docs/assets/014_cannibalism/gfx_handoff.md`
 - `docs/specs/014_cannibalism_specs/README.md`

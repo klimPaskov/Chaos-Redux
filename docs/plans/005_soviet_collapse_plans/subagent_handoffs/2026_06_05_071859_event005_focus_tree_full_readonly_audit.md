@@ -68,20 +68,20 @@ Major tree sizes:
 - `PRA_soviet_collapse_focus_tree`: 22 focuses
 - `OGB_soviet_collapse_focus_tree`: 23 focuses
 - `TSC`, `RMC`, `DSC`, `NRF`, `ICD`: 18 focuses each
-- `KZR`, `SOG`, `KHW`, `ALN`: 16 focuses each
+- `APX`, `SOG`, `ANX`, `ABX`: 16 focuses each
 
 ## Top Blockers
 
 1. Visible reward spam remains widespread. The parser found 184 focus reward warnings where rewards visibly expose multiple `soviet_collapse_* = yes` helpers or long raw reward lists without one coherent `custom_effect_tooltip` or `complete_tooltip`.
 2. Helper spam is not isolated to old or minor branches. It is systemic in Ukraine, Kazakhstan, internal republics, MFR, CFR, Moldova, Belarus, the regional republic trees, PRA, and many custom splinter trees.
 3. Several high-chaos special actors remain shallow by focus count and branch coverage: `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` are 18-focus trees. `PRA` and `OGB` are also compact at 22 and 23 focuses.
-4. Most 47-focus custom splinters still read as under-expanded mechanically. Keyword and explicit-mechanic scans flagged weak expansion/diplomacy surfaces in `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, and `NLC`.
+4. Most 47-focus custom splinters still read as under-expanded mechanically. Keyword and explicit-mechanic scans flagged weak expansion/diplomacy surfaces in `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, and `NLC`.
 5. `CFR` is not aggressive or overpowered enough for the construction-state identity. Its late branch has construction-state flavor, but major payoffs around lines 820, 841, 883, and 983 are mostly helper-driven and lack explicit visible conquest, protectorate, or border-building mechanics.
 6. `MFR` is stronger than `CFR`, but still has mid and late rewards that are helper-only before its explicit final wargoal sequence. It needs cleaner visible reward composition and earlier expansion mechanics.
 7. `ICD` is weaker than `DSC` as a dead/zombie-style state. `ICD_claim_the_unburied_front` at line 4247 and `ICD_grave_columns_march` at line 4268 mainly add claims/objective pressure, while comparable `DSC` late branches add broader war and assault payloads.
 8. One confirmed pathline/layout issue remains in Kazakhstan: `kaz_soviet_collapse_the_southern_republics_write_together` at `common/national_focus/005_soviet_collapse_republics.txt:11408` sits on the same row as prerequisite `kaz_soviet_collapse_the_steppe_arbitration_court`.
 9. Many branches are disconnected from Soviet Collapse mechanics at the visible focus layer. Several trees have zero or very few explicit `unlock_decision_tooltip`, claim/core, wargoal, faction, release, autonomy, or unit-template tokens and rely on generic helper names instead.
-10. Ancient restoration trees are intentionally compact but remain too thin for identity depth. `KZR`, `KHW`, and `ALN` are especially weak on industry/mechanic expansion, even if compact trees are acceptable for side actors.
+10. Ancient restoration trees are intentionally compact but remain too thin for identity depth. `APX`, `ANX`, and `ABX` are especially weak on industry/mechanic expansion, even if compact trees are acceptable for side actors.
 
 ## Reward Spam Findings
 
@@ -106,7 +106,7 @@ Representative high-priority examples:
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:424`, `FTH_radical_turn`: long visible reward surface.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:1229`, `PRA_the_timetable_declares_authority`: exposes two helper calls.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:1463`, `PRA_coal_water_and_spare_parts`: exposes two helper calls and a long reward.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt:10122`, `KRS_every_harbor_a_soviet`: exposes two helper calls and a long reward.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt:10122`, `AOX_every_harbor_a_soviet`: exposes two helper calls and a long reward.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:11857`, `SDZ_no_file_burned_order`: exposes two helper calls and a long reward.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:12472`, `SDZ_radical_turn`: long visible reward surface.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:14413`, `DHC_manych_rear_area`: long visible reward surface.
@@ -143,9 +143,9 @@ Highest-priority shallow trees:
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:3913`, `ICD_soviet_collapse_focus_tree`: 18 focuses; weak industry, expansion, and diplomacy coverage, and weaker death-state aggression than `DSC`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:1222`, `PRA_soviet_collapse_focus_tree`: 22 focuses; has rail decisions and one final wargoal, but remains compact for a rail-state fantasy.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt:1003`, `OGB_soviet_collapse_focus_tree`: 23 focuses; weak industry and expansion coverage by scan.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`, `KZR_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:827`, `KHW_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1235`, `ALN_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`, `APX_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:827`, `ANX_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1235`, `ABX_soviet_collapse_ancient_focus_tree`: 16 focuses; weak industry coverage.
 
 Patch recommendation:
 - Expand `TSC`, `RMC`, `NRF`, and `ICD` first because they are high-chaos identity actors with the least branch depth.
@@ -248,12 +248,12 @@ Trees with especially weak explicit mechanic visibility:
 - `soviet_collapse_moldova_focus_tree`: 0 out of 48; 47 helper-bearing focuses.
 - `FTH_soviet_collapse_focus_tree`: 0 out of 47.
 - `BBH_soviet_collapse_focus_tree`: 0 out of 47.
-- `KRS_soviet_collapse_focus_tree`: 0 out of 47.
+- `AOX_soviet_collapse_focus_tree`: 0 out of 47.
 - `SDZ_soviet_collapse_focus_tree`: 0 out of 47.
 - `GAC_soviet_collapse_focus_tree`: 0 out of 47.
 - `DHC_soviet_collapse_focus_tree`: 0 out of 47.
 - `KHC_soviet_collapse_focus_tree`: 0 out of 47.
-- `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`: 0 explicit mechanic focuses out of 47 by direct-token scan.
+- `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`: 0 explicit mechanic focuses out of 47 by direct-token scan.
 - `soviet_collapse_kazakhstan_focus_tree`: 4 explicit mechanic focuses out of 92.
 - `soviet_collapse_internal_republic_focus_tree`: 4 explicit mechanic focuses out of 62.
 - `MFR_soviet_collapse_focus_tree`: 8 explicit mechanic focuses out of 58.
@@ -271,7 +271,7 @@ Patch recommendation:
 3. Expand or deepen `ICD`, `TSC`, `RMC`, and `NRF`; these are high-chaos actors with too little branch depth.
 4. Strengthen `CFR` with construction-state conquest/protectorate/build-the-border mechanics and a military/security branch.
 5. Strengthen `MFR` midgame mechanics before final war, especially arms-client and factory-integration decisions.
-6. Add direct visible mechanics to the no-explicit-token custom splinters, starting with the most identity-sensitive actors: `BBH`, `KRS`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, and `NLC`.
+6. Add direct visible mechanics to the no-explicit-token custom splinters, starting with the most identity-sensitive actors: `BBH`, `AOX`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, and `NLC`.
 7. Revisit regional republic trees with zero explicit mechanic visibility: breakaway, Baltic, and Moldova.
 8. Give ancient restoration trees at least one unique restoration mechanic and a small industry/sustainment branch.
 9. Re-run focus reward spam and explicit-mechanic scans after each tranche, because this issue is systemic and easy to reintroduce.

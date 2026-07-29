@@ -4,7 +4,7 @@
 
 Regenerated every live Event 014 Cannibalism flag as a distinct built-in-imagegen design and replaced its normal, medium, and small runtime TGA while preserving all existing filenames.
 
-- Families: `CBA`, `CBB`, `CBC`, `CBD`, `CBE`, `CBF`, `CBG`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
+- Families: `CBA`, `AHX`, `CBC`, `AIX`, `CBE`, `CBF`, `AMX`, `CBH`, `CBL`, `CBL_CENTRAL_COMMAND`, `CBL_HOST_CONFEDERATION`, `CBL_RITUAL_STATE`, `ZZZ_CANNIBALISM_HANNIBAL`
 - Variants per family: base, `_communism`, `_democratic`, `_fascism`, `_neutrality`
 - Distinct generated designs: 65
 - Runtime TGA outputs: 195
@@ -38,7 +38,7 @@ The manifest is the exact per-file inventory. Each entry records the Event 014 u
 - Runtime masters use a centered 82:52 crop and no-dither four-color flattening to remove source gradients, vignettes, and soft shadows while preserving generated geometry.
 - Medium and small assets derive from the corresponding flattened normal master and are remapped to that same palette.
 - `CBL_CENTRAL_COMMAND_communism` uses maximum-coverage palette selection because median-cut dropped its small emblem. Small disconnected red quantization islands were then removed.
-- Comparable isolated gray quantization pixels were removed from `CBG_democratic` before rebuilding all three sizes and contact sheets.
+- Comparable isolated gray quantization pixels were removed from `AMX_democratic` before rebuilding all three sizes and contact sheets.
 - TGAs are written as uncompressed 32-bit BGRA with descriptor byte `8`; the top-origin bit is unset, so pixel data is bottom-origin.
 
 ## Validation evidence

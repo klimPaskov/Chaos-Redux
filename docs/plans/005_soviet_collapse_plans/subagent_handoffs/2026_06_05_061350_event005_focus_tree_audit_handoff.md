@@ -33,7 +33,7 @@ Factory and ancient successors:
 - `CFR` has 47 focuses and a construction-directorate identity, but its direct visible map reward count is low in the focus file because most output is hidden in helpers.
 - `MFR` has 58 focuses and a strong factory/arsenal identity with industry, military, market, foreign, and expansion lanes.
 - `OGB` has 23 focuses and is moderate depth.
-- `KZR`, `SOG`, `KHW`, `ALN` have 16 focuses each. They cover symbolic politics, industry/support, expansion, claims/wargoals, and endgame, but they remain shallow compared with the requested "real depth" standard.
+- `APX`, `SOG`, `ANX`, `ABX` have 16 focuses each. They cover symbolic politics, industry/support, expansion, claims/wargoals, and endgame, but they remain shallow compared with the requested "real depth" standard.
 
 ## Worst Idea And Helper Spam
 
@@ -59,7 +59,7 @@ Worst generic helper/reward clutter examples:
 - `DSC_grave_ordnance_claims` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:3002`: five direct helpers, several aggressive/core/claim payloads.
 - `DSC_claim_the_soldiers_road` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:3210`: five direct helpers, same issue.
 - `NLC_extreme_gate` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:25525`: four direct helpers.
-- Ancient expansion/endgame focuses such as `KZR_expansionist_steppe_levy`, `KZR_road_beyond_the_caspian`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, and `ALN_every_pass_a_border` each call four generic aggressive helpers.
+- Ancient expansion/endgame focuses such as `APX_expansionist_steppe_levy`, `APX_road_beyond_the_caspian`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, and `ABX_every_pass_a_border` each call four generic aggressive helpers.
 
 These are not necessarily broken, but they are the reward clutter hotspots. Parent should collapse generic tooltip output behind a route-specific wrapper per family, so the player sees one country-specific payoff and the implementation still reuses helper internals.
 
@@ -109,7 +109,7 @@ Other high-priority pathlines:
 - `MFR_officers_chair_the_board` `(2,6)` from `MFR_who_owns_the_rifle` `(15,5)`, dx -13.
 - `MFR_artillery_from_broken_foundries` `(4,10)` from `MFR_factory_war_cabinet` `(13,8)`, dx -9.
 - `UWD_kama_foundry_contracts` `(3,8)` from `UWD_workers_canteen_compact` `(16,7)`, dx -13.
-- `FEV_endgame`, `SZA_endgame`, `BAC_endgame`, and `ARD_endgame` each have multiple long converging prerequisites and likely produce line clutter.
+- `FEV_endgame`, `SZA_endgame`, `ADX_endgame`, and `ARD_endgame` each have multiple long converging prerequisites and likely produce line clutter.
 
 Too-close same-row pairs to review:
 
@@ -125,7 +125,7 @@ Too-close same-row pairs to review:
 2. Replace direct generic-helper stacks with route-specific wrapper helpers and route-specific tooltips. Start with `moldova_soviet_collapse_romanian_aid_without_annexation`, `blr_soviet_collapse_military_transit_directorate`, `PRA_armored_train_directorate`, `PRA_seize_the_junction_cities`, `DSC_grave_ordnance_claims`, `DSC_claim_the_soldiers_road`, and the ancient expansion/endgame focuses.
 3. For `PRA`, keep the single-authority-idea lifecycle, but make later focus rewards visibly about rail corridors, supply hubs, rail guard columns, transit decisions, and war/claim behavior. Avoid presenting repeated "authority spirit updated" as the main reward.
 4. Expand or explicitly classify the 16-18 focus fixed-purpose trees. `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, and the ancient restoration trees should each either gain deeper political/industry/diplomacy/special mechanics or be documented as compact fixed-purpose packages with deliberately narrow scope.
-5. Patch the worst non-Ukraine long pathlines: Caucasus oil, Belarus rail/corridor, Moldova river-state, Kazakhstan Alash/resource/southern lines, CFR/MFR factory successor crosslines, and FEV/SZA/BAC/ARD endgame convergence.
+5. Patch the worst non-Ukraine long pathlines: Caucasus oil, Belarus rail/corridor, Moldova river-state, Kazakhstan Alash/resource/southern lines, CFR/MFR factory successor crosslines, and FEV/SZA/ADX/ARD endgame convergence.
 6. Re-run a focus-layout audit after every layout tranche. Long edges are not automatically wrong, but the current density means pathlines will plausibly cross unrelated branches.
 
 ## Validation

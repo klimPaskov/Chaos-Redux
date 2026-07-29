@@ -1,6 +1,6 @@
 # Event 013 Natural Disasters live repository map
 
-> Superseded discovery snapshot, 2026-07-12: the fresh Event 013 controller, public API, decisions, GUI, assets, cluster, scenario, achievements, reports, news, and super-events described as absent below were implemented afterward. Event 099 is now the narrow dust-family bridge, Event 046 remains inert, and Event 051 remains separate. Use `013_event_completion_final_audit.md` and `docs/events/013_natural_disasters.md` for current implementation evidence.
+> Superseded discovery snapshot, 2026-07-12: the fresh Event 013 controller, public API, decisions, GUI, assets, cluster, scenario, achievements, reports, news, and super-events described as absent below were implemented afterward. Event 099 is now the narrow dust-family bridge, Event 046 remains inert, and Event 051 remains separate. Use `013_event_completion_final_audit.md` and `docs/events/013_natural_disasters/overview.md` for current implementation evidence.
 
 Date: 2026-07-09
 Mode: `chaosx_repo_explorer`, evidence-only mapping
@@ -67,7 +67,7 @@ The vanilla disaster events are structural references only. Their flat casualtie
 | Abnormal GUI | No live Event 013 GUI, GFX, or scripted GUI. | Create `common/scripted_guis/013_natural_disasters_scripted_gui.txt`, `interface/013_natural_disasters.gui`, and `interface/013_natural_disasters.gfx`. |
 | Event-specific scripted localisation | No live Event 013 scripted-localisation file. | Create `common/scripted_localisation/013_natural_disasters_scripted_localisation.txt` for family, state, card, risk, severity, timeline, report, and GUI routing. |
 | Event localisation | No live `localisation/english/013_natural_disasters_l_english.yml`. | Create UTF-8 BOM localisation for events, decisions/missions, modifiers/ideas, GUI, evolutions, reports, and tooltips. |
-| Event documentation | No live `docs/events/013_natural_disasters.md`. | Create only after implementation wording is stable; document actual behavior and limitations, not the implementation history. |
+| Event documentation | No live `docs/events/013_natural_disasters/overview.md`. | Create only after implementation wording is stable; document actual behavior and limitations, not the implementation history. |
 | On actions | No Event 013 on-action file. | Do not add `on_daily`, `on_weekly`, or `on_monthly`. Delayed events and decision mission timeouts are sufficient for the specified controller. Create `common/on_actions/013_natural_disasters_on_actions.txt` only if a narrow state-control/annex cleanup hook proves necessary. |
 | AI strategy | No Event 013 AI strategy file. | Normal AI belongs in event `ai_chance`, decision `ai_will_do`, and scripted triggers/constants. A `common/ai_strategy/013_natural_disasters.txt` file is unnecessary unless implementation later introduces military front behavior. |
 
@@ -517,7 +517,7 @@ Slots `67`-`70` are partially reserved in `common/scripted_localisation/chaosx_s
 - `GetSuperEventImage` has no 67-70 image mappings
 - `interface/chaosx_super_events.gfx` has no Event 013 sprites
 - no `chaosx_super_event.67`-`.70` localisation exists
-- no Event 013 OGG/WAV folders exist
+- no Event 013 WAV folders exist
 - `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, and `sound/chaosx_sound.asset` have no Event 013 registrations
 
 The current untracked constants also define only four abnormal super-event slots. The six accepted roles need a final collision-free numeric allocation and complete research packages before wiring.
@@ -530,7 +530,7 @@ For each completed role, update:
 - `music/chaosx_super_event_music.asset`
 - `music/chaosx_super_event_music.txt`
 - `sound/chaosx_sound.asset`
-- actual licensed/researched audio under new Event 013 music/sound folders
+- actual licensed/researched audio under new Event 013 sound folders
 - Event 013 emit helpers using `super_event_visible`, `global.current_super_event_audio_id`, and `play_current_super_event_audio`
 - super-event research/audio documentation and catalog
 
@@ -542,7 +542,7 @@ Source-of-truth specs remain in `docs/specs/013_natural_disasters_specs/`. Accep
 
 Required documentation surfaces after gameplay wording stabilizes:
 
-- `docs/events/013_natural_disasters.md`
+- `docs/events/013_natural_disasters/overview.md`
 - `docs/systems/event_clusters.md`
 - `docs/systems/triggerable_scenarios.md`
 - `docs/systems/chaos_meter_deaths_mechanic.md` for the new death reason/source
@@ -599,7 +599,7 @@ Use `implementation_readiness/013_validation_scenario_matrix.md` as the full che
 | GUI fallback | Animated and static modes both show current path/card/risk/progress state; GUI buttons do not bypass decision costs. |
 | Deaths UI | Natural-disaster cause appears in latest reason, country totals, detailed cause totals, and tooltips, including rebuilt/legacy rows. |
 | Achievements | Each accepted id requires its actual route and disqualifier; none unlock merely because Event 013 fired. |
-| Super-events | Every emitted role has correct image, researched text/quote/remark, settings-aware music and sound registration, and no default/placeholder audio. |
+| Super-events | Every emitted role has correct image, researched text/quote/remark, settings-aware sound registration, and no default/placeholder audio. |
 
 ## Risks, blockers, and unresolved choices
 

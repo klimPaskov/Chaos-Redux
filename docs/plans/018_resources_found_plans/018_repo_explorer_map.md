@@ -112,7 +112,7 @@ Create Event 018 logic in event-owned files so shared edits remain small and rev
 
 ### Documentation and assets
 
-- `docs/events/018_resources_found.md`;
+- `docs/events/018_resources_found/overview.md`;
 - `docs/assets/018_resources_found/manifest.md` plus source, processed, contact-sheet, preview, animation, and handoff folders required by the asset skill;
 - `docs/assets/018_resources_found/gfx_handoff.md`;
 - Event 018 super-event text/audio research files under `docs/super_events/`;
@@ -399,7 +399,7 @@ Shared files to merge carefully:
 - `music/chaosx_music_track_list.html`;
 - `docs/super_events/super_event_audio_packages.md`.
 
-Use script constants and `global.current_super_event_audio_id`, with the settings-aware shared playback wrapper. Each super-event requires unique 457×328 art, researched quotation/source notes, a licensed/sourced 44.1 kHz audio package, OGG/WAV registrations, localisation, and documentation. Do not reuse the default super-event image or audio.
+Use script constants and `global.current_super_event_audio_id`, with the settings-aware shared playback wrapper. Each super-event requires unique 457×328 art, researched quotation/source notes, a licensed/sourced 44.1 kHz audio package, WAV registrations, localisation, and documentation. Do not reuse the default super-event image or audio.
 
 ### Achievements
 
@@ -464,7 +464,7 @@ The implementation should concentrate feature logic in Event-owned files. The fo
 | shared chaos-meter constants/effects/scripted localisation/GUI loc | Cause 15, aggregation, view sync, and player-facing incident-death text. |
 | `common/country_tags/chaosx_countries.txt` | Register `DHO`. |
 | shared country/party name localisation | DHO country forms and parties. |
-| shared super-event GFX/scripted loc/music/sound/catalog/docs | Slots 82–84 and audio 54–56. |
+| shared super-event GFX/scripted loc/sound/catalog/docs | Slots 82–84 and audio 54–56. |
 | shared achievement registry/GFX/localisation/docs | Fifteen semantic IDs and icon triplets. |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | Final Event 18 event/evolution/cluster/detail alignment after implementation. |
 

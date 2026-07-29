@@ -86,7 +86,7 @@ Repeated helper-only focus rewards:
 
 - 625 focuses complete primarily through helper effects without direct visible map, war, decision, unit, or diplomatic payload in the focus file.
 - By file: republics 147, custom splinters 386, factory successors 60, ancient restorations 32.
-- Highest tree counts: `MFR_soviet_collapse_focus_tree` 31, `CFR_soviet_collapse_focus_tree` 25, `DHC_soviet_collapse_focus_tree` 23, `BAC_soviet_collapse_focus_tree` 23, `soviet_collapse_baltic_focus_tree` 22, `SDZ_soviet_collapse_focus_tree` 22, `GAC_soviet_collapse_focus_tree` 22, `FEV_soviet_collapse_focus_tree` 22, `SZA_soviet_collapse_focus_tree` 22, `IUL_soviet_collapse_focus_tree` 22.
+- Highest tree counts: `MFR_soviet_collapse_focus_tree` 31, `CFR_soviet_collapse_focus_tree` 25, `DHC_soviet_collapse_focus_tree` 23, `ADX_soviet_collapse_focus_tree` 23, `soviet_collapse_baltic_focus_tree` 22, `SDZ_soviet_collapse_focus_tree` 22, `GAC_soviet_collapse_focus_tree` 22, `FEV_soviet_collapse_focus_tree` 22, `SZA_soviet_collapse_focus_tree` 22, `IUL_soviet_collapse_focus_tree` 22.
 - Most repeated helpers: `soviet_collapse_apply_focus_depot_and_supply_control` 142, `soviet_collapse_apply_focus_military_consolidation` 132, `soviet_collapse_apply_focus_legal_recognition` 108, `soviet_collapse_apply_focus_republican_compact_plan` 95, `soviet_collapse_apply_focus_foreign_channel` 66, `soviet_collapse_apply_focus_security_supply_plan` 64.
 
 This is better than raw idea spam, but it still risks focus sameness. The parent should keep the shared helpers, but major and high-chaos trees need visible payoff layers on top of them: unlocked decisions, targetable wars, claims/cores, scripted AI strategy, rail/supply networks, ports, dockyards, escalation missions, leader/state identity, and route-specific end states.
@@ -123,11 +123,11 @@ Legend:
 | `DSC_soviet_collapse_focus_tree` | All branches shallow due 18-focus design. Military/dead-congress tone is strong, but mechanics are still compact. |
 | `NRF_soviet_collapse_focus_tree` | All branches shallow due 18-focus design. Naval theme exists, but needs port/fleet/convoy control mechanics instead of small convoys. |
 | `ICD_soviet_collapse_focus_tree` | All branches shallow due 18-focus design. Needs dead-state congress politics and aggressive endpoint depth. |
-| `BSC_soviet_collapse_focus_tree` | Political/industry/military/diplomacy/mechanics present; expansion partial. Layout currently clean after corrected coordinate scan, but 8 hidden locks and 18 helper-only rewards remain. |
+| `AEX_soviet_collapse_focus_tree` | Political/industry/military/diplomacy/mechanics present; expansion partial. Layout currently clean after corrected coordinate scan, but 8 hidden locks and 18 helper-only rewards remain. |
 | `TNC_soviet_collapse_focus_tree` | Present except expansion shallow. Needs actual neighbor wars/claims tied to its urban/oasis route. |
-| `ALA_soviet_collapse_focus_tree` | Present except expansion shallow. Needs steppe aggression and cores/claims instead of mostly route language. |
+| `AAX_soviet_collapse_focus_tree` | Present except expansion shallow. Needs steppe aggression and cores/claims instead of mostly route language. |
 | `BBH_soviet_collapse_focus_tree` | Present except expansion shallow. Needs Bashkir/steppe military expansion payoff. |
-| `KRS_soviet_collapse_focus_tree` | Present except expansion shallow. Naval/Baltic worker identity exists but hard expansion is weak. |
+| `AOX_soviet_collapse_focus_tree` | Present except expansion shallow. Naval/Baltic worker identity exists but hard expansion is weak. |
 | `UDC_soviet_collapse_focus_tree` | Present across major branches. Its command network branch is a better high-chaos template, but still has 21 helper-only rewards. |
 | `SDZ_soviet_collapse_focus_tree` | Present across major branches. Archive/control mechanics are clearer than most custom trees; still needs more visible aggression. |
 | `GAC_soviet_collapse_focus_tree` | Present across major branches. Has pathline risk from upward/same-row prerequisites listed below. |
@@ -138,16 +138,16 @@ Legend:
 | `UWD_soviet_collapse_focus_tree` | Present except expansion shallow. It is a war directorate but has no hard expansion payoff in this scan. |
 | `MRC_soviet_collapse_focus_tree` | Present except expansion shallow. Mountain diplomacy is present; pass control and neighbor wars need hard mechanics. |
 | `IUL_soviet_collapse_focus_tree` | Present except expansion shallow. Idel-Ural route needs Volga/rail expansion payoff. |
-| `BAC_soviet_collapse_focus_tree` | Present except expansion shallow. Needs stronger aggressive AI/war route. |
+| `ADX_soviet_collapse_focus_tree` | Present except expansion shallow. Needs stronger aggressive AI/war route. |
 | `ARD_soviet_collapse_focus_tree` | Present with expansion partial. Needs route-specific claims/cores and war pressure. |
 | `NLC_soviet_collapse_focus_tree` | Present across major branches. Best current northern compact candidate; port/radar/supply rewards still too small/repeated. |
 | `CFR_soviet_collapse_focus_tree` | Industry and mechanics present; political present. Expansion shallow, military/diplomacy partial. Construction successor should build much more factory/infrastructure and project power through protectorates/contracts. |
 | `OGB_soviet_collapse_focus_tree` | All branches shallow due 23-focus design. Needs fuller restoration politics, Volga trade/war mechanics, and regional claims. |
 | `MFR_soviet_collapse_focus_tree` | Industry/military/mechanics present; expansion present; politics/diplomacy partial. Good arsenal concept, but 31 helper-only rewards and repeated arms factory focus payoffs flatten it. |
-| `KZR_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact ancient design. Has claims/wargoal but needs real political/industry/military/diplomacy branches. |
+| `APX_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact ancient design. Has claims/wargoal but needs real political/industry/military/diplomacy branches. |
 | `SOG_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact design. Needs Sogdian merchant/diplomatic mechanics and broader city-state payoff. |
-| `KHW_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact design. Irrigation/water identity needs a mechanical spine. |
-| `ALN_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact design. Pass control identity needs supply/pass war mechanics. |
+| `ANX_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact design. Irrigation/water identity needs a mechanical spine. |
+| `ABX_soviet_collapse_ancient_focus_tree` | All branches shallow due 16-focus compact design. Pass control identity needs supply/pass war mechanics. |
 
 ## Pathline and Layout Risks
 
@@ -209,7 +209,7 @@ The hidden locks are not necessarily invalid, but they are graph-hostile. Where 
 
 3. Rework high-chaos aggression before polishing ordinary republics:
    - Files: `005_soviet_collapse_custom_splinters.txt`, `005_soviet_collapse_factory_successors.txt`, `005_soviet_collapse_ancient_restorations.txt`.
-   - Priority IDs/trees: `PRA_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`, `CFR_soviet_collapse_focus_tree`, `MFR_soviet_collapse_focus_tree`, ancient trees `KZR/SOG/KHW/ALN`.
+   - Priority IDs/trees: `PRA_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`, `CFR_soviet_collapse_focus_tree`, `MFR_soviet_collapse_focus_tree`, ancient trees `APX/SOG/ANX/ABX`.
    - Payoff: meets user constraint that chaos countries are powerful/aggressive. Use hard claims/cores/wargoals, aggressive AI strategies, postwar settlement decisions, and route-specific neighbor conflicts.
 
 4. Give special-purpose tags their required mechanical spines:
@@ -217,12 +217,12 @@ The hidden locks are not necessarily invalid, but they are graph-hostile. Where 
    - `NRF`: naval bases, dockyards, convoy/port seizure decisions, White Sea/Arctic naval aggression.
    - `CFR`: large-scale factories/infrastructure, construction directorate decisions, client-city/protectorate mechanics.
    - `MFR`: production surge risks, arms export/recognition mechanics, direct militarized expansion.
-   - `KHW`/`ALN`: irrigation/pass-control supply mechanics.
+   - `ANX`/`ABX`: irrigation/pass-control supply mechanics.
 
 5. Reduce helper-only focus completion sameness:
    - Do not remove shared helpers where they centralize variables or AI pressure.
    - Add one visible payoff per route node cluster: decision unlock, state target, war/claim/core, unit template, AI strategy, dynamic mission, named map construction, or diplomatic relation/faction action.
-   - Start with trees over 20 helper-only rewards: `MFR`, `CFR`, `DHC`, `BAC`, `SDZ`, `GAC`, `FEV`, `SZA`, `IUL`, `UWD`, `KHC`, `MRC`, `UDC`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_kazakhstan_focus_tree`, `soviet_collapse_ukraine_focus_tree`.
+   - Start with trees over 20 helper-only rewards: `MFR`, `CFR`, `DHC`, `ADX`, `SDZ`, `GAC`, `FEV`, `SZA`, `IUL`, `UWD`, `KHC`, `MRC`, `UDC`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_kazakhstan_focus_tree`, `soviet_collapse_ukraine_focus_tree`.
 
 6. Convert hidden route locks into visible graph structure:
    - First targets: Kazakhstan, Baltic, Caucasus, UWD, IUL, Moldova, Ukraine.

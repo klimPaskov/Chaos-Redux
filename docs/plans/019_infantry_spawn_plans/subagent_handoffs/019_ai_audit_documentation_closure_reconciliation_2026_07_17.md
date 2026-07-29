@@ -8,12 +8,12 @@ Pending AI, balance, performance, isolation, scenario-safety, and exploit audit 
 
 The follow-up changed only these eight documentation files:
 
-1. `docs/events/019_infantry_spawn.md`
+1. `docs/events/019_infantry_spawn/overview.md`
 2. `docs/specs/019_infantry_spawn_specs/README.md`
 3. `docs/specs/019_infantry_spawn_specs/review/blockers_and_uncertainty.md`
 4. `docs/specs/019_infantry_spawn_specs/review/mandatory_improvement_loop_review.md`
 5. `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
-6. `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+6. `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 7. `docs/systems/chaos_unit_family_registry.md`
 8. `docs/systems/triggerable_scenarios.md`
 

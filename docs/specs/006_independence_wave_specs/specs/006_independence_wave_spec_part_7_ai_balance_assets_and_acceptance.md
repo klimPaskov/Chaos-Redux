@@ -670,7 +670,7 @@ The spreadsheet row must be updated only after final in-game wording exists. The
 
 Implementation should create or update:
 
-- canonical event doc under `docs/events/006_independence_wave.md`
+- canonical event doc under `docs/events/006_independence_wave/overview.md`
 - country package registry documentation
 - regional overlay documentation
 - focus tree and overlay documentation

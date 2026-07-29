@@ -217,29 +217,11 @@ Catastrophic success is a moral and political disaster, not a free critical hit.
 
 ## Continuous mission path
 
-The current repository estimates chemical air activity from deployed CAS and tactical bombers, frontline density, and war activity because exact module mission use is not reliably exposed.
+Continuous chemical-air contamination is currently disabled and remains fail-closed until a verified current-version mission hook proves eligible chemical mission activity and supplies the exact route inputs required by the shared exposure pipeline.
 
-The rework must not call the approximation fully reliable. Use one of these outcomes after local engine research:
+The later accepted user constraint rejects the former estimator option in this section. No deployed-aircraft estimate, frontline or region proxy, ground-operation estimate, reserved weekly budget, neutral condition, or other fallback may authorize continuous contamination.
 
-### Preferred
-
-A current 1.19 hook identifies mission activity by design or module. Use it to calculate weekly payload and contamination.
-
-### Acceptable only with explicit approval
-
-Keep a conservative estimator that requires:
-
-- a country flag that the player enabled continuous chemical sorties
-- eligible chemical aircraft share above a threshold
-- actual air mission activity in the region
-- active ground operations or selected target region
-- a weekly payload budget reserved by decision
-
-The estimator must never infer use merely because chemical-capable aircraft are deployed.
-
-### Blocked
-
-If no reliable mission activity hook exists and the user does not approve the estimator, continuous contamination remains unavailable. Explicit raids and operations still function.
+Explicit selected-state chemical raids and other routes may operate only after real payload debit, exact target proof, resolved protection and conditions, and the shared exposure pipeline accept the action. Idle chemical-capable aircraft never contaminate.
 
 ## Air contamination targeting
 

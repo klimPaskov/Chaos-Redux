@@ -50,11 +50,11 @@ Main reward finding: the current files do not spam `add_ideas`; `add_ideas =` is
 | custom splinters | `DSC_soviet_collapse_focus_tree` | 2822 | 18 | 0 | 0 | 0 | 0 | 18 |
 | custom splinters | `NRF_soviet_collapse_focus_tree` | 3345 | 18 | 0 | 0 | 0 | 1 | 18 |
 | custom splinters | `ICD_soviet_collapse_focus_tree` | 3849 | 18 | 0 | 0 | 0 | 1 | 18 |
-| custom splinters | `BSC_soviet_collapse_focus_tree` | 4317 | 47 | 0 | 0 | 0 | 11 | 47 |
+| custom splinters | `AEX_soviet_collapse_focus_tree` | 4317 | 47 | 0 | 0 | 0 | 11 | 47 |
 | custom splinters | `TNC_soviet_collapse_focus_tree` | 5461 | 47 | 0 | 0 | 0 | 8 | 47 |
-| custom splinters | `ALA_soviet_collapse_focus_tree` | 6596 | 47 | 0 | 0 | 0 | 5 | 47 |
+| custom splinters | `AAX_soviet_collapse_focus_tree` | 6596 | 47 | 0 | 0 | 0 | 5 | 47 |
 | custom splinters | `BBH_soviet_collapse_focus_tree` | 7707 | 47 | 0 | 0 | 0 | 8 | 47 |
-| custom splinters | `KRS_soviet_collapse_focus_tree` | 8901 | 47 | 0 | 0 | 0 | 7 | 47 |
+| custom splinters | `AOX_soviet_collapse_focus_tree` | 8901 | 47 | 0 | 0 | 0 | 7 | 47 |
 | custom splinters | `UDC_soviet_collapse_focus_tree` | 10126 | 47 | 0 | 0 | 0 | 3 | 47 |
 | custom splinters | `SDZ_soviet_collapse_focus_tree` | 11334 | 47 | 0 | 0 | 0 | 2 | 47 |
 | custom splinters | `GAC_soviet_collapse_focus_tree` | 12584 | 47 | 0 | 0 | 0 | 2 | 47 |
@@ -65,16 +65,16 @@ Main reward finding: the current files do not spam `add_ideas`; `add_ideas =` is
 | custom splinters | `UWD_soviet_collapse_focus_tree` | 18475 | 47 | 0 | 0 | 0 | 4 | 47 |
 | custom splinters | `MRC_soviet_collapse_focus_tree` | 19662 | 47 | 0 | 0 | 0 | 6 | 47 |
 | custom splinters | `IUL_soviet_collapse_focus_tree` | 20835 | 47 | 0 | 0 | 0 | 5 | 47 |
-| custom splinters | `BAC_soviet_collapse_focus_tree` | 21975 | 47 | 0 | 0 | 0 | 7 | 47 |
+| custom splinters | `ADX_soviet_collapse_focus_tree` | 21975 | 47 | 0 | 0 | 0 | 7 | 47 |
 | custom splinters | `ARD_soviet_collapse_focus_tree` | 23108 | 47 | 0 | 0 | 0 | 8 | 47 |
 | custom splinters | `NLC_soviet_collapse_focus_tree` | 24307 | 47 | 0 | 0 | 0 | 3 | 47 |
 | factory successors | `CFR_soviet_collapse_focus_tree` | 17 | 47 | 0 | 0 | 0 | 2 | 47 |
 | factory successors | `OGB_soviet_collapse_focus_tree` | 1008 | 23 | 0 | 0 | 0 | 2 | 23 |
 | factory successors | `MFR_soviet_collapse_focus_tree` | 1569 | 58 | 0 | 0 | 2 | 5 | 58 |
-| ancient restorations | `KZR_soviet_collapse_ancient_focus_tree` | 12 | 16 | 0 | 0 | 8 | 0 | 16 |
+| ancient restorations | `APX_soviet_collapse_ancient_focus_tree` | 12 | 16 | 0 | 0 | 8 | 0 | 16 |
 | ancient restorations | `SOG_soviet_collapse_ancient_focus_tree` | 422 | 16 | 0 | 0 | 8 | 0 | 16 |
-| ancient restorations | `KHW_soviet_collapse_ancient_focus_tree` | 826 | 16 | 0 | 0 | 8 | 0 | 16 |
-| ancient restorations | `ALN_soviet_collapse_ancient_focus_tree` | 1234 | 16 | 0 | 0 | 8 | 0 | 16 |
+| ancient restorations | `ANX_soviet_collapse_ancient_focus_tree` | 826 | 16 | 0 | 0 | 8 | 0 | 16 |
+| ancient restorations | `ABX_soviet_collapse_ancient_focus_tree` | 1234 | 16 | 0 | 0 | 8 | 0 | 16 |
 
 ## Top 20 Worst Focus IDs
 
@@ -165,17 +165,17 @@ Shallow by focus count:
 - `PRA_soviet_collapse_focus_tree` has 22 focuses. It has a strong rail/supply identity, but needs more political/diplomatic/expansion depth for a special country.
 - `TSC`, `RMC`, `DSC`, `NRF`, `ICD` each have 18 focuses. They are compact high-chaos packages, not full trees. DSC is mechanically aggressive through helpers, but the tree is still narrow.
 - `OGB_soviet_collapse_focus_tree` has 23 focuses. It has expansion/restoration identity but is short for a standalone ancient restoration successor.
-- `KZR`, `SOG`, `KHW`, `ALN` each have 16 focuses. They have political/industry/military/expansion signals, but the first half of each tree is largely helper-only and compact.
+- `APX`, `SOG`, `ANX`, `ABX` each have 16 focuses. They have political/industry/military/expansion signals, but the first half of each tree is largely helper-only and compact.
 
 Missing or weak expansion branch by heuristic:
 
 - `soviet_collapse_breakaway_focus_tree`: only one obvious expansion-tagged focus. It has survival, sponsor, local court, and neutrality content, but no distinct expansion or settlement branch.
 - `soviet_collapse_belarus_focus_tree`: only two obvious expansion-tagged focuses; the green/forest route should get clearer border, league, partisan corridor, or anti-Soviet settlement payoffs.
-- `TNC`, `ALA`, `KRS`, `DHC`, `FEV`, `SZA`, `UWD`, `IUL`, `ARD`: each has 47 focuses but only one or two obvious expansion-tagged nodes. Some may route expansion through generic high-chaos helpers, but the tree surface does not clearly show a distinct expansion branch.
+- `TNC`, `AAX`, `AOX`, `DHC`, `FEV`, `SZA`, `UWD`, `IUL`, `ARD`: each has 47 focuses but only one or two obvious expansion-tagged nodes. Some may route expansion through generic high-chaos helpers, but the tree surface does not clearly show a distinct expansion branch.
 
 Trees that generally meet the branch surface requirement:
 
-- Ukraine, internal republics, Baltic, Caucasus, Central Asia, Moldova, Kazakhstan, FTH, BSC, BBH, UDC, SDZ, GAC, KHC, MRC, BAC, NLC, CFR, MFR. These still need the layout and reward-thinness fixes above.
+- Ukraine, internal republics, Baltic, Caucasus, Central Asia, Moldova, Kazakhstan, FTH, AEX, BBH, UDC, SDZ, GAC, KHC, MRC, ADX, NLC, CFR, MFR. These still need the layout and reward-thinness fixes above.
 
 ## Chaos/Special Country OP and Aggression Review
 
@@ -214,15 +214,15 @@ Risks:
    - Central Asia, Moldova, Kazakhstan: spread the listed close pairs by at least one more `x` unit.
 
 4. Deepen the shallow special trees before adding more broad content.
-   - Start with `PRA_soviet_collapse_focus_tree`, then `DSC`, `TSC/RMC/NRF/ICD`, then `OGB`, then `KZR/SOG/KHW/ALN`.
+   - Start with `PRA_soviet_collapse_focus_tree`, then `DSC`, `TSC/RMC/NRF/ICD`, then `OGB`, then `APX/SOG/ANX/ABX`.
    - Use existing helpers: `soviet_collapse_build_pra_corridor_network`, `soviet_collapse_spawn_pra_rail_guard_columns`, `soviet_collapse_dsc_unleash_dead_army_campaign`, `soviet_collapse_apply_high_chaos_neighbor_expansion_plan`, `soviet_collapse_apply_custom_splinter_expansion_claims`.
 
 5. Strengthen weak expansion branches.
    - Breakaway and Belarus should get visible expansion/settlement/league lanes, not just hidden helper effects.
-   - Custom splinters with weak expansion signal: `TNC`, `ALA`, `KRS`, `DHC`, `FEV`, `SZA`, `UWD`, `IUL`, `ARD`.
+   - Custom splinters with weak expansion signal: `TNC`, `AAX`, `AOX`, `DHC`, `FEV`, `SZA`, `UWD`, `IUL`, `ARD`.
 
 6. Convert thin support rewards into branch payoffs.
-   - Patch examples: `FTH_village_delegate_roads`, `PRA_switchyard_denial_posts`, `BSC_road_and_well_ledger`, `BSC_caravan_supply_hubs`, `TSC_recover_the_burned_glass`.
+   - Patch examples: `FTH_village_delegate_roads`, `PRA_switchyard_denial_posts`, `AEX_road_and_well_ledger`, `AEX_caravan_supply_hubs`, `TSC_recover_the_burned_glass`.
    - Preferred patch style: unlock or upgrade a decision, add route-specific units, claims/cores, rail/supply network changes, AI aggression, or visible mechanic variables rather than just one random building.
 
 7. Add/update helper documentation if parent expands helper usage.

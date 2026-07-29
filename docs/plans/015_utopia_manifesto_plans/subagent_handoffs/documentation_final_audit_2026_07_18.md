@@ -37,7 +37,7 @@ The mission split is 105 decisions and 40 missions in the main file, 15 decision
 | Priority | Surface | Current authority |
 | ---: | --- | --- |
 | 1 | Runtime state | Current implementation files and final specialist reports for their inspected snapshots |
-| 2 | Player-facing overview | `docs/events/015_utopia_manifesto.md` |
+| 2 | Player-facing overview | `docs/events/015_utopia_manifesto/overview.md` |
 | 3 | Accepted design | `docs/specs/015_utopia_manifesto_specs/specs/`, including promoted implementation records in Parts 2, 4, 6, 7, and 8 |
 | 4 | Implementation proof | `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md` |
 | 5 | Current resume state | `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md` |
@@ -151,7 +151,7 @@ In particular:
 
 ## Files changed by documentation reconciliation
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/README.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/country_package_matrix.md`
@@ -170,7 +170,7 @@ These hashes freeze the reconciled canonical documents before this handoff was a
 
 | File | SHA-256 |
 | --- | --- |
-| `docs/events/015_utopia_manifesto.md` | `45321bae3035ed333c04c5f3236d22a7dce904ad8a2f5702922a59b9a7cfe14a` |
+| `docs/events/015_utopia_manifesto/overview.md` | `45321bae3035ed333c04c5f3236d22a7dce904ad8a2f5702922a59b9a7cfe14a` |
 | `docs/specs/015_utopia_manifesto_specs/README.md` | `5faf1eea7da28bd4c10d7e351d2e71e773184c81e19d8e0e33c475efde865248` |
 | `matrices/completion_coverage_matrix.md` | `23c5db0733943110411242aab2bb85a0277e0fadbe4f12beacb146bfc526b06b` |
 | `matrices/country_package_matrix.md` | `2d65a5113d03c63390a789b2f026d167f23cf5e0436a46f3cf1bf9a2e8821e68` |
@@ -240,7 +240,7 @@ The older workbook SHA-256 `729e48a3135094d210b70e74ce3694ff0b66dbd5d2bc448051db
 
 Current workbook authority was reconciled in:
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_8_assets_localisation_and_acceptance.md`
 - `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md`
@@ -269,7 +269,7 @@ The former FAIL snapshot previously stored at `completion_audit.md`, SHA-256 `be
 
 Post-audit pointer reconciliation changed only these current documentation surfaces:
 
-- `docs/events/015_utopia_manifesto.md`, SHA-256 `87fdaa5f4fda05c29f0aa30cc2ff1cbbb4a508fdc7c53e94ff5a3725e4d818af`
+- `docs/events/015_utopia_manifesto/overview.md`, SHA-256 `87fdaa5f4fda05c29f0aa30cc2ff1cbbb4a508fdc7c53e94ff5a3725e4d818af`
 - `docs/specs/015_utopia_manifesto_specs/README.md`, SHA-256 `c04930268936392cc5e15a7d71e95d90fdc74b3b6891ddea9f4cd2def431eee2`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`, SHA-256 `ae446174375e18dad0d0cd77e964e3b463851a04de36269e1b6b820aaa7c07fb`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_8_assets_localisation_and_acceptance.md`, SHA-256 `57f921eb2d73aabf5ef3d1672ade760c29fdb41762be13c1be6fc3727e346a92`

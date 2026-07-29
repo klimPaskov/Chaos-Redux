@@ -47,11 +47,11 @@ Current parser counts:
 | `005_soviet_collapse_republics.txt` | 9 | 501 | Ukraine, generic breakaway, internal republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan. |
 | `005_soviet_collapse_custom_splinters.txt` | 25 | 1005 | FTH, PRA, five compact crisis trees, and nineteen larger custom splinter trees. |
 | `005_soviet_collapse_factory_successors.txt` | 3 | 128 | CFR, OGB, MFR. |
-| `005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | KZR, SOG, KHW, ALN. |
+| `005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | APX, SOG, ANX, ABX. |
 | Total | 41 | 1698 | Current workspace state. |
 
 Smallest trees:
-- 16 focuses: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`.
+- 16 focuses: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`.
 - 18 focuses: `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`.
 - 22 focuses: `PRA_soviet_collapse_focus_tree`.
 - 23 focuses: `OGB_soviet_collapse_focus_tree`.
@@ -307,7 +307,7 @@ Needed fix:
 
 ## Ancient Restorations
 
-Trees: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`, 16 focuses each.
+Trees: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`, 16 focuses each.
 
 Current state:
 - These trees are compact and readable, and they now include stronger high-chaos aggression hooks.
@@ -315,9 +315,9 @@ Current state:
 - Branch payoff is still symbolic restoration, old borders, workshops, league bargain, and endgame. That is not enough for a major chaos-country power fantasy.
 
 Exact ids needing attention:
-- Shallow endpoint ids: `KZR_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `KHW_restoration_survives_modern_war`, `ALN_restoration_survives_modern_war`.
-- Strong but compact aggression ids: `KZR_returned_names_endgame`, `KZR_road_beyond_the_caspian`, `SOG_returned_names_endgame`, `SOG_cities_beyond_the_desert`, `KHW_returned_names_endgame`, `KHW_delta_without_a_center`, `ALN_returned_names_endgame`, `ALN_every_pass_a_border`.
-- Layout crossings: `KZR_caspian_road_markets -> KZR_league_transit_bargain` crosses `KZR_customs_workshop_compact -> KZR_old_border_files`; equivalent compact diamond crossings exist for SOG/KHW/ALN.
+- Shallow endpoint ids: `APX_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `ANX_restoration_survives_modern_war`, `ABX_restoration_survives_modern_war`.
+- Strong but compact aggression ids: `APX_returned_names_endgame`, `APX_road_beyond_the_caspian`, `SOG_returned_names_endgame`, `SOG_cities_beyond_the_desert`, `ANX_returned_names_endgame`, `ANX_delta_without_a_center`, `ABX_returned_names_endgame`, `ABX_every_pass_a_border`.
+- Layout crossings: `APX_caspian_road_markets -> APX_league_transit_bargain` crosses `APX_customs_workshop_compact -> APX_old_border_files`; equivalent compact diamond crossings exist for SOG/ANX/ABX.
 
 Needed fix:
 - Either document them as intentionally compact high-chaos countries, or expand each to 25 to 35 focuses with distinct restoration law, levy, ancient border, modern industry, sponsor reaction, and endgame conquest/federation mechanics.
@@ -346,7 +346,7 @@ Needed fix:
 
 ### Larger 47-Focus Custom Splinters
 
-Trees: `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`.
+Trees: `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`.
 
 Current state:
 - These are much better than compact trees and usually include political, supply, industry, diplomacy, war, settlement, high-chaos, and endgame families.
@@ -362,12 +362,12 @@ Exact high-risk layout clusters:
 - `FEV`: `FEV_industry_plan`, `FEV_hidden_doctrine`, `FEV_extreme_gate`, `FEV_vladivostok_harbor_board`, `FEV_settlement`, `FEV_endgame`.
 - `SZA`: `SZA_industry_plan`, `SZA_hidden_doctrine`, `SZA_extreme_gate`, `SZA_siberian_staff_map`, `SZA_baikal_rear_area`, `SZA_authority_from_the_railhead`, `SZA_endgame`.
 - `UWD`: `UWD_supply`, `UWD_blast_furnace_guard_posts`, `UWD_chelyabinsk_airwatch_yards`, `UWD_shift_council_mediation`, `UWD_workers_canteen_compact`, `UWD_war_plan`, `UWD_industry_plan`.
-- `BAC`: `BAC_settlement`, `BAC_industry_plan`, `BAC_war_plan`, `BAC_militia_training_yards`, `BAC_radical_turn`, `BAC_hardline_against_border_troops`, `BAC_extreme_path`, `BAC_endgame`.
+- `ADX`: `ADX_settlement`, `ADX_industry_plan`, `ADX_war_plan`, `ADX_militia_training_yards`, `ADX_radical_turn`, `ADX_hardline_against_border_troops`, `ADX_extreme_path`, `ADX_endgame`.
 - `ARD`: `ARD_white_sea_customs`, `ARD_murmansk_dockyard_contracts`, `ARD_white_sea_port_tolls`, `ARD_arctic_port_endurance`, `ARD_winter_convoy_columns`, `ARD_directorate_staff_map`, `ARD_endgame`.
 - `NLC`: `NLC_station_mediation`, `NLC_winter_guarantees`, `NLC_heated_workshop_contracts`, `NLC_settlement`, `NLC_polar_neutrality_statute`, `NLC_war_plan`, `NLC_industry_plan`, `NLC_endgame`.
 
 Needed fix:
-- Use one layout pass on the shared 47-focus architecture before deeper content. Then pick the most important tags for bespoke mechanics: `FTH`, `UDC`, `SDZ`, `DHC`, `KHC`, `SZA`, `UWD`, `BAC`, `ARD`, `NLC`.
+- Use one layout pass on the shared 47-focus architecture before deeper content. Then pick the most important tags for bespoke mechanics: `FTH`, `UDC`, `SDZ`, `DHC`, `KHC`, `SZA`, `UWD`, `ADX`, `ARD`, `NLC`.
 - For each full custom splinter, replace at least one generic helper route with a country-specific visible mechanic or staged decision family.
 
 ## Priority Fix Queue
@@ -378,7 +378,7 @@ Needed fix:
 2. Compact crisis trees: expand `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` or document them as intentionally compact. Current 18 to 22 focus trees are shallow for the complaint.
 3. Ukraine: convert flagship statehood, grain, Black Sea, and high-chaos routes from helper bundles into visible mechanics and stronger expansion/diplomacy consequences.
 4. Belarus: add rail-state mechanics and staged rail/corridor/League depot decisions; reduce checklist feel.
-5. Ancient restorations: either expand KZR/SOG/KHW/ALN beyond 16 focuses or explicitly treat them as compact high-chaos actors.
+5. Ancient restorations: either expand APX/SOG/ANX/ABX beyond 16 focuses or explicitly treat them as compact high-chaos actors.
 6. Kazakhstan: add postwar federation/resource/Caspian/old-state consequences so the large tree feels as strong as its size.
 
 ### Layout and Pathline Blockers
@@ -387,7 +387,7 @@ Needed fix:
 2. Belarus rail/evacuation/corridor/League convergence.
 3. CFR mid-tree board/city/rail/factory/contract crossings.
 4. MFR rifle/artillery/steel production crossings.
-5. UDC/SDZ/DHC/KHC/FEV/SZA/UWD/BAC/ARD/NLC late convergence crossings.
+5. UDC/SDZ/DHC/KHC/FEV/SZA/UWD/ADX/ARD/NLC late convergence crossings.
 6. Ancient restoration compact diamond crossings.
 
 ### Reward Cleanup

@@ -26,9 +26,9 @@ No localisation, icon, scripted effect, decision, trigger, or flag file was chan
 
 | Focus id | Before | After |
 | --- | --- | --- |
-| `BSC_extreme_path` | Recalled `soviet_collapse_complete_basmachi_endgame` after `BSC_endgame` already called it. | Keeps high-chaos identity only; no duplicate final spirit/faction/news helper. |
+| `AEX_extreme_path` | Recalled `soviet_collapse_complete_basmachi_endgame` after `AEX_endgame` already called it. | Keeps high-chaos identity only; no duplicate final spirit/faction/news helper. |
 | `TNC_extreme_path` | Recalled `soviet_collapse_complete_turkestan_endgame` after `TNC_endgame`. | Keeps high-chaos identity only. |
-| `ALA_extreme_path` | Recalled `soviet_collapse_complete_alash_endgame` after `ALA_endgame`. | Keeps high-chaos identity only. |
+| `AAX_extreme_path` | Recalled `soviet_collapse_complete_alash_endgame` after `AAX_endgame`. | Keeps high-chaos identity only. |
 | `UDC_extreme_path` | Recalled `soviet_collapse_complete_union_defense_endgame` after `UDC_endgame`. | Keeps high-chaos identity only. |
 | `SDZ_extreme_path` | Recalled `soviet_collapse_complete_security_directorate_endgame` after `SDZ_endgame`. | Keeps high-chaos identity only. |
 | `GAC_extreme_path` | Recalled `soviet_collapse_complete_green_army_endgame` after `GAC_endgame`. | Keeps high-chaos identity only. |
@@ -36,7 +36,7 @@ No localisation, icon, scripted effect, decision, trigger, or flag file was chan
 | `KHC_extreme_path` | Recalled `soviet_collapse_complete_kuban_host_endgame` after `KHC_endgame` and `KHC_kuban_endurance`. | Keeps high-chaos identity only. |
 | `UWD_extreme_path` | Recalled `soviet_collapse_complete_ural_workers_endgame` after `UWD_endgame`. | Keeps high-chaos identity only. |
 | `IUL_extreme_path` | Recalled `soviet_collapse_complete_idel_ural_endgame` after `IUL_endgame`; otherwise had no visible high-chaos payoff. | Uses `soviet_collapse_apply_focus_high_chaos_identity = yes`. |
-| `BAC_endgame` | Recalled `soviet_collapse_complete_birobidzhan_endgame` after prerequisite `BAC_extreme_path` had already called it. | Keeps legal recognition, depot/supply, and military consolidation only. |
+| `ADX_endgame` | Recalled `soviet_collapse_complete_birobidzhan_endgame` after prerequisite `ADX_extreme_path` had already called it. | Keeps legal recognition, depot/supply, and military consolidation only. |
 
 Validation after patch shows each affected final helper now has one focus call site in the audited focus files.
 
@@ -52,7 +52,7 @@ Validation after patch shows each affected final helper now has one focus call s
 | Pale Railway Authority OP rail/supply state | `PRA_soviet_collapse_focus_tree`, 22 focuses | Partial, improved by prior dirty work | 11 direct hooks and rail/supply rewards exist. Still too short for requested overpowered rail-state route depth. |
 | Dead Soldiers' Congress recruitable population, war goals, cores, zombie-like expansion | `DSC_soviet_collapse_focus_tree`, 18 focuses | Partial, improved by prior dirty work | 9 direct hooks and endgame core/wargoal helper exist, but route is still shallow and should add more dead-army pressure before `DSC_congress_of_the_dead_army`. |
 | Crisis splinters `TSC`, `RMC`, `ICD`, `NRF` | 18-focus trees | Shallow to partial | NRF has 5 direct hooks; TSC/RMC/ICD have 1 each. These remain compact crisis trees, not full OP high-chaos routes. |
-| Full custom splinters `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | 47-focus trees | Broad but mechanic-light | Most have route labels and helper chains, but many have 0 direct decision/war/core/unit hooks. `ARD` has 3 direct hooks; most others have none. |
+| Full custom splinters `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | 47-focus trees | Broad but mechanic-light | Most have route labels and helper chains, but many have 0 direct decision/war/core/unit hooks. `ARD` has 3 direct hooks; most others have none. |
 
 ## Idea reward audit
 
@@ -91,7 +91,7 @@ Mechanical scan counted focuses containing direct small reward tokens such as `a
 Worst broad gaps by direct-hook scan:
 
 - `soviet_collapse_baltic_focus_tree`, `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_moldova_focus_tree`: 0 direct hooks.
-- `ALA`, `BAC`, `BBH`, `BSC`, `DHC`, `FEV`, `FTH`, `GAC`, `IUL`, `KHC`, `KRS`, `MRC`, `NLC`, `SDZ`, `SZA`, `TNC`, `UDC`, `UWD`: 0 direct hooks despite route labels that imply decisions, expansion, war plans, logistics, or political systems.
+- `AAX`, `ADX`, `BBH`, `AEX`, `DHC`, `FEV`, `FTH`, `GAC`, `IUL`, `KHC`, `AOX`, `MRC`, `NLC`, `SDZ`, `SZA`, `TNC`, `UDC`, `UWD`: 0 direct hooks despite route labels that imply decisions, expansion, war plans, logistics, or political systems.
 - `OGB_soviet_collapse_focus_tree`: high priority shallow successor; 23 focuses, 18 small reward token focuses.
 
 These are broad design gaps and should not be bulk-fixed by a subagent with shallow generated content.

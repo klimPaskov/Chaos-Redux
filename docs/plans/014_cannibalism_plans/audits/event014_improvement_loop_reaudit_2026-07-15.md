@@ -26,7 +26,7 @@ This reaudit checked the live shared working tree and treated current files as a
 - both accepted Event 014 improvement-loop addenda;
 - all 12 source specification parts and the current matrices;
 - `docs/specs/014_cannibalism_specs/README.md`, `quality/package_status.md`, and `quality/package_validation.md`;
-- the canonical event document at `docs/events/014_cannibalism.md`;
+- the canonical event document at `docs/events/014_cannibalism/overview.md`;
 - the 2026-07-15 country-package, decision/mission, focus-tree, localisation/asset, spreadsheet, super-event visual, and documentation reaudits;
 - the historical banner and preserved body of `event014_final_completion_audit_2026-07-13.md`;
 - the live target-scoring effects and official offline effect documentation needed to resolve the first-band AI disposition;
@@ -166,7 +166,7 @@ This behavior is promoted consistently in:
 - `specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md`;
 - `specs/014_cannibalism_spec_part_12_acceptance_criteria.md`;
 - `matrices/ai_strategy_matrix.md`;
-- `docs/events/014_cannibalism.md`;
+- `docs/events/014_cannibalism/overview.md`;
 - `quality/package_status.md`;
 - `quality/package_validation.md`.
 

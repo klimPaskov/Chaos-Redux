@@ -14,7 +14,7 @@ This handoff covers the bounded host-Directorate tranche: one category header, h
 - `common/decisions/016_brilliant_scientist_directorate_foreign.txt`
 - `common/decisions/016_brilliant_scientist_directorate_project_board.txt`
 - `localisation/english/016_brilliant_scientist_directorate_l_english.yml`
-- `docs/systems/016_brilliant_scientist_directorate.md`
+- `docs/events/016_brilliant_scientist/systems/directorate.md`
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_directorate_implementation_handoff.md`
 
 No existing shared Event 016 gameplay, interface, asset, or project-family file was edited by this tranche.

@@ -47,7 +47,7 @@ Icon ids changed: none.
 | Standard republic families | Breakaway, internal republic, Baltic, Caucasus, Central Asia, Moldova, Belarus, Kazakhstan are implemented. | Partial | Rewards still lean heavily on shared helpers and variable progress. |
 | Custom chaos splinters | 25 custom splinter trees exist; most have 47 focuses, crisis trees have 18-22. | Partial | DSC already has manpower, claims/cores-on-control, neighbor war goals, anti-SOV AI, and assault-column spawning, but short crisis trees remain less deep than full major-country trees. |
 | Factory successors | CFR, OGB, MFR trees exist. | Partial | CFR/MFR have identity forks; OGB remains shorter than the full design target. |
-| Ancient restorations | KZR, SOG, KHW, ALN trees exist. | Partial | Each is a compact 16-focus package and should not be called full-depth restoration content. |
+| Ancient restorations | APX, SOG, ANX, ABX trees exist. | Partial | Each is a compact 16-focus package and should not be called full-depth restoration content. |
 
 ## Missing or Simplified Content
 

@@ -71,7 +71,7 @@ Current mentions of the retired Prison Host are limited to explicit removal, exc
 - `docs/specs/014_cannibalism_specs/matrices/ai_strategy_matrix.md`
 - `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`
 - `docs/specs/014_cannibalism_specs/matrices/decision_mission_matrix.md`
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/systems/triggerable_scenarios.md`
 - `docs/assets/014_cannibalism/manifest.md`
 - `docs/assets/014_cannibalism/gfx_handoff.md`

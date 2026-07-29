@@ -237,27 +237,27 @@ Repeated hidden-helper tooltip surface:
 
 The shared custom splinter trees repeat the same helper/tooltip reward skeleton heavily. Representative exact ids with identical hidden-helper tooltip surface:
 
-`ALA`:
+`AAX`:
 
-- `ALA_stores`
-- `ALA_legitimacy`
-- `ALA_rival`
-- `ALA_doctrine`
-- `ALA_economy`
-- `ALA_league`
-- `ALA_foreign`
-- `ALA_diplomatic_plan`
-- `ALA_inner_faction`
-- `ALA_special_arm`
-- `ALA_supply`
-- `ALA_enemy_front`
-- `ALA_war_plan`
-- `ALA_civil_rule`
-- `ALA_propaganda`
-- `ALA_settlement`
-- `ALA_industry_plan`
-- `ALA_hidden_doctrine`
-- `ALA_extreme_gate`
+- `AAX_stores`
+- `AAX_legitimacy`
+- `AAX_rival`
+- `AAX_doctrine`
+- `AAX_economy`
+- `AAX_league`
+- `AAX_foreign`
+- `AAX_diplomatic_plan`
+- `AAX_inner_faction`
+- `AAX_special_arm`
+- `AAX_supply`
+- `AAX_enemy_front`
+- `AAX_war_plan`
+- `AAX_civil_rule`
+- `AAX_propaganda`
+- `AAX_settlement`
+- `AAX_industry_plan`
+- `AAX_hidden_doctrine`
+- `AAX_extreme_gate`
 
 `ARD`:
 
@@ -280,29 +280,29 @@ The shared custom splinter trees repeat the same helper/tooltip reward skeleton 
 - `ARD_hidden_doctrine`
 - `ARD_extreme_gate`
 
-`BAC`:
+`ADX`:
 
-- `BAC_first_guard`
-- `BAC_stores`
-- `BAC_legitimacy`
-- `BAC_rival`
-- `BAC_doctrine`
-- `BAC_economy`
-- `BAC_league`
-- `BAC_foreign`
-- `BAC_inner_faction`
-- `BAC_special_arm`
-- `BAC_supply`
-- `BAC_enemy_front`
-- `BAC_civil_rule`
-- `BAC_propaganda`
-- `BAC_settlement`
-- `BAC_diplomatic_plan`
-- `BAC_industry_plan`
-- `BAC_hidden_doctrine`
-- `BAC_extreme_gate`
+- `ADX_first_guard`
+- `ADX_stores`
+- `ADX_legitimacy`
+- `ADX_rival`
+- `ADX_doctrine`
+- `ADX_economy`
+- `ADX_league`
+- `ADX_foreign`
+- `ADX_inner_faction`
+- `ADX_special_arm`
+- `ADX_supply`
+- `ADX_enemy_front`
+- `ADX_civil_rule`
+- `ADX_propaganda`
+- `ADX_settlement`
+- `ADX_diplomatic_plan`
+- `ADX_industry_plan`
+- `ADX_hidden_doctrine`
+- `ADX_extreme_gate`
 
-The same pattern appears across the broader custom successor family, including `BBH`, `BSC`, `DHC`, `FEV`, `FTH`, `GAC`, `IUL`, `KHC`, `KRS`, `MRC`, `NLC`, `SDZ`, `SZA`, `TNC`, `UDC`, and `UWD`. Patch these by helper family and route role rather than by isolated focus ids.
+The same pattern appears across the broader custom successor family, including `BBH`, `AEX`, `DHC`, `FEV`, `FTH`, `GAC`, `IUL`, `KHC`, `AOX`, `MRC`, `NLC`, `SDZ`, `SZA`, `TNC`, `UDC`, and `UWD`. Patch these by helper family and route role rather than by isolated focus ids.
 
 ## 3. Worst Layout And Pathline Problems
 
@@ -396,27 +396,27 @@ Direct hard-war or strong aggression surfaces in the scoped focus files were fou
 - `MFR_no_peace_without_orders`
 - `MFR_every_order_a_rifle`
 - `MFR_eternal_arsenal_marches`
-- `KZR_expansionist_steppe_levy`
-- `KZR_returned_names_endgame`
-- `KZR_road_beyond_the_caspian`
+- `APX_expansionist_steppe_levy`
+- `APX_returned_names_endgame`
+- `APX_road_beyond_the_caspian`
 - `SOG_expansionist_merchant_claims`
 - `SOG_returned_names_endgame`
 - `SOG_cities_beyond_the_desert`
-- `KHW_expansionist_water_claims`
-- `KHW_returned_names_endgame`
-- `KHW_delta_without_a_center`
-- `ALN_expansionist_mountain_claims`
-- `ALN_returned_names_endgame`
-- `ALN_every_pass_a_border`
+- `ANX_expansionist_water_claims`
+- `ANX_returned_names_endgame`
+- `ANX_delta_without_a_center`
+- `ABX_expansionist_mountain_claims`
+- `ABX_returned_names_endgame`
+- `ABX_every_pass_a_border`
 
 Trees that still read underpowered or under-explicit because their focus files rely on generic helper shells and lack direct, visible overpowered aggression:
 
 - `FTH`
-- `BSC`
+- `AEX`
 - `TNC`
-- `ALA`
+- `AAX`
 - `BBH`
-- `KRS`
+- `AOX`
 - `UDC`
 - `SDZ`
 - `GAC`
@@ -427,13 +427,13 @@ Trees that still read underpowered or under-explicit because their focus files r
 - `UWD`
 - `MRC`
 - `IUL`
-- `BAC`
+- `ADX`
 - `ARD`
 - `NLC`
 
 This does not prove the helpers do nothing; it means the focus layer does not make the chaos successor fantasy legible or forceful. Parent should give each chaos country an obvious aggression spine with claims, timed attack advantages, AI strategies, assault columns, forced escalation, unique state transfers, or route-specific country spirits.
 
-The ancient restoration trees (`KZR`, `SOG`, `KHW`, `ALN`) do have expansionist hooks, but they are only 16-focus mirrored mini trees. Their raw aggression is present; their political, industrial, and expansion depth is still shallow.
+The ancient restoration trees (`APX`, `SOG`, `ANX`, `ABX`) do have expansionist hooks, but they are only 16-focus mirrored mini trees. Their raw aggression is present; their political, industrial, and expansion depth is still shallow.
 
 ## 5. Prioritized Patch Order For Parent
 

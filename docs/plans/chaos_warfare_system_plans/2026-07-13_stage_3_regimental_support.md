@@ -103,7 +103,7 @@ Dedicated role tokens avoid overriding vanilla or country-specific role-level te
 - `cbrn_armored_assault`
 - `cbrn_containment`
 
-Target templates are enabled only when their unlock technologies and real standing equipment gates are met. Offensive templates also require battlefield-use policy and an actual chemical payload stock signal. Role ratios are bounded and self-disabling when prerequisites disappear. Mask, decontamination, and instrument equipment each have a registered `script_enum_equipment_category`, so their production-factor strategies target the intended family rather than the broad support pool. Stage 10 replaces the baseline weights with the full route-aware country profiles; Stage 3 proves that the AI can build valid templates and does not request unavailable units.
+Target templates are enabled only when their unlock technologies and real standing equipment gates are met. Offensive templates also require battlefield-use policy, an actual chemical payload stock signal, an active Army-HQ operation plan, and an exact target receipt. Until the Stage 6 adapter exposes that receipt through a supported country-scope surface, offensive artillery and armored template adoption is fail-closed; a generic enemy-country check is not accepted as a substitute. Role ratios are bounded and self-disabling when prerequisites disappear. Mask, decontamination, and instrument equipment each have a registered `script_enum_equipment_category`, so their production-factor strategies target the intended family rather than the broad support pool. Stage 10 replaces the baseline weights with the full route-aware country profiles; Stage 3 proves that the AI can build valid templates and does not request unavailable units.
 
 ## Asset contract
 

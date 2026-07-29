@@ -11,7 +11,7 @@ Use this for the super-event research and wiring pass after the coding agent ver
 
 ## Super-events to verify
 
-1. Angel Directorate reveal. Current source names `GFX_super_event_angel_directorate`, slot and audio ID `12`, `music/003_holy_realm/super_event_12_angel_directorate.ogg`, and `chaosx_super_event_angel_directorate_track`.
+1. Angel Directorate reveal. Current source names `GFX_super_event_angel_directorate`, slot and audio ID `12`, `sound/003_holy_realm/super_event_12_angel_directorate.wav`, and `chaosx_super_event_angel_directorate_track`.
 2. Angelic World Order, if the final clone-network world-end branch is live.
 3. Aryan Supremacy title variant, if the Aryan branch is live.
 
@@ -37,7 +37,7 @@ Requirements:
 
 - Preserve source audio.
 - Document title, creator, performer or recording source, URL, license, duration, usage terms, conversion notes, and uncertainty.
-- Convert final OGG to 44.1 kHz.
+- Convert final WAV to 44.1 kHz.
 - Verify sound and music definitions.
 - Update audio docs and track list as required by repo convention.
 

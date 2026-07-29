@@ -94,7 +94,7 @@ but its circa-1940s archive date remains a 1936-baseline admission gate. FIJ
 selects FORM-39 Melanesian Federation. The explicit FIJ/PNG/WPG consent-led
 adapter, exact three-member/three-anchor arrays, MFX X-tag identity surface,
 autonomous-member cleanup, staged anchor integration, and paid post-formation
-projects are now implemented and documented in `docs/events/006_form39_melanesian_federation.md`.
+projects are now implemented and documented in `docs/events/006_independence_wave/form39_melanesian_federation.md`.
 FORM-39 remains outside runtime attestation until the IW-157/IW-178 member
 research flags, MFX collision reservation, flat-flag review, and source/date
 decision are independently accepted. The bounded source handoff
@@ -508,7 +508,7 @@ waiver.
 | `006_iw157_iw178_new_guinea_source_research_2026_07_26.md` | HOLD / research only | IW-157/WPG and IW-178/PNG require exact named-community containment, rights-clear period leadership or institutional evidence, and community-specific symbols; no fallback or package promotion |
 | `006_super_event_audio_research_v22_2026_07_27.md` | Research-only; `6001` remains blocked | Candidates A/B/C are unselected and unwired because none preserves the accepted brass-and-organ cue; explicit user choice or a United States rights waiver is required |
 | `006_statehood_ledger_frame_mapping_2026_07_25.md` and `de36a366e` | Source consumer implemented; focused static UI/source audit remains bounded | Semantic frame mapping remains current, while `de36a366e` adds the `Animate` toggle and static fallback path; source interaction, threshold, click-region, and return-to-state checks remain bounded, while live interaction and playback are optional future QA |
-| Super-event audio research handoff | Partly superseded | `6002` production and runtime wiring are complete. Its rights research and `6001` blocker remain current and are extended by v22. Use `docs/super_events/006_independence_wave_super_event_research.md` for the canonical implementation contract |
+| Super-event audio research handoff | Partly superseded | `6002` production and runtime wiring are complete. Its rights research and `6001` blocker remain current and are extended by v22. Use `docs/super_events/006_independence_wave/research.md` for the canonical implementation contract |
 | Asset-source research handoffs | Partly superseded | Use final manifests for produced files and research handoffs only for unresolved source constraints |
 | `006_round_number_balance_preflight_2026_07_15.md` | Implemented evidence | Commit `879e511cc` contains its reviewed tuning tranche. It is not a final Event 006 balance or completion audit |
 

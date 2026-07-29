@@ -104,7 +104,7 @@ Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for
 
 Suggested final folder pattern:
 
-`music/006_independence_wave/super_event_<id>_<slug>.ogg`
+`sound/006_independence_wave/super_event_<id>_<slug>.wav`
 
 ## Image handoff
 

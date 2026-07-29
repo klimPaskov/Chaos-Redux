@@ -33,7 +33,7 @@ The current Event 006 documentation now names the three v35 closure handoffs as 
 
 | File or evidence | Contradiction | Resolution |
 | --- | --- | --- |
-| `docs/events/006_independence_wave.md`, `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` | Existing docs described the whole event as one undifferentiated incomplete implementation, which obscured the shared core/API tranche that v35 closed. | Added a bounded milestone ledger and retained the separate package-content and whole-event **HOLD / PARTIAL** boundary. |
+| `docs/events/006_independence_wave/overview.md`, `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` | Existing docs described the whole event as one undifferentiated incomplete implementation, which obscured the shared core/API tranche that v35 closed. | Added a bounded milestone ledger and retained the separate package-content and whole-event **HOLD / PARTIAL** boundary. |
 | Older ladder references in historical audits | Earlier material uses 3/4/5/7/10. | Current docs preserve the later user-approved 6/8/10/14/20 ladder and mark older wording historical. |
 | Runtime wording in older audits and package notes | Some older rows require live execution or save/load proof. | The 2026-07-29 acceptance authority makes runtime-only evidence optional future QA. Static capacity, package, source, asset, focus, AI, route, and rights blockers remain required. |
 | Registry/API presence versus package readiness | Registry rows and carrier collections can be mistaken for complete country packages. | Current docs explicitly state that registration, collections, and overlay views do not promote leaders, portraits, flags, focuses, decisions, forces, AI, formables, or assets. |
@@ -60,7 +60,7 @@ The current Event 006 documentation now names the three v35 closure handoffs as 
 
 ## Files changed
 
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - `docs/specs/006_independence_wave_specs/quality/spec_acceptance_checklist.md`

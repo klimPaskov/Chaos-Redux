@@ -54,7 +54,7 @@ No daily, weekly, monthly, or autonomous country iteration was added.
 - foreign response event AI chances and response-profile records
 - world-route AI weights
 - decision-category reachability and target-selection localisation
-- `docs/events/012_africa_world_order.md`
+- `docs/events/012_africa/world_order.md`
 
 ## Remaining risks and open work
 

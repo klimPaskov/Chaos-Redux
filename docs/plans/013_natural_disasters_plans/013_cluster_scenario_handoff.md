@@ -1,6 +1,6 @@
 # Event 013 cluster and Disaster Barrage handoff
 
-> Superseded tranche snapshot, 2026-07-12: the three API gaps and Event 099 boundary recorded below were closed afterward. Full Catalogue, intensity-aware family pools, manual evolution/abnormal authority, type-compatible exhaustive targeting, and the narrow Event 099 dust bridge are live. Evolution cluster roles use tiers 1, 2, and 3 for Wider Disaster Seasons, Regional Cascades, and Abnormal Paths. Current authority is `docs/events/013_natural_disasters.md`, `common/scripted_effects/chaosx_dynamic_effects.md`, and `013_event_completion_final_audit.md`.
+> Superseded tranche snapshot, 2026-07-12: the three API gaps and Event 099 boundary recorded below were closed afterward. Full Catalogue, intensity-aware family pools, manual evolution/abnormal authority, type-compatible exhaustive targeting, and the narrow Event 099 dust bridge are live. Evolution cluster roles use tiers 1, 2, and 3 for Wider Disaster Seasons, Regional Cascades, and Abnormal Paths. Current authority is `docs/events/013_natural_disasters/overview.md`, `common/scripted_effects/chaosx_dynamic_effects.md`, and `013_event_completion_final_audit.md`.
 
 ## Scope
 

@@ -23,7 +23,7 @@ No files under `gfx/flags/` or `interface/flags/` were opened or edited. Flags w
 - Vanilla precedent sampled:
   - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
 - Event 005 design/context:
-  - `docs/events/005_soviet_collapse.md`
+  - `docs/events/005_soviet_collapse/overview.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
   - `docs/plans/005_soviet_collapse_plans/2026_05_29_soviet_collapse_focus_tree_redesign_followup_plan.md`
   - `common/scripted_effects/005_soviet_collapse_effects.txt` focus loading and successor setup sections
@@ -52,14 +52,14 @@ Parser count: 41 `focus_tree` blocks and 1,698 `focus = { ... }` blocks.
 
 Ancient restorations:
 
-- `KZR_soviet_collapse_ancient_focus_tree` - 16 focuses
+- `APX_soviet_collapse_ancient_focus_tree` - 16 focuses
 - `SOG_soviet_collapse_ancient_focus_tree` - 16 focuses
-- `KHW_soviet_collapse_ancient_focus_tree` - 16 focuses
-- `ALN_soviet_collapse_ancient_focus_tree` - 16 focuses
+- `ANX_soviet_collapse_ancient_focus_tree` - 16 focuses
+- `ABX_soviet_collapse_ancient_focus_tree` - 16 focuses
 
 Custom/high-chaos splinters:
 
-- 47-focus full splinters: `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`
+- 47-focus full splinters: `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`
 - Short/crisis splinters: `PRA` 22, `TSC` 18, `RMC` 18, `DSC` 18, `NRF` 18, `ICD` 18
 
 Factory/returned-name successors:
@@ -106,10 +106,10 @@ Republic/shared trees:
 | 10 | `NRF_northern_revenant_fleet` (`custom_splinters`, focus id from NRF tree) | Endpoint exists but the tree remains 18 focuses and shallow for a naval death-state. | Make endpoint fire a northern raiding package: coastal war goals, mine/convoy AI strategy, naval infantry spawn, and port-core/occupation settlement decisions. |
 | 11 | `OGB_restore_the_bolghar_name` (`factory_successors:1142`) | Flat PP/stability. This should define the restored-name state. | Add Volga legitimacy stages, cleric/scholar/notable route locks, party/cosmetic identity effects if available, and decisions to contest Kazan/Ufa legitimacy. |
 | 12 | `OGB_treat_with_idel_ural` (`factory_successors:1430`) | Key compact route gives mostly PP/flag. It should decide Volga diplomacy. | Add compact mechanics: mutual guarantees or regional faction hook, Volga toll-sharing decision, defensive member call, and a clear alternative to the rival war path. |
-| 13 | `KZR_old_border_files` (`ancient_restorations:177`) | Ancient restoration expansion is compressed into a reward bundle. | Add Caspian toll-claim decisions, Volga/Caspian route control mission, controlled-claim cores, and a trade/toll mechanic that competes with normal republic legitimacy. |
+| 13 | `APX_old_border_files` (`ancient_restorations:177`) | Ancient restoration expansion is compressed into a reward bundle. | Add Caspian toll-claim decisions, Volga/Caspian route control mission, controlled-claim cores, and a trade/toll mechanic that competes with normal republic legitimacy. |
 | 14 | `SOG_old_city_border_files` (`ancient_restorations:587`) | Same 16-focus ancient skeleton; old-city expansion lacks postwar handling. | Add Samarkand/Bukhara city-claim chain, caravan route decisions, integration/coring on controlled old cities, and merchant-polity diplomacy branch. |
-| 15 | `KHW_old_oasis_border_files` (`ancient_restorations:987`) | Oasis restoration gets claims/buildings but little mechanic depth. | Add water-rights decisions, canal-control missions, oasis claim integration, and drought/supply consequences tied to KHW variables. |
-| 16 | `ALN_old_pass_border_files` (`ancient_restorations:1396`) | Pass claims/buildings are a bundle, not a branch. | Add Darial/pass-control mechanics, mountain pass fortification decisions, controlled-pass cores, and a forced pass-war escalation at high chaos. |
+| 15 | `ANX_old_oasis_border_files` (`ancient_restorations:987`) | Oasis restoration gets claims/buildings but little mechanic depth. | Add water-rights decisions, canal-control missions, oasis claim integration, and drought/supply consequences tied to ANX variables. |
+| 16 | `ABX_old_pass_border_files` (`ancient_restorations:1396`) | Pass claims/buildings are a bundle, not a branch. | Add Darial/pass-control mechanics, mountain pass fortification decisions, controlled-pass cores, and a forced pass-war escalation at high chaos. |
 | 17 | `CFR_construction_battalions` (`factory_successors:652`) | CFR military branch is too small and not distinct from construction rewards. | Unlock construction-battalion unit/template and worksite-security decisions; make later concrete/fort focuses consume or increase construction mandates. |
 | 18 | `CFR_buy_peace_with_concrete` (`factory_successors:897`) | Diplomacy path is abstract; peace-by-concrete should be a mechanic. | Add reconstruction-protectorate contracts, targeted aid-for-nonaggression decisions, patron/dependency risk, and AI preference for buying peace when weak. |
 | 19 | `MFR_every_buyer_has_a_flag` (`factory_successors:1958`) | Arms-export premise is underused and can become generic PP/flag depth. | Add arms-client decisions, dependency/client network variables, arms-for-recognition trade, and AI strategy to arm anti-Soviet neighbors. |
@@ -141,7 +141,7 @@ Remaining repeated reward clusters:
 
 Ancient restorations:
 
-- `KZR`, `SOG`, `KHW`, `ALN`: each has only 16 focuses. They have labels for politics, trade/industry, guards, League, old borders, symbolic route, expansion route, and endgame, but each "branch" is usually one or two focuses. Missing real industrial branch, missing real diplomacy branch, missing postwar integration/coring decisions, missing route-specific AI beyond focus weights, and missing enough internal politics to feel like a restored ancient polity.
+- `APX`, `SOG`, `ANX`, `ABX`: each has only 16 focuses. They have labels for politics, trade/industry, guards, League, old borders, symbolic route, expansion route, and endgame, but each "branch" is usually one or two focuses. Missing real industrial branch, missing real diplomacy branch, missing postwar integration/coring decisions, missing route-specific AI beyond focus weights, and missing enough internal politics to feel like a restored ancient polity.
 
 Short/crisis custom splinters:
 
@@ -155,7 +155,7 @@ Short/crisis custom splinters:
 Full 47-focus custom splinters:
 
 - Many have full skeleton coverage, but decision/mechanic integration is uneven.
-- Trees with zero direct decision unlocks in the focus file: `FTH`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`.
+- Trees with zero direct decision unlocks in the focus file: `FTH`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`.
 - Trees with zero direct claims/cores/war goals in the focus file despite chaos identity: most 47-focus custom splinters. They rely on generic endpoint helpers; this hides aggression and makes OP routes feel late and abstract.
 - `UDC`, `SDZ`, `DHC`, `KHC`, `ARD`, `NLC` have especially low expansion keyword counts in the parser and need explicit aggression/settlement payoffs.
 
@@ -182,7 +182,7 @@ Republic/shared trees:
 High-chaos/custom splinters should feel more dangerous than ordinary republics. Current gaps:
 
 - Many 47-focus splinters have no direct `create_wargoal`, no direct `add_state_claim`, no direct `add_state_core`, and no direct decision unlock in their focus file. The generic endpoint helpers may work, but the tree itself does not communicate aggression.
-- `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, and `NLC` need at least one visible mid-tree aggression/expansion step before the endpoint.
+- `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, and `NLC` need at least one visible mid-tree aggression/expansion step before the endpoint.
 - `TSC`, `RMC`, `ICD`, and `NRF` should receive earlier OP payoffs: forced claims, assault templates, neighbor intimidation decisions, or automatic pressure on Soviet authority/obedience/old-movement variables.
 - Ancient restorations should not merely claim old borders. Their OP path should create state-specific integration, historical-route pressure, and high-chaos wars or ultimatums.
 
@@ -245,9 +245,9 @@ These examples are not the full list; they show recurring patterns.
 
 Trees with very low or zero direct focus decision unlocks need a mechanic pass:
 
-- Zero direct focus decision unlocks: `FTH`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, generic breakaway, internal republic, Baltic, Moldova.
+- Zero direct focus decision unlocks: `FTH`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, generic breakaway, internal republic, Baltic, Moldova.
 - One direct unlock: `TSC`, `RMC`, `ICD`, `NLC`.
-- Two direct unlocks: `BSC`, `TNC`, `ALA`.
+- Two direct unlocks: `AEX`, `TNC`, `AAX`.
 
 This does not mean no helper or decisions exist elsewhere, but the focus trees do not visibly evolve decision categories enough. Add or expose decision unlocks for:
 
@@ -262,7 +262,7 @@ This does not mean no helper or decisions exist elsewhere, but the focus trees d
 
 1. Fix hard layout first: the two vertical pathline collisions, all same-row x=1 pairs, and the worst Ukraine/Moldova/Belarus/Kazakhstan long edges.
 2. Deepen short high-chaos trees before polishing full trees: `TSC`, `RMC`, `NRF`, `ICD`, then decide whether `PRA` and `DSC` stay short or grow to full successor depth.
-3. Expand ancient restorations as a batch: add shared old-name restoration mechanics, then per-tag old-route/payoff decisions for `KZR`, `SOG`, `KHW`, and `ALN`.
+3. Expand ancient restorations as a batch: add shared old-name restoration mechanics, then per-tag old-route/payoff decisions for `APX`, `SOG`, `ANX`, and `ABX`.
 4. Add visible aggression to 47-focus high-chaos splinters: at least one mid-tree claim/war/ultimatum/raider decision and one postwar settlement hook before endpoint.
 5. Rework `OGB` to full returned-name successor depth or explicitly classify it as a narrow crisis tree in docs.
 6. Clean reward helper repetition: keep shared helpers, but add route-specific wrappers or direct decision unlocks so political, military, industry, diplomacy, and expansion paths do not all feel like depot/recognition variants.

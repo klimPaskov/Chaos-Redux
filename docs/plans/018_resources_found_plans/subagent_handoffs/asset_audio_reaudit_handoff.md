@@ -22,7 +22,7 @@ The source-of-truth documents were re-read after the final documentation alignme
 - docs/assets/018_resources_found/manifest.md — SHA-256 371ef7163519f5658b027d9d7b73a746198e32e34e8cb983336a66c8f993aa3f
 - docs/assets/018_resources_found/animations/selected_field_ui/manifest.md — SHA-256 24ebb757e96074b0806ba0de7d8dd0a0d7d2181ee7dd940aa04a4485a73cec7d
 - docs/assets/018_resources_found/icon_generation_provenance_ledger.md — SHA-256 dff90959c1f6a212d2223d9598d952d5a3db1f8dfdd8b1f1514e0e80bc96a3fc
-- docs/super_events/018_resources_found_super_event_research.md — SHA-256 29aa19fe38623600c0378477e59a5d2d29d9b60bd9d4ff9286454b226fba1a29
+- docs/super_events/018_resources_found/overview.md — SHA-256 29aa19fe38623600c0378477e59a5d2d29d9b60bd9d4ff9286454b226fba1a29
 
 The final comparison initially found one stale documentation cell: the consolidated manifest named interface/018_resources_found.gfx for the three super-event registrations even though the live definitions are in interface/chaosx_super_events.gfx. The parent corrected that cell during this audit. The current manifest bytes and all three live registrations were re-read after the correction; the mismatch is resolved and is not a remaining blocker.
 
@@ -106,7 +106,7 @@ Rights and source disposition is clean:
 
 All nine frozen source/deed/legal-code snapshots exist and match the SHA-256 inventory in source/audio/license_evidence/README.md. The three preserved source masters match their documented hashes and profiles. The superseded Debussy/USAF file is retained only as rejected research history; it has no Event 018 runtime definition, helper, localisation title, catalogue row, or final-cue mapping. The live stable ID 55 mapping is Brahms/CC0 everywhere.
 
-Runtime audio wiring is exact: 18 music helpers and 18 sound wrappers provide six volume variants per ID at 0.67, 1.33, 2.00, 2.67, 3.33, and 4.00. Each family points to the correct final filename/base sound, and each ID has one zero-chance music-station registration. Display IDs 82–84, audio IDs 54–56, helper/wrapper names, sound-track names, and runtime filenames remain stable. The shared player dispatches the correct music or sound path according to settings and volume.
+Runtime audio wiring is exact: 18 sound wrappers and 18 sound wrappers provide six volume variants per ID at 0.67, 1.33, 2.00, 2.67, 3.33, and 4.00. Each family points to the correct final filename/base sound, and each ID has one zero-chance music-station registration. Display IDs 82–84, audio IDs 54–56, helper/wrapper names, sound-track names, and runtime filenames remain stable. The shared player dispatches the correct music or sound path according to settings and volume.
 
 ## Combined super-event reconciliation
 

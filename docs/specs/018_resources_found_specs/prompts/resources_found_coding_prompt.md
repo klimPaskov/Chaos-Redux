@@ -224,7 +224,7 @@ Update:
 - country, focus, decision, ideas, AI, templates, traits, history
 - super-event text, images, audio, and music docs
 - achievements
-- `docs/events/018_resources_found.md`
+- `docs/events/018_resources_found/overview.md`
 - helper docs
 - asset and super-event manifests
 - catalog workbook through `chaosx_spreadsheet_doc_worker`

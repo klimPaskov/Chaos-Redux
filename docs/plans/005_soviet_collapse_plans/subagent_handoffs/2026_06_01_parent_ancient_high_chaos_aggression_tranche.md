@@ -15,18 +15,18 @@ Changed files:
 
 Ancient restoration focuses now push actual aggressive mechanics instead of ending at generic claim helpers:
 
-- `KZR_expansionist_steppe_levy`
-- `KZR_returned_names_endgame`
-- `KZR_road_beyond_the_caspian`
+- `APX_expansionist_steppe_levy`
+- `APX_returned_names_endgame`
+- `APX_road_beyond_the_caspian`
 - `SOG_expansionist_merchant_claims`
 - `SOG_returned_names_endgame`
 - `SOG_cities_beyond_the_desert`
-- `KHW_expansionist_water_claims`
-- `KHW_returned_names_endgame`
-- `KHW_delta_without_a_center`
-- `ALN_expansionist_mountain_claims`
-- `ALN_returned_names_endgame`
-- `ALN_every_pass_a_border`
+- `ANX_expansionist_water_claims`
+- `ANX_returned_names_endgame`
+- `ANX_delta_without_a_center`
+- `ABX_expansionist_mountain_claims`
+- `ABX_returned_names_endgame`
+- `ABX_every_pass_a_border`
 
 These focuses now call:
 
@@ -50,7 +50,7 @@ Affected helper families include:
 ## Cleanup
 
 - Removed ancient focus calls to `soviet_collapse_update_consolidated_republic_ideas` where they were only refreshing consolidated idea state after variable changes. This reduces helper-mediated idea churn in ancient focus rewards.
-- Fixed malformed indentation around `KZR_khazar_charter` and `KHW_symbolic_oasis_authority`.
+- Fixed malformed indentation around `APX_khazar_charter` and `ANX_symbolic_oasis_authority`.
 - Preserved the compact ancient symbolic-vs-expansion fork layout while separating the mutually exclusive route choices horizontally.
 
 ## Validation

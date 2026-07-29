@@ -54,18 +54,18 @@ After: the same route still unlocks reconstruction contract behavior and AI host
 | `soviet_collapse_moldova_focus_tree` | 48 | Political, military, and corridor identity coverage present. | Needs deeper expansion/diplomacy payoff and route-specific decisions. |
 | `soviet_collapse_belarus_focus_tree` | 53 | Broad route skeleton present. | Rewards remain helper-heavy and need distinct political/military/diplomatic outcomes. |
 | `soviet_collapse_kazakhstan_focus_tree` | 92 | Largest republic tree with substantial route surface. | Needs manual reward-variety audit and clearer expansion mechanics. |
-| Full custom splinters `BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC` | 47 each | Political, industry, military, diplomacy, and endpoint hooks mostly exist. | Many trees still read as templated; OP chaos-country aggression is uneven. |
+| Full custom splinters `AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC` | 47 each | Political, industry, military, diplomacy, and endpoint hooks mostly exist. | Many trees still read as templated; OP chaos-country aggression is uneven. |
 | Crisis/custom shallow splinters `PRA/TSC/RMC/DSC/NRF/ICD` | 18-22 each | Basic crisis identity exists. | Too shallow for the requested full country-depth rework. |
 | `CFR_soviet_collapse_focus_tree` | 47 | Real political, industrial, diplomacy, and expansion branches exist. | Some reward/filter mismatch remains; icon reuse and helper patterns need cleanup. |
 | `OGB_soviet_collapse_focus_tree` | 23 | Basic successor identity exists. | Too shallow for a high-chaos successor and needs military/industrial/special depth. |
 | `MFR_soviet_collapse_focus_tree` | 58 | Stronger factory-successor coverage with industry/military routes. | Expansion and state-concept mechanics are still thin. |
-| Ancient trees `KZR/SOG/KHW/ALN` | 16 each | Minimal ancient restoration skeletons exist. | These are stub-depth trees, not full restoration route families. |
+| Ancient trees `APX/SOG/ANX/ABX` | 16 each | Minimal ancient restoration skeletons exist. | These are stub-depth trees, not full restoration route families. |
 
 ## Missing Or Simplified Content List
 
 High-priority issues first:
 
-1. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, and `ALN_soviet_collapse_ancient_focus_tree` are only 16 focuses each. They need full political, industrial, military, diplomacy, expansion, and special-mechanic branches.
+1. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, and `ABX_soviet_collapse_ancient_focus_tree` are only 16 focuses each. They need full political, industrial, military, diplomacy, expansion, and special-mechanic branches.
 2. `common/national_focus/005_soviet_collapse_custom_splinters.txt`: `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, and `ICD_soviet_collapse_focus_tree` are 18-focus crisis trees. `PRA_soviet_collapse_focus_tree` has 22 focuses. These are simplified compared to the requested full chaos-country depth.
 3. `common/national_focus/005_soviet_collapse_factory_successors.txt`: `OGB_soviet_collapse_focus_tree` has 23 focuses and needs full successor depth, not only a compact branch set.
 4. `common/national_focus/005_soviet_collapse_republics.txt`: the shared republic trees have broad size, but many rewards rely on repeated helper effects instead of concrete route-specific gameplay. The worst review targets are `soviet_collapse_ukraine_focus_tree`, `soviet_collapse_belarus_focus_tree`, and `soviet_collapse_kazakhstan_focus_tree` because they are large enough that helper repetition hides route behavior.
@@ -91,7 +91,7 @@ High-priority issues first:
 | Remaining filter/reward mismatch risk | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR_build_the_border_bend_the_border` | Uses `FOCUS_FILTER_ANNEXATION` but appears to reward border-permit/public-works logic rather than a direct claim, core, war goal, or state transfer. Needs route-design decision before patching. |
 | Helper-only/repeated reward risk | `common/national_focus/005_soviet_collapse_republics.txt` | `soviet_collapse_ukraine_focus_tree`, `soviet_collapse_belarus_focus_tree`, `soviet_collapse_kazakhstan_focus_tree` | Large trees still need manual branch-by-branch reward matching so focus names and descriptions promise concrete gameplay that the reward delivers. |
 | Helper-only/repeated reward risk | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 47-focus custom splinter trees and crisis splinter trees | Many routes remain mechanically similar despite distinct country names. Needs bespoke decisions, state mechanics, unit/template spawns, and expansion tools. |
-| Stub-depth reward risk | `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `KZR/SOG/KHW/ALN` ancient trees | Focus names imply restoration arcs, but 16-focus depth cannot support the requested political/industrial/military/diplomacy/expansion/special route spread. |
+| Stub-depth reward risk | `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `APX/SOG/ANX/ABX` ancient trees | Focus names imply restoration arcs, but 16-focus depth cannot support the requested political/industrial/military/diplomacy/expansion/special route spread. |
 
 ## AI Behavior Gaps
 
@@ -104,7 +104,7 @@ High-priority issues first:
 
 ## High-Priority Fixes For Parent
 
-1. Expand ancient restoration trees `KZR/SOG/KHW/ALN` from 16-focus stubs into full route families with restoration politics, old-border claims, elite/army conflict, industrial revival, diplomacy, expansion, state mechanics, and AI aggression.
+1. Expand ancient restoration trees `APX/SOG/ANX/ABX` from 16-focus stubs into full route families with restoration politics, old-border claims, elite/army conflict, industrial revival, diplomacy, expansion, state mechanics, and AI aggression.
 2. Deepen shallow crisis/custom splinters `PRA/TSC/RMC/DSC/NRF/ICD` and `OGB` before polishing larger trees; these are the clearest failures against the full rework requirement.
 3. Replace repeated helper-only rewards with concrete gameplay per route: war goals, claims, cores, units, templates, decisions, missions, state flags, scripted state concepts, advisors, leader changes, and event hooks.
 4. Audit `CFR_build_the_border_bend_the_border`; either add a concrete border/claim/war-state payoff or replace `FOCUS_FILTER_ANNEXATION` with a filter that matches its actual reward.

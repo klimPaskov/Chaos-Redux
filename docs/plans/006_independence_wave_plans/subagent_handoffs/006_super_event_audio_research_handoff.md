@@ -4,7 +4,7 @@ Date: 2026-07-14
 
 > Superseded production status, 2026-07-16: this is the preserved pre-production
 > research handoff. Its instructions to create, register, and fire 6002 are
-> complete. Use `docs/super_events/006_independence_wave_super_event_research.md`
+> complete. Use `docs/super_events/006_independence_wave/research.md`
 > and `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`
 > for current runtime and checksum authority. Audio 6001 remains blocked.
 
@@ -37,11 +37,11 @@ No London Brass Players source file was added. Its Commons remote SHA-1 is `6320
 1. Treat `6001` as blocked. Obtain explicit permission/waiver covering the exact recording in the United States, or ask the user for approval to reopen track selection. Do not silently substitute a recording.
 2. Completed: produced `6002` from the preserved Opus original using the exact final-110-second interval `10:44.641-12:34.641`, a `1.5 s` fade-in, a `2.0 s` fade-out, dynamics-preserving two-pass normalization to `-18 LUFS`, and `44.1 kHz` delivery.
 3. Completed: created both derivatives:
-   - `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg`
+   - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
    - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 4. Completed: validated decoded duration, channel count, sample rate, integrated loudness, true peak, and SHA-256 for both derivatives.
 5. Completed: registered music names `chaosx_super_event_6002_<suffix>`, raw sound `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`, and sound wrappers `chaosx_super_event_6002_sound_<suffix>` for the six established volume suffixes.
-6. Completed: added `chaosx_super_event_6002_1_5` to the music track list with zero random-play chance and wired the dangerous-milestone publisher to the existing settings-aware FIFO and playback helper.
+6. Completed: added `chaosx_super_event_6002_sound_1_5` to the music track list with zero random-play chance and wired the dangerous-milestone publisher to the existing settings-aware FIFO and playback helper.
 
 ## Meaningful checks performed
 
@@ -56,5 +56,5 @@ No London Brass Players source file was added. Its Commons remote SHA-1 is `6320
 
 - The requested final two-track package could not be completed because `6001` failed rights verification.
 - No fallback or substitute was used.
-- Final OGG/WAV production and source wiring were parent-owned and intentionally not performed by this research subagent; the parent later completed them for 6002.
+- Final WAV production and source wiring were parent-owned and intentionally not performed by this research subagent; the parent later completed them for 6002.
 - The `6002` rights basis is U.S. federal public domain, not a worldwide CC0 dedication; this caveat is documented rather than hidden.

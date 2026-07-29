@@ -63,5 +63,5 @@ Strengthened the Construction Directorate's civilian-industry identity:
 ## Remaining Gaps
 
 - This is not a full focus-tree completion pass. Many trees still need further branch-depth cleanup, especially short high-chaos and ancient trees.
-- The focus tree audit still lists other wide joins outside this tranche, including FEV/SZA/BAC/ARD endgame joins and several custom splinter template skeletons.
+- The focus tree audit still lists other wide joins outside this tranche, including FEV/SZA/ADX/ARD endgame joins and several custom splinter template skeletons.
 - A full final completion claim still requires a new full-tree audit after additional passes.

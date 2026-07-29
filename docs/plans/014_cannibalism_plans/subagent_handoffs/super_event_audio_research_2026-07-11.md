@@ -2,22 +2,22 @@
 
 ## Disposition
 
-Audio research and production are complete for all four requested Event 014 roles. Four unique source recordings were acquired from authoritative Wikimedia Commons file pages, their published SHA-1 values were verified locally, and final OGG/WAV derivatives were produced.
+Audio research and production are complete for all four requested Event 014 roles. Four unique source recordings were acquired from authoritative Wikimedia Commons file pages, their published SHA-1 values were verified locally, and final WAV derivatives were produced.
 
 The detailed rights record, cue rationale, hashes, attribution, and rejection log live in:
 
-- `docs/super_events/014_cannibalism_super_event_audio_research.md`
+- `docs/super_events/014_cannibalism/audio_research.md`
 
 This subagent did not edit music definitions, sound definitions, event script, scripted localisation, ordinary localisation, GUI, GFX, spreadsheets, or the music track list. The parent agent owns final registration and wiring.
 
 ## Final identifier map
 
-| Role | Proposed display/audio ID | Final OGG | Final WAV | Stable underlying sound ID |
+| Role | Proposed display/audio ID | Final WAV | Final WAV | Stable underlying sound ID |
 | --- | ---: | --- | --- | --- |
-| Hannibal reveal | `49` | `music/014_cannibalism/super_event_49_hannibal_reveal.ogg` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` | `chaosx_super_event_cannibalism_hannibal_reveal_track` |
-| Ordinary Hannibal world-end | `50` | `music/014_cannibalism/super_event_50_hannibal_world_end.ogg` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_hannibal_world_end_track` |
-| Wendigo Hannibal world-end | `53` | `music/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_wendigo_world_end_track` |
-| Eligible global defeat aftermath | `52` | `music/014_cannibalism/super_event_52_global_defeat_aftermath.ogg` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` |
+| Hannibal reveal | `49` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` | `chaosx_super_event_cannibalism_hannibal_reveal_track` |
+| Ordinary Hannibal world-end | `50` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_hannibal_world_end_track` |
+| Wendigo Hannibal world-end | `53` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` | `chaosx_super_event_cannibalism_wendigo_world_end_track` |
+| Eligible global defeat aftermath | `52` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` |
 
 ID `51` was rejected after the repository explorer found the Holy Realm's `Mandala of Nations` already using that visible super-event slot. The Wendigo package was renamed to `53`. At the final handoff check, `49`, `50`, `52`, and `53` had no existing audio-helper or visible-super-event text references. The live audio helper catalogue reached `48`. The parent must repeat this check immediately before editing shared registries.
 
@@ -59,7 +59,7 @@ ID `51` was rejected after the repository explorer found the Holy Realm's `Manda
 - Selection: Fauré, `Élégie, Op. 24`; Hans Goldstein, cello; Eli Kalman, piano; 3 June 2006.
 - Composition rights: public domain; the work dates to 1883 and Fauré died in 1924.
 - Recording rights: CC BY-SA 2.0, through the source's EFF Open Audio License / CC BY-SA 2.0 interchange statement.
-- Mandatory terms: credit the performers and source, link <https://creativecommons.org/licenses/by-sa/2.0/>, state the excerpt/fade/normalization changes, and distribute the adapted OGG/WAV under CC BY-SA 2.0 or a compatible license.
+- Mandatory terms: credit the performers and source, link <https://creativecommons.org/licenses/by-sa/2.0/>, state the excerpt/fade/normalization changes, and distribute the adapted WAV under CC BY-SA 2.0 or a compatible license.
 - Source page: <https://commons.wikimedia.org/wiki/File:Faure_-_Elegie.ogg>
 - Preserved source: `docs/assets/014_cannibalism/source_audio/global_defeat_aftermath_faure_elegie_goldstein_kalman_source.ogg`
 - Source SHA-1: `6d57244d2133c2968ab96508441ed08a134f240e`
@@ -78,7 +78,7 @@ All files decode, are stereo, and use exactly 44,100 Hz. OGG outputs are Vorbis;
 
 The ID 52 OGG container reports `0.099 s` of Vorbis end padding beyond the PCM mirror. The shared musical excerpt and fade are unchanged.
 
-The four final OGG hashes are mutually unique and do not duplicate any other OGG currently under `music/`.
+The four final WAV hashes are mutually unique and do not duplicate any other OGG currently under `music/`.
 
 ## Parent-agent wiring checklist
 
@@ -94,10 +94,10 @@ The four final OGG hashes are mutually unique and do not duplicate any other OGG
 
 Expected helper families:
 
-- `chaosx_super_event_49_0_5` through `chaosx_super_event_49_3_0` and `chaosx_super_event_49_sound_0_5` through `chaosx_super_event_49_sound_3_0`
-- `chaosx_super_event_50_0_5` through `chaosx_super_event_50_3_0` and `chaosx_super_event_50_sound_0_5` through `chaosx_super_event_50_sound_3_0`
-- `chaosx_super_event_52_0_5` through `chaosx_super_event_52_3_0` and `chaosx_super_event_52_sound_0_5` through `chaosx_super_event_52_sound_3_0`
-- `chaosx_super_event_53_0_5` through `chaosx_super_event_53_3_0` and `chaosx_super_event_53_sound_0_5` through `chaosx_super_event_53_sound_3_0`
+- `chaosx_super_event_49_sound_0_5` through `chaosx_super_event_49_sound_3_0` and `chaosx_super_event_49_sound_0_5` through `chaosx_super_event_49_sound_3_0`
+- `chaosx_super_event_50_sound_0_5` through `chaosx_super_event_50_sound_3_0` and `chaosx_super_event_50_sound_0_5` through `chaosx_super_event_50_sound_3_0`
+- `chaosx_super_event_52_sound_0_5` through `chaosx_super_event_52_sound_3_0` and `chaosx_super_event_52_sound_0_5` through `chaosx_super_event_52_sound_3_0`
+- `chaosx_super_event_53_sound_0_5` through `chaosx_super_event_53_sound_3_0` and `chaosx_super_event_53_sound_0_5` through `chaosx_super_event_53_sound_3_0`
 
 ## Rejected-source note
 
@@ -107,7 +107,7 @@ The 1953 Louis Fourestier / Concerts Colonne recording of `Danse macabre` was re
 
 Documentation:
 
-- `docs/super_events/014_cannibalism_super_event_audio_research.md`
+- `docs/super_events/014_cannibalism/audio_research.md`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/super_event_audio_research_2026-07-11.md`
 
 Preserved sources:
@@ -119,10 +119,10 @@ Preserved sources:
 
 Final music:
 
-- `music/014_cannibalism/super_event_49_hannibal_reveal.ogg`
-- `music/014_cannibalism/super_event_50_hannibal_world_end.ogg`
-- `music/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg`
-- `music/014_cannibalism/super_event_52_global_defeat_aftermath.ogg`
+- `sound/014_cannibalism/super_event_49_hannibal_reveal.wav`
+- `sound/014_cannibalism/super_event_50_hannibal_world_end.wav`
+- `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav`
+- `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav`
 
 Final sound mirrors:
 

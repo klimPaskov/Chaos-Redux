@@ -42,12 +42,12 @@ Ideology-specific files are mandatory because a cosmetic fallback does not overr
 | Family | Distinct fictional motif |
 |---|---|
 | `CBA` | tooth-ring and crossed cleavers in hard geometric bands |
-| `CBB` | split jaw and hooked knife in a bold saltire or chevron field |
+| `AHX` | split jaw and hooked knife in a bold saltire or chevron field |
 | `CBC` | cracked bowl and three fangs in high-contrast heraldic geometry |
-| `CBD` | black sunburst, butcher hook, and angular bone-white divisions |
+| `AIX` | black sunburst, butcher hook, and angular bone-white divisions |
 | `CBE` | wagon wheel and cleaver reduced to severe flat silhouettes |
 | `CBF` | rail spike, horse jaw, and broken line rendered as simple heraldry |
-| `CBG` | crescent bite, butcher block, and triangular color divisions |
+| `AMX` | crescent bite, butcher block, and triangular color divisions |
 | `CBH` | crossed cleavers, tooth crown, and asymmetric flat bands |
 | `CBL` | one empty command table joined to several blood-red routes; no leader portrait |
 | `CBL_CENTRAL_COMMAND` | one blade and one chain binding every route into a rigid vertical command |

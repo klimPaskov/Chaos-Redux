@@ -1,6 +1,6 @@
 /goal Implement the Condemnation Impact System expansion to its fullest extent.
 
-Read and follow AGENTS.md, CHAOS_REDUX_MECHANICS.md, all repo skills, and all custom subagent TOMLs before editing. Use the full spec at docs/specs/condemnation_impact_system_spec.md or the provided file condemnation_impact_system_spec.md as the source of truth.
+Read and follow AGENTS.md, CHAOS_REDUX_MECHANICS.md, all repo skills, and all custom subagent TOMLs before editing. Use the full spec at docs/specs/condemnation_system_specs/specs/condemnation_impact_system_spec.md or the provided file condemnation_impact_system_spec.md as the source of truth.
 
 Treat this as a standalone system-level mechanic. Condemnation must stop being mainly an opinion modifier. High condemnation must create practical diplomatic, economic, military, and trade consequences, including real embargo relationships where HOI4 supports them.
 

@@ -19,7 +19,7 @@ No flag assets were touched.
   - Follow-on burst counts now use the same dynamic gates as candidate selection.
   - Pressure-successor bursts are zeroed unless the severe/real pressure gate is open.
   - Dynamic follow-on backlog no longer fires from tier alone.
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
   - Updated release-system documentation to state that Gathering Storm and higher tiers open pools, while union threat, progressive pressure, failed objectives, regional cascades, war pressure, or severe components drive actual non-base releases.
 - `common/national_focus/005_soviet_collapse_republics.txt`
   - Coordinate-only fixes for Ukraine, internal republics, Central Asia, and Kazakhstan branches.

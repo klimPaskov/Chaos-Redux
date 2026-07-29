@@ -50,7 +50,7 @@ claimed.
 | `common/scripted_effects/006_independence_wave_iw043_iw058_focus_effects.txt:122-128,171-177,453-468` | Select the exact Volga-Ural, Idel-Ural, or Mesopotamian family before calling the existing formable registration helper from the matching focus. |
 | `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt:908-1174` | Added full-framework assignment, route/power/ambition/league/formable/signature registration, setup receipts, and final validation gates for IW-043 and IW-058. |
 | `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt:1176-1670` | Added focus-runtime/formable-profile teardown and guarded generic-tree reload before CHU/ASY identity cleanup. |
-| `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md:1-24` | Documented the focus-framework contract, route registrations, import behavior, cleanup, and fail-closed formable status. |
+| `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md:1-24` | Documented the focus-framework contract, route registrations, import behavior, cleanup, and fail-closed formable status. |
 
 No decision, event, character, idea, tag, country-history, BAY, RHI, asset, or
 GFX file was changed by this focus patch.

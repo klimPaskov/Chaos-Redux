@@ -16,8 +16,8 @@ The following sources were read before deriving workbook facts:
 - the full `xlsx` skill
 - repository `AGENTS.md`
 - the complete 26-file Event 018 specification package under `docs/specs/018_resources_found_specs/`
-- `docs/events/018_resources_found.md`
-- `docs/events/018_resources_found_cave_country.md`
+- `docs/events/018_resources_found/overview.md`
+- `docs/events/018_resources_found/cave_country.md`
 - finalized Event 018 event, system, decision, shared event-name, shared GUI, achievement, and music localisation
 - Event 018 implementation handoffs, acceptance report, country audit, asset manifests, super-event text research, and super-event audio research
 - the required offline Paradox wiki pages and relevant vanilla localisation documentation

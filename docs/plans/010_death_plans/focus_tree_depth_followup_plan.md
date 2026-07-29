@@ -11,7 +11,7 @@ Implemented follow-up evidence:
 - `common/scripted_triggers/010_death_triggers.txt` adds the stricter low-pop island target helper and makes coastal watch no longer an absolute block after the `No Ferry Returns` focus.
 - `interface/010_death.gfx` registers base and `_shine` sprites for every Death focus.
 - `localisation/english/010_death_l_english.yml` contains title and description keys for every implemented focus.
-- `docs/events/010_death.md`, `docs/assets/010_death/generated_art_manifest.md`, and `docs/assets/010_death/generated_art_gfx_handoff.md` document the expanded focus tree and completed route/asset packages.
+- `docs/events/010_death/overview.md`, `docs/assets/010_death/generated_art_manifest.md`, and `docs/assets/010_death/generated_art_gfx_handoff.md` document the expanded focus tree and completed route/asset packages.
 
 ## Original Audit Verdict
 
@@ -256,14 +256,14 @@ The focus depth finding can close when all of these are true:
 - Each new focus has name/description localisation, base sprite, shine sprite, and appropriate search filters.
 - AI weights are stage-aware and cannot select impossible stage content.
 - Dark Methods and Black Oath are implemented as full living-country routes and remain outside the DTH focus tree.
-- `docs/events/010_death.md` and the country/focus-tree source spec are updated or annotated after implementation so the plan is no longer a loose unresolved addendum.
+- `docs/events/010_death/overview.md` and the country/focus-tree source spec are updated or annotated after implementation so the plan is no longer a loose unresolved addendum.
 
 ## Promotion Guidance
 
-This plan is implemented and retained as audit history. Current source-of-truth status lives in `docs/events/010_death.md` and the Event 010 specs.
+This plan is implemented and retained as audit history. Current source-of-truth status lives in `docs/events/010_death/overview.md` and the Event 010 specs.
 
 The implemented design has been promoted into:
 
 - `docs/specs/010_death_specs/specs/010_death_country_package_and_focus_tree.md`, as the accepted fixed-purpose Death focus architecture;
-- `docs/events/010_death.md`, as the implemented focus route map;
+- `docs/events/010_death/overview.md`, as the implemented focus route map;
 - the final completion report route-coverage evidence.

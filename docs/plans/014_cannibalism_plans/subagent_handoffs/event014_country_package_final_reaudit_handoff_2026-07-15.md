@@ -19,7 +19,7 @@ The previous player-priority P2 remains closed. The previous manual-scenario ato
 
 ## Audited identifiers and systems
 
-- Reusable country tags CBA, CBB, CBC, CBD, CBE, CBF, CBG, and CBH.
+- Reusable country tags CBA, AHX, CBC, AIX, CBE, CBF, AMX, and CBH.
 - Unified ordinary tag CBL.
 - Original-tag ZZZ Wendigo merge host.
 - Island Host, Siege Commune, and March Host. No fourth warlord origin.

@@ -26,7 +26,7 @@ Scope:
 | File | Change |
 | --- | --- |
 | `common/national_focus/005_soviet_collapse_republics.txt` | Removed five-focus updater duplication pattern from four republic focuses by moving variable changes before existing updater helpers or inlining only the high-chaos variable/pressure payload. |
-| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Removed duplicated KRS staged-idea updater; made `DSC_armies_that_do_not_demobilize` an earlier aggressive-neighbor war-plan focus. |
+| `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Removed duplicated AOX staged-idea updater; made `DSC_armies_that_do_not_demobilize` an earlier aggressive-neighbor war-plan focus. |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | Strengthened `CFR_factories_first` with extra offsite civilian industry. |
 | `docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_05_29_focus_subagent_duplicate_reward_cfr_dsc_patch.md` | This handoff. |
 
@@ -38,7 +38,7 @@ Scope:
 | `central_asia_soviet_collapse_khwarazm_restoration_debate` | Called high-chaos and legal helpers, then forced another direct staged-idea refresh after claims. | Moves local-authority pressure before helpers and removes the direct updater; state claims remain. |
 | `moldova_soviet_collapse_smugglers_and_border_committees` | Called high-chaos/depot helpers, added route pressure, then forced another direct updater. | Applies route pressure before helper refreshes and removes the direct updater. |
 | `kaz_soviet_collapse_red_nomad_committees` | Called socialist helper, then added variables, then forced another direct updater. | Adds variables before the socialist helper and removes the direct updater. |
-| `KRS_inner_faction` | Called custom-splinter inner-faction helper, then added variables, then forced another direct updater. | Adds variables before the helper and removes the direct updater. |
+| `AOX_inner_faction` | Called custom-splinter inner-faction helper, then added variables, then forced another direct updater. | Adds variables before the helper and removes the direct updater. |
 | `CFR_factories_first` | Civilian-build helper plus one state civilian factory. | Adds offsite industrial complexes using the existing factory-successor mandate constant. |
 | `DSC_armies_that_do_not_demobilize` | Claimed/cored two road/front states and pressured Soviet obedience, but did not yet create neighbor war goals. | Adds annexation filter, hidden non-allied neighbor war goals, hidden conquer/antagonize AI against those neighbors, and assault columns. |
 
@@ -49,7 +49,7 @@ Scope:
 | Republic political branches | Ukraine, Belarus, Kazakhstan, Baltic, Caucasus, Central Asia, Moldova, internal republic, generic breakaway branches. | Partial | Real branches exist, but many still pay off through shared staged-idea helpers. This patch only removed exact updater duplication. |
 | Republic industry branches | Multiple republic construction/depot/rail branches. | Partial | Still needs more decision-backed industry programs and fewer one-off factory/AA/truck rewards. |
 | Republic expansion branches | Ukraine, Kazakhstan, Central Asia, Baltic, Caucasus, Moldova and internal republic expansion hooks. | Partial | Claims exist in places, but postwar integration and AI target behavior remain thin. |
-| High-chaos custom splinters | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`. | Partial | Full shells exist, but many middle branches remain templated and helper-heavy. |
+| High-chaos custom splinters | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`. | Partial | Full shells exist, but many middle branches remain templated and helper-heavy. |
 | Shallow crisis splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`. | Partial/Fail | Prior endpoint aggression exists. This pass strengthens DSC mid-end aggression, but all six still need full fixed-purpose branch depth. |
 | Factory successors | `CFR`, `MFR`, `OGB`. | Partial | CFR civilian industry is stronger after this patch; MFR is the strongest factory tree; OGB remains too shallow. |
 
@@ -63,7 +63,7 @@ Exact duplicate staged-idea updater cases patched:
 - `central_asia_soviet_collapse_khwarazm_restoration_debate`
 - `moldova_soviet_collapse_smugglers_and_border_committees`
 - `kaz_soviet_collapse_red_nomad_committees`
-- `KRS_inner_faction`
+- `AOX_inner_faction`
 
 Remaining design-level spam risk:
 
@@ -109,11 +109,11 @@ Manual layout risks still needing screenshot review:
 | `DSC` | Dead Soldiers' Congress | Needs a full dead-army command/economy branch; this patch adds earlier neighbor war goals and assault columns. |
 | `NRF` | Northern revenant fleet | Needs convoy raiding, port-control decisions, naval invasions, and White Sea/North Sea expansion mechanics. |
 | `ICD` | Iron/immortal commissariat | Needs commissar terror administration, memorial recruitment, front claims, and cleanup/aftermath. |
-| `BSC` | Siberian/Baikal successor | Needs bespoke Siberian resource and frontier-expansion mechanics. |
+| `AEX` | Siberian/Baikal successor | Needs bespoke Siberian resource and frontier-expansion mechanics. |
 | `TNC` | Trans-Caspian / transit authority | Needs stronger transit tolls, Caspian claims, and sponsor conflict hooks. |
-| `ALA` | Alash / steppe national restoration | Needs Alash-specific courts, steppe integration, Kazakh claims/cores, and cavalry expansion AI. |
+| `AAX` | Alash / steppe national restoration | Needs Alash-specific courts, steppe integration, Kazakh claims/cores, and cavalry expansion AI. |
 | `BBH` | Black Banner Host / anarchist raiders | Needs non-domination pact decisions, raider supply loops, and hostile anti-state expansion. |
-| `KRS` | Kronstadt/Red sailor council | Needs naval-port mechanics and Baltic/Gulf aggression beyond generic identity helpers. |
+| `AOX` | Kronstadt/Red sailor council | Needs naval-port mechanics and Baltic/Gulf aggression beyond generic identity helpers. |
 | `UDC` | Union Defense Command | Needs command-network annexation, emergency laws, and target-specific Soviet successor war plans. |
 | `SDZ` | Security Directorate zone | Needs archive/security mechanics, purge/occupation decisions, and hostile intelligence branch. |
 | `GAC` | Green Army communes | Needs peasant land-control mechanics, forest partisan decisions, and anti-urban expansion. |
@@ -124,7 +124,7 @@ Manual layout risks still needing screenshot review:
 | `UWD` | Ural Workers Directorate | Needs worker/factory seizure decisions, railbelt conquest, and industrial mobilization AI. |
 | `MRC` | Mountain Republic / Caucasus pass state | Needs pass-control missions, mountain war goals, and postwar integration. |
 | `IUL` | Idel-Ural federation | Needs Volga federal settlement, oil/river economy, and OGB/neighbor conflict decisions. |
-| `BAC` | Birobidzhan/Amur commune | Needs refuge/archive politics, Amur border control, and Far Eastern diplomacy/expansion. |
+| `ADX` | Birobidzhan/Amur commune | Needs refuge/archive politics, Amur border control, and Far Eastern diplomacy/expansion. |
 | `ARD` | Arctic Directorate / northern ports | Needs Arctic convoy/port economy, Murmansk/Kola expansion, and naval AI. |
 | `NLC` | Northern Lights / polar station commune | Needs polar logistics, weather/science mechanics, and northern route control. |
 

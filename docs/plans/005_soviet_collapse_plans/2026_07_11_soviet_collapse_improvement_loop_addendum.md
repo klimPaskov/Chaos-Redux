@@ -29,7 +29,7 @@ The canonical June 5 ledger is stale.
 - UWR has a compact seven-focus package and no dedicated decision category or bespoke AI surface.
 - KMB has a compact nine-focus package with decisions, coal-golem units, resource treaties, and concessions, but no bespoke route AI.
 - The existing audit still records 1,127 helper-only or nearly helper-only focus rewards and 520 pathline heuristic risks. Those findings remain the separate focus backlog.
-- `docs/events/005_soviet_collapse.md` says selected patron desks normalize dynamic targets and check both target and `FROM`.
+- `docs/events/005_soviet_collapse/overview.md` says selected patron desks normalize dynamic targets and check both target and `FROM`.
 - Before this reconciliation, `source_of_truth_map.md` still listed Tajikistan-style empty panels as unresolved. It now records the required verification instead of assuming a missing implementation.
 - The live scripts contain selected-target variables, flags, event-target activation, array normalization, and checks in both scope directions. This is a verification contradiction, not evidence that another targeting system is needed.
 - Reconquest resolution currently clears the crisis and resets its component values. It does not turn the manner of victory into a political settlement or lasting aftermath.
@@ -159,7 +159,7 @@ These labels are design directions, not final player-facing localisation.
 - `common/ai_strategy/005_soviet_collapse.txt`
 - the four existing Event 005 focus files only for accepted shared hooks
 - `localisation/english/005_soviet_collapse_l_english.yml`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - relevant canonical specs and the Event 005 spreadsheet row after final wording exists

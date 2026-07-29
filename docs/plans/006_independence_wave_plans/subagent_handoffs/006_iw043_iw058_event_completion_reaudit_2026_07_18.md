@@ -126,7 +126,7 @@ This is an evidence gap, not a missing-file finding. Automated validation and th
 
 - `006_source_of_truth_map.md` describes the signature tranche as implemented and the proof writers as operational, but still says sovereign-autonomy terminal ordering must be resolved and rerun.
 - The addendum's current disposition is `IMPLEMENTED / FINAL AUDIT`, yet it still lists the `.5810` ordering review as a blocker and leaves most acceptance boxes unchecked.
-- `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` links to `006_iw043_iw058_focus_audit_handoff_2026_07_18.md`; the actual file is `006_iw043_iw058_focus_audit_handoff_2026-07-18.md`.
+- `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` links to `006_iw043_iw058_focus_audit_handoff_2026_07_18.md`; the actual file is `006_iw043_iw058_focus_audit_handoff_2026-07-18.md`.
 - Earlier decision/localisation handoffs preserve historical `.5810` cautions. Their bodies should be marked superseded where necessary instead of remaining parallel current evidence.
 
 ### L1. The “40 decisions” count is a terminology issue, not two missing decisions

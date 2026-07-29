@@ -20,7 +20,7 @@ This handoff records the parent-owned IW-012 implementation tranche for Event 00
 
 ## Documentation and asset evidence
 
-- `docs/events/006_independence_wave_iw012_ice_package.md` is the package source-of-truth document and records preservation, ledgers, projects, host/league/formable behavior, force mapping, focus carrier, asset reuse, and remaining live evidence.
+- `docs/events/006_independence_wave/iw012_ice_package.md` is the package source-of-truth document and records preservation, ledgers, projects, host/league/formable behavior, force mapping, focus carrier, asset reuse, and remaining live evidence.
 - `docs/assets/006_independence_wave/iw012_ice_package_2026_07_28/manifest.md` records that IW-012 reuses approved vanilla ICE historical assets and creates no Event 006 advisor icons. The original-size portrait shelf remains flat at `docs/assets/006_independence_wave/portraits_generated_png`; it contains 54 source-derived masters directly in one directory, no nested folders, and no normalized 156×210 PNGs.
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md` now list IW-012 in the current eleven-package compile-time attestation set and retain the whole-event HOLD / PARTIAL disposition.
 

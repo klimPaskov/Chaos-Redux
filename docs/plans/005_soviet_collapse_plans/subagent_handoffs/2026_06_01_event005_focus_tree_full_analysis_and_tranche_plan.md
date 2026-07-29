@@ -24,7 +24,7 @@ Do-not-touch constraint honored: this pass did not edit `gfx/flags`, flag sprite
 - Offline wiki: Data structures, Triggers, Effect, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, AI modding, National focus modding.
 - Vanilla docs: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, `triggers_documentation.md`, `modifiers_documentation.md`, `script_concept_documentation.md`.
 - Vanilla precedent: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`.
-- Event005 specs/docs: `docs/events/005_soviet_collapse.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_4_releases_leagues_union_unmade.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`.
+- Event005 specs/docs: `docs/events/005_soviet_collapse/overview.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_4_releases_leagues_union_unmade.md`, `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`.
 
 ## Machine Counts
 
@@ -91,14 +91,14 @@ Top repeated focus helper calls in rewards:
 | `DSC_soviet_collapse_focus_tree` | 18 | 1 | 0 | 4 | Mechanized through decisions, but focus tree remains too compressed. |
 | `NRF_soviet_collapse_focus_tree` | 18 | 1 | 0 | 3 | Naval revenant identity exists but needs naval/port/dockyard branch depth. |
 | `ICD_soviet_collapse_focus_tree` | 18 | 1 | 0 | 1 | Shallow death-commissariat tree; needs coercive politics and expansion loop. |
-| `BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC` | 47 each | 0 each | 0 each | 0 each | Template-sized route trees; many still read as reward-template variants. |
+| `AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC` | 47 each | 0 each | 0 each | 0 each | Template-sized route trees; many still read as reward-template variants. |
 | `CFR_soviet_collapse_focus_tree` | 47 | 2 | 0 | 2 | Best construction-state surface, but single-building rewards and hidden route locks remain. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 2 | 1 | 2 | Compact restoration tree; too shallow for a high-chaos/special successor. |
 | `MFR_soviet_collapse_focus_tree` | 58 | 1 | 0 | 3 | Stronger factory tree; still needs route payoff polish. |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | 1 | 3 | 1 | Stub-depth ancient restoration. |
 
 Spec mismatch: Part 5 requires political, industry, and expansion branches for every playable/long-lived tree, plus military/diplomacy/special branches for major countries. The four ancient trees, `TSC/RMC/DSC/NRF/ICD`, `PRA`, and `OGB` do not meet that depth standard. Large republic trees meet branch count better, but Ukraine, Belarus, Kazakhstan, and shared regional trees still lack direct expansion/aggression surfaces and route-specific mechanics at the level promised by the spec.
 
@@ -106,7 +106,7 @@ Spec mismatch: Part 5 requires political, industry, and expansion branches for e
 
 High-priority issues first:
 
-1. `005_soviet_collapse_ancient_restorations.txt`: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, and `ALN_soviet_collapse_ancient_focus_tree` are 16-focus stubs. They need restoration politics, state economy, military order, diplomacy, expansion, and postwar identity mechanics.
+1. `005_soviet_collapse_ancient_restorations.txt`: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, and `ABX_soviet_collapse_ancient_focus_tree` are 16-focus stubs. They need restoration politics, state economy, military order, diplomacy, expansion, and postwar identity mechanics.
 2. `005_soviet_collapse_custom_splinters.txt`: `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, and `ICD_soviet_collapse_focus_tree` are 18 focuses each; `PRA_soviet_collapse_focus_tree` is 22. They do not satisfy the "chaos countries should be overpowered and identity-specific" target.
 3. `005_soviet_collapse_factory_successors.txt`: `OGB_soviet_collapse_focus_tree` has 23 focuses and remains compact; it needs Volga trade/restored-name mechanics or a clear reason to stay narrow.
 4. `005_soviet_collapse_republics.txt`: `soviet_collapse_ukraine_focus_tree`, `soviet_collapse_belarus_focus_tree`, and `soviet_collapse_kazakhstan_focus_tree` have enough focuses, but too many rewards collapse into shared helper buckets.
@@ -140,7 +140,7 @@ Reward mismatch risks:
 | `005_soviet_collapse_custom_splinters.txt` | `RMC_lipetsk_reliquary_workshops`, `RMC_blood_oath_requisitions`, `RMC_dead_volunteer_columns`, `RMC_claim_the_burial_roads` | Reliquary/dead-volunteer concepts are implemented as ordinary factories/equipment/helper rewards. |
 | `005_soviet_collapse_custom_splinters.txt` | `ICD_penza_memorial_workshops`, `ICD_black_seal_requisitions`, `ICD_memorial_battalions`, `ICD_claim_the_unburied_front` | Death-commissariat route needs coercion/repression/front mechanics. |
 | `005_soviet_collapse_factory_successors.txt` | `CFR_the_trust_office_takes_the_seal`, `CFR_emergency_cement_accounts`, `CFR_the_first_new_district`, `CFR_a_civilian_factory_in_every_capital`, `CFR_the_state_that_builds`, `CFR_rebuild_russia_without_moscow` | Construction-state text should feed mandates, site registry, protectorate/rebuild systems, claims, or integration, not mostly one-building rewards. |
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_returned_names_endgame`, `SOG_returned_names_endgame`, `KHW_returned_names_endgame`, `ALN_returned_names_endgame` | Endgame names imply restored-state payoff, but rewards are still compact/helper-led. |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_returned_names_endgame`, `SOG_returned_names_endgame`, `ANX_returned_names_endgame`, `ABX_returned_names_endgame` | Endgame names imply restored-state payoff, but rewards are still compact/helper-led. |
 | `005_soviet_collapse_republics.txt` | `internal_soviet_collapse_northern_timber_rail_fund`, `internal_soviet_collapse_ural_cavalry_roads`, `central_asia_soviet_collapse_turkestan_city_congress`, `kaz_soviet_collapse_turkmen_rail_and_desert_talks` | Regional branch names are specific, but rewards still combine one building with generic helper calls. |
 
 ## Top 30 Weak Reward Candidates
@@ -152,22 +152,22 @@ Machine-scored from live focus blocks. Reasons include shallow-tree membership, 
 | 19 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | `PRA_the_pale_line_endures` | shallow tree; stockpile; multiple helpers; weak rail-state payoff |
 | 16 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | `NRF_fleet_that_does_not_dock` | shallow tree; single building; annexation filter lacks direct expansion |
 | 15 | `005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | `central_asia_soviet_collapse_desert_republic_settlement` | stockpile plus multiple helpers |
-| 14 | `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | `KZR_khazar_charter` | shallow tree; stockpile; annexation-filter mismatch risk |
-| 14 | `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | `KZR_returned_names_endgame` | shallow tree; helper-only identity payoff |
+| 14 | `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | `APX_khazar_charter` | shallow tree; stockpile; annexation-filter mismatch risk |
+| 14 | `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | `APX_returned_names_endgame` | shallow tree; helper-only identity payoff |
 | 14 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | `SOG_returned_names_endgame` | shallow tree; helper-only identity payoff |
-| 14 | `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | `KHW_khwarazmian_water_charter` | shallow tree; stockpile; annexation-filter mismatch risk |
-| 14 | `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | `KHW_returned_names_endgame` | shallow tree; helper-only identity payoff |
+| 14 | `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | `ANX_khwarazmian_water_charter` | shallow tree; stockpile; annexation-filter mismatch risk |
+| 14 | `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | `ANX_returned_names_endgame` | shallow tree; helper-only identity payoff |
 | 14 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | `PRA_charge_for_safe_passage` | shallow tree; stockpile; building-list reward |
 | 14 | `005_soviet_collapse_custom_splinters.txt` | `TSC_soviet_collapse_focus_tree` | `TSC_portable_laboratory_trains` | shallow tree; stockpile without direct system unlock |
 | 14 | `005_soviet_collapse_custom_splinters.txt` | `TSC_soviet_collapse_focus_tree` | `TSC_perimeter_regiments` | shallow tree; stockpile and buildings |
 | 14 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | `NRF_port_republic_of_the_living` | shallow tree; stockpile; weak naval payoff |
 | 14 | `005_soviet_collapse_custom_splinters.txt` | `IUL_soviet_collapse_focus_tree` | `IUL_volga_ural_endurance` | single building plus multiple helpers |
-| 14 | `005_soviet_collapse_custom_splinters.txt` | `BAC_soviet_collapse_focus_tree` | `BAC_amur_commune_endurance` | single building plus multiple helpers |
+| 14 | `005_soviet_collapse_custom_splinters.txt` | `ADX_soviet_collapse_focus_tree` | `ADX_amur_commune_endurance` | single building plus multiple helpers |
 | 14 | `005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | `internal_soviet_collapse_northern_timber_rail_fund` | single building plus multiple helpers |
 | 14 | `005_soviet_collapse_republics.txt` | `soviet_collapse_internal_republic_focus_tree` | `internal_soviet_collapse_ural_cavalry_roads` | single building plus multiple helpers |
 | 14 | `005_soviet_collapse_republics.txt` | `soviet_collapse_central_asia_focus_tree` | `central_asia_soviet_collapse_turkestan_city_congress` | single building plus multiple helpers |
 | 14 | `005_soviet_collapse_republics.txt` | `soviet_collapse_kazakhstan_focus_tree` | `kaz_soviet_collapse_turkmen_rail_and_desert_talks` | single building plus multiple helpers |
-| 12 | `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | `KHW_canal_recognition_letters` | shallow tree; stockpile without direct system unlock |
+| 12 | `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | `ANX_canal_recognition_letters` | shallow tree; stockpile without direct system unlock |
 | 12 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | `PRA_the_board_overrules_ministers` | shallow tree; stockpile plus helper |
 | 12 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | `PRA_armored_train_schools` | shallow tree; stockpile without direct rail-system unlock |
 | 12 | `005_soviet_collapse_custom_splinters.txt` | `RMC_soviet_collapse_focus_tree` | `RMC_lipetsk_reliquary_workshops` | shallow tree; stockpile and building |
@@ -210,14 +210,14 @@ Manual layout risk not fully captured by the parser: Ukraine and Belarus have lo
 
 ## Next 10 Parent Implementation Tranches
 
-1. Ancient restoration expansion tranche: deepen `KZR/SOG/KHW/ALN` into real restoration route families with politics, old-border claims, state economy, military order, diplomacy, expansion, and postwar integration. Do not create new formable chains unless explicitly approved.
+1. Ancient restoration expansion tranche: deepen `APX/SOG/ANX/ABX` into real restoration route families with politics, old-border claims, state economy, military order, diplomacy, expansion, and postwar integration. Do not create new formable chains unless explicitly approved.
 2. Special shallow chaos tranche: expand `TSC/RMC/DSC/NRF/ICD` and `PRA` from 18-22 focus compact trees into overpowered identity trees. Prioritize mechanics over focus count: rail authority, revenant fleet, dead army, laboratory/star pressure, reliquary processions, death commissariat.
 3. OGB restoration tranche: expand `OGB_soviet_collapse_focus_tree` beyond 23 focuses or document a hard design reason for compactness; add Volga trade, restored-name legitimacy, old-border diplomacy, and direct expansion/integration payoffs.
 4. Ukraine layout and route payoff tranche: untangle long route lines, keep only lore-important mutual exclusions visible, and convert route endpoints into distinct governments, League/Black Sea decisions, old-movement consequences, and aggressive/high-chaos behavior.
 5. Belarus route-layout tranche: separate rail, forest, corridor, and League branches so prerequisites do not span unrelated columns; add route-specific rail/forest/corridor decisions and AI behavior.
 6. Kazakhstan route payoff tranche: reduce helper reliance in the 92-focus tree; make Alash, socialist, military district, resource board, Central Asian League, foreign mediation, and high-chaos steppe routes alter decisions, claims, units, and AI.
 7. Shared regional republic tranche: split internal, Baltic, Caucasus, Central Asia, Moldova, and generic breakaway trees into real regional mechanics with settlement, border, league, and economy loops; cut one-building-only rewards.
-8. Template splinter mechanics tranche: pick the 10 worst 47-focus templates first (`ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `BSC`, `BAC`, `IUL`, `NLC`, `KRS`) and replace stockpile/helper rewards with identity mechanics, claims/cores, units/templates, decisions, and aggressive AI.
+8. Template splinter mechanics tranche: pick the 10 worst 47-focus templates first (`ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `AEX`, `ADX`, `IUL`, `NLC`, `AOX`) and replace stockpile/helper rewards with identity mechanics, claims/cores, units/templates, decisions, and aggressive AI.
 9. Focus layout/mutual-exclusion tranche: after reward changes, move all same-row mutual-exclusion span risks listed above; mutual exclusives should mark identity-defining forks only, not decorative or convenience choices.
 10. Icon and validation tranche: after focus ids/routes settle, route icon duplicates to the asset workflow without touching flags; rerun focus count, duplicate id, localisation, filter/reward, icon, layout, unsupported operator, and flag-path diff checks.
 

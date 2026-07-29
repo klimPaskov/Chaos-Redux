@@ -140,7 +140,7 @@ Skipped validation: no runtime event delivery, save recovery, multiplayer, host 
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_ID_LEDGER.md`
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md`
 - `docs/plans/air_cleanliness_fallout_plans/source_of_truth_map.md`
-- `docs/air_cleanliness_winter.md`
+- `docs/systems/air_cleanliness/winter.md`
 - `docs/assets/656_second_dust_bowl/manifest.md`
 - `docs/assets/656_second_dust_bowl/README.md`
 - `docs/assets/656_second_dust_bowl/gfx_handoff.md`

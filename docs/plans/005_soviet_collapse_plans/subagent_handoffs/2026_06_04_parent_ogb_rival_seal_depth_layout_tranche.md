@@ -7,7 +7,7 @@ Scope: Event005 Soviet Collapse focus-tree cleanup and high-chaos reward depth
 ## Files Changed
 
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 
 No flag files or flag sprite folders were touched.
 

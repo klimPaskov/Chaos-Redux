@@ -39,7 +39,7 @@
 | `common/script_constants/012_africa_action_constants.txt` | Action IDs and caller tuning. | `petition_the_rain = 69` and `defy_the_drought = 70` at lines 84–85; caller tuning block begins at line 349. |
 | `common/scripted_triggers/012_africa_triggers.txt` | Nature-call actor, cost, cooldown, and target gates. | Nature-call eligibility and cost triggers begin at lines 1085 and 1107. |
 | `events/013_natural_disasters.txt` and `common/scripted_effects/013_natural_disasters_effects.txt` | Event 013 public contract and downstream controller. | Canonical hidden entry `chaosx.nr13.1` is at line 12; it consumes the caller variables and invokes the shared `call_natural_disaster` contract at line 60. |
-| `music/012_africa/` and `sound/012_africa/` | Physical Event 012 super-event audio candidates. | `super_event_59_scramble_response` and `super_event_60_continental_wars` exist as OGG/WAV files, but are not registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, or `sound/chaosx_sound.asset`. |
+| `music/012_africa/` and `sound/012_africa/` | Physical Event 012 super-event audio candidates. | `super_event_59_scramble_response` and `super_event_60_continental_wars` exist as WAV files, but are not registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, or `sound/chaosx_sound.asset`. |
 
 ## Existing patterns
 

@@ -16,7 +16,7 @@ References used: `AGENTS.md`, `hoi4-focus-trees`, `chaos-redux-events`, `hoi4-de
 | File | Purpose |
 | --- | --- |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | Added existing TSC/RMC depth helper calls and moved high-chaos endpoint focuses so mutual-exclusion lines no longer span most of the tree. |
-| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | Moved KZR/SOG/KHW/ALN symbolic/expansion/charter/endgame coordinates to keep mutually exclusive route choices close and reduce centerline crossing. |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | Moved APX/SOG/ANX/ABX symbolic/expansion/charter/endgame coordinates to keep mutually exclusive route choices close and reduce centerline crossing. |
 
 No localisation keys or icon ids were changed.
 
@@ -35,16 +35,16 @@ No localisation keys or icon ids were changed.
 | `DSC_republic_of_roll_calls`, `DSC_memorial_frontier_state` | Same endpoint/pathline issue. | Moved to `x = 6`; child moved to `y = 11`. |
 | `NRF_port_republic_of_the_living`, `NRF_memorial_convoy_state` | Same endpoint/pathline issue. | Moved to `x = 6`; child moved to `y = 11`. |
 | `ICD_citizens_after_death`, `ICD_state_of_last_addresses` | Same endpoint/pathline issue. | Moved to `x = 6`; child moved to `y = 11`. |
-| `KZR_symbolic_crossing_state`, `KZR_khazar_charter`, `KZR_restoration_survives_modern_war`, `KZR_returned_names_endgame`, `KZR_road_beyond_the_caspian` | Symbolic/expansion mutual exclusion was spread across the centerline. | Route choice/charter/endgame coordinates now mirror the SOG/KHW/ALN pattern. |
+| `APX_symbolic_crossing_state`, `APX_khazar_charter`, `APX_restoration_survives_modern_war`, `APX_returned_names_endgame`, `APX_road_beyond_the_caspian` | Symbolic/expansion mutual exclusion was spread across the centerline. | Route choice/charter/endgame coordinates now mirror the SOG/ANX/ABX pattern. |
 | `SOG_symbolic_city_league`, `SOG_sogdian_city_charter`, `SOG_restoration_survives_modern_war`, `SOG_returned_names_endgame`, `SOG_cities_beyond_the_desert` | Same ancient-restoration line issue. | Moved to the compact `x = 7/8/6/10/10` route geometry. |
-| `KHW_symbolic_oasis_authority`, `KHW_khwarazmian_water_charter`, `KHW_restoration_survives_modern_war`, `KHW_returned_names_endgame`, `KHW_delta_without_a_center` | Same ancient-restoration line issue. | Moved to the compact route geometry. |
-| `ALN_symbolic_pass_principality`, `ALN_alan_pass_charter`, `ALN_restoration_survives_modern_war`, `ALN_returned_names_endgame`, `ALN_every_pass_a_border` | Same ancient-restoration line issue. | Moved to the compact route geometry. |
+| `ANX_symbolic_oasis_authority`, `ANX_khwarazmian_water_charter`, `ANX_restoration_survives_modern_war`, `ANX_returned_names_endgame`, `ANX_delta_without_a_center` | Same ancient-restoration line issue. | Moved to the compact route geometry. |
+| `ABX_symbolic_pass_principality`, `ABX_alan_pass_charter`, `ABX_restoration_survives_modern_war`, `ABX_returned_names_endgame`, `ABX_every_pass_a_border` | Same ancient-restoration line issue. | Moved to the compact route geometry. |
 
 ## Route Coverage Table
 
 | Required route family | Implemented coverage | Status | Notes |
 | --- | --- | --- | --- |
-| Political/state-building | Present in all four files. | Partial | Deep in Ukraine/Kazakhstan/MFR; compact in OGB/PRA; shallow in TSC/RMC/DSC/NRF/ICD and KZR/SOG/KHW/ALN. |
+| Political/state-building | Present in all four files. | Partial | Deep in Ukraine/Kazakhstan/MFR; compact in OGB/PRA; shallow in TSC/RMC/DSC/NRF/ICD and APX/SOG/ANX/ABX. |
 | Industry/logistics | Present in most trees. | Partial | Too many compact trees still lean on small stockpile/building packets rather than persistent mechanics or state-targeted industry loops. |
 | Military | Present in all playable groups. | Partial | High-chaos endpoints are stronger, but many 47-focus splinters still share generic militia/front/supply structures. |
 | Diplomacy/league/patronage | Present in republic, custom, factory, and ancient files. | Partial | AI and rewards often do not distinguish acceptance, neutrality, faction formation, or patron risk enough. |
@@ -59,8 +59,8 @@ No localisation keys or icon ids were changed.
 | --- | --- | --- |
 | Compact high-chaos trees | `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree` in `005_soviet_collapse_custom_splinters.txt` | 18 focuses each. They have identity and endpoints but not full political/industry/military/diplomacy/expansion/special-mechanic branch families. |
 | Compact railway/restoration trees | `PRA_soviet_collapse_focus_tree` in `005_soviet_collapse_custom_splinters.txt`; `OGB_soviet_collapse_focus_tree` in `005_soviet_collapse_factory_successors.txt` | 22/23 focuses. Stronger than shallow tags but still below major-country depth. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` trees in `005_soviet_collapse_ancient_restorations.txt` | 16 focuses each. Good claims/route identity, but not enough internal politics, diplomacy, army, industry, and post-conquest integration. |
-| Medium 47-focus custom splinters | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | Broad skeletons exist, but several still read as templated branches with repeated reward patterns and shared route shapes. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` trees in `005_soviet_collapse_ancient_restorations.txt` | 16 focuses each. Good claims/route identity, but not enough internal politics, diplomacy, army, industry, and post-conquest integration. |
+| Medium 47-focus custom splinters | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | Broad skeletons exist, but several still read as templated branches with repeated reward patterns and shared route shapes. |
 | Republic successors | `soviet_collapse_republics.txt` trees | Large enough, but rewards are helper-heavy and expansion payoffs are uneven. Ukraine/Kazakhstan are deep; generic and regional republic trees need more route-specific payoff auditing. |
 | Helper-side idea lifecycle | `common/scripted_effects/005_soviet_collapse_effects.txt:14568`, `14581`, `14592`, `14607`, `14621`, `14635`, `14678` | Endgame helpers still add major ideas. I did not edit parent-owned helper files; parent should decide whether this is intended payoff or lingering idea spam. |
 
@@ -72,7 +72,7 @@ No localisation keys or icon ids were changed.
 | Large republic trees | None. | Repeated icons above 2 uses in Ukraine, internal republic, Baltic, Caucasus, Central Asia, Moldova. |
 | Medium custom splinters | None. | Notable repeated icons in `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `CFR`; most others are acceptable. |
 | Compact chaos trees | None. | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `OGB` all have unique icons per focus. |
-| Ancient restorations | None. | `KZR`, `SOG`, `KHW`, `ALN` all have unique icons per focus after current file state. |
+| Ancient restorations | None. | `APX`, `SOG`, `ANX`, `ABX` all have unique icons per focus after current file state. |
 
 ## Localisation And Reward Mismatch List
 
@@ -91,7 +91,7 @@ Remaining mismatch risks are design-level rather than missing-key errors:
 | --- | --- | --- |
 | High-chaos compact tags | `TSC`, `RMC`, `DSC`, `NRF`, `ICD` endpoint routes | AI weights react to chaos tier, war, and some route flags, but lack broader route plans for expansion versus settlement, faction use, and when to avoid overextension. |
 | OGB/PRA | `OGB_*`, `PRA_*` trees | AI is better than the shallow chaos tags but still mostly local focus weights; no visible full strategic plan for compact vs conquest identities. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` | AI can choose branches, but there is no robust post-claim behavior for integrating or prioritizing claims. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` | AI can choose branches, but there is no robust post-claim behavior for integrating or prioritizing claims. |
 | Medium custom splinters | 47-focus splinter trees | Many use route flags and chaos-tier weights, but repeated branch shapes make AI behavior feel similar across identities. |
 
 ## Ranking By Depth And Remaining Work
@@ -104,7 +104,7 @@ Remaining mismatch risks are design-level rather than missing-key errors:
 | `MFR_soviet_collapse_focus_tree` | 58 | Deep | Good identity; verify factory mechanics and route AI. |
 | `soviet_collapse_belarus_focus_tree` | 53 | Medium-high | Needs stronger expansion/diplomacy payoff. |
 | `soviet_collapse_moldova_focus_tree` | 48 | Medium | Needs less stockpile/building repetition. |
-| 47-focus custom splinters (`FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`, `CFR`) | 47 each | Medium | Branch families exist; remaining work is identity-specific rewards, AI, icons where repeated, and expansion consequences. |
+| 47-focus custom splinters (`FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`, `CFR`) | 47 each | Medium | Branch families exist; remaining work is identity-specific rewards, AI, icons where repeated, and expansion consequences. |
 | `soviet_collapse_central_asia_focus_tree` | 45 | Medium | Claims exist; needs stronger post-claim integration and diplomacy. |
 | `soviet_collapse_baltic_focus_tree` | 42 | Medium | Good diplomacy shell; needs stronger military/port payoff. |
 | `soviet_collapse_caucasus_focus_tree` | 40 | Medium | Needs oil/pass mechanics and more consequenceful diplomacy. |
@@ -112,13 +112,13 @@ Remaining mismatch risks are design-level rather than missing-key errors:
 | `OGB_soviet_collapse_focus_tree` | 23 | Compact | Strong identity, still too short for a major chaos country. |
 | `PRA_soviet_collapse_focus_tree` | 22 | Compact | Strong railway identity, needs a real rail-control mechanic and broader expansion branch. |
 | `TSC`, `RMC`, `DSC`, `NRF`, `ICD` trees | 18 each | Shallow compact | Need full expansion addenda, not more small focus-file patches. |
-| `KZR`, `SOG`, `KHW`, `ALN` ancient trees | 16 each | Shallow compact | Need political, military, industry, diplomacy, and postwar integration expansion. |
+| `APX`, `SOG`, `ANX`, `ABX` ancient trees | 16 each | Shallow compact | Need political, military, industry, diplomacy, and postwar integration expansion. |
 
 ## High-Priority Fixes Applied First
 
 1. Used existing TSC/RMC depth helpers where focus names already promised observatory, field-station, martyrology, and reliquary development.
 2. Shortened bad high-chaos endpoint mutual-exclusion pathlines in TSC/RMC/DSC/NRF/ICD.
-3. Shortened ancient restoration symbolic-versus-expansion mutual-exclusion pathlines in KZR/SOG/KHW/ALN.
+3. Shortened ancient restoration symbolic-versus-expansion mutual-exclusion pathlines in APX/SOG/ANX/ABX.
 
 ## Validation Run
 
@@ -149,7 +149,7 @@ Remaining mismatch risks are design-level rather than missing-key errors:
 
 Use this handoff as the improvement plan for the next parent pass:
 
-1. Add or extend helper-side depth systems for `DSC`, `NRF`, `ICD`, `PRA`, `OGB`, `KZR`, `SOG`, `KHW`, and `ALN`, matching the existing TSC/RMC helper pattern.
+1. Add or extend helper-side depth systems for `DSC`, `NRF`, `ICD`, `PRA`, `OGB`, `APX`, `SOG`, `ANX`, and `ABX`, matching the existing TSC/RMC helper pattern.
 2. Give each compact high-chaos country one route-specific decision loop: railway control for `PRA`, star research/perimeter control for `TSC`, memorial musters for `RMC/DSC/ICD`, cold-port convoy authority for `NRF`, Volga legitimacy for `OGB`, and restored-name integration for ancient tags.
 3. Add postwar integration for claims: cores or staged integration missions should follow conquest; war goals alone are insufficient.
 4. Add route-level AI behavior beyond `ai_will_do`, especially for settlement versus extreme paths and for when the AI should form/join factions.

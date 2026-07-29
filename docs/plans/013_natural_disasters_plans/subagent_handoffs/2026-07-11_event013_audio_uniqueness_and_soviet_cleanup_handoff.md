@@ -1,6 +1,6 @@
 # Event 013 audio uniqueness and Soviet Collapse cleanup handoff
 
-Closure note, 2026-07-12: the parent implementation replaced Event 013 audio ID 37 at its stable paths, updated its source/rights/catalogue records, and removed unused Soviet Collapse IDs 16 and 19-27 from media, registration, localisation, and catalogue surfaces. Soviet IDs 14, 15, 17, and 18 remain live. The authoritative final production record is `docs/super_events/013_natural_disasters_super_event_audio_production.md`.
+Closure note, 2026-07-12: the parent implementation replaced Event 013 audio ID 37 at its stable paths, updated its source/rights/catalogue records, and removed unused Soviet Collapse IDs 16 and 19-27 from media, registration, localisation, and catalogue surfaces. Soviet IDs 14, 15, 17, and 18 remain live. The authoritative final production record is `docs/super_events/013_natural_disasters/audio_production.md`.
 
 > **Historical audio audit snapshot — closed and superseded.** The candidate/deletion language below records the 2026-07-11 pre-closure state. Use the closure note, the final production record, and the 2026-07-26 audio audit handoff for current paths, durations, reachability, and retained Soviet IDs.
 
@@ -29,7 +29,7 @@ Verified same-recording controls scored `0.939946–0.995107`. Before replacemen
 
 The superseded ID 37 OGG had:
 
-- path: `music/013_natural_disasters/super_event_37_earth_rupture.ogg`
+- path: `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
 - OGG SHA-256: `E294D65B251017897B6A98D31FDF8C850F22614A785D9064D8BF073309DA438F`
 - raw-Chromaprint SHA-256: `A434009B68F31299267EFEF38A9C06075F2E56F00A3E798623B27357145F8FFA`
 - duration: `118.000` seconds
@@ -84,9 +84,9 @@ The cue begins with controlled low-orchestral motion, accumulates pressure, and 
 - normalization: two-pass EBU R128 loudness normalization; post-encode measurement `-18.1 LUFS`, `-1.63 dBTP`
 - source format: 48 kHz stereo FLAC
 - final music format: 44.1 kHz stereo Vorbis OGG
-- final sound format: 44.1 kHz stereo signed-16-bit PCM WAV decoded from the final OGG, ensuring both playback modes render the same mastered signal
-- final OGG path: `music/013_natural_disasters/super_event_37_earth_rupture.ogg`
-- final OGG SHA-256: `189AF2FD28DEFD122CDF80CA0CCBF34317268148B3379C0BEE382285F17346A8`
+- final sound format: 44.1 kHz stereo signed-16-bit PCM WAV decoded from the final WAV, ensuring both playback modes render the same mastered signal
+- final WAV path: `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
+- final WAV SHA-256: `189AF2FD28DEFD122CDF80CA0CCBF34317268148B3379C0BEE382285F17346A8`
 - final WAV path: `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
 - final WAV SHA-256: `1D527BAD4BC93D77AC4265D4791D3B8ADABBA88C38C745F9A7623D554B6B7CFF`
 - canonical decoded 44.1 kHz stereo s16 PCM SHA-256 for both files: `0657C8A2E6897428E44C0423D2BEF0B3B4BDE15CB74BCC2C17B06F9AC0B911FE`
@@ -96,7 +96,7 @@ The replacement matches its preserved source at `0.923771` over 931 aligned Chro
 
 ## Event 013 final uniqueness table
 
-| Audio ID | Final OGG SHA-256 | Raw-Chromaprint SHA-256 | Actual duration | Nearest non-Event-013 score | Verdict |
+| Audio ID | Final WAV SHA-256 | Raw-Chromaprint SHA-256 | Actual duration | Nearest non-Event-013 score | Verdict |
 | ---: | --- | --- | ---: | ---: | --- |
 | 37 | `189AF2FD28DEFD122CDF80CA0CCBF34317268148B3379C0BEE382285F17346A8` | `60948D34D558E23FF83846B94DFBF63AB307444667639D186E9A4B5FDB459298` | `118 s` | `0.589419` | unique replacement |
 | 38 | `3744B32D01E4F6DA4660ECCC556A35FD871855CDA28F4CF0C84AB00C01883A84` | `BE4B47ECF141E9623EFF89E41FD06A8F9884557C3DEED196A7CF7A843DCAC3C7` | `115 s` | `0.604360` | unique |
@@ -132,11 +132,11 @@ The Event 013 manifest and audio-research note were updated in this handoff. The
 
 ## Soviet Collapse runtime-use audit
 
-All IDs 14–27 have OGG and WAV files, full music and sound registration, a representative station entry, music-label localisation, and an HTML catalogue row. Registration alone cannot play a track. `soviet_collapse_emit_super_event` assigns `global.current_super_event_audio_id` from `soviet_collapse_super_event_id`, and the settings helper only plays the assigned ID. A track is reachable only when a live call chain first assigns its ID and invokes the emitter.
+All IDs 14–27 have OGG and WAV files, full sound registration, a representative station entry, music-label localisation, and an HTML catalogue row. Registration alone cannot play a track. `soviet_collapse_emit_super_event` assigns `global.current_super_event_audio_id` from `soviet_collapse_super_event_id`, and the settings helper only plays the assigned ID. A track is reachable only when a live call chain first assigns its ID and invokes the emitter.
 
 | Audio ID | Registered | Referenced state | Runtime conclusion |
 | ---: | --- | --- | --- |
-| 14 | OGG, WAV, music/sound variants, station, labels, catalogue | Union Unmade setter at `common/scripted_effects/005_soviet_collapse_effects.txt:2689–2706`; invoked by normal evaluation and the triggerable scenario | keep |
+| 14 | OGG, WAV, sound variants, station, labels, catalogue | Union Unmade setter at `common/scripted_effects/005_soviet_collapse_effects.txt:2689–2706`; invoked by normal evaluation and the triggerable scenario | keep |
 | 15 | fully registered | Black Banner setter at `:3727–3732`; called by `soviet_collapse_complete_black_banner_endgame` at `:18804` | keep conservatively |
 | 16 | fully registered; presentation localisation/selectors remain | no setter or emitter call | strong deletion candidate |
 | 17 | fully registered | setter helper at `common/scripted_effects/005_soviet_collapse_effects.txt:3736–3741`, called by the factory-successor focus at `common/national_focus/005_soviet_collapse_factory_successors.txt:2831` | retain; it has a live gameplay caller |
@@ -170,7 +170,7 @@ This is 20 files totaling `140,350,169` bytes, approximately `133.85 MiB`.
 
 If a final exact-name scan of national focuses, decisions, and any other roots outside this subagent's inspection boundary confirms that the ID 17 helper has no caller, also delete:
 
-- `music/005_soviet_collapse/super_event_17_workshops_choose_councils.ogg`
+- `sound/005_soviet_collapse/super_event_17_workshops_choose_councils.wav`
 - `sound/005_soviet_collapse/super_event_17_workshops_choose_councils.wav`
 
 Including ID 17 raises the cleanup to 22 files and approximately `150.27 MiB`.
@@ -205,7 +205,7 @@ If ID 17 is confirmed unused, additionally remove:
 - music-label localisation: current lines 104–109
 - HTML catalogue row: current lines 285–294
 
-No Soviet-specific per-ID audio rows exist under `docs/super_events`. `docs/events/005_soviet_collapse.md` contains only generic asset-directory references and needs no audio-row deletion.
+No Soviet-specific per-ID audio rows exist under `docs/super_events`. `docs/events/005_soviet_collapse/overview.md` contains only generic asset-directory references and needs no audio-row deletion.
 
 ## Optional dormant presentation cleanup
 
@@ -224,10 +224,10 @@ IDs 23–27 have no equivalent super-event presentation selectors or `.t/.d/.a/.
 ## Files changed by this subagent
 
 - `docs/assets/013_natural_disasters/audio_source/earth_rupture_grieg_mountain_king_source.flac`
-- `music/013_natural_disasters/super_event_37_earth_rupture.ogg`
+- `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
 - `sound/013_natural_disasters/super_event_37_earth_rupture.wav`
 - `docs/assets/013_natural_disasters/audio_manifest.md`
-- `docs/super_events/013_natural_disasters_super_event_audio_research.md`
+- `docs/super_events/013_natural_disasters/archive/audio_research.md`
 - `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-11_event013_audio_uniqueness_and_soviet_cleanup_handoff.md`
 
 No `.asset`, music-station `.txt`, scripted localisation, event, gameplay localisation, GUI/GFX, spreadsheet, or Soviet media file was edited or deleted.

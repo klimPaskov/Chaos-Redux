@@ -7,7 +7,7 @@ Status: complete for the bounded CBE-CBH portrait package
 
 ## Delivered result
 
-Regenerated the complete 28-portrait CBE-CBH warlord set: CBE, CBF, CBG, and CBH across Europe/default, Africa, Asia, Middle East, North America, South America, and Oceania. Every portrait is a separate fictional built-in image-generation output with a unique bald or hairless warlord, distinct anatomy and field clothing, and its own close-up macabre but non-graphic action.
+Regenerated the complete 28-portrait CBE-CBH warlord set: CBE, CBF, AMX, and CBH across Europe/default, Africa, Asia, Middle East, North America, South America, and Oceania. Every portrait is a separate fictional built-in image-generation output with a unique bald or hairless warlord, distinct anatomy and field clothing, and its own close-up macabre but non-graphic action.
 
 The exact existing filenames were preserved. Each accepted source master was copied into the package, cropped and processed to an opaque 156x210 PNG, converted to an uncompressed 32-bit BGRA DDS, and placed over the corresponding live texture in `gfx/leaders/014_cannibalism/`.
 
@@ -34,7 +34,7 @@ No gameplay script, `.gfx`, `.gui`, localisation, spreadsheet, or event specific
 - Consulted the required offline HOI4 wiki core pages and portrait/interface pages before asset changes.
 - Reviewed the Event 014 country package, portrait prompt, regional name pools, dynamic portrait selection, and existing GFX registrations.
 - Used the canonical vanilla leader portraits `den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png` only as framing, value-range, and paint-finish references.
-- Used `.tools/process_hoi4_portrait.py` version 2.0 with explicit in-bounds 26:35 crops and `.tools/convert_to_dds.py` for the live textures.
+- Used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` version 2.0 with explicit in-bounds 26:35 crops and `.tools/convert_to_dds.py` for the live textures.
 
 ## Validation evidence
 

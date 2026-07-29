@@ -32,7 +32,7 @@ Mechanical parse found 41 focus trees and 1,698 focus blocks:
 
 - Republics file: Ukraine 83, generic breakaway 36, internal republic 62, Baltic 42, Caucasus 40, Central Asia 45, Moldova 48, Belarus 53, Kazakhstan 92.
 - Custom splinters: FTH 47, PRA 22, TSC 18, RMC 18, DSC 18, NRF 18, ICD 18, and 21 other custom/splinter trees at 47 focuses each.
-- Factory/ancient files: CFR 47, OGB 23, MFR 58, KZR/SOG/KHW/ALN 16 each.
+- Factory/ancient files: CFR 47, OGB 23, MFR 58, APX/SOG/ANX/ABX 16 each.
 
 Every parsed focus has an `ai_will_do` block. The remaining AI problem is route specificity and aggression gating, not missing blocks.
 
@@ -107,7 +107,7 @@ Recommended fix: add route-specific decision surfaces to the large republic tree
 Specific expansion/recovery focuses add claims or war goals but do not unlock settlement/integration decisions at the focus site:
 
 - `central_asia_soviet_collapse_khwarazm_restoration_debate` at `common/national_focus/005_soviet_collapse_republics.txt:7380` adds 7 claims with no decision hook in the focus.
-- Ancient restoration expansion focuses add claims/wargoals and shared high-chaos expansion helpers without local settlement handling: `KZR_expansionist_steppe_levy` line 236, `KZR_road_beyond_the_caspian` line 370, `SOG_expansionist_merchant_claims` line 629, `SOG_cities_beyond_the_desert` line 759, `KHW_expansionist_water_claims` line 1012, `KHW_delta_without_a_center` line 1152, `ALN_expansionist_mountain_claims` line 1406, `ALN_every_pass_a_border` line 1540.
+- Ancient restoration expansion focuses add claims/wargoals and shared high-chaos expansion helpers without local settlement handling: `APX_expansionist_steppe_levy` line 236, `APX_road_beyond_the_caspian` line 370, `SOG_expansionist_merchant_claims` line 629, `SOG_cities_beyond_the_desert` line 759, `ANX_expansionist_water_claims` line 1012, `ANX_delta_without_a_center` line 1152, `ABX_expansionist_mountain_claims` line 1406, `ABX_every_pass_a_border` line 1540.
 - OGB and MFR have more bespoke payoff structure, but OGB still uses strong war/endgame helpers at `common/national_focus/005_soviet_collapse_factory_successors.txt:1630` and `common/scripted_effects/005_soviet_collapse_effects.txt:16460`.
 
 Recommended fix: each expansion focus should either unlock target/integration decisions or call a scoped postwar settlement helper. War goals alone should not be the payoff.
@@ -116,7 +116,7 @@ Recommended fix: each expansion focus should either unlock target/integration de
 
 The 16-18 focus trees are functional but not "full" country trees under the focus-tree skill standard:
 
-- KZR/SOG/KHW/ALN: 16 focuses each. They have identity, claims, and endgame, but political/industry/expansion/military/diplomacy are compressed into short ladders with limited route choice.
+- APX/SOG/ANX/ABX: 16 focuses each. They have identity, claims, and endgame, but political/industry/expansion/military/diplomacy are compressed into short ladders with limited route choice.
 - TSC/RMC/ICD: 18 focuses each and only 1 decision hook each. Their high-chaos concepts are strong, but most branch families are shallow.
 - DSC/NRF are better connected by decisions than TSC/RMC/ICD but still rely heavily on shared endgame aggression.
 - OGB has 23 focuses but 8 weak-flat candidates and should be expanded or treated as a special short tree with explicit limited-scope acceptance.

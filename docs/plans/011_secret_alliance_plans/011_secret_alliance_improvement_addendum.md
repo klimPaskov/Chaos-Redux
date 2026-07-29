@@ -661,7 +661,7 @@ Audio direction:
 
 Suggested file planning:
 
-- research note: `docs/super_events/011_secret_alliance_super_event_research.md`
+- research note: `docs/super_events/011_secret_alliance/research.md`
 - image assets: `docs/assets/011_secret_alliance/` and final `gfx/super_events/011_secret_alliance/`
 - audio assets: `music/011_secret_alliance/` and `sound/011_secret_alliance/` per super-event skill if implemented
 
@@ -735,7 +735,7 @@ If accepted, promote the design into `docs/specs/011_secret_alliance_specs/` and
 - `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt`
 - event log and event-name mappings required by `chaos-redux-events`
 - super-event localisation, sprite, audio, and docs surfaces if the reveal super-event is accepted
-- `docs/events/011_secret_alliance.md`
+- `docs/events/011_secret_alliance/overview.md`
 - asset manifests and super-event research notes
 
 On actions:

@@ -113,11 +113,11 @@ Definitions:
 | DSC | `DSC_soviet_collapse_focus_tree`, 18 focuses | Shallow but promising | Has decision, wargoal, and AI hooks; needs more dead-army route depth. |
 | NRF | `NRF_soviet_collapse_focus_tree`, 18 focuses | Shallow but promising | Has naval-flavored hooks; needs port/convoy/war loop. |
 | ICD | `ICD_soviet_collapse_focus_tree`, 18 focuses | Shallow | No decision hooks; death-state bureaucracy needs mechanics. |
-| BSC | `BSC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
+| AEX | `AEX_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
 | TNC | `TNC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
-| ALA | `ALA_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
+| AAX | `AAX_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
 | BBH | `BBH_soviet_collapse_focus_tree`, 47 focuses | Simplified | Anarchist identity exists, but no direct decision/war/core/unit/template hooks. |
-| KRS | `KRS_soviet_collapse_focus_tree`, 47 focuses | Simplified | Naval/free-port identity exists, but no direct decision/war/core/unit/template hooks. |
+| AOX | `AOX_soviet_collapse_focus_tree`, 47 focuses | Simplified | Naval/free-port identity exists, but no direct decision/war/core/unit/template hooks. |
 | UDC | `UDC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
 | SDZ | `SDZ_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
 | GAC | `GAC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
@@ -128,7 +128,7 @@ Definitions:
 | UWD | `UWD_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks and high flat reward density. |
 | MRC | `MRC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
 | IUL | `IUL_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks. |
-| BAC | `BAC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks and 6 layout-risk signals. |
+| ADX | `ADX_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks and 6 layout-risk signals. |
 | ARD | `ARD_soviet_collapse_focus_tree`, 47 focuses | Partial | Has decision unlocks, but lacks direct expansion/postwar mechanics. |
 | NLC | `NLC_soviet_collapse_focus_tree`, 47 focuses | Simplified | No direct decision/war/core/unit/template hooks despite polar/science/port promise. |
 | CFR | `CFR_soviet_collapse_focus_tree`, 47 focuses | Partial | Decision and wargoal hooks exist; governance and strategy forks need distinct operating models and less pathline clutter. |
@@ -215,7 +215,7 @@ Icon conclusion: there are no load-breaking missing icon references in the three
 - Missing `ai_will_do`: 0. Every focus in the three files has an `ai_will_do` block.
 - Route-aware AI is still incomplete. Many blocks use flat bases or basic local conditions; broad route strategy is not consistently tied to the Soviet Collapse variables after route selection.
 - `TSC`, `RMC`, `ICD`, `FEV`, and most full-size custom splinters lack direct decision/war/core/unit/template hooks, so AI focus completion often has no direct follow-on behavior visible in these files.
-- Naval and port actors (`NRF`, `ARD`, `KRS`, `NLC`, `FEV`) need AI strategies for port defense, dockyard priorities, convoy escort/raiding, coastal war targets, and naval invasion/landing behavior.
+- Naval and port actors (`NRF`, `ARD`, `AOX`, `NLC`, `FEV`) need AI strategies for port defense, dockyard priorities, convoy escort/raiding, coastal war targets, and naval invasion/landing behavior.
 - Aggressive high-chaos actors (`DSC`, `RMC`, `ICD`, `TSC`, `NRF`) need stronger endpoint AI strategies and limits so they do not choose normal diplomatic consolidation when chaos tier, war state, or concept says conquest or rupture.
 - Major republics need route-choice AI around defensive consolidation, League leadership, foreign protectorate play, regional expansion, and internal faction payoff.
 
@@ -262,11 +262,11 @@ Trees with no direct decision/war/core/unit/template hooks in the focus file, al
 - `soviet_collapse_baltic_focus_tree`
 - `soviet_collapse_moldova_focus_tree`
 - `FTH_soviet_collapse_focus_tree`
-- `BSC_soviet_collapse_focus_tree`
+- `AEX_soviet_collapse_focus_tree`
 - `TNC_soviet_collapse_focus_tree`
-- `ALA_soviet_collapse_focus_tree`
+- `AAX_soviet_collapse_focus_tree`
 - `BBH_soviet_collapse_focus_tree`
-- `KRS_soviet_collapse_focus_tree`
+- `AOX_soviet_collapse_focus_tree`
 - `UDC_soviet_collapse_focus_tree`
 - `SDZ_soviet_collapse_focus_tree`
 - `GAC_soviet_collapse_focus_tree`
@@ -277,7 +277,7 @@ Trees with no direct decision/war/core/unit/template hooks in the focus file, al
 - `UWD_soviet_collapse_focus_tree`
 - `MRC_soviet_collapse_focus_tree`
 - `IUL_soviet_collapse_focus_tree`
-- `BAC_soviet_collapse_focus_tree`
+- `ADX_soviet_collapse_focus_tree`
 - `NLC_soviet_collapse_focus_tree`
 
 Trees with direct hard hooks:

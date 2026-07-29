@@ -9,7 +9,7 @@ Use these files:
 - `docs/specs/011_secret_alliance_specs/research/011_secret_alliance_super_event_text_research.md`
 - `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_super_event_prompt.md`
 - `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_text_research.md`
-- `docs/super_events/011_secret_alliance_super_event_research.md`
+- `docs/super_events/011_secret_alliance/research.md`
 
 The retired working selection used Luke 8:17 as the main quote and `In battalions.` as the button remark. It conflicted with both authoritative source files. Primary-text verification confirmed the authoritative selection:
 

@@ -19,7 +19,7 @@ All seven prior blockers are closed in the current worktree:
 2. Closed art has a live history-only consumer (`interface/018_resources_found.gui:125`), with scripted visibility and a parent-category history trigger (`common/scripted_guis/018_resources_found_scripted_gui.txt:163-170`; `common/decisions/categories/018_resources_found_categories.txt:22`).
 3. Audio IDs 54-56 are unique 115-, 110-, and 109-second cues (`docs/assets/018_resources_found/audio_manifest.md:5-7`, `45-47`).
 4. The exhaustive icon provenance ledger contains 150 exact-once rows and signed OpenAI C2PA evidence (`docs/assets/018_resources_found/icon_generation_provenance_ledger.md:5-7`, `242-248`). An independent binary scan found 150/150 `c2pa`, `OpenAI Media Service API`, and `trainedAlgorithmicMedia` markers.
-5. Combined super-event authority exists and reconciles text, images, audio, licensing, identifiers, triggers, and rejected candidates (`docs/super_events/018_resources_found_super_event_research.md:1-5`, `103`, `158`).
+5. Combined super-event authority exists and reconciles text, images, audio, licensing, identifiers, triggers, and rejected candidates (`docs/super_events/018_resources_found/overview.md:1-5`, `103`, `158`).
 6. The current ID 56 WAV SHA-256 is consistently `9be248a28861b96a8c454ab729af8d710727c2b3289eb4820efa98b1cba8fcc9` (`docs/assets/018_resources_found/audio_manifest.md:47`).
 7. ID 55 uses the Brahms Musopen/Commons CC0 recording with worldwide related-rights coverage; the jurisdiction-limited Debussy candidate is rejected research only (`docs/assets/018_resources_found/audio_manifest.md:14`, `17`, `24`; `docs/assets/018_resources_found/source/audio/license_evidence/README.md:18-30`, `45-47`).
 

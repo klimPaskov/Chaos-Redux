@@ -23,7 +23,7 @@ The worktree already contained unrelated dirty edits in Event 005 and unrelated 
 | Regional republic trees | Baltic 42, Caucasus 40, Central Asia 45, Moldova 48, Kazakhstan 92 | Implemented, mixed risk | Core route families exist. Kazakhstan is deeper; other regional trees still need line readability and reward-identity review. |
 | Custom splinters | 25 custom trees, 1005 focuses total | Implemented, uneven | Most full splinters are 47 focuses; crisis splinters are 18-22. Several still need non-generic route payoff review. |
 | Factory successors | `CFR` 47, `MFR` 58, `OGB` 23 | Partly simplified | CFR/MFR have real branch structure. OGB remains short for an OP successor and should remain a high-priority redesign target. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN`, 16 focuses each | Simplified | These are still compact stubs compared with the spec's ancient-restoration identity promise. Needs broader plan/implementation, not a subagent patch. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX`, 16 focuses each | Simplified | These are still compact stubs compared with the spec's ancient-restoration identity promise. Needs broader plan/implementation, not a subagent patch. |
 
 ## High-Priority Findings
 

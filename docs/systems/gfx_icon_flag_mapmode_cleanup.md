@@ -66,13 +66,13 @@ Each index has a `76x42` large sprite and a `30x12` small sprite in the vanilla-
 
 ## Flags
 
-The real KHW flag TGAs are repaired at all three required sizes:
+The real ANX flag TGAs are repaired at all three required sizes:
 
 - normal `82x52`
 - medium `41x26`
 - small `10x7`
 
-The full-height white column is removed from the left edge of `KHW` and the right edge of `KHW_neutrality`. All custom flag triplets are stored as 32-bit, bottom-origin TGA files. The filenames and orientation remain unchanged.
+The full-height white column is removed from the left edge of `ANX` and the right edge of `ANX_neutrality`. All custom flag triplets are stored as 32-bit, bottom-origin TGA files. The filenames and orientation remain unchanged.
 
 ## Asset records
 

@@ -27,7 +27,7 @@ These parts deepen the same story. Governments first interpret missing routes, t
 - `death_try_mainland_pressure_spread` and `death_attempt_coastal_jump` select from every globally valid state. Island spread already prefers nearby targets through `distance_to`, so the inconsistency is local to the mainland and coastal stages.
 - Recaptured wastelands retain zero usable population and severe permanent penalties.
 - The current aftermath decisions only survey a wasteland and build a dead-zone outpost.
-- `docs/events/010_death.md` explicitly queues deeper memorial and reconstruction decisions without restoring erased population.
+- `docs/events/010_death/overview.md` explicitly queues deeper memorial and reconstruction decisions without restoring erased population.
 - The 26-node DTH focus tree, Dark Methods, Black Oath, Herald, Apostolate, Living Compact, Black Atlas, achievements, and super-events are already implemented. They are not missing route work.
 
 ## Tranche One: The Maritime Case File
@@ -133,7 +133,7 @@ These are separate plans and must not be folded into tranche one without a new s
 - `common/dynamic_modifiers/010_death_state_modifiers.txt`
 - `common/scripted_localisation/010_death_scripted_localisation.txt`
 - `localisation/english/010_death_l_english.yml`
-- `docs/events/010_death.md`
+- `docs/events/010_death/overview.md`
 - relevant Event 010 specs, event-detail text, and spreadsheet fields after final in-game wording exists
 
 No new icon is required for tranche one if the existing survey, outpost, quarantine, coastal watch, and memorial-compatible sprites remain semantically accurate. Any art expansion requires a separate asset handoff before sprite names change.

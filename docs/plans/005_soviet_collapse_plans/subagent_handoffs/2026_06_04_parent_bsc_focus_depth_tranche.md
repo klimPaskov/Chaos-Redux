@@ -1,4 +1,4 @@
-# Parent Handoff: BSC Focus Depth Tranche
+# Parent Handoff: AEX Focus Depth Tranche
 
 ## Scope
 
@@ -11,36 +11,36 @@ This tranche deepened the Basmachi Confederation focus tree inside Event 005 Sov
 
 ## Focuses Updated
 
-The following BSC focuses no longer use generic `soviet_collapse_custom_splinter_*_reward_tt` route filler. They now expose BSC-specific reward tooltips and call existing Soviet Collapse mechanics through hidden payloads:
+The following AEX focuses no longer use generic `soviet_collapse_custom_splinter_*_reward_tt` route filler. They now expose AEX-specific reward tooltips and call existing Soviet Collapse mechanics through hidden payloads:
 
-- `BSC_first_guard`
-- `BSC_stores`
-- `BSC_legitimacy`
-- `BSC_rival`
-- `BSC_doctrine`
-- `BSC_economy`
-- `BSC_league`
-- `BSC_foreign`
-- `BSC_diplomatic_plan`
-- `BSC_inner_faction`
-- `BSC_special_arm`
-- `BSC_supply`
-- `BSC_enemy_front`
-- `BSC_war_plan`
-- `BSC_civil_rule`
-- `BSC_propaganda`
-- `BSC_settlement`
-- `BSC_industry_plan`
-- `BSC_hidden_doctrine`
-- `BSC_extreme_gate`
+- `AEX_first_guard`
+- `AEX_stores`
+- `AEX_legitimacy`
+- `AEX_rival`
+- `AEX_doctrine`
+- `AEX_economy`
+- `AEX_league`
+- `AEX_foreign`
+- `AEX_diplomatic_plan`
+- `AEX_inner_faction`
+- `AEX_special_arm`
+- `AEX_supply`
+- `AEX_enemy_front`
+- `AEX_war_plan`
+- `AEX_civil_rule`
+- `AEX_propaganda`
+- `AEX_settlement`
+- `AEX_industry_plan`
+- `AEX_hidden_doctrine`
+- `AEX_extreme_gate`
 
 ## Behavior Before
 
-BSC had 20 focuses that displayed broad route-level reward text such as political, logistics, diplomacy, industry, or high-chaos route rewards. Most of those focuses called generic custom-splinter identity helpers, so the route read as a template rather than a Basmachi road-war country package.
+AEX had 20 focuses that displayed broad route-level reward text such as political, logistics, diplomacy, industry, or high-chaos route rewards. Most of those focuses called generic custom-splinter identity helpers, so the route read as a template rather than a Basmachi road-war country package.
 
 ## Behavior After
 
-BSC now ties the affected focuses to concrete existing mechanics:
+AEX now ties the affected focuses to concrete existing mechanics:
 
 - caravan guard and raiding-column focuses create assault strength, mobile columns, and Soviet-obedience pressure
 - road-store and supply focuses increase depot control, equipment, factory recovery, and supply depth
@@ -51,34 +51,34 @@ BSC now ties the affected focuses to concrete existing mechanics:
 
 ## Localisation Keys Added
 
-- `BSC_first_guard_tt`
-- `BSC_stores_tt`
-- `BSC_legitimacy_tt`
-- `BSC_rival_tt`
-- `BSC_doctrine_tt`
-- `BSC_economy_tt`
-- `BSC_league_tt`
-- `BSC_foreign_tt`
-- `BSC_diplomatic_plan_tt`
-- `BSC_inner_faction_tt`
-- `BSC_special_arm_tt`
-- `BSC_supply_tt`
-- `BSC_enemy_front_tt`
-- `BSC_war_plan_tt`
-- `BSC_civil_rule_tt`
-- `BSC_propaganda_tt`
-- `BSC_settlement_tt`
-- `BSC_industry_plan_tt`
-- `BSC_hidden_doctrine_tt`
-- `BSC_extreme_gate_tt`
+- `AEX_first_guard_tt`
+- `AEX_stores_tt`
+- `AEX_legitimacy_tt`
+- `AEX_rival_tt`
+- `AEX_doctrine_tt`
+- `AEX_economy_tt`
+- `AEX_league_tt`
+- `AEX_foreign_tt`
+- `AEX_diplomatic_plan_tt`
+- `AEX_inner_faction_tt`
+- `AEX_special_arm_tt`
+- `AEX_supply_tt`
+- `AEX_enemy_front_tt`
+- `AEX_war_plan_tt`
+- `AEX_civil_rule_tt`
+- `AEX_propaganda_tt`
+- `AEX_settlement_tt`
+- `AEX_industry_plan_tt`
+- `AEX_hidden_doctrine_tt`
+- `AEX_extreme_gate_tt`
 
 ## Validation
 
-- Parsed BSC focus tree: 47 focuses.
-- BSC duplicate coordinates: none.
-- BSC generic custom-splinter tooltip count: 0.
-- BSC missing tooltip localisation: none.
-- BSC-specific custom tooltip count: 20.
+- Parsed AEX focus tree: 47 focuses.
+- AEX duplicate coordinates: none.
+- AEX generic custom-splinter tooltip count: 0.
+- AEX missing tooltip localisation: none.
+- AEX-specific custom tooltip count: 20.
 - `git diff --check -- common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml`: passed.
 - `rg -n "<=|>=" common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml`: no matches.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` brace balance: 0, minimum balance 0.

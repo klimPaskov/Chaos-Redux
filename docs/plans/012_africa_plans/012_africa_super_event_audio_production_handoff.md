@@ -12,8 +12,8 @@ No runtime registration or super-event wiring is included in this tranche becaus
 
 | Role | Lossless production master | Ogg runtime candidate | WAV sound candidate |
 | --- | --- | --- | --- |
-| Scramble response | `docs/super_events/processed_audio/012_africa/role_02_scramble_response_master_115s.wav` | `music/012_africa/super_event_59_scramble_response.ogg` | `sound/012_africa/super_event_59_scramble_response.wav` |
-| Continental wars | `docs/super_events/processed_audio/012_africa/role_03_continental_wars_master_115s.wav` | `music/012_africa/super_event_60_continental_wars.ogg` | `sound/012_africa/super_event_60_continental_wars.wav` |
+| Scramble response | `docs/super_events/processed_audio/012_africa/role_02_scramble_response_master_115s.wav` | `sound/012_africa/super_event_59_scramble_response.wav` | `sound/012_africa/super_event_59_scramble_response.wav` |
+| Continental wars | `docs/super_events/processed_audio/012_africa/role_03_continental_wars_master_115s.wav` | `sound/012_africa/super_event_60_continental_wars.wav` | `sound/012_africa/super_event_60_continental_wars.wav` |
 
 ## Runtime properties
 

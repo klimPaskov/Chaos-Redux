@@ -24,7 +24,7 @@ Subagent route: attempted `chaosx_focus_tree_auditor` with `fork_context=false`;
   - Explicitly selected patron targets no longer fail the intervention decision gate just because a dynamic release path missed the full breakaway classifier.
 - `common/scripted_effects/chaosx_settings_effects.txt`
   - Event 5 details now register both the high-chaos successor preview and the extreme successor preview.
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
   - Updated implementation notes for the stronger dynamic force scaling.
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_4_releases_leagues_union_unmade.md`
   - Updated release/unit expectations to match the stronger implementation.

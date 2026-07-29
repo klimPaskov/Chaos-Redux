@@ -60,7 +60,7 @@ The remaining blockers are mainly design-state blockers: custom chaos-country tr
 
 3. **Many 47-focus custom splinter trees have no direct decision unlocks or event payoffs.**
 
-   Tree-level scan found 0 `unlock_decision_tooltip` and 0 event/news/super-event calls in many 47-focus custom splinters, including `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, and `NLC`. Example: the `BSC` mid-tree has diplomacy/logistics content at `005_soviet_collapse_custom_splinters.txt:4714-4994`, but no direct decision unlocks or event payoffs in that tree. The result is branch depth that often changes variables/buildings rather than opening new play.
+   Tree-level scan found 0 `unlock_decision_tooltip` and 0 event/news/super-event calls in many 47-focus custom splinters, including `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, and `NLC`. Example: the `AEX` mid-tree has diplomacy/logistics content at `005_soviet_collapse_custom_splinters.txt:4714-4994`, but no direct decision unlocks or event payoffs in that tree. The result is branch depth that often changes variables/buildings rather than opening new play.
 
 4. **Visible political transformation is thin in the focus files themselves.**
 
@@ -81,7 +81,7 @@ The remaining blockers are mainly design-state blockers: custom chaos-country tr
 
    Some convergence focuses intentionally accept either mutually exclusive route. This is valid HOI4 syntax, but it can create cluttered visual lines if the convergence is not centered or if siblings are dense. Examples:
 
-   - `KZR_khazar_charter` converges from `KZR_symbolic_crossing_state` or `KZR_expansionist_steppe_levy` at `005_soviet_collapse_ancient_restorations.txt:283-290`.
+   - `APX_khazar_charter` converges from `APX_symbolic_crossing_state` or `APX_expansionist_steppe_levy` at `005_soviet_collapse_ancient_restorations.txt:283-290`.
    - `CFR_apartment_blocks_for_loyalty` converges from `CFR_cities_first` or `CFR_rails_first` at `005_soviet_collapse_factory_successors.txt:497-503`.
    - `ukr_soviet_collapse_last_harvest_plan` converges from three high-chaos route endpoints at `005_soviet_collapse_republics.txt:2190-2197`.
 
@@ -89,7 +89,7 @@ The remaining blockers are mainly design-state blockers: custom chaos-country tr
 
 7. **Some compact trees are structurally coherent but still below major-country depth expectations.**
 
-   Ancient restorations have 16 focuses each and compact TSC/RMC/DSC/NRF/ICD trees have 18 focuses each. The ancient trees have strong direct claims/wargoals, e.g. `KZR_expansionist_steppe_levy` at `005_soviet_collapse_ancient_restorations.txt:236-280` and `SOG_expansionist_merchant_claims` at lines 629-673. However, compact trees still have limited internal faction, diplomacy, industry/logistics, and late-game depth compared to the focus-tree skill's standard for playable event-created countries.
+   Ancient restorations have 16 focuses each and compact TSC/RMC/DSC/NRF/ICD trees have 18 focuses each. The ancient trees have strong direct claims/wargoals, e.g. `APX_expansionist_steppe_levy` at `005_soviet_collapse_ancient_restorations.txt:236-280` and `SOG_expansionist_merchant_claims` at lines 629-673. However, compact trees still have limited internal faction, diplomacy, industry/logistics, and late-game depth compared to the focus-tree skill's standard for playable event-created countries.
 
 ## Route-Depth Coverage Table
 
@@ -115,7 +115,7 @@ I did not patch because the current hard-structure scan found no duplicate IDs, 
 
 3. Add direct route payoff proof to political branches. The parent should inspect the helper implementations and ensure political routes visibly change ruling party, leader/council/advisors, cosmetic identity, route mechanics, or decision categories where appropriate. Do not change flags unless the user explicitly reopens flag scope.
 
-4. Run a visual layout pass on adjacent same-row pairs and OR-convergence nodes. Start with Ukraine, Kazakhstan, Belarus, Moldova, and the FTH/BSC/NLC custom splinter layouts. Move focus coordinates only after checking pathlines in-game or with a layout visualization, because the references are mostly valid and blind moves risk new crossings.
+4. Run a visual layout pass on adjacent same-row pairs and OR-convergence nodes. Start with Ukraine, Kazakhstan, Belarus, Moldova, and the FTH/AEX/NLC custom splinter layouts. Move focus coordinates only after checking pathlines in-game or with a layout visualization, because the references are mostly valid and blind moves risk new crossings.
 
 5. Expand compact death-state and ancient-restoration trees only if they are intended to be playable majors. Ancient restorations already have direct claims and wargoals, so the next gain is not more aggression alone; it is deeper settlement, legitimacy, diplomacy, integration, and late-game route identity.
 

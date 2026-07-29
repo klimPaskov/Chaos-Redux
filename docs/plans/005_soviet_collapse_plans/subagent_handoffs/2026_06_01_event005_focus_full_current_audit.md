@@ -39,14 +39,14 @@ I did not patch because the remaining issues are broad route-quality and reward-
 | custom splinters | `DSC_soviet_collapse_focus_tree` | 18 | Shallow but mechanized | Dead-soldier variables/decisions exist; focus route is still too compressed. |
 | custom splinters | `NRF_soviet_collapse_focus_tree` | 18 | Shallow but mechanized | Fleet variables/decisions exist; naval identity needs naval/dockyard/route expansion. |
 | custom splinters | `ICD_soviet_collapse_focus_tree` | 18 | Shallow | Death-commissariat identity mostly spirits/equipment, needs coercive politics and expansion loop. |
-| custom splinters | `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | 47 each | Template-sized route trees | Better than shallow stubs, but many are still reward-template variants with repeated equipment/buildings. |
+| custom splinters | `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | 47 each | Template-sized route trees | Better than shallow stubs, but many are still reward-template variants with repeated equipment/buildings. |
 | factory successors | `CFR_soviet_collapse_focus_tree` | 47 | Medium-depth mechanic tree | Has construction mandate variables/decisions; governance/strategy choices use hidden locks instead of visible mutual exclusivity. |
 | factory successors | `OGB_soviet_collapse_focus_tree` | 23 | Compact restoration tree | Needs deeper identity/Volga trade or restoration mechanics. |
 | factory successors | `MFR_soviet_collapse_focus_tree` | 58 | Stronger factory tree | Better branch depth; still some building-only rewards and needs route payoff polish. |
-| ancient restorations | `KZR_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Needs restoration-specific decision/formable/postwar loop. |
+| ancient restorations | `APX_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Needs restoration-specific decision/formable/postwar loop. |
 | ancient restorations | `SOG_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Needs oasis/city-league mechanics beyond compact branch. |
-| ancient restorations | `KHW_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Water/canal identity should become an irrigation/river authority loop. |
-| ancient restorations | `ALN_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Alan pass/mountain restoration needs claims, pass missions, and culture/legitimacy loop. |
+| ancient restorations | `ANX_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Water/canal identity should become an irrigation/river authority loop. |
+| ancient restorations | `ABX_soviet_collapse_ancient_focus_tree` | 16 | Shallow | Alan pass/mountain restoration needs claims, pass missions, and culture/legitimacy loop. |
 
 ## Reward Spam Counts
 
@@ -68,7 +68,7 @@ The highest-spam trees by direct stockpile focus count are:
 - `UWD_soviet_collapse_focus_tree`: 11, heavy artillery/support mix.
 - `DHC_soviet_collapse_focus_tree`: 10, convoy/support mix.
 - `FEV_soviet_collapse_focus_tree`: 9, convoy/support mix.
-- `BSC_soviet_collapse_focus_tree`: 7, `BAC`: 7, `IUL`: 7, `NLC`: 7, `PRA`: 7.
+- `AEX_soviet_collapse_focus_tree`: 7, `ADX`: 7, `IUL`: 7, `NLC`: 7, `PRA`: 7.
 
 Concrete direct-equipment focus IDs:
 - `soviet_collapse_ukraine_focus_tree`: `ukr_soviet_collapse_seal_the_grain_ledgers:80`, `ukr_soviet_collapse_count_the_depot_keys:102`, `ukr_soviet_collapse_black_sea_port_ledgers:1217`.
@@ -86,11 +86,11 @@ Concrete direct-equipment focus IDs:
 - `DSC_soviet_collapse_focus_tree`: `DSC_call_the_dead_soldiers_congress:2734`, `DSC_voronezh_rearguard_archives:2784`, `DSC_revenant_staff_line:2872`, `DSC_field_hospital_memorials:2942`.
 - `NRF_soviet_collapse_focus_tree`: `NRF_count_the_drowned_crews:3370`, `NRF_living_harbor_committees:3394`, `NRF_revenant_admiralty:3419`, `NRF_maps_of_sunken_routes:3566`, `NRF_port_republic_of_the_living:3704`.
 - `ICD_soviet_collapse_focus_tree`: `ICD_penza_memorial_workshops:3840`, `ICD_black_seal_requisitions:3950`, `ICD_memorial_battalions:4024`, `ICD_letters_to_grieving_cities:4080`.
-- `BSC_soviet_collapse_focus_tree`: `BSC_first_guard:4292`, `BSC_caravan_officer_schools:4546`, `BSC_mountain_route_envoys:4845`, `BSC_tajik_pass_bargains:4888`, `BSC_raiding_column_oaths:4977`, `BSC_desert_airstrips:5021`, `BSC_radical_turn:5223`.
+- `AEX_soviet_collapse_focus_tree`: `AEX_first_guard:4292`, `AEX_caravan_officer_schools:4546`, `AEX_mountain_route_envoys:4845`, `AEX_tajik_pass_bargains:4888`, `AEX_raiding_column_oaths:4977`, `AEX_desert_airstrips:5021`, `AEX_radical_turn:5223`.
 - `TNC_soviet_collapse_focus_tree`: `TNC_tajik_relief_corridors:6019`, `TNC_city_militia_charter:6108`.
-- `ALA_soviet_collapse_focus_tree`: `ALA_turkmen_route_bargain:7173`, `ALA_mobile_airstrips:7260`, `ALA_steppe_supply_hubs:7286`.
+- `AAX_soviet_collapse_focus_tree`: `AAX_turkmen_route_bargain:7173`, `AAX_mobile_airstrips:7260`, `AAX_steppe_supply_hubs:7286`.
 - `BBH_soviet_collapse_focus_tree`: `BBH_column_schools:8042`, `BBH_armored_car_raids:8179`, `BBH_roving_artillery_crews:8229`, `BBH_column_supply_ledgers:8485`, `BBH_red_and_black_depots:8533`, `BBH_borderless_column_schools:8654`.
-- `KRS_soviet_collapse_focus_tree`: `KRS_baltic_worker_letters:9341`, `KRS_anti_party_soviet_clause:9432`, `KRS_icebound_supply_ledger:9622`, `KRS_gulf_mine_watch:9836`, `KRS_port_guard_schools:9887`, `KRS_free_port_conference:9913`.
+- `AOX_soviet_collapse_focus_tree`: `AOX_baltic_worker_letters:9341`, `AOX_anti_party_soviet_clause:9432`, `AOX_icebound_supply_ledger:9622`, `AOX_gulf_mine_watch:9836`, `AOX_port_guard_schools:9887`, `AOX_free_port_conference:9913`.
 - `UDC_soviet_collapse_focus_tree`: `UDC_birth:10046`, `UDC_staff_car_workshops:10572`, `UDC_war_plan:10625`, `UDC_radical_turn:11041`.
 - `SDZ_soviet_collapse_focus_tree`: `SDZ_every_office_a_watchpost:11691`, `SDZ_document_cart_workshops:11774`, `SDZ_archive_bunker_vaults:11858`, `SDZ_witness_protection_cells:12062`, `SDZ_secure_court_dockets:12088`, `SDZ_signal_van_yards:12162`.
 - `GAC_soviet_collapse_focus_tree`: `GAC_green_column_oaths:12965`, `GAC_captured_artillery_caches:12985`, `GAC_partisan_airstrip_meadows:13028`, `GAC_blacksmith_carts:13151`, `GAC_forest_depot_clearings:13174`, `GAC_seed_and_rifle_stores:13203`, `GAC_war_plan:13302`.
@@ -101,13 +101,13 @@ Concrete direct-equipment focus IDs:
 - `UWD_soviet_collapse_focus_tree`: `UWD_birth:18373`, `UWD_war_plan:18714`, `UWD_output_guarantees:18792`, `UWD_radical_turn:18873`, `UWD_perm_field_staff:18930`, `UWD_tagil_machine_tool_ledger:18952`, `UWD_factory_militia_charter:18978`, `UWD_magnitogorsk_steel_quota:19005`, `UWD_kama_foundry_contracts:19134`, `UWD_volga_steel_letters:19189`, `UWD_kurgan_rear_area:19267`.
 - `MRC_soviet_collapse_focus_tree`: `mrc_raid_lowland_depots:19825`, `MRC_aul_militia_charter:20234`, `MRC_grozny_workshop_bargain:20328`, `MRC_argun_rear_area:20435`.
 - `IUL_soviet_collapse_focus_tree`: `IUL_radical_turn:21103`, `IUL_samara_crossing_ledger:21176`, `IUL_kama_workshop_trust:21241`, `IUL_volga_fortified_crossings:21261`, `IUL_no_requisition_without_federal_vote:21387`, `IUL_rail_and_river_patrols:21420`, `IUL_volga_trade_letters:21446`.
-- `BAC_soviet_collapse_focus_tree`: `BAC_war_plan:22274`, `BAC_observer_relief_conference:22408`, `BAC_birobidzhan_council_records:22432`, `BAC_grain_and_relief_escorts:22561`, `BAC_winter_road_columns:22661`, `BAC_far_eastern_letters:22709`, `BAC_autonomy_statute:22845`.
+- `ADX_soviet_collapse_focus_tree`: `ADX_war_plan:22274`, `ADX_observer_relief_conference:22408`, `ADX_birobidzhan_council_records:22432`, `ADX_grain_and_relief_escorts:22561`, `ADX_winter_road_columns:22661`, `ADX_far_eastern_letters:22709`, `ADX_autonomy_statute:22845`.
 - `ARD_soviet_collapse_focus_tree`: `ARD_birth:23021`, `ARD_first_guard:23037`, `ARD_radical_turn:23378`, `ARD_war_plan:23409`, `ARD_diplomatic_plan:23442`, `ARD_kola_denial_posts:23526`, `ARD_murmansk_port_records:23580`, `ARD_convoy_court_registers:23639`, `ARD_fuel_and_convoy_escorts:23746`, `ARD_winter_convoy_columns:23853`, `ARD_white_sea_port_tolls:23949`, `ARD_league_convoy_bargain:23972`, `ARD_port_neutrality_statute:24042`, `ARD_arctic_port_endurance:24070`.
 - `NLC_soviet_collapse_focus_tree`: `NLC_diplomatic_plan:24423`, `NLC_ice_road_customs:24861`, `NLC_heated_workshop_contracts:24962`, `NLC_winter_road_columns:25011`, `NLC_apatity_rear_area:25043`, `NLC_ice_port_tolls:25122`, `NLC_hidden_doctrine:25318`.
 - `CFR_soviet_collapse_focus_tree`: none.
 - `OGB_soviet_collapse_focus_tree`: `OGB_notables_and_workshops:1377`.
 - `MFR_soviet_collapse_focus_tree`: `MFR_the_arsenal_state:2813`.
-- Ancient restorations: `KZR_old_border_files:166`, `KZR_expansionist_steppe_levy:225`, `KZR_khazar_charter:269`, `SOG_expansionist_merchant_claims:606`, `KHW_canal_recognition_letters:879`, `KHW_expansionist_water_claims:977`, `KHW_khwarazmian_water_charter:1021`, `KHW_delta_without_a_center:1108`.
+- Ancient restorations: `APX_old_border_files:166`, `APX_expansionist_steppe_levy:225`, `APX_khazar_charter:269`, `SOG_expansionist_merchant_claims:606`, `ANX_canal_recognition_letters:879`, `ANX_expansionist_water_claims:977`, `ANX_khwarazmian_water_charter:1021`, `ANX_delta_without_a_center:1108`.
 
 ### Generic Single-Building Rewards
 
@@ -116,11 +116,11 @@ Concrete direct-equipment focus IDs:
 - `soviet_collapse_central_asia_focus_tree`: 12.
 - `soviet_collapse_kazakhstan_focus_tree`: 11.
 - `MRC_soviet_collapse_focus_tree`: 9.
-- `BSC_soviet_collapse_focus_tree`: 8.
+- `AEX_soviet_collapse_focus_tree`: 8.
 - `FTH_soviet_collapse_focus_tree`: 7.
 - `TNC_soviet_collapse_focus_tree`: 7.
 - `CFR_soviet_collapse_focus_tree`: 6.
-- `KRS_soviet_collapse_focus_tree`: 6.
+- `AOX_soviet_collapse_focus_tree`: 6.
 - `SZA_soviet_collapse_focus_tree`: 6.
 - `soviet_collapse_baltic_focus_tree`: 6.
 
@@ -216,12 +216,12 @@ Gaps:
    - `OGB_soviet_collapse_focus_tree` is too compact at 23 focuses and should gain Volga trade/cultural restoration decisions or a formable/state integration loop.
 
 6. Template splinters with high reward spam
-   - Prioritize `ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `BSC`, `BAC`, `IUL`, `NLC`, `KRS`.
-   - Convert stockpile-heavy rewards into identity mechanics: convoy court for `ARD`, host/cavalry/river missions for `DHC`/`KHC`, steel quota/arms client ledger for `UWD`, Far Eastern port/ferry diplomacy for `FEV`, mountain/desert route control for `BSC`, Amur relief/autonomy missions for `BAC`, Volga-Ural federal compact for `IUL`, polar science/weather logistics for `NLC`, Baltic free-port navy for `KRS`.
+   - Prioritize `ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `AEX`, `ADX`, `IUL`, `NLC`, `AOX`.
+   - Convert stockpile-heavy rewards into identity mechanics: convoy court for `ARD`, host/cavalry/river missions for `DHC`/`KHC`, steel quota/arms client ledger for `UWD`, Far Eastern port/ferry diplomacy for `FEV`, mountain/desert route control for `AEX`, Amur relief/autonomy missions for `ADX`, Volga-Ural federal compact for `IUL`, polar science/weather logistics for `NLC`, Baltic free-port navy for `AOX`.
 
 7. Ancient restorations
-   - All four 16-focus ancient trees (`KZR`, `SOG`, `KHW`, `ALN`) need broader route families or a shared ancient-restoration decision layer.
-   - Suggested swaps: KZR toll/steppe charter decisions, SOG oasis-city league recognition, KHW irrigation/canal authority, ALN mountain pass guard and old-border integration.
+   - All four 16-focus ancient trees (`APX`, `SOG`, `ANX`, `ABX`) need broader route families or a shared ancient-restoration decision layer.
+   - Suggested swaps: APX toll/steppe charter decisions, SOG oasis-city league recognition, ANX irrigation/canal authority, ABX mountain pass guard and old-border integration.
 
 8. Ukraine and Belarus layout
    - Ukraine should be re-laid around visibly separated political, military, foreign, industry, and expansion lanes; do not reduce content count.

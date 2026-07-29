@@ -74,7 +74,7 @@ Gameplay and localisation:
 Current documentation and specifications:
 
 - `docs/assets/019_infantry_spawn/notes/claimant_identity_metadata.md`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/specs/019_infantry_spawn_specs/matrices/019_possessed_general_matrix.md`
 - `docs/specs/019_infantry_spawn_specs/matrices/019_asset_inventory.md`
 - `docs/specs/019_infantry_spawn_specs/prompts/019_infantry_spawn_asset_prompt.md`

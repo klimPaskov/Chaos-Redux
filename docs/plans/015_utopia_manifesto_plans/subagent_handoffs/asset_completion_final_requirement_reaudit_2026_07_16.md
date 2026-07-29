@@ -79,7 +79,7 @@ Five route-distinct `457x328` images bind to slots `96`-`100`; matching route de
 - OGG: Vorbis, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`.
 - WAV: PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
 - Uniqueness: one OGG match among `55`; one WAV match among `53`.
-- Frozen original-recording, source-page, metadata, CC0 deed, and CC0 legal-code hashes match `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
+- Frozen original-recording, source-page, metadata, CC0 deed, and CC0 legal-code hashes match `docs/super_events/015_utopia_manifesto/audio_research.md`.
 
 ## Visual review and tool limits
 

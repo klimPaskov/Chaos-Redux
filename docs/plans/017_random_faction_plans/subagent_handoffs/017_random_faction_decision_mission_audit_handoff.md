@@ -19,7 +19,7 @@ The parent agent's live selection, pressure-source, option-preservation, join-or
 - `common/scripted_triggers/017_random_faction_triggers.txt`
 - `common/scripted_localisation/017_random_faction_scripted_localisation.txt`
 - `localisation/english/017_join_faction_l_english.yml`
-- `docs/events/017_random_faction.md`
+- `docs/events/017_random_faction/overview.md`
 - this handoff
 
 `common/decisions/categories/017_random_faction_categories.txt` was audited and did not require a patch. Its category visibility delegates to the holder-aware scripted trigger, and the category has no unrelated permanent visibility condition.

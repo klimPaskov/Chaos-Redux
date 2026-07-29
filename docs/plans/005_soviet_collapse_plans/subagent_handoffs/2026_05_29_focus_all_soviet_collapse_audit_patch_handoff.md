@@ -36,26 +36,26 @@ No commit was created.
 
 Filter-only changes:
 
-- `KZR_customs_workshop_compact`
-- `KZR_volga_toll_guard`
-- `KZR_guard_the_crossings`
-- `KZR_expansionist_steppe_levy`
-- `KZR_road_beyond_the_caspian`
+- `APX_customs_workshop_compact`
+- `APX_volga_toll_guard`
+- `APX_guard_the_crossings`
+- `APX_expansionist_steppe_levy`
+- `APX_road_beyond_the_caspian`
 - `SOG_bazaar_workshop_compact`
 - `SOG_market_guard`
 - `SOG_oasis_checkpoint_guard`
 - `SOG_expansionist_merchant_claims`
 - `SOG_cities_beyond_the_desert`
-- `KHW_oasis_workshop_compact`
-- `KHW_oasis_canal_guards`
-- `KHW_guard_the_pumps`
-- `KHW_expansionist_water_claims`
-- `KHW_delta_without_a_center`
-- `ALN_mountain_workshop_compact`
-- `ALN_darial_guard_posts`
-- `ALN_guard_the_pass_line`
-- `ALN_expansionist_mountain_claims`
-- `ALN_every_pass_a_border`
+- `ANX_oasis_workshop_compact`
+- `ANX_oasis_canal_guards`
+- `ANX_guard_the_pumps`
+- `ANX_expansionist_water_claims`
+- `ANX_delta_without_a_center`
+- `ABX_mountain_workshop_compact`
+- `ABX_darial_guard_posts`
+- `ABX_guard_the_pass_line`
+- `ABX_expansionist_mountain_claims`
+- `ABX_every_pass_a_border`
 
 Coordinate changes:
 
@@ -144,10 +144,10 @@ Repeated icon clusters still needing asset work:
 | Internal republics, `soviet_collapse_internal_republic_focus_tree` | Differentiate Karelia, Komi, Idel-Ural/Tatar, Bashkir, Caucasus, Siberian, Far East, Yakutia, Buryatia, and Tuva variants. | Region-specific rail/resource/supply work. | Local defense styles: forest, mountain, steppe, taiga, rail. | League, autonomy, federation, or independence settlement branches. | Per-tag route flags, state targets, integration missions, AI strategy. |
 | Baltic, Caucasus, Central Asia, Moldova, Belarus | Existing compact routes need sharper ideology and regional government consequences. | Ports, oil, mountain passes, irrigation, Dniester/Prut crossings, Belarus forests. | Regional templates and defensive/offensive missions. | Postwar claims, local leagues, sponsor risk, border settlement. | Focus-unlocked decisions for League votes, fortification zones, resource concessions, border missions. |
 | Kazakhstan | Route tree is large but over-helpered. Political routes need clearer Alash/socialist/resource/federation consequences. | Oil, mines, rail, Caspian, and steppe industry should unlock state-targeted projects. | Mobile steppe army, horse/truck columns, rail guard brigades need templates and AI. | Southern republics, Caspian, Alash, and resource diplomacy need postwar integration. | Add decisions for resource sovereignty, steppe federation, border cavalry, Caspian security, and old-state memory. |
-| Full 47-focus custom splinters: `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | Replace template names with route-specific councils, leaders, laws, advisors, and identity flags. | Tag-specific economic loops: commune rail, caravan routes, archives, mountain passes, Arctic ports, Ural factories. | Special units: tachankas, cavalry, sailors, command districts, internal troops, partisans, host cavalry, rail guards. | Neighbor-specific war goals, League bargains, protectorates, raids, and integration. | Reduce helper cadence; add bespoke scripted effects/decisions for each tag family. |
+| Full 47-focus custom splinters: `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | Replace template names with route-specific councils, leaders, laws, advisors, and identity flags. | Tag-specific economic loops: commune rail, caravan routes, archives, mountain passes, Arctic ports, Ural factories. | Special units: tachankas, cavalry, sailors, command districts, internal troops, partisans, host cavalry, rail guards. | Neighbor-specific war goals, League bargains, protectorates, raids, and integration. | Reduce helper cadence; add bespoke scripted effects/decisions for each tag family. |
 | Shallow crisis splinters: `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` | Each needs full fixed-purpose internal politics around hierarchy, doctrine, economy, recruitment, expansion, and endgame. | `PRA`: rail/supply-hub construction; `TSC`: observatory labs; `RMC`: shrine economy; `DSC`: grave ordnance; `NRF`: dockyards/ports; `ICD`: archive/prison logistics. | `PRA`: armored trains; `TSC`: perimeter regiments; `RMC`: martyr columns; `DSC`: revenant army; `NRF`: naval infantry/convoys; `ICD`: commissar battalions. | Immediate dangerous expansion with cores/claims/war goals and postwar cleanup. | Major redesign needed: decision categories, unit spawns/templates, AI attack plans, integration/occupation missions. |
 | Factory successors: `CFR`, `MFR`, `OGB` | `CFR` and `MFR` have identity; `OGB` needs full Volga political/religious/trade route depth. | `CFR`: much larger civilian factory/construction projects; `MFR`: arsenal quotas and proxy arming; `OGB`: Volga trade/river authority. | `CFR`: construction battalions/engineers; `MFR`: guard divisions/armored trains; `OGB`: heritage guard/steppe cavalry. | Factory merger/rivalry, reconstruction protectorates, arsenal clients, Volga claims and Idel-Ural settlement. | Add construction/arsenal decision systems, factory rivalry missions, contract pressure, route AI, and postwar protectorates. |
-| Ancient restorations: `KZR`, `SOG`, `KHW`, `ALN` | Compact symbolic/expansion fork exists but is too short. Add legitimacy, scholar/religious/elite councils, modern survival politics. | River, oasis, pass, toll, bazaar, and workshop projects should be state-targeted. | Heritage guards, toll guards, canal guards, pass guards need templates and defensive missions. | Current claims need war goals, integration, League reactions, and neighbor settlement. | Add restoration legitimacy decisions, capital memory-site missions, postwar integration, AI route limits, and future-event hooks. |
+| Ancient restorations: `APX`, `SOG`, `ANX`, `ABX` | Compact symbolic/expansion fork exists but is too short. Add legitimacy, scholar/religious/elite councils, modern survival politics. | River, oasis, pass, toll, bazaar, and workshop projects should be state-targeted. | Heritage guards, toll guards, canal guards, pass guards need templates and defensive missions. | Current claims need war goals, integration, League reactions, and neighbor settlement. | Add restoration legitimacy decisions, capital memory-site missions, postwar integration, AI route limits, and future-event hooks. |
 
 ## High-priority parent work
 

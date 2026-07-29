@@ -78,7 +78,7 @@ Focus-tree counts:
   - `OGB`: 23 focuses, lines 1048-1608.
   - `MFR`: 58 focuses, lines 1611-2994.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
-  - `KZR`, `SOG`, `KHW`, `ALN`: 16 focuses each.
+  - `APX`, `SOG`, `ANX`, `ABX`: 16 focuses each.
 
 ## Findings
 
@@ -113,7 +113,7 @@ Direct aggressive examples that are good but uneven:
 
 - `DSC_congress_of_the_dead_army` declares war on SOV if possible and adds conquer/antagonize AI strategy at `005_soviet_collapse_custom_splinters.txt:3479-3501`.
 - `TSC_starfall_mandate` creates a wargoal and adds conquer/antagonize AI strategy but does not directly declare war at `005_soviet_collapse_custom_splinters.txt:2458-2479`.
-- `KZR_expansionist_steppe_levy` creates a wargoal, adds AI strategy, spawns assault columns, and applies neighbor expansion helpers at `005_soviet_collapse_ancient_restorations.txt:248-279`.
+- `APX_expansionist_steppe_levy` creates a wargoal, adds AI strategy, spawns assault columns, and applies neighbor expansion helpers at `005_soviet_collapse_ancient_restorations.txt:248-279`.
 - `OGB_the_old_name_survives_modern_war` creates a wargoal at `005_soviet_collapse_factory_successors.txt:1575-1584` and continues with endgame handling after that range.
 
 Weak or still restrained examples:
@@ -180,7 +180,7 @@ The custom/splinter file has improved a lot, but it is uneven:
 - `PRA` has 22 focuses and `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` have only 18 each. These are better than stubs, but still too compact for “major chaos country” expectations.
 - `TSC_soviet_collapse_focus_tree` at `005_soviet_collapse_custom_splinters.txt:2022-2529` has a compact political/industry/military/league/chaos spread, but the “industry” lane is mostly a handful of station/radar/train rewards at lines 2081-2187 and does not become a full branch.
 - `DSC_soviet_collapse_focus_tree` at lines 3010-3547 has strong aggression in the opening and endgame, but still has several reward blocks that are just accumulated variables/helpers, and several indentation/layout inconsistencies around lines 3183-3213, 3260-3305, 3405-3412, and 3479-3502.
-- The later 47-focus custom trees use a recognizable repeated skeleton: `birth`, `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `war_plan`, `diplomatic_plan`, `industry_plan`, `hidden_doctrine`, `extreme_gate`, `endgame`, `extreme_path`. BSC shows this at lines 4542-4758, and the same skeleton recurs for TNC/ALA/BBH/KRS/UDC/SDZ and later trees.
+- The later 47-focus custom trees use a recognizable repeated skeleton: `birth`, `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `war_plan`, `diplomatic_plan`, `industry_plan`, `hidden_doctrine`, `extreme_gate`, `endgame`, `extreme_path`. AEX shows this at lines 4542-4758, and the same skeleton recurs for TNC/AAX/BBH/AOX/UDC/SDZ and later trees.
 
 Priority: do not bulk-regenerate. Pick the weakest short trees first (`TSC`, `RMC`, `NRF`, `ICD`, then `PRA`) and add bespoke branches/endgame rewards. For the 47-focus template trees, preserve the branch count but replace repeated generic helper-only nodes with country-specific payoffs, route locks, and AI strategy.
 
@@ -190,8 +190,8 @@ The four ancient restoration trees are only 16 focuses each. They have a useful 
 
 Evidence:
 
-- `KZR_symbolic_crossing_state` and `KZR_expansionist_steppe_levy` form a clear fork at `005_soviet_collapse_ancient_restorations.txt:212-285`.
-- The KZR end of tree runs to line 421, then SOG begins at line 424.
+- `APX_symbolic_crossing_state` and `APX_expansionist_steppe_levy` form a clear fork at `005_soviet_collapse_ancient_restorations.txt:212-285`.
+- The APX end of tree runs to line 421, then SOG begins at line 424.
 - The mechanical parse found eight helper-only rewards in each ancient tree. These are not necessarily broken, but they make the compact trees feel less bespoke.
 
 Priority: if ancient restorations are intended as compact side-country packages, current scope is acceptable with known simplification. If they are intended to satisfy “chaos countries should be OP/aggressive,” they need larger route families and clearer war/claim/faction/AI end states.

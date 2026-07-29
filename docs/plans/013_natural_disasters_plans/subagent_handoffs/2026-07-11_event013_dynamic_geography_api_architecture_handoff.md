@@ -1,6 +1,6 @@
 # Event 013 dynamic geography and public-call architecture handoff
 
-> Historical audit snapshot, 2026-07-11. The gaps and verdict below describe the pre-implementation state and are retained for audit history. The later geography/API tranches replaced proxy-only eligibility with the curated physical-domain registries and revalidation paths documented in `docs/events/013_natural_disasters.md`, `013_implementation_validation_notes.md`, and the final completion audit. Do not use this handoff as the current implementation status.
+> Historical audit snapshot, 2026-07-11. The gaps and verdict below describe the pre-implementation state and are retained for audit history. The later geography/API tranches replaced proxy-only eligibility with the curated physical-domain registries and revalidation paths documented in `docs/events/013_natural_disasters/overview.md`, `013_implementation_validation_notes.md`, and the final completion audit. Do not use this handoff as the current implementation status.
 
 Date: 2026-07-11
 Mode: read-only scripted-system architecture audit
@@ -731,7 +731,7 @@ Potential presentation localisation only if player-facing wording changes:
 
 Documentation that the parent must align after implementation:
 
-- docs/systems/013_natural_disasters.md
+- docs/events/013_natural_disasters/overview.md
 - accepted Event 013 source specs if the correction changes an authoritative contract
 
 No new image, DDS, sprite definition, or GUI asset is required. Every recommended category picture already exists in interface/013_natural_disasters.gfx.

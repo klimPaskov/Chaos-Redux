@@ -47,7 +47,7 @@ Icon ids changed: none.
 | Factory and construction authorities become very strong | CFR and MFR already have construction/arsenal trees; OGB is in the same factory-successor file as a restoration successor. | Partial | No CFR/MFR edits in this pass. OGB endpoint now has real military and territorial payoff. |
 | Dead Soldiers Congress aggressive expansion | DSC has existing war-goal/core/assault-column endpoint content. | Present but still shallow | No direct DSC patch this pass because current DSC already has aggressive endpoint hooks; broader depth remains a redesign item. |
 | Railway authority rails and supply | PRA has rail, supply-node, armored-train, corridor, junction, and endgame focuses. | Present | No direct PRA patch; current rail/supply identity matches the requested direction better than the remaining shallow trees. |
-| Ancient restorations with real depth | KZR, SOG, KHW, ALN have 16 focuses each. | Missing depth | Too broad for a small patch. Needs implementation-ready redesign from existing follow-up plan. |
+| Ancient restorations with real depth | APX, SOG, ANX, ABX have 16 focuses each. | Missing depth | Too broad for a small patch. Needs implementation-ready redesign from existing follow-up plan. |
 | Custom splinter route depth | Most full custom splinters have 47 focuses; crisis trees are 18-22 focuses. | Partial | FTH coordinate collision fixed. Several crisis trees remain too shallow for completion claims. |
 
 ## Missing or Simplified Content

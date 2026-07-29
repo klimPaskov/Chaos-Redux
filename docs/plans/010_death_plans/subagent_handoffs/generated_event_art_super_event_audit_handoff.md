@@ -25,8 +25,8 @@ Scope: audit Death super-event image assets and produce missing final art only i
 - `common/script_constants/010_death_constants.txt`
 - `common/scripted_effects/010_death_effects.txt`
 - `docs/specs/010_death_specs/specs/010_death_assets_super_events_achievements.md`
-- `docs/super_events/010_death_super_event_text_research.md`
-- `docs/super_events/010_death_super_event_black_oath_research.md`
+- `docs/super_events/010_death/text_research.md`
+- `docs/super_events/010_death/black_oath_research.md`
 
 ## Audit result
 

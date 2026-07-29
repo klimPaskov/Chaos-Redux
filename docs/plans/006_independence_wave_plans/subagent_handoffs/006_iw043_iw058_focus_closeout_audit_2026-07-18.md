@@ -251,7 +251,7 @@ Skipped meaningful validation:
   the final ratification focus as the sole terminal presentation caller; the
   parent-wide closeout should verify that ordering and its proof records.
 - Existing documentation in
-  `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` and
+  `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` and
   earlier handoffs still describe all FORM adapters as having no attestation
   writer. Current setup writes explicit attestation receipts, so those docs
   need a documentation-curator reconciliation; gameplay files were not
