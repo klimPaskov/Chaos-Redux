@@ -157,14 +157,23 @@ An absent event-scoped `docs/assets/` folder is expected after a fully complete 
 
 Create a durable ComfyUI handoff for every portrait while continuing the normal HOI4 processing, resize, DDS conversion, review, and runtime-wiring workflow. Treat the agent-produced HOI4-style runtime portrait as a usable placeholder that may later be replaced manually; do not delay the current implementation merely because the ComfyUI pass is pending.
 
-For an event with one portrait, save the pair exactly as:
+Create one source/prompt pair for each portrait. Build its basename from dynamic project keys:
 
 ```text
-docs/assets/portraits/<event_id>_<event_slug>/portrait.png
-docs/assets/portraits/<event_id>_<event_slug>/portrait.txt
+<runtime_portrait_basename> = portrait_<portrait_owner_key>_<character_key>
 ```
 
-Save the highest-resolution portrait source that anchors the subject as `portrait.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
+Use the resolved basename consistently across the runtime texture and durable ComfyUI pair:
+
+```text
+<runtime_portrait_path>/<runtime_portrait_basename>.dds
+docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.png
+docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.txt
+```
+
+Resolve `<portrait_owner_key>` from the actual country tag, cosmetic tag, formable key, organization key, or other stable owning script key used by the implementation. Resolve `<character_key>` from the actual stable scripted character or institutional subject key, not a localised display name. Use the resolved runtime texture filename's basename, not the sprite id or a generic `portrait` filename, and preserve its exact spelling and case. Decide and register the dynamic runtime DDS basename before creating the durable pair when portrait work precedes final wiring, then wire the DDS with that same basename. Never rename only one side of the runtime DDS, source PNG, and prompt TXT contract.
+
+Save the highest-resolution portrait source that anchors the subject as `<runtime_portrait_basename>.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
 
 Analyze the saved portrait source, use established task context and verified research about the subject, and follow this portrait-description instruction:
 
@@ -195,9 +204,9 @@ Use concise natural language, not a tag list. Do not use the person’s name. Do
 Output only the final prompt with no headings, quotation marks, explanations, or formatting.
 ```
 
-Save only the resulting final prompt in `portrait.txt`. Do not add provenance, labels, headings, notes, or the instruction text itself to that file. Record the research sources used for non-visual facts in the asset manifest or permanent event documentation, not in `portrait.txt`.
+Save only the resulting final prompt in the matching `<runtime_portrait_basename>.txt`. Do not add provenance, labels, headings, notes, or the instruction text itself to that file. Record the research sources used for non-visual facts in the asset manifest or permanent event documentation, not in the prompt TXT.
 
-For an accepted event with more than one portrait, keep the primary portrait at `portrait.png` and `portrait.txt`, then use paired stable subject basenames such as `portrait_<subject_slug>.png` and `portrait_<subject_slug>.txt` for each additional portrait. Never overwrite one subject with another. Record every durable pair, its subject, source relationship, and `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed` state in the active manifest and permanent event documentation.
+An event may contain any number of portrait pairs in the same durable event folder. Never designate a generic primary pair and never overwrite one subject with another. Record every durable pair, its exact runtime DDS basename and path, source relationship, and `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed` state in the active manifest and permanent event documentation.
 
 The durable queue is not runtime storage. No `.gfx`, character, GUI, event, focus, idea, or decision reference may point into `docs/assets/portraits/`. Do not delete this queue when removing `docs/assets/<event_id>_<event_slug>/`; remove or replace a queued portrait only when the user explicitly requests it.
 
@@ -587,7 +596,7 @@ For every asset package:
 15. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 16. For user-provided assets, record that the image was provided by the user.
 17. Save the original generated, sourced, or provided image as a source PNG.
-18. For every portrait, create or update its durable ComfyUI source PNG and prompt-style TXT pair under `docs/assets/portraits/<event_id>_<event_slug>/` according to section 2.3.
+18. For every portrait, create or update its durable ComfyUI source PNG and prompt-style TXT pair under `docs/assets/portraits/<event_id>_<event_slug>/`, using the exact wired runtime DDS basename for both files according to section 2.3.
 19. Crop and resize non-portrait assets to the target size; real-person portraits require the exact lossless source crop and JSON equality evidence before ImageGen, followed by the deterministic 156x210 candidate from section 3. Do not treat an `ffmpeg` or ImageMagick crop as immutable unless its decoded pixels are independently proven equal to the same decoded master rectangle.
 20. Save a processed PNG preview.
 21. Convert a real-person portrait to DDS only after an independent audit PASS; convert other processed assets to DDS 32 bit unsigned BGRB 8.8.8.8.
@@ -673,7 +682,7 @@ Each asset entry should include:
 - portrait subject-ownership search terms, roots/files and ids checked, matched owner or
   consumer (or explicit no-match evidence), disposition, and any guarded transfer/
   availability contract
-- durable ComfyUI portrait source PNG path, matching prompt TXT path, subject basename, and source relationship for every portrait
+- durable ComfyUI portrait source PNG path, matching prompt TXT path, exact wired runtime DDS basename and path, and source relationship for every portrait
 - ComfyUI replacement state: `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed`
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
@@ -1143,7 +1152,7 @@ The metadata must record the Pillow/tool version and hash, master/output hashes 
 
 After the immutable crop and any source-locked ImageGen repaint, produce the full-size candidate with the same explicit role boundary and deterministic `156x210` canvas. Keep the image-editing steps reproducible and record their normalized commands or manual operations in the manifest; do not advertise a missing shared processor or silently treat a raw, filtered, or merely resized photograph as runtime art.
 
-Before the final resize and DDS conversion, also create the durable ComfyUI pair from section 2.3. Save the highest-resolution subject source as `docs/assets/portraits/<event_id>_<event_slug>/portrait.png`, combine analysis of that image with established task context and verified research through the section 2.3 portrait-description instruction, and save only its final natural-language prompt as `portrait.txt`. This queue does not replace the source master, audit evidence, processed candidate, or runtime asset.
+Before the final resize and DDS conversion, also create the durable ComfyUI pair from section 2.3. Derive the filenames from the exact basename of the portrait DDS that is or will be wired into the mod, save the highest-resolution subject source as `docs/assets/portraits/<event_id>_<event_slug>/<runtime_portrait_basename>.png`, combine analysis of that image with established task context and verified research through the section 2.3 portrait-description instruction, and save only its final natural-language prompt as the matching `<runtime_portrait_basename>.txt`. This queue does not replace the source master, audit evidence, processed candidate, or runtime asset.
 
 Choose the canonical reference family by role before starting:
 
@@ -1490,4 +1499,4 @@ Before finishing, confirm:
 20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
 22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
-23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead. The durable `docs/assets/portraits/<event_id>_<event_slug>/` ComfyUI queue remains present, every portrait has a matching prompt TXT produced from the exact section 2.3 image-analysis instruction without a person name or invented details, and no runtime reference points into that queue.
+23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead. The durable `docs/assets/portraits/<event_id>_<event_slug>/` ComfyUI queue remains present, every wired portrait DDS has a source PNG and prompt TXT sharing its exact runtime basename, every prompt was produced from the section 2.3 image-analysis instruction without a person name or invented details, and no runtime reference points into that queue.
