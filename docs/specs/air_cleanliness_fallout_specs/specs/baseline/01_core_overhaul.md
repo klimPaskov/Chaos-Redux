@@ -10,7 +10,7 @@ This spec expands the existing Air Cleanliness system into a visible atmospheric
 
 Air Cleanliness must stop being only a number in the Chaos Meter. It becomes the atmosphere that every country lives inside. Players should see winter bands on a mapmode, watch state categories collapse, decide whether to spend scarce resources on filters and shelter agriculture, and understand why the world becomes impossible to govern before the final Fallout transition.
 
-Fallout is a shared terminal-overhaul scenario available to several collapse causes. Any route that destroys the air can send the world into Fallout. The normal path is gradual collapse after contamination exceeds 100 percent. The cinematic path is instant collapse, such as Final Silence or a manual scenario that uses a thermonuclear strike on every province and then fires Fallout after one week.
+Fallout is a shared terminal-overhaul consequence available to several collapse causes. Any route that destroys the air can request Fallout. The normal path is gradual collapse after contamination reaches the terminal threshold. The cinematic path is instant collapse, such as the Final Silence cause-memory route or a manual scenario that uses a thermonuclear strike on every province and then fires Fallout after one week.
 
 ## Trigger doctrine
 
@@ -19,7 +19,7 @@ Fallout can begin through three paths.
 | Path | Trigger idea | What the player sees |
 | --- | --- | --- |
 | Gradual atmospheric collapse | Global contamination exceeds 100 percent and the world fails the terminal stabilization roll. Higher contamination, severe winter, global deaths, and ruined food states increase the chance. | The black-screen sequence interrupts ordinary play after escalating winter flavour and map damage. |
-| Scripted apocalypse bridge | A world-end event such as Final Silence explicitly requests Fallout as its aftermath. | The previous event produces its own ending beat, then the Fallout black screen begins after a short delay. |
+| Scripted apocalypse bridge | A terminal cause such as the Final Silence Holy Realm route explicitly requests Fallout as its aftermath. | The cause produces its own ending beat, then the Fallout black screen begins after a short delay. |
 | Manual scenario | The manual Fallout scenario uses the next free live scenario id, thermonuclear-strikes every valid province, waits seven days, then requests Fallout. | The map is visibly destroyed first. The black screen then covers the processing and narrative transition. |
 
 The user instruction overrides the old world-end rule that required chaos above 1000. Fallout can use chaos above 1000 as one possible pressure source, but it must not require it. Air contamination above 100 percent or a scripted terminal event is enough.

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Create one reusable aftermath framework that can be called by gradual Air collapse, Final Silence, a concentrated nuclear exchange, chemical or biological terminal events, and the manual Fallout scenario. Every caller supplies cause and intensity. Every caller enters the same validated blackout, state grading, world rewrite, player handoff, and post-Fallout campaign state.
+Create one reusable aftermath framework that can be called by gradual Air collapse, the Final Silence cause-memory terminal path, a concentrated nuclear exchange, chemical or biological terminal events, and the manual Fallout scenario. Every caller supplies cause and intensity. Every caller enters the same validated blackout, state grading, world rewrite, player handoff, and post-Fallout campaign state.
 
 ## Live implementation boundary
 
@@ -43,12 +43,12 @@ Caller examples:
 - bypass: no
 - behavior: request coordinator validates and may start from monthly pressure
 
-### Final Silence
+### Final Silence cause-memory source
 
 - source: scripted terminal strike
 - intensity: maximum or event-defined
 - bypass: yes
-- behavior: the event applies its direct strike or silence consequences, then requests Fallout
+- behavior: the Holy Realm retains the Final Silence cause-memory identity, then requests the Fallout consequence. Final Silence no longer owns a world-end selector or ordinary super-event route.
 
 ### Manual scenario
 

@@ -21,7 +21,7 @@ The exact installed-map sweep substrate exists but is dormant.
   after complete verification.
 - Save recovery extends the existing host daily coordinator for hourly sweep and verifier callbacks and never adds a second recurring world iterator. The seven-day callback remains engine-owned and cannot be reconstructed from a calendar-day value.
 
-The public row and dispatch remain intentionally absent. The live registry reaches SCN-013 with The Unbidden Muster while the unfinished Black Plague package separately reserves raw id 12. The Fallout-owned manual trigger keeps SCN-014 as the live maximum plus one without inserting it into public scenario, Event Details, evolution, ordinary event-log, or ordinary super-event registries. Existing ids, including the unused public gap at 12, remain unchanged.
+The manual sandbox row and dispatch use raw id 14. The live triggerable-scenario registry includes Black Plague at raw id 12 and reaches raw id 13 with The Unbidden Muster. Fallout remains absent from the world-end Event Details card, ordinary Event Log, evolution, and ordinary super-event registries. Existing ids remain unchanged.
 
 Runtime acceptance and bounded performance remain unobserved because Hearts of Iron IV was not run and must not be run for this documentation task. The dormant substrate is not a release claim.
 
@@ -36,7 +36,7 @@ The manual Fallout scenario is a direct sandbox launch. It does not require Chao
 ## Event ownership
 
 The generic manual-scenario framework may dispatch a Fallout-owned bootstrap callback after an authorized request. The callback owns confirmation follow-up and province-strike sequencing.
-It is not the Fallout consequence itself, and Fallout is not inserted into the public scenario, Event Details, evolution, or ordinary super-event registries.
+It is not the Fallout consequence itself. The manual sandbox entry is only a launch surface. Fallout is not inserted into the ordinary Event Log, evolution, or ordinary super-event registries, and the world-end selector row describes the consequence without becoming an ordinary event.
 
 The Fallout file owns the strike transaction, seven-day countdown completion, blackout entry, world rewrite, and post-transition orientation. No Fallout event block is added to `events/chaosx_triggerable_scenarios.txt`.
 
@@ -69,12 +69,12 @@ Allocation procedure:
 2. verify that existing assignments are unique
 3. find the highest assigned integer
 4. assign Fallout to that integer plus one
-5. use the same allocated value in Fallout-owned reservation, dispatch, event, and documentation surfaces while keeping public registry and catalog surfaces Fallout-free
+5. use the same allocated value in Fallout-owned reservation, dispatch, manual sandbox row, and documentation surfaces while keeping ordinary Event Log, evolution, Event Details, and ordinary super-event surfaces Fallout-free
 6. record the final id in the implementation handoff and source-of-truth map
 
 Do not move Africa Is One or any other existing scenario. Do not reuse a gap unless the user later asks for gap reuse. Do not copy the next value observed in an older repository snapshot.
 
-No public row will display `SCN-014`. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation for the dormant manual trigger and is never inserted into the public scenario or Event Details registries.
+The manual sandbox row displays `SCN-014`. The Fallout-owned constant `fallout_manual_scenario_identity.triggerable_scenario_id` holds the reservation for that launch surface. No ordinary Event Log, evolution, or ordinary super-event row displays it, and the world-end selector keeps Fallout as a consequence description rather than an ordinary event.
 
 ## Engine feasibility and runtime release gate
 
@@ -196,7 +196,7 @@ Do not add types during the first implementation if they delay the required scen
 
 ## Registry integration checklist
 
-Keep the public scenario, Event Details, evolution, and ordinary super-event registries Fallout-free. Audit the Fallout-owned surfaces instead:
+Keep ordinary Event Log, evolution, Event Details, and ordinary super-event registries Fallout-free. Audit the Fallout-owned surfaces instead:
 
 - reserved id constant
 - manual launch gate
@@ -259,7 +259,9 @@ If the sweep needs batching, the seven-day countdown begins after the final batc
 
 ## Acceptance checks
 
-- no public scenario or Event Details row contains Fallout
+- the manual sandbox row alone contains `SCN-014`
+- no ordinary Event Log, evolution, or ordinary super-event row contains Fallout
+- the world-end selector row describes the Fallout consequence without registering an ordinary event
 - allocated raw id is unique and equals the previous live maximum plus one
 - every existing scenario keeps its prior id and stored selection meaning
 - every valid province receives a verified thermonuclear strike

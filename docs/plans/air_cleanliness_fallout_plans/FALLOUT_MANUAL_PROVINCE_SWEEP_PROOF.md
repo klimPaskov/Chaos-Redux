@@ -139,7 +139,7 @@ The `.903` trigger and the request wrapper both validate countdown ownership, ge
 
 ### Scenario id allocation
 
-The live public registry reaches SCN-013 with The Unbidden Muster. The unfinished Black Plague package separately reserves raw id 12 without registering a live row. Gaps do not change the required maximum-plus-one rule.
+The live triggerable-scenario registry includes Black Plague at raw id 12 and reaches raw id 13 with The Unbidden Muster. Fallout assigns raw id 14 as one greater than the highest assigned identity to the dormant manual sandbox row. Existing ids remain unchanged. This row is not an ordinary Event Log, Event Details, evolution, or ordinary super-event registration.
 
 Fallout owns the reserved raw id 14 through `fallout_manual_scenario_identity.triggerable_scenario_id`. This is exactly one greater than the highest live assignment. Raw id 12 and every existing scenario id remain unchanged. The reservation does not register a public row or waive the runtime gate.
 
@@ -154,4 +154,4 @@ Static source proof does not establish these runtime properties:
 - the player-facing result remains readable across the 41 batches
 - the vanilla twelve-event `on_nuke_drop` branch remains bounded when it may schedule about 121,848 one-day news event attempts
 
-The public scenario row and public launch dispatch are prohibited. The Fallout-owned manual trigger, visible countdown direction, and release claim remain dormant until those properties are resolved. Scenario identity is no longer a blocker. No weaker substitute has been installed or approved.
+The manual sandbox row and Fallout-owned dispatch are present but launch-gated. The visible countdown direction and release claim remain dormant until those properties are resolved. Scenario identity is no longer a blocker. No weaker substitute has been installed or approved.

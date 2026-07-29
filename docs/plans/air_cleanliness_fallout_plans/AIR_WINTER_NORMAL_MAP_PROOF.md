@@ -1,6 +1,6 @@
 # Air Winter Normal-Map Proof Gate
 
-Status: the ordinary-map entity route is statically supported and the dedicated regional lifecycle is wired. Runtime creation, placement, layering, visibility, cleanup, multiplayer behavior, and performance have not been observed because HOI4 was not launched.
+Status: the ordinary-map entity route is statically supported and the dedicated regional lifecycle is wired. HOI4 was not launched, and no live observation claim is made.
 
 ## Legacy proof
 
@@ -30,11 +30,11 @@ The dedicated route now supplies:
 
 The detailed engine, collision, post-wire resolver, hash, DDS, and contact-sheet evidence is in `AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`. Asset ownership, matrices, counts, source frames, and final paths are in `docs/assets/air_cleanliness_fallout/regional_map_visuals/`.
 
-The post-asset static re-audit is recorded in `subagent_handoffs/air_winter_normal_map_static_reaudit_2026-07-22.md`. It independently rechecks the ordinary-map call chain, exact 1,081-state class cover, regional weather matrix, five-slot cleanup, entity and particle registries, runtime file resolution, and Zombie separation. Its verdict is source-level pass with runtime presentation unobserved.
+The post-asset static re-audit is recorded in `subagent_handoffs/air_winter_normal_map_static_reaudit_2026-07-22.md`. It independently rechecks the ordinary-map call chain, exact 1,081-state class cover, regional weather matrix, five-slot cleanup, entity and particle registries, source-file resolution, and Zombie separation. Its verdict is a source-level pass without a live observation claim.
 
-## Remaining runtime observation gate
+## User validation handoff
 
-Before ordinary-map runtime presentation can be called complete, observe:
+The user may later inspect:
 
 1. all nine classes at phases 1, 4, and 6 on ordinary political and terrain maps
 2. absence of universal snow in desert, tropical, equatorial, and ordinary oceanic states
@@ -46,10 +46,8 @@ Before ordinary-map runtime presentation can be called complete, observe:
 8. world-scale entity and particle performance
 9. particle atlas playback, density, culling, and absence of unwanted audio
 
-## Grade and static boundary
+## Removed unowned registrations
 
-The registered full-screen grade plates are not promoted. The proof parent `mapicons_container`, interface order, click-through behavior, supported resolutions, UI scales, mapmode interaction, and multiplayer visibility remain unproven.
-
-The registered static accessibility alternatives also remain unwired because no approved player setting selects them. They are not used as a fallback for the animated route.
+The unused full-screen grade plates and static accessibility sprite registrations were removed from `interface/air_cleanliness_winter_regional_visuals.gfx`. The ordinary-map entity and particle route does not depend on those sprites. This leaves no registered grade or accessibility surface without an owning GUI or player setting.
 
 Regional phase materials already carry the dim-light cue, so the ordinary map does not depend on the unproven full-screen grade.

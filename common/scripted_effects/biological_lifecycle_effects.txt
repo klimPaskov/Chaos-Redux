@@ -521,6 +521,7 @@ bio_lifecycle_store_seed_in_current_agent_record = {
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
 	}
+	bio_lifecycle_update_current_agent_air_contribution_from_slot = yes
 }
 
 bio_lifecycle_prepare_incubation_delay = {
@@ -771,6 +772,7 @@ bio_lifecycle_activate_current_agent = {
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
 	}
+	bio_lifecycle_update_current_agent_air_contribution_from_slot = yes
 }
 
 # State scope. Loads the current numeric agent record into temporary working
@@ -2103,6 +2105,10 @@ bio_lifecycle_attempt_current_agent_spread = {
 }
 
 bio_lifecycle_cleanup_current_agent_if_recovered = {
+	# Air Cleanliness follows the exact post-tick intensity band. Calling this
+	# before the recovery test also removes a stale receipt if a countermeasure
+	# has already driven the agent below the local-outbreak band.
+	bio_lifecycle_set_current_agent_air_contribution = yes
 	set_temp_variable = { bio_cleanup_status = constant:bio_lifecycle_proof.missing }
 	if = {
 		limit = {

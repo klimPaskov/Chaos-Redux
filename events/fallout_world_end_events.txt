@@ -10367,6 +10367,7 @@ country_event = {
 
 	option = {
 		name = chaosx.fallout.203.a
+		custom_effect_tooltip = chaosx.fallout.203.a.tt
 	}
 }
 
@@ -10375,7 +10376,8 @@ country_event = {
 # ---------------------------------------------------------------------------
 
 # These events are not registered in the public Triggerable Scenarios list.
-# The next-live-id conflict and runtime sweep proof remain release blockers.
+# The maximum-plus-one manual scenario identity is reconciled. Native sweep
+# acceptance and runtime proof remain release blockers.
 country_event = {
 	id = chaosx.fallout.900
 	hidden = yes
@@ -19198,4 +19200,210 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { fallout_event_663_cleanup_can_enter = yes }
 	immediate = { fallout_event_663_cleanup = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Work for Rations
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.670
+	title = chaosx.fallout.670.t
+	desc = chaosx.fallout.670.d
+	picture = GFX_report_event_fallout_work_for_rations
+	is_triggered_only = yes
+	trigger = { fallout_event_670_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.670.a
+		trigger = { fallout_event_670_universal_duty_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_670_requested_branch = constant:fallout_event_670_branch.universal_duty } fallout_event_670_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.670.a.tt
+	}
+	option = {
+		name = chaosx.fallout.670.b
+		trigger = { fallout_event_670_paid_labor_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_670_requested_branch = constant:fallout_event_670_branch.paid_labor } fallout_event_670_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.670.b.tt
+	}
+	option = {
+		name = chaosx.fallout.670.c
+		trigger = { fallout_event_670_refugee_work_program_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_670_requested_branch = constant:fallout_event_670_branch.refugee_work_program } fallout_event_670_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.670.c.tt
+	}
+	option = {
+		name = chaosx.fallout.670.d
+		trigger = { fallout_event_670_mechanized_harvest_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_670_requested_branch = constant:fallout_event_670_branch.mechanized_harvest } fallout_event_670_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.670.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.671
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_670_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_670_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.672
+	title = chaosx.fallout.672.t
+	desc = { text = chaosx.fallout.672.universal.success.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.universal_duty } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.672.universal.partial.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.universal_duty } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.672.universal.failure.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.universal_duty } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.672.paid.success.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.paid_labor } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.672.paid.partial.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.paid_labor } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.672.paid.failure.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.paid_labor } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.672.refugee.success.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.refugee_work_program } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.672.refugee.partial.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.refugee_work_program } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.672.refugee.failure.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.refugee_work_program } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.672.mechanized.success.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.mechanized_harvest } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.672.mechanized.partial.d trigger = { check_variable = { fallout_event_670_selected_branch = constant:fallout_event_670_branch.mechanized_harvest } check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.672.mechanized.failure.d
+	picture = GFX_report_event_fallout_work_for_rations
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_670_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.work_for_rations_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.672.a hidden_effect = { fallout_event_670_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.672.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.673
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_670_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.work_for_rations_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_670_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.674
+	title = chaosx.fallout.674.t
+	desc = { text = chaosx.fallout.674.success.d trigger = { check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.674.partial.d trigger = { check_variable = { fallout_event_670_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.674.failure.d
+	picture = GFX_report_event_fallout_work_for_rations
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_670_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.work_for_rations_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_670_labor_registry_is_current = yes }
+	immediate = { fallout_event_670_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.674.a hidden_effect = { fallout_event_670_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.674.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.675
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_670_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.work_for_rations_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_670_labor_registry_is_current = yes }
+	immediate = { fallout_event_670_calculate_callback_outcome = yes fallout_event_670_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.676
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_670_cleanup_can_enter = yes }
+	immediate = { fallout_event_670_cleanup = yes }
+}
+
+# ---------------------------------------------------------------------------
+# The Battalion's Bread List
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.677
+	title = chaosx.fallout.677.t
+	desc = chaosx.fallout.677.d
+	picture = GFX_report_event_fallout_hungry_battalion
+	is_triggered_only = yes
+	trigger = { fallout_event_677_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.677.a
+		trigger = { fallout_event_677_protected_issue_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_677_requested_branch = constant:fallout_event_677_branch.protected_issue } fallout_event_677_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.677.a.tt
+	}
+	option = {
+		name = chaosx.fallout.677.b
+		trigger = { fallout_event_677_equal_measure_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_677_requested_branch = constant:fallout_event_677_branch.equal_measure } fallout_event_677_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.677.b.tt
+	}
+	option = {
+		name = chaosx.fallout.677.c
+		trigger = { fallout_event_677_field_requisition_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_677_requested_branch = constant:fallout_event_677_branch.field_requisition } fallout_event_677_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.677.c.tt
+	}
+	option = {
+		name = chaosx.fallout.677.d
+		trigger = { fallout_event_677_rear_echelon_stand_down_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_677_requested_branch = constant:fallout_event_677_branch.rear_echelon_stand_down } fallout_event_677_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.677.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.678
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_677_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_677_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.679
+	title = chaosx.fallout.679.t
+	desc = { text = chaosx.fallout.679.protected.success.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.protected_issue } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.679.protected.partial.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.protected_issue } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.679.protected.failure.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.protected_issue } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.679.equal.success.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.equal_measure } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.679.equal.partial.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.equal_measure } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.679.equal.failure.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.equal_measure } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.679.requisition.success.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.field_requisition } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.679.requisition.partial.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.field_requisition } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.679.requisition.failure.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.field_requisition } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.679.stand_down.success.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.rear_echelon_stand_down } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.679.stand_down.partial.d trigger = { check_variable = { fallout_event_677_selected_branch = constant:fallout_event_677_branch.rear_echelon_stand_down } check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.679.stand_down.failure.d
+	picture = GFX_report_event_fallout_hungry_battalion
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_677_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.hungry_battalion_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.679.a hidden_effect = { fallout_event_677_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.679.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.680
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_677_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.hungry_battalion_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_677_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.681
+	title = chaosx.fallout.681.t
+	desc = { text = chaosx.fallout.681.success.d trigger = { check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.681.partial.d trigger = { check_variable = { fallout_event_677_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.681.failure.d
+	picture = GFX_report_event_fallout_hungry_battalion
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_677_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.hungry_battalion_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_677_ration_registry_is_current = yes }
+	immediate = { fallout_event_677_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.681.a hidden_effect = { fallout_event_677_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.681.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.682
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_677_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.hungry_battalion_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_677_ration_registry_is_current = yes }
+	immediate = { fallout_event_677_calculate_callback_outcome = yes fallout_event_677_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.683
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_677_cleanup_can_enter = yes }
+	immediate = { fallout_event_677_cleanup = yes }
 }

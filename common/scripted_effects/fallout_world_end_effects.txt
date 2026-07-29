@@ -125,16 +125,38 @@ fallout_clear_pending_request_envelope = {
 }
 
 # Supported scope: COUNTRY or the existing global host. This is the single
-# idempotent post-admission shutdown for Air Cleanliness. Request intake keeps
+# idempotent post-admission lock for Air Contamination. Request intake keeps
 # its temporary pause separate so a rejected envelope can restore the system.
-# Once Fallout owns the transition, this effect removes live Air pressure,
-# suspends Air Winter, and closes treaty operations without touching the frozen
-# pretransition ledgers used by the rewrite.
-fallout_disable_air_cleanliness_after_fallout_admission = {
-	set_global_flag = fallout_air_cleanliness_disabled
+# Once Fallout owns the transition, the world is held at ninety-nine percent
+# contamination. Further source deltas stop, while Air Winter remains a live
+# consumer of the locked atmosphere after the transition pause ends.
+fallout_enforce_permanent_air_contamination = {
+	set_global_flag = fallout_air_contamination_permanent_99
+	# Request intake uses the disabled marker only as a reversible transaction
+	# pause. The permanent lock is a live system state, not a disabled system.
+	clr_global_flag = fallout_air_cleanliness_disabled
 	clr_global_flag = fallout_air_cleanliness_request_paused
+	set_variable = { global.air_contamination_bp = constant:fallout_air_contamination_lock.permanent_99_bp }
+	set_variable = { global.air_contamination_chem_states = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_bio_states = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_chem_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_bio_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_fallout_bp = constant:fallout_air_contamination_lock.permanent_fallout_source_bp }
+	set_variable = { global.air_contamination_natural_source_reservoir_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_natural_source_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_decay_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_last_delta_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	set_variable = { global.air_contamination_last_nuke_bp = constant:fallout_air_contamination_lock.zero_delta_bp }
+	air_contamination_refresh_values = yes
+	air_contamination_update_threshold_flags = yes
 	air_contamination_apply_state_modifier = yes
-	air_winter_suspend_all_states_for_fallout = yes
+}
+
+# Supported scope: COUNTRY or the existing global host. This is the single
+# idempotent post-admission lock. Treaty cleanup remains permanent, but Air
+# Winter resumes against the locked atmosphere after transition processing.
+fallout_lock_air_cleanliness_after_fallout_admission = {
+	fallout_enforce_permanent_air_contamination = yes
 	air_cleanliness_treaty_pause_for_fallout = yes
 }
 
@@ -161,7 +183,7 @@ fallout_evaluate_air_contamination_request = {
 			NOT = { has_global_flag = world_end }
 			NOT = { has_global_flag = world_end_disabled }
 			NOT = { has_global_flag = fallout_air_cleanliness_disabled }
-			world_end_fallout_scenario_enabled = yes
+			fallout_consequence_enabled = yes
 			check_variable = {
 				var = global.air_contamination_bp
 				value = constant:air_contamination_threshold_bp.irreversible_100
@@ -178,12 +200,19 @@ fallout_evaluate_air_contamination_request = {
 # shared disabled-scenario array remains the single authoritative toggle ledger.
 fallout_toggle_system_scenario_disabled = {
 	if = {
-		limit = { is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger } }
+		limit = {
+			OR = {
+				is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger }
+				is_in_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.fallout }
+			}
+		}
 		remove_from_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger }
+		remove_from_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.fallout }
 		fallout_evaluate_air_contamination_request = yes
 	}
 	else = {
 		add_to_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger }
+		add_to_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.fallout }
 	}
 }
 
@@ -214,12 +243,14 @@ fallout_lock_transition = {
 		clr_global_flag = fallout_request_pending
 		set_global_flag = fallout_request_locked
 		set_global_flag = fallout_transition_active
-		# The durable shutdown is performed only after the snapshot is ready and
-		# the request is locked. This preserves rejection recovery before this
-		# boundary and removes stale Air pressure before blackout scheduling.
-		fallout_disable_air_cleanliness_after_fallout_admission = yes
+		# The durable 99 percent lock is performed only after the snapshot is
+		# ready and the request is locked. This preserves rejection recovery
+		# before this boundary and freezes source deltas before blackout scheduling.
+		fallout_lock_air_cleanliness_after_fallout_admission = yes
+		fallout_stop_old_world_wars_at_admission = yes
 		set_global_flag = world_end
 		set_global_flag = world_end_fallout
+		fallout_retire_legacy_final_silence_runtime = yes
 		set_variable = { global.fallout_transition_dirty = constant:fallout_runtime.one }
 		fallout_mark_blackout_gui_dirty = yes
 		fallout_dispatch_blackout_audio = yes
@@ -303,11 +334,65 @@ fallout_play_blackout_audio = {
 # Save migration and coordinator recovery
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Retires the active Final Silence runtime flags in
+# a stale save before the same request coordinator takes ownership. The
+# completed cause-memory flag is deliberately preserved for history and
+# achievements.
+fallout_retire_legacy_final_silence_runtime = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = world_end_final_silence
+				has_global_flag = world_end_final_silence_thermonuclear
+				has_global_flag = world_end_final_silence_interrupted
+			}
+		}
+		clr_global_flag = world_end_final_silence
+		clr_global_flag = world_end_final_silence_thermonuclear
+		clr_global_flag = world_end_final_silence_interrupted
+	}
+}
+
 # Supported scope: COUNTRY
 fallout_world_end_migrate_save = {
 	if = {
+		limit = {
+			OR = {
+				has_global_flag = world_end_final_silence
+				has_global_flag = world_end_final_silence_thermonuclear
+			}
+			NOT = { has_global_flag = world_end_fallout }
+			NOT = { has_global_flag = fallout_request_pending }
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		fallout_retire_legacy_final_silence_runtime = yes
+		clr_global_flag = world_end
+		set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.final_silence }
+		set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.maximum }
+		fallout_request_aftermath = yes
+	}
+	else_if = {
+		limit = {
+			has_global_flag = world_end_final_silence_interrupted
+			NOT = { has_global_flag = world_end_fallout }
+			NOT = { has_global_flag = fallout_request_pending }
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		fallout_retire_legacy_final_silence_runtime = yes
+	}
+	if = {
 		limit = { has_global_flag = world_end_fallout }
-		fallout_disable_air_cleanliness_after_fallout_admission = yes
+		fallout_retire_legacy_final_silence_runtime = yes
+		fallout_lock_air_cleanliness_after_fallout_admission = yes
+		if = {
+			limit = {
+				has_global_flag = fallout_transition_active
+				has_variable = global.fallout_transition_generation
+			}
+			fallout_stop_old_world_wars_at_admission = yes
+		}
 	}
 	if = {
 		limit = {
@@ -562,6 +647,7 @@ fallout_reconcile_supply_network_schema_extension = {
 		clr_global_flag = fallout_physical_collapse_complete
 		clr_global_flag = fallout_transition_government_sorting_applied
 		clr_global_flag = fallout_government_sorting_complete
+		clr_global_flag = fallout_technology_regression_complete
 		clr_global_flag = fallout_transition_survivor_allocation_applied
 		clear_variable = global.fallout_supply_network_collapse_schema_version
 		clear_variable = global.fallout_supply_network_collapse_generation
@@ -1232,6 +1318,45 @@ fallout_take_world_snapshot = {
 		}
 		else = {
 			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.snapshot_incomplete }
+			fallout_register_transition_error_if_unowned = yes
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Verifies that the original live country-tag set
+# still exists before map return. This never deletes a tag and does not require
+# the original border or owner to survive.
+fallout_verify_pretransition_tags_preserved = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_tag_preservation_complete }
+				NOT = {
+					check_variable = {
+						var = global.fallout_tag_preservation_generation
+						value = global.fallout_transition_generation
+						compare = equals
+					}
+				}
+			}
+		}
+		clr_global_flag = fallout_tag_preservation_complete
+		clear_variable = global.fallout_tag_preservation_generation
+		clear_variable = global.fallout_tag_preservation_expected_count
+		if = {
+			limit = { fallout_pretransition_tag_rows_exist = yes }
+			set_variable = { global.fallout_tag_preservation_expected_count = global.fallout_pretransition_countries^num }
+			set_variable = { global.fallout_tag_preservation_generation = global.fallout_transition_generation }
+			every_country = {
+				limit = { is_in_array = { array = global.fallout_pretransition_countries value = THIS } }
+				set_country_flag = fallout_tag_preservation_receipt
+				set_variable = { fallout_tag_preservation_generation = global.fallout_transition_generation }
+			}
+			set_global_flag = fallout_tag_preservation_complete
+		}
+		else = {
+			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.tag_preservation_failed }
 			fallout_register_transition_error_if_unowned = yes
 			set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
 		}
@@ -2392,6 +2517,59 @@ fallout_clear_recoverable_peace_conference_error = {
 	}
 }
 
+# Supported scope: COUNTRY. The blackout owns an immediate war-stop receipt so
+# no old combat can continue while the later diplomacy transaction completes.
+# The later full reset still owns subjects, access, trade, intelligence, and
+# its exhaustive postconditions.
+fallout_stop_old_world_wars_at_admission = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = fallout_transition_wars_stopped_at_admission }
+				NOT = {
+					check_variable = {
+						var = global.fallout_transition_wars_stopped_at_admission_generation
+						value = global.fallout_transition_generation
+						compare = equals
+					}
+				}
+			}
+		}
+		set_global_flag = white_peace_suppress_standard_chaos_on_peace
+		every_country = {
+			limit = { is_government_in_exile = yes }
+			end_exile = THIS
+		}
+		every_country = {
+			every_other_country = {
+				limit = {
+					has_volunteers_amount_from = {
+						tag = PREV
+						count > constant:fallout_runtime.zero
+					}
+				}
+				PREV = { recall_volunteers_from = PREV }
+			}
+		}
+		every_country = {
+			every_other_country = {
+				limit = { civilwar_target = PREV }
+				remove_civil_war_target = PREV
+				if = {
+					limit = { has_war_with = PREV }
+					white_peace = PREV
+				}
+			}
+		}
+		every_country = {
+			every_enemy_country = { white_peace = PREV }
+		}
+		clr_global_flag = white_peace_suppress_standard_chaos_on_peace
+		set_global_flag = fallout_transition_wars_stopped_at_admission
+		set_variable = { global.fallout_transition_wars_stopped_at_admission_generation = global.fallout_transition_generation }
+	}
+}
+
 # Supported scope: COUNTRY. This is a one-time coordinator transaction. It is
 # safe to retry after a peace conference or a partially applied save.
 fallout_reset_old_world_diplomacy = {
@@ -2399,6 +2577,8 @@ fallout_reset_old_world_diplomacy = {
 	set_temp_variable = { fallout_truce_reset_days = constant:fallout_runtime.zero }
 	clr_global_flag = fallout_transition_diplomacy_validation_failed
 	clr_global_flag = fallout_transition_diplomacy_reset_applied
+	clr_global_flag = fallout_transition_wars_stopped_complete
+	clear_variable = global.fallout_transition_wars_stopped_generation
 	clr_global_flag = fallout_transition_old_world_diplomacy_proven_complete
 	clr_global_flag = fallout_transition_exiles_reset_complete
 	clr_global_flag = fallout_transition_volunteers_reset_complete
@@ -2612,6 +2792,8 @@ fallout_reset_old_world_diplomacy = {
 			set_global_flag = fallout_transition_purchase_contracts_reset_complete
 			set_global_flag = fallout_transition_embargoes_reset_complete
 			set_global_flag = fallout_transition_old_world_diplomacy_proven_complete
+			set_global_flag = fallout_transition_wars_stopped_complete
+			set_variable = { global.fallout_transition_wars_stopped_generation = global.fallout_transition_generation }
 		}
 		else = {
 			set_global_flag = fallout_transition_diplomacy_validation_failed
@@ -4306,6 +4488,22 @@ fallout_apply_transition_phase_government_sorting = {
 			fallout_classify_country_government = yes
 		}
 		if = {
+			limit = { NOT = { has_global_flag = fallout_technology_regression_complete } }
+			for_each_scope_loop = {
+				array = global.fallout_pretransition_countries
+				fallout_regress_country_technology = yes
+			}
+			if = {
+				limit = { fallout_all_live_country_technology_rows_are_current = yes }
+				set_global_flag = fallout_technology_regression_complete
+			}
+			else = {
+				set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.technology_regression_incomplete }
+				fallout_register_transition_error_if_unowned = yes
+				set_temp_variable = { fallout_transition_error_to_register = constant:fallout_transition_error_code.none }
+			}
+		}
+		if = {
 			limit = {
 				NOT = { has_global_flag = fallout_transition_error }
 				any_of_scopes = {
@@ -4318,10 +4516,12 @@ fallout_apply_transition_phase_government_sorting = {
 			add_to_variable = { global.fallout_transition_error_count = constant:fallout_runtime.one }
 		}
 		if = {
-			limit = {
-				NOT = { has_global_flag = fallout_transition_error }
-				fallout_government_sorting_is_current = yes
-			}
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			fallout_government_sorting_is_current = yes
+			has_global_flag = fallout_technology_regression_complete
+			fallout_all_live_country_technology_rows_are_current = yes
+		}
 			set_global_flag = fallout_transition_government_sorting_applied
 			set_global_flag = fallout_government_sorting_complete
 		}
@@ -4505,6 +4705,8 @@ fallout_apply_transition_phase_player_continuation = {
 # Supported scope: COUNTRY
 fallout_apply_transition_phase_map_return = {
 	fallout_clear_recoverable_map_postcondition_error = yes
+	fallout_verify_pretransition_tags_preserved = yes
+	fallout_apply_fracture_contract = yes
 	if = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_map_return_applied }

@@ -763,6 +763,17 @@ cbrn_apply_state_contamination_delta_internal = {
 		limit = { has_variable = cbrn_chemical_contamination }
 		set_temp_variable = { cbrn_state_new_contamination_value = cbrn_chemical_contamination }
 	}
+	# Air Cleanliness is a state-class transition, not a monthly presence scan.
+	# The state helper compares the stored contribution with the new class and
+	# applies only the difference to the existing global system.
+	set_temp_variable = { cbrn_air_contribution_class = cbrn_state_new_contamination_class }
+	cbrn_chemical_set_air_contribution_from_class = yes
+	cbrn_air_cleanliness_update_chemical_state_contribution = yes
+	cbrn_chemical_refresh_state_modifier = yes
+	if = {
+		limit = { has_variable = cbrn_last_chemical_agent_class }
+		cbrn_chemical_refresh_continuing_death_profile = yes
+	}
 }
 
 cbrn_refresh_state_attribution = {

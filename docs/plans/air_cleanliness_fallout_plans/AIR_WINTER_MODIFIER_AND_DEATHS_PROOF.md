@@ -49,10 +49,9 @@ modifiers. The strongest precedents are:
   `common/resistance_compliance_modifiers/resistance_modifiers.txt`.
 
 This vanilla evidence supports retaining the controller-side field. The
-generated category list still disagrees with live vanilla usage. A future
-runtime comparison can observe a controlled state with and without one Air
-Winter phase modifier while identical friendly units remain in the state. The
-controller and enemy attrition deltas are not claimed as observed here.
+generated category list still disagrees with vanilla source usage. The
+controller and enemy attrition deltas are source-supported but are not claimed
+as live observations.
 
 ## Country air operations
 
@@ -147,6 +146,9 @@ Air-owned registry, and schedules blackout. A failed prelock snapshot leaves
 the modifier intact. `air_winter_begin_fallout_snapshot_production` repeats the
 same narrow cleanup only when a transition is already active, which covers
 snapshot recovery without clearing the state ledger needed by that snapshot.
+After the transition flag clears, the permanent 99 percent contamination flag
+keeps Air Winter enabled and the bounded country modifier is rebuilt from the
+next ordinary monthly state pass.
 
 ### Static scenario audit
 
@@ -160,6 +162,7 @@ snapshot recovery without clearing the state ledger needed by that snapshot.
 | Air Cleanliness is disabled | The modifier is removed | The country finalizer requires `air_winter_system_enabled`. |
 | A Fallout request passes the complete prelock snapshot gate | Every registered country loses the modifier before blackout scheduling and before the monthly pass pauses | The request lock sets the transition flag, calls bounded Air-owned cleanup, then schedules the blackout phase. |
 | A Fallout prelock snapshot fails | The Air Winter modifier remains active | Cleanup occurs only after the request is lock-ready or while recovering an already active transition. |
+| Fallout transition completes | The modifier is rebuilt from the fixed 99 percent atmosphere | The permanent flag satisfies `air_winter_system_enabled`, and the next host-owned monthly state pass aggregates working controlled airfields. |
 | State traversal order changes | The final burden is unchanged | Count and phase sum use only commutative addition before one final division. |
 
 ### Granularity boundary
@@ -225,7 +228,7 @@ The guarded seed route applies `air_winter_seed_vault_preservation_industry_stat
 
 The modifier lasts 46 days, which is one day longer than the scheduled 45-day seed result. Seed success and failure remove it explicitly. Branch replacement, ownership cancellation, state reset, and Fallout snapshot cleanup also remove it through the shared pending-chain effects. Herd slaughter and breeding-stock routes do not apply it.
 
-The modifier uses the dedicated Phase 2 Air Winter icon. It does not change a monthly winter coefficient or a Fallout survival coefficient. Runtime factory availability remains part of the unobserved modifier boundary because Hearts of Iron IV was not launched.
+The modifier uses the dedicated Phase 2 Air Winter icon. It does not change a monthly winter coefficient or a Fallout survival coefficient. Factory availability is supported by the official field and vanilla state-modifier precedent, without a live observation claim.
 
 The shared exact-loss helper can be used by other systems that intentionally
 remove population even when Deaths display and logging are disabled. Air
@@ -260,7 +263,7 @@ contains no direct `add_manpower` effect. Both routes use the shared helper,
 pre-seed its temporary outputs, and add only
 `state_civilian_population_loss_applied` to winter memory.
 
-## Runtime observation boundary
+## Static evidence boundary
 
 Static evidence proves the repair-field categories, every building token, the
 Deaths setting gates, the tunnel-school protection multiplier, the seed-vault
@@ -269,7 +272,8 @@ state population mutation route, the
 recruitable-credit reconciliation contract, and vanilla state usage of
 controller attrition. It also proves country scope for the four air fields,
 country dynamic-modifier application, working-airfield input, bounded
-aggregation, duplicate-finalize protection, and transition cleanup. The exact
-live state-population delta, controller and enemy attrition deltas, and country
-air-operation modifier effects remain unobserved. The documented routes and
-vanilla precedents are retained without a runtime claim.
+aggregation, duplicate-finalize protection, transition cleanup, and the
+post-transition fixed-atmosphere rebuild route. The documented routes and
+vanilla precedents are retained without a live observation claim. The user will
+perform live validation later, and that handoff is not a completion requirement
+for this implementation tranche.

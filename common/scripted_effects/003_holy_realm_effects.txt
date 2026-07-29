@@ -2277,37 +2277,37 @@ holy_realm_open_vow_against_annihilation_branch = {
 }
 
 holy_realm_prepare_final_silence = {
+	# Final Silence remains a Holy Realm doctrine and cause-memory label, but it
+	# no longer owns a world-end flag, generic diplomacy cleanup, contamination
+	# lock, or ordinary super-event route. The terminal branch below requests the
+	# Fallout consequence through the shared coordinator.
 	clr_country_flag = holy_realm_stage_refuge
 	clr_country_flag = holy_realm_stage_bodhisattva
 	clr_country_flag = holy_realm_stage_arhat_administration
 	clr_country_flag = holy_realm_stage_buddha_mandate
 	clr_country_flag = holy_realm_stage_divine_sovereignty
 	set_country_flag = holy_realm_stage_final_silence
-	set_global_flag = world_end
-	random_faction_cleanup_after_world_end = yes
-	set_global_flag = world_end_final_silence
+	set_country_flag = holy_realm_final_silence_prepared
 	set_global_flag = holy_realm_global_warning
 	set_variable = { global.holy_realm_final_silence_wave = 0 }
 	if = {
 		limit = { holy_realm_uses_thermonuclear_final_silence = yes }
-		set_global_flag = world_end_final_silence_thermonuclear
 		set_country_flag = holy_realm_thermonuclear_doctrine
-		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_thermonuclear_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_thermonuclear }
 		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.thermonuclear_fallout_intensity }
 	}
 	else = {
-		clr_global_flag = world_end_final_silence_thermonuclear
-		set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
+		clr_country_flag = holy_realm_thermonuclear_doctrine
 		set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 		set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 		set_temp_variable = { holy_realm_final_condemnation = constant:holy_realm_final_silence.condemnation_normal }
 		set_temp_variable = { holy_realm_final_contamination = constant:holy_realm_final_silence.normal_fallout_intensity }
 	}
 	holy_realm_add_chaos = yes
-	holy_realm_show_super_event = yes
+	# Dramatic audio is owned by the later Fallout blackout, not by a Final
+	# Silence super-event.
 	set_temp_variable = { condemnation_source_type = constant:condemnation_source.nuclear }
 	set_temp_variable = { condemnation_base_gain = holy_realm_final_condemnation }
 	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
@@ -2317,10 +2317,6 @@ holy_realm_prepare_final_silence = {
 	set_temp_variable = { condemnation_victim_country = THIS }
 	set_temp_variable = { condemnation_context_type = constant:condemnation_context.final_silence }
 	condemnation_add_source = yes
-	if = {
-		limit = { NOT = { has_global_flag = fallout_air_cleanliness_disabled } }
-		air_contamination_lock_final_silence = yes
-	}
 	set_country_flag = used_unconventional_weapon
 	air_cleanliness_treaty_on_unconventional_use = yes
 	holy_realm_refresh_world_threat_source = yes
@@ -2329,18 +2325,17 @@ holy_realm_prepare_final_silence = {
 holy_realm_complete_terminal_final_silence = {
 	holy_realm_set_stage_final_silence = yes
 	set_country_flag = holy_realm_final_silence_terminal_completed
-	set_global_flag = world_end
-	random_faction_cleanup_after_world_end = yes
-	set_global_flag = world_end_final_silence
+	# Final Silence is retained as the Holy Realm's cause-memory label. The
+	# world-end route itself is retired and hands control to Fallout before the
+	# shared world-end lock is written.
 	set_global_flag = world_end_final_silence_completed
+	set_country_flag = fallout_cause_final_silence_memory
 	set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.final_silence }
 	set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.maximum }
 	fallout_request_aftermath = yes
 	set_global_flag = holy_realm_global_warning
 	set_country_leader_name = { name = "The Empty Seat" }
 	set_country_flag = holy_realm_empty_seat_leader
-	set_temp_variable = { holy_realm_super_event_id = constant:holy_realm_super_event.final_silence_terminal }
-	holy_realm_show_super_event = yes
 	set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.final_silence_gain }
 	set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_final_silence }
 	holy_realm_add_chaos = yes

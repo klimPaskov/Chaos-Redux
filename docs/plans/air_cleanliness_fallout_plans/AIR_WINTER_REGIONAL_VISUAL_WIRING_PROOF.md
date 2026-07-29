@@ -2,7 +2,7 @@
 
 ## Conclusion
 
-The ordinary-map route is statically supported and wired into the synchronized Air Winter monthly lifecycle. It is not runtime proven. HOI4 was not launched.
+The ordinary-map route is statically supported and wired into the synchronized Air Winter monthly lifecycle. HOI4 was not launched, and no live observation claim is made.
 
 The implementation creates class-specific ground, weather, ash, vegetation, ice, and thaw entities during ordinary map play. It uses the existing host-owned `every_state` pass and adds no second world iterator.
 
@@ -105,7 +105,7 @@ The regional package contains:
 - 81 numeric class aliases
 - nine registered particle entities and particle types
 - 16 separately authored particle source frames
-- 12 registered review, fallback, and grade sprites
+- no unowned review, fallback, grade, or accessibility sprite registrations
 
 All runtime tokens referenced by the gameplay effect resolve to Fallout-owned files and identifiers. No zombie path, sprite, sound, image, or entity is referenced.
 
@@ -122,9 +122,9 @@ The final package was audited again from the live runtime files after integratio
 - The current entity-id bands have no literal collision elsewhere in gameplay, GUI, or asset script. The installed state maximum remains 1081, below the documented band-overlap boundary.
 - The particle wrapper form matches vanilla `gfx/entities/weather_entities.asset`: an idle state with `state_time = 2`, a time-zero particle event, and `keep_particle = yes`. The Air Winter wrappers omit vanilla weather sound events by design.
 
-Decoded contact-sheet review found nine visibly distinct regional ground families, region-specific dead vegetation, ice, and thaw props, and four independently composed frames for each particle family. Warm and arid classes do not become copies of the boreal snow field. Early wet or frost phases may gain local highlight before the soot jump, while every class darkens from black harvest through terminal winter. This is asset and wiring evidence only. It does not convert the runtime observation gate into a pass.
+Decoded contact-sheet review found nine visibly distinct regional ground families, region-specific dead vegetation, ice, and thaw props, and four independently composed frames for each particle family. Warm and arid classes do not become copies of the boreal snow field. Early wet or frost phases may gain local highlight before the soot jump, while every class darkens from black harvest through terminal winter. This is asset and source-wiring evidence without a live observation claim.
 
-## Unproven runtime boundary
+## User validation handoff
 
 Static evidence cannot prove:
 
@@ -138,4 +138,4 @@ Static evidence cannot prove:
 - world-scale rendering and simulation cost
 - the full-screen grade parent, click-through behavior, resolution scaling, and mapmode interaction
 
-The full-screen grade sprites and static accessibility alternatives remain registered but unwired. They are not substituted for the animated route. No completion claim should treat those runtime surfaces as observed.
+The full-screen grade and static accessibility registrations were removed because no approved GUI or player setting owned them. The ordinary-map entity and particle route remains the sole active regional presentation route. Live presentation checks belong to the user's later validation and are not a completion requirement for this static core-mechanics tranche.

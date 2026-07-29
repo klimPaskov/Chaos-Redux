@@ -9,12 +9,23 @@ world_end_zombie_apocalypse_scenario_enabled = {
 	NOT = { is_in_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.zombie_apocalypse } }
 }
 
-world_end_fallout_scenario_enabled = {
+# Fallout is the replacement world-end consequence route. It is represented in
+# the world-end selector, but it never creates an ordinary event-log or
+# evolution entry.
+fallout_consequence_enabled = {
 	NOT = { is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger } }
+	NOT = { is_in_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.fallout } }
 }
 
+world_end_fallout_scenario_enabled = {
+	fallout_consequence_enabled = yes
+}
+
+# Legacy helper retained for older Holy Realm focus and decision scripts. It
+# now gates the Fallout-owned consequence route and does not enable a Final
+# Silence world-end implementation.
 world_end_final_silence_scenario_enabled = {
-	NOT = { is_in_array = { global.disabled_world_end_scenarios = constant:world_end_scenario_id.final_silence } }
+	world_end_fallout_scenario_enabled = yes
 }
 
 world_end_fury_scenario_enabled = {

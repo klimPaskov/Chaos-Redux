@@ -4,6 +4,14 @@ Date: 2026-07-26
 
 Status: implemented and superseded by `docs/specs/air_cleanliness_fallout_specs/specs/54_reviewed_regional_river_ration_league.md` and `FALLOUT_RIVER_RATION_LEAGUE_CHAIN_PROOF.md`.
 
+## Disposition clarification
+
+The accepted implementation owns candidate `565`, events `565` through `571`, transaction `710053`, route `7153`, and Event Log history `9158`.
+
+The accepted spec and chain proof are the current design and implementation references. The recommendation, acceptance gates, and implementation-surface language below are retained as dated design evidence. They are not an open implementation queue.
+
+The chain remains dormant and outside release-floor credit because both scheduler activation flags remain unset and runtime delivery is unproven. Future river-federation, barge-war, bilateral-compact, and successor-country consumers remain explicitly queued after the shared scheduler and relationship contracts are accepted.
+
 All event titles, option labels, and prose directions below are working copy directions rather than final localisation.
 
 ## Recommendation and bounded scope

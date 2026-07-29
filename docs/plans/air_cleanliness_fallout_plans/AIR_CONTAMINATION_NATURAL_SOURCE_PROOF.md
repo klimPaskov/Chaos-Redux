@@ -103,7 +103,7 @@ the impact registration, the aftermath registration, and monthly decay.
 
 Missing reservoir variables initialize to zero inside the public monthly helper, which keeps existing saves safe. Disabling Air Cleanliness hides the current contribution and prevents it from entering the monthly delta while the reservoir continues to dissipate.
 
-Final Silence retains its fixed contamination total. New natural-source registrations stop, the hidden reservoir continues to dissipate, and the monthly breakdown exposes zero natural contribution while the lock is active.
+Fallout owns a permanent 99 percent Air Contamination lock. New natural-source registrations stop, the hidden reservoir is zeroed, and the monthly breakdown exposes zero natural contribution while the lock is active. The 9,900 basis points remain assigned to the Fallout source, so the Air system is fixed rather than disabled.
 
 ## UI and asset proof
 
@@ -111,4 +111,4 @@ The existing Air Cleanliness monthly model line displays the cached wildfire-smo
 
 ## Static evidence boundary
 
-The implementation was reviewed against the offline wiki, installed official documentation, Event 013 runtime paths, the existing host monthly route, and the vanilla capped-variable precedent. The read-only HOI4 event inspector was also attempted against `events/013_natural_disasters.txt`, but the Event 013 helper graph exceeded its fixed 200,000-projection ceiling even with helper expansion disabled. Source-level route review remains the evidence for the three call sites. HOI4 was not launched at the user's request. Runtime observation is therefore not claimed.
+The implementation was reviewed against the offline wiki, installed official documentation, Event 013 source paths, the existing host monthly route, and the vanilla capped-variable precedent. The read-only HOI4 event inspector was also attempted against `events/013_natural_disasters.txt`, but the Event 013 helper graph exceeded its fixed 200,000-projection ceiling even with helper expansion disabled. Source-level route review remains the evidence for the three call sites. HOI4 was not launched. Live playtesting is a later user validation handoff and is not a completion requirement for this static implementation tranche.

@@ -171,11 +171,18 @@ triggerable_scenario_can_launch_selected = {
 			SOV = { exists = yes }
 		}
 		AND = {
-			check_variable = {
-				var = triggerable_scenarios_selected
-				value = constant:triggerable_scenario_id.final_silence
+			OR = {
+				check_variable = {
+					var = triggerable_scenarios_selected
+					value = constant:triggerable_scenario_id.fallout
+				}
+				check_variable = {
+					var = triggerable_scenarios_selected
+					value = constant:triggerable_scenario_id.final_silence
+				}
 			}
 			NOT = { has_global_flag = world_end }
+			has_global_flag = fallout_manual_native_sweep_release_enabled
 		}
 		AND = {
 			check_variable = {

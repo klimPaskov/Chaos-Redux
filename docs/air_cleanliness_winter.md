@@ -33,7 +33,7 @@ The implementation is distributed across:
 
 The Air Winter helpers do not create another state-wide or country-wide iterator. Post-pass work enters only owner arrays assembled during the existing state pass. The monotonic cycle id, per-state cycle id, and finalization cycle id make repeated calls idempotent. Global pressure reads a snapshot of the completed contamination-state counts from the preceding monthly pass before the host rebuilds those counts. Severe-neighbor pressure reads the opening state of every neighbor regardless of iterator order.
 
-When ordinary Air Cleanliness is disabled, runtime phase and disease modifiers are removed while persistent state history remains available. `air_contamination_final_silence_locked` keeps Air Winter enabled under the existing Air Cleanliness contract.
+When ordinary Air Cleanliness is disabled, runtime phase and disease modifiers are removed while persistent state history remains available. Fallout overrides that setting after its transition commits, fixes Air Contamination at 99 percent, and keeps the Air Winter state model active against the locked atmosphere.
 
 ## Phase model
 
@@ -118,7 +118,7 @@ The country modifier changes mission efficiency, detection, accident rate, and t
 
 `air_detection` changes the base detection value rather than multiplying the existing value. The table therefore records a flat value reduction for detection and percentage changes for the other three fields.
 
-The aggregate is commutative and uses the existing state pass. Controllers enter the persistent Air Winter country registry without duplication. A cycle-stamped finalizer removes stale burden when a country loses its last working airfield, loses control of every contributing state, reaches mean phase 0, or disables Air Cleanliness. The committed Fallout transition lock removes the country modifier through that bounded registry before blackout scheduling and before the monthly Air Winter pass pauses. Active snapshot retries keep it absent. A failed prelock snapshot does not remove it.
+The aggregate is commutative and uses the existing state pass. Controllers enter the persistent Air Winter country registry without duplication. A cycle-stamped finalizer removes stale burden when a country loses its last working airfield, loses control of every contributing state, reaches mean phase 0, or disables ordinary Air Cleanliness. The monthly pass pauses while `fallout_transition_active` protects the frozen transition snapshot. After that flag clears, the country burden and other Air Winter consumers rebuild through the ordinary bounded pass against Fallout's fixed 99 percent atmosphere.
 
 This country result affects all air operations owned by the country. The engine exposes the required general air fields at country scope, so the modifier cannot be confined to the originating strategic regions through a runtime dynamic modifier. Exact state pressure from active ordinary land combat remains blocked by the absence of a documented state predicate or callback. Recent strategic bombing has a documented state trigger, but a second winter multiplier would compound the existing strategic-bombing Deaths tick and requires a separate balance decision.
 
@@ -242,7 +242,8 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 | Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/air_cleanliness_winter.gfx` |
 | Regional ground and props | `air_winter_class_<class>_phase_<phase>_entity` and class prop aliases | `gfx/models/air_cleanliness_winter/regional/` | `gfx/entities/air_cleanliness_winter_regional_visuals.asset` |
 | Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
-| Registered grade and static alternatives | `GFX_air_winter_regional_*` | `gfx/interface/air_cleanliness_winter/regional_grades/` and regional static textures | `interface/air_cleanliness_winter_regional_visuals.gfx` |
+
+The regional grade and static-alternative DDS plates remain source assets only. They have no runtime sprite registrations because no approved GUI or setting consumes them.
 
 The refinery-output and reactor-power dynamic modifiers both use `GFX_air_winter_phase_3`. No additional modifier icon is required for the infrastructure tranche.
 

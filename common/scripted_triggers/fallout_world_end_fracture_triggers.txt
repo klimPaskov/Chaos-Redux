@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT FRACTURE TRIGGERS
+# ============================================================================
+
+# Supported scope: COUNTRY. Fracture only considers a pretransition country
+# with more than one surviving state and a severe frozen state grade. The war
+# memory gate keeps the effect tied to the requested severe-war case.
+fallout_fracture_source_is_eligible = {
+	exists = yes
+	has_country_flag = fallout_pretransition_country
+	has_country_flag = fallout_pretransition_had_war
+	num_of_controlled_states > constant:fallout_fracture_contract.minimum_source_states
+	any_owned_state = {
+		OR = {
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.dead_city
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = fallout_state_grade
+				value = constant:fallout_state_grade.wasteland
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. A live conflict ledger is required before any
+# reserved Independence Wave tag may be copied by the dynamic-country effect.
+fallout_fracture_conflict_ledger_is_current = {
+	has_global_flag = fallout_fracture_conflict_ledger_complete
+	has_variable = global.fallout_fracture_conflict_ledger_generation
+	check_variable = {
+		var = global.fallout_fracture_conflict_ledger_generation
+		value = global.fallout_transition_generation
+		compare = equals
+	}
+	has_variable = global.fallout_fracture_safe_template_count
+	check_variable = {
+		var = global.fallout_fracture_safe_template_count
+		value = constant:fallout_fracture_contract.zero
+		compare = greater_than
+	}
+}
+
+# Supported scope: COUNTRY. The release flag is deliberately absent from
+# normal saves until live dynamic-tag and no-delete readback is proven.
+fallout_fracture_release_is_enabled = {
+	has_global_flag = fallout_fracture_release_enabled
+	fallout_fracture_conflict_ledger_is_current = yes
+	NOT = { has_global_flag = fallout_tag_preservation_failed }
+}

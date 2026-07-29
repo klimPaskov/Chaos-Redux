@@ -258,10 +258,6 @@ defined_text = {
 		localization_key = "scenarios.soviet_collapse_type"
 	}
 	text = {
-		trigger = { check_variable = { settings_export_scalar_key = 51 } }
-		localization_key = "scenarios.final_silence_type"
-	}
-	text = {
 		trigger = { check_variable = { settings_export_scalar_key = 52 } }
 		localization_key = "scenarios.fury_type"
 	}
@@ -10451,7 +10447,12 @@ defined_text = {
 defined_text = {
 	name = GetFalloutSystemScenarioDisabledCheckboxSprite
 	text = {
-		trigger = { is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger } }
+		trigger = {
+			OR = {
+				is_in_array = { global.disabled_world_end_scenarios = constant:fallout_consequence_id.settings_ledger }
+				has_global_flag = fallout_air_contamination_permanent_99
+			}
+		}
 		localization_key = "GFX_chaosx_checkbox_checked"
 	}
 	text = {

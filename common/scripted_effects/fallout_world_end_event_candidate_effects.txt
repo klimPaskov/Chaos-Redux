@@ -3313,6 +3313,147 @@ fallout_event_build_pilot_candidate_registries = {
 		clear_variable = fallout_event_663_candidate_disease
 		clear_variable = fallout_event_663_candidate_pressure
 		clear_variable = fallout_event_663_candidate_phase
+
+			# Work for Rations selects the lowest owned Food Compact harvest state
+			# with a produced Air Winter food snapshot. The candidate carries only
+			# the native state id. The opening receipt reauthenticates every ledger.
+			set_temp_variable = { fallout_event_pilot_work_target = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_work_food = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_work_exposure = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_work_supply = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_work_for_rations_harvest_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_work_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_work_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_work_target = fallout_event_pilot_state_candidate_id }
+					set_temp_variable = { fallout_event_pilot_work_food = fallout_pretransition_air_winter_food_reserve }
+					set_temp_variable = { fallout_event_pilot_work_exposure = fallout_pretransition_air_winter_exposure }
+					set_temp_variable = { fallout_event_pilot_work_supply = fallout_state_supply_access_current }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { fallout_event_pilot_work_target > constant:fallout_event_runtime.zero }
+					fallout_event_670_candidate_country_can_pay_any_branch = yes
+					has_variable = global.fallout_event_timeline_elapsed_days
+					check_variable = { global.fallout_event_timeline_elapsed_days value = constant:fallout_event_670_threshold.minimum_timeline_elapsed_day compare = greater_than_or_equals }
+					check_variable = { global.fallout_event_timeline_elapsed_days value = constant:fallout_event_670_threshold.maximum_candidate_issue_elapsed_day compare = less_than_or_equals }
+				}
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.work_for_rations_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.work_for_rations_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.global_survival_and_society }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.food_security }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.work_for_rations_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.work_for_rations_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_670_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_pilot_work_exposure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_pilot_work_food }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_pilot_work_supply }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_four }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_work_target }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.work_for_rations_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_work_target
+			clear_temp_variable = fallout_event_pilot_work_food
+			clear_temp_variable = fallout_event_pilot_work_exposure
+			clear_temp_variable = fallout_event_pilot_work_supply
+
+			# The Battalion's Bread List follows a completed Work for Rations
+			# state memory. The lowest authenticated granary state wins so the
+			# candidate row is deterministic for a fixed world state.
+			set_temp_variable = { fallout_event_pilot_hungry_battalion_target = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_hungry_battalion_food = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_hungry_battalion_exposure = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_hungry_battalion_supply = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_hungry_battalion_granary_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_hungry_battalion_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_hungry_battalion_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_hungry_battalion_target = fallout_event_pilot_state_candidate_id }
+					set_temp_variable = { fallout_event_pilot_hungry_battalion_food = fallout_pretransition_air_winter_food_reserve }
+					set_temp_variable = { fallout_event_pilot_hungry_battalion_exposure = fallout_pretransition_air_winter_exposure }
+					set_temp_variable = { fallout_event_pilot_hungry_battalion_supply = fallout_state_supply_access_current }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { fallout_event_pilot_hungry_battalion_target > constant:fallout_event_runtime.zero }
+					fallout_event_677_candidate_country_can_pay_any_branch = yes
+					has_variable = global.fallout_event_timeline_elapsed_days
+					check_variable = { global.fallout_event_timeline_elapsed_days value = constant:fallout_event_677_threshold.minimum_timeline_elapsed_day compare = greater_than_or_equals }
+					check_variable = { global.fallout_event_timeline_elapsed_days value = constant:fallout_event_677_threshold.maximum_timeline_elapsed_day compare = less_than_or_equals }
+				}
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.hungry_battalion_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.hungry_battalion_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.global_survival_and_society }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.food_security }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.hungry_battalion_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.hungry_battalion_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.first_winter_year }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_677_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_pilot_hungry_battalion_exposure }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_pilot_hungry_battalion_food }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_pilot_hungry_battalion_supply }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_region_match = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_required_region = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_four }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_hungry_battalion_target }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.hungry_battalion_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			clear_temp_variable = fallout_event_pilot_hungry_battalion_target
+			clear_temp_variable = fallout_event_pilot_hungry_battalion_food
+			clear_temp_variable = fallout_event_pilot_hungry_battalion_exposure
+			clear_temp_variable = fallout_event_pilot_hungry_battalion_supply
+
 			# Water row. The state trigger proves an existing produced water source,
 			# a current Fallout state row, and the native owner relationship.
 			set_temp_variable = { fallout_event_pilot_water_target = constant:fallout_event_runtime.zero }

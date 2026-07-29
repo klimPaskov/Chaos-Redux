@@ -1,8 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Great Lakes Lock Winter
+## Current reconciliation after The Battalion's Bread List
 
-The living-world pilot now contains `544` defined event blocks across the reviewed ordinary range through `669`, including the dormant Great Lakes Lock Winter tranche at `663` through `669`. The current reviewed ordinary row count is `65`. Great Lakes Lock Winter uses candidate `663`, transaction `710066`, route `7166`, and Event Log history `9172`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `558` defined event blocks across the reviewed ordinary range through `683`, including the dormant Battalion's Bread List tranche at `677` through `683`. The current reviewed ordinary row count is `68`. The Battalion's Bread List uses candidate `677`, transaction `710068`, route `7168`, and survivor Event Log history `9174`. The reserved route upper bound is `7169`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
@@ -13,6 +13,16 @@ Canal Schedule reserves candidate `628`, transaction `710061`, route `7161`, and
 Second Dust Bowl reserves candidate `656`, transaction `710065`, route `7165`, and Event Log history `9171`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native North American plains state and does not add Air Contamination, mutate the native state category, transfer population between states, or create a named historical district. Committed-row cleanup can release same-generation target drift through the generic country registry, and the generation-reset abort path statically handles pre-result stale cancellation and generation drift before runtime rebuild.
 
 Great Lakes Lock Winter reserves candidate `663`, transaction `710066`, route `7166`, and Event Log history `9172`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. It selects a native coastal Great Lakes state with a non-damaged naval base, infrastructure, surviving population, current Air Winter records, and bounded survival resources. Its four branches change lock policy, food and fuel movement, port access, trust, and thaw inspection memory without creating a new state or successor tag. Its generation-reset abort path statically authenticates the state, terminalizes stale issued rows, removes cleanup tombstones, records cancellation history, and releases the reservation before shared runtime teardown.
+
+## Work for Rations reviewed tranche
+
+Work for Rations reserves candidate `670`, transaction `710067`, route `7167`, event blocks `670` through `676`, and survivor Event Log history `9173`. The candidate producer now emits one lowest-id native Food Compact harvest state with current Food, Supply Access, Air Winter, population, controller, first-year issue, and generation evidence. It also requires at least one complete affordable branch and carries no false regional match. The human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. Its four branches are Universal Duty, Paid Labor, Refugee Work Program, and Mechanized Harvest. The result resolves after 35 days and the callback after 270 days. Branch outcomes affect Food Compact labor and production, Air Winter, supply, manpower, integration, maintenance, and Deaths-backed failure. Low-Adaptation mechanized results add the maintenance burden, while every resolved Refugee result preserves an owner-state host memory with its outcome. The chain writes only post-consequence survivor memory history and does not register Fallout itself as a public event log or evolution row. It remains dormant and contributes zero release-floor blocks. The dedicated proof is `FALLOUT_WORK_FOR_RATIONS_CHAIN_PROOF.md`.
+
+Work for Rations now writes a durable policy-memory generation and owner receipt with every resolved branch. Candidate 677 requires that receipt, which prevents a stale branch flag from qualifying after ownership or Fallout-generation drift.
+
+## The Battalion's Bread List reviewed tranche
+
+The Battalion's Bread List reserves candidate `677`, transaction `710068`, route `7168`, event blocks `677` through `683`, and survivor Event Log history `9174`. The candidate producer selects the lowest current-generation native Food Compact granary state with a Work for Rations policy receipt, a produced Air Winter snapshot, surviving population, supply access, minimum Cohesion, a meaningful fielded army, and at least one complete affordable branch. Its protected issue, equal measure, field requisition, and rear-echelon stand-down branches resolve after `28` days and receive a ration review after `210` days. Results alter Food Compact resources, military readiness, Air Winter, Supply Access, civil-military ledgers, buildings, and Deaths-backed bounded losses. Stand-down cannot delete a division or refund equipment, and its personnel release has a durable one-use receipt. The chain writes only post-consequence survivor memory history and does not register Fallout itself as an Event Log event or evolution. It remains dormant and contributes zero release-floor blocks. The dedicated proof is `FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md`.
 
 ## Purpose
 
@@ -747,7 +757,7 @@ The row requires a current-generation owner-controlled Sub-Saharan African state
 
 The chain carries four authored resource-works branches with exact costs, deterministic result and callback grading, a 42-day result, a 270-day operating-season callback, native infrastructure or industrial damage on failure, bounded Deaths effects, durable country ledgers, Event Log history, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not create a mine or generator building, alter a native deposit, create a country, transfer population across states, or add a recurring scheduler.
 
-The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven. The dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.
+The chain remains dormant and outside release-floor credit. Its generation-reset opening path snapshots the issued state before cancellation so stale reservation release remains state-bound. Scheduler activation, host authority, save recovery, delayed delivery, multiplayer behavior, and runtime Event Log rendering remain unproven. The dedicated proof is `FALLOUT_MINE_GENERATOR_PROOF.md`.
 
 ## The New Year Without Fireworks tranche
 
