@@ -1012,18 +1012,138 @@ africa_world_commit_package_successor = {
 			africa_world_package_successor_resolution_is_possible = yes
 			FROM = { has_country_flag = africa_world_package_successor_candidate }
 		}
-		set_country_flag = africa_world_package_successor_recorded
+		if = {
+			limit = { has_country_flag = africa_world_package_sovereign_complete }
+			event_target:africa_host = {
+				subtract_from_variable = { africa_world_packages_settled_count = constant:africa_value.one }
+				subtract_from_variable = { africa_world_packages_sovereign_complete_count = constant:africa_value.one }
+				clamp_variable = { var = africa_world_packages_settled_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
+				clamp_variable = { var = africa_world_packages_sovereign_complete_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
+			}
+		}
+		if = {
+			limit = { has_country_flag = africa_world_terminal_resolution_counted }
+			event_target:africa_host = {
+				subtract_from_variable = { africa_world_terminal_resolved_count = constant:africa_value.one }
+				clamp_variable = { var = africa_world_terminal_resolved_count min = constant:africa_value.zero max = constant:africa_world_order.required_package_count }
+			}
+		}
+		FROM = {
+			set_country_flag = africa_world_package_actor
+			set_country_flag = africa_world_package_installed
+			set_country_flag = africa_world_package_successor_recorded
+			set_country_flag = africa_world_package_implementation_ready
+			set_variable = { africa_world_continent_id = ROOT.africa_world_continent_id }
+			set_variable = { africa_world_package_status = constant:africa_world_package_status.independent }
+			set_variable = { africa_world_package_install_outcome = ROOT.africa_world_package_install_outcome }
+			set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.active }
+			set_variable = { africa_world_package_step = constant:africa_world_package_step.none }
+			set_variable = { africa_world_package_completed_step_count = constant:africa_value.zero }
+			set_variable = { africa_world_package_capacity = ROOT.africa_world_package_capacity }
+			set_variable = { africa_world_package_legitimacy = ROOT.africa_world_package_legitimacy }
+			set_variable = { africa_world_package_authority = ROOT.africa_world_package_authority }
+			add_to_variable = { africa_world_package_authority = constant:africa_world_roster.successor_authority_gain }
+			clamp_variable = { var = africa_world_package_capacity min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			if = {
+				limit = { ROOT = { has_country_flag = africa_world_middle_east_package } }
+				set_country_flag = africa_world_middle_east_package
+				load_focus_tree = { tree = africa_middle_east_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_crossroads_arab_compact = ROOT.africa_crossroads_arab_compact }
+				set_variable = { africa_crossroads_persian_influence = ROOT.africa_crossroads_persian_influence }
+				set_variable = { africa_crossroads_anatolian_power = ROOT.africa_crossroads_anatolian_power }
+				set_variable = { africa_crossroads_minority_guarantees = ROOT.africa_crossroads_minority_guarantees }
+				set_variable = { africa_crossroads_holy_site_legitimacy = ROOT.africa_crossroads_holy_site_legitimacy }
+				set_variable = { africa_crossroads_water_security = ROOT.africa_crossroads_water_security }
+				set_variable = { africa_crossroads_oil_sovereignty = ROOT.africa_crossroads_oil_sovereignty }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_world_europe_package } }
+				set_country_flag = africa_world_europe_package
+				load_focus_tree = { tree = africa_europe_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_europe_industrial_integration = ROOT.africa_europe_industrial_integration }
+				set_variable = { africa_europe_national_sovereignty = ROOT.africa_europe_national_sovereignty }
+				set_variable = { africa_europe_war_memory = ROOT.africa_europe_war_memory }
+				set_variable = { africa_europe_ideological_balance = ROOT.africa_europe_ideological_balance }
+				set_variable = { africa_europe_colonial_debt = ROOT.africa_europe_colonial_debt }
+				set_variable = { africa_europe_border_settlement = ROOT.africa_europe_border_settlement }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_world_asia_package } }
+				set_country_flag = africa_world_asia_package
+				load_focus_tree = { tree = africa_asia_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_asia_eastern_centre = ROOT.africa_asia_eastern_centre }
+				set_variable = { africa_asia_southern_centre = ROOT.africa_asia_southern_centre }
+				set_variable = { africa_asia_inland_centre = ROOT.africa_asia_inland_centre }
+				set_variable = { africa_asia_archipelago_centre = ROOT.africa_asia_archipelago_centre }
+				set_variable = { africa_asia_food_and_river_security = ROOT.africa_asia_food_and_river_security }
+				set_variable = { africa_asia_corridor_coordination = ROOT.africa_asia_corridor_coordination }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_world_north_america_package } }
+				set_country_flag = africa_world_north_america_package
+				load_focus_tree = { tree = africa_north_america_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_north_america_industrial_balance = ROOT.africa_north_america_industrial_balance }
+				set_variable = { africa_north_america_federal_representation = ROOT.africa_north_america_federal_representation }
+				set_variable = { africa_north_america_national_sovereignty = ROOT.africa_north_america_national_sovereignty }
+				set_variable = { africa_north_america_caribbean_inclusion = ROOT.africa_north_america_caribbean_inclusion }
+				set_variable = { africa_north_america_indigenous_settlement = ROOT.africa_north_america_indigenous_settlement }
+				set_variable = { africa_north_america_migration_compact = ROOT.africa_north_america_migration_compact }
+				set_variable = { africa_north_america_command_integration = ROOT.africa_north_america_command_integration }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_world_south_america_package } }
+				set_country_flag = africa_world_south_america_package
+				load_focus_tree = { tree = africa_south_america_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_south_america_andean_voice = ROOT.africa_south_america_andean_voice }
+				set_variable = { africa_south_america_amazon_voice = ROOT.africa_south_america_amazon_voice }
+				set_variable = { africa_south_america_plata_voice = ROOT.africa_south_america_plata_voice }
+				set_variable = { africa_south_america_indigenous_representation = ROOT.africa_south_america_indigenous_representation }
+				set_variable = { africa_south_america_resource_sovereignty = ROOT.africa_south_america_resource_sovereignty }
+				set_variable = { africa_south_america_debt_freedom = ROOT.africa_south_america_debt_freedom }
+			}
+			else_if = {
+				limit = { ROOT = { has_country_flag = africa_world_oceania_package } }
+				set_country_flag = africa_world_oceania_package
+				load_focus_tree = { tree = africa_oceania_world_focus_tree keep_completed = yes }
+				africa_world_initialise_distinct_package_mechanic = yes
+				set_variable = { africa_oceania_convoy_reach = ROOT.africa_oceania_convoy_reach }
+				set_variable = { africa_oceania_island_representation = ROOT.africa_oceania_island_representation }
+				set_variable = { africa_oceania_naval_protection = ROOT.africa_oceania_naval_protection }
+				set_variable = { africa_oceania_indigenous_settlement = ROOT.africa_oceania_indigenous_settlement }
+				set_variable = { africa_oceania_air_network = ROOT.africa_oceania_air_network }
+				set_variable = { africa_oceania_dispersed_industry = ROOT.africa_oceania_dispersed_industry }
+			}
+			africa_world_initialise_package_polity_foundation = yes
+			africa_world_refresh_package_polity_proof = yes
+			mark_focus_tree_layout_dirty = yes
+		}
+		event_target:africa_host = {
+			remove_from_array = { array = africa_world_package_actors value = ROOT }
+			if = {
+				limit = { NOT = { is_in_array = { array = africa_world_package_actors value = FROM } } }
+				add_to_array = { array = africa_world_package_actors value = FROM }
+			}
+		}
 		clr_country_flag = africa_world_package_successor_review_open
 		clr_country_flag = africa_world_package_heartland_lost
-		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.successor }
-		add_to_variable = { africa_world_package_authority = constant:africa_world_roster.successor_authority_gain }
-		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
-		FROM = {
-			clr_country_flag = africa_world_package_successor_candidate
-			set_country_flag = africa_world_package_successor_recorded
-			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.successor }
-		}
+		set_country_flag = africa_world_package_predecessor_replaced
+		clr_country_flag = africa_world_package_actor
+		clr_country_flag = africa_world_package_installed
+		clr_country_flag = africa_world_package_sovereign_complete
+		clr_country_flag = africa_world_union_partner
+		clr_country_flag = africa_world_submission_settlement
+		clr_country_flag = africa_world_package_terminal_absorbed
+		clr_country_flag = africa_world_package_terminally_resolved
+		clr_country_flag = africa_world_terminal_resolution_counted
 		for_each_scope_loop = { array = africa_world_package_successor_candidates clr_country_flag = africa_world_package_successor_candidate }
+		clear_array = africa_world_package_successor_candidates
 	}
 }
 
@@ -1035,6 +1155,7 @@ africa_world_record_exile_resolution = {
 		clr_country_flag = africa_world_package_successor_review_open
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.exile }
 		set_country_flag = africa_world_constituent_exile_recorded
+		africa_world_record_terminal_resolution = yes
 	}
 }
 
@@ -1046,7 +1167,7 @@ africa_world_record_package_breakup = {
 		clr_country_flag = africa_world_package_breakup_review_open
 		clr_country_flag = africa_world_package_successor_review_open
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.terminally_resolved }
-		subtract_from_variable = { africa_world_package_authority = constant:africa_world_roster.breakup_authority_loss }
+		add_to_variable = { africa_world_package_authority = constant:africa_world_roster.breakup_authority_loss }
 		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 		for_each_scope_loop = {
 			array = africa_world_constituent_countries
@@ -1057,6 +1178,7 @@ africa_world_record_package_breakup = {
 			set_country_flag = africa_world_constituent_withdrawn
 			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
 		}
+		africa_world_record_terminal_resolution = yes
 	}
 }
 
@@ -1102,6 +1224,7 @@ africa_world_install_current_package = {
 				add_to_array = { array = africa_world_package_actors value = PREV }
 				add_to_variable = { africa_world_packages_installed_count = constant:africa_value.one }
 			}
+			remove_from_array = { array = africa_world_package_candidates value = PREV }
 			if = {
 				limit = { PREV = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } } }
 				remove_from_array = { array = africa_world_package_pending_continents value = constant:africa_world_continent.middle_east }
