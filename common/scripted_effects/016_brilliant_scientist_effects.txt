@@ -584,6 +584,95 @@ brilliant_scientist_refresh_government_control = {
 	else = {
 		set_country_flag = brilliant_scientist_control_lost
 	}
+	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
+}
+
+# COUNTRY scope. Exactly one host lifecycle idea is present at a time. The
+# world-threat idea is independent because it represents an external strategic
+# state rather than the host's relationship with Kruger.
+brilliant_scientist_refresh_directorate_idea_lifecycle = {
+	if = { limit = { has_idea = brilliant_scientist_kruger_appointment } remove_ideas = brilliant_scientist_kruger_appointment }
+	if = { limit = { has_idea = brilliant_scientist_kruger_method } remove_ideas = brilliant_scientist_kruger_method }
+	if = { limit = { has_idea = brilliant_scientist_national_scientific_dependence } remove_ideas = brilliant_scientist_national_scientific_dependence }
+	if = { limit = { has_idea = brilliant_scientist_public_scientific_renaissance } remove_ideas = brilliant_scientist_public_scientific_renaissance }
+	if = { limit = { has_idea = brilliant_scientist_controlled_secret_compact } remove_ideas = brilliant_scientist_controlled_secret_compact }
+	if = { limit = { has_idea = brilliant_scientist_unrestricted_laboratory_state } remove_ideas = brilliant_scientist_unrestricted_laboratory_state }
+	if = { limit = { has_idea = brilliant_scientist_scientific_vacuum } remove_ideas = brilliant_scientist_scientific_vacuum }
+
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_current_host
+			NOT = { has_country_flag = brilliant_scientist_kruger_departed }
+			has_character = KRG_warren_kruger
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_evolution_iv_policy_concession }
+			add_ideas = brilliant_scientist_unrestricted_laboratory_state
+		}
+		else_if = {
+			limit = {
+				has_country_flag = brilliant_scientist_public_compact
+				OR = {
+					has_country_flag = brilliant_scientist_regional_science_compact
+					has_country_flag = brilliant_scientist_directorate_publication_completed
+				}
+			}
+			add_ideas = brilliant_scientist_public_scientific_renaissance
+		}
+		else_if = {
+			limit = {
+				has_country_flag = brilliant_scientist_secret_directorate
+				OR = {
+					has_country_flag = brilliant_scientist_evolution_iv_policy_safe_regional_compact
+					has_country_flag = brilliant_scientist_evolution_iii_policy_negotiated_limits
+				}
+			}
+			add_ideas = brilliant_scientist_controlled_secret_compact
+		}
+		else_if = {
+			limit = {
+				has_country_flag = brilliant_scientist_directorate_publication_completed
+				check_variable = {
+					var = brilliant_scientist_independently_replicated_family_count
+					value = constant:brilliant_scientist_idea_lifecycle.method_replication_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			add_ideas = brilliant_scientist_kruger_method
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_dependence
+					value = constant:brilliant_scientist_idea_lifecycle.dependence_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			add_ideas = brilliant_scientist_national_scientific_dependence
+		}
+		else = {
+			add_ideas = brilliant_scientist_kruger_appointment
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = brilliant_scientist_former_host
+			has_country_flag = brilliant_scientist_kruger_departed
+		}
+		add_ideas = brilliant_scientist_scientific_vacuum
+	}
+
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_world_threat_active
+			NOT = { has_idea = brilliant_scientist_world_threat_project_state }
+		}
+		add_ideas = brilliant_scientist_world_threat_project_state
+	}
+	else_if = {
+		limit = { has_idea = brilliant_scientist_world_threat_project_state }
+		remove_ideas = brilliant_scientist_world_threat_project_state
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -989,6 +1078,7 @@ brilliant_scientist_refresh_project_counts = {
 		}
 		add_to_temp_variable = { brilliant_scientist_project_count_index = constant:brilliant_scientist_value.one }
 	}
+	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
 }
 
 # COUNTRY scope. Inputs: temporary family and requested stage. The request may
@@ -2694,6 +2784,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 		brilliant_scientist_reconcile_old_host_after_transfer = yes
 		clr_country_flag = brilliant_scientist_current_host
 		set_country_flag = brilliant_scientist_kruger_departed
+		brilliant_scientist_refresh_directorate_idea_lifecycle = yes
 
 		if = {
 			limit = { has_event_target = brilliant_scientist_primary_facility }
