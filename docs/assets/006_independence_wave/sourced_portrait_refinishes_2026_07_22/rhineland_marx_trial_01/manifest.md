@@ -32,7 +32,7 @@ This package contains one sourced real-male Rhineland civic-leader portrait cand
 - Style-only reference: `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png`.
 - Prompt: `prompts/RHI_wilhelm_marx_identity_preserve_trial_01.txt`.
 - ImageGen source result: `imagegen_results/RHI_wilhelm_marx_identity_preserve_trial_01.png`, `1086x1448`, SHA-256 `7FE508AE31CD7D2CC0AC79768222FAFDBC4925BFB85AD818BCDF31296FDB1E69`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit full-result crop `(0, 0, 1086, 1448)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit full-result crop `(0, 0, 1086, 1448)`, canonical vanilla leader reference directory.
 - Processed `156x210` PNG: `processed_png/portrait_RHI_independence_wave_provisional_directorate.png`, SHA-256 `757A0DEAFF0A57595C6A87E3BFBC84E39D1187FA23871DA4EA85CEA6CD736839`.
 - Review sheet: `contact_sheets/RHI_wilhelm_marx_source_result_reference.png`, SHA-256 `66C3BBC688C1F1A679E691CA6173A163C394E16B8489648F8D9815D2EF836056`.
 - Processor metadata: `metadata/RHI_wilhelm_marx_processing.json`.

@@ -44,7 +44,7 @@ The copied master is byte-identical to the independently researched source packa
 
 ## Deterministic 156x210 processing
 
-- Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, `leader` mode.
+- Processor: `retired_advisor_card_processor_REMOVED`, `leader` mode.
 - Raw-result crop: `(left=0, top=80, right=1023, bottom=1457)`.
 - Output: `processed_png/portrait_WLS_independence_wave_mountain_commandant.png`.
 - Output dimensions: `156x210`.

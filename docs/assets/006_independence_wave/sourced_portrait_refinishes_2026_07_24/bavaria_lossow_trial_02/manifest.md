@@ -44,7 +44,7 @@ They are used only by the deterministic processor review sheet.
 
 ## Deterministic candidate
 
-The candidate was processed with `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader --role-family commander`.
+The candidate was processed with `retired_advisor_card_processor_REMOVED leader --role-family commander`.
 
 The processed candidate is `processed_png/portrait_BAY_independence_wave_mountain_commandant.png`, `156x210`, SHA-256 `3185DDE35415BF58FD31E5152A01F6E05AA3A64F4B1607874D028BC9106B6B47`.
 

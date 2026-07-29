@@ -22,7 +22,7 @@ The exact prompt is retained at `prompts/RHI_gustav_adolf_von_zangen_identity_pr
 The raw result is `imagegen_results/RHI_gustav_adolf_von_zangen_identity_preserve_trial_01.png`, native `1023x1537`, and its SHA-256 is recorded in `hashes.sha256`.
 The prompt preserves face geometry, asymmetry, age, expression, hairline, pose, and uniform silhouette while neutralizing explicit political emblems, Nazi symbols, decorations, rank insignia, and award shapes into unmarked fabric.
 
-The deterministic finish used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, which is the repository's full `156x210` export mode for leaders and commanders.
+The deterministic finish used `retired_advisor_card_processor_REMOVED leader`, which is the repository's full `156x210` export mode for leaders and commanders.
 The raw-result crop was `(0,100,1023,1477)`, `source_kind` was `real`, and the built-in processor sheet used canonical leader references only as a finishing control.
 The processed candidate is `processed_png/portrait_RHI_independence_wave_river_commandant.png`, an opaque `156x210` RGBA image.
 The exact processor record is `metadata/RHI_gustav_adolf_von_zangen_processing.json`.

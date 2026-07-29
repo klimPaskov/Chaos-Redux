@@ -11,7 +11,7 @@ Machine-readable source/processed/runtime records and hashes are in [`manifests/
 
 ## Large leader portraits
 
-All eight source masters are fictional, all-male institutional groups. Each was finished with `advisor_icon_processing.py leader` in collective mode against the canonical leader-reference family, exported at exactly 156x210, and visually reviewed by the parent agent.
+All eight source masters are fictional, all-male institutional groups. Each was finished with `retired_advisor_card_processor_REMOVED leader` in collective mode against the canonical leader-reference family, exported at exactly 156x210, and visually reviewed by the parent agent.
 
 | Portrait | Source | Processed PNG | Runtime DDS | Sprite | Status |
 |---|---|---|---|---|---|

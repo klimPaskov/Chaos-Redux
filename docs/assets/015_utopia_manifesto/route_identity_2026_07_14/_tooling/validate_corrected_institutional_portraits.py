@@ -166,7 +166,7 @@ def validate_portraits() -> tuple[list[dict[str, object]], dict[str, object]]:
             "imagegen_handle": details["handle"],
             "source_kind": "symbolic",
             "crop": expected_crop,
-            "processor": ".agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader",
+            "processor": "retired_advisor_card_processor_REMOVED leader",
             "processed": rel(processed),
             "processed_dimensions": [156, 210],
             "processed_sha256": sha256(processed),

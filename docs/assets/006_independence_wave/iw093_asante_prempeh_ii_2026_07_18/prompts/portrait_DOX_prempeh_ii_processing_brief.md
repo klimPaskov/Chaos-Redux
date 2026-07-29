@@ -2,7 +2,7 @@
 
 No ImageGen prompt was used. Prempeh II is a real historical person, so the
 `chaos-redux-event-assets` real-person rule requires an attributed archival
-source and the deterministic `advisor_icon_processing.py leader` finish.
+source and the deterministic `retired_advisor_card_processor_REMOVED leader` finish.
 
 ## Identity-preservation brief
 
@@ -23,7 +23,7 @@ Source dimensions: `393x563` pixels.
 Rejected candidate crop in source pixels: `left=105, top=5, right=275, bottom=234`.
 
 ```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader `
+python -B retired_advisor_card_processor_REMOVED leader `
 	docs/assets/006_independence_wave/iw093_asante_prempeh_ii_2026_07_18/source_image/CO_1069-44-12_prempeh_ii_1935.jpg `
 	docs/assets/006_independence_wave/iw093_asante_prempeh_ii_2026_07_18/processed_png/portrait_DOX_prempeh_ii.png `
 	--source-kind real `

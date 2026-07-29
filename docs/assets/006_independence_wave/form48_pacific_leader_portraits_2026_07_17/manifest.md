@@ -35,7 +35,7 @@ The runtime copy is byte-identical to the retained DDS.
 ## Processing and conversion
 
 The canonical portrait processor
-`.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`
+`retired_advisor_card_processor_REMOVED`
 version `5.0` (render version `2.0`, SHA-256
 `e248979f21784c016e69c5458b9925c32177d6af29f2cca1a82bfaaffbe1f23c`)
 ran in `leader` mode under Python `3.9.12` and Pillow `11.1.0`.

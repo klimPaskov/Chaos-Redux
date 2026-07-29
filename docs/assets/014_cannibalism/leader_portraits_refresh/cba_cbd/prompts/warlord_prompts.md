@@ -92,7 +92,7 @@ The role/action column records the decisive per-portrait prompt delta. It is the
 
 ## Processing and review
 
-Each selected master was passed through .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader with an explicit full-source crop, fictional source mode, the canonical leader reference directory, a 156x210 output, a JSON metadata record, and a per-portrait review sheet. The selected processed PNG was then converted through .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py at 156x210.
+Each selected master was passed through retired_advisor_card_processor_REMOVED leader with an explicit full-source crop, fictional source mode, the canonical leader reference directory, a 156x210 output, a JSON metadata record, and a per-portrait review sheet. The selected processed PNG was then converted through .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py at 156x210.
 
 The final native-size repaint sheets are:
 

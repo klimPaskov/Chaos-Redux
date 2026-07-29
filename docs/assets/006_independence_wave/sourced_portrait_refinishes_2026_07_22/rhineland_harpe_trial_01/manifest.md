@@ -33,7 +33,7 @@ The original crop contains a Nazi emblem on the cap crown. The first direct Imag
 - Prompt: `prompts/RHI_josef_harpe_identity_preserve_trial_01.txt`.
 - ImageGen source result: `imagegen_results/RHI_josef_harpe_identity_preserve_trial_01.png`.
 - ImageGen source-result SHA-256: `7AD008E1DE5A57F77D10D4FB44FC1AFA76D3B451601AC6439B437A73086A8C`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
 - Processed `156x210` PNG: `processed_png/portrait_RHI_independence_wave_river_commandant.png`.
 - Processed PNG SHA-256: `D32AB4E289CC4BB9B2E98ADD0947E388BFD14A3F1040F390253D4AADDA755950`.
 - Full comparison sheet: `contact_sheets/RHI_josef_harpe_full_source_result_comparison.png`.

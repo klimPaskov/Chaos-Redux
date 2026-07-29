@@ -46,7 +46,7 @@ Each identifier below has the matching files `source_png/<identifier>_source.png
 
 - Source type: fictional built-in ImageGen; no real-person or actor likeness requested.
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/den_thorvald_stauning.png`, `ire_eamon_de_valera.png`, and `fin_carl_mannerheim.png`.
-- Finish: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
+- Finish: `retired_advisor_card_processor_REMOVED leader`, explicit full-source crop, `source-kind fictional`, 156x210 output, processor version 2.0.
 - DDS conversion: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --width 156 --height 210`, producing uncompressed 32-bit RGBA/BGRA-compatible DDS files.
 - Historical visual decision: 28/28 approved as bald fictional adult men with readable actions, distinct silhouettes, matte opaque oil/gouache handling, simplified painted facial planes, muted interwar values, and no photographic, modern-digital, prison, cell, bar, cage, restraint, or confinement imagery.
 

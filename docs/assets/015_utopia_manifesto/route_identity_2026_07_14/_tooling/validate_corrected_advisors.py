@@ -39,9 +39,9 @@ REVIEWS = BASE / "contact_sheets/advisor_reviews"
 METADATA = BASE / "metadata/advisors"
 CONTACT = BASE / "contact_sheets"
 RUNTIME = REPO / "gfx/leaders/015_utopia_manifesto/advisors"
-PROCESSOR = REPO / ".agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py"
+PROCESSOR = REPO / "retired_advisor_card_processor_REMOVED"
 CONVERTER = REPO / ".agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py"
-OVERLAY_PACKAGE = REPO / ".agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays"
+OVERLAY_PACKAGE = REPO / ".agents/skills/chaos-redux-event-assets/assets/retired_advisor_overlay_kit_REMOVED"
 OVERLAY_MANIFEST = OVERLAY_PACKAGE / "advisor_dossier_overlay_manifest.json"
 OVERLAY_V3 = OVERLAY_PACKAGE / "v3"
 FRAME_SOURCE = OVERLAY_V3 / "advisor_frame_shadowless_imagegen_source.png"
@@ -725,7 +725,7 @@ def regenerate(stem: str, spec: dict[str, object]) -> None:
 		"--source-kind", "fictional", "--crop", *[str(value) for value in spec["approved_crop"]],
 		"--face-box", *[str(value) for value in spec["approved_face_box"]],
 		"--advisor-overlay-manifest", str(OVERLAY_MANIFEST),
-		"--portrait-provenance-manifest", str(PORTRAIT_MANIFEST),
+		"--retired_advisor_provenance_contract_REMOVED", str(PORTRAIT_MANIFEST),
 		"--advisor-frame-source", str(FRAME_SOURCE), "--advisor-frame-overlay", str(FRAME_OVERLAY),
 		"--advisor-paper-source", str(PAPER_SOURCE), "--advisor-paper-overlay", str(PAPER_OVERLAY),
 		"--review-sheet", str(review), "--metadata", str(metadata_path), "--force",

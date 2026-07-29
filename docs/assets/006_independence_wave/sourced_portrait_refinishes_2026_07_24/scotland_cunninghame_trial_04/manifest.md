@@ -45,7 +45,7 @@ No advisor, dossier, `_small`, female, fictional, alternate, flag, focus, decisi
 
 ## Deterministic 156x210 processing
 
-- Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`.
+- Processor: `retired_advisor_card_processor_REMOVED`.
 - Mode: `leader`, which is the processor's full-size `156x210` country-leader and commander export mode.
 - Source kind: `real`.
 - Raw-result crop: `(0, 0, 1082, 1454)`.

@@ -48,7 +48,7 @@ The independent likeness gate must determine whether the output actually obeys t
 
 ## Deterministic 156x210 commander processing
 
-- Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`.
+- Processor: `retired_advisor_card_processor_REMOVED`.
 - Processor positional mode: `leader`, the backward-compatible full-size `156x210` export mode.
 - Required role family: `commander`.
 - Processor SHA-256: `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`.

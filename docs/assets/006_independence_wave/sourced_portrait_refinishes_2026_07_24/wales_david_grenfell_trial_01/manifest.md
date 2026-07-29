@@ -60,7 +60,7 @@ The skill-local crop utility extracted the rectangle without resampling, enhance
 | Raw repaint | `imagegen_results/WLS_david_grenfell_identity_preserve_trial_01.png` |
 | Raw dimensions | `1074x1464` |
 | Raw SHA-256 | `4F3B0A31A2A7360EDFE549E038FDC7DBD688B89460999FF608D3447C956ADF79` |
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, version `5.0` |
+| Processor | `retired_advisor_card_processor_REMOVED`, version `5.0` |
 | Mode and role | `leader`, role family `leader`, source kind `real` |
 | Raw crop | `(0,9,1074,1455)` |
 | Candidate | `processed_png/portrait_WLS_independence_wave_national_council.png` |

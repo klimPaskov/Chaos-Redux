@@ -35,7 +35,7 @@ Status: `rejected_identity_runtime_hold`
 - Identity input: exact crop above.
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/ire_eamon_de_valera.png` and `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png`.
 - Raw ImageGen result: `imagegen_results/ARX_emilio_lussu_identity_preserve_trial_01.png`, actual decoded dimensions `1082x1454`, RGB, SHA-256 `2913582D0DFF6159651486A58BE1987CB38BF5DCB087519CC6FDF6BAC7C7F85C`.
-- Deterministic processing used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` in `leader` mode, source kind `real`, raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory.
+- Deterministic processing used `retired_advisor_card_processor_REMOVED` in `leader` mode, source kind `real`, raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory.
 - Deterministic candidate: `processed_png/portrait_ARX_independence_wave_emilio_lussu.png`, `156x210`, RGBA, SHA-256 `8AE82FE2CDC1F6F4D129DD1FEA8603C90D479D324C1BE5B382FF8539958111A1`.
 - Processor metadata: `metadata/ARX_emilio_lussu_trial_01_processing.json`, SHA-256 `ED8DF6B38D195CFF822B4B13E7AC8B242C5CDE3DD2A2D979B964087DDFD68BDB`.
 - Processor style sheet: `review_sheets/ARX_emilio_lussu_trial_01_processor_style_comparison.png`, `1344x464`, SHA-256 `614CE42410AF8210E599E785C4A56D7DB1041E00D27BD74D73293709025DCA4F`.

@@ -30,7 +30,7 @@ This package contains one sourced real-male civic portrait candidate for IW-002 
 - Prompt: `prompts/WLS_saunders_lewis_identity_preserve_trial_01.txt`.
 - Retained ImageGen result: `imagegen_results/WLS_saunders_lewis_identity_preserve_trial_01.png`.
 - ImageGen result SHA-256: `B4372C9BF01564507E1EE0770111FC3333A5D2BF417A2F8C01BBCE477B01E757`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
 - Processed `156x210` candidate: `processed_png/portrait_WLS_independence_wave_national_council.png`.
 - Processed candidate SHA-256: `3B184CE80E81246F2318F8A8221B958C78AFAD57E595B8BA5ADDA68DF44E63E0`.
 - Full source/result sheet: `contact_sheets/WLS_saunders_lewis_full_source_result_comparison.png`.

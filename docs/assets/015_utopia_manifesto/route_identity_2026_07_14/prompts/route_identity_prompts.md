@@ -16,7 +16,7 @@ The historical atlases under `source_png/atlases/` are retained only as supersed
 
 ## Advisor portrait masters
 
-Each active advisor master was generated independently and processed with the reusable generated dossier overlay kit. The frame source is `exec-e3c2e24d-4275-41ba-a25c-bdbfdb2a94ff`; the paper, paperclip, illegible notes, and wax-seal source is `exec-44055cbe-b80e-4e91-9f84-b47e46ded6c8`. Their exact sources, transparent derivatives, hashes, and composition contract are recorded in `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`.
+Each active advisor master was generated independently and processed with the reusable generated dossier overlay kit. The frame source is `exec-e3c2e24d-4275-41ba-a25c-bdbfdb2a94ff`; the paper, paperclip, illegible notes, and wax-seal source is `exec-44055cbe-b80e-4e91-9f84-b47e46ded6c8`. Their exact sources, transparent derivatives, hashes, and composition contract are recorded in `.agents/skills/chaos-redux-event-assets/assets/retired_advisor_overlay_kit_REMOVED/advisor_dossier_overlay_manifest.json`.
 
 | Advisor master | Built-in ImageGen handle |
 | --- | --- |
@@ -147,7 +147,7 @@ Each source below was created in a separate `image_gen` call using only its rout
 ## Processing record
 
 - Twenty-one independent built-in ImageGen flag masters were aspect-fitted, restrainedly graded and sharpened, resized independently to `82x52`, `41x26`, and `10x7`, and exported as uncompressed bottom-left-origin 32-bit TGA. The processor does not quantize, flatten, trace, redraw, or simplify the ImageGen heraldry. Four unsuffixed stems are exact documented aliases.
-- Four built-in ImageGen people-free symbolic institutional masters use the complete generated canvas through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader --source-kind symbolic`, per-asset metadata, and individual bundled-vanilla style-comparison sheets before `156x210` one-level uncompressed BGRA DDS export.
-- Sixteen independent fictional advisor masters use `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor --source-kind fictional` plus the generated frame and paper/seal overlays. The script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports; it draws no visible dossier artwork. The resulting `65x67` cards have transparent outer corners and one-level uncompressed BGRA DDS finals.
+- Four built-in ImageGen people-free symbolic institutional masters use the complete generated canvas through `retired_advisor_card_processor_REMOVED leader --source-kind symbolic`, per-asset metadata, and individual bundled-vanilla style-comparison sheets before `156x210` one-level uncompressed BGRA DDS export.
+- Sixteen independent fictional advisor masters use `retired_advisor_card_processor_REMOVED advisor --source-kind fictional` plus the generated frame and paper/seal overlays. The script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports; it draws no visible dossier artwork. The resulting `65x67` cards have transparent outer corners and one-level uncompressed BGRA DDS finals.
 - League emblems were split from the frozen atlas, passed through the official image-generation chroma-key helper with a soft alpha matte and spill cleanup, fitted to `64x64`, and exported as one-level uncompressed BGRA DDS.
 - `asset_records.json` binds every source, processed derivative, package final, runtime final, dimensions, and SHA-256. `validation.json` records format, decode, alpha, and distinctness checks.

@@ -11,4 +11,4 @@ Each of the eight source masters was generated independently with ImageGen as a 
 - `ASY_independence_wave_levies_guardianship`: temporary security guardianship board with male Levies-era service presence and civilian oversight.
 - `ASY_independence_wave_civic_national_assembly`: civic national assembly of distinct male representatives, no unattributed sacred symbol.
 
-The retained source masters are not real-person portraits and do not imitate a named individual. They were finished with `advisor_icon_processing.py leader` in collective mode using an explicit full-source crop and the canonical `portraits/leaders` reference family.
+The retained source masters are not real-person portraits and do not imitate a named individual. They were finished with `retired_advisor_card_processor_REMOVED leader` in collective mode using an explicit full-source crop and the canonical `portraits/leaders` reference family.

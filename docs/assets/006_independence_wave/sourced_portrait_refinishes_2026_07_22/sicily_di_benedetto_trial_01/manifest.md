@@ -65,7 +65,7 @@ retained at
   `imagegen_results/ASX_vincenzo_di_benedetto_identity_preserve_trial_01.png`,
   `1080x1457`, SHA-256
   `01404A3C74F670DCC238F6B2D68A69AE50F538CF4F48C82B19D548964AED5671`.
-- Deterministic finish: skill-local `advisor_icon_processing.py leader`, source
+- Deterministic finish: skill-local `retired_advisor_card_processor_REMOVED leader`, source
   kind `real`, crop `(0, 1, 1080, 1455)`, canonical vanilla leader review
   directory.
 - Processed candidate:

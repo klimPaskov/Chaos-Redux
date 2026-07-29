@@ -88,7 +88,7 @@ The two HOI4 portraits in this section were supplied to ImageGen as provider-sid
 
 | Field | Value |
 |---|---|
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` |
+| Processor | `retired_advisor_card_processor_REMOVED` |
 | Positional mode | `leader` |
 | Role family | `leader` |
 | Source kind | `real` |

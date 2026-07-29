@@ -80,7 +80,7 @@ It expressly preserves the unequal eye geometry, long narrow nose, asymmetrical 
 
 | Field | Value |
 |---|---|
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` |
+| Processor | `retired_advisor_card_processor_REMOVED` |
 | Positional mode | `leader` |
 | Role family | `commander` |
 | Source kind | `real` |

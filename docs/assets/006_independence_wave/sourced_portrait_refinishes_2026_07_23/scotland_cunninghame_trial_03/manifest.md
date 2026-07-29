@@ -30,7 +30,7 @@ It contains no advisor, dossier, `_small`, female, fictional, flag, focus, decis
 - Image 1 is the HathiTrust identity crop, image 2 is the Rijksmuseum same-person cross-check, and image 3 is the style-only `den_thorvald_stauning.png` leader reference.
 - The exact executed prompt is retained at `prompts/SCO_cunninghame_graham_identity_preserve_trial_03.txt`.
 - The raw ImageGen result is `imagegen_results/SCO_cunninghame_graham_identity_preserve_trial_03.png`, `1086x1448`, SHA-256 `173D558845E33077A495739EE240DD53A0DD5DD37E96D719EDAB6849A5C2474E`.
-- Deterministic `156x210` processing used the skill-local `advisor_icon_processing.py leader` mode, source kind `real`, full-result crop `(0, 0, 1086, 1448)`, and canonical vanilla leader review directory.
+- Deterministic `156x210` processing used the skill-local `retired_advisor_card_processor_REMOVED leader` mode, source kind `real`, full-result crop `(0, 0, 1086, 1448)`, and canonical vanilla leader review directory.
 - The processed candidate is `processed_png/portrait_SCO_independence_wave_civic_convention.png`, SHA-256 `BD42DE868B423268B23B412F736923E987EF848F957FDDF5A0556A2487163259`.
 - The direct source, rejected-trial, candidate, and canonical comparison is `contact_sheets/SCO_cunninghame_graham_source_trials_reference.png`, SHA-256 `5C45C141AAC5D5E238549AA18622EE7BA0BD7C343E97A33E04406B16D26CAD43`.
 - The processor comparison is `contact_sheets/SCO_cunninghame_graham_processor_style_comparison.png`, SHA-256 `6661A60A8D1792A4CF982640C53111C9B409F347C89ECD726DF758A8CD5C27F6`.

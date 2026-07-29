@@ -27,7 +27,7 @@ Status: `rejected_identity_runtime_hold`
 - Identity input: the exact crop above.
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/afg_mohammed_zahir_shah.png` and `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/ire_eamon_de_valera.png`.
 - Raw ImageGen result: `imagegen_results/HAW_david_kalakaua_kawananakoa_identity_preserve_trial_01.png`, `1073×1466`, SHA-256 `84CBE0D5083EC2C2E7F361874867DAE0E05C06F528F000DE435D274CB1576F01`.
-- Deterministic processing used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` in `leader` mode, source kind `real`, the raw-result crop `(0, 10, 1073, 1455)`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
+- Deterministic processing used `retired_advisor_card_processor_REMOVED` in `leader` mode, source kind `real`, the raw-result crop `(0, 10, 1073, 1455)`, and `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`.
 - Deterministic `156×210` candidate: `processed_png/portrait_HAW_david_kalakaua_kawananakoa.png`, SHA-256 `88EA77261859DE81D1E5082802EA83DA3C79C646C2E200CA0495C9401887F607`.
 - Processor metadata: `metadata/HAW_david_kalakaua_kawananakoa_processing.json`, SHA-256 `0C6D9AB93845841A5C66A4B8DFA0622E2AC369E5E81915E01B68BA33E081FDBE`.
 - Processor comparison sheet: `review_sheets/HAW_david_kalakaua_kawananakoa_processor_style_comparison.png`, SHA-256 `710B281C326101FE643D35DE5D9079036F17DBF6A5441AB91C923C16355862A4`.

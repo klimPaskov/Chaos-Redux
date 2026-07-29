@@ -60,7 +60,7 @@ Bundled vanilla leader portraits were used only to compare value hierarchy, subd
 | `leader_board_of_measure_source.png` | `exec-dda8c28b-0625-4bd7-a686-65afef28a489` | Empty standards chamber, compass network, balance, gauges, planning table, and measure seal. |
 | `leader_stewardship_council_source.png` | `exec-b5e1e53d-ed19-4d3b-9baa-c2edb1dfc0a3` | Dark empty reserve chamber, sealed ledger, four vacant chairs, and fortified tower-and-keys seal. |
 
-All four use the full generated master, `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader --source-kind symbolic`, per-asset vanilla-style comparison sheets, and `156x210` one-level uncompressed BGRA DDS export. The finishing script crops, grades, resizes, validates, and exports only; it does not draw or replace the institution, seal, scene, or subject.
+All four use the full generated master, `retired_advisor_card_processor_REMOVED leader --source-kind symbolic`, per-asset vanilla-style comparison sheets, and `156x210` one-level uncompressed BGRA DDS export. The finishing script crops, grades, resizes, validates, and exports only; it does not draw or replace the institution, seal, scene, or subject.
 
 ## Rejected and superseded output
 

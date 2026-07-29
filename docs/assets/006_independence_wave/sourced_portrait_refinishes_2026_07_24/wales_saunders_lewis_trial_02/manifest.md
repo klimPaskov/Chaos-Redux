@@ -26,7 +26,7 @@ Trial 02 uses the exact same immutable source and crop, explicitly preserves the
 - Identity input: exact crop above.
 - Style-only references: `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/den_thorvald_stauning.png` and `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/afg_mohammed_zahir_shah.png`.
 - Raw ImageGen result: `imagegen_results/WLS_saunders_lewis_identity_preserve_trial_02.png`, `1083x1452`, RGB, SHA-256 `4C81E29529006EBFE80AEEEF2F2D30985E812C36B32D137D54DFEE8BD42E5835`.
-- Deterministic processing used `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` in `leader` mode, source kind `real`, raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory.
+- Deterministic processing used `retired_advisor_card_processor_REMOVED` in `leader` mode, source kind `real`, raw-result crop `(3, 0, 1080, 1450)`, and the canonical leader reference directory.
 - Deterministic candidate: `processed_png/portrait_WLS_independence_wave_national_council.png`, `156x210`, RGBA, SHA-256 `DD5946C65458FB85D4A136A768F9B0B946F0A9A1B5380505AD5B17652E163A3D`.
 - Processor metadata: `metadata/WLS_saunders_lewis_trial_02_processing.json`, SHA-256 `78B6881254AFB23456C819F1A540C055C5EBF35DAF850C8B9FE7FA77899CFA12`.
 - Processor style sheet: `review_sheets/WLS_saunders_lewis_trial_02_processor_style_comparison.png`, `1344x464`, SHA-256 `D6BCAF653E1816DA5ECA2054EA8D1E9498EA17F8F170CD239D238C4A88ECB43D`.

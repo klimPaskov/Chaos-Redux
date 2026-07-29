@@ -49,7 +49,7 @@ The flags are intentional flat ImageGen designs, not waving fabric or locally dr
 
 - Source prompts: `prompts/imagegen_prompts.md` (SHA-256 `6d4ebf3d4c202851fe09c0730a55bd95eb6fcd29974dcdb1e2d4632078a37e64`).
 - Advisor provenance: `portrait_provenance_manifest.json`.
-- Advisor overlay contract: `.agents/skills/chaos-redux-event-assets/assets/advisor_dossier_overlays/advisor_dossier_overlay_manifest.json`.
+- Advisor overlay contract: `.agents/skills/chaos-redux-event-assets/assets/retired_advisor_overlay_kit_REMOVED/advisor_dossier_overlay_manifest.json`.
 - Report processor: `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py`.
 - DDS converter: `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`.
 

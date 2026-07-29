@@ -51,7 +51,7 @@ It is not an approved runtime portrait.
 
 ## Deterministic commander processing
 
-- Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`.
+- Processor: `retired_advisor_card_processor_REMOVED`.
 - Processor version: `5.0`.
 - Processor SHA-256: `1ADB521B43238EE971E093DAE90007C4C44C600435EBB897C6482BA3B64B96EC`.
 - Python: `3.9.12`.

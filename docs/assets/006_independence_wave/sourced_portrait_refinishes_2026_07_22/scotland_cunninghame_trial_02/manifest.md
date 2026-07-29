@@ -41,7 +41,7 @@ This package retries the sourced real-male civic portrait for IW-001 Scotland af
 - Prompt: `prompts/SCO_cunninghame_graham_identity_preserve_trial_02.txt`.
 - Retained ImageGen result: `imagegen_results/SCO_cunninghame_graham_identity_preserve_trial_02.png`.
 - ImageGen result SHA-256: `B0AB6C888E123C8F60B1CF6822ED3D1DDB0817EDF827A79760A6DD6A1B44DD32`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
 - Processed `156x210` candidate: `processed_png/portrait_SCO_independence_wave_civic_convention.png`.
 - Processed candidate SHA-256: `83EFE010CCC536BC0DE51A12D474BDABC6B4E34220958C233E13C6E656D7FF03`.
 - Full source/result sheet: `contact_sheets/SCO_cunninghame_graham_full_source_result_comparison.png`.

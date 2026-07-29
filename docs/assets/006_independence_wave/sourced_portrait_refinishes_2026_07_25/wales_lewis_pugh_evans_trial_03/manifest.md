@@ -65,7 +65,7 @@ The raw repaint was generated directly from the canonical exact crop and does no
 
 | Field | Value |
 | --- | --- |
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` |
+| Processor | `retired_advisor_card_processor_REMOVED` |
 | Processor version | `5.0` |
 | Positional mode | `leader` |
 | Role family | `commander` |

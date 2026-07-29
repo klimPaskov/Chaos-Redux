@@ -64,7 +64,7 @@ The skill-local crop utility extracted the rectangle without resampling, enhance
 | Raw repaint | `imagegen_results/WLS_george_cornwallis_west_identity_preserve_trial_01.png` |
 | Raw dimensions | `1122x1402` |
 | Raw SHA-256 | `525A948795C8C0A455631BDB4A0E8463F9A6BF4D8CE6102EF3C8A45CEF0668FB` |
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py`, version `5.0` |
+| Processor | `retired_advisor_card_processor_REMOVED`, version `5.0` |
 | Mode and role | `leader`, role family `commander`, source kind `real` |
 | Raw crop | `(40,0,1081,1402)` |
 | Candidate | `processed_png/portrait_WLS_independence_wave_mountain_commandant.png` |

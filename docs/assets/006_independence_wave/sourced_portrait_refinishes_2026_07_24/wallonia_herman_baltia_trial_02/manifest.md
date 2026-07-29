@@ -79,7 +79,7 @@ Unlike trial 01, it retains the source-visible dress uniform instead of inventin
 
 | Field | Value |
 |---|---|
-| Processor | `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` |
+| Processor | `retired_advisor_card_processor_REMOVED` |
 | Positional mode | `leader` |
 | Role family | `commander` |
 | Source kind | `real` |

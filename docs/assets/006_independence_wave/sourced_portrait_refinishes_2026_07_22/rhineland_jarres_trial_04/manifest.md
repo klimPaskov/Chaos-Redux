@@ -42,7 +42,7 @@ This package retries the sourced real-male civic portrait for IW-008 Rhineland a
 - Prompt: `prompts/RHI_karl_jarres_identity_preserve_trial_04.txt`.
 - Retained ImageGen result: `imagegen_results/RHI_karl_jarres_identity_preserve_trial_04.png`.
 - ImageGen result SHA-256: `18C8A1F1D543A4817DC738750AE119D4DAC09F118F192695BF0EBAE88DB970D1`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit crop `(1, 0, 1081, 1454)`, canonical vanilla leader reference directory.
 - Processed `156x210` candidate: `processed_png/portrait_RHI_independence_wave_provisional_directorate.png`.
 - Processed candidate SHA-256: `AE34E21CF3B35AD034E222191313BD77E52EEAD12D26A6D2379B1FD064B9FA69`.
 - Full source/result sheet: `contact_sheets/RHI_karl_jarres_full_source_result_comparison.png`.

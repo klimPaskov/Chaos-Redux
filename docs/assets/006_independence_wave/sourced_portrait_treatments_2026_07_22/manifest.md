@@ -1,7 +1,7 @@
 # Event 006 sourced leader-portrait treatments
 
 Date: 2026-07-22
-Processor: `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py` v5.0, `leader` mode
+Processor: `retired_advisor_card_processor_REMOVED` v5.0, `leader` mode
 Reference family: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/leaders/`
 
 This package records attributed archival portraits and identity-preserving

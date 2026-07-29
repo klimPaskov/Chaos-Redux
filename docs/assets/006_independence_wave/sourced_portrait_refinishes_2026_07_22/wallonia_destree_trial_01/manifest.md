@@ -28,7 +28,7 @@ This package contains one sourced real-male civic portrait candidate for IW-006 
 - Prompt: `prompts/AFX_jules_destree_identity_preserve_trial_01.txt`.
 - Retained ImageGen result: `imagegen_results/AFX_jules_destree_identity_preserve_trial_01.png`.
 - ImageGen result SHA-256: `B07EF2D6A77C6D4F86314638B7F352D3488B9F396E566E8B04D21298E49922B7`.
-- Finish command: skill-local `advisor_icon_processing.py leader`, source kind `real`, explicit crop `(0, 1, 1080, 1455)`, canonical vanilla leader reference directory.
+- Finish command: skill-local `retired_advisor_card_processor_REMOVED leader`, source kind `real`, explicit crop `(0, 1, 1080, 1455)`, canonical vanilla leader reference directory.
 - Processed `156x210` candidate: `processed_png/portrait_AFX_walloon_provisional_assembly.png`.
 - Processed candidate SHA-256: `7F1D43F8D3B350040B59630E44F1D7F8A7635883E7A067DCC5901ABDE2FC75BE`.
 - Full source/result sheet: `contact_sheets/AFX_jules_destree_full_source_result_comparison.png`.

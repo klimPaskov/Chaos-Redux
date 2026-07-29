@@ -35,7 +35,7 @@ The four texture files were replaced in place with people-free symbolic establis
 
 ### Advisors
 
-All sixteen textures below are final `65x67` advisor dossier-card DDS files. Their sprite handles and runtime paths are unchanged by the advisor-pipeline correction, so no `.gfx` or character edit is required for this asset replacement. Each file was made from an independent fictional ImageGen portrait master with a separate head-and-shoulders crop through `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py advisor`. The visible dark frame and paper/seal are also generated overlay assets; the script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports. None is a resized leader portrait or a programmatically drawn dossier card.
+All sixteen textures below are final `65x67` advisor dossier-card DDS files. Their sprite handles and runtime paths are unchanged by the advisor-pipeline correction, so no `.gfx` or character edit is required for this asset replacement. Each file was made from an independent fictional ImageGen portrait master with a separate head-and-shoulders crop through `retired_advisor_card_processor_REMOVED advisor`. The visible dark frame and paper/seal are also generated overlay assets; the script only crops, grades, angles, derives alpha shadows, composites generated layers, resizes, validates, and exports. None is a resized leader portrait or a programmatically drawn dossier card.
 
 ```txt
 	spriteType = {
