@@ -234,3 +234,27 @@ The dynamic-duration and natural-disaster-strength gaps remain unimplemented by 
 ## Guidance used
 
 Applied `hoi4-decisions-missions`, `chaos-redux-events`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`.
+
+## 2026-07-30 profile-driven duration implementation blocked
+
+The proposed record-side duration implementation required `days_mission_timeout = var:FROM.africa_active_action_duration_days` in the four targeted shared missions.
+
+The offline variable reference confirms that `FROM` is the target country in a targeted decision and that scoped variables may use a dual scope.
+
+Neither the vanilla decision documentation nor the vanilla dynamic-variable documentation states that `days_mission_timeout` accepts a scoped `var:FROM.<name>` token.
+
+No vanilla or approved reference-mod precedent for a scoped duration token in that field was found.
+
+The documented `add_days_mission_timeout` effect is country-scoped and takes only a mission identifier, so it cannot safely identify one of several simultaneously active targeted instances.
+
+The proposed target-side timer was therefore removed before handoff rather than risk a load error or a timer that would be unwired for targeted missions.
+
+The original safe host-side band timers remain: short 60, medium 120, long 240, and epic 540 days.
+
+This leaves all 95 non-instant profiles fixed by their four shared bands: 4 short, 21 medium, 56 long, and 14 epic.
+
+The seven intentional instant actions remain unchanged because they resolve in the same effect chain as their launch.
+
+Action 73 remains review-authorisation-gated with its previously documented missing target-delivery and outcome design, and no host, global, or world-readiness logic was changed.
+
+No commit was created.
