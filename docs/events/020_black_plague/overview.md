@@ -45,7 +45,7 @@ Five logged evolutions have dynamic active and pre-fire Event Details entries:
 
 1. Evolution I strengthens the strain.
 2. Evolution II enables physically proven overseas spread.
-3. Evolution III creates Rat Nations from uncontrolled basins.
+3. Evolution III creates the Rat Nation from an uncontrolled basin.
 4. Evolution IV creates the separate sentient Rat King.
 5. Evolution V is the earned terminal route.
 

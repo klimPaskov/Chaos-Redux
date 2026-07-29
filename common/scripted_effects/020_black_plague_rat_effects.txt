@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 020 RAT NATION AND RAT KING EFFECTS
 # ============================================================================
-# Event-owned finite-pool runtime for Evolutions I-IV. The state scheduler
+# Event-owned two-country runtime for Evolutions I-IV. The state scheduler
 # calls black_plague_rat_run_runtime_pulse once per disease pulse; all country
 # work is then limited to the maintained rat-country array. No world on_action
 # or duplicate disease category is introduced here.
@@ -151,7 +151,7 @@ black_plague_rat_record_current_evolution = {
 }
 
 # ---------------------------------------------------------------------------
-# Finite pool allocation and state selection
+# Reusable Rat Nation allocation and state selection
 # ---------------------------------------------------------------------------
 
 black_plague_rat_select_free_slot = {
@@ -160,91 +160,7 @@ black_plague_rat_select_free_slot = {
 		limit = { NOT = { has_global_flag = black_plague_rat_slot_rta_in_use } }
 		RTA = { save_event_target_as = black_plague_rat_selected_country }
 		set_global_flag = black_plague_rat_slot_rta_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 1 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtb_in_use } }
-		RTB = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtb_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 2 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtc_in_use } }
-		RTC = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtc_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 3 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtd_in_use } }
-		RTD = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtd_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 4 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rte_in_use } }
-		RTE = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rte_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 5 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtf_in_use } }
-		RTF = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtf_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 6 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtg_in_use } }
-		RTG = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtg_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 7 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rth_in_use } }
-		RTH = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rth_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 8 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rti_in_use } }
-		RTI = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rti_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 9 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtj_in_use } }
-		RTJ = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtj_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 10 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtk_in_use } }
-		RTK = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtk_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 11 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtl_in_use } }
-		RTL = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtl_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 12 }
-		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-	}
-	else_if = {
-		limit = { NOT = { has_global_flag = black_plague_rat_slot_rtm_in_use } }
-		RTM = { save_event_target_as = black_plague_rat_selected_country }
-		set_global_flag = black_plague_rat_slot_rtm_in_use
-		set_temp_variable = { black_plague_rat_selected_slot = 13 }
+		set_temp_variable = { black_plague_rat_selected_slot = constant:black_plague_value.one }
 		set_temp_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
 	}
 }
@@ -613,53 +529,22 @@ black_plague_rat_create_from_state = {
 }
 
 # ---------------------------------------------------------------------------
-# Evolution III: finite Rat Nation emergence
+# Evolution III: Rat Nation emergence
 # ---------------------------------------------------------------------------
 
-black_plague_rat_calculate_spawn_count = {
-	set_temp_variable = { black_plague_rat_spawn_count = constant:black_plague_rat_pool.minimum_spawn_count }
-	set_temp_variable = { black_plague_rat_spawn_capacity = global.black_plague_established_state_count }
-	divide_temp_variable = { black_plague_rat_spawn_capacity = constant:black_plague_rat_pool.states_per_nation }
-	round_temp_variable = black_plague_rat_spawn_capacity
-	add_to_temp_variable = { black_plague_rat_spawn_count = black_plague_rat_spawn_capacity }
-	clamp_temp_variable = {
-		var = black_plague_rat_spawn_count
-		min = constant:black_plague_rat_pool.minimum_spawn_count
-		max = constant:black_plague_rat_pool.maximum_spawn_count
-	}
-}
-
-black_plague_rat_spawn_finite_pool = {
-	black_plague_rat_calculate_spawn_count = yes
-	for_loop_effect = {
-		start = 0
-		end = black_plague_rat_spawn_count
-		value = black_plague_rat_spawn_index
-		black_plague_rat_select_free_slot = yes
+black_plague_rat_spawn_base_nation = {
+	black_plague_rat_select_free_slot = yes
+	if = {
+		limit = {
+			check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
+		}
+		black_plague_rat_select_spawn_state = yes
 		if = {
-			limit = {
-				check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one }
-			}
-			black_plague_rat_select_spawn_state = yes
-			if = {
-				limit = { check_variable = { black_plague_rat_spawn_state_result = constant:black_plague_value.one } }
-				event_target:black_plague_rat_spawn_state = { black_plague_rat_create_from_state = yes }
-			}
-			else = {
-				if = { limit = { check_variable = { black_plague_rat_selected_slot = 1 } } clr_global_flag = black_plague_rat_slot_rta_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 2 } } clr_global_flag = black_plague_rat_slot_rtb_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 3 } } clr_global_flag = black_plague_rat_slot_rtc_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 4 } } clr_global_flag = black_plague_rat_slot_rtd_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 5 } } clr_global_flag = black_plague_rat_slot_rte_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 6 } } clr_global_flag = black_plague_rat_slot_rtf_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 7 } } clr_global_flag = black_plague_rat_slot_rtg_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 8 } } clr_global_flag = black_plague_rat_slot_rth_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 9 } } clr_global_flag = black_plague_rat_slot_rti_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 10 } } clr_global_flag = black_plague_rat_slot_rtj_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 11 } } clr_global_flag = black_plague_rat_slot_rtk_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 12 } } clr_global_flag = black_plague_rat_slot_rtl_in_use }
-				else_if = { limit = { check_variable = { black_plague_rat_selected_slot = 13 } } clr_global_flag = black_plague_rat_slot_rtm_in_use }
-			}
+			limit = { check_variable = { black_plague_rat_spawn_state_result = constant:black_plague_value.one } }
+			event_target:black_plague_rat_spawn_state = { black_plague_rat_create_from_state = yes }
+		}
+		else = {
+			clr_global_flag = black_plague_rat_slot_rta_in_use
 		}
 	}
 }
@@ -668,12 +553,12 @@ black_plague_rat_activate_evolution_iii = {
 	set_global_flag = black_plague_evolution_iii_active
 	set_global_flag = black_plague_evolution_iii_recorded
 	set_variable = { global.black_plague_evolution_iii_date = global.date }
-	if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } black_plague_rat_spawn_finite_pool = yes }
+	if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } black_plague_rat_spawn_base_nation = yes }
 	if = {
 		limit = {
 			check_variable = {
 				var = global.black_plague_rat_countries_count
-				value = constant:black_plague_rat_pool.minimum_spawn_count
+				value = constant:black_plague_value.one
 				compare = greater_than_or_equals
 			}
 		}
@@ -751,57 +636,12 @@ black_plague_rat_run_country_pulses = {
 }
 
 # ---------------------------------------------------------------------------
-# Rat-rat dominance and finite-slot retirement
+# Rat Nation basin consolidation and reusable-carrier retirement
 # ---------------------------------------------------------------------------
 
 black_plague_rat_try_absorb_adjacent_brood = {
-	if = {
-		limit = {
-			black_plague_rat_country_is_active = yes
-			has_country_flag = black_plague_rat_dominance_ready
-			NOT = { has_country_flag = black_plague_rat_merger_lock }
-		}
-		every_owned_state = {
-			limit = { black_plague_state_is_rat_controlled = yes }
-			every_neighbor_state = {
-				limit = {
-					black_plague_rat_state_is_valid_merger_state = yes
-					NOT = { CONTROLLER = { tag = ROOT } }
-				}
-				set_state_flag = black_plague_rat_merger_reserved
-				CONTROLLER = { save_event_target_as = black_plague_rat_merger_source }
-				ROOT = { save_event_target_as = black_plague_rat_merger_recipient }
-				ROOT = {
-					transfer_state = PREV
-					add_state_core = PREV
-					subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_merge_cost }
-					set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_pool.rat_merger_cooldown_days }
-					set_country_flag = { flag = black_plague_rat_merger_lock days = black_plague_rat_merger_cooldown_days }
-				}
-				if = {
-					limit = { has_event_target = black_plague_rat_merger_source has_event_target = black_plague_rat_merger_recipient }
-					event_target:black_plague_rat_merger_source = {
-						transfer_units_fraction = {
-							target = event_target:black_plague_rat_merger_recipient
-							size = 1
-							stockpile_ratio = 0
-							army_ratio = 1
-							navy_ratio = 0
-							air_ratio = 0
-						}
-					}
-				}
-				if = {
-					limit = { has_event_target = black_plague_rat_merger_source }
-					event_target:black_plague_rat_merger_source = {
-						if = { limit = { num_of_controlled_states < 1 } set_country_flag = black_plague_rat_country_retired }
-					}
-				}
-				if = { limit = { has_event_target = black_plague_rat_merger_recipient } event_target:black_plague_rat_merger_recipient = { set_variable = { black_plague_rat_division_count = num_of_divisions } } }
-				clr_state_flag = black_plague_rat_merger_reserved
-			}
-		}
-	}
+	# Separate broods are represented by RTA's rat-controlled states and pulse
+	# growth. With one carrier there is no country-to-country annex transaction.
 }
 
 black_plague_rat_cleanup_retired_country = {
@@ -820,19 +660,7 @@ black_plague_rat_cleanup_retired_country = {
 		delete_unit_template_and_units = { division_template = "Rat Burrow Column" disband = no }
 		delete_unit_template_and_units = { division_template = "Rat Carrion Guard" disband = no }
 		delete_unit_template_and_units = { division_template = "Rat Dock Stowaways" disband = no }
-		if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 1 compare = equals } } clr_global_flag = black_plague_rat_slot_rta_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 2 compare = equals } } clr_global_flag = black_plague_rat_slot_rtb_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 3 compare = equals } } clr_global_flag = black_plague_rat_slot_rtc_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 4 compare = equals } } clr_global_flag = black_plague_rat_slot_rtd_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 5 compare = equals } } clr_global_flag = black_plague_rat_slot_rte_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 6 compare = equals } } clr_global_flag = black_plague_rat_slot_rtf_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 7 compare = equals } } clr_global_flag = black_plague_rat_slot_rtg_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 8 compare = equals } } clr_global_flag = black_plague_rat_slot_rth_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 9 compare = equals } } clr_global_flag = black_plague_rat_slot_rti_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 10 compare = equals } } clr_global_flag = black_plague_rat_slot_rtj_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 11 compare = equals } } clr_global_flag = black_plague_rat_slot_rtk_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 12 compare = equals } } clr_global_flag = black_plague_rat_slot_rtl_in_use }
-		else_if = { limit = { check_variable = { var = black_plague_rat_slot_id value = 13 compare = equals } } clr_global_flag = black_plague_rat_slot_rtm_in_use }
+		clr_global_flag = black_plague_rat_slot_rta_in_use
 		if = { limit = { is_in_array = { array = global.black_plague_rat_countries value = THIS } } remove_from_array = { array = global.black_plague_rat_countries value = THIS } }
 		if = { limit = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
 		set_variable = { black_plague_rat_retirement_date = global.date }
@@ -986,8 +814,8 @@ black_plague_rat_transfer_to_king = {
 		black_plague_rat_select_royal_basin_state = yes
 		if = {
 			limit = { has_event_target = black_plague_rat_royal_basin_state }
+			event_target:black_plague_rat_king_source = { set_country_flag = black_plague_rat_country_retired }
 			RTX = {
-				set_country_flag = black_plague_rat_slot_release_pending
 				set_capital = { state = event_target:black_plague_rat_royal_basin_state remember_old_capital = no }
 				black_plague_rat_initialize_king_country = yes
 			}
