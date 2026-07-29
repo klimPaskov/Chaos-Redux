@@ -7,29 +7,11 @@
 # call the existing atomic Event 12 relationship state machine.
 # ============================================================================
 
-# This helper is intentionally self-contained and uses has_focus_tree as the
-# semantic load test. The existing selected-host initializer currently calls
-# africa_load_continental_focus_tree, which implements the same contract. If
-# that initializer is consolidated later, call this helper exactly once there.
+# Compatibility wrapper for older route call sites. The canonical loader owns
+# the one-shot tree test, completion preservation, loaded flag, and layout
+# refresh so those rules cannot drift between helpers.
 africa_focus_route_ensure_continental_tree_loaded = {
-	if = {
-		limit = {
-			africa_is_current_host = yes
-			NOT = { has_focus_tree = africa_continental_focus_tree }
-		}
-		load_focus_tree = {
-			tree = africa_continental_focus_tree
-			keep_completed = no
-		}
-	}
-	if = {
-		limit = {
-			africa_is_current_host = yes
-			has_focus_tree = africa_continental_focus_tree
-		}
-		set_country_flag = africa_continental_focus_tree_loaded
-		mark_focus_tree_layout_dirty = yes
-	}
+	africa_load_continental_focus_tree = yes
 }
 
 # The seven constitutional axes are displayed on the Charter Council and are
