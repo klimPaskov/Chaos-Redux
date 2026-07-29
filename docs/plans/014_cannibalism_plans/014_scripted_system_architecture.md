@@ -1,6 +1,8 @@
 # Event 014 Scripted System Architecture
 
-Status: implementation architecture, plan only
+> Historical implementation architecture. Its accepted design is implemented; use `docs/events/014_cannibalism/overview.md`, `docs/specs/014_cannibalism_specs/quality/package_status.md`, and the 2026-07-15 consolidation re-audits for current runtime and completion status.
+
+Status: superseded as a current-runtime status source
 
 Owner: main Event 014 implementation agent
 
@@ -29,7 +31,7 @@ The design follows these engine and repository precedents.
 - Arrays store scopes. A monotonic generation on every actor, node, queue entry, and reusable tag incarnation prevents stale delayed callbacks from mutating a later incarnation.
 - Vanilla player-safe country consolidation calls `change_tag_from` on the future host before annexing the former player country. Event 014 must follow that order.
 - Script constants are used for shared tuning. Timed flag durations must first be copied into a variable because timed flag fields do not reliably accept `constant:` tokens.
-- `modify_state_population_by_percent` is not suitable for Event 014. It does not provide the exact Deaths-disabled behavior or transaction outputs required here.
+- A standalone population-only dynamic helper does not provide the exact Deaths-disabled behavior or transaction outputs required here and does not belong in the shared API.
 
 ## 3. File ownership map
 
@@ -488,7 +490,7 @@ Required behavior:
 
 The helper never updates larder, hunger, Event 014 totals, node strength, or route state. Those belong to the caller.
 
-The old `modify_state_population_by_percent` helper remains untouched until a separate migration is authorized. Event 014 must not call it.
+Event 014 uses its exact event-owned Deaths transaction. No standalone population-only helper belongs in the shared API.
 
 ### 12.2 Event-owned consumption transaction
 

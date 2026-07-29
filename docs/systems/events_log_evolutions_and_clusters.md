@@ -50,7 +50,7 @@ The zombie outbreak event has authored gameplay text in the event-details window
 22. Each terminal branch has one clickable row and one persistent checkbox. Multiple branches owned by the same event remain separate, and hidden easter-egg branches are filtered before view rows are built.
 23. Clicking a world-end row opens the scenario details popup; toggling it changes only that scenario's automatic eligibility and rebuilds the selected event's rows.
 
-Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text.
+Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text. The shared type selector maps the Death and Secret Alliance evolution constants to their dedicated labels rather than the generic `Evolution` fallback.
 
 ## Events tab sorting and filtering
 Events tab supports:

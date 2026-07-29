@@ -14,6 +14,12 @@ Use this registry only for triggers with demonstrated call-site breadth across u
 
 ## is_desert_state
 
+State-scope trigger. Returns true for the maintained list of desert states used by shared event and map logic.
+
+The list is an explicit state-ID registry because the game does not expose a shared desert-region collection for this mechanic. Each state appears once so callers receive the same boolean result without duplicate alternatives.
+
+When adding a state, update this trigger and record the consuming event or system in its documentation. Do not replace the list with an event-local desert classifier.
+
 ## is_special_chaos_country
 
 Country-scope trigger. Returns true for system actors and special scenario countries that should not be treated like normal civilian societies.
