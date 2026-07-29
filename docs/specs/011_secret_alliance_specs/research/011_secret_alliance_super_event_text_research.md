@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance super-event text research
 
-Status: historical candidate research. The title is no longer blocked. The implemented package uses `THE PACT UNMASKED`, the Sun Tzu quotation, the `Look about you.` button fragment, five route descriptions, slot `73`, and audio ID `43`. See `docs/super_events/011_secret_alliance_super_event_research.md`.
+Status: historical candidate research. The title is no longer blocked. The implemented package uses `THE PACT UNMASKED`, the Sun Tzu quotation, the `Look about you.` button fragment, five route descriptions, slot `73`, and audio ID `43`. See `docs/super_events/011_secret_alliance/research.md`.
 
 ## Super-event role
 

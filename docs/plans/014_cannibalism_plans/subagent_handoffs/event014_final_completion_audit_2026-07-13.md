@@ -78,13 +78,13 @@ The live change surface remains Event 014-scoped. Relative to baseline `ac80683d
 
 ### Super-events, assets, localisation, and documents
 
-- Four distinct super-events are wired: reveal `49`, ordinary world end `50`, eligible global defeat `52`, and Wendigo world end `53`. ID 51 is not owned by Event 014. Each ID has unique 44.1 kHz OGG/WAV material, settings-aware registrations, documented rights/provenance, a unique action-scene image, and the required reveal/route gate.
+- Four distinct super-events are wired: reveal `49`, ordinary world end `50`, eligible global defeat `52`, and Wendigo world end `53`. ID 51 is not owned by Event 014. Each ID has unique 44.1 kHz WAV material, settings-aware registrations, documented rights/provenance, a unique action-scene image, and the required reveal/route gate.
 - The final nine-file Event 014 GFX scan records 816 texture references, 598 unique runtime DDS paths, zero missing paths, and 598 unique runtime hashes. Coverage includes 54 achievement textures, 208 focus icons, 56 idea icons, 124 decision icons, 13 category panels, 26 static GUI textures, 22 report images, seven news images, four super-event images, and the leader/animation packages.
 - Thirteen flag families supply five ideology variants in three engine sizes, for 195 TGA files. The 56 regional warlord portraits are unique. The final closure package contributes 21 matched assets.
 - Fourteen animation packages contain 142 independently rendered source frames and 142 processed frames. Each has the required sheet PNG/DDS, static fallback, preview, contact sheet, manifest, and handoff; the GUI switches all 14 animated/static pairs through the animation-disable and secrecy gates.
 - The achievement package now uses the exact required overlay derivation for all 18 not-eligible variants. The live 18 completed/grey/not-eligible triplets total 54 distinct registered DDS files.
 - The final localisation audit reports zero P0-P3 findings across events, focuses, decisions, missions, ideas, traits, countries, achievements, tracker stages, Event Details, super-events, dynamic text, terminology, secrecy, missing keys, and duplicate keys.
-- `docs/events/014_cannibalism.md`, the package manifest, acceptance criteria, current matrices, final asset manifests, super-event research, audit handoffs, and catalog re-audit agree on the live implementation. Both accepted improvement addenda have dispositions and their accepted behavior has been promoted into the source-of-truth specs.
+- `docs/events/014_cannibalism/overview.md`, the package manifest, acceptance criteria, current matrices, final asset manifests, super-event research, audit handoffs, and catalog re-audit agree on the live implementation. Both accepted improvement addenda have dispositions and their accepted behavior has been promoted into the source-of-truth specs.
 
 ## Static scenario walkthroughs
 

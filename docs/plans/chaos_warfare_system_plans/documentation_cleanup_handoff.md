@@ -4,6 +4,16 @@ This handoff lists documentation contradictions and stale statements found while
 
 This reconciliation is bounded to the five user-authorized Markdown surfaces named in the task. Gameplay, localisation, assets, GUI, and spreadsheets are outside the patch scope, and broader system-document cleanup remains queued rather than silently treated as complete.
 
+## Superseding core-first disposition
+
+The user subsequently authorized unsupported content to be skipped so the supported core mechanics can close without proxies or fallbacks.
+
+- Ground Chemical operations, continuous Chemical air missions, and nerve-agent suppression remain inactive behind verified-current-version hooks. Their orphan player-facing selectors and commissioning controls are hidden by the same hooks.
+- `Air Is Still Breathable`, `No Wind Is Friendly`, `The Antidote Arrived`, and `Unbroken Supply Corridor` were removed from the active achievement registry because their exact required receipts are unavailable.
+- Hardened Mobile Plant was removed rather than replaced with a reliability, cost, bombing-loss, or capture-loss approximation.
+- Historically sourced unique national MIO names and exact live production-share claims are skipped as non-core work. Generic functional MIO families and route-aware AI remain active.
+- These items are explicit omissions, not open core blockers. Earlier blocker language below records the pre-disposition audit and is superseded where it conflicts with this section.
+
 ## Bounded reconciliation result
 
 | Surface | Disposition | Current result |
@@ -18,7 +28,7 @@ This reconciliation is bounded to the five user-authorized Markdown surfaces nam
 
 1. The twelve numbered specifications under `docs/specs/chaos_warfare_system_specs/specs/` remain authoritative.
 2. The ten accepted matrices under `docs/specs/chaos_warfare_system_specs/matrices/` provide implementation mappings and tuning constraints after the numbered specifications.
-3. The specialist prompts under `docs/specs/chaos_warfare_system_specs/prompts/` provide bounded implementation guidance after the specifications and matrices; the achievement prompt's major-or-regional eligibility requirement remains unresolved in current source because no accepted regional-power definition exists.
+3. The specialist prompts under `docs/specs/chaos_warfare_system_specs/prompts/` provide bounded implementation guidance after the specifications and matrices; unsupported prompt items are omitted under the later core-first user disposition rather than approximated.
 4. Current gameplay source is evidence of existing contracts, not permission to invent missing hooks, proxies, estimators, neutral receipts, or fallbacks.
 5. The named Stage 5, Stage 6-10, decision/mission, country-profile, improvement-loop, and Stage 14 reports are audit evidence with the dispositions below; they do not override the numbered specifications or make live validation claims.
 
@@ -27,12 +37,12 @@ This reconciliation is bounded to the five user-authorized Markdown surfaces nam
 | Evidence or plan | Disposition | Reason or remaining work |
 | --- | --- | --- |
 | `2026-07-14_stage_5_completion_audit.md` | promoted as local evidence | Stage 5 doctrine and balance tranche passed its bounded audit; it does not close package completion. |
-| Stage 6 chemical migration and doctrine addenda | partially implemented; remainder queued/blocked | Doctrine potency and Condemnation boundary is implemented; ground Chemical exact HQ/weather/terrain receipts, legacy route migration, and continuous air remain unresolved or unsupported. |
+| Stage 6 chemical migration and doctrine addenda | core implemented; unsupported routes omitted | Doctrine potency and Condemnation boundary is implemented; ground Chemical exact HQ/weather/terrain operations and continuous air remain inactive without verified hooks. |
 | Stage 7 biological lifecycle and route validations | promoted as bounded evidence | Native raids, operative release, battlefield dissemination, sabotage, bounded historical decisions, doomsday, countermeasures, potency hierarchy, and agent-neutral native raid odds are recorded; final package scenarios remain open. |
-| Stage 9 decision/mission audit | promoted as bounded evidence | Decision/mission surfaces passed the scoped audit; nerve suppression remains fail-closed on exact condition and target-loss receipts. |
-| Stage 10 AI/country handoffs | partially implemented; unresolved items queued | Country profiles, route-aware AI, and MIO visibility are source-audited; exact live production shares and historically sourced unique national MIO identities remain unresolved. |
+| Stage 9 decision/mission audit | promoted as bounded evidence | Supported decision/mission surfaces passed the scoped audit; nerve suppression remains inactive and its commissioning control is hidden. |
+| Stage 10 AI/country handoffs | core implemented; non-core identities skipped | Country profiles, route-aware AI, generic MIO families, and MIO visibility are source-audited; exact live production shares and historically sourced unique national MIO identities are not claimed. |
 | `2026-07-29_near_completion_improvement_loop_closure.md` | accepted closure; no new addendum | Broad expansion is closed, and no estimator, proxy, neutral receipt, fallback, or scope reduction is authorized. |
-| `2026-07-29_stage_14_package_scenario_evidence.md` | promoted as source evidence | Deterministic source scenarios and AI score evidence are recorded; live consumer validation and achievement reachability gaps remain open. |
+| `2026-07-29_stage_14_package_scenario_evidence.md` | promoted as source evidence | Deterministic supported-core scenarios and AI score evidence are recorded; unsupported scenarios and achievements are explicit omissions. |
 | `subagent_handoffs/2026-07-29_package_decision_mission_audit.md` | promoted as bounded evidence | The bounded decision/mission surface passed its audit without closing the package. |
 | `subagent_handoffs/2026-07-29_package_country_profile_audit.md` | promoted as bounded evidence | The actionable AI migration finding was fixed; exact live shares and unique national MIO identities remain unresolved. |
 | Older Stage 7 reports that retain superseded legacy-caller wording | left unchanged; later migration evidence supersedes the stale paragraph for current status | No out-of-scope report was rewritten or deleted in this pass; the parent should use the later legacy-migration validation when resolving that contradiction. |
@@ -40,10 +50,7 @@ This reconciliation is bounded to the five user-authorized Markdown surfaces nam
 ## Achievement reachability findings
 
 - `Quarantine Without Collapse` is promoted to implemented and source-audited. `cbrn_achievement_refresh_bio_containment_receipt` reads current and needed trucks and trains through exact `get_supply_vehicles_temp` receipts, applies the 0.80 `minimum_supply` threshold to each class, and writes `cbrn_achievement_outbreak_supply_ready_history` only at exact catastrophic-outbreak recovery. The completion trigger requires that receipt, with no periodic estimator or building proxy.
-- `No Wind Is Friendly` remains deliberately fail-closed because exact selected-state forecast and friendly-exposure receipts depend on the unavailable ground Chemical weather/terrain hook. Its missing writers are `cbrn_achievement_forecast_failure_history`, `cbrn_achievement_friendly_exposure_history`, `cbrn_achievement_operation_recovered_history`, and `cbrn_achievement_no_wind_clean_after_failure_history`.
-- `The Antidote Arrived` is the third unreachable achievement. Its receipts are written only by `cbrn_achievement_record_nerve_response`, whose only caller is the exact nerve-suppression state transaction; Sarin/Soman suppression remains fail-closed on missing exact condition and target-loss receipts.
-- `Unbroken Supply Corridor` remains fail-closed because no exact assigned-Army supply-ratio receipt or major-offensive-objective completion receipt exists. Its missing writers/variables are `cbrn_achievement_corridor_operational_history`, `cbrn_achievement_corridor_supply_objective_history`, `cbrn_achievement_corridor_state_count`, and `cbrn_achievement_corridor_supply_days`.
-- `Air Is Still Breathable` remains unresolved because the achievement prompt requires any major or regional power with enemy Chemical use, while the current predicate has no accepted regional-power definition or gate. The Event 006-specific `is_independence_wave_regional_power` helper is not reusable.
+- `No Wind Is Friendly`, `The Antidote Arrived`, `Unbroken Supply Corridor`, and `Air Is Still Breathable` are explicit unsupported omissions. Their exact receipts are unavailable, so they have no active registry, trigger, localisation, or GFX entry and do not block supported-core playability.
 - The starting-eligibility finding is resolved in source. The one-time startup transaction writes `cbrn_achievement_start_country_eligible`, `cbrn_achievement_starting_major_power`, and `cbrn_achievement_starting_civil_defence_profile` after accepted profiles; the common eligibility trigger requires the first receipt, `A Mask for Every Door` requires the civil-defence receipt, and registry `possible = always yes` remains presentation-only.
 - `A Poisoned Victory` now requires current Condemnation at or above `constant:cbrn_achievement_threshold.minimum_active_condemnation` rather than only a historical peak; it is source-audited but remains subject to the package reachability audit.
 
@@ -63,22 +70,20 @@ This reconciliation is bounded to the five user-authorized Markdown surfaces nam
 - Hardened Mobile Plant lacks an exact bombing/capture equipment-loss transaction.
 - Historically sourced unique national MIO identities remain unresolved.
 - Precise live production shares, long-run AI pacing, and user-owned runtime validation remain unresolved.
-- The Air Is Still Breathable regional-power definition/gate is unresolved; no threshold or Event 006 helper may be invented.
-- The three unreachable achievements and Unbroken's missing writers/variables remain explicit source blockers; no proxy receipts are permitted.
+- The four unsupported achievement proposals remain omitted; no proxy receipts or narrowed eligibility definitions are permitted.
 
 ## Duplicate, superseded, and stale instruction list
 
 - Older system documents named in the required cleanup order remain queued because they are outside this bounded patch; they must not be treated as current merely because this handoff references them.
 - The older Stage 7 countermeasure report's legacy-caller limitation is superseded for current source status by the later legacy-biological-migration validation, but the older report remains unchanged.
-- The achievement prompt remains current authority for the major-or-regional eligibility requirement and starting-receipt tracking; current source is not allowed to silently narrow that requirement to generic human eligibility.
+- The achievement prompt's four unsupported entries are superseded by the later user-authorized supported-core omission. The eleven retained achievements still use their exact starting and campaign receipts.
 - The asset prompt's optional window-animation concepts have no accepted consumer under the native category decision; no stale prompt is authorized to expand the GUI surface during this pass.
 
 ## Recommended parent decisions
 
-1. Define and approve the CBRN meaning of `regional power`, or explicitly revise the achievement prompt/spec before adding an Air Is Still Breathable gate. Do not reuse the Event 006 predicate.
-2. Decide whether the accepted major-power startup receipt should be consumed by Air Is Still Breathable once the regional-power design is settled.
-3. Supply or formally decline the exact current-version ground Chemical, nerve, assigned-Army supply-ratio, major-offensive-objective, and bombing/capture transaction receipts before reopening their fail-closed items.
-4. Decide whether historically sourced unique national MIO identities and precise live production shares are required for the next audit tranche; no generic substitute is being promoted as equivalent.
+1. Supply an exact current-version ground Chemical, nerve, or bombing/capture transaction receipt before reopening those omitted surfaces.
+2. Reopen any of the four omitted achievements only if its exact required receipt becomes available; no proxy or narrowed replacement is authorized.
+3. Decide whether historically sourced unique national MIO identities and precise live production shares are required for a later non-core tranche; no generic substitute is being promoted as equivalent.
 
 ## Proposed cleanup if patching is not allowed
 

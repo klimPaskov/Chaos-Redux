@@ -2,7 +2,7 @@
 
 ## Delivered
 
-All six evolution visuals required by `docs/events/012_africa_evolutions.md` are complete:
+All six evolution visuals required by `docs/events/012_africa/evolutions.md` are complete:
 
 - three distinct 210 x 176 report-event DDS files at their registered `gfx/event_pictures/012_africa/evolutions/` paths;
 - three distinct 156 x 210 collective-institution DDS files at their registered `gfx/leaders/012_africa/evolutions/` paths; and

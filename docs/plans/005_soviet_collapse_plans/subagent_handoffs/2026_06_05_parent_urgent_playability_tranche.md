@@ -33,7 +33,7 @@ Documentation curator subagent `019e9880-6c69-7242-9f04-1e553e57f6ea` completed 
 
 Changed docs:
 
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/plans/005_soviet_collapse_plans/documentation_state.md`
 - `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md`
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`

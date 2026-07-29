@@ -15,7 +15,7 @@ Mode: Audit only. No gameplay patch was made.
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_3_decisions_missions_influence.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_4_releases_leagues_union_unmade.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
-  - `docs/events/005_soviet_collapse.md`
+  - `docs/events/005_soviet_collapse/overview.md`
 
 ## Executive finding
 
@@ -45,11 +45,11 @@ No small safe patch was made because the dominant issues are structural: route d
 | same | `DSC` | 2751 | 18 | 3 | 6 | 7 |
 | same | `NRF` | 3313 | 18 | 3 | 7 | 6 |
 | same | `ICD` | 3816 | 18 | 6 | 5 | 5 |
-| same | `BSC` | 4290 | 47 | 23 | 13 | 24 |
+| same | `AEX` | 4290 | 47 | 23 | 13 | 24 |
 | same | `TNC` | 5420 | 47 | 22 | 14 | 24 |
-| same | `ALA` | 6558 | 47 | 25 | 10 | 25 |
+| same | `AAX` | 6558 | 47 | 25 | 10 | 25 |
 | same | `BBH` | 7678 | 47 | 25 | 10 | 24 |
-| same | `KRS` | 8882 | 47 | 19 | 16 | 21 |
+| same | `AOX` | 8882 | 47 | 19 | 16 | 21 |
 | same | `UDC` | 10124 | 47 | 27 | 7 | 26 |
 | same | `SDZ` | 11325 | 47 | 27 | 8 | 26 |
 | same | `GAC` | 12570 | 47 | 27 | 10 | 25 |
@@ -60,16 +60,16 @@ No small safe patch was made because the dominant issues are structural: route d
 | same | `UWD` | 18513 | 47 | 22 | 20 | 24 |
 | same | `MRC` | 19718 | 47 | 24 | 17 | 23 |
 | same | `IUL` | 20894 | 47 | 24 | 13 | 23 |
-| same | `BAC` | 22051 | 47 | 26 | 13 | 22 |
+| same | `ADX` | 22051 | 47 | 26 | 13 | 22 |
 | same | `ARD` | 23197 | 47 | 23 | 17 | 23 |
 | same | `NLC` | 24395 | 47 | 23 | 14 | 28 |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | `CFR` | 15 | 47 | 37 | 9 | 0 |
 | same | `OGB` | 1135 | 23 | 12 | 6 | 4 |
 | same | `MFR` | 1712 | 58 | 50 | 6 | 2 |
-| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `KZR` | 12 | 16 | 8 | 6 | 3 |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | `APX` | 12 | 16 | 8 | 6 | 3 |
 | same | `SOG` | 384 | 16 | 8 | 6 | 3 |
-| same | `KHW` | 757 | 16 | 8 | 7 | 3 |
-| same | `ALN` | 1133 | 16 | 8 | 7 | 2 |
+| same | `ANX` | 757 | 16 | 8 | 7 | 3 |
+| same | `ABX` | 1133 | 16 | 8 | 7 | 2 |
 
 Notes:
 - "Tiny/generic reward candidates" are mechanically detected focuses where the completion reward did not visibly contain a map, unit, decision, war, faction, building, tech, template, or similar concrete payoff. Some helpers may have deeper effects, but the focus reward surface still reads as indirect or small.
@@ -124,8 +124,8 @@ Major helper/updater use:
 | NRF naval revenant, `005_soviet_collapse_custom_splinters.txt:3313` | 18-focus naval/dead crew compact tree. | Ports; dockyards; convoys; ships; naval invasions; White Sea lanes; fleet that does not dock. | Underbuilt for naval identity. | Add dockyards, convoys, ship spawns/build speed, naval invasion preparation, naval AI. |
 | TSC science/anomaly, `005_soviet_collapse_custom_splinters.txt:1790` | 18-focus field station package. | Radar/airbases; anomaly expeditions; decryption; special projects; observatory vs signs route choice. | Too compact and helper-driven. | Make the anomaly mechanic visible through decisions, radar, air/special tech, and scouting missions. |
 | RMC/ICD death/commissar trees, `005_soviet_collapse_custom_splinters.txt:2267` and `3816` | 18-focus compact identity packages. | Cult/commissariat rule; undead manpower; martyr/roll-call expansion; archive coring; forced mobilization. | Too small for full identity-driven play. | Add coring/war/mobilization branch and unique internal pressure mechanic. |
-| FTH/BBH/KRS/BSC/TNC/ALA and other 47-focus high-chaos trees | Mostly 47-focus repeated template using custom splinter identity helpers. | Each needs a country-specific military, economy, diplomacy/special, and expansion route built around its lore. | Broadly shallow. Repeated 47-focus shell is the main "same tree with different names" risk. | Pick one country at a time and replace helper-template middle lanes with visible state, unit, decision, and war mechanics. |
-| Ancient restorations KZR/SOG/KHW/ALN, `005_soviet_collapse_ancient_restorations.txt` | Four 16-focus compact packages. | Ancient legitimacy; modern survival; trade/water/pass/oasis economy; symbolic restoration vs modern administration; expansion; League bargain. | Too compact for requested "all trees" rework unless they are explicitly side trees. | Add 4 compact but distinct route lanes per tree, with actual formation/integration/claim decisions. |
+| FTH/BBH/AOX/AEX/TNC/AAX and other 47-focus high-chaos trees | Mostly 47-focus repeated template using custom splinter identity helpers. | Each needs a country-specific military, economy, diplomacy/special, and expansion route built around its lore. | Broadly shallow. Repeated 47-focus shell is the main "same tree with different names" risk. | Pick one country at a time and replace helper-template middle lanes with visible state, unit, decision, and war mechanics. |
+| Ancient restorations APX/SOG/ANX/ABX, `005_soviet_collapse_ancient_restorations.txt` | Four 16-focus compact packages. | Ancient legitimacy; modern survival; trade/water/pass/oasis economy; symbolic restoration vs modern administration; expansion; League bargain. | Too compact for requested "all trees" rework unless they are explicitly side trees. | Add 4 compact but distinct route lanes per tree, with actual formation/integration/claim decisions. |
 
 ## Mechanics disconnect list
 
@@ -152,7 +152,7 @@ Highest-risk groups:
 | Ukraine | 153 | 4 | 16 | Worst offender. Example cluster: `ukr_soviet_collapse_guard_the_telegraph_house`, `ukr_soviet_collapse_question_of_statehood`, `ukr_soviet_collapse_seal_the_grain_ledgers`, `ukr_soviet_collapse_village_granary_guards`, and `ukr_soviet_collapse_direct_national_claims` around `005_soviet_collapse_republics.txt:138`, `267`, `1747`. |
 | Moldova | 91 | 4 | 0 | Large crisscrossing branch risk despite a smaller tree. |
 | Kazakhstan | 120 | 13 | 2 | Too wide/deep for the current coordinate structure. |
-| BAC | 44 | 0 | 0 | 47-focus custom tree still produces many crossing risks. |
+| ADX | 44 | 0 | 0 | 47-focus custom tree still produces many crossing risks. |
 | UWD | 35 | 2 | 0 | Custom template has through-focus risk. |
 | SZA | 29 | 0 | 0 | Custom template line density risk. |
 | FEV | 18 | 0 | 0 | Repeated custom shell risk. |
@@ -245,7 +245,7 @@ Required AI direction:
 
 ## High-priority fixes first
 
-1. Reflow Ukraine, Moldova, Kazakhstan, CFR, MFR, BAC, UWD, SZA, and FEV before adding more focuses. The layout risk is already high enough that more content will worsen pathline crossing.
+1. Reflow Ukraine, Moldova, Kazakhstan, CFR, MFR, ADX, UWD, SZA, and FEV before adding more focuses. The layout risk is already high enough that more content will worsen pathline crossing.
 2. Replace helper/idea-update reward spam with visible route mechanics. The first rework pass should target focuses that only call `soviet_collapse_update_consolidated_republic_ideas`, `soviet_collapse_apply_focus_high_chaos_identity`, or repeated custom splinter identity helpers.
 3. Rebuild overpowered identity branches for CFR, MFR, PRA, DSC, and NRF. These are the clearest examples from the request and should set the quality bar for other chaos/special countries.
 4. Add route-aware AI strategy coverage for every major regional and special tree before calling the rework complete.

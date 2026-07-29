@@ -33,7 +33,7 @@ Already addressed by existing parent/subagent reports:
 - Same-focus duplicate direct helper calls were not found.
 - Duplicate focus coordinates were not found in the current four focus files.
 - MFR ownership-route mutexes are now visible.
-- Some Ukraine, Belarus, CFR, DSC, ancient restoration, BSC/TNC/ALA, UDC, ARD, NLC, and high-chaos helper payloads were strengthened.
+- Some Ukraine, Belarus, CFR, DSC, ancient restoration, AEX/TNC/AAX, UDC, ARD, NLC, and high-chaos helper payloads were strengthened.
 
 Still current:
 
@@ -47,7 +47,7 @@ Still current:
    Evidence: helper counts above; representative same-shape early FTH chain at `common/national_focus/005_soviet_collapse_custom_splinters.txt:52`, `:77`, `:101`, `:125`, `:149`, `:173`, `:197`, `:221`. The helpers are stronger than before, but many countries still read as the same scaffold with different tag prefixes.
 
 2. Many trees still have zero focus-staged decision links.
-   Evidence: zero decision-link focus trees include the generic breakaway tree (`common/national_focus/005_soviet_collapse_republics.txt:2355`), internal republic tree (`:3167`), Baltic tree (`:4657`), Moldova tree (`:8688`), and many 47-focus custom splinters such as FTH (`common/national_focus/005_soviet_collapse_custom_splinters.txt:52`) and BBH/KRS/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC.
+   Evidence: zero decision-link focus trees include the generic breakaway tree (`common/national_focus/005_soviet_collapse_republics.txt:2355`), internal republic tree (`:3167`), Baltic tree (`:4657`), Moldova tree (`:8688`), and many 47-focus custom splinters such as FTH (`common/national_focus/005_soviet_collapse_custom_splinters.txt:52`) and BBH/AOX/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX.
 
 3. Several large republic/shared trees still show no direct focus-file expansion payload.
    Evidence: Baltic, Belarus, Kazakhstan, Moldova, internal republic, and generic breakaway parsed with `0` direct focus-file `add_state_claim`, `add_state_core`, `create_wargoal`, or `declare_war_on` calls. Examples: Baltic opening and route fork at `common/national_focus/005_soviet_collapse_republics.txt:4657` and `:4745`; Belarus rail/League branch at `:9777` through `:10090`; Kazakhstan federation branch at `:10813` and `:11339`; Moldova endpoints at `:8688` and `:8730`.
@@ -77,10 +77,10 @@ Still current:
     Evidence: opening focuses at `common/national_focus/005_soviet_collapse_republics.txt:5621`, `:5634`, `:5650`, and `:5666` are helper/stat rewards. The tree has only 2 focus-level decision hooks and `0` direct expansion effects in the parser despite oil/pass/league themes.
 
 12. The 16-focus ancient restorations remain compact side trees after the symbolic-core patch.
-    Evidence: KZR/SOG/KHW/ALN each have 16 focuses. Charter joins at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:288`, `:697`, `:1096`, and `:1508` OR-join the symbolic and expansion forks into one focus. This is legal, but it compresses politics, industry, diplomacy, expansion, and settlement into one short spine.
+    Evidence: APX/SOG/ANX/ABX each have 16 focuses. Charter joins at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:288`, `:697`, `:1096`, and `:1508` OR-join the symbolic and expansion forks into one focus. This is legal, but it compresses politics, industry, diplomacy, expansion, and settlement into one short spine.
 
 13. Ancient expansion is now strong, but still generic across the four restorations.
-    Evidence: expansionist focuses call the same assault/claim/high-chaos neighbor package around `KZR_expansionist_steppe_levy` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:240`), `SOG_expansionist_merchant_claims` (`:648`), `KHW_expansionist_water_claims` (`:1047`), and `ALN_expansionist_mountain_claims` (`:1457`). They need route-specific postwar decisions, not only shared OP payloads.
+    Evidence: expansionist focuses call the same assault/claim/high-chaos neighbor package around `APX_expansionist_steppe_levy` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:240`), `SOG_expansionist_merchant_claims` (`:648`), `ANX_expansionist_water_claims` (`:1047`), and `ABX_expansionist_mountain_claims` (`:1457`). They need route-specific postwar decisions, not only shared OP payloads.
 
 14. TSC has better decisions than before, but still lacks a full anomaly mechanic branch.
     Evidence: `TSC_claim_the_impact_zone` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:2207` now unlocks a decision and calls expansion helpers, but the tree is still only 18 focuses. The quiet endpoint `TSC_observatory_state` at `:2301` remains a compact republican-compact/stability payoff rather than a separate non-chaos anomaly governance path.
@@ -100,8 +100,8 @@ Still current:
 19. UDC and SDZ still have long diplomacy-to-statute joins.
     Evidence: `UDC_loyalist_statute_guarantees` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:10893` joins `UDC_command_mediation` and `UDC_diplomatic_plan` across a 20-step edge; `SDZ_chain_of_custody_statutes` at `:12136` has the same pattern across a 19-step edge. Both remain pathline and route-readability risks.
 
-20. BAC and several other 47-focus splinters still have no decision evolution despite local reward depth.
-    Evidence: BAC has long war/industry pathlines at `common/national_focus/005_soviet_collapse_custom_splinters.txt:22749` and `:22848`, but the parser found `0` focus-staged decision links. Similar zero-link 47-focus trees include BBH, KRS, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and BAC.
+20. ADX and several other 47-focus splinters still have no decision evolution despite local reward depth.
+    Evidence: ADX has long war/industry pathlines at `common/national_focus/005_soviet_collapse_custom_splinters.txt:22749` and `:22848`, but the parser found `0` focus-staged decision links. Similar zero-link 47-focus trees include BBH, AOX, SDZ, GAC, DHC, KHC, FEV, SZA, UWD, MRC, IUL, and ADX.
 
 ## Prioritized Patch Order
 
@@ -109,7 +109,7 @@ Still current:
 2. Add decision/mechanic staging to zero-link shared trees: generic breakaway, internal republic, Baltic, Moldova, and the 47-focus custom splinters that still have no focus-staged decisions.
 3. Patch Central Asia and Kazakhstan pathlines plus expansion payoffs: break up giant OR joins, add federation/protectorate/settlement decisions, and expose claims/cores/wargoals or regional war missions in focus rewards/tooltips.
 4. Expand or explicitly accept the compact special trees. If not accepted as short side trees, TSC/RMC/ICD/NRF and the ancient restorations need 35-45 focus equivalents or dense decision modules covering politics, industry, diplomacy, expansion, and special mechanics.
-5. Replace repeated generic helper rewards with per-tag signature helpers. Start with FTH/BBH/KRS/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC so each has a visible special mechanic and one focus-staged decision phase.
+5. Replace repeated generic helper rewards with per-tag signature helpers. Start with FTH/BBH/AOX/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX so each has a visible special mechanic and one focus-staged decision phase.
 6. Rework OGB and CFR branch payoffs: OGB needs restored-name governance and Volga compact decisions; CFR needs clearer route-specific construction mandate spending, protectorate contracts, and fewer same-outcome forks.
 7. Run a visual pathline screenshot pass after coordinate changes. Current mechanical checks removed duplicate coords and axis blockers except Moldova, but long diagonal paths remain likely to render poorly.
 

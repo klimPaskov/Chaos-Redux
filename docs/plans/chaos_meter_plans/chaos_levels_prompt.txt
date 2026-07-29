@@ -1,0 +1,231 @@
+# Implement Per-Event Chaos Levels
+
+Add a **Chaos level** requirement to normal Chaos Redux events. This is the minimum global Chaos tier at which an event becomes eligible for automatic selection.
+
+Event clusters already have an unlock-tier system. Use that implementation as a structural reference, while keeping event Chaos levels and cluster Chaos levels as separate requirements.
+
+## Required Behavior
+
+Each registered event must have a minimum Chaos level.
+
+Use the existing six Chaos tiers:
+
+1. **Calm World**
+2. **Gathering Storm**
+3. **Rising Chaos**
+4. **Chaos Tier**
+5. **Totalen Chaos**
+6. **World Collapse**
+
+Do not create a second Chaos tier calculation system. Reuse the current global Chaos tier state and existing tier constants.
+
+An event is eligible only when:
+
+- the event is enabled
+- its normal trigger and target requirements are valid
+- its fire-once or repeatable state permits firing
+- the current global Chaos tier is equal to or above the event's required Chaos level
+- every other existing event-selection condition is satisfied
+
+The Chaos level is a minimum tier. Reaching a higher tier must keep the event eligible.
+
+## Event Assignments for IDs 1-20
+
+Assign these values exactly:
+
+| Event ID | Event | Chaos level |
+| --- | --- | --- |
+| 1 | Communist Insurgency | 1, Calm World |
+| 2 | Zombie Outbreak | 1, Calm World |
+| 3 | The Holy Realm | 1, Calm World |
+| 4 | Random War | 1, Calm World |
+| 5 | Soviet Union Collapse | 1, Calm World |
+| 6 | Independence Wave | 1, Calm World |
+| 7 | Fury | 1, Calm World |
+| 8 | Tensions Rising | 1, Calm World |
+| 9 | White Peace | 2, Gathering Storm |
+| 10 | Death | 1, Calm World |
+| 11 | Secret Alliance | 1, Calm World |
+| 12 | Africa | 1, Calm World |
+| 13 | Natural Disasters | 1, Calm World |
+| 14 | Cannibalism | 1, Calm World |
+| 15 | Utopia Manifesto | 1, Calm World |
+| 16 | Brilliant Scientist | 1, Calm World |
+| 17 | Random Faction | 1, Calm World |
+| 18 | Resources Found | 1, Calm World |
+| 19 | Infantry Spawn | 1, Calm World |
+| 20 | Black Plague | 1, Calm World |
+
+Apply these assignments regardless of the current testing or rework status of the event.
+
+Do not change event classifications, starting weights, recovery, repeat caps, major-event weight growth, timer pressure, evolution requirements, or event effects as part of this task.
+
+## Registration Architecture
+
+Add the Chaos level to the shared event registry.
+
+Follow the existing event and cluster registration patterns. Keep the event ID and Chaos level data aligned and initialized in one central place.
+
+Use a reusable lookup and eligibility structure. The final naming should follow nearby repository conventions, but the system needs the equivalent of:
+
+- an event Chaos-level registry
+- a helper that resolves the required Chaos level for an event ID
+- a trigger that checks whether the current event's required Chaos level is met
+- scripted localisation that resolves the numeric level and tier name
+
+Do not scatter separate checks such as `event 9 requires tier 2` through selection, settings, GUI, and logging files. The event registry must be the source of truth.
+
+Do not use a large duplicated conditional chain when aligned arrays or the established registry pattern can represent the data cleanly.
+
+Every active event covered by the system must have an explicit registered value. Default to Chaos level 1 for every event when the Chaos level is not specified.
+
+## Automatic Event Selection
+
+Integrate the requirement into the normal candidate eligibility calculation before an event contributes weight to the random selection pool.
+
+When the current Chaos level is below the event requirement:
+
+- the event must contribute no selectable weight
+- its stored weight must remain unchanged
+- it must not be marked as fired
+- its repeatable cap must remain unchanged
+- it must not advance the event timer
+- it must not add major-event weight
+- it must become eligible immediately after the required tier is reached
+
+Do not overwrite the event's stored weight with zero. Treat the event as temporarily unavailable.
+
+If Chaos later falls below the required tier, the event must become unavailable again without losing its weight, fired history, recovery state, cap, or other persistent data.
+
+## Event and Cluster Interaction
+
+Event Chaos levels and cluster Chaos levels are independent gates.
+
+For ordinary automatic firing:
+
+1. The selected event must meet its own Chaos-level requirement.
+2. If the event belongs to a cluster, the cluster must also meet its cluster unlock tier.
+3. Cluster member-specific minimum tiers must continue to work.
+4. All other cluster availability, cooldown, member, participation, and runtime-context checks must continue to work.
+
+The effective automatic requirement can therefore be stricter than either value alone.
+
+White Peace is Event 9 and must remain unavailable during Calm World even though the Peace cluster currently has Chaos level 1. The Peace cluster must not automatically enter through White Peace until the world reaches Gathering Storm.
+
+Do not merge the event level with the cluster level or automatically rewrite one from the other.
+
+## Manual Triggering
+
+Normal manual event triggering from Settings must respect the event Chaos level.
+
+When **Force Trigger Mode** is enabled, the existing force behavior may bypass the event Chaos-level requirement together with the other normal restrictions.
+
+Keep manual cluster forcing consistent with its existing bypass behavior. Do not change cluster force-trigger semantics during this task.
+
+Triggerable scenarios remain separate from normal event Chaos-level eligibility and must not gain this gate.
+
+## Event Logs and Event Details UI
+
+Expose the requirement to the player.
+
+Add the event Chaos level to Event Details using the existing movable event-detail window. Show the numeric level and use the color appropriate for the value. Calm World level 1 should be green, for example.
+
+Examples:
+
+- `Chaos lvl: 1`
+- `Chaos lvl: 2`
+
+The Events tab should make the requirement visible without making rows overcrowded. Use either a compact Chaos-level field in each row or a clear requirement or status line in the selected event details, depending on the existing layout capacity.
+
+When an event is unavailable because the current Chaos tier is too low:
+
+- show `N/A` instead of a selectable weight
+- provide a clear tooltip or status such as `Requires Gathering Storm`
+- do not expose raw scripted trigger text
+- do not describe the event as disabled, since the player's event toggle may still be enabled
+
+Keep the enable and disable checkbox independent from Chaos-level availability.
+
+Reuse the existing Chaos tier names and localisation where practical. Add dedicated localisation only where needed for event-specific labels, status text, and tooltips.
+
+If the Events tab layout changes, verify row alignment, text bounds, click regions, tooltip regions, sorting controls, and event-row selection at the supported resolutions.
+
+## Sorting and Filters
+
+Existing sorting and filters must continue to work.
+
+Add a Chaos-level filter.
+
+If the event view uses parallel arrays, include the Chaos level in the correct rebuilt view data so sorting or filtering cannot associate one event with another event's level.
+
+## Documentation
+
+Update the event-system documentation to explain:
+
+- what an event Chaos level means
+- the six level names
+- how automatic selection checks the requirement
+- how event and cluster requirements combine
+- how manual triggering and Force Trigger Mode behave
+- how temporarily locked event weights are preserved
+- how the Event Details UI displays the requirement
+
+Create or update the appropriate system documentation under `docs/systems/`. Follow the repository requirement for documenting a new mechanic.
+
+Also update `CHAOS_REDUX_MECHANICS.md` so the main mechanics guide describes event Chaos levels separately from evolutions and cluster unlock levels.
+
+Do not describe this as a recent rework in player-facing text.
+
+## Event Catalog Workbook
+
+Update the authoritative workbook:
+
+`docs/spreadsheets/chaos_redux_events_catalog.xlsx`
+
+Add a numeric **Chaos level** field to the event catalog while preserving the workbook's formatting, filters, formulas, validation, and structure.
+
+Populate Events 1-20 with the exact values listed above:
+
+- Event 9: `2`
+- Events 1-8 and 10-20: `1`
+
+Do not edit the CSV files directly.
+
+After saving the workbook, run:
+
+```bash
+python .tools/export_event_catalog_csv.py
+```
+
+Confirm that the event, cluster, and scenario CSV exports were regenerated from the workbook.
+
+## Completion Requirements
+
+Do not stop after adding the selection check.
+
+Completion requires:
+
+- central event Chaos-level registration
+- reusable lookup and eligibility logic
+- integration into automatic selection
+- correct manual and force-trigger behavior
+- correct cluster interaction
+- Event Details and availability display
+- localisation
+- documentation
+- authoritative workbook update
+- regenerated CSV exports
+- focused validation of the threshold and weight-preservation behavior
+
+In the final report, list:
+
+- files changed
+- helper, trigger, constant, array, and localisation identifiers added
+- the final Event 1-20 assignments
+- the exact automatic and manual behavior
+- the Event Details presentation
+- workbook and exporter changes
+- task-specific validation results
+- any unresolved issue or limitation
+
+Do not claim completion if one of these surfaces is missing.

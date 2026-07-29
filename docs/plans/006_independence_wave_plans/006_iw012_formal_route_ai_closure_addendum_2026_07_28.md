@@ -308,7 +308,7 @@ If accepted and implemented:
 
 - merge the route arbitration rule and exact matrix into the IW-012 section of `006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md`;
 - merge the two-stage AI acceptance cases into `006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`;
-- update `docs/events/006_independence_wave_iw012_ice_package.md`;
+- update `docs/events/006_independence_wave/iw012_ice_package.md`;
 - update `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md`;
 - reconcile stale IW-012 handoffs that still describe a fixed Denmark target or unconditional route behavior.
 
@@ -320,7 +320,7 @@ Required:
 
 - `common/decisions/006_independence_wave_ice_decisions.txt`;
 - `common/national_focus/006_independence_wave_focus.txt`;
-- `docs/events/006_independence_wave_iw012_ice_package.md`;
+- `docs/events/006_independence_wave/iw012_ice_package.md`;
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`;
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`;
 - `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md` after acceptance;

@@ -44,12 +44,12 @@ Record asset name, event id, asset type, source mode, prompt or source link, lic
 
 ## Reference folders to inspect
 
-- `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/achievements`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
 
 ## Second-pass GUI and recovery asset additions
 

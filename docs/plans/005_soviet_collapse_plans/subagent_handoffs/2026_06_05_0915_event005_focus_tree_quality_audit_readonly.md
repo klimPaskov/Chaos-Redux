@@ -56,7 +56,7 @@ These are the highest-impact visible pathline problems by parent-child horizonta
 - `kaz_soviet_collapse_the_steppe_arbitration_court` at `(2,7)`, line 11320, pulls from `kaz_soviet_collapse_steppe_federation_charter` `(18,6)`, `dx=-16`, `dy=1`.
 - `blr_soviet_collapse_baltic_wire_rooms` at `(31,12)`, line 10067, pulls from `blr_soviet_collapse_state_between_armies` `(16,7)`, `dx=15`.
 - `internal_soviet_collapse_forest_republic_committees` at `(1,4)`, line 3320, pulls from `internal_soviet_collapse_write_the_autonomy_statute` `(16,2)`, `dx=-15`.
-- `BAC_militia_training_yards` at `(15,9)`, line 22664, pulls from `BAC_war_plan` `(0,8)`, `dx=15`, `dy=1`.
+- `ADX_militia_training_yards` at `(15,9)`, line 22664, pulls from `ADX_war_plan` `(0,8)`, `dx=15`, `dy=1`.
 - `UDC_loyalist_statute_guarantees` at `(4,10)`, line 10865, pulls from `UDC_diplomatic_plan` `(18,4)`, `dx=-14`.
 - `SDZ_chain_of_custody_statutes` at `(5,10)`, line 12094, pulls from `SDZ_diplomatic_plan` `(18,4)`, `dx=-13`.
 
@@ -64,9 +64,9 @@ Repeated multi-parent join issues:
 
 - `FEV_endgame` `(10,13)`, line 17275, has parent spread 16 across `FEV_extreme_path` `(3,12)`, `FEV_settlement` `(6,7)`, `FEV_authority_from_the_harbor` `(12,12)`, `FEV_amur_buffer_posts` `(0,10)`, `FEV_pacific_between_empires` `(16,12)`, and others.
 - `SZA_endgame` `(10,15)`, line 18444, has parent spread 14 across `SZA_extreme_path` `(3,12)`, `SZA_settlement` `(6,7)`, `SZA_baikal_rear_area` `(2,10)`, `SZA_siberia_between_oceans` `(16,12)`, and others.
-- `BAC_endgame` `(8,18)`, line 23083, has parent spread 14 across `BAC_extreme_path` `(3,11)`, `BAC_obluchye_rear_area` `(0,13)`, `BAC_league_relief_bargain` `(14,12)`, and others.
+- `ADX_endgame` `(8,18)`, line 23083, has parent spread 14 across `ADX_extreme_path` `(3,11)`, `ADX_obluchye_rear_area` `(0,13)`, `ADX_league_relief_bargain` `(14,12)`, and others.
 - `ARD_endgame` `(8,18)`, line 24281, has parent spread 12 across `ARD_extreme_path` `(5,13)`, `ARD_kandalaksha_rear_area` `(0,13)`, `ARD_league_convoy_bargain` `(12,12)`, and others.
-- Ancient trees have clean small grids but repeated wide center joins: `KZR_league_transit_bargain` `(6,4)` joins parents at `(0,3)` and `(12,3)`; `KHW_league_irrigation_bargain` and `ALN_league_pass_bargain` repeat the same 12-wide join.
+- Ancient trees have clean small grids but repeated wide center joins: `APX_league_transit_bargain` `(6,4)` joins parents at `(0,3)` and `(12,3)`; `ANX_league_irrigation_bargain` and `ABX_league_pass_bargain` repeat the same 12-wide join.
 
 ## Direct Ideas And Repeated Reward Findings
 
@@ -93,7 +93,7 @@ Finding: the user complaint about "idea-like/spammy rewards" is valid in effect 
 ## Shallow Branch And Tree Findings
 
 - The 18-focus special trees remain too short for playable chaos countries: `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`. They have flavor identity but not enough political/industry/diplomacy/expansion branch mass to feel like full countries.
-- The 16-focus ancient trees (`KZR`, `SOG`, `KHW`, `ALN`) are structurally readable but are mostly the same pattern: council/law/registers, market/workshop, guard/patrol, old border files, symbolic vs expansion fork, charter, two end nodes. They need at least one unique mechanic branch each, not just claims plus a symbolic/expansion pair.
+- The 16-focus ancient trees (`APX`, `SOG`, `ANX`, `ABX`) are structurally readable but are mostly the same pattern: council/law/registers, market/workshop, guard/patrol, old border files, symbolic vs expansion fork, charter, two end nodes. They need at least one unique mechanic branch each, not just claims plus a symbolic/expansion pair.
 - The 47-focus custom splinter trees have better size, but many share the same skeleton: `birth`, `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `diplomatic_plan`, `inner_faction`, `special_arm`, `supply`, `enemy_front`, `war_plan`, `civil_rule`, `propaganda`, `settlement`, `radical_turn`, `industry_plan`, `hidden_doctrine`, `extreme_gate`, `endgame`, `extreme_path`. This makes the branch labels clearer than before but still template-driven.
 - Political/industry/expansion branches are visually and mechanically blurred in several republic trees because long parent jumps connect political decisions to far-away industry/expansion payoffs. Moldova, Belarus, Kazakhstan, Central Asia, and Ukraine have the worst examples listed above.
 - `CFR_soviet_collapse_focus_tree` is thematically coherent but still reads as repeated construction-state branches. The path around `CFR_apartment_blocks_for_loyalty` `(11,10)`, `CFR_cities_first` `(11,9)`, and `CFR_rails_first` creates odd joins and reward repetition around housing/public works.
@@ -111,21 +111,21 @@ Trees with strong aggression signals:
 
 - `MFR_soviet_collapse_focus_tree`: `MFR_no_peace_without_orders`, `MFR_eternal_arsenal_marches`, and several AI strategy focuses make it the closest to OP/aggressive.
 - `DSC_soviet_collapse_focus_tree`: `DSC_congress_of_the_dead_army` and `DSC_revenant_staff_line` have war pressure, AI strategy, assault columns, and the only helper-mediated focus idea upgrade.
-- Ancient expansion nodes (`KZR_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, `ALN_expansionist_mountain_claims`) add claims/wargoals/AI, but the rest of each ancient tree is compact and not especially overpowered.
+- Ancient expansion nodes (`APX_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, `ABX_expansionist_mountain_claims`) add claims/wargoals/AI, but the rest of each ancient tree is compact and not especially overpowered.
 
 Trees/gaps that still look under-aggressive for chaos successors:
 
-- `BSC`, `UDC`, `SDZ`, and `NLC` have assault-column/claim helper paths but little direct AI strategy pressure; they need more explicit conquer/antagonize behavior and staged neighbor war goals.
-- `TNC`, `ALA`, `BBH`, `KRS`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, and `ARD` mostly have one `extreme_path` or local high-chaos identity endpoint, not enough repeated aggressive pressure across the route.
+- `AEX`, `UDC`, `SDZ`, and `NLC` have assault-column/claim helper paths but little direct AI strategy pressure; they need more explicit conquer/antagonize behavior and staged neighbor war goals.
+- `TNC`, `AAX`, `BBH`, `AOX`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, and `ARD` mostly have one `extreme_path` or local high-chaos identity endpoint, not enough repeated aggressive pressure across the route.
 - `PRA`, `TSC`, `RMC`, `ICD`, `NRF`, and `OGB` have compact aggression endpoints, but most of their tree is still setup/identity rather than a snowballing threat.
 
 ## Prioritized Patch Recommendations
 
 1. Fix pathline geometry before more reward work.
-   Move or split the worst long joins listed above. Use `relative_position_id` on branch chains after the cleanup so future coordinate edits move whole branches together. Start with Moldova, Central Asia, Ukraine bread-state, Belarus timetable/league, Kazakhstan federation/arbitration, UDC/SDZ guarantee joins, and BAC/FEV/SZA/ARD endgame joins.
+   Move or split the worst long joins listed above. Use `relative_position_id` on branch chains after the cleanup so future coordinate edits move whole branches together. Start with Moldova, Central Asia, Ukraine bread-state, Belarus timetable/league, Kazakhstan federation/arbitration, UDC/SDZ guarantee joins, and ADX/FEV/SZA/ARD endgame joins.
 
 2. Split repeated multi-parent endgame joins into visible branch gates.
-   For FEV/SZA/BAC/ARD and similar trees, add intermediate "route consolidation" gates close to their parent clusters, then feed the final endgame from 2-3 nearby gates instead of 6-9 parents spread across the tree.
+   For FEV/SZA/ADX/ARD and similar trees, add intermediate "route consolidation" gates close to their parent clusters, then feed the final endgame from 2-3 nearby gates instead of 6-9 parents spread across the tree.
 
 3. Replace repeated helper-only custom splinter trunk nodes.
    The 14-tree custom splinter skeleton should keep shared helpers only for shared infrastructure. Each tree needs 3-5 bespoke branch-defining focuses that unlock unique decisions, war plans, state targets, unit templates, advisors, or route-specific laws instead of only `*_identity` helpers.

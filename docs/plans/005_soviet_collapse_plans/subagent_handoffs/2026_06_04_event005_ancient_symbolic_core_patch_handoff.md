@@ -17,7 +17,7 @@ Date: 2026-06-04
 | Political branch | All four ancient restorations have council, law debate, charter, and symbolic-vs-expansion route choice branches. | Implemented but compact | Political identity is present, but route-specific leader/advisor/law changes remain limited. |
 | Industry branch | Ancient restorations have market/workshop/road/water/pass branches plus state construction rewards. | Implemented but still reward-heavy | Industry is geographically flavored but mostly one-time buildings and helper rewards. |
 | Expansion branch | Ancient restorations have old-border files, expansionist route focuses, returned-names endgames, and high-chaos late endpoints. | Implemented | Existing parent work already added war goals, assault columns, neighbor expansion helpers, and claim/core behavior on expansion paths. |
-| Symbolic survival route | `KZR_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `KHW_restoration_survives_modern_war`, `ALN_restoration_survives_modern_war`. | Patched | These now core controlled claimed territory and add rail/mobile guard power instead of staying mostly authority/building payoffs. |
+| Symbolic survival route | `APX_restoration_survives_modern_war`, `SOG_restoration_survives_modern_war`, `ANX_restoration_survives_modern_war`, `ABX_restoration_survives_modern_war`. | Patched | These now core controlled claimed territory and add rail/mobile guard power instead of staying mostly authority/building payoffs. |
 | AI route behavior | Every focus in the four files has `ai_will_do`. | Partial | Most AI remains base-weighted; ancient route forks have some war/no-war modifiers, but broader route-aware plans are still shallow. |
 
 ## Remaining shallow or generic content
@@ -53,10 +53,10 @@ Date: 2026-06-04
 
 Changed focus ids:
 
-- `KZR_restoration_survives_modern_war`
+- `APX_restoration_survives_modern_war`
 - `SOG_restoration_survives_modern_war`
-- `KHW_restoration_survives_modern_war`
-- `ALN_restoration_survives_modern_war`
+- `ANX_restoration_survives_modern_war`
+- `ABX_restoration_survives_modern_war`
 
 Before:
 
@@ -65,10 +65,10 @@ Before:
 
 After:
 
-- `KZR_restoration_survives_modern_war` adds `soviet_collapse_apply_focus_rail_authority_reward = yes` and cores controlled claimed states.
+- `APX_restoration_survives_modern_war` adds `soviet_collapse_apply_focus_rail_authority_reward = yes` and cores controlled claimed states.
 - `SOG_restoration_survives_modern_war` adds `soviet_collapse_apply_focus_mobile_columns_reward = yes` and cores controlled claimed states.
-- `KHW_restoration_survives_modern_war` adds mobile columns, cores controlled claimed states, and improves infrastructure in those integrated controlled claims.
-- `ALN_restoration_survives_modern_war` adds mobile columns, cores controlled claimed states, and fortifies those integrated controlled claims.
+- `ANX_restoration_survives_modern_war` adds mobile columns, cores controlled claimed states, and improves infrastructure in those integrated controlled claims.
+- `ABX_restoration_survives_modern_war` adds mobile columns, cores controlled claimed states, and fortifies those integrated controlled claims.
 
 ## Safety notes
 

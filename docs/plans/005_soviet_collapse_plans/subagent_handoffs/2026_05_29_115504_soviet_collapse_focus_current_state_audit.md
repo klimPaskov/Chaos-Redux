@@ -41,11 +41,11 @@ Mode: read-only audit. No gameplay files were patched.
 | `DSC_soviet_collapse_focus_tree` | custom:2693 | 18 | Fail | Dead-army premise needs real army/economy/expansion branches. |
 | `NRF_soviet_collapse_focus_tree` | custom:3167 | 18 | Fail | Fleet premise needs naval, port, raid, and expansion mechanics. |
 | `ICD_soviet_collapse_focus_tree` | custom:3632 | 18 | Fail | Commissariat premise is a short ladder with limited mechanic payoff. |
-| `BSC_soviet_collapse_focus_tree` | custom:4103 | 47 | Partial | Full shell exists; regional branches still rely on shared identity helpers. |
+| `AEX_soviet_collapse_focus_tree` | custom:4103 | 47 | Partial | Full shell exists; regional branches still rely on shared identity helpers. |
 | `TNC_soviet_collapse_focus_tree` | custom:5233 | 47 | Partial | Full shell exists; regional branches still rely on shared identity helpers. |
-| `ALA_soviet_collapse_focus_tree` | custom:6371 | 47 | Partial | Full shell exists; needs stronger Alash-specific political/expansion mechanics. |
+| `AAX_soviet_collapse_focus_tree` | custom:6371 | 47 | Partial | Full shell exists; needs stronger Alash-specific political/expansion mechanics. |
 | `BBH_soviet_collapse_focus_tree` | custom:7491 | 47 | Fail | Missing 3 icon sprite definitions and anarchist/raider route needs more direct mechanics. |
-| `KRS_soviet_collapse_focus_tree` | custom:8695 | 47 | Partial | Port-council depth exists, but one direct updater plus identity helper remains. |
+| `AOX_soviet_collapse_focus_tree` | custom:8695 | 47 | Partial | Port-council depth exists, but one direct updater plus identity helper remains. |
 | `UDC_soviet_collapse_focus_tree` | custom:9938 | 47 | Partial | Command-network hooks exist; still template-heavy. |
 | `SDZ_soviet_collapse_focus_tree` | custom:11139 | 47 | Partial | Archive-control hooks exist; still template-heavy. |
 | `GAC_soviet_collapse_focus_tree` | custom:12384 | 47 | Partial | Full shell exists; needs more unique green-army route play. |
@@ -56,7 +56,7 @@ Mode: read-only audit. No gameplay files were patched.
 | `UWD_soviet_collapse_focus_tree` | custom:18327 | 47 | Partial | Factory/rail logic exists but has heavy icon reuse/helper reliance. |
 | `MRC_soviet_collapse_focus_tree` | custom:19529 | 47 | Partial | Mountain route exists; note lowercase `mrc_*` ids remain in this tree. |
 | `IUL_soviet_collapse_focus_tree` | custom:20705 | 47 | Partial | Corridor/federal route exists but needs stronger Idel-Ural settlement decisions. |
-| `BAC_soviet_collapse_focus_tree` | custom:21862 | 47 | Partial | Refuge/archive route exists but remains helper-heavy. |
+| `ADX_soviet_collapse_focus_tree` | custom:21862 | 47 | Partial | Refuge/archive route exists but remains helper-heavy. |
 | `ARD_soviet_collapse_focus_tree` | custom:23008 | 47 | Partial | Arctic/directorate route exists but remains helper-heavy. |
 | `NLC_soviet_collapse_focus_tree` | custom:24183 | 47 | Partial | Many direct updater focuses remain in the winter/logistics branch. |
 | `CFR_soviet_collapse_focus_tree` | factory:17 | 47 | Partial | Stronger than prior state; still icon reuse and compact reward cadence remain. |
@@ -84,7 +84,7 @@ Definite same-reward duplicate/update spam:
 | `central_asia_soviet_collapse_khwarazm_restoration_debate` | `005_soviet_collapse_republics.txt:7443` | Calls `soviet_collapse_apply_focus_high_chaos_identity` and directly calls `soviet_collapse_update_consolidated_republic_ideas`. |
 | `moldova_soviet_collapse_smugglers_and_border_committees` | `005_soviet_collapse_republics.txt:8647` | Calls `soviet_collapse_apply_focus_high_chaos_identity` and directly calls `soviet_collapse_update_consolidated_republic_ideas`. |
 | `kaz_soviet_collapse_red_nomad_committees` | `005_soviet_collapse_republics.txt:11569` | Calls `soviet_collapse_apply_focus_socialist_sovereignty` and directly calls `soviet_collapse_update_consolidated_republic_ideas`. |
-| `KRS_inner_faction` | `005_soviet_collapse_custom_splinters.txt:8917` | Calls `soviet_collapse_apply_custom_splinter_inner_faction_identity` and directly calls `soviet_collapse_update_consolidated_republic_ideas`. |
+| `AOX_inner_faction` | `005_soviet_collapse_custom_splinters.txt:8917` | Calls `soviet_collapse_apply_custom_splinter_inner_faction_identity` and directly calls `soviet_collapse_update_consolidated_republic_ideas`. |
 
 Adjacent direct updater refreshes:
 
@@ -97,7 +97,7 @@ Adjacent direct updater refreshes:
 | `soviet_collapse_kazakhstan_focus_tree` | `kaz_soviet_collapse_aul_horse_registers` -> `kaz_soviet_collapse_horse_and_truck_columns` |
 | `NLC_soviet_collapse_focus_tree` | `NLC_winter_road_columns` -> `NLC_apatity_rear_area` |
 
-Template-wide helper cadence still reads like updater/helper spam even when not a literal duplicate call in one focus. The 47-focus custom splinter template prefixes `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, and `NLC` repeatedly call route identity helpers on adjacent focuses. The recurring exact suffixes are:
+Template-wide helper cadence still reads like updater/helper spam even when not a literal duplicate call in one focus. The 47-focus custom splinter template prefixes `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, and `NLC` repeatedly call route identity helpers on adjacent focuses. The recurring exact suffixes are:
 
 - `*_birth` direct updater.
 - `*_first_guard`, `*_stores`, `*_legitimacy`, `*_rival`, `*_doctrine`, `*_economy`, `*_league`, `*_foreign`, `*_inner_faction`, `*_special_arm`, `*_supply`, `*_enemy_front`, `*_civil_rule`, `*_propaganda`, `*_settlement`, `*_industry_plan`, `*_hidden_doctrine`, and `*_extreme_gate` via `soviet_collapse_apply_custom_splinter_*_identity`.
@@ -177,14 +177,14 @@ Every parsed focus has an `ai_will_do` block.
 Flat or weakly route-aware focus AI remains:
 
 - Republic file: Ukraine has 27 flat focus weights, generic breakaway 18, internal republic 25, Baltic 18, Caucasus 23, Central Asia 15, Moldova 20, Belarus 12, Kazakhstan 61.
-- Custom splinters: older/full template trees mostly have modifier blocks, but `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, and `ARD` still have 9-13 flat focus weights each.
+- Custom splinters: older/full template trees mostly have modifier blocks, but `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, and `ARD` still have 9-13 flat focus weights each.
 - Factory successors: all focus AI blocks have modifiers, but route-level AI strategy is still strongest only at endpoints.
 
 Route-aware AI strategy coverage exists for Soviet crisis behavior, generic breakaway survival, custom/high-chaos force routes, Ukraine, Belarus, Kazakhstan, and foreign patrons. It does not yet provide tag-specific plans for every custom splinter's expansion style, target selection, war-plan timing, League behavior, or high-chaos escalation.
 
 ## Prioritized Implementation List
 
-1. Fix the definite duplicate updater/helper rewards first: `ukr_soviet_collapse_the_ukrainian_commune_debate`, `central_asia_soviet_collapse_khwarazm_restoration_debate`, `moldova_soviet_collapse_smugglers_and_border_committees`, `kaz_soviet_collapse_red_nomad_committees`, and `KRS_inner_faction`.
+1. Fix the definite duplicate updater/helper rewards first: `ukr_soviet_collapse_the_ukrainian_commune_debate`, `central_asia_soviet_collapse_khwarazm_restoration_debate`, `moldova_soviet_collapse_smugglers_and_border_committees`, `kaz_soviet_collapse_red_nomad_committees`, and `AOX_inner_faction`.
 2. Collapse adjacent direct updater refreshes into one final refresh at the last focus in each edge listed above, after all variable changes are applied.
 3. Add or swap icon sprite ids for `BBH_column_schools`, `BBH_commune_mediation`, and `BBH_non_domination_pacts`.
 4. Redesign the shallow crisis trees: `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, and `ICD`. These need full branch families, not small local patches.

@@ -4,14 +4,14 @@ Create the final visual asset package for Event 010 `Death` according to the spe
 
 Follow `chaos-redux-event-assets` and `chaos-redux-frame-animation`. Inspect the relevant reference folders before creating assets:
 
-- ideas: `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- decisions: `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- focuses: `.agents/skills/chaos-redux-event-assets/assets/focuses`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/achievements`
-- report images: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- flags: `.agents/skills/chaos-redux-event-assets/assets/flags`
+- ideas: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- decisions: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- focuses: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
+- report images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- news images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- flags: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal`
 
 Use generated art for fictional, symbolic, supernatural, and alternate-history assets. Do not use real historical leader sourcing for Zol because Zol is fictional/nonhuman. Do not use a generated portrait for any real person if future implementation adds real advisers.
 

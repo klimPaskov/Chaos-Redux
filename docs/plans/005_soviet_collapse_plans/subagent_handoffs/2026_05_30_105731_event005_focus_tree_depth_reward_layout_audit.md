@@ -82,11 +82,11 @@ The only direct idea effects in focus rewards are cleanup removes:
 | `DSC_soviet_collapse_focus_tree` | 18 | 5 | 2 | Shallow but promising | Dead-army endpoint is strong; needs manpower/revival/occupation loop behind it. |
 | `NRF_soviet_collapse_focus_tree` | 18 | 5 | 1 | Shallow naval chaos tree | Needs port-control, raiding, dockyard, naval invasion, and coastal settlement mechanics. |
 | `ICD_soviet_collapse_focus_tree` | 18 | 0 | 1 | Shallow death-state tree | Needs commissariat production, occupation conversion, and decision loop. |
-| `BSC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Basmachi/oasis identity not translated into mechanics. |
+| `AEX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Basmachi/oasis identity not translated into mechanics. |
 | `TNC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Turkestan identity lacks decisions/expansion. |
-| `ALA_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Alash route needs lore-specific government and steppe settlement mechanics. |
+| `AAX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Alash route needs lore-specific government and steppe settlement mechanics. |
 | `BBH_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Black Banner Host flavor exists; no decision/expansion hooks. |
-| `KRS_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Naval/sailor concept needs port and fleet gameplay. |
+| `AOX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Naval/sailor concept needs port and fleet gameplay. |
 | `UDC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Loyalist defense state lacks distinct mechanics. |
 | `SDZ_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Security directorate lacks intelligence/security decisions. |
 | `GAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Peasant/green route needs land, requisition, and local autonomy mechanics. |
@@ -97,24 +97,24 @@ The only direct idea effects in focus rewards are cleanup removes:
 | `UWD_soviet_collapse_focus_tree` | 47 | 0 | 0 | Worst tiny-reward density | Worker/industrial route should be a production system, not 23 tiny reward focuses. |
 | `MRC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Mountain confederation needs pass, autonomy, and mountain defense mechanics. |
 | `IUL_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Volga/Ural identity needs rivalry/integration mechanics with OGB and regional claims. |
-| `BAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Birobidzhan/Amur settlement needs local institutions and border play. |
+| `ADX_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Birobidzhan/Amur settlement needs local institutions and border play. |
 | `ARD_soviet_collapse_focus_tree` | 47 | 3 | 0 | Full-size but reward-heavy | Arctic naval directorate needs port-control and naval decisions. |
 | `NLC_soviet_collapse_focus_tree` | 47 | 0 | 0 | Full-size but templated | Polar science/commune identity needs weather, survival, and Arctic diplomacy mechanics. |
 | `CFR_soviet_collapse_focus_tree` | 47 | 5 | 2 | Better than most | Needs governance/strategy operating-model depth, not only construction payoffs. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 2 | 3 | Too shallow for OP successor | Volga restoration exists but needs full political/industry/expansion branches. |
 | `MFR_soviet_collapse_focus_tree` | 58 | 3 | 1 | Better than most | Needs arms-market/client-war system and cleaner route fork layout. |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | 2 | 3 | Ancient stub | Too shallow; repeated restoration template. |
 
 ## Missing Or Simplified Content List
 
 High priority:
 - `PRA`, `TSC`, `DSC`, `NRF`, `ICD`, `RMC`: 18-22 focus trees are too small for the requested extremely overpowered and aggressive chaos countries. `PRA`, `DSC`, and `NRF` have useful foundations; `TSC`, `ICD`, and `RMC` need full mechanic loops.
 - `OGB_soviet_collapse_focus_tree`: 23 focuses and a few claims/wargoals are not enough for a high-chaos Volga restoration. It needs separate governance, river economy, military, and expansion branches.
-- Full custom splinter trees with zero decision and direct expansion hooks (`BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC`) are structurally present but still read as variants of one template.
-- Ancient restorations (`KZR`, `SOG`, `KHW`, `ALN`) are 16-focus packages. They need distinct legitimacy, old-border proof, route-choice, claim, integration, and AI behavior before they can be considered deep trees.
+- Full custom splinter trees with zero decision and direct expansion hooks (`AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC`) are structurally present but still read as variants of one template.
+- Ancient restorations (`APX`, `SOG`, `ANX`, `ABX`) are 16-focus packages. They need distinct legitimacy, old-border proof, route-choice, claim, integration, and AI behavior before they can be considered deep trees.
 - Ordinary shared republic trees (`breakaway`, `internal`, `Baltic`, `Moldova`) need decision loops and route-specific payoff if used for long-lived player countries.
 
 Reward simplification:
@@ -155,7 +155,7 @@ Reward/content mismatches:
 - Every focus has `ai_will_do`.
 - `common/ai_strategy/005_soviet_collapse.txt` has route-aware AI for Ukraine, Belarus, Kazakhstan, and broad custom/high-chaos signature-force states.
 - Most full custom splinters share generic signature-force strategies instead of tag-specific AI. They do not yet understand ports, rail junctions, mountain passes, host cavalry, factory contracts, polar survival, or Far Eastern patronage as country-specific behaviors.
-- Naval actors (`NRF`, `ARD`, `KRS`, `NLC`) need AI for dockyard construction, convoy raiding/escort, coastal target selection, naval invasion preparation, and port defense.
+- Naval actors (`NRF`, `ARD`, `AOX`, `NLC`) need AI for dockyard construction, convoy raiding/escort, coastal target selection, naval invasion preparation, and port defense.
 - Death/high-chaos actors (`DSC`, `ICD`, `RMC`) need AI that escalates aggressively with chaos tier, casualties, conquered states, and neighboring weakness.
 - Factory actors (`CFR`, `MFR`, `UWD`) need AI strategies tied to construction, arms output, client wars, production priorities, and contract/protectorate choices.
 
@@ -182,7 +182,7 @@ Remaining layout risks are wide mutual-exclusion lines or tight-but-not-line-bre
 
 1. Deepen `PRA`, `DSC`, `NRF`, `TSC`, `ICD`, and `RMC` into real special chaos trees or explicitly classify them as short crisis trees. For the user's objective, they should be deepened.
 2. Expand `OGB` into a real Volga restoration package with governance, river economy, military guard, IUL rivalry/compact, and regional expansion/integration.
-3. Convert templated 47-focus custom splinters into tag-specific mechanics. Start with `UWD`, `FEV`, `ARD`, `NLC`, `KRS`, `DHC`, `KHC`, and `IUL`.
+3. Convert templated 47-focus custom splinters into tag-specific mechanics. Start with `UWD`, `FEV`, `ARD`, `NLC`, `AOX`, `DHC`, `KHC`, and `IUL`.
 4. Add postwar handling to expansion branches: claims, cores, integration missions, occupation decisions, protectorates, or border settlements.
 5. Replace repeated tiny equipment/building rewards with focus-gated decisions, missions, state-targeted construction programs, route-specific units, or scripted mechanics.
 6. Add tag-specific AI after mechanics exist so AI behavior can target the new systems rather than only changing production weights.

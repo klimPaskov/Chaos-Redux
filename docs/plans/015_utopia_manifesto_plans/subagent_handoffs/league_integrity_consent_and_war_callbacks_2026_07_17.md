@@ -36,7 +36,7 @@ No simplification, fallback, placeholder, recurring scan, or omitted requested b
 - `localisation/english/015_utopia_manifesto_decision_completion_l_english.yml`
 - `localisation/english/015_utopia_manifesto_events_l_english.yml`
 - `docs/assets/015_utopia_manifesto/decision_icon_mapping.csv`
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_4_decisions_and_missions.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_6_evolutions_events_and_reactions.md`
 - `docs/specs/015_utopia_manifesto_specs/specs/015_utopia_manifesto_spec_part_8_assets_localisation_and_acceptance.md`

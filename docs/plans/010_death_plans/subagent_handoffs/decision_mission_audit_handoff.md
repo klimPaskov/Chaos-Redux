@@ -12,7 +12,7 @@ Scope: Event 010 `Death`, root `chaosx.nr10.1`, country `DTH`, no cluster, trigg
 - `common/scripted_triggers/010_death_triggers.txt`
 - `common/dynamic_modifiers/010_death_state_modifiers.txt`
 - `localisation/english/010_death_l_english.yml`
-- Supporting references in `events/010_death.txt`, `common/on_actions/chaosx_on_actions.txt`, `common/script_constants/010_death_constants.txt`, `docs/events/010_death.md`, and relevant Event 010 specs/plans.
+- Supporting references in `events/010_death.txt`, `common/on_actions/chaosx_on_actions.txt`, `common/script_constants/010_death_constants.txt`, `docs/events/010_death/overview.md`, and relevant Event 010 specs/plans.
 
 No gameplay files were edited. This is an audit-only handoff.
 

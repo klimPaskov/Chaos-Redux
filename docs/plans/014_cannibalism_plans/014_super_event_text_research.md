@@ -91,7 +91,7 @@ chaosx_super_event.49.d: "The identical maps, rank tables, prisoner ledgers, and
 
 - Audio ID: `49`.
 - Final cue: Saint-Saëns, *Danse macabre, Op. 40*, Philadelphia Symphony Orchestra under Leopold Stokowski, 1925.
-- Final file: `music/014_cannibalism/super_event_49_hannibal_reveal.ogg`.
+- Final file: `sound/014_cannibalism/super_event_49_hannibal_reveal.wav`.
 - Duration: `114.000 s` with a `0.25 s` fade-in.
 - Sync note: The first sentence reveals the name and command immediately, matching the cue's immediate macabre motion. Set slot `49` and audio ID `49` before calling `play_current_super_event_audio`. No delayed text change or timed voice line is needed.
 
@@ -146,7 +146,7 @@ chaosx_super_event.50.d: "The last limits on Hannibal Lecter's command have been
 
 - Audio ID: `50`.
 - Final cue: Wagner, *Siegfried's Funeral March and Finale*, United States Marine Band under John R. Bourgeois, 1981.
-- Final file: `music/014_cannibalism/super_event_50_hannibal_world_end.ogg`.
+- Final file: `sound/014_cannibalism/super_event_50_hannibal_world_end.wav`.
 - Duration: `120.000 s` with a `0.25 s` fade-in. The retained excerpt begins after a musical pause.
 - Sync note: Show the title and body before playback is dispatched. The opening should land as an immediate procession rather than a delayed reveal. The phrase `single timetable` suits the cue's massed military structure. No victory fanfare wording should be added.
 
@@ -201,10 +201,10 @@ chaosx_super_event.52.d: "The last army under Hannibal Lecter's command has been
 
 - Audio ID: `52`.
 - Final cue: Fauré, *Élégie, Op. 24*, Hans Goldstein on cello and Eli Kalman on piano, 2006.
-- Final file: `music/014_cannibalism/super_event_52_global_defeat_aftermath.ogg`.
+- Final file: `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav`.
 - Duration: `116.100 s` with opening silence removed and a `0.25 s` fade-in.
 - Sync note: The short option remark lets the elegy continue without turning the close button into a victory slogan. The first paragraph should remain visible from the cue's first cello phrase. Do not add a military stinger or reuse another victory cue.
-- Rights note: The final audio derivative is CC BY-SA 2.0 and requires the attribution, license link, change notice, and share-alike treatment recorded in `docs/super_events/014_cannibalism_super_event_audio_research.md`.
+- Rights note: The final audio derivative is CC BY-SA 2.0 and requires the attribution, license link, change notice, and share-alike treatment recorded in `docs/super_events/014_cannibalism/audio_research.md`.
 
 ## Slot 53: transformed Hannibal Lecter worldwide victory
 
@@ -257,7 +257,7 @@ chaosx_super_event.53.d: "Every transformation anchor has sealed beneath frost a
 
 - Audio ID: `53`.
 - Final cue: Grieg, *Peer Gynt Suite No. 1, Op. 46 - II. The Death of Åse*, Musopen Symphony, 2012.
-- Final file: `music/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg`.
+- Final file: `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav`.
 - Duration: `118.000 s` with source silence removed and a `0.25 s` fade-in.
 - Sync note: The title's finality and Byron's brief void image suit the quiet opening. The body should remain static while the lament develops. Do not add an ambience-only pre-roll, a generated cold drone, or a borrowed ceremonial vocal element.
 
@@ -287,12 +287,12 @@ As of this research pass, slots `49`, `50`, `52`, and `53` have no live mappings
 
 The accepted audio handoff currently mirrors visible slot IDs with audio IDs:
 
-| Slot | `global.current_super_event_audio_id` | Stable track ID | Final OGG |
+| Slot | `global.current_super_event_audio_id` | Stable track ID | Final WAV |
 | ---: | ---: | --- | --- |
-| `49` | `49` | `chaosx_super_event_cannibalism_hannibal_reveal_track` | `music/014_cannibalism/super_event_49_hannibal_reveal.ogg` |
-| `50` | `50` | `chaosx_super_event_cannibalism_hannibal_world_end_track` | `music/014_cannibalism/super_event_50_hannibal_world_end.ogg` |
-| `52` | `52` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` | `music/014_cannibalism/super_event_52_global_defeat_aftermath.ogg` |
-| `53` | `53` | `chaosx_super_event_cannibalism_wendigo_world_end_track` | `music/014_cannibalism/super_event_53_wendigo_hannibal_world_end.ogg` |
+| `49` | `49` | `chaosx_super_event_cannibalism_hannibal_reveal_track` | `sound/014_cannibalism/super_event_49_hannibal_reveal.wav` |
+| `50` | `50` | `chaosx_super_event_cannibalism_hannibal_world_end_track` | `sound/014_cannibalism/super_event_50_hannibal_world_end.wav` |
+| `52` | `52` | `chaosx_super_event_cannibalism_global_defeat_aftermath_track` | `sound/014_cannibalism/super_event_52_global_defeat_aftermath.wav` |
+| `53` | `53` | `chaosx_super_event_cannibalism_wendigo_world_end_track` | `sound/014_cannibalism/super_event_53_wendigo_hannibal_world_end.wav` |
 
 Use this order inside each emit effect:
 

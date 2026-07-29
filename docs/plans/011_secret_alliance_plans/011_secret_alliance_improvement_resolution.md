@@ -154,6 +154,6 @@ The direct AI controller is the unique owner of eight protection routes, Turn Me
 
 ## Promotion result and current blockers
 
-The accepted addendum did not expand the five-part source specification's completion boundary. It supplied causal implementation detail already required by that design. The completed behavior is promoted into `docs/events/011_secret_alliance.md`, while this resolution remains the itemized audit trail.
+The accepted addendum did not expand the five-part source specification's completion boundary. It supplied causal implementation detail already required by that design. The completed behavior is promoted into `docs/events/011_secret_alliance/overview.md`, while this resolution remains the itemized audit trail.
 
 No accepted improvement-loop item remains unresolved. No DM-15 through DM-20 or CA-01 through CA-13 blocker remains open at the final freeze. This resolution remains a plan-closure record, while the holistic verdict is maintained in the final completion-audit handoff.

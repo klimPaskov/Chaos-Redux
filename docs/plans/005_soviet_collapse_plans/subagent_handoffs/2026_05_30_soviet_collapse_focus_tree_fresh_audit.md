@@ -23,7 +23,7 @@ This audit was performed from the current worktree. Older handoffs were not used
 | Belarus | 53 | Corridor, forest, League, Baltic, and statehood themes exist | Tight mid-tree spacing and long crossing pathlines; core forest/army choice lacks units/templates/decisions. |
 | Kazakhstan | 92 | Largest republic tree, with Alash, socialist, resource, federation, foreign, military, and chaos themes | Excessively wide layout; route rewards are often staged-helper updates instead of state-targeted rail, supply, resource, units, and expansion mechanics. |
 | Generic republic templates | 315 | Breakaway, internal republic, Baltic, Caucasus, Central Asia, Moldova branches exist | Helper churn dominates; many focuses read as statehood flavor without durable gameplay hooks. |
-| Custom splinter 47-focus family | 846 | FTH/BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC are present | Repeated identity ladder structure; many route focuses share helper shapes, repeated icons, and weak aggression. |
+| Custom splinter 47-focus family | 846 | FTH/AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC are present | Repeated identity ladder structure; many route focuses share helper shapes, repeated icons, and weak aggression. |
 | Compact chaos splinters | 117 | PRA/TSC/RMC/DSC/NRF/ICD/OGB exist | Several are too shallow for chaos countries; DSC/NRF/OGB especially need deeper military, diplomacy, expansion, and AI hooks. |
 | Factory successors | 105 | CFR and MFR are present | CFR/MFR mutual-exclusion groups are spread too wide; more decisions, contracts, rail/supply projects, and war behavior are needed. |
 
@@ -107,7 +107,7 @@ High-risk clusters:
 - Kazakhstan: very wide spans around `kaz_soviet_collapse_the_congress_chooses_a_past`, `kaz_soviet_collapse_alash_memory_restored`, `kaz_soviet_collapse_socialist_steppe_republic`, `kaz_soviet_collapse_resource_defense_directorate`, `kaz_soviet_collapse_steppe_federation_charter`, `kaz_soviet_collapse_the_steppe_arbitration_court`, `kaz_soviet_collapse_emergency_oil_boards`, and `kaz_soviet_collapse_airstrips_on_the_steppe`.
 - CFR: `CFR_the_unfinished_city_speaks` fans into governance and construction branches across too much horizontal distance; `CFR_elect_the_site_committees`, `CFR_publish_the_planners_charter`, `CFR_invite_the_foreign_contract_board`, and `CFR_the_concrete_committee` form an overly spread mutual-exclusion set.
 - MFR: `MFR_who_owns_the_rifle` fans to `MFR_officers_chair_the_board`, `MFR_armorers_elect_delegates`, `MFR_eternal_arsenal`, and `MFR_merchants_of_ammunition` across roughly 22 columns.
-- FEV/SZA/MRC/BAC/ARD/NLC: several late endpoints have long vertical or diagonal prerequisite lines, especially `FEV_endgame`, `SZA_endgame`, `MRC_black_sea_transit_protocols`, `BAC_endgame`, `ARD_endgame`, and `NLC_heated_workshop_contracts`.
+- FEV/SZA/MRC/ADX/ARD/NLC: several late endpoints have long vertical or diagonal prerequisite lines, especially `FEV_endgame`, `SZA_endgame`, `MRC_black_sea_transit_protocols`, `ADX_endgame`, `ARD_endgame`, and `NLC_heated_workshop_contracts`.
 
 ## Icon Coverage Table
 

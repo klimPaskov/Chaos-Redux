@@ -55,10 +55,10 @@ The direct visible idea spam reported by earlier passes has mostly been removed 
 
 | File / tree | Focuses | Current route coverage | Main gap |
 | --- | ---: | --- | --- |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | Ancient legitimacy, border names, workshop/logistics, league/expansion | Too shallow for an overpowered chaos successor; `KZR_expansionist_steppe_levy` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:222` and `KZR_returned_names_endgame` at `:325` are helper-led end states. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | Ancient legitimacy, border names, workshop/logistics, league/expansion | Too shallow for an overpowered chaos successor; `APX_expansionist_steppe_levy` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:222` and `APX_returned_names_endgame` at `:325` are helper-led end states. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | Ancient trade/merchant legitimacy, route guard, expansion | Same 16-focus stub issue; `SOG_expansionist_merchant_claims` at `:612` and `SOG_returned_names_endgame` at `:711` need real route mechanics. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | Delta legitimacy, water/control themes, expansion | `KHW_expansionist_water_claims` at `:992`, `KHW_returned_names_endgame` at `:1100`, and `KHW_delta_without_a_center` at `:1128` overuse helper payoffs. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | Ancient northern identity, guard routes, league/expansion | `ALN_returned_names_endgame` at `:1483` is a route name without enough direct mechanic payoff. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | Delta legitimacy, water/control themes, expansion | `ANX_expansionist_water_claims` at `:992`, `ANX_returned_names_endgame` at `:1100`, and `ANX_delta_without_a_center` at `:1128` overuse helper payoffs. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | Ancient northern identity, guard routes, league/expansion | `ABX_returned_names_endgame` at `:1483` is a route name without enough direct mechanic payoff. |
 | `FTH` custom splinter | 47 | Political commune, settlement, military/logistics, expansion-lite | Stronger shape than compact stubs but still uses broad generic route identity tooltips and helper bundles. |
 | `PRA` custom splinter | 22 | Rail authority and moving-state identity | Severe compact-tree gap; `PRA_the_timetable_declares_authority` at `custom_splinters.txt:1198`, `PRA_timetable_law` at `:1298`, `PRA_the_board_overrules_ministers` at `:1344`, `PRA_armored_train_directorate` at `:1369`, `PRA_passport_of_the_moving_state` at `:1529`, `PRA_neutral_corridor_letters` at `:1552`, `PRA_charge_for_safe_passage` at `:1573`, and `PRA_the_pale_line_endures` at `:1744` need rail-state decisions/route consequences. |
 | `TSC` custom splinter | 18 | Tunguska/star identity, observatory guard, impact zone | Severe compact-tree gap; `TSC_radio_towers_in_the_taiga` at `:1874`, `TSC_observatory_guard` at `:1979`, `TSC_claim_the_impact_zone` at `:2112`, `TSC_sky_over_siberia` at `:2134`, and `TSC_the_quiet_sky_settlement` at `:2222` need a project/anomaly/science payoff loop. |
@@ -66,7 +66,7 @@ The direct visible idea spam reported by earlier passes has mostly been removed 
 | `DSC` custom splinter | 18 | Dead soldiers, revenant staff, grave ordnance | `DSC_revenant_staff_line` at `:2866`, `DSC_grave_ordnance_claims` at `:2901`, `DSC_rearguard_supply_bureau` at `:2971`, and `DSC_memorial_frontier_state` at `:3250` are high-priority shallow identity payoffs. |
 | `NRF` custom splinter | 18 | Northern fleet/revenant convoy | `NRF_fleet_that_does_not_dock` at `:3665` and `NRF_memorial_convoy_state` at `:3765` should produce naval/port/convoy and coast-control systems, not just helper pressure. |
 | `ICD` custom splinter | 18 | Iron commissariat/dead-command identity | `ICD_grave_columns_march` at `:4138` and `ICD_state_of_last_addresses` at `:4230` need coercion/front/discipline mechanics. |
-| 47-focus custom templates: `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | 47 each | Political, legal/settlement, logistics/military, diplomacy, expansion/endgame lanes generally present | The lane count is acceptable, but too many rewards still call shared route bundles. Several templates repeat icon IDs and have endpoint rewards that read as generic recognition/depot/security packages. |
+| 47-focus custom templates: `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | 47 each | Political, legal/settlement, logistics/military, diplomacy, expansion/endgame lanes generally present | The lane count is acceptable, but too many rewards still call shared route bundles. Several templates repeat icon IDs and have endpoint rewards that read as generic recognition/depot/security packages. |
 | `CFR` factory successor | 47 | Construction state, municipal legality, guards, industry, foreign engineers | Stronger than most compact trees, but repeated idea updater/setup rewards still blur construction-mandate identity. |
 | `OGB` factory successor | 23 | Restored name, Volga position, expansion-lite | Too shallow for a chaos-country identity; needs trade, old-name politics, border diplomacy, and military/logistics growth. |
 | `MFR` factory successor | 58 | Arsenal quotas, military-industrial command, force buildup | Best-developed factory route by size; still helper-heavy and needs clearer route-exclusive consequences. |
@@ -83,10 +83,10 @@ The direct visible idea spam reported by earlier passes has mostly been removed 
 ## Concrete worst offenders
 
 High-priority shallow or generic-reward focuses:
-- `KZR_expansionist_steppe_levy` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:222`: stockpile plus assault/claims/high-chaos helper bundle in a 16-focus tree.
+- `APX_expansionist_steppe_levy` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:222`: stockpile plus assault/claims/high-chaos helper bundle in a 16-focus tree.
 - `SOG_expansionist_merchant_claims` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:612`: same shallow expansion pattern.
-- `KHW_expansionist_water_claims` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:992`: same shallow expansion pattern.
-- `KHW_delta_without_a_center` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1128`: end-state naming but helper/claim-led reward.
+- `ANX_expansionist_water_claims` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:992`: same shallow expansion pattern.
+- `ANX_delta_without_a_center` at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1128`: end-state naming but helper/claim-led reward.
 - `DSC_revenant_staff_line` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:2866`: high-chaos/depot/objective helper pattern where a dead-army command system should appear.
 - `PRA_*` compact route endpoints from `common/national_focus/005_soviet_collapse_custom_splinters.txt:1198-1744`: moving rail-state lore but mostly authority/updater/helper effects.
 - `TSC_*` compact route endpoints from `common/national_focus/005_soviet_collapse_custom_splinters.txt:1874-2222`: anomalous/star-science lore but no distinct project loop.
@@ -202,7 +202,7 @@ Behavioral gap:
    - Each needs an exact small system: rail-state decisions for `PRA`, anomaly/signal projects for `TSC`, procession/reliquary recruitment for `RMC`, dead-army command for `DSC`, convoy/port fleet for `NRF`, and coercive commissariat order for `ICD`.
 
 3. Expand ancient restorations:
-   - `KZR`, `SOG`, `KHW`, and `ALN` need political, industrial, expansion, military/logistics, and diplomatic routes instead of 16-focus mirrored stubs.
+   - `APX`, `SOG`, `ANX`, and `ABX` need political, industrial, expansion, military/logistics, and diplomatic routes instead of 16-focus mirrored stubs.
    - This is broad rework and should not be attempted as a subagent micro-patch.
 
 4. Fix remaining republic route-choice layout:
@@ -222,7 +222,7 @@ Tranche 1: compact high-chaos successor mechanics
 - Deliverables: route-specific tooltip keys, one or two route-specific scripted helper calls, AI strategy effects, and endpoint rewards that grant claims/units/industry/decision unlocks directly relevant to the identity.
 
 Tranche 2: ancient restoration tree expansion plan
-- Countries: `KZR`, `SOG`, `KHW`, `ALN`.
+- Countries: `APX`, `SOG`, `ANX`, `ABX`.
 - Required routes: political restoration, industrial/old workshop network, military/logistics guard, expansion/old borders, diplomatic league or survival.
 - Deliverable should be a full plan first because this requires more than small coordinate/reward patches.
 
@@ -233,9 +233,9 @@ Tranche 3: republic route-layout and fork-meaning pass
 - Add route-specific AI and reward tooltips where low-risk.
 
 Tranche 4: custom template reward differentiation
-- Countries: `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`.
+- Countries: `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`.
 - Replace repeated helper packages with route-specific payloads while preserving current tree size.
-- Priority candidates are templates with many stockpile rewards and repeated icon ids: `ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `BSC`, `BAC`, `IUL`, `NLC`, `KRS`.
+- Priority candidates are templates with many stockpile rewards and repeated icon ids: `ARD`, `KHC`, `UWD`, `DHC`, `FEV`, `AEX`, `ADX`, `IUL`, `NLC`, `AOX`.
 
 Tranche 5: icon identity pass
 - Do not touch flag/interface sprite files in this audit scope.

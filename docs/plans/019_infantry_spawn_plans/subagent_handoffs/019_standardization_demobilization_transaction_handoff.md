@@ -84,7 +84,7 @@ demobilization sprites remain the documented UI assets.
 - `common/scripted_triggers/019_infantry_spawn_muster_board_triggers.txt`
 - `common/decisions/019_infantry_spawn_decisions.txt`
 - `localisation/english/019_infrantry_spawn_l_english.yml`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_standardization_demobilization_transaction_handoff.md`
 
 ## Validation evidence

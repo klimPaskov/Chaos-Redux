@@ -148,7 +148,7 @@ These are the intended Event 017-owned surfaces. They appeared as modified or ne
 | `common/scripted_localisation/017_random_faction_scripted_localisation.txt` | option leader names, pressure status, dynamic decision text |
 | `localisation/english/017_join_faction_l_english.yml` | all Event 017 player-facing text |
 | `interface/017_random_faction.gfx` | report, decision, idea, static, and animated sprites |
-| `docs/events/017_random_faction.md` | current mechanic documentation |
+| `docs/events/017_random_faction/overview.md` | current mechanic documentation |
 
 Every new script file needs an overview header. The localisation file must remain UTF-8 with BOM and use keys without `:0`.
 
@@ -243,7 +243,7 @@ No duplicate art production is needed unless an asset review finds a concrete de
 
 | Path | Required final state |
 | --- | --- |
-| `docs/events/017_random_faction.md` | full current mechanic, flow, eligibility, memory, decisions, evolutions, logs, cluster, achievements, assets, cleanup, tuning, future plans |
+| `docs/events/017_random_faction/overview.md` | full current mechanic, flow, eligibility, memory, decisions, evolutions, logs, cluster, achievements, assets, cleanup, tuning, future plans |
 | `docs/systems/event_clusters.md` | Event 017 membership and role |
 | `docs/assets/017_random_faction/manifest.md` | exact final sprite and runtime wiring state |
 | `docs/assets/017_random_faction/gfx_handoff.md` | no stale registration claims |

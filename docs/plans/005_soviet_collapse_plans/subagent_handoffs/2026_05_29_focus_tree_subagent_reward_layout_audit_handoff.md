@@ -88,7 +88,7 @@ Icon ids changed: none.
 | `DSC_soviet_collapse_focus_tree` | custom splinters | 18 | Political, army, industry, annexation, manpower, stability. | Shallow, but endgame payoff was strengthened in helper. Needs full death-route depth. |
 | `NRF_soviet_collapse_focus_tree` | custom splinters | 18 | Political, army, navy, industry, annexation, manpower, stability. | Shallow, but endgame payoff was strengthened in helper. Needs full naval route depth. |
 | `ICD_soviet_collapse_focus_tree` | custom splinters | 18 | Political, army, industry, annexation, manpower, stability. | Shallow; needs full route family. |
-| `BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/BAC/ARD/NLC` | custom splinters | 47 each | Most have broad political/industry/military/stability/manpower coverage. | Many are structurally similar and need sharper lore/mechanical identity. |
+| `AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/ADX/ARD/NLC` | custom splinters | 47 each | Most have broad political/industry/military/stability/manpower coverage. | Many are structurally similar and need sharper lore/mechanical identity. |
 | `FEV_soviet_collapse_focus_tree` | custom splinters | 47 | Political, army, navy, industry, manpower, stability. | Only 32 unique icons for 47 focuses; repeated visuals and generic rewards. |
 | `SZA_soviet_collapse_focus_tree` | custom splinters | 47 | Political, army, industry, manpower, stability. | Only 32 unique icons; needs stronger concept-specific payoff. |
 | `UWD_soviet_collapse_focus_tree` | custom splinters | 47 | Political, army, air, research, industry, manpower, stability. | Only 28 unique icons; needs visual/reward differentiation. |
@@ -97,10 +97,10 @@ Icon ids changed: none.
 | `CFR_soviet_collapse_focus_tree` | factory successors | 47 | Political, army, industry, annexation, manpower, stability. | Factory concept exists but needs stronger production/factory payoff differentiation. |
 | `OGB_soviet_collapse_focus_tree` | factory successors | 23 | Political, army, industry, annexation, manpower, stability. | Shallow; needs full route family. |
 | `MFR_soviet_collapse_focus_tree` | factory successors | 58 | Political, army, industry, annexation, manpower, stability. | Stronger size, but two layout inversions remain and factory branches need payoff review. |
-| `KZR_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, navy, industry, annexation, manpower, stability. | Shallow restoration tree; needs full political/industrial/military/expansion route depth. |
+| `APX_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, navy, industry, annexation, manpower, stability. | Shallow restoration tree; needs full political/industrial/military/expansion route depth. |
 | `SOG_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, industry, annexation, manpower, stability. | Shallow restoration tree. |
-| `KHW_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, industry, annexation, manpower, stability. | Shallow restoration tree. |
-| `ALN_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, industry, annexation, manpower, stability. | Shallow restoration tree. |
+| `ANX_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, industry, annexation, manpower, stability. | Shallow restoration tree. |
+| `ABX_soviet_collapse_ancient_focus_tree` | ancient restorations | 16 | Political, army, industry, annexation, manpower, stability. | Shallow restoration tree. |
 
 ## Missing or simplified content list
 
@@ -108,7 +108,7 @@ Icon ids changed: none.
 | --- | --- |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt`, `PRA/TSC/RMC/DSC/NRF/ICD_soviet_collapse_focus_tree` | 18-22 focus trees are below the requested depth and do not yet support distinct political, industrial, military/diplomacy, and expansion routes. |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt`, `OGB_soviet_collapse_focus_tree` | 23 focuses; shallow relative to CFR/MFR and the requested factory-successor identity. |
-| `common/national_focus/005_soviet_collapse_ancient_restorations.txt`, `KZR/SOG/KHW/ALN_soviet_collapse_ancient_focus_tree` | Each has 16 focuses; ancient restoration routes are placeholders compared with the requested full-route design. |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt`, `APX/SOG/ANX/ABX_soviet_collapse_ancient_focus_tree` | Each has 16 focuses; ancient restoration routes are placeholders compared with the requested full-route design. |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt`, full 47-focus custom trees | Many use broad branch labels but still lean on common reward helpers. They need route-specific mechanics instead of repeated generic pressure/recovery. |
 | `common/national_focus/005_soviet_collapse_republics.txt`, shared republic trees | Stronger than the shallow custom/ancient trees, but repeated helper use still reduces route purpose. |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt`, `MFR_production_war_room`, `MFR_contracts_with_builders` | Pathline/prerequisite inversion remains. |
@@ -135,7 +135,7 @@ Icon repetition risks:
 - `MRC_soviet_collapse_focus_tree`: 47 focuses, 31 unique icons.
 - `IUL_soviet_collapse_focus_tree`: 47 focuses, 24 unique icons.
 - `CFR_soviet_collapse_focus_tree`: 47 focuses, 32 unique icons.
-- `KZR/SOG/KHW/ALN_soviet_collapse_ancient_focus_tree`: defined icons exist, but 16-focus trees are too shallow for final-route identity.
+- `APX/SOG/ANX/ABX_soviet_collapse_ancient_focus_tree`: defined icons exist, but 16-focus trees are too shallow for final-route identity.
 
 ## Localisation and reward mismatch list
 

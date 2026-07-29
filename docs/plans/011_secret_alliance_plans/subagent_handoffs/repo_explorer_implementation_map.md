@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Historical pre-implementation repository map. Its placeholder, provisional-file, and required-action statements describe the explorer's original freeze. Gameplay commit `407b9a05`, balance freeze `1c87d923`, `docs/events/011_secret_alliance.md`, and the holistic `completion_audit.md` govern current behavior and status.
+Historical pre-implementation repository map. Its placeholder, provisional-file, and required-action statements describe the explorer's original freeze. Gameplay commit `407b9a05`, balance freeze `1c87d923`, `docs/events/011_secret_alliance/overview.md`, and the holistic `completion_audit.md` govern current behavior and status.
 
 ## Scope and authority
 
@@ -67,7 +67,7 @@ These drafts provide useful identifiers, but require main-agent review before wi
 8. Global targets and arrays are begun at `011_secret_alliance_effects.txt:20-39,221-370`, but terminal cleanup is not implemented yet. Every global event target, member/suspect array, country flag, AI strategy, modifier/idea, and scenario-origin flag needs a single idempotent cleanup contract.
 9. The founder pool selects AI countries only (`011_secret_alliance_triggers.txt:18-40`). That safely avoids forced human recruitment, but the separate human invitation/consent route required for multiplayer still needs implementation if a human is ever invited later.
 
-The tracked audio package is already present and documented in `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`: public-domain U.S. Marine Band recording of William Paris Chambers's `Revelation`, proposed audio ID 43, with final OGG/WAV under `music/011_secret_alliance/` and `sound/011_secret_alliance/`. Audio ID 43 remains independent of the visible super-event slot.
+The tracked audio package is already present and documented in `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`: public-domain U.S. Marine Band recording of William Paris Chambers's `Revelation`, proposed audio ID 43, with final WAV under `music/011_secret_alliance/` and `sound/011_secret_alliance/`. Audio ID 43 remains independent of the visible super-event slot.
 
 An untracked concurrent asset prompt pack is also present at `docs/assets/011_secret_alliance/prompts/generated_event_art_prompts.md`. It covers the seven report scenes, public-coalition news image, and reveal super-event image from the accepted asset register. Treat it as an asset-subagent draft until its handoff, generated sources, processing outputs, manifest, and final DDS wiring are complete.
 
@@ -97,7 +97,7 @@ Create or complete these files as the coherent Event 011 package:
 | `interface/011_secret_alliance.gfx` | Event pictures, category/decision/idea/UI sprites, faction emblem, and genuine eight-frame warning animation plus static fallback. |
 | `common/scripted_localisation/011_secret_alliance_scripted_localisation.txt` | Suspect confidence, broad hidden-state bands, dynamic faction name, phase-aware tooltips, and spoiler-safe actor/member text. |
 | `localisation/english/011_secret_alliance_l_english.yml` | All Event 011 gameplay/UI/event/faction/AI-facing strings, UTF-8 BOM, no `:0`. |
-| `docs/events/011_secret_alliance.md` | Mechanic walkthrough, interactions, variable/state contract, complete icon/sprite/path list, scenario and achievement coverage, future plans. |
+| `docs/events/011_secret_alliance/overview.md` | Mechanic walkthrough, interactions, variable/state contract, complete icon/sprite/path list, scenario and achievement coverage, future plans. |
 
 ### Shared integration files
 

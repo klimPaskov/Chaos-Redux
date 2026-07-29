@@ -15,7 +15,7 @@ The reconciliation preserves the accepted ten-part specification as design autho
 1. `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` was created as the current source-of-truth and resume map.
 2. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` received a top pointer marking its 2026-07-14 runtime paragraphs historical while preserving its binding design dispositions.
 3. `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md` received a top pointer marking its 2026-07-14 resume state historical and directing continuation to the new map.
-4. `docs/events/016_brilliant_scientist.md` received current milestone wording for bounded implementation tranches, accepted report or super-event and portrait packages, and the remaining blockers.
+4. `docs/events/016_brilliant_scientist/overview.md` received current milestone wording for bounded implementation tranches, accepted report or super-event and portrait packages, and the remaining blockers.
 
 No other file was changed by this documentation pass.
 

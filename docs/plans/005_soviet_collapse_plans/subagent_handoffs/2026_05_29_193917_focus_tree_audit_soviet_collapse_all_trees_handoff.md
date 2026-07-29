@@ -42,10 +42,10 @@ No gameplay patch was made. The focus files are dirty and the issues are mostly 
 | Caucasus shared tree | `soviet_collapse_caucasus_focus_tree` | Partial | Oil/pass/mountain identity exists; needs stronger claims, compact mechanics, local wars, and postwar handling. |
 | Central Asia shared tree | `soviet_collapse_central_asia_focus_tree` | Partial | Southern/Turkestan/Basmachi design exists; still lacks a full regional mechanic and has line crossing around the route fork. |
 | Moldova shared tree | `soviet_collapse_moldova_focus_tree` | Partial | Strong geography, but the Romanian/Dniester/Ukraine branches overlap heavily and need cleaner route logic and payoff. |
-| Full custom splinters | `BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC/FTH` 47-focus trees | Partial | Most have branch skeletons but many share the same route rhythm: legitimacy, stores, rival, league, civil/radical, industry, endgame. Needs more bespoke mechanics. |
+| Full custom splinters | `AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC/FTH` 47-focus trees | Partial | Most have branch skeletons but many share the same route rhythm: legitimacy, stores, rival, league, civil/radical, industry, endgame. Needs more bespoke mechanics. |
 | Crisis/custom shallow splinters | `PRA` 22 focuses; `TSC/RMC/DSC/NRF/ICD` 18 focuses each | Fails depth target | These are too shallow for chaos countries. They have strong concepts but not full political, industrial, military, diplomatic, expansion, special mechanic, and endgame branches. |
 | Factory successors | `CFR` 47, `MFR` 58, `OGB` 23 | Mixed | CFR/MFR have structure; OGB is shallow. CFR has overconstrained industry mutual exclusions. MFR aggression exists but should become route-aware, not only endpoint spikes. |
-| Ancient restorations | `KZR/SOG/KHW/ALN` 16 focuses each | Fails depth target | Compact ancient trees are not large-country routes. They need political restoration, economy, army, diplomacy, expansion, special mechanic, and final identity families. |
+| Ancient restorations | `APX/SOG/ANX/ABX` 16 focuses each | Fails depth target | Compact ancient trees are not large-country routes. They need political restoration, economy, army, diplomacy, expansion, special mechanic, and final identity families. |
 
 ## High-Priority Findings
 
@@ -53,7 +53,7 @@ No gameplay patch was made. The focus files are dirty and the issues are mostly 
 | --- | --- | --- | --- |
 | High | Shallow chaos countries do not meet the user request that chaos countries become overpowered and aggressive. | `common/national_focus/005_soviet_collapse_custom_splinters.txt`: `PRA_soviet_collapse_focus_tree` (22), `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree` (18 each). | These trees are conceptually interesting but too short to support politics, economy, military, diplomacy, expansion, special mechanics, OP escalation, and postwar handling. |
 | High | `OGB` is too shallow for a high-chaos/factory-successor identity. | `common/national_focus/005_soviet_collapse_factory_successors.txt`: `OGB_soviet_collapse_focus_tree`, especially `OGB_open_the_volga_registers` through `OGB_the_old_name_survives_modern_war`. | It has a council fork, trade, heritage guard, Idel-Ural choice, claims, and an end state, but lacks full industrial/military/diplomacy/expansion depth and needs a stronger OP Volga empire route. |
-| High | Ancient restoration trees are compact placeholders compared to required route depth. | `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`. | 16 focuses each cannot support restoration politics, state economy, restoration army, diplomatic recognition, expansion pressure, and final restoration identity. |
+| High | Ancient restoration trees are compact placeholders compared to required route depth. | `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`. | 16 focuses each cannot support restoration politics, state economy, restoration army, diplomatic recognition, expansion pressure, and final restoration identity. |
 | High | Helper-led idea lifecycle creates idea-spam feel even without duplicate direct `add_ideas` in focus rewards. | Focus files call `soviet_collapse_apply_focus_legal_recognition` 305 times, `soviet_collapse_apply_focus_depot_and_supply_control` 257 times, `soviet_collapse_apply_focus_military_consolidation` 252 times, `soviet_collapse_apply_focus_league_preparation` 220 times, `soviet_collapse_apply_focus_foreign_channel` 176 times, `soviet_collapse_update_consolidated_republic_ideas` 111 times. These helpers feed `common/scripted_effects/005_soviet_collapse_effects.txt:5461` `soviet_collapse_update_consolidated_republic_ideas`, which adds tiered republic/league/foreign/local-authority ideas. | This avoids duplicate direct focus rewards, but still makes many routes feel like the same idea-tier updater plus small numeric rewards. |
 | High | Pathline crossings are severe in several major trees. | `common/national_focus/005_soviet_collapse_republics.txt`: `soviet_collapse_ukraine_focus_tree` 153 detected crossings, `soviet_collapse_kazakhstan_focus_tree` 120, `soviet_collapse_moldova_focus_tree` 91, `soviet_collapse_belarus_focus_tree` 33. Samples: `ukr_soviet_collapse_question_of_statehood` crossing with `ukr_soviet_collapse_elections_under_shellfire`/`ukr_soviet_collapse_republic_of_laws`; `kaz_soviet_collapse_the_congress_chooses_a_past` crossing `kaz_soviet_collapse_guard_the_resource_towns` branches; `moldova_soviet_collapse_moldova_route_fork` crossing Dniester/Ukraine grain routes. | The user specifically reported overlapping lines and nonsensical structure; these are not isolated cosmetic bugs. They need layout redesign. |
 | High | Route-aware AI strategy is incomplete. | `common/ai_strategy/005_soviet_collapse.txt` has Ukraine lines 268-434, Belarus 438-576, Kazakhstan 580-720, generic custom splinter lines 157-219, and generic high-chaos lines 222-245. No equivalent route-specific AI strategy families exist for Baltic, Caucasus, Central Asia, Moldova, internal republics, CFR, MFR, OGB, ancient restorations, or each custom splinter identity. | Focus-level `ai_will_do` exists, but countries do not get route-specific aggression, production, target, faction, and expansion strategies for most trees. |
@@ -75,7 +75,7 @@ Focus ids that visibly call both a route helper and the updater and should be re
 - `common/national_focus/005_soviet_collapse_republics.txt:6414` `caucasus_soviet_collapse_oil_state_command`
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:44` `FTH_first_guard`
 - `common/national_focus/005_soviet_collapse_factory_successors.txt:1202` `OGB_the_council_takes_the_seal`
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:343` `KZR_league_transit_bargain`
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:343` `APX_league_transit_bargain`
 
 ## Generic Reward and Idea-Spam Routes
 
@@ -94,7 +94,7 @@ Representative exact focus ids with generic equipment/factory/truck/train/buildi
 | `005_soviet_collapse_custom_splinters.txt:1995` | `TSC_observatory_guard` | XP, manpower, equipment, depot variable. |
 | `005_soviet_collapse_factory_successors.txt:1240` | `OGB_reopen_volga_trade_tolls` | Generic depot/liaison variables plus rail/supply construction. |
 | `005_soviet_collapse_factory_successors.txt:1287` | `OGB_kazan_ferry_offices` | One civilian factory. |
-| `005_soviet_collapse_ancient_restorations.txt:173` | `KZR_old_border_files` | Claims plus train/infrastructure stockpile pattern. |
+| `005_soviet_collapse_ancient_restorations.txt:173` | `APX_old_border_files` | Claims plus train/infrastructure stockpile pattern. |
 
 Recommendation: keep a few one-time rewards, but each family should convert the main branch rewards into unlocks: targeted state missions, route decisions, advisor/commander unlocks, special units, claims/cores with integration, timed objectives, construction programs, patron/rival decisions, and route-specific AI strategies.
 
@@ -109,7 +109,7 @@ Recommendation: keep a few one-time rewards, but each family should convert the 
 | Northern Revenant Fleet | `NRF_living_harbor_committees`, `NRF_revenant_admiralty`, `NRF_northern_revenant_fleet` | Needs naval/port control mechanic, convoy raiding AI, White Sea/Baltic ambitions, special marines, shipyard/port decisions. |
 | Immortal Commissariat | `ICD_commissars_of_last_addresses`, `ICD_commissars_who_do_not_die`, `ICD_commissariat_without_end` | Needs dead-roll bureaucracy mechanic, purges/integration, occupied-state claims, commissar units/advisors, and relentless conquest AI. |
 | OGB Old Volga Bulgaria | `OGB_scholars_guard_the_charter`, `OGB_clerics_guard_the_charter`, `OGB_treat_with_idel_ural`, `OGB_the_volga_cannot_have_two_seals`, `OGB_volga_restoration_state` | Needs full cleric/scholar/notable route, Volga trade economy, heritage army, diplomacy with IUL/KAZ/SOV, staged old-city integration, and OP Volga restoration route. |
-| Ancient restorations | `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_alan_pass_charter` | End-state charters should cap multi-branch routes, not appear after 16-focus compact chains. |
+| Ancient restorations | `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_alan_pass_charter` | End-state charters should cap multi-branch routes, not appear after 16-focus compact chains. |
 
 ## Meaningless or Overused Mutual Exclusions
 
@@ -118,7 +118,7 @@ Reciprocity check found no missing reciprocal mutual exclusions. The problem is 
 Questionable overuse:
 
 - `common/national_focus/005_soviet_collapse_factory_successors.txt:364-474`: `CFR_cities_first`, `CFR_rails_first`, `CFR_factories_first`, and `CFR_contracts_first` all mutually exclude each other. These are industry priorities, not incompatible identities; they would work better as staged priorities, modifiers, or decision specializations rather than permanent hard locks.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt`: repeated `*_settlement` versus `*_radical_turn` pairs across many 47-focus splinter trees (`FTH_settlement`/`FTH_radical_turn`, `BSC_settlement`/`BSC_radical_turn`, `TNC_settlement`/`TNC_radical_turn`, `ALA_settlement`/`ALA_radical_turn`, `BBH_settlement`/`BBH_radical_turn`, etc.) are structurally repetitive. They can be valid, but the repeated pattern makes countries feel cloned.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt`: repeated `*_settlement` versus `*_radical_turn` pairs across many 47-focus splinter trees (`FTH_settlement`/`FTH_radical_turn`, `AEX_settlement`/`AEX_radical_turn`, `TNC_settlement`/`TNC_radical_turn`, `AAX_settlement`/`AAX_radical_turn`, `BBH_settlement`/`BBH_radical_turn`, etc.) are structurally repetitive. They can be valid, but the repeated pattern makes countries feel cloned.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt:1214-1234`: `OGB_scholars_guard_the_charter` versus `OGB_clerics_guard_the_charter` is meaningful, but it currently gates only a shallow tree. It needs different follow-up content, not just two minor popularity/stability variants.
 
 ## Prerequisite Semantics and Nonsensical Route Structure
@@ -150,7 +150,7 @@ Detected line crossing counts from focus coordinate/prerequisite geometry:
 | `soviet_collapse_caucasus_focus_tree` | 18 | Oil directorate and route fork crossings around `caucasus_soviet_collapse_oilfield_security_compacts`. |
 | `soviet_collapse_baltic_focus_tree` | 14 | Legal/defense/port branch crossings around `baltic_soviet_collapse_the_baltic_question_resolved`. |
 | `UWD_soviet_collapse_focus_tree` | 35 | `UWD_supply`/industry/radical/settlement branch crossings. |
-| `BAC_soviet_collapse_focus_tree` | 44 | `BAC_industry_plan`, `BAC_war_plan`, `BAC_radical_turn`, and diplomatic branches cross repeatedly. |
+| `ADX_soviet_collapse_focus_tree` | 44 | `ADX_industry_plan`, `ADX_war_plan`, `ADX_radical_turn`, and diplomatic branches cross repeatedly. |
 | `SZA_soviet_collapse_focus_tree` | 29 | `SZA_extreme_gate`, `SZA_settlement`, `SZA_endgame`, and infrastructure branches cross. |
 
 Too-close vertical spine examples:
@@ -181,7 +181,7 @@ Reward/localisation mismatch and weak-match risks:
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:1650` `PRA_claim_the_branch_lines`: title implies map claims; reward mainly increments `pra_rail_authority`, unlocks `pra_drive_the_junction_columns`, and applies depot control. If the decision grants the map action, the focus tooltip should make that clear; otherwise it needs direct rail-junction claims.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:2152` `TSC_claim_the_impact_zone`: title implies a territorial claim, but the visible reward is authority/high-chaos identity and field station depth. Needs explicit claims/targeted decisions or a clearer title.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt:1287` `OGB_kazan_ferry_offices`: title is geographically strong but the reward is only a random owned/core civilian factory. It should target Kazan/Volga states if available.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:268` `KZR_khazar_charter`, and equivalent `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_alan_pass_charter`: charter end-states read larger than their 16-focus mechanical base.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:268` `APX_khazar_charter`, and equivalent `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_alan_pass_charter`: charter end-states read larger than their 16-focus mechanical base.
 
 ## Focus Filters That Do Not Match Rewards
 
@@ -203,7 +203,7 @@ Gaps:
 - No route-specific AI strategy family for `soviet_collapse_baltic_focus_tree`, `soviet_collapse_caucasus_focus_tree`, `soviet_collapse_central_asia_focus_tree`, `soviet_collapse_moldova_focus_tree`, or `soviet_collapse_internal_republic_focus_tree`.
 - No bespoke AI strategy family for `PRA/TSC/RMC/DSC/NRF/ICD`; they share `soviet_collapse_high_chaos_signature_force_route`, which only boosts army/equipment and does not set concrete expansion targets, local rivals, faction behavior, state priorities, naval/air behavior, or special mechanic use.
 - No bespoke AI strategy family for `CFR/MFR/OGB`; aggression is mostly endpoint hidden effects.
-- No bespoke AI strategy family for ancient restorations `KZR/SOG/KHW/ALN`; each expansionist endpoint gets generic SOV conquest/antagonize but not region-specific claim, alliance, or invasion behavior.
+- No bespoke AI strategy family for ancient restorations `APX/SOG/ANX/ABX`; each expansionist endpoint gets generic SOV conquest/antagonize but not region-specific claim, alliance, or invasion behavior.
 
 ## Recommended Full Route Architecture
 
@@ -274,7 +274,7 @@ Every 47-focus custom splinter should use this route frame, but with country-spe
 - `CFR`: Concrete Factory Republic. Overpowered identity: construction state that annexes by rebuilding. Hooks: reconstruction contracts, debt-map subjects, forced construction protectorates, concrete war machine.
 - `MFR`: Militarized Foundry Republic. Overpowered identity: arsenal state. Hooks: arms export/client network, armored train/tank line, war-economy AI, conquer for foundry inputs, client wars.
 - `OGB`: Old Volga Bulgaria. Overpowered identity: restored Volga empire. Hooks: Bolghar legitimacy, river tolls, heritage guard, Idel-Ural rivalry, Kazan/Ufa integration, old trade-city claims.
-- `KZR/SOG/KHW/ALN`: Ancient restoration states. Overpowered identity: returned old-name polities. Hooks: restoration legitimacy, museum/archive claims, old-border surveys, restoration levies, ancient-charter formables, SOV/Russia-region claims.
+- `APX/SOG/ANX/ABX`: Ancient restoration states. Overpowered identity: returned old-name polities. Hooks: restoration legitimacy, museum/archive claims, old-border surveys, restoration levies, ancient-charter formables, SOV/Russia-region claims.
 
 ### Factory Successors
 

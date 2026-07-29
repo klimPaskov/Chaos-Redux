@@ -76,7 +76,7 @@ Signature countries include the highlighted packages in Part 4.
 ## Concrete Event 006 signature package tranche: IW-043 and IW-058
 
 The bounded implementation contract for the two signature packages is recorded
-in `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` and
+in `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` and
 the dated package audits under
 `docs/plans/006_independence_wave_plans/subagent_handoffs/`. Those references
 are evidence for the concrete tranche; the package rules in this specification

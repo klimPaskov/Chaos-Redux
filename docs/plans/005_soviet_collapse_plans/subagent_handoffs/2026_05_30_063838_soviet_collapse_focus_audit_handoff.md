@@ -99,7 +99,7 @@ Mechanical coverage:
 | Dead Soldiers' Congress | `DSC_soviet_collapse_focus_tree`, 18 focuses | Shallow/high priority | 5 direct decision unlocks, 2 war goals, high manpower/equipment rewards. Needs dead-army politics mechanic, veteran/revenant unit or template hooks, memorial legitimacy missions, and recruitment tradeoffs. |
 | Iron Commissariat of the Dead | `ICD_soviet_collapse_focus_tree`, 18 focuses | Shallow/high priority | 1 war goal, no direct decision unlocks in term count. Needs death-state command structure, citizen-after-death mechanics, special recruitment, and grim bureaucracy decisions. |
 | Northern Revenant Fleet | `NRF_soviet_collapse_focus_tree`, 18 focuses | Shallow/high priority | 4 direct decision unlocks, 1 war goal, heavy navy XP/convoy rewards. Needs fleet/port mechanic, naval militia or revenant-fleet unit hooks, convoy missions, and Arctic port control play. |
-| Full 47-focus custom splinters | `FTH/BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC` | Mixed | They have apparent branch families, all local AI weights, and route capstones. Most still need stronger route-specific decision evolution, map claims/cores/settlements, unit/template hooks, and fewer repeated state-building/equipment rewards. |
+| Full 47-focus custom splinters | `FTH/AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC` | Mixed | They have apparent branch families, all local AI weights, and route capstones. Most still need stronger route-specific decision evolution, map claims/cores/settlements, unit/template hooks, and fewer repeated state-building/equipment rewards. |
 
 ## Idea Spam and Helper Lifecycle Audit
 
@@ -153,7 +153,7 @@ High-priority design gaps:
 | `PRA` | High | Moving-state rail authority meter; train/railway guard template; rail corridor missions; rolling-stock costs; route mobility decisions. |
 | `CFR` | High | Construction capacity projects; housing/labor pressure; consumer burden; foreign contract debt; explicit MFR rivalry/merger decision or focus hook. |
 | `MFR` | High | Arsenal quotas as visible decision loop; production militias/template; proxy arming decisions; armored train/depot route hooks; explicit CFR rivalry/merger decision or focus hook. |
-| `FTH/BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC` | Medium | Replace repeated generic rewards with route-specific decision evolution, claims/cores/settlements, advisor or commander hooks, and route-aware AI strategy plans. |
+| `FTH/AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC` | Medium | Replace repeated generic rewards with route-specific decision evolution, claims/cores/settlements, advisor or commander hooks, and route-aware AI strategy plans. |
 
 ## Layout Audit
 
@@ -175,7 +175,7 @@ Exact mutually exclusive same-row pathline risks:
 - `OGB_scholars_guard_the_charter`, line 1214, `x = 4 y = 3`, vs `OGB_clerics_guard_the_charter`, line 1234, `x = 6 y = 3`.
 - `OGB_treat_with_idel_ural`, line 1460, `x = 12 y = 4`, vs `OGB_the_volga_cannot_have_two_seals`, line 1495, `x = 14 y = 4`.
 - `IUL_settlement`, line 21278, `x = 7 y = 7`, vs `IUL_radical_turn`, line 21311, `x = 5 y = 7`.
-- `BAC_settlement`, line 22432, `x = 6 y = 7`, vs `BAC_radical_turn`, line 22463, `x = 4 y = 7`.
+- `ADX_settlement`, line 22432, `x = 6 y = 7`, vs `ADX_radical_turn`, line 22463, `x = 4 y = 7`.
 
 Exact wide mutually exclusive same-row pathline risks:
 
@@ -194,7 +194,7 @@ Exact OR-prerequisite pathline risks to review:
 - `MFR_artillery_from_broken_foundries`, line 2090, `x = 4 y = 10`, OR-parents `MFR_factory_war_cabinet` line 2071, `x = 13 y = 8`, and `MFR_military_accounting_courts` line 1974, `x = 2 y = 7`; `dx = 11`.
 - `FEV_endgame`, line 17318, `x = 10 y = 13`, has nine OR-parents spanning `x = 0..16`, `y = 7..12`.
 - `SZA_endgame`, line 18498, `x = 10 y = 15`, has nine OR-parents spanning `x = 2..16`, `y = 7..14`.
-- `BAC_endgame`, line 23187, `x = 8 y = 18`, has six OR-parents spanning `x = 0..14`, `y = 11..17`.
+- `ADX_endgame`, line 23187, `x = 8 y = 18`, has six OR-parents spanning `x = 0..14`, `y = 11..17`.
 - `ARD_endgame`, line 24386, `x = 8 y = 18`, has six OR-parents spanning `x = 0..12`, `y = 11..17`.
 
 ## Icon Coverage
@@ -243,7 +243,7 @@ I did not patch icons because the user explicitly said not to touch gfx/flags, a
 2. Add special mechanics to `TSC`, `ICD`, `DSC`, `NRF`, and `PRA` before further cosmetic/layout polish.
 3. Add explicit CFR/MFR rivalry or merger hooks and decision evolution.
 4. Replace or supplement generic 47-focus custom splinter rewards with direct decisions, missions, claims/cores/settlements, unit/template hooks, advisors, leaders, or event hooks.
-5. Resolve same-row and wide mutual-exclusion pathline risks in CFR, MFR, OGB, IUL, and BAC.
+5. Resolve same-row and wide mutual-exclusion pathline risks in CFR, MFR, OGB, IUL, and ADX.
 6. Audit repeated focus icon ids against available registered sprites; do not change gfx/flags until sprite definitions exist.
 7. Consider converting staged republic idea display into clearer category-specific ideas or dynamic localisation if the current single `else_if` display priority hides important simultaneous state.
 

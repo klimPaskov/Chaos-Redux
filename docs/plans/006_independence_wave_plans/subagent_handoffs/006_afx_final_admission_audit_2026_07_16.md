@@ -43,7 +43,7 @@ surfaces still preserve the pre-audit history:
   AFX lacks its binding Level 2 focus group;
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
   still schedules that missing-group repair;
-- `docs/events/006_independence_wave.md` still describes the historical joint
+- `docs/events/006_independence_wave/overview.md` still describes the historical joint
   AFX/AGX promotion without recording the later revocation and this audit.
 
 Those statements correctly keep AFX closed before this verdict, but their

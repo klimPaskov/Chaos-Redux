@@ -50,7 +50,7 @@ Added asset package:
 
 ## Validation
 
-- Decision reference art was inspected in `.agents/skills/chaos-redux-event-assets/assets/decisions/` before generation and processing.
+- Decision reference art was inspected in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions/` before generation and processing.
 - `identify` confirmed all processed PNG previews are the expected size:
   - `decision_category_fury_war_office.png` and `decision_category_anti_fury.png`: `52x40`
   - all seven ordinary decision previews: `32x32`

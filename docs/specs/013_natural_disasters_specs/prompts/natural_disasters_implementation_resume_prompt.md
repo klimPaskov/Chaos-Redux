@@ -1,6 +1,6 @@
 # Event 013 Natural Disasters implementation resume prompt
 
-> Resume disposition: resume from `docs/events/013_natural_disasters.md`, the live Event 013 files, and `docs/plans/013_natural_disasters_plans/`. Do not restart from the planning package or recreate completed asset/research tranches.
+> Resume disposition: resume from `docs/events/013_natural_disasters/overview.md`, the live Event 013 files, and `docs/plans/013_natural_disasters_plans/`. Do not restart from the planning package or recreate completed asset/research tranches.
 
 Continue from the closure-ready Event 013 package, not from the superseded continuation prompt. Treat `docs/specs/013_natural_disasters_specs/` as the source-spec folder. Read `README.md`, `manifest.md`, `research/004_final_improvement_loop_anti_bloat_closure.md`, `research/008_closure_followup_final_readiness_pass.md`, `docs_alignment/013_source_of_truth_and_disposition_map.md`, and `matrices/013_implementation_readiness_ledger.md` first.
 

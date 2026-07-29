@@ -30,7 +30,7 @@ Status: audit handoff only. No gameplay, focus, localisation, or asset source wa
 - localisation/english/012_africa_focus_l_english.yml
 - localisation/english/012_africa_priority_member_focus_l_english.yml
 - localisation/english/012_africa_world_order_l_english.yml
-- docs/events/012_africa_world_order.md
+- docs/events/012_africa/world_order.md
 
 ## Route coverage table
 
@@ -66,7 +66,7 @@ The current RC intentionally retains all six world-order focus files and their l
 
 hoi4.focus_inspect parsed africa_asia_world_focus_tree with focusCount = 20 and status = ok; its Event 12 iconless nodes produce FOCUS_ICON_MISSING design warnings, not parser or load blockers. The same structural pattern is used by the other five dormant package files.
 
-The package install path is gated by has_country_flag = africa_world_package_implementation_ready in common/decisions/012_africa_decisions.txt:1686 and common/scripted_triggers/012_africa_ai_profile_triggers.txt:782. No current Event 12 source sets that flag; the only references are six readiness checks. docs/events/012_africa_world_order.md:28 identifies it as an external implementation gate.
+The package install path is gated by has_country_flag = africa_world_package_implementation_ready in common/decisions/012_africa_decisions.txt:1686 and common/scripted_triggers/012_africa_ai_profile_triggers.txt:782. No current Event 12 source sets that flag; the only references are six readiness checks. docs/events/012_africa/world_order.md:28 identifies it as an external implementation gate.
 
 africa_world_install_current_package in common/scripted_effects/012_africa_world_order_effects.txt:465-541 now checks the readiness flag itself before any regional load_focus_tree branch. Its only six load_focus_tree references are in that gated helper. Retaining the dormant files and loaders preserves the reserved focus IDs, prerequisites, rewards, and future asset contract without exposing an iconless package in normal play.
 
@@ -100,7 +100,7 @@ Every focus block has a cost, completion reward, and AI block. The 61 custom afr
 
 No direct add_core, annex_country, transfer_state, create_country, join_faction, or set_relation effect appears in the owned focus files. Route and relationship outcomes dispatch through existing scripted reward helpers, so no static focus-name/reward mismatch was found.
 
-One documentation wording risk remains: docs/events/012_africa_world_order.md correctly describes the readiness flag as an external gate, but its later package section describes the registry as implementation-ready because the architectures exist. That wording should be clarified if the dormant asset gate remains in the release candidate.
+One documentation wording risk remains: docs/events/012_africa/world_order.md correctly describes the readiness flag as an external gate, but its later package section describes the registry as implementation-ready because the architectures exist. That wording should be clarified if the dormant asset gate remains in the release candidate.
 
 ## AI behaviour gaps
 

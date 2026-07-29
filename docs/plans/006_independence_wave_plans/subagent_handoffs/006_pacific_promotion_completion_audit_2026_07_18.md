@@ -118,7 +118,7 @@ pending.
   the existing actor/event-target and evolution registries; Pacific promotion does
   not introduce a separate unmapped event or evolution stage. HAW/FSM use vanilla
   country names and HBX/PFX have current country localisation.
-- `docs/events/006_independence_wave.md` and
+- `docs/events/006_independence_wave/overview.md` and
   `docs/events/006_independence_wave/pacific_country_packages.md` now record the
   exact Pacific promotion while keeping whole Event 006 pending.
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` records the

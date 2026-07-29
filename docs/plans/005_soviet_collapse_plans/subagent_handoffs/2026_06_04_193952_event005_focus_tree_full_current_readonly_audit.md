@@ -68,11 +68,11 @@ Tree-level counts:
 | `005_soviet_collapse_custom_splinters.txt` | `DSC_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `ICD_soviet_collapse_focus_tree` | 18 |
-| `005_soviet_collapse_custom_splinters.txt` | `BSC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AEX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `TNC_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `ALA_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AAX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `BBH_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `KRS_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AOX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `UDC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `SDZ_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `GAC_soviet_collapse_focus_tree` | 47 |
@@ -83,16 +83,16 @@ Tree-level counts:
 | `005_soviet_collapse_custom_splinters.txt` | `UWD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `MRC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `IUL_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `BAC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `ADX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `ARD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `NLC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `OGB_soviet_collapse_focus_tree` | 23 |
 | `005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | 16 |
 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ABX_soviet_collapse_ancient_focus_tree` | 16 |
 
 ## Highest-priority findings
 
@@ -109,11 +109,11 @@ Tree-level counts:
    - `NLC_war_plan` around `005_soviet_collapse_custom_splinters.txt:24727`: same pattern plus direct construction/variable reward.
    - `PRA_armored_train_directorate` around `005_soviet_collapse_custom_splinters.txt:1406`: rail authority, PRA authority idea update, rail guard columns, and military consolidation in one focus.
 6. Far Eastern/Pacific content exists but is still underpowered relative to the objective. `FEV_war_plan` around `005_soviet_collapse_custom_splinters.txt:16831`, `FEV_vladivostok_harbor_board` around `:16941`, `FEV_pacific_observer_missions` around `:17081`, `FEV_sakhalin_ferry_protocols` around `:17102`, `FEV_pacific_city_compact` around `:17127`, and `FEV_pacific_between_empires` around `:17288` should become stronger Pacific-facing mechanics, not mostly generic foreign/security helpers.
-7. Naval actors need stronger naval mechanics and filters. `NRF` is only 18 focuses despite being a required naval revenant actor. `KRS` and `ARD` have more content, but focus filters and rewards are not consistently naval-facing. Review `KRS_war_plan` around `:9373`, `KRS_naval_infantry_oaths` around `:9930`, `KRS_port_guard_schools` around `:10030`, `ARD_murmansk_dockyard_sheds` around `:23648`, `ARD_naval_infantry_yards` around `:23860`, `ARD_foreign_fleet_letters` around `:24050`, `ARD_white_sea_port_tolls` around `:24097`, and `ARD_arctic_port_endurance` around `:24218`.
-8. Several mutually exclusive branches are real but too small to feel like route differences. The weakest cases are two-focus or endpoint-only forks: `OGB_scholars_guard_the_charter` / `OGB_clerics_guard_the_charter`, `OGB_treat_with_idel_ural` / `OGB_the_volga_cannot_have_two_seals`, and the ancient symbolic-vs-expansion pairs at `KZR_symbolic_crossing_state` / `KZR_expansionist_steppe_levy`, `SOG_symbolic_city_league` / `SOG_expansionist_merchant_claims`, `KHW_symbolic_oasis_authority` / `KHW_expansionist_water_claims`, `ALN_symbolic_pass_principality` / `ALN_expansionist_mountain_claims`.
+7. Naval actors need stronger naval mechanics and filters. `NRF` is only 18 focuses despite being a required naval revenant actor. `AOX` and `ARD` have more content, but focus filters and rewards are not consistently naval-facing. Review `AOX_war_plan` around `:9373`, `AOX_naval_infantry_oaths` around `:9930`, `AOX_port_guard_schools` around `:10030`, `ARD_murmansk_dockyard_sheds` around `:23648`, `ARD_naval_infantry_yards` around `:23860`, `ARD_foreign_fleet_letters` around `:24050`, `ARD_white_sea_port_tolls` around `:24097`, and `ARD_arctic_port_endurance` around `:24218`.
+8. Several mutually exclusive branches are real but too small to feel like route differences. The weakest cases are two-focus or endpoint-only forks: `OGB_scholars_guard_the_charter` / `OGB_clerics_guard_the_charter`, `OGB_treat_with_idel_ural` / `OGB_the_volga_cannot_have_two_seals`, and the ancient symbolic-vs-expansion pairs at `APX_symbolic_crossing_state` / `APX_expansionist_steppe_levy`, `SOG_symbolic_city_league` / `SOG_expansionist_merchant_claims`, `ANX_symbolic_oasis_authority` / `ANX_expansionist_water_claims`, `ABX_symbolic_pass_principality` / `ABX_expansionist_mountain_claims`.
 9. Some focus filters still do not match rewards. Representative current examples:
-   - `BSC_hidden_doctrine` around `005_soviet_collapse_custom_splinters.txt:5401` and `BSC_extreme_gate` around `:5427` use expansion/neighbor helpers but lack `FOCUS_FILTER_ANNEXATION`.
-   - `KRS_first_guard` around `:8980`, `KRS_sailors_assembly_registers` around `:9460`, and `KRS_free_soviet_congress` around `:9650` grant or imply naval rewards without consistent `FOCUS_FILTER_NAVY_XP`.
+   - `AEX_hidden_doctrine` around `005_soviet_collapse_custom_splinters.txt:5401` and `AEX_extreme_gate` around `:5427` use expansion/neighbor helpers but lack `FOCUS_FILTER_ANNEXATION`.
+   - `AOX_first_guard` around `:8980`, `AOX_sailors_assembly_registers` around `:9460`, and `AOX_free_soviet_congress` around `:9650` grant or imply naval rewards without consistent `FOCUS_FILTER_NAVY_XP`.
    - `ARD_murmansk_dockyard_sheds`, `ARD_white_sea_customs`, `ARD_foreign_fleet_letters`, `ARD_white_sea_port_tolls`, and `ARD_arctic_port_endurance` should be reviewed for `FOCUS_FILTER_NAVY_XP`.
    - `internal_soviet_collapse_far_eastern_port_authority` around `005_soviet_collapse_republics.txt:4238` and `internal_soviet_collapse_pacific_harbor_guard` around `:4274` should be reviewed for navy/industry filter alignment.
 
@@ -123,9 +123,9 @@ The focus files use many Soviet Collapse variables and helpers, so they are not 
 
 Priority gap groups:
 
-- Progressive release and Union Unmade: several successor focus trees can pressure `SOV` through helper variables, but few route endpoints visibly alter release wave behavior, Union Unmade settlement, or scenario release/war behavior. Good candidates for hooks: `kaz_soviet_collapse_the_southern_republics_do_not_kneel`, `FEV_pacific_between_empires`, `ARD_endgame`, `KRS_endgame`, `DSC_congress_of_the_dead_army`, and all ancient restoration endgames.
-- Influence/funding: diplomacy branches generally raise recognition, liaison, or foreign variables, but many do not unlock or modify foreign patron/funding decisions. Candidates: `FEV_pacific_observer_missions`, `FEV_sakhalin_ferry_protocols`, `BSC_diplomatic_plan`, `TNC_diplomatic_plan`, `ALA_diplomatic_plan`, `ARD_foreign_fleet_letters`, `KRS_free_port_conference`.
-- League decisions: League-preparation helpers are used, but several focuses that promise League logistics or regional coordination do not clearly unlock a new League decision tier. Candidates: `blr_soviet_collapse_prepare_league_freight_tables`, `blr_soviet_collapse_minsk_supplies_the_front`, `central_asia_soviet_collapse_the_south_survives_together`, `BSC_central_asian_defense_council`, `TNC_central_asian_defense_council`, `ALA_central_asian_league_draft`.
+- Progressive release and Union Unmade: several successor focus trees can pressure `SOV` through helper variables, but few route endpoints visibly alter release wave behavior, Union Unmade settlement, or scenario release/war behavior. Good candidates for hooks: `kaz_soviet_collapse_the_southern_republics_do_not_kneel`, `FEV_pacific_between_empires`, `ARD_endgame`, `AOX_endgame`, `DSC_congress_of_the_dead_army`, and all ancient restoration endgames.
+- Influence/funding: diplomacy branches generally raise recognition, liaison, or foreign variables, but many do not unlock or modify foreign patron/funding decisions. Candidates: `FEV_pacific_observer_missions`, `FEV_sakhalin_ferry_protocols`, `AEX_diplomatic_plan`, `TNC_diplomatic_plan`, `AAX_diplomatic_plan`, `ARD_foreign_fleet_letters`, `AOX_free_port_conference`.
+- League decisions: League-preparation helpers are used, but several focuses that promise League logistics or regional coordination do not clearly unlock a new League decision tier. Candidates: `blr_soviet_collapse_prepare_league_freight_tables`, `blr_soviet_collapse_minsk_supplies_the_front`, `central_asia_soviet_collapse_the_south_survives_together`, `AEX_central_asian_defense_council`, `TNC_central_asian_defense_council`, `AAX_central_asian_league_draft`.
 - Republic-vs-republic wars: high-chaos helpers can create neighbor claims/wars, but short trees often compress this into one endpoint. Candidates for explicit war-plan/claim/settlement decision chains: `DSC_congress_of_the_dead_army`, `NRF_northern_revenant_fleet`, `ICD_commissariat_without_end`, `RMC_resurrection_without_state`, `TSC_starfall_mandate`.
 - Chaos-tier releases: high-chaos payloads exist, but current focus route availability and payoff rarely communicate chaos-tier release behavior to the player. Candidates: all short high-chaos trees plus `NLC_extreme_path`, `FTH_war_plan`, `FEV_extreme_path`, `ARD_extreme_path`.
 
@@ -140,7 +140,7 @@ These are current-state design failures against the spec, not parser errors.
 - `NRF_soviet_collapse_focus_tree`, 18 focuses: naval revenant identity needs actual fleet, convoy, port, raid, naval militia, and Arctic settlement systems.
 - `ICD_soviet_collapse_focus_tree`, 18 focuses: iron/dead commissariat needs security, archives, coercive mobilisation, dead-roll administration, and grim command mechanics beyond flat variables.
 - `OGB_soviet_collapse_focus_tree`, 23 focuses: Volga restoration remains narrow. It needs trade/river authority, religion and society, Idel-Ural relations, future-event hooks, expansion settlement, and stronger late branch.
-- `KZR`, `SOG`, `KHW`, `ALN` ancient trees, 16 each: all are compact symbolic-restoration stubs. They need full or at least robust compact routes around historical legitimacy, trade/water/pass authority, military survival, League/Union Unmade interaction, and expansion consequences.
+- `APX`, `SOG`, `ANX`, `ABX` ancient trees, 16 each: all are compact symbolic-restoration stubs. They need full or at least robust compact routes around historical legitimacy, trade/water/pass authority, military survival, League/Union Unmade interaction, and expansion consequences.
 
 ## Layout findings
 
@@ -160,7 +160,7 @@ Continuous panel overlap risk:
 Potential pathline / branch-flow risks:
 
 - `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` have three roots each. This can be intentional for side packages, but currently reads as disconnected route content in very short trees.
-- Several focuses use hidden `available = { has_completed_focus = ... }` locks instead of visible path structure. Examples include BSC/TNC/ALA regional route locks and FEV late endgame locks. These may be valid, but the parent should review whether the player sees the route requirement clearly.
+- Several focuses use hidden `available = { has_completed_focus = ... }` locks instead of visible path structure. Examples include AEX/TNC/AAX regional route locks and FEV late endgame locks. These may be valid, but the parent should review whether the player sees the route requirement clearly.
 
 ## Mutually exclusive branch quality
 
@@ -183,16 +183,16 @@ This audit used a heuristic reward-to-filter pass and manual review of represent
 Quick filter fixes:
 
 - Add or review `FOCUS_FILTER_ANNEXATION` for focuses that call neighbor expansion/claim/war helpers:
-  - `BSC_hidden_doctrine`, `BSC_extreme_gate`
-  - `TNC`/`ALA`/other equivalent hidden doctrine and extreme gate clones
+  - `AEX_hidden_doctrine`, `AEX_extreme_gate`
+  - `TNC`/`AAX`/other equivalent hidden doctrine and extreme gate clones
   - `UDC_rival`, `UDC_enemy_front`, `UDC_war_plan`
-  - `KZR_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, `ALN_expansionist_mountain_claims`
+  - `APX_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, `ABX_expansionist_mountain_claims`
 - Add or review `FOCUS_FILTER_NAVY_XP` on naval actors:
-  - `KRS_first_guard`, `KRS_sailors_assembly_registers`, `KRS_free_soviet_congress`, `KRS_gulf_mine_watch`, `KRS_port_guard_schools`, `KRS_endgame`
+  - `AOX_first_guard`, `AOX_sailors_assembly_registers`, `AOX_free_soviet_congress`, `AOX_gulf_mine_watch`, `AOX_port_guard_schools`, `AOX_endgame`
   - `NRF_living_harbor_committees`, `NRF_letters_to_sailor_towns`, `NRF_memorial_convoy_state`, `NRF_northern_revenant_fleet`
   - `ARD_murmansk_dockyard_sheds`, `ARD_white_sea_customs`, `ARD_foreign_fleet_letters`, `ARD_white_sea_port_tolls`, `ARD_arctic_port_endurance`
 - Add or review industry filters on focuses with direct construction rewards:
-  - `BSC_desert_airstrips`, `TNC_airfields_for_the_council`, `KRS_petrograd_signal_watch`, `KRS_convoy_escort_ledger`, `UDC_radio_command_posts`, and analogous cloned regional focuses.
+  - `AEX_desert_airstrips`, `TNC_airfields_for_the_council`, `AOX_petrograd_signal_watch`, `AOX_convoy_escort_ledger`, `UDC_radio_command_posts`, and analogous cloned regional focuses.
 
 ## Prioritized parent patch plan
 
@@ -299,9 +299,9 @@ Focus IDs:
 - `FEV_sakhalin_ferry_protocols`
 - `FEV_pacific_city_compact`
 - `FEV_pacific_between_empires`
-- `KRS_war_plan`
-- `KRS_naval_infantry_oaths`
-- `KRS_port_guard_schools`
+- `AOX_war_plan`
+- `AOX_naval_infantry_oaths`
+- `AOX_port_guard_schools`
 - `ARD_murmansk_dockyard_sheds`
 - `ARD_naval_infantry_yards`
 - `ARD_foreign_fleet_letters`
@@ -327,15 +327,15 @@ Files:
 Trees:
 
 - `OGB_soviet_collapse_focus_tree`
-- `KZR_soviet_collapse_ancient_focus_tree`
+- `APX_soviet_collapse_ancient_focus_tree`
 - `SOG_soviet_collapse_ancient_focus_tree`
-- `KHW_soviet_collapse_ancient_focus_tree`
-- `ALN_soviet_collapse_ancient_focus_tree`
+- `ANX_soviet_collapse_ancient_focus_tree`
+- `ABX_soviet_collapse_ancient_focus_tree`
 
 Intended gameplay change:
 
 - Expand OGB from compact Volga memory tree into a real Volga restoration actor with trade, religion/society, Idel-Ural relations, claims, modern survival, and future event hook.
-- Give each ancient restoration at least one distinct mechanic: `KZR` toll/trade authority, `SOG` city/oasis trade, `KHW` canal/water authority, `ALN` pass/host authority.
+- Give each ancient restoration at least one distinct mechanic: `APX` toll/trade authority, `SOG` city/oasis trade, `ANX` canal/water authority, `ABX` pass/host authority.
 - Tie these to League/Union Unmade/neighbor settlement, not only generic recognition and expansion helpers.
 
 ## Validation run

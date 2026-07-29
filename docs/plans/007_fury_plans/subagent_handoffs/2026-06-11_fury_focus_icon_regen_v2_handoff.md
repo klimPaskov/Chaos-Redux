@@ -46,7 +46,7 @@ Added asset package:
 
 ## Validation
 
-- Reference focus art was inspected in `.agents/skills/chaos-redux-event-assets/assets/focuses/` before generation and processing.
+- Reference focus art was inspected in `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus/` before generation and processing.
 - `identify` confirmed all eight processed PNG previews are `94x86`.
 - `identify` confirmed all eight final DDS files are `94x86`.
 - `identify` confirmed processed PNG previews and DDS files preserve transparency (`opaque=false`).

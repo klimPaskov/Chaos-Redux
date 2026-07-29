@@ -98,7 +98,7 @@ The following evidence must be updated in the same repaired package transaction:
 | `localisation/english/006_independence_wave_brittany_l_english.yml:79` | Congress wording implies immediate commitment. | Say that the delegation resolves preparation and, on success, leaves FORM-01 ready for the shared proclamation action. |
 | `localisation/english/006_independence_wave_saar_l_english.yml:90` | Congress wording implies immediate proposal commitment. | Say that the delegation resolves preparation and, on success, leaves FORM-04 ready for the shared proclamation action. |
 
-The dirty `docs/events/006_independence_wave.md:88-107` already uses the correct post-98ec distinction: FORM-04 passed its operational audit while AJX automatic/SCN admission remains separate. The Saar package reference currently contradicts it.
+The dirty `docs/events/006_independence_wave/overview.md:88-107` already uses the correct post-98ec distinction: FORM-04 passed its operational audit while AJX automatic/SCN admission remains separate. The Saar package reference currently contradicts it.
 
 ## Exact post-98ec transaction sequence
 
@@ -220,7 +220,7 @@ All other existing tracked dirty hunks are outside a BRI-only package commit. BR
 | `common/scripted_triggers/006_independence_wave_rhineland_bavaria_package_triggers.txt` | Both complete deletions: old `@@ -31,6 +30,0` and `@@ -232,6 +225,0`. | Required for approved later-wave AJX/RHI coexistence. |
 | `common/scripted_triggers/006_independence_wave_triggers.txt` | `@@ -202 +202`. | Package-required government-route maximum. |
 | `common/scripted_triggers/006_independence_wave_decision_triggers.txt` | Repair line for `independence_wave_ajx_convene_rhenish_league_congress` inside the active-operation trigger. | Present in the parent repair. |
-| `docs/events/006_independence_wave.md` | AJX package section `@@ -87,0 +88,20` and regional portrait registration wording `@@ -90 +110,4`. | Both describe the AJX tranche. |
+| `docs/events/006_independence_wave/overview.md` | AJX package section `@@ -87,0 +88,20` and regional portrait registration wording `@@ -90 +110,4`. | Both describe the AJX tranche. |
 | `events/006_independence_wave.txt` | Generic roster-comment hunk `@@ -51,2 +51,2` and AJX recruitment branch `@@ -84,0 +85,6`. | Stage together with AJX character definitions. |
 | `history/countries/AJX - Event 006 Country Shell.txt` | Both current hunks (`@@ -6 +6,2`, `@@ -7,0 +9,9`). | Package shell only; it remains dormant. |
 | `interface/006_independence_wave.gfx` | `@@ -28,0 +29,2`. | AJX focus sprite pair. |

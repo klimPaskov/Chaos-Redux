@@ -158,7 +158,7 @@ localisation, and durable-sovereignty closure flag.
   registration/proofs/scripted localisation, focus tree, package dispatch,
   exact package identity, and durable-government proof files
 - the RHI package proof file, solely to remove permanent active-AJX exclusion
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - the Event 006 asset manifest, regeneration manifest/review, generated-art
   manifest/handoff, and regional portrait handoff
 

@@ -37,7 +37,7 @@ The full focus-tree goal is not complete. The subagent audit identified 41 Sovie
 
 - Top reward-spam sites in custom splinters and factory successors.
 - Short chaos tree depth for `TSC`, `RMC`, `DSC`, `NRF`, `ICD`, `PRA`, and `OGB`.
-- Ancient restoration mechanics for `KZR`, `SOG`, `KHW`, and `ALN`.
+- Ancient restoration mechanics for `APX`, `SOG`, `ANX`, and `ABX`.
 - More explicit focus-to-decision unlock visibility across Kazakhstan, Moldova, PRA, MFR, CFR, returned names, and custom splinter routes.
 - CFR/MFR/Moldova and short-tree mutex layout review.
 

@@ -26,7 +26,7 @@ Package setup is outside that interval. Event 006 politics, technology inheritan
 - `common/scripted_effects/006_independence_wave_scenario_effects.txt`
 - `common/scripted_effects/006_independence_wave_effects.txt`
 - `docs/systems/liberation_release_coordinator.md`
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 
 ## Implemented contracts
 

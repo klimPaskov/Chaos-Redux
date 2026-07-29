@@ -36,13 +36,13 @@ General systems remain fully in scope, including:
 - docs
 - shared infrastructure and helper files
 
-Event-specific implementation cleanup is limited to Events 1 through 10 only, excluding event 6.
+Event-specific implementation cleanup is limited to Events 1 through 20.
 
-Do not audit, refactor, clean up, delete, preserve, or improve the old event-specific implementations for Events 11 and higher. Those events are waiting for full rework and their current event-specific code should be treated as obsolete implementation that will be replaced completely.
+Do not audit, refactor, clean up, delete, preserve, or improve the old event-specific implementations for Events 21 and higher. Those events are waiting for full rework and their current event-specific code should be treated as obsolete implementation that will be replaced completely.
 
-Events 11 and higher may only be inspected or touched when they appear inside a general shared system and the reference affects shared infrastructure. Examples include event registration arrays, event-log catalog entries, settings lists, triggerable scenario registries, shared helper references, shared localisation selectors, shared docs for the general event system, or stale references that block cleanup of shared systems.
+Events 21 and higher may only be inspected or touched when they appear inside a general shared system and the reference affects shared infrastructure. Examples include event registration arrays, event-log catalog entries, settings lists, triggerable scenario registries, shared helper references, shared localisation selectors, shared docs for the general event system, or stale references that block cleanup of shared systems.
 
-Do not spend time improving old Events 11 and higher event chains, decisions, focus trees, ideas, country packages, assets, or localisation as standalone event content. If a reference belongs only to obsolete event-specific content, leave it for the future event rework or report it as out of scope.
+Do not spend time improving old Events 21 and higher event chains, decisions, focus trees, ideas, country packages, assets, or localisation as standalone event content. If a reference belongs only to obsolete event-specific content, leave it for the future event rework or report it as out of scope.
 
 ## Main goals
 
@@ -87,7 +87,7 @@ Inspect existing reusable helper and tuning files before creating new helpers:
 
 Inspect relevant gameplay text files, including:
 
-- `events/` only for Events 1 through 10 event-specific implementations, plus shared event-system references to Events 11 and higher when they affect shared infrastructure
+- `events/` only for Events 1 through 20 event-specific implementations, plus shared event-system references to Events 21 and higher when they affect shared infrastructure
 - `common/scripted_effects/`
 - `common/scripted_triggers/`
 - `common/script_constants/`
@@ -96,14 +96,14 @@ Inspect relevant gameplay text files, including:
 - `common/decisions/categories/`
 - `common/scripted_guis/`
 - `common/scripted_localisation/`
-- `common/national_focus/` only for Events 1 through 10 or shared hooks, not obsolete Events 11 and higher event-specific trees
-- `common/ideas/` only for Events 1 through 10 or shared systems, not obsolete Events 11 and higher event-specific ideas
+- `common/national_focus/` only for Events 1 through 20 or shared hooks, not obsolete Events 21 and higher event-specific trees
+- `common/ideas/` only for Events 1 through 20 or shared systems, not obsolete Events 21 and higher event-specific ideas
 - `common/ai_strategy/`
 - `common/ai_templates/` when relevant
-- `history/` when country, state, setup, or tag references are involved for Events 1 through 10 or shared systems
+- `history/` when country, state, setup, or tag references are involved for Events 1 through 20 or shared systems
 - `interface/` and `.gfx` only where UI, GUI button logic, sprite references, or asset references need cleanup
 - `localisation/` where keys, dynamic text, tooltips, event names, docs-facing labels, or player-facing text need cleanup
-- `docs/` where system docs, event docs for Events 1 through 10, helper docs, plans, manifests, prompt files, or README-style docs need alignment
+- `docs/` where system docs, event docs for Events 1 through 20, helper docs, plans, manifests, prompt files, or README-style docs need alignment
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` only through the spreadsheet worker when catalog fields need alignment with in-game wording
 
 Do not inspect binary assets, DDS files, audio files, generated images, presentations, or spreadsheets unless a script, docs, `.gfx`, or manifest reference makes them relevant.
@@ -279,7 +279,7 @@ If uncertain, leave it in place and document the uncertainty. Do not delete it.
 
 Do not remove intentional placeholders, future hooks, templates, examples, or planned content unless the repo clearly marks them as obsolete.
 
-For Events 11 and higher, do not perform event-specific dead-code cleanup. Treat their old event-specific implementation as out of scope unless a reference affects shared infrastructure.
+For Events 21 and higher, do not perform event-specific dead-code cleanup. Treat their old event-specific implementation as out of scope unless a reference affects shared infrastructure.
 
 If obsolete code is still useful as a pattern, move it to a clearly documented reference location or mark it as a retained template. Do not silently delete useful examples.
 
@@ -291,9 +291,9 @@ Update docs when helpers are created, renamed, moved, removed, or changed.
 
 Update docs when a subsystem becomes better organized.
 
-Update event docs for Events 1 through 10 when event-specific cleanup changes how an event is wired.
+Update event docs for Events 1 through 20 when event-specific cleanup changes how an event is wired.
 
-Do not update old Events 11 and higher event docs as standalone event cleanup unless the document is part of shared-system documentation or creates confusion in shared infrastructure.
+Do not update old Events 21 and higher event docs as standalone event cleanup unless the document is part of shared-system documentation or creates confusion in shared infrastructure.
 
 Update helper markdown files when dynamic effects or triggers change.
 
@@ -381,7 +381,7 @@ At minimum, check:
 - no unsupported operators were introduced
 - no broad on-action iteration was added without explicit permission
 - no placeholder or fallback was introduced
-- Events 11 and higher were not treated as standalone event cleanup targets
+- Events 21 and higher were not treated as standalone event cleanup targets
 
 Avoid final-report noise. Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives useful evidence.
 
@@ -390,8 +390,8 @@ Avoid final-report noise. Mention validation only when it is task-specific, coul
 The final report must include:
 
 - systems inspected
-- Events 1 through 10 event-specific surfaces inspected
-- Events 11 and higher shared-system references touched, if any
+- Events 1 through 20 event-specific surfaces inspected
+- Events 21 and higher shared-system references touched, if any
 - files changed
 - reusable helpers created or updated
 - scripted triggers created or updated

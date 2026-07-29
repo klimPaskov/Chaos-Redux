@@ -52,7 +52,7 @@ The shared data-driven launcher owns the stable ID, aligned registry arrays, fou
 - `localisation/english/019_infrantry_spawn_l_english.yml`
   - `infantry_spawn_scenario_muster_council`
   - `infantry_spawn_scenario_unbidden_assembly`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
   - shared and direct callers, type/intensity behavior, revolt safety, isolation, roster, cleanup, assets, and SCN-013 registration contract.
 
 ### Shared scenario integration

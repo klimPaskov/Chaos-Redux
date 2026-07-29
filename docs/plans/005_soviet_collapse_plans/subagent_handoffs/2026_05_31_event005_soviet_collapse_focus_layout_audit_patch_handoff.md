@@ -20,7 +20,7 @@ No `gfx/flags` paths or flag asset files were touched.
 | Republic expansion/diplomacy routes | Ukraine League, Black Sea, western question, foreign liaison; Belarus League, Baltic, corridor; regional branches | Implemented, needs parent review | Route content is present, but some branch rows still feel dense and should be visually reblocked in a larger pass. |
 | Custom splinter political/industry/war/diplomacy branches | 19 custom splinter trees in `005_soviet_collapse_custom_splinters.txt`, mostly 47 focuses each | Implemented, repeated scaffold risk | Branches exist, but many trees share near-identical early branch shapes and several direct rewards still read like scaffolding. |
 | Factory successors | CFR, MFR, OGB, PRA/RMC/DSC/NRF/ICD/TSC successor packages in `005_soviet_collapse_factory_successors.txt` | Implemented, mixed depth | CFR/MFR have stronger helper-backed routes. OGB and smaller factory/restoration packages are shorter and should be reviewed for payoff depth. |
-| Ancient restorations | KZR, SOG, KHW, ALN in `005_soviet_collapse_ancient_restorations.txt` | Implemented compact routes | Four 16-focus trees have political, economic, guard, claim, and endgame arcs. Reused icons are intentional family icons but reduce visual uniqueness. |
+| Ancient restorations | APX, SOG, ANX, ABX in `005_soviet_collapse_ancient_restorations.txt` | Implemented compact routes | Four 16-focus trees have political, economic, guard, claim, and endgame arcs. Reused icons are intentional family icons but reduce visual uniqueness. |
 
 ## Patch
 
@@ -62,7 +62,7 @@ After:
 | File | Parsed focuses | Missing icons | Repeated icon risk |
 | --- | ---: | ---: | --- |
 | `005_soviet_collapse_republics.txt` | 501 | 0 | Several intentional/shared route-family icons remain, e.g. `GFX_ukr_soviet_collapse_democratic` across democratic Ukraine focuses. |
-| `005_soviet_collapse_custom_splinters.txt` | 1005 | 0 | Repeated regional pattern icons remain, e.g. BSC/TNC/ALA-style branch families and repeated FEV/SZA diplomatic-plan icons. |
+| `005_soviet_collapse_custom_splinters.txt` | 1005 | 0 | Repeated regional pattern icons remain, e.g. AEX/TNC/AAX-style branch families and repeated FEV/SZA diplomatic-plan icons. |
 | `005_soviet_collapse_factory_successors.txt` | 128 | 0 | No missing icons found; repeated icons should be reviewed where shorter successor packages share identity beats. |
 | `005_soviet_collapse_ancient_restorations.txt` | 64 | 0 | Intentional repeated ancient-family icons appear four times each, e.g. `GFX_focus_soviet_collapse_ancient_workshop_compact`, `GFX_focus_soviet_collapse_ancient_league_bargain`, and endgame icons. |
 
@@ -70,8 +70,8 @@ After:
 
 - `common/national_focus/005_soviet_collapse_republics.txt:236`, `:275`, `:320`, `:546`, `:1716`: Ukraine's five-way political route lock is mechanically reciprocal but still visually dense because every row-5 route focus mutually excludes several non-adjacent route focuses.
 - `common/national_focus/005_soviet_collapse_republics.txt:8881`, `:8912`, `:8945`, `:8977`: Belarus has the same complete-graph route-lock row issue, with `blr_soviet_collapse_timetable_state` visually sitting among route-lock arrows.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt:4297` through `:4623`: the BSC starter package shows the repeated custom-splinter scaffold pattern (`birth`, `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `diplomatic_plan`, etc.). This is present across many custom splinters and needs a broader parent pass if the goal is less random, more identity-specific branch feel.
-- Direct shallow reward examples still present and not patched because helper edits are out of scope: `DHC_steppe_watch_posts` at `005_soviet_collapse_custom_splinters.txt:14088`, `DHC_rostov_workshop_contracts` at `:14364`, `KHC_steppe_watch_posts` at `:15282`, `FEV_harbor_fortress_line` at `:16605`, `SZA_station_fortress_line` at `:17768`, `OGB_fortify_the_volga_crossings` at `005_soviet_collapse_factory_successors.txt:1459`, and `KHW_symbolic_oasis_authority` at `005_soviet_collapse_ancient_restorations.txt:939`.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt:4297` through `:4623`: the AEX starter package shows the repeated custom-splinter scaffold pattern (`birth`, `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `diplomatic_plan`, etc.). This is present across many custom splinters and needs a broader parent pass if the goal is less random, more identity-specific branch feel.
+- Direct shallow reward examples still present and not patched because helper edits are out of scope: `DHC_steppe_watch_posts` at `005_soviet_collapse_custom_splinters.txt:14088`, `DHC_rostov_workshop_contracts` at `:14364`, `KHC_steppe_watch_posts` at `:15282`, `FEV_harbor_fortress_line` at `:16605`, `SZA_station_fortress_line` at `:17768`, `OGB_fortify_the_volga_crossings` at `005_soviet_collapse_factory_successors.txt:1459`, and `ANX_symbolic_oasis_authority` at `005_soviet_collapse_ancient_restorations.txt:939`.
 
 ## Localisation And Reward Mismatch List
 

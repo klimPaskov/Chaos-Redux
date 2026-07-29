@@ -11,9 +11,9 @@ Core status and source-of-truth surfaces:
 
 - `docs/assets/019_infantry_spawn/manifest.md`
 - `docs/assets/019_infantry_spawn/gfx_handoff.md`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/systems/triggerable_scenarios.md`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 - `docs/specs/019_infantry_spawn_specs/README.md`
 - `docs/specs/019_infantry_spawn_specs/review/blockers_and_uncertainty.md`
 - `docs/specs/019_infantry_spawn_specs/review/mandatory_improvement_loop_review.md`

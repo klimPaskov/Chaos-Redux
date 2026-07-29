@@ -106,7 +106,7 @@ The four decoded scenes are action-heavy, compositionally distinct, and do not r
 
 The live achievement registry contains 18 Event 014 achievements. `interface/014_cannibalism_achievements.gfx` contains 54 unique sprites: completed, grey, and not-eligible states for every achievement. All 54 runtime DDS files are 64x64 and have distinct hashes.
 
-The current processor copies each grey variant and alpha-composites the exact required overlay from `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`, SHA-256 `89bc80c6ac975bf6f1ff000ff3070b20c337bfb8b8ae966ae35a5540c004d6dd`. Its validation ledger contains 54 complete rows, with package and runtime DDS hashes aligned.
+The current processor copies each grey variant and alpha-composites the exact required overlay from `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`, SHA-256 `89bc80c6ac975bf6f1ff000ff3070b20c337bfb8b8ae966ae35a5540c004d6dd`. Its validation ledger contains 54 complete rows, with package and runtime DDS hashes aligned.
 
 ## Licensed audio and wiring
 
@@ -119,7 +119,7 @@ The four distinct licensed cues are delivered as eight hash-distinct binaries: f
 - ID 52: Faure, `Elegie, Op. 24`, Goldstein/Kalman; CC BY-SA 2.0 attribution, adaptation notice, and share-alike record.
 - ID 53: Grieg, `The Death of Aase`, Musopen Symphony; public-domain composition and recording record.
 
-`music/chaosx_super_event_music.asset` registers six volume variants per ID, `music/chaosx_super_event_music.txt` suppresses their representative entries from normal selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware wrappers per ID. Source, rights, excerpt, processing, and output evidence is retained in `docs/super_events/014_cannibalism_super_event_audio_research.md` and `music/chaosx_music_track_list.html`. No generated tone or placeholder track is present.
+`music/chaosx_super_event_music.asset` registers six volume variants per ID, `music/chaosx_super_event_music.txt` suppresses their representative entries from normal selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware wrappers per ID. Source, rights, excerpt, processing, and output evidence is retained in `docs/super_events/014_cannibalism/audio_research.md` and `music/chaosx_music_track_list.html`. No generated tone or placeholder track is present.
 
 ## Changed files
 

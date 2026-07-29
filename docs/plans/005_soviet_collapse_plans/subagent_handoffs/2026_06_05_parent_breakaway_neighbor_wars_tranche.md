@@ -7,7 +7,7 @@ Urgent playability follow-up for Soviet Collapse breakaway aggression. This tran
 ## Changed Files
 
 - `common/scripted_effects/005_soviet_collapse_effects.txt`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 
 ## Implementation
 

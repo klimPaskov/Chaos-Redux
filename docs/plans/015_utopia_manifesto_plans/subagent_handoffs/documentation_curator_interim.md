@@ -1,6 +1,6 @@
 # Event 015 Documentation Curator Interim
 
-> Superseded status, 2026-07-15: this dated inspection remains useful provenance, but its current-state conclusions are superseded by `docs/events/015_utopia_manifesto.md`, the rebuilt asset manifest, the implementation proof matrix, and `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md`.
+> Superseded status, 2026-07-15: this dated inspection remains useful provenance, but its current-state conclusions are superseded by `docs/events/015_utopia_manifesto/overview.md`, the rebuilt asset manifest, the implementation proof matrix, and `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_source_of_truth_and_resume_2026_07_15.md`.
 
 Date: `2026-07-14`
 
@@ -14,7 +14,7 @@ Status: interim. Event 015 implementation and corrective audits are active. Coun
 
 Event 015 has a substantial accepted design package and broad implementation evidence. Its documentation does not yet provide one dependable current-state entry point. The main problems are not missing prose. They are mixed authority levels, historical blockers presented as live blockers, implementation clarifications that were never promoted into the specs, and asset records that describe several different generations of the package without a clear precedence order.
 
-The intended canonical mechanic document, `docs/events/015_utopia_manifesto.md`, is not safe to use as current truth. It describes an older ledger, older route identities, older visual gaps, and an older achievement count. It needs a full post-stabilisation rewrite against final gameplay and final localisation.
+The intended canonical mechanic document, `docs/events/015_utopia_manifesto/overview.md`, is not safe to use as current truth. It describes an older ledger, older route identities, older visual gaps, and an older achievement count. It needs a full post-stabilisation rewrite against final gameplay and final localisation.
 
 The eight spec parts and their matrices remain the accepted design authority. They are not runtime proof. Live source is the authority for what is implemented. Handoffs and audits are dated evidence. Prompts are execution templates. Historical catalog and research files are provenance.
 
@@ -30,7 +30,7 @@ Use this order until a final Event 015 resume packet replaces this interim file.
 | 2 | `docs/specs/015_utopia_manifesto_specs/specs/` and accepted matrices | Design truth | Authoritative for intended scope. Not proof that an item is implemented or balanced. |
 | 3 | Final Event 015 super-event text and audio research | Quotation, attribution, route text, and audio provenance | Authoritative for the researched package. Integration status must come from live source or a later integration handoff. |
 | 4 | Family-specific final asset manifests | Asset provenance and binary inventory | Authoritative within each frozen asset family. The root asset manifest is currently an incomplete index. |
-| 5 | `docs/events/015_utopia_manifesto.md` | Intended canonical mechanic and event documentation | Stale. Do not use for current ledger, route, identity, event, achievement, or asset facts. |
+| 5 | `docs/events/015_utopia_manifesto/overview.md` | Intended canonical mechanic and event documentation | Stale. Do not use for current ledger, route, identity, event, achievement, or asset facts. |
 | 6 | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/` | Dated implementation and audit evidence | Snapshot evidence only. Later handoffs and live source supersede earlier status claims. |
 | 7 | `docs/specs/015_utopia_manifesto_specs/prompts/` | Execution templates | Not current status and not runtime truth. |
 | 8 | Catalog replacement and source-reading records | Historical input and provenance | Preserve. Add status notices where old Event 15 names could be mistaken for the current identity. |
@@ -99,7 +99,7 @@ The observed decision and event counts differ from several handoffs and from an 
 
 ### Canonical event document
 
-`docs/events/015_utopia_manifesto.md` requires a full rewrite after implementation stabilises.
+`docs/events/015_utopia_manifesto/overview.md` requires a full rewrite after implementation stabilises.
 
 Current conflicts include:
 
@@ -201,8 +201,8 @@ The final text and audio research is substantially more specific than Part 8. Th
 
 Keep the full research and attribution in:
 
-- `docs/super_events/015_utopia_manifesto_super_event_text_research.md`
-- `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`
+- `docs/super_events/015_utopia_manifesto/text_research.md`
+- `docs/super_events/015_utopia_manifesto/audio_research.md`
 - `docs/super_events/super_event_audio_packages.md`
 
 The audio research file and its handoff still describe missing route visuals. That blocker is superseded by the final non-icon manifest and current route sprite registration.
@@ -301,7 +301,7 @@ Do not promote old failure findings to resolved unless a fresh audit or direct s
 
 ### 3. Rewrite the canonical mechanic document
 
-Rewrite `docs/events/015_utopia_manifesto.md` from final source and final English localisation. It should cover:
+Rewrite `docs/events/015_utopia_manifesto/overview.md` from final source and final English localisation. It should cover:
 
 - entry conditions and actor selection
 - the four-value Ledger and how values change
@@ -362,7 +362,7 @@ Do not delete historical assets or handoffs merely to simplify the index. Classi
 
 Update:
 
-- `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`
+- `docs/super_events/015_utopia_manifesto/audio_research.md`
 - `super_event_audio_researcher_handoff.md`
 - `super_event_text_researcher_handoff.md` if final localisation changed
 
@@ -420,7 +420,7 @@ This curation pass inspected:
 
 - all Event 15 numbered specs, matrices, focus graphs, research records, handoffs, prompts, README, and package manifest
 - all handoffs in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/`
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - the Event 15 root asset manifest, final non-icon manifest, route-identity manifest, icon audit, decision mapping, asset handoffs, and prompt records
 - Event 15 super-event text research, audio research, and the shared audio-package index
 - current Event 15 gameplay, localisation, interface, asset registry, music, and sound identifiers on a read-only basis

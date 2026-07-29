@@ -1,6 +1,6 @@
 # Event 006 Northern and Western Europe Package Implementation Map
 
-> **Historical/superseded carrier note (2026-07-28):** The IW-012 section below predates the exact vanilla `iceland_tree` carrier and four ICE route consumers. Use `docs/events/006_independence_wave_iw012_ice_package.md` and the 2026-07-28 IW-012 implementation/country/focus/decision handoffs for current ICE routing. Other package findings remain at-time evidence.
+> **Historical/superseded carrier note (2026-07-28):** The IW-012 section below predates the exact vanilla `iceland_tree` carrier and four ICE route consumers. Use `docs/events/006_independence_wave/iw012_ice_package.md` and the 2026-07-28 IW-012 implementation/country/focus/decision handoffs for current ICE routing. Other package findings remain at-time evidence.
 
 Date: 2026-07-14
 Scope: IW-001, IW-002, IW-003, IW-004, IW-005, IW-006, IW-007, IW-008, IW-009, IW-010, and IW-012
@@ -483,7 +483,7 @@ The following is the minimum complete tranche surface. Exact names may be folded
 
 ### 6.8 Documentation and data alignment
 
-- Update `docs/events/006_independence_wave.md` with the region-01 runtime adapter and focus-preservation behavior.
+- Update `docs/events/006_independence_wave/overview.md` with the region-01 runtime adapter and focus-preservation behavior.
 - Add/update the mechanic/package documentation required by AGENTS.md, including step-by-step behavior, interactions, icon paths/names, future plans, and extension suggestions.
 - Fold accepted binding changes into the Event 006 specs rather than leaving them only in a plan handoff.
 - Keep package registry, AI matrix, regional overlay matrix, idea lifecycle matrix, formable registry, force mapping CSV, event details/evolution details, and spreadsheet/presentation wording aligned with exact in-game localisation.

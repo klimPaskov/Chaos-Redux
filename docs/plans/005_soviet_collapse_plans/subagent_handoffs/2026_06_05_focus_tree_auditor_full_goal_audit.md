@@ -81,11 +81,11 @@ Current parsed inventory: 41 focus trees.
 - Line 3010: `DSC_soviet_collapse_focus_tree`, 18 focuses.
 - Line 3550: `NRF_soviet_collapse_focus_tree`, 18 focuses.
 - Line 4056: `ICD_soviet_collapse_focus_tree`, 18 focuses.
-- Line 4526: `BSC_soviet_collapse_focus_tree`, 47 focuses.
+- Line 4526: `AEX_soviet_collapse_focus_tree`, 47 focuses.
 - Line 5670: `TNC_soviet_collapse_focus_tree`, 47 focuses.
-- Line 6805: `ALA_soviet_collapse_focus_tree`, 47 focuses.
+- Line 6805: `AAX_soviet_collapse_focus_tree`, 47 focuses.
 - Line 7916: `BBH_soviet_collapse_focus_tree`, 47 focuses.
-- Line 9110: `KRS_soviet_collapse_focus_tree`, 47 focuses.
+- Line 9110: `AOX_soviet_collapse_focus_tree`, 47 focuses.
 - Line 10335: `UDC_soviet_collapse_focus_tree`, 47 focuses.
 - Line 11543: `SDZ_soviet_collapse_focus_tree`, 47 focuses.
 - Line 12793: `GAC_soviet_collapse_focus_tree`, 47 focuses.
@@ -96,7 +96,7 @@ Current parsed inventory: 41 focus trees.
 - Line 18684: `UWD_soviet_collapse_focus_tree`, 47 focuses.
 - Line 19871: `MRC_soviet_collapse_focus_tree`, 47 focuses.
 - Line 21044: `IUL_soviet_collapse_focus_tree`, 47 focuses.
-- Line 22184: `BAC_soviet_collapse_focus_tree`, 47 focuses.
+- Line 22184: `ADX_soviet_collapse_focus_tree`, 47 focuses.
 - Line 23317: `ARD_soviet_collapse_focus_tree`, 47 focuses.
 - Line 24516: `NLC_soviet_collapse_focus_tree`, 47 focuses.
 
@@ -108,10 +108,10 @@ Current parsed inventory: 41 focus trees.
 
 `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 
-- Line 14: `KZR_soviet_collapse_ancient_focus_tree`, 16 focuses.
+- Line 14: `APX_soviet_collapse_ancient_focus_tree`, 16 focuses.
 - Line 424: `SOG_soviet_collapse_ancient_focus_tree`, 16 focuses.
-- Line 828: `KHW_soviet_collapse_ancient_focus_tree`, 16 focuses.
-- Line 1236: `ALN_soviet_collapse_ancient_focus_tree`, 16 focuses.
+- Line 828: `ANX_soviet_collapse_ancient_focus_tree`, 16 focuses.
+- Line 1236: `ABX_soviet_collapse_ancient_focus_tree`, 16 focuses.
 
 ## Current state summary
 
@@ -163,7 +163,7 @@ These focus positions sit horizontally between mutually exclusive alternatives. 
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 3747: `NRF_icebound_marine_guard` is between mutually exclusive focuses line 3648: `NRF_living_harbor_committees` and line 3682: `NRF_revenant_admiralty`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 4244: `ICD_funeral_guard` is between mutually exclusive focuses line 4156: `ICD_commissars_of_last_addresses` and line 4190: `ICD_commissars_who_do_not_die`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 8737: `BBH_industry_plan` is between mutually exclusive focuses line 8671: `BBH_settlement` and line 8704: `BBH_radical_turn`.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 9839: `KRS_hidden_doctrine` is between mutually exclusive focuses line 9474: `KRS_settlement` and line 9505: `KRS_radical_turn`.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 9839: `AOX_hidden_doctrine` is between mutually exclusive focuses line 9474: `AOX_settlement` and line 9505: `AOX_radical_turn`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 13465: `GAC_hidden_mill_ledgers` is between mutually exclusive focuses line 13756: `GAC_settlement` and line 13792: `GAC_radical_turn`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 13490: `GAC_blacksmith_carts` is between mutually exclusive focuses line 13756: `GAC_settlement` and line 13792: `GAC_radical_turn`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 13830: `GAC_industry_plan` is between mutually exclusive focuses line 13756: `GAC_settlement` and line 13792: `GAC_radical_turn`.
@@ -177,10 +177,10 @@ These focus positions sit horizontally between mutually exclusive alternatives. 
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 1253: `OGB_friday_schools_and_court_records` is between mutually exclusive focuses line 1126: `OGB_scholars_guard_the_charter` and line 1150: `OGB_clerics_guard_the_charter`.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 1771: `MFR_armorers_elect_delegates` is between mutually exclusive focuses line 1740: `MFR_officers_chair_the_board` and line 1797: `MFR_merchants_of_ammunition`.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 1830: `MFR_eternal_arsenal` is between mutually exclusive focuses line 1740: `MFR_officers_chair_the_board` and line 1797: `MFR_merchants_of_ammunition`.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 288: `KZR_khazar_charter` is between mutually exclusive focuses line 211: `KZR_symbolic_crossing_state` and line 238: `KZR_expansionist_steppe_levy`.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 288: `APX_khazar_charter` is between mutually exclusive focuses line 211: `APX_symbolic_crossing_state` and line 238: `APX_expansionist_steppe_levy`.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 696: `SOG_sogdian_city_charter` is between mutually exclusive focuses line 620: `SOG_symbolic_city_league` and line 646: `SOG_expansionist_merchant_claims`.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1094: `KHW_khwarazmian_water_charter` is between mutually exclusive focuses line 1019: `KHW_symbolic_oasis_authority` and line 1044: `KHW_expansionist_water_claims`.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1505: `ALN_alan_pass_charter` is between mutually exclusive focuses line 1428: `ALN_symbolic_pass_principality` and line 1453: `ALN_expansionist_mountain_claims`.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1094: `ANX_khwarazmian_water_charter` is between mutually exclusive focuses line 1019: `ANX_symbolic_oasis_authority` and line 1044: `ANX_expansionist_water_claims`.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1505: `ABX_alan_pass_charter` is between mutually exclusive focuses line 1428: `ABX_symbolic_pass_principality` and line 1453: `ABX_expansionist_mountain_claims`.
 
 ### Vertical pathline crossing
 
@@ -255,8 +255,8 @@ Representative dense rewards that should be reviewed first:
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 3934: `NRF_fleet_that_does_not_dock`, 3 helper calls plus naval direct effects.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 3994: `NRF_northern_revenant_fleet`, 4 helper calls plus naval, wargoal, AI, and decision effects.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 4463: `ICD_commissariat_without_end`, 4 helper calls plus wargoal and AI effects.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 4902: `BSC_war_plan`, 3 helper calls.
-- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 5566: `BSC_hidden_doctrine`, 3 helper calls.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 4902: `AEX_war_plan`, 3 helper calls.
+- `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 5566: `AEX_hidden_doctrine`, 3 helper calls.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` lines 10490, 10563, 10589, 10615, 10950, 11432, and 11459: UDC command-network focuses repeatedly pair generic helpers with `soviet_collapse_apply_udc_command_network_focus`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 23722: `ARD_war_plan`, 4 helper calls plus naval or direct effects.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` line 23754: `ARD_diplomatic_plan`, 3 helper calls.
@@ -267,18 +267,18 @@ Representative dense rewards that should be reviewed first:
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 516: `CFR_the_first_new_district`, dense construction-state payload.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 810: `CFR_the_state_that_builds`, concept-appropriate but dense state-building payload.
 - `common/national_focus/005_soviet_collapse_factory_successors.txt` line 1567: `OGB_endgame_*`, dense endgame payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 240: `KZR_expansionist_steppe_levy`, dense expansion payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 356: `KZR_returned_names_endgame`, dense endgame payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 381: `KZR_road_beyond_the_caspian`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 240: `APX_expansionist_steppe_levy`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 356: `APX_returned_names_endgame`, dense endgame payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 381: `APX_road_beyond_the_caspian`, dense expansion payload.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 648: `SOG_expansionist_merchant_claims`, dense expansion payload.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 760: `SOG_returned_names_endgame`, dense endgame payload.
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 785: `SOG_cities_beyond_the_desert`, dense expansion payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1046: `KHW_expansionist_water_claims`, dense expansion payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1168: `KHW_returned_names_endgame`, dense endgame payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1193: `KHW_delta_without_a_center`, dense expansion payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1455: `ALN_expansionist_mountain_claims`, dense expansion payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1570: `ALN_returned_names_endgame`, dense endgame payload.
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1596: `ALN_every_pass_a_border`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1046: `ANX_expansionist_water_claims`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1168: `ANX_returned_names_endgame`, dense endgame payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1193: `ANX_delta_without_a_center`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1455: `ABX_expansionist_mountain_claims`, dense expansion payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1570: `ABX_returned_names_endgame`, dense endgame payload.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt` line 1596: `ABX_every_pass_a_border`, dense expansion payload.
 
 ## Highest-priority route redesign work
 
@@ -312,17 +312,17 @@ Representative dense rewards that should be reviewed first:
    - Let the country weaponize infrastructure: state modifiers, enemy supply disruption, strategic redeployment bonuses, armored train templates, and war goals against rail junctions.
    - Reduce helper spam by creating one or two `PRA` rail-network payload effects that combine the intended overpowered rail/supply package.
 
-4. Ancient restorations: `KZR`, `SOG`, `KHW`, and `ALN`, in `common/national_focus/005_soviet_collapse_ancient_restorations.txt`.
+4. Ancient restorations: `APX`, `SOG`, `ANX`, and `ABX`, in `common/national_focus/005_soviet_collapse_ancient_restorations.txt`.
 
    Current status: Each tree has only 16 focuses. The symbolic and expansionist alternatives are visible, but the post-choice content converges too quickly and the common charter focuses sit between mutually exclusive alternatives:
-   - `KZR_khazar_charter` line 288 between line 211 and line 238.
+   - `APX_khazar_charter` line 288 between line 211 and line 238.
    - `SOG_sogdian_city_charter` line 696 between line 620 and line 646.
-   - `KHW_khwarazmian_water_charter` line 1094 between line 1019 and line 1044.
-   - `ALN_alan_pass_charter` line 1505 between line 1428 and line 1453.
+   - `ANX_khwarazmian_water_charter` line 1094 between line 1019 and line 1044.
+   - `ABX_alan_pass_charter` line 1505 between line 1428 and line 1453.
 
    Implementation-ready work:
    - Expand each to distinct symbolic/diplomatic and expansionist/militarist routes.
-   - Add local economy and military branches tied to the ancient concept: river and oasis management for `KHW`, caravan/city wealth for `SOG`, steppe levy and Caspian routes for `KZR`, mountain pass military control for `ALN`.
+   - Add local economy and military branches tied to the ancient concept: river and oasis management for `ANX`, caravan/city wealth for `SOG`, steppe levy and Caspian routes for `APX`, mountain pass military control for `ABX`.
    - Keep expansion branches aggressively overpowered with claims, war goals, cores, and route-specific units, but make the symbolic branches use League diplomacy, legitimacy, and federation mechanics.
    - Reposition convergence focuses so they do not sit between mutually exclusive choices.
 
@@ -343,7 +343,7 @@ Representative dense rewards that should be reviewed first:
    Implementation-ready work:
    - Keep the branch skeleton only where it supports readability.
    - Add tag-specific route mechanics and rewards to high-priority concept countries before adding more generic focuses.
-   - Start with tags that already show specific mechanics or user priority: `FTH`, `BSC`, `UDC`, `GAC`, `DHC`, `KHC`, `ARD`, and `NLC`.
+   - Start with tags that already show specific mechanics or user priority: `FTH`, `AEX`, `UDC`, `GAC`, `DHC`, `KHC`, `ARD`, and `NLC`.
    - Replace repeated helper bundles with tag-specific scripted effects that include the common baseline internally and add unique consequences.
 
 7. Republic trees in `common/national_focus/005_soviet_collapse_republics.txt`.

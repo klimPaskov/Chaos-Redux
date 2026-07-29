@@ -51,7 +51,7 @@ The implementation preserves these invariants:
 - `common/ideas/006_independence_wave_form03_ideas.txt`
 - `common/scripted_localisation/006_independence_wave_form03_scripted_localisation.txt`
 - `localisation/english/006_independence_wave_form03_l_english.yml`
-- `docs/systems/006_independence_wave_form03_progression.md`
+- `docs/events/006_independence_wave/systems/form03_progression.md`
 - this handoff
 
 The previously uncommitted FORM-03 effect, trigger, decision, category, registry,
@@ -67,8 +67,8 @@ and localisation files remain shared base files and were extended in place.
 - `common/national_focus/006_independence_wave_focus.txt`
 - `events/006_independence_wave.txt`
 - `localisation/english/006_independence_wave_formable_registry_l_english.yml`
-- `docs/events/006_independence_wave.md`
-- `docs/systems/006_independence_wave_formable_registry.md`
+- `docs/events/006_independence_wave/overview.md`
+- `docs/events/006_independence_wave/systems/formable_registry.md`
 - `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - FORM-03 rows in the formable, decision/mission, and idea matrices
 

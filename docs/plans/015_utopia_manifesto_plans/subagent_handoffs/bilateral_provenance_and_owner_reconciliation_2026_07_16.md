@@ -42,7 +42,7 @@ No daily, weekly, monthly, or all-country iteration was introduced.
 - `common/scripted_triggers/015_utopia_manifesto_triggers.txt`
 - `common/on_actions/015_utopia_manifesto_on_actions.txt`
 - `events/015_utopia_manifesto.txt`
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`
 
 ## Validation and remaining proof

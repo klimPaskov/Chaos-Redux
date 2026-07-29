@@ -19,7 +19,13 @@ Route-owned Rupprecht and Matthes remain protected and byte-identical.
 Gameplay advisor offices remain active without custom Event 006 advisor cards, sprites, or runtime DDS files.
 Any later section describing a closed package as promoted records an earlier gameplay audit and is superseded for current visual admission by this paragraph.
 
-The complete IW-012 package reference is [the dedicated Iceland package document](../006_independence_wave_iw012_ice_package.md). It is kept outside the grounded real-portrait roster because it deliberately reuses Iceland's researched vanilla identity and portrait/flag/history surfaces rather than adding Event 006 art.
+The complete IW-012 package reference is [the dedicated Iceland package document](iw012_ice_package.md). It is kept outside the grounded real-portrait roster because it deliberately reuses Iceland's researched vanilla identity and portrait/flag/history surfaces rather than adding Event 006 art.
+
+## Current regional admission snapshot (2026-07-28)
+
+The current Event 006 authority is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md`. Eleven packages are statically content-attested, including IW-012 Iceland, across ten compatible reservation groups. The allocator source audit records 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, and the doubled 6/8/10/14/20 ladder. The flat portrait shelf contains 54 original-size masters with no normalized or advisor derivatives.
+
+The IW-012 route-arbitration source closure is recorded after commits `3570ed8ff` and `72d8549e3` in `subagent_handoffs/006_iw012_decision_ai_reaudit_2026_07_28.md` and `subagent_handoffs/006_iw012_formal_route_ai_closure_implementation_2026_07_28.md`. These static findings do not close live allocator, host-survival, force, save/load, route-AI timing, shared-focus visibility, scenario, or synchronized transaction evidence. The regional package remains under the overall **HOLD / PARTIAL** runtime disposition, and the restored shared-focus baseline retains fourteen geometry blockers.
 
 ---
 

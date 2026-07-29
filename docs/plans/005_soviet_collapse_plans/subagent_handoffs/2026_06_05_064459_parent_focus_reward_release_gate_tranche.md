@@ -25,7 +25,7 @@ Custom-splinter focuses now show one route-specific custom tooltip while their s
 
 - `FTH_war_plan`
 - `DSC_dead_regiment_columns`
-- `BSC_hidden_road_depots`
+- `AEX_hidden_road_depots`
 - `FEV_authority_from_the_harbor`
 - `FEV_pacific_between_empires`
 - `SZA_authority_from_the_railhead`

@@ -356,7 +356,7 @@ Unlocks:
 - Biological Security HQ Section
 - improved containment after capturing infected or contaminated territory
 
-It does not provide a blanket Condemnation reduction. It can reduce friendly deaths, accidental spread, and evidence from failed handling.
+The later accepted doctrine clarification limits mitigation to Condemnation impact. Doctrine may increase physical CBRN harm and may reduce the Condemnation result through the bounded shared multiplier, but it cannot reduce or erase friendly deaths, accidental spread, evidence, attribution, contamination, trauma, responsibility, history, or any other physical or forensic consequence.
 
 ### Mastery 5: Theater CBRN Overmatch
 

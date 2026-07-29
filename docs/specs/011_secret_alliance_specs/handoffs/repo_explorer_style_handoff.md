@@ -48,7 +48,7 @@ Status: historical planning-intake map. Its `To Be Reworked` and missing-scenari
 - achievements registry and tracking
 - super-event slot, GFX, scripted localisation, audio, and music docs
 - triggerable-scenario registry, effects, GUI, and docs
-- `docs/events/011_secret_alliance.md`
+- `docs/events/011_secret_alliance/overview.md`
 - event asset manifest and GFX handoff
 - event catalog workbook after final localisation exists
 

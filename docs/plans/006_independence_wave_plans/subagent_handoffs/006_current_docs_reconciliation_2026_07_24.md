@@ -14,14 +14,14 @@ Scope: documentation-only reconciliation for Event 006. The accepted specificati
 | Current implementation status | `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` | Use as the implementation ledger, with the same-day gap audit and content-gate handoff resolving stale historical passages. |
 | Current completion gaps | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_current_completion_gap_audit_2026_07_24.md` | Event 006 remains incomplete. The exact current gate admits IW-001, IW-004, IW-007, IW-008, IW-017, and IW-019 only. |
 | Automatic gate repair | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_automatic_content_attestation_weight_gate_2026_07_24.md` | Unadmitted IDs receive zero automatic weight and fail with `package_unready` before anchor reservation. This is the current allocator and reservation boundary. |
-| Event documentation | `docs/events/006_independence_wave.md` | The new current-status section is authoritative for this event doc. The prior 2026-07-22 admission section is explicitly historical and superseded. |
+| Event documentation | `docs/events/006_independence_wave/overview.md` | The new current-status section is authoritative for this event doc. The prior 2026-07-22 admission section is explicitly historical and superseded. |
 | FORM-48 plan | `docs/plans/006_independence_wave_plans/006_form48_pacific_federation_implementation_plan_2026_07_16.md` | The design and gameplay tranche remain implemented. Runtime admission is blocked because HAW, FSM, and HBX are outside the exact six-package gate. |
 
 ## Files changed
 
 | File | Change |
 | --- | --- |
-| `docs/events/006_independence_wave.md` | Added a 2026-07-24 current runtime admission section, marked the former three-package section superseded, documented conditional 3/4/5 reliability, the 7/10 and World Collapse capacity block, FORM-48 reachability, portrait policy, advisor-asset absence, ASSET040-ASSET043 gaps, 6001 and 6002 status, and Radical Bloc reachability. Updated the release, asset, and dangerous-milestone summaries to match. |
+| `docs/events/006_independence_wave/overview.md` | Added a 2026-07-24 current runtime admission section, marked the former three-package section superseded, documented conditional 3/4/5 reliability, the 7/10 and World Collapse capacity block, FORM-48 reachability, portrait policy, advisor-asset absence, ASSET040-ASSET043 gaps, 6001 and 6002 status, and Radical Bloc reachability. Updated the release, asset, and dangerous-milestone summaries to match. |
 | `docs/plans/006_independence_wave_plans/006_form48_pacific_federation_implementation_plan_2026-07-16.md` | Replaced the stale 2026-07-18 promotion note with a current exact-six admission note and a clearly labeled historical supersession note. The plan status now says the design tranche is implemented while runtime admission is blocked. |
 | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_current_docs_reconciliation_2026-07-24.md` | Created this reconciliation handoff. |
 
@@ -57,7 +57,7 @@ Scope: documentation-only reconciliation for Event 006. The accepted specificati
 
 ## Duplicate and superseded documentation
 
-- The former `Current portrait-gated admission (2026-07-22)` section inside `docs/events/006_independence_wave.md` is retained as a historical section and superseded by the new 2026-07-24 section.
+- The former `Current portrait-gated admission (2026-07-22)` section inside `docs/events/006_independence_wave/overview.md` is retained as a historical section and superseded by the new 2026-07-24 section.
 - The 2026-07-18 FORM-48 promotion wording is retained as a labeled historical note inside the plan and no longer describes runtime admission.
 - Earlier portrait promotion handoffs remain historical evidence under `subagent_handoffs/`, while the current sourced-only portrait policy and exact gate control admission.
 - No documentation file was deleted. No accepted plan was rejected because it is currently fail-closed.

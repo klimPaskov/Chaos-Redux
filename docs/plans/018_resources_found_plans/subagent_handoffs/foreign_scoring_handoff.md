@@ -8,8 +8,8 @@ Status: bounded patch complete. No files were staged or committed.
 
 - `common/scripted_effects/018_resources_found_decision_effects.txt`
 - `common/script_constants/018_resources_found_foreign_interest_constants.txt`
-- `docs/events/018_resources_found.md`
-- `docs/events/018_resources_found_helper_contracts.md`
+- `docs/events/018_resources_found/overview.md`
+- `docs/events/018_resources_found/helper_contracts.md`
 - `docs/plans/018_resources_found_plans/subagent_handoffs/foreign_scoring_handoff.md`
 
 ## Identifiers and call site

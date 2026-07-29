@@ -135,7 +135,7 @@ The unnumbered `Crazy Scientist` idea is absorbed and redesigned inside Event 01
 
 | Surface | Status at follow-up reconciliation | Evidence and next owner |
 | --- | --- | --- |
-| Super-event text | Research complete for six packages | `docs/super_events/016_brilliant_scientist_super_event_research.md` and its handoff |
+| Super-event text | Research complete for six packages | `docs/super_events/016_brilliant_scientist/text_research.md` and its handoff |
 | Super-event images | Not produced and not wired | Image and asset subagents, then parent-owned GFX wiring |
 | Super-event audio | Research and six Event 016-owned OGGs complete | Commit `0e8c6f8e` preserves the role mapping at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring is absent |
 | Kruger stage 0 | Source, leader or scientist DDS, advisor DDS, and sprite registration complete | Exact base `portrait_generic_biowarfare_europe_male_01`. Registered sprites are `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0` |
@@ -144,7 +144,7 @@ The unnumbered `Crazy Scientist` idea is absorbed and redesigned inside Event 01
 | Achievement icons | Not produced and not wired | Seventeen triplets, 51 final DDS files |
 | Event 016-owned GFX registration | Stage-0 sprites and later portrait filename contracts registered | Registration does not prove later assets exist or complete character and GUI state wiring |
 
-The final OGGs are accepted Event 016-owned assets, not research candidates. Their presence does not complete shared playback or the six super-event packages. The copied stage-0 portrait base is user-authorized for internal mod use. Its external redistribution rights remain unresolved and must not be described as cleared.
+The final WAVs are accepted Event 016-owned assets, not research candidates. Their presence does not complete shared playback or the six super-event packages. The copied stage-0 portrait base is user-authorized for internal mod use. Its external redistribution rights remain unresolved and must not be described as cleared.
 
 ## Spreadsheet status
 

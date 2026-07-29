@@ -78,7 +78,7 @@ Research required. Desired tone: final, brief, and cold. Avoid generic phrases a
 - Duration: 7 minutes 14 seconds
 - License: dedicated to the public domain by the uploader
 - Potential use: Rat King world-end after selecting and trimming a one to two minute passage
-- Required work: preserve the source, choose a musically complete excerpt, fade carefully, convert final OGG to 44.1 kHz, document the derivative and final duration, create a unique audio ID and sound wrapper
+- Required work: preserve the source, choose a musically complete excerpt, fade carefully, convert final WAV to 44.1 kHz, document the derivative and final duration, create a unique audio ID and sound wrapper
 - Status: strong lead, not final wired track
 
 ### Audio exclusion

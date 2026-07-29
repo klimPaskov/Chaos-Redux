@@ -57,7 +57,7 @@ The event history may be written before a human chooses or after an AI resolves.
 
 - `localisation/english/016_brilliant_scientist_l_english.yml` names the character, advisor, scientist trait, options, and exact effects without asserting an alien origin.
 - `localisation/english/chaosx_ideas_l_english.yml` removes the obsolete anonymous idea text.
-- `docs/events/016_brilliant_scientist.md` records the implemented opening and the remaining package work.
+- `docs/events/016_brilliant_scientist/overview.md` records the implemented opening and the remaining package work.
 - The existing Stage-0 leader/scientist and advisor DDS files remain the native character portraits.
 - The opening report-event DDS, sprite registration, and `chaosx.nr16.2`/`.3` picture swap are completed with the dedicated opening-report asset handoff before this tranche is committed.
 

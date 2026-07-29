@@ -43,11 +43,11 @@ The worktree was already dirty when this audit began. I did not revert unrelated
 | `DSC_soviet_collapse_focus_tree` | 18 | Dead soldiers congress crisis tree | Endpoint strengthened this pass; needs recruitment/cores/aggression branch depth |
 | `NRF_soviet_collapse_focus_tree` | 18 | Northern revenant fleet crisis tree | Endpoint strengthened this pass; needs naval/dockyard/raiding branch depth |
 | `ICD_soviet_collapse_focus_tree` | 18 | Immortal commissariat crisis tree | Endpoint strengthened this pass; needs commissariat-specific control mechanics |
-| `BSC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
+| `AEX_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `TNC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
-| `ALA_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
+| `AAX_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `BBH_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
-| `KRS_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
+| `AOX_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `UDC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `SDZ_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `GAC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
@@ -58,7 +58,7 @@ The worktree was already dirty when this audit began. I did not revert unrelated
 | `UWD_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `MRC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `IUL_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
-| `BAC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
+| `ADX_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Needs stronger local identity and direct mechanics |
 | `ARD_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Layout line cleaned this pass; needs stronger Arctic naval/convoy identity |
 | `NLC_soviet_collapse_focus_tree` | 47 | Full custom splinter template | Layout lines cleaned this pass; needs stronger polar-city industrial/survival identity |
 | `CFR_soviet_collapse_focus_tree` | 47 | Factory successor construction authority | Civilian industry payoff strengthened this pass |
@@ -123,7 +123,7 @@ The worktree was already dirty when this audit began. I did not revert unrelated
 
 - Direct idea spam is no longer present in these three focus files: `add_ideas = 0`, `swap_ideas = 0`.
 - Exact repeated equipment-stockpile rewards inside one focus: `0` after the `MFR_workers_own_the_arsenal` cleanup.
-- Many 47-focus custom splinter trees still have reward text that implies unique identity while the gameplay remains generic helper cadence. The biggest examples are the template-heavy trees from `BSC` through `NLC`.
+- Many 47-focus custom splinter trees still have reward text that implies unique identity while the gameplay remains generic helper cadence. The biggest examples are the template-heavy trees from `AEX` through `NLC`.
 - The six short crisis trees now have stronger endpoints, but the middle routes remain shallow and do not yet fully match their strong lore claims.
 - `OGB_soviet_collapse_focus_tree` remains the clearest factory successor mismatch: it is only 23 focuses and does not yet deliver a distinct political/industry/security identity.
 
@@ -150,7 +150,7 @@ Repeated generic icon usage still exists in template-heavy custom splinter trees
 
 - `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` still need full branch deepening. This patch strengthened endpoints only; it did not create new political/industry/military route families.
 - `OGB_soviet_collapse_focus_tree` needs the largest factory-successor pass: expand to distinct bureaucracy/political control, files-and-records industry, internal security, and diplomatic/expansion payoffs.
-- The 47-focus custom splinter trees from `BSC` through `NLC` remain too template-like. Each needs at least a small identity pass that swaps generic helper cadence for direct mechanics tied to the tag's name/lore.
+- The 47-focus custom splinter trees from `AEX` through `NLC` remain too template-like. Each needs at least a small identity pass that swaps generic helper cadence for direct mechanics tied to the tag's name/lore.
 - Republic trees are mechanically broad but still need more direct Soviet Collapse decision hooks, postwar handling, and route-aware expansion decisions.
 - Focus-decision integration remains mostly indirect outside Ukraine and existing helper systems.
 - No full redesign was attempted in this subtask by request; broad rewrites are queued as remaining work.

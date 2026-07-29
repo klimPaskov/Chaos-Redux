@@ -6,7 +6,7 @@ Status: accepted, implemented, and promoted into the Event 014 source specificat
 
 Scope: one improvement-loop pass after the country package and unified focus remediation
 
-Disposition: the constituent technology union and 38 unique unified decision icons remain implemented after the 2026-07-15 removal of the fourth origin package. Their final behavior is recorded in spec parts 7, 8, 10, and 12, the current matrices, and `docs/events/014_cannibalism.md`. Optional ideas A through C remain queued and unaccepted.
+Disposition: the constituent technology union and 38 unique unified decision icons remain implemented after the 2026-07-15 removal of the fourth origin package. Their final behavior is recorded in spec parts 7, 8, 10, and 12, the current matrices, and `docs/events/014_cannibalism/overview.md`. Optional ideas A through C remain queued and unaccepted.
 
 This addendum records the bounded closure tranche that was later implemented. It does not authorize a new route, country package, focus branch, currency, faction, super-event, evolution, or scripted GUI. Historical implementation instructions below are retained as design provenance. Current status is controlled by the disposition above and the promoted source specifications.
 
@@ -26,7 +26,7 @@ The optional ideas at the end of this document remain queued and unaccepted. The
 Current authority is:
 
 - `docs/specs/014_cannibalism_specs/`
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`
 - `docs/plans/014_cannibalism_plans/audits/event014_decision_mission_consolidation_reaudit_2026-07-15.md`
 - `docs/plans/014_cannibalism_plans/audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md`
@@ -164,7 +164,7 @@ Required gameplay and documentation surfaces:
 - `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/014_cannibalism_unification_effects.txt`
 - `common/scripted_effects/014_cannibalism_wendigo_effects.txt`
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - `docs/specs/014_cannibalism_specs/specs/014_cannibalism_spec_part_7_hannibal_reveal_and_unification.md`
 - `docs/specs/014_cannibalism_specs/specs/014_cannibalism_spec_part_8_wendigo_and_world_end.md`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_technology_union_architect_2026-07-12.md`
@@ -207,7 +207,7 @@ Implementation is accepted only after evidence covers all of these scenarios:
 
 `interface/014_cannibalism.gfx` declares all 38 retained sprite names and all 38 deterministic DDS paths.
 
-Registration and asset production are complete. All 38 retained DDS files have dedicated generated sources, processed PNGs, manifest rows, decoded-DDS contact sheets, and one of three row-range handoffs. `docs/events/014_cannibalism.md` records the distinct live icon package.
+Registration and asset production are complete. All 38 retained DDS files have dedicated generated sources, processed PNGs, manifest rows, decoded-DDS contact sheets, and one of three row-range handoffs. `docs/events/014_cannibalism/overview.md` records the distinct live icon package.
 
 ### Production contract
 
@@ -299,7 +299,7 @@ Asset production and documentation must update:
 - `docs/assets/014_cannibalism/manifest.md`
 - `docs/assets/014_cannibalism/gfx_handoff.md`
 - `docs/specs/014_cannibalism_specs/matrices/asset_inventory_matrix.md`
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - the three row-range handoffs named in the production contract above
 
 The final wiring audit must compare the 38 retained decision IDs, 38 sprite names, 38 declared DDS paths, 38 final files, 38 source files, and 38 manifest rows as exact one-to-one sets.
@@ -315,7 +315,7 @@ The icon package is accepted only when all of these conditions hold:
 5. Every decision's live `icon =` token resolves to its matching `spriteType` and exact file.
 6. The decoded-DDS contact sheet shows no opaque squares, white halos, clipping, invisible silhouettes, illegible micro-detail, or accidental text.
 7. The package contains no actor or real-person likeness, living Indigenous motif, ceremonial regalia, real victim likeness, or pre-reveal identity leak.
-8. `docs/events/014_cannibalism.md` records the 38 retained distinct unified decision icons.
+8. `docs/events/014_cannibalism/overview.md` records the 38 retained distinct unified decision icons.
 9. The asset inventory, Event 014 manifest, `.gfx` handoff, and subagent handoff agree on all names and paths.
 10. No placeholder or fallback icon remains in the package.
 
@@ -335,7 +335,7 @@ After the technology helper and icon package land, run one bounded Event 014 clo
 - no actor or real-person likeness
 - no actor likeness
 - no living Indigenous motif or authenticity claim
-- alignment of specs, `docs/events/014_cannibalism.md`, asset documentation, and the final completion handoff
+- alignment of specs, `docs/events/014_cannibalism/overview.md`, asset documentation, and the final completion handoff
 
 This pass should report any real divergence. It should not add generic events, filler decisions, or more focus branches to make the feature appear deeper.
 

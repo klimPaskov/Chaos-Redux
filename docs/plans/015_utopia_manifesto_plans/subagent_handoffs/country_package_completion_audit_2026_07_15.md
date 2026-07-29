@@ -157,7 +157,7 @@ hard-fill flag treatment.
 
 They have no live cosmetic definition or script consumer, but stale
 documentation still says they are applied at
-`docs/events/015_utopia_manifesto.md:117-125` and lists them as the current
+`docs/events/015_utopia_manifesto/overview.md:117-125` and lists them as the current
 cosmetic package at `docs/assets/015_utopia_manifesto/manifest.md:50-52` and
 `:345-362`.
 

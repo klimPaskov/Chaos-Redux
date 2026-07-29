@@ -35,7 +35,7 @@ The audit also consulted the required offline wiki pages, including Data structu
 - `localisation/english/018_resources_found_system_l_english.yml`
   - completed DHO democratic, fascist, communist, and neutrality-facing country/party localisation;
   - retained UTF-8 BOM after the edit.
-- `docs/events/018_resources_found_cave_country.md`
+- `docs/events/018_resources_found/cave_country.md`
   - aligned the single OOB load, origin supply node, market isolation, speed table, route-spirit lifecycle, and Vhorruk portrait surfaces with the live implementation.
 - `docs/plans/018_resources_found_plans/subagent_handoffs/country_package_auditor_handoff.md`
   - records this final static audit and its unexercised engine gates.

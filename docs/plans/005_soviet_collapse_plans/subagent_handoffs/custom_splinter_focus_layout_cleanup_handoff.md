@@ -16,17 +16,17 @@ No localisation files were changed.
 | Focus id | Before | After | Reason |
 | --- | --- | --- | --- |
 | `PRA_passport_of_the_moving_state` | `x = 0`, `y = 6` | `x = 6`, `y = 6` | Moved OR continuation away from directly under a mutual-exclusive endpoint. |
-| `BSC_cleric_elder_compact` | `x = 10`, `y = 8` | `x = 15`, `y = 8` | Moved settlement-side focus out of the `BSC_radical_turn` / `BSC_settlement` fork lane. |
-| `BSC_water_and_rifle_ledger` | `x = 12`, `y = 9` | `x = 15`, `y = 9` | Kept the child line aligned after moving `BSC_cleric_elder_compact`. |
+| `AEX_cleric_elder_compact` | `x = 10`, `y = 8` | `x = 15`, `y = 8` | Moved settlement-side focus out of the `AEX_radical_turn` / `AEX_settlement` fork lane. |
+| `AEX_water_and_rifle_ledger` | `x = 12`, `y = 9` | `x = 15`, `y = 9` | Kept the child line aligned after moving `AEX_cleric_elder_compact`. |
 | `TNC_madrasah_school_compact` | `x = 10`, `y = 8` | `x = 15`, `y = 8` | Moved settlement-side focus out of the `TNC_radical_turn` / `TNC_settlement` fork lane. |
 | `TNC_water_and_bread_ledger` | `x = 12`, `y = 9` | `x = 15`, `y = 9` | Kept the child line aligned after moving `TNC_madrasah_school_compact`. |
-| `ALA_anti_puppet_steppe_statute` | `x = 10`, `y = 8` | `x = 15`, `y = 8` | Moved settlement-side focus out of the `ALA_radical_turn` / `ALA_settlement` fork lane. |
-| `BSC_kyrgyz_raid_watch` | `x = 22`, `y = 8` | `x = 18`, `y = 8` | Resolved duplicate coordinates in the BSC side branch. |
-| `BSC_tajik_pass_bargains` | `x = 22`, `y = 8` | `x = 16`, `y = 8` | Resolved duplicate coordinates in the BSC side branch. |
+| `AAX_anti_puppet_steppe_statute` | `x = 10`, `y = 8` | `x = 15`, `y = 8` | Moved settlement-side focus out of the `AAX_radical_turn` / `AAX_settlement` fork lane. |
+| `AEX_kyrgyz_raid_watch` | `x = 22`, `y = 8` | `x = 18`, `y = 8` | Resolved duplicate coordinates in the AEX side branch. |
+| `AEX_tajik_pass_bargains` | `x = 22`, `y = 8` | `x = 16`, `y = 8` | Resolved duplicate coordinates in the AEX side branch. |
 | `TNC_tajik_relief_corridors` | `x = 18`, `y = 8` | `x = 16`, `y = 8` | Resolved duplicate coordinates in the TNC side branch. |
 | `DHC_stanitsa_mediation` | `x = 4`, `y = 6` | `x = 6`, `y = 6` | Resolved duplicate coordinates with `DHC_propaganda`. |
 | `KHC_stanitsa_mediation` | `x = 4`, `y = 6` | `x = 6`, `y = 6` | Resolved duplicate coordinates with `KHC_propaganda`. |
-| `BAC_militia_training_yards` | `x = 4`, `y = 9` | `x = 2`, `y = 9` | Resolved duplicate coordinates with `BAC_hidden_doctrine`. |
+| `ADX_militia_training_yards` | `x = 4`, `y = 9` | `x = 2`, `y = 9` | Resolved duplicate coordinates with `ADX_hidden_doctrine`. |
 | `ARD_hidden_doctrine` | `x = 6`, `y = 9` | `x = 5`, `y = 9` | Resolved duplicate coordinates with `ARD_murmansk_dockyard_sheds`. |
 
 ## Route Coverage
@@ -34,11 +34,11 @@ No localisation files were changed.
 | Required route | Implemented route or focus branch | Status | Notes |
 | --- | --- | --- | --- |
 | PRA board/directorate fork | `PRA_the_board_overrules_ministers` / `PRA_armored_train_directorate` into `PRA_passport_of_the_moving_state` | Layout adjusted | Gameplay prerequisites unchanged. |
-| BSC settlement lane | `BSC_settlement` support focuses | Layout adjusted | `BSC_cleric_elder_compact` chain moved out of the fork lane. |
+| AEX settlement lane | `AEX_settlement` support focuses | Layout adjusted | `AEX_cleric_elder_compact` chain moved out of the fork lane. |
 | TNC settlement lane | `TNC_settlement` support focuses | Layout adjusted | `TNC_madrasah_school_compact` chain moved out of the fork lane. |
-| ALA settlement lane | `ALA_settlement` support focuses | Layout adjusted | `ALA_anti_puppet_steppe_statute` moved out of the fork lane. |
+| AAX settlement lane | `AAX_settlement` support focuses | Layout adjusted | `AAX_anti_puppet_steppe_statute` moved out of the fork lane. |
 | DHC/KHC civil-propaganda area | Stanitsa mediation and propaganda support branches | Layout adjusted | Duplicate coordinates removed. |
-| BAC/ARD late generic lanes | Military / hidden doctrine branch | Layout adjusted | Duplicate coordinates removed. |
+| ADX/ARD late generic lanes | Military / hidden doctrine branch | Layout adjusted | Duplicate coordinates removed. |
 
 ## Before And After Behavior
 

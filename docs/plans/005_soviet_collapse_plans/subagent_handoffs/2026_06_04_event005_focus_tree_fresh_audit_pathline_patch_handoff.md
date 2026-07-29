@@ -63,9 +63,9 @@ These were not patched:
 Requested files contain 1,269 focus blocks across 41 trees:
 
 - Republics: Ukraine 83, generic breakaway 36, internal republic 62, Baltic 42, Caucasus 40, Central Asia 45, Moldova 48, Belarus 53, Kazakhstan 92.
-- Custom splinters: FTH 47, PRA 22, TSC/RMC/DSC/NRF/ICD 18 each, and BSC/TNC/ALA/BBH/KRS/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/BAC/ARD/NLC 47 each.
+- Custom splinters: FTH 47, PRA 22, TSC/RMC/DSC/NRF/ICD 18 each, and AEX/TNC/AAX/BBH/AOX/UDC/SDZ/GAC/DHC/KHC/FEV/SZA/UWD/MRC/IUL/ADX/ARD/NLC 47 each.
 - Factory successors: CFR 47, OGB 23, MFR 58.
-- Ancient restorations: KZR/SOG/KHW/ALN 16 each.
+- Ancient restorations: APX/SOG/ANX/ABX 16 each.
 
 ## Remaining High-Priority Findings
 
@@ -106,7 +106,7 @@ Requested files contain 1,269 focus blocks across 41 trees:
    - Add 3-6 country-specific mechanic focuses per weak tree rather than repeating flat stats.
    - Prefer decisions, state targeting, AI strategies, claims/cores, timed missions, or special units over another national spirit.
 4. Run an ancient-restoration OP identity tranche:
-   - Give KZR/SOG/KHW/ALN unique late-game identity mechanics and expansion consequences.
+   - Give APX/SOG/ANX/ABX unique late-game identity mechanics and expansion consequences.
    - Keep symbolic and expansionist branches mechanically distinct.
 5. Re-run the focus-tree auditor after those tranches and then use a localisation audit for all new or changed player-facing text.
 

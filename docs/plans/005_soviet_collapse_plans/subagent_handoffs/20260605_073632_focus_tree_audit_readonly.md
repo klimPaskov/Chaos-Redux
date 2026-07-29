@@ -50,7 +50,7 @@ Required references consulted before inspection:
 
 ### Shallow custom splinters outside the named list
 
-- Ancient restorations are the shallowest: `KZR`, `SOG`, `KHW`, and `ALN` each have 16 focuses in `common/national_focus/005_soviet_collapse_ancient_restorations.txt` at lines 12, 422, 826, and 1234. They have symbolic identity and claims, but not enough branch breadth for full political/industry/military/diplomacy/expansion play.
+- Ancient restorations are the shallowest: `APX`, `SOG`, `ANX`, and `ABX` each have 16 focuses in `common/national_focus/005_soviet_collapse_ancient_restorations.txt` at lines 12, 422, 826, and 1234. They have symbolic identity and claims, but not enough branch breadth for full political/industry/military/diplomacy/expansion play.
 - `OGB_soviet_collapse_focus_tree` at `common/national_focus/005_soviet_collapse_factory_successors.txt:1008` has only 23 focuses. It is still closer to a compact side-tree than a full overpowered custom actor.
 - Most other custom splinters in `005_soviet_collapse_custom_splinters.txt` have 47 focuses and are less shallow than the 18-focus set, but their repeated template structure should still be reviewed after the named blockers.
 

@@ -43,7 +43,7 @@ absent from live Chaos Redux references except for reviewed migration tables.
   `chaosx_country_all`, Event 006 owned/registered/all views, African overlap
   and regional views, `chaosx_country_soviet_collapse`, and 14 Event 006
   region aliases.
-- `docs/systems/006_independence_wave_country_registry.md` documents the
+- `docs/events/006_independence_wave/systems/country_registry.md` documents the
   collection contract, provenance boundary, Africa use, and collision policy.
 
 Collections are active scope views. A consuming event must still prove its own

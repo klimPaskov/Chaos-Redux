@@ -53,7 +53,7 @@ The current notes name these presentation assets:
 - `GFX_super_event_angel_directorate` in `interface/chaosx_super_events.gfx`.
 - `gfx/super_events/003_holy_realm/super_event_angel_directorate.dds`.
 - Super-event slot and audio ID `12`.
-- `music/003_holy_realm/super_event_12_angel_directorate.ogg`.
+- `sound/003_holy_realm/super_event_12_angel_directorate.wav`.
 - `chaosx_super_event_angel_directorate_track`.
 - `sound/003_holy_realm/super_event_12_angel_directorate.wav`.
 - Audio source notes in `docs/super_events/super_event_audio_packages.md`.

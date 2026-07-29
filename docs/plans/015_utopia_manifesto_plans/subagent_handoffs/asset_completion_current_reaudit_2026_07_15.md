@@ -65,11 +65,11 @@ Authority: `docs/assets/015_utopia_manifesto/final_icon_frame_audit.json`, SHA-2
 
 ## Super-event audio
 
-Display slots `96` through `100` use audio ID `57` and the event-scoped cue `super_event_57_utopia_has_neighbors`. The cue is a `116`-second edit of the Musopen Symphony Orchestra performance of the third movement of Brahms's Symphony No. 3. The exact recording is preserved with frozen source-page, CC0 deed, legal-code, checksum, and processing evidence. Runtime OGG and WAV registration, music localisation, six route/helper music definitions, six sound wrappers, settings-aware playback, and the five display slots are wired.
+Display slots `96` through `100` use audio ID `57` and the event-scoped cue `super_event_57_utopia_has_neighbors`. The cue is a `116`-second edit of the Musopen Symphony Orchestra performance of the third movement of Brahms's Symphony No. 3. The exact recording is preserved with frozen source-page, CC0 deed, legal-code, checksum, and processing evidence. Runtime WAV and WAV registration, music localisation, six route/helper music definitions, six sound wrappers, settings-aware playback, and the five display slots are wired.
 
 The Event 15 OGG and WAV have unique container hashes in the current runtime audio folders; the recorded Chromaprint comparison also finds only the intended OGG and its intended WAV mirror. No other event reuses this work, recording, derivative, audio ID, helper family, or wrapper.
 
-Authority: `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`, SHA-256 `2c87617e505064368af282bf885664e47e78494efca80f137d9a76ec6d54d655`.
+Authority: `docs/super_events/015_utopia_manifesto/audio_research.md`, SHA-256 `2c87617e505064368af282bf885664e47e78494efca80f137d9a76ec6d54d655`.
 
 ## Visual review
 

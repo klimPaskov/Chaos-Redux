@@ -1,6 +1,6 @@
 # Repo Explorer Handoff
 
-> Superseded exploration snapshot. This file records the repository state before Event 014 implementation. It is retained for provenance and must not be used as current implementation status. Current facts live in `docs/specs/014_cannibalism_specs/`, `docs/events/014_cannibalism.md`, and the final reconciliation handoffs.
+> Superseded exploration snapshot. This file records the repository state before Event 014 implementation. It is retained for provenance and must not be used as current implementation status. Current facts live in `docs/specs/014_cannibalism_specs/`, `docs/events/014_cannibalism/overview.md`, and the final reconciliation handoffs.
 
 ## Scope read
 
@@ -90,7 +90,7 @@ The exploration covered:
   not be reused. IDs **49, 50, 52, and 53** were free at inspection time, so a
   safe assignment is reveal 49, ordinary world end 50, defeat/aftermath 52,
   and Wendigo-Hannibal world end 53. The authoritative super-event constants,
-  sprite selectors, localisation selectors, music/sound registrations, and
+  sprite selectors, localisation selectors, sound registrations, and
   filenames must all use the same final assignment.
 
 ### 3. The existing Wendigo is a dynamic ZZZ-derived country, not a fixed tag
@@ -557,7 +557,7 @@ These are task-specific acceptance checks, not generic syntax hygiene.
 
 1. **Dirty shared files.** The worktree contains concurrent/user changes in
    achievement registries, super-event selectors and sprites, GUI and decision
-   localisation, music/sound registries, camp/genocide systems, and the event
+   localisation, sound registries, camp/genocide systems, and the event
    workbook. Event 014 implementation must merge narrowly and review each
    shared diff; broad file replacement would overwrite unrelated work.
 2. **Deleted focus icons.** Thirty-seven tracked Event 014 focus DDS files are

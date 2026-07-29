@@ -20,14 +20,14 @@ Affected focus ids checked:
 
 - `PRA_armored_train_directorate`
 - `PRA_seize_the_junction_cities`
-- `KZR_returned_names_endgame`
-- `KZR_road_beyond_the_caspian`
+- `APX_returned_names_endgame`
+- `APX_road_beyond_the_caspian`
 - `SOG_returned_names_endgame`
 - `SOG_cities_beyond_the_desert`
-- `KHW_returned_names_endgame`
-- `KHW_delta_without_a_center`
-- `ALN_returned_names_endgame`
-- `ALN_every_pass_a_border`
+- `ANX_returned_names_endgame`
+- `ANX_delta_without_a_center`
+- `ABX_returned_names_endgame`
+- `ABX_every_pass_a_border`
 - `blr_soviet_collapse_military_transit_directorate`
 - `kaz_soviet_collapse_the_southern_republics_do_not_kneel`
 - `DSC_grave_ordnance_claims`
@@ -95,7 +95,7 @@ Relevant reference conclusions:
 - `rg -n "id = blr_soviet_collapse_military_transit_directorate|id = kaz_soviet_collapse_the_southern_republics_do_not_kneel" common/national_focus/005_soviet_collapse_republics.txt`
 - `nl -ba common/national_focus/005_soviet_collapse_republics.txt | sed -n '8922,8970p;10920,10972p'`
 - `rg -n "blr_soviet_collapse_military_transit_directorate|kaz_soviet_collapse_the_southern_republics_do_not_kneel" localisation/english/005_soviet_collapse*_l_english.yml`
-- `rg -n "PRA_armored_train_directorate_tt|PRA_seize_the_junction_cities_tt|dsc_grave_ordnance_claims_tt|dsc_claim_the_soldiers_road_focus_tt|KZR_returned_names_endgame_tt|KZR_road_beyond_the_caspian_tt|SOG_returned_names_endgame_tt|SOG_cities_beyond_the_desert_tt|KHW_returned_names_endgame_tt|KHW_delta_without_a_center_tt|ALN_returned_names_endgame_tt|ALN_every_pass_a_border_tt" localisation/english/005_soviet_collapse*_l_english.yml`
+- `rg -n "PRA_armored_train_directorate_tt|PRA_seize_the_junction_cities_tt|dsc_grave_ordnance_claims_tt|dsc_claim_the_soldiers_road_focus_tt|APX_returned_names_endgame_tt|APX_road_beyond_the_caspian_tt|SOG_returned_names_endgame_tt|SOG_cities_beyond_the_desert_tt|ANX_returned_names_endgame_tt|ANX_delta_without_a_center_tt|ABX_returned_names_endgame_tt|ABX_every_pass_a_border_tt" localisation/english/005_soviet_collapse*_l_english.yml`
 - `git status --short`
 - `date -u +%Y_%m_%d_%H%M%S`
 

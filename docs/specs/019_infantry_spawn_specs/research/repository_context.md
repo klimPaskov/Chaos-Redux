@@ -6,7 +6,7 @@ July 10, 2026.
 
 > **Historical inspection snapshot:** The implementation descriptions below
 > record the pre-rework public repository and are not live status. Use the
-> package `README.md` source-of-truth map, `docs/events/019_infantry_spawn.md`,
+> package `README.md` source-of-truth map, `docs/events/019_infantry_spawn/overview.md`,
 > and `review/blockers_and_uncertainty.md` for current implementation and
 > closure state.
 
@@ -26,7 +26,7 @@ The public `docs/events/` tree did not show a canonical Event 19 document during
 
 - [docs/events](https://github.com/klimPaskov/Chaos-Redux/tree/master/docs/events)
 
-Implementation should create `docs/events/019_infantry_spawn.md` and keep it aligned with final behavior.
+Implementation should create `docs/events/019_infantry_spawn/overview.md` and keep it aligned with final behavior.
 
 ## Shared special-country classification
 

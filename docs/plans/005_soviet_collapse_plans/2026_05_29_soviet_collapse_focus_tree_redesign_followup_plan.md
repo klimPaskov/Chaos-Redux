@@ -15,7 +15,7 @@ This plan covers the broad route redesign work that is outside the bounded activ
 | `common/national_focus/005_soviet_collapse_republics.txt` | 9 | 501 | Ukraine, Belarus, Kazakhstan and shared republic trees exist, but Ukraine/Belarus still need a full route readability and reward-identity pass. |
 | `common/national_focus/005_soviet_collapse_custom_splinters.txt` | 25 | 1005 | Most full custom splinters have 47 focuses; crisis splinters have 18-22. Several high-chaos trees still rely on repeated convoy/truck/AA rewards. |
 | `common/national_focus/005_soviet_collapse_factory_successors.txt` | 3 | 128 | CFR and MFR have real forks; OGB remains a shallow 23-focus successor and needs specialization depth. |
-| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | KZR, SOG, KHW, ALN are 16-focus stubs compared with the requested ancient-restoration identity depth. |
+| `common/national_focus/005_soviet_collapse_ancient_restorations.txt` | 4 | 64 | APX, SOG, ANX, ABX are 16-focus stubs compared with the requested ancient-restoration identity depth. |
 
 ## High-Priority Route Work
 
@@ -31,7 +31,7 @@ This plan covers the broad route redesign work that is outside the bounded activ
    - Follow-up work: separate crowded focus rows, reduce repeated rail/truck framing, and make the corridor paths unlock or strengthen existing decisions/effects rather than only adding variables.
 
 3. Custom splinter identity and OP specialization pass.
-   - Full 47-focus trees to review first: `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`.
+   - Full 47-focus trees to review first: `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`.
    - Crisis/shallow trees to deepen or explicitly classify as crisis trees: `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD`.
    - Follow-up work: route end states should create dangerous expansion/specialization payoffs tied to existing Soviet Collapse pressure, depot, recognition, League, war, foreign appetite, or old-movement mechanics. Avoid adding direct idea stacks.
 
@@ -42,7 +42,7 @@ This plan covers the broad route redesign work that is outside the bounded activ
    - `OGB`: expand beyond the current 23-focus shape or document it as intentionally narrow. Current depth is not enough for an OP successor route.
 
 5. Ancient restorations.
-   - Trees: `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, `ALN_soviet_collapse_ancient_focus_tree`.
+   - Trees: `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, `ABX_soviet_collapse_ancient_focus_tree`.
    - Follow-up work: each currently has 16 focuses. Add route identity and existing-mechanic hooks before claiming completion. Do not add a new formable chain unless explicitly approved by the parent.
 
 ## Reward Cleanup Backlog
@@ -52,13 +52,13 @@ Direct tiny generic equipment rewards remain in 47 focuses. Replace these with e
 | Tree | Focus ids |
 |---|---|
 | `ARD_soviet_collapse_focus_tree` | `ARD_first_guard`, `ARD_war_plan`, `ARD_diplomatic_plan`, `ARD_kola_denial_posts`, `ARD_convoy_court_registers`, `ARD_naval_infantry_yards`, `ARD_fuel_and_convoy_escorts`, `ARD_winter_convoy_columns`, `ARD_white_sea_port_tolls`, `ARD_league_convoy_bargain`, `ARD_port_neutrality_statute`, `ARD_arctic_port_endurance` |
-| `BSC_soviet_collapse_focus_tree` | `BSC_mountain_route_envoys` |
+| `AEX_soviet_collapse_focus_tree` | `AEX_mountain_route_envoys` |
 | `DHC_soviet_collapse_focus_tree` | `DHC_host_court_registers`, `DHC_grain_convoy_escorts`, `DHC_convoy_autonomy_guarantees`, `DHC_river_port_tolls`, `DHC_league_passage_bargain`, `DHC_river_and_steppe_compact` |
 | `FEV_soviet_collapse_focus_tree` | `FEV_customs_house_ledger`, `FEV_razdolnoye_rear_area`, `FEV_pacific_observer_missions`, `FEV_sakhalin_ferry_protocols` |
 | `FTH_soviet_collapse_focus_tree` | `FTH_ukrainian_border_letters` |
 | `IUL_soviet_collapse_focus_tree` | `IUL_volga_fortified_crossings`, `IUL_no_requisition_without_federal_vote`, `IUL_rail_and_river_patrols`, `IUL_volga_trade_letters` |
-| `KRS_soviet_collapse_focus_tree` | `KRS_baltic_worker_letters`, `KRS_anti_party_soviet_clause`, `KRS_icebound_supply_ledger`, `KRS_naval_infantry_oaths`, `KRS_gulf_mine_watch`, `KRS_free_port_conference` |
-| `KZR_soviet_collapse_ancient_focus_tree` | `KZR_caspian_patrol_letters`, `KZR_khazar_charter` |
+| `AOX_soviet_collapse_focus_tree` | `AOX_baltic_worker_letters`, `AOX_anti_party_soviet_clause`, `AOX_icebound_supply_ledger`, `AOX_naval_infantry_oaths`, `AOX_gulf_mine_watch`, `AOX_free_port_conference` |
+| `APX_soviet_collapse_ancient_focus_tree` | `APX_caspian_patrol_letters`, `APX_khazar_charter` |
 | `NLC_soviet_collapse_focus_tree` | `NLC_diplomatic_plan`, `NLC_ice_port_tolls` |
 | `NRF_soviet_collapse_focus_tree` | `NRF_salvage_the_dark_berths`, `NRF_dead_convoy_supply_board`, `NRF_ghost_convoy_escorts`, `NRF_northern_revenant_fleet` |
 | `soviet_collapse_baltic_focus_tree` | `baltic_soviet_collapse_the_baltic_customs_desk` |

@@ -16,7 +16,7 @@ Event 006 remains **HOLD / incomplete**. This handoff does not promote any packa
 | Whole-event completion | `subagent_handoffs/006_event_completion_audit_v9_final_2026_07_26.md` | Current matrix, audited against pre-commit `51369b2ea`; overall HOLD remains current |
 | DM-58 bounded repair | `subagent_handoffs/006_dm58_injective_owner_preflight_repair_2026_07_26.md` and commit `cf2316a9a` | Source-level injective three-member/three-distinct-owner feasibility PASS; paid random resolver, rollback, AI, save/load, and live execution evidence remain open |
 | Shared focus bounded repair | `subagent_handoffs/006_shared_focus_geometry_repair_2026_07_26.md` and commit `f8ca54d24` | Coordinate-only reflow committed; offline segment audit is evidence only; post-edit MCP inspect/render returned `Transport closed` |
-| Canonical event documentation | `docs/events/006_independence_wave.md` | Ten-ID gate, nine-compatible-group capacity boundary, HAW/FSM blockers, v9 HOLD, and bounded post-v9 handoffs are stated |
+| Canonical event documentation | `docs/events/006_independence_wave/overview.md` | Ten-ID gate, nine-compatible-group capacity boundary, HAW/FSM blockers, v9 HOLD, and bounded post-v9 handoffs are stated |
 
 The current compile-time content-attestation set is IW-001 SCO, IW-004 BRI, IW-006 AFX, IW-007 AGX, IW-008 RHI, IW-009 BAY, IW-010 AJX, IW-017 COR, IW-019 ASX, and IW-184 HBX. IW-008 RHI and IW-010 AJX share `RG-RHINE-SAAR`, leaving nine mutually compatible reservation groups rather than the ten required by the 10-country bands. The exact 3/4/5/7/10 ladder remains accepted, but the ten-country Totalen Krieg and World Collapse bands remain fail-closed.
 
@@ -68,7 +68,7 @@ No accepted Event 006 prompt or source specification changed in this reconciliat
 
 - Updated `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` header, completion state, whole-event authority paragraph, DM-58 row, focus row, and completion ledger wording to reference v9, `cf2316a9a`, and `f8ca54d24`.
 - Updated `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` header, v9 authority paragraph, bounded handoff routing, AFX admission wording, and whole-event HOLD wording.
-- Updated `docs/events/006_independence_wave.md` current authority, bounded handoff section, and historical v6/v7 wording.
+- Updated `docs/events/006_independence_wave/overview.md` current authority, bounded handoff section, and historical v6/v7 wording.
 - Added supersession notices to `006_event_completion_audit_v9_final_2026_07_26.md`, `006_focus_readonly_handoff_2026_07_26.md`, `006_documentation_cleanup_handoff_2026_07_26.md`, `006_documentation_reconciliation_post_agx_2026_07_26.md`, `006_event_completion_audit_v8_agx_tranche_2026_07_26.md`, and `006_agx_country_package_reaudit_2026_07_26.md`.
 - Created this handoff at `docs/plans/006_independence_wave_plans/subagent_handoffs/006_documentation_reconciliation_post_cf2316a9a_f8ca54d24_2026_07_26.md`.
 

@@ -41,7 +41,7 @@ References read before editing:
 | Full-size high-chaos splinters | 19 47-focus trees in `005_soviet_collapse_custom_splinters.txt`, e.g. `FTH` at line 15, `BBH` at line 7723, `ARD` at line 23238 | Partial | Counts are high, but many trees still share helper rhythm and have too little decision/formable/war payoff. |
 | Compact crisis splinters | `PRA` line 1216, `TSC` line 1815, `RMC` line 2290, `DSC` line 2773, `NRF` line 3370, `ICD` line 3874 | Partial | Strong concepts; 18-22 focuses are still too narrow for OP/high-chaos actors. |
 | Factory successors | `CFR` line 16, `OGB` line 1171, `MFR` line 1776 in `005_soviet_collapse_factory_successors.txt` | Partial | CFR/MFR are more developed. OGB remains the shallowest successor, but this pass added one missing focus-surfaced decision hook. |
-| Ancient restorations | `KZR` line 13, `SOG` line 382, `KHW` line 752, `ALN` line 1125 in `005_soviet_collapse_ancient_restorations.txt` | Incomplete for depth | All four are 16-focus stubs with repeated icon families and similar claim/endgame rhythm. |
+| Ancient restorations | `APX` line 13, `SOG` line 382, `ANX` line 752, `ABX` line 1125 in `005_soviet_collapse_ancient_restorations.txt` | Incomplete for depth | All four are 16-focus stubs with repeated icon families and similar claim/endgame rhythm. |
 
 ## Patch Applied
 
@@ -77,7 +77,7 @@ High-priority shallow/repeated reward helper call sites remaining:
 Top priority shallow trees:
 - `OGB_soviet_collapse_focus_tree`, `005_soviet_collapse_factory_successors.txt:1171`: 23 focuses; needs broader Volga restoration politics, river economy, Idel-Ural compact/rivalry consequences, and postwar integration.
 - `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` in `005_soviet_collapse_custom_splinters.txt:1216-4327`: strong concepts but only 18-22 focuses each.
-- Ancient restoration trees `KZR`, `SOG`, `KHW`, `ALN`: 16 focuses each, too similar by structure and icon family.
+- Ancient restoration trees `APX`, `SOG`, `ANX`, `ABX`: 16 focuses each, too similar by structure and icon family.
 - `soviet_collapse_kazakhstan_focus_tree`, `005_soviet_collapse_republics.txt:10199`: 92 focuses but still too many variable/stat packets.
 
 Top priority layout fixes remaining:

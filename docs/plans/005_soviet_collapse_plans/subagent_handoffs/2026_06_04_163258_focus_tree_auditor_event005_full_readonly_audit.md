@@ -92,11 +92,11 @@ By tree/tag:
 | custom splinters | `DSC_soviet_collapse_focus_tree` | DSC | 18 |
 | custom splinters | `NRF_soviet_collapse_focus_tree` | NRF | 18 |
 | custom splinters | `ICD_soviet_collapse_focus_tree` | ICD | 18 |
-| custom splinters | `BSC_soviet_collapse_focus_tree` | BSC | 47 |
+| custom splinters | `AEX_soviet_collapse_focus_tree` | AEX | 47 |
 | custom splinters | `TNC_soviet_collapse_focus_tree` | TNC | 47 |
-| custom splinters | `ALA_soviet_collapse_focus_tree` | ALA | 47 |
+| custom splinters | `AAX_soviet_collapse_focus_tree` | AAX | 47 |
 | custom splinters | `BBH_soviet_collapse_focus_tree` | BBH | 47 |
-| custom splinters | `KRS_soviet_collapse_focus_tree` | KRS | 47 |
+| custom splinters | `AOX_soviet_collapse_focus_tree` | AOX | 47 |
 | custom splinters | `UDC_soviet_collapse_focus_tree` | UDC | 47 |
 | custom splinters | `SDZ_soviet_collapse_focus_tree` | SDZ | 47 |
 | custom splinters | `GAC_soviet_collapse_focus_tree` | GAC | 47 |
@@ -107,16 +107,16 @@ By tree/tag:
 | custom splinters | `UWD_soviet_collapse_focus_tree` | UWD | 47 |
 | custom splinters | `MRC_soviet_collapse_focus_tree` | MRC | 47 |
 | custom splinters | `IUL_soviet_collapse_focus_tree` | IUL | 47 |
-| custom splinters | `BAC_soviet_collapse_focus_tree` | BAC | 47 |
+| custom splinters | `ADX_soviet_collapse_focus_tree` | ADX | 47 |
 | custom splinters | `ARD_soviet_collapse_focus_tree` | ARD | 47 |
 | custom splinters | `NLC_soviet_collapse_focus_tree` | NLC | 47 |
 | factory successors | `CFR_soviet_collapse_focus_tree` | CFR | 47 |
 | factory successors | `OGB_soviet_collapse_focus_tree` | OGB | 23 |
 | factory successors | `MFR_soviet_collapse_focus_tree` | MFR | 58 |
-| ancient restorations | `KZR_soviet_collapse_ancient_focus_tree` | KZR | 16 |
+| ancient restorations | `APX_soviet_collapse_ancient_focus_tree` | APX | 16 |
 | ancient restorations | `SOG_soviet_collapse_ancient_focus_tree` | SOG | 16 |
-| ancient restorations | `KHW_soviet_collapse_ancient_focus_tree` | KHW | 16 |
-| ancient restorations | `ALN_soviet_collapse_ancient_focus_tree` | ALN | 16 |
+| ancient restorations | `ANX_soviet_collapse_ancient_focus_tree` | ANX | 16 |
+| ancient restorations | `ABX_soviet_collapse_ancient_focus_tree` | ABX | 16 |
 
 ## Idea Reward and Idea Lifecycle Findings
 
@@ -153,7 +153,7 @@ The reward pattern has improved from earlier idea-stack reports, but the current
 Examples:
 
 - `FTH_birth`, `FTH_first_guard`, `FTH_stores`, `FTH_legitimacy`, `FTH_rival`, `FTH_doctrine`, `FTH_economy`, `FTH_league` show the common custom-splinter pattern: variables, PP/stability, then generic chaos assault/supply/legal/league helpers.
-- `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` largely use the same 47-focus depth, so parent should vary mechanics and end-state branch logic by identity rather than only localise names and swap one or two payloads.
+- `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` largely use the same 47-focus depth, so parent should vary mechanics and end-state branch logic by identity rather than only localise names and swap one or two payloads.
 - Ancient restoration trees are compact and heavily helper/variable driven. They have some claims and decision tooltips, but each 16-focus tree needs one more distinctive mechanic loop to avoid reading as "claims plus old-name legitimacy".
 - Railway/factory states have stronger identity hooks than generic splinters, but still repeat construction, rail, offsite factory, equipment, and PP/stability rewards. CFR and MFR are the most mechanically promising but need the reward payloads consolidated into construction/arsenal decision systems.
 
@@ -266,12 +266,12 @@ Priority identity checks:
 - `DSC`: strong concept with `DSC_congress_of_the_dead_army`, `dsc_convene_the_dead_army`, and `dsc_order_the_dead_army_forward`, but earlier nodes still use generic legal/security helpers. It should receive a dead-army campaign loop earlier.
 - `NRF`: strong endpoint names and naval XP/dockyard/convoy rewards, but lacks a unique naval mission loop. Add fleet raising, ghost convoy, Arctic port, or raiding decisions.
 - `FEV`: Far Eastern actor should be more aggressive and Pacific-border specific. Current branch has generic fort/security/war-plan rewards.
-- `BSC`: Central Asian old-movement identity exists, but should get cavalry/irregular water-road mechanics and league tension.
+- `AEX`: Central Asian old-movement identity exists, but should get cavalry/irregular water-road mechanics and league tension.
 - `BBH`: anarchist/Black Banner identity needs more irregular expansion and anti-state decisions, not only generic chaos assault helpers.
-- `KRS`: naval council/sailor identity should have port/fleet/sailor soviet decisions.
+- `AOX`: naval council/sailor identity should have port/fleet/sailor soviet decisions.
 - `SDZ`: sealed security authority needs archive/prison/intelligence mechanics instead of mostly generic security helpers.
 - `TSC`, `RMC`, `ICD`: high-chaos myth/death states need stranger mechanics and more destructive payoff. Current 18-focus compact trees are too shallow for their concepts.
-- `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`: 47-focus skeleton exists, but parent should audit one by one for actual unique branch mechanics rather than title-only identity.
+- `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`: 47-focus skeleton exists, but parent should audit one by one for actual unique branch mechanics rather than title-only identity.
 
 ### Factory Successors
 
@@ -283,12 +283,12 @@ CFR and MFR are the best candidates for "extremely overpowered and identity-spec
 
 ### Ancient Restorations
 
-KZR/SOG/KHW/ALN are functional compact trees, but too shallow for high-chaos restorations. They should not become full 47-focus monsters, but each needs one defining mechanic:
+APX/SOG/ANX/ABX are functional compact trees, but too shallow for high-chaos restorations. They should not become full 47-focus monsters, but each needs one defining mechanic:
 
-- KZR: toll/transit authority and Caspian/Volga route decisions.
+- APX: toll/transit authority and Caspian/Volga route decisions.
 - SOG: city/trade-road diplomacy and merchant corridors.
-- KHW: water/canal/irrigation authority and river basin settlement.
-- ALN: pass/mountain oath defense, Caucasus road control, and neighbor settlement.
+- ANX: water/canal/irrigation authority and river basin settlement.
+- ABX: pass/mountain oath defense, Caucasus road control, and neighbor settlement.
 
 Currently, several focuses use large hidden bundles of flags, claims, variables, train/equipment/building rewards. That is better than visible spam, but the player still needs a reason to play the restoration differently.
 
@@ -303,7 +303,7 @@ Currently, several focuses use large hidden bundles of flags, claims, variables,
 7. `common/scripted_effects/005_soviet_collapse_effects.txt`: audit `soviet_collapse_add_republic_focus_recovery_progress` and prevent repeated visible disorder-spirit churn from common focus helpers.
 8. `common/scripted_effects/005_soviet_collapse_effects.txt`: audit `soviet_collapse_update_pra_authority_idea` for repeated clear/add churn, then call it only from PRA route milestones that actually change authority state.
 9. `common/national_focus/005_soviet_collapse_custom_splinters.txt`: add one unique decision unlock to NRF mid-branch before `NRF_fleet_that_does_not_dock`.
-10. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: add one unique decision unlock or route-specific variable payoff to each ancient tree capstone, starting with `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_expansionist_mountain_claims`.
+10. `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: add one unique decision unlock or route-specific variable payoff to each ancient tree capstone, starting with `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_expansionist_mountain_claims`.
 
 ## Top 10 Deep Route Rewrites Needed
 
@@ -315,8 +315,8 @@ Currently, several focuses use large hidden bundles of flags, claims, variables,
 6. OGB future Bulgaria/restoration: expand Volga legitimacy, religion/society, river authority, and future-event hook.
 7. FEV Far Eastern authority: give it Pacific/Amur/Trans-Siberian border mechanics and aggressive regional war/settlement options.
 8. SDZ sealed security zone: create archive/prison/intelligence mechanics and internal control payoffs.
-9. Ancient restorations: give KZR/SOG/KHW/ALN one bespoke mechanic each and integrate with regional leagues/neighbors.
-10. Generic 47-focus custom splinter skeleton: reduce title-only identity by adding tag-specific helper payloads for BSC, TNC, ALA, BBH, KRS, UDC, GAC, DHC, KHC, SZA, UWD, MRC, IUL, BAC, ARD, NLC.
+9. Ancient restorations: give APX/SOG/ANX/ABX one bespoke mechanic each and integrate with regional leagues/neighbors.
+10. Generic 47-focus custom splinter skeleton: reduce title-only identity by adding tag-specific helper payloads for AEX, TNC, AAX, BBH, AOX, UDC, GAC, DHC, KHC, SZA, UWD, MRC, IUL, ADX, ARD, NLC.
 
 ## Commands and Key Outputs
 
@@ -391,15 +391,15 @@ common/national_focus/005_soviet_collapse_custom_splinters.txt,NRF_soviet_collap
 common/national_focus/005_soviet_collapse_custom_splinters.txt,NRF_soviet_collapse_focus_tree,NRF_northern_revenant_fleet,route_depth,high,"should be extremely overpowered naval chaos payoff","add fleet spawn or port seizure mechanic with AI aggression"
 common/national_focus/005_soviet_collapse_custom_splinters.txt,FEV_soviet_collapse_focus_tree,FEV_war_plan,route_depth,high,"Far East route reads as generic war/security helper","add Amur/Pacific/Trans-Siberian war and settlement system"
 common/national_focus/005_soviet_collapse_custom_splinters.txt,SDZ_soviet_collapse_focus_tree,SDZ_informant_cipher_schools,route_depth,high,"security state needs archive/intelligence mechanics","add prison/archive/informant decision loop"
-common/national_focus/005_soviet_collapse_custom_splinters.txt,BSC_soviet_collapse_focus_tree,BSC_caravan_officer_schools,route_depth,medium,"Basmachi identity needs more than generic assault helper","add cavalry/irregular/water-road decisions"
-common/national_focus/005_soviet_collapse_custom_splinters.txt,KRS_soviet_collapse_focus_tree,KRS_sailor_soviet_path,route_depth,medium,"sailor state should have port/fleet mechanics","add naval council or port seizure decisions"
+common/national_focus/005_soviet_collapse_custom_splinters.txt,AEX_soviet_collapse_focus_tree,AEX_caravan_officer_schools,route_depth,medium,"Basmachi identity needs more than generic assault helper","add cavalry/irregular/water-road decisions"
+common/national_focus/005_soviet_collapse_custom_splinters.txt,AOX_soviet_collapse_focus_tree,AOX_sailor_soviet_path,route_depth,medium,"sailor state should have port/fleet mechanics","add naval council or port seizure decisions"
 common/national_focus/005_soviet_collapse_factory_successors.txt,OGB_soviet_collapse_focus_tree,OGB_future_bulgaria_file,route_depth,high,"future-event hook exists but route is only 23 focuses","expand future Bulgaria bridge and Volga restoration decisions"
 common/national_focus/005_soviet_collapse_factory_successors.txt,MFR_soviet_collapse_focus_tree,MFR_eternal_arsenal_marches,reward_design,medium,"appropriately overpowered but repeats direct AI/building/equipment payloads","consolidate into arsenal-state helper and decision loop"
 common/national_focus/005_soviet_collapse_factory_successors.txt,MFR_soviet_collapse_focus_tree,MFR_no_peace_without_orders,reward_design,medium,"neighbor-wide wargoal loop is powerful but hidden in focus reward","move to documented arsenal war-plan helper with tooltip"
-common/national_focus/005_soviet_collapse_ancient_restorations.txt,KZR_soviet_collapse_ancient_focus_tree,KZR_khazar_charter,route_depth,medium,"large hidden bundle but limited bespoke gameplay","add toll/transit authority decision payoff"
+common/national_focus/005_soviet_collapse_ancient_restorations.txt,APX_soviet_collapse_ancient_focus_tree,APX_khazar_charter,route_depth,medium,"large hidden bundle but limited bespoke gameplay","add toll/transit authority decision payoff"
 common/national_focus/005_soviet_collapse_ancient_restorations.txt,SOG_soviet_collapse_ancient_focus_tree,SOG_sogdian_city_charter,route_depth,medium,"ancient restoration compact tree needs unique trade mechanic","add merchant-road/city diplomacy decisions"
-common/national_focus/005_soviet_collapse_ancient_restorations.txt,KHW_soviet_collapse_ancient_focus_tree,KHW_khwarazmian_water_charter,route_depth,medium,"ancient restoration compact tree needs unique water mechanic","add canal/irrigation/water settlement decisions"
-common/national_focus/005_soviet_collapse_ancient_restorations.txt,ALN_soviet_collapse_ancient_focus_tree,ALN_expansionist_mountain_claims,route_depth,medium,"mountain restoration needs pass-control mechanic","add Caucasus pass oath/road-control decisions"
+common/national_focus/005_soviet_collapse_ancient_restorations.txt,ANX_soviet_collapse_ancient_focus_tree,ANX_khwarazmian_water_charter,route_depth,medium,"ancient restoration compact tree needs unique water mechanic","add canal/irrigation/water settlement decisions"
+common/national_focus/005_soviet_collapse_ancient_restorations.txt,ABX_soviet_collapse_ancient_focus_tree,ABX_expansionist_mountain_claims,route_depth,medium,"mountain restoration needs pass-control mechanic","add Caucasus pass oath/road-control decisions"
 common/scripted_effects/005_soviet_collapse_effects.txt,shared,soviet_collapse_clear_republic_staged_ideas,idea_lifecycle,high,"96 direct idea tokens in cleanup helper","keep hidden and replace mass cleanup with staged upgrade helper"
 common/scripted_effects/005_soviet_collapse_effects.txt,shared,soviet_collapse_update_pra_authority_idea,idea_lifecycle,medium,"clears and re-adds PRA authority ideas by focus flags","call only when authority tier actually changes"
 common/scripted_effects/005_soviet_collapse_effects.txt,shared,soviet_collapse_add_republic_focus_recovery_progress,idea_lifecycle,medium,"common helper can mutate startup disorder ideas through many focus routes","ensure no visible tooltip spam and no repeated no-op churn"

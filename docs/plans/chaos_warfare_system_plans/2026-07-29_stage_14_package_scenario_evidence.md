@@ -1,6 +1,6 @@
 # Stage 14 package scenario evidence
 
-Status: source validation complete; Quarantine Without Collapse and startup achievement-eligibility receipts are source-audited; three achievements remain fail-closed, Air Is Still Breathable has an unresolved regional-power gate, and live-consumer validation plus four engine-bound operation families remain unresolved
+Status: supported-core source validation complete; four receipt-dependent achievements and the engine-bound ground Chemical, continuous-air, and nerve-suppression routes are explicit omissions under the later user-authorized core-first disposition
 
 ## Evidence boundary
 
@@ -8,23 +8,25 @@ This report records deterministic source traces against the ten scenarios requir
 
 It is not an in-game test claim. Repository policy assigns live Hearts of Iron IV testing to the user, and the current installed 1.19.2 script surface does not provide the exact selected-state condition receipts required by the ground Chemical operation and nerve-suppression families. Those scenarios therefore record a fail-closed result instead of an estimator, proxy, neutral receipt, or fallback.
 
+The later core-first disposition removes unsupported surfaces from the completion gate. The inactive definitions remain migration-safe compatibility code behind false verified-current-version hooks, and their player-facing selector or commissioning controls require those same hooks. This report does not treat their absence as supported behavior.
+
 The `hoi4.probability_inspect` AI-strategy audit verified the installed game as Operation Postern 1.19.2.0 with checksum `d245`, scanned `common/ai_strategy/cbrn_country_profiles.txt`, and found 57 current strategy-factor consumers with no unsupported parser construct. Its pool is intentionally incomplete because strategy factors modify downstream scores and are not a categorical probability pool. The result is score evidence, not click probability.
 
 ## Achievement reachability audit
 
-The achievement predicates were checked against current writers and the accepted achievement prompt. These findings are source evidence, not live unlock claims, and no estimator, proxy receipt, neutral receipt, or fallback is permitted.
+The achievement predicates were checked against current writers and the accepted achievement prompt. These findings are source evidence, not live unlock claims, and no estimator, proxy receipt, neutral receipt, or fallback is permitted. The four unsupported achievements in this historical table were subsequently removed from the active registry, triggers, sprites, and localisation.
 
 | Achievement or requirement | Current source evidence | Status |
 | --- | --- | --- |
 | `Quarantine Without Collapse` | `common/scripted_effects/cbrn_achievement_effects.txt` uses exact current and needed truck/train `get_supply_vehicles_temp` receipts, applies `constant:cbrn_achievement_threshold.minimum_supply` at `0.80` for each class, and writes `cbrn_achievement_outbreak_supply_ready_history` only during exact catastrophic-outbreak recovery. `cbrn_achievement_quarantine_without_collapse_is_complete` requires that receipt. | Implemented and source-audited. |
 | Starting eligibility and route-switch prevention | `common/scripted_effects/chaosx_startup_history_effects.txt` writes `cbrn_achievement_start_country_eligible`, `cbrn_achievement_starting_major_power`, and `cbrn_achievement_starting_civil_defence_profile` after accepted profiles. `cbrn_achievement_human_campaign_is_eligible` requires the start-country receipt, and `A Mask for Every Door` requires the civil-defence receipt. Achievement `possible = { always = yes }` remains presentation-only. | Implemented and source-audited. |
-| `No Wind Is Friendly` | The completion predicate requires `cbrn_achievement_forecast_failure_history`, `cbrn_achievement_friendly_exposure_history`, `cbrn_achievement_operation_recovered_history`, and `cbrn_achievement_no_wind_clean_after_failure_history`, but no writers for those flags exist outside `common/scripted_triggers/cbrn_achievement_triggers.txt`. Exact selected-state forecast and friendly-exposure receipts depend on the unavailable ground Chemical weather/terrain hook. | Fail-closed and blocked. |
-| `The Antidote Arrived` | Its nerve-response receipts are written only by `cbrn_achievement_record_nerve_response`, whose only caller is the exact nerve-suppression state transaction. Sarin/Soman suppression remains fail-closed on missing exact condition and target-loss receipts. | Fail-closed and blocked. |
-| `Unbroken Supply Corridor` | The completion predicate requires `cbrn_achievement_corridor_operational_history`, `cbrn_achievement_corridor_supply_objective_history`, `cbrn_achievement_corridor_state_count`, and `cbrn_achievement_corridor_supply_days`, but no writers for those flags or variables exist. No exact assigned-Army supply-ratio or major-offensive-objective completion receipt was found. | Fail-closed and blocked. |
-| `Air Is Still Breathable` | The accepted prompt requires eligibility for any major or regional power with enemy Chemical use. The current predicate enforces generic human start-country eligibility and enemy-use history but has no accepted regional-power definition or gate, and it does not consume the startup major-power receipt. The only existing `is_independence_wave_regional_power` helper is Event 006-specific and must not be reused. | Unresolved design/implementation input; not complete. |
+| `No Wind Is Friendly` | Exact selected-state forecast and friendly-exposure receipts are unavailable. | Explicit unsupported omission; absent from active registry, triggers, localisation, and GFX. |
+| `The Antidote Arrived` | Exact nerve-response and target-loss receipts are unavailable. | Explicit unsupported omission; absent from active registry, triggers, localisation, and GFX. |
+| `Unbroken Supply Corridor` | Exact assigned-Army supply-ratio and major-offensive-objective receipts are unavailable. | Explicit unsupported omission; absent from active registry, triggers, localisation, and GFX. |
+| `Air Is Still Breathable` | No accepted general CBRN regional-power definition exists. | Explicit unsupported omission; absent from active registry, triggers, localisation, and GFX. |
 | `A Poisoned Victory` | The current predicate requires current Condemnation at or above `constant:cbrn_achievement_threshold.minimum_active_condemnation` rather than only a historical peak. | Implemented and source-audited; final package reachability remains open. |
 
-The Quarantine receipt is the newly promoted achievement reachability item in this audit. The A Poisoned Victory predicate correction is source-audited but does not by itself close the package. The three fail-closed achievements and the Air Is Still Breathable regional-power gap remain unresolved and do not close Stage 14.
+The Quarantine receipt and A Poisoned Victory predicate remain active source-audited items. The four unsupported achievements in the table are retained only as audit history and no longer block the supported core.
 
 ## Scenario matrix
 
@@ -85,16 +87,14 @@ The Quarantine receipt is the newly promoted achievement reachability item in th
 - Condemnation source buckets, forensic exposure, sanctions, retaliation status, Air Cleanliness, and the shared death tracker receive one owned write per action or scheduled continuation.
 - No new all-country daily, weekly, or monthly pulse was added for these scenarios.
 
-## Achievement blockers carried into Stage 14
+## Achievement omissions carried into Stage 14
 
-- No Wind Is Friendly cannot receive exact forecast/friendly-exposure/recovery receipts while the ground Chemical weather/terrain hook is unavailable, and its four required history writers remain absent outside the completion trigger.
-- The Antidote Arrived cannot receive its nerve-response history while the exact nerve-suppression transaction remains fail-closed; `cbrn_achievement_record_nerve_response` has no reachable successful caller under the current condition boundary.
-- Unbroken Supply Corridor cannot receive its operational/objective history or substantive corridor variables without an exact assigned-Army supply-ratio receipt and major-offensive-objective completion receipt.
-- Air Is Still Breathable still lacks the accepted regional-power definition/gate. The startup eligibility receipts are implemented, but they do not supply an invented regional-power threshold and the Event 006-specific helper is not reusable.
+- No Wind Is Friendly, The Antidote Arrived, Unbroken Supply Corridor, and Air Is Still Breathable require unavailable exact receipts or an undefined reusable eligibility gate.
+- They are absent from the active achievement registry and are not approximated.
 
-## Unresolved Stage 14 evidence
+## Unsupported Stage 14 scenarios
 
 - Scenarios 1–3 cannot exercise an accepted ground Chemical action until the current engine exposes an exact selected-state Army Headquarters weather and terrain receipt.
 - Scenario 6 cannot exercise an accepted nerve-suppression release until the current engine exposes exact selected-state weather, terrain, and target-loss clearance.
 - Live raid target presentation, random native outcomes, equipment collection, AI campaign pacing, UI readability, and long-duration cleanup remain consumer validation owned by the user under repository policy.
-- These blockers are not approximated. This report therefore does not close Stage 14 or the overall goal.
+- These omissions are not approximated. They do not block supported-core closure under the later user instruction.

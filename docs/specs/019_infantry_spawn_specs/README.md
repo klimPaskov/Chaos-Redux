@@ -40,9 +40,9 @@ The design keeps the event repeatable, prevents free equipment farming, separate
 
 - This folder owns the accepted Event 19 design. Event 19 is ID `19`, `Minor
   Repeatable`, unclustered, nonterminal, and has no fixed derivative tag.
-- `docs/events/019_infantry_spawn.md` owns the canonical implemented-system
+- `docs/events/019_infantry_spawn/overview.md` owns the canonical implemented-system
   explanation.
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md` owns the direct
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` owns the direct
   scenario contract. The live identity is `SCN-013`; proposed `SCN-008`
   collided with Independence Wave.
 - `docs/systems/chaos_unit_family_registry.md` owns registry contract version 4.
@@ -50,7 +50,7 @@ The design keeps the event repeatable, prevents free equipment farming, separate
   `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
 - `common/scripted_triggers/chaosx_dynamic_triggers.md` owns the shared special
   and nonhuman classifier documentation, and
-  `docs/achievements/019_infantry_spawn_achievements.md` owns the eleven
+  `docs/achievements/019_infantry_spawn/achievements.md` owns the eleven
   achievement proof contracts.
 - The accepted near-completion addendum named above owns the disposition of its
   three findings. Dated implementation and audit evidence lives under

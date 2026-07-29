@@ -1,6 +1,6 @@
 # Super-event research and production prompt: Event 011 Secret Alliance
 
-Status: fulfilled historical implementation prompt. The final title, five route descriptions, quote, remark, image, audio, and presentation lifetime are implemented and documented in `docs/super_events/011_secret_alliance_super_event_research.md`.
+Status: fulfilled historical implementation prompt. The final title, five route descriptions, quote, remark, image, audio, and presentation lifetime are implemented and documented in `docs/super_events/011_secret_alliance/research.md`.
 
 Research and prepare the full super-event package for the first public reveal of the anti-target pact. Read the event specs, `research/011_secret_alliance_super_event_text_research.md`, and the project super-event skill before work.
 
@@ -81,7 +81,7 @@ For every candidate, document:
 
 Preserve the selected source download under the event's documentation asset archive. Convert the final track to 44.1 kHz OGG. Use an event-scoped path:
 
-`music/011_secret_alliance/super_event_<slot>_public_reveal.ogg`
+`sound/011_secret_alliance/super_event_<slot>_public_reveal.wav`
 
 Propose a unique audio ID and sound wrapper. Do not reuse another super-event track.
 
@@ -89,11 +89,11 @@ Propose a unique audio ID and sound wrapper. Do not reuse another super-event tr
 
 Create or update:
 
-- `docs/super_events/011_secret_alliance_super_event_research.md`
+- `docs/super_events/011_secret_alliance/research.md`
 - selected and backup quote notes
 - final title, description, button remark, and quote package
 - audio candidate table
-- selected source audio and final OGG
+- selected source audio and final WAV
 - license and attribution notes
 - image handoff reference
 - proposed super-event slot and unique audio ID
@@ -103,4 +103,4 @@ Do not edit event, localisation, GFX, GUI, sound definition, or spreadsheet file
 
 ## Completion gate
 
-Do not call the super-event package ready if the final audio source, license, recording rights, unique track, final OGG, selected quote, title, description, button text, image handoff, or implementation identifiers remain unresolved. Report any blocker directly.
+Do not call the super-event package ready if the final audio source, license, recording rights, unique track, final WAV, selected quote, title, description, button text, image handoff, or implementation identifiers remain unresolved. Report any blocker directly.

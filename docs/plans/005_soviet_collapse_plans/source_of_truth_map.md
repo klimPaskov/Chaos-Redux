@@ -33,7 +33,7 @@ This map tells the next parent agent which documents to trust first. It does not
 
 | Source | Use for | Caveat |
 | --- | --- | --- |
-| `docs/events/005_soviet_collapse.md` | Compact current event overview, main systems, release behavior, focus reward policy, evolution families, current priority. | Do not treat as a final completion report. It now records gradual active releases, terminal/max release boundaries, standalone scenarios, pending evolution-detail parity, and no active flag work. |
+| `docs/events/005_soviet_collapse/overview.md` | Compact current event overview, main systems, release behavior, focus reward policy, evolution families, current priority. | Do not treat as a final completion report. It now records gradual active releases, terminal/max release boundaries, standalone scenarios, pending evolution-detail parity, and no active flag work. |
 
 ## Current Working Ledgers
 
@@ -53,7 +53,7 @@ This map tells the next parent agent which documents to trust first. It does not
 
 | Source | Why accepted |
 | --- | --- |
-| `docs/events/005_soviet_collapse.md` | Current compact overview and urgent playability routing. It is a summary, not a completion report and not a blanket deletion of older evidence. |
+| `docs/events/005_soviet_collapse/overview.md` | Current compact overview and urgent playability routing. It is a summary, not a completion report and not a blanket deletion of older evidence. |
 | `docs/plans/005_soviet_collapse_plans/documentation_state.md` | Current resume/status packet, accepted constraints, known contradictions, queued work, and no-flag boundary. |
 | `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` | Current documentation routing map. |
 | Nine core and supplemental files under `docs/specs/005_soviet_collapse_specs/` | Source design and final completion standards, including the UWR and KMB supplements, read through the current no-flag-touching boundary for urgent playability work. |

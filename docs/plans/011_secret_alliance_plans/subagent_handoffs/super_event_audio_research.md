@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Accepted and promoted. Audio ID `43` and both final derivatives are implemented and wired. The main-agent wiring work listed later in this research handoff is historical; `docs/super_events/011_secret_alliance_super_event_research.md` and `docs/super_events/super_event_audio_packages.md` are the current implementation records.
+Accepted and promoted. Audio ID `43` and both final derivatives are implemented and wired. The main-agent wiring work listed later in this research handoff is historical; `docs/super_events/011_secret_alliance/research.md` and `docs/super_events/super_event_audio_packages.md` are the current implementation records.
 
 ## Scope and outcome
 
@@ -81,7 +81,7 @@ Recommended courtesy attribution:
 
 ## Editing and conversion
 
-The retained source interval is `00:00.940113` through `00:87.040113`. This removes the source's leading silence and ends inside the short natural break that begins at approximately `00:86.966`. The edit adds a `0.40`-second fade-in, a `2.00`-second fade-out, and targets `-18 LUFS` with a `-1.5 dBTP` ceiling. The final OGG measures approximately `-18.07 LUFS`, `-1.93 dBTP`, with `6.3 LU` loudness range.
+The retained source interval is `00:00.940113` through `00:87.040113`. This removes the source's leading silence and ends inside the short natural break that begins at approximately `00:86.966`. The edit adds a `0.40`-second fade-in, a `2.00`-second fade-out, and targets `-18 LUFS` with a `-1.5 dBTP` ceiling. The final WAV measures approximately `-18.07 LUFS`, `-1.93 dBTP`, with `6.3 LU` loudness range.
 
 Actual conversion command:
 
@@ -97,22 +97,22 @@ ffmpeg -y -v warning `
   -metadata date="1992" `
   -metadata license="Public domain composition and U.S. federal government performance" `
   -metadata comment="Edited excerpt: source 00:00.940-00:87.040; 0.40 s fade-in; 2.00 s fade-out; loudness normalized to -18 LUFS target." `
-  "music/011_secret_alliance/super_event_43_public_reveal.ogg" `
+  "sound/011_secret_alliance/super_event_43_public_reveal.wav" `
   -map "[awav]" -c:a pcm_s16le -ar 44100 -ac 2 `
   "sound/011_secret_alliance/super_event_43_public_reveal.wav"
 ```
 
-The matching WAV uses 44.1 kHz stereo signed 16-bit PCM because that is the format used by the current repository super-event sound-channel files and helper definitions.
+The matching WAV uses 44.1 kHz stereo signed 16-bit PCM because that is the format used by the current repository super-event sound files and helper definitions.
 
 ## Final deliverables
 
 | Purpose | Path | Technical result |
 | --- | --- | --- |
 | Preserved source | `docs/assets/011_secret_alliance/source_audio/revelation_us_marine_band_commons_source.ogg` | Ogg Vorbis, 44.1 kHz stereo, `165.746939` s |
-| Music-channel final | `music/011_secret_alliance/super_event_43_public_reveal.ogg` | Ogg Vorbis, 44.1 kHz stereo, nominal 160 kbps, `86.101746` s |
-| Sound-channel final | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | PCM signed 16-bit little-endian, 44.1 kHz stereo, `86.101746` s |
+| Music-channel final | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | Ogg Vorbis, 44.1 kHz stereo, nominal 160 kbps, `86.101746` s |
+| Sound final | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | PCM signed 16-bit little-endian, 44.1 kHz stereo, `86.101746` s |
 
-Both final files decode without errors. The final OGG is not byte-identical to any other OGG under `music/`, and no existing catalogue row or documentation entry uses this work or audio ID.
+Both final files decode without errors. The final WAV is not byte-identical to any other OGG under `music/`, and no existing catalogue row or documentation entry uses this work or audio ID.
 
 ## Proposed main-agent wiring
 
@@ -122,12 +122,12 @@ The following identifiers are proposed but intentionally not written into gamepl
 - Set on reveal: `global.current_super_event_audio_id = 43`
 - Underlying sound ID: `chaosx_super_event_secret_alliance_public_reveal_track`
 - Music helper IDs:
-  - `chaosx_super_event_43_0_5`
-  - `chaosx_super_event_43_1_0`
-  - `chaosx_super_event_43_1_5`
-  - `chaosx_super_event_43_2_0`
-  - `chaosx_super_event_43_2_5`
-  - `chaosx_super_event_43_3_0`
+  - `chaosx_super_event_43_sound_0_5`
+  - `chaosx_super_event_43_sound_1_0`
+  - `chaosx_super_event_43_sound_1_5`
+  - `chaosx_super_event_43_sound_2_0`
+  - `chaosx_super_event_43_sound_2_5`
+  - `chaosx_super_event_43_sound_3_0`
 - Sound-effect wrappers:
   - `chaosx_super_event_43_sound_0_5`
   - `chaosx_super_event_43_sound_1_0`
@@ -135,7 +135,7 @@ The following identifiers are proposed but intentionally not written into gamepl
   - `chaosx_super_event_43_sound_2_0`
   - `chaosx_super_event_43_sound_2_5`
   - `chaosx_super_event_43_sound_3_0`
-- Representative zero-chance station entry: `chaosx_super_event_43_1_5`
+- Representative zero-chance station entry: `chaosx_super_event_43_sound_1_5`
 - Stable file slug: `public_reveal`
 
 The numeric audio ID is independent from the visible super-event slot. The main agent should allocate or confirm the display slot while wiring the Event 011 text and image package.

@@ -15,7 +15,7 @@ This focused decision and mission patch removes the permanent Evolution III cate
 - `common/scripted_effects/019_infantry_spawn_derivative_package_effects.txt`: the former-parent revolt marker and Board close are success-gated at the final exact-transfer or one-state takeover proof.
 - `common/scripted_effects/019_infantry_spawn_scenario_effects.txt`: a proven direct-scenario dynamic breakaway closes the former parent's ordinary Board and terminal surface.
 - `common/scripted_effects/019_infantry_spawn_pulse_effects.txt`: passive pulses refresh the Board gate before and after management so quiet closeout clears a stale Board-open flag.
-- `docs/events/019_infantry_spawn.md` and `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md`: lifecycle contract updated to match implementation.
+- `docs/events/019_infantry_spawn/overview.md` and `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md`: lifecycle contract updated to match implementation.
 
 ## Before and after behavior
 

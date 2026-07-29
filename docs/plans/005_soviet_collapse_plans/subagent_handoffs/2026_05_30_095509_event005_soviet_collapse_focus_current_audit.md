@@ -11,7 +11,7 @@ Audited:
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt`
 - `common/scripted_effects/005_soviet_collapse_effects.txt`
-- relevant event 005 specs/plans and `docs/events/005_soviet_collapse.md`
+- relevant event 005 specs/plans and `docs/events/005_soviet_collapse/overview.md`
 
 Explicitly not touched:
 - `gfx/flags/`
@@ -48,10 +48,10 @@ Localisation keys and icon ids changed:
 | Moldova | `soviet_collapse_moldova_focus_tree`, `005_soviet_collapse_republics.txt:7707`, 48 focuses, x 2-26, y 0-13 | Partial, layout risk | Dniester, Prut/Romania, Ukraine, and river-state branches exist. Layout scan finds line-through-node risks and heavy crossing clusters. |
 | Belarus | `soviet_collapse_belarus_focus_tree`, `005_soviet_collapse_republics.txt:8868`, 53 focuses, x 3-28, y 0-16 | Partial | National council/socialist/transit/foreign paths exist. Corridor, forest, rail, and League branches need stronger mechanics and cleaner line paths. |
 | Kazakhstan | `soviet_collapse_kazakhstan_focus_tree`, `005_soviet_collapse_republics.txt:10199`, 92 focuses, x 2-35, y 0-12 | Partial, major layout risk | Largest republic tree. Route concepts exist, but scan finds 13 line-through-node risks. Needs broad reflow and clearer Alash/socialist/resource/southern-route payoffs. |
-| Full custom splinters | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` in `005_soviet_collapse_custom_splinters.txt` | Partial | Most are 47-focus templates with country-specific text but many cloned route skeletons. They need OP/specialized country mechanics rather than mostly shared helper rewards. |
+| Full custom splinters | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` in `005_soviet_collapse_custom_splinters.txt` | Partial | Most are 47-focus templates with country-specific text but many cloned route skeletons. They need OP/specialized country mechanics rather than mostly shared helper rewards. |
 | Crisis/special splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` in `005_soviet_collapse_custom_splinters.txt` | Mixed, too short | `PRA`, `DSC`, and `NRF` have stronger hooks than most, but 18-22 focuses is still shallow for campaign-defining chaos actors unless explicitly classified as compact crisis trees. |
 | Factory successors | `CFR`, `MFR`, `OGB` in `005_soviet_collapse_factory_successors.txt` | Mixed | `CFR` and `MFR` have larger branch maps. `OGB_soviet_collapse_focus_tree`, `005_soviet_collapse_factory_successors.txt:1171`, 23 focuses, remains shallow for an OP restoration/high-chaos successor. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` in `005_soviet_collapse_ancient_restorations.txt` | Simplified | Each has 16 focuses. They include claims and decision hooks but not enough depth for distinct political, industrial, military/diplomacy, and expansion/mechanic branches. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` in `005_soviet_collapse_ancient_restorations.txt` | Simplified | Each has 16 focuses. They include claims and decision hooks but not enough depth for distinct political, industrial, military/diplomacy, and expansion/mechanic branches. |
 
 ## Idea Spam and Repeated Idea Grants
 
@@ -110,7 +110,7 @@ Other exact line-through-node risks found by parser:
 - `moldova_soviet_collapse_bessarabian_legal_files` to `moldova_soviet_collapse_independent_republic_council` crosses `moldova_soviet_collapse_chisinau_radio_watch`, `005_soviet_collapse_republics.txt:7844` and `:8243`.
 - `kaz_soviet_collapse_oil_field_protection_orders` to `kaz_soviet_collapse_emergency_oil_boards` crosses `kaz_soviet_collapse_resource_concessions_debate`, `kaz_soviet_collapse_foreign_trucks_local_drivers`, and `kaz_soviet_collapse_rail_guard_brigades`, `005_soviet_collapse_republics.txt:11730`, `:10561`, `:11299`, `:11891`.
 - `UWD_propaganda` to `UWD_settlement` crosses `UWD_rail_yard_repair_trust`, `005_soviet_collapse_custom_splinters.txt:19022` and `:19203`.
-- `BAC_war_plan` to `BAC_militia_training_yards` crosses `BAC_industry_plan`, `005_soviet_collapse_custom_splinters.txt:22737` and `:22525`.
+- `ADX_war_plan` to `ADX_militia_training_yards` crosses `ADX_industry_plan`, `005_soviet_collapse_custom_splinters.txt:22737` and `:22525`.
 
 This is not a safe "move one focus" issue. The worst trees have dense route webs where moving one focus risks creating new crossings or breaking branch readability.
 
@@ -135,12 +135,12 @@ Reward or title mismatch examples needing parent follow-up:
 - `OGB_kazan_ferry_offices`, `005_soviet_collapse_factory_successors.txt:1321`: named Kazan ferry focus gives random owned/core factory-style construction instead of targeted Kazan/Volga ferry-office mechanics.
 - `PRA_claim_the_branch_lines`, `005_soviet_collapse_custom_splinters.txt:1656`: title implies territorial/rail claims; focus lacks `FOCUS_FILTER_ANNEXATION` and should make the rail-junction claim mechanics visible.
 - `TSC_claim_the_impact_zone`, `005_soviet_collapse_custom_splinters.txt:2156`: title implies territorial claims; payoff appears delayed to later route/endgame effects.
-- Ancient charter focuses `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, and `ALN_alan_pass_charter`: localisation implies foundational restoration politics, but each tree has only 16 focuses and compact rewards.
+- Ancient charter focuses `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, and `ABX_alan_pass_charter`: localisation implies foundational restoration politics, but each tree has only 16 focuses and compact rewards.
 
 ## Missing or Simplified Content
 
 High-priority broad gaps:
-- Shallow ancient restorations: `KZR`, `SOG`, `KHW`, and `ALN` need full political, industry, military/diplomacy, and expansion/mechanic branches or explicit design approval as compact side trees.
+- Shallow ancient restorations: `APX`, `SOG`, `ANX`, and `ABX` need full political, industry, military/diplomacy, and expansion/mechanic branches or explicit design approval as compact side trees.
 - Shallow crisis/high-chaos trees: `TSC`, `RMC`, `ICD`, `NRF`, `DSC`, and `PRA` need deeper special mechanics if they are meant to be long-lived campaign actors.
 - `OGB_soviet_collapse_focus_tree` remains too shallow at 23 focuses for an OP restored Volga/old-name successor.
 - Full custom splinters still look template-derived in reward structure. Country-specific localisation exists, but the branch mechanics need more local claims, cores, war goals, unit templates, factories, route decisions, and AI strategies.
@@ -161,7 +161,7 @@ Remaining gaps:
 
 1. Full route reflow for Ukraine, Kazakhstan, Moldova, and Belarus before more small pathline patches. These trees have the highest layout risk and user-visible pathline problems.
 2. Route reward pass for custom splinters, starting with `TSC`, `RMC`, `ICD`, `NRF`, `PRA`, `DSC`, `OGB`, then the 47-focus templates.
-3. Ancient restoration expansion plan for `KZR`, `SOG`, `KHW`, and `ALN`.
+3. Ancient restoration expansion plan for `APX`, `SOG`, `ANX`, and `ABX`.
 4. Replace repeated helper-variable rewards with concrete route mechanics: decision unlocks, route-specific units, state-targeted construction, claims/cores, war goals, factory/rail/port programs, and postwar settlement.
 5. Add route-aware AI strategy families outside Ukraine/Belarus/Kazakhstan.
 6. Unique focus icon assignment pass after route shapes stabilize; do not edit flags or flag sprites as part of this focus pass.

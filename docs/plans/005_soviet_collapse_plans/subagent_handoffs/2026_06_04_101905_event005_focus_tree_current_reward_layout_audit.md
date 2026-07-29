@@ -65,7 +65,7 @@ Remaining pathline risk is long one-row lateral edges. Exact worst examples:
 - `kaz_soviet_collapse_the_alash_courts` at `005_soviet_collapse_republics.txt:10241`: x22/y4 from `kaz_soviet_collapse_alash_memory_restored` x36/y3.
 - `DHC_river_and_steppe_compact` at `005_soviet_collapse_custom_splinters.txt:14669`: x12/y10 from `DHC_hardline_against_commissars` x2/y9.
 - `UWD_workers_canteen_compact` at `005_soviet_collapse_custom_splinters.txt:19120` and `UWD_kama_foundry_contracts` at `19154`: compact crosses from x6/y6 to x16/y7, then back to x3/y8.
-- `BAC_militia_training_yards` at `005_soviet_collapse_custom_splinters.txt:22551`: x15/y9 from `BAC_war_plan` x0/y8.
+- `ADX_militia_training_yards` at `005_soviet_collapse_custom_splinters.txt:22551`: x15/y9 from `ADX_war_plan` x0/y8.
 
 ## Concrete Next Targets
 
@@ -73,7 +73,7 @@ Remaining pathline risk is long one-row lateral edges. Exact worst examples:
 2. Add visible late-route payoff to MFR focuses `MFR_war_market_never_sleeps`, `MFR_output_is_victory`, and `MFR_no_peace_without_orders`: decisions, arms-client mechanics, contract missions, or sponsor/dependency consequences.
 3. Add a concrete OGB payoff to `OGB_future_bulgaria_file`: claim preparation, trade-city integration, court/archive decision unlock, or future-Bulgaria event hook with visible player action.
 4. Thin repeated high-chaos helper-only call sites in Ukraine by giving later bread-state focuses unique branch consequences instead of relying on the once-per-country high-chaos payload.
-5. Repair the DHC/UWD/BAC custom-splinter long lateral lines in a focused layout-only pass after the Kazakhstan tranche.
+5. Repair the DHC/UWD/ADX custom-splinter long lateral lines in a focused layout-only pass after the Kazakhstan tranche.
 
 ## Validation
 

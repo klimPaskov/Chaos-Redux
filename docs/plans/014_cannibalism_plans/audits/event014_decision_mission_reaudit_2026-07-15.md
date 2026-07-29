@@ -176,7 +176,7 @@ Mission reset and scenario atomicity:
 
 Documentation:
 
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - this final reaudit
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_decision_mission_findings_remediation_handoff_2026-07-15.md`
 

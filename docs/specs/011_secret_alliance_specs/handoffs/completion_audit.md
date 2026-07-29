@@ -72,7 +72,7 @@ Slot `73` and audio ID `43` open only after the public transaction has selected 
 | AI | Role-aware `front_unit_request`, full-array suspect selection, shared direct-action helpers, explicit ownership, exact state selectors, and 120/180/120-day cooldowns are implemented. Dynamic political actions reserve 170 PP for the rounded 168 PP mixed-profile maximum at scale 2.2425. |
 | Event Log | Automatic-only coordinated and public-reveal history uses durable target-owned actor flags. |
 | Super-event | Five route packages, stable presentation faction helper, 14-day slot, day-15 cleanup, image, audio, quote, and remark are wired. |
-| Audio | `Revelation`, audio ID `43`, exact final OGG and WAV duration `86.101746` seconds at 44.1 kHz. The 1901 composition and 1992 United States Marine Band federal-government recording have separate public-domain evidence. |
+| Audio | `Revelation`, audio ID `43`, exact final WAV and WAV duration `86.101746` seconds at 44.1 kHz. The 1901 composition and 1992 United States Marine Band federal-government recording have separate public-domain evidence. |
 | Assets and animation | 57 runtime DDS targets, 38 transparent assets, 17 unique decision sources, seven idea sources, eight authored confrontation-emblem source frames, eight processed frames, one still fallback, and six achievement triplets passed the package validator. |
 | Achievements | Six contracts use durable origin, evidence, reveal, capital, fracture, roster, and outcome facts. Every tooltip requires the player not to capitulate, relevant forced/debug disqualifiers are disclosed, and Two Giants uses in-world reveal wording. |
 | Scenario | SCN-009 has five AI-only compositions and Low, Medium, High, and Maximum intensities with safe-pool and outcome snapshots. |

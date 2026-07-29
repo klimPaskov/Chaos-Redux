@@ -24,7 +24,7 @@ Post-reveal focus cadence is documented as 21/35/56 days for short/normal/termin
 - `common/dynamic_modifiers/014_cannibalism_unified_decision_modifiers.txt`
 - `common/script_constants/014_cannibalism_unified_decision_constants.txt`
 - `localisation/english/014_cannibalism_l_english.yml`
-- `docs/events/014_cannibalism.md`
+- `docs/events/014_cannibalism/overview.md`
 - this handoff
 
 ## Key mechanics

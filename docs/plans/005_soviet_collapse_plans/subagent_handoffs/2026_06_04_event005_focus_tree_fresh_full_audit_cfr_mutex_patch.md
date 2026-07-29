@@ -106,9 +106,9 @@ Remaining visible route-lock mismatch candidates:
 - `DSC_republic_of_roll_calls`
 - `NRF_port_republic_of_the_living`
 - `ICD_citizens_after_death`
-- `BSC_settlement`
+- `AEX_settlement`
 - `TNC_settlement`
-- `ALA_settlement`
+- `AAX_settlement`
 - `BBH_settlement`
 - `UDC_settlement`
 - `SDZ_settlement`

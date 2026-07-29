@@ -28,7 +28,7 @@ The endgame helper calls remain visible: `soviet_collapse_complete_pale_railway_
 | Republic political, industry, expansion, diplomacy, military, high-chaos where relevant | 9 republic/internal/shared trees, 501 focuses | Partial | Ukraine and Kazakhstan are broad; Belarus and shared republic trees still need route readability and reward-identity review. |
 | Custom splinter political/industry/expansion/special branches | 25 custom splinter trees, 1005 focuses | Partial | Most full splinters have 47 focuses. Crisis splinters `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` remain much shallower at 18-22 focuses. |
 | Factory successors with industrial and high-chaos successor identity | `CFR`, `OGB`, `MFR`, 128 focuses | Partial | `CFR` and `MFR` have visible forks. `OGB` remains a 23-focus shallow high-chaos successor relative to the spec. |
-| Ancient restoration modern administration, ancient claim, army, diplomacy, expansion, myth pressure | `KZR`, `SOG`, `KHW`, `ALN`, 64 focuses | Partial | Each ancient restoration is still a 16-focus compact tree and needs deeper route mechanics before completion can be claimed. |
+| Ancient restoration modern administration, ancient claim, army, diplomacy, expansion, myth pressure | `APX`, `SOG`, `ANX`, `ABX`, 64 focuses | Partial | Each ancient restoration is still a 16-focus compact tree and needs deeper route mechanics before completion can be claimed. |
 | High-chaos countries strong and aggressive | High-chaos helpers, war goals, claims, assault columns, and AI strategies appear across splinter endcaps | Partial | Aggression exists, but several route payoffs still read as stacked helper bundles instead of bespoke mechanics. |
 
 ## Audit Counts
@@ -58,9 +58,9 @@ Icon assignments exist everywhere, but repeated icon families remain common. Per
 ## Missing or Simplified Content
 
 - `OGB_soviet_collapse_focus_tree` remains shallow at 23 focuses for a high-chaos successor and still needs deeper trade, religion/society, rival, expansion, and late-game route mechanics.
-- `KZR`, `SOG`, `KHW`, and `ALN` ancient restoration trees remain 16-focus compact trees and do not yet satisfy the full ancient-restoration route promise.
+- `APX`, `SOG`, `ANX`, and `ABX` ancient restoration trees remain 16-focus compact trees and do not yet satisfy the full ancient-restoration route promise.
 - Crisis splinters `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` are mechanically present but still more like crisis packages than full political/industrial/expansion trees.
-- 35 focus joins use an OR prerequisite over mutually exclusive focuses. Some are intentional convergence points, but they should be reviewed for visible pathline clarity. First examples: `ukr_soviet_collapse_free_soil_compromise`, `FTH_industry_plan`, `CFR_apartment_blocks_for_loyalty`, `KZR_khazar_charter`.
+- 35 focus joins use an OR prerequisite over mutually exclusive focuses. Some are intentional convergence points, but they should be reviewed for visible pathline clarity. First examples: `ukr_soviet_collapse_free_soil_compromise`, `FTH_industry_plan`, `CFR_apartment_blocks_for_loyalty`, `APX_khazar_charter`.
 - Visible helper spam remains in 46 focuses by the 3+ visible-helper threshold, especially Ukraine endcaps and custom splinter endcaps.
 
 ## Localisation and Reward Mismatch List

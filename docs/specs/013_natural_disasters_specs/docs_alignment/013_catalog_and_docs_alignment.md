@@ -8,7 +8,7 @@ This file gives player-facing direction for documentation, catalog rows, Event D
 | --- | --- |
 | Event source spec folder | `docs/specs/013_natural_disasters_specs/` remains the source design area after this package is imported. |
 | Working plan folder | Any implementation addendum, audit, or subagent handoff belongs in `docs/plans/013_natural_disasters_plans/`. |
-| Event doc | `docs/events/013_natural_disasters.md` should explain the live system after implementation, not the planning process. |
+| Event doc | `docs/events/013_natural_disasters/overview.md` should explain the live system after implementation, not the planning process. |
 | Catalog workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` should be updated only after final in-game wording exists. |
 | Scenario docs | Disaster Barrage should be documented with type and intensity controls after it is wired. |
 | Related placeholders | Event 046 and Event 099 docs should be updated only to reflect their placeholder or bridge status. Event 051 stays separate. |
@@ -68,7 +68,7 @@ The Natural Disasters cluster is unusual because the same repeatable event can o
 | Cooldown | Bigger abnormal disasters should not repeat too frequently through clusters. |
 | News behavior | Cluster details should note that news is throttled for smaller hits in later stages. |
 
-## Documentation structure for `docs/events/013_natural_disasters.md`
+## Documentation structure for `docs/events/013_natural_disasters/overview.md`
 
 | Section | Direction |
 | --- | --- |

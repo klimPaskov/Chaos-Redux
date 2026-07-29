@@ -249,8 +249,8 @@ No gameplay, scripted localisation, interface, asset, audio, source-research, or
 | `localisation/english/chaosx_gui_l_english.yml` | `451862430b424bf603626fac24aa66dad17120c3517c0447b41edb435e83ac1b` |
 | `localisation/english/chaosx_music_l_english.yml` | `e6516afd808b30f7c825f2f9d8398d09c773406c93ee35249debc2779cbc4c19` |
 | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | `6aa758d699d814599a1011d5f9acc1089bbf42baf053be7a4dbabadd525091a2` |
-| `docs/super_events/015_utopia_manifesto_super_event_text_research.md` | `4eb5209323e8746ebdfc1c949298e45482db313f03f8565c5f35517967eb93af` |
-| `docs/super_events/015_utopia_manifesto_super_event_audio_research.md` | `2c87617e505064368af282bf885664e47e78494efca80f137d9a76ec6d54d655` |
+| `docs/super_events/015_utopia_manifesto/text_research.md` | `4eb5209323e8746ebdfc1c949298e45482db313f03f8565c5f35517967eb93af` |
+| `docs/super_events/015_utopia_manifesto/audio_research.md` | `2c87617e505064368af282bf885664e47e78494efca80f137d9a76ec6d54d655` |
 | `music/chaosx_music_track_list.html` | `7480d2595f9df579b8459b57547a6a53d25911644887a863a3cc248d29e775c2` |
 
 ## Meaningful validation limits

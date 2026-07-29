@@ -4,7 +4,7 @@ Date: 2026-07-15
 
 Audit basis: live shared working tree at Git HEAD `7dd903a81d59db08f16e02c97262a43803827ea5`. The working tree contains concurrent Event 014 work, so the live files cited below, not Git HEAD or the pre-consolidation audit, are the implementation authority.
 
-Audit mode: source, control-flow, inventory, and direct visual-asset re-audit after the Event 014 runtime consolidation, the recovery-state population fix, the focus layout repair, and the CBA-CBD portrait refresh. No country-package gameplay repair was required by this pass.
+Audit mode: source, control-flow, inventory, and direct visual-asset re-audit after the Event 014 runtime consolidation, the recovery-state population fix, the focus layout repair, and the CBA-AIX portrait refresh. No country-package gameplay repair was required by this pass.
 
 ## Verdict
 
@@ -79,8 +79,8 @@ The dedicated runtime inventory remains exactly 23 current files. The consolidat
 - `common/scripted_effects/014_cannibalism_effects.txt:4699-4711` builds the initial leader portrait as `GFX_portrait_[slot]_warlord_[region]`. Lines 12248-12310 reuse the same retained slot and region pair for integrated CBL commanders and servants.
 - `common/scripted_localisation/014_cannibalism_scripted_localisation.txt:384-408` maps all eight slot tokens and all seven region tokens. `localisation/english/014_cannibalism_l_english.yml:408-422` resolves those tokens exactly.
 - The live portrait inventory is 56/56 files, seven for each slot. Every file is 156x210. All 56 SHA-256 hashes are unique, with zero duplicate-hash group and zero dimension mismatch.
-- Direct visual review of both current contact sheets found distinct faces, clothing, settings, and disturbing actions. None of the 56 images uses a prison cell, bars, cage, restraints, prisoner uniform, or prison-origin framing. The regenerated CBA-CBD set keeps the required CBA South America skull-lick composition and corrects the remaining baldness inconsistencies.
-- The current CBA-CBD contact sheet is `docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/contact_sheets/cba_cbd_warlords_contact_sheet.png`, SHA-256 `a084cad054387fd6e66a6ecf32a48999630b26e445fd836afe50ba7cf6312f72`. Its 28 source, processed, and DDS files have independent provenance recorded in the adjacent prompt and validation documents.
+- Direct visual review of both current contact sheets found distinct faces, clothing, settings, and disturbing actions. None of the 56 images uses a prison cell, bars, cage, restraints, prisoner uniform, or prison-origin framing. The regenerated CBA-AIX set keeps the required CBA South America skull-lick composition and corrects the remaining baldness inconsistencies.
+- The current CBA-AIX contact sheet is `docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/contact_sheets/cba_cbd_warlords_contact_sheet.png`, SHA-256 `a084cad054387fd6e66a6ecf32a48999630b26e445fd836afe50ba7cf6312f72`. Its 28 source, processed, and DDS files have independent provenance recorded in the adjacent prompt and validation documents.
 - The CBE-CBH contact sheet is `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/contact_sheets/processed_contact_sheet.png`; its 28 live files complete the same seven-region matrix.
 - All 120 CBA-CBH flag TGA files exist: eight tags times five ideology filenames times three sizes. All 120 hashes are unique. Header checks found zero dimension mismatch at 82x52, 41x26, and 10x7.
 - `localisation/english/014_cannibalism_l_english.yml:197-332` supplies complete dynamic country, adjective, ideology, and party localisation for all eight reusable tags.
@@ -150,7 +150,7 @@ This is a live-source and direct-asset audit, not an in-game runtime session. Th
 - `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_country_package_consolidation_reaudit_handoff_2026-07-15.md`
 
-No gameplay, localisation, interface, asset, manifest, spreadsheet, or source specification was changed by this country-package re-audit. The live recovery guard, focus coordinates, and CBA-CBD portrait assets were separately owned concurrent changes and are cited here only as audited current state. No commit was created.
+No gameplay, localisation, interface, asset, manifest, spreadsheet, or source specification was changed by this country-package re-audit. The live recovery guard, focus coordinates, and CBA-AIX portrait assets were separately owned concurrent changes and are cited here only as audited current state. No commit was created.
 
 ## Simplifications, omissions, and blockers
 

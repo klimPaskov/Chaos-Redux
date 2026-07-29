@@ -8,7 +8,7 @@ Subagent task path: `/root/event014_warlord_portraits_americas_oceania`
 
 Completed all 16 parent-owned North America and South America CBA-CBH warlord portraits. Each selected portrait has an independent built-in `image_gen` source PNG, manually reviewed 156x210 RGBA processed PNG, and uncompressed one-mip BGRA DDS at the already-registered runtime path.
 
-The parent reviewed and accepted the final source board after rejecting ordinary-looking early attempts. The final actions, faces, asymmetry, expressions, props, crops, clothing constructions, and backgrounds are visibly distinct within the Americas set and do not repeat the accepted Europe CBA skull-licking or CBB ration-biscuit actions.
+The parent reviewed and accepted the final source board after rejecting ordinary-looking early attempts. The final actions, faces, asymmetry, expressions, props, crops, clothing constructions, and backgrounds are visibly distinct within the Americas set and do not repeat the accepted Europe CBA skull-licking or AHX ration-biscuit actions.
 
 ## Ownership revision
 

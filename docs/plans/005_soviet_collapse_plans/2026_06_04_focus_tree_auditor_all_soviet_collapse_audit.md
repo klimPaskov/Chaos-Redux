@@ -45,7 +45,7 @@ No focus-file patches were made. The defects found are broad route/layout/reward
 17. `FEV_war_plan` line 16698 has visible repeated building rewards and generic security payoff; it needs a more distinctive Far Eastern war mechanic or decision hook.
 18. `FEV_harbor_fortress_line` line 16617 has a large building payload hidden behind a tooltip. The tooltip approach is better, but the branch still reads as construction spam without a clearer port/fortress mechanic.
 19. `NRF_fleet_that_does_not_dock` line 3688 and `NRF_northern_revenant_fleet` line 3774 are strong identity beats, but the mid-branch between them is still mostly resources, claims, and generic pressure; add a unique naval mission loop or fleet-raising decision chain.
-20. Ancient restorations are too shallow overall. `KZR_khazar_charter` line 281, `SOG_sogdian_city_charter` line 690, `KHW_khwarazmian_water_charter` line 1089, and `ALN_expansionist_mountain_claims` line 1451 have oversized direct variable/claim batches without enough playable systems around them.
+20. Ancient restorations are too shallow overall. `APX_khazar_charter` line 281, `SOG_sogdian_city_charter` line 690, `ANX_khwarazmian_water_charter` line 1089, and `ABX_expansionist_mountain_claims` line 1451 have oversized direct variable/claim batches without enough playable systems around them.
 
 ## Parent Priorities
 

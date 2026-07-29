@@ -64,10 +64,10 @@ Exact high-priority helper-stacking cases:
 Template-generated custom splinters repeat the same issue heavily. Exact tree starts and helper-stack counts from the current scan:
 
 - `FTH_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:16`; 23 helper-stacked focuses, starting with `FTH_first_guard` at line 53, `FTH_stores` at line 78, `FTH_legitimacy` at line 102, `FTH_rival` at line 126, `FTH_economy` at line 173, `FTH_league` at line 197, `FTH_foreign` at line 221, `FTH_inner_faction` at line 245, `FTH_special_arm` at line 269, `FTH_supply` at line 294, `FTH_enemy_front` at line 318.
-- `BSC_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:4361`; 20 helper-stacked focuses, same route-label pattern beginning with `BSC_first_guard` at line 4397.
+- `AEX_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:4361`; 20 helper-stacked focuses, same route-label pattern beginning with `AEX_first_guard` at line 4397.
 - `UDC_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:10167`; many focuses stack command-network helpers with generic chaos/security helpers, beginning with `UDC_first_guard` at line 10204.
 - `SDZ_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:11375`; many focuses stack archive-control helpers with generic route helpers, beginning with `SDZ_first_guard` at line 11416.
-- `KRS_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:8942`; helper-tooltips repeat across `KRS_first_guard` at line 8979 through `KRS_extreme_gate` at line 9870.
+- `AOX_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:8942`; helper-tooltips repeat across `AOX_first_guard` at line 8979 through `AOX_extreme_gate` at line 9870.
 
 These should be consolidated into route-specific scripted effects that own the visible tooltip and call payload-only helpers internally. For example, a dead-army focus should call one `dsc_apply_dead_congress_aggression_payoff` effect instead of five generic high-chaos helpers.
 
@@ -77,10 +77,10 @@ These trees do not clearly separate political, industry, and expansion branches,
 
 | Tree | File line | Audit finding |
 | --- | --- | --- |
-| `KZR_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:14` | 16-focus mini-tree; ancient identity, trade, war, and state-building are compressed into reward clusters instead of distinct branch families. |
+| `APX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:14` | 16-focus mini-tree; ancient identity, trade, war, and state-building are compressed into reward clusters instead of distinct branch families. |
 | `SOG_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:425` | Same 16-focus structure; politics and economy are mostly name/restoration flavor, expansion is concentrated in border-file/payoff focuses. |
-| `KHW_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:830` | Irrigation/oasis identity is present but not a real industry branch; expansion and legitimacy are payoff helpers. |
-| `ALN_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:1239` | Mountain/pass concept is strong, but branches are too short and expansion helpers carry the actual gameplay. |
+| `ANX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:830` | Irrigation/oasis identity is present but not a real industry branch; expansion and legitimacy are payoff helpers. |
+| `ABX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:1239` | Mountain/pass concept is strong, but branches are too short and expansion helpers carry the actual gameplay. |
 | `PRA_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:1222` | Has rail identity, but politics, industry, military, and expansion interleave in one rail ladder. Needs rail/supply network branch, construction/rolling stock branch, neutral corridor diplomacy, and conquest-by-junction branch. |
 | `TSC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:1831` | Observatory/signals concept exists; industry is mostly random labs/radar, expansion starts late and is not tied to a distinct anomaly mechanic. |
 | `RMC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:2343` | Martyr politics dominates; industry and expansion are shallow shrine/reliquary payoffs. |
@@ -88,7 +88,7 @@ These trees do not clearly separate political, industry, and expansion branches,
 | `NRF_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:3389` | Naval/dead fleet flavor is clear but political/industry/expansion branches are not separated; final conquest route is a reward stack. |
 | `ICD_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:3893` | Death-commissariat tree mirrors RMC/DSC shapes; lacks separate bureaucracy, industry, and expansion branches. |
 | `OGB_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt:1059` | Better than most mini-trees, but industry and expansion are short Volga/heritage side lanes. Needs clearer trade-city economy versus Idel-Ural aggression/diplomacy. |
-| `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` | starts from `005_soviet_collapse_custom_splinters.txt:16` through `24345` | Many are 47-focus generated route-label trees. They have labels like `war_plan`, `industry_plan`, `diplomatic_plan`, `settlement`, `extreme_gate`, but rewards still come from generic helper mixes rather than country-specific political/industry/expansion mechanics. |
+| `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` | starts from `005_soviet_collapse_custom_splinters.txt:16` through `24345` | Many are 47-focus generated route-label trees. They have labels like `war_plan`, `industry_plan`, `diplomatic_plan`, `settlement`, `extreme_gate`, but rewards still come from generic helper mixes rather than country-specific political/industry/expansion mechanics. |
 
 Republic trees generally have branch families, but several are too crowded to read cleanly: Ukraine (`005_soviet_collapse_republics.txt:53`), Kazakhstan (`:10130`), Belarus (`:8813`), Central Asia (`:6532`), Moldova (`:7663`).
 
@@ -124,7 +124,7 @@ The worst mutex geometry remains route selectors stretched across unrelated node
 2. `DSC_soviet_collapse_focus_tree`: make dead congress a war machine. Add a dead-congress political branch, grave ordnance/factory branch, field hospital/rearguard branch, and neighbor aggression branch with claims, cores, war goals, and AI conquer strategies. `DSC_grave_ordnance_claims`, `DSC_claim_the_soldiers_road`, and `DSC_congress_of_the_dead_army` should each call one dead-army scripted payoff, not several generic helpers.
 3. `CFR_soviet_collapse_focus_tree`: make construction directorate equal factories. The tree should visibly create civilian factories, shared slots, infrastructure, construction decisions, contract networks, and client-city protectorates. Replace stacked public-works/site-registry/factory-network helpers with one construction-directorate payoff per focus.
 4. `NRF_soviet_collapse_focus_tree` and `ICD_soviet_collapse_focus_tree`: expand death-state branches. NRF should own ports, convoys, dockyards, coastal forts, naval bases, marines, ghost convoy aggression. ICD should own memorial bureaucracy, dead labor, last-address claims, and unstoppable commissariat expansion.
-5. Ancient restoration trees (`KZR`, `SOG`, `KHW`, `ALN`): convert 16-focus symbolic trees into real restoration packages. Each needs old-name politics, trade/industry, military survival, and expansion/restoration endgame paths.
+5. Ancient restoration trees (`APX`, `SOG`, `ANX`, `ABX`): convert 16-focus symbolic trees into real restoration packages. Each needs old-name politics, trade/industry, military survival, and expansion/restoration endgame paths.
 6. Generated custom splinter 47-focus trees: keep template only as a skeleton. Rewrite per country so `war_plan`, `industry_plan`, `diplomatic_plan`, `settlement`, and `extreme_gate` unlock country-specific mechanics rather than generic helper combinations.
 7. Republic layout pass: Ukraine, Kazakhstan, Belarus, Moldova, Central Asia need pathline cleanup after reward redesign. Avoid route selectors with four mutually locked siblings on one row.
 

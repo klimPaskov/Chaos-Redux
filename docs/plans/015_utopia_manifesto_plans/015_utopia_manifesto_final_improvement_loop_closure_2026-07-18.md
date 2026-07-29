@@ -138,7 +138,7 @@ Minimum final scenario traces:
 
 ### 4. Reconcile closing documentation and catalog evidence - completed by the final pointer pass
 
-- Update `docs/events/015_utopia_manifesto.md`, the completion proof matrix, source-of-truth resume packet, and any affected decision/country/asset matrix to the frozen counts and audit authorities.
+- Update `docs/events/015_utopia_manifesto/overview.md`, the completion proof matrix, source-of-truth resume packet, and any affected decision/country/asset matrix to the frozen counts and audit authorities.
 - Keep historical FAIL reports as dated evidence, but add or point to explicit superseding PASS records.
 - The workbook currently passes. If final player-facing Event Details or evolution wording changes, update the workbook source and run `.tools/export_event_catalog_csv.py`; otherwise do not churn the workbook or export-only CSV files.
 - Remove or disposition any temporary audit artifacts or debug-only lines created by the closing corrections.

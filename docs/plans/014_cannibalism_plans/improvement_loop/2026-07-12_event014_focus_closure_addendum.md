@@ -80,7 +80,7 @@ Update:
 - common/scripted_effects/014_cannibalism_wendigo_focus_effects.txt
 - common/scripted_effects/014_cannibalism_super_event_effects.txt
 - localisation/english/014_cannibalism_l_english.yml
-- docs/events/014_cannibalism.md
+- docs/events/014_cannibalism/overview.md
 - docs/specs/014_cannibalism_specs/specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md
 - docs/specs/014_cannibalism_specs/matrices/ai_strategy_matrix.md
 
@@ -1103,7 +1103,7 @@ Any audit finding is implementation work, not a documentation-only note.
 
 The verified implementation facts are reconciled in:
 
-- docs/events/014_cannibalism.md
+- docs/events/014_cannibalism/overview.md
 - Event 014 spec parts 5, 6, 8, 9, 10, and 12
 - focus_route_matrix.md
 - decision_mission_matrix.md

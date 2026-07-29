@@ -1,6 +1,6 @@
 # Achievement implementation prompt: Event 011 Secret Alliance
 
-Status: fulfilled historical implementation prompt. All six achievements and icon triplets are implemented. Do not rerun this prompt as open work; use the holistic completion audit and `docs/achievements/011_secret_alliance_achievements.md` for current status.
+Status: fulfilled historical implementation prompt. All six achievements and icon triplets are implemented. Do not rerun this prompt as open work; use the holistic completion audit and `docs/achievements/011_secret_alliance/achievements.md` for current status.
 
 Implement the complete achievement set from `matrices/011_secret_alliance_achievement_matrix.md`. Read the event specs, the asset register, the project event skill, and the event-asset skill before work.
 

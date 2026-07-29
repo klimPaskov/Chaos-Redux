@@ -1,17 +1,17 @@
-# Event 014 CBA-CBD Warlord Portrait ImageGen Handoff
+# Event 014 CBA-AIX Warlord Portrait ImageGen Handoff
 
-Status: complete. All 28 CBA-CBD regional/default warlord portraits were independently regenerated with built-in ImageGen, processed to 156x210, converted to the existing live DDS paths, visually reviewed as a complete set, and documented on 2026-07-15.
+Status: complete. All 28 CBA-AIX regional/default warlord portraits were independently regenerated with built-in ImageGen, processed to 156x210, converted to the existing live DDS paths, visually reviewed as a complete set, and documented on 2026-07-15.
 
 ## Outcome
 
-- Four tags covered: CBA, CBB, CBC, and CBD.
+- Four tags covered: CBA, AHX, CBC, and AIX.
 - Seven portrait slots per tag: Europe/default, Africa, Asia, Middle East, North America, Oceania, and South America.
 - Final selected sources: 28 independent built-in ImageGen PNGs with 28 unique SHA-256 hashes.
 - Final processed portraits: 28 unique 156x210 PNGs.
 - Final live textures: 28 unique 156x210 DDS files at the exact pre-registered paths.
 - Every portrait has distinct face anatomy, build, clothing, expression, action, prop, environment, and silhouette.
 - Every action remains legible in the native-size 28-up contact sheet.
-- The corrected CBA Asia, CBB Asia, and CBB Oceania portraits are fully bald.
+- The corrected CBA Asia, AHX Asia, and AHX Oceania portraits are fully bald.
 - CBA South America retains the required visible skull-lick action with tongue-to-temple contact.
 - No portrait contains a prison, cell, bars, cage, prisoner uniform, restraint, or confinement setting.
 
@@ -28,9 +28,9 @@ docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/contact_sheets/cba_
 | Tag | Europe/default | Africa | Asia | Middle East | North America | Oceania | South America |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CBA | Bites a dog tag | Sniffs a torn glove | Pulls a false-teeth chain from his mouth with pliers | Whispers into a jawbone-like relic | Wrings a ration cloth beneath his mouth | Stares cross-eyed at a tooth in his palm | Licks a skull at the temple |
-| CBB | Bites a papier-mâché hand | Caresses a carved feast mask | Bites a carved tooth bead from a taut cord | Paints his cheek while watching a mirror shard | Uses a hollow bone-like relic as a telescope | Chews a stitched ration-puppet arm | Slurps from a paper skull-cup through its eye socket |
+| AHX | Bites a papier-mâché hand | Caresses a carved feast mask | Bites a carved tooth bead from a taut cord | Paints his cheek while watching a mirror shard | Uses a hollow bone-like relic as a telescope | Chews a stitched ration-puppet arm | Slurps from a paper skull-cup through its eye socket |
 | CBC | Screams into a paper skull used as a telephone | Gnaws an oversized carved wooden molar | Licks an empty ration spoon | Rubs a tarnished coin across his lips | Balances a tooth-shaped token on his tongue | Plays a bone-like whistle | Sews a grin onto a cloth ration puppet |
-| CBD | Drops a tooth-shaped token into a tiny cup | Threads tooth-shaped tokens on wire with pliers | Files a resin crooked-smile trinket | Arranges resin molars along a steel collar | Kisses a wire-framed paper skull on its painted teeth | Bites a counting-frame wire with carved teeth clenched in his mouth | Pours resin tooth tokens into his open mouth |
+| AIX | Drops a tooth-shaped token into a tiny cup | Threads tooth-shaped tokens on wire with pliers | Files a resin crooked-smile trinket | Arranges resin molars along a steel collar | Kisses a wire-framed paper skull on its painted teeth | Bites a counting-frame wire with carved teeth clenched in his mouth | Pours resin tooth tokens into his open mouth |
 
 ## Source generation and quality gate
 
@@ -47,7 +47,7 @@ Generation accounting:
 Moderation request IDs:
 
 - 6613135f-0ec8-449e-8903-1aa8a1d4c5b8: initial CBA North America/South America/Oceania group.
-- 7e5fbfb6-958a-4c58-8fb5-c81e963485e9: later partially persisted CBD group; CBD default and Africa persisted, while Asia and Middle East were retried individually.
+- 7e5fbfb6-958a-4c58-8fb5-c81e963485e9: later partially persisted AIX group; AIX default and Africa persisted, while Asia and Middle East were retried individually.
 
 No moderation retry exceeded one additional attempt. No alternate source route, CLI generator, local procedural art, other model, derivative portrait, or transformed-copy fallback was used.
 
@@ -59,7 +59,7 @@ docs/assets/014_cannibalism/leader_portraits_refresh/cba_cbd/prompts/warlord_pro
 
 Every selected source was processed with:
 
-- .tools/process_hoi4_portrait.py leader
+- .agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader
 - explicit full-source crop from the selected master dimensions
 - source-kind fictional
 - the canonical leader reference directory
@@ -92,7 +92,7 @@ Asset package:
 
 Live textures:
 
-- 28 leader_CBA_warlord*.dds through leader_CBD_warlord*.dds files under gfx/leaders/014_cannibalism/
+- 28 leader_CBA_warlord*.dds through leader_AIX_warlord*.dds files under gfx/leaders/014_cannibalism/
 
 Handoff:
 

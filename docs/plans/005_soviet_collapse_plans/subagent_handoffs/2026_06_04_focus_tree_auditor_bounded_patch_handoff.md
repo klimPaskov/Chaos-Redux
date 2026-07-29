@@ -53,10 +53,10 @@ Required local references consulted before patching:
 
 These focus rewards are still large direct-effect bundles and should be moved into identity-specific scripted effects rather than patched one-by-one here:
 
-- `KZR_soviet_collapse_ancient_focus_tree`: `KZR_caspian_patrol_letters`, `KZR_old_border_files`, `KZR_khazar_charter`
+- `APX_soviet_collapse_ancient_focus_tree`: `APX_caspian_patrol_letters`, `APX_old_border_files`, `APX_khazar_charter`
 - `SOG_soviet_collapse_ancient_focus_tree`: `SOG_old_city_border_files`, `SOG_sogdian_city_charter`
-- `KHW_soviet_collapse_ancient_focus_tree`: `KHW_canal_recognition_letters`, `KHW_old_oasis_border_files`, `KHW_khwarazmian_water_charter`
-- `ALN_soviet_collapse_ancient_focus_tree`: `ALN_mountain_envoy_guarantees`, `ALN_old_pass_border_files`, `ALN_alan_pass_charter`
+- `ANX_soviet_collapse_ancient_focus_tree`: `ANX_canal_recognition_letters`, `ANX_old_oasis_border_files`, `ANX_khwarazmian_water_charter`
+- `ABX_soviet_collapse_ancient_focus_tree`: `ABX_mountain_envoy_guarantees`, `ABX_old_pass_border_files`, `ABX_alan_pass_charter`
 - `NRF_soviet_collapse_focus_tree`: `NRF_living_harbor_committees`
 
 Parent implementation should create/extend scripted effects in `common/scripted_effects/005_soviet_collapse_effects.txt` for each tag's border-file, charter, and envoy/patrol payoff pattern, then leave focus rewards as flags, tooltips, and one helper call.

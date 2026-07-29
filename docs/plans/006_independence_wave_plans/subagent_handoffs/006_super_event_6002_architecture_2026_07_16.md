@@ -5,7 +5,7 @@
 **Reserved runtime identity:** display slot `24`, audio id `6002`
 **Dangerous super-event:** **Every Border a Casus Belli**
 **Original audit verdict:** **NOT READY for gameplay implementation**
-**Parent closeout:** **RESOLVED; the implemented contract in `docs/super_events/006_independence_wave_super_event_research.md` is authoritative**
+**Parent closeout:** **RESOLVED; the implemented contract in `docs/super_events/006_independence_wave/research.md` is authoritative**
 
 The architecture and bounded call sites are mapped, and the final image/audio packages are ready. Runtime implementation must not begin until the five blocking contracts in [Blocking decisions](#blocking-decisions) are resolved. In particular, the present Event 6 state cannot prove the accepted “immediate coordinated claims” or “aggressive bloc center” conditions without inventing semantics, and no safe policy currently exists for player-scoped audio or a busy shared super-event display.
 
@@ -317,12 +317,12 @@ Slot 24’s image dispatcher must return this exact sprite token.
 
 The final production files are ready:
 
-- `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg` (~109.99 seconds, 44.1 kHz);
+- `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` (~109.99 seconds, 44.1 kHz);
 - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`.
 
 Registries already exist:
 
-- `music/chaosx_super_event_music.asset:846-852`: six setting variants `chaosx_super_event_6002_0_5` through `_3_0`;
+- `music/chaosx_super_event_music.asset:846-852`: six setting variants `chaosx_super_event_6002_sound_0_5` through `_3_0`;
 - `music/chaosx_super_event_music.txt:264-266`: zero-chance representative track;
 - `sound/chaosx_sound.asset:278-283`, raw sound near line 428, and setting wrappers at lines 2045-2051.
 
@@ -332,7 +332,7 @@ No collision exists in the super-event audio namespace. An unrelated unit priori
 
 ### Settings-aware path
 
-`play_current_super_event_audio` in `common/scripted_effects/chaosx_settings_effects.txt:4874-4927` dynamically dispatches the sound/music wrappers from `global.current_super_event_audio_id` and the current country’s user settings. Its comments and behavior require the current scope to be the player country that should hear the event.
+`play_current_super_event_audio` in `common/scripted_effects/chaosx_settings_effects.txt:4874-4927` dynamically dispatches the sound wrappers from `global.current_super_event_audio_id` and the current country’s user settings. Its comments and behavior require the current scope to be the player country that should hear the event.
 
 The Event 6 mutation transactions can run in an AI coordinator or released-country scope. Calling the helper directly from those effects is unsafe. The architecture must not silently add a world iteration: `on_daily`/`on_weekly` scans are forbidden, and even a one-shot `every_country` player search requires explicit parent approval under the repository rule.
 

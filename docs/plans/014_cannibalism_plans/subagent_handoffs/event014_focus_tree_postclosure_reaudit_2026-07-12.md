@@ -1,5 +1,9 @@
 # Event 014 Focus-Tree Post-Closure Re-Audit
 
+> **Historical snapshot.** The closure facts below were later promoted into
+> the consolidated Event 014 focus audit and package status. Refer to those
+> current authorities for counts, assets, and completion state.
+
 Date: 2026-07-13
 Requested audit-series date: 2026-07-12
 Mode: independent read-only gameplay, AI, localisation, and asset audit
@@ -99,7 +103,7 @@ The earlier six-DDS dependency is therefore resolved and is not a blocker in thi
 
 ### P2 — Source-of-truth documentation reconciliation was pending
 
-At the frozen audit snapshot, the implemented terminal hunt, enemy-death receipt muster, inherited winter cell, structural Pack/origin/commander stages, and exact scorer consumers were not yet reconciled into `docs/events/014_cannibalism.md`, the focus/decision/AI/asset/idea matrices, package status/validation, package manifest, and the live asset ledgers required by the accepted closure addendum.
+At the frozen audit snapshot, the implemented terminal hunt, enemy-death receipt muster, inherited winter cell, structural Pack/origin/commander stages, and exact scorer consumers were not yet reconciled into `docs/events/014_cannibalism/overview.md`, the focus/decision/AI/asset/idea matrices, package status/validation, package manifest, and the live asset ledgers required by the accepted closure addendum.
 
 For example, `decision_mission_matrix.md` still ended with generic Wendigo training and acceleration rows, while `focus_route_matrix.md` described the Wendigo branches only at the pre-closure level. This does not invalidate the verified gameplay, but AGENTS.md forbids a repository completion claim while source-of-truth documentation is stale. The documentation curator owns the queued reconciliation.
 

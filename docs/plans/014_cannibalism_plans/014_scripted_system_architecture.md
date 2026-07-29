@@ -583,12 +583,12 @@ Reserve these eight currently free tags.
 | Slot | Tag | Reservation flag | Scripted-localisation result |
 |---:|---|---|---|
 | 1 | `CBA` | `cannibalism_warlord_slot_1_reserved` | `CBA` |
-| 2 | `CBB` | `cannibalism_warlord_slot_2_reserved` | `CBB` |
+| 2 | `AHX` | `cannibalism_warlord_slot_2_reserved` | `AHX` |
 | 3 | `CBC` | `cannibalism_warlord_slot_3_reserved` | `CBC` |
-| 4 | `CBD` | `cannibalism_warlord_slot_4_reserved` | `CBD` |
+| 4 | `AIX` | `cannibalism_warlord_slot_4_reserved` | `AIX` |
 | 5 | `CBE` | `cannibalism_warlord_slot_5_reserved` | `CBE` |
 | 6 | `CBF` | `cannibalism_warlord_slot_6_reserved` | `CBF` |
-| 7 | `CBG` | `cannibalism_warlord_slot_7_reserved` | `CBG` |
+| 7 | `AMX` | `cannibalism_warlord_slot_7_reserved` | `AMX` |
 | 8 | `CBH` | `cannibalism_warlord_slot_8_reserved` | `CBH` |
 
 The scripted localisation key is `GetCannibalismWarlordSlotTag`. A meta effect injects the selected tag into static tag fields such as `add_core_of`, `release`, and tag scope blocks.

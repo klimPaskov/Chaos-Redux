@@ -50,11 +50,11 @@ Legend: `families` are detected route surfaces, not proof of quality. `idea ops`
 | `DSC_soviet_collapse_focus_tree` | 2775 | 18 | political, industry/logistics, military, diplomacy, expansion | 29; high-chaos x6, military x6, legal x4 | 1 | 8 / 5 / 2 | 14 | 0 | 0 | 1 wide prereq |
 | `NRF_soviet_collapse_focus_tree` | 3351 | 18 | political, industry/logistics, military, diplomacy, expansion | 23; high-chaos x5, legal x4, league x3 | 1 | 5 / 4 / 1 | 15 | 0 | 0 | 1 wide prereq |
 | `ICD_soviet_collapse_focus_tree` | 3854 | 18 | industry/logistics, military, diplomacy, expansion | 23; legal x4, high-chaos x4, league x3 | 1 | 1 / 0 / 1 | 13 | 0 | 0 | 1 wide prereq |
-| `BSC_soviet_collapse_focus_tree` | 4328 | 47 | all major families plus high-chaos | 44; league x7, legal x4, idea update x3 | 0 | 0 / 0 / 0 | 28 | 0 | 3 | clean by heuristic |
+| `AEX_soviet_collapse_focus_tree` | 4328 | 47 | all major families plus high-chaos | 44; league x7, legal x4, idea update x3 | 0 | 0 / 0 / 0 | 28 | 0 | 3 | clean by heuristic |
 | `TNC_soviet_collapse_focus_tree` | 5457 | 47 | all major families plus high-chaos | 44; league x6, legal x5, idea update x3 | 0 | 0 / 0 / 0 | 26 | 0 | 3 | clean by heuristic |
-| `ALA_soviet_collapse_focus_tree` | 6594 | 47 | all major families plus high-chaos | 47; legal x6, league x5, military x4 | 0 | 0 / 0 / 0 | 24 | 0 | 3 | clean by heuristic |
+| `AAX_soviet_collapse_focus_tree` | 6594 | 47 | all major families plus high-chaos | 47; legal x6, league x5, military x4 | 0 | 0 / 0 / 0 | 24 | 0 | 3 | clean by heuristic |
 | `BBH_soviet_collapse_focus_tree` | 7713 | 47 | all major families plus high-chaos | 60; military x8, legal x6, pressure x6 | 0 | 0 / 0 / 0 | 25 | 0 | 3 | 1 wide prereq |
-| `KRS_soviet_collapse_focus_tree` | 8917 | 47 | all major families plus high-chaos | 64; military x12, depot x9, legal x7 | 0 | 0 / 0 / 0 | 27 | 0 | 3 | 1 wide prereq |
+| `AOX_soviet_collapse_focus_tree` | 8917 | 47 | all major families plus high-chaos | 64; military x12, depot x9, legal x7 | 0 | 0 / 0 / 0 | 27 | 0 | 3 | 1 wide prereq |
 | `UDC_soviet_collapse_focus_tree` | 10159 | 47 | industry/logistics, military, diplomacy, expansion, high-chaos | 62; legal x8, league x5, command x5 | 0 | 0 / 0 / 0 | 23 | 0 | 0 | 6 wide prereqs |
 | `SDZ_soviet_collapse_focus_tree` | 11359 | 47 | industry/logistics, military, diplomacy, expansion, high-chaos | 62; legal x8, league x5, archive x5 | 0 | 0 / 0 / 0 | 23 | 0 | 0 | 6 wide prereqs |
 | `GAC_soviet_collapse_focus_tree` | 12603 | 47 | all major families plus high-chaos | 59; legal x8, league x6, military x5 | 0 | 0 / 0 / 0 | 25 | 0 | 0 | 2 wide prereqs |
@@ -65,7 +65,7 @@ Legend: `families` are detected route surfaces, not proof of quality. `idea ops`
 | `UWD_soviet_collapse_focus_tree` | 18543 | 47 | all major families plus high-chaos | 54; legal x7, depot x7, military x5 | 0 | 0 / 0 / 0 | 25 | 11 | 15 | 12 wide prereqs, 3 hits |
 | `MRC_soviet_collapse_focus_tree` | 19747 | 47 | all major families plus high-chaos | 54; military x7, legal x6, depot x5 | 1 | 0 / 0 / 0 | 23 | 9 | 12 | 5 wide prereqs |
 | `IUL_soviet_collapse_focus_tree` | 20923 | 47 | all major families plus high-chaos | 62; legal x10, depot x9, league x6 | 0 | 0 / 0 / 0 | 22 | 11 | 15 | 6 wide prereqs |
-| `BAC_soviet_collapse_focus_tree` | 22080 | 47 | all major families plus high-chaos | 59; legal x9, depot x7, military x7 | 0 | 0 / 0 / 0 | 23 | 12 | 3 | 6 wide prereqs, 1 hit |
+| `ADX_soviet_collapse_focus_tree` | 22080 | 47 | all major families plus high-chaos | 59; legal x9, depot x7, military x7 | 0 | 0 / 0 / 0 | 23 | 12 | 3 | 6 wide prereqs, 1 hit |
 | `ARD_soviet_collapse_focus_tree` | 23225 | 47 | industry/logistics, military, diplomacy, expansion, high-chaos | 61; military x9, legal x9, depot x7 | 0 | 3 / 3 / 0 | 28 | 11 | 3 | 2 wide prereqs |
 | `NLC_soviet_collapse_focus_tree` | 24423 | 47 | all major families plus high-chaos | 62; idea update x7, legal x7, foreign x6 | 0 | 0 / 0 / 0 | 26 | 5 | 3 | 7 wide prereqs, 4 hits |
 | `CFR_soviet_collapse_focus_tree` | 16 | 47 | political, industry/logistics, military, diplomacy, expansion | 50; mandate x6, public works x6, housing x4 | 0 | 5 / 4 / 2 | 18 | 0 | 11 | clean by heuristic |
@@ -81,8 +81,8 @@ Legend: `families` are detected route surfaces, not proof of quality. `idea ops`
 - `TSC_soviet_collapse_focus_tree` (`:1814`), `ICD_soviet_collapse_focus_tree` (`:3854`), `DSC_soviet_collapse_focus_tree` (`:2775`), and `NRF_soviet_collapse_focus_tree` (`:3351`) are 18-focus crisis trees. They cannot satisfy the requested overpowered, lore-mechanic-connected country standard without a real route expansion.
 - `OGB_soviet_collapse_focus_tree` (`005_soviet_collapse_factory_successors.txt:1136`) has only 23 focuses, no decision unlocks by direct scan, and only 11 helper calls. It is the clearest factory-successor depth failure.
 - `CFR_soviet_collapse_focus_tree` (`:16`) and `MFR_soviet_collapse_focus_tree` (`:1713`) are mechanically better than `OGB`, but still lean on repeated local helper families and need route specialization.
-- Full custom splinters with 47 focuses but zero direct decision/expansion hooks by scan: `BSC` (`:4328`), `TNC` (`:5457`), `ALA` (`:6594`), `BBH` (`:7713`), `KRS` (`:8917`), `UDC` (`:10159`), `SDZ` (`:11359`), `GAC` (`:12603`), `DHC` (`:13785`), `KHC` (`:14990`), `FEV` (`:16188`), `SZA` (`:17363`), `UWD` (`:18543`), `MRC` (`:19747`), `IUL` (`:20923`), `BAC` (`:22080`), and `NLC` (`:24423`).
-- Naval/port lore mismatch remains high in `NRF`, `ARD`, `KRS`, and `NLC`: they need port control, convoy/raid, naval war, coastal integration, and AI target loops rather than more convoy/XP rewards.
+- Full custom splinters with 47 focuses but zero direct decision/expansion hooks by scan: `AEX` (`:4328`), `TNC` (`:5457`), `AAX` (`:6594`), `BBH` (`:7713`), `AOX` (`:8917`), `UDC` (`:10159`), `SDZ` (`:11359`), `GAC` (`:12603`), `DHC` (`:13785`), `KHC` (`:14990`), `FEV` (`:16188`), `SZA` (`:17363`), `UWD` (`:18543`), `MRC` (`:19747`), `IUL` (`:20923`), `ADX` (`:22080`), and `NLC` (`:24423`).
+- Naval/port lore mismatch remains high in `NRF`, `ARD`, `AOX`, and `NLC`: they need port control, convoy/raid, naval war, coastal integration, and AI target loops rather than more convoy/XP rewards.
 
 ## Missing Or Simplified Content
 
@@ -90,7 +90,7 @@ Legend: `families` are detected route surfaces, not proof of quality. `idea ops`
 2. Chaos countries are still not consistently overpowered through lore-specific mechanics. `DSC` and `NRF` have some hooks; `TSC`, `ICD`, and `OGB` are still too shallow; most 47-focus custom splinters have no direct decision or expansion hooks.
 3. Decision integration is uneven. Ukraine, PRA, DSC, NRF, ARD, CFR, MFR, Belarus, Kazakhstan, Central Asia, and Caucasus have some direct hooks. Many other trees have zero direct decision unlocks.
 4. Expansion and postwar handling are thin. Direct expansion hooks are absent from Ukraine, Belarus, Kazakhstan, Moldova, Baltic, internal republics, and most 47-focus custom splinters by scan.
-5. Flat reward density remains high: 893 focuses across the three scoped files include direct flat reward patterns. The largest offenders are Kazakhstan 57, Ukraine 52, internal republics 42, Belarus 33, Moldova 31, ARD 28, BSC 28, Central Asia 28, and KRS 27.
+5. Flat reward density remains high: 893 focuses across the three scoped files include direct flat reward patterns. The largest offenders are Kazakhstan 57, Ukraine 52, internal republics 42, Belarus 33, Moldova 31, ARD 28, AEX 28, Central Asia 28, and AOX 27.
 6. Direct idea add/swap/timed spam is gone, but hidden idea refresh remains frequent and repeated helper rhythm remains high. This is better for hover readability, but not enough for route depth.
 
 ## Icon Coverage
@@ -113,7 +113,7 @@ No icon ids were changed. Technically load-safe icon coverage is better than des
 ## AI Behavior Gaps
 
 - No focus is missing an `ai_will_do` block by scan.
-- Route-aware AI is still weak. Base-only or near-base AI is especially high in Kazakhstan, Ukraine, internal republics, Moldova, Caucasus, Baltic, FEV, SZA, UWD, IUL, BAC, and ARD.
+- Route-aware AI is still weak. Base-only or near-base AI is especially high in Kazakhstan, Ukraine, internal republics, Moldova, Caucasus, Baltic, FEV, SZA, UWD, IUL, ADX, and ARD.
 - Chaos country endpoints need persistent `add_ai_strategy` and target logic tied to their lore. Some individual focuses do this, but it is not systematic.
 - Decision-target AI cannot be fully assessed from focus files alone. Trees with zero decision hooks cannot yet express meaningful route-aware decision behavior through focus unlocks.
 
@@ -122,7 +122,7 @@ No icon ids were changed. Technically load-safe icon coverage is better than des
 1. Full Ukraine route layout pass around the five route selectors listed above. Current line density is too high for a safe one-focus patch.
 2. Kazakhstan route and AI pass. It has the most focuses, the most flat rewards, and the most base-only AI.
 3. Deepen `OGB`, `TSC`, `ICD`, `DSC`, `NRF`, and `PRA` into actual chaos/special-state route trees, or explicitly classify them as compact crisis actors and document the limitation. Current depth does not satisfy the complaint.
-4. Add direct decision/mission hooks to 47-focus custom splinters that currently have zero, starting with `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC`, `KRS`, and the host trees.
+4. Add direct decision/mission hooks to 47-focus custom splinters that currently have zero, starting with `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC`, `AOX`, and the host trees.
 5. Replace flat reward ladders with route-specific mechanics: port control, rail authority decisions, grave-roll recruitment, factory contract systems, state integration, postwar claims/cores, and aggressive AI strategies.
 6. Icon pass after route depth changes. Do not spend asset effort before the route structure is stable.
 

@@ -119,7 +119,7 @@ The inspected English localisation contains all FORM-39 category, decision, desc
 
 The two lifecycle ideas are visible carrier and autonomous-member states. No advisor or portrait consumer is implied.
 
-`docs/events/006_form39_melanesian_federation.md`, the current source-of-truth map changes, and the current resume-packet changes accurately distinguish implemented adapter source from runtime admission. They retain the IW-157/IW-178, MFX review, collision, and FIJ source-date gates. No workbook change is required because FORM-39 does not alter the shared Event Details, evolution, cluster, or SCN-008 mirror text, and the catalog remains `In progress` / `Needs Testing`.
+`docs/events/006_independence_wave/form39_melanesian_federation.md`, the current source-of-truth map changes, and the current resume-packet changes accurately distinguish implemented adapter source from runtime admission. They retain the IW-157/IW-178, MFX review, collision, and FIJ source-date gates. No workbook change is required because FORM-39 does not alter the shared Event Details, evolution, cluster, or SCN-008 mirror text, and the catalog remains `In progress` / `Needs Testing`.
 
 A dedicated independent FORM-39 localisation audit and a current tag-audit handoff are still absent. Static key coverage does not replace those promotion gates.
 

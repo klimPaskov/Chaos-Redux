@@ -83,7 +83,7 @@ Parent visual review accepted the source, native card, and enlarged DDS-decoded 
 - The existing FORM-03 icon-package root manifest was not edited. Merge report_scene/submanifest.md into it only after the concurrent icon package is stable.
 - No gameplay, interface GFX, localisation, readiness, spreadsheet, or root manifest file was edited.
 - No Git commit was created.
-- The older Visual assets paragraph in docs/systems/006_independence_wave_form03_progression.md says that the tranche introduces no distinct art. The accepted addendum and live sprite require this dedicated report scene; the parent should reconcile that documentation sentence during integration.
+- The older Visual assets paragraph in docs/events/006_independence_wave/systems/form03_progression.md says that the tranche introduces no distinct art. The accepted addendum and live sprite require this dedicated report scene; the parent should reconcile that documentation sentence during integration.
 
 ## Simplifications, omissions, and blockers
 

@@ -22,7 +22,7 @@ It also records the exact custom icon contract for the qualifying-defeat decisio
 - Added a free shared Fallout-ledger requirement to the Singularity terminal gate so a competing request cannot absorb Event 16 consequences without returning the Event 16 finalizer.
 - Registered stable custom sprites for all twenty-two aftermath decisions and four categories.
 - Normalized the aftermath localisation file to repository key style while preserving UTF-8 BOM.
-- Added `docs/systems/016_brilliant_scientist_super_events_and_aftermath.md`.
+- Added `docs/events/016_brilliant_scientist/systems/super_events_and_aftermath.md`.
 
 ## Causal checks
 

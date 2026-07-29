@@ -61,8 +61,8 @@ Current project documentation consulted:
 - docs/systems/chaos_meter_deaths_mechanic.md
 - docs/systems/chaos_meter_deaths_and_events_log_ui.md
 - docs/systems/condemnation_sanctions.md
-- docs/events/germany_mengele.md
-- docs/events/005_soviet_collapse.md
+- docs/events/germany_mengele/overview.md
+- docs/events/005_soviet_collapse/overview.md
 - docs/chemical_warfare/japan_chemical_campaign_decisions.md
 - docs/chemical_warfare/chemical_warfare_documentation.md
 - docs/biological_warfare/biowarfare_system.md
@@ -380,7 +380,7 @@ Primary files:
 - common/special_projects/projects/mengele_cloning_projects.txt.
 - common/national_focus/germany_mengele_clone_army.txt.
 - localisation/english/germany_mengele_l_english.yml.
-- docs/events/germany_mengele.md.
+- docs/events/germany_mengele/overview.md.
 
 Critical live gaps:
 
@@ -537,8 +537,8 @@ Presentation/docs:
 - docs/systems/genocide_mechanics_spec.md
 - docs/systems/chaos_meter_deaths_mechanic.md if Deaths semantics change
 - docs/systems/condemnation_sanctions.md if new contexts/sources are added
-- docs/events/germany_mengele.md
-- docs/events/005_soviet_collapse.md
+- docs/events/germany_mengele/overview.md
+- docs/events/005_soviet_collapse/overview.md
 - common/scripted_effects/chaosx_dynamic_effects.md only if a new shared dynamic helper is added to chaosx_dynamic_effects.txt.
 
 ### 5.2 Likely new files
@@ -552,7 +552,7 @@ Prefer subsystem separation for readability:
 - localisation/english/camp_repression_rework_l_english.yml
 - events/camp_repression_country_events.txt or bounded country-specific event files
 - optional country-specific constants/effects/decisions for Ishii if the shared genocide files become unwieldy
-- docs/systems/camp_repression_rework.md as the required mechanic document
+- docs/systems/genocide_crisis_system.md as the required mechanic document
 - docs/assets/system_camp_repression_rework/manifest.md and prompt/handoff files after IDs stabilize
 
 Avoid creating separate duplicated lifecycle engines for each country. Shared registration, pressure, Deaths, exposure, cleanup, and GUI cache logic should remain centralized.

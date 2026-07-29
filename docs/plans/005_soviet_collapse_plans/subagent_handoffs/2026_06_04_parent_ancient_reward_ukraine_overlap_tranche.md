@@ -15,22 +15,22 @@
 
 The following ancient restoration focuses kept their existing gameplay payloads but now expose one compact `custom_effect_tooltip` instead of a long raw effect stack. The actual flags, claims, equipment, variables, war plans, buildings, cores, and AI strategy effects were moved into `hidden_effect`.
 
-- `KZR_old_border_files`
-- `KZR_expansionist_steppe_levy`
-- `KZR_khazar_charter`
-- `KZR_restoration_survives_modern_war`
+- `APX_old_border_files`
+- `APX_expansionist_steppe_levy`
+- `APX_khazar_charter`
+- `APX_restoration_survives_modern_war`
 - `SOG_old_city_border_files`
 - `SOG_expansionist_merchant_claims`
 - `SOG_sogdian_city_charter`
 - `SOG_restoration_survives_modern_war`
-- `KHW_old_oasis_border_files`
-- `KHW_expansionist_water_claims`
-- `KHW_khwarazmian_water_charter`
-- `KHW_restoration_survives_modern_war`
-- `ALN_old_pass_border_files`
-- `ALN_expansionist_mountain_claims`
-- `ALN_alan_pass_charter`
-- `ALN_restoration_survives_modern_war`
+- `ANX_old_oasis_border_files`
+- `ANX_expansionist_water_claims`
+- `ANX_khwarazmian_water_charter`
+- `ANX_restoration_survives_modern_war`
+- `ABX_old_pass_border_files`
+- `ABX_expansionist_mountain_claims`
+- `ABX_alan_pass_charter`
+- `ABX_restoration_survives_modern_war`
 
 ## Layout fix
 

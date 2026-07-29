@@ -28,7 +28,7 @@ The worktree was already dirty before this pass, including the four focus files 
 | DSC zombie-like dead army | `DSC_soviet_collapse_focus_tree` roll-call, revenant staff, dead-regiment columns, dead-army endgame | Patched | Added controlled-state cores on hardline claimed roads and raised SOV aggression values in the extreme route. |
 | Factory states focused on factory type | `CFR_soviet_collapse_focus_tree`, `MFR_soviet_collapse_focus_tree`, `OGB_soviet_collapse_focus_tree` | Patched for CFR/MFR | CFR now directly adds civilian factories/infrastructure/rail/supply. MFR now directly adds arms factories on arsenal focuses. OGB remains more restoration/Volga than factory-specific. |
 | Naval northern directorate | `ARD_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `NLC_soviet_collapse_focus_tree` | Covered with risks | Existing branches have navy, convoy, dockyard, coastal defense, and port logic. Some still use small convoy rewards and should get a later pass. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` ancient focus trees | Covered but shallow | Compact, claim-heavy, and readable. They mostly stop at claims, not staged cores or formable depth. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` ancient focus trees | Covered but shallow | Compact, claim-heavy, and readable. They mostly stop at claims, not staged cores or formable depth. |
 
 ## High-Priority Fixes Applied
 
@@ -102,7 +102,7 @@ After:
 
 - Ukraine still needs a dedicated layout pass. Main risk ids: `ukr_soviet_collapse_officers_above_parties`, `ukr_soviet_collapse_elections_under_shellfire`, `ukr_soviet_collapse_socialist_republic_without_moscow`, `ukr_soviet_collapse_black_banner_compact`, `ukr_soviet_collapse_protectorate_debate`, `ukr_soviet_collapse_open_the_liaison_offices`, `ukr_soviet_collapse_the_commander_or_the_cabinet`, `ukr_soviet_collapse_black_sea_port_ledgers`, and downstream row-7/row-9 crosslinks.
 - Belarus late forest/green-state area remains dense after the early layout cleanup. Main risk ids: `blr_soviet_collapse_partisans_or_army`, `blr_soviet_collapse_regular_forest_brigades`, `blr_soviet_collapse_decentralized_detachments`, `blr_soviet_collapse_the_forest_general_staff`, `blr_soviet_collapse_the_forest_state_rumor`, `blr_soviet_collapse_a_forest_that_can_govern`.
-- Ancient restoration trees are compact but still mostly claim/payoff trees. Follow-up should consider staged integration/core mechanics for `KZR_khazar_charter`, `SOG_sogdian_charter`, `KHW_khwarezmian_charter`, `ALN_alan_charter` and their expansion endgames.
+- Ancient restoration trees are compact but still mostly claim/payoff trees. Follow-up should consider staged integration/core mechanics for `APX_khazar_charter`, `SOG_sogdian_charter`, `ANX_khwarezmian_charter`, `ABX_alan_charter` and their expansion endgames.
 - Several 18-focus high-chaos trees are mechanically stronger than pure reward ladders, but their compactness comes with shallow route choice. Broad route-family expansion was out of scope.
 
 ## Icon Coverage Table

@@ -15,7 +15,7 @@ Required work:
 - Record every plan and addendum as implemented, promoted, queued with reason, rejected with reason, superseded, or blocked.
 - Reconcile the ten-part spec pack with accepted improvement-loop changes.
 - Mark stale prompts or old design notes as superseded rather than silently deleting them.
-- Keep `docs/events/016_brilliant_scientist.md` aligned with actual triggers, projects, evolutions, country routes, super-events, world end, and limitations.
+- Keep `docs/events/016_brilliant_scientist/overview.md` aligned with actual triggers, projects, evolutions, country routes, super-events, world end, and limitations.
 - Reconcile asset and audio manifests with wired files.
 - Record whether the unnumbered `Crazy Scientist` catalog concept was absorbed or redesigned.
 - Create or update a resume packet before a later implementation session.

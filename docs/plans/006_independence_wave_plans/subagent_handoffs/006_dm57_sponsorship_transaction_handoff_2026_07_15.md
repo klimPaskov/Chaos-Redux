@@ -79,7 +79,7 @@ to `global.independence_wave_sponsored_breakaway_states`.
 - `common/scripted_triggers/006_independence_wave_decision_triggers.txt`
 - `common/scripted_triggers/006_independence_wave_package_triggers.txt`
 - `common/scripted_triggers/006_independence_wave_triggers.txt`
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 
 Several of these files already contained concurrent Event 006 balance,
 formable, or documentation edits in the shared worktree. This task used

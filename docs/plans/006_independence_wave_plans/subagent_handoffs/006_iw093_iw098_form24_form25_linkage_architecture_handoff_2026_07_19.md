@@ -35,7 +35,7 @@ Accepted source-of-truth surfaces:
   Kanem-Bornu, Hausa, Darfur, Wadai, and compatible packages, and regional
   capitals plus caravan corridors as the territorial direction. No exact
   tags, package ids, states, or consent rows are provided.
-- `docs/systems/006_independence_wave_iw093_iw098_signature_packages.md`
+- `docs/events/006_independence_wave/systems/iw093_iw098_signature_packages.md`
   explicitly limits IW-093 and IW-098 to package-local preparation. It
   requires three active members, three unique anchors, and three explicit
   consents before a shared family can commit, and leaves identity, territory,

@@ -4,7 +4,7 @@ Status: complete for the audio-research and Event 016-owned OGG scope. Commit `0
 
 ## Delivered package
 
-- Full rights, fit, attribution, mastering, loudness, hash, and integration research: `docs/super_events/016_brilliant_scientist_super_event_audio_research.md`.
+- Full rights, fit, attribution, mastering, loudness, hash, and integration research: `docs/super_events/016_brilliant_scientist/audio_research.md`.
 - Source and evidence index: `docs/super_events/source_audio/016_brilliant_scientist/README.md`.
 - Six source masters plus frozen Commons revisions, API metadata, upstream Archive.org evidence, and license legal code: `docs/super_events/source_audio/016_brilliant_scientist/`.
 - Six final game-ready OGGs: `music/016_brilliant_scientist/`.
@@ -13,16 +13,16 @@ All six required packages are retained. R1 removal was rejected. R7 is preserved
 
 ## Parent-assigned IDs
 
-The earlier parent reservation of IDs 88 through 93 is superseded because live Event 015 wiring occupies visible slots 85 through 89. A fresh parent collision scan assigns Event 016 exactly IDs 90 through 95. These IDs were supplied by the parent and were not reserved by the audio researcher. The final OGGs were moved by role with `git mv` only; they were not re-encoded or retagged.
+The earlier parent reservation of IDs 88 through 93 is superseded because live Event 015 wiring occupies visible slots 85 through 89. A fresh parent collision scan assigns Event 016 exactly IDs 90 through 95. These IDs were supplied by the parent and were not reserved by the audio researcher. The final WAVs were moved by role with `git mv` only; they were not re-encoded or retagged.
 
 | ID | Package | Event 016 OGG | World-end scenario |
 | ---: | --- | --- | ---: |
-| 90 | International recognition | `music/016_brilliant_scientist/super_event_90_international_recognition.ogg` | — |
-| 91 | Kruger State formation | `music/016_brilliant_scientist/super_event_91_kruger_state_formation.ogg` | — |
-| 92 | Global Kruger threat | `music/016_brilliant_scientist/super_event_92_global_kruger_threat.ogg` | — |
-| 93 | Laboratory World | `music/016_brilliant_scientist/super_event_93_laboratory_world.ogg` | 11 |
-| 94 | Strategic Singularity | `music/016_brilliant_scientist/super_event_94_strategic_singularity.ogg` | 12 |
-| 95 | Qualifying defeat aftermath | `music/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.ogg` | — |
+| 90 | International recognition | `sound/016_brilliant_scientist/super_event_90_international_recognition.wav` | — |
+| 91 | Kruger State formation | `sound/016_brilliant_scientist/super_event_91_kruger_state_formation.wav` | — |
+| 92 | Global Kruger threat | `sound/016_brilliant_scientist/super_event_92_global_kruger_threat.wav` | — |
+| 93 | Laboratory World | `sound/016_brilliant_scientist/super_event_93_laboratory_world.wav` | 11 |
+| 94 | Strategic Singularity | `sound/016_brilliant_scientist/super_event_94_strategic_singularity.wav` | 12 |
+| 95 | Qualifying defeat aftermath | `sound/016_brilliant_scientist/super_event_95_qualifying_defeat_aftermath.wav` | — |
 
 ## Six selections and rights
 
@@ -35,7 +35,7 @@ The earlier parent reservation of IDs 88 through 93 is superseded because live E
 | 94 | Mahler, Symphony No. 5, movement II | Peabody Symphony Orchestra / Archive.org | CC0 1.0 |
 | 95 | Chopin, Nocturne Op. 9 No. 1 | Vadim Chaimovich / Musopen | CC0 1.0 |
 
-The underlying six compositions are public domain. Exact attribution text and change notices are in the research note and embedded in the final OGG Vorbis comments.
+The underlying six compositions are public domain. Exact attribution text and change notices are in the research note and embedded in the final WAV Vorbis comments.
 
 ## Final technical properties
 
@@ -57,7 +57,7 @@ The quieter integrated level for ID 91 preserves the large natural range of the 
 1. In `music/chaosx_super_event_music.asset`, add six definitions per ID using names `chaosx_super_event_<ID>_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`, all pointing to the corresponding Event 016 OGG.
 2. Use definition volumes `0.67`, `1.33`, `2.00`, `2.67`, `3.33`, and `4.00` in that order. Do not create six OGG copies.
 3. In `music/chaosx_super_event_music.txt`, add one representative zero-chance row per track using `chaosx_super_event_<ID>_1_5`.
-4. If the implementation uses the sound channel, reproduce the documented source edit into a matching Event 016 WAV and add the base sound plus `chaosx_super_event_<ID>_sound_<suffix>` wrappers. Do not generate a WAV by decoding the lossy final OGG when the preserved source and exact edit chain are available.
+4. If the implementation uses the sound channel, reproduce the documented source edit into a matching Event 016 WAV and add the base sound plus `chaosx_super_event_<ID>_sound_<suffix>` wrappers. Do not generate a WAV by decoding the lossy final WAV when the preserved source and exact edit chain are available.
 5. Set `global.current_super_event_audio_id` to the matching parent-assigned ID and use the existing settings-aware playback helper.
 6. Add the six rows to `music/chaosx_music_track_list.html` with their visible super-event IDs, titles, performers, final durations, paths, and rights.
 7. Keep the two terminal routes distinct in trigger/effect wiring: ID 93 accompanies world-end scenario 11; ID 94 accompanies scenario 12 and the threshold-then-Fallout sequence.
@@ -75,7 +75,7 @@ The quieter integrated level for ID 91 preserves the large natural range of the 
 
 ## Scope boundary and blockers
 
-No shared music asset, station, sound, localisation, GUI, gameplay, specification, workbook, or catalog file was edited. No numeric reservation was made by this subagent; filenames use the IDs later supplied by the parent. No sound-channel WAV was requested or produced in the OGG-only subtask.
+No shared music asset, station, sound, localisation, GUI, gameplay, specification, workbook, or catalog file was edited. No numeric reservation was made by this subagent; filenames use the IDs later supplied by the parent. No sound WAV was requested or produced in the OGG-only subtask.
 
 The follow-up documentation reconciliation records IDs 90 through 95 across the Event 016 specification, prompts, source-of-truth map, resume packet, integration map, event documentation, and status handoffs. The historical 88-through-93 paths remain relevant only as rename provenance in audio-owned evidence.
 

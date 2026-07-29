@@ -345,13 +345,13 @@ Asset families:
 
 Audio:
 
-- major-Fury super-event audio is wired as ID `29` with `music/007_fury/super_event_29_fury_becomes_a_state.ogg` and `sound/007_fury/super_event_29_fury_becomes_a_state.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
-- World in Fury terminal super-event audio is wired as ID `30` with `music/007_fury/super_event_30_world_in_fury.ogg` and `sound/007_fury/super_event_30_world_in_fury.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
+- major-Fury super-event audio is wired as ID `29` with `sound/007_fury/super_event_29_fury_becomes_a_state.wav` and `sound/007_fury/super_event_29_fury_becomes_a_state.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
+- World in Fury terminal super-event audio is wired as ID `30` with `sound/007_fury/super_event_30_world_in_fury.wav` and `sound/007_fury/super_event_30_world_in_fury.wav`; source and license are documented in `docs/super_events/super_event_audio_packages.md`.
 
 Documentation and spreadsheet:
 
 - Promote accepted route/focus/decision/world-end changes into `docs/specs/007_fury_specs/`.
-- Update `docs/events/007_fury.md` with final mechanics, not implementation history.
+- Update `docs/events/007_fury/overview.md` with final mechanics, not implementation history.
 - Update `docs/assets/007_fury/manifest.md` and `gfx_handoff.md` with final assets.
 - Update triggerable scenario docs if scenario flags/achievement handling changes.
 - Update the event catalog workbook after implementation facts are final.
@@ -386,7 +386,7 @@ The main agent should expect to touch these surfaces if this addendum is accepte
 - `localisation/english/007_random_expansion_l_english.yml`
 - `localisation/english/chaosx_achievements_l_english.yml`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `docs/events/007_fury.md`
+- `docs/events/007_fury/overview.md`
 - `docs/specs/007_fury_specs/` promoted spec files
 - `docs/assets/007_fury/manifest.md`
 - `docs/assets/007_fury/gfx_handoff.md`
@@ -409,7 +409,7 @@ Before the main agent can claim Fury complete, run task-specific validation and 
 - Localisation audit: new focus, decision, mission, idea, event, achievement, tooltip, cost, scenario, and super-event keys exist and avoid implementation-history phrasing.
 - Asset audit: every placeholder is either replaced or explicitly reported as placeholder/blocker.
 - Super-event audit: quote, audio, image, slot, scripted localisation, player localisation, docs, and spreadsheet align.
-- Documentation/spreadsheet audit: `docs/events/007_fury.md`, accepted specs, asset manifest, super-event research note, scenario docs, and workbook agree with implementation.
+- Documentation/spreadsheet audit: `docs/events/007_fury/overview.md`, accepted specs, asset manifest, super-event research note, scenario docs, and workbook agree with implementation.
 
 Recommended scenario checks:
 

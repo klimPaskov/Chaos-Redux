@@ -70,8 +70,8 @@ The attacker marker is cleared only through the immutable unit-row scope after u
 - `common/on_actions/019_infantry_spawn_achievement_on_actions.txt`
 - `localisation/english/019_infrantry_spawn_l_english.yml`
 - `localisation/english/chaosx_achievements_l_english.yml`
-- `docs/achievements/019_infantry_spawn_achievements.md`
-- `docs/events/019_infantry_spawn.md`
+- `docs/achievements/019_infantry_spawn/achievements.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/specs/019_infantry_spawn_specs/matrices/019_achievement_matrix.md`
 - `docs/specs/019_infantry_spawn_specs/review/blockers_and_uncertainty.md`
 - this handoff

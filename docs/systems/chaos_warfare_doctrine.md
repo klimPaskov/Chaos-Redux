@@ -116,6 +116,8 @@ The shared exposure calculation applies this value only to the Condemnation base
 
 An active Army HQ Decontamination Corridor plus Theater Exploitation exposes a state-targeted assignment decision. It requires a controlled state with actual chemical contamination and permits one national assignment every 28 days. Cleanup output depends on the current contamination class:
 
+Each assignment is paid at the point of use. It costs 5 Political Power, 4 Command Power, 40 Decontamination Equipment, 100 Gas Masks, 20 Support Equipment, 2 Motorized Equipment, and 300 Fuel. Decontamination stock and masks are debited from the oldest available progression tiers, while support equipment, motorized equipment, fuel, and command power use the native stockpiles. A shortage prevents the assignment from starting; the assignment does not create free cleanup capacity.
+
 - Trace or Local: 10 points
 - Serious: 8 points
 - Severe: 5 points

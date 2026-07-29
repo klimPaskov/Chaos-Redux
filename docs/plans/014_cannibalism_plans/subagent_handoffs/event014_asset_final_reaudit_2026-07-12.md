@@ -33,7 +33,7 @@ The authoritative Event 014 achievement package contains 18 completed masters, 1
 
 However, `docs/assets/014_cannibalism/achievements_imagegen/process_achievement_icons.py:131-142` darkens each grey icon and manually draws a red X with `ImageDraw.line` and `ImageDraw.ellipse`. It does not copy the grey variant and composite the required exact overlay:
 
-`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`
+`C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`
 
 The overlay exists and has SHA-256 `89bc80c6ac975bf6f1ff000ff3070b20c337bfb8b8ae966ae35a5540c004d6dd`. The governing skill explicitly forbids not-eligible icons made by darkening or manually redrawing the grey icon. Consequently, every registered `gfx/achievements/014_cannibalism_*_not_eligible.dds` is non-compliant.
 
@@ -137,7 +137,7 @@ The four packages use stable unique IDs 49, 50, 52, and 53 from `common/script_c
 | 52 | Fauré, *Élégie, Op. 24*, Goldstein/Kalman | Vorbis, 44100 Hz, stereo, 116.100 s | PCM s16le, 44100 Hz, stereo, 116.001 s | CC BY-SA 2.0 recording; attribution, modification notice, and share-alike record are present. |
 | 53 | Grieg, *The Death of Aase*, Musopen Symphony | Vorbis, 44100 Hz, stereo, 118.000 s | PCM s16le, 44100 Hz, stereo, 118.000 s | Public-domain composition and Musopen public-domain recording. |
 
-The four OGG hashes are unique, the four WAV hashes are unique, and none duplicates another repository audio binary. `music/chaosx_super_event_music.asset` registers six volume variants for each ID, `music/chaosx_super_event_music.txt` suppresses the representative tracks from ordinary music selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware soundeffect wrappers per ID. `music/chaosx_music_track_list.html` and `docs/super_events/014_cannibalism_super_event_audio_research.md` preserve the source and license records.
+The four OGG hashes are unique, the four WAV hashes are unique, and none duplicates another repository audio binary. `music/chaosx_super_event_music.asset` registers six volume variants for each ID, `music/chaosx_super_event_music.txt` suppresses the representative tracks from ordinary music selection, and `sound/chaosx_sound.asset` registers four WAV sources plus six settings-aware soundeffect wrappers per ID. `music/chaosx_music_track_list.html` and `docs/super_events/014_cannibalism/audio_research.md` preserve the source and license records.
 
 ## Visual safety and secrecy review
 
@@ -160,7 +160,7 @@ Decoded final contact sheets were inspected for the 598 registered texture set, 
 
 The three finding groups above were remediated and independently rechecked on 2026-07-13.
 
-- `docs/assets/014_cannibalism/achievements_imagegen/process_achievement_icons.py` now requires the exact 64x64 RGBA overlay at `.agents/skills/chaos-redux-event-assets/assets/achievements/overlay.png`, copies each grey variant without alteration, and alpha-composites that overlay on top. The brightness adjustment and locally drawn X were removed.
+- `docs/assets/014_cannibalism/achievements_imagegen/process_achievement_icons.py` now requires the exact 64x64 RGBA overlay at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/overlay.png`, copies each grey variant without alteration, and alpha-composites that overlay on top. The brightness adjustment and locally drawn X were removed.
 - The processor regenerated and validated all 18 masters / 54 variants. An independent pixel comparison found 18 exact grey-copy overlay composites and zero mismatches. The 54 package DDS files exactly match the 54 live DDS files; all 54 live hashes remain distinct.
 - `docs/assets/014_cannibalism/animations_imagegen/manifest.md` now identifies all six early experiments as retired source/provenance only and makes no claim that their 12 absent DDS files or sprites are live.
 - `docs/assets/014_cannibalism/generated_art_sources/generated_art_manifest.md` now preserves historical source/processed provenance without assigning absent final DDS/TGA paths or superseded sprite ownership.

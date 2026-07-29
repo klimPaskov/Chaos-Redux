@@ -37,7 +37,7 @@ This pass used `hoi4-focus-trees` and read the complete Event 018 spec package, 
   - aligned route, spawn, vault, link, and final-adaptation tooltips with live effects.
 - `localisation/english/018_resources_found_decisions_l_english.yml`
   - aligned the tunnel-link project text with bounded endpoint selection and automatic-spawn priority.
-- `docs/events/018_resources_found_cave_country.md`
+- `docs/events/018_resources_found/cave_country.md`
   - documented the one-spirit progression, route-spirit cap, vault lifecycle, linked spawn endpoints, and corrected speed table.
 
 ## New and materially changed identifiers

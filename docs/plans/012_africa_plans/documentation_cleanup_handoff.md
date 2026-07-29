@@ -9,8 +9,8 @@ Scope: release-candidate reconciliation of Event 012 documentation, dated plans,
 | Surface | Current source of truth | Evidence or boundary |
 | --- | --- | --- |
 | Accepted design | `docs/specs/012_africa_specs/` | The accepted specification remains authoritative for intended mechanics, routes, counts, and required surfaces. |
-| Release-candidate status | `docs/events/012_africa.md` | This is the current reconciled ledger for Event 012 status and unresolved decisions. |
-| Event subsystem mechanics | `docs/events/012_africa_charter_autonomy_and_focus_ai.md`, `docs/events/012_africa_evolutions.md`, and `docs/events/012_africa_world_order.md` | These remain subsystem authorities and were not merged or deleted. |
+| Release-candidate status | `docs/events/012_africa/overview.md` | This is the current reconciled ledger for Event 012 status and unresolved decisions. |
+| Event subsystem mechanics | `docs/events/012_africa/charter_autonomy_and_focus_ai.md`, `docs/events/012_africa/evolutions.md`, and `docs/events/012_africa/world_order.md` | These remain subsystem authorities and were not merged or deleted. |
 | Visual row status | `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv` and its notes file | The 239 rows now use explicit release dispositions instead of `planned`. |
 | Gameplay implementation | Current `common/`, `events/`, `localisation/`, and `interface/` files | Implementation is evidence of what exists, not permission to silently alter the accepted design. |
 | Historical working ledger | `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` | Retained as historical evidence; its old queued/blocked asset counts are not current release status. |
@@ -41,7 +41,7 @@ South Africa is intentionally excluded from ordinary host selection by the gener
 | `subagent_handoffs/012_africa_charter_gui_handoff_2026_07_24.md` | Superseded queued-texture wording | Twelve static textures and two real frame sheets are present and registered; final 16/16 exact-path review is complete and the registration scan reports no active blocker. The source handoff's older in-progress sentence is overridden by its release-candidate correction and this row. |
 | `subagent_handoffs/012_africa_country_rc_audit_2026_07_29.md` | Historical count corrected | Sixteen sovereign portraits are installed; seven carrier flag ladders are being integrated. Carrier ownership and reachability risks remain open. |
 | `subagent_handoffs/012_africa_independence_wave_tag_loading_country_audit_2026_07_24.md` | Historical reachability evidence | The seven carrier presentation ladders are installed on existing identities and remain usable through bounded promotion; Event 006 allocator provenance and unbound paths remain unresolved. |
-| `subagent_handoffs/012_africa_acceptance_ledger_reconciliation_2026_07_24.md` | Superseded by this handoff and `docs/events/012_africa.md` | Retained as the 2026-07-24 baseline; its missing-art and mostly-queued claims predate current filesystem evidence. |
+| `subagent_handoffs/012_africa_acceptance_ledger_reconciliation_2026_07_24.md` | Superseded by this handoff and `docs/events/012_africa/overview.md` | Retained as the 2026-07-24 baseline; its missing-art and mostly-queued claims predate current filesystem evidence. |
 | `012_africa_implementation_source_map.md` | Historical source-map baseline | Accepted design provenance remains useful, but current asset and status dispositions come from the release-candidate document and matrix. |
 | `012_africa_ai_actions_77_92_handoff_2026_07_18.md` | Queued audit evidence | The bounded late-action dispatcher does not prove all 64 AI profiles or campaign simulations. |
 | `012_africa_focus_architecture_handoff.md` | Queued audit evidence | Focus route, AI, topology, icon, and live-consumer audits remain open. |
@@ -59,7 +59,7 @@ South Africa is intentionally excluded from ordinary host selection by the gener
 
 ## Duplicate or superseded documents
 
-- `docs/events/012_africa.md` is the central index; the three subsystem event documents remain intentionally separate authorities rather than duplicates.
+- `docs/events/012_africa/overview.md` is the central index; the three subsystem event documents remain intentionally separate authorities rather than duplicates.
 - `subagent_handoffs/012_africa_acceptance_ledger_reconciliation_2026_07_24.md` is retained as a dated baseline and superseded for release status.
 - `012_africa_implementation_source_map.md` is retained for accepted design provenance and superseded for current asset disposition.
 - The achievement, priority-member, decision, focus-icon, Charter-GUI, country, and audio research handoffs retain historical evidence with explicit correction sections instead of deletion.
@@ -81,7 +81,7 @@ South Africa is intentionally excluded from ordinary host selection by the gener
 
 ## Files changed by this cleanup
 
-- `docs/events/012_africa.md`
+- `docs/events/012_africa/overview.md`
 - `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`
 - `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix_notes.md`
 - `docs/plans/012_africa_plans/012_africa_achievements_handoff.md`
@@ -99,10 +99,10 @@ South Africa is intentionally excluded from ordinary host selection by the gener
 
 ## Validation and skipped checks
 
-Targeted path and registration checks confirmed the current image, Charter, focus, achievement, portrait, decision, report, and carrier-flag evidence described above. The final 16/16 Charter exact-path review, focus and decision reaudits, and registration scan report no active blocker. The Event 12-only Event 13 wrapper call was rechecked against unchanged Event 13 sources. The matrix was imported after editing and confirmed 239 rows, no `planned` values, and the seven disposition counts recorded in `docs/events/012_africa.md`.
+Targeted path and registration checks confirmed the current image, Charter, focus, achievement, portrait, decision, report, and carrier-flag evidence described above. The final 16/16 Charter exact-path review, focus and decision reaudits, and registration scan report no active blocker. The Event 12-only Event 13 wrapper call was rechecked against unchanged Event 13 sources. The matrix was imported after editing and confirmed 239 rows, no `planned` values, and the seven disposition counts recorded in `docs/events/012_africa/overview.md`.
 
 No in-game launch, save test, workbook edit, binary visual re-authoring, or gameplay audit was performed because those surfaces remain parent-owned or outside this documentation scope. The working tree contains concurrent unrelated changes; no commit was created.
 
 ## Remaining risks
 
-The documentation is internally cross-referenced for the release-candidate status, but gameplay acceptance, owner-system achievement proof, Event 013 integration, carrier provenance, GUI animation acceptance, world-package implementation, audio rights/wiring, native language review, and broad controlled-pool asset production remain open. The parent should use this handoff and `docs/events/012_africa.md` before starting another implementation tranche.
+The documentation is internally cross-referenced for the release-candidate status, but gameplay acceptance, owner-system achievement proof, Event 013 integration, carrier provenance, GUI animation acceptance, world-package implementation, audio rights/wiring, native language review, and broad controlled-pool asset production remain open. The parent should use this handoff and `docs/events/012_africa/overview.md` before starting another implementation tranche.

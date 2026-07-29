@@ -53,7 +53,7 @@ Mode: documentation patch only. No gameplay, localisation, workbook, spreadsheet
 - Read France and Italy pool helpers and selectors in live triggers/effects.
 - Read fixed-country and explicit-doctrine restricted-method gates plus capacity checks.
 - Reconciled Ledger names across scripted GUI, scripted localisation, interface, and player-facing localisation.
-- Reconciled super-event slots, audio ids, helpers, localisation ownership, art registration, and music/sound registration.
+- Reconciled super-event slots, audio ids, helpers, localisation ownership, art registration, and sound registration.
 - Compared asset-manifest totals with live GFX consumers and workbook Event Details with live localisation.
 
 ## Remaining Risks and Parent Follow-up

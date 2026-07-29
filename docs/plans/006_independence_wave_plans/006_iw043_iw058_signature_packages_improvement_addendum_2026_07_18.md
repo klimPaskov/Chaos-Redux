@@ -2,10 +2,12 @@
 
 Date: 2026-07-18
 
-Status: **IMPLEMENTED / FINAL AUDIT** — the CHU/ASY package, FORM-12/13/18
-transactions, exact vanilla-formable guards, staged integration, sovereign-
-autonomy alternative, and signature-achievement writers are implemented;
-independent closeout audits and source-of-truth promotion remain in progress
+Status: **SOURCE IMPLEMENTED / PACKAGE ADMISSION BLOCKED** — the CHU/ASY
+gameplay, FORM-12/13/18 transactions, exact vanilla-formable guards, staged
+integration, sovereign-autonomy alternative, and signature-achievement writers
+are implemented. IW-043 and IW-058 remain excluded from exact content
+attestation while their grounded portrait, rights, role, and full-package gates
+remain open.
 
 Owner: Event 006 parent implementation agent
 
@@ -16,7 +18,7 @@ Packages:
 
 ## Decision
 
-Both signature packages are expanded. The accepted Event 006 design promises modern political bridges, distinct institutions, route play, local military problems, formable ambitions, and achievement proof. The exact CHU and ASY package content is admitted through the shared runtime registry with package-owned mechanics, routes, localisation, reviewed visual assets, FORM-12/13/18 transactions, staged sovereignty-preserving integration, and sole signature-proof writers. The exact compatibility adapter prevents active Event 006 IW-043/IW-058 carriers from using the vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` shortcuts while preserving ordinary and Event 005 behavior.
+Both signature packages are expanded at source level. The accepted Event 006 design promises modern political bridges, distinct institutions, route play, local military problems, formable ambitions, and achievement proof. The exact CHU and ASY gameplay provides package-owned mechanics, routes, localisation, FORM-12/13/18 transactions, staged sovereignty-preserving integration, and sole signature-proof writers. Neither package is currently admitted through the exact content-attestation gate because the grounded portrait, rights, role, and full-package audits remain open. The exact compatibility adapter prevents active Event 006 IW-043/IW-058 carriers from using the vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` shortcuts while preserving ordinary and Event 005 behavior.
 
 This addendum is the only open improvement-loop layer for IW-043 and IW-058. No earlier addendum for either package exists. The earlier FORM-48 plan was implemented in its bounded tranche and is separately promoted after its independent closure. It is not duplicated here.
 
@@ -46,7 +48,7 @@ Implementation must treat the following accepted files as controlling inputs:
 - `docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv`
 - `docs/specs/006_independence_wave_specs/matrices/006_achievement_matrix.csv`
 - `docs/plans/006_independence_wave_plans/tag_audit/006_installed_tag_collision_audit_2026_07_17.md`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 
 The design uses these accepted research findings:
 
@@ -89,9 +91,11 @@ adapter, ledger, receipt, and proof surface owned by that generation.
 The independent country, focus, decision, localisation, documentation, and
 event-completion audits have closed the bounded source tranche. Historical
 handoffs retain their at-the-time fail-closed findings and are superseded by the
-final audit handoffs for the implemented transaction. Parent-wide live human and
-AI scenario evidence, congress failure and counterpart invalidation, crossover
-rejection, cleanup, balance, and whole-Event 006 closeout remain outstanding.
+latest bounded audit handoffs for the source-implemented transaction. Grounded
+portrait, rights, role, and full-package admission audits remain outstanding.
+Parent-wide live human and AI scenario evidence, congress failure and
+counterpart invalidation, crossover rejection, cleanup, balance, and whole-Event
+006 closeout remain outstanding.
 
 ## Binding invariants
 
@@ -961,7 +965,7 @@ The package should update these existing implementation surfaces:
 - `common/on_actions/006_independence_wave_achievement_on_actions.txt`, only for exact narrow war, peace, state-control, subject-transition, annexation, or cleanup hooks that are not already present
 - `interface/006_independence_wave_iw043_iw058.gfx`
 - Event 006 English localisation files, split by focus, decisions, characters, countries, achievements, and events only if repository convention warrants it
-- `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md`
+- `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md`
 - `docs/assets/006_independence_wave/manifest.md` and a dedicated package asset manifest
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` after implementation facts and player-facing wording are final
 
@@ -990,19 +994,20 @@ First inspect `common/scripted_effects/chaosx_dynamic_effects.txt`. Reuse any ex
 
 ### Runtime attestation
 
-Reconciliation note (2026-07-18): the exact CHU/ASY signature tranche now has
-setup attestation for its package, FORM-12/13/18 transaction surfaces, and all
-five proof writers. The checklist below is retained as plan-time evidence for
-the wider Event 006 gate and for any future family promotion; it is not a
-current statement that the exact signature tranche is unattested.
+Reconciliation note (2026-07-29): the exact CHU/ASY signature tranche has
+source-implemented setup, FORM-12/13/18 transaction surfaces, and five proof
+writers, but it has no exact content attestation and is not admitted. The
+checklist below is retained as plan-time evidence for the wider Event 006 gate
+and for any future family promotion; it must not be read as satisfied admission
+evidence for CHU or ASY.
 
 `independence_wave_package_content_is_attested` and the scenario equivalent
 remain the broader Event 006 admission gates. A future family promotion
-requires every item below; the exact CHU/ASY signature tranche has already
-passed its scoped package and transaction attestation:
+requires every item below. The exact CHU/ASY signature tranche has not passed
+these gates; the rows below are required evidence, not a completed attestation:
 
 - all files load and exact package dispatch returns setup, validation, and cleanup
-- exact ID and tag pairs are admitted
+- exact ID and tag pairs satisfy the admission gate
 - origin and CHU mutex tests pass
 - no living carrier is touched
 - focus nodes load only for the exact package
@@ -1015,9 +1020,11 @@ passed its scoped package and transaction attestation:
 - independent focus, decision, country-package, localisation, and event-completion audits report no blocker
 
 The loader being present alone is not attestation evidence for any wider
-extension surface. Current exact-carrier admission is evidenced by the exact
-registry, setup receipts, transaction audits, and bounded
-country/focus/decision/localisation evidence, not by this addendum alone.
+extension surface. The exact registry, setup receipts, transaction audits, and
+bounded country/focus/decision/localisation evidence document source behavior,
+but they do not establish current CHU/ASY admission or exact content
+attestation. Admission remains fail-closed until the grounded portrait, rights,
+role, and full-package gates pass.
 
 ## Asset handoff
 
@@ -1125,8 +1132,10 @@ with normal, grey, and not-eligible DDS files for
 around Mosul and survival, not a conquest map or an unattributed sacred symbol.
 The achievement remains hidden when its intended route, survival, or terminal
 proof predicates are not met. The three IW-058 proof writers and the exact ASY
-compatibility attestation are operational for the admitted signature carrier;
-the parent-wide achievement audit remains open.
+compatibility adapter are source-implemented, but no exact ASY compatibility
+attestation or admitted signature carrier is currently established. The
+parent-wide achievement audit and the grounded portrait, rights, role, and
+full-package gates remain open.
 
 ### Report and news images
 
@@ -1358,14 +1367,16 @@ IW-058:
 
 ## Implementation tranches
 
-### Reconciliation note (2026-07-18)
+### Reconciliation note (2026-07-29)
 
-Tranches 0–5 are complete for the exact IW-043 `CHU` and IW-058 `ASY`
-signature tranche. The exit criteria below are retained as plan-time history;
-they explain the original gates and are not a current claim that every Event
-006 package or every parent-wide audit is complete. Current closeout is scoped
-to balance and runtime-scenario review, independent closeout audits, and the
-remaining parent-wide Event 006 work.
+Source implementation tranches 0–4 and the source portions of Tranche 5 are
+complete for the exact IW-043 `CHU` and IW-058 `ASY` signature tranche. Tranche
+5's exact admission and content-attestation exit remain blocked by grounded
+portrait, rights, role, and full-package gates. The exit criteria below are
+retained as plan-time history; they explain the original gates and are not a
+current claim that every Event 006 package or every parent-wide audit is
+complete. Current closeout is scoped to balance and runtime-scenario review,
+independent closeout audits, and the remaining parent-wide Event 006 work.
 
 ### Tranche 0, admission blockers and exact architecture
 
@@ -1573,10 +1584,11 @@ transaction surfaces.
 - [x] No Event 006 advisor asset or sprite is added.
 - [x] Localisation, event log, event detail, evolution detail, system docs, asset manifests, and workbook agree with the bounded package facts and accepted generic Event 6 catalog direction.
 - [x] Independent country-package, focus, decision-mission, localisation, and event-completion audits report no unresolved bounded source blocker.
-- [ ] Parent-wide runtime and scenario closeout is still pending. Exact CHU/ASY
-  package/setup attestation now covers FORM-12/13/18 transaction surfaces and
-  the five sole signature-proof writers; remaining family and whole-event
-  audits must not be inferred from this bounded admission.
+- [ ] Parent-wide runtime and scenario closeout is still pending. The exact
+  CHU/ASY package/setup and FORM-12/13/18 surfaces are source-implemented, but
+  exact content attestation and package admission remain blocked by the
+  grounded portrait, rights, role, and full-package gates. Remaining family and
+  whole-event audits must not be inferred from this source tranche.
 
 ## Promotion and closure handoff
 
@@ -1593,14 +1605,15 @@ implementation evidence rather than starting another parallel plan:
 - exact registry, formable, achievement, AI, and asset rows into their corresponding matrices
 - research cautions and source IDs into the research dossiers only where the accepted wording needs clarification
 
-Current disposition: **IMPLEMENTED / FINAL AUDIT** for the exact CHU/ASY
-signature tranche. Package identity, centralized politics and institutional
-leaders, FORM-12/13/18 transactions and exact-carrier attestations, paid
-180-day consent congresses, staged sovereignty-preserving integration, and
-the five sole proof writers are promoted into the source-of-truth specs and
-runtime evidence. This disposition does not claim whole Event 006 completion;
-parent-wide balance, runtime-scenario evidence, and remaining family audits
-stay queued.
+Current disposition: **SOURCE IMPLEMENTED / PACKAGE ADMISSION BLOCKED** for
+the exact CHU/ASY signature tranche. Package identity, centralized politics and
+institutional leaders, FORM-12/13/18 transactions, paid 180-day consent
+congresses, staged sovereignty-preserving integration, and the five sole proof
+writers are promoted into the source-of-truth specs and runtime evidence.
+Exact-carrier content attestation remains absent until the grounded portrait,
+rights, role, and full-package audits pass. This disposition does not claim
+whole Event 006 completion; parent-wide balance, runtime-scenario evidence, and
+remaining family audits stay queued.
 
 Promotion is recorded above for the exact CHU/ASY signature tranche. Do not
 start another IW-043 or IW-058 improvement-loop pass while the parent-wide
@@ -1610,13 +1623,17 @@ When all tranches are complete, the final parent closure should contain only fin
 
 ## Simplifications, omissions, and fallback disposition
 
-The exact CHU/ASY signature tranche is not a fallback: it is admitted and
-backed by the current package manifests. FORM-12/13/18 transactions and their
-adapter attestations are operational for the exact carriers, with paid
-180-day consent ledgers, anchor recounts, staged integration, and sole proof
-writers. Signature achievements remain hidden when their intended route,
-survival, or terminal-record predicates fail. The separate vanilla
-compatibility guard remains passed.
+The exact CHU/ASY signature tranche is not a fallback: its gameplay source is
+implemented and backed by the current package manifests, while runtime
+selection remains fail-closed at the exact content-attestation gate.
+FORM-12/13/18 transactions and their adapter surfaces are source-implemented
+and remain fail-closed for CHU/ASY until a future exact content attestation and
+package admission; no admitted-carrier operation is claimed. Paid 180-day
+consent ledgers, anchor recounts, staged integration, and sole proof writers
+remain part of the source tranche. Signature achievements remain hidden when
+their intended route, survival, or terminal-record predicates fail. The
+separate vanilla compatibility guard remains a source-level requirement pending
+the admission gates.
 
 No fallback or simplification is proposed. Whole-Event 006 completion,
 runtime-scenario evidence, and remaining family audits are still open and must

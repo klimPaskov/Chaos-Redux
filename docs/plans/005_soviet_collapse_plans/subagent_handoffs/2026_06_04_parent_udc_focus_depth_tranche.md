@@ -61,7 +61,7 @@ The affected focuses now expose UDC-specific tooltips and connect to existing So
 - UDC generic custom-splinter tooltip count: 0.
 - UDC missing tooltip localisation: none.
 - UDC-specific custom tooltip count: 22.
-- Parsed BSC focus tree after this tranche: 47 focuses, duplicate coordinates none, generic custom-splinter tooltip count 0, missing tooltip localisation none.
+- Parsed AEX focus tree after this tranche: 47 focuses, duplicate coordinates none, generic custom-splinter tooltip count 0, missing tooltip localisation none.
 - `git diff --check -- common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_04_parent_bsc_focus_depth_tranche.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_04_160727_event005_custom_splinter_focus_audit_readonly.md`: passed.
 - `rg -n "<=|>=" common/national_focus/005_soviet_collapse_custom_splinters.txt localisation/english/005_soviet_collapse_custom_countries_l_english.yml`: no matches.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt` brace balance: 0, minimum balance 0.
@@ -69,4 +69,4 @@ The affected focuses now expose UDC-specific tooltips and connect to existing So
 
 ## Remaining Gaps
 
-The focus auditor still reports many untouched or lightly touched custom-splinter trees with generic route scaffolds, especially NLC, FEV, ARD, BBH, KRS, GAC, DHC, KHC, SZA, UWD, MRC, IUL, and BAC. Republic-tree layout risks also remain in Ukraine, Central Asia, and Moldova. This tranche does not complete the overall Soviet Collapse focus-tree objective.
+The focus auditor still reports many untouched or lightly touched custom-splinter trees with generic route scaffolds, especially NLC, FEV, ARD, BBH, AOX, GAC, DHC, KHC, SZA, UWD, MRC, IUL, and ADX. Republic-tree layout risks also remain in Ukraine, Central Asia, and Moldova. This tranche does not complete the overall Soviet Collapse focus-tree objective.

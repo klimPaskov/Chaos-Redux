@@ -13,7 +13,7 @@ Scope: reconcile Event 006 documentation after parent promotion of the independe
 | Accepted design | `docs/specs/006_independence_wave_specs/` | Accepted design unchanged. |
 | Whole-event status | `subagent_handoffs/006_event_completion_audit_v30_2026_07_28.md` | **HOLD / PARTIAL**. v30 supersedes v23 and v28 for whole-event disposition. |
 | Current routing | `006_source_of_truth_map.md` and `006_independence_wave_resume_packet.md` | Reconciled to the 51-master flat shelf and Galimzhan v2 promotion. |
-| Public event documentation | `docs/events/006_independence_wave.md` | Reconciled to v30, 51 flat masters, no normalized shelf PNGs, no advisor derivatives, and the promoted DDS hash. |
+| Public event documentation | `docs/events/006_independence_wave/overview.md` | Reconciled to v30, 51 flat masters, no normalized shelf PNGs, no advisor derivatives, and the promoted DDS hash. |
 | CHU/ASY portrait ledger | `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/manifest.md` and `gfx_handoff.md` | Galimzhan v2 is `runtime_promoted`. The other five rows remain source-only, blocked, or needs-user-review. |
 | Galimzhan promotion | `subagent_handoffs/006_galimzhan_portrait_v2_runtime_promotion_2026_07_28.md` | One existing CHU consumer was promoted. CHU remains outside runtime content attestation. |
 | Portrait shelf | `docs/assets/006_independence_wave/portraits_generated_png/README.md`, `MANIFEST.md`, and `PRE_RESIZE_MANIFEST.md` | Exactly 51 original-size RGB masters, one flat directory, no normalized 156x210 PNGs, no advisor or small/dossier derivatives. |
@@ -32,7 +32,7 @@ Scope: reconcile Event 006 documentation after parent promotion of the independe
 
 ## Contradictions reconciled
 
-- `docs/events/006_independence_wave.md` described a 49-master shelf and v23 as current whole-event authority. It now records the 51-master flat shelf, v30 as current authority, v23 as historical, and the parent-promoted DDS hash.
+- `docs/events/006_independence_wave/overview.md` described a 49-master shelf and v23 as current whole-event authority. It now records the 51-master flat shelf, v30 as current authority, v23 as historical, and the parent-promoted DDS hash.
 - `006_source_of_truth_map.md` had a stale final portrait-shelf addendum saying the v2 DDS promotion had not occurred. It now records the promoted existing CHU consumer, hash, no normalized shelf PNGs, and no advisor or small/dossier derivatives.
 - `006_source_of_truth_map.md` described the static visual row as candidate-only and called v23 the whole-event authority. Both statements now distinguish the parent-promoted Galimzhan consumer from the still-held CHU/ASY package and identify v30 as current authority.
 - `006_independence_wave_resume_packet.md` described Galimzhan as a reviewed candidate without a DDS in one continuation bullet. That bullet now records the existing consumer and final hash. Its 49/50 and v23 references remain explicitly historical.

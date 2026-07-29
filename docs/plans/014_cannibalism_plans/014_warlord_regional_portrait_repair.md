@@ -15,7 +15,7 @@ Status: completed and closed by the 2026-07-15 asset and country-package evidenc
 
 ## Frozen 56-file runtime ledger
 
-For each slot `S` in `CBA`, `CBB`, `CBC`, `CBD`, `CBE`, `CBF`, `CBG`, and `CBH`:
+For each slot `S` in `CBA`, `AHX`, `CBC`, `AIX`, `CBE`, `CBF`, `AMX`, and `CBH`:
 
 - Europe: `gfx/leaders/014_cannibalism/leader_S_warlord.dds`, sprite `GFX_portrait_S_warlord_europe`.
 - Asia: `gfx/leaders/014_cannibalism/leader_S_warlord_asia.dds`, sprite `GFX_portrait_S_warlord_asia`.
@@ -47,6 +47,6 @@ Each runtime portrait is 156 by 210, uncompressed one-mip 32-bit BGRA DDS. Its g
 - Their matching `gfx_handoff.md` files record the stable CBA-CBH regional sprite and runtime paths.
 - `docs/plans/014_cannibalism_plans/subagent_handoffs/portrait_regen_a_handoff.md` and `portrait_regen_b_handoff.md` record the two completed production tranches.
 - `docs/assets/014_cannibalism/leader_portraits_refresh/hannibal/manifest.md` closes the ordinary 12-frame package, and `wendigo_hannibal/manifest.md` closes the transformed 16-frame package. Both have matching GFX handoffs, static fallbacks, sheets, previews, contact sheets, canonical frame `000` sources, and separately generated action states.
-- `audits/event014_country_package_consolidation_reaudit_2026-07-15.md` reports 56 live portrait files, 56 valid dimensions, 56 unique hashes, correct regional selection, the required skull-lick composition, and no prison setting in CBG or CBH.
+- `audits/event014_country_package_consolidation_reaudit_2026-07-15.md` reports 56 live portrait files, 56 valid dimensions, 56 unique hashes, correct regional selection, the required skull-lick composition, and no prison setting in AMX or CBH.
 
 No fallback, reused portrait, transform-only animation, missing regional variant, or unwired runtime path remains in this repair scope.

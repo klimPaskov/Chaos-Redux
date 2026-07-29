@@ -32,7 +32,7 @@ No registry file, registry filename, registry row, scenario registration, consta
   - removes redundant frozen lot/formation rewinds because derivative identity already excludes every ordinary-history append.
 - `events/019_infantry_spawn_scenario.txt`
   - adds hidden retry event `chaosx.nr19.955`.
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
   - documents exact package proof, deferred finalization, same-tag rollback/retry, General claimant-ledger adoption, and the permitted failed-coup consequence.
 - `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_scn013_same_tag_transaction_repair_handoff.md`
   - records this bounded implementation handoff.

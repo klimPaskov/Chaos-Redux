@@ -1,5 +1,9 @@
 # Event 014 Local Warlord Focus Implementation Handoff
 
+> **Historical implementation handoff.** The tree-count and asset details in
+> this early handoff describe an intermediate draft. Current route counts and
+> package status are defined by the consolidated Event 014 focus audit.
+
 ## Scope and files
 
 This bounded patch implements the shared local warlord focus tree and its reward effects. It changes only:

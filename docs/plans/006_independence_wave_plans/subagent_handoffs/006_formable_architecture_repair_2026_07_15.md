@@ -87,7 +87,7 @@ Status: implementation repair complete; readiness remains deliberately closed pe
 - `common/decisions/categories/006_independence_wave_form03_categories.txt`
 - `localisation/english/006_independence_wave_formable_registry_l_english.yml`
 - `localisation/english/006_independence_wave_form01_02_04_l_english.yml`
-- `docs/systems/006_independence_wave_formable_registry.md`
+- `docs/events/006_independence_wave/systems/formable_registry.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_architecture_repair_2026_07_15.md`
 
 ## Validation and evidence

@@ -16,7 +16,7 @@ Context files read for mechanics and helper tracing:
 - `common/scripted_effects/005_soviet_collapse_effects.txt`
 - `common/ideas/005_soviet_collapse_ideas.txt`
 - `common/decisions/005_soviet_collapse_decisions.txt`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - Existing Event 005 focus handoffs under `docs/plans/005_soviet_collapse_plans/subagent_handoffs/`
 
 References and skills read:
@@ -76,11 +76,11 @@ Counts are current-worktree static counts. `Direct hooks` counts focus-level dir
 | `DSC_soviet_collapse_focus_tree` | 18 | 14 | 14 | 0 | Aggressive hooks exist, but route is still short for Dead Soldiers' Congress ambitions. |
 | `NRF_soviet_collapse_focus_tree` | 18 | 9 | 15 | 0 | Naval identity exists but remains compact and small-reward-heavy. |
 | `ICD_soviet_collapse_focus_tree` | 18 | 2 | 13 | 0 | Shallow crisis tree. |
-| `BSC_soviet_collapse_focus_tree` | 47 | 0 | 28 | 1 | Full-size but direct mechanics absent. |
+| `AEX_soviet_collapse_focus_tree` | 47 | 0 | 28 | 1 | Full-size but direct mechanics absent. |
 | `TNC_soviet_collapse_focus_tree` | 47 | 0 | 26 | 1 | Full-size but direct mechanics absent. |
-| `ALA_soviet_collapse_focus_tree` | 47 | 0 | 24 | 1 | Full-size but direct mechanics absent. |
+| `AAX_soviet_collapse_focus_tree` | 47 | 0 | 24 | 1 | Full-size but direct mechanics absent. |
 | `BBH_soviet_collapse_focus_tree` | 47 | 0 | 25 | 1 | Full-size but direct mechanics absent. |
-| `KRS_soviet_collapse_focus_tree` | 47 | 0 | 27 | 2 | Full-size but direct mechanics absent. |
+| `AOX_soviet_collapse_focus_tree` | 47 | 0 | 27 | 2 | Full-size but direct mechanics absent. |
 | `UDC_soviet_collapse_focus_tree` | 47 | 0 | 23 | 1 | Full-size but direct mechanics absent. |
 | `SDZ_soviet_collapse_focus_tree` | 47 | 0 | 23 | 1 | Full-size but direct mechanics absent. |
 | `GAC_soviet_collapse_focus_tree` | 47 | 0 | 25 | 1 | Full-size but direct mechanics absent. |
@@ -91,16 +91,16 @@ Counts are current-worktree static counts. `Direct hooks` counts focus-level dir
 | `UWD_soviet_collapse_focus_tree` | 47 | 0 | 25 | 1 | Full-size but direct mechanics absent. |
 | `MRC_soviet_collapse_focus_tree` | 47 | 0 | 24 | 0 | Full-size but direct mechanics absent. |
 | `IUL_soviet_collapse_focus_tree` | 47 | 0 | 22 | 3 | Full-size but direct mechanics absent. |
-| `BAC_soviet_collapse_focus_tree` | 47 | 0 | 23 | 3 | Full-size but direct mechanics absent. |
+| `ADX_soviet_collapse_focus_tree` | 47 | 0 | 23 | 3 | Full-size but direct mechanics absent. |
 | `ARD_soviet_collapse_focus_tree` | 47 | 3 | 28 | 3 | Naval/arctic hooks exist, but route is still too light for the intended OP actor. |
 | `NLC_soviet_collapse_focus_tree` | 47 | 0 | 29 | 1 | Full-size but direct mechanics absent. |
 | `CFR_soviet_collapse_focus_tree` | 47 | 9 | 19 | 0 | Construction route has strong recent improvements; still needs more decision/mission contracts. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 10 | 18 | 0 | Improved with claims/wargoal hooks, but still shallow by high-impact successor standard. |
 | `MFR_soviet_collapse_focus_tree` | 58 | 7 | 16 | 0 | Stronger arsenal identity than most; patched one pathline issue in this pass. |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 6 | 7 | 0 | Compact ancient restoration, not a full route family. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 6 | 7 | 0 | Compact ancient restoration, not a full route family. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 6 | 7 | 0 | Compact ancient restoration, not a full route family. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 6 | 7 | 0 | Compact ancient restoration, not a full route family. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | 6 | 8 | 0 | Compact ancient restoration, not a full route family. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 6 | 7 | 0 | Compact ancient restoration, not a full route family. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | 6 | 8 | 0 | Compact ancient restoration, not a full route family. |
 
 ## Idea Spam Findings
 
@@ -132,13 +132,13 @@ Exact multi-helper focus call site ids found in this pass:
 - `moldova_soviet_collapse_a_small_state_between_larger_maps`
 - `kaz_soviet_collapse_the_steppe_outlives_the_union`
 - `FTH_diplomatic_plan`, `FTH_communes_without_capitals`, `FTH_endgame`
-- `BSC_diplomatic_plan`, `TNC_diplomatic_plan`, `ALA_diplomatic_plan`, `BBH_diplomatic_plan`, `KRS_diplomatic_plan`, `KRS_endgame`
+- `AEX_diplomatic_plan`, `TNC_diplomatic_plan`, `AAX_diplomatic_plan`, `BBH_diplomatic_plan`, `AOX_diplomatic_plan`, `AOX_endgame`
 - `UDC_diplomatic_plan`, `SDZ_diplomatic_plan`, `GAC_diplomatic_plan`, `DHC_diplomatic_plan`, `KHC_diplomatic_plan`
 - `FEV_diplomatic_plan`, `FEV_authority_from_the_harbor`, `FEV_endgame`
 - `SZA_diplomatic_plan`, `SZA_authority_from_the_railhead`, `SZA_endgame`
 - `UWD_diplomatic_plan`
 - `IUL_volga_ural_endurance`, `IUL_diplomatic_plan`, `IUL_endgame`
-- `BAC_diplomatic_plan`, `BAC_amur_commune_endurance`, `BAC_endgame`
+- `ADX_diplomatic_plan`, `ADX_amur_commune_endurance`, `ADX_endgame`
 - `ARD_diplomatic_plan`, `ARD_arctic_port_endurance`, `ARD_endgame`
 - `NLC_diplomatic_plan`
 

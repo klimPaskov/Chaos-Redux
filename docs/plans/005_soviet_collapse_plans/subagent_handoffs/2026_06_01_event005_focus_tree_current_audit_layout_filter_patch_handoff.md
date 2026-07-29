@@ -61,7 +61,7 @@ No localisation keys, icon ids, gfx files, flag files, scripted effects, scripte
 | Internal republic compact | `soviet_collapse_internal_republic_focus_tree` with 62 focuses | Partial | Has regional paths and depth, but still needs more visible country adaptation and postwar settlement hooks. |
 | Baltic, Caucasus, Central Asia, Moldova, Belarus regional republic branches | Regional trees with 40-53 focuses each | Partial | Route families exist. Remaining problems are layout congestion, shared-helper rewards, and limited postwar settlement/integration consequences. |
 | Kazakhstan major successor | `soviet_collapse_kazakhstan_focus_tree` with 92 focuses | Partial/stronger | Strongest regional tree by count and route spread. Still has several long pathline risks around Alash, federation, resource, and southern republic branches. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` ancient trees, 16 focuses each | Partial/shallow | Political, industry, and expansion hooks exist, but 16-focus trees remain shallow for playable restored identities and still reuse the ancient icon family heavily. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` ancient trees, 16 focuses each | Partial/shallow | Political, industry, and expansion hooks exist, but 16-focus trees remain shallow for playable restored identities and still reuse the ancient icon family heavily. |
 | Factory successors | `CFR` 47 focuses, `OGB` 23 focuses, `MFR` 58 focuses | Mixed | `CFR` and `MFR` have stronger industrial identity. `OGB_soviet_collapse_focus_tree` remains the shallowest factory successor and needs broader Volga/Idel-Ural/postwar integration depth. |
 | High-chaos custom splinters should be dangerous/OP | `FTH`, `PRA`, compact `TSC/RMC/DSC/NRF/ICD`, and 47-focus splinters in `005_soviet_collapse_custom_splinters.txt` | Partial | Aggressive endpoints exist, e.g. `FTH_communes_without_capitals`, `PRA_rails_over_capitals`, `TSC_sky_over_siberia`, `RMC_procession_columns`, `DSC_dead_regiment_columns`, `NRF_icebound_marine_guard`, `ICD_grave_columns_march`, but compact 18-focus chaos countries still need stronger OP map pressure, war escalation, units, or collapse-mechanic damage. |
 
@@ -72,7 +72,7 @@ High priority:
 1. `soviet_collapse_update_pra_authority_idea` is still called by 14 PRA focuses in `005_soviet_collapse_custom_splinters.txt`: `PRA_the_timetable_declares_authority`, `PRA_novosibirsk_dispatcher_court`, `PRA_omsk_station_guard`, `PRA_timetable_law`, `PRA_ticket_courts_for_every_platform`, `PRA_the_board_overrules_ministers`, `PRA_armored_train_directorate`, `PRA_passport_of_the_moving_state`, `PRA_neutral_corridor_letters`, `PRA_charge_for_safe_passage`, `PRA_league_transit_bargain`, `PRA_rails_over_capitals`, `PRA_flags_on_every_station`, and `PRA_the_pale_line_endures`. The helper is hidden and mostly idempotent, but it still repeatedly evaluates add/remove idea lifecycle logic. A broader scripted-system pass should consider a single route-state updater, not another focus-side patch.
 2. Compact high-chaos trees remain underpowered relative to the event promise. `TSC_sky_over_siberia`, `RMC_procession_columns`, `DSC_dead_regiment_columns`, `NRF_icebound_marine_guard`, and `ICD_grave_columns_march` should become scarier through direct map pressure, special units, stronger war plans, collapse pressure, or hostile AI strategy. This is too broad for this subagent patch.
 3. `OGB_soviet_collapse_focus_tree` is still only 23 focuses. It has Volga claims, Idel-Ural hooks, and a restoration state path, but lacks the same depth as `CFR` and `MFR`.
-4. The 16-focus ancient restoration trees (`KZR`, `SOG`, `KHW`, `ALN`) cover basic identity but not enough internal politics, industry, and postwar handling for long-lived playable identities.
+4. The 16-focus ancient restoration trees (`APX`, `SOG`, `ANX`, `ABX`) cover basic identity but not enough internal politics, industry, and postwar handling for long-lived playable identities.
 
 Secondary:
 
@@ -102,7 +102,7 @@ Secondary:
 
 - Mechanical scan found `ai_will_do` present on all 1,698 focus blocks.
 - Many AI blocks are still shallow `base =` weights or simple war/chaos modifiers. The biggest remaining design gap is not missing AI blocks; it is lack of route-aware strategic behavior for many major paths.
-- High-chaos/extreme routes need stronger AI push when chaos tier is high, when SOV authority is low, or when the country is already at war with SOV. Examples needing deeper AI review: `TSC_sky_over_siberia`, `RMC_procession_columns`, `DSC_dead_regiment_columns`, `NRF_icebound_marine_guard`, `ICD_grave_columns_march`, `PRA_rails_over_capitals`, `KRS_every_harbor_a_soviet`.
+- High-chaos/extreme routes need stronger AI push when chaos tier is high, when SOV authority is low, or when the country is already at war with SOV. Examples needing deeper AI review: `TSC_sky_over_siberia`, `RMC_procession_columns`, `DSC_dead_regiment_columns`, `NRF_icebound_marine_guard`, `ICD_grave_columns_march`, `PRA_rails_over_capitals`, `AOX_every_harbor_a_soviet`.
 - Regional republic diplomacy and League branches should more consistently weight foreign/League routes based on actual faction membership, neighboring breakaways, SOV threat values, war state, and sponsor appetite.
 
 ## Layout Findings
@@ -118,7 +118,7 @@ Remaining broad layout risks:
 - Representative remaining risks:
   - `UWD_propaganda -> UWD_settlement` near `UWD_rail_yard_repair_trust` in `005_soviet_collapse_custom_splinters.txt`.
   - `UWD_workers_canteen_compact -> UWD_kama_foundry_contracts` near `UWD_radical_turn`.
-  - `BAC_war_plan -> BAC_militia_training_yards` near `BAC_industry_plan`.
+  - `ADX_war_plan -> ADX_militia_training_yards` near `ADX_industry_plan`.
   - `NLC_station_mediation -> NLC_winter_guarantees` near `NLC_settlement`.
   - Multiple Ukraine, Belarus, Moldova, Caucasus, and Kazakhstan long diagonals remain in `005_soviet_collapse_republics.txt`.
 - Post-patch mechanical scan reports 0 duplicate focus IDs, 0 exact coordinate overlaps, and 0 very-close same-row pairs under the strict `dx < 2`, `dy < 1` check.

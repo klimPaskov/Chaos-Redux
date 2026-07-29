@@ -93,10 +93,10 @@ Reason: the target gameplay files already contain broad unrelated dirty work, an
 
 `005_soviet_collapse_ancient_restorations.txt`
 
-- `KZR_soviet_collapse_focus_tree`: 16 focuses
+- `APX_soviet_collapse_focus_tree`: 16 focuses
 - `SOG_soviet_collapse_focus_tree`: 16 focuses
-- `KHW_soviet_collapse_focus_tree`: 16 focuses
-- `ALN_soviet_collapse_focus_tree`: 16 focuses
+- `ANX_soviet_collapse_focus_tree`: 16 focuses
+- `ABX_soviet_collapse_focus_tree`: 16 focuses
 
 ## Finding 1: Idea Spam And Duplicate Idea Rewards
 
@@ -144,7 +144,7 @@ Representative focus IDs:
 - Political-power-only: `ukr_soviet_collapse_workers_congress_in_kharkiv`, `ukr_soviet_collapse_the_commander_or_the_cabinet`, `ukr_soviet_collapse_coalition_of_three_ministries`, `soviet_collapse_capital_committee_records`, `internal_soviet_collapse_idel_ural_congress`.
 - Army-experience-only: `ukr_soviet_collapse_moscows_officers_in_our_barracks`, `ukr_soviet_collapse_civilian_command_over_the_army`, `ukr_soviet_collapse_foreign_advisers_in_plain_coats`, `blr_soviet_collapse_orders_printed_like_timetables`.
 - War-support-only: `ukr_soviet_collapse_army_of_the_republic`, `ukr_soviet_collapse_great_steppe_and_sea_plan`, `blr_soviet_collapse_swamp_roads_closed`, `blr_soviet_collapse_regular_forest_brigades`.
-- Single civilian factory plus slot: `soviet_collapse_home_industry_contracts`, `internal_soviet_collapse_komi_mine_and_timber_contracts`, `moldova_soviet_collapse_vineyard_and_cannery_committees`, `kaz_soviet_collapse_karaganda_coal_accounting`, `TSC_kirensk_field_stations`, `BSC_road_and_well_ledger`.
+- Single civilian factory plus slot: `soviet_collapse_home_industry_contracts`, `internal_soviet_collapse_komi_mine_and_timber_contracts`, `moldova_soviet_collapse_vineyard_and_cannery_committees`, `kaz_soviet_collapse_karaganda_coal_accounting`, `TSC_kirensk_field_stations`, `AEX_road_and_well_ledger`.
 - Single arms factory plus slot: `internal_soviet_collapse_bashkir_oilfield_security`, `moldova_soviet_collapse_tiraspol_depot_belt`, `kaz_soviet_collapse_mining_workers_councils`, `FTH_hidden_workshop_cells`, `BBH_workshop_cells`, `MFR_foundry_line_holds`.
 - Reused support equipment package: `soviet_collapse_foreign_liaison_government`, `internal_soviet_collapse_republic_volunteer_standards`, `ICD_letters_to_grieving_cities`, `FEV_siberian_factory_letters`.
 - Convoy-only: `baltic_soviet_collapse_the_baltic_customs_desk`, `kaz_soviet_collapse_iranian_caspian_notes`, `FTH_ukrainian_border_letters`, `FEV_sakhalin_ferry_protocols`, `IUL_volga_trade_letters`, `ARD_league_convoy_bargain`, `NLC_diplomatic_plan`.
@@ -324,10 +324,10 @@ Priority exact examples:
 - `NLC_war_plan`, line 24573: air-related reward, filters army/industry. Add `FOCUS_FILTER_AIR_XP` if the air payload is kept.
 - `MFR_factory_guard_columns`, line 2485: building reward, filters army/manpower. Add `FOCUS_FILTER_INDUSTRY`.
 - `MFR_no_peace_without_orders`, line 2935: claims/wars/equipment reward, filters industry/political. Add `FOCUS_FILTER_ANNEXATION` and `FOCUS_FILTER_ARMY_XP`.
-- `KZR_old_border_files`, line 175: annexation filter is present, but building rewards also need industry if retained.
+- `APX_old_border_files`, line 175: annexation filter is present, but building rewards also need industry if retained.
 - `SOG_old_city_border_files`, line 569: annexation filter is present, but building rewards also need industry if retained.
-- `KHW_old_oasis_border_files`, line 953: annexation filter is present, but building rewards also need industry if retained.
-- `ALN_old_pass_border_files`, line 1346: annexation filter is present, but building rewards also need industry if retained.
+- `ANX_old_oasis_border_files`, line 953: annexation filter is present, but building rewards also need industry if retained.
+- `ABX_old_pass_border_files`, line 1346: annexation filter is present, but building rewards also need industry if retained.
 
 ## Recommended Next Parent Patches
 

@@ -48,7 +48,7 @@ The previous Event 016 visible-ID range 88 through 93 is superseded. Live Event 
 ## Exact files changed
 
 1. `docs/assets/016_brilliant_scientist/manifest.md`
-2. `docs/events/016_brilliant_scientist.md`
+2. `docs/events/016_brilliant_scientist/overview.md`
 3. `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`
 4. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`
 5. `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md`
@@ -72,8 +72,8 @@ The previous Event 016 visible-ID range 88 through 93 is superseded. Live Event 
 23. `docs/specs/016_brilliant_scientist_specs/prompts/016_brilliant_scientist_super_event_prompt.md`
 24. `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_8_super_events_world_end_and_aftermath.md`
 25. `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_9_assets_animation_and_localisation.md`
-26. `docs/super_events/016_brilliant_scientist_super_event_audio_research.md`
-27. `docs/super_events/016_brilliant_scientist_super_event_research.md`
+26. `docs/super_events/016_brilliant_scientist/audio_research.md`
+27. `docs/super_events/016_brilliant_scientist/text_research.md`
 
 ## Source and plan dispositions
 

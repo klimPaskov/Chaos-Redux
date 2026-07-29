@@ -103,7 +103,7 @@ Every Banner Rises launches Event 006 through the shared frozen Liberation trans
 
 Low, Medium, High, and Maximum select anchor, compact, extended, and extended territory packages while scaling forces, stocks, institutions, ambitions, and route access. Great Partition advances territory by one additional tier before reservation, capped at the accepted non-overlapping extension. Six numeric type families back eight player-facing modes because Universal Belligerence exposes three independently selectable rules. The 32-cell runtime acceptance matrix covers each mode at all four intensities. The result event reports releases, hosts, wars, league membership, territory, forces, and transaction proof; its decision ledger exposes every blocked package and exact rejection reason.
 
-The implementation contract, files, assets, and test matrix are documented in `docs/systems/independence_wave_triggerable_scenario.md`.
+The implementation contract, files, assets, and test matrix are documented in `docs/events/006_independence_wave/systems/triggerable_scenario.md`.
 
 ### SCN-011: Africa Is One
 
@@ -152,7 +152,7 @@ The Unbidden Muster launches Event 019 as an immediate military crisis without r
 Event 019's source proposal used `SCN-008`, but Every Banner Rises already owns
 that ID. IDs 1 through 11 are occupied and Event 020 reserves raw ID 12, so the
 live collision-free identity is `SCN-013`. The dedicated runtime contract is
-documented in `docs/systems/019_infantry_spawn_triggerable_scenario.md`.
+documented in `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`.
 
 Low, Medium, High, and Maximum intensity scale the share of countries processed, connected revolt-region coverage, formation lots, front count, additional adjacent wars, and actor manpower. One-state and all-island countries use a same-tag military takeover instead of losing their only state. Every dynamic actor receives a connected noncapital region, new Event 019 formations, and an immediate former-parent war. Maximum is an ongoing global crisis and never sets `world_end`.
 

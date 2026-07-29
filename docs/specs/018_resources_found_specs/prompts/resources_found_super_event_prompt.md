@@ -29,7 +29,7 @@ Every super-event must have its own final image, final track, audio ID, sound wr
 Create or update:
 
 ```text
-docs/super_events/018_resources_found_super_event_research.md
+docs/super_events/018_resources_found/overview.md
 ```
 
 The note must include considered candidates, selected sources, confidence, licensing, final file paths, implementation IDs, and open blockers.
@@ -119,7 +119,7 @@ Final IDs must be checked against the repository.
 super_event role: 018_cave_emergence
 image sprite: GFX_super_event_018_cave_emergence
 audio id direction: super_event_audio_018_cave_emergence
-music path direction: music/018_resources_found/super_event_<slot>_cave_emergence.ogg
+music path direction: sound/018_resources_found/super_event_<slot>_cave_emergence.wav
 sound path direction: sound/018_resources_found/super_event_<slot>_cave_emergence.wav
 ```
 
@@ -191,7 +191,7 @@ Research a unique final track, different from emergence. Desired shape:
 super_event role: 018_cave_world_end
 image sprite: GFX_super_event_018_world_end
 audio id direction: super_event_audio_018_cave_world_end
-music path direction: music/018_resources_found/super_event_<slot>_cave_world_end.ogg
+music path direction: sound/018_resources_found/super_event_<slot>_cave_world_end.wav
 sound path direction: sound/018_resources_found/super_event_<slot>_cave_world_end.wav
 ```
 
@@ -267,8 +267,8 @@ For each super-event:
 6. Select one final track that fits the exact role.
 7. Preserve the original downloaded source under the Event 018 docs asset package.
 8. Trim, remove silence, normalize carefully, and fade where useful.
-9. Convert final OGG to 44.1 kHz.
-10. Prepare matching sound-channel file if the current super-event system requires it.
+9. Convert final WAV to 44.1 kHz.
+10. Prepare matching sound file if the current super-event system requires it.
 11. Document exact editing and conversion steps.
 12. Propose final unique audio ID and sound wrapper.
 
@@ -316,7 +316,7 @@ For each package record:
 - duration
 - attribution text
 - original source path
-- final OGG path
+- final WAV path
 - final WAV path if used
 - audio ID
 - super-event slot

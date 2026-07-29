@@ -79,11 +79,11 @@ Implement and audit all high-chaos splinters required by the specs.
 
 | Actor | Suggested tag | Required identity |
 | --- | --- | --- |
-| Kronstadt Free Soviet | KRS or equivalent | sailor and naval council state, anti-Moscow soviet identity, port and fleet mechanics |
+| Kronstadt Free Soviet | AOX or equivalent | sailor and naval council state, anti-Moscow soviet identity, port and fleet mechanics |
 | Green Army Congress | GRM, GAC, or equivalent | peasant and rural defense movement, local legitimacy, irregular forces |
 | Union Defense Committee | UDC | loyalist non-Moscow union splinter, military district content, emergency union continuity |
 | Security Directorate Zone | SDZ, NKD, or equivalent | sealed security authority, archives, prisons, internal control, intelligence mechanics |
-| Basmachi Confederation | BSC, BSM, or equivalent | Central Asian old movement, cavalry, irregular routes, local league tension |
+| Basmachi Confederation | AEX, BSM, or equivalent | Central Asian old movement, cavalry, irregular routes, local league tension |
 | Red Martyrs' Resurrection Cult | RMC, RMT, or equivalent | death or martyr cult, high-chaos ideology, special recruitment or legitimacy |
 | Black Banner Host | BBH or equivalent | anarchist or anti-state military actor, Black Banner route, irregular expansion |
 | Iron Commissariat of the Dead | ICD or equivalent | rogue Soviet death-state authority, special mechanics, grim command structure |

@@ -518,7 +518,7 @@ Final catalog wording must match the implemented in-game Event Details and evolu
 
 Implementation should update:
 
-- canonical event doc under `docs/events/020_black_plague.md`
+- canonical event doc under `docs/events/020_black_plague/overview.md`
 - biological warfare system documentation
 - disease mapmode and crisis board documentation
 - world-threat source documentation

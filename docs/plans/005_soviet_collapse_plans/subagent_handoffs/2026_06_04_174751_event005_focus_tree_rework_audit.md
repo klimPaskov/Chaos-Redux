@@ -63,7 +63,7 @@ Exact focus ids with direct mobile-columns helper plus another helper that can r
 | `internal_soviet_collapse_tuvan_steppe_guard` | `common/national_focus/005_soviet_collapse_republics.txt:4382` | direct mobile helper + `soviet_collapse_apply_focus_league_security_plan` |
 | `kaz_soviet_collapse_the_army_that_crosses_distance` | `common/national_focus/005_soviet_collapse_republics.txt:10746` | direct mobile helper + `soviet_collapse_apply_focus_military_consolidation` |
 | `FTH_doctrine` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:148` | direct mobile helper + `soviet_collapse_apply_focus_chaos_assault_plan` |
-| `BSC_doctrine` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:4494` | direct mobile helper + chaos assault plan |
+| `AEX_doctrine` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:4494` | direct mobile helper + chaos assault plan |
 | `TNC_doctrine` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:5630` | direct mobile helper + chaos assault plan |
 | `UDC_doctrine` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:10303` | direct mobile helper + chaos assault plan |
 | `UDC_signal_truck_yards` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:11104` | direct mobile helper + military consolidation |
@@ -83,7 +83,7 @@ Highest-priority shallow custom splinter trees:
 | --- | --- | --- |
 | `FTH_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:15` | 47 focuses, 0 decision hooks, 0 war hooks, 0 claims/cores; visible template opener; direct duplicate mobile chain on `FTH_doctrine`. |
 | `BBH_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:7752` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
-| `KRS_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:8946` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
+| `AOX_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:8946` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
 | `SDZ_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:11394` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
 | `GAC_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:12657` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
 | `DHC_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:13827` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores; also has a pathline issue. |
@@ -93,9 +93,9 @@ Highest-priority shallow custom splinter trees:
 | `UWD_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:18578` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores; also has a pathline issue. |
 | `MRC_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:19765` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
 | `IUL_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:20938` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
-| `BAC_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:22078` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
+| `ADX_soviet_collapse_focus_tree` | `common/national_focus/005_soviet_collapse_custom_splinters.txt:22078` | 47 focuses, 0 decisions, 0 war hooks, 0 claims/cores. |
 
-Second-priority custom trees have a few hooks but still lack enough OP country-specific mechanics: `BSC`, `TNC`, `ALA`, `UDC`, `ARD`, and `NLC` each have 2-3 decision references and no direct war/claim/core hooks in focus rewards. `BSC_doctrine`, `TNC_doctrine`, `UDC_doctrine`, `UDC_signal_truck_yards`, and `NLC_doctrine` are also in the duplicate mobile-helper list above.
+Second-priority custom trees have a few hooks but still lack enough OP country-specific mechanics: `AEX`, `TNC`, `AAX`, `UDC`, `ARD`, and `NLC` each have 2-3 decision references and no direct war/claim/core hooks in focus rewards. `AEX_doctrine`, `TNC_doctrine`, `UDC_doctrine`, `UDC_signal_truck_yards`, and `NLC_doctrine` are also in the duplicate mobile-helper list above.
 
 The short chaos trees have more identity than the repeated 47-focus family but are too compressed:
 
@@ -119,7 +119,7 @@ Large republic trees are denser but still need route identity cleanup:
 - `soviet_collapse_kazakhstan_focus_tree` at `common/national_focus/005_soviet_collapse_republics.txt:10109`: 92 focuses and 7 decision hooks, but 0 direct war/claim/core hooks and multiple duplicate rail/mobile helper chains.
 - `soviet_collapse_belarus_focus_tree` at `common/national_focus/005_soviet_collapse_republics.txt:8791`: 53 focuses and 12 decision hooks, but 0 direct war/claim/core hooks and a pathline issue.
 
-Ancient restorations are short but less broken mechanically: `KZR`, `SOG`, `KHW`, and `ALN` are each 16 focuses with 4 decision hooks, 2 war hooks, 1 core/transfer hook, and 8-11 claim hooks. They need branch depth, but they are not the first place to fix "no mechanics".
+Ancient restorations are short but less broken mechanically: `APX`, `SOG`, `ANX`, and `ABX` are each 16 focuses with 4 decision hooks, 2 war hooks, 1 core/transfer hook, and 8-11 claim hooks. They need branch depth, but they are not the first place to fix "no mechanics".
 
 ## 3. Political / Industry / Expansion Lanes and Layout Risks
 
@@ -168,13 +168,13 @@ No focus-staged decision hooks in scope:
 - `soviet_collapse_internal_republic_focus_tree`: 62 focuses, 0 decisions, 0 wars, 1 claim.
 - `soviet_collapse_baltic_focus_tree`: 42 focuses, 0 decisions, 0 wars, 0 claims/cores.
 - `soviet_collapse_moldova_focus_tree`: 48 focuses, 0 decisions, 0 wars, 0 claims/cores.
-- `FTH`, `BBH`, `KRS`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `BAC`: each 47 focuses with 0 decisions, 0 wars, 0 claims/cores.
+- `FTH`, `BBH`, `AOX`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `ADX`: each 47 focuses with 0 decisions, 0 wars, 0 claims/cores.
 
 Low focus-staged decision hooks:
 
 - `RMC`: 18 focuses, 1 decision, 2 wars, 2 claims.
 - `ICD`: 18 focuses, 1 decision, 2 wars, 2 claims.
-- `BSC`, `TNC`, `ALA`, `UDC`, and `NLC`: each 47 focuses with only 2 decision references and no direct wars/claims/cores.
+- `AEX`, `TNC`, `AAX`, `UDC`, and `NLC`: each 47 focuses with only 2 decision references and no direct wars/claims/cores.
 - `ARD`: 47 focuses with 3 decision references and no direct wars/claims/cores.
 - `TSC`: 18 focuses with 3 decisions, 2 wars, 0 claims/cores.
 - `soviet_collapse_caucasus_focus_tree`: 40 focuses with 4 decisions and no direct wars/claims/cores.
@@ -184,11 +184,11 @@ Category shell note: decision category files contain Event005 categories for man
 ## 5. Prioritized Patch Order for Parent
 
 1. Fix duplicate helper spam first. Split visible tooltip helpers from payload helpers or add one-shot focus-completion flags so one focus cannot display/apply `soviet_collapse_apply_focus_rail_authority_reward` or `soviet_collapse_apply_focus_mobile_columns_reward` twice through direct and plan-helper calls. Start with the exact focus ids in section 1.
-2. Rebuild the repeated 47-focus high-chaos custom splinter family into distinct lane trees. Start with `FTH` as the template repair, then apply bespoke identity passes to `BBH`, `KRS`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `BAC`. These are the worst "OP chaos country but not OP" surfaces because they have no decision, war, claim, or core hooks.
+2. Rebuild the repeated 47-focus high-chaos custom splinter family into distinct lane trees. Start with `FTH` as the template repair, then apply bespoke identity passes to `BBH`, `AOX`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, and `ADX`. These are the worst "OP chaos country but not OP" surfaces because they have no decision, war, claim, or core hooks.
 3. Add focus-staged decision and expansion mechanics to custom splinters. Each chaos tree should have at least one political mechanic category, one industry/logistics category or mission chain, and one expansion chain that produces claims, war goals, cores/compliance, units, or postwar decisions.
 4. Rework the generic/republic fallback surfaces: `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_moldova_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, and `soviet_collapse_caucasus_focus_tree`. These should stop being helper-stack trees and gain clear political, industry, and expansion lanes.
 5. Sweep pathlines and mutexes after mechanic changes. Fix the exact pathline blockers in section 3, then reassess `CFR`, `PRA`, the 18-focus chaos trees, and `NLC` for pointless mutex density.
-6. Expand ancient restorations after the worst shallow trees are fixed. `KZR`, `SOG`, `KHW`, and `ALN` already have basic war/claim/core hooks, so the next pass should deepen their political and industry lanes rather than merely adding more conquest.
+6. Expand ancient restorations after the worst shallow trees are fixed. `APX`, `SOG`, `ANX`, and `ABX` already have basic war/claim/core hooks, so the next pass should deepen their political and industry lanes rather than merely adding more conquest.
 
 ## Validation
 

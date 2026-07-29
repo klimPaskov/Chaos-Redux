@@ -1,5 +1,10 @@
 # Event 014 focus-tree final re-audit — 2026-07-12
 
+> **Superseded snapshot (2026-07-15).** This historical re-audit predates the
+> consolidated focus and asset closure evidence. Its incomplete findings are
+> retained for audit history; current status is defined by the consolidated
+> Event 014 focus audit and package status.
+
 ## Verdict
 
 **Incomplete — the Event 014 focus package is not ready for a completion claim.**

@@ -106,7 +106,7 @@ Run after final trigger roles and slots are known.
 
 ### Prompt
 
-Read only the Event 6 super-event prompt and the relevant super-event text rules. Verify the approved league formation and dangerous coordinated bloc text packages in `research/006_super_event_text_research.md`. Confirm wording, attribution, source access, UI fit, and copyright note. Do not reselect text unless a documented blocker exists. Do not invent quotes or convert working labels into final titles. Write the research note to `docs/super_events/006_independence_wave_super_event_research.md`.
+Read only the Event 6 super-event prompt and the relevant super-event text rules. Verify the approved league formation and dangerous coordinated bloc text packages in `research/006_super_event_text_research.md`. Confirm wording, attribution, source access, UI fit, and copyright note. Do not reselect text unless a documented blocker exists. Do not invent quotes or convert working labels into final titles. Write the research note to `docs/super_events/006_independence_wave/research.md`.
 
 ## 12. Super-event audio researcher
 

@@ -144,7 +144,7 @@ Achievements should not unlock just because Event 17 fires.
 
 After implementation, the spreadsheet worker should update ID 17 with the final in-game event detail, evolution detail, cluster assignment, member severity, and status. The worker must mirror in-game wording rather than paraphrasing when the field is meant to match UI text.
 
-The event doc should live at `docs/events/017_random_faction.md`. It should explain:
+The event doc should live at `docs/events/017_random_faction/overview.md`. It should explain:
 
 - core flow
 - player and AI choices

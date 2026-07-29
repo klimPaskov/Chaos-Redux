@@ -34,7 +34,7 @@ Hard asset constraint followed: no flag assets, `.tga` files, `gfx/flags`, or fl
   - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/soviet.txt`
   - `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/national_focus/mexico.txt`
 - Event005 design context checked:
-  - `docs/events/005_soviet_collapse.md`
+  - `docs/events/005_soviet_collapse/overview.md`
   - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
 
 ## Summary
@@ -72,11 +72,11 @@ This is an audit and implementation handoff only. It does not complete the user'
 | `005_soviet_collapse_custom_splinters.txt` | `DSC_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `ICD_soviet_collapse_focus_tree` | 18 |
-| `005_soviet_collapse_custom_splinters.txt` | `BSC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AEX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `TNC_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `ALA_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AAX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `BBH_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `KRS_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AOX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `UDC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `SDZ_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `GAC_soviet_collapse_focus_tree` | 47 |
@@ -87,16 +87,16 @@ This is an audit and implementation handoff only. It does not complete the user'
 | `005_soviet_collapse_custom_splinters.txt` | `UWD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `MRC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `IUL_soviet_collapse_focus_tree` | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `BAC_soviet_collapse_focus_tree` | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `ADX_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `ARD_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `NLC_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `OGB_soviet_collapse_focus_tree` | 23 |
 | `005_soviet_collapse_factory_successors.txt` | `MFR_soviet_collapse_focus_tree` | 58 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | 16 |
 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ABX_soviet_collapse_ancient_focus_tree` | 16 |
 
 Per-file totals:
 
@@ -302,13 +302,13 @@ Factory successors / `MFR`, `OGB`, `CFR`:
 Special splinters:
 
 - The 47-focus trees should not share the same route feel. The copied branch IDs (`*_first_guard`, `*_stores`, `*_legitimacy`, `*_doctrine`, `*_league`, `*_foreign`, `*_inner_faction`, `*_enemy_front`, `*_civil_rule`, `*_propaganda`, `*_settlement`, `*_industry_plan`, `*_hidden_doctrine`, `*_extreme_gate`, `*_endgame`) are too visible.
-- Make the largest or most thematic splinters OP first: `UDC`, `SDZ`, `UWD`, `FEV`, `SZA`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`, `DHC`, `KHC`.
+- Make the largest or most thematic splinters OP first: `UDC`, `SDZ`, `UWD`, `FEV`, `SZA`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`, `DHC`, `KHC`.
 
 Ancient restorations:
 
 - Each ancient tree has only 16 focuses. They have claims, cores, SOV war goals, and high-chaos neighbor plans, but still lack full branch families.
 - They should become overpowered through old-border claims, symbolic legitimacy, cultural/legal restoration decisions, rapid coring/integration, old route/road control, and neighbor expansion.
-- Patch surface: `KZR_*`, `SOG_*`, `KHW_*`, `ALN_*` symbolic-vs-expansionist pairs, charter focuses, and returned-names endgames.
+- Patch surface: `APX_*`, `SOG_*`, `ANX_*`, `ABX_*` symbolic-vs-expansionist pairs, charter focuses, and returned-names endgames.
 
 ## Ranked Next 20 Parent Patch Targets
 
@@ -348,9 +348,9 @@ Ancient restorations:
 
 18. `common/national_focus/005_soviet_collapse_custom_splinters.txt` - compact special trees `TSC`, `RMC`, `NRF`, `ICD`. Targets: their `*_endgame`, `*_hidden_doctrine`, and high-chaos route focuses. Add unique overpowered mechanics: observatory shock/network for `TSC`, martyr/death manpower for `RMC`, revenant naval raids for `NRF`, death-commissariat repression/war for `ICD`.
 
-19. `common/national_focus/005_soviet_collapse_custom_splinters.txt` - copied 47-focus custom splinter template de-duplication. Targets: repeated route ids `*_political_route_reward_tt`, `*_first_guard`, `*_stores`, `*_legitimacy`, `*_doctrine`, `*_league`, `*_enemy_front`, `*_industry_plan`, `*_hidden_doctrine`, `*_extreme_gate`. Convert at least the first pass for `UDC`, `SDZ`, `UWD`, `FEV`, `SZA`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`, `DHC`, `KHC` into tag-specific mechanics.
+19. `common/national_focus/005_soviet_collapse_custom_splinters.txt` - copied 47-focus custom splinter template de-duplication. Targets: repeated route ids `*_political_route_reward_tt`, `*_first_guard`, `*_stores`, `*_legitimacy`, `*_doctrine`, `*_league`, `*_enemy_front`, `*_industry_plan`, `*_hidden_doctrine`, `*_extreme_gate`. Convert at least the first pass for `UDC`, `SDZ`, `UWD`, `FEV`, `SZA`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`, `DHC`, `KHC` into tag-specific mechanics.
 
-20. `common/national_focus/005_soviet_collapse_ancient_restorations.txt` - ancient restorations branch expansion. Targets: `KZR_symbolic_crossing_state`, `KZR_expansionist_steppe_levy`, `SOG_symbolic_city_league`, `SOG_expansionist_merchant_claims`, `KHW_symbolic_oasis_authority`, `KHW_expansionist_water_claims`, `ALN_symbolic_pass_principality`, `ALN_expansionist_mountain_claims`, plus all `*_returned_names_endgame`. Expand beyond 16-focus compact trees and make old-border restoration mechanically excessive.
+20. `common/national_focus/005_soviet_collapse_ancient_restorations.txt` - ancient restorations branch expansion. Targets: `APX_symbolic_crossing_state`, `APX_expansionist_steppe_levy`, `SOG_symbolic_city_league`, `SOG_expansionist_merchant_claims`, `ANX_symbolic_oasis_authority`, `ANX_expansionist_water_claims`, `ABX_symbolic_pass_principality`, `ABX_expansionist_mountain_claims`, plus all `*_returned_names_endgame`. Expand beyond 16-focus compact trees and make old-border restoration mechanically excessive.
 
 ## Validation Commands Run
 

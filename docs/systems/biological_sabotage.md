@@ -2,24 +2,32 @@
 
 ## Purpose
 
-This subsystem covers covert biological sabotage of a selected state's combined public food, water, and medical distribution network. It is a timed state-targeted decision family for the four ordinary agents: Anthrax, Plague, Tularemia, and Smallpox.
+This subsystem covers covert biological sabotage of a selected state's combined public food, water, and medical distribution network. It provides one approved ordinary delivery surface for four distinct agents: exact-state timed covert decisions for espionage-style supply-chain penetration.
 
-It is not battlefield dissemination. Battlefield delivery remains exclusively in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes.
+It is not battlefield dissemination. Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes. Japan's two accepted China-theater historical actions remain exact decisions in `common/decisions/japan_biological_campaign_decisions.txt`; the doomsday release remains a decision.
 
 ## Player flow
 
 1. Complete the matching biological-agent project and establish an authenticated CBRN program.
 2. Reach Operational Chemical Readiness and adopt a use policy that authorizes the selected foreign controller.
-3. Select one eligible foreign state. The state profile differs by agent: durable industrial or logistics networks for Anthrax, dense urban networks for Plague and Smallpox, and troop or supply concentrations for Tularemia.
-4. Commit Political Power, the exact agent payload model, `support_equipment_1`, and Command Power. Equipment and Command Power are debited immediately.
-5. Maintain the exact actor, victim controller, selected state, policy, readiness, and agent context until the timer resolves.
-6. Resolve failure, partial release, or full release. Partial and full releases enter `bio_lifecycle_dispatch_seed` through `bio_lifecycle_route.food_water_medical_sabotage`.
+3. Choose the exact-state covert sabotage decision family. It selects the combined public network in one state and remains the lower-profile espionage route; strategic and battlefield biological delivery continue to use their own raid surfaces.
+4. Select one mutually exclusive timed preparation posture for the current doctrine posture. The decision reserves the exact agent payload model and required support equipment before preparation and allocates Command Power.
+5. Maintain the exact actor, victim controller, selected state, policy, readiness, route, and agent context until the chosen surface resolves.
+6. Resolve failure, limited success, success, or critical success. Limited and full releases enter `bio_lifecycle_dispatch_seed` through `bio_lifecycle_route.food_water_medical_sabotage`.
 
-There is one visible action per agent. Three mutually exclusive internal variants supply base, Theater Contamination, or Terminal Hazard preparation timing without exposing duplicate doctrine buttons.
+There are three timed covert decision variants per agent. Base, Theater Contamination, and Terminal Hazard preparation timing is exposed separately, while route-specific costs, evidence, and initial-dose handling remain distinct.
+
+## Agent hierarchy and raid odds
+
+Overall weapon potency is strictly `Tularemia < Anthrax < Plague < Smallpox`. Tularemia is low, Anthrax moderate, Plague serious, and only Smallpox is the severe ordinary weapon tier. The potency profile changes incubation, spread, contamination, medical pressure, deaths, and other lifecycle consequences after the native delivery result.
+
+All twelve supply-chain decision variants use the same shared route result bands and the same agent-neutral delivery factors. Agent identity does not make Plague or Smallpox intrinsically easier or harder to deliver. Agent-specific AI preferences and target-fit weights are allowed to represent doctrine, history, and route selection, but they do not alter the route result.
+
+The route's critical outcome is an operational delivery band, not a weapon-severity label. It does not make Anthrax or Plague severe. Only the separate Smallpox doomsday decision may submit the severe biological lifecycle result.
 
 ## Central tuning
 
-All costs, timings, success bands, cooldowns, AI weights, and history increments are in `common/script_constants/biological_sabotage_constants.txt`.
+Lifecycle, route, doctrine, and AI tuning remains centralized in `common/script_constants/biological_sabotage_constants.txt`, `common/script_constants/biological_lifecycle_constants.txt`, and `common/script_constants/biological_battlefield_constants.txt`.
 
 | Agent | Payload | Support equipment | Command Power | Base / Theater / Terminal preparation |
 |---|---:|---:|---:|---:|
@@ -28,53 +36,53 @@ All costs, timings, success bands, cooldowns, AI weights, and history increments
 | Tularemia | 10 | 40 | 12 | 180 / 153 / 135 days |
 | Smallpox | 8 | 60 | 20 | 300 / 255 / 225 days |
 
-The accepted matrix gives this route a 120–300-day preparation range, low initial attribution risk, and medium friendly-spread risk. The lifecycle route profile supplies the low initial dose, evidence, concealment, spread pressure, Condemnation base, incubation, deaths, contamination, and medical saturation after a proven release.
+The accepted matrix gives this route a 120-300-day preparation range, low initial attribution risk, and medium friendly-spread risk. The lifecycle route profile supplies the low initial dose, evidence, concealment, spread pressure, Condemnation base, incubation, deaths, contamination, and medical saturation after a proven release.
 
 ## Doctrine interaction
 
-Theater Contamination and Terminal Hazard make sabotage easier and more aggressive by shortening preparation and cooldown, increasing success, increasing downstream biological potency through the shared lifecycle, increasing AI willingness, and returning a bounded 3 or 6 Command Power after a valid resolution.
+Theater Contamination and Terminal Hazard make sabotage easier and more aggressive by shortening preparation and cooldown, increasing downstream biological potency through the shared lifecycle, increasing AI willingness, and returning a bounded Command Power amount after a valid resolution.
 
-Doctrine never reduces or refunds physical payload, support equipment, evidence, attribution, deaths, contamination, medical saturation, confirmed-use history, public-harm floors, or cancellation losses. A rejected or cancelled operation receives no Command Power refund. Condemnation remains the only consequence record doctrine may reduce.
+Doctrine never reduces or refunds physical payload, support equipment, evidence, attribution, deaths, contamination, medical saturation, confirmed-use history, public-harm floors, or cancellation losses. Doctrine may reduce only the Condemnation impact. A rejected or cancelled raid receives no Command Power refund.
 
 ## Exact-state and accounting contract
 
-The selected state stores the actor, victim controller, agent, payload required and consumed, support equipment required and consumed, Command Power cost and possible refund, cooldown, and start date. A country flag and scope-valued active-state record prevent concurrent sabotage operations by one actor.
+The timed covert decision reserves the selected payload and support equipment in its committed ledger and rechecks relationship, controller, policy, readiness, program, agent profile, and target validity before dispatch. No replacement payload or alternate state is selected.
 
-The full release validator rechecks exact state, controller, actor, relationship, policy, readiness, current agent episode, all material debits, and the doctrine record. A weaker committed-attempt validator may write only failed-attempt evidence, hidden Condemnation, cancellation history, and cooldown when every original debit and scope pointer remains provable. It never authorizes release.
+A failed outcome records failed-attempt evidence and attempted-use consequences without creating an outbreak. A limited or full outcome records the exact route and payload through the shared biological lifecycle. If the dispatch proof fails, the resolver records a rejected release and never fabricates a biological episode or equipment proof.
 
-If exact context cannot be proven, the operation cleans up without selecting another state, inferring a victim, creating an outbreak, fabricating equipment proof, or returning Command Power. The initial Political Power click can be lost if context changes between the UI availability check and immediate commitment revalidation; no material ledger is created in that race.
+Cleanup preserves permanent attempt, resolution, equipment-consumption, evidence, attribution, history, and consequence records while avoiding a broad periodic scan.
 
 ## Failure, cancellation, and history
 
-- A proven ordinary failure records low-confidence attempt evidence and hidden attempted-use Condemnation but no deliberate-use history.
-- A partial or full release records the exact route and payload through the shared lifecycle, which owns later detection, attribution, deaths, contamination, medical saturation, evidence escalation, Condemnation, and sanctions interaction.
-- Cancellation loses all committed payload, support equipment, and Command Power. It records attempt history only while the committed ledger remains exact.
-- A dispatcher rejection after a valid timed resolution records failed-attempt evidence and hidden attempted-use Condemnation, applies cooldown, and grants no doctrine refund; it does not fabricate a release.
-- Cleanup removes transient operation fields while preserving permanent attempt, resolution, equipment-consumption, evidence, and consequence history.
+- A proven failure records low-confidence attempt evidence and hidden attempted-use Condemnation but no deliberate-use history.
+- A limited, successful, or critical release records the exact route and payload through the shared lifecycle, which owns later detection, attribution, deaths, contamination, medical saturation, evidence escalation, Condemnation, and sanctions interaction.
+- Decision preparation and resolution consume the committed payload and support equipment according to the decision ledger.
+- A dispatcher rejection records failed-attempt evidence and hidden attempted-use Condemnation, applies cooldown, and grants no doctrine refund.
+- The actor history stores the committed outcome, biological result, agent, selected state, and victim country for audit and AI use.
 
 ## AI behavior
 
-AI uses the same readiness, policy, project, equipment, active-operation, cooldown, and state gates as the player. Weights distinguish retaliation, first use, unrestricted use, desperation, defensive profiles, domestic pathogen-handling preparation, doctrine, target-agent fit, Japan attacking Chinese states, active outbreak risk, and Condemnation plus import vulnerability. The decision engine evaluates the exact proposed state; no target estimator or alternate-state search is retained.
+AI uses the same readiness, policy, project, equipment, active-operation, cooldown, and state gates as the player. Decision weights distinguish retaliation, first use, unrestricted use, desperation, defensive profiles, domestic pathogen-handling preparation, doctrine, target-agent fit, Japan attacking Chinese states, active outbreak risk, and Condemnation plus import vulnerability. An actor at its own near-capitulation threshold does not choose ordinary sabotage; the separate doomsday decision remains the collapse route. The decision evaluates the exact proposed state; no target estimator or alternate-state search is retained.
 
 ## Files and identifiers
 
-- Decisions: `common/decisions/biological_sabotage_decisions.txt`
-- Tuning: `common/script_constants/biological_sabotage_constants.txt`
-- Private triggers: `common/scripted_triggers/biological_sabotage_triggers.txt`
-- Private effects: `common/scripted_effects/biological_sabotage_effects.txt`
-- Localisation: `localisation/english/biological_sabotage_l_english.yml`
-- Sprites: `interface/biological_warfare.gfx`
-- Final DDS: `gfx/interface/decisions/biowarfare/decision_bio_sabotage_{anthrax,plague,tularemia,smallpox}.dds`
-- Asset manifest: `docs/assets/chaos_warfare_system/stage_7_biological_warfare/food_water_medical_sabotage/manifest.md`
+- Timed covert decision family: `common/decisions/biological_sabotage_decisions.txt` and `common/scripted_effects/biological_sabotage_effects.txt`
+- Decision tuning and route triggers: `common/script_constants/biological_sabotage_constants.txt` and `common/scripted_triggers/biological_sabotage_triggers.txt`
+- Shared lifecycle effects: `common/scripted_effects/biological_lifecycle_effects.txt`
+- Retained historical decisions: `common/decisions/japan_biological_campaign_decisions.txt` and `common/decisions/chemical_warfare_decisions.txt`
+- Retained Japan localisation and legacy icon strings: `localisation/english/biological_sabotage_l_english.yml`
+- Strategic and battlefield raid map icons remain the existing `GFX_raid_type_icon_anthrax_strike`, `GFX_raid_type_icon_plague_strike`, `GFX_raid_type_icon_tularemia_strike`, and `GFX_raid_type_icon_smallpox_strike` definitions
+- Existing decision icons retained for the Japan exceptions: `GFX_decision_bio_sabotage_anthrax`, `GFX_decision_bio_sabotage_plague`, `GFX_decision_bio_sabotage_tularemia`, and `GFX_decision_bio_sabotage_smallpox`
+- Asset manifests: `docs/assets/chaos_warfare_system/stage_7_biological_warfare/food_water_medical_sabotage/manifest.md` and the existing biological raid icon manifests
 
-The four sprite identifiers are `GFX_decision_bio_sabotage_anthrax`, `GFX_decision_bio_sabotage_plague`, `GFX_decision_bio_sabotage_tularemia`, and `GFX_decision_bio_sabotage_smallpox`. Each icon visually emphasizes one compromised chain, while every decision mechanically represents the selected state's combined food, water, and medical network.
+The raid map icons are owned by the existing strategic and battlefield biological raid interface definitions. The retained decision icons remain in `gfx/interface/decisions/biowarfare/` for the covert and Japan historical decisions and are not overwritten or deleted.
 
 ## Engine boundaries
 
-HOI4 exposes a selected state and its controller, not native target objects for food depots, municipal water systems, or medical distribution chains. The accepted state-targeted decision therefore treats the selected state's combined public network as the sabotage object. No unrelated building is damaged or used as a release proxy.
+HOI4 exposes a selected state and its controller, not native target objects for food depots, municipal water systems, or medical distribution chains. The selected state's combined public network is therefore the sabotage object. No unrelated building is damaged or used as a release proxy.
 
-The system needs no periodic on action, dynamic helper registry entry, continuous-air activity hook, scripted GUI, target estimator, or compatibility wrapper. All helpers remain in biological-sabotage-specific files because their only callers are this decision family.
+The timed covert decision surface stores exact actor, victim, state, preparation, equipment reservation, and outcome proof in its committed ledger. It does not expose a verified continuous-air activity callback, so no estimator or broad periodic fallback is retained. All biological sabotage helpers remain in biological-sabotage-specific files because their callers are the covert decision resolver and the narrow historical adapters.
 
 ## Future Stage 7 integration
 
-Later accepted Stage 7 work should expose active sabotage and discovered outbreak records in the final CBRN overview, include this route in cross-route package scenarios, and connect completed countermeasure and international-response content to the resulting lifecycle episode. Those surfaces remain Stage 7 requirements; they are not substitutes for this route's current exact-state implementation.
+The shared lifecycle already exposes active sabotage and discovered-outbreak state to the biological response decisions. Final package closure still requires cross-route scenarios, the mapped specialist audits, and final asset and documentation disposition. Those remaining checks do not change the exact-state delivery contract.

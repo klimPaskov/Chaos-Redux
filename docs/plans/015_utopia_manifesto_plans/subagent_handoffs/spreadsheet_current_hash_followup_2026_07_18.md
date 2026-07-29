@@ -63,7 +63,7 @@ For a concrete working-tree comparison against the tracked baseline, the export-
 - `localisation/english/chaosx_gui_l_english.yml` (`chaosx.events_log.window.event_details.utopia_manifesto`)
 - `localisation/english/015_utopia_manifesto_evolutions_l_english.yml` (five title/body pairs)
 - `events/015_utopia_manifesto.txt` (entry root `chaosx.nr15.1`, `fire_only_once = yes`)
-- `docs/events/015_utopia_manifesto.md` (current five-evolution inventory and Event Details mapping)
+- `docs/events/015_utopia_manifesto/overview.md` (current five-evolution inventory and Event Details mapping)
 - `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_final_audit_2026_07_18.md` (prior comparison evidence)
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md` (current completion matrix)
 

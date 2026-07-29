@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Accepted, promoted, and reconciled. The final text package is implemented at display slot `73`. The four-route research candidate was implemented first, `abc70f55` added the weakened route, `6a33976e` supplied the first final prose, `a1f47c0c` moved all five packages onto durable presentation snapshots and the stable faction-name helper, `7563648f` isolated counted callbacks, `97a2da80` finalized the mirrored wording, and `1c87d923` preserved the package through the final balance freeze. The image and wiring blockers from the original text pass are historical. `docs/super_events/011_secret_alliance_super_event_research.md` is the current implementation record.
+Accepted, promoted, and reconciled. The final text package is implemented at display slot `73`. The four-route research candidate was implemented first, `abc70f55` added the weakened route, `6a33976e` supplied the first final prose, `a1f47c0c` moved all five packages onto durable presentation snapshots and the stable faction-name helper, `7563648f` isolated counted callbacks, `97a2da80` finalized the mirrored wording, and `1c87d923` preserved the package through the final balance freeze. The image and wiring blockers from the original text pass are historical. `docs/super_events/011_secret_alliance/research.md` is the current implementation record.
 
 ## Scope and outcome
 
@@ -153,7 +153,7 @@ The audio handoff selected `Revelation`, a 1901 march by William Paris Chambers,
 Implementation identifiers:
 
 - audio ID `43`
-- final OGG `music/011_secret_alliance/super_event_43_public_reveal.ogg`
+- final WAV `sound/011_secret_alliance/super_event_43_public_reveal.wav`
 - sound mirror `sound/011_secret_alliance/super_event_43_public_reveal.wav`
 - underlying sound ID `chaosx_super_event_secret_alliance_public_reveal_track`
 - final duration `86.101746` seconds
@@ -180,7 +180,7 @@ Every item below is resolved in the current implementation. The list is retained
 3. Copy route selection from `global.secret_alliance_reveal_route` into the durable presentation route before the slot opens and preserve all seven values through the five packages above.
 4. Keep `secret_alliance_snapshot_reveal_state` before the super-event call, then copy target, leader, member count, and faction-name grammar into presentation state.
 5. Wire `GFX_super_event_011_secret_alliance_public_reveal` only after the final DDS exists.
-6. Wire audio ID `43`, its music helpers, sound wrappers, and the music table from the audio handoff.
+6. Wire audio ID `43`, its sound wrappers, sound wrappers, and the music table from the audio handoff.
 7. Keep the super-event after public-state and faction creation, hold the presentation context for 14 days, and clear it through `.202` on day 15.
 8. Do not reuse any of these strings in pre-reveal Event Details, evolutions, decisions, reports, or spreadsheet text.
 

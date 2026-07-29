@@ -14,7 +14,7 @@ Current result: P0/P1/P2/P3 all zero. No gameplay, localisation, GFX, image, fla
 - Package status: `docs/specs/014_cannibalism_specs/quality/package_status.md`
 - Package validation: `docs/specs/014_cannibalism_specs/quality/package_validation.md`
 - Manifest: `docs/specs/014_cannibalism_specs/PACKAGE_MANIFEST.md`
-- Canonical event document: `docs/events/014_cannibalism.md`
+- Canonical event document: `docs/events/014_cannibalism/overview.md`
 - Root asset manifest: `docs/assets/014_cannibalism/manifest.md`
 - Root GFX handoff: `docs/assets/014_cannibalism/gfx_handoff.md`
 

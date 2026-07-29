@@ -82,7 +82,7 @@ The shipping, diplomacy, compact, and host-war lanes listed above require replac
 | File | Change | Focus IDs/localization/icon IDs |
 |---|---|---|
 | `common/scripted_effects/006_independence_wave_ice_package_effects.txt` | Removed two `recruit_character` calls from `independence_wave_initialize_ice_politics`; setup now relies on the existing roster attested by `has_independence_wave_ice_command_roster`. | No focus IDs, localization keys, or icon IDs changed. |
-| `docs/events/006_independence_wave_iw012_ice_package.md` | Corrected the focus-integration paragraph so it no longer claims that an additive flag renders shared focuses on vanilla ICE. | No gameplay identifiers changed. |
+| `docs/events/006_independence_wave/iw012_ice_package.md` | Corrected the focus-integration paragraph so it no longer claims that an additive flag renders shared focuses on vanilla ICE. | No gameplay identifiers changed. |
 | `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw012_ice_focus_audit_2026_07_28.md` | This audit handoff. | No gameplay identifiers. |
 
 The removed recruitment calls were a narrow direct fix because repository guidance forbids dynamic `recruit_character` calls in scripted effects/on-actions and the ICE setup trigger already requires both vanilla characters.

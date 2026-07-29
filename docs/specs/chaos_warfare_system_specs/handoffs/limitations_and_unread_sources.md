@@ -4,16 +4,16 @@
 
 All files supplied directly with the task were read in full. This includes every provided skill, every provided subagent definition, the mechanics guide, AGENTS.md, all catalog CSV files, and every markdown file inside the biological-warfare archive.
 
-## Not fully readable in this environment
+## Package-time limitations
 
-The following source sets were not available as complete mounted directories:
+The package handoff was written before the implementation workspace was mounted and recorded these limitations:
 
 - the full live Chaos Redux repository
 - the user's offline `paradox_wiki/` snapshot
 - the user's local Hearts of Iron IV installation and its `documentation/` folder
 - approved comparison mods in the user's Steam Workshop installation
 
-Targeted live repository files were inspected through GitHub. Current vanilla behavior was researched through official announcements and patch notes. These steps are enough for a detailed design package, but not enough to guarantee engine-facing syntax or the final installed 1.19 balance values.
+Those statements describe the design-package authoring environment, not the current implementation workspace. During implementation, `AGENTS.md`, the mounted offline wiki pages, installed vanilla documentation, relevant vanilla examples, current Chaos Redux surfaces, and the required repository skills were consulted before edits.
 
 ## Subagent limitation
 
@@ -25,4 +25,4 @@ The design itself was not intentionally truncated to produce a quick answer. It 
 
 ## Required closure before implementation completion
 
-The implementation agent must read the relevant offline wiki pages and vanilla documentation, inspect the installed 1.19 files, identify exact Army HQ and regimental-support schema, verify chemical-air mission hooks, and record any unsupported design surface. Unsupported mechanics must be discussed rather than silently approximated.
+The implementation agent must identify exact Army HQ and regimental-support schema, verify chemical-air mission hooks, and record any unsupported design surface. The current audit found no verified selected-state weather/terrain hook for the timed Army-HQ battlefield family and no verified continuous-air mission-activity hook. Those surfaces remain explicitly fail-closed; unsupported mechanics are not silently approximated.

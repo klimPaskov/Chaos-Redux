@@ -15,14 +15,14 @@ The acceptance matrix contains 363 checked requirements out of 363. Fresh event-
 | Surface | Current source of truth | Status |
 | --- | --- | --- |
 | Accepted design | `docs/specs/018_resources_found_specs/` | Current. Parts 4 through 7 and the tuning matrix contain the accepted RF design promotions. |
-| Implementation behavior | `docs/events/018_resources_found.md`, `018_resources_found_cave_country.md`, and `018_resources_found_helper_contracts.md` | Current. These describe the implemented field, cave-country, terminal, and helper lifecycles. |
+| Implementation behavior | `docs/events/018_resources_found/overview.md`, `018_resources_found_cave_country.md`, and `018_resources_found_helper_contracts.md` | Current. These describe the implemented field, cave-country, terminal, and helper lifecycles. |
 | Definition-based acceptance | `018_static_acceptance_report.md` and `docs/specs/018_resources_found_specs/matrices/acceptance_criteria.md` | Current. Live engine execution was waived and is not claimed. |
 | Fresh closure audits | `subagent_handoffs/final_event_completion_reaudit_handoff.md`, `ui_localisation_reaudit_handoff.md`, and `asset_audio_reaudit_handoff.md` | Current. All three strict verdicts are PASS. |
 | Improvement-loop disposition | `improvement_loop_closure_handoff.md` and the closure table at the top of `018_resources_found_implementation_depth_addendum.md` | Current. RF-018-01 through RF-018-08 are closed. |
 | Visual and audio package | `docs/assets/018_resources_found/manifest.md` and `audio_manifest.md` | Current. Runtime files, registrations, provenance, and handoffs are complete. |
 | Static icon provenance | `docs/assets/018_resources_found/icon_generation_provenance_ledger.md` | Current. All 150 generated focus, idea/state, decision, and category assets have exact source, processed, runtime, use, prompt-family, and registration records. |
-| Super-event research | `docs/super_events/018_resources_found_super_event_research.md` | Current. The final text, sourced quotations, licensed music, rights, hashes, live slots, and rejected candidates are reconciled in one authority. |
-| Achievements | `docs/achievements/018_resources_found_achievements.md` | Current. Fifteen achievements and their evidence, disqualifiers, and three-state icon contract are documented. |
+| Super-event research | `docs/super_events/018_resources_found/overview.md` | Current. The final text, sourced quotations, licensed music, rights, hashes, live slots, and rejected candidates are reconciled in one authority. |
+| Achievements | `docs/achievements/018_resources_found/achievements.md` | Current. Fifteen achievements and their evidence, disqualifiers, and three-state icon contract are documented. |
 | Workbook alignment | `subagent_handoffs/spreadsheet_doc_worker_handoff.md` | Current. Event row, four evolution fields, world-end field, cluster, severity, and implementation status match the accepted in-game wording. |
 
 ## Promoted into the source specifications
@@ -82,7 +82,7 @@ These are optional extensions outside the accepted design. None is queued, omitt
 
 The consolidated asset manifest states that the visual and audio package is complete and wired. Its current inventory includes 10 report images, 6 news images, 3 super-event images, the Oth-Kesh portrait and flag packages, 65 focus icons, 36 unique idea/state icons, 39 decision-family icons mapped across 125 visible decisions and missions, 5 category icons, 5 category pictures, 15 complete achievement triplets, and the selected-field UI package with five real-frame animation families and required static fallbacks. The provenance ledger records 150 unique generated static icons and category assets with one-to-one source, processed, runtime, and registration evidence.
 
-The audio manifest states complete integration for visible slots 82 through 84 and audio IDs 54 through 56. It records unique 115-second, 110-second, and 109-second 44.1 kHz OGG cues, three WAV mirrors, source and recording rights, hashes, loudness, music helpers, sound wrappers, base sounds, music localisation, HTML catalogue entries, and playback selectors. No superseded 49, 50, or 51 Event 018 path remains.
+The audio manifest states complete integration for visible slots 82 through 84 and audio IDs 54 through 56. It records unique 115-second, 110-second, and 109-second 44.1 kHz OGG cues, three WAV mirrors, source and recording rights, hashes, loudness, sound wrappers, sound wrappers, base sounds, music localisation, HTML catalogue entries, and playback selectors. No superseded 49, 50, or 51 Event 018 path remains.
 
 The manifests do not claim in-engine playback or UI-scale observation. Those checks were waived and remain correctly disclosed as unperformed rather than converted into false live evidence.
 
@@ -113,7 +113,7 @@ The manifests do not claim in-engine playback or UI-scale observation. Those che
 - `docs/plans/018_resources_found_plans/subagent_handoffs/ui_localisation_reaudit_handoff.md`
 - `docs/plans/018_resources_found_plans/subagent_handoffs/asset_audio_reaudit_handoff.md`
 - `docs/assets/018_resources_found/icon_generation_provenance_ledger.md`
-- `docs/super_events/018_resources_found_super_event_research.md`
+- `docs/super_events/018_resources_found/overview.md`
 - `docs/plans/018_resources_found_plans/documentation_curator_handoff.md`
 
 ## Simplifications, omissions, fallbacks, and blockers

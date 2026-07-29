@@ -209,20 +209,9 @@ Strategic civilian retaliation, doomsday release, or attacks on third parties re
 
 ### Doctrine mitigation rule
 
-Doctrine can reduce:
+The later accepted doctrine clarification limits doctrine mitigation to Condemnation impact through the bounded shared multiplier and any accepted public-harm floors.
 
-- accidental use
-- friendly casualties
-- civilian exposed share through precise targeting
-- evidence created by poor handling
-- repeat-use waste
-
-Doctrine cannot reduce:
-
-- confirmed public responsibility
-- deaths already caused
-- contamination already visible
-- the minimum Condemnation floor for a strategic or mass-casualty attack
+Doctrine cannot reduce or erase payload debit, physical harm, friendly or civilian deaths, civilian exposure, contamination, medical saturation, evidence, attribution, confirmed public responsibility, resistance trauma, accident records, use history, or any other physical, forensic, domestic, or historical consequence.
 
 ## Existing Condemnation tiers
 

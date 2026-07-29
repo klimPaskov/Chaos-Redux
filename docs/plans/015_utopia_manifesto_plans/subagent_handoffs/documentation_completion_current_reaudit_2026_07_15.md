@@ -41,7 +41,7 @@ The repaired live source anchors shared by the current focus, country, decision,
 | --- | --- |
 | What does the engine execute? | live HOI4 source under `events/`, `common/`, `interface/`, `localisation/`, `gfx/`, `music/`, and `sound/` |
 | What is the accepted Event 15 design? | the eight parts under `docs/specs/015_utopia_manifesto_specs/specs/` |
-| What is the concise current mechanic description? | `docs/events/015_utopia_manifesto.md` |
+| What is the concise current mechanic description? | `docs/events/015_utopia_manifesto/overview.md` |
 | Which requested surfaces are implemented and evidenced? | `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md` |
 | What is the current visual/provenance authority? | `docs/assets/015_utopia_manifesto/manifest.md`, `gfx_handoff.md`, and focused validators |
 | What is the current catalog authority? | the live workbook row plus `spreadsheet_catalog_completion_audit_2026_07_15.md` |
@@ -139,7 +139,7 @@ No accepted plan is silently queued. The final whole-event audit is a workflow g
 
 ## Files changed by this documentation pass
 
-- `docs/events/015_utopia_manifesto.md`
+- `docs/events/015_utopia_manifesto/overview.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/completion_coverage_matrix.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/decision_mission_matrix.md`
 - `docs/specs/015_utopia_manifesto_specs/matrices/country_package_matrix.md`

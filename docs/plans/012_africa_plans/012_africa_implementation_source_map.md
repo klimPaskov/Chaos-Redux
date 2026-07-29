@@ -1,6 +1,6 @@
 # Event 12 Africa implementation source map
 
-> Historical source-map baseline. The release-candidate current-state ledger is `docs/events/012_africa.md` together with `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`; this file remains useful for accepted design provenance but its machine-ledger and asset-row summaries are not current disposition truth.
+> Historical source-map baseline. The release-candidate current-state ledger is `docs/events/012_africa/overview.md` together with `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`; this file remains useful for accepted design provenance but its machine-ledger and asset-row summaries are not current disposition truth.
 
 ## Authority and completion gate
 

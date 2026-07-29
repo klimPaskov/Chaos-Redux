@@ -48,11 +48,11 @@ Key reference points used:
 | custom splinters | `DSC_soviet_collapse_focus_tree` | 18 | dead soldiers congress, roll call, revenant staff, lost armies, dead army endgame | Mechanically stronger than other 18-focus trees, but one helper has duplicate same-target idea lifecycle and the route is still short. |
 | custom splinters | `NRF_soviet_collapse_focus_tree` | 18 | revenant fleet, harbor/salvage, admiralty, White Sea claim | Shallow; navy identity is present, but politics/industry/diplomacy are minimal. |
 | custom splinters | `ICD_soviet_collapse_focus_tree` | 18 | absent citizens, commissariat, memorial guard, unburied front | Shallow death-state tree. Needs overpowered aggression and special mechanics before endgame. |
-| custom splinters | `BSC_soviet_collapse_focus_tree` | 47 | Basmachi state, caravan/oasis, league/foreign, raiding, settlement, high-chaos | Aggression exists through helpers; route clarity moderate. |
+| custom splinters | `AEX_soviet_collapse_focus_tree` | 47 | Basmachi state, caravan/oasis, league/foreign, raiding, settlement, high-chaos | Aggression exists through helpers; route clarity moderate. |
 | custom splinters | `TNC_soviet_collapse_focus_tree` | 47 | Turkestan city/oasis, local politics, irrigation/cotton, diplomacy, settlement, extreme path | Direct aggression is weak: only decision/endgame/identity helpers show; needs war-plan and border settlement payloads. |
-| custom splinters | `ALA_soviet_collapse_focus_tree` | 47 | Alash/steppe, minority guarantees, diplomacy, industry, settlement, extreme path | Direct aggression is weak; expansion path does not look overpowered. |
+| custom splinters | `AAX_soviet_collapse_focus_tree` | 47 | Alash/steppe, minority guarantees, diplomacy, industry, settlement, extreme path | Direct aggression is weak; expansion path does not look overpowered. |
 | custom splinters | `BBH_soviet_collapse_focus_tree` | 47 | black banner, columns, no masters, borderless endgame | Too soft for a chaos country. Only endgame/identity helpers carry aggression markers. |
-| custom splinters | `KRS_soviet_collapse_focus_tree` | 47 | port/sailor assembly, free port, anti-party soviet, naval support, endgame | Too soft for a chaos country. No mid-tree war goal, core, annex, or hostile AI focus found in focus rewards. |
+| custom splinters | `AOX_soviet_collapse_focus_tree` | 47 | port/sailor assembly, free port, anti-party soviet, naval support, endgame | Too soft for a chaos country. No mid-tree war goal, core, annex, or hostile AI focus found in focus rewards. |
 | custom splinters | `UDC_soviet_collapse_focus_tree` | 47 | loyalist command, depots, staff cars, command mediation, hidden doctrine, extreme | Aggressive helper usage is present and route is viable, but still uses generic branch anchors. |
 | custom splinters | `SDZ_soviet_collapse_focus_tree` | 47 | archive/security directorate, custody, offices/watchposts, hidden doctrine, extreme | Aggressive helper usage is present; many rewards are still support equipment/offices rather than unique mechanic. |
 | custom splinters | `GAC_soviet_collapse_focus_tree` | 47 | village congress, harvest/airstrip, mediation, partisan/green army | Some aggression through high-chaos neighbor helper, but no direct cores/annex chain. |
@@ -63,16 +63,16 @@ Key reference points used:
 | custom splinters | `UWD_soviet_collapse_focus_tree` | 47 | Ural workers, arsenal/foundry/rail yards, federation/endgame | Too soft for industrial chaos: no direct war goals, conquest AI, or annex/coring route in focus rewards. |
 | custom splinters | `MRC_soviet_collapse_focus_tree` | 47 | mountain republic/pass confederation, aul militia, lowland raids | Too soft: only endgame helper marker detected. Needs actual raiding, cores/claims, war-plan route. |
 | custom splinters | `IUL_soviet_collapse_focus_tree` | 47 | Idel-Ural, Volga crossings, oilfield, Kazan-Ufa, corridor | Too soft in its own tree; OGB has more direct conflict over IUL than IUL has outward aggression. |
-| custom splinters | `BAC_soviet_collapse_focus_tree` | 47 | Birobidzhan, settlement defense, relief, Amur/Far East, autonomy | Too soft: only endgame helper marker detected. |
+| custom splinters | `ADX_soviet_collapse_focus_tree` | 47 | Birobidzhan, settlement defense, relief, Amur/Far East, autonomy | Too soft: only endgame helper marker detected. |
 | custom splinters | `ARD_soviet_collapse_focus_tree` | 47 | Arctic port, Murmansk docks, White Sea, naval infantry, convoy diplomacy | Some high-chaos neighbor helper; needs direct naval war and occupation payoffs. |
 | custom splinters | `NLC_soviet_collapse_focus_tree` | 47 | polar commune, weather/science, ice road, tundra watch, extreme path | Aggression and spawn helpers exist; layout still has line hits and route clarity issues. |
 | factory | `CFR_soviet_collapse_focus_tree` | 47 | construction trust, committees/contractors/concrete state, city/factory/rail/contract tracks, protectorates | Strong construction identity but not aggressive enough until late protectorate/builder-state helpers. |
 | factory | `OGB_soviet_collapse_focus_tree` | 23 | Volga registers, scholar/cleric route, heritage guard, Idel-Ural question, restored Volga empire | Coherent but shallow; OGB is more aggressive than most 23-focus trees but needs more industry and diplomacy depth. |
 | factory | `MFR_soviet_collapse_focus_tree` | 58 | arsenal board, military/council/merchant routes, artillery/rifles/tanks/air parts, client arms, eternal arsenal | Stronger than most, but still has repeated flat arsenal/equipment rewards and layout crossings. |
-| ancient | `KZR_soviet_collapse_ancient_focus_tree` | 16 | Khazar toll/crossing, Caspian roads, expansionist levy, charter/endgame | Very shallow but aggressive enough for a compact ancient restoration. Needs postwar integration decisions. |
+| ancient | `APX_soviet_collapse_ancient_focus_tree` | 16 | Khazar toll/crossing, Caspian roads, expansionist levy, charter/endgame | Very shallow but aggressive enough for a compact ancient restoration. Needs postwar integration decisions. |
 | ancient | `SOG_soviet_collapse_ancient_focus_tree` | 16 | Sogdian city/merchant roads, city claims, charter/endgame | Very shallow; claims/wargoal exist but route is a short ladder. |
-| ancient | `KHW_soviet_collapse_ancient_focus_tree` | 16 | Khwarazmian oasis/canal/water claims, charter/endgame | Very shallow; claims/wargoal exist but too many rewards are trains/trucks/support. |
-| ancient | `ALN_soviet_collapse_ancient_focus_tree` | 16 | Alan pass/road, mountain claims, charter/endgame | Very shallow; claims/wargoal exist but needs occupation/coring decisions. |
+| ancient | `ANX_soviet_collapse_ancient_focus_tree` | 16 | Khwarazmian oasis/canal/water claims, charter/endgame | Very shallow; claims/wargoal exist but too many rewards are trains/trucks/support. |
+| ancient | `ABX_soviet_collapse_ancient_focus_tree` | 16 | Alan pass/road, mountain claims, charter/endgame | Very shallow; claims/wargoal exist but needs occupation/coring decisions. |
 
 ## Idea reward audit
 
@@ -90,17 +90,17 @@ The mechanical scan found 744 candidate shallow reward focuses across all four f
 
 Exact repeated equipment cases:
 
-- `train_equipment_1`: `ukr_soviet_collapse_seal_the_grain_ledgers`, `FTH_supply`, `PRA_armored_train_schools`, `PRA_claim_the_branch_lines`, `PRA_seize_the_junction_cities`, `NLC_ice_road_customs`, `MFR_armored_train_workshops`, `KZR_old_border_files`, `KZR_khazar_charter`, `KHW_expansionist_water_claims`.
-- `motorized_equipment_1`: `kaz_soviet_collapse_foreign_trucks_local_drivers`, `KHW_canal_recognition_letters`, `KHW_khwarazmian_water_charter`.
-- `support_equipment_1`: `ukr_soviet_collapse_count_the_depot_keys`, `soviet_collapse_military_defense_council`, `soviet_collapse_foreign_liaison_government`, `internal_soviet_collapse_republic_volunteer_standards`, `baltic_soviet_collapse_latvian_port_guard_boards`, `caucasus_soviet_collapse_black_sea_observer_desks`, `caucasus_soviet_collapse_yerevan_relief_networks`, `central_asia_soviet_collapse_pamir_pass_fortresses`, `central_asia_soviet_collapse_the_oasis_arsenal`, `central_asia_soviet_collapse_the_oasis_guard`, `central_asia_soviet_collapse_desert_republic_settlement`, `moldova_soviet_collapse_river_guard_brigades`, `kaz_soviet_collapse_oil_field_protection_orders`, `kaz_soviet_collapse_army_of_the_open_horizon`, `FTH_first_guard`, `FTH_stores`, `FTH_economy`, `FTH_special_arm`, `FTH_anti_puppet_commune_clause`, `FTH_commune_court_registers`, `TSC_perimeter_regiments`, `RMC_lipetsk_reliquary_workshops`, `RMC_blood_oath_requisitions`, `RMC_dead_volunteer_columns`, `DSC_call_the_dead_soldiers_congress`, `DSC_field_hospital_memorials`, `ICD_penza_memorial_workshops`, `ICD_black_seal_requisitions`, `ICD_memorial_battalions`, `ICD_letters_to_grieving_cities`, `BSC_first_guard`, `BSC_caravan_officer_schools`, `BSC_tajik_pass_bargains`, `BSC_raiding_column_oaths`, `TNC_tajik_relief_corridors`, `TNC_city_militia_charter`, `ALA_turkmen_route_bargain`, `ALA_steppe_supply_hubs`, `BBH_column_schools`, `BBH_armored_car_raids`, `BBH_roving_artillery_crews`, `BBH_column_supply_ledgers`, `BBH_red_and_black_depots`, `BBH_borderless_column_schools`, `KRS_port_guard_schools`, `UDC_staff_car_workshops`, `UDC_war_plan`, `SDZ_every_office_a_watchpost`, `SDZ_document_cart_workshops`, `SDZ_archive_bunker_vaults`, `SDZ_witness_protection_cells`, `SDZ_secure_court_dockets`, `SDZ_signal_van_yards`, `DHC_cavalry_remount_yards`, `FEV_railway_militia_charter`, `FEV_winter_rail_columns`, `FEV_siberian_factory_letters`, `SZA_winter_column_registers`, `SZA_baikal_rear_area`, `SZA_ural_factory_letters`, `UWD_perm_field_staff`, `UWD_tagil_machine_tool_ledger`, `UWD_factory_militia_charter`, `mrc_raid_lowland_depots`, `MRC_aul_militia_charter`, `MRC_argun_rear_area`, `IUL_samara_crossing_ledger`, `IUL_kama_workshop_trust`, `BAC_war_plan`, `BAC_observer_relief_conference`, `BAC_birobidzhan_council_records`, `BAC_grain_and_relief_escorts`, `BAC_winter_road_columns`, `BAC_far_eastern_letters`, `BAC_autonomy_statute`, `NLC_heated_workshop_contracts`, `NLC_winter_road_columns`, `NLC_apatity_rear_area`, `SOG_expansionist_merchant_claims`, `KHW_delta_without_a_center`.
+- `train_equipment_1`: `ukr_soviet_collapse_seal_the_grain_ledgers`, `FTH_supply`, `PRA_armored_train_schools`, `PRA_claim_the_branch_lines`, `PRA_seize_the_junction_cities`, `NLC_ice_road_customs`, `MFR_armored_train_workshops`, `APX_old_border_files`, `APX_khazar_charter`, `ANX_expansionist_water_claims`.
+- `motorized_equipment_1`: `kaz_soviet_collapse_foreign_trucks_local_drivers`, `ANX_canal_recognition_letters`, `ANX_khwarazmian_water_charter`.
+- `support_equipment_1`: `ukr_soviet_collapse_count_the_depot_keys`, `soviet_collapse_military_defense_council`, `soviet_collapse_foreign_liaison_government`, `internal_soviet_collapse_republic_volunteer_standards`, `baltic_soviet_collapse_latvian_port_guard_boards`, `caucasus_soviet_collapse_black_sea_observer_desks`, `caucasus_soviet_collapse_yerevan_relief_networks`, `central_asia_soviet_collapse_pamir_pass_fortresses`, `central_asia_soviet_collapse_the_oasis_arsenal`, `central_asia_soviet_collapse_the_oasis_guard`, `central_asia_soviet_collapse_desert_republic_settlement`, `moldova_soviet_collapse_river_guard_brigades`, `kaz_soviet_collapse_oil_field_protection_orders`, `kaz_soviet_collapse_army_of_the_open_horizon`, `FTH_first_guard`, `FTH_stores`, `FTH_economy`, `FTH_special_arm`, `FTH_anti_puppet_commune_clause`, `FTH_commune_court_registers`, `TSC_perimeter_regiments`, `RMC_lipetsk_reliquary_workshops`, `RMC_blood_oath_requisitions`, `RMC_dead_volunteer_columns`, `DSC_call_the_dead_soldiers_congress`, `DSC_field_hospital_memorials`, `ICD_penza_memorial_workshops`, `ICD_black_seal_requisitions`, `ICD_memorial_battalions`, `ICD_letters_to_grieving_cities`, `AEX_first_guard`, `AEX_caravan_officer_schools`, `AEX_tajik_pass_bargains`, `AEX_raiding_column_oaths`, `TNC_tajik_relief_corridors`, `TNC_city_militia_charter`, `AAX_turkmen_route_bargain`, `AAX_steppe_supply_hubs`, `BBH_column_schools`, `BBH_armored_car_raids`, `BBH_roving_artillery_crews`, `BBH_column_supply_ledgers`, `BBH_red_and_black_depots`, `BBH_borderless_column_schools`, `AOX_port_guard_schools`, `UDC_staff_car_workshops`, `UDC_war_plan`, `SDZ_every_office_a_watchpost`, `SDZ_document_cart_workshops`, `SDZ_archive_bunker_vaults`, `SDZ_witness_protection_cells`, `SDZ_secure_court_dockets`, `SDZ_signal_van_yards`, `DHC_cavalry_remount_yards`, `FEV_railway_militia_charter`, `FEV_winter_rail_columns`, `FEV_siberian_factory_letters`, `SZA_winter_column_registers`, `SZA_baikal_rear_area`, `SZA_ural_factory_letters`, `UWD_perm_field_staff`, `UWD_tagil_machine_tool_ledger`, `UWD_factory_militia_charter`, `mrc_raid_lowland_depots`, `MRC_aul_militia_charter`, `MRC_argun_rear_area`, `IUL_samara_crossing_ledger`, `IUL_kama_workshop_trust`, `ADX_war_plan`, `ADX_observer_relief_conference`, `ADX_birobidzhan_council_records`, `ADX_grain_and_relief_escorts`, `ADX_winter_road_columns`, `ADX_far_eastern_letters`, `ADX_autonomy_statute`, `NLC_heated_workshop_contracts`, `NLC_winter_road_columns`, `NLC_apatity_rear_area`, `SOG_expansionist_merchant_claims`, `ANX_delta_without_a_center`.
 
 Representative exact tiny-building/flat-stat offenders:
 
 - Ukraine: `ukr_soviet_collapse_emergency_rada`, `ukr_soviet_collapse_seal_the_grain_ledgers`, `ukr_soviet_collapse_count_the_depot_keys`, `ukr_soviet_collapse_first_republican_line`, `ukr_soviet_collapse_moscows_officers_in_our_barracks`, `ukr_soviet_collapse_workers_congress_in_kharkiv`, `ukr_soviet_collapse_village_soviets_without_requisition`, `ukr_soviet_collapse_re_register_the_party`, `ukr_soviet_collapse_arsenal_cities`, `ukr_soviet_collapse_dnieper_workshops`, `ukr_soviet_collapse_black_sea_port_ledgers`.
 - Generic breakaway: `soviet_collapse_assemble_emergency_government`, `soviet_collapse_depot_repair_crews`, `soviet_collapse_home_industry_contracts`, `soviet_collapse_military_defense_council`, `soviet_collapse_foreign_liaison_government`, `soviet_collapse_border_militia_standard`, `soviet_collapse_rail_hub_or_mountain_pass`.
 - Internal republic: `internal_soviet_collapse_northern_timber_rail_fund`, `internal_soviet_collapse_karelian_finnish_border_mission`, `internal_soviet_collapse_komi_river_and_mine_committees`, `internal_soviet_collapse_pechora_rail_survival`, `internal_soviet_collapse_ural_cavalry_roads`.
-- Custom splinters with many small rewards: `BBH_column_schools`, `BBH_armored_car_raids`, `BBH_roving_artillery_crews`, `BBH_column_supply_ledgers`, `BBH_red_and_black_depots`, `SDZ_document_cart_workshops`, `SDZ_archive_bunker_vaults`, `SDZ_signal_van_yards`, `BAC_winter_road_columns`, `BAC_obluchye_rear_area`, `BAC_far_eastern_letters`, `ARD_ice_watch_boards`, `NLC_heated_workshop_contracts`, `NLC_winter_road_columns`, `NLC_apatity_rear_area`.
-- Factory/ancient: `MFR_armored_train_workshops`, `MFR_foundry_line_holds`, `MFR_contracts_with_builders`, `KZR_caspian_patrol_letters`, `KHW_canal_recognition_letters`, `KHW_khwarazmian_water_charter`, `ALN_symbolic_pass_principality`.
+- Custom splinters with many small rewards: `BBH_column_schools`, `BBH_armored_car_raids`, `BBH_roving_artillery_crews`, `BBH_column_supply_ledgers`, `BBH_red_and_black_depots`, `SDZ_document_cart_workshops`, `SDZ_archive_bunker_vaults`, `SDZ_signal_van_yards`, `ADX_winter_road_columns`, `ADX_obluchye_rear_area`, `ADX_far_eastern_letters`, `ARD_ice_watch_boards`, `NLC_heated_workshop_contracts`, `NLC_winter_road_columns`, `NLC_apatity_rear_area`.
+- Factory/ancient: `MFR_armored_train_workshops`, `MFR_foundry_line_holds`, `MFR_contracts_with_builders`, `APX_caspian_patrol_letters`, `ANX_canal_recognition_letters`, `ANX_khwarazmian_water_charter`, `ABX_symbolic_pass_principality`.
 
 Recommended replacements:
 
@@ -116,21 +116,21 @@ One-level helper expansion was included for focus rewards that call `soviet_coll
 Trees that are still too soft or too late in their aggression:
 
 - `TNC_soviet_collapse_focus_tree`: only `TNC_special_arm`, `TNC_extreme_gate`, `TNC_endgame`, `TNC_extreme_path` show decision/endgame/identity markers. Add direct war-plan claims/wargoals, cores or integration decisions, and hostile AI.
-- `ALA_soviet_collapse_focus_tree`: same issue as TNC. `ALA_special_arm`, `ALA_extreme_gate`, `ALA_endgame`, `ALA_extreme_path` are not enough.
+- `AAX_soviet_collapse_focus_tree`: same issue as TNC. `AAX_special_arm`, `AAX_extreme_gate`, `AAX_endgame`, `AAX_extreme_path` are not enough.
 - `BBH_soviet_collapse_focus_tree`: only `BBH_banner_without_borders` and `BBH_extreme_path` show helper markers. Black Banner should be much more aggressive: borderless raids, instant neighbor war plan, unit spawning, no-puppet annex/coring decisions, hostile AI.
-- `KRS_soviet_collapse_focus_tree`: only `KRS_extreme_path` and `KRS_endgame` show helper markers. Needs port-seizure war goals, naval invasion preparation, anti-SOV aggression, and port occupation decisions.
+- `AOX_soviet_collapse_focus_tree`: only `AOX_extreme_path` and `AOX_endgame` show helper markers. Needs port-seizure war goals, naval invasion preparation, anti-SOV aggression, and port occupation decisions.
 - `DHC_soviet_collapse_focus_tree`: only `DHC_steppe_watch_posts`, `DHC_endgame`, `DHC_don_endurance`, `DHC_extreme_path` show identity/endgame helpers. Needs direct Don/Kuban/Volga war plan, cavalry columns, and coring/settlement.
 - `SZA_soviet_collapse_focus_tree`: only `SZA_station_fortress_line`, `SZA_extreme_path`, `SZA_endgame` show markers. Needs Siberian depth conquest/rail corridor war mechanics.
 - `UWD_soviet_collapse_focus_tree`: only `UWD_endgame`, `UWD_extreme_path` show markers. Industrial chaos should add arms-export coercion, factory guard columns, neighbor wargoals, and AI building/attack strategy.
 - `MRC_soviet_collapse_focus_tree`: only `MRC_extreme_path` shows an endgame helper. Needs lowland raids, pass claims, mountain coring/occupation decisions, hostile AI.
 - `IUL_soviet_collapse_focus_tree`: only `IUL_extreme_path`, `IUL_endgame` show markers. Needs direct Volga-Ural expansion and conflict over OGB/Kazan/Ufa.
-- `BAC_soviet_collapse_focus_tree`: only `BAC_extreme_path` shows an endgame helper. Needs Amur/Far East aggression and settlement-defense conquest payoffs.
+- `ADX_soviet_collapse_focus_tree`: only `ADX_extreme_path` shows an endgame helper. Needs Amur/Far East aggression and settlement-defense conquest payoffs.
 - `FEV_soviet_collapse_focus_tree`: `FEV_harbor_fortress_line` uses a conflict helper, but the rest leans Japanese/Pacific diplomacy. Needs stronger war and occupation branch.
 - `CFR_soviet_collapse_focus_tree`: construction identity is strong, but aggression appears late through `CFR_the_builder_state_marches_east` and `CFR_reconstruction_protectorates`. Add earlier protectorate pressure and hostile AI.
 
 Trees that are comparatively stronger:
 
-- `FTH`, `BSC`, `UDC`, `SDZ`, `DSC`, `NLC`, `OGB`, `MFR`, and ancient restorations all have meaningful aggressive helpers or direct war markers, but several still need clearer route placement and postwar integration.
+- `FTH`, `AEX`, `UDC`, `SDZ`, `DSC`, `NLC`, `OGB`, `MFR`, and ancient restorations all have meaningful aggressive helpers or direct war markers, but several still need clearer route placement and postwar integration.
 
 Missing aggression surfaces to add where absent:
 
@@ -162,11 +162,11 @@ Quantitative layout summary from resolved absolute coordinates:
 | `DSC_soviet_collapse_focus_tree` | 18 | 0 | 0 | 1 | 1 |
 | `NRF_soviet_collapse_focus_tree` | 18 | 0 | 0 | 1 | 1 |
 | `ICD_soviet_collapse_focus_tree` | 18 | 0 | 0 | 1 | 1 |
-| `BSC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 4 | 0 |
+| `AEX_soviet_collapse_focus_tree` | 47 | 0 | 0 | 4 | 0 |
 | `TNC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 5 | 0 |
-| `ALA_soviet_collapse_focus_tree` | 47 | 0 | 0 | 1 | 0 |
+| `AAX_soviet_collapse_focus_tree` | 47 | 0 | 0 | 1 | 0 |
 | `BBH_soviet_collapse_focus_tree` | 47 | 0 | 0 | 1 | 0 |
-| `KRS_soviet_collapse_focus_tree` | 47 | 0 | 0 | 2 | 0 |
+| `AOX_soviet_collapse_focus_tree` | 47 | 0 | 0 | 2 | 0 |
 | `UDC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 16 | 0 |
 | `SDZ_soviet_collapse_focus_tree` | 47 | 0 | 0 | 16 | 0 |
 | `GAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 13 | 1 |
@@ -177,16 +177,16 @@ Quantitative layout summary from resolved absolute coordinates:
 | `UWD_soviet_collapse_focus_tree` | 47 | 0 | 0 | 35 | 1 |
 | `MRC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 5 | 0 |
 | `IUL_soviet_collapse_focus_tree` | 47 | 0 | 0 | 12 | 0 |
-| `BAC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 44 | 0 |
+| `ADX_soviet_collapse_focus_tree` | 47 | 0 | 0 | 44 | 0 |
 | `ARD_soviet_collapse_focus_tree` | 47 | 0 | 0 | 20 | 0 |
 | `NLC_soviet_collapse_focus_tree` | 47 | 0 | 0 | 22 | 1 |
 | `CFR_soviet_collapse_focus_tree` | 47 | 0 | 0 | 0 | 0 |
 | `OGB_soviet_collapse_focus_tree` | 23 | 0 | 0 | 0 | 1 |
 | `MFR_soviet_collapse_focus_tree` | 58 | 0 | 1 | 8 | 0 |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 1 | 0 |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | 0 | 0 | 2 | 0 |
 
 High-priority exact layout issues:
 
@@ -203,7 +203,7 @@ High-priority exact layout issues:
 - Kazakhstan:
   - Exact duplicates: `(26,4)` `kaz_soviet_collapse_the_alash_courts` with `kaz_soviet_collapse_the_resource_towns_demand_seats`; `(16,7)` `kaz_soviet_collapse_foreign_trucks_local_drivers` with `kaz_soviet_collapse_emergency_oil_boards`; `(2,7)` `kaz_soviet_collapse_army_of_the_open_horizon` with `kaz_soviet_collapse_uzbek_supply_delegates`.
   - Too-close pairs: `kaz_soviet_collapse_oasis_and_steppe_congress` with `kaz_soviet_collapse_southern_deputies_demand_seats` and `kaz_soviet_collapse_the_steppe_cannot_be_encircled`; `kaz_soviet_collapse_league_resource_pool` with `kaz_soviet_collapse_foreign_technical_missions`; `kaz_soviet_collapse_league_cavalry_school` with `kaz_soviet_collapse_border_cavalry_schools`; `kaz_soviet_collapse_crush_the_road_militias` with `kaz_soviet_collapse_collective_farm_bargains`; `kaz_soviet_collapse_the_last_caravan_tax` with `kaz_soviet_collapse_kyrgyz_border_cavalry` and `kaz_soviet_collapse_horse_and_truck_columns`; `kaz_soviet_collapse_caspian_security_detachments`, `kaz_soviet_collapse_iranian_caspian_notes`, `kaz_soviet_collapse_japanese_far_east_approaches` form an x-adjacent same-row cluster.
-- Other bad layout trees by crossing count: `BAC` 44, `UWD` 35, `moldova` 32, `KHC` 30, `SZA` 28, `NLC` 22, `ARD` 20, `DHC` 18, `FEV` 17, `caucasus` 17, `UDC`/`SDZ` 16 each.
+- Other bad layout trees by crossing count: `ADX` 44, `UWD` 35, `moldova` 32, `KHC` 30, `SZA` 28, `NLC` 22, `ARD` 20, `DHC` 18, `FEV` 17, `caucasus` 17, `UDC`/`SDZ` 16 each.
 
 I found no isolated/unconnected focuses in the parsed trees.
 
@@ -216,12 +216,12 @@ I found no isolated/unconnected focuses in the parsed trees.
    - Moldova crossing cleanup if time permits; it has the highest republican crossing count.
 
 2. `005_soviet_collapse_custom_splinters.txt`: Add direct aggression and route-depth patches to the soft chaos trees.
-   - First tranche: `BBH`, `KRS`, `UWD`, `MRC`, `BAC`.
-   - Second tranche: `TNC`, `ALA`, `DHC`, `SZA`, `IUL`, `FEV`.
+   - First tranche: `BBH`, `AOX`, `UWD`, `MRC`, `ADX`.
+   - Second tranche: `TNC`, `AAX`, `DHC`, `SZA`, `IUL`, `FEV`.
    - Keep patches disjoint by tag. Add direct war-plan helpers, unit spawns, conquest AI, claims/cores or integration decisions, and postwar settlement.
 
 3. `005_soviet_collapse_custom_splinters.txt`: Replace repeated support-equipment filler.
-   - Group by regional family to avoid giant risky edits: death-state mini trees (`RMC`, `DSC`, `ICD`, `NRF`), steppe/Central Asia (`BSC`, `TNC`, `ALA`, `BBH`), Siberia/Far East (`FEV`, `SZA`, `BAC`, `NLC`), Volga/Ural/Caucasus (`UWD`, `MRC`, `IUL`, `DHC`, `KHC`).
+   - Group by regional family to avoid giant risky edits: death-state mini trees (`RMC`, `DSC`, `ICD`, `NRF`), steppe/Central Asia (`AEX`, `TNC`, `AAX`, `BBH`), Siberia/Far East (`FEV`, `SZA`, `ADX`, `NLC`), Volga/Ural/Caucasus (`UWD`, `MRC`, `IUL`, `DHC`, `KHC`).
 
 4. `005_soviet_collapse_factory_successors.txt`: Patch `CFR`, `OGB`, `MFR`.
    - `CFR`: move aggression earlier than `CFR_the_builder_state_marches_east`; deepen protectorate and construction-debt mechanics.

@@ -187,7 +187,7 @@ This is not a failure of the requested decision-category visibility, but it cont
 
 ## Documentation gaps
 
-`docs/events/019_infantry_spawn.md:597-599` correctly describes quiet category closeout and claimant closure, but “a successful derivative revolt closes” is stronger than the current initialization-time marker.
+`docs/events/019_infantry_spawn/overview.md:597-599` correctly describes quiet category closeout and claimant closure, but “a successful derivative revolt closes” is stronger than the current initialization-time marker.
 
 `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_7_decisions_ui_ai_balance.md:29-35` correctly states the evolved quiet-closeout contract.
 

@@ -24,7 +24,7 @@ The audit initially replaced the shared script-constant-to-temporary-variable du
   - `brilliant_scientist_krg_recover_stolen_facility_archive` now requires `brilliant_scientist_krg_has_standard_factory_capacity = yes` in addition to the existing foreign-operation material gate.
 - `common/decisions/016_brilliant_scientist_kruger_state_safeguard_decisions.txt`
   - `brilliant_scientist_krg_audit_restricted_material_custody` now requires `brilliant_scientist_krg_has_standard_factory_capacity = yes` in addition to the existing foreign-operation material gate.
-- `docs/systems/016_brilliant_scientist_kruger_state_decisions.md`
+- `docs/events/016_brilliant_scientist/systems/kruger_state_decisions.md`
   - Recorded the 1/2/4/6 capacity-band contract and the required timed-flag temporary-variable bridge.
 
 Before the patch, the two foreign-operation decisions could start while fewer than two civilian factories were available despite their standard factory modifier.
@@ -76,7 +76,7 @@ The existing full-completion receipts now also prevent rerunning their mission a
   - Four transient objective cleanup helpers and four contained-failure helpers.
 - `localisation/english/016_brilliant_scientist_kruger_state_decisions_l_english.yml`
   - Four objective title/description pairs and four public requirement tooltips.
-- `docs/systems/016_brilliant_scientist_kruger_state_decisions.md`
+- `docs/events/016_brilliant_scientist/systems/kruger_state_decisions.md`
   - Hazardous-mission lifecycle, requirements, history, cleanup, and retry contract.
 - `docs/plans/016_brilliant_scientist_plans/016_krg_hazardous_mission_pressure_accepted_plan.md`
   - The accepted, pre-implementation bounded plan.

@@ -1,8 +1,8 @@
-# Event 014 CBG/CBH HOI4 Portrait Repaint Handoff
+# Event 014 AMX/CBH HOI4 Portrait Repaint Handoff
 
 Date: 2026-07-15
 Owner: `event014_portraits_cbg_cbh_hoi4`
-Scope: the 14 static CBG and CBH warlord leader portraits only. No gameplay, interface, localisation, Hannibal asset, shared manifest, aggregate hash, validation summary, or prompt-matrix file was edited.
+Scope: the 14 static AMX and CBH warlord leader portraits only. No gameplay, interface, localisation, Hannibal asset, shared manifest, aggregate hash, validation summary, or prompt-matrix file was edited.
 
 ## Delivered package
 
@@ -20,13 +20,13 @@ No referenced identity, face, clothing, pose, or insignia was copied. The set co
 
 | Stem | Required action preserved in source and leader crop |
 | --- | --- |
-| `leader_CBG_warlord` | Clenches the knot of a cord looped through a cracked jaw relic between his teeth. |
-| `leader_CBG_warlord_africa` | Holds a mud-dark boot heel directly beneath his nose with ecstatic disgust. |
-| `leader_CBG_warlord_asia` | Smears rust-red sealing wax across a blank ledger and his cheek. |
-| `leader_CBG_warlord_middle_east` | Chews the corner of a captured field map while grinning at the viewer. |
-| `leader_CBG_warlord_north_america` | Displays a molar on his tongue beside a small secular skull token. |
-| `leader_CBG_warlord_south_america` | Bites and counts a necklace of mismatched teeth. |
-| `leader_CBG_warlord_oceania` | Sews a plain human-shaped leather mask with the thread held between his teeth. |
+| `leader_AMX_warlord` | Clenches the knot of a cord looped through a cracked jaw relic between his teeth. |
+| `leader_AMX_warlord_africa` | Holds a mud-dark boot heel directly beneath his nose with ecstatic disgust. |
+| `leader_AMX_warlord_asia` | Smears rust-red sealing wax across a blank ledger and his cheek. |
+| `leader_AMX_warlord_middle_east` | Chews the corner of a captured field map while grinning at the viewer. |
+| `leader_AMX_warlord_north_america` | Displays a molar on his tongue beside a small secular skull token. |
+| `leader_AMX_warlord_south_america` | Bites and counts a necklace of mismatched teeth. |
+| `leader_AMX_warlord_oceania` | Sews a plain human-shaped leather mask with the thread held between his teeth. |
 | `leader_CBH_warlord` | Pulls his filed grin wider while studying it in a cracked mirror. |
 | `leader_CBH_warlord_africa` | In three-quarter side profile, polishes one oversized ivory-colored tooth charm pinned against the black wool sleeve beside his cheek while his other arm remains folded across his chest. |
 | `leader_CBH_warlord_asia` | Holds a glossy black leech-shaped wax charm at his lip. |
@@ -35,9 +35,9 @@ No referenced identity, face, clothing, pose, or insignia was copied. The set co
 | `leader_CBH_warlord_south_america` | Holds a jawbone-shaped nutcracker beside his cheek and mimics its bite. |
 | `leader_CBH_warlord_oceania` | Stitches a pale leather patch onto his high collar with a curved needle held between his teeth. |
 
-Each face, skull silhouette, expression, garment arrangement, and prop interaction is distinct. The two initial CBG default and Africa generations were rejected after processed comparison because their finish was too glossy. Both were regenerated with a stricter matte-gouache prompt, reprocessed, re-exported, and visually approved; only those accepted second versions are present in the package and final DDS files.
+Each face, skull silhouette, expression, garment arrangement, and prop interaction is distinct. The two initial AMX default and Africa generations were rejected after processed comparison because their finish was too glossy. Both were regenerated with a stricter matte-gouache prompt, reprocessed, re-exported, and visually approved; only those accepted second versions are present in the package and final DDS files.
 
-An independent uniqueness audit then identified the earlier `leader_CBH_warlord_africa` as borderline similar to `leader_CBG_warlord_south_america`: both used a near-frontal, two-handed tooth-row presentation. That CBH Africa result was rejected. The accepted audit-driven third version uses a strong three-quarter side profile, one single vertical sleeve-pinned charm, one rag-rubbing hand, and a folded-arm diagonal silhouette. It contains no necklace, cord, tooth row, or two-handed horizontal display. The rebuilt combined contact sheet confirms that it is unmistakably different from the frontal CBG South America tooth-necklace action.
+An independent uniqueness audit then identified the earlier `leader_CBH_warlord_africa` as borderline similar to `leader_AMX_warlord_south_america`: both used a near-frontal, two-handed tooth-row presentation. That CBH Africa result was rejected. The accepted audit-driven third version uses a strong three-quarter side profile, one single vertical sleeve-pinned charm, one rag-rubbing hand, and a folded-arm diagonal silhouette. It contains no necklace, cord, tooth row, or two-handed horizontal display. The rebuilt combined contact sheet confirms that it is unmistakably different from the frontal AMX South America tooth-necklace action.
 
 ### Audit-driven CBH Africa v3 provenance
 
@@ -54,29 +54,29 @@ An independent uniqueness audit then identified the earlier `leader_CBH_warlord_
 
 ## Files and locations
 
-- Accepted ImageGen masters: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/source_png/leader_CBG_warlord*_source.png` and `leader_CBH_warlord*_source.png`
-- Exact accepted prompts: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/prompts/generated/leader_CBG_warlord*.txt` and `leader_CBH_warlord*.txt`
-- Finished leader PNGs: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/processed_png/leader_CBG_warlord*.png` and `leader_CBH_warlord*.png`
-- Processor metadata: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/metadata/leader_CBG_warlord*.json` and `leader_CBH_warlord*.json`
-- Per-portrait review sheets: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/contact_sheets/reviews/leader_CBG_warlord*_review.png` and `leader_CBH_warlord*_review.png`
+- Accepted ImageGen masters: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/source_png/leader_AMX_warlord*_source.png` and `leader_CBH_warlord*_source.png`
+- Exact accepted prompts: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/prompts/generated/leader_AMX_warlord*.txt` and `leader_CBH_warlord*.txt`
+- Finished leader PNGs: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/processed_png/leader_AMX_warlord*.png` and `leader_CBH_warlord*.png`
+- Processor metadata: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/metadata/leader_AMX_warlord*.json` and `leader_CBH_warlord*.json`
+- Per-portrait review sheets: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/contact_sheets/reviews/leader_AMX_warlord*_review.png` and `leader_CBH_warlord*_review.png`
 - Combined visual review: `docs/assets/014_cannibalism/leader_portraits_refresh/cbe_cbh/contact_sheets/cbg_cbh_hoi4_repaint_contact_sheet.png`
-- Final game DDS files: `gfx/leaders/014_cannibalism/leader_CBG_warlord*.dds` and `leader_CBH_warlord*.dds`
+- Final game DDS files: `gfx/leaders/014_cannibalism/leader_AMX_warlord*.dds` and `leader_CBH_warlord*.dds`
 
 ## Deterministic finishing
 
-Every portrait was processed with `.tools/process_hoi4_portrait.py leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and an individual comparison sheet. Every processed PNG is 156x210. Every DDS was created with `.tools/convert_to_dds.py --width 156 --height 210`.
+Every portrait was processed with `.agents/skills/chaos-redux-event-assets/tools/advisor_icon_processing.py leader`, `--source-kind fictional`, the leader reference directory above, an explicit crop, a metadata JSON, and an individual comparison sheet. Every processed PNG is 156x210. Every DDS was created with `.tools/convert_to_dds.py --width 156 --height 210`.
 
 The crop geometry recorded in metadata is:
 
 | Stem | Source size | Crop |
 | --- | --- | --- |
-| `leader_CBG_warlord` | 1081x1455 | `0 0 1081 1455` |
-| `leader_CBG_warlord_africa` | 1085x1450 | `4 0 1081 1450` |
-| `leader_CBG_warlord_asia` | 1080x1457 | `0 1 1080 1455` |
-| `leader_CBG_warlord_middle_east` | 1080x1456 | `0 1 1080 1455` |
-| `leader_CBG_warlord_north_america` | 1082x1454 | `1 0 1081 1454` |
-| `leader_CBG_warlord_south_america` | 1081x1455 | `0 0 1081 1455` |
-| `leader_CBG_warlord_oceania` | 1080x1456 | `0 1 1080 1455` |
+| `leader_AMX_warlord` | 1081x1455 | `0 0 1081 1455` |
+| `leader_AMX_warlord_africa` | 1085x1450 | `4 0 1081 1450` |
+| `leader_AMX_warlord_asia` | 1080x1457 | `0 1 1080 1455` |
+| `leader_AMX_warlord_middle_east` | 1080x1456 | `0 1 1080 1455` |
+| `leader_AMX_warlord_north_america` | 1082x1454 | `1 0 1081 1454` |
+| `leader_AMX_warlord_south_america` | 1081x1455 | `0 0 1081 1455` |
+| `leader_AMX_warlord_oceania` | 1080x1456 | `0 1 1080 1455` |
 | `leader_CBH_warlord` | 1080x1456 | `0 1 1080 1455` |
 | `leader_CBH_warlord_africa` | 1080x1456 | `0 1 1080 1455` |
 | `leader_CBH_warlord_asia` | 1080x1456 | `0 1 1080 1455` |
@@ -97,7 +97,7 @@ Existing sprite definitions in `interface/014_cannibalism.gfx` lines 215-230 alr
 - All DDS headers validate as uncompressed 32-bit BGRA, 156x210, with opaque alpha; each file is 131,168 bytes.
 - The accepted prompt text files match the prompts used in their individual ImageGen calls.
 - The 1228x905 combined contact sheet was inspected at original resolution after final processing and includes all fourteen finals with the three vanilla style references.
-- The audit comparison specifically confirms that `leader_CBH_warlord_africa` uses one vertical sleeve-pinned charm in side profile and no longer duplicates `leader_CBG_warlord_south_america`'s frontal two-handed tooth-necklace silhouette.
+- The audit comparison specifically confirms that `leader_CBH_warlord_africa` uses one vertical sleeve-pinned charm in side profile and no longer duplicates `leader_AMX_warlord_south_america`'s frontal two-handed tooth-necklace silhouette.
 
 Shared `manifest.md`, `hashes.sha256`, `source_generation_metadata.md`, `validation.md`, and `prompts/prompt_matrix.md` were intentionally left untouched under the parent-granted ownership boundary. Aggregate records can be refreshed after all portrait batches are assembled.
 

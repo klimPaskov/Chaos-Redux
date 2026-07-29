@@ -67,25 +67,25 @@ These hashes identify the exact shared-registry snapshot against which the colli
 
 ### Provisional slot and path contract
 
-| Role | Slot | Audio ID | Final OGG | Final WAV mirror | Stable raw-sound name |
-| --- | ---: | ---: | --- | --- | --- |
-| Africa is one | `101` | `58` | `music/012_africa/super_event_58_africa_is_one.ogg` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
-| Scramble response | `102` | `59` | `music/012_africa/super_event_59_scramble_response.ogg` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
-| Continental wars | `103` | `60` | `music/012_africa/super_event_60_continental_wars.ogg` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
-| The World | `104` | `61` | `music/012_africa/super_event_61_the_world.ogg` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
+| Role | Slot | Audio ID | Final WAV | Stable raw-sound name |
+| --- | ---: | ---: | --- | --- |
+| Africa is one | `101` | `58` | `sound/012_africa/super_event_58_africa_is_one.wav` | `chaosx_super_event_africa_is_one_track` |
+| Scramble response | `102` | `59` | `sound/012_africa/super_event_59_scramble_response.wav` | `chaosx_super_event_scramble_response_track` |
+| Continental wars | `103` | `60` | `sound/012_africa/super_event_60_continental_wars.wav` | `chaosx_super_event_continental_wars_track` |
+| The World | `104` | `61` | `sound/012_africa/super_event_61_the_world.wav` | `chaosx_super_event_the_world_track` |
 
-Expected music helper families are `chaosx_super_event_<ID>_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`. Expected sound wrappers are `chaosx_super_event_<ID>_sound_0_5` through `_sound_3_0` using the same six suffixes. The representative `_1_5` music entry belongs in the super-event station with zero chance, matching the live registry pattern. Playback must set `global.current_super_event_audio_id` and call the existing settings-aware helper; direct unsynchronised playback is not part of this contract.
+Expected sound wrappers are `chaosx_super_event_<ID>_sound_0_5` through `_sound_3_0` using the six established suffixes. Playback must set `global.current_super_event_audio_id` and call the existing settings-aware sound helper; direct unsynchronised playback is not part of this contract.
 
 ## Shared source, edit, and runtime contract
 
 - Every final cue is actual composed music. No tone, drone, noise bed, oscillator output, or transform-only placeholder is accepted.
 - Preserve each source master and frozen rights evidence under `docs/super_events/source_audio/012_africa/`. The production owner must record source URL, frozen revision, download date, published checksum, local checksum, edit command or DAW edit record, final checksum, duration, codec, sample rate, channels, loudness, true peak, and change notice.
-- Final music files must be Ogg Vorbis, stereo, exactly `44,100 Hz`, and no longer than two minutes. The matching sound-channel files must be stereo `44,100 Hz` WAV derivatives made from the preserved lossless source or original production master, not decoded from the lossy final OGG.
+- Final music files must be Ogg Vorbis, stereo, exactly `44,100 Hz`, and no longer than two minutes. The matching sound files must be stereo `44,100 Hz` WAV derivatives made from the preserved lossless source or original production master, not decoded from the lossy final WAV.
 - Target final loudness is `-19 LUFS ± 1 LU` with true peak at or below `-1.5 dBTP`, unless a documented musical-dynamics reason requires a quieter integrated level. Do not peak-limit a quiet classical opening merely to hit the target.
 - All four cues are one-shot. Do not loop the OGG, the raw sound, or a sound wrapper. Do not synthesize a loop from repeated bars.
 - Edits must begin and end on musically defensible boundaries. The exact time windows below are the selected windows; the production owner must audition the source before export. If a listed boundary exposes a click, corrupted frame, speech, applause, unrelated material, or an unacceptable mid-phrase ending, stop and return to audio research. Do not silently choose another movement, recording, or work.
 - Embed or preserve courtesy attribution and change metadata in the OGG comments. Also put full source and rights entries in `music/chaosx_music_track_list.html` and the Event 012 super-event documentation. WAV cannot be the sole attribution carrier.
-- Before acceptance, compare the final OGG and WAV pair against the full repository audio corpus using decoded-audio fingerprints, not only container hashes or filenames. A recording-level collision blocks the cue and returns it to research; it does not authorize reuse.
+- Before acceptance, compare the final WAV and WAV pair against the full repository audio corpus using decoded-audio fingerprints, not only container hashes or filenames. A recording-level collision blocks the cue and returns it to research; it does not authorize reuse.
 
 ## Role 1 — Africa is one
 
@@ -153,7 +153,7 @@ The change notice must add: `Edited to a 115-second excerpt; start/end safety fa
 - Opening: retain the movement's opening; apply only a `0.100 s` safety fade-in.
 - Ending: begin an equal-power fade at `01:48.000` and reach digital silence at `01:55.000`.
 - Loop: none.
-- Final paths and identifiers: audio ID `59`, slot `102`, the fixed OGG/WAV paths and stable sound name in the provisional contract table.
+- Final paths and identifiers: audio ID `59`, slot `102`, the fixed WAV paths and stable sound name in the provisional contract table.
 
 ### Cultural and gameplay rationale
 
@@ -197,7 +197,7 @@ The change notice must add: `Edited to a 115-second excerpt; start/end safety fa
 - Opening: preserve the opening attack; apply only a `0.050 s` de-click fade-in.
 - Ending: begin an equal-power fade at `01:48.000` and reach digital silence at `01:55.000`.
 - Loop: none.
-- Final paths and identifiers: audio ID `60`, slot `103`, the fixed OGG/WAV paths and stable sound name in the provisional contract table.
+- Final paths and identifiers: audio ID `60`, slot `103`, the fixed WAV paths and stable sound name in the provisional contract table.
 
 ### Cultural and gameplay rationale
 
@@ -268,7 +268,7 @@ Disposition: rejected, not a fallback. A later user decision to revive it would 
 The earlier provisional candidate was Schubert's Symphony No. 8, II. *Andante con moto*, performed by the Fulda Symphonic Orchestra under Simon Schindler.
 
 - Frozen source: <https://commons.wikimedia.org/w/index.php?title=File:Schubert%27s_8th_Symphony,_2nd_movement_Andante_con_moto_in_E_major.ogg&oldid=1189797410>
-- The source uses EFF Open Audio License 1.0 terms requiring preservation of author attribution, licence terms, and the original file's attribution information. The Event 012 dual OGG/WAV pipeline needs an explicit, documented method for carrying those obligations outside Vorbis tags.
+- The source uses EFF Open Audio License 1.0 terms requiring preservation of author attribution, licence terms, and the original file's attribution information. The Event 012 dual WAV pipeline needs an explicit, documented method for carrying those obligations outside Vorbis tags.
 - Even if that operational issue were resolved, this one existing movement does not deliberately bridge peaceful union, federation, submission, and victory. Original production provides a stronger route-neutral terminal identity.
 
 Disposition: rejected, not a fallback. Do not silently revive it if original production is delayed.
@@ -297,9 +297,9 @@ The engine-facing result is consistent with the repository's live implementation
 1. Keep roles 1 and 4 blocked until original-production masters and signed rights packages satisfy every term above. Do not register a partial four-role package.
 2. Immediately before any shared edit, repeat the collision scan for presentation slots `101-104`, audio IDs `58-61`, all helper and sound names, final paths, and explicit reservations. Register the four mappings atomically only if still free.
 3. Acquire the exact role 2 and role 3 FLAC masters from the selected Commons records. Verify the published SHA-1 values, preserve frozen source pages and licence evidence, and record local SHA-256 values.
-4. Produce the exact cue windows from the verified lossless masters. Do not decode a Commons or final OGG to make the WAV mirror.
+4. Produce the exact cue windows from the verified lossless masters. Do not decode a Commons or final WAV to make the WAV mirror.
 5. Obtain the original role 1 and role 4 lossless masters, stems, contracts, contributor releases, exact credit lines, and source-master hashes.
-6. Export all final OGG/WAV files at `44,100 Hz`, verify duration and channels, measure loudness and true peak, decode-test them, and compare decoded fingerprints against every existing runtime cue.
+6. Export all final WAV files at `44,100 Hz`, verify duration and channels, measure loudness and true peak, decode-test them, and compare decoded fingerprints against every existing runtime cue.
 7. Register all six music volume helpers and six sound wrappers per audio ID, add one zero-chance `_1_5` station row per cue, set the correct audio ID at the event call site, and use the existing settings-aware player helper.
 8. Add full creator, performer, source, rights, attribution, edit, duration, path, slot, audio-ID, and checksum records to `music/chaosx_music_track_list.html` and the final Event 012 super-event audio documentation.
 9. Reconcile the final audio facts with the Event 012 specifications, final-text handoff, asset manifest, completion report, and spreadsheet only after production facts exist.

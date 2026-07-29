@@ -15,7 +15,7 @@ Parent-agent patch tranche for Soviet Collapse release pacing and focus-tree cle
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt`
 - `common/national_focus/005_soviet_collapse_factory_successors.txt`
 - `localisation/english/005_soviet_collapse_custom_countries_l_english.yml`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_4_releases_leagues_union_unmade.md`
 
 ## Release Pacing State

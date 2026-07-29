@@ -230,7 +230,7 @@ The controller also may not have `resources_found_achievement_starting_capital`,
 
 4. Change the achievement trigger to require the semantic owner-or-controller role flag instead of the owner-only flag.
 5. Preserve the existing exact 30-division equality, survival, independence, uncapitulated, recorded-capital control, cave-defeat, and pre-global gates.
-6. Update achievement localisation and `docs/achievements/018_resources_found_achievements.md` to say "owner or controller at breach." Do not retain player-facing owner-only wording.
+6. Update achievement localisation and `docs/achievements/018_resources_found/achievements.md` to say "owner or controller at breach." Do not retain player-facing owner-only wording.
 
 ### Required acceptance cases
 
@@ -308,8 +308,8 @@ Player-facing and proof surfaces:
 
 - `localisation/english/chaosx_achievements_l_english.yml`
 - the Event 018 decision localisation file for the Burrow deadline mission
-- `docs/achievements/018_resources_found_achievements.md`
-- `docs/events/018_resources_found.md`
+- `docs/achievements/018_resources_found/achievements.md`
+- `docs/events/018_resources_found/overview.md`
 - the Event 018 cave-country/helper documentation that inventories these flags and variables
 - the Event 018 acceptance criteria and static acceptance report
 

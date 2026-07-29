@@ -16,7 +16,7 @@ The final all-region manifest proves 56 source, 56 processed, and 56 runtime por
 
 ## Visual review
 
-The Europe, Asia, Africa, Americas, Middle East, and Oceania source, processed, and DDS-decoded contact sheets were reviewed at full resolution. The review accepted the feral behavior, blood, origin tools, scavenged period gear, silhouettes, expressions, actions, and absence of borrowed sacred motifs. Europe CBB, Asia CBB, Asia CBH, Africa CBE, Africa CBF, and Africa CBG were regenerated because their first versions retained visible hair. The replacements are fully hairless and preserve six distinct actions and origin-readable props. The final 56-cell DDS review is `docs/assets/014_cannibalism/warlord_portraits_imagegen/contact_sheets/warlord_all_regions_dds_decoded_contact_2026-07-12.png`.
+The Europe, Asia, Africa, Americas, Middle East, and Oceania source, processed, and DDS-decoded contact sheets were reviewed at full resolution. The review accepted the feral behavior, blood, origin tools, scavenged period gear, silhouettes, expressions, actions, and absence of borrowed sacred motifs. Europe AHX, Asia AHX, Asia CBH, Africa CBE, Africa CBF, and Africa AMX were regenerated because their first versions retained visible hair. The replacements are fully hairless and preserve six distinct actions and origin-readable props. The final 56-cell DDS review is `docs/assets/014_cannibalism/warlord_portraits_imagegen/contact_sheets/warlord_all_regions_dds_decoded_contact_2026-07-12.png`.
 
 The European CBA portrait supplies the requested skull-holding and licking behavior. The ordinary reveal portrait uses a separate twelve-frame skull raise, contact, lick, recoil, and return animation; neither is reused as another regional portrait.
 

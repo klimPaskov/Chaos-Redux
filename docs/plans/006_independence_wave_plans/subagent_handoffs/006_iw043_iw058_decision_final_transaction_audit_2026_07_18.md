@@ -43,7 +43,7 @@ The receipt loop now reads the aligned consent entry and considers its anchor on
 
 ### Low — remaining documentation discrepancy
 
-At the time of this audit, `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md` and the earlier decision audit handoff still said FORM-12/13/18 were fail-closed because the attestation flags were unwritten. The current setup writes the IW-043 writer/Form-12/Form-13 flags and the IW-058 writer/Form-18 flags in `independence_wave_apply_iw043_package_setup` and `independence_wave_apply_iw058_package_setup`; this documentation pass records that promotion. Gameplay is not fail-closed for the exact CHU/ASY carriers.
+At the time of this audit, `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md` and the earlier decision audit handoff still said FORM-12/13/18 were fail-closed because the attestation flags were unwritten. The current setup writes the IW-043 writer/Form-12/Form-13 flags and the IW-058 writer/Form-18 flags in `independence_wave_apply_iw043_package_setup` and `independence_wave_apply_iw058_package_setup`; this documentation pass records that promotion. Gameplay is not fail-closed for the exact CHU/ASY carriers.
 
 ## Decision-category lifecycle and mission quality
 

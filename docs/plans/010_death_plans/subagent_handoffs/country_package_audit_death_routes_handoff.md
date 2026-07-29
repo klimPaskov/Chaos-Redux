@@ -3,7 +3,7 @@
 Date: 2026-06-15
 Agent role: Chaos Redux country package subagent
 
-Supersession note: this handoff predates the parent final asset pass and final route-disposition cleanup. Its missing route-achievement DDS and stale-manifest findings are resolved; current source-of-truth status lives in `docs/assets/010_death/generated_art_manifest.md`, `docs/events/010_death.md`, and the Event 010 specs.
+Supersession note: this handoff predates the parent final asset pass and final route-disposition cleanup. Its missing route-achievement DDS and stale-manifest findings are resolved; current source-of-truth status lives in `docs/assets/010_death/generated_art_manifest.md`, `docs/events/010_death/overview.md`, and the Event 010 specs.
 
 ## Scope audited
 

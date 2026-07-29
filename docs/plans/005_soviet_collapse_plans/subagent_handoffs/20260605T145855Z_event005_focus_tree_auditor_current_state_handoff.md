@@ -127,7 +127,7 @@ The compact high-chaos/special trees with 16-23 focuses have usable branching, b
 
 - `PRA_soviet_collapse_focus_tree`: 22 focuses; strong rail identity, but still leans on recognition/depot helpers early.
 - `TSC`, `RMC`, `DSC`, `NRF`, `ICD`: 18 focuses each; they have concept-specific names and some high-chaos route hooks, but limited branch depth makes political/industrial/expansion play feel compressed.
-- Ancient restorations (`KZR`, `SOG`, `KHW`, `ALN`): 16 focuses each; they do have symbolic vs expansionist mutual exclusions and direct wargoal/AI strategy payloads, but each tree uses the same compact architecture. Their expansion route is clearer than their internal politics or economy route.
+- Ancient restorations (`APX`, `SOG`, `ANX`, `ABX`): 16 focuses each; they do have symbolic vs expansionist mutual exclusions and direct wargoal/AI strategy payloads, but each tree uses the same compact architecture. Their expansion route is clearer than their internal politics or economy route.
 - `OGB`: 23 focuses; clearer restoration choice structure, but its opening is still a narrow vertical legitimacy spine.
 
 Parent should expand one or two high-impact special-country route families per tranche rather than adding more generic helper rewards.

@@ -185,8 +185,8 @@ Project unit/equipment/technology definitions also rely on generic vanilla pictu
 
 The following documentation surfaces do not yet describe the live country/force implementation and should be reconciled after the next implementation tranche:
 
-- `docs/events/016_brilliant_scientist.md` still describes focus/flag/icon work as absent or queued;
-- `docs/systems/016_brilliant_scientist_projects.md` still places force, focus, and AI work in a later phase;
+- `docs/events/016_brilliant_scientist/overview.md` still describes focus/flag/icon work as absent or queued;
+- `docs/events/016_brilliant_scientist/systems/projects.md` still places force, focus, and AI work in a later phase;
 - there is no current dedicated country/force system document covering the live formation transaction, conventional formula, project-force caps, runtime revocation, recovery hook, and downstream maintenance contracts;
 - the focus architecture and implementation handoff must be refreshed after the 36 missing gates and 301 setter-only flags are classified.
 

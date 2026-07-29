@@ -24,7 +24,7 @@ Added:
 - `common/special_projects/projects/016_brilliant_scientist_projects.txt`
 - `common/on_actions/016_brilliant_scientist_project_on_actions.txt`
 - `localisation/english/016_brilliant_scientist_projects_l_english.yml`
-- `docs/systems/016_brilliant_scientist_projects.md`
+- `docs/events/016_brilliant_scientist/systems/projects.md`
 - this handoff
 
 The tranche does not edit the parent-owned Event 016 effect or trigger files, incident event namespace, opening events, evolutions, containment, KRG focus work, super events, achievements, specs, or asset manifest.

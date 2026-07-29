@@ -45,7 +45,7 @@ No flag assets, gfx files, interface files, or `common/national_focus/005_soviet
   - Added core-state bunker and anti-air construction.
   - The focus now matches its border-defense premise with immediate map consequences.
 
-- `KZR_caspian_patrol_letters`
+- `APX_caspian_patrol_letters`
   - Added industry search filter, convoys, and coastal dockyard/naval-base construction.
   - The Caspian/naval focus now has port and shipping payoff instead of only naval XP and recognition variables.
 
@@ -69,7 +69,7 @@ No flag assets, gfx files, interface files, or `common/national_focus/005_soviet
 - The three files still contain many focus rewards that route through existing helper effects. Some helpers are already deep, but a full audit would need helper-by-helper review to distinguish real mechanics from tooltip-heavy or variable-only rewards.
 - `005_soviet_collapse_custom_splinters.txt` is large enough that more bounded passes are still warranted for death-state, religious, naval, and high-chaos splinter payoffs.
 - `005_soviet_collapse_factory_successors.txt` still has several MFR/CFR/OGB focuses whose identity depends mostly on helper calls. The next broad pass should inspect helper outputs before adding more direct construction, to avoid double-paying.
-- `005_soviet_collapse_ancient_restorations.txt` has stronger expansion payoffs than before this audit, but SOG/KHW/ALN still deserve a separate route-by-route audit for late branch aggression and map consequences.
+- `005_soviet_collapse_ancient_restorations.txt` has stronger expansion payoffs than before this audit, but SOG/ANX/ABX still deserve a separate route-by-route audit for late branch aggression and map consequences.
 
 Further broad rework is still needed. This handoff is a bounded safe tranche, not a completion claim for every special focus tree in Event005.
 

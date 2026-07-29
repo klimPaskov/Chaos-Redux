@@ -47,7 +47,7 @@ Event005 design references consulted:
 
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_5_focus_trees.md`
 - `docs/specs/005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_6_countries_splinters_restorations.md`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 
 Key syntax/layout checks applied from references:
 
@@ -76,10 +76,10 @@ No duplicate focus IDs were detected among the 1,698 focus blocks.
 
 | File | Tree id | Start line | Focus count |
 |---|---|---:|---:|
-| `005_soviet_collapse_ancient_restorations.txt` | `KZR_soviet_collapse_ancient_focus_tree` | 13 | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `APX_soviet_collapse_ancient_focus_tree` | 13 | 16 |
 | `005_soviet_collapse_ancient_restorations.txt` | `SOG_soviet_collapse_ancient_focus_tree` | 395 | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `KHW_soviet_collapse_ancient_focus_tree` | 778 | 16 |
-| `005_soviet_collapse_ancient_restorations.txt` | `ALN_soviet_collapse_ancient_focus_tree` | 1164 | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ANX_soviet_collapse_ancient_focus_tree` | 778 | 16 |
+| `005_soviet_collapse_ancient_restorations.txt` | `ABX_soviet_collapse_ancient_focus_tree` | 1164 | 16 |
 | `005_soviet_collapse_custom_splinters.txt` | `FTH_soviet_collapse_focus_tree` | 15 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `PRA_soviet_collapse_focus_tree` | 1201 | 22 |
 | `005_soviet_collapse_custom_splinters.txt` | `TSC_soviet_collapse_focus_tree` | 1787 | 18 |
@@ -87,11 +87,11 @@ No duplicate focus IDs were detected among the 1,698 focus blocks.
 | `005_soviet_collapse_custom_splinters.txt` | `DSC_soviet_collapse_focus_tree` | 2728 | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `NRF_soviet_collapse_focus_tree` | 3300 | 18 |
 | `005_soviet_collapse_custom_splinters.txt` | `ICD_soviet_collapse_focus_tree` | 3797 | 18 |
-| `005_soviet_collapse_custom_splinters.txt` | `BSC_soviet_collapse_focus_tree` | 4262 | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AEX_soviet_collapse_focus_tree` | 4262 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `TNC_soviet_collapse_focus_tree` | 5381 | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `ALA_soviet_collapse_focus_tree` | 6510 | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AAX_soviet_collapse_focus_tree` | 6510 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `BBH_soviet_collapse_focus_tree` | 7619 | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `KRS_soviet_collapse_focus_tree` | 8808 | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `AOX_soviet_collapse_focus_tree` | 8808 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `UDC_soviet_collapse_focus_tree` | 10034 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `SDZ_soviet_collapse_focus_tree` | 11218 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `GAC_soviet_collapse_focus_tree` | 12452 | 47 |
@@ -102,7 +102,7 @@ No duplicate focus IDs were detected among the 1,698 focus blocks.
 | `005_soviet_collapse_custom_splinters.txt` | `UWD_soviet_collapse_focus_tree` | 18338 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `MRC_soviet_collapse_focus_tree` | 19525 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `IUL_soviet_collapse_focus_tree` | 20698 | 47 |
-| `005_soviet_collapse_custom_splinters.txt` | `BAC_soviet_collapse_focus_tree` | 21840 | 47 |
+| `005_soviet_collapse_custom_splinters.txt` | `ADX_soviet_collapse_focus_tree` | 21840 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `ARD_soviet_collapse_focus_tree` | 22975 | 47 |
 | `005_soviet_collapse_custom_splinters.txt` | `NLC_soviet_collapse_focus_tree` | 24176 | 47 |
 | `005_soviet_collapse_factory_successors.txt` | `CFR_soviet_collapse_focus_tree` | 16 | 47 |
@@ -124,7 +124,7 @@ No duplicate focus IDs were detected among the 1,698 focus blocks.
 |---|---|---|
 | Major republic and regional successor routes | 9 trees in `005_soviet_collapse_republics.txt`, including Ukraine, breakaway, internal republics, Baltic, Caucasus, Central Asia, Moldova, Belarus, and Kazakhstan. | Partially covered. Political, industrial, and military branches exist, but several trees have sparse direct decision, war, faction, map, or evolution hooks. Layout issues are concentrated in Baltic, Moldova, Belarus, and breakaway shared trees. |
 | Custom splinter countries | 25 trees in `005_soviet_collapse_custom_splinters.txt`. Most are 47-focus full trees; `PRA` has 22 focuses; `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` have 18-focus compact trees. | Broadly present but uneven. The 18-focus trees are shallow for high-chaos states. The 47-focus trees frequently repeat generic helper patterns, flags, stats, and variables, with fewer visible special mechanics than the spec implies. |
-| Ancient restorations | 4 trees in `005_soviet_collapse_ancient_restorations.txt`: KZR, SOG, KHW, ALN. | Present but shallow. Each is 16 focuses and has a similar compact structure. They have old-name and annexation/recovery identity beats, but weak decision/diplomacy/special-mechanic depth and repeated icon families. |
+| Ancient restorations | 4 trees in `005_soviet_collapse_ancient_restorations.txt`: APX, SOG, ANX, ABX. | Present but shallow. Each is 16 focuses and has a similar compact structure. They have old-name and annexation/recovery identity beats, but weak decision/diplomacy/special-mechanic depth and repeated icon families. |
 | Factory and industrial successor states | 3 trees in `005_soviet_collapse_factory_successors.txt`: CFR, OGB, MFR. | Present. CFR and MFR are substantial; OGB is compact. Direct decision and war hooks exist in the file, but first-row industrial/political filters sometimes do not match visible rewards, and OGB remains shallow. |
 | High-chaos overpowered/aggressive successor behavior | Helpers such as `soviet_collapse_apply_focus_chaos_assault_plan`, `soviet_collapse_apply_custom_splinter_expansion_claims`, and `soviet_collapse_spawn_custom_splinter_assault_columns` are used in several routes. | Needs targeted follow-up. The aggressive hooks are helper-mediated and not consistently visible from individual focus reward text/filter structure. Several high-chaos end focuses still look like flags/helpers rather than obvious claim/core/war/assault payoffs. |
 | Decision, release, aggression, influence, evolution, faction, scenario, core/claim, and unit integration | Some direct decision, event, faction, map, unit, AI-strategy, and war-goal markers exist, with many more likely hidden through scripted helpers. | Uneven. The audit found 128 focus blocks with no direct marker for decisions, map effects, war/faction hooks, events, identity changes, buildings, units, or AI strategy. These may be helper-backed, but they are high-value manual review targets because reward visibility and route identity can feel disconnected. |
@@ -200,7 +200,7 @@ High-priority shallow areas:
 
 Concrete disconnected reward candidates found by scanner include:
 
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:129` `KZR_caspian_patrol_letters`
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt:129` `APX_caspian_patrol_letters`
 - `common/national_focus/005_soviet_collapse_ancient_restorations.txt:497` `SOG_scholar_envoy_rooms`
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:31` `FTH_birth`
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt:410` `FTH_radical_turn`
@@ -251,7 +251,7 @@ Examples of repeated icon families:
 
 | Icon id | Reuse examples | Risk |
 |---|---|---|
-| `GFX_focus_soviet_collapse_ancient_workshop_compact` and related ancient icon family | Reused across KZR/SOG/KHW/ALN, including lines `84`, `466`, `849`, `1235` and analogous branch icons | Ancient restoration trees visually blend together despite distinct identity promises. |
+| `GFX_focus_soviet_collapse_ancient_workshop_compact` and related ancient icon family | Reused across APX/SOG/ANX/ABX, including lines `84`, `466`, `849`, `1235` and analogous branch icons | Ancient restoration trees visually blend together despite distinct identity promises. |
 | `GFX_focus_FEV_diplomatic_plan` | `005_soviet_collapse_custom_splinters.txt:16689`, `:16823`, `:16902`, `:17102` | Repeated diplomacy icon inside one tree. |
 | `GFX_focus_SZA_diplomatic_plan` | `005_soviet_collapse_custom_splinters.txt:17840`, `:17969`, `:18048`, `:18267` | Repeated diplomacy icon inside one tree. |
 | `GFX_focus_MRC_civil_rule` | `005_soviet_collapse_custom_splinters.txt:19753`, `:19901`, `:20003`, `:20235` | Repeated civil rule icon inside one tree. |
@@ -278,16 +278,16 @@ Reward/filter mismatch examples:
 |---|---|---|---|
 | `CFR_count_the_cranes` | `005_soviet_collapse_factory_successors.txt:32` | `FOCUS_FILTER_INDUSTRY` | Direct reward surface has no visible building/stockpile/research payload; likely helper-backed, but the filter does not visibly match the reward. |
 | `MFR_orders_outlive_ministries` | `005_soviet_collapse_factory_successors.txt:1762` | `FOCUS_FILTER_INDUSTRY` | Direct reward surface is flag/helper driven and not visibly industrial. |
-| `BSC_supply` | `005_soviet_collapse_custom_splinters.txt:4582` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
-| `BSC_hidden_road_depots` | `005_soviet_collapse_custom_splinters.txt:4831` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
-| `BSC_industry_plan` | `005_soviet_collapse_custom_splinters.txt:5260` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
+| `AEX_supply` | `005_soviet_collapse_custom_splinters.txt:4582` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
+| `AEX_hidden_road_depots` | `005_soviet_collapse_custom_splinters.txt:4831` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
+| `AEX_industry_plan` | `005_soviet_collapse_custom_splinters.txt:5260` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
 | `TNC_stores` | `005_soviet_collapse_custom_splinters.txt:5442` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
 | `TNC_economy` | `005_soviet_collapse_custom_splinters.txt:5530` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
 | `TNC_supply` | `005_soviet_collapse_custom_splinters.txt:5695` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
 | `TNC_railway_officer_schools` | `005_soviet_collapse_custom_splinters.txt:5665` | `FOCUS_FILTER_RESEARCH` | Research filter without a visible direct research payload. |
-| `ALA_alash_officer_schools` | `005_soviet_collapse_custom_splinters.txt:6796` | `FOCUS_FILTER_RESEARCH` | Research filter without a visible direct research payload. |
-| `ALA_steppe_communications_congress` | `005_soviet_collapse_custom_splinters.txt:6963` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
-| `ALA_tashkent_contact_rooms` | `005_soviet_collapse_custom_splinters.txt:7118` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
+| `AAX_alash_officer_schools` | `005_soviet_collapse_custom_splinters.txt:6796` | `FOCUS_FILTER_RESEARCH` | Research filter without a visible direct research payload. |
+| `AAX_steppe_communications_congress` | `005_soviet_collapse_custom_splinters.txt:6963` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
+| `AAX_tashkent_contact_rooms` | `005_soviet_collapse_custom_splinters.txt:7118` | `FOCUS_FILTER_INDUSTRY` | Industry filter without a visible direct industry payload. |
 
 These findings do not prove no reward exists because many rewards are helper-mediated. They do identify focuses where the filter/player expectation should be manually compared against the helper effect and tooltip.
 
@@ -316,11 +316,11 @@ Remaining AI risks:
 8. `DHC_settlement` (`005_soviet_collapse_custom_splinters.txt:14534`) and `DHC_radical_turn` (`:14570`) with `DHC_convoy_autonomy_guarantees` (`:14411`) between them. Patch row/relative placement.
 9. `KHC_settlement` (`005_soviet_collapse_custom_splinters.txt:15725`) and `KHC_radical_turn` (`:15761`) with `KHC_grain_passage_guarantees` (`:15604`) between them. Patch row/relative placement.
 10. PRA authority chain: `PRA_the_timetable_declares_authority` (`005_soviet_collapse_custom_splinters.txt:1208`) through `PRA_the_pale_line_endures` (`:1754`) repeatedly call `soviet_collapse_update_pra_authority_idea` (`common/scripted_effects/005_soviet_collapse_effects.txt:7432`). Verify idea cleanup/swap exclusivity before adding more authority focus calls.
-11. Ancient restoration repeated icon family: KZR/SOG/KHW/ALN analogous focuses such as `KZR_workshop_compact` (`005_soviet_collapse_ancient_restorations.txt:84`), `SOG_workshop_compact` (`:466`), `KHW_workshop_compact` (`:849`), and `ALN_workshop_compact` (`:1235`). Patch icon variety or accept documented shared icon reuse.
+11. Ancient restoration repeated icon family: APX/SOG/ANX/ABX analogous focuses such as `APX_workshop_compact` (`005_soviet_collapse_ancient_restorations.txt:84`), `SOG_workshop_compact` (`:466`), `ANX_workshop_compact` (`:849`), and `ABX_workshop_compact` (`:1235`). Patch icon variety or accept documented shared icon reuse.
 12. `CFR_count_the_cranes` (`005_soviet_collapse_factory_successors.txt:32`). Patch industry filter/reward visibility if helper does not provide a clear industry tooltip.
 13. `MFR_orders_outlive_ministries` (`005_soviet_collapse_factory_successors.txt:1762`). Patch industry filter/reward visibility if helper does not provide a clear industry tooltip.
-14. BSC industrial cluster: `BSC_supply` (`005_soviet_collapse_custom_splinters.txt:4582`), `BSC_hidden_road_depots` (`:4831`), and `BSC_industry_plan` (`:5260`). Patch industry filter mismatch and improve visible reward variety.
-15. Research-filter mismatches: `TNC_railway_officer_schools` (`005_soviet_collapse_custom_splinters.txt:5665`) and `ALA_alash_officer_schools` (`:6796`). Add visible research payload or change filters after checking helper effects.
+14. AEX industrial cluster: `AEX_supply` (`005_soviet_collapse_custom_splinters.txt:4582`), `AEX_hidden_road_depots` (`:4831`), and `AEX_industry_plan` (`:5260`). Patch industry filter mismatch and improve visible reward variety.
+15. Research-filter mismatches: `TNC_railway_officer_schools` (`005_soviet_collapse_custom_splinters.txt:5665`) and `AAX_alash_officer_schools` (`:6796`). Add visible research payload or change filters after checking helper effects.
 16. Generic birth/radical route entry pattern: `FTH_birth` (`005_soviet_collapse_custom_splinters.txt:31`) and `FTH_radical_turn` (`:410`) are representative. Many birth/radical focuses are flags/stats/variables only; first focuses should reveal a distinct system or decision hook.
 17. TSC compact route depth: `TSC_tura_observation_presidium` (`005_soviet_collapse_custom_splinters.txt:1815`), `TSC_the_committee_of_instruments` (`:1932`), `TSC_the_committee_of_signs` (`:1961`), and `TSC_sky_over_siberia` (`:2144`). Patch special-mechanic/aggression visibility if helper review confirms shallow rewards.
 18. High-chaos compact aggression endpoints: `RMC_procession_columns` (`005_soviet_collapse_custom_splinters.txt:2611`), `ICD_grave_columns_march` (`:4148`), and `TSC_sky_over_siberia` (`:2144`). Verify they are actually overpowered/aggressive enough through units/claims/war/assault effects.
@@ -337,7 +337,7 @@ wc -l common/national_focus/005_soviet_collapse_*.txt
 rg -n '^focus_tree\s*=\s*\{' common/national_focus/005_soviet_collapse_*.txt
 rg -n 'add_ideas|add_timed_idea|swap_ideas|remove_ideas' common/national_focus/005_soviet_collapse_*.txt common/scripted_effects/005_soviet_collapse_effects.txt
 rg -n 'relative_position_id|mutually_exclusive|prerequisite|ai_will_do|search_filters|completion_reward' common/national_focus/005_soviet_collapse_*.txt
-rg -n '^(soviet_collapse|KZR_|SOG_|KHW_|ALN_|FTH_|PRA_|TSC_|RMC_|DSC_|NRF_|ICD_|BSC_|TNC_|ALA_|BBH_|KRS_|UDC_|SDZ_|GAC_|DHC_|KHC_|FEV_|SZA_|UWD_|MRC_|IUL_|BAC_|ARD_|NLC_|CFR_|OGB_|MFR_|baltic_|moldova_|blr_)' localisation/english/*005_soviet_collapse*.yml
+rg -n '^(soviet_collapse|APX_|SOG_|ANX_|ABX_|FTH_|PRA_|TSC_|RMC_|DSC_|NRF_|ICD_|AEX_|TNC_|AAX_|BBH_|AOX_|UDC_|SDZ_|GAC_|DHC_|KHC_|FEV_|SZA_|UWD_|MRC_|IUL_|ADX_|ARD_|NLC_|CFR_|OGB_|MFR_|baltic_|moldova_|blr_)' localisation/english/*005_soviet_collapse*.yml
 python3 - <<'PY'
 # Read-only parser used to extract focus_tree blocks, direct focus blocks, ids, x/y positions,
 # icons, filters, ai_will_do, completion_reward content, mutual exclusions, prerequisites,

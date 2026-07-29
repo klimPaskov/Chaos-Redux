@@ -58,7 +58,7 @@ Worst examples:
 - `moldova_soviet_collapse_republic_of_crossings` at `common/national_focus/005_soviet_collapse_republics.txt:8679`: eight prerequisites.
 - `FEV_endgame` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:17351`: nine prerequisites.
 - `SZA_endgame` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:18520`: nine prerequisites.
-- `BAC_endgame` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:23159`: six prerequisites.
+- `ADX_endgame` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:23159`: six prerequisites.
 - `ARD_endgame` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:24358`: six prerequisites.
 - `blr_soviet_collapse_minsk_supplies_the_front` at `common/national_focus/005_soviet_collapse_republics.txt:9852`: four prerequisites, including a mixed OR prerequisite block plus another separate prerequisite to `quiet_recognition_letters`.
 - Ancient `old_border_files` foci at `common/national_focus/005_soviet_collapse_ancient_restorations.txt:177`, `:586`, `:985`, and `:1393`: three prerequisites each in compact 16-focus trees, likely drawing a visible convergence knot.
@@ -96,7 +96,7 @@ Tree metrics from the scan:
 | `NRF_soviet_collapse_focus_tree` | 18 | 6 | 1 | 2 | 3 | Better aggression, but branch depth is still compact for a special naval chaos actor. |
 | `ICD_soviet_collapse_focus_tree` | 18 | 1 | 1 | 2 | 1 | Very thin decision integration outside the final high-chaos path. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 7 | 1 | mostly helper-driven | 2 | Much improved, but it still has only one direct war-goal focus and several generic/stat-only steps. |
-| Ancient KZR/SOG/KHW/ALN trees | 16 each | 2 each | 1 each | 3 each | 1 each | They are functional compact trees, but political/industry/military/diplomacy/expansion are compressed into a narrow convergence shape. |
+| Ancient APX/SOG/ANX/ABX trees | 16 each | 2 each | 1 each | 3 each | 1 each | They are functional compact trees, but political/industry/military/diplomacy/expansion are compressed into a narrow convergence shape. |
 
 Recommendation: do not enlarge all compact trees blindly. Pick TSC and ICD first, then add one small diplomacy/decision lane and one visible expansion payoff per tree without rewriting the whole layout.
 
@@ -109,7 +109,7 @@ Uneven spots:
 - `TSC_soviet_collapse_focus_tree` has one war focus and no direct claim focus in the structural scan.
 - `ICD_soviet_collapse_focus_tree` has one direct decision focus despite having strong late war hooks at `ICD_commissariat_without_end` (`common/national_focus/005_soviet_collapse_custom_splinters.txt:4321`).
 - `OGB_soviet_collapse_focus_tree` gives a direct Soviet war goal only at `OGB_the_old_name_survives_modern_war` (`common/national_focus/005_soviet_collapse_factory_successors.txt:1523`), with earlier expansion mostly claims/decision-helper based.
-- Ancient expansion routes are appropriately aggressive at `KZR_expansionist_steppe_levy` (`:240`), `SOG_expansionist_merchant_claims` (`:648`), `KHW_expansionist_water_claims` (`:1046`), and `ALN_expansionist_mountain_claims` (`:1455`), but each tree has only one main war-goal focus.
+- Ancient expansion routes are appropriately aggressive at `APX_expansionist_steppe_levy` (`:240`), `SOG_expansionist_merchant_claims` (`:648`), `ANX_expansionist_water_claims` (`:1046`), and `ABX_expansionist_mountain_claims` (`:1455`), but each tree has only one main war-goal focus.
 
 Recommendation: add aggression through route-specific decision unlocks and postwar coring/integration, not by adding more direct `create_wargoal` spam.
 
@@ -137,8 +137,8 @@ Examples worth improving when those branches are touched:
 - `PRA_armored_train_schools` (`common/national_focus/005_soviet_collapse_custom_splinters.txt:1542`): XP, command power, train equipment, tech, depot variable, buildings, and columns in one reward.
 - `ICD_memorial_battalions` (`common/national_focus/005_soviet_collapse_custom_splinters.txt:4150`): manpower, support equipment, command power, variable gain, and every-owned-state bunkers.
 - `MFR_workers_own_the_arsenal` (`common/national_focus/005_soviet_collapse_factory_successors.txt:2738`): variable gains, XP, manpower, command power, popularity, factory slot, and factory build.
-- `KZR_caspian_patrol_letters` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:130`): multiple variables, navy XP, convoys, dockyard/naval base, and decryption in one focus.
-- `ALN_alan_pass_charter` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:1505`): variable gains, command power, XP, forts, and bunkers in one focus.
+- `APX_caspian_patrol_letters` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:130`): multiple variables, navy XP, convoys, dockyard/naval base, and decryption in one focus.
+- `ABX_alan_pass_charter` (`common/national_focus/005_soviet_collapse_ancient_restorations.txt:1505`): variable gains, command power, XP, forts, and bunkers in one focus.
 
 Recommendation: when revisiting these, shift part of the payload to unlocked decisions or route-specific helper tooltips so the focus remains readable.
 
@@ -147,7 +147,7 @@ Recommendation: when revisiting these, shift part of the payload to unlocked dec
 | Priority | Tranche | Files/foci | Recommended action | Collision risk |
 | --- | --- | --- | --- | --- |
 | 1 | Pathline repair | Ukraine, Belarus, Kazakhstan, CFR entries listed under High finding 1 | Move child or prerequisite coordinates so every visible prerequisite is above the child; keep IDs and rewards unchanged. | Medium, because parent may be editing these same trees. |
-| 2 | Long fan-in cleanup | `soviet_collapse_armed_neutrality`, `moldova_soviet_collapse_republic_of_crossings`, `FEV_endgame`, `SZA_endgame`, `BAC_endgame`, `ARD_endgame` | Replace most visible prerequisite lines with a single convergence focus plus `available` route-proof and custom tooltip. | High, because it changes visible layout. |
+| 2 | Long fan-in cleanup | `soviet_collapse_armed_neutrality`, `moldova_soviet_collapse_republic_of_crossings`, `FEV_endgame`, `SZA_endgame`, `ADX_endgame`, `ARD_endgame` | Replace most visible prerequisite lines with a single convergence focus plus `available` route-proof and custom tooltip. | High, because it changes visible layout. |
 | 3 | Same-row mutex polish | PRA/TSC/RMC/DSC/NRF/ICD, OGB, MFR, ancient symbolic/expansion pairs | Stagger mutual-exclusive children by one y row and keep siblings visually separated. | Low to medium if only coordinates change. |
 | 4 | Compact chaos depth | TSC and ICD first; then RMC/NRF if time | Add one diplomacy/decision lane and one route-specific expansion/postwar decision payoff. | Medium, because it adds content. |
 | 5 | Generic reward cleanup | PRA `:1542`, ICD `:4150`, MFR `:2738`, ancient `:130`/`:1505` patterns | Move large payloads behind helper tooltips or staged decisions; do not add new ideas unless replacing/upgrading an existing lifecycle. | Medium. |

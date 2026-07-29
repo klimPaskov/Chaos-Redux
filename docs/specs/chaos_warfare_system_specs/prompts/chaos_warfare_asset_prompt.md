@@ -20,10 +20,10 @@ Final DDS folders should follow existing category and event-system conventions w
 
 Before generation, inspect:
 
-- `.agents/skills/chaos-redux-event-assets/assets/focuses`
-- `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/tech_icons`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/technologies/legacy`
 - vanilla officer-corps spirit icons for HQ and officer-corps assets
 - existing Chaos Warfare doctrine and technology icons
 

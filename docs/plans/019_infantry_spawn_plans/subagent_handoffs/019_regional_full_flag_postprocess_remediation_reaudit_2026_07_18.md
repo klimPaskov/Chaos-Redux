@@ -21,9 +21,9 @@ Re-read and cross-checked the current regional sections in:
 - `docs/assets/019_infantry_spawn/gfx_handoff.md`
 - `docs/assets/019_infantry_spawn/regional_flag_validation_2026_07_18.json`
 - `docs/assets/019_infantry_spawn/regional_flag_checksums_2026_07_18.sha256`
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
 - `docs/systems/triggerable_scenarios.md`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 - `docs/specs/019_infantry_spawn_specs/README.md`
 - `docs/specs/019_infantry_spawn_specs/review/blockers_and_uncertainty.md`
 - `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md`

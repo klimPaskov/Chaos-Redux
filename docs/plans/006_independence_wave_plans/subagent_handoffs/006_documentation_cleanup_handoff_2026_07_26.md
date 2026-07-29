@@ -23,7 +23,7 @@ No gameplay, asset, workbook, or localisation file was edited. The current workb
 
 ## Changes made
 
-- Updated `docs/events/006_independence_wave.md` to the 2026-07-26 runtime-admission date, replace stale “completion audit pending” language with v6/v7 **HOLD** authority, and summarize the current DM-58, focus, localisation, and HAW bounded handoffs.
+- Updated `docs/events/006_independence_wave/overview.md` to the 2026-07-26 runtime-admission date, replace stale “completion audit pending” language with v6/v7 **HOLD** authority, and summarize the current DM-58, focus, localisation, and HAW bounded handoffs.
 - Updated `006_source_of_truth_map.md` with the current curation date, v6/v7 authority note, bounded DM-58/focus/localisation/completion/HAW ledger rows, and current HOLD wording for the formerly pending audit status.
 - Updated `006_independence_wave_resume_packet.md` with the current date, current audit/handoff pointers, and explicit v6/v7 HOLD language.
 - Added supersession notices to `006_event_completion_audit_v5_2026_07_26.md`, `006_event_completion_audit_v6_2026_07_26.md`, and `006_decision_mission_matrix_reaudit_2026_07_26.md` so historical pre-closeout and pre-repair bodies are not mistaken for current authority.

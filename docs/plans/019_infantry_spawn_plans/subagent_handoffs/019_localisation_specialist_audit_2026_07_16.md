@@ -170,9 +170,9 @@ were kept separate from localisation references.
 The following source-of-truth surfaces now match the current player-facing
 localisation:
 
-- `docs/events/019_infantry_spawn.md`
-- `docs/achievements/019_infantry_spawn_achievements.md`
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/overview.md`
+- `docs/achievements/019_infantry_spawn/achievements.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
 
 Workbook evidence:
@@ -236,13 +236,13 @@ preserved because it is the established live file path. It was not renamed.
 
 ### Documentation and workbook
 
-- `docs/events/019_infantry_spawn.md`
+- `docs/events/019_infantry_spawn/overview.md`
   - aligned the derivative identity and 91-flag asset inventory
   - cleaned prohibited punctuation
-- `docs/achievements/019_infantry_spawn_achievements.md`
+- `docs/achievements/019_infantry_spawn/achievements.md`
   - aligned `Every Barracks a Front` with the visible scenario names
   - cleaned prohibited punctuation
-- `docs/systems/019_infantry_spawn_triggerable_scenario.md`
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md`
   - cleaned prohibited punctuation without changing the SCN-013 contract
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
   - aligned `Events!D20:G20` punctuation

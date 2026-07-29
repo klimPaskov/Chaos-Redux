@@ -93,7 +93,7 @@ documentation change.
 - `events/006_independence_wave.txt` is not an inert placeholder.
 - Event 006 localisation is not a placeholder-only surface.
 - Final Event 006 assets materially exist.
-- Audio `6002` has final OGG and WAV derivatives, music and sound registry
+- Audio `6002` has final WAV and WAV derivatives, music and sound registry
   entries, slot-24 firing, Event Log history, and settings-aware presentation.
 - Trabzon state 354 and Kashmir state 441 are no longer unresolved architecture
   defects. Their explicit reservation protections are implemented.

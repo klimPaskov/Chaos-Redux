@@ -161,12 +161,12 @@ The minimum non-fallback package is eight distinct portraits, one for each warlo
 | Slot | Stable final path | Size and format | Live status |
 | --- | --- | --- | --- |
 | CBA | gfx/leaders/014_cannibalism/leader_CBA_warlord.dds | 156x210 BGRA DDS | Missing |
-| CBB | gfx/leaders/014_cannibalism/leader_CBB_warlord.dds | 156x210 BGRA DDS | Missing |
+| AHX | gfx/leaders/014_cannibalism/leader_AHX_warlord.dds | 156x210 BGRA DDS | Missing |
 | CBC | gfx/leaders/014_cannibalism/leader_CBC_warlord.dds | 156x210 BGRA DDS | Missing |
-| CBD | gfx/leaders/014_cannibalism/leader_CBD_warlord.dds | 156x210 BGRA DDS | Missing |
+| AIX | gfx/leaders/014_cannibalism/leader_AIX_warlord.dds | 156x210 BGRA DDS | Missing |
 | CBE | gfx/leaders/014_cannibalism/leader_CBE_warlord.dds | 156x210 BGRA DDS | Missing |
 | CBF | gfx/leaders/014_cannibalism/leader_CBF_warlord.dds | 156x210 BGRA DDS | Missing |
-| CBG | gfx/leaders/014_cannibalism/leader_CBG_warlord.dds | 156x210 BGRA DDS | Missing |
+| AMX | gfx/leaders/014_cannibalism/leader_AMX_warlord.dds | 156x210 BGRA DDS | Missing |
 | CBH | gfx/leaders/014_cannibalism/leader_CBH_warlord.dds | 156x210 BGRA DDS | Missing |
 
 The eight base portraits cover eight origin-agnostic reusable warlord slots. Each must be male-presenting, bald, bloodied, visibly distinct, grounded in invented rough cloth and scavenged period military pieces, non-supernatural, and visibly unlike the hidden leader. Six additional regional variants per slot complete the mandatory 56-portrait matrix; none is optional and none may use a prison setting.
@@ -213,7 +213,7 @@ Batch IDs: E14-FLAG-WARLORD-01 and E14-FLAG-UNIFIED-01
 
 Required family tokens:
 
-- CBA, CBB, CBC, CBD, CBE, CBF, CBG, CBH
+- CBA, AHX, CBC, AIX, CBE, CBF, AMX, CBH
 - CBL
 - CBL_CENTRAL_COMMAND
 - CBL_HOST_CONFEDERATION

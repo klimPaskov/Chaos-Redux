@@ -30,14 +30,14 @@ DM-15 through DM-20 are resolved, and the independent decision specialist return
 | Detailed accepted design maps | `docs/specs/011_secret_alliance_specs/matrices/` | Event chain, decisions, missions, AI, tuning, assets, and achievement intent. |
 | Final gameplay behavior | Event 011 gameplay files at `407b9a05` | Authoritative for implemented facts. SHA-256 prefixes are recorded below. |
 | Final balance behavior | Event 011 tuning at `1c87d923` | Authoritative for the high-impact values retained by the compatibility correction. |
-| Current mechanic overview | `docs/events/011_secret_alliance.md` | Canonical implementation summary and file map. |
+| Current mechanic overview | `docs/events/011_secret_alliance/overview.md` | Canonical implementation summary and file map. |
 | Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` | Itemized disposition of tranches A-G, mandatory architecture carryover, and all seventeen acceptance scenarios. |
 | Holistic completion evidence | `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` | Final static verdict, CA and DM disposition, frozen hashes, assets, audio, achievements, workbook, and plan disposition. |
 | Source-package audit chronology | `docs/specs/011_secret_alliance_specs/handoffs/completion_audit.md` | Historical source-package audit reconciled to the final freeze. |
-| Super-event text and sources | `docs/super_events/011_secret_alliance_super_event_research.md` | Slot `73`, five route packages, durable presentation context, quote, remark, image, and audio map. |
+| Super-event text and sources | `docs/super_events/011_secret_alliance/research.md` | Slot `73`, five route packages, durable presentation context, quote, remark, image, and audio map. |
 | Historical super-event research | `subagent_handoffs/super_event_text_research.md` | Preserves candidate selection and sourcing while marking superseded wording and wiring notes as chronology. |
 | Assets | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` | Final paths, sprites, source ledgers, animation frames, 57-DDS validator, achievement triplets, and explicit `chaosx.nr11.21` art reuse. |
-| Achievements | `docs/achievements/011_secret_alliance_achievements.md` and live definitions | Six implemented achievement contracts with origin and anti-farming snapshots. |
+| Achievements | `docs/achievements/011_secret_alliance/achievements.md` and live definitions | Six implemented achievement contracts with origin and anti-farming snapshots. |
 | Manual scenario | `docs/systems/triggerable_scenarios.md`, accepted spec part 4, and live SCN-009 implementation | Five AI-only compositions, four intensities, manual bypasses, retained safety gates, and workbook status. |
 | Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` | SHA-256 `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; `Events!M12` and `Scenarios!F9` are `Implemented`; no formula error cells or formula error tokens. |
 | Audio | `docs/super_events/super_event_audio_packages.md` and `subagent_handoffs/super_event_audio_research.md` | Audio ID `43`, final `Revelation` OGG and WAV, exact duration `86.101746` seconds, 44.1 kHz, and separate public-domain evidence for the composition and federal-government recording. |
@@ -120,7 +120,7 @@ No contradiction or parent decision remains open. Historical uses of `provisiona
 - `docs/assets/011_secret_alliance/asset_register.md`
 - `docs/assets/011_secret_alliance/manifest.md`
 - `docs/assets/011_secret_alliance/notes/validation.md`
-- `docs/events/011_secret_alliance.md`
+- `docs/events/011_secret_alliance/overview.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_decision_mission_handoff.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_high_impact_balance.md`
 - `docs/plans/011_secret_alliance_plans/011_secret_alliance_implementation_improvement_addendum.md`
@@ -155,7 +155,7 @@ No contradiction or parent decision remains open. Historical uses of `provisiona
 - `docs/specs/011_secret_alliance_specs/prompts/secret_alliance_super_event_prompt.md`
 - `docs/specs/011_secret_alliance_specs/research/011_secret_alliance_super_event_text_research.md`
 - `docs/specs/011_secret_alliance_specs/source_inventory.md`
-- `docs/super_events/011_secret_alliance_super_event_research.md`
+- `docs/super_events/011_secret_alliance/research.md`
 
 No gameplay, localisation, scripted localisation, GUI, GFX, visual asset, audio file, workbook, binary, achievement definition, scenario implementation, or five-part source specification was edited. No commit was created.
 

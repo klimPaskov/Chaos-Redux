@@ -100,10 +100,10 @@ Shallow focus-tree families still below the large-country branch-depth standard:
 | `NRF_soviet_collapse_focus_tree` | 18 | Naval revenant route needs stronger fleet, port, raid, and settlement mechanics. |
 | `ICD_soviet_collapse_focus_tree` | 18 | Dead/iron commissariat route needs more playable systems and route consequence. |
 | `OGB_soviet_collapse_focus_tree` | 23 | Restored-name successor remains small compared with requested chaos-country power. |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs a full branch expansion beyond symbolic restoration/claims. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs a full branch expansion beyond symbolic restoration/claims. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs stronger city-state, trade, war, and endgame mechanics. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs deeper water/canal authority, patron, and expansion consequences. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs deeper steppe/host identity, military, and settlement payoffs. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs deeper water/canal authority, patron, and expansion consequences. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | Ancient restoration needs deeper steppe/host identity, military, and settlement payoffs. |
 
 Other remaining design risks:
 

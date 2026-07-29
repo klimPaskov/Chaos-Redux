@@ -76,14 +76,14 @@ Factory successors:
 
 Ancient restorations:
 
-- `KZR_old_border_files`
-- `KZR_khazar_charter`
+- `APX_old_border_files`
+- `APX_khazar_charter`
 - `SOG_old_city_border_files`
 - `SOG_sogdian_city_charter`
-- `KHW_old_oasis_border_files`
-- `KHW_khwarazmian_water_charter`
-- `ALN_old_pass_border_files`
-- `ALN_alan_pass_charter`
+- `ANX_old_oasis_border_files`
+- `ANX_khwarazmian_water_charter`
+- `ABX_old_pass_border_files`
+- `ABX_alan_pass_charter`
 
 ## Route Coverage Table
 

@@ -13,7 +13,7 @@
 `federal` route flag. The player-facing/formable behaviour is correct, but the
 implementation references call it federal in two places:
 
-- `docs/systems/006_independence_wave_iw093_iw098_signature_packages.md:187`
+- `docs/events/006_independence_wave/systems/iw093_iw098_signature_packages.md:187`
 - `docs/plans/006_independence_wave_plans/006_iw093_iw098_signature_packages_improvement_addendum_2026_07_18.md:86`
 
 **Recommended fix:** replace “federal route” with “constitutional-cabinet

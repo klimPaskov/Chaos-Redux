@@ -45,4 +45,4 @@ No `gfx/flags` files were touched.
 - Kazakhstan still has too many crossings and needs a broader route-lane cleanup.
 - Ukraine remains compact but still has visible pathline issues around the early political/industry split and military/foreign lanes.
 - The remaining focus reward spam is helper-layer repetition, not direct focus-level `add_ideas`.
-- Custom splinter and factory successor layouts still need separate passes, especially BAC, NLC, UWD, OGB, MFR, and ancient restoration trees.
+- Custom splinter and factory successor layouts still need separate passes, especially ADX, NLC, UWD, OGB, MFR, and ancient restoration trees.

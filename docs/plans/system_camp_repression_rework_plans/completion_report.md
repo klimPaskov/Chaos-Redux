@@ -89,7 +89,7 @@ The final implementation contains 84 player actions. Mission blocks and the four
 | Icons | 82 source compositions, 102 processed PNGs, and 102 live DDS files across decisions, ideas, projects, and achievement variants. | None. Producer manifests and live GFX registration agree. |
 | Report/news/super-event art | 27 final identities: 12 major report cards, 10 colonial/generic report or news identities, and 5 super events. | No placeholder or unwired runtime identity remains. |
 | Achievement art | Ten achievement identities, ids `60`–`69`, each with three runtime variants. | None. |
-| Audio | Five unique final tracks for ids `44`–`48`, with OGG/WAV outputs, provenance, licensing, and playback registration. | None. |
+| Audio | Five unique final tracks for ids `44`–`48`, with WAV outputs, provenance, licensing, and playback registration. | None. |
 
 ## Documentation
 

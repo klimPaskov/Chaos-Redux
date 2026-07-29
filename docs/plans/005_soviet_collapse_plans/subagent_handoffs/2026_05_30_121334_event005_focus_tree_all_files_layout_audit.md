@@ -99,11 +99,11 @@ Static columns:
 | `DSC_soviet_collapse_focus_tree` | 18 | 17 | 14 | 15 | 6 | Direct aggression exists; too short for full Dead Soldiers' Congress ambitions. |
 | `NRF_soviet_collapse_focus_tree` | 18 | 12 | 14 | 12 | 4 | Naval identity exists, but needs more naval missions, ports, ships, and convoy warfare. |
 | `ICD_soviet_collapse_focus_tree` | 18 | 3 | 13 | 12 | 4 | Shallow crisis tree. |
-| `BSC_soviet_collapse_focus_tree` | 47 | 0 | 24 | 14 | 4 | Full-size but lacks direct mechanics. |
+| `AEX_soviet_collapse_focus_tree` | 47 | 0 | 24 | 14 | 4 | Full-size but lacks direct mechanics. |
 | `TNC_soviet_collapse_focus_tree` | 47 | 0 | 22 | 14 | 4 | Full-size but lacks direct mechanics. |
-| `ALA_soviet_collapse_focus_tree` | 47 | 0 | 21 | 17 | 4 | Full-size but lacks direct mechanics. |
+| `AAX_soviet_collapse_focus_tree` | 47 | 0 | 21 | 17 | 4 | Full-size but lacks direct mechanics. |
 | `BBH_soviet_collapse_focus_tree` | 47 | 0 | 21 | 22 | 7 | Full-size but lacks direct mechanics. |
-| `KRS_soviet_collapse_focus_tree` | 47 | 0 | 24 | 28 | 10 | Full-size, high helper load, no direct hooks by scan. |
+| `AOX_soviet_collapse_focus_tree` | 47 | 0 | 24 | 28 | 10 | Full-size, high helper load, no direct hooks by scan. |
 | `UDC_soviet_collapse_focus_tree` | 47 | 0 | 23 | 20 | 8 | Full-size, but route mechanics are mostly helper calls. |
 | `SDZ_soviet_collapse_focus_tree` | 47 | 0 | 22 | 20 | 8 | Full-size, but route mechanics are mostly helper calls. |
 | `GAC_soviet_collapse_focus_tree` | 47 | 0 | 25 | 18 | 10 | Full-size, but route mechanics are mostly helper calls. |
@@ -114,16 +114,16 @@ Static columns:
 | `UWD_soviet_collapse_focus_tree` | 47 | 0 | 20 | 21 | 6 | Full-size, but direct route mechanics are absent by scan. |
 | `MRC_soviet_collapse_focus_tree` | 47 | 0 | 20 | 22 | 4 | Full-size, but direct route mechanics are absent by scan. |
 | `IUL_soviet_collapse_focus_tree` | 47 | 0 | 19 | 22 | 10 | Full-size, but Volga/Ural mechanics remain mostly helper-based. |
-| `BAC_soviet_collapse_focus_tree` | 47 | 0 | 18 | 22 | 7 | Full-size, but Amur/commune route mechanics remain mostly helper-based. |
+| `ADX_soviet_collapse_focus_tree` | 47 | 0 | 18 | 22 | 7 | Full-size, but Amur/commune route mechanics remain mostly helper-based. |
 | `ARD_soviet_collapse_focus_tree` | 47 | 3 | 24 | 24 | 8 | Arctic naval hooks exist but are not enough for an OP naval successor. |
 | `NLC_soviet_collapse_focus_tree` | 47 | 0 | 26 | 19 | 7 | Full-size, but lacks direct polar state mechanics. |
 | `CFR_soviet_collapse_focus_tree` | 47 | 13 | 13 | 1 | 0 | Stronger than most; still needs construction contract missions and state-targeted build mandates. |
 | `OGB_soviet_collapse_focus_tree` | 23 | 14 | 15 | 3 | 0 | Improved hooks, still shallow for a high-impact successor. |
 | `MFR_soviet_collapse_focus_tree` | 58 | 15 | 14 | 1 | 0 | Stronger arsenal identity; still needs arms export/client-state mechanics and persistent aggression. |
-| `KZR_soviet_collapse_ancient_focus_tree` | 16 | 14 | 7 | 2 | 0 | Compact ancient restoration, not a full route family. |
+| `APX_soviet_collapse_ancient_focus_tree` | 16 | 14 | 7 | 2 | 0 | Compact ancient restoration, not a full route family. |
 | `SOG_soviet_collapse_ancient_focus_tree` | 16 | 14 | 7 | 1 | 0 | Compact ancient restoration, not a full route family. |
-| `KHW_soviet_collapse_ancient_focus_tree` | 16 | 14 | 6 | 1 | 0 | Compact ancient restoration, not a full route family. |
-| `ALN_soviet_collapse_ancient_focus_tree` | 16 | 17 | 8 | 1 | 0 | Compact ancient restoration, not a full route family. |
+| `ANX_soviet_collapse_ancient_focus_tree` | 16 | 14 | 6 | 1 | 0 | Compact ancient restoration, not a full route family. |
+| `ABX_soviet_collapse_ancient_focus_tree` | 16 | 17 | 8 | 1 | 0 | Compact ancient restoration, not a full route family. |
 
 ## Missing Or Simplified Content
 

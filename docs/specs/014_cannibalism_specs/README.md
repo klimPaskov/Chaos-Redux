@@ -36,7 +36,7 @@ Current implementation facts are read in this order:
 
 1. Live gameplay, localisation, GFX, audio, and asset files.
 2. The twelve spec parts and current matrices in this directory.
-3. `docs/events/014_cannibalism.md` for the canonical mechanic overview.
+3. `docs/events/014_cannibalism/overview.md` for the canonical mechanic overview.
 4. Current asset manifests under `docs/assets/014_cannibalism/`.
 5. The current 2026-07-15 consolidation audits under `docs/plans/014_cannibalism_plans/audits/`: `event014_country_package_consolidation_reaudit_2026-07-15.md`, `event014_decision_mission_consolidation_reaudit_2026-07-15.md`, `event014_focus_tree_consolidation_reaudit_2026-07-15.md`, `event014_localisation_asset_consolidation_reaudit_2026-07-15.md`, `event014_spreadsheet_consolidation_reaudit_2026-07-15.md`, `event014_improvement_loop_consolidation_reaudit_2026-07-15.md`, and `event014_documentation_consolidation_reaudit_2026-07-15.md`. The integration/catalog and super-event visual audits remain current companion evidence.
 

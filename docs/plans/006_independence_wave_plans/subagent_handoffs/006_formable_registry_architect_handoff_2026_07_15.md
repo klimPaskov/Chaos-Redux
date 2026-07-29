@@ -36,7 +36,7 @@ New shared files:
 - `common/scripted_triggers/006_independence_wave_formable_registry_triggers.txt`
 - `common/scripted_localisation/006_independence_wave_formable_registry_scripted_localisation.txt`
 - `localisation/english/006_independence_wave_formable_registry_l_english.yml`
-- `docs/systems/006_independence_wave_formable_registry.md`
+- `docs/events/006_independence_wave/systems/formable_registry.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_registry_architect_handoff_2026_07_15.md`
 
 No RHI, BAY, SCO, or WLS package-owned decision, effect, trigger, focus, or localisation file was edited.

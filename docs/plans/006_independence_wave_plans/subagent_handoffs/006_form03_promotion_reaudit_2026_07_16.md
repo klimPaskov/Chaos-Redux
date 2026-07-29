@@ -52,7 +52,7 @@ Status: **resolved**.
 `docs/assets/006_independence_wave/low_countries_form03_progression/report_scene/submanifest.md:81-84` now states that:
 
 - the package-root FORM-03 manifest and Event 006 root manifest record the ASSET-048 child, runtime sprite, and nine consumers
-- `docs/systems/006_independence_wave_form03_progression.md` records the dedicated icon and report package
+- `docs/events/006_independence_wave/systems/form03_progression.md` records the dedicated icon and report package
 - no parent merge action remains
 
 No stale instruction remains saying that a manifest was not edited, that the system document still claims no distinct art, or that the parent must reconcile the package later.
@@ -69,7 +69,7 @@ The reconciled claims are supported by all parent documentation surfaces:
 
 - `docs/assets/006_independence_wave/manifest.md:191-210` records ASSET-048, the report-scene package, runtime DDS, registered sprite, and `.300-.308` consumers
 - `docs/assets/006_independence_wave/low_countries_form03_progression/manifest.md:17-26` records the child submanifest and the wired report-scene row
-- `docs/systems/006_independence_wave_form03_progression.md:98-110` records six focus icons, six idea icons, six decision icons, the report sprite registration, all nine consumers, retained source and review material, and the absence of animation
+- `docs/events/006_independence_wave/systems/form03_progression.md:98-110` records six focus icons, six idea icons, six decision icons, the report sprite registration, all nine consumers, retained source and review material, and the absence of animation
 
 The asset documentation is internally aligned. No fallback or placeholder claim is being used for promotion.
 

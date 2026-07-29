@@ -86,14 +86,14 @@ The cave species must have one coherent identity across leader portrait, flags, 
 Inspect before production:
 
 ```text
-.agents/skills/chaos-redux-event-assets/assets/report_event_images
-.agents/skills/chaos-redux-event-assets/assets/news_event_images
-.agents/skills/chaos-redux-event-assets/assets/super_event_images
-.agents/skills/chaos-redux-event-assets/assets/ideas
-.agents/skills/chaos-redux-event-assets/assets/focuses
-.agents/skills/chaos-redux-event-assets/assets/decisions
-.agents/skills/chaos-redux-event-assets/assets/achievements
-.agents/skills/chaos-redux-event-assets/assets/flags
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/national_focus
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements
+.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/flags/normal
 ```
 
 Record which references were inspected in the manifest.

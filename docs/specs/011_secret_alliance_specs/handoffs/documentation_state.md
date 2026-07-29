@@ -9,15 +9,15 @@
 | Final engine-compatible gameplay | Event 011 gameplay files at `407b9a05eb7024dd1728c4092fba2f1162efde9c` |
 | High-impact balance implementation | Event 011 tuning at `1c87d9235319781c871c2948813ab55693eb8618` |
 | Lifecycle, callback, wording, and catalog lineage | Commits `a1f47c0c`, `7563648f`, and `97a2da80` beneath the final freeze |
-| Mechanic overview | `docs/events/011_secret_alliance.md` |
+| Mechanic overview | `docs/events/011_secret_alliance/overview.md` |
 | Improvement-loop closure | `docs/plans/011_secret_alliance_plans/011_secret_alliance_improvement_resolution.md` |
 | Holistic completion verdict | `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md` |
 | Source-package audit chronology | `docs/specs/011_secret_alliance_specs/handoffs/completion_audit.md` |
 | Decision and mission audit chronology | `docs/plans/011_secret_alliance_plans/subagent_handoffs/decision_mission_audit.md` plus the final independent rescan recorded in the completion audit |
-| Super-event implementation | `docs/super_events/011_secret_alliance_super_event_research.md` |
+| Super-event implementation | `docs/super_events/011_secret_alliance/research.md` |
 | Asset and animation evidence | `docs/assets/011_secret_alliance/asset_register.md`, `manifest.md`, `manifest_icons_ui_animation.md`, and `notes/validation.md` |
 | Audio rights and conversion | `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md` and `docs/super_events/super_event_audio_packages.md` |
-| Achievements | `docs/achievements/011_secret_alliance_achievements.md` and live definitions |
+| Achievements | `docs/achievements/011_secret_alliance/achievements.md` and live definitions |
 | Scenario | `docs/systems/triggerable_scenarios.md`, spec part 4, and live SCN-009 registration |
 | Workbook | `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and `handoffs/spreadsheet_handoff.md` |
 
@@ -73,7 +73,7 @@ Early working labels are no longer current localisation authority. Stable identi
 ## Evidence status
 
 - Final workbook SHA-256 is `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; Event 011 and SCN-009 status cells are `Implemented`, and no formula error cells or formula error tokens remain.
-- Audio ID `43` uses `Revelation`; final OGG and WAV duration is `86.101746` seconds at 44.1 kHz. Composition and federal-government recording rights are documented separately.
+- Audio ID `43` uses `Revelation`; final WAV and WAV duration is `86.101746` seconds at 44.1 kHz. Composition and federal-government recording rights are documented separately.
 - The asset validator covers 57 runtime DDS targets, eight source and processed animation frames, one static fallback, and six achievement triplets.
 
 ## Resume note

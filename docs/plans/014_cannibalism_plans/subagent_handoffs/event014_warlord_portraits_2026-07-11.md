@@ -17,12 +17,12 @@ The portrait tranche used no fallback, reused portrait, local drawing, procedura
 Final runtime portraits:
 
 - `gfx/leaders/014_cannibalism/leader_CBA_warlord.dds`
-- `gfx/leaders/014_cannibalism/leader_CBB_warlord.dds`
+- `gfx/leaders/014_cannibalism/leader_AHX_warlord.dds`
 - `gfx/leaders/014_cannibalism/leader_CBC_warlord.dds`
-- `gfx/leaders/014_cannibalism/leader_CBD_warlord.dds`
+- `gfx/leaders/014_cannibalism/leader_AIX_warlord.dds`
 - `gfx/leaders/014_cannibalism/leader_CBE_warlord.dds`
 - `gfx/leaders/014_cannibalism/leader_CBF_warlord.dds`
-- `gfx/leaders/014_cannibalism/leader_CBG_warlord.dds`
+- `gfx/leaders/014_cannibalism/leader_AMX_warlord.dds`
 - `gfx/leaders/014_cannibalism/leader_CBH_warlord.dds`
 
 Asset package:
@@ -50,12 +50,12 @@ This file is the required subagent handoff under the Event 014 plans folder.
 | Slot | Origin assignment | Exact expected sprite | Final texture |
 | --- | --- | --- | --- |
 | CBA | Island Host candidate 1 | `GFX_portrait_CBA_warlord` | `gfx/leaders/014_cannibalism/leader_CBA_warlord.dds` |
-| CBB | Island Host candidate 2 | `GFX_portrait_CBB_warlord` | `gfx/leaders/014_cannibalism/leader_CBB_warlord.dds` |
+| AHX | Island Host candidate 2 | `GFX_portrait_AHX_warlord` | `gfx/leaders/014_cannibalism/leader_AHX_warlord.dds` |
 | CBC | Siege Commune candidate 1 | `GFX_portrait_CBC_warlord` | `gfx/leaders/014_cannibalism/leader_CBC_warlord.dds` |
-| CBD | Siege Commune candidate 2 | `GFX_portrait_CBD_warlord` | `gfx/leaders/014_cannibalism/leader_CBD_warlord.dds` |
+| AIX | Siege Commune candidate 2 | `GFX_portrait_AIX_warlord` | `gfx/leaders/014_cannibalism/leader_AIX_warlord.dds` |
 | CBE | March Host candidate 1 | `GFX_portrait_CBE_warlord` | `gfx/leaders/014_cannibalism/leader_CBE_warlord.dds` |
 | CBF | March Host candidate 2 | `GFX_portrait_CBF_warlord` | `gfx/leaders/014_cannibalism/leader_CBF_warlord.dds` |
-| CBG | Prison Host candidate 1 | `GFX_portrait_CBG_warlord` | `gfx/leaders/014_cannibalism/leader_CBG_warlord.dds` |
+| AMX | Prison Host candidate 1 | `GFX_portrait_AMX_warlord` | `gfx/leaders/014_cannibalism/leader_AMX_warlord.dds` |
 | CBH | Prison Host candidate 2 | `GFX_portrait_CBH_warlord` | `gfx/leaders/014_cannibalism/leader_CBH_warlord.dds` |
 
 The parent confirmed that these are the exact sprite names expected by live leader effects. The ready-to-copy sprite block and character-binding lines are in `docs/assets/014_cannibalism/warlord_portraits_imagegen/gfx_handoff.md`.

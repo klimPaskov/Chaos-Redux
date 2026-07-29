@@ -228,13 +228,13 @@ Document:
 - duration
 - attribution
 - original source path
-- final OGG path
+- final WAV path
 - editing and conversion
 - suggested audio ID
 - route fit
 - uncertainty
 
-Final OGG requirements:
+Final WAV requirements:
 
 - 44.1 kHz
 - event-scoped music folder

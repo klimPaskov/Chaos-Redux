@@ -36,7 +36,7 @@ Status: incomplete and release-blocked. This note supersedes only the current-st
 | Fallout status and navigation | `README_IMPLEMENTATION_STATUS.md` and `source_of_truth_map.md` | Current status is partial and release-blocked. These documents point to the scheduler proof and do not promote dormant rows to runtime completion. |
 | River Ration League design | `docs/specs/air_cleanliness_fallout_specs/specs/54_reviewed_regional_river_ration_league.md` and `FALLOUT_RIVER_RATION_LEAGUE_CHAIN_PROOF.md` | Accepted dormant implementation at candidate `565`, with the addendum retained as historical design evidence. |
 | Refugee Train relationship and bilateral consumer | `2026-07-26_refugee_train_relationship_pairing_addendum.md`, `FALLOUT_REFUGEE_TRAIN_RELATIONSHIP_PAIRING_PROOF.md`, `2026-07-26_refugee_train_bilateral_consumer_addendum.md`, and `FALLOUT_REFUGEE_TRAIN_BILATERAL_CONSUMER_PROOF.md` | Pairing and consumer are authored dormant surfaces. Events `1019` through `1022` remain outside the ordinary row count and release-floor credit. |
-| Air Winter pilot and scheduler distinction | `docs/air_cleanliness_winter.md` and `AIR_WINTER_EVENT_SCHEDULER_PROOF.md` | Fifty-two Air Winter pilot blocks remain separate from the Fallout scheduler total. The winter document now states this distinction beside the pilot count. |
+| Air Winter pilot and scheduler distinction | `docs/systems/air_cleanliness/winter.md` and `AIR_WINTER_EVENT_SCHEDULER_PROOF.md` | Fifty-two Air Winter pilot blocks remain separate from the Fallout scheduler total. The winter document now states this distinction beside the pilot count. |
 
 ## Plan and handoff dispositions
 
@@ -47,7 +47,7 @@ Status: incomplete and release-blocked. This note supersedes only the current-st
 | `2026-07-26_relationship_candidate_reservation_addendum.md` | Implemented dormant reservation substrate with a Refugee Train consumer correction | Other relationship rows remain without consumers and no release-floor credit is added. |
 | `2026-07-26_refugee_train_bilateral_consumer_addendum.md` | Implemented dormant authored consumer | Keep events `1019` through `1022` outside the 660 count until engine delivery, cleanup, and Event Log runtime proof exist. |
 | `2026-07-25_fallout_completion_audit.md` | Superseded for current counts by this reconciliation | Retain only as dated historical evidence. |
-| `docs/air_cleanliness_winter.md` | Current after scheduler-count clarification | Do not treat the Air Winter pilot count as Fallout release-floor progress. |
+| `docs/systems/air_cleanliness/winter.md` | Current after scheduler-count clarification | Do not treat the Air Winter pilot count as Fallout release-floor progress. |
 
 ## Contradictions found and resolved
 

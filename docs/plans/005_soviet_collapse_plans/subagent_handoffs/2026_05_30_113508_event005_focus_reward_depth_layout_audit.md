@@ -43,7 +43,7 @@ References consulted:
 | Full custom splinters | 19 main custom splinter trees at 47 focuses each. | Partial | Trees are large by count, but repeated helper patterns make many countries feel templated. Examples: repeated `*_first_guard`, `*_stores`, `*_league`, `*_enemy_front` identity helpers. |
 | Compact chaos/crisis splinters | PRA, TSC, RMC, DSC, NRF, ICD at 18-22 focuses. | Partial | These have stronger concept hooks but are still narrow. Violent/chaos identities need more direct overpowered war, claim, unit, or pressure mechanics. |
 | Factory successors | CFR 47, MFR 58, OGB 23 focuses. | Partial | CFR/MFR have real branches; OGB remains shallow for a successor with restoration identity. |
-| Ancient restorations | KZR, SOG, KHW, ALN at 16 focuses each. | Incomplete for major-tree depth | They have identity hooks and claims, but remain compact stubs compared with the spec's focus-tree standard. |
+| Ancient restorations | APX, SOG, ANX, ABX at 16 focuses each. | Incomplete for major-tree depth | They have identity hooks and claims, but remain compact stubs compared with the spec's focus-tree standard. |
 
 ## Direct and Indirect Idea-Spam Examples
 
@@ -69,13 +69,13 @@ Focus-visible helper risk examples:
 
 | Helper visible in focus files | Count | Example focus ids | Audit note |
 | --- | ---: | --- | --- |
-| `soviet_collapse_apply_focus_legal_recognition` | 305 | `KZR_returned_names_endgame`, `FTH_diplomatic_plan`, many republic/custom focuses | Broad shared helper creates sameness. It calls recognition/recovery/route payload helpers; the actual staged idea updater is outside the focus files. |
+| `soviet_collapse_apply_focus_legal_recognition` | 305 | `APX_returned_names_endgame`, `FTH_diplomatic_plan`, many republic/custom focuses | Broad shared helper creates sameness. It calls recognition/recovery/route payload helpers; the actual staged idea updater is outside the focus files. |
 | `soviet_collapse_add_republic_focus_recovery_progress` | 10 direct calls | `FTH_village_delegate_roads`, `DHC_manych_rear_area`, `NLC_ration_and_signal_escorts` | Helper removes startup disorder at thresholds; it does not directly add new staged ideas in the current helper definition. |
 | `soviet_collapse_apply_focus_high_chaos_identity` | 98 | `FTH_extreme_path`, `PRA_passport_of_the_moving_state`, `TSC_claim_the_impact_zone` | Current helper is strong but generic: manpower/equipment/war support/claims/AI strategy. It does not directly add ideas, but repeated use flattens chaos identity. |
-| `soviet_collapse_apply_custom_splinter_first_guard_identity` | 19 | `FTH_first_guard`, `BSC_first_guard`, `TNC_first_guard` | Repeated country-template helper. Safer to diversify helper payloads in scripted effects than patch individual focus files blindly. |
-| `soviet_collapse_apply_custom_splinter_stores_identity` | 19 | `FTH_stores`, `BSC_stores`, `TNC_stores` | Repeated stores/economy identity helper. |
-| `soviet_collapse_apply_custom_splinter_league_identity` | 38 | `FTH_league`, `FTH_diplomatic_plan`, `BSC_league` | Repeated diplomatic/League helper. |
-| `soviet_collapse_apply_custom_splinter_enemy_front_identity` | 36 | `FTH_enemy_front`, `FTH_war_plan`, `ALA_war_plan` | Repeated front/war helper. |
+| `soviet_collapse_apply_custom_splinter_first_guard_identity` | 19 | `FTH_first_guard`, `AEX_first_guard`, `TNC_first_guard` | Repeated country-template helper. Safer to diversify helper payloads in scripted effects than patch individual focus files blindly. |
+| `soviet_collapse_apply_custom_splinter_stores_identity` | 19 | `FTH_stores`, `AEX_stores`, `TNC_stores` | Repeated stores/economy identity helper. |
+| `soviet_collapse_apply_custom_splinter_league_identity` | 38 | `FTH_league`, `FTH_diplomatic_plan`, `AEX_league` | Repeated diplomatic/League helper. |
+| `soviet_collapse_apply_custom_splinter_enemy_front_identity` | 36 | `FTH_enemy_front`, `FTH_war_plan`, `AAX_war_plan` | Repeated front/war helper. |
 
 Conclusion on the complaint: the current focus files do not directly create idea spam with `add_ideas` or `swap_ideas`. The focus-level problem is helper overuse and repeated variable/identity payloads. If idea churn still appears in-game, the parent should inspect `soviet_collapse_update_consolidated_republic_ideas`, `soviet_collapse_clear_republic_staged_ideas`, and focus-called helpers from scripted effects. That is outside this subagent's edit boundary.
 

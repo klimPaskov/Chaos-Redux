@@ -90,11 +90,11 @@ Repeated helper calls remain high:
 | `DSC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:2775` | 18 | 5 | 3 | 14 | 3 | Dangerous endpoint exists; dead-army state still too short. |
 | `NRF_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:3351` | 18 | 4 | 3 | 15 | 8 | Naval theme exists; needs real naval war and port control loop. |
 | `ICD_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:3854` | 18 | 0 | 3 | 13 | 5 | Shallow death-state tree with no decision loop. |
-| `BSC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:4328` | 47 | 0 | 0 | 28 | 15 | Full-size but templated; no decision hooks or expansion mechanics. |
+| `AEX_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:4328` | 47 | 0 | 0 | 28 | 15 | Full-size but templated; no decision hooks or expansion mechanics. |
 | `TNC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:5458` | 47 | 0 | 0 | 26 | 14 | Full-size but templated; no decision hooks or expansion mechanics. |
-| `ALA_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:6596` | 47 | 0 | 0 | 24 | 8 | Full-size but templated; needs lore-specific payoffs. |
+| `AAX_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:6596` | 47 | 0 | 0 | 24 | 8 | Full-size but templated; needs lore-specific payoffs. |
 | `BBH_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:7716` | 47 | 0 | 0 | 25 | 11 | Stronger theme than most, but no decision hooks or expansion mechanics. |
-| `KRS_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:8920` | 47 | 0 | 0 | 27 | 17 | Port/sailor theme exists; no decision hooks or expansion mechanics. |
+| `AOX_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:8920` | 47 | 0 | 0 | 27 | 17 | Port/sailor theme exists; no decision hooks or expansion mechanics. |
 | `UDC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:10162` | 47 | 0 | 0 | 23 | 8 | Loyalist/military theme exists; no decision hooks or expansion mechanics. |
 | `SDZ_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:11363` | 47 | 0 | 0 | 23 | 7 | Security theme exists; no decision hooks or expansion mechanics. |
 | `GAC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:12608` | 47 | 0 | 0 | 25 | 9 | Peasant route labels exist; no decision hooks or expansion mechanics. |
@@ -105,22 +105,22 @@ Repeated helper calls remain high:
 | `UWD_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:18551` | 47 | 0 | 0 | 25 | 19 | Industrial theme, but heavy tiny factory rewards and no decision hooks. |
 | `MRC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:19756` | 47 | 0 | 0 | 23 | 15 | Mountain confederation labels exist; no decision hooks or expansion mechanics. |
 | `IUL_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:20932` | 47 | 0 | 0 | 22 | 11 | Volga/Ural identity exists; no decision hooks or expansion mechanics. |
-| `BAC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:22089` | 47 | 0 | 0 | 23 | 12 | Amur/Birobidzhan identity exists; no decision hooks or expansion mechanics. |
+| `ADX_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:22089` | 47 | 0 | 0 | 23 | 12 | Amur/Birobidzhan identity exists; no decision hooks or expansion mechanics. |
 | `ARD_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:23235` | 47 | 3 | 0 | 28 | 16 | Naval directorate has some hooks, but lacks expansion/postwar mechanics. |
 | `NLC_soviet_collapse_focus_tree` | `005_soviet_collapse_custom_splinters.txt:24433` | 47 | 0 | 0 | 26 | 11 | Polar/science theme exists; no decision hooks or expansion mechanics. |
 | `CFR_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt:16` | 47 | 4 | 2 | 18 | 4 | Better than most; needs governance/strategy operating-model depth. |
 | `OGB_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt:1136` | 23 | 0 | 3 | 18 | 3 | Shallow successor tree; no decision hooks. |
 | `MFR_soviet_collapse_focus_tree` | `005_soviet_collapse_factory_successors.txt:1713` | 58 | 3 | 1 | 17 | 3 | Better arsenal identity; expansion/special mechanics still thin. |
-| `KZR_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:13` | 16 | 2 | 3 | 7 | 2 | Ancient restoration stub; too shallow. |
+| `APX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:13` | 16 | 2 | 3 | 7 | 2 | Ancient restoration stub; too shallow. |
 | `SOG_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:385` | 16 | 2 | 3 | 7 | 2 | Ancient restoration stub; too shallow. |
-| `KHW_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:758` | 16 | 2 | 3 | 7 | 3 | Ancient restoration stub; too shallow. |
-| `ALN_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:1134` | 16 | 2 | 3 | 8 | 3 | Ancient restoration stub; too shallow. |
+| `ANX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:758` | 16 | 2 | 3 | 7 | 3 | Ancient restoration stub; too shallow. |
+| `ABX_soviet_collapse_ancient_focus_tree` | `005_soviet_collapse_ancient_restorations.txt:1134` | 16 | 2 | 3 | 8 | 3 | Ancient restoration stub; too shallow. |
 
 ## Ranked Trees Needing Full Rework
 
 1. `TSC`, `RMC`, `ICD`, `DSC`, `NRF`: 18-focus crisis/high-chaos trees cannot satisfy the requested OP, lore-specific, playable-country standard. `DSC` and `NRF` have useful hooks but are still too small.
-2. Ancient restorations `KZR`, `SOG`, `KHW`, `ALN`: all four are 16-focus stubs with repeated ancient icon families and claim/endgame payoffs, not living restoration politics.
-3. Full-size custom splinters with zero decision hooks and zero direct expansion mechanics: `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC`.
+2. Ancient restorations `APX`, `SOG`, `ANX`, `ABX`: all four are 16-focus stubs with repeated ancient icon families and claim/endgame payoffs, not living restoration politics.
+3. Full-size custom splinters with zero decision hooks and zero direct expansion mechanics: `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC`.
 4. Major republics needing payoff/layout cleanup: `soviet_collapse_kazakhstan_focus_tree`, `soviet_collapse_ukraine_focus_tree`, `soviet_collapse_belarus_focus_tree`, `soviet_collapse_moldova_focus_tree`.
 5. Factory successors: `OGB` needs full successor depth; `CFR` and `MFR` need targeted route specialization rather than a full reset.
 6. `PRA` should be deepened, but it is already the best shallow special tree because it has 11 decision hooks and a rail identity.
@@ -139,7 +139,7 @@ Industrial branches:
 
 Expansion branches:
 - Every full-size custom splinter needs a real expansion or postwar branch. At minimum: claims or war goals, target-state missions, integration decisions, resistance/legitimacy consequences, and AI target strategy.
-- Naval actors need port-control missions, convoy raiding or escort decisions, dockyard/ship priorities, coastal war goals, and post-capture port integration. Apply this especially to `NRF`, `ARD`, `KRS`, and `NLC`.
+- Naval actors need port-control missions, convoy raiding or escort decisions, dockyard/ship priorities, coastal war goals, and post-capture port integration. Apply this especially to `NRF`, `ARD`, `AOX`, and `NLC`.
 - Dead-army or high-chaos actors should be intentionally overpowered through lore-specific mechanics, not just more equipment: controlled-state coring, grave-roll recruitment, automatic war pressure, conquered-state memorial integration, high-chaos penalties for neighbors, and aggressive AI strategies.
 - Ancient restoration trees should stage legitimacy before conquest: rediscovery/recognition, charter proclamation, old-route military, claim wars, partial integration, then endgame identity. Do not create a new full formable chain unless the parent approves it.
 
@@ -164,7 +164,7 @@ Icon conclusion: there are no load-breaking missing focus icons, but the unique-
 - Hover spam risk is lower than before because staged idea updates are hidden in many places, but `soviet_collapse_update_consolidated_republic_ideas` still appears in 111 focus rewards through hidden effects and should stay hidden/custom-tooltipped during rework.
 - Biggest mismatch surfaces:
   - `UWD_soviet_collapse_focus_tree`: 19 tiny equipment/factory focuses, but the worker/industrial route should unlock a production system.
-  - `KRS`, `DHC`, `KHC`, `ARD`: many naval/host/port titles still lean on convoy, rail, dockyard, and helper loops without enough map outcome.
+  - `AOX`, `DHC`, `KHC`, `ARD`: many naval/host/port titles still lean on convoy, rail, dockyard, and helper loops without enough map outcome.
   - `soviet_collapse_kazakhstan_focus_tree`: 92 focuses and 57 flat reward focuses; route breadth is present but too many payoffs are generic.
   - Ancient restorations: repeated icons and 16-focus shape make all four restorations read as variants of one template.
 
@@ -192,7 +192,7 @@ Highest-risk trees:
 - `soviet_collapse_central_asia_focus_tree`: 10 risk signals.
 - `soviet_collapse_moldova_focus_tree`: 8 risk signals.
 - `soviet_collapse_caucasus_focus_tree`: 7 risk signals.
-- `UWD_soviet_collapse_focus_tree` and `BAC_soviet_collapse_focus_tree`: 6 each.
+- `UWD_soviet_collapse_focus_tree` and `ADX_soviet_collapse_focus_tree`: 6 each.
 
 Remaining exact crowded same-row pairs:
 - `ukr_soviet_collapse_socialist_republic_without_moscow` / `ukr_soviet_collapse_republic_of_laws`, both row `y = 6`, `dx = 1`.

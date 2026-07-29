@@ -20,7 +20,7 @@ This handoff covers the bounded reusable scripted layer for the Middle Volga (IW
 
 - `common/scripted_triggers/006_independence_wave_iw043_iw058_package_triggers.txt`
 - `common/scripted_effects/006_independence_wave_iw043_iw058_package_effects.txt`
-- `docs/systems/006_independence_wave_iw043_iw058_signature_packages.md`
+- `docs/events/006_independence_wave/systems/iw043_iw058_signature_packages.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw043_iw058_scripted_architecture_handoff_2026_07_18.md`
 
 The existing package constants file was inspected and remains the single tuning source; no new numeric threshold was needed for relationship reach.

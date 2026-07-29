@@ -41,7 +41,7 @@ Extended:
 - `common/decisions/006_independence_wave_form01_02_04_decisions.txt`
 - `common/ideas/006_independence_wave_pacific_ideas.txt`
 - `localisation/english/006_independence_wave_pacific_l_english.yml`
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/events/006_independence_wave/pacific_country_packages.md`
 - `docs/plans/006_independence_wave_plans/subagent_handoffs/006_form48_registry_transaction_surface_2026_07_17.md`
 

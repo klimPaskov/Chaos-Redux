@@ -90,9 +90,9 @@ Recommended patch owner: `chaosx_scripted_system_architect` for reward-family re
 
 Evidence:
 
-- `BSC_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:4300` with generic `BSC_birth`, `BSC_first_guard`, and `BSC_stores` at `:4316`, `:4336`, and `:4365`.
+- `AEX_soviet_collapse_focus_tree` starts at `005_soviet_collapse_custom_splinters.txt:4300` with generic `AEX_birth`, `AEX_first_guard`, and `AEX_stores` at `:4316`, `:4336`, and `:4365`.
 - `TNC_soviet_collapse_focus_tree` repeats the same `birth`, `first_guard`, `stores` opening at `005_soviet_collapse_custom_splinters.txt:5419`, `:5435`, `:5455`, and `:5484`.
-- `ALA_soviet_collapse_focus_tree` repeats the same pattern at `005_soviet_collapse_custom_splinters.txt:6548`, `:6564`, `:6584`, and `:6613`.
+- `AAX_soviet_collapse_focus_tree` repeats the same pattern at `005_soviet_collapse_custom_splinters.txt:6548`, `:6564`, `:6584`, and `:6613`.
 
 Impact: The 47-focus count masks sameness. Names and some helper calls vary, but the route architecture and reward rhythm remain template-like across many countries.
 
@@ -104,7 +104,7 @@ Evidence:
 
 - Across `005_soviet_collapse_custom_splinters.txt`, most 47-focus custom splinter trees have no direct `create_wargoal`, no direct claims, and no `add_ai_strategy`.
 - Direct war/AI aggression is concentrated in a small subset: `PRA_rails_over_capitals` at `:1701`, `TSC_starfall_mandate` at `:2189`, `RMC_resurrection_without_state` at `:2688`, `DSC_congress_of_the_dead_army` at `:3247`, `NRF_northern_revenant_fleet` at `:3770`, and `ICD_commissariat_without_end` at `:4239`.
-- `BSC_soviet_collapse_focus_tree` at `:4300`, `TNC_soviet_collapse_focus_tree` at `:5419`, and `ALA_soviet_collapse_focus_tree` at `:6548` have no direct war/claim/AI-strategy payloads in the parsed focus blocks.
+- `AEX_soviet_collapse_focus_tree` at `:4300`, `TNC_soviet_collapse_focus_tree` at `:5419`, and `AAX_soviet_collapse_focus_tree` at `:6548` have no direct war/claim/AI-strategy payloads in the parsed focus blocks.
 
 Impact: High-chaos countries often play like normal weak successors with darker names. They need stronger war goals, claims, unit packages, pressure decisions, and AI conquest strategy.
 
@@ -184,8 +184,8 @@ Recommended patch owner: `chaosx_improvement_loop_planner`, then parent focus im
 
 Evidence:
 
-- `KZR_soviet_collapse_ancient_focus_tree` at `005_soviet_collapse_ancient_restorations.txt:12` has 16 focuses.
-- `SOG_soviet_collapse_ancient_focus_tree` at `:407`, `KHW_soviet_collapse_ancient_focus_tree` at `:796`, and `ALN_soviet_collapse_ancient_focus_tree` at `:1189` each also have 16 focuses with matching `old_*_border_files`, symbolic-authority, charter, survival, and final border/road focuses.
+- `APX_soviet_collapse_ancient_focus_tree` at `005_soviet_collapse_ancient_restorations.txt:12` has 16 focuses.
+- `SOG_soviet_collapse_ancient_focus_tree` at `:407`, `ANX_soviet_collapse_ancient_focus_tree` at `:796`, and `ABX_soviet_collapse_ancient_focus_tree` at `:1189` each also have 16 focuses with matching `old_*_border_files`, symbolic-authority, charter, survival, and final border/road focuses.
 - Each ancient tree has one direct war focus and three claim-bearing focuses, but little political route branching or distinct economic/military depth.
 
 Impact: They are better at direct claims than republics, but their design is still too close to a mirrored mini-template.
@@ -197,7 +197,7 @@ Recommended patch owner: `chaosx_improvement_loop_planner` for distinct ancient-
 Evidence:
 
 - Only 79 of 1,698 parsed focuses contain `unlock_decision*` or `activate_decision*`.
-- Many 47-focus custom splinter trees have 0 parsed decision unlocks, including `BSC_soviet_collapse_focus_tree` at `005_soviet_collapse_custom_splinters.txt:4300`, `TNC_soviet_collapse_focus_tree` at `:5419`, and `ALA_soviet_collapse_focus_tree` at `:6548`.
+- Many 47-focus custom splinter trees have 0 parsed decision unlocks, including `AEX_soviet_collapse_focus_tree` at `005_soviet_collapse_custom_splinters.txt:4300`, `TNC_soviet_collapse_focus_tree` at `:5419`, and `AAX_soviet_collapse_focus_tree` at `:6548`.
 - PRA is an exception with 14 decision-touching focuses in 22 focuses, starting at `PRA_soviet_collapse_focus_tree` at `:1199`.
 
 Impact: Most countries still receive focus rewards instead of evolving decision categories. This weakens replayability and makes route choices feel less interactive.

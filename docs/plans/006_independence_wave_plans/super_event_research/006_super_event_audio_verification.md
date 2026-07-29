@@ -6,17 +6,17 @@ Research date: 2026-07-14
 > and identifier audit. Audio 6002 has since been produced, registered, and
 > wired through slot 24 and the settings-aware FIFO. Any statement below that
 > calls 6002 absent or future work is superseded by
-> `docs/super_events/006_independence_wave_super_event_research.md` and the final
+> `docs/super_events/006_independence_wave/research.md` and the final
 > production manifest. Audio 6001 remains blocked and absent from runtime.
 
-This note independently verifies the two accepted Event 006 super-event recordings. It records source identity, rights evidence, preserved-source state, timing, technical measurements, audio identifiers, and the exact production/wiring handoff. It does not change the accepted music choices, process final OGG/WAV derivatives, or wire gameplay.
+This note independently verifies the two accepted Event 006 super-event recordings. It records source identity, rights evidence, preserved-source state, timing, technical measurements, audio identifiers, and the exact production/wiring handoff. It does not change the accepted music choices, process final WAV derivatives, or wire gameplay.
 
 ## Outcome
 
 | Audio ID | Super-event | Accepted recording | Rights verdict | Preserved source | Production state |
 | ---: | --- | --- | --- | --- | --- |
 | `6001` | The League of New States | Jeremiah Clarke, *A Trumpet Voluntary*, London Brass Players (1948 recording; 1949 release) | **Blocked.** The composition is public domain, but the exact recording is not cleared for United States redistribution. | Not downloaded | Do not process or wire |
-| `6002` | Every Border a Casus Belli | Tchaikovsky, *1812 Overture*, United States Marine Band (2019) | **Verified on the stated U.S. federal-government public-domain basis.** | Downloaded and checksum-verified | Final OGG/WAV produced and asset wrappers wired |
+| `6002` | Every Border a Casus Belli | Tchaikovsky, *1812 Overture*, United States Marine Band (2019) | **Verified on the stated U.S. federal-government public-domain basis.** | Downloaded and checksum-verified | Final WAV produced and sound wrappers wired |
 
 The `6001` finding corrects the recording-rights conclusion in the accepted research without replacing the accepted selection. No substitute has been researched or proposed. The Event 006 two-track audio package therefore remains incomplete.
 
@@ -81,8 +81,7 @@ Unblocking requires either explicit permission/waiver covering redistribution of
 - Accepted fade-in: `1.500 s`
 - Accepted fade-out: `2.000 s`, beginning at excerpt time `108.000 s`
 - Playback: one-shot; no loop
-- Reserved OGG path: `music/006_independence_wave/super_event_006_01_league_of_new_states.ogg`
-- Reserved WAV mirror: `sound/006_independence_wave/super_event_006_01_league_of_new_states.wav`
+- Reserved WAV path: `sound/006_independence_wave/super_event_006_01_league_of_new_states.wav`
 - Reserved audio ID: `6001`
 
 Courtesy attribution to carry if the recording is later cleared:
@@ -165,7 +164,7 @@ The measured values are reproducible with the current preserved source and local
 
 Reserved final derivatives:
 
-- OGG: `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg`
+- OGG: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 - WAV mirror: `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 - Audio ID: `6002`
 - OGG delivery: Ogg Vorbis, `44,100 Hz`, stereo
@@ -186,7 +185,7 @@ The full production record is in
 
 ## Implemented 6002 wiring record
 
-The current settings helper is already dynamic. `play_dynamic_super_event_music` builds `chaosx_super_event_[SUPER_EVENT_ID]_[VOLUME_SUFFIX]`, and `play_dynamic_super_event_sound` builds `chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]`. No helper rewrite is required for IDs `6001` or `6002`.
+The current settings helper is already dynamic. `play_dynamic_super_event_sound` builds `chaosx_super_event_[SUPER_EVENT_ID]_sound_[VOLUME_SUFFIX]`. No helper rewrite is required for IDs `6001` or `6002`.
 
 For each cleared audio ID, register the six established suffixes and volumes:
 
@@ -201,8 +200,8 @@ For each cleared audio ID, register the six established suffixes and volumes:
 
 For the verified cue, the required identifiers are:
 
-- music assets: `chaosx_super_event_6002_0_5` through `chaosx_super_event_6002_3_0`;
-- representative station row: `chaosx_super_event_6002_1_5`, with `chance = { factor = 0 }`;
+- music assets: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
+- representative station row: `chaosx_super_event_6002_sound_1_5`, with `chance = { factor = 0 }`;
 - raw sound name: `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`;
 - sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
 - each sound wrapper should retain `max_audible = 1` and `max_audible_behaviour = fail` and should not enable looping.

@@ -84,7 +84,7 @@ This is documentation-only, but it is likely to reintroduce the scope bug during
 
 ### Eight reusable warlord slots and origins
 
-- `common/country_tags/014_cannibalism_countries.txt:8-16` registers CBA/CBB as Island, CBC/CBD as Siege, CBE/CBF as March, CBG/CBH as Prison, and CBL as the ordinary unified country. Matching country and dormant history files remain present.
+- `common/country_tags/014_cannibalism_countries.txt:8-16` registers CBA/AHX as Island, CBC/AIX as Siege, CBE/CBF as March, AMX/CBH as Prison, and CBL as the ordinary unified country. Matching country and dormant history files remain present.
 - Origin selection, the strict origin-priority mapping, two-slot pools, regional identity selection, population/chaos force scaling, incarnation metadata, core assignment, quarantine, and final reference cleanup remain in the established country effects.
 - Release still waits for the dead-country/reference audit before clearing the global slot-in-use marker. CBA through CBH all have allocation and release coverage.
 - Regional identity remains bespoke for Europe, Asia, Africa, the Middle East, North America, South America, and Oceania; no generic unsupported-region identity leak was found.

@@ -105,10 +105,10 @@ Factory and special successor trees:
 
 Ancient restoration trees:
 
-- `KZR_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`
+- `APX_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`
 - `SOG_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:408`
-- `KHW_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:797`
-- `ALN_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1190`
+- `ANX_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:797`
+- `ABX_soviet_collapse_ancient_focus_tree`: 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1190`
 
 High-chaos and custom splinter trees:
 
@@ -119,7 +119,7 @@ High-chaos and custom splinter trees:
 - `DSC_soviet_collapse_focus_tree`: 18 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:2745`
 - `NRF_soviet_collapse_focus_tree`: 18 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:3308`
 - `ICD_soviet_collapse_focus_tree`: 18 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:3812`
-- `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, and `NLC`: 47 focuses each, beginning respectively at `common/national_focus/005_soviet_collapse_custom_splinters.txt:4280`, `:5401`, `:6532`, `:7644`, `:8839`, `:10064`, `:11254`, `:12494`, `:13664`, `:14863`, `:16052`, `:17217`, `:18381`, `:19568`, `:20741`, `:21881`, `:23014`, and `:24213`.
+- `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, and `NLC`: 47 focuses each, beginning respectively at `common/national_focus/005_soviet_collapse_custom_splinters.txt:4280`, `:5401`, `:6532`, `:7644`, `:8839`, `:10064`, `:11254`, `:12494`, `:13664`, `:14863`, `:16052`, `:17217`, `:18381`, `:19568`, `:20741`, `:21881`, `:23014`, and `:24213`.
 
 ## Findings
 
@@ -128,10 +128,10 @@ High-chaos and custom splinter trees:
 Highest priority. Eleven trees are below 25 focuses:
 
 - `OGB_soviet_collapse_focus_tree`, 23 focuses, `common/national_focus/005_soviet_collapse_factory_successors.txt:1094`
-- `KZR_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`
+- `APX_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:13`
 - `SOG_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:408`
-- `KHW_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:797`
-- `ALN_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1190`
+- `ANX_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:797`
+- `ABX_soviet_collapse_ancient_focus_tree`, 16 focuses, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1190`
 - `PRA_soviet_collapse_focus_tree`, 22 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:1200`
 - `TSC_soviet_collapse_focus_tree`, 18 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:1800`
 - `RMC_soviet_collapse_focus_tree`, 18 focuses, `common/national_focus/005_soviet_collapse_custom_splinters.txt:2269`
@@ -185,7 +185,7 @@ Trees with zero direct decision hooks in focus rewards:
 - `soviet_collapse_baltic_focus_tree`
 - `soviet_collapse_moldova_focus_tree`
 - `FTH_soviet_collapse_focus_tree`
-- `KRS_soviet_collapse_focus_tree`
+- `AOX_soviet_collapse_focus_tree`
 - `BBH_soviet_collapse_focus_tree`
 - `UDC_soviet_collapse_focus_tree`
 - `SDZ_soviet_collapse_focus_tree`
@@ -195,7 +195,7 @@ Trees with zero direct decision hooks in focus rewards:
 - `FEV_soviet_collapse_focus_tree`
 - `MRC_soviet_collapse_focus_tree`
 - `IUL_soviet_collapse_focus_tree`
-- `BAC_soviet_collapse_focus_tree`
+- `ADX_soviet_collapse_focus_tree`
 - `NLC_soviet_collapse_focus_tree`
 
 Trees with low direct decision hook counts:
@@ -203,7 +203,7 @@ Trees with low direct decision hook counts:
 - `ICD_soviet_collapse_focus_tree`: 1
 - `RMC_soviet_collapse_focus_tree`: 1
 - `TSC_soviet_collapse_focus_tree`: 1
-- `BSC_soviet_collapse_focus_tree`: 2
+- `AEX_soviet_collapse_focus_tree`: 2
 - `TNC_soviet_collapse_focus_tree`: 2
 - Each ancient restoration tree: 2
 - `soviet_collapse_caucasus_focus_tree`: 2
@@ -228,10 +228,10 @@ The weak-reward heuristic found 39 focus rewards that are mostly flags plus gene
 - `kaz_soviet_collapse_guard_the_mine_heads`, `common/national_focus/005_soviet_collapse_republics.txt:11550`
 - `OGB_treat_with_idel_ural`, `common/national_focus/005_soviet_collapse_factory_successors.txt:1417`
 - `TSC_perimeter_regiments`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:2034`
-- `BSC_road_and_well_ledger`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:4782`
+- `AEX_road_and_well_ledger`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:4782`
 - `TNC_cotton_rail_republic`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:5908`
-- `ALA_caspian_oil_survey`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:7077`
-- `KRS_economy`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:8992`
+- `AAX_caspian_oil_survey`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:7077`
+- `AOX_economy`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:8992`
 - `SDZ_document_cart_workshops`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:11816`
 - `GAC_blacksmith_carts`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:13193`
 - `NLC_tundra_watch_posts`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:24991`
@@ -242,10 +242,10 @@ The parent should treat this as a review queue, not as automatic delete/replace 
 
 The heuristic found 236 search-filter mismatch candidates. Many are mixed rewards and not necessarily bugs, but the following are high-signal examples:
 
-- `KZR_old_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:177`: `FOCUS_FILTER_ANNEXATION` only, but grants claims plus train equipment and infrastructure.
+- `APX_old_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:177`: `FOCUS_FILTER_ANNEXATION` only, but grants claims plus train equipment and infrastructure.
 - `SOG_old_city_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:571`: annexation-facing focus with political/industry reward pieces.
-- `KHW_old_oasis_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:955`: annexation-facing focus with infrastructure/supply-node reward pieces.
-- `ALN_old_pass_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1348`: annexation-facing focus with command/army XP and fort reward pieces.
+- `ANX_old_oasis_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:955`: annexation-facing focus with infrastructure/supply-node reward pieces.
+- `ABX_old_pass_border_files`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1348`: annexation-facing focus with command/army XP and fort reward pieces.
 - `MFR_no_peace_without_orders`, `common/national_focus/005_soviet_collapse_factory_successors.txt:2932`: filters `FOCUS_FILTER_INDUSTRY` and `FOCUS_FILTER_POLITICAL`, but grants aggressive war behavior.
 - `FTH_grain_and_rifle_stores`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:813`: filters industry/army, but includes political stability and power reward pieces.
 - `PRA_armored_train_schools`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:1513`: army-only filter, but grants supply/rail/building elements.
@@ -275,10 +275,10 @@ The parser found no coordinate overlap and no missing/invalid focus positions. H
 
 Examples to watch:
 
-- `KZR_symbolic_crossing_state`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:210`, and `KZR_expansionist_steppe_levy`, `:236`
+- `APX_symbolic_crossing_state`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:210`, and `APX_expansionist_steppe_levy`, `:236`
 - `SOG_symbolic_city_league`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:604`, and `SOG_expansionist_merchant_claims`, `:629`
-- `KHW_symbolic_oasis_authority`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:988`, and the nearby expansionist branch under the same tree
-- `ALN_symbolic_pass_principality`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1382`, and the nearby expansionist branch under the same tree
+- `ANX_symbolic_oasis_authority`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:988`, and the nearby expansionist branch under the same tree
+- `ABX_symbolic_pass_principality`, `common/national_focus/005_soviet_collapse_ancient_restorations.txt:1382`, and the nearby expansionist branch under the same tree
 - `PRA_the_board_overrules_ministers`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:1349`, and `PRA_armored_train_directorate` in the same compact branch family
 - `NRF_living_harbor_committees`, `common/national_focus/005_soviet_collapse_custom_splinters.txt:3408`, and `NRF_revenant_admiralty` in the same compact branch family
 
@@ -303,9 +303,9 @@ This audit did not find missing focus-tree load wiring. The remaining issue is c
 ## Top 10 Parent Follow-Ups
 
 1. Expand the compact OGB tree into a real 40+ focus successor tree or explicitly accept it as a compact secondary tree. Highest-value additions: Volga legitimacy decisions, Idel-Ural compact/rivalry branch, trade-city industrial logistics, heritage guard army path, and aggressive border settlement tools.
-2. Expand `KZR`, `SOG`, `KHW`, and `ALN` ancient restoration trees from 16-focus sketches into full political, industrial, military, diplomacy, and expansion route families with dedicated decisions or missions.
+2. Expand `APX`, `SOG`, `ANX`, and `ABX` ancient restoration trees from 16-focus sketches into full political, industrial, military, diplomacy, and expansion route families with dedicated decisions or missions.
 3. Expand `TSC`, `RMC`, `ICD`, `NRF`, `PRA`, and `DSC` compact high-chaos trees. Each should have a unique mechanic loop matching its identity, not only a short trunk with strong rewards.
-4. Add player-facing decision or mission hooks to zero-hook 47-focus custom splinter trees, especially `FTH`, `KRS`, `BBH`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `MRC`, `IUL`, `BAC`, and `NLC`.
+4. Add player-facing decision or mission hooks to zero-hook 47-focus custom splinter trees, especially `FTH`, `AOX`, `BBH`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `MRC`, `IUL`, `ADX`, and `NLC`.
 5. Add country-specific AI strategy plans for major custom splinters and high-chaos successor routes, with explicit aggression, consolidation, and branch selection behavior beyond shared signature-force strategies.
 6. Review the 39 weak/flat reward candidates and upgrade them with variables, targeted state effects, timed missions, unlock decisions, dynamic claims, branch counters, or scripted effects where appropriate.
 7. Run a focused search-filter cleanup pass, starting with the high-signal examples listed above. Mixed reward focuses should either add matching filters or split rewards into clearer branch focuses.

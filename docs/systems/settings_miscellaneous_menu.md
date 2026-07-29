@@ -5,7 +5,6 @@ This change adds a new `Miscellaneous` category to the Chaos Redux settings menu
 
 The update covers:
 - A new `Miscellaneous` menu entry below `Advanced Settings`.
-- Super-event playback channel selection between music and sound.
 - Super-event audio volume selection with a stepped slider covering the explicit multiplier tiers.
 - A dedicated Fallout system checkbox that is independent from numbered events.
 - A `Harder Crises for Players` checkbox for reusable Non-AI Crisis Pressure.
@@ -17,10 +16,7 @@ The update covers:
 
 ## Miscellaneous menu flow
 1. Clicking `Miscellaneous` opens a dedicated content panel in the settings window.
-2. `Playback Channel` cycles between:
-- `Music`
-- `Sound`
-3. `Super Event Audio Volume` cycles between:
+2. `Super Event Audio Volume` cycles between:
 - `0x`
 - `0.5x`
 - `1.0x`
@@ -28,10 +24,8 @@ The update covers:
 - `2.0x`
 - `2.5x`
 - `3.0x`
-4. `Disable Fallout` toggles the dedicated Fallout world-end route through the shared disabled-scenario ledger. An active Fallout transition cannot be disabled.
-5. Default values are:
-- Audio mode: `Sound`
-- Audio volume: `1.5x`
+3. `Disable Fallout` toggles the dedicated Fallout world-end route through the shared disabled-scenario ledger. An active Fallout transition cannot be disabled.
+4. The default audio volume is `1.5x`.
 - Harder Crises for Players: enabled
 
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
@@ -46,21 +40,21 @@ The shared pressure helpers live in:
 Communist spread now uses the setting when a player-controlled country has active communist state control, intervention targets, emergency pressure, or a communist rebel war. While active, spread, escalation, and sabotage receive higher chance weights and shorter cooldowns; AI-only crisis fronts continue to use normal tuning.
 
 ## Super-event audio behavior
-Super-event playback is now routed through `play_current_super_event_audio` in:
+Super-event playback is routed through the settings-aware sound helper in:
 - `common/scripted_effects/chaosx_settings_effects.txt`
 
 Behavior:
-- `Music` mode plays the current super-event track through the music channel.
-- `Sound` mode plays that same current super-event track through the sound-effects channel.
+- Super-event runtime audio uses the sound output only.
+- The dispatcher assigns `global.current_super_event_audio_id` and resolves the matching sound definition from `sound/chaosx_sound.asset`.
+- Each super-event has one final WAV under `sound/<event_id>_<event_slug>/...`.
 - `0x` mutes super-event playback entirely.
 - `1.5x` preserves the previous loudness as the default volume tier.
-- `Sound` is now the default playback channel for new saves and for `Reset All Settings`.
 
-The Fallout blackout is not an ordinary super-event audio ID. `fallout_play_blackout_audio` reads the same playback-channel and volume preferences, then selects Fallout-owned wrappers from `music/fallout_world_end_music.asset` or `sound/fallout_world_end_sound.asset`.
+The Fallout blackout is not an ordinary super-event audio ID. Its dedicated playback documentation remains separate from the super-event sound-only contract.
 
-Current song routing:
-- The script now builds `chaosx_super_event_<id>_<volume_suffix>` dynamically through `meta_effect`.
-- Sound-channel playback builds `chaosx_super_event_<id>_sound_<volume_suffix>` the same way.
+Current sound routing:
+- The dispatcher builds the sound-side reference for the assigned audio ID through the existing settings-aware helper.
+- Sound-side registration is maintained in `sound/chaosx_sound.asset`.
 - Current audio ID `1` uses the initial outbreak track definitions.
 - Current audio ID `2` uses the Alliance of Man track definitions.
 - Current audio ID `3` uses the zombie apocalypse track definitions.
@@ -76,11 +70,7 @@ Current song routing:
 - Current audio ID `28` uses the Mandala of Nations track definitions.
 - Current audio ID `31` uses the Powers of the Awakened track definitions.
 
-The variant song IDs are defined in:
-- `music/chaosx_super_event_music.asset`
-
-Each registered per-ID variant reuses the same underlying track file from:
-- `music/chaosx_super_event_music.asset`
+The canonical audio catalogue remains `music/chaosx_music_track_list.html`; the parent implementation owns its catalogue edit.
 
 The Miscellaneous panel no longer shows explanatory note text under the controls.
 The volume control no longer uses a boxed value field. It now uses a vanilla game-rules style slider look with:
@@ -181,7 +171,6 @@ This change also includes:
 - `common/on_actions/chaosx_on_actions.txt`
 - `events/chaosx_events.txt`
 - `interface/chaosx.gui`
-- `music/chaosx_super_event_music.asset`
 - `sound/chaosx_sound.asset`
 - `common/scripted_effects/fallout_world_end_effects.txt`
 - `music/fallout_world_end_music.asset`
@@ -210,26 +199,9 @@ Existing assets used:
   - `yearslider_rightbutton`
 
 Audio assets used:
-- Music definition file:
-  - `music/chaosx_super_event_music.asset`
 - Sound definition file:
   - `sound/chaosx_sound.asset`
-- Music-channel sources:
-  - `music/default.ogg`
-  - `music/002_zombie_outbreak/super_event_1_zombies.ogg`
-  - `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
-  - `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
-  - `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
-  - `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
-  - `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
-  - `music/003_holy_realm/super_event_8_final_silence.ogg`
-  - `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
-  - `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
-  - `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
-  - `music/003_holy_realm/super_event_28_mandala_of_nations.ogg`
-  - `music/003_holy_realm/super_event_12_angel_directorate.ogg`
-  - `music/003_holy_realm/super_event_13_angelic_world_order.ogg`
-- Sound-channel sources:
+- Sound sources:
   - `sound/chaosx_super_event_default.wav`
   - `sound/002_zombie_outbreak/super_event_1_zombies.wav`
   - `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
@@ -244,11 +216,7 @@ Audio assets used:
   - `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
   - `sound/003_holy_realm/super_event_12_angel_directorate.wav`
   - `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
-- Dedicated Fallout blackout sources:
-  - `music/fallout_world_end/fallout_world_end_blackout.ogg`
-  - `sound/fallout_world_end/fallout_world_end_blackout.wav`
-  - music wrappers: `fallout_world_end_blackout_0_5` through `fallout_world_end_blackout_3_0`
-  - sound wrappers: `fallout_world_end_blackout_sound_0_5` through `fallout_world_end_blackout_sound_3_0`
+- Dedicated Fallout blackout assets are documented by the separate Fallout system record.
 - Audio source and license documentation:
   - `docs/super_events/super_event_audio_packages.md`
 
@@ -259,5 +227,5 @@ If custom art is later desired for the Miscellaneous menu or sync controls:
 
 ## Future plans
 - Replace the selected-country/state sync buttons with a true automatic map-selection hook if Paradox exposes a documented callback for selection changes in scripted GUI.
-- Register per-ID definitions for any newly-added super events as soon as they start using `super_event_visible`, so the dynamic audio builder can resolve them immediately.
-- Add a live preview button for super-event audio mode and loudness testing inside the Miscellaneous panel.
+- Document each newly-added super-event WAV, sound definition, audio ID, and catalogue row together with its presentation wiring.
+- Add a live preview button for super-event sound cues and loudness testing inside the Miscellaneous panel.

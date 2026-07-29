@@ -19,7 +19,7 @@ The owned slice is structurally sound after the local corrections recorded below
 - `common/dynamic_modifiers/016_brilliant_scientist_directorate_modifiers.txt`
 - `common/script_constants/016_brilliant_scientist_directorate_constants.txt`
 - `localisation/english/016_brilliant_scientist_directorate_l_english.yml`
-- `docs/systems/016_brilliant_scientist_directorate.md`
+- `docs/events/016_brilliant_scientist/systems/directorate.md`
 
 ## Identifiers reviewed
 

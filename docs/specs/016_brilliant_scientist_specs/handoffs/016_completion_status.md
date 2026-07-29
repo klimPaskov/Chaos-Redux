@@ -29,7 +29,7 @@ The source design is complete at the parent-planning level. It contains no inten
 
 The package specifies exactly seventeen working achievements. The parent rejected the proposed merge because `public_method` and `clean_break` test distinct outcomes.
 
-Six-package super-event title, button, quotation, and audio research is complete and sourced. The Event 016-owned OGGs are complete. Final descriptions, images, localisation, triggers, shared music and sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
+Six-package super-event title, button, quotation, and audio research is complete and sourced. The Event 016-owned OGGs are complete. Final descriptions, images, localisation, triggers, shared sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
 
 ## Current incomplete work
 

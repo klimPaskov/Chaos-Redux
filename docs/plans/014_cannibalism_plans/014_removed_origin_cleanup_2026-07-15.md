@@ -8,7 +8,7 @@ Status: implemented and closed by the 2026-07-15 cross-surface re-audits.
 
 Event 014 has three warlord origins: Island Host, Siege Commune, and March Host. `CBA` through `CBH` are eight origin-agnostic reusable slots. No current gameplay, localisation, interface, portrait, flag, scenario, country package, focus, decision, idea, trait, AI profile, recruitment template, or Wendigo inheritance stage reserves a slot for any other origin.
 
-Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/subagent_handoffs/` are historical evidence of the superseded implementation and are not design authority. Current authority is the specification package, `docs/events/014_cannibalism.md`, this cleanup record, and the 2026-07-15 consolidation re-audits.
+Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/subagent_handoffs/` are historical evidence of the superseded implementation and are not design authority. Current authority is the specification package, `docs/events/014_cannibalism/overview.md`, this cleanup record, and the 2026-07-15 consolidation re-audits.
 
 ## Removed runtime surfaces
 
@@ -16,7 +16,7 @@ Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/suba
 - Four-focus local-tree overlay and its four DDS icons, sprite registrations, reward helpers, AI weights, prerequisites, tooltips, and localisation.
 - Origin-only prisoner-transfer decision, operation cost contract, target helper, effect, icon, and localisation.
 - Lockhouse formation template, starting unit, specialist recruitment decision, recruitment counter, costs, inheritance flags, Wendigo template upgrade, icon, idea, cleanup, and localisation.
-- Fixed CBG/CBH country-package pairing and detention-themed portrait/flag direction.
+- Fixed AMX/CBH country-package pairing and detention-themed portrait/flag direction.
 - Scenario selectors, reserved-state markers, capacity checks, and launch distributions tied to the removed origin.
 
 ## Replacement contracts
@@ -25,7 +25,7 @@ Older dated audit and handoff files under `docs/plans/014_cannibalism_plans/suba
 - Scenario capacity uses `count_triggers` across all eight slot-availability triggers, so any reusable combination can satisfy one through six requested countries.
 - High and maximum Warlord States launches distribute four or six countries across the three origins. Convergence launches scale from one of each origin to two of each.
 - All eight country and history files use the neutral `Cannibal Warlord Slot` identity. Runtime setup supplies origin, region, name, portrait, ideas, units, and AI.
-- CBG and CBH flag families use origin-agnostic flat heraldry. Their seven regional portraits use HOI4-style leader busts with no prison or detention imagery.
+- AMX and CBH flag families use origin-agnostic flat heraldry. Their seven regional portraits use HOI4-style leader busts with no prison or detention imagery.
 - Unified recruitment and Wendigo inheritance retain Island Reavers, Siege Eaters, and March Predation Columns only.
 
 ## Closed audit proof

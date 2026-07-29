@@ -16,7 +16,7 @@ Vanilla documentation was consulted in `C:\Program Files (x86)\Steam\steamapps\c
 
 Event 13 contracts were read from `docs/specs/013_natural_disasters_specs/matrices/013_disaster_call_contract.md`, `docs/plans/013_natural_disasters_plans/subagent_handoffs/2026-07-26_event013_dynamic_api_target_audit_handoff.md`, and `common/scripted_effects/013_natural_disasters_effects.txt`.
 
-Event 6 identity constraints were read from `docs/systems/006_independence_wave_country_registry.md` and `common/scripted_triggers/006_independence_wave_country_registry_triggers.txt`.
+Event 6 identity constraints were read from `docs/events/006_independence_wave/systems/country_registry.md` and `common/scripted_triggers/006_independence_wave_country_registry_triggers.txt`.
 
 ## Findings
 
@@ -96,7 +96,7 @@ All ten high-chaos action names, descriptions, and full/partial/failure result k
 
 The custom Event 12 decision and event GFX references resolve to definitions in the Event 12 interface `.gfx` files. The only unresolved names in the mod-only scan were generic vanilla GFX names such as `GFX_decision_generic_industry`, `GFX_decision_generic_break_treaty`, `GFX_report_event_generic_conference`, and `GFX_report_event_generic_african_unity`.
 
-The expected central `docs/events/012_africa.md` file is absent; the repository instead has separate Event 12 charter, evolution, and world-order event documents. This is a documentation-completeness gap for the parent documentation pass.
+The expected central `docs/events/012_africa/overview.md` file is absent; the repository instead has separate Event 12 charter, evolution, and world-order event documents. This is a documentation-completeness gap for the parent documentation pass.
 
 ## Proposed helper map
 
@@ -160,7 +160,7 @@ Preserve the Event 6 carrier predicates and the grounded priority-member common-
 - `common/scripted_effects/012_africa_action_effects.txt`: added `africa_reserve_natural_disaster_weapon_cost`, active-ledger reservation and cleanup, strict action 69/70 validator gates, `africa_call_hostile_natural_disaster_from_action`, Event 013 public-call inputs/outputs, cooldown/backfire handling, and the existing timed-target cooldown `var:` safety patch.
 - `common/scripted_localisation/012_africa_scripted_localisation.txt`: routes accepted/rejected hostile-nature receipts into the existing Event 012 result description surface.
 - `localisation/english/012_african_union_l_english.yml`: documented hostile-war nature calls, extra ritual payment, cooldown/backfire, and accepted/rejected call wording.
-- `docs/012_africa_natural_disaster_weapons.md`: helper contract, tuning, target lifecycle, AI parity, UI reuse, and limitations.
+- `docs/events/012_africa/natural_disaster_weapons.md`: helper contract, tuning, target lifecycle, AI parity, UI reuse, and limitations.
 - `docs/plans/012_africa_plans/012_africa_runtime_core_audit_handoff.md`: implementation handoff and audit record.
 
 No Event 013 source file, strange-force formation, model/entity, new decision, focus, interface asset, portrait, workbook, or tag was added.
@@ -189,7 +189,7 @@ The `set_country_flag` timed-duration child is incompletely documented by vanill
 
 The MCP lint reports are partial and cannot substitute for a focused Event 12 load check.
 
-The missing central `docs/events/012_africa.md` file should be resolved by the parent documentation pass or explicitly superseded by a source-of-truth map.
+The missing central `docs/events/012_africa/overview.md` file should be resolved by the parent documentation pass or explicitly superseded by a source-of-truth map.
 
 No fallback or silent simplification was introduced. The implementation reuses actions 69 and 70, preserves the Event 012 ledger, and reports the action 73 pathogen boundary and existing strange-force consumer gap explicitly.
 
@@ -199,6 +199,6 @@ The selected-enemy Event 013 disaster-call path for actions 69 and 70 is accepte
 
 The strange-force consumer statement above is superseded for the current candidate. Actions `awaken_stone_cohort`, `train_gorilla_heavy_infantry`, and `organise_pan_sappers` have custom formation consumers that are runtime-gated by `africa_strange_formation_package_ready`; the gate remains closed until the approved formation, model, and entity package exists.
 
-The central source-of-truth document now exists at `docs/events/012_africa.md`; the earlier absence note is historical and is superseded by that document and the documentation cleanup handoff.
+The central source-of-truth document now exists at `docs/events/012_africa/overview.md`; the earlier absence note is historical and is superseded by that document and the documentation cleanup handoff.
 
 The sixteen grounded priority-member common-reserve packages remain separate from the deferred strange-force package and should not be conflated during audit or release review.

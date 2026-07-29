@@ -91,7 +91,7 @@ Skipped validation:
 | `CFR_soviet_collapse_focus_tree` | 47 focuses. | Closest to the requested factory-directorate fantasy. Construction/factory/rail/supply identity is visible. Still needs review for OP scaling, route-exclusive payoffs, and decision hooks. | Medium |
 | `MFR_soviet_collapse_focus_tree` | 58 focuses. | Stronger arsenal and worker-factory identity than most splinters. Needs clearer final route payoffs and mechanic links so the arsenal branch is not just factories plus army bonuses. | Medium |
 | `OGB_soviet_collapse_focus_tree` | 23 focuses. | Too shallow for an identity-driven chaos successor. Needs a proper political/industry/expansion/military split and final payoff. | High |
-| Ancient restorations, `KZR`, `SOG`, `KHW`, `ALN` | 16 focuses each. | All four are compact stubs. They have symbolic-state, old-route, guard, charter, expansion, and survival concepts, but not enough depth or bespoke mechanics. One filter mismatch was patched for `SOG_scholar_envoy_rooms`. | Critical |
+| Ancient restorations, `APX`, `SOG`, `ANX`, `ABX` | 16 focuses each. | All four are compact stubs. They have symbolic-state, old-route, guard, charter, expansion, and survival concepts, but not enough depth or bespoke mechanics. One filter mismatch was patched for `SOG_scholar_envoy_rooms`. | Critical |
 
 ## Missing Or Simplified Content
 
@@ -99,7 +99,7 @@ High-priority gaps:
 - `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, `ICD_soviet_collapse_focus_tree`: each needs expansion from 18-focus survival stubs into distinct political, industry, military, expansion, and identity branches. Do not bulk-generate; write country-specific route families.
 - `DSC_soviet_collapse_focus_tree`: the dead congress concept should receive recruitable population, legitimacy-through-dead-records flavor, manpower mobilization, and aggressive neighbor claims/war goals. Current depth is not enough for the user requirement.
 - `OGB_soviet_collapse_focus_tree`: add a real identity-driven route family. Current 23-focus depth is not enough for an OP chaos-country branch.
-- Ancient `KZR`, `SOG`, `KHW`, `ALN`: expand from 16 focuses to proper branch sets. Recommended branches: restoration legitimacy, modern administrative survival, caravan/water/pass economy, relic-guard or warrior military, neighbor claim/core aggression, and a final survival/empire payoff.
+- Ancient `APX`, `SOG`, `ANX`, `ABX`: expand from 16 focuses to proper branch sets. Recommended branches: restoration legitimacy, modern administrative survival, caravan/water/pass economy, relic-guard or warrior military, neighbor claim/core aggression, and a final survival/empire payoff.
 - Ukraine layout: same-row close pairs and remaining route crossings need a hand layout pass. Priority focus ids:
 	- `ukr_soviet_collapse_peasant_socialist_congress` at x15 y7 and `ukr_soviet_collapse_coalition_of_three_ministries` at x16 y7.
 	- `ukr_soviet_collapse_rural_deputy_bloc` at x16 y8 and `ukr_soviet_collapse_workers_congress_in_kharkiv` at x17 y8.
@@ -168,7 +168,7 @@ Remaining review risks:
 	- Ukraine: `ukr_soviet_collapse_free_soil_compromise`, `ukr_soviet_collapse_last_harvest_plan`.
 	- Breakaway: `soviet_collapse_stabilize_food_and_currency`, `soviet_collapse_rail_hub_or_mountain_pass`, `soviet_collapse_armed_neutrality`.
 	- Factory successors: several `CFR_*`, `MFR_*`, and `OGB_*` OR-convergence points.
-	- Ancient restorations: `KZR_khazar_charter`, `SOG_sogdian_city_charter`, `KHW_khwarazmian_water_charter`, `ALN_alan_pass_charter`.
+	- Ancient restorations: `APX_khazar_charter`, `SOG_sogdian_city_charter`, `ANX_khwarazmian_water_charter`, `ABX_alan_pass_charter`.
 
 Recommendation:
 - Do not convert every OR prerequisite into AND. Vanilla focus trees use OR groups heavily. Instead, map each route visually, then add or adjust route-lock `available` blocks, mutual exclusions, or x/y placement only where the route meaning is ambiguous.

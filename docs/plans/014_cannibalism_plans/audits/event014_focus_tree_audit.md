@@ -1,5 +1,10 @@
 # Event 014 focus-tree audit
 
+> **Superseded snapshot (2026-07-15).** This 2026-07-11 audit predates the
+> focus, asset, localisation, and gameplay closure passes. Do not use its
+> incomplete counts or missing-asset findings for current status; use the
+> consolidated Event 014 focus audit and package status instead.
+
 Date: 2026-07-11  
 Mode: read-only audit; no gameplay, localisation, interface, or asset files were edited  
 Status: **incomplete — no completion claim**

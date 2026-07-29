@@ -84,7 +84,7 @@ Many chaos successor trees have strong names but few direct aggressive surfaces.
 - `NRF_northern_revenant_fleet`
 - `ICD_commissariat_without_end`
 
-The 47-focus custom splinter trees mostly rely on shared identity helpers and have no direct decision or wargoal unlocks in many cases. Examples with zero direct decision unlocks in the parsed counts include `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`; `ARD` and `NLC` have only a small amount of direct decision surfacing.
+The 47-focus custom splinter trees mostly rely on shared identity helpers and have no direct decision or wargoal unlocks in many cases. Examples with zero direct decision unlocks in the parsed counts include `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`; `ARD` and `NLC` have only a small amount of direct decision surfacing.
 
 The 18-focus high-chaos trees are particularly shallow:
 
@@ -109,7 +109,7 @@ Counts of prerequisite focuses without `relative_position_id`:
 
 Highest-risk line-crossing clusters:
 
-- Ancient symbolic/expansion forks: `KZR_symbolic_crossing_state` / `KZR_expansionist_steppe_levy`, `SOG_symbolic_city_league` / `SOG_expansionist_merchant_claims`, `KHW_symbolic_oasis_authority` / `KHW_expansionist_water_claims`, `ALN_symbolic_pass_principality` / `ALN_expansionist_mountain_claims`.
+- Ancient symbolic/expansion forks: `APX_symbolic_crossing_state` / `APX_expansionist_steppe_levy`, `SOG_symbolic_city_league` / `SOG_expansionist_merchant_claims`, `ANX_symbolic_oasis_authority` / `ANX_expansionist_water_claims`, `ABX_symbolic_pass_principality` / `ABX_expansionist_mountain_claims`.
 - `CFR_soviet_collapse_focus_tree`: 31 heuristic crossing risks around `CFR_elect_the_site_committees`, `CFR_publish_the_planners_charter`, `CFR_invite_the_foreign_contract_board`, `CFR_the_concrete_committee`.
 - `soviet_collapse_baltic_focus_tree`: 13 crossing risks around `baltic_soviet_collapse_legal_continuity_government`, `baltic_soviet_collapse_military_border_government`, `baltic_soviet_collapse_baltic_league_first`, `baltic_soviet_collapse_foreign_protection_council`.
 - `soviet_collapse_central_asia_focus_tree`: 12 crossing risks around `central_asia_soviet_collapse_local_republic_council`, `central_asia_soviet_collapse_military_border_authority`, `central_asia_soviet_collapse_clear_the_mountain_bands`, `central_asia_soviet_collapse_negotiate_with_the_mountain_bands`.
@@ -158,7 +158,7 @@ Heuristic filter mismatch count: 308. This includes false positives where helper
 
 Representative mismatches:
 
-- `KZR_old_border_files`, `SOG_old_city_border_files`, `KHW_old_oasis_border_files`, `ALN_old_pass_border_files`: focus filters emphasize annexation but rewards also unlock decisions and build industry/logistics.
+- `APX_old_border_files`, `SOG_old_city_border_files`, `ANX_old_oasis_border_files`, `ABX_old_pass_border_files`: focus filters emphasize annexation but rewards also unlock decisions and build industry/logistics.
 - `PRA_omsk_station_guard`, `PRA_count_the_locomotives`, `PRA_repair_crews_without_ministries`, `PRA_armored_train_schools`: decision/industry effects are not consistently reflected.
 - `CFR_the_builder_state_marches_east`: annexation/industry focus also has political/AI-strategy effects.
 - `MFR_factory_guard_columns` and `MFR_workers_own_the_arsenal`: military/manpower filters miss industry effects.

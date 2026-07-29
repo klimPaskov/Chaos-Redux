@@ -59,7 +59,7 @@ This tranche is not a complete Event 006 integration claim. The repeatable Event
   - Selects public armed-state, host-distribution, and earlier-network report prose from the committed ledger.
 - `localisation/english/006_independence_wave_l_english.yml`
   - Final opening-wave report text and dynamic summary clauses.
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
   - Documents standalone/joint dispatch and the post-commit presentation ledger.
 - `docs/assets/006_independence_wave/generated_event_scenes_gfx_handoff.md`
   - Records the final report/news/super-event sprite registration and current wiring status.

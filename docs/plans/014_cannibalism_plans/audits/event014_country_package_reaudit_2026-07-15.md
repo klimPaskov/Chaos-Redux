@@ -84,7 +84,7 @@ Exact manual profile plan and consumption matrix:
 - `common/decisions/014_cannibalism_warlord_decisions.txt:360-412` has one paid origin operation for each live origin.
 - `common/ideas/014_cannibalism_ideas.txt:49-123` has three starting origin ideas and three origin upgrades.
 - `common/country_leader/014_cannibalism_traits.txt:9-25` has three origin leader traits.
-- A case-insensitive runtime search across `common/`, `events/`, `history/`, `interface/`, and `localisation/` found zero removed Prison Host, origin-prison, Lockhouse, or fixed CBG/CBH prison identifiers. Generic prison nodes, prisoner objectives, and prisoner logistics remain because they are baseline Event 014 content, not a fourth country origin.
+- A case-insensitive runtime search across `common/`, `events/`, `history/`, `interface/`, and `localisation/` found zero removed Prison Host, origin-prison, Lockhouse, or fixed AMX/CBH prison identifiers. Generic prison nodes, prisoner objectives, and prisoner logistics remain because they are baseline Event 014 content, not a fourth country origin.
 
 ### Territory, forces, technology, ideas, and paid reinforcement
 
@@ -126,7 +126,7 @@ Exact manual profile plan and consumption matrix:
 - `localisation/english/014_cannibalism_l_english.yml:405-419` resolves the eight internal slot tokens and seven region tokens.
 - `interface/014_cannibalism.gfx:161-224` registers eight portrait names per slot. The generic and Europe names share the Europe DDS, producing 64 registrations backed by 56 distinct regional files.
 - All 56 expected warlord DDS files exist. Every file is 156 by 210. All 56 SHA-256 hashes are unique.
-- The CBA-CBD and CBE-CBH contact sheets were visually rechecked. They show distinct bald male warlords. CBG and CBH have no prison cell, bars, cage, restraints, or prisoner-uniform direction. The required CBA South America skull-lick portrait is present.
+- The CBA-AIX and CBE-CBH contact sheets were visually rechecked. They show distinct bald male warlords. AMX and CBH have no prison cell, bars, cage, restraints, or prisoner-uniform direction. The required CBA South America skull-lick portrait is present.
 - All 120 expected CBA-CBH flag files exist. This is eight tags times five ideology filenames times three sizes. Header checks found zero dimension mismatch at 82 by 52, 41 by 26, and 10 by 7.
 
 ### AI, cleanup, and reuse

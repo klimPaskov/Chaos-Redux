@@ -46,17 +46,17 @@ Counts:
 | High | PRA authority route | `common/national_focus/005_soviet_collapse_custom_splinters.txt:1209` `PRA_the_timetable_declares_authority`; `:1351` `PRA_the_board_overrules_ministers`; `:1382` `PRA_armored_train_directorate`; `:1549` `PRA_passport_of_the_moving_state`; `:1746` `PRA_flags_on_every_station` | These call `soviet_collapse_update_pra_authority_idea`. Helper at `common/scripted_effects/005_soviet_collapse_effects.txt:7478` removes three competing PRA ideas and adds one of four authority ideas depending on flags. This is controlled, but still risks repeated national-spirit notification churn if route flags change often or decisions call it again. |
 | Medium | Republic recovery helper users | `common/national_focus/005_soviet_collapse_republics.txt:3654`, `:3698`; `common/national_focus/005_soviet_collapse_custom_splinters.txt:537`, `:14291`, `:14456`, `:15488`, `:17989`, `:24952`, `:25057`, `:25088`, `:25401` | `soviet_collapse_add_republic_focus_recovery_progress` at `common/scripted_effects/005_soviet_collapse_effects.txt:4670` gates one application only with a temp variable, so it does not persistently prevent repeated focus-stage applications. It also removes startup-disorder ideas once thresholds are met. |
 | Medium | Starting tension cleanup helper | `common/national_focus/005_soviet_collapse_factory_successors.txt:1221` `OGB_the_council_takes_the_seal`; `common/national_focus/005_soviet_collapse_custom_splinters.txt:1363`, `:1963`, `:2391`, `:2882`, `:3438`, `:3944` | `soviet_collapse_clear_focus_starting_tension_ideas` at `common/scripted_effects/005_soviet_collapse_effects.txt:5578` removes 7 possible starting-tension ideas. It is hidden and `has_idea` guarded, but broad. |
-| High | Ancient returned-name endgames | `KZR_returned_names_endgame` `:348`; `SOG_returned_names_endgame` `:737`; `KHW_returned_names_endgame` `:1130`; `ALN_returned_names_endgame` `:1517` | Each calls `soviet_collapse_apply_focus_legal_recognition`, `soviet_collapse_spawn_custom_splinter_assault_columns`, `soviet_collapse_apply_custom_splinter_expansion_claims`, and `soviet_collapse_apply_high_chaos_neighbor_expansion_plan` in one reward. |
-| High | Ancient route-final war focuses | `KZR_road_beyond_the_caspian` `:371`; `SOG_cities_beyond_the_desert` `:760`; `KHW_delta_without_a_center` `:1153`; `ALN_every_pass_a_border` `:1541` | Each repeats the assault-columns, expansion-claims, and neighbor-expansion helper trio after the preceding endgame can already grant similar power. |
+| High | Ancient returned-name endgames | `APX_returned_names_endgame` `:348`; `SOG_returned_names_endgame` `:737`; `ANX_returned_names_endgame` `:1130`; `ABX_returned_names_endgame` `:1517` | Each calls `soviet_collapse_apply_focus_legal_recognition`, `soviet_collapse_spawn_custom_splinter_assault_columns`, `soviet_collapse_apply_custom_splinter_expansion_claims`, and `soviet_collapse_apply_high_chaos_neighbor_expansion_plan` in one reward. |
+| High | Ancient route-final war focuses | `APX_road_beyond_the_caspian` `:371`; `SOG_cities_beyond_the_desert` `:760`; `ANX_delta_without_a_center` `:1153`; `ABX_every_pass_a_border` `:1541` | Each repeats the assault-columns, expansion-claims, and neighbor-expansion helper trio after the preceding endgame can already grant similar power. |
 | High | High-chaos helper chain | `common/scripted_effects/005_soviet_collapse_effects.txt:9127`, `:10392` | `soviet_collapse_apply_focus_chaos_assault_plan` grants mobile columns and, for high-chaos successors, custom assault columns, claims, neighbor expansion, and identity payload. `soviet_collapse_apply_focus_high_chaos_identity` then calls high-chaos payload logic and SOV conquer strategy. |
 
 ### Shallow Or Mechanically Disconnected Trees
 
 | Tree group | Evidence | Audit finding |
 | --- | --- | --- |
-| Ancient restorations: `KZR`, `SOG`, `KHW`, `ALN` | 16 focuses each; 2 decision links each | The four trees have compact political/industry/military/expansion signals but are still too small for major event-created successor fantasies. Their expansion payoff is concentrated in 2-4 late focuses and helper bursts. |
+| Ancient restorations: `APX`, `SOG`, `ANX`, `ABX` | 16 focuses each; 2 decision links each | The four trees have compact political/industry/military/expansion signals but are still too small for major event-created successor fantasies. Their expansion payoff is concentrated in 2-4 late focuses and helper bursts. |
 | 18-focus high-chaos trees: `TSC`, `RMC`, `ICD` | `TSC` 1 decision link, `RMC` 1, `ICD` 1 | Strong identity names exist, but route depth remains narrow. `DSC` and `NRF` are better because they have 10 and 6 decision links respectively. |
-| 47-focus custom splinters with zero decision links | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC` | These trees often have bespoke categories or generic breakaway decisions available elsewhere, but the focus trees do not stage or evolve decision play. They read like reward ladders rather than trees that unlock mechanics over time. |
+| 47-focus custom splinters with zero decision links | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC` | These trees often have bespoke categories or generic breakaway decisions available elsewhere, but the focus trees do not stage or evolve decision play. They read like reward ladders rather than trees that unlock mechanics over time. |
 | Republic generic trees | `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_moldova_focus_tree` all have 0 focus-staged decision links | These need focus-driven decision phases. Moldova and Baltic especially have enough route concepts that their trees should unlock route-specific action sets. |
 | Large republics with thin expansion | `soviet_collapse_baltic_focus_tree`: 0 expansion foci; `soviet_collapse_belarus_focus_tree`: 0; `soviet_collapse_kazakhstan_focus_tree`: 0; `soviet_collapse_moldova_focus_tree`: 0 | These are large or medium trees but do not visibly deliver map ambitions through focuses. They need claims, cores, intervention, settlement, league, or border-decision routes. |
 
@@ -65,9 +65,9 @@ Counts:
 The strongest chaos payloads are technically dangerous, but many chaos-country trees do not consistently meet the requested fantasy of extremely dangerous, overpowered, aggressive, identity-specific successors.
 
 Worst gaps:
-- `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC`: zero focus-staged decision links despite high-chaos or militant identities.
+- `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC`: zero focus-staged decision links despite high-chaos or militant identities.
 - Most 47-focus custom splinters have only 2-3 expansion foci, usually `*_enemy_front` and `*_war_plan`.
-- Many extreme-route focuses such as `FTH_extreme_gate`, `BSC_extreme_gate`, `UDC_extreme_gate`, `SDZ_extreme_gate`, `GAC_extreme_gate`, `DHC_extreme_gate`, `KHC_extreme_gate`, `FEV_extreme_gate`, `SZA_extreme_gate`, `UWD_extreme_gate`, `MRC_extreme_gate`, `IUL_extreme_gate`, `BAC_extreme_gate`, `ARD_extreme_gate`, and `NLC_extreme_path` rely on generic high-chaos helpers rather than country-specific mechanics or staged decisions.
+- Many extreme-route focuses such as `FTH_extreme_gate`, `AEX_extreme_gate`, `UDC_extreme_gate`, `SDZ_extreme_gate`, `GAC_extreme_gate`, `DHC_extreme_gate`, `KHC_extreme_gate`, `FEV_extreme_gate`, `SZA_extreme_gate`, `UWD_extreme_gate`, `MRC_extreme_gate`, `IUL_extreme_gate`, `ADX_extreme_gate`, `ARD_extreme_gate`, and `NLC_extreme_path` rely on generic high-chaos helpers rather than country-specific mechanics or staged decisions.
 
 ## Focus Filter Issues
 
@@ -76,7 +76,7 @@ Top mismatch counts from the parser:
 | Tree | Mismatch count | Representative focus ids |
 | --- | ---: | --- |
 | `soviet_collapse_ukraine_focus_tree` | 20 | `ukr_soviet_collapse_emergency_rada`, `ukr_soviet_collapse_seal_the_grain_ledgers`, `ukr_soviet_collapse_first_republican_line` |
-| `KRS_soviet_collapse_focus_tree` | 18 | `KRS_war_plan`, `KRS_sailors_assembly_registers`, `KRS_petrograd_signal_watch` |
+| `AOX_soviet_collapse_focus_tree` | 18 | `AOX_war_plan`, `AOX_sailors_assembly_registers`, `AOX_petrograd_signal_watch` |
 | `soviet_collapse_kazakhstan_focus_tree` | 17 | `kaz_soviet_collapse_karaganda_emergency_board`, `kaz_soviet_collapse_oil_field_protection_orders`, `kaz_soviet_collapse_rail_to_the_mines` |
 | `NLC_soviet_collapse_focus_tree` | 16 | `NLC_diplomatic_plan`, `NLC_station_mediation`, `NLC_extreme_gate` |
 | `GAC_soviet_collapse_focus_tree` | 15 | `GAC_grain_passage_papers`, `GAC_rural_congress_charter`, `GAC_forest_radio_runners` |
@@ -90,16 +90,16 @@ Common pattern: rewards add manpower, equipment, buildings, stability, war suppo
 No exact duplicate focus coordinates were found. Continuous focus panels appear outside the nearest node clusters. The closest panel case is `soviet_collapse_breakaway_focus_tree`, whose continuous position maps to grid `(30.0, 1.4)` and is about 4.0 grid units from `soviet_collapse_home_industry_contracts`; this is a watch item, not an immediate collision.
 
 Worst crossed-line or tight-node examples:
-- `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `KZR_caspian_road_markets -> KZR_league_transit_bargain` crosses `KZR_customs_workshop_compact -> KZR_old_border_files`; similar crossing patterns repeat for `SOG`, `KHW`, and `ALN`.
+- `common/national_focus/005_soviet_collapse_ancient_restorations.txt`: `APX_caspian_road_markets -> APX_league_transit_bargain` crosses `APX_customs_workshop_compact -> APX_old_border_files`; similar crossing patterns repeat for `SOG`, `ANX`, and `ABX`.
 - `common/national_focus/005_soviet_collapse_custom_splinters.txt`: `PRA_omsk_station_guard -> PRA_armored_train_directorate` crosses `PRA_count_the_locomotives -> PRA_repair_crews_without_ministries`.
-- `BSC`, `TNC`, `UDC`, `SDZ`, `GAC`, `DHC`, and `KHC` have multiple crossed lines between military, diplomacy, and settlement branches.
+- `AEX`, `TNC`, `UDC`, `SDZ`, `GAC`, `DHC`, and `KHC` have multiple crossed lines between military, diplomacy, and settlement branches.
 - `common/national_focus/005_soviet_collapse_republics.txt`: Baltic, Caucasus, Central Asia, Moldova, Belarus, and Kazakhstan trees all have multiple crossed prerequisite lines in dense route-fork areas.
-- Many compact trees place route successors one grid apart, for example `KZR_returned_names_endgame` and `KZR_road_beyond_the_caspian`, or `FTH_first_guard` and `FTH_legitimacy`. This is readable only if the focus icons and tooltips remain short.
+- Many compact trees place route successors one grid apart, for example `APX_returned_names_endgame` and `APX_road_beyond_the_caspian`, or `FTH_first_guard` and `FTH_legitimacy`. This is readable only if the focus icons and tooltips remain short.
 
 ## Focus-To-Decision And Mechanic Disconnects
 
 Decision-link counts by focus tree confirm the gap:
-- 0 links: `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `NLC`, `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_moldova_focus_tree`.
+- 0 links: `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `NLC`, `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_baltic_focus_tree`, `soviet_collapse_moldova_focus_tree`.
 - Low links: `TSC` 1, `RMC` 1, `ICD` 1, `caucasus` 2, `central_asia` 3, `MFR` 3.
 - Stronger examples: `PRA` 14, `DSC` 10, `UKR` 10, `CFR` 8, `NRF` 6, `OGB` 5, `KAZ` 5.
 
@@ -109,7 +109,7 @@ Decision categories exist for generic breakaways, regional factions, and several
 
 ### Immediate Safe Patches
 
-- Fix `search_filters` on the highest mismatch trees first: `UKR`, `KRS`, `KAZ`, `NLC`, `GAC`, `ARD`, `central_asia`.
+- Fix `search_filters` on the highest mismatch trees first: `UKR`, `AOX`, `KAZ`, `NLC`, `GAC`, `ARD`, `central_asia`.
 - Add persistent one-time guards around high-chaos helper bundles that grant custom assault columns, cores, claims, and neighbor war plans. Start with ancient endgames and any focus that combines `soviet_collapse_apply_focus_high_chaos_identity` with endgame helpers.
 - Harden `soviet_collapse_update_pra_authority_idea` so it changes ideas only when the desired authority stage changes. Prefer a staged flag or current-stage variable over removing non-current ideas on every call.
 - Review compact layout crossings in ancient trees and dense republic forks. These are coordinate-only patches and should not change gameplay.

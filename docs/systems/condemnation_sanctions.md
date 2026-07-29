@@ -109,7 +109,7 @@ Severity then multiplies the source value:
 | Mass death | `1.75` |
 | Doomsday | `2.50` |
 
-Active inspections disclose `10%` of each remaining hidden bucket on each targeted monthly pulse. Active observers disclose `5%` of each remaining hidden bucket. The exposed amount becomes public, updates recent gain, records a public source entry, recalculates the tier, and can refresh participants.
+Active inspections disclose `10%` of each remaining hidden bucket on each targeted monthly pulse. Active observers disclose `5%` of each remaining hidden bucket. Chemical disclosure applies that fraction independently to the offender's append-only exact action rows and transfers only the amount reconciled to those rows; unmatched aggregate Chemical liability remains hidden rather than being assigned to an inferred action. The exposed amount becomes public, updates recent gain, records a public source entry, recalculates the tier, and can refresh participants.
 
 Camp operation, restricted-site operation, and concealment effects accumulate canonical hidden atrocity or cover-up evidence before discovery. A camp or restricted-site discovery exposes `100%` of the stored hidden atrocity and cover-up buckets, then adds the public discovery source calculated for that state.
 
@@ -472,8 +472,11 @@ Participant AI is automatic and score-driven:
 Condemned-target decision AI uses the visible decision conditions:
 
 - a non-major with fewer than `12` factories is explicitly classified as weak, while a major or a country with at least `50` factories is explicitly classified as strong
-- democracies and countries at peace favor inspections, stockpile destruction, compensation, pledges, observers, and command reform
-- fascist countries, majors, and countries at war favor refusal, forced extraction, hardline mobilization, and evasion
+- democratic, import-dependent countries under formal censure favor inspections, stockpile destruction, compensation, pledges, observers, and command reform
+- non-democratic industrial majors without an unrestricted route favor denial, partial compliance, and autarky
+- radical high-chaos countries require an explicit unrestricted route before they favor refusal, propaganda, hardline mobilization, black-market procurement, and a more willing allied shield
+- an unrestricted country near victory gains an additional defiance preference only when at least one actual enemy has reached the centralized native surrender-progress threshold
+- a country near capitulation destroys chemical and biological stockpiles when it lacks the explicit doomsday route or extreme-use policy; the separate doomsday decision remains responsible when that authorization exists
 - a severe visible recent source increases both compliance and selected defiance weights, while Tier 5 or Tier 6 adds further compliance pressure
 - high import vulnerability favors autarky and substitute materials
 - high fuel vulnerability favors covert fuel routes
@@ -481,7 +484,7 @@ Condemned-target decision AI uses the visible decision conditions:
 
 The explicit classifiers add `+35` compliance and `-20` defiance weight for weak targets, with the signs reversed for strong targets.
 
-Human players see three zero-cost view selectors for compliance, defiance, and evasion. The selectors only curate the visible decision list; AI countries continue to evaluate all eligible actions. Participant actions remain in their own targeted category.
+Human players see three zero-cost view selectors for compliance, defiance, and evasion. The selectors only curate the visible decision list; AI countries continue to evaluate all eligible target-response actions. Participant decisions remain player controls with zero AI weight because `condemnation_recalculate_participants` already owns AI sanction, abstention, carve-out, breach, enforcement, shielding, escalation, and withdrawal behavior. Enabling both surfaces would duplicate the same pair action.
 
 ## Decay and memory
 
@@ -663,7 +666,7 @@ These are expected results from the current implementation. They are not a claim
 | 10 | A country reaches Tier 5 with no shielding and high trade dependency | Eligible participants scoring at least `120` can apply total sanctions. The target's import vulnerability magnifies strategic penalties, and isolation-economy penalties scale with weighted severity. |
 | 11 | A neutral trader has high dependency | Dependency strongly reduces participant score. At `40` or more estimated dependency, the AI can record abstention when no sanction applies. |
 | 12 | A neutral trader quietly breaches sanctions and is exposed | An active AI pair can create a `120` day quiet breach when estimated dependency is at least `40` after dependency relief and score is below `105`. Exposure removes the breach, adds coverup condemnation to target and participant, and applies breach opinion damage. |
-| 13 | A condemned country accepts inspections and destroys stockpiles | Inspections add burden and decay credit while exposing `10%` of hidden evidence per pulse. Stockpile decisions remove `75%` of the matching stock and add source-specific restriction and further credit. |
+| 13 | A condemned country accepts inspections and destroys stockpiles | Inspections add burden and decay credit while exposing `10%` of hidden evidence per pulse. Chemical exposure is reconciled row by row against exact recorded actions and never allocated to a guessed record. Stockpile decisions remove `75%` of the matching stock and add source-specific restriction and further credit. |
 | 14 | A condemned country breaks a non-use pledge | The pledge clears. The country gains `365` days of broken-pledge memory, `35` coverup, `25` repeat pressure, and zero public decay while the memory flag remains. |
 | 15 | A condemned country repeatedly uses black-market procurement | Each route increases evasion pressure and exposure. Exposure decays by `25%` per pulse, but the monthly discovery chance is exposure plus `5`. Discovery adds public coverup pressure. |
 | 16 | A participant stops sanctions after tier decay or fatigue | AI recalculation clears a pair when the target no longer supports the pair tier, the score no longer supports enforcement, or fatigue reaches `75` while score is below `155`. Pair variables, AI strategies, relation rules, modifiers, opinion support, and the condemnation native-embargo claim are cleaned. Other native owners remain intact. Clearing a pair reduces participant fatigue by `15`, and clearing the final pair resets it to zero. |

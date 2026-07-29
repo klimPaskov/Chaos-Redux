@@ -47,7 +47,7 @@ pending.
   - retained FORM-06 through FORM-47 (including FORM-42) fail-closed and the
     overall incomplete status;
   - recorded the queued IW043/IW058 package/achievement addendum.
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
   - added the current Pacific promotion ledger, allocator/tag-scan evidence,
     asset boundaries, and pending completion-audit note;
   - updated the dangerous-milestone hidden-formable wording so FORM-48 is
@@ -61,7 +61,7 @@ pending.
   - explicitly records zero custom Event 006 advisor icon assets/sprites/
     portrait blocks. The two accepted male large country-leader portraits are
     separate assets; no advisor icon requirement was added.
-- `docs/systems/006_independence_wave_formable_registry.md`
+- `docs/events/006_independence_wave/systems/formable_registry.md`
   - changed the registry status to distinguish promoted FORM-01 through FORM-05
     and FORM-48 from fail-closed FORM-06 through FORM-47;
   - added the current FORM-48 adapter contract and historical-handoff note.

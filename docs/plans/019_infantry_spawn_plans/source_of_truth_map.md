@@ -13,9 +13,9 @@ completion audit is PASS with P0/P1/P2 = 0, and Event 019 and SCN-013 are
    `review/blockers_and_uncertainty.md` and `review/spec_completion_audit.md`
    carry the live gates and planning-only qualification.
 2. Player-facing feature status is summarized by
-   `docs/events/019_infantry_spawn.md` and
+   `docs/events/019_infantry_spawn/overview.md` and
    `docs/systems/triggerable_scenarios.md`.
-   `docs/systems/019_infantry_spawn_triggerable_scenario.md` is the SCN-013
+   `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` is the SCN-013
    implementation-facing documentation.
 3. Asset status is owned by
    `docs/assets/019_infantry_spawn/manifest.md` and

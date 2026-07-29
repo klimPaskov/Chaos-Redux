@@ -55,14 +55,14 @@ These are the worst representatives of the repeated `add_stability` + `soviet_co
 5. `OGB_guard_the_old_capital` at `common/national_focus/005_soviet_collapse_factory_successors.txt:1502`
 6. `soviet_collapse_neutrality_under_pressure` at `common/national_focus/005_soviet_collapse_republics.txt:2777`
 7. `internal_soviet_collapse_write_the_autonomy_statute` at `common/national_focus/005_soviet_collapse_republics.txt:3231`
-8. `BSC_anti_puppet_caravan_clause` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:5165`
+8. `AEX_anti_puppet_caravan_clause` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:5165`
 9. `caucasus_soviet_collapse_the_border_faiths_and_nations` at `common/national_focus/005_soviet_collapse_republics.txt:5658`
 10. `caucasus_soviet_collapse_mountain_federal_compact` at `common/national_focus/005_soviet_collapse_republics.txt:5729`
 11. `caucasus_soviet_collapse_capital_claims_the_valleys` at `common/national_focus/005_soviet_collapse_republics.txt:5898`
 12. `TNC_samarkand_bukhara_legitimacy` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:5991`
 13. `caucasus_soviet_collapse_the_passes_vote` at `common/national_focus/005_soviet_collapse_republics.txt:6263`
 14. `central_asia_soviet_collapse_samarkand_letters` at `common/national_focus/005_soviet_collapse_republics.txt:6673`
-15. `ALA_local_district_registers` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:7114`
+15. `AAX_local_district_registers` at `common/national_focus/005_soviet_collapse_custom_splinters.txt:7114`
 16. `moldova_soviet_collapse_bessarabian_legal_files` at `common/national_focus/005_soviet_collapse_republics.txt:7697`
 17. `moldova_soviet_collapse_ministry_seals` at `common/national_focus/005_soviet_collapse_republics.txt:8126`
 18. `moldova_soviet_collapse_constitutional_sfat` at `common/national_focus/005_soviet_collapse_republics.txt:8203`
@@ -98,7 +98,7 @@ Continuous panel note:
 
 Most severe identity gaps:
 
-- Generic custom splinters (`TNC`, `ALA`, `BBH`, `KRS`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC`) share many identical helper names: `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `special_arm`, `enemy_front`, `civil_rule`, `propaganda`, `settlement`, `hidden_doctrine`, `extreme_gate`.
+- Generic custom splinters (`TNC`, `AAX`, `BBH`, `AOX`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC`) share many identical helper names: `first_guard`, `stores`, `legitimacy`, `rival`, `doctrine`, `economy`, `league`, `foreign`, `special_arm`, `enemy_front`, `civil_rule`, `propaganda`, `settlement`, `hidden_doctrine`, `extreme_gate`.
 - Many custom splinter identity helpers at `common/scripted_effects/005_soviet_collapse_effects.txt:13873-13945` are wrappers with no immediate visible country package change. The payloads may update variables/ideas, but focuses do not reliably change leaders, cosmetic tags, advisors, laws, decision categories, or diplomatic behavior.
 - Branches often read as reward ladders: legal/recognition ladder, depot ladder, military ladder, foreign ladder, league ladder. They need country-specific unlocks at branch milestones.
 - Political branches rarely route into expansion/industry/decision surfaces strongly enough. A focus that chooses a legal, military, league, foreign, or high-chaos identity should alter later expansion, cores, war decisions, unit templates, and AI strategies.

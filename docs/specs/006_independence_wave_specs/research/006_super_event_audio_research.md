@@ -22,9 +22,9 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 **Selected in-game segment:** 00:23 to 02:13, 110 seconds.
 
-**Edit plan:** Preserve the original source. Trim to the selected segment, apply a 1.5 second fade-in and 2 second fade-out, normalize loudness conservatively, and export at 44.1 kHz Ogg Vorbis.
+**Edit plan:** Preserve the original source. Trim to the selected segment, apply a 1.5 second fade-in and 2 second fade-out, normalize loudness conservatively, and export as a 44.1 kHz stereo WAV.
 
-**Final path:** `music/006_independence_wave/super_event_006_01_league_of_new_states.ogg`
+**Final path:** `sound/006_independence_wave/super_event_006_01_league_of_new_states.wav`
 
 **Suggested audio ID:** `6001`, subject to the implementation collision check.
 
@@ -50,9 +50,9 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 **Selected in-game segment:** Final 110 seconds, precisely 10:44.641 to 12:34.641.
 
-**Edit plan:** Preserve the original source. Trim the final 110 seconds, apply a 1.5 second fade-in and 2 second fade-out, control the loudest peaks so the cue does not overwhelm the super-event UI, and export at 44.1 kHz Ogg Vorbis.
+**Edit plan:** Preserve the original source. Trim the final 110 seconds, apply a 1.5 second fade-in and 2 second fade-out, control the loudest peaks so the cue does not overwhelm the super-event UI, and export as a 44.1 kHz stereo WAV.
 
-**Final path:** `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg`
+**Final path:** `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 
 **Runtime audio ID:** `6002`; the implementation collision check found no conflicting super-event audio registration.
 
@@ -64,10 +64,7 @@ Two distinct musical selections remain accepted. Their recording-rights status i
 
 ## Production handoff status
 
-The cleared `6002` derivative has been produced from the preserved source,
-post-encode verified, and registered through the unique music and sound wrapper
-families. Its exact measurements and checksums are recorded in
-`../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
+The cleared `6002` derivative has been produced from the preserved source, post-encode verified, and registered through the unique sound wrapper family. Its exact measurements and checksums are recorded in `../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
 The dangerous-bloc firing effect submits audio ID `6002` and display slot 24 to
 the shared settings-aware FIFO; the dispatcher assigns the ID when the entry
 becomes visible and calls the playback helper. `6001` remains unwired until its

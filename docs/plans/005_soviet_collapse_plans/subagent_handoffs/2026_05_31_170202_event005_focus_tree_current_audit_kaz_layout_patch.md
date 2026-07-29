@@ -78,17 +78,17 @@ No rewards, prerequisites, mutual exclusions, availability, bypasses, AI weights
 | Moldova | `soviet_collapse_moldova_focus_tree`, `005_soviet_collapse_republics.txt:7566`, 48 focuses | Simplified | Dniester/Romanian/Ukrainian corridor concepts exist, but no direct focus-file hooks detected and 47 focuses call helper effects. |
 | Belarus | `soviet_collapse_belarus_focus_tree`, `005_soviet_collapse_republics.txt:8709`, 53 focuses | Partial | Rail/forest/corridor identity exists. Still has 31 small reward focuses and needs more direct rail authority, League freight, and corridor decision surfaces. |
 | Kazakhstan | `soviet_collapse_kazakhstan_focus_tree`, `005_soviet_collapse_republics.txt:10028`, 92 focuses | Broad but reward-heavy | Layout selector spacing patched. Resource, Alash, socialist, steppe, and League branches remain helper-heavy, with 86 helper focuses. |
-| Full custom splinters | `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, `ARD`, `NLC` in `005_soviet_collapse_custom_splinters.txt` | Present but template-like | Most have 47 focuses, but many have zero direct focus-file hooks and heavy generic helper/stat reward patterns. |
+| Full custom splinters | `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, `ARD`, `NLC` in `005_soviet_collapse_custom_splinters.txt` | Present but template-like | Most have 47 focuses, but many have zero direct focus-file hooks and heavy generic helper/stat reward patterns. |
 | Compact crisis splinters | `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, `ICD` in `005_soviet_collapse_custom_splinters.txt` | Shallow | 18-22 focuses. Some direct aggression exists in `PRA`, `DSC`, and `NRF`, but route depth is still below the high-chaos/OP actor expectation. |
 | Factory successors excluding CFR | `OGB_soviet_collapse_focus_tree` at `005_soviet_collapse_factory_successors.txt:1170`; `MFR_soviet_collapse_focus_tree` at `:1778` | Mixed | MFR has 58 focuses and stronger arsenal identity. OGB remains a 23-focus shallow Volga successor. CFR was deliberately not audited for patching or edited. |
-| Ancient restorations | `KZR`, `SOG`, `KHW`, `ALN` in `005_soviet_collapse_ancient_restorations.txt` | Shallow | Each has 16 focuses. They satisfy compact content but not a full political/industry/military/diplomacy/expansion route family standard. |
+| Ancient restorations | `APX`, `SOG`, `ANX`, `ABX` in `005_soviet_collapse_ancient_restorations.txt` | Shallow | Each has 16 focuses. They satisfy compact content but not a full political/industry/military/diplomacy/expansion route family standard. |
 
 ## Missing or Simplified Content
 
 - `PRA_soviet_collapse_focus_tree`, `TSC_soviet_collapse_focus_tree`, `RMC_soviet_collapse_focus_tree`, `DSC_soviet_collapse_focus_tree`, `NRF_soviet_collapse_focus_tree`, and `ICD_soviet_collapse_focus_tree` remain shallow crisis trees at 18-22 focuses.
 - Most 47-focus custom splinters have route labels but no direct focus-file hooks for decisions, war goals, claims, cores, units, factions, cosmetic changes, or AI strategy. This is broad route design, not a safe small patch.
 - `OGB_soviet_collapse_focus_tree` remains a 23-focus successor and is still shallow compared with the OP/high-impact successor expectation.
-- `KZR_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `KHW_soviet_collapse_ancient_focus_tree`, and `ALN_soviet_collapse_ancient_focus_tree` remain 16-focus compact restorations.
+- `APX_soviet_collapse_ancient_focus_tree`, `SOG_soviet_collapse_ancient_focus_tree`, `ANX_soviet_collapse_ancient_focus_tree`, and `ABX_soviet_collapse_ancient_focus_tree` remain 16-focus compact restorations.
 - Republic shared trees still depend heavily on helper effects instead of direct, readable decision/mission/map/unit payoffs.
 
 ## Icon Coverage Table
@@ -119,7 +119,7 @@ Mechanical localisation coverage:
 Reward/localisation mismatch risks:
 
 - `soviet_collapse_breakaway_focus_tree`, `soviet_collapse_internal_republic_focus_tree`, `soviet_collapse_baltic_focus_tree`, and `soviet_collapse_moldova_focus_tree` promise political survival, restoration, and regional settlement but have no direct focus-file decision/war/claim/core/unit/faction hooks by static scan.
-- Full custom splinter trees such as `FTH`, `BSC`, `TNC`, `ALA`, `BBH`, `KRS`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `BAC`, and `NLC` are still likely to feel template-like because direct route mechanics are hidden behind repeated helper families.
+- Full custom splinter trees such as `FTH`, `AEX`, `TNC`, `AAX`, `BBH`, `AOX`, `UDC`, `SDZ`, `GAC`, `DHC`, `KHC`, `FEV`, `SZA`, `UWD`, `MRC`, `IUL`, `ADX`, and `NLC` are still likely to feel template-like because direct route mechanics are hidden behind repeated helper families.
 - Ancient restoration localisation reads distinct, but route depth remains compact and repeated icon families reinforce the shared-template feel.
 - MFR is stronger than most non-CFR factory-successor content, but it still has 57 helper focuses and needs more direct arsenal export/client-state mechanics before final completion.
 
@@ -136,7 +136,7 @@ Reward/localisation mismatch risks:
 1. Expand or explicitly scope down `PRA`, `TSC`, `RMC`, `DSC`, `NRF`, and `ICD` compact crisis trees.
 2. Add direct route payoffs to the 47-focus custom splinters: claims, war goals, targeted decisions, special units, AI strategy, and postwar hooks.
 3. Expand `OGB_soviet_collapse_focus_tree` beyond its 23-focus current shape or document it as intentionally compact.
-4. Expand `KZR`, `SOG`, `KHW`, and `ALN` beyond 16-focus compact restorations if they are expected to be long-lived country identities.
+4. Expand `APX`, `SOG`, `ANX`, and `ABX` beyond 16-focus compact restorations if they are expected to be long-lived country identities.
 5. Reduce helper/list reward feel by replacing repeated helper-only payoffs with existing decisions, missions, state-building effects, units, claims, war goals, and custom tooltips.
 6. Run a repeated-icon identity pass after route structure settles. Do not touch flags/assets unless explicitly scoped by the parent.
 

@@ -13,7 +13,7 @@ Scope: current Event 006 documentation after commits `4ef5f9aa9`, `9b07d12fd`, a
 | Runtime admission | The ten exact compile-time attested packages are IW-001, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-017, IW-019, and IW-184. Live host, anchor, reservation, Event 005 collision, force, chaos-band, and synchronized-transaction gates remain mandatory. |
 | RG-RHINE-SAAR | Only IW-008 RHI and IW-010 AJX may use the shared group together, at capacity two, with distinct anchors 51 and 42. In the installed map both anchors are GER-owned, so same-host cases may share GER's protected-remnant row; no independent-host assumption is made. Both-order, same-host, Event 005, rollback/save-load, exact-ten, and synchronized runtime proof remains open. |
 | Portrait shelf | `docs/assets/006_independence_wave/portraits_generated_png/` contains 49 pre-resize source-derived masters and 83 normalized `156x210` PNGs. `README.md`, `MANIFEST.md`, and `PRE_RESIZE_MANIFEST.md` agree. The shelf is evidence-only and has no advisor, dossier, commander-small, `_small`, or runtime consumer. |
-| FORM-39 | `docs/events/006_form39_melanesian_federation.md` and `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/manifest.md` describe the source-implemented FIJ/PNG/WPG adapter and the `needs_user_review` MFX flag. Six admission inputs and runtime proof remain fail-closed; the flag package is not a readiness fallback. |
+| FORM-39 | `docs/events/006_independence_wave/form39_melanesian_federation.md` and `docs/assets/006_independence_wave/form39_melanesian_federation_identity_2026_07_27/manifest.md` describe the source-implemented FIJ/PNG/WPG adapter and the `needs_user_review` MFX flag. Six admission inputs and runtime proof remain fail-closed; the flag package is not a readiness fallback. |
 | Advisor-art boundary | Event 006 gameplay advisor offices remain asset-neutral. Exactly zero custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier cards, and related runtime DDS consumers are authorized. |
 
 ## Unresolved plan and handoff dispositions
@@ -32,9 +32,9 @@ Scope: current Event 006 documentation after commits `4ef5f9aa9`, `9b07d12fd`, a
 
 ### Resolved in current docs
 
-- `docs/events/006_independence_wave.md` previously said the shared reservation prevented IW-008/IW-010 coexistence in one incident. It now records the exact reciprocal pair at capacity two, distinct anchors, and the installed same-host GER remnant caveat.
+- `docs/events/006_independence_wave/overview.md` previously said the shared reservation prevented IW-008/IW-010 coexistence in one incident. It now records the exact reciprocal pair at capacity two, distinct anchors, and the installed same-host GER remnant caveat.
 - `docs/events/006_independence_wave/northern_western_europe_packages.md` previously repeated same-incident exclusion in the IW-010 runtime sequence. It now records the reciprocal pair exception, distinct anchors, same-host GER remnant sharing, and the one-package rule for all other groups.
-- `docs/events/006_independence_wave.md` previously named the v10 audit as whole-event source-of-truth. It now names v23 as current and v21 as superseded for current disposition.
+- `docs/events/006_independence_wave/overview.md` previously named the v10 audit as whole-event source-of-truth. It now names v23 as current and v21 as superseded for current disposition.
 - The current Event 006 overview and bounded-handoff heading now carry the 2026-07-27 date.
 - `006_independence_wave_resume_packet.md`, `PRE_RESIZE_MANIFEST.md`, and `docs/assets/006_independence_wave/manifest.md` now use the shelf's 49-master/83-normalized count.
 - The FORM-48 plan's eight-ID note is now explicitly historical rather than a competing current attestation set.
@@ -67,7 +67,7 @@ No current prompt file in the named scope carried the stale 48/49 count or the o
 
 Files changed:
 
-- `docs/events/006_independence_wave.md`
+- `docs/events/006_independence_wave/overview.md`
 - `docs/events/006_independence_wave/northern_western_europe_packages.md`
 - `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`
 - `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`

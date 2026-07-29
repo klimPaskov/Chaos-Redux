@@ -40,7 +40,7 @@ All implementation files are new and isolated.
 7. `common/ideas/006_independence_wave_iw005_flanders_ideas.txt`
 8. `common/scripted_localisation/006_independence_wave_iw005_flanders_scripted_localisation.txt`
 9. `localisation/english/006_independence_wave_iw005_flanders_l_english.yml`
-10. `docs/systems/006_independence_wave_iw005_flanders_overlay.md`
+10. `docs/events/006_independence_wave/systems/iw005_flanders_overlay.md`
 11. `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw005_flanders_overlay_implementation_2026_07_16.md`
 
 No shared FORM-03, formable-registry, focus-tree, country-tag, country-history, character, or asset file was edited.

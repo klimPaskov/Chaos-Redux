@@ -14,7 +14,7 @@ No gameplay, localisation, assets, audio, workbook, shared registry, or specific
 
 ## Files created
 
-- `docs/super_events/018_resources_found_super_event_text_research.md`
+- `docs/super_events/018_resources_found/text_research.md`
 - `docs/plans/018_resources_found_plans/subagent_handoffs/super_event_text_researcher_handoff.md`
 
 ## Final selections

@@ -21,7 +21,7 @@ Event Log identity is exactly Event `6`, type `21`, stages `1..5`, tiers `1..5`.
 - `common/scripted_triggers/006_independence_wave_evolution_triggers.txt`
 - `common/scripted_effects/006_independence_wave_evolution_effects.txt`
 - `localisation/english/006_independence_wave_evolutions_l_english.yml`
-- `docs/events/006_independence_wave_evolutions.md`
+- `docs/events/006_independence_wave/evolutions.md`
 - this handoff
 
 ## Files Updated

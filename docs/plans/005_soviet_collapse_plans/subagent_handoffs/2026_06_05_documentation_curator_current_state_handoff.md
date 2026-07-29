@@ -17,7 +17,7 @@ No gameplay, localisation, scripts, focus files, decisions, events, history, AI,
 - `AGENTS.md`
 - `.agents/skills/chaos-redux-subagents/SKILL.md`
 - `.codex/agents/chaosx_documentation_curator.toml`
-- `docs/events/005_soviet_collapse.md`
+- `docs/events/005_soviet_collapse/overview.md`
 - `docs/specs/005_soviet_collapse_specs/*.md`
 - `docs/plans/005_soviet_collapse_plans/*.md`
 - Selected recent handoffs under `docs/plans/005_soviet_collapse_plans/subagent_handoffs/`, especially the June 5 focus/release/CFR handoffs.
@@ -41,7 +41,7 @@ No gameplay, localisation, scripts, focus files, decisions, events, history, AI,
 ## Contradictions Flagged
 
 - Union Unmade terminal release wording conflicts across docs:
-  - `docs/events/005_soviet_collapse.md` and spec part 4 describe exhaustive terminal release sweeps.
+  - `docs/events/005_soviet_collapse/overview.md` and spec part 4 describe exhaustive terminal release sweeps.
   - `2026_06_05_parent_dynamic_release_pacing_and_idea_cleanup_followup.md` says normal Union Unmade no longer calls the exhaustive all-possible helper directly.
 - Older release-floor language is stale compared with current staged, live-pressure-gated active release wording.
 - Spec part 7 requires flags/assets for final completion, but current parent scope forbids flag edits.
@@ -54,8 +54,8 @@ Run only against documentation files inspected or touched:
 
 - `rg --files docs/events docs/specs/005_soviet_collapse_specs docs/plans/005_soviet_collapse_plans | sort`
 - `find docs/specs/005_soviet_collapse_specs docs/plans/005_soviet_collapse_plans -maxdepth 2 -type f -printf '%TY-%Tm-%Td %TH:%TM %p\n' | sort`
-- `rg -n "^#|flag|flags|instantly|instant|immediately|complete|completion|evolution|spreadsheet|release|all republic|all.*release|focus trees?" docs/events/005_soviet_collapse.md docs/specs/005_soviet_collapse_specs docs/plans/005_soviet_collapse_plans -g '*.md'`
-- `rg -n "Current Priority|Legacy Doc Routing|Event Log Evolutions|Union Unmade|Progressive general releases|Focus rewards|Current Gameplay Surface" docs/events/005_soviet_collapse.md docs/specs/005_soviet_collapse_specs/*.md docs/plans/005_soviet_collapse_plans/*.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05*.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/20260605*.md`
+- `rg -n "^#|flag|flags|instantly|instant|immediately|complete|completion|evolution|spreadsheet|release|all republic|all.*release|focus trees?" docs/events/005_soviet_collapse/overview.md docs/specs/005_soviet_collapse_specs docs/plans/005_soviet_collapse_plans -g '*.md'`
+- `rg -n "Current Priority|Legacy Doc Routing|Event Log Evolutions|Union Unmade|Progressive general releases|Focus rewards|Current Gameplay Surface" docs/events/005_soviet_collapse/overview.md docs/specs/005_soviet_collapse_specs/*.md docs/plans/005_soviet_collapse_plans/*.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/2026_06_05*.md docs/plans/005_soviet_collapse_plans/subagent_handoffs/20260605*.md`
 
 Post-patch checks:
 

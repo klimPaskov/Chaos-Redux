@@ -18,12 +18,12 @@ Do not edit gameplay, localisation, GUI, GFX, event, decision, idea, achievement
 
 Before generation or processing, inspect the matching repository reference folders:
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/report_event_images`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/news_event_images`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/super_event_images`
-- decisions and category icons: `.agents/skills/chaos-redux-event-assets/assets/decisions`
-- ideas: `.agents/skills/chaos-redux-event-assets/assets/ideas`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/achievements`
+- report images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/report`
+- news images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/news`
+- super-event images: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/event_art/super_event`
+- decisions and category icons: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decisions`
+- ideas: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas`
+- achievements: `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements`
 
 Record the references inspected in the manifest and GFX handoff.
 

@@ -38,10 +38,10 @@
 
 ## Wiring status
 
-- `The Awakened One` is wired to existing slot 7 via `music/003_holy_realm/super_event_7_buddha_mandate.ogg` and `sound/003_holy_realm/super_event_7_buddha_mandate.wav`.
-- `Powers of the Awakened` is wired to new slot 61 via `music/003_holy_realm/super_event_31_powers_of_the_awakened.ogg` and `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`.
-- Non-terminal `The Final Silence` is wired to slot 8 via `music/003_holy_realm/super_event_8_final_silence.ogg` and `sound/003_holy_realm/super_event_8_final_silence.wav`.
-- Terminal `The Final Silence` is wired to slot 9 via `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg` and `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`.
+- `The Awakened One` is wired to existing slot 7 via `sound/003_holy_realm/super_event_7_buddha_mandate.wav` and `sound/003_holy_realm/super_event_7_buddha_mandate.wav`.
+- `Powers of the Awakened` is wired to new slot 61 via `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav` and `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`.
+- Non-terminal `The Final Silence` is wired to slot 8 via `sound/003_holy_realm/super_event_8_final_silence.wav` and `sound/003_holy_realm/super_event_8_final_silence.wav`.
+- Terminal `The Final Silence` is wired to slot 9 via `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav` and `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`.
 - `gfx/super_events/003_holy_realm/super_event_powers_of_the_awakened.dds` now uses bespoke generated monochrome battlefield art. Source, prompt, processed PNG, and image manifest are under `docs/assets/003_holy_realm_buddhahood/super_event_images/`.
 
 ## Main risk

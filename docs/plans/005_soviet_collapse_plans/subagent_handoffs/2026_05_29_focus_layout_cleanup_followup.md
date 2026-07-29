@@ -38,8 +38,8 @@ Custom splinter focus ids adjusted in this pass:
 
 - `ARD_foreign_fleet_letters`
 - `ARD_hidden_doctrine`
-- `BAC_far_eastern_letters`
-- `BAC_militia_training_yards`
+- `ADX_far_eastern_letters`
+- `ADX_militia_training_yards`
 - `BBH_non_domination_pacts`
 - `DHC_propaganda`
 - `FEV_hidden_doctrine`
@@ -49,7 +49,7 @@ Custom splinter focus ids adjusted in this pass:
 - `IUL_league_corridor_bargain`
 - `IUL_river_port_customs_board`
 - `KHC_propaganda`
-- `KRS_free_soviet_couriers`
+- `AOX_free_soviet_couriers`
 - `MRC_foreign`
 - `MRC_hidden_doctrine`
 - `MRC_industry_plan`
@@ -101,7 +101,7 @@ Remaining non-Ukraine/non-Belarus pathline crossings require a broader layout pa
 - Caucasus: `oil_emergency_directorate` -> `oil_state_command` crosses `civilian_oversight_of_oil`.
 - Moldova: 4 crossings remain around `republic_of_crossings` and `black_soil_recovery_boards`.
 - Kazakhstan: `the_alash_courts` -> `the_steppe_keeps_many_memories` crosses `the_written_alash_program`.
-- Custom splinters: 11 crossings remain across BBH, DHC, KHC, UWD, IUL, BAC, ARD, and NLC.
+- Custom splinters: 11 crossings remain across BBH, DHC, KHC, UWD, IUL, ADX, ARD, and NLC.
 
 Shallow decorative exclusive forks remain a design issue, not a safe coordinate patch issue. Settlement/radical or identity forks in several custom splinter trees still often differ mostly by generic helper payloads. They need route-specific decision hooks, war-plan behavior, cores/claims/wargoals, or special unit/factory packages in a parent-owned design pass.
 

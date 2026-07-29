@@ -40,7 +40,7 @@ Focus files were reviewed tree-wide through parser coverage. Manual spot checks 
 
 - Ukraine: `ukr_soviet_collapse_purge_moscow_loyalists`, `ukr_soviet_collapse_re_register_the_party`, `ukr_soviet_collapse_the_ukrainian_commune_debate`, `ukr_soviet_collapse_the_double_republic`, `ukr_soviet_collapse_the_commune_war`, `ukr_soviet_collapse_direct_national_claims`, `ukr_soviet_collapse_ports_need_soldiers`, `ukr_soviet_collapse_great_steppe_and_sea_plan`, `ukr_soviet_collapse_the_western_question_cannot_wait`, `ukr_soviet_collapse_endgame_a_ukraine_outside_the_old_map`.
 - Belarus: `blr_soviet_collapse_railway_neutrality`, `blr_soviet_collapse_rail_war_state`, `blr_soviet_collapse_council_bargains_with_forests`, `blr_soviet_collapse_a_forest_that_can_govern`, `blr_soviet_collapse_foreign_aid_through_brest`, `blr_soviet_collapse_brest_is_not_a_gift`, `blr_soviet_collapse_the_league_depot_at_minsk`, `blr_soviet_collapse_minsk_supplies_the_front`, `blr_soviet_collapse_decentralized_detachments`, `blr_soviet_collapse_regular_forest_brigades`.
-- Raw reward/pathline examples: `DSC_claim_the_soldiers_road`, `ALN_expansionist_mountain_claims`, `KZR_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `KHW_expansionist_water_claims`, `PRA_rails_over_capitals`, `central_asia_soviet_collapse_khwarazm_restoration_debate`.
+- Raw reward/pathline examples: `DSC_claim_the_soldiers_road`, `ABX_expansionist_mountain_claims`, `APX_expansionist_steppe_levy`, `SOG_expansionist_merchant_claims`, `ANX_expansionist_water_claims`, `PRA_rails_over_capitals`, `central_asia_soviet_collapse_khwarazm_restoration_debate`.
 - No focus IDs were patched.
 
 ## Tree Counts
@@ -65,7 +65,7 @@ Other scoped trees:
 - `CFR_soviet_collapse_focus_tree`: 47 focuses, 47 helper/mechanic rewards, 0 claim/war focuses, 24 mutex edges.
 - Nineteen 47-focus custom splinter templates: generally 34-46 helper/mechanic rewards each, usually 2 mutex edges each.
 - Compact high-chaos/special trees (`PRA`, `DSC`, `RMC`, `TSC`, `NRF`, `ICD`, `OGB`): 18-23 focuses each, 1-2 claim/war focuses each, usually 4 mutex edges.
-- Ancient restoration trees (`KZR`, `SOG`, `KHW`, `ALN`): 16 focuses each, 12-13 helper/mechanic rewards each, 3 claim/war focuses each, 2 mutex edges each.
+- Ancient restoration trees (`APX`, `SOG`, `ANX`, `ABX`): 16 focuses each, 12-13 helper/mechanic rewards each, 3 claim/war focuses each, 2 mutex edges each.
 
 ## Reward-Spam Findings
 
@@ -85,12 +85,12 @@ The player complaint is still partly valid, but the current source is helper-sid
 Largest raw/direct reward blocks still worth helper consolidation:
 
 - `DSC_claim_the_soldiers_road`: 35 reward lines.
-- `ALN_expansionist_mountain_claims`: 34 reward lines.
-- `KZR_expansionist_steppe_levy`: 32 reward lines.
+- `ABX_expansionist_mountain_claims`: 34 reward lines.
+- `APX_expansionist_steppe_levy`: 32 reward lines.
 - `SOG_expansionist_merchant_claims`: 32 reward lines.
-- `KHW_expansionist_water_claims`: 32 reward lines.
+- `ANX_expansionist_water_claims`: 32 reward lines.
 - `OGB_the_old_name_survives_modern_war`: 27 reward lines.
-- `KHW_khwarazmian_water_charter`: 27 reward lines.
+- `ANX_khwarazmian_water_charter`: 27 reward lines.
 - `PRA_rails_over_capitals`: 25 reward lines.
 
 ## Pathline And Mutex Findings

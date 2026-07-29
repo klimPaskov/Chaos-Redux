@@ -49,7 +49,7 @@ Added asset package files:
 
 ## Validation
 
-- Inspected `.agents/skills/chaos-redux-event-assets/assets/ideas` before generation and processing.
+- Inspected `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/ideas` before generation and processing.
 - Generated all source art with the built-in `$imagegen` path; no existing Fury DDS or Fury focus icons were used as source art.
 - Reprocessed the full set after the first sheet exposed retained green chroma spill on several icons.
 - Parent review later found a dark rectangular matte behind the icons; near-black semi-transparent matte pixels were removed, all 11 DDS files were reconverted, and the contact sheet was rebuilt.

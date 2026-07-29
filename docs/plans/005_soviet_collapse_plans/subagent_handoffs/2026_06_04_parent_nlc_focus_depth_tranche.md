@@ -60,7 +60,7 @@ An initial broad replacement matched copied focus helper blocks outside NLC. Thi
 
 The wider Soviet Collapse goal remains incomplete. Remaining open areas include:
 
-- More custom-splinter focus cleanup for generic/shallow reward trees beyond BSC, UDC, and NLC.
+- More custom-splinter focus cleanup for generic/shallow reward trees beyond AEX, UDC, and NLC.
 - Republic layout and route-depth cleanup, especially Ukraine and other previously reported overlapping pathline areas.
 - Evolution detail alignment with spreadsheet wording.
 - Dynamic release scaling and high-chaos release behavior across all eligible Soviet breakaways.
