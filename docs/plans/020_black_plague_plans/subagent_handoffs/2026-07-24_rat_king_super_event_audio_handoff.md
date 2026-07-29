@@ -30,17 +30,13 @@ This handoff covers only the licensed audio research and production requested fo
 
 Kevin MacLeod's `Gregorian Chant` is a 194-second SoundCloud-origin recording imported to Commons with the author/composer named and CC BY 3.0 explicitly stated. A 110-second opening excerpt is used. Attribution, a licence link, and a modification notice are required. Source SHA-1 is `3462dd0732223ee7b7815f8fb04a55415b3bf673`; source SHA-256 is `d4ec1fe983170ab5f315a54770fdcb0e43992e41166d194a3ae8a1e01041a804`.
 
-Final WAV: `sound/020_black_plague/super_event_101_rat_king_coronation.wav`, 110.000000 seconds, 44,100 Hz stereo, SHA-256 `28d891720ccfeb2a2d8a41c0972fe5d88b895d7191365bf98071b33accc78db0`.
-
-Final WAV: `sound/020_black_plague/super_event_101_rat_king_coronation.wav`, 110.000000 seconds, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `4b717c9744c4a9a3c4ecf5997d55b8a8f1a708226e3d47a3c1fc2f9cd4425722`.
+Final sound file: `sound/020_black_plague/super_event_101_rat_king_coronation.wav`, 110.000000 seconds, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `4b717c9744c4a9a3c4ecf5997d55b8a8f1a708226e3d47a3c1fc2f9cd4425722`.
 
 ### World end / proposed playback ID 102
 
 Membeth's `Dies irae` is a 434.000952-second Gregorian chant recording released to the worldwide public domain. The medieval Requiem sequence is public domain; the historical composer attribution is not needed for the recording licence. A 103.65-second excerpt ending at the first long musical pause is used. Attribution is optional but courtesy credit is recommended. Source SHA-1 is `d13e914db3016ab43bcb89c695e501ac8fd19605`; source SHA-256 is `a94c57586d3215a4ecb67a5eb9701b387be39bef2f53abaa3e3b2214a2e9472e6`.
 
-Final WAV: `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, 103.650000 seconds, 44,100 Hz stereo, SHA-256 `b9b03f7a977170a2cda47e056b8ebc7afb428d6776802ac30603c65525521709`.
-
-Final WAV: `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, 103.650000 seconds, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `7240f9bddc19955fde7c56ef9d15381d87a84ba7ce39f6c5bf3663b67ab0221f`.
+Final sound file: `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, 103.650000 seconds, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `7240f9bddc19955fde7c56ef9d15381d87a84ba7ce39f6c5bf3663b67ab0221f`.
 
 ## Processing and validation
 
