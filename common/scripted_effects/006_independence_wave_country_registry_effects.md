@@ -37,3 +37,36 @@ The registry itself owns no event targets: the short-lived setup targets remain
 the existing `independence_wave_setup_former_host` and
 `independence_wave_setup_anchor_state` targets, and the existing Event 006
 cleanup chain remains responsible for clearing them and global targets.
+
+## Static carrier status API
+
+The country-group constants in
+`common/script_constants/006_independence_wave_country_registry_constants.txt`
+now expose package-row status projections for later callers:
+
+- `selectable_bound_tags` is the current-map-bound selectable pool (138 rows,
+  137 unique carrier scopes).
+- `selectable_unbound_tags` is the explicit fail-closed selectable pool (55
+  rows, 55 unique carrier scopes). Missing geography is preserved; no nearby
+  state or substitute tag is implied.
+- `event6_owned_bound_tags` and `event6_owned_unbound_tags` split custom `X`
+  registrations by current-map status.
+- `registered_reuse_bound_tags` and `registered_reuse_unbound_tags` split
+  vanilla-tag reuse rows by current-map status.
+- `overlay_route_carrier_tags` and its route-specific subsets expose the
+  original carriers for all thirteen non-selectable overlays. Overlay
+  carriers may also appear in a selectable pool when the same vanilla country
+  has a separate Event 006 row; route triggers remain the identity gate.
+
+Country groups de-duplicate tags, so BIA appears in both bound and unbound
+status projections: IW-107 is bound while IW-096 is unbound. Exact package
+identity, anchor, host, reservation group, readiness, scenario rank, and
+package status remain row-level facts in the canonical candidate registry,
+package-id constants, and current-map binding CSV. Use those sources and the
+existing region load/reserve dispatchers when a caller needs a specific row;
+do not infer a row from a carrier tag alone.
+
+The public `chaosx_country_independence_wave_*` collections mirror these
+status and overlay views. Collections are active views and naturally omit
+dormant reserved tags; static country-group constants remain the source for
+registration audits and fail-closed admission checks.

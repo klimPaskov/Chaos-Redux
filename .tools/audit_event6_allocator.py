@@ -422,6 +422,34 @@ def main() -> int:
 		"independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.unsafe_instantiation",
 	):
 		require(needle in execution, f"Event 006 transfer verification is missing {needle}", errors)
+	try:
+		execution_metadata = extract_script_block(execution, "independence_wave_validate_execution_metadata")
+	except ValueError as exc:
+		errors.append(str(exc))
+		execution_metadata = ""
+	for target, first_readiness_trigger in (
+		("independence_wave_execution_country", "is_liberation_release_current_reserved_country = yes"),
+		("independence_wave_execution_sponsorship_country", "is_liberation_release_current_reserved_country = yes"),
+	):
+		positive_target_validation = (
+			rf"event_target:{re.escape(target)}\s*=\s*\{{"
+			rf"\s*exists\s*=\s*yes"
+			rf"\s*{re.escape(first_readiness_trigger)}"
+		)
+		inverted_target_validation = (
+			rf"event_target:{re.escape(target)}\s*=\s*\{{"
+			rf"\s*exists\s*=\s*no"
+		)
+		require(
+			re.search(positive_target_validation, execution_metadata) is not None,
+			f"Event 006 execution metadata does not positively validate existing {target}",
+			errors,
+		)
+		require(
+			re.search(inverted_target_validation, execution_metadata) is None,
+			f"Event 006 execution metadata inverts the existence test for {target}",
+			errors,
+		)
 
 	scenario = read("common/scripted_effects/006_independence_wave_scenario_effects.txt")
 	require_order(
@@ -529,6 +557,30 @@ def main() -> int:
 		"soviet_collapse_joint_execution_transfer_failure = constant:liberation_plan_reject_reason.unsafe_instantiation",
 	):
 		require(needle in joint, f"joint Event 005 transfer verification is missing {needle}", errors)
+	try:
+		joint_execution_metadata = extract_script_block(joint, "soviet_collapse_joint_validate_execution_metadata")
+	except ValueError as exc:
+		errors.append(str(exc))
+		joint_execution_metadata = ""
+	joint_country_validation = (
+		r"event_target:soviet_collapse_joint_execution_country\s*=\s*\{"
+		r"\s*exists\s*=\s*yes"
+		r"\s*has_country_flag\s*=\s*soviet_collapse_joint_pending_origin"
+	)
+	joint_country_inversion = (
+		r"event_target:soviet_collapse_joint_execution_country\s*=\s*\{"
+		r"\s*exists\s*=\s*no"
+	)
+	require(
+		re.search(joint_country_validation, joint_execution_metadata) is not None,
+		"joint Event 005 execution metadata does not positively validate the existing reserved country",
+		errors,
+	)
+	require(
+		re.search(joint_country_inversion, joint_execution_metadata) is None,
+		"joint Event 005 execution metadata inverts the reserved-country existence test",
+		errors,
+	)
 
 	shared = read("common/scripted_effects/chaosx_liberation_release_effects.txt")
 	require("random_owned_state" not in shared, "host-survival selection still contains random_owned_state", errors)
