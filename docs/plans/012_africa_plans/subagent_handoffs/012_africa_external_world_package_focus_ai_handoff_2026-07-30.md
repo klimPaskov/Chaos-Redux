@@ -54,6 +54,12 @@ No player-facing localisation or focus rewards were changed. All 121 focus IDs r
 - Route plans include late shared focuses as priorities, but the current authored all-institutions AND prerequisites can leave those focuses unreachable after a mutually exclusive route. The parent should resolve the tree semantics before enabling package readiness.
 - External package actors remain absent until the implementation-ready gate is intentionally reviewed. These plans therefore have no current live consumer in the dormant build.
 
+## High-priority fixes for the parent scope
+
+1. Resolve the mutually exclusive route versus all-institutions AND prerequisite conflict in each external tree before enabling package readiness. The affected shared capstones are `africa_middle_east_desert_and_mountain_command`, `africa_europe_common_army_and_air_defence`, `africa_asia_food_river_and_monsoon_board`, `africa_north_america_resources_and_withdrawal_law`, `africa_south_america_resource_and_debt_sovereignty_law`, and `africa_oceania_ocean_constitution_and_withdrawal_law`.
+2. Complete the six packages' authored icon, localisation, decision/event, actor, and asset surfaces, then rerun the focus layout and loader audit before setting `africa_world_package_implementation_ready`.
+3. Run weighted AI inspection or live consumer acceptance after package actors become reachable, including sponsorship default, independent settlement, rivalry, high-chaos gate loss, and sovereign completion transitions.
+
 ## Validation
 
 - Counted 32 new route plan blocks in `common/ai_strategy_plans/012_africa_focus_plans.txt`, with 32 unique plan IDs and 32 unique route flags.
