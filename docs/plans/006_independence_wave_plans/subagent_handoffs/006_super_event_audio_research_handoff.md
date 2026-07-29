@@ -40,7 +40,7 @@ No London Brass Players source file was added. Its Commons remote SHA-1 is `6320
    - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
    - `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav`
 4. Completed: validated decoded duration, channel count, sample rate, integrated loudness, true peak, and SHA-256 for both derivatives.
-5. Completed: registered music names `chaosx_super_event_6002_<suffix>`, raw sound `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`, and sound wrappers `chaosx_super_event_6002_sound_<suffix>` for the six established volume suffixes.
+5. Completed: registered music names `chaosx_super_event_6002_<suffix>`, raw sound `chaosx_super_event_6002_track`, and sound wrappers `chaosx_super_event_6002_sound_<suffix>` for the six established volume suffixes.
 6. Completed: added `chaosx_super_event_6002_sound_1_5` to the music track list with zero random-play chance and wired the dangerous-milestone publisher to the existing settings-aware FIFO and playback helper.
 
 ## Meaningful checks performed

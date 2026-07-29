@@ -191,7 +191,7 @@ For each cleared audio ID, register the six established suffixes and volumes:
 For the verified cue, the required identifiers are:
 
 - sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
-- raw sound name: `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`;
+- raw sound name: `chaosx_super_event_6002_track`;
 - sound wrappers: `chaosx_super_event_6002_sound_0_5` through `chaosx_super_event_6002_sound_3_0`;
 - each sound wrapper should retain `max_audible = 1` and `max_audible_behaviour = fail` and should not enable looping.
 
