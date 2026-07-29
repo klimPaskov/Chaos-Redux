@@ -12,7 +12,7 @@ This is a read-only country-package audit; no gameplay file, country history, ma
 
 The tag migration is structurally correct for the seven existing niche Event 006 tags and does not register a parallel Event 012 country or cosmetic identity layer.
 
-Three high-severity acceptance gaps remain: active Event 006 provenance is not enforced by the current Event 012 origin predicates, Luba/Lunda/Kilwa remain explicitly unbound in the Event 006 allocator, and the nine vanilla-carrier institutional councils have runtime recruitment but no stable country-history ownership.
+Three high-severity acceptance gaps remain: active Event 006 provenance is not enforced by the current Event 012 origin predicates, Luba/Lunda/Kilwa remain explicitly unbound in the Event 006 allocator, and the nine vanilla-carrier sovereigns have runtime recruitment but no stable country-history ownership.
 
 The first gap is a provenance-policy blocker rather than an authorization to add tags or territory, and the latter two require a parent design decision before implementation.
 
@@ -25,8 +25,8 @@ The first gap is a provenance-policy blocker rather than an authorization to add
 | Exact original-tag predicates | Pass | `common/scripted_triggers/006_independence_wave_country_registry_triggers.txt:286-300` maps the seven niche carriers and the nine accepted vanilla carriers; Kongo additionally requires `COG_kingdom_of_kongo`. |
 | Action 102 gate | Pass subject to provenance decision | `common/scripted_effects/012_africa_action_effects.txt:3169-3185` validates Action 102 and `:5901-5910` writes approval before `africa_priority_member_register_from_origin`; `africa_priority_member_can_register_package` remains the final package gate. |
 | Event 006 active-origin eligibility | Open high | `common/scripted_triggers/012_africa_priority_member_triggers.txt:88-218` and `common/scripted_effects/012_africa_priority_member_effects.txt:21-120` exclude Soviet origins but no longer require `is_independence_wave_registry_event6_origin` for direct carriers. |
-| Seven niche council ownership | Pass | Each dormant shell history recruits its matching institutional council at line 10 in `history/countries/DOX - Asante.txt`, `DSX - Oyo.txt`, `DUX - Kanem-Bornu.txt`, `DYX - Luba.txt`, `DZX - Lunda.txt`, `EMX - Kilwa Restoration.txt`, and `EQX - Zulu.txt`. |
-| Nine vanilla council ownership | Open high | Vanilla histories for `SOK`, `MLI`, `COG`, `UGA`, `TIG`, `HAR`, `SUD`, `ZIM`, and `MAD` do not own the Event 012 councils; the current helper recruits them only at runtime. |
+| Seven niche sovereign ownership | Pass | Each dormant shell history recruits its matching sovereign at line 10 in `history/countries/DOX - Asante.txt`, `DSX - Oyo.txt`, `DUX - Kanem-Bornu.txt`, `DYX - Luba.txt`, `DZX - Lunda.txt`, `EMX - Kilwa Restoration.txt`, and `EQX - Zulu.txt`. |
+| Nine vanilla sovereign ownership | Open high | Vanilla histories for `SOK`, `MLI`, `COG`, `UGA`, `TIG`, `HAR`, `SUD`, `ZIM`, and `MAD` do not own the Event 012 sovereigns; the current helper recruits them only at runtime. |
 | DYX/DZX/EMX reachability | Open high | Event 006 scenario setup blocks `DYX`, `DZX`, and `EMX` as `IW-103`, `IW-104`, and `IW-117`; no region plan/allocator entry currently creates them. |
 | Focus-tree handoff | Pass | `common/scripted_effects/012_africa_priority_member_effects.txt:244-278` loads `africa_priority_member_focus_tree` for the seven niche tags and only generic-tree vanilla carriers; meaningful vanilla trees are preserved. |
 | Public country names | Pass | `localisation/english/006_independence_wave_countries_l_english.yml:615-834` supplies all seven names under every ideology; `EMX` is `Kilwa`/`Kilwan`, not `Kilwa Restoration`. |
@@ -79,7 +79,7 @@ Required parent decision: keep these rows dormant and hide or reject their Event
 
 ### High: nine vanilla-carrier councils lack country-history ownership
 
-`common/characters/012_africa_priority_member_characters.txt` defines the institutional council characters, but vanilla histories for `SOK`, `MLI`, `COG`, `UGA`, `TIG`, `HAR`, `SUD`, `ZIM`, and `MAD` do not recruit the matching Event 012 council in their normal history setup.
+`common/characters/012_africa_priority_member_characters.txt` defines the sovereign characters, but vanilla histories for `SOK`, `MLI`, `COG`, `UGA`, `TIG`, `HAR`, `SUD`, `ZIM`, and `MAD` do not recruit the matching Event 012 sovereign in their normal history setup.
 
 `common/scripted_effects/012_africa_priority_member_character_effects.txt:10-123` recruits all sixteen councils during package registration, including the nine vanilla branches.
 
@@ -115,7 +115,7 @@ The migration therefore preserves the no-fallback-territory contract, but the bl
 
 ## Politics, leaders, portraits, flags, advisors, and parties
 
-The seven niche shell histories provide stable ownership for `africa_priority_<key>_institutional_council` characters before runtime registration.
+The seven niche shell histories provide stable ownership for `africa_priority_<key>_sovereign` characters before runtime registration.
 
 `common/scripted_effects/012_africa_priority_member_character_effects.txt:125` and later settlement logic keep councils without a political role until the country explicitly ratifies a political settlement, at which point one matching leader role and party route is installed.
 
@@ -165,7 +165,7 @@ A playable acceptance pass must still exercise each niche tag after Event 006 cr
 
 4. A vanilla carrier with a meaningful tree, such as `COG` or `UGA`, retains that tree while receiving Event 012 decisions, ideas, forces, League behavior, and AI additively; a vanilla carrier still using `generic_focus` receives `africa_priority_member_focus_tree`.
 
-5. Each of the seven niche shell histories owns exactly its matching institutional council before runtime, the council has no political role until ratification, and no personal leader-name pool is used for the institutional body.
+5. Each of the seven niche shell histories owns exactly its matching sovereign before runtime, the sovereign has no political role until ratification, and the political role remains separate from the constitutional council.
 
 6. The nine vanilla carriers (`SOK`, `MLI`, `COG`, `UGA`, `TIG`, `HAR`, `SUD`, `ZIM`, and `MAD`) must either receive an approved stable ownership mechanism or be explicitly accepted as runtime-only council ownership with the contract and acceptance ledger updated.
 
@@ -187,6 +187,10 @@ No HOI4 MCP write was used because the local source surfaces answered the tag-lo
 
 No gameplay fallback, replacement tag, fallback territory, new cosmetic identity, generated ruler, or unrelated vanilla-history override was added.
 
-The audit does not claim whole-country-package completion because active Event 006 provenance, DYX/DZX/EMX reachability, and nine vanilla council ownership remain unresolved, and final portrait/flag production was outside scope.
+The audit does not claim whole-country-package completion because active Event 006 provenance, DYX/DZX/EMX reachability, and nine vanilla sovereign ownership paths remain unresolved, and final portrait/flag production was outside scope.
 
 Recommended follow-up is a parent-owned design handoff for the three high-severity findings before any gameplay patch is attempted.
+
+## Release-candidate correction (2026-07-29)
+
+The active-provenance and reachability concerns remain open, but the presentation status changed after this audit. Seven niche carrier flag ladders are being installed on the existing Event 006 identities, and Event 012 still creates no new tags or cosmetic tags. Do not read this correction as acceptance of the three unbound allocator paths or as proof that the nine vanilla ownership paths are resolved.

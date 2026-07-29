@@ -4,6 +4,8 @@ Prepared: 2026-07-17
 
 Status: audio selection research is complete. Roles 2 and 3 have exact, rights-cleared source recordings and edit contracts but no downloaded or produced files. Roles 1 and 4 intentionally require original production and are hard-blocked until their creators, performers, masters, and rights are documented. This handoff does not authorize a fallback, partial runtime registration, or silent substitution.
 
+Release-candidate correction (2026-07-29): the later production handoff records dormant production candidates for roles 2 and 3. The research disposition above remains valid as historical acquisition guidance, but it is superseded for current file status by `012_africa_super_event_audio_production_handoff.md`; no role is runtime-wired, roles 1 and 4 remain hard-blocked, and no fallback or silent substitution is approved.
+
 This is a research and parent-integration handoff only. No audio was downloaded, generated, edited, reserved, registered, or wired. No gameplay, music, sound, localisation, GUI, GFX, spreadsheet, catalogue, or specification file was changed.
 
 Public-domain and licence findings below are project research, not legal advice. Web sources were checked on 2026-07-17.

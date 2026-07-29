@@ -31,30 +31,11 @@ africa_world_register_current_candidate = {
 		set_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_start_legitimacy }
 		set_variable = { africa_world_package_capacity = constant:africa_world_order.package_start_capacity }
 		set_variable = { africa_world_package_authority = constant:africa_world_order.package_start_authority }
-		if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.middle_east } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
-		else_if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.europe } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
-		else_if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.asia } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
-		else_if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.north_america } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
-		else_if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.south_america } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
-		else_if = {
-			limit = { check_variable = { africa_world_candidate_id = constant:africa_world_continent.oceania } }
-			set_country_flag = africa_world_package_implementation_ready
-		}
+		# Continent packages are nominated for the post-unification ledger, but
+		# they are not installable until their complete regional content and
+		# presentation packages explicitly set the implementation-ready flag.
+		# This prevents an unfinished focus tree or asset family from entering
+		# the live game while preserving the candidate for later sponsorship.
 		event_target:africa_host = {
 			if = {
 				limit = { NOT = { is_in_array = { array = africa_world_package_candidates value = PREV } } }
@@ -456,6 +437,25 @@ africa_scramble_ratify_aftermath = {
 	}
 }
 
+# COUNTRY scope on the host. This closes the completed Scramble response while
+# leaving the six unfinished external continent packages outside runtime.
+africa_scramble_close_continental_docket = {
+	if = {
+		limit = { africa_scramble_can_close_continental_docket = yes }
+		set_variable = { africa_scramble_phase = constant:africa_scramble_phase.settled }
+		clr_country_flag = africa_scramble_aftermath_phase
+		set_country_flag = africa_scramble_aftermath_complete
+		set_country_flag = africa_scramble_response_settled
+		set_country_flag = africa_world_order_deferred
+		clr_global_flag = africa_scramble_response_active
+		set_global_flag = africa_scramble_response_settled
+		set_global_flag = africa_world_order_deferred
+		set_variable = { africa_selected_action_family = constant:africa_action_family.post_unification }
+		set_variable = { africa_selected_action_id = constant:africa_action.none }
+		africa_clear_action_quote = yes
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Six unique continent packages and sponsorship obligations
 # ---------------------------------------------------------------------------
@@ -466,6 +466,7 @@ africa_world_install_current_package = {
 	if = {
 		limit = {
 			africa_world_package_is_candidate = yes
+			has_country_flag = africa_world_package_implementation_ready
 			check_variable = { africa_world_install_status > constant:africa_world_package_status.candidate }
 			check_variable = {
 				var = africa_world_install_status

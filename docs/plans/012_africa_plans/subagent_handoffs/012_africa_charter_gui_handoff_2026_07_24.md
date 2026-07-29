@@ -89,3 +89,7 @@ Static checks found 63 GUI localisation references with no missing keys, no dupl
 ## Follow-up
 
 The asset producer should deliver the sixteen reserved DDS dependencies at the paths above and update the asset manifest without changing IDs. The parent should wire immutable diaspora selector copies into Actions 52 and 54, add AI least-unrepresented selection, and perform the final decision-category integration audit after those gameplay edits land.
+
+## Release-candidate correction (2026-07-29)
+
+The queued-texture paragraph is historical and is superseded by the current filesystem evidence. Twelve static Charter GUI textures and the two real frame-animation sheets with static fallbacks are present and registered in `interface/012_africa_charter.gfx`. Charter GUI animation/runtime acceptance remains in progress, and the earlier render evidence remains useful only as a prior audit record.

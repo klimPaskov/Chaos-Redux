@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`012_africa_asset_animation_matrix.csv` records 239 planned visual work items. It covers presentation images, the Charter interface, animation, idea icons, decision icons, focus icon families, constitutional identities, portrait frames, Tier A restored polities, strange units, and continent-unifier packages.
+`012_africa_asset_animation_matrix.csv` records 239 visual work items with explicit release-candidate dispositions. It covers presentation images, the Charter interface, animation, idea icons, decision icons, focus icon families, constitutional identities, portrait frames, Tier A restored polities, strange units, and continent-unifier packages.
 
 The matrix is a planning ledger. Actual asset production must split work by source mode and asset type. It does not authorise one worker to generate, source, process, and wire everything in one pass.
 
@@ -134,3 +134,19 @@ Before implementation completion, verify:
 - every generated asset has a prompt and source evidence
 - every animation has real source frames and a static fallback
 - no placeholder, copied, resized-across-type, or undocumented visible asset is presented as final
+
+## Release-candidate disposition vocabulary
+
+The `status` column is a row-level release-candidate disposition, not a generic production wish list. Every row must use one of the following values and must remain truthful to the current filesystem, `.gfx` registrations, and runtime gates.
+
+- `installed_runtime`: the final runtime file and its registered consumer are present in the current worktree.
+- `installed_dormant`: the final runtime file and registration are present, but the owning package or super-event remains behind an explicit promotion, presentation, or readiness gate.
+- `deferred_runtime_gated`: the surface has a documented runtime path, but the owning mechanic is intentionally closed until its readiness flag or acceptance barrier is true.
+- `deferred_controlled_pool`: the row remains an accepted controlled-pool or optional family item and has no release-candidate runtime consumer that can be truthfully claimed as complete.
+- `deferred_model_required`: the row cannot be released before a real model, entity, or model-dependent formation package exists.
+- `deferred_unique_package_required`: the row belongs to a unique continent-scale or other bespoke package whose political, identity, presentation, and runtime surfaces are not yet complete.
+- `pending_runtime_blocker`: a release-candidate consumer expects the row now, but the exact final file or registration is absent. This value is not used when a dormant gate intentionally explains the absence.
+
+The 2026-07-29 release-candidate matrix contains 239 rows with these counts: `installed_runtime` 43, `installed_dormant` 28, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 16, `deferred_unique_package_required` 7, and `pending_runtime_blocker` 0.
+
+The current matrix retains two suggested-filename aliases that do not erase installed runtime evidence: the Africa-is-one news and super-event rows omit the `africa_` segment in their suggested filenames. The Charter header has no remaining path drift; its exact registered/runtime file is `gfx/interface/012_africa/charter_header_plate.dds`. The registered `.gfx` paths remain authoritative.

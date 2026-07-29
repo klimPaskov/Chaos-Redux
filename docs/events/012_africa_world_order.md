@@ -18,6 +18,8 @@ No response grants African membership, integration, annexation, or cores. The fo
 8. Settled packages can consent to union, remain sovereign, become rivals, fight a prepared continental war, or accept a postwar submission settlement.
 9. The terminal World identity remains unavailable until all continent packages are resolved, chaos is above the terminal threshold, no ordinary settlement remains pending, and the researched final super-event package sets `africa_the_world_super_event_package_ready`.
 
+When no external candidate carries the reviewed `africa_world_package_implementation_ready` gate, the host can instead close the Continental Docket after satisfying every Scramble recognition, sanctions, ultimatum, intervention, and peace requirement. This records a complete Africa-only settlement, leaves external governments outside the Charter League, and does not open world-order actions.
+
 ## Tuning and shared logic
 
 - `common/script_constants/012_africa_world_order_constants.txt` contains phase identifiers, continent identifiers, package statuses, shared costs, durations, thresholds, and reward values.
@@ -54,7 +56,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-All six packages have dedicated focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Their package registry gates are implementation-ready because each now has a distinct playable constitutional structure. The broader political, decision, AI, identity, and asset surfaces remain separate completion requirements and cannot be replaced by a generic or copied package.
+All six packages have dedicated dormant focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Their runtime implementation gates remain closed until each package receives its complete political, decision, AI, identity, focus-icon, idea-icon, and presentation surfaces. No generic icon or copied package may satisfy that gate.
 
 ## Middle East implementation
 

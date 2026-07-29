@@ -1150,9 +1150,9 @@ africa_prepare_action_profile = {
 		limit = { check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought } }
 		set_temp_variable = { africa_profile_valid = constant:africa_value.one }
 		set_temp_variable = { africa_profile_family = constant:africa_action_family.high_chaos }
-		set_temp_variable = { africa_profile_kernel = constant:africa_action_kernel.state_project }
+		set_temp_variable = { africa_profile_kernel = constant:africa_action_kernel.timed_country }
 		set_temp_variable = { africa_profile_phase = constant:africa_action_phase.high_chaos }
-		set_temp_variable = { africa_profile_target_mode = constant:africa_action_target_mode.state }
+		set_temp_variable = { africa_profile_target_mode = constant:africa_action_target_mode.country }
 		set_temp_variable = { africa_profile_duration_band = constant:africa_action_duration_band.long }
 		set_temp_variable = { africa_profile_risk = constant:africa_action_risk.extreme }
 		set_temp_variable = { africa_profile_cost_tier = constant:africa_value.three }
@@ -1988,6 +1988,30 @@ africa_refresh_selected_action_quote = {
 	}
 }
 
+# COUNTRY scope on the host. Reserve the caller-side Event 013 payment before
+# the shared action ledger is created, so the quoted action cannot start and
+# later discover that its hostile nature call is unaffordable.
+africa_reserve_natural_disaster_weapon_cost = {
+	set_temp_variable = { africa_natural_disaster_cost_reserved = constant:africa_value.zero }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
+				check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought }
+			}
+			africa_natural_disaster_weapon_cost_is_available = yes
+		}
+		set_temp_variable = { africa_natural_disaster_payment_pp = constant:africa_natural_disaster.caller_pp_cost }
+		multiply_temp_variable = { africa_natural_disaster_payment_pp = constant:africa_action_cost.negation_multiplier }
+		add_political_power = africa_natural_disaster_payment_pp
+		set_temp_variable = { africa_natural_disaster_payment_cp = constant:africa_natural_disaster.caller_cp_cost }
+		multiply_temp_variable = { africa_natural_disaster_payment_cp = constant:africa_action_cost.negation_multiplier }
+		add_command_power = africa_natural_disaster_payment_cp
+		set_temp_variable = { africa_natural_disaster_cost_reserved = constant:africa_value.one }
+		set_country_flag = africa_natural_disaster_weapon_reserved
+	}
+}
+
 # COUNTRY scope on the host.
 africa_pay_current_action_quote = {
 	set_temp_variable = { africa_payment_pp = africa_quote_cost_pp }
@@ -2807,10 +2831,14 @@ africa_validate_action_specific_requirements = {
 	if = {
 		limit = {
 			check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
+			africa_natural_disaster_weapon_actor_is_eligible = yes
+			has_war = yes
+			africa_natural_disaster_weapon_cost_is_available = yes
 			has_event_target = africa_action_target
-			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_evolution_iii_logged
-			event_target:africa_action_target = { OR = { has_country_flag = africa_registered_high_chaos_actor has_country_flag = africa_ecological_bargain_site } }
+			event_target:africa_action_target = {
+				africa_action_target_is_usable = yes
+				africa_natural_disaster_weapon_target_is_valid = yes
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2818,9 +2846,14 @@ africa_validate_action_specific_requirements = {
 	if = {
 		limit = {
 			check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought }
+			africa_natural_disaster_weapon_actor_is_eligible = yes
+			has_war = yes
+			africa_natural_disaster_weapon_cost_is_available = yes
 			has_event_target = africa_action_target
-			event_target:africa_action_target = { africa_action_target_is_usable = yes }
-			has_global_flag = africa_evolution_iii_logged
+			event_target:africa_action_target = {
+				africa_action_target_is_usable = yes
+				africa_natural_disaster_weapon_target_is_valid = yes
+			}
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
 	}
@@ -2865,6 +2898,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_evolution_iii_logged
+			has_global_flag = africa_strange_formation_package_ready
 			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
@@ -2876,6 +2910,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_evolution_iii_logged
+			has_global_flag = africa_strange_formation_package_ready
 			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
@@ -2887,6 +2922,7 @@ africa_validate_action_specific_requirements = {
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { africa_action_target_is_usable = yes }
 			has_global_flag = africa_evolution_iii_logged
+			has_global_flag = africa_strange_formation_package_ready
 			check_variable = { africa_active_action_count < africa_active_action_cap }
 		}
 		set_temp_variable = { africa_action_specific_validation_result = constant:africa_value.one }
@@ -3437,6 +3473,16 @@ africa_create_action_record = {
 	}
 	event_target:africa_action_target = {
 		set_country_flag = africa_action_record_active
+		if = {
+			limit = {
+				OR = {
+					check_variable = { ROOT.africa_quote_action_id = constant:africa_action.petition_the_rain }
+					check_variable = { ROOT.africa_quote_action_id = constant:africa_action.defy_the_drought }
+				}
+			}
+			clr_country_flag = africa_natural_disaster_call_accepted_recorded
+			clr_country_flag = africa_natural_disaster_call_rejected_recorded
+		}
 		set_variable = { africa_active_action_id = ROOT.africa_quote_action_id }
 		set_variable = { africa_active_action_family = ROOT.africa_quote_family }
 		set_variable = { africa_active_action_kernel = ROOT.africa_quote_kernel }
@@ -3461,6 +3507,7 @@ africa_create_action_record = {
 		set_variable = { africa_active_action_intelligence_reservation = ROOT.africa_quote_cost_intelligence }
 		set_variable = { africa_active_action_cost_stability = ROOT.africa_quote_cost_stability }
 		set_variable = { africa_active_action_cost_war_support = ROOT.africa_quote_cost_war_support }
+		set_variable = { africa_active_action_natural_disaster_cost_reserved = ROOT.africa_natural_disaster_cost_reserved }
 		set_variable = { africa_active_diaspora_origin_group = ROOT.africa_selected_diaspora_origin_group }
 		set_variable = { africa_active_diaspora_skill_programme = ROOT.africa_selected_diaspora_skill_programme }
 		clear_array = africa_action_state_targets
@@ -3517,6 +3564,7 @@ africa_activate_shared_action_mission = {
 # COUNTRY scope on the host. Input: regular africa_action_target.
 africa_begin_quoted_action_against_target = {
 	set_temp_variable = { africa_action_begin_result = constant:africa_value.zero }
+	set_temp_variable = { africa_natural_disaster_cost_reserved = constant:africa_value.zero }
 	africa_requote_selected_action_against_action_target = yes
 	set_temp_variable = { africa_requested_action_id = africa_selected_action_id }
 	africa_prepare_action_profile = yes
@@ -3540,6 +3588,7 @@ africa_begin_quoted_action_against_target = {
 			limit = { check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof } }
 			africa_begin_first_proof_recovery_contract = yes
 		}
+		africa_reserve_natural_disaster_weapon_cost = yes
 		africa_pay_current_action_quote = yes
 		africa_create_action_record = yes
 		event_target:africa_action_target = { africa_achievement_record_action_start = yes }
@@ -6263,6 +6312,105 @@ africa_apply_action_failure_semantics = {
 	africa_world_order_apply_failure_result = yes
 }
 
+# COUNTRY scope on the resolved target. Uses the existing action target and
+# host event targets; Event 013 receives one exact selected-country target and
+# its public hostile_actor contract. No new target array or world iteration is
+# introduced here.
+africa_call_hostile_natural_disaster_from_action = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_active_action_id = constant:africa_action.petition_the_rain }
+				check_variable = { africa_active_action_id = constant:africa_action.defy_the_drought }
+			}
+			has_variable = africa_active_action_natural_disaster_cost_reserved
+			check_variable = { africa_active_action_natural_disaster_cost_reserved > constant:africa_value.zero }
+			has_event_target = africa_host
+			NOT = { africa_is_current_host = yes }
+			has_war_with = event_target:africa_host
+			event_target:africa_host = {
+				africa_natural_disaster_weapon_actor_is_eligible = yes
+				has_war = yes
+				has_country_flag = africa_natural_disaster_weapon_reserved
+				NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+			}
+		}
+		save_event_target_as = natural_disaster_call_target_country
+		event_target:africa_host = {
+			set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.hostile_actor }
+			set_temp_variable = { natural_disaster_call_caller_event_id = constant:africa_natural_disaster.caller_event_id }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.random }
+			set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.selected_country }
+			set_temp_variable = { natural_disaster_call_target_country_supplied = constant:africa_value.one }
+			set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.severe }
+			if = {
+				limit = { PREV = { check_variable = { africa_active_action_id = constant:africa_action.defy_the_drought } } }
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.regional }
+			}
+			if = {
+				limit = { has_country_flag = africa_priority_member_full_promotion }
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.regional }
+			}
+			if = {
+				limit = { has_country_flag = africa_covenant_write_warfare_doctrine }
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.regional }
+			}
+			if = {
+				limit = { has_country_flag = africa_covenant_route_capstone }
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.catastrophic }
+			}
+			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+			set_temp_variable = { natural_disaster_call_sequence_count = constant:africa_value.one }
+			set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
+			set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+			set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+			set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.family }
+			set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+			set_temp_variable = { natural_disaster_call_caller_cost_checked = constant:africa_value.one }
+			set_temp_variable = { natural_disaster_call_caller_cooldown_checked = constant:africa_value.one }
+			set_temp_variable = { natural_disaster_call_target_legitimacy_checked = constant:africa_value.one }
+			set_country_flag = africa_natural_disaster_caller_cost_checked
+			set_country_flag = africa_natural_disaster_caller_cooldown_checked
+			set_country_flag = africa_natural_disaster_target_legitimacy_checked
+			call_natural_disaster = yes
+			set_variable = { africa_last_natural_disaster_call_result = natural_disaster_call_result }
+			set_variable = { africa_last_natural_disaster_call_reject_reason = natural_disaster_call_reject_reason }
+			set_variable = { africa_last_natural_disaster_call_sequence_id = natural_disaster_call_sequence_id }
+			set_variable = { africa_last_natural_disaster_call_primary_family = natural_disaster_call_resolved_primary_family }
+			set_variable = { africa_last_natural_disaster_call_primary_job_count = natural_disaster_call_primary_job_count }
+			set_variable = { africa_last_natural_disaster_call_skipped_primary_count = natural_disaster_call_skipped_primary_count }
+			set_temp_variable = { africa_natural_disaster_cooldown_days = constant:africa_natural_disaster.cooldown_days }
+			set_country_flag = { flag = africa_natural_disaster_weapon_cooldown days = var:africa_natural_disaster_cooldown_days }
+			clear_variable = africa_natural_disaster_cooldown_days
+			if = {
+				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
+				set_country_flag = africa_natural_disaster_call_accepted
+				PREV = { set_country_flag = africa_natural_disaster_call_accepted_recorded }
+				if = {
+					limit = { check_variable = { natural_disaster_call_has_resolved_primary_country > constant:africa_value.zero } }
+					event_target:natural_disaster_call_resolved_primary_country = {
+						set_country_flag = africa_natural_disaster_targeted
+					}
+				}
+				random = {
+					chance = constant:africa_natural_disaster.backfire_chance
+					set_country_flag = africa_natural_disaster_backfire_recorded
+					add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
+					africa_clamp_host_values = yes
+				}
+			}
+			else = {
+				set_country_flag = africa_natural_disaster_call_rejected
+				PREV = { set_country_flag = africa_natural_disaster_call_rejected_recorded }
+				set_country_flag = africa_natural_disaster_backfire_recorded
+				add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
+				africa_clamp_host_values = yes
+			}
+		}
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Outcome roll, resolution, and idempotent cleanup
 # ---------------------------------------------------------------------------
@@ -6316,6 +6464,7 @@ africa_apply_current_action_outcome = {
 		africa_record_action_full_disposition = yes
 		africa_apply_full_action_family_values = yes
 		africa_apply_action_full_semantics = yes
+		africa_call_hostile_natural_disaster_from_action = yes
 		africa_achievement_record_full_action = yes
 	}
 	else_if = {
@@ -6364,6 +6513,10 @@ africa_cleanup_action = {
 		set_country_flag = africa_has_action_history
 		africa_remove_current_action_mission = yes
 		event_target:africa_host = {
+			if = {
+				limit = { check_variable = { PREV.africa_active_action_natural_disaster_cost_reserved > constant:africa_value.zero } }
+				clr_country_flag = africa_natural_disaster_weapon_reserved
+			}
 			if = { limit = { is_in_array = { array = africa_active_action_targets value = PREV } } remove_from_array = { array = africa_active_action_targets value = PREV } }
 			if = { limit = { is_in_array = { array = africa_active_action_short_targets value = PREV } } remove_from_array = { array = africa_active_action_short_targets value = PREV } }
 			if = { limit = { is_in_array = { array = africa_active_action_medium_targets value = PREV } } remove_from_array = { array = africa_active_action_medium_targets value = PREV } }
@@ -6389,7 +6542,7 @@ africa_cleanup_action = {
 		}
 		clear_array = africa_action_state_targets
 		set_variable = { africa_action_cooldown_days = constant:africa_action_threshold.cooldown_days }
-		set_country_flag = { flag = africa_action_recent_target days = africa_action_cooldown_days }
+		set_country_flag = { flag = africa_action_recent_target days = var:africa_action_cooldown_days }
 		clear_variable = africa_action_cooldown_days
 		clr_country_flag = africa_action_record_active
 		clr_country_flag = africa_action_duration_short
@@ -6419,6 +6572,7 @@ africa_cleanup_action = {
 		clear_variable = africa_active_action_intelligence_reservation
 		clear_variable = africa_active_action_cost_stability
 		clear_variable = africa_active_action_cost_war_support
+		clear_variable = africa_active_action_natural_disaster_cost_reserved
 		clear_variable = africa_active_action_state_id
 		clear_variable = africa_active_diaspora_origin_group
 		clear_variable = africa_active_diaspora_skill_programme
