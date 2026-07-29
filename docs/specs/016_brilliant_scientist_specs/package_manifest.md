@@ -16,7 +16,7 @@
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | Stage-0 leader and advisor portraits complete and registered, later visual assets missing, later sprite contracts pre-registered only |
+| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states are present and registered; the fourteen later advisor cards use the canonical advisor-template workflow; remaining visual families and final state-selection review remain tracked separately |
 | Audio status | Research and six Event 016-owned WAVs complete, shared music, sound, settings, event, and localisation wiring absent |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |

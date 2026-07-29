@@ -16,7 +16,7 @@ This matrix records the frozen completed Event 15 surface and the evidence that 
 | Ideas | 50 definitions, 12 unique pictures | `common/ideas/015_utopia_manifesto_ideas.txt`, `interface/015_utopia_manifesto.gfx` | implemented |
 | Characters | 24 total | `common/characters/015_utopia_manifesto_characters.txt` | current country-package re-audit PASS |
 | Institutional entries | 8 founder and successor entries sharing 4 people-free built-in ImageGen institutional tableaux | Event 15 character file and portrait registry | current people-free ImageGen tableau, registration, and country-package checks PASS |
-| Advisors | 16 | Event 15 character file, advisor portrait registry, v5 approval package, and installed-validation report | current ImageGen dossier, registration, independent visual approval, and decoded runtime equality checks PASS |
+| Advisors | 16 | Event 15 character file, advisor portrait registry, canonical-template migration handoff, and installed-validation report | current ImageGen source identity, canonical template composition, registration, independent visual approval, and decoded runtime equality checks PASS |
 | Achievements | 14 | `common/achievements/chaos_redux_achievements.txt` | implemented with active, complete, and failed icon variants |
 | Cosmetic identities | 5 | `common/countries/cosmetic.txt`, Event 15 formation effects, route flags | current ImageGen flag, formation-timing, and country-package checks PASS |
 
