@@ -1,5 +1,7 @@
 # Event 020 rat country package builder handoff
 
+> Superseded by the two-tag correction handoff dated 2026-07-29. This historical builder record describes the retired multi-carrier draft; the current source of truth keeps only reusable RTA and separate RTX, and its former RTB–RTM surfaces are no longer implementation targets.
+
 ## Scope
 
 This handoff covers the finite Rat Nation country package surfaces requested from the country-package subagent. It registers the exact tags already referenced by Event 020, adds dormant country shells and history, defines zero-manpower equipment-independent rat battalions and locked templates, adds the referenced Rat Nation and Rat King spirits, adds archetype-aware AI profiles, and adds BOM-encoded English localisation. It does not edit `common/scripted_effects/020_black_plague_rat_effects.txt`, evolution files, scenario files, focus trees, decisions, maps, or asset wiring.

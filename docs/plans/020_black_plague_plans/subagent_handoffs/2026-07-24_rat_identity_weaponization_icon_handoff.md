@@ -1,5 +1,7 @@
 # Event 020 Rat identity and weaponization icon handoff
 
+> Superseded by the two-tag correction handoff dated 2026-07-29. This historical asset record describes the retired multi-carrier flag surface; the current source of truth keeps only RTA and RTX.
+
 ## Scope completed
 
 The asset package adds four dedicated Rat Nation idea sprites, the long weaponization special-project icon, four distinct weaponization approach decision icons, eleven critical Rat/Rat King focus icons, five fictional non-human leader portraits, and unique normal/medium/small flags for RTA through RTM plus RTX. No gameplay, localisation, or `.gfx` file was edited.

@@ -3,7 +3,7 @@
 # ============================================================================
 # The triggerable scenario is a single, idempotent bootstrap transaction. It
 # seeds the ordinary Event 020 state machine, activates Evolutions I-IV in
-# order, creates independent finite-pool Rat Nations, and establishes a
+# order, creates the reusable Rat Nation, and establishes a
 # separate Royal Basin for RTX. The scoped bootstrap flag is the only bypass;
 # it is cleared before ordinary pulses resume. Evolution V and world_end are
 # deliberately outside this entry point.
@@ -236,26 +236,22 @@ black_plague_scenario_seed_established_states = {
 }
 
 black_plague_scenario_create_rat_nations = {
-	set_temp_variable = { black_plague_scenario_rat_remaining = global.black_plague_scenario_rat_target }
-	subtract_from_temp_variable = { black_plague_scenario_rat_remaining = global.black_plague_rat_countries_count }
-	clamp_temp_variable = { var = black_plague_scenario_rat_remaining min = constant:black_plague_value.zero }
-	for_loop_effect = {
-		start = 0
-		end = black_plague_scenario_rat_remaining
-		value = black_plague_scenario_rat_index
+	if = {
+		limit = {
+			check_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.zero }
+			check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
+		}
+		random_scope_in_array = {
+			array = global.black_plague_scenario_rat_candidate_states
+			save_event_target_as = black_plague_scenario_selected_rat_state
+			remove_from_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS }
+		}
+		black_plague_rat_select_free_slot = yes
 		if = {
-			limit = { check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero } }
-			random_scope_in_array = { array = global.black_plague_scenario_rat_candidate_states save_event_target_as = black_plague_scenario_selected_rat_state remove_from_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
-			black_plague_rat_select_free_slot = yes
-			if = {
-				limit = { check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one } }
-				event_target:black_plague_scenario_selected_rat_state = { black_plague_rat_create_from_state = yes }
-				if = {
-					limit = { check_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.zero } }
-					event_target:black_plague_selected_country = { save_event_target_as = black_plague_rat_evolution_actor }
-				}
-				add_to_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.one }
-			}
+			limit = { check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one } }
+			event_target:black_plague_scenario_selected_rat_state = { black_plague_rat_create_from_state = yes }
+			event_target:black_plague_rat_selected_country = { save_event_target_as = black_plague_rat_evolution_actor }
+			set_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.one }
 		}
 	}
 }

@@ -2,9 +2,9 @@
 
 ## Scope
 
-This handoff records the bounded country-package audit and the two load-time idea-reference repairs for the RTA–RTM Rat Nation slots and the RTX Rat King shell.
+This handoff records the bounded country-package audit and the two load-time idea-reference repairs for the reusable RTA Rat Nation carrier and the separate RTX Rat King shell.
 
-The package remains a dormant finite-pool country package whose ownership, state transfer, leader creation, pulses, merger cleanup, and Rat King transfer are runtime-owned by the Event 020 scripted effects.
+The package remains a dormant two-country package whose ownership, state transfer, leader creation, pulses, cleanup, and Rat King transfer are runtime-owned by the Event 020 scripted effects.
 
 ## Changed files
 
@@ -25,20 +25,20 @@ The dedicated `Crowned Brood` and `Plague Mastery` spirit identities described b
 
 ## Country package coverage
 
-- `common/country_tags/020_black_plague_rat_countries.txt` registers 14 unique tags: RTA–RTM plus RTX.
+- `common/country_tags/020_black_plague_rat_countries.txt` registers exactly two unique tags: RTA and RTX.
 - `common/countries/020_black_plague_rat_country.txt` supplies the shared country shell and eastern graphical cultures.
-- `history/countries/RTA...RTM` and `history/countries/RTX - Rat King.txt` provide dormant shell politics, capital placeholder, zero research slots, and the shared `020_black_plague_rat_1936` OOB reference.
+- `history/countries/RTA - Rat Nation.txt` and `history/countries/RTX - Rat King.txt` provide dormant shell politics, capital placeholder, zero research slots, and the shared `020_black_plague_rat_1936` OOB reference.
 - `history/units/020_black_plague_rat_1936.txt` defines five locked templates, while runtime effects add and lock `Royal Rat Guard`.
 - `common/units/020_black_plague_rat_units.txt` defines six inactive zero-manpower rat sub-units used only by scripted creation.
 - `common/ideas/020_black_plague_rat_ideas.txt` currently registers four ideas: `black_plague_rat_brood_instinct`, `black_plague_rat_no_civilian_economy`, `black_plague_rat_dominion`, and `black_plague_rat_king_dominion`.
 - `common/ai_strategy/020_black_plague_rat_ai_strategy.txt` supplies brood archetype and King AI strategies with rat template priorities and front behavior.
 - `interface/020_black_plague_rat_identity.gfx` registers all current custom focus, idea, and portrait sprites.
 - `localisation/english/020_black_plague_rat_countries_l_english.yml`, `020_black_plague_rat_focus_l_english.yml`, and `020_black_plague_rat_decisions_l_english.yml` are UTF-8 with BOM and cover the current country, focus, decision, leader, unit, template, and idea keys.
-- Normal, medium, and small TGA flags exist for all 14 tags at 82x52, 41x26, and 10x7 pixels respectively, with distinct hashes per tag and size.
+- Normal, medium, and small TGA flags exist for both tags at 82x52, 41x26, and 10x7 pixels respectively, with distinct hashes per tag and size.
 
 ## Validation evidence
 
-- Static package scan found 14 unique registered tags, one matching country shell, one history file per tag, and an existing `history/units/020_black_plague_rat_1936.txt` OOB.
+- Static package scan found exactly two unique registered tags, one matching country shell, one history file per tag, and an existing `history/units/020_black_plague_rat_1936.txt` OOB.
 - Focus localisation scan found 23 base-tree focuses and 38 King-tree focuses with no missing title or description keys.
 - Decision localisation scan found all 12 decision IDs and both category keys covered by `020_black_plague_rat_decisions_l_english.yml`.
 - Focus icon scan found 17 base-tree and 25 King-tree icon tokens with no missing sprite token across mod and vanilla interface GFX files.

@@ -6,6 +6,8 @@ This folder is the complete source specification for the Black Plague rework.
 
 Event 20 begins naturally in one weighted vulnerable mainland state. The disease kills real population over time, spreads through state and transport routes, uses the shared disease and biological warfare interface, supports non-instant countermeasures and a long weaponization project, evolves into Rat Nations and a sentient Rat King, and can end in a terminal Rat King world takeover. A separate triggerable scenario can immediately seed many states on several continents, activate Evolutions I through IV, and create independent Rat Nations plus the Rat King for an instant global challenge.
 
+The later correction in `corrections/2026-07-29_two_rat_tags.md` supersedes all multi-tag Rat Nation requirements. Runtime country identity is limited to the reusable Rat Nation `RTA` and the separate Rat King `RTX`.
+
 ## Read order
 
 1. `specs/020_black_plague_spec_part_1_core_crisis.md`
