@@ -12,7 +12,9 @@ africa_world_package_candidate_base_is_valid = {
 	NOT = { has_country_flag = africa_unifier_host }
 	NOT = { has_country_flag = africa_world_package_actor }
 	NOT = { has_country_flag = africa_world_package_candidate }
+	NOT = { has_country_flag = africa_world_package_successor_candidate }
 	NOT = { has_country_flag = africa_terminal_world_actor }
+	is_subject = no
 	NOT = { is_actual_nonhuman_country = yes }
 	NOT = { is_special_chaos_country = yes }
 	NOT = { is_government_in_exile = yes }
@@ -103,6 +105,176 @@ africa_world_package_is_resolved = {
 		has_country_flag = africa_world_union_partner
 		has_country_flag = africa_world_submission_settlement
 		has_country_flag = africa_world_package_terminal_absorbed
+		has_country_flag = africa_world_package_successor_recorded
+		has_country_flag = africa_world_package_exile_path_resolved
+		has_country_flag = africa_world_package_breakup_recorded
+		has_country_flag = africa_world_package_terminally_resolved
+	}
+}
+
+# COUNTRY scope on the Event 12 host. Every required continent has an explicit
+# disposition (installed, pending, or documented absent) before this is set.
+africa_world_roster_is_documented = {
+	africa_is_current_host = yes
+	has_country_flag = africa_world_package_roster_documented
+	check_variable = {
+		var = africa_world_package_roster_disposition_count
+		value = constant:africa_world_order.required_package_count
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope on an installed package actor. This is a real heartland proof,
+# not a cosmetic continent flag: the actor must still control the recorded
+# minimum number of states on its own continent.
+africa_world_package_heartland_is_proven = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_polity_foundation_initialised
+	has_country_flag = africa_world_package_heartland_proof
+	check_variable = {
+		var = africa_world_package_heartland_state_count
+		value = constant:africa_world_roster.minimum_heartland_states
+		compare = greater_than_or_equals
+	}
+}
+
+africa_world_package_constituent_settlement_is_proven = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_polity_foundation_initialised
+	check_variable = {
+		var = africa_world_package_constituent_count
+		value = constant:africa_world_roster.minimum_constituents
+		compare = greater_than_or_equals
+	}
+	NOT = {
+		any_of_scopes = {
+			array = africa_world_constituent_countries
+			has_country_flag = africa_world_constituent_pending
+		}
+	}
+}
+
+africa_world_package_terminal_resolution_is_proven = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_polity_foundation_initialised
+	OR = {
+		AND = {
+			has_country_flag = africa_world_package_sovereign_complete
+			africa_world_package_heartland_is_proven = yes
+			africa_world_package_constituent_settlement_is_proven = yes
+		}
+		AND = {
+			has_country_flag = africa_world_union_partner
+			africa_world_package_heartland_is_proven = yes
+		}
+		AND = {
+			has_country_flag = africa_world_submission_settlement
+			africa_world_package_heartland_is_proven = yes
+		}
+		has_country_flag = africa_world_package_successor_recorded
+		has_country_flag = africa_world_package_exile_path_resolved
+		has_country_flag = africa_world_package_breakup_recorded
+		has_country_flag = africa_world_package_terminally_resolved
+	}
+}
+
+africa_world_package_successor_candidate_is_valid = {
+	exists = yes
+	has_capitulated = no
+	is_subject = no
+	NOT = { has_country_flag = africa_unifier_host }
+	NOT = { has_country_flag = africa_world_package_actor }
+	NOT = { has_country_flag = africa_world_package_candidate }
+	NOT = { has_country_flag = africa_world_package_successor_candidate }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	OR = {
+		has_focus_tree = generic_focus
+		has_country_flag = africa_world_package_focus_replacement_approved
+	}
+	capital_scope = { is_controlled_by = PREV }
+	OR = {
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
+			capital_scope = { is_on_continent = middle_east }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } }
+			capital_scope = { is_on_continent = europe }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } }
+			capital_scope = { is_on_continent = asia }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } }
+			capital_scope = { is_on_continent = north_america }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } }
+			capital_scope = { is_on_continent = south_america }
+		}
+		AND = {
+			ROOT = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } }
+			capital_scope = { is_on_continent = australia }
+		}
+	}
+}
+
+africa_world_constituent_can_consent = {
+	has_country_flag = africa_world_constituent_registered
+	has_country_flag = africa_world_constituent_pending
+	NOT = { has_country_flag = africa_world_constituent_consented }
+	NOT = { has_country_flag = africa_world_constituent_refused }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	is_subject = no
+}
+
+africa_world_constituent_can_coerce = {
+	has_country_flag = africa_world_constituent_registered
+	OR = {
+		has_country_flag = africa_world_constituent_pending
+		has_country_flag = africa_world_constituent_refused
+	}
+	NOT = { has_country_flag = africa_world_constituent_coerced }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	has_capitulated = no
+}
+
+africa_world_constituent_can_withdraw = {
+	has_country_flag = africa_world_constituent_member
+	NOT = { has_country_flag = africa_world_package_actor }
+	NOT = { has_country_flag = africa_world_constituent_withdrawn }
+	is_subject = no
+}
+
+africa_world_package_successor_resolution_is_possible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_successor_review_open
+	any_of_scopes = {
+		array = africa_world_package_successor_candidates
+		has_country_flag = africa_world_package_successor_candidate
+	}
+}
+
+africa_world_package_exile_resolution_is_possible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_successor_review_open
+	has_country_flag = africa_world_package_exile_path_open
+	is_government_in_exile = yes
+}
+
+africa_world_package_breakup_resolution_is_possible = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_package_successor_review_open
+	has_country_flag = africa_world_package_heartland_lost
+	NOT = { is_government_in_exile = yes }
+	NOT = {
+		any_of_scopes = {
+			array = africa_world_package_successor_candidates
+			has_country_flag = africa_world_package_successor_candidate
+		}
 	}
 }
 
@@ -235,6 +407,8 @@ africa_scramble_can_ratify_aftermath = {
 africa_scramble_can_close_continental_docket = {
 	africa_is_current_host = yes
 	africa_scramble_phase_is_aftermath = yes
+	africa_world_roster_is_documented = yes
+	NOT = { africa_world_packages_are_installed = yes }
 	africa_scramble_recognition_requirement_met = yes
 	africa_scramble_sanctions_requirement_met = yes
 	africa_scramble_ultimatum_requirement_met = yes
@@ -320,6 +494,12 @@ africa_terminal_world_identity_can_commit = {
 		var = africa_world_terminal_resolved_count
 		value = constant:africa_world_order.minimum_terminal_control
 		compare = greater_than_or_equals
+	}
+	NOT = {
+		any_of_scopes = {
+			array = africa_world_package_actors
+			NOT = { africa_world_package_terminal_resolution_is_proven = yes }
+		}
 	}
 	check_variable = {
 		var = global.chaos_meter_value

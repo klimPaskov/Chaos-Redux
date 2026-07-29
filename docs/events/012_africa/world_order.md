@@ -242,3 +242,32 @@ Scramble phase flags and intervention-war flags are cleared at settlement or def
 - Complete the accepted news, focus, idea, flag, super-event, animation, and audio assets with no substitutions.
 - Research and approve the high-chaos continent routes before enabling their review flags.
 - Research and wire the four super-event roles only after final text, images, licensed music, slots, and unique audio IDs are complete.
+
+## World-order roster and polity foundation (tranche 1)
+
+The external roster is a one-time, host-owned census. `africa_world_nominate_missing_package_candidates` still nominates existing sovereign countries with the approved generic or replacement focus surface, but `africa_world_finalize_package_roster` now records each of the six continent slots in one of three bounded arrays: `africa_world_package_resolved_continents`, `africa_world_package_pending_continents`, or `africa_world_package_absent_continents`. `africa_world_package_roster_documented` is set only after all six slots have a disposition. A pending implementation-ready candidate still blocks the partial docket close, so the Scramble cannot silently discard a package that is ready to install.
+
+The aftermath mission can now close the Africa-only docket when the roster is documented but not all six packages are installed. This path sets `africa_world_order_deferred`, publishes `africa_world_order.110`, and leaves no substitute actor in the registry. Full installation still uses `africa_scramble_ratify_aftermath` and opens the World-Order Council; the two paths are mutually gated by `africa_world_packages_are_installed`.
+
+Each installed actor keeps its original country tag and receives `africa_world_initialise_package_polity_foundation`. The helper records the actor in the constituent ledger, scans sovereign same-continent capitals once, records controlled same-continent heartland states, and sets `africa_world_package_heartland_proof` only when the centralised `africa_world_roster.minimum_heartland_states` threshold is met. `on_state_control_changed` refreshes this proof for only the old and new controllers when either is a package actor.
+
+Constituent countries carry `africa_world_constituent_status` and explicit consent, refusal, coercion, withdrawal, successor, or exile flags. Package actors receive bounded target-array decisions for consent, refusal, coercion, and withdrawal. No decision transfers states, manufactures cores, changes a country tag, or substitutes opinion for a recorded polity outcome.
+
+When an actor capitulates or is annexed, the narrow loss helper opens a successor review and records one eligible same-continent sovereign candidate when available. If no candidate exists, the actor receives an explicit exile or breakup certification path. The successor, exile, and breakup effects preserve the original actor and host proof and set lifecycle flags consumed by `africa_world_package_terminal_resolution_is_proven`; no route writes a readiness flag for the unfinished final package.
+
+### Foundation helper map
+
+| Helper | Scope | Inputs | Outputs and side effects | Call sites |
+| --- | --- | --- | --- | --- |
+| `africa_world_finalize_package_roster` | Africa host | six candidate and actor checks | disposition arrays, counters, documented/partial/absence flags | one-time nomination pass |
+| `africa_world_initialise_package_polity_foundation` | package actor | installed actor and package-continent flag | constituent arrays, heartland snapshot, original-actor/host proof | package installation |
+| `africa_world_refresh_package_polity_proof` | package actor | current owned and controlled states | heartland array and proof/loss flags | state-control on-action |
+| `africa_world_record_constituent_consent`, `...refusal`, `...coercion`, `...withdrawal` | constituent with package actor as ROOT | target decision and current status | status flags, actor arrays, authority deltas | package-polity decisions |
+| `africa_world_handle_package_actor_loss` | package actor | capitulation or annexation | successor review, exile/breakup opening, heartland loss | capitulation, peace, annex on-actions |
+| `africa_world_commit_package_successor`, `africa_world_record_exile_resolution`, `africa_world_record_package_breakup` | package actor | reviewed target or explicit certification | lifecycle resolution flags and cleanup | package-polity decisions |
+
+The new shared tuning category is `africa_world_roster` in `common/script_constants/012_africa_world_order_constants.txt`. It owns heartland and constituent thresholds, decision costs, and authority deltas. The lifecycle enum is `africa_world_package_resolution`; constituent statuses use `africa_world_constituent_status`.
+
+### Cleanup and unsupported surfaces
+
+The on-action hooks do not run a recurring all-country scan. Successor candidate flags are cleared when a successor is committed or a breakup is certified, constituent member flags are cleared during breakup, pending roster entries are removed when a candidate installs, and absent entries are retained as the documented historical disposition. This tranche does not set `africa_world_package_implementation_ready`, `africa_the_world_super_event_package_ready`, or any model/asset readiness flag. Focus-tree route depth, country identity art, dynamic union wars, terminal presentation, and the existing stale GFX claims remain outside this foundation tranche.

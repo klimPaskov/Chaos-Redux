@@ -60,8 +60,95 @@ on_actions = {
 		}
 	}
 
+	# ROOT is the new puppet and FROM is its overlord. This is the exact
+	# subject-creation witness for an Event 012 host/member that retains an
+	# African core under an external capital; no current-control proxy is used.
+	on_puppet = {
+		effect = {
+			if = {
+				limit = {
+					any_core_state = { is_on_continent = africa }
+					OR = {
+						africa_is_current_host = yes
+						africa_member_host_generation_is_current = yes
+					}
+					FROM = {
+						capital_scope = {
+							NOT = { is_on_continent = africa }
+						}
+					}
+				}
+				africa_achievement_record_external_puppet_status = yes
+			}
+		}
+	}
+
+	# ROOT is the annexer and FROM is still the victim during this callback.
+	# The victim's Event 012 generation or immutable achievement-counted flags
+	# identify the exact member/partner transaction before the country is removed.
+	on_annex = {
+		effect = {
+			if = {
+				limit = {
+					FROM = {
+						OR = {
+							has_variable = africa_member_host_generation
+							has_country_flag = africa_achievement_counted_protected_partner
+							has_country_flag = africa_achievement_counted_guarantee
+							has_country_flag = africa_achievement_last_convoy_candidate
+							has_country_flag = africa_achievement_archive_evacuated
+							has_country_flag = africa_achievement_restoration_identity_luba_recorded
+							has_country_flag = africa_achievement_restoration_identity_lunda_recorded
+							has_country_flag = africa_achievement_restoration_identity_kuba_recorded
+							has_country_flag = africa_achievement_restoration_identity_kush_recorded
+							has_country_flag = africa_achievement_restoration_identity_nubia_recorded
+							has_country_flag = africa_achievement_restoration_identity_makuria_recorded
+							has_country_flag = africa_achievement_restoration_identity_alodia_recorded
+							has_country_flag = africa_achievement_restoration_identity_aksum_recorded
+							has_country_flag = africa_achievement_restoration_identity_harar_recorded
+							has_country_flag = africa_achievement_restoration_identity_great_zimbabwe_recorded
+							has_country_flag = africa_achievement_restoration_identity_mutapa_recorded
+							has_country_flag = africa_achievement_restoration_identity_rozwi_recorded
+						}
+					}
+				}
+				FROM = { africa_achievement_record_coercive_annexation = yes }
+			}
+			if = {
+				limit = { FROM = { africa_world_package_is_installed = yes } }
+				FROM = { africa_world_handle_package_actor_loss = yes }
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			ROOT = {
+				if = {
+					limit = { africa_world_package_is_installed = yes }
+					africa_world_refresh_package_polity_proof = yes
+				}
+			}
+			FROM = {
+				if = {
+					limit = { africa_world_package_is_installed = yes }
+					africa_world_refresh_package_polity_proof = yes
+				}
+			}
+		}
+	}
+
 	on_capitulation = {
 		effect = {
+			if = {
+				limit = {
+					ROOT = {
+						africa_world_package_is_installed = yes
+						has_capitulated = yes
+					}
+				}
+				ROOT = { africa_world_handle_package_actor_loss = yes }
+			}
 			if = {
 				limit = {
 					ROOT = {
@@ -133,6 +220,14 @@ on_actions = {
 
 	on_peaceconference_ended = {
 		effect = {
+			if = {
+				limit = { ROOT = { africa_world_package_is_installed = yes has_capitulated = yes } }
+				ROOT = { africa_world_handle_package_actor_loss = yes }
+			}
+			if = {
+				limit = { FROM = { africa_world_package_is_installed = yes has_capitulated = yes } }
+				FROM = { africa_world_handle_package_actor_loss = yes }
+			}
 			if = {
 				limit = {
 					ROOT = { africa_is_current_host = yes }
@@ -220,4 +315,5 @@ on_actions = {
 			}
 		}
 	}
+
 }

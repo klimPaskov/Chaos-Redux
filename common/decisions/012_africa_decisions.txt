@@ -1665,6 +1665,10 @@ africa_scramble_actions_category = {
 				limit = { africa_scramble_can_ratify_aftermath = yes }
 				africa_scramble_ratify_aftermath = yes
 			}
+			else_if = {
+				limit = { africa_scramble_can_close_continental_docket = yes }
+				africa_scramble_close_continental_docket = yes
+			}
 			else = {
 				set_country_flag = africa_scramble_aftermath_negotiations_prolonged
 				add_to_variable = { africa_scramble_pressure = constant:africa_world_order.scramble_pressure_gain }
@@ -1966,6 +1970,81 @@ africa_world_order_actions_category = {
 		ai_will_do = { base = constant:africa_world_order.ai_high }
 	}
 
+}
+
+africa_world_polity_actions_category = {
+	africa_world_accept_constituent_consent = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_constituent_countries
+		activation = { africa_world_package_is_installed = yes }
+		target_root_trigger = { africa_world_package_is_installed = yes }
+		target_trigger = { FROM = { africa_world_constituent_can_consent = yes } }
+		cost = constant:africa_world_roster.constituent_consent_pp
+		complete_effect = { FROM = { africa_world_record_constituent_consent = yes } }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_record_constituent_refusal = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_constituent_countries
+		activation = { africa_world_package_is_installed = yes }
+		target_root_trigger = { africa_world_package_is_installed = yes }
+		target_trigger = { FROM = { africa_world_constituent_can_consent = yes } }
+		cost = constant:africa_world_roster.constituent_refusal_pp
+		complete_effect = { FROM = { africa_world_record_constituent_refusal = yes } }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
+
+	africa_world_coerce_constituent_compact = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_constituent_countries
+		activation = { africa_world_package_is_installed = yes }
+		target_root_trigger = { africa_world_package_is_installed = yes }
+		target_trigger = { FROM = { africa_world_constituent_can_coerce = yes } }
+		cost = constant:africa_world_roster.constituent_coercion_pp
+		complete_effect = { FROM = { africa_world_record_constituent_coercion = yes } }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
+
+	africa_world_accept_constituent_withdrawal = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_constituent_countries
+		activation = { africa_world_package_is_installed = yes }
+		target_root_trigger = { africa_world_package_is_installed = yes }
+		target_trigger = { FROM = { africa_world_constituent_can_withdraw = yes } }
+		cost = constant:africa_world_roster.constituent_withdrawal_pp
+		complete_effect = { FROM = { africa_world_record_constituent_withdrawal = yes } }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_commit_package_successor = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_successor_candidates
+		activation = { africa_world_package_is_installed = yes }
+		target_root_trigger = { africa_world_package_successor_resolution_is_possible = yes }
+		target_trigger = { FROM = { africa_world_package_successor_candidate_is_valid = yes } }
+		cost = constant:africa_world_roster.successor_review_pp
+		complete_effect = { africa_world_commit_package_successor = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_certify_package_exile = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_exile_resolution_is_possible = yes }
+		available = { africa_world_package_exile_resolution_is_possible = yes }
+		cost = constant:africa_world_roster.exile_certification_pp
+		complete_effect = { africa_world_record_exile_resolution = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_certify_package_breakup = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_breakup_resolution_is_possible = yes }
+		available = { africa_world_package_breakup_resolution_is_possible = yes }
+		cost = constant:africa_world_roster.breakup_certification_pp
+		complete_effect = { africa_world_record_package_breakup = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
 }
 
 africa_constitutional_crisis_actions_category = {
