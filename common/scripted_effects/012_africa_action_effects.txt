@@ -6318,6 +6318,149 @@ africa_apply_action_failure_semantics = {
 	africa_world_order_apply_failure_result = yes
 }
 
+# COUNTRY scope on the Event 012 host. The caller seeds the action and
+# payment reservation from the exact active action target before invoking
+# this helper. The selected-country event target is never widened or rerolled.
+africa_prepare_hostile_natural_disaster_strength = {
+	set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.base_strength }
+
+	# Route flags provide a floor, with the strongest completed route taking
+	# precedence instead of stacking every intermediate flag.
+	if = {
+		limit = { has_country_flag = africa_covenant_route_capstone }
+		set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.capstone_route_strength }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_covenant_write_warfare_doctrine }
+		set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.warfare_route_strength }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_covenant_favour_and_wrath }
+		set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.favour_route_strength }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_covenant_route_committed }
+		set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.committed_route_strength }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_priority_member_full_promotion }
+		set_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.priority_route_strength }
+	}
+
+	# The extra nature-call payment and the drought action's longer, extreme
+	# profile each add one bounded point after the route floor is selected.
+	if = {
+		limit = { check_variable = { africa_natural_disaster_weapon_cost_reserved > constant:africa_value.zero } }
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.caller_cost_strength }
+	}
+	if = {
+		limit = { check_variable = { africa_natural_disaster_weapon_action_id = constant:africa_action.defy_the_drought } }
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.drought_action_strength }
+	}
+
+	# Pressure and war-readiness are read from the live host ledger. Existing
+	# Africa measure bands keep the thresholds shared with the rest of Event 012.
+	if = {
+		limit = {
+			has_variable = africa_ecological_wrath
+			check_variable = { africa_ecological_wrath > constant:africa_measure.low }
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.ecological_wrath_low_strength }
+	}
+	if = {
+		limit = {
+			has_variable = africa_ecological_wrath
+			check_variable = { africa_ecological_wrath > constant:africa_measure.medium }
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.ecological_wrath_medium_strength }
+	}
+	if = {
+		limit = {
+			has_variable = africa_ecological_wrath
+			check_variable = { africa_ecological_wrath > constant:africa_measure.high }
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.ecological_wrath_high_strength }
+	}
+	if = {
+		limit = {
+			has_variable = africa_continental_war_readiness
+			check_variable = { africa_continental_war_readiness > constant:africa_measure.medium }
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.war_readiness_medium_strength }
+	}
+	if = {
+		limit = {
+			has_variable = africa_continental_war_readiness
+			check_variable = { africa_continental_war_readiness > constant:africa_measure.high }
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.war_readiness_high_strength }
+	}
+
+	# The exact selected enemy's size is an impact-envelope adjustment, not an
+	# actor-power signal, and contributes at most one point per axis. This reads
+	# only the saved event target and never searches for another country/state.
+	if = {
+		limit = {
+			has_event_target = natural_disaster_call_target_country
+			event_target:natural_disaster_call_target_country = {
+				num_of_factories > constant:africa_natural_disaster_strength.target_factory_threshold
+			}
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.target_size_strength }
+	}
+	if = {
+		limit = {
+			has_event_target = natural_disaster_call_target_country
+			event_target:natural_disaster_call_target_country = {
+				num_of_controlled_states > constant:africa_natural_disaster_strength.target_state_threshold
+			}
+		}
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.target_size_strength }
+	}
+
+	clamp_temp_variable = {
+		var = africa_natural_disaster_weapon_strength
+		min = constant:africa_natural_disaster_strength.base_strength
+		max = constant:africa_natural_disaster_strength.maximum_strength
+	}
+	set_temp_variable = { africa_natural_disaster_weapon_strength_delta = africa_natural_disaster_weapon_strength }
+	subtract_from_temp_variable = { africa_natural_disaster_weapon_strength_delta = constant:africa_natural_disaster_strength.base_strength }
+	clamp_temp_variable = {
+		var = africa_natural_disaster_weapon_strength_delta
+		min = constant:africa_value.zero
+		max = constant:africa_natural_disaster_strength.maximum_strength
+	}
+
+	# Convert strength points to all five public Event 013 impact scales. The
+	# Event 013 wrapper validates these values against its own shared bounds.
+	set_temp_variable = { natural_disaster_call_death_scale = constant:africa_natural_disaster_strength.base_scale }
+	set_temp_variable = { natural_disaster_call_building_scale = constant:africa_natural_disaster_strength.base_scale }
+	set_temp_variable = { natural_disaster_call_warning_scale = constant:africa_natural_disaster_strength.base_scale }
+	set_temp_variable = { natural_disaster_call_recovery_scale = constant:africa_natural_disaster_strength.base_scale }
+	set_temp_variable = { natural_disaster_call_supply_scale = constant:africa_natural_disaster_strength.base_scale }
+	set_temp_variable = { africa_natural_disaster_weapon_scale_delta = africa_natural_disaster_weapon_strength_delta }
+	multiply_temp_variable = { africa_natural_disaster_weapon_scale_delta = constant:africa_natural_disaster_strength.death_scale_per_strength }
+	add_to_temp_variable = { natural_disaster_call_death_scale = africa_natural_disaster_weapon_scale_delta }
+	set_temp_variable = { africa_natural_disaster_weapon_scale_delta = africa_natural_disaster_weapon_strength_delta }
+	multiply_temp_variable = { africa_natural_disaster_weapon_scale_delta = constant:africa_natural_disaster_strength.building_scale_per_strength }
+	add_to_temp_variable = { natural_disaster_call_building_scale = africa_natural_disaster_weapon_scale_delta }
+	set_temp_variable = { africa_natural_disaster_weapon_scale_delta = africa_natural_disaster_weapon_strength_delta }
+	multiply_temp_variable = { africa_natural_disaster_weapon_scale_delta = constant:africa_natural_disaster_strength.warning_scale_per_strength }
+	add_to_temp_variable = { natural_disaster_call_warning_scale = africa_natural_disaster_weapon_scale_delta }
+	set_temp_variable = { africa_natural_disaster_weapon_scale_delta = africa_natural_disaster_weapon_strength_delta }
+	multiply_temp_variable = { africa_natural_disaster_weapon_scale_delta = constant:africa_natural_disaster_strength.recovery_scale_per_strength }
+	add_to_temp_variable = { natural_disaster_call_recovery_scale = africa_natural_disaster_weapon_scale_delta }
+	set_temp_variable = { africa_natural_disaster_weapon_scale_delta = africa_natural_disaster_weapon_strength_delta }
+	multiply_temp_variable = { africa_natural_disaster_weapon_scale_delta = constant:africa_natural_disaster_strength.supply_scale_per_strength }
+	add_to_temp_variable = { natural_disaster_call_supply_scale = africa_natural_disaster_weapon_scale_delta }
+
+	clamp_temp_variable = { var = natural_disaster_call_death_scale min = constant:natural_disaster_call_scale.minimum max = constant:natural_disaster_call_scale.maximum }
+	clamp_temp_variable = { var = natural_disaster_call_building_scale min = constant:natural_disaster_call_scale.minimum max = constant:natural_disaster_call_scale.maximum }
+	clamp_temp_variable = { var = natural_disaster_call_warning_scale min = constant:natural_disaster_call_scale.minimum max = constant:natural_disaster_call_scale.maximum }
+	clamp_temp_variable = { var = natural_disaster_call_recovery_scale min = constant:natural_disaster_call_scale.minimum max = constant:natural_disaster_call_scale.maximum }
+	clamp_temp_variable = { var = natural_disaster_call_supply_scale min = constant:natural_disaster_call_scale.minimum max = constant:natural_disaster_call_scale.maximum }
+}
+
 # COUNTRY scope on the resolved target. Uses the existing action target and
 # host event targets; Event 013 receives one exact selected-country target and
 # its public hostile_actor contract. No new target array or world iteration is
@@ -6343,6 +6486,8 @@ africa_call_hostile_natural_disaster_from_action = {
 		}
 		save_event_target_as = natural_disaster_call_target_country
 		event_target:africa_host = {
+			set_temp_variable = { africa_natural_disaster_weapon_action_id = PREV.africa_active_action_id }
+			set_temp_variable = { africa_natural_disaster_weapon_cost_reserved = PREV.africa_active_action_natural_disaster_cost_reserved }
 			set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.hostile_actor }
 			set_temp_variable = { natural_disaster_call_caller_event_id = constant:africa_natural_disaster.caller_event_id }
 			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.random }
@@ -6366,6 +6511,8 @@ africa_call_hostile_natural_disaster_from_action = {
 				limit = { has_country_flag = africa_covenant_route_capstone }
 				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.catastrophic }
 			}
+			africa_prepare_hostile_natural_disaster_strength = yes
+			set_variable = { africa_last_natural_disaster_call_strength = africa_natural_disaster_weapon_strength }
 			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
 			set_temp_variable = { natural_disaster_call_sequence_count = constant:africa_value.one }
 			set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.meaningful }
@@ -6393,6 +6540,7 @@ africa_call_hostile_natural_disaster_from_action = {
 				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
 				set_country_flag = africa_natural_disaster_call_accepted
 				PREV = { set_country_flag = africa_natural_disaster_call_accepted_recorded }
+				africa_achievement_record_disaster_weaponised_against_civilians = yes
 				if = {
 					limit = { check_variable = { natural_disaster_call_has_resolved_primary_country > constant:africa_value.zero } }
 					event_target:natural_disaster_call_resolved_primary_country = {
