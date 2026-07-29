@@ -801,7 +801,9 @@ africa_priority_member_apply_mechanic_payload = {
 		set_country_flag = africa_priority_kilwa_common_customs_arbitrated
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_priority_member_reward.convoy_standard }
 		navy_experience = constant:africa_priority_member_reward.navy_experience_small
-		event_target:africa_host = { add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain } }
+		event_target:africa_host = {
+			add_to_variable = { africa_continental_reach = constant:africa_priority_member_progress.host_standard_gain }
+		}
 	}
 	if = {
 		limit = { africa_priority_member_package_is_nubia = yes }
@@ -921,6 +923,22 @@ africa_priority_member_advance_mechanic = {
 			if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_mechanic_complete }
 			if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_mechanic_complete }
 			if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_mechanic_complete }
+			africa_achievement_record_priority_member_identity = yes
+			if = {
+				limit = {
+					africa_priority_member_package_is_kilwa = yes
+					has_country_flag = africa_priority_kilwa_common_customs_arbitrated
+					has_event_target = africa_host
+				}
+				event_target:africa_host = {
+					set_global_flag = africa_achievement_maritime_convoy_access_active
+					africa_achievement_refresh_survival_windows = yes
+				}
+			}
+			if = {
+				limit = { has_event_target = africa_host }
+				event_target:africa_host = { africa_achievement_record_horn_corridor_operational = yes }
+			}
 		}
 		if = { limit = { has_event_target = africa_host } event_target:africa_host = { africa_clamp_host_values = yes } }
 	}
@@ -1431,6 +1449,10 @@ africa_priority_member_refuse_league_offer = {
 		}
 	}
 	africa_priority_member_reconcile_post_settlement = yes
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = { africa_achievement_refresh_survival_windows = yes }
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -1670,6 +1692,10 @@ africa_priority_member_record_rival_bloc_victory = {
 		if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_country_flag = africa_priority_great_zimbabwe_rival_bloc_victory }
 		if = { limit = { africa_priority_member_package_is_merina = yes } set_country_flag = africa_priority_merina_rival_bloc_victory }
 		if = { limit = { africa_priority_member_package_is_zulu = yes } set_country_flag = africa_priority_zulu_rival_bloc_victory }
+	}
+	if = {
+		limit = { has_event_target = africa_host }
+		event_target:africa_host = { africa_achievement_refresh_survival_windows = yes }
 	}
 }
 
