@@ -678,6 +678,8 @@ When an event uses a custom interface, align these surfaces:
 
 Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
 
+Event targets are valid scope pointers inside scripted GUI triggers, effects, and scripted localisation. Preserve `event_target:` usage when a GUI action intentionally carries a country, state, or character pointer across clicks, localisation, or event chains. Audits must verify that the target is referenced in a valid scope and that its lifecycle is safe, including cleanup for global targets and stale-target handling. Do not require migration to variables or remove an event-target GUI pattern merely because a variable could represent the same pointer.
+
 Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.
 
 ## 3D model and entity integration
