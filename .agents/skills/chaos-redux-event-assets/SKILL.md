@@ -98,6 +98,7 @@ Asset subagents may create:
 - final DDS files
 - contact sheets
 - manifests
+- durable ComfyUI portrait source and prompt pairs under `docs/assets/portraits/`
 - `docs/assets/<event_id>_<event_slug>/gfx_handoff.md`
 
 Asset subagents must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, scripted effect, scripted trigger, on_action, history, country, or spreadsheet files unless the parent explicitly grants that scope.
@@ -148,29 +149,55 @@ Before declaring the event goal fully complete:
 1. Confirm that every accepted asset row has a final runtime consumer and that no runtime reference points into `docs/assets/`.
 2. Promote durable provenance, licensing, attribution, requirement-to-runtime crosswalks, review results, accepted handoff facts, and blocker or exception notes into permanent `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another appropriate documentation surface.
 3. Move final runtime assets into engine-facing folders and verify their `.gfx`, `.gui`, audio, or gameplay references.
-4. Delete the complete event-scoped temporary workspace, including empty subfolders, and verify that it is absent.
+4. Delete the complete event-scoped temporary workspace, including empty subfolders, and verify that it is absent. Never delete the separate durable ComfyUI portrait queue under `docs/assets/portraits/` as part of this cleanup.
 
 An absent event-scoped `docs/assets/` folder is expected after a fully complete goal and is not an asset blocker. If the event is incomplete or blocked, retain the workspace and report the blocker. Never delete skill-local `assets/` reference libraries or an unrelated event workspace.
 
-When the user requests a durable pre-DDS portrait reference shelf, retain a
-byte-for-byte copy of every source-derived HOI4 repaint master before
-deterministic normalization under
-`docs/assets/<event_id>_<event_slug>/portraits_generated_png/pre_resize_source_repaints/`.
-Retain the normalized 156x210 PNG in the same shelf with its source path,
-SHA-256, dimensions, generation record, crop evidence, processing metadata,
-independent audit state, and runtime status. This shelf is evidence only: it
-does not authorize DDS conversion, `.gfx` wiring, a character consumer, or a
-leader replacement. Update the shelf manifests whenever a new source-derived
-portrait is produced, including candidates that are later rejected or blocked.
+### Durable ComfyUI portrait replacement queue
 
-If the user explicitly requests a flat shelf, that request overrides the default
-evidence layout above: place every original-size repaint master directly in
-`docs/assets/<event_id>_<event_slug>/portraits_generated_png/`, use unique
-basenames, create no nested subfolders, and do not place normalized 156x210 PNGs
-in that directory. Keep any normalized evidence in a separate sibling archive or
-the originating package workspace, update the manifest to use the flat filenames,
-and preserve the same source, SHA-256, crop, processing, audit, and runtime-status
-records. The flat shelf remains evidence-only and never authorizes runtime use.
+Create a durable ComfyUI handoff for every portrait while continuing the normal HOI4 processing, resize, DDS conversion, review, and runtime-wiring workflow. Treat the agent-produced HOI4-style runtime portrait as a usable placeholder that may later be replaced manually; do not delay the current implementation merely because the ComfyUI pass is pending.
+
+For an event with one portrait, save the pair exactly as:
+
+```text
+docs/assets/portraits/<event_id>_<event_slug>/portrait.png
+docs/assets/portraits/<event_id>_<event_slug>/portrait.txt
+```
+
+Save the highest-resolution portrait source that anchors the subject as `portrait.png`, before the final `156x210` resize and DDS conversion. Prefer the pre-style identity or subject master suitable for a later ComfyUI image-input pass. If the subject began as an agent generation, save the original full-resolution generation rather than only the cropped, resized, framed, or DDS runtime placeholder. If the source is an attributed real-person photograph, retain the immutable downloaded master and provenance in the active evidence workspace and save a lossless PNG copy in the durable queue; the queue copy never replaces the real-person provenance or identity-audit requirements.
+
+Analyze the saved portrait source and use the following prompt exactly as the portrait-description instruction:
+
+```text
+Write one concise natural-language image prompt describing the input portrait.
+
+Begin with:
+
+hoi4_portrait,
+
+Prioritize visible details that help recreate the person:
+
+- approximate age and gender
+- nationality, ideology, military role, or political role when clearly visible
+- hair, hairline, facial hair, glasses, and accessories
+- expression and head direction
+- eye shape and spacing
+- nose shape
+- mouth shape
+- jawline and chin
+- facial proportions, skin tone, and visible asymmetry
+- clothing, uniform, medals, hats, jewelry, and other relevant visible details
+
+Use concise natural language, not a tag list. Do not use the person’s name. Do not invent details that cannot be inferred from the image.
+
+Output only the final prompt with no headings, quotation marks, explanations, or formatting.
+```
+
+Save only the resulting final prompt in `portrait.txt`. Do not add provenance, labels, headings, notes, or the instruction text itself to that file.
+
+For an accepted event with more than one portrait, keep the primary portrait at `portrait.png` and `portrait.txt`, then use paired stable subject basenames such as `portrait_<subject_slug>.png` and `portrait_<subject_slug>.txt` for each additional portrait. Never overwrite one subject with another. Record every durable pair, its subject, source relationship, and `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed` state in the active manifest and permanent event documentation.
+
+The durable queue is not runtime storage. No `.gfx`, character, GUI, event, focus, idea, or decision reference may point into `docs/assets/portraits/`. Do not delete this queue when removing `docs/assets/<event_id>_<event_slug>/`; remove or replace a queued portrait only when the user explicitly requests it.
 
 ## 3. Asset source rules
 
@@ -558,14 +585,15 @@ For every asset package:
 15. For internet-sourced assets, find a suitable source image and record its source link, author or archive if available, and license or public domain status if available.
 16. For user-provided assets, record that the image was provided by the user.
 17. Save the original generated, sourced, or provided image as a source PNG.
-18. Crop and resize non-portrait assets to the target size; real-person portraits require the exact lossless source crop and JSON equality evidence before ImageGen, followed by the deterministic 156x210 candidate from section 3. Do not treat an `ffmpeg` or ImageMagick crop as immutable unless its decoded pixels are independently proven equal to the same decoded master rectangle.
-19. Save a processed PNG preview.
-20. Convert a real-person portrait to DDS only after an independent audit PASS; convert other processed assets to DDS 32 bit unsigned BGRB 8.8.8.8.
-21. Move the DDS into the correct mod folder.
-22. Create or update the asset manifest.
-23. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
-24. Update event docs or asset docs when the parent prompt grants that documentation scope.
-25. Report all created files, proposed sprite names, final paths, independent audit status, blocked assets, and any handoff uncertainty.
+18. For every portrait, create or update its durable ComfyUI source PNG and prompt-style TXT pair under `docs/assets/portraits/<event_id>_<event_slug>/` according to section 2.3.
+19. Crop and resize non-portrait assets to the target size; real-person portraits require the exact lossless source crop and JSON equality evidence before ImageGen, followed by the deterministic 156x210 candidate from section 3. Do not treat an `ffmpeg` or ImageMagick crop as immutable unless its decoded pixels are independently proven equal to the same decoded master rectangle.
+20. Save a processed PNG preview.
+21. Convert a real-person portrait to DDS only after an independent audit PASS; convert other processed assets to DDS 32 bit unsigned BGRB 8.8.8.8.
+22. Move the DDS into the correct mod folder.
+23. Create or update the asset manifest.
+24. Create or update `gfx_handoff.md` for any asset that needs a sprite definition.
+25. Update event docs or asset docs when the parent prompt grants that documentation scope.
+26. Report all created files, durable portrait source/prompt pairs, proposed sprite names, final paths, independent audit status, blocked assets, and any handoff uncertainty.
 
 Do not mark assets complete until the DDS files exist, the manifest is written, every real-person portrait has an independent audit PASS, and the main agent has enough handoff information to wire every sprite without guessing.
 
@@ -596,6 +624,8 @@ Final DDS files must be moved into the correct gameplay asset folders.
 Do not keep final assets under `docs/assets/`.
 
 Keep this workspace through active implementation, review, and validation only. Before the event goal is fully complete, preserve any durable provenance or coverage facts in permanent docs, then delete the entire event-scoped workspace. Do not require the deleted workspace to exist for a completion claim.
+
+Portraits also require the separate durable source/prompt pair from section 2.3 under `docs/assets/portraits/<event_id>_<event_slug>/`. That portrait queue is not part of the temporary event workspace and survives its cleanup.
 
 ## 8. Manifest requirements
 
@@ -641,6 +671,8 @@ Each asset entry should include:
 - portrait subject-ownership search terms, roots/files and ids checked, matched owner or
   consumer (or explicit no-match evidence), disposition, and any guarded transfer/
   availability contract
+- durable ComfyUI portrait source PNG path, matching prompt TXT path, subject basename, and source relationship for every portrait
+- ComfyUI replacement state: `comfyui_replacement_pending`, `comfyui_replaced`, or `comfyui_not_needed`
 
 Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
 
@@ -1109,6 +1141,8 @@ The metadata must record the Pillow/tool version and hash, master/output hashes 
 
 After the immutable crop and any source-locked ImageGen repaint, produce the full-size candidate with the same explicit role boundary and deterministic `156x210` canvas. Keep the image-editing steps reproducible and record their normalized commands or manual operations in the manifest; do not advertise a missing shared processor or silently treat a raw, filtered, or merely resized photograph as runtime art.
 
+Before the final resize and DDS conversion, also create the durable ComfyUI pair from section 2.3. Save the highest-resolution subject source as `docs/assets/portraits/<event_id>_<event_slug>/portrait.png`, analyze that image with the exact portrait-description instruction from section 2.3, and save only its final natural-language prompt as `portrait.txt`. This queue does not replace the source master, audit evidence, processed candidate, or runtime asset.
+
 Choose the canonical reference family by role before starting:
 
 - country leader: `portraits/leaders/`
@@ -1454,4 +1488,4 @@ Before finishing, confirm:
 20. Every flag has visible imagegen source evidence, and historical flags also have a cited design reference plus a documented geometry/colour/symbol comparison. No final flag is a fabric scene or painterly flag artwork.
 21. Every unit visual is classified by domain and surface as equipment/technology art, a large land counter, a land/air/naval map counter, a division-template emblem, or a land/air/naval 3D model package; one pipeline was not resized or relabeled to substitute for another. A 3D package also proves the one-image Meshy input rule, provider lineage, vanilla scale calibration, PDX material mapping, topology repair, required skeletal actions, `.mesh`/`.anim` reimport, hash-aware runtime synchronization, parent-owned wiring, and a live consumer.
 22. Every strip, indexed icon family, counter, and multi-state asset preserves the cataloged frame order, frame count, per-frame footprint, and owning definition.
-23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead.
+23. When the event goal is fully complete, `docs/assets/<event_id>_<event_slug>/` is absent and no runtime reference points into it. If the event is blocked or incomplete, retain the workspace with a clear blocker instead. The durable `docs/assets/portraits/<event_id>_<event_slug>/` ComfyUI queue remains present, every portrait has a matching prompt TXT produced from the exact section 2.3 image-analysis instruction without a person name or invented details, and no runtime reference points into that queue.
