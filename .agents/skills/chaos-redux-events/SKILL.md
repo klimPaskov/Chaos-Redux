@@ -131,7 +131,7 @@ Only write sections for event surfaces that actually exist. Omit absent systems 
 
 Do not expose hidden routes, secret variables, future surprises, achievement paths, implementation history, tuning history, or rework history in player-facing text. Event Details and spreadsheet detail fields describe the situation and premise, not the mechanical effects. Options, decisions, focuses, and tooltips must still clearly describe visible consequences and requirements, but they should not read like reward lists or spoil content.
 
-For super-events, do not invent quotes, cultural remarks, song fragments, title references, or final audio choices. Use `chaos-redux-super-events` and the relevant research subagents when the event needs sourced wording or music.
+For super-events, do not invent quotes, cultural remarks, song fragments, title references, or final audio choices. Use `chaos-redux-super-events` and the relevant research subagents when the event needs sourced wording or audio.
 
 ## Parent and subagent implementation ownership
 
@@ -518,12 +518,14 @@ If the event shows or drives a super event, wire the whole package:
 
 - choose the slot intentionally
 - set `super_event_visible`
-- set `global.current_super_event_audio_id`. Every super event has a unique audio.
-- use the settings-aware playback helper rather than bypassing it
+- set `global.current_super_event_audio_id`. Every super-event has a unique audio id and unique final track.
+- register the final cue as a game-ready WAV under `sound/<event_id>_<event_slug>/...`
+- add the base sound definition and required settings-volume soundeffect wrappers to `sound/chaosx_sound.asset`
+- play the cue with `play_current_super_event_sound = yes`, the settings-aware sound helper
 - update scripted localisation in `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - update image wiring in `interface/chaosx_super_events.gfx`
 - update player-facing localisation in the correct `.yml` files
-- also update the .html documentation of music files correctly. If you can't get all the info from the file metadata and the user didn't provide the author or the name of the piece, then ask the user to do so.
+- update `music/chaosx_music_track_list.html`, the canonical audio catalogue, with the final track, super-event id, source, and rights details. If you can't get all the info from the file metadata and the user didn't provide the author or the name of the piece, then ask the user to do so.
 
 Use `chaos-redux-super-events` whenever an event includes a super-event.
 
