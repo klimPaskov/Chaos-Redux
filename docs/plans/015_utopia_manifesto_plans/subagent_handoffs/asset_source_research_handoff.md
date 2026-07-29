@@ -12,7 +12,7 @@ The Event 015 report image, news image, and two installed legacy super-event ima
 
 The Thomas More quotation is accurately reproduced and attributed to Thomas More, *Utopia*, translated by Gilbert Burnet. The wording matches the closing sentence in Project Gutenberg ebook 2130, and that edition's introduction explicitly identifies Burnet's 1684 translation. More died in 1535, Burnet in 1715, and editor Henry Morley in 1894, so the quoted text and edition chain are public-domain compatible. The five current localisation entries for slots `96`-`100` all reproduce the same exact sentence and attribution.
 
-Playback audio ID `57` is a unique, documented, compatible cue. It uses Johannes Brahms's *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, performed by the Musopen Symphony Orchestra. The specific Commons recording is dedicated under CC0 1.0 Universal. The source master, frozen Commons page, structured metadata, CC0 deed, CC0 legal code, final WAV, and Event 015 WAV mirror are all present and checksum-backed. The HTML music catalogue now contains the missing active row.
+Playback audio ID `57` is a unique, documented, compatible cue. It uses Johannes Brahms's *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*, performed by the Musopen Symphony Orchestra. The specific Commons recording is dedicated under CC0 1.0 Universal. The source master, frozen Commons page, structured metadata, CC0 deed, CC0 legal code, final WAV, and Event 015 WAV file are all present and checksum-backed. The HTML music catalogue now contains the missing active row.
 
 The overall super-event visual package is incomplete. Five route-specific sprites are registered and selected for display slots `96`-`100`, but none of their generated source PNGs or runtime DDS files exists. The two installed legacy super-event images are not accepted as fallbacks.
 
@@ -72,7 +72,7 @@ Identity chain:
 - Commons size and SHA-1: `8,770,243` bytes; `38f129111cb55461c7749a52b7ac608a13709b11`
 - preserved source SHA-256: `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df`
 - final WAV: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`, `116.000000 s`, stereo, `44,100 Hz`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`
-- final WAV mirror: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`, `116.000000 s`, stereo PCM s16le, `44,100 Hz`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`
+- final WAV file: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`, `116.000000 s`, stereo PCM s16le, `44,100 Hz`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`
 - embedded OGG tags name the title, performer, composer, Event 015, CC0 licence, Commons source, and edit interval
 
 Runtime/catalog identity:
@@ -88,7 +88,7 @@ Uniqueness checks:
 
 - all `54` OGG files under `music/` were container-hash checked; only the Event 015 OGG has its SHA-256
 - exact first-20-second Chromaprint scan of all `54` OGGs returned one match: the Event 015 OGG
-- exact first-20-second Chromaprint scan of all `52` WAVs under `sound/` returned one match: the expected Event 015 WAV mirror
+- exact first-20-second Chromaprint scan of all `52` WAVs under `sound/` returned one match: the expected Event 015 WAV file
 - repository-wide title, source, filename, helper, wrapper, and audio-ID searches found no mapping to another event
 - Event 018 uses a different Brahms work, Symphony No. 1, movement I, with a different source and derivative; it is not a reuse of the Event 015 track
 
@@ -154,7 +154,7 @@ Meaningful validation performed:
 - rechecked the More sentence and Burnet attribution against the primary text
 - recalculated the source-audio, OGG, WAV, and frozen-evidence hashes
 - decoded and profiled the source, OGG, and WAV with FFprobe
-- verified six music definitions, six sound wrappers, one station entry, one catalogue row, and the Event 015 audio constant
+- verified six sound wrappers, one catalogue row, and the Event 015 audio constant
 - ran repository-wide WAV hash and Chromaprint uniqueness scans
 
 No commit was created. The five-file route-image blocker prevents a clean overall super-event completion claim, and most Event 015 documentation surfaces in this handoff were already untracked shared-plan outputs. The parent should review and commit the integrated Event 015 plan without folding unrelated concurrent changes into this bounded audit.

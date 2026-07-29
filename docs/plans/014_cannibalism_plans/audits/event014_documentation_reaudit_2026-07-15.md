@@ -31,7 +31,7 @@ The current documentation authority is internally aligned. No current source spe
 - The regional warlord package contains 56 distinct no-prison HOI4-style portraits.
 - The ordinary leader animation has 12 independently generated frames. The transformed leader animation has 16 independently generated frames.
 - Four action super-events are live.
-- Super-event audio contains 8 runtime files at 44.1 kHz: 4 OGG and 4 WAV.
+- Super-event audio contains 8 runtime files at 44.1 kHz: 4 WAV.
 - Exactly 18 achievements and an 18-entry read-only staged tracker are live.
 - `SCN-010` has five types and is cataloged as `Fully Functional`.
 - Manual `SCN-010` launch uses a mutation-free exact preflight for actors, opening-state capacity, external Island/Siege/March state arrays, origin distribution, and reusable slots. Commit starts only after exact equality. Failure changes only the launcher marker and temporary plan state.

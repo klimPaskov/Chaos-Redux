@@ -507,7 +507,7 @@ The anti-spoiler audit must inspect:
 - achievement list visibility
 - scenario details
 - super-event slot defaults
-- music station names or tooltips
+- audio catalogue names or tooltips
 - event log preview rows
 - Event Details evolution catalog
 - debug names visible outside debug mode
@@ -526,7 +526,7 @@ The implemented runtime package contains:
 - 135 decision and category textures, including 38 distinct unified decision icons
 - 18 achievement triplets
 - 12 non-portrait animation packages plus the two leader portrait packages, for exactly 14 semantic animation packages and 142 genuine source plus 142 processed frames
-- eight unique 44.1 kHz super-event runtime audio files, four OGG and four WAV
+- eight unique 44.1 kHz super-event runtime audio files, four WAV
 - the final 21-surface closure package.
 
 The closure package covers 13 maintained objective/action icons, two achievement-tracker textures, four terminal-hunt textures, the receipt-backed Pack icon, and the inherited winter-cell icon. Every closure composition has independent generated source art, processed output, runtime DDS, hash ledger, validation report, and contact-sheet evidence.

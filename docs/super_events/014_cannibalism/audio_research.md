@@ -218,7 +218,7 @@ Courtesy attribution for the public-domain tracks:
 
 Required attribution and share-alike notice for ID 52:
 
-> Gabriel Fauré, `Élégie, Op. 24`; Hans Goldstein (cello) and Eli Kalman (piano), Michael Fields Agriculture Institute, 3 June 2006; source via Wikimedia Commons / Pandora Music at ibiblio. Recording licensed CC BY-SA 2.0: https://creativecommons.org/licenses/by-sa/2.0/. Chaos Redux excerpted, faded, resampled where required, and loudness-normalized the recording. The adapted OGG and WAV are distributed under CC BY-SA 2.0.
+> Gabriel Fauré, `Élégie, Op. 24`; Hans Goldstein (cello) and Eli Kalman (piano), Michael Fields Agriculture Institute, 3 June 2006; source via Wikimedia Commons / Pandora Music at ibiblio. Recording licensed CC BY-SA 2.0: https://creativecommons.org/licenses/by-sa/2.0/. Chaos Redux excerpted, faded, resampled where required, and loudness-normalized the recording. The adapted WAV are distributed under CC BY-SA 2.0.
 
 ## Rejected candidates and sources
 

@@ -63,7 +63,7 @@ Runtime state binding is exact:
 
 Slots `96`-`100` bind five route-distinct images, matching route descriptions, the shared title `UTOPIA HAS NEIGHBORS`, the verified public-domain Thomas More quotation, and audio ID `57`. `utopia_manifesto_emit_regional_proclamation` sets the exact route slot and audio ID, then calls the settings-aware playback helper.
 
-The final OGG is Vorbis, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`. The WAV is PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`. Both are unique in the current runtime audio folders. Frozen CC0 source and licence evidence is documented in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
+The final WAV is Vorbis, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`. The WAV is PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`. Both are unique in the current runtime audio folders. Frozen CC0 source and licence evidence is documented in `docs/super_events/015_utopia_manifesto/audio_research.md`.
 
 ## Prior P2 history and completion boundary
 

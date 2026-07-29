@@ -173,7 +173,6 @@ This change also includes:
 - `interface/chaosx.gui`
 - `sound/chaosx_sound.asset`
 - `common/scripted_effects/fallout_world_end_effects.txt`
-- `music/fallout_world_end_music.asset`
 - `sound/fallout_world_end_sound.asset`
 - `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
 - `localisation/english/chaosx_gui_l_english.yml`
@@ -202,7 +201,6 @@ Audio assets used:
 - Sound definition file:
   - `sound/chaosx_sound.asset`
 - Sound sources:
-  - `sound/chaosx_super_event_default.wav`
   - `sound/002_zombie_outbreak/super_event_1_zombies.wav`
   - `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
   - `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`

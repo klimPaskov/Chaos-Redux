@@ -39,7 +39,7 @@ These criteria apply to the Angel Directorate reveal super-event and any later w
 - Source file is preserved in an asset documentation area.
 - Track title, creator, performer or recording source, source URL, license, usage terms, duration, conversion notes, and uncertainty are documented.
 - Composition rights and recording rights are considered separately.
-- Sound definition and music asset entries point to the correct final file.
+- Sound definitions point to the correct final file.
 - No placeholder, mismatched, undocumented, or wrong-format audio remains.
 
 ## Documentation and spreadsheet

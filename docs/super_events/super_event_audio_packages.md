@@ -1,14 +1,13 @@
 # Super-Event Audio Packages
 
-This file records restored, sourced, and converted super-event audio assets used by the settings-aware super-event playback system. It also records the dedicated Fallout blackout cue, which reads the same audio preferences without using an ordinary super-event audio ID.
+This file records sourced super-event audio provenance and the current sound-only runtime mapping. Each current super-event package has one final WAV under `sound/<event_id>_<event_slug>/...`, is registered in `sound/chaosx_sound.asset`, and is played through the settings-aware sound helper. `music/chaosx_music_track_list.html` remains the canonical audio catalogue and its edit is parent-owned. OGG and FLAC files under `docs/` are preserved as source or historical evidence, not as current super-event runtime paths. The dedicated Fallout blackout cue is documented separately because it is not an ordinary super-event audio ID.
 
 ## Zombie Outbreak
 
 ### Undead?
 
 - Super-event ID: `1`
-- Music file: `music/002_zombie_outbreak/super_event_1_zombies.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_1_zombies.wav`
+- Runtime WAV: `sound/002_zombie_outbreak/super_event_1_zombies.wav`
 - Sound definition: `chaosx_super_event_zombies_track`
 - Source title: `Requiem: Dies irae`
 - Composer / creator: Giuseppe Verdi.
@@ -21,8 +20,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Alliance of Man
 
 - Super-event ID: `2`
-- Music file: `music/002_zombie_outbreak/super_event_2_alliance_of_man.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
+- Runtime WAV: `sound/002_zombie_outbreak/super_event_2_alliance_of_man.wav`
 - Sound definition: `chaosx_super_event_alliance_of_man_track`
 - Source title: `Battle Hymn of the Republic`
 - Composer / creator: John William Steffe / Julia Ward Howe, arranged by Eric Richards.
@@ -31,13 +29,12 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source file: `docs/super_events/source_audio/battle_hymn_of_the_republic_usafb.ogg`
 - License: public domain U.S. federal government recording; underlying composition public domain.
 - Duration: 1:30 final excerpt.
-- Conversion notes: sourced replacement for the prior generated cue; OGG and WAV are rendered from the same licensed recording.
+- Conversion notes: sourced replacement for the prior generated cue; the final WAV is rendered from the preserved licensed recording.
 
 ### Zombie Apocalypse
 
 - Super-event ID: `3`
-- Music file: `music/002_zombie_outbreak/super_event_3_zombie_apocalypse.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
+- Runtime WAV: `sound/002_zombie_outbreak/super_event_3_zombie_apocalypse.wav`
 - Sound definition: `chaosx_super_event_zombie_apocalypse_track`
 - Source title: `Dies Irae`
 - Composer / creator: traditional Gregorian chant; recording by Membeth.
@@ -46,13 +43,12 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source file: `docs/super_events/source_audio/dies_irae_gregorian_chant.ogg`
 - License: public domain dedication by the recording author.
 - Duration: 1:35 final excerpt.
-- Conversion notes: sourced replacement for the prior generated cue; OGG and WAV are rendered from the same licensed recording.
+- Conversion notes: sourced replacement for the prior generated cue; the final WAV is rendered from the preserved licensed recording.
 
 ### The Dead Are Buried
 
 - Super-event ID: `5`
-- Music file: `music/002_zombie_outbreak/super_event_5_zombies_defeat.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
+- Runtime WAV: `sound/002_zombie_outbreak/super_event_5_zombies_defeat.wav`
 - Sound definition: `chaosx_super_event_zombies_defeat_track`
 - Source title: `Unknown / uncredited source track`
 - Composer / creator: Unknown / uncredited.
@@ -65,8 +61,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Wendigo
 
 - Super-event ID: `6`
-- Music file: `music/002_zombie_outbreak/super_event_6_wendigo.ogg`
-- Sound-channel file: `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
+- Runtime WAV: `sound/002_zombie_outbreak/super_event_6_wendigo.wav`
 - Sound definition: `chaosx_super_event_wendigo_track`
 - Source title: `Tapiola, Op. 112`
 - Composer / creator: Jean Sibelius.
@@ -82,19 +77,17 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Presentation owner: dedicated `fallout_world_end` system.
 - Playback effect: `fallout_play_blackout_audio`.
-- Music file: `music/fallout_world_end/fallout_world_end_blackout.ogg`.
-- Sound-channel file: `sound/fallout_world_end/fallout_world_end_blackout.wav`.
-- Music asset file: `music/fallout_world_end_music.asset`.
+- Music file: `sound/fallout_world_end/fallout_world_end_blackout.wav`.
+- Sound file: `sound/fallout_world_end/fallout_world_end_blackout.wav`.
 - Sound asset file: `sound/fallout_world_end_sound.asset`.
-- Music wrappers: `fallout_world_end_blackout_0_5` through `fallout_world_end_blackout_3_0`.
 - Sound wrappers: `fallout_world_end_blackout_sound_0_5` through `fallout_world_end_blackout_sound_3_0`.
 - Source title: `Eyes In The Void`.
 - Composer and recording owner: Scott Buckley.
 - Official source page: <https://www.scottbuckley.com.au/library/eyes-in-the-void/>.
 - License: Creative Commons Attribution 4.0 International.
 - Duration: exactly 120 seconds.
-- Conversion notes: Chaos Redux excerpted `02:22.370` through `04:22.370`, applied fades and 12 dB attenuation, then produced 44.1 kHz OGG and WAV outputs.
-- Preference integration: the playback effect honors the shared super-event audio mode and volume settings while retaining Fallout-owned wrappers and assets.
+- Conversion notes: Chaos Redux excerpted `02:22.370` through `04:22.370`, applied fades and 12 dB attenuation, then produced 44.1 kHz WAV output.
+- Preference integration: the playback effect honors the shared super-event volume setting while retaining Fallout-owned wrappers and assets.
 - Full source, attribution, hash, processing, and distribution ledger: `docs/assets/fallout_world_end/audio_manifest.md`.
 
 ## Holy Realm
@@ -102,8 +95,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Buddha Mandate
 
 - Super-event ID: `7`
-- Music file: `music/003_holy_realm/super_event_7_buddha_mandate.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_7_buddha_mandate.wav`
 - Sound definition: `chaosx_super_event_buddha_mandate_track`
 - Source title: `Buddham Saranam Gacchami - Male Voice, with Female Chorus`
 - Composer / creator: Hariharan.
@@ -117,8 +109,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `61`
 - Audio ID: `31`
-- Music file: `music/003_holy_realm/super_event_31_powers_of_the_awakened.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_31_powers_of_the_awakened.wav`
 - Sound definition: `chaosx_super_event_powers_of_the_awakened_track`
 - Source title: `Bhikkhu Pāṭimokkha Pali`
 - Composer / creator: traditional Pali monastic chant; recording uploaded by Wikimedia Commons account `Tevaprapas` / `พระวินัยธร`.
@@ -131,8 +122,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Final Silence
 
 - Super-event ID: `8`
-- Music file: `music/003_holy_realm/super_event_8_final_silence.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_8_final_silence.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_8_final_silence.wav`
 - Sound definition: `chaosx_super_event_final_silence_track`
 - Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson 2`
 - Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
@@ -145,8 +135,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Thermonuclear Final Silence
 
 - Super-event ID: `9`
-- Music file: `music/003_holy_realm/super_event_9_final_silence_thermonuclear.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_9_final_silence_thermonuclear.wav`
 - Sound definition: `chaosx_super_event_final_silence_thermonuclear_track`
 - Source title: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson`
 - Composer / creator: Heart Sutra text is ancient scripture; recording by Nyarlathotep1001.
@@ -159,8 +148,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### The Mandala Breaks
 
 - Super-event ID: `10`
-- Music file: `music/003_holy_realm/super_event_10_mandala_breaks.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_10_mandala_breaks.wav`
 - Sound definition: `chaosx_super_event_mandala_breaks_track`
 - Source title: `Symphony No. 5 in C minor, Op. 67: I. Allegro con brio`
 - Composer / creator: Ludwig van Beethoven.
@@ -172,8 +160,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Divine Sovereignty
 
 - Super-event ID: `11`
-- Music file: `music/003_holy_realm/super_event_11_divine_sovereignty.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_11_divine_sovereignty.wav`
 - Sound definition: `chaosx_super_event_divine_sovereignty_track`
 - Source title: `Ave Maria from Gregorian Vespers`
 - Composer / creator: Traditional Gregorian chant.
@@ -187,8 +174,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `51`
 - Audio ID: `28`
-- Music file: `music/003_holy_realm/super_event_28_mandala_of_nations.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_28_mandala_of_nations.wav`
 - Sound definition: `chaosx_super_event_mandala_of_nations_track`
 - Source title: `Shurangama Dharani Chant`, 120-150 second excerpt.
 - Composer / creator: Ven. Chan Master Hsuan Hua recording excerpt.
@@ -205,8 +191,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `59`
 - Audio ID: `29`
-- Music file: `music/007_fury/super_event_29_fury_becomes_a_state.ogg`
-- Sound-channel file: `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
+- Runtime WAV: `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
 - Sound definition: `chaosx_super_event_fury_becomes_a_state_track`
 - Source title: `Symphony No. 9 in E minor "From the New World", Op. 95: IV. Allegro con fuoco`
 - Composer / creator: Antonín Dvořák.
@@ -215,14 +200,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source file: `docs/super_events/source_audio/dvorak_new_world_iv_musopen_original.ogg`
 - License: Wikimedia Commons lists the file as public-domain music from Musopen with attribution requested to Musopen, and states that redistribution, derivative work, commercial use, and all other use are permitted with proper attribution.
 - Duration: 2:30 final cue.
-- Conversion notes: first two and a half minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
+- Conversion notes: first two and a half minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; the WAV is rendered from the preserved source.
 
 ### The World in Fury
 
 - Super-event ID: `60`
 - Audio ID: `30`
-- Music file: `music/007_fury/super_event_30_world_in_fury.ogg`
-- Sound-channel file: `sound/007_fury/super_event_30_world_in_fury.wav`
+- Runtime WAV: `sound/007_fury/super_event_30_world_in_fury.wav`
 - Sound definition: `chaosx_super_event_world_in_fury_track`
 - Source title: `The Planets, Op. 32: I. Mars, the Bringer of War`
 - Composer / creator: Gustav Holst.
@@ -231,7 +215,7 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source file: `docs/super_events/source_audio/holst_mars_musopen_original.ogg`
 - License: Wikimedia Commons lists the file as public-domain music from Musopen with attribution requested to Musopen, and states that redistribution, derivative work, commercial use, and all other use are permitted with proper attribution.
 - Duration: 3:00 final cue.
-- Conversion notes: first three minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; OGG and WAV are rendered from the same source.
+- Conversion notes: first three minutes rendered from the source OGG with short fade-in/fade-out and loudness normalization; the WAV is rendered from the preserved source.
 
 ## Mengele
 
@@ -239,8 +223,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `12`
 - Audio ID: `45`
-- Music file: `music/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.ogg`
-- Sound-channel file: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
+- Runtime WAV: `sound/system_camp_repression_rework/super_event_45_angel_of_death_directorate_revolt.wav`
 - Sound definition: `chaosx_super_event_camp_angel_directorate_revolt_track`
 - Source title: `Passacaglia and Fugue in C minor, BWV 582`
 - Composer / creator: Johann Sebastian Bach.
@@ -253,8 +236,7 @@ This file records restored, sourced, and converted super-event audio assets used
 ### Angelic World Order
 
 - Super-event ID: `13`
-- Music file: `music/003_holy_realm/super_event_13_angelic_world_order.ogg`
-- Sound-channel file: `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
+- Runtime WAV: `sound/003_holy_realm/super_event_13_angelic_world_order.wav`
 - Sound definition: `chaosx_super_event_angelic_world_order_track`
 - Source title: `Toccata and Fugue in D minor, BWV 565`
 - Composer / creator: Johann Sebastian Bach.
@@ -270,8 +252,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `73`
 - Audio ID: `43`
-- Music file: `music/011_secret_alliance/super_event_43_public_reveal.ogg`
-- Sound-channel file: `sound/011_secret_alliance/super_event_43_public_reveal.wav`
+- Runtime WAV: `sound/011_secret_alliance/super_event_43_public_reveal.wav`
 - Sound definition: `chaosx_super_event_secret_alliance_public_reveal_track`
 - Source title: `Revelation`
 - Composer / creator: William Paris Chambers, composed 1901.
@@ -280,7 +261,7 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source record and rights: the United States Marine Band is a United States federal military ensemble. The selected federal-government recording is documented as public domain in `docs/plans/011_secret_alliance_plans/subagent_handoffs/super_event_audio_research.md`.
 - Duration: `86.101746` seconds.
 - Music catalogue: `music/chaosx_music_track_list.html` records The Pact Unmasked, audio ID `43`, `Revelation`, William Paris Chambers, the United States Marine Band performance, duration `01:26`, and verified public-domain status.
-- Conversion notes: the final OGG and WAV are derived from the same licensed source, use the unique Event 011 path, and are registered at all six settings-aware playback levels. No reused track, generated tone, placeholder, or attribution-dependent substitute is used.
+- Conversion notes: the final WAV is derived from the licensed source, uses the unique Event 011 path, and is registered with the settings-aware sound helper. No reused track, generated tone, placeholder, or attribution-dependent substitute is used.
 
 ## Camp Repression Rework
 
@@ -288,8 +269,7 @@ This file records restored, sourced, and converted super-event audio assets used
 
 - Super-event ID: `74`
 - Audio ID: `44`
-- Music file: `music/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.ogg`
-- Sound-channel file: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
+- Runtime WAV: `sound/system_camp_repression_rework/super_event_44_global_atrocity_evidence_discovery.wav`
 - Sound definition: `chaosx_super_event_camp_global_discovery_track`
 - Source title: `Gnossienne No. 1`
 - Composer / creator: Erik Satie.
@@ -297,14 +277,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source URL: <https://commons.wikimedia.org/wiki/File:Satie_-_Gnossienne_1.ogg>
 - License: public-domain composition; CC BY-SA 3.0 performance.
 - Duration: 1:52 final excerpt.
-- Conversion notes: normalized and faded from the source opening; registered at all six settings-aware levels in both playback modes.
+- Conversion notes: normalized and faded from the source opening; registered with the settings-aware sound helper.
 
 ### The Empty Granaries
 
 - Super-event ID: `75`
 - Audio ID: `46`
-- Music file: `music/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.ogg`
-- Sound-channel file: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
+- Runtime WAV: `sound/system_camp_repression_rework/super_event_46_soviet_famine_catastrophe.wav`
 - Sound definition: `chaosx_super_event_camp_soviet_famine_catastrophe_track`
 - Source title: `Hey, Plyve Kacha po Tysyni`
 - Composer / creator: traditional Ukrainian Lemko folk lament.
@@ -312,14 +291,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source URL: <https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B0%D0%BF%D0%B5%D0%BB%D0%B0_%D1%96%D0%BC._%D0%A0%D0%B5%D0%B2%D1%83%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_-_%D0%93%D0%B5%D0%B9,_%D0%BF%D0%BB%D0%B8%D0%B2%D0%B5_%D0%BA%D0%B0%D1%87%D0%B0_%D0%BF%D0%BE_%D0%A2%D0%B8%D1%81%D0%B8%D0%BD%D1%96.webm>
 - License: traditional composition; CC BY 3.0 recording.
 - Duration: 1:56 final excerpt.
-- Conversion notes: audio isolated from WebM, timestamps repaired, normalized, and faded; registered at all six settings-aware levels in both playback modes.
+- Conversion notes: audio isolated from WebM, timestamps repaired, normalized, and faded; registered with the settings-aware sound helper.
 
 ### The Pingfang Files
 
 - Super-event ID: `76`
 - Audio ID: `47`
-- Music file: `music/system_camp_repression_rework/super_event_47_pingfang_exposure.ogg`
-- Sound-channel file: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
+- Runtime WAV: `sound/system_camp_repression_rework/super_event_47_pingfang_exposure.wav`
 - Sound definition: `chaosx_super_event_camp_pingfang_exposure_track`
 - Source title: `Yangguan Sandie (Three Refrains on the Yang Pass Theme)`
 - Composer / creator: traditional Chinese guqin repertory; `Qinxue Rumen` (1867) score source.
@@ -327,14 +305,13 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source URL: <https://commons.wikimedia.org/wiki/File:Guqin-Yangguan_Sandie.ogg>
 - License: public-domain score source; CC BY-SA 3.0 performance.
 - Duration: 1:49 final excerpt.
-- Conversion notes: leading silence removed and the excerpt closed at the first extended musical pause; registered at all six settings-aware levels in both playback modes.
+- Conversion notes: leading silence removed and the excerpt closed at the first extended musical pause; registered with the settings-aware sound helper.
 
 ### The Empire's Accounts
 
 - Super-event ID: `77`
 - Audio ID: `48`
-- Music file: `music/system_camp_repression_rework/super_event_48_colonial_reckoning.ogg`
-- Sound-channel file: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
+- Runtime WAV: `sound/system_camp_repression_rework/super_event_48_colonial_reckoning.wav`
 - Sound definition: `chaosx_super_event_camp_colonial_reckoning_track`
 - Source title: `Go Down Moses`
 - Composer / creator: traditional nineteenth-century African American spiritual.
@@ -342,15 +319,14 @@ This file records restored, sourced, and converted super-event audio assets used
 - Source URL: <https://commons.wikimedia.org/wiki/File:01_-_Go_down_Moses_(Negro_Spiritual).ogg>
 - License: public-domain traditional composition; CC BY-SA 2.0 performance.
 - Duration: 1:50 final excerpt.
-- Conversion notes: normalized and faded while retaining the source license metadata; registered at all six settings-aware levels in both playback modes.
+- Conversion notes: normalized and faded while retaining the source license metadata; registered with the settings-aware sound helper.
 
 ## Event 015 Utopia Manifesto
 
 ### Utopia Has Neighbors
 
 - Super-event display slots: `96`, `97`, `98`, `99`, and `100`; playback audio ID: `57`.
-- Music file: `music/015_utopia_manifesto/super_event_57_utopia_has_neighbors.ogg`.
-- Sound-channel file: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`.
+- Runtime WAV: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`.
 - Sound definition: `chaosx_super_event_utopia_manifesto_regional_proclamation_track`.
 - Source title: Johannes Brahms, *Symphony No. 3 in F major, Op. 90*, III. *Poco allegretto*.
 - Performer / recording source: Musopen Symphony Orchestra.
@@ -358,41 +334,38 @@ This file records restored, sourced, and converted super-event audio assets used
 - Frozen source revision: <https://commons.wikimedia.org/w/index.php?title=File:Brahms,_Symphony_No._3_in_F_Major,_Op._90_-_III._Poco_allegretto.ogg&oldid=956414568>.
 - Rights: public-domain composition and file-specific [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) recording. CC0 applies to the Commons file and supplies a worldwide waiver of copyright and related or neighbouring rights to the extent allowed by law. Attribution is not required, but courtesy credit is retained and no endorsement is implied.
 - Preserved source: `docs/super_events/source_audio/015_utopia_manifesto/brahms_symphony_3_iii_poco_allegretto_musopen_cc0_original.ogg`; `8,770,243` bytes; Commons SHA-1 `38f129111cb55461c7749a52b7ac608a13709b11`; SHA-256 `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df`.
-- Edit: Chaos Redux retained `00:00.000-01:56.000`, applied a `0.500 s` fade-in and `6.000 s` fade-out, normalized to approximately `-18 LUFS`, and encoded the `116.000000 s` 44.1 kHz stereo OGG/WAV derivatives.
-- Final hashes: OGG `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`; WAV `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
-- Uniqueness: a current scan of all `54` music OGGs and `52` sound WAVs found no use by another event. The only matching WAV is the expected Event 015 mirror.
-- Full source, licence, edit, technical, and uniqueness ledger: `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
+- Edit: Chaos Redux retained `00:00.000-01:56.000`, applied a `0.500 s` fade-in and `6.000 s` fade-out, normalized to approximately `-18 LUFS`, and rendered the `116.000000 s` 44.1 kHz stereo runtime WAV.
+- Final WAV hash: `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
+- Uniqueness: the Event 015 runtime WAV is unique in the current sound runtime set.
+- Full source, licence, edit, technical, and uniqueness ledger: `docs/super_events/015_utopia_manifesto/audio_research.md`.
 
 ## Event 018 Resources Found
 
-The complete source, edit, hash, loudness, and rights ledger is `docs/assets/018_resources_found/audio_manifest.md`. All three cues are unique 60-to-120-second, 44.1 kHz stereo packages registered at all six settings-aware music and sound levels. Their stable durations are `115.000000 s`, `110.000000 s`, and `109.000000 s`.
+The complete source, edit, hash, loudness, and rights ledger is `docs/assets/018_resources_found/audio_manifest.md`. All three cues are unique 60-to-120-second, 44.1 kHz stereo runtime WAV packages registered with the settings-aware sound helper. Their stable durations are `115.000000 s`, `110.000000 s`, and `109.000000 s`.
 
 ### The Oth-Kesh Host Rises
 
 - Super-event ID: `82`; audio ID: `54`.
-- Music file: `music/018_resources_found/super_event_54_oth_kesh_emergence.ogg`.
-- Sound-channel file: `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`.
+- Runtime WAV: `sound/018_resources_found/super_event_54_oth_kesh_emergence.wav`.
 - Sound definition: `chaosx_super_event_resources_found_oth_kesh_emergence_track`.
 - Source: Modest Mussorgsky, *Pictures at an Exhibition* — `IV. Bydło`, performed by Skidmore College Orchestra; Musopen public-domain recording preserved with VRTS confirmation by Wikimedia Commons.
 - Rights: public-domain composition and recording; courtesy credit retained.
-- Edit: source `00:24.000–02:18.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `-2.6 dB` gain, SoXr resample to 44.1 kHz, and OGG/WAV encoding by Chaos Redux. Final duration: `115.000000 s`.
+- Edit: source `00:24.000–02:18.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `-2.6 dB` gain, SoXr resample to 44.1 kHz, and WAV rendering by Chaos Redux. Final duration: `115.000000 s`.
 
 ### The Deep War Crosses the Seas
 
 - Super-event ID: `83`; audio ID: `55`.
-- Music file: `music/018_resources_found/super_event_55_deep_war_crosses_seas.ogg`.
-- Sound-channel file: `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`.
+- Runtime WAV: `sound/018_resources_found/super_event_55_deep_war_crosses_seas.wav`.
 - Sound definition: `chaosx_super_event_resources_found_deep_war_crosses_seas_track`.
 - Source: Johannes Brahms, Symphony No. 1 in C minor, Op. 68 — I. `Un poco sostenuto - Allegro`; performed by the Czech National Symphony Orchestra and published as the Musopen Symphony Orchestra recording.
 - Rights: public-domain composition and recording dedicated under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/). CC0 supplies the worldwide copyright and neighbouring-rights waiver required for redistribution and adaptation.
 - Courtesy credit: Johannes Brahms, Symphony No. 1 in C minor, Op. 68 - I. `Un poco sostenuto - Allegro`; Czech National Symphony Orchestra / Musopen Symphony Orchestra; source via Wikimedia Commons; CC0 1.0. No endorsement is implied.
-- Edit: source `08:40.000–10:29.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `6.000 s` quarter-sine fade-out, SoXr resample to 44.1 kHz, and OGG/WAV encoding by Chaos Redux. No compression or limiting was applied. Final duration: `110.000000 s`.
+- Edit: source `08:40.000–10:29.750` plus a `0.250 s` zero tail; `1.500 s` quarter-sine fade-in, `6.000 s` quarter-sine fade-out, SoXr resample to 44.1 kHz, and WAV rendering by Chaos Redux. No compression or limiting was applied. Final duration: `110.000000 s`.
 
 ### The Last Depth Is Sealed
 
 - Super-event ID: `84`; audio ID: `56`.
-- Music file: `music/018_resources_found/super_event_56_last_depth_sealed.ogg`.
-- Sound-channel file: `sound/018_resources_found/super_event_56_last_depth_sealed.wav`.
+- Runtime WAV: `sound/018_resources_found/super_event_56_last_depth_sealed.wav`.
 - Sound definition: `chaosx_super_event_resources_found_last_depth_sealed_track`.
 - Required credit: Frédéric Chopin, Prelude in E minor, Op. 28 No. 4; performed by Ivan Ilić, Paris, October 2005; source via Wikimedia Commons / IMSLP. Recording licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
-- Edit: Chaos Redux excerpted `00:00.450–01:49.200`, applied a `1.250 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `+6.5 dB` gain, and a `0.250 s` zero tail, then encoded OGG/WAV derivatives. Final duration: `109.000000 s`. No endorsement by Ivan Ilić is implied.
+- Edit: Chaos Redux excerpted `00:00.450–01:49.200`, applied a `1.250 s` quarter-sine fade-in, `5.000 s` quarter-sine fade-out, fixed `+6.5 dB` gain, and a `0.250 s` zero tail, then rendered the runtime WAV. Final duration: `109.000000 s`. No endorsement by Ivan Ilić is implied.

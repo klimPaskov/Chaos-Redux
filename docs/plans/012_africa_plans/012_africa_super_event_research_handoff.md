@@ -6,7 +6,7 @@ Date of research: 2026-07-16
 
 This note supplies one researched package for each of the four roles required by the Event 012 source package. It does not create a fifth role or a host-by-host variant grid. The final title recommendations are deliberately different from the working role labels, as required by the Event 012 prompt.
 
-No media was downloaded. No image was generated. No audio derivative, DDS, GFX entry, GUI entry, sound definition, music definition, gameplay script, localisation, workbook, or catalog row was created or edited. The four packages below are therefore **research-complete candidates, not wire-ready super-events**.
+No media was downloaded. No image was generated. No audio derivative, DDS, GFX entry, GUI entry, sound definition, gameplay script, localisation, workbook, or catalog row was created or edited. The four packages below are therefore **research-complete candidates, not wire-ready super-events**.
 
 The governing Event 012 sources are:
 
@@ -36,14 +36,14 @@ The authoritative live getter is `common/scripted_localisation/chaosx_scripted_l
 Additional reserved presentation ranges were also inspected:
 
 - Event 020 reserves `85`, `86`, and `87` in `common/script_constants/020_black_plague_constants.txt:21-23`.
-- Event 016 reserves `90` through `95` in `common/script_constants/016_brilliant_scientist_constants.txt:928-933`; six matching OGG filenames already exist under `music/016_brilliant_scientist/`.
+- Event 016 reserves `90` through `95` in `common/script_constants/016_brilliant_scientist_constants.txt:928-933`; six matching WAV filenames already exist under `sound/016_brilliant_scientist/`.
 - `docs/plans/018_resources_found_plans/018_live_registry_reservations.md:3-11` retains a historical reservation note for `78` through `81`. Those gaps were not reclaimed here.
 
 A namespace-specific search found no getter, localisation key, sprite, constant, event call, or plan allocation using presentation slots `101`, `102`, `103`, or `104`. They are the safest contiguous maximum-plus-one block at the time of this audit.
 
 ### Live audio IDs
 
-The unique IDs registered in both `music/chaosx_super_event_music.asset` and `sound/chaosx_sound.asset` are:
+The unique IDs registered in both `sound/chaosx_sound.asset` and `sound/chaosx_sound.asset` are:
 
 `1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 52, 53, 54, 55, 56, 57, 6002`.
 
@@ -218,7 +218,7 @@ Description direction: identify both rival systems and the concrete political di
 - **Licence confidence:** high for the file-specific CC0 grant; medium for performer attribution until the source package or Musopen record is checked.
 - **Provisional courtesy attribution:** `Johannes Brahms, Symphony No. 4 in E minor, IV. "Allegro energico e passionato"; Musopen recording; source via Wikimedia Commons; recording dedicated under CC0 1.0. Performer credit pending source reconciliation.`
 - **Proposed preserved source:** `docs/assets/012_africa/source_audio/continental_wars_brahms_symphony_4_iv_musopen_source.ogg`.
-- **Editing plan:** after resolving performer credit, audition for a continuous `75-115 s` arc with an immediate pulse, sustained middle escalation, and a complete cadence or controlled phrase-safe fade. Deliver `44,100 Hz` stereo OGG and WAV at project loudness; do not manufacture intensity with tempo or pitch changes.
+- **Editing plan:** after resolving performer credit, audition for a continuous `75-115 s` arc with an immediate pulse, sustained middle escalation, and a complete cadence or controlled phrase-safe fade. Deliver `44,100 Hz` stereo WAV at project loudness; do not manufacture intensity with tempo or pitch changes.
 - **Why it fits:** the passacaglia-like drive and severe orchestral escalation communicate campaign-defining war without modern or cinematic associations.
 - **Unresolved blocker:** exact performer attribution must be reconciled before the rights ledger, embedded metadata, catalogue row, or final derivative is approved.
 

@@ -79,7 +79,7 @@ For every candidate, document:
 - proposed trim and fade
 - rejection reason if not selected
 
-Preserve the selected source download under the event's documentation asset archive. Convert the final track to 44.1 kHz OGG. Use an event-scoped path:
+Preserve the selected source download under the event's documentation asset archive. Convert the final track to a 44.1 kHz stereo WAV. Use an event-scoped path:
 
 `sound/011_secret_alliance/super_event_<slot>_public_reveal.wav`
 

@@ -121,7 +121,7 @@ Event Log presentation is automatic-run history only. Normal-origin Evolution II
 - Event log and details: shared event-log registration, actor mapping, detail page, and Evolution I-III entries under the Event 011 ID
 - Scenario registry: shared triggerable-scenario constants, effects, triggers, scripted localisation, and GUI localisation as SCN-009
 - Super-event: slot 73, audio ID 43, image `GFX_super_event_011_secret_alliance_public_reveal`
-- Music catalogue: `music/chaosx_music_track_list.html` records audio ID 43, `Revelation`, duration `01:26`, and the United States Marine Band public-domain performance. The final WAV and WAV each measure `86.101746` seconds at 44.1 kHz.
+- Music catalogue: `music/chaosx_music_track_list.html` records audio ID 43, `Revelation`, duration `01:26`, and the United States Marine Band public-domain performance. The final WAV each measure `86.101746` seconds at 44.1 kHz.
 - Catalog workbook: SHA-256 `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`. Event 011 is `Implemented` at `Events!M12`, SCN-009 is `Implemented` at `Scenarios!F9`, and the final audit found no formula error cells or formula error tokens.
 
 ## Asset register

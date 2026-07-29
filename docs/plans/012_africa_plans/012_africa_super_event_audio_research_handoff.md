@@ -6,7 +6,7 @@ Status: audio selection research is complete. Roles 2 and 3 have exact, rights-c
 
 Release-candidate correction (2026-07-29): the later production handoff records dormant production candidates for roles 2 and 3. The research disposition above remains valid as historical acquisition guidance, but it is superseded for current file status by `012_africa_super_event_audio_production_handoff.md`; no role is runtime-wired, roles 1 and 4 remain hard-blocked, and no fallback or silent substitution is approved.
 
-This is a research and parent-integration handoff only. No audio was downloaded, generated, edited, reserved, registered, or wired. No gameplay, music, sound, localisation, GUI, GFX, spreadsheet, catalogue, or specification file was changed.
+This is a research and parent-integration handoff only. No audio was downloaded, generated, edited, reserved, registered, or wired. No gameplay, sound, localisation, GUI, GFX, spreadsheet, catalogue, or specification file was changed.
 
 Public-domain and licence findings below are project research, not legal advice. Web sources were checked on 2026-07-17.
 
@@ -42,7 +42,7 @@ The four choices are distinct works and recordings. A repository-wide title and 
 
 A fresh scan on 2026-07-17 found no competing registration, runtime path, helper family, sound family, visible-slot assignment, or explicit external reservation for audio IDs `58-61` or presentation slots `101-104`. The scan excluded the two prior Event 012 research handoffs and Event 012 specifications so that their own provisional proposals would not be mistaken for live ownership.
 
-Current registered music and raw-sound numeric IDs are:
+Current registered sound numeric IDs are:
 
 `1-3`, `5-15`, `17-18`, `28-50`, `52-57`, `90-95`, and `6002`.
 
@@ -58,8 +58,8 @@ These hashes identify the exact shared-registry snapshot against which the colli
 
 | Shared surface | SHA-256 |
 | --- | --- |
-| `music/chaosx_super_event_music.asset` | `e77355ab5980801c57e304859b4c8b69dce8cae8a21c1f09d6e6d0dd3d8b2f01` |
-| `music/chaosx_super_event_music.txt` | `dbdb6b2ae0a7c778a05a1a792db93cf985e60326373cdf81efb181e88ceac1f7` |
+| `sound/chaosx_sound.asset` | `e77355ab5980801c57e304859b4c8b69dce8cae8a21c1f09d6e6d0dd3d8b2f01` |
+| `sound/chaosx_sound.asset` | `dbdb6b2ae0a7c778a05a1a792db93cf985e60326373cdf81efb181e88ceac1f7` |
 | `sound/chaosx_sound.asset` | `242200e52db6ac2a34697a8ccbf77e4c7fd6b91952aeacd507175b95df2aa710` |
 | `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt` | `ac0646c566b439c02d67055db00202a9beff3609c3ffe8dcf99d86210c99623f` |
 | `music/chaosx_music_track_list.html` | `2cd3ab91e28be6602382f700bb81807b236fde357ebcc7d71deae5df99532d77` |
@@ -80,12 +80,12 @@ Expected sound wrappers are `chaosx_super_event_<ID>_sound_0_5` through `_sound_
 
 - Every final cue is actual composed music. No tone, drone, noise bed, oscillator output, or transform-only placeholder is accepted.
 - Preserve each source master and frozen rights evidence under `docs/super_events/source_audio/012_africa/`. The production owner must record source URL, frozen revision, download date, published checksum, local checksum, edit command or DAW edit record, final checksum, duration, codec, sample rate, channels, loudness, true peak, and change notice.
-- Final music files must be Ogg Vorbis, stereo, exactly `44,100 Hz`, and no longer than two minutes. The matching sound files must be stereo `44,100 Hz` WAV derivatives made from the preserved lossless source or original production master, not decoded from the lossy final WAV.
+- Final sound files must be stereo `44,100 Hz` WAV derivatives made from the preserved lossless source or original production master and no longer than two minutes.
 - Target final loudness is `-19 LUFS ± 1 LU` with true peak at or below `-1.5 dBTP`, unless a documented musical-dynamics reason requires a quieter integrated level. Do not peak-limit a quiet classical opening merely to hit the target.
 - All four cues are one-shot. Do not loop the OGG, the raw sound, or a sound wrapper. Do not synthesize a loop from repeated bars.
 - Edits must begin and end on musically defensible boundaries. The exact time windows below are the selected windows; the production owner must audition the source before export. If a listed boundary exposes a click, corrupted frame, speech, applause, unrelated material, or an unacceptable mid-phrase ending, stop and return to audio research. Do not silently choose another movement, recording, or work.
 - Embed or preserve courtesy attribution and change metadata in the OGG comments. Also put full source and rights entries in `music/chaosx_music_track_list.html` and the Event 012 super-event documentation. WAV cannot be the sole attribution carrier.
-- Before acceptance, compare the final WAV and WAV pair against the full repository audio corpus using decoded-audio fingerprints, not only container hashes or filenames. A recording-level collision blocks the cue and returns it to research; it does not authorize reuse.
+- Before acceptance, compare the final WAV against the full repository audio corpus using decoded-audio fingerprints, not only container hashes or filenames. A recording-level collision blocks the cue and returns it to research; it does not authorize reuse.
 
 ## Role 1 — Africa is one
 
@@ -290,17 +290,17 @@ The required offline references were consulted before this handoff:
 - vanilla `common/scripted_effects/zzz_play_speech_effects.txt`
 - vanilla `events/MUN_Czechoslovakia.txt` as a `scoped_play_song` event precedent
 
-The engine-facing result is consistent with the repository's live implementation: one 44.1 kHz OGG per unique cue, one matching 44.1 kHz WAV where the sound channel is supported, six settings-volume definitions per channel, no loop, one zero-chance representative music-station entry, and country-scoped settings-aware playback. The vanilla and wiki review does not override the repository's stricter uniqueness, rights, documentation, and dual-channel rules.
+The engine-facing result is one 44.1 kHz WAV per unique cue, six settings-volume sound definitions, no loop, and country-scoped settings-aware playback. The vanilla and wiki review does not override the repository's stricter uniqueness, rights, and documentation rules.
 
 ## Parent integration sequence
 
 1. Keep roles 1 and 4 blocked until original-production masters and signed rights packages satisfy every term above. Do not register a partial four-role package.
 2. Immediately before any shared edit, repeat the collision scan for presentation slots `101-104`, audio IDs `58-61`, all helper and sound names, final paths, and explicit reservations. Register the four mappings atomically only if still free.
 3. Acquire the exact role 2 and role 3 FLAC masters from the selected Commons records. Verify the published SHA-1 values, preserve frozen source pages and licence evidence, and record local SHA-256 values.
-4. Produce the exact cue windows from the verified lossless masters. Do not decode a Commons or final WAV to make the WAV mirror.
+4. Produce the exact cue windows from the verified lossless masters.
 5. Obtain the original role 1 and role 4 lossless masters, stems, contracts, contributor releases, exact credit lines, and source-master hashes.
 6. Export all final WAV files at `44,100 Hz`, verify duration and channels, measure loudness and true peak, decode-test them, and compare decoded fingerprints against every existing runtime cue.
-7. Register all six music volume helpers and six sound wrappers per audio ID, add one zero-chance `_1_5` station row per cue, set the correct audio ID at the event call site, and use the existing settings-aware player helper.
+7. Register all six sound wrappers per audio ID, set the correct audio ID at the event call site, and use the existing settings-aware sound helper.
 8. Add full creator, performer, source, rights, attribution, edit, duration, path, slot, audio-ID, and checksum records to `music/chaosx_music_track_list.html` and the final Event 012 super-event audio documentation.
 9. Reconcile the final audio facts with the Event 012 specifications, final-text handoff, asset manifest, completion report, and spreadsheet only after production facts exist.
 
@@ -311,7 +311,7 @@ The engine-facing result is consistent with the repository's live implementation
 - **Production gate — role 2:** the selection and rights are clear, but the exact master has not been acquired, checksum-verified, auditioned, edited, exported, or fingerprinted because this task forbade downloading and production.
 - **Production gate — role 3:** the selection and rights are clear, but the exact master has not been acquired, checksum-verified, auditioned, edited, exported, or fingerprinted because this task forbade downloading and production.
 - **Identifier state:** `58-61` and `101-104` are collision-free only against the recorded snapshot. They were not reserved.
-- **Runtime state:** no OGG, WAV, helper, wrapper, station row, localisation string, audio-ID selector, or catalogue row was created or changed.
+- **Runtime state:** no WAV, wrapper, localisation string, audio-ID selector, or catalogue row was created or changed.
 - **Simplifications:** none. The package preserves all four canonical roles, corrects role 3 to the first terminal Continental Wars, retains one route-spanning terminal role, and reports missing original production as a blocker instead of substituting weaker material.
 
 This handoff completes the requested research scope, not the Event 012 audio-production or integration scope.

@@ -8,7 +8,7 @@ This matrix is a research handoff for `chaos-redux-super-events` and the narrow 
 | --- | --- | --- |
 | Main quote research | `chaosx_super_event_text_researcher` | Several sourced quote candidates, selected quote, attribution confidence, source URL, copyright note. |
 | Cultural remark research | `chaosx_super_event_text_researcher` | Short remark or allusion candidates, source notes, copyright risk, selected recommendation. |
-| Audio research | `chaosx_super_event_audio_researcher` | Legal track candidate, source file, final ogg, license note, duration, sound id direction. |
+| Audio research | `chaosx_super_event_audio_researcher` | Legal track candidate, source file, final WAV, license note, duration, sound ID direction. |
 | Image production | `chaosx_generated_event_art` or `chaosx_asset_source_researcher` | Super-event image source, processed preview, DDS, manifest, gfx handoff. |
 | Main implementation | parent coding agent | Slot wiring, scripted localisation, settings-aware playback, image sprite, docs, spreadsheet alignment. |
 
@@ -42,7 +42,7 @@ This matrix is a research handoff for `chaos-redux-super-events` and the narrow 
 
 - Every final super-event needs a unique final track and unique audio id unless the user explicitly approves reuse.
 - Final music must be real licensed or public domain music, not generated test tones, primitive waveforms, abstract drones, or placeholder ambience.
-- Final ogg must be documented with title, creator or composer, performer or recording source if known, source URL, license, duration, edit steps, final path, and sound id direction.
+- Final WAV must be documented with title, creator or composer, performer or recording source if known, source URL, license, duration, edit steps, final path, and sound ID direction.
 
 ## Image constraints
 

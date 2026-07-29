@@ -28,7 +28,7 @@ Minimum file families to verify:
 - Events and event effects: `events/germany_mengele.txt`, `common/scripted_effects/germany_mengele_effects.txt`, `common/scripted_triggers/germany_mengele_triggers.txt`, and `common/script_constants/germany_mengele_constants.txt`.
 - Decisions: `common/decisions/germany_mengele_decisions.txt` and `common/decisions/categories/germany_mengele_categories.txt`.
 - Ideas, leader traits, AI, focus tree, special projects, unit names, opinion modifiers, and localisation.
-- Super-event GFX, scripted localisation, music definitions, sound definitions, audio docs, and assets.
+- Super-event GFX, scripted localisation, sound definitions, sound definitions, audio docs, and assets.
 - Genocide-crisis integration files and Chaos Meter integration files named by the current map.
 
 ### 2. Event chain completeness

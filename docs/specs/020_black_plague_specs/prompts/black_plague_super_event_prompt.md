@@ -93,4 +93,4 @@ Create or update `docs/super_events/020_black_plague/research.md` with:
 - selected track title, creator, performer, source, license, duration, attribution, source path, final WAV path, edit steps, and unique audio ID recommendation
 - uncertainties and blockers
 
-For selected audio, preserve the original download, create a 44.1 kHz OGG in `music/020_black_plague/`, and report final duration. Do not edit sound definitions or gameplay wiring.
+For selected audio, preserve the original download, create a 44.1 kHz stereo WAV in `sound/020_black_plague/`, and report final duration. Do not edit sound definitions or gameplay wiring.

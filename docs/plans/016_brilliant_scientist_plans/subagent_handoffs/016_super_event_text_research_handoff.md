@@ -6,7 +6,7 @@ Mode: bounded text research and documentation patch. No gameplay, localisation, 
 
 ## Follow-up reconciliation, 2026-07-14
 
-The selected text remains unchanged. Event 016 now uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Six final Event 016-owned OGGs and their audio research are complete. Images, final descriptions, localisation, triggers, shared playback definitions, and presentation wiring remain incomplete.
+The selected text remains unchanged. Event 016 now uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat. Six final Event 016-owned WAVs and their audio research are complete. Images, final descriptions, localisation, triggers, shared playback definitions, and presentation wiring remain incomplete.
 
 ## Result
 
@@ -64,7 +64,7 @@ After this patch:
 2. Implement the conditional trigger gates. Recognition must not fire from Evolution II alone. Defeat must not fire for an ordinary local loss.
 3. Preserve the R7 commitment split and cleanup. Laboratory World must cancel Singularity. Singularity firing must permanently prevent Laboratory World and enter Fallout after raising chaos above the threshold.
 4. Decide whether formation uses the selected common button or the optional route-sensitive button set. Do not create route-sensitive keys unless the scripted-localisation mapping is also implemented.
-5. Route the six missing images to the dedicated Event 016 asset worker. Preserve the completed audio research and Event 016-owned OGGs. No placeholder or reused package asset is authorized by this handoff.
+5. Route the six missing images to the dedicated Event 016 asset worker. Preserve the completed audio research and Event 016-owned WAVs. No placeholder or reused package asset is authorized by this handoff.
 6. Write and wire the final descriptions in a separate implementation pass. The descriptions must show visible world state and must not expose counters, thresholds, or plan history.
 
 ## Meaningful review performed
@@ -88,7 +88,7 @@ No in-game, localisation-render, audio, image, or GUI validation was performed b
 
 No simplification or fallback was used within the text-research scope. No text-source blocker remains.
 
-Images, final descriptions, localisation wiring, event triggers, shared playback definitions, and settings-aware playback remain unimplemented because they are explicitly outside this subagent's authority. The completed audio research, Event 016-owned OGGs, and fixed IDs do not by themselves complete any super-event package.
+Images, final descriptions, localisation wiring, event triggers, shared playback definitions, and settings-aware playback remain unimplemented because they are explicitly outside this subagent's authority. The completed audio research, Event 016-owned WAVs, and fixed IDs do not by themselves complete any super-event package.
 
 ## Skills used
 

@@ -137,7 +137,7 @@ Behavior:
 6. Increment the GUI dirty variable.
 7. Schedule the next beat.
 
-No normal super-event flag or shared global audio id is set. Dedicated Fallout dramatic audio still plays through Fallout-owned wrappers that honor the super-event audio mode and volume settings.
+No normal super-event flag or shared global audio ID is set. Dedicated Fallout dramatic audio still plays through Fallout-owned wrappers that honor the super-event volume setting.
 
 ### `fallout_advance_blackout_beat`
 
@@ -330,7 +330,7 @@ A separate transition sound package may use:
 - sparse mechanical or radio failure texture
 - restrained post-rewrite ambience
 
-Any final music or sound must follow repository licensing and documentation rules. Do not manufacture placeholder oscillator audio.
+Any final sound must follow repository licensing and documentation rules. Do not manufacture placeholder oscillator audio.
 
 ## State grading
 
@@ -552,7 +552,7 @@ Do not start every war, focus event, and flavour incident on the reveal day.
 
 - no normal super-event appears
 - no ordinary super-event or shared global audio id is set
-- dedicated Fallout dramatic audio plays once per transition audio generation when the configured audio mode permits it
+- dedicated Fallout dramatic audio plays once per transition audio generation when the configured volume permits it
 - blackout cannot be closed during processing
 - text beats advance through scripted events
 - save-load resumes the correct beat

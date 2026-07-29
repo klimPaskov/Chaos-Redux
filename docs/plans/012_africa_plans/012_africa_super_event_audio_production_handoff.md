@@ -28,7 +28,7 @@ No runtime registration or super-event wiring is included in this tranche becaus
 
 The master and runtime pairs preserve the source dynamics, meet the approved loudness and true-peak contract, contain no loop, and end at digital silence after the specified seven-second fade.
 
-The final Ogg files contain courtesy credit, public-domain source, and change-notice metadata.
+The final WAV files are accompanied by courtesy credit, public-domain source, and change-notice metadata.
 
 Chromaprint comparison against 118 other repository audio files found no exact decoded-audio fingerprint collision for either runtime candidate.
 

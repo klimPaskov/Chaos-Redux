@@ -68,7 +68,7 @@ After parent review, begin Tranche 1. Do not enable Event 16 by default during t
 
 - Six-package super-event text research is complete.
 - Super-event images are absent.
-- Six-package audio research and all six Event 016-owned OGGs are complete. Every file is `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared music, sound, settings, event, GUI, and localisation wiring is absent.
+- Six-package audio research and all six Event 016-owned WAVs are complete. Every file is `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared music, sound, settings, event, GUI, and localisation wiring is absent.
 - Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`.
 - Stage I through IV portrait sprite contracts are pre-registered, but all referenced later assets, severe source-frame packages, static fallbacks, previews, contact sheets, and state wiring remain missing.
 - Achievement icons, flags, UI art, project art, report images, news images, and super-event images remain absent and unwired.

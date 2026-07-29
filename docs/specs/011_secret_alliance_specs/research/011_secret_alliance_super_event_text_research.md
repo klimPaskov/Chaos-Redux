@@ -162,7 +162,7 @@ Potential source families for the audio researcher:
 - government or institutional archive recordings with verified recording rights
 - Creative Commons music that permits redistribution and derivative editing
 
-The audio researcher must compare several candidates, preserve source files, document composition and recording rights separately, convert the selected track to 44.1 kHz OGG, and provide unique audio IDs and paths for this super-event.
+The audio researcher must compare several candidates, preserve source files, document composition and recording rights separately, convert the selected track to a 44.1 kHz stereo WAV, and provide unique audio IDs and paths for this super-event.
 
 ## Image direction
 

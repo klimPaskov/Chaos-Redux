@@ -20,7 +20,7 @@ The official source page, creator usage terms, and CC BY 4.0 legal code are pres
 
 Change notice:
 
-`Edited by Chaos Redux: excerpted from 02:22.370 to 04:22.370, faded, attenuated, and converted to 44.1 kHz OGG and WAV.`
+`Edited by Chaos Redux: excerpted from 02:22.370 to 04:22.370, faded, attenuated, and converted to 44.1 kHz WAV.`
 
 ## Processing record
 
@@ -30,22 +30,17 @@ Change notice:
 - Fade out: final 1.5 seconds
 - Master attenuation: 12 dB
 - Filter chain: `atrim=start=142.370:end=262.370,asetpts=PTS-STARTPTS,afade=t=in:st=0:d=0.75,afade=t=out:st=118.5:d=1.5,volume=-12dB`
-- Music output: `music/fallout_world_end/fallout_world_end_blackout.ogg`
-- Music format: Vorbis OGG quality 6, 44.1 kHz, stereo
-- Music SHA-256: `3741F0C65CD2753573EBCC7A759F7062ADCBA5636165A18787464F8F11684E8B`
 - Sound output: `sound/fallout_world_end/fallout_world_end_blackout.wav`
 - Sound format: PCM16 WAV, 44.1 kHz, stereo
 - Sound SHA-256: `7C6901A5B93C876030FBED7D176A3CB84EBD42A6DC15E568537F91BA3D8AAA39`
 
 ## Wiring
 
-- Music asset file: `music/fallout_world_end_music.asset`
 - Sound asset file: `sound/fallout_world_end_sound.asset`
-- Gameplay wrappers: `fallout_world_end_blackout_0_5` through `fallout_world_end_blackout_3_0`
 - Sound wrappers: `fallout_world_end_blackout_sound_0_5` through `fallout_world_end_blackout_sound_3_0`
 - Playback owner: `fallout_play_blackout_audio`
 
-The playback route reads the existing player preference for super-event audio mode and volume, but it does not use the ordinary super-event visibility flag, audio identifier, sprite, file, or path.
+The playback route reads the existing player preference for super-event volume, but it does not use the ordinary super-event visibility flag, audio identifier, sprite, file, or path.
 
 ## License constraints
 

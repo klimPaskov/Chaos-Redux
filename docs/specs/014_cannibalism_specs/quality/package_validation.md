@@ -29,8 +29,8 @@ Status date: 2026-07-15
 - Super-event action images: four distinct 457x328 DDS files.
 - Revealed leader animations: the static sprites directly register the exact supplied `hannibal.dds` and `hannibal_wendigo.dds` files. One 12-frame ordinary sheet and one 16-frame transformed sheet use those exact portraits as frame `000` and separately image-generated source art for every later motion state. Both play at 12 fps with frame blending.
 - Event 014 texture references across exactly three GFX files, one dedicated registry plus `chaosx_pictures.gfx` and `chaosx_super_events.gfx`: 812 total references, 598 unique existing paths, and 598 unique hashes.
-- Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz OGG and WAV files and a rights/source record. ID 51 is not used by Event 014.
-- The runtime audio inventory is eight files: four OGG and four WAV.
+- Super-event audio IDs 49, 50, 52, and 53 have unique 44.1 kHz WAV files and a rights/source record. ID 51 is not used by Event 014.
+- The runtime audio inventory is eight files: four WAV.
 - No custom subunit or equipment identifiers were added. Existing battalion and equipment surfaces remain in use, so no bespoke unit-counter or equipment art is required. This is a verified scope disposition, not a fallback.
 
 ## Secrecy evidence

@@ -4,7 +4,7 @@ Research exactly six mapped packages. International recognition and qualifying d
 
 Use visible super-event reservations 90 through 95 in this order: recognition, formation, global threat, Laboratory World, Strategic Singularity, qualifying defeat. Live Event 015 wiring occupies visible IDs 85 through 89. Laboratory World and Strategic Singularity use world-end scenario IDs 11 and 12.
 
-Text and audio research are complete for all six packages. The final Event 016-owned OGGs are exactly `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo, and use the role-preserving filenames under `music/016_brilliant_scientist/` for IDs 90 through 95. Do not repeat audio selection, download, rights research, mastering, or conversion unless a concrete evidence defect is found. Super-event images, final descriptions, localisation, shared sound definitions, settings-aware playback, event triggers, and presentation wiring remain incomplete.
+Text and audio research are complete for all six packages. The final Event 016-owned WAVs are exactly `115.000000` seconds, PCM, `44,100 Hz`, stereo, and use the role-preserving filenames under `sound/016_brilliant_scientist/` for IDs 90 through 95. Do not repeat audio selection, download, rights research, mastering, or conversion unless a concrete evidence defect is found. Super-event images, final descriptions, localisation, shared sound definitions, settings-aware playback, event triggers, and presentation wiring remain incomplete.
 
 Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the appropriate image subagent. Spawn each with `fork_context=false` and pass only the narrow brief it needs.
 
@@ -52,7 +52,7 @@ Final titles also require deliberate research and selection. Avoid generic apoca
 
 ## Audio research
 
-The unique track selection and Event 016-owned OGG production are complete for every retained package. Use `docs/super_events/016_brilliant_scientist/audio_research.md` and its handoff as the authoritative audio record.
+The unique track selection and Event 016-owned WAV production are complete for every retained package. Use `docs/super_events/016_brilliant_scientist/audio_research.md` and its handoff as the authoritative audio record.
 
 Preserve the completed documentation fields:
 

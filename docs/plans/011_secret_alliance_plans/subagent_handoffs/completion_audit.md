@@ -61,7 +61,7 @@ This report is the holistic verdict owner named by the Event 011 documentation m
 ## Presentation, assets, audio, and achievements
 
 - Super-event slot `73` has hostile-war, pact-controlled, player-forced, fractured, and weakened descriptions. Durable presentation target, leader, route, member count, and faction-name grammar last through the 14-day slot and are cleared on day 15.
-- Audio ID `43` uses `Revelation` by William Paris Chambers, performed by the United States Marine Band under Col. John R. Bourgeois. Composition and federal-government recording rights are documented separately. The final WAV and WAV are both `86.101746` seconds at 44.1 kHz.
+- Audio ID `43` uses `Revelation` by William Paris Chambers, performed by the United States Marine Band under Col. John R. Bourgeois. Composition and federal-government recording rights are documented separately. The final WAV are both `86.101746` seconds at 44.1 kHz.
 - The validated visual package contains 57 runtime DDS targets, 38 transparent assets, 17 unique decision sources, seven unique idea sources, eight authored confrontation-emblem source frames, eight processed frames, one still fallback, and six achievement triplets. The final balance commit changes no asset or audio path.
 - The Empty Chair, Every Thread, Their Man in the Room, Divide the Table, Surrounded, Not Buried, and Two Giants, One Grave use durable origin, evidence, membership, capital, fracture, scenario, and outcome facts. Forced/debug origins are disqualified, the relevant scenario restrictions are explicit, and every tooltip requires the player not to capitulate.
 

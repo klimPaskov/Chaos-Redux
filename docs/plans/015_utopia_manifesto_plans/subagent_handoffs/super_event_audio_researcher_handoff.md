@@ -2,7 +2,7 @@
 
 > Current disposition, `2026-07-15`: the visual blocker recorded later in this dated audio handoff is closed. The five route-specific DDS files exist and are registered. Audio ID 57 and the source, licence, and uniqueness evidence remain authoritative.
 
-> Integration audit, `2026-07-14`: the package is implemented under playback audio ID `57`. The final WAV and Event 015 WAV mirror, sound wrappers, sound wrappers, localisation, script constant, settings-aware playback, and music-catalogue row are present. Current verification and checksums are canonical in `docs/super_events/015_utopia_manifesto/audio_research.md`.
+> Integration audit, `2026-07-14`: the package is implemented under playback audio ID `57`. The final WAV and Event 015 WAV file, sound wrappers, localisation, script constant, settings-aware playback, and music-catalogue row are present. Current verification and checksums are canonical in `docs/super_events/015_utopia_manifesto/audio_research.md`.
 
 ## Final result
 
@@ -71,9 +71,8 @@ ID `57` remains reserved for Event 015 and has no other runtime mapping.
 
 ## Integration completion
 
-1. Six OGG sound wrappers and the representative zero-chance station entry are registered.
-2. Six music localisation keys identify `Symphony No. 3 in F major: III. Poco allegretto`.
-3. The matching 44.1 kHz stereo PCM s16le WAV, base sound, and six wrappers are registered.
+1. The 44.1 kHz stereo PCM s16le WAV, base sound, and six settings-scaled wrappers are registered.
+2. The catalogue identifies `Symphony No. 3 in F major: III. Poco allegretto`.
 4. The current Event 015 effect uses the one route-spanning audio ID and no historical `151` or `152` audio mapping.
 5. Display slots `96`-`100`, route-sensitive text, actor, and settings-aware playback are wired. The five route-specific image binaries remain a separate asset blocker.
 6. The shared music catalogue and audio-package documentation carry the source, CC0 link, courtesy credit, duration, edit notice, and Event 015 use.
@@ -91,8 +90,8 @@ No commit was created. The parent owns final shared wiring, review, and commit s
 - The preserved source remains byte-identical to the recorded Commons file: `8,770,243` bytes, Commons SHA-1 `38f129111cb55461c7749a52b7ac608a13709b11`, local SHA-256 `ba1db2035d78954d5f15711594817ccceaa730bd83df68734cb724a2e3ba32df`.
 - The Commons file page still identifies the Musopen Symphony Orchestra and applies CC0 1.0 Universal to the specific recording. Composition and recording rights remain separately documented.
 - The final WAV remains `116.000000 s`, stereo, `44,100 Hz`, with SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`.
-- The integrated WAV mirror is `116.000000 s`, stereo PCM s16le, `44,100 Hz`, with SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
-- A current scan of `54` music OGGs found only the Event 015 OGG with its exact first-20-second Chromaprint. A scan of `52` sound WAVs found only the expected Event 015 WAV mirror. Repository definitions and text contain no other event mapping for the work, derivative, audio ID `57`, helper family, or wrapper family.
+- The integrated WAV file is `116.000000 s`, stereo PCM s16le, `44,100 Hz`, with SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
+- A current scan of `54` music OGGs found only the Event 015 OGG with its exact first-20-second Chromaprint. A scan of `52` sound WAVs found only the expected Event 015 WAV file. Repository definitions and text contain no other event mapping for the work, derivative, audio ID `57`, helper family, or wrapper family.
 - `music/chaosx_music_track_list.html` now records playback audio ID `57`, display slots `96`-`100`, the source work, composer, performer, Commons source, CC0 link, duration, and edit notice.
 
 No audio blocker remains. The overall super-event package is still blocked on the five route-specific image files documented in the Event 015 asset manifest.

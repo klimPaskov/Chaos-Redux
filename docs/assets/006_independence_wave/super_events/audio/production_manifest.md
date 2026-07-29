@@ -24,15 +24,12 @@ Preserved source:
 
 Final runtime derivatives:
 
-| Runtime file | Format | Decoded duration | Loudness | True peak | LRA | SHA-256 |
+| Runtime WAV | Format | Decoded duration | Loudness | True peak | LRA | SHA-256 |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| `music/006_independence_wave/super_event_006_02_every_border_a_casus_belli.ogg` | Ogg Vorbis, 44.1 kHz, stereo | `109.992517 s` | `-18.05 LUFS` | `-3.81 dBTP` | `16.40 LU` | `6B62C5AFA03E83C5BEB7D36E203E41BDC1EE51AEDD89269410A48BA0FCBC0DF0` |
 | `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | PCM signed 16-bit little-endian, 44.1 kHz, stereo | `109.992517 s` | `-18.00 LUFS` | `-4.27 dBTP` | `16.30 LU` | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
 
 Wiring identifiers:
 
-- music assets: `chaosx_super_event_6002_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`;
-- station representative: `chaosx_super_event_6002_1_5`, zero random chance;
 - raw sound: `chaosx_super_event_independence_wave_every_border_a_casus_belli_track`;
 - sound wrappers: `chaosx_super_event_6002_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`;
 - one-shot playback; wrapper collision policy is `max_audible = 1` with `max_audible_behaviour = fail`.
@@ -40,7 +37,10 @@ Wiring identifiers:
 The dangerous milestone submits audio ID 6002 with display slot 24 to the
 shared settings-aware super-event FIFO. The dispatcher assigns
 `global.current_super_event_audio_id` only when that entry owns the visible
-window, then calls the existing volume-mode playback helper for human players.
+window, then calls the existing settings-aware sound helper for human players.
+
+The canonical audio catalogue remains `music/chaosx_music_track_list.html`; the
+parent implementation owns its row update.
 
 ## Held production
 

@@ -663,7 +663,7 @@ Suggested file planning:
 
 - research note: `docs/super_events/011_secret_alliance/research.md`
 - image assets: `docs/assets/011_secret_alliance/` and final `gfx/super_events/011_secret_alliance/`
-- audio assets: `music/011_secret_alliance/` and `sound/011_secret_alliance/` per super-event skill if implemented
+- audio assets: `sound/011_secret_alliance/` and `sound/011_secret_alliance/` per super-event skill if implemented
 
 ## Asset and animation needs
 

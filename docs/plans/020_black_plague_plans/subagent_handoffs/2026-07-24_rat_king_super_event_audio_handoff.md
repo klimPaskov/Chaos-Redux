@@ -2,7 +2,7 @@
 
 ## Scope
 
-This handoff covers only the licensed audio research and production requested for the Rat King coronation and Rat King world-end super-events. It does not edit gameplay, event scripts, localisation, GFX, GUI, music definitions, sound definitions, or spreadsheets.
+This handoff covers only the licensed audio research and production requested for the Rat King coronation and Rat King world-end super-events. It does not edit gameplay, event scripts, localisation, GFX, GUI, sound definitions, sound definitions, or spreadsheets.
 
 ## Produced files
 
@@ -44,13 +44,13 @@ Final WAV: `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, 103.
 
 ## Processing and validation
 
-Both sources were downloaded from Wikimedia Commons' `Special:FilePath` endpoint and preserved unchanged. FFmpeg rendered stereo signed 16-bit PCM with `loudnorm=I=-20:TP=-2:LRA=11`, 1.5-second fade-in, 6-second fade-out, and 44,100 Hz output conversion. OGG Vorbis quality 6 files were encoded from the processed WAV mirrors. `ffprobe` confirms both OGGs and both WAVs are stereo at exactly 44,100 Hz, with final durations 110.000000 and 103.650000 seconds. `ebur128` measures `-19.9 LUFS` for coronation and `-20.3 LUFS` for world end.
+Both sources were downloaded from Wikimedia Commons' `Special:FilePath` endpoint and preserved unchanged. FFmpeg rendered stereo signed 16-bit PCM with `loudnorm=I=-20:TP=-2:LRA=11`, 1.5-second fade-in, 6-second fade-out, and 44,100 Hz output conversion. OGG Vorbis quality 6 files were encoded from the processed WAV files. `ffprobe` confirms both OGGs and both WAVs are stereo at exactly 44,100 Hz, with final durations 110.000000 and 103.650000 seconds. `ebur128` measures `-19.9 LUFS` for coronation and `-20.3 LUFS` for world end.
 
 The files contain musical recordings rather than generated tones, noise beds, drones, stingers, or oscillator placeholders. A SHA-256 comparison against every existing `.ogg` and `.wav` under `music/` and `sound/` returned zero duplicates for all four Event 020 derivatives. The repository's current audio definitions and catalogue contain no IDs `101` or `102`; parent must collision-scan the final shared constants before committing.
 
 ## Parent wiring keys
 
-Add six `chaosx_super_event_101_*` music variants pointing to the coronation OGG, six `chaosx_super_event_102_*` variants pointing to the world-end OGG, a representative `*_1_5` station entry for each, and WAV wrappers:
+Add six settings-scaled sound wrappers for audio IDs `101` and `102`:
 
 - `chaosx_super_event_rat_king_coronation_track` -> `020_black_plague/super_event_101_rat_king_coronation.wav`;
 - `chaosx_super_event_101_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, `_3_0`;

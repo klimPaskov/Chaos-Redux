@@ -130,8 +130,8 @@ The following Event 014-adjacent shared registries and files are clean against H
 - interface/chaosx_super_events.gfx;
 - interface/chaosx_events_log_popup.gui;
 - common/script_constants/world_end_scenario_registry_constants.txt;
-- music/chaosx_super_event_music.txt;
-- music/chaosx_super_event_music.asset;
+- sound/chaosx_sound.asset;
+- sound/chaosx_sound.asset;
 - music/chaosx_music_track_list.html;
 - sound/chaosx_sound.asset;
 - all current music/014_cannibalism and sound/014_cannibalism audio files.

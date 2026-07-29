@@ -6,7 +6,7 @@ Accepted and promoted. Audio ID `43` and both final derivatives are implemented 
 
 ## Scope and outcome
 
-This handoff covers the unique music package for the Event 011 public-revelation and faction-formation super-event. It does not wire gameplay, localisation, music definitions, sound definitions, the music table, or spreadsheets.
+This handoff covers the unique music package for the Event 011 public-revelation and faction-formation super-event. It does not wire gameplay, localisation, sound definitions, sound definitions, the music table, or spreadsheets.
 
 **Selected recording:** `Revelation`, a 1901 march by William Paris Chambers, performed by the United States Marine Band under Col. John R. Bourgeois for the 1992 album *Sound Off!*.
 
@@ -109,7 +109,7 @@ The matching WAV uses 44.1 kHz stereo signed 16-bit PCM because that is the form
 | Purpose | Path | Technical result |
 | --- | --- | --- |
 | Preserved source | `docs/assets/011_secret_alliance/source_audio/revelation_us_marine_band_commons_source.ogg` | Ogg Vorbis, 44.1 kHz stereo, `165.746939` s |
-| Music-channel final | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | Ogg Vorbis, 44.1 kHz stereo, nominal 160 kbps, `86.101746` s |
+| Runtime sound | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | PCM signed 16-bit little-endian, 44.1 kHz stereo, `86.101746` s |
 | Sound final | `sound/011_secret_alliance/super_event_43_public_reveal.wav` | PCM signed 16-bit little-endian, 44.1 kHz stereo, `86.101746` s |
 
 Both final files decode without errors. The final WAV is not byte-identical to any other OGG under `music/`, and no existing catalogue row or documentation entry uses this work or audio ID.
@@ -121,7 +121,7 @@ The following identifiers are proposed but intentionally not written into gamepl
 - Numeric audio ID: `43`
 - Set on reveal: `global.current_super_event_audio_id = 43`
 - Underlying sound ID: `chaosx_super_event_secret_alliance_public_reveal_track`
-- Music helper IDs:
+- Sound wrapper IDs:
   - `chaosx_super_event_43_sound_0_5`
   - `chaosx_super_event_43_sound_1_0`
   - `chaosx_super_event_43_sound_1_5`
@@ -135,15 +135,14 @@ The following identifiers are proposed but intentionally not written into gamepl
   - `chaosx_super_event_43_sound_2_0`
   - `chaosx_super_event_43_sound_2_5`
   - `chaosx_super_event_43_sound_3_0`
-- Representative zero-chance station entry: `chaosx_super_event_43_sound_1_5`
 - Stable file slug: `public_reveal`
 
 The numeric audio ID is independent from the visible super-event slot. The main agent should allocate or confirm the display slot while wiring the Event 011 text and image package.
 
 Main-agent definition targets:
 
-- `music/chaosx_super_event_music.asset`
-- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
+- `sound/chaosx_sound.asset`
 - `sound/chaosx_sound.asset`
 - settings-aware playback helper call site for the Event 011 reveal
 - `music/chaosx_music_track_list.html`

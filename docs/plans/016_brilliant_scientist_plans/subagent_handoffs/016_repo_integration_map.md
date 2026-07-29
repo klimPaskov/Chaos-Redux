@@ -13,7 +13,7 @@ Event 016 remains default-disabled and gameplay-incomplete. The original impleme
 - Event 015 occupies visible super-event IDs 85 through 89.
 - Event 016 uses visible IDs 90 recognition, 91 formation, 92 global threat, 93 Laboratory World, 94 Strategic Singularity, and 95 qualifying defeat.
 - Event 016 world-end IDs remain 11 and 12.
-- Six final Event 016-owned OGGs are complete at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring remains absent.
+- Six final Event 016-owned WAVs are complete at IDs 90 through 95. Shared music, sound, settings, event, GUI, and localisation wiring remains absent.
 - The exact stage-0 leader or scientist DDS and advisor DDS are complete and registered. Stage I through IV sprite contracts are pre-registered, but the referenced later assets remain missing.
 - Event 020 separately declares world-end ID 10 and visible IDs 85 through 87 in its own constants. Its visible overlap with Event 015 is external to Event 016.
 - Fallout is an independent unnumbered system under `chaosx.fallout`. It owns its request coordinator, blackout GUI, transition events, assets, and audio wrappers.
@@ -405,7 +405,7 @@ Required Event 016 bridge:
 6. Event 016 sets `world_end_strategic_singularity` and its terminal, evolution, and achievement state only after the Fallout request is accepted.
 7. Event 016 clears its request context on success, cancellation, invalid ownership, disarmament, and every aborted attempt.
 
-Fallout does not use the Strategic Singularity image or track. Strategic Singularity does not replace the Fallout blackout GUI, dedicated sound wrappers, sound wrappers, or final audio files. The exact Event 016 request-source constant remains parent-owned because the current Fallout source enum has no Event 016-specific entry.
+Fallout does not use the Strategic Singularity image or track. Strategic Singularity does not replace the Fallout blackout GUI, dedicated sound wrappers, or final audio files. The exact Event 016 request-source constant remains parent-owned because the current Fallout source enum has no Event 016-specific entry.
 
 Canonical shared effects to call rather than reimplement:
 
@@ -769,8 +769,8 @@ Shared registration surfaces:
 - interface/chaosx_super_events.gui
 - localisation/english/chaosx_gui_l_english.yml
 - localisation/english/chaosx_music_l_english.yml
-- music/chaosx_super_event_music.asset
-- music/chaosx_super_event_music.txt
+- sound/chaosx_sound.asset
+- sound/chaosx_sound.asset
 - the repository super-event sound asset registry
 - common/scripted_effects/chaosx_settings_effects.txt audio playback helpers
 
@@ -797,7 +797,7 @@ Each role needs a unique image and track. The six Event 016-owned tracks are com
 Recommended Event 016-owned asset roots:
 
 - gfx/super_events/016_brilliant_scientist/
-- music/016_brilliant_scientist/
+- sound/016_brilliant_scientist/
 - sound/016_brilliant_scientist/
 - docs/super_events/016_brilliant_scientist_<role>_research.md
 
@@ -903,7 +903,7 @@ The following files are high-collision shared surfaces. The Event 016 implemente
 | common/achievements/chaos_redux_achievements.txt | Seventeen entries in the one registry |
 | interface/chaosx_super_events.gfx | Six final sprites for visible IDs 90 through 95 |
 | common/scripted_localisation/chaosx_scripted_localisation_super_events.txt | Six full selector routes |
-| music/chaosx_super_event_music.asset and .txt | Six final tracks |
+| sound/chaosx_sound.asset and .txt | Six final tracks |
 | localisation/english/chaosx_gui_l_english.yml | Details/evolutions/world-end/super-event shared keys |
 | docs/spreadsheets/chaos_redux_events_catalog.xlsx | Final exact text alignment only |
 
@@ -1003,7 +1003,7 @@ Most important collision risks:
 
 - Implement world-threat gates, Laboratory World, Strategic Singularity, the dedicated Fallout request bridge, Deaths, Condemnation, Chaos consequences, aftermath, two world-end registry rows, and six final super-events.
 - Preserve the collision-audited Event 016 IDs 90 through 95 and re-scan before shared registration.
-- Preserve the completed audio licences, source docs, and Event 016-owned OGGs. Finish shared settings-aware playback.
+- Preserve the completed audio licences, source docs, and Event 016-owned WAVs. Finish shared settings-aware playback.
 
 ### Tranche 7: achievements, assets, docs, and workbook
 

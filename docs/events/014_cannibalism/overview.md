@@ -129,7 +129,7 @@ Both world-end branches require Chaos greater than 1000, their full route prereq
 
 Event Details exposes two independent post-reveal terminal rows. Scenario ID `6`, **The World Is the Larder**, controls only the ordinary terminal branch and maps to super-event ID `50`. Scenario ID `7`, **No Thaw Will Come**, controls only the Wendigo terminal branch and maps to super-event ID `53`. Each row is default enabled, persists its own disabled state, opens its own detail panel, and gates only its matching automatic terminal selection. Neither row is visible before `cannibalism_reveal_complete`.
 
-The four action-scene super-events and their unique audio IDs are Hannibal's reveal `49`, the ordinary world end `50`, eligible global defeat `52`, and the Wendigo world end `53`. Their registered 44.1 kHz OGG and WAV files use separate sourced recordings and separate visual compositions. ID `51` remains assigned elsewhere and is not part of Event 014.
+The four action-scene super-events and their unique audio IDs are Hannibal's reveal `49`, the ordinary world end `50`, eligible global defeat `52`, and the Wendigo world end `53`. Their registered 44.1 kHz WAV files use separate sourced recordings and separate visual compositions. ID `51` remains assigned elsewhere and is not part of Event 014.
 
 Before terminal lock, the world can defeat the revealed command or break the Wendigo transformation. Eligible victors receive a distinct global-defeat aftermath only after the exact defeat predicates are recorded. Captured warlords and Hannibal Lecter have explicit custody or death outcomes. Recovered states retain their death ledgers and reconstruction obligations. An international inspection compact, memorial work, victim identification, and long recovery prevent victory from erasing the cost of the crisis.
 
@@ -172,7 +172,7 @@ The Event 014 runtime surface is consolidated from 93 dedicated script, GUI, and
 | Flags | `gfx/flags/`, `gfx/flags/medium/`, `gfx/flags/small/` | CBA-CBH, CBL, and the registered cosmetic-tag flag set |
 | Scripted GUI statics and animations | `gfx/interface/014_cannibalism/` | `GFX_cannibalism_*`, including meter, warning, route, portrait, and terminal sheets plus static fallbacks |
 | Super-events | `gfx/super_events/014_cannibalism/` | reveal, ordinary world end, global defeat, and Wendigo world end |
-| Super-event music and sound | `music/014_cannibalism/`, `sound/014_cannibalism/` | audio IDs 49, 50, 52, and 53 |
+| Super-event sound | `sound/014_cannibalism/` | audio IDs 49, 50, 52, and 53 |
 
 The four super-event images are action scenes rather than posed tableaux. The reveal shows a violent convergence breaking barricades and chasing civilians under Lecter's command. The ordinary world end shows a capital overrun in motion. Global defeat shows a kinetic coalition breakthrough, opened cages, and escaping civilians. The Wendigo world end shows the transformed command leading a distorted frozen pack through a collapsing defense. Generated victims are fictional adults, and no image uses real atrocity photography or identifiable people.
 

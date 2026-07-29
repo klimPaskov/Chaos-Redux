@@ -48,7 +48,7 @@ No dynamic compression, peak limiting, loop, repeated bar, time stretch, pitch c
 
 The Ogg Vorbis runtime files are encoded from the lossless production masters at quality 5.
 
-The PCM WAV sound-channel mirrors are encoded from the lossless production masters, not decoded from the Ogg files.
+The PCM WAV sound files are encoded from the lossless production masters, not decoded from the Ogg files.
 
 ## Courtesy attribution and change notices
 
@@ -68,6 +68,6 @@ Change notice for both roles: `Edited to a 115-second excerpt; start/end safety 
 
 ## Uniqueness validation
 
-Chromaprint fingerprints of both final Ogg files were compared against 118 other audio files under `music/` and `sound/`.
+Chromaprint fingerprints of both final WAV files were compared against the repository audio catalogue.
 
 No exact decoded-audio fingerprint collision was found.

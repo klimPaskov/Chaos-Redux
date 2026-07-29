@@ -74,7 +74,7 @@ Bounded direct checks reconfirmed the live fire-once registration, absence of Ev
 - The eight warlord slots retain 56 unique 156x210 DDS portraits, seven regional identities per slot, with distinct feral HOI4 compositions and no prison setting.
 - Canonical ordinary and Wendigo Hannibal statics remain bound directly in `interface/014_cannibalism.gfx`.
 - The package retains 14 genuine semantic animation packages: 12 nonportrait packages plus the 12-frame ordinary and 16-frame Wendigo portrait sequences. The leader animations remain declared at 12 FPS with blend frames, and each package retains source frames, processed frames, sheet, static fallback, manifest, contact sheet, and preview.
-- Four distinct action-led super-event images and four uniquely documented audio cues remain registered. The OGG and WAV deliverables are stereo 44.1 kHz and retain provenance and licensing records.
+- Four distinct action-led super-event images and four uniquely documented audio cues remain registered. The WAV deliverables are stereo 44.1 kHz and retain provenance and licensing records.
 - The three Event 014 GFX registry surfaces retain 812 references resolving to 598 existing unique paths with 598 unique hashes. No placeholder, default art, cross-type reuse, stale static binding, or transform-only final animation remains.
 
 ### Consolidation, documentation, and catalog

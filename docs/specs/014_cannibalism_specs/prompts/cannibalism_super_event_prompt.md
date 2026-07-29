@@ -177,7 +177,7 @@ For every package provide:
 - duration
 - editing plan
 - original source path
-- final 44100 Hz OGG path
+- final 44.1 kHz WAV path
 - suggested audio ID
 - image handoff path
 - uncertainty and blockers

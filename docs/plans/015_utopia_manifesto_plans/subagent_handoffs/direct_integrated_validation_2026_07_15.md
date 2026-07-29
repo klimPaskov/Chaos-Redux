@@ -75,7 +75,7 @@ The regional proclamation requires all of the following at both event and effect
 - non-trivial subject status
 - no prior proclamation
 
-Slots 96 through 100 map to five route-specific images and route-specific descriptions. Playback uses Event-scoped audio ID 57, six settings-volume wrappers, and the Event 15-exclusive `super_event_57_utopia_has_neighbors` OGG and WAV.
+Slots 96 through 100 map to five route-specific images and route-specific descriptions. Playback uses Event-scoped audio ID 57, six settings-volume wrappers, and the Event 15-exclusive `super_event_57_utopia_has_neighbors` WAV.
 
 ## Necessary Ground, stewardship, and association lifecycle
 

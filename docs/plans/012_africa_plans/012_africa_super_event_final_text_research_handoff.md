@@ -58,11 +58,11 @@ Each role must have one shared title, quote, attribution, button remark, and ima
 
 ### Live collision evidence
 
-A repository-wide live scan on 2026-07-17 found presentation slots currently registered at `1-3`, `5-22`, `24`, `49-53`, `59-77`, `82-84`, and `90-100`. It found music and raw-sound numeric IDs at `1-3`, `5-15`, `17-18`, `28-50`, `52-57`, `90-95`, and `6002`.
+A repository-wide live scan on 2026-07-17 found presentation slots currently registered at `1-3`, `5-22`, `24`, `49-53`, `59-77`, `82-84`, and `90-100`. It found sound numeric IDs at `1-3`, `5-15`, `17-18`, `28-50`, `52-57`, `90-95`, and `6002`.
 
 Presentation slots `101-104` and audio IDs `58-61` were free in the live registries at scan time. A separate repository search found no competing explicit reservation for either proposed block outside the earlier Event 012 research handoff. Presentation numbers and audio numbers are separate namespaces, so an occupied presentation slot such as `59` does not consume audio ID `59`.
 
-These findings are not an engine-readable reservation. The implementation owner must repeat the collision scan immediately before wiring and then register all four roles atomically. A collision blocks wiring and requires an explicit identifier update across this handoff, the earlier handoff, constants, getters, localisation, interface, music, sound, docs, and asset records. It does not authorize reclaiming another event's gap.
+These findings are not an engine-readable reservation. The implementation owner must repeat the collision scan immediately before wiring and then register all four roles atomically. A collision blocks wiring and requires an explicit identifier update across this handoff, the earlier handoff, constants, getters, localisation, interface, sound, docs, and asset records. It does not authorize reclaiming another event's gap.
 
 ### Required paths and stable names
 

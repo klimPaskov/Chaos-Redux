@@ -52,7 +52,7 @@ License confidence: high for the stated CC BY-SA 3.0 license and uploader attrib
 
 Suitability: medium for composition and duration, low for accepted tone. The take is harpsichord rather than brass and organ, so it does not preserve the accepted ceremonial brass color. It could support a quieter institutional proclamation only if the user explicitly accepts that tonal change.
 
-Edit feasibility if approved: trim or leave essentially complete (108.135 seconds), apply the reserved 1.5-second fade-in and 2-second fade-out, and export at 44.1 kHz Ogg Vorbis. Any edited derivative must retain CC BY-SA 3.0 attribution/share-alike documentation. No edit was performed.
+Edit feasibility if approved: trim or leave essentially complete (108.135 seconds), apply the reserved 1.5-second fade-in and 2-second fade-out, and export as a 44.1 kHz stereo WAV. Any edited derivative must retain CC BY-SA 3.0 attribution/share-alike documentation. No edit was performed.
 
 Attribution text: “Jeremiah Clarke – Prince of Denmark's March, performed/recorded by Fehufanga, Wikimedia Commons, CC BY-SA 3.0.” Include the license URL `https://creativecommons.org/licenses/by-sa/3.0/`.
 
@@ -76,7 +76,7 @@ License confidence: high for the stated CC BY-SA 4.0 license and uploader attrib
 
 Suitability: medium-low. It preserves the composition but exceeds the reserved 110-second segment by 23.904 seconds and does not document a brass-and-organ instrumentation. It is therefore a rights-cleared fallback candidate only, not an approved replacement.
 
-Edit feasibility if approved: trim to the reserved 110-second window, apply a 1.5-second fade-in and 2-second fade-out, and export at 44.1 kHz Ogg Vorbis. The trim/fade derivative must retain CC BY-SA 4.0 attribution/share-alike documentation. No edit was performed.
+Edit feasibility if approved: trim to the reserved 110-second window, apply a 1.5-second fade-in and 2-second fade-out, and export as a 44.1 kHz stereo WAV. The trim/fade derivative must retain CC BY-SA 4.0 attribution/share-alike documentation. No edit was performed.
 
 Attribution text: “Clarke Trumpet Voluntary, performed/recorded by Orgelputzer, Wikimedia Commons, CC BY-SA 4.0.” Include `https://creativecommons.org/licenses/by-sa/4.0/`.
 

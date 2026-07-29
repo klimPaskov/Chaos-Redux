@@ -137,7 +137,7 @@ Shared or non-event systems may use a clear shared/system folder. Do not force s
 
 When moving or adding an asset, update every `.gfx`, `.gui`, event, idea, decision, focus, localisation, and documentation reference that names the old path or sprite. Keep sprite names stable unless the engine-facing identifier itself has to change, as with achievement ids.
 
-Super-event audio follows the `chaos-redux-super-events` convention. Final music belongs under `music/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.ogg`, and matching sound-channel files belong under `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`. Do not create persistent `music/source/` or `music/super_events/` folders; preserve source downloads under docs/assets source-audio paths instead.
+Super-event audio follows the `chaos-redux-super-events` convention. Register the final cue as sound from `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`. Preserve source downloads under docs/assets source-audio paths.
 
 ## 2.3 Temporary event asset workspaces
 
@@ -884,7 +884,7 @@ Target size:
 457x328
 ```
 
-If a super-event needs music, use `chaos-redux-super-events` and research suitable public domain or clearly licensed music. Final audio should use the event-scoped `music/<event_id>_<event_slug>/` and `sound/<event_id>_<event_slug>/` layout from that skill. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output; that includes sine, square, triangle, and sawtooth waveforms.
+If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final cue as sound from the event-scoped `sound/<event_id>_<event_slug>/` folder. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output; that includes sine, square, triangle, and sawtooth waveforms.
 
 For each track, document:
 

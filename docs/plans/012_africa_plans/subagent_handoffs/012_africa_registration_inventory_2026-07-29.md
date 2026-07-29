@@ -12,7 +12,7 @@
 - All requested dynamic references resolve: 48 unique `set_cosmetic_tag` values, 9 `recruit_character` values, 9 focus-tree loads covering 8 unique trees, and 93 idea-reference occurrences covering 80 unique ideas.
 - The six `interface/012_africa*.gfx` packages expose 205 texture rows in total, and all 205 runtime texture paths exist, including all 16 Charter textures and all 16 sovereign portraits.
 - Event 012 actions 69 and 70 use the existing Event 013 public `call_natural_disaster = yes` contract with exact target, caller proof, receipts, cooldown, severity, and backfire bookkeeping; no unresolved direct `chaosx.nr13.*` call was found.
-- Event 012 audio files exist on disk, but IDs 59 and 60 remain unregistered and unconsumed by the super-event music or sound registries. This is a deferred package surface, not an active Event 012 load blocker because the world super-event readiness gate remains unset.
+- Event 012 audio files exist on disk, but IDs 59 and 60 remain unregistered and unconsumed by the super-event sound registry. This is a deferred package surface, not an active Event 012 load blocker because the world super-event readiness gate remains unset.
 
 ## Relevant files
 
@@ -39,7 +39,7 @@
 | `common/script_constants/012_africa_action_constants.txt` | Action IDs and caller tuning. | `petition_the_rain = 69` and `defy_the_drought = 70` at lines 84–85; caller tuning block begins at line 349. |
 | `common/scripted_triggers/012_africa_triggers.txt` | Nature-call actor, cost, cooldown, and target gates. | Nature-call eligibility and cost triggers begin at lines 1085 and 1107. |
 | `events/013_natural_disasters.txt` and `common/scripted_effects/013_natural_disasters_effects.txt` | Event 013 public contract and downstream controller. | Canonical hidden entry `chaosx.nr13.1` is at line 12; it consumes the caller variables and invokes the shared `call_natural_disaster` contract at line 60. |
-| `music/012_africa/` and `sound/012_africa/` | Physical Event 012 super-event audio candidates. | `super_event_59_scramble_response` and `super_event_60_continental_wars` exist as WAV files, but are not registered in `music/chaosx_super_event_music.asset`, `music/chaosx_super_event_music.txt`, or `sound/chaosx_sound.asset`. |
+| `sound/012_africa/` and `sound/012_africa/` | Physical Event 012 super-event audio candidates. | `super_event_59_scramble_response` and `super_event_60_continental_wars` exist as WAV files, but are not registered in `sound/chaosx_sound.asset`, or `sound/chaosx_sound.asset`. |
 
 ## Existing patterns
 
@@ -63,7 +63,7 @@ Generic event pictures are deliberate vanilla reuse. `GFX_report_event_generic_c
 1. Treat the active Event 012 registrations as settled; no gameplay registration patch is required from this scan.
 2. Keep the Event 013 caller contract and action 69/70 gates synchronized with the existing Event 013 controller; do not add direct `chaosx.nr13.*` event calls unless the public contract changes.
 3. If the world-order package is reactivated, restore its complete art, focus/idea icon, super-event text/image/audio/scenario package, and readiness-flag setter in one coordinated pass.
-4. If Event 012 audio is activated, register IDs 59/60 in the super-event music and sound assets, wire the corresponding current-audio effect, and update the super-event readiness package together.
+4. If Event 012 audio is activated, register IDs 59/60 as sound, wire the corresponding current-audio effect, and update the super-event readiness package together.
 5. Keep the Charter GFX comment and asset manifests aligned with the installed 16-texture package; the stale “not fabricated” comment was corrected during the final pass.
 
 ## Validation checks

@@ -70,7 +70,7 @@ Super-event visible ID 15 is occupied and unrelated to Event 15:
 - The same file maps slot 15 title at `478-480`, quote at `719-721`, button at `960-962`, and description at `1201-1203`.
 - `localisation/english/005_soviet_collapse_l_english.yml:1926-1929` owns `chaosx_super_event.15.{t,d,a,q}`.
 - `sound/chaosx_sound.asset` owns the settings-scaled sound wrappers and `sound/005_soviet_collapse/super_event_15_black_banner_returns.wav`.
-- `music/chaosx_super_event_music.txt:127-131` registers the 1.5-volume song.
+- `sound/chaosx_sound.asset:127-131` registers the 1.5-volume song.
 - `sound/chaosx_sound.asset:92-97,447,1157-1199` owns the corresponding sound list, WAV, and volume variants.
 - `localisation/english/chaosx_music_l_english.yml:92-97` and `music/chaosx_music_track_list.html:267-269` document the track.
 
@@ -128,8 +128,8 @@ Do **not** check out or restore any historical version of these files:
 - `localisation/english/chaosx_achievements_l_english.yml`
 - `localisation/english/chaosx_event_names_l_english.yml`
 - `localisation/english/chaosx_gui_l_english.yml`
-- `music/chaosx_super_event_music.asset`
-- `music/chaosx_super_event_music.txt`
+- `sound/chaosx_sound.asset`
+- `sound/chaosx_sound.asset`
 - `sound/chaosx_sound.asset`
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx`
 - shared super-event documentation.

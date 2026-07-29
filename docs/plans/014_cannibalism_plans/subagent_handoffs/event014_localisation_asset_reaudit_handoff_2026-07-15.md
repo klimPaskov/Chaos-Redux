@@ -25,7 +25,7 @@ The authoritative audit is:
 - Animation: 12-frame ordinary and 16-frame transformed portraits plus 12 non-portrait real-frame packages; 142 unique source frames and 142 unique processed frames in total, with complete sheets, fallbacks, GIFs, manifests, contacts, and GFX handoffs.
 - Super-events: four distinct action-heavy 457x328 scenes.
 - Achievements: 18 registry entries and 54 unique runtime states using the exact required not-eligible overlay.
-- Audio: IDs 49/50/52/53, four OGG and four WAV binaries, eight unique hashes, stereo 44100 Hz, complete sound wrappers, and retained license evidence.
+- Audio: IDs 49/50/52/53, four WAV binaries, eight unique hashes, stereo 44100 Hz, complete sound wrappers, and retained license evidence.
 - Retired content and cultural safety: zero Prison Host basenames or live matches; zero ancient-general disclaimer; zero player-facing living Indigenous sacred-authenticity claim.
 
 ## Changed files

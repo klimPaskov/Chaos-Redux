@@ -82,7 +82,7 @@ These are optional extensions outside the accepted design. None is queued, omitt
 
 The consolidated asset manifest states that the visual and audio package is complete and wired. Its current inventory includes 10 report images, 6 news images, 3 super-event images, the Oth-Kesh portrait and flag packages, 65 focus icons, 36 unique idea/state icons, 39 decision-family icons mapped across 125 visible decisions and missions, 5 category icons, 5 category pictures, 15 complete achievement triplets, and the selected-field UI package with five real-frame animation families and required static fallbacks. The provenance ledger records 150 unique generated static icons and category assets with one-to-one source, processed, runtime, and registration evidence.
 
-The audio manifest states complete integration for visible slots 82 through 84 and audio IDs 54 through 56. It records unique 115-second, 110-second, and 109-second 44.1 kHz OGG cues, three WAV mirrors, source and recording rights, hashes, loudness, sound wrappers, sound wrappers, base sounds, music localisation, HTML catalogue entries, and playback selectors. No superseded 49, 50, or 51 Event 018 path remains.
+The audio manifest states complete integration for visible slots 82 through 84 and audio IDs 54 through 56. It records unique 115-second, 110-second, and 109-second 44.1 kHz OGG cues, three WAV files, source and recording rights, hashes, loudness, sound wrappers, base sounds, music localisation, HTML catalogue entries, and playback selectors. No superseded 49, 50, or 51 Event 018 path remains.
 
 The manifests do not claim in-engine playback or UI-scale observation. Those checks were waived and remain correctly disclosed as unperformed rather than converted into false live evidence.
 

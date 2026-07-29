@@ -73,7 +73,7 @@ Early working labels are no longer current localisation authority. Stable identi
 ## Evidence status
 
 - Final workbook SHA-256 is `597E71A1307958135BA1B34A8E60741320CD9E2753FA2EBDDBC1ED83403E1D59`; Event 011 and SCN-009 status cells are `Implemented`, and no formula error cells or formula error tokens remain.
-- Audio ID `43` uses `Revelation`; final WAV and WAV duration is `86.101746` seconds at 44.1 kHz. Composition and federal-government recording rights are documented separately.
+- Audio ID `43` uses `Revelation`; final WAV duration is `86.101746` seconds at 44.1 kHz. Composition and federal-government recording rights are documented separately.
 - The asset validator covers 57 runtime DDS targets, eight source and processed animation frames, one static fallback, and six achievement triplets.
 
 ## Resume note

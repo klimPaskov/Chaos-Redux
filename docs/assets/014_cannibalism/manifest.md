@@ -34,7 +34,7 @@ Superseded flag, portrait, and retired transform-only animation packages are not
 | `report_news_imagegen/` | Report and news picture families | Generated sources, processed files and handoff |
 | `achievements_imagegen/` | 18 achievement triplets | Generated sources, locked/unlocked variants, validation and handoff |
 | `static_event_art_imagegen/` | Four action-heavy super-event images and the remaining static event-art families | Exact source records, processed DDS, visual audit, manifests |
-| `source_audio/` | Eight 44,100 Hz runtime files: four OGG and four WAV for four unique licensed super-event recordings | Source files, research/evidence records and runtime handoff |
+| `source_audio/` | Eight 44,100 Hz runtime files: four WAV for four unique licensed super-event recordings | Source files, research/evidence records and runtime handoff |
 
 ## Runtime closure
 

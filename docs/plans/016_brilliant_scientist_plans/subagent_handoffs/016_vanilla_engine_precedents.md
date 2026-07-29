@@ -550,7 +550,7 @@ Animated final assets also fall under `chaos-redux-event-assets` and `chaos-redu
 
 ### Vanilla status
 
-Vanilla has no native “super-event” framework. A super-event is a scripted GUI convention combining visibility state, an image/text mapping, a close/cleanup path, and music or sound playback. It is therefore incorrect to claim a vanilla super-event implementation precedent.
+Vanilla has no native “super-event” framework. A super-event is a scripted GUI convention combining visibility state, an image/text mapping, a close/cleanup path, and sound playback. It is therefore incorrect to claim a vanilla super-event implementation precedent.
 
 ### Approved-mod structural precedent
 
@@ -571,8 +571,8 @@ Event 016 should extend these existing surfaces:
 - `$REPO/interface/chaosx_super_events.gfx`
 - `$REPO/common/scripted_guis/chaosx_scripted_gui_super_events.txt`
 - `$REPO/common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
-- `$REPO/music/chaosx_super_event_music.asset`
-- `$REPO/music/chaosx_super_event_music.txt`
+- `$REPO/sound/chaosx_sound.asset`
+- `$REPO/sound/chaosx_sound.asset`
 - `$REPO/sound/chaosx_sound.asset`
 
 `$REPO/events/002_zombie_outbreak.txt:202-207` shows an older local pattern: a timed `super_event_visible` slot, `global.current_super_event_audio_id`, and `play_current_super_event_audio = yes`.
@@ -589,8 +589,8 @@ For each Event 016 super-event, reserve and wire:
 - scripted-localisation image/text mapping;
 - unique audio ID;
 - final 44.1 kHz OGG asset with all required volume variants;
-- music asset registration;
-- zero-random-chance music-station registration;
+- sound asset registration;
+- sound registration;
 - sound wrapper where used by the framework;
 - settings-aware playback helper;
 - timed or explicit close cleanup;
@@ -714,7 +714,7 @@ Before claiming Event 016 complete, the parent implementation should prove:
 - conditional focus branches refresh their layout and all children share route gates;
 - large portrait/custom-GUI animation is wired from real frames;
 - any static advisor/scientist portrait compromise has explicit user approval;
-- every super-event slot, text mapping, image, audio variant, station entry, wrapper, and cleanup path exists;
+- every super-event slot, text mapping, image, sound variant, wrapper, and cleanup path exists;
 - all 17 specified achievements have attainable triggers, 34 localisation keys, and 51 DDS files;
 - terminal effects clean decisions, projects, targets, audio, GUI state, and transient flags without erasing achievement facts;
 - event log, evolutions, event-details UI, docs, and spreadsheet wording match the final in-game localisation.

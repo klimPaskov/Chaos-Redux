@@ -346,7 +346,7 @@ Generated fictional super-event art at 457 by 328.
 
 ### Audio direction
 
-A unique one to two minute licensed or public-domain musical track with finality, ritual, and dread. A public-domain `Dies Irae` recording is a research lead, not a wired final selection. It must be downloaded from a legitimate source, trimmed if needed, converted to 44.1 kHz OGG, documented, assigned a unique audio ID, and kept distinct from the coronation track.
+A unique one to two minute licensed or public-domain musical track with finality, ritual, and dread. A public-domain `Dies Irae` recording is a research lead, not a wired final selection. It must be downloaded from a legitimate source, trimmed if needed, converted to a 44.1 kHz stereo WAV, documented, assigned a unique audio ID, and kept distinct from the coronation track.
 
 ## Nonterminal victory outcomes
 

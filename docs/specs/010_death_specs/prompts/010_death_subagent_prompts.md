@@ -78,7 +78,7 @@ Research the super-event role packages: mainland reveal, world-end, defeat after
 You are chaosx_super_event_audio_researcher. fork_context=false.
 Task: Research, verify, download, convert, and document licensed/public-domain audio candidates for Event 010 Death super-events.
 Read only: docs/specs/010_death_specs/prompts/010_death_super_event_prompt.md and relevant chaos-redux-super-events audio sections. Check approved existing track docs only if parent provides paths; otherwise search for clearly licensed music. Reject unclear licenses and generated/test-tone audio.
-Output final .ogg candidates, source files, license notes, suggested audio ids, and the audio record indexed by `docs/super_events/010_death/README.md`. Do not edit sound definitions or gameplay.
+Output final WAV candidates, source files, license notes, suggested audio ids, and the audio record indexed by `docs/super_events/010_death/README.md`. Do not edit sound definitions or gameplay.
 ```
 
 ## Localisation auditor prompt

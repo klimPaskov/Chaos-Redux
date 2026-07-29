@@ -55,13 +55,13 @@ The weaponization project has six phases, eighteen unique iteration roles, four 
 
 ## Rat countries
 
-The finite pool contains Rat Nation tags `RTA` through `RTM` and the separate Rat King tag `RTX`. The package includes country identity, leaders, flags, ideas, AI, locked zero-manpower division templates, starting forces, decisions, four origin archetypes, focus trees, brood consolidation, unit inheritance, capped force-growth pulses, plague immunity, and occupation-driven infection.
+The country package uses the reusable Rat Nation tag `RTA` and the separate Rat King tag `RTX`. The Rat Nation chooses one of four origin archetypes from its founding basin and represents additional broods through rat-controlled states, capped force-growth pulses, and internal brood mass rather than extra country tags. The package includes country identity, leaders, flags, ideas, AI, locked zero-manpower division templates, starting forces, decisions, focus trees, plague immunity, and occupation-driven infection.
 
 Rat units do not consume human manpower or normal equipment and cannot be manually deployed. Their current map models intentionally use the registered infantry entity as a temporary engine-safe visual consumer. Bespoke Rat Nation and Rat King unit models and skeletal animations are required in a later 3D production tranche.
 
 ## SCN-012 and terminal route
 
-Black Plague Unbound is implemented in the existing triggerable-scenario UI as `SCN-012`. Each intensity directly seeds established outbreaks across multiple eligible continents, forces Evolutions I through IV, creates independent Rat Nations, creates the Rat King in a separate Royal Basin, grants a coexistence grace period, initializes AI, forces, disease values, decisions, logs, coronation, and performs one mapmode rebuild. The setup uses a scoped bypass, clears it after the transaction, and is idempotent. It never grants Evolution V, `world_end`, or automatic victory and disqualifies ordinary-progression achievements.
+Black Plague Unbound is implemented in the existing triggerable-scenario UI as `SCN-012`. Each intensity directly seeds established outbreaks across multiple eligible continents, forces Evolutions I through IV, creates the Rat Nation, creates the Rat King in a separate Royal Basin, grants a coexistence grace period, initializes AI, forces, disease values, decisions, logs, coronation, and performs one mapmode rebuild. The setup uses a scoped bypass, clears it after the transaction, and is idempotent. It never grants Evolution V, `world_end`, or automatic victory and disqualifies ordinary-progression achievements.
 
 Evolution V remains gated by Chaos above 1000, catastrophic plague deaths, conquest, the completed Rat King route, and 90 percent control of an eligible continent together with its designated capitals and refuge nodes. Only that earned route performs deterministic takeover and the world-end super-event.
 

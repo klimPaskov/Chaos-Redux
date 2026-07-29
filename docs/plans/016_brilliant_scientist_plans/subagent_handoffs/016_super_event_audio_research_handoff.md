@@ -1,13 +1,13 @@
 # Event 016 super-event audio research handoff
 
-Status: complete for the audio-research and Event 016-owned OGG scope. Commit `0e8c6f8e` performed the role-preserving rename to final IDs 90 through 95 without re-encoding or retagging.
+Status: complete for the audio-research and Event 016-owned WAV scope. Commit `0e8c6f8e` performed the role-preserving rename to final IDs 90 through 95 without re-encoding or retagging.
 
 ## Delivered package
 
 - Full rights, fit, attribution, mastering, loudness, hash, and integration research: `docs/super_events/016_brilliant_scientist/audio_research.md`.
 - Source and evidence index: `docs/super_events/source_audio/016_brilliant_scientist/README.md`.
 - Six source masters plus frozen Commons revisions, API metadata, upstream Archive.org evidence, and license legal code: `docs/super_events/source_audio/016_brilliant_scientist/`.
-- Six final game-ready OGGs: `music/016_brilliant_scientist/`.
+- Six final game-ready WAVs: `sound/016_brilliant_scientist/`.
 
 All six required packages are retained. R1 removal was rejected. R7 is preserved: Laboratory World is administrative conquest/integration; Strategic Singularity is the vulnerable multi-year denied-victory device that crosses the shared chaos threshold and then commits canonical Fallout.
 
@@ -54,9 +54,9 @@ The quieter integrated level for ID 91 preserves the large natural range of the 
 
 ## Parent wiring checklist
 
-1. In `music/chaosx_super_event_music.asset`, add six definitions per ID using names `chaosx_super_event_<ID>_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`, all pointing to the corresponding Event 016 OGG.
+1. In `sound/chaosx_sound.asset`, add six definitions per ID using names `chaosx_super_event_<ID>_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`, all pointing to the corresponding Event 016 WAV.
 2. Use definition volumes `0.67`, `1.33`, `2.00`, `2.67`, `3.33`, and `4.00` in that order. Do not create six OGG copies.
-3. In `music/chaosx_super_event_music.txt`, add one representative zero-chance row per track using `chaosx_super_event_<ID>_1_5`.
+3. In `sound/chaosx_sound.asset`, add one representative zero-chance row per track using `chaosx_super_event_<ID>_1_5`.
 4. If the implementation uses the sound channel, reproduce the documented source edit into a matching Event 016 WAV and add the base sound plus `chaosx_super_event_<ID>_sound_<suffix>` wrappers. Do not generate a WAV by decoding the lossy final WAV when the preserved source and exact edit chain are available.
 5. Set `global.current_super_event_audio_id` to the matching parent-assigned ID and use the existing settings-aware playback helper.
 6. Add the six rows to `music/chaosx_music_track_list.html` with their visible super-event IDs, titles, performers, final durations, paths, and rights.
@@ -70,13 +70,13 @@ The quieter integrated level for ID 91 preserves the large natural range of the 
 - A repository title/performer scan found no prior use. The only matching Wagner work text is an Event 013 rejection of a different 1921 Edison recording; Event 016 uses the distinct, openly licensed 2014 Ulm performance.
 - Every final file is exactly `115.000000 s`, Ogg Vorbis, `44,100 Hz`, stereo, and includes source/license/change metadata.
 - Pre-move and post-move SHA-256 checks match for all six encoded OGGs and all six decoded PCM streams. The collision repair was path-only and did not re-encode or retag any file.
-- The six corrected filenames are the only OGGs in `music/016_brilliant_scientist/`; each filename's role matches a unique embedded title, performer, and license tag.
+- The six corrected filenames are the only WAVs in `sound/016_brilliant_scientist/`; each filename's role matches a unique embedded title, performer, and license tag.
 - A whole-worktree scan found no competing live or shared-registry `chaosx_super_event_90` through `chaosx_super_event_95` owner. The only 90-through-95 path matches are the corrected Event 016 audio files and audio documentation.
 
 ## Scope boundary and blockers
 
-No shared music asset, station, sound, localisation, GUI, gameplay, specification, workbook, or catalog file was edited. No numeric reservation was made by this subagent; filenames use the IDs later supplied by the parent. No sound WAV was requested or produced in the OGG-only subtask.
+No shared sound, localisation, GUI, gameplay, specification, workbook, or catalogue file was edited. No numeric reservation was made by this subagent; filenames use the IDs later supplied by the parent.
 
 The follow-up documentation reconciliation records IDs 90 through 95 across the Event 016 specification, prompts, source-of-truth map, resume packet, integration map, event documentation, and status handoffs. The historical 88-through-93 paths remain relevant only as rename provenance in audio-owned evidence.
 
-There is no rights, source-download, mastering, or Event 016-owned file blocker. Shared wiring and any WAV mirror remain parent-owned integration work, not a fallback or simplification of the delivered audio-research scope.
+There is no rights, source-download, mastering, or Event 016-owned file blocker. Shared wiring and any WAV file remain parent-owned integration work, not a fallback or simplification of the delivered audio-research scope.

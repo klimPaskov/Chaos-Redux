@@ -190,7 +190,7 @@ The workbook status `Needs Testing` is accurate.
 
 ### Super-events
 
-Super-event 6002 has source-level completion for its slot, static image, WAV audio, unique wrappers, station integration, settings-aware emission, Event Log history, and five trigger predicates.
+Super-event 6002 has source-level completion for its slot, static image, WAV audio, unique sound wrappers, settings-aware emission, Event Log history, and five trigger predicates.
 
 Its FORM48 predicate remains unreachable, and its high-chaos branches lack a currently playable ten-package environment.
 

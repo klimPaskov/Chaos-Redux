@@ -33,7 +33,7 @@ This handoff closes the documentation reconciliation tranche and incorporates th
 | Portraits and animations | 56 regional warlord portraits. The revealed ordinary portrait uses 12 independently generated frames and the transformed portrait uses 16 independently generated frames |
 | GFX closure | 816 Event 014 texture references across nine `.gfx` files, 598 unique paths, and zero missing runtime files |
 | Action super-events | Four unique action images and audio roles: reveal 49, ordinary world end 50, global defeat 52, and Wendigo world end 53. ID 51 remains assigned elsewhere |
-| Audio | Four unique 44.1 kHz OGG and WAV pairs with source and rights records |
+| Audio | Four unique 44.1 kHz WAV files with source and rights records |
 | Reveal secrecy | Every public identity surface is gated by `cannibalism_reveal_complete`. Pre-reveal events, evolutions, focuses, decisions, GUI, Event Details, tracker rows, scenarios, reports, portraits, terminal rows, and audio presentation remain neutral |
 
 ## Source specifications promoted

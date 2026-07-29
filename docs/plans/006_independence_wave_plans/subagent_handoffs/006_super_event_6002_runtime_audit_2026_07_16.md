@@ -71,10 +71,7 @@ Final media verification:
 | `sound/006_independence_wave/super_event_006_02_every_border_a_casus_belli.wav` | PCM S16LE, 44.1 kHz stereo, 109.992517 s | `3A7C58C94016EDA80842E328DEBC3D00B2D1755085F0C87F580AAAB3B4E0BC08` |
 | `gfx/super_events/006_independence_wave/super_event_006_asset_006_revisionist_milestone.dds` | registered 457 x 328 BGRA DDS | `A7ABEC9C821A709BBD6412B2904DB6124E59914D739F79944CF0FD40D5187542` |
 
-All six music variants, all six sound wrappers, and the zero-random-play station
-row are registered. Audio 6001, slot-23 text dispatch, slot-23 firing, and all
-6001 playback wrappers remain absent. ASSET-005's static DDS and sprite
-registration remain dormant and are not runtime dispatch.
+All six sound wrappers are registered. Audio 6001, slot-23 text dispatch, slot-23 firing, and all 6001 playback wrappers remain absent. ASSET-005's static DDS and sprite registration remain dormant and are not runtime dispatch.
 
 ## Achievement boundary
 

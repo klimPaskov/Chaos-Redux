@@ -64,7 +64,7 @@ The Ledger seal is intentionally audited outside the five standardized animation
 
 Slots `96`-`100` select five route-distinct `457x328` images and five matching route descriptions under the shared title `UTOPIA HAS NEIGHBORS`. The selected Thomas More quotation is public-domain text documented in `015_utopia_manifesto_super_event_text_research.md`.
 
-Audio ID `57` is assigned before `play_current_super_event_audio`, which respects the configured music/sound mode and volume. The OGG is Vorbis, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9`; the WAV is PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`. Each hash occurs once among the current `55` OGG and `53` WAV runtime files. Frozen source-page, metadata, CC0 deed, CC0 legal code, original recording, processing, and catalogue evidence match the hashes in `docs/super_events/015_utopia_manifesto_super_event_audio_research.md`.
+Audio ID `57` is assigned before `play_current_super_event_audio`, which respects the configured volume. The WAV is PCM s16le, `44,100 Hz`, stereo, `116.000000 s`, SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`. Frozen source-page, metadata, CC0 deed, CC0 legal code, original recording, processing, and catalogue evidence match the hashes in `docs/super_events/015_utopia_manifesto/audio_research.md`.
 
 ## Visual review and tool limits
 

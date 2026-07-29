@@ -38,7 +38,7 @@ Requirements:
 - Preserve source audio.
 - Document title, creator, performer or recording source, URL, license, duration, usage terms, conversion notes, and uncertainty.
 - Convert final WAV to 44.1 kHz.
-- Verify sound and music definitions.
+- Verify sound and sound definitions.
 - Update audio docs and track list as required by repo convention.
 
 ## Image work

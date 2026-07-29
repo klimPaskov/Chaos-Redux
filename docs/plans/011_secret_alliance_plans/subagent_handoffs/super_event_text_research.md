@@ -180,7 +180,7 @@ Every item below is resolved in the current implementation. The list is retained
 3. Copy route selection from `global.secret_alliance_reveal_route` into the durable presentation route before the slot opens and preserve all seven values through the five packages above.
 4. Keep `secret_alliance_snapshot_reveal_state` before the super-event call, then copy target, leader, member count, and faction-name grammar into presentation state.
 5. Wire `GFX_super_event_011_secret_alliance_public_reveal` only after the final DDS exists.
-6. Wire audio ID `43`, its sound wrappers, sound wrappers, and the music table from the audio handoff.
+6. Wire audio ID `43`, its sound wrappers, and the audio catalogue row from the audio handoff.
 7. Keep the super-event after public-state and faction creation, hold the presentation context for 14 days, and clear it through `.202` on day 15.
 8. Do not reuse any of these strings in pre-reveal Event Details, evolutions, decisions, reports, or spreadsheet text.
 
