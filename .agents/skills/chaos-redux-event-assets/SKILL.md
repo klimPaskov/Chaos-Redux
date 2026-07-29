@@ -1162,19 +1162,9 @@ generation or editing inputs, attribution or ImageGen record, reviewer, date, an
 runtime path. Keep each source, processed PNG, review sheet, and metadata file in a
 distinct path; do not split out or bypass an individual source to weaken provenance.
 
-Prepare each native `65x67` PNG with `.tools/create_advisor_icon.py`. The script
-uses the canonical `portraits/advisors/advisor_frame.png` and
-`portraits/advisors/advisor_paper.png` sources and composites them bottom-to-top as
-frame, resized/rotated portrait, then paper. The script must preserve the portrait's
-source aspect ratio, rotate it around the stable center of the frame opening, and
-calculate the smallest proportional rectangle that covers all four opening corners.
-It must not stretch, squash, skew, or perspective-warp the portrait. The canonical
-frame and paper remain native `65x67` layers with no resize, rotation, recolouring,
-filter, or alpha rewrite. Clip only the portrait, including a narrow exclusion under
-the paper footprint so light clothing cannot create a fringe around the paper. Apply
-only a slight portrait-only sepia blend. Record the explicit crop, fitted dimensions,
-center, rotation, cover margin, sepia strength, source hashes, processed PNG, and
-final DDS in the asset package.
+Prepare each native `65x67` PNG with `.tools/create_advisor_icon.py`. The script uses the canonical `portraits/advisors/advisor_frame.png` and `portraits/advisors/advisor_paper.png` sources and composites them bottom-to-top as frame, resized/rotated portrait, then paper. The script must preserve the portrait's source aspect ratio, rotate it around the stable center of the frame opening, and calculate the smallest proportional rectangle that covers all four opening corners. It must not stretch, squash, skew, or perspective-warp the portrait. The canonical frame and paper remain native `65x67` layers with no resize, rotation, recolouring, filter, or alpha rewrite. Clip only the portrait against the frame opening and visible frame footprint. Apply only a slight portrait-only sepia blend. Record the explicit crop, fitted dimensions, center, rotation, cover margin, sepia strength, source hashes, processed PNG, and final DDS in the asset package.
+
+When a hard portrait exclusion creates a visible light or transparent fringe, keep the canonical frame and paper pixels unchanged but replace that exclusion with a separately generated soft dark shadow beneath each layer. Build the shadow from the layer alpha, feather it with a small Gaussian radius, and composite it below the unchanged source layer. Do not blur, recolour, reshape, or rewrite the canonical layer itself.
 
 Do not shrink, pad, or directly wire a `156x210` leader, commander, or operative
 portrait. Compose the subject independently inside the native card with a
