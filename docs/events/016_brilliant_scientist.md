@@ -2,11 +2,11 @@
 
 ## Implementation status
 
-Event 016 remains default-disabled while the complete package is assembled and audited. The opening incident and shared scripted architecture are implemented: the dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
+Event 016 remains default-disabled while the core package is integrated and audited. The opening incident and shared scripted architecture are implemented: the dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
 
-The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. The Directorate, project portfolio, evolution, containment, Kruger State, terminal, achievement, and presentation tranches remain under implementation; this document does not claim the whole event is complete.
+The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Bounded Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, and presentation tranches are present in the current worktree or accepted handoffs, but parent-owned shared wiring, Event 019 provider interoperability, deferred report/news and flavor content, Event016-specific 3D models, localisation, workbook alignment, mapped audits, and final enablement remain open. This document does not claim the whole event is complete.
 
-The controlling source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`.
+The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 ## Event identity
 
@@ -99,17 +99,17 @@ Automatic fail-deadly or deliberate global-use doctrine blocks Laboratory World 
 
 Six super-event packages are planned for recognition, formation, global threat, Laboratory World, Strategic Singularity, and qualifying defeat. Recognition and defeat are conditional at runtime but remain full production packages.
 
-Text and audio research is complete for all six packages. Six role-distinct Event 016-owned OGGs exist at IDs 90 through 95. Every OGG is exactly `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared music, sound, settings, event, GUI, and localisation wiring remains incomplete, and all six super-event images are missing.
+Text and audio research is complete for all six packages. Six role-distinct Event 016-owned OGGs exist at IDs 90 through 95, and six generated super-event DDS files plus the six generated report-event DDS files are present with accepted production handoffs. Every OGG is exactly `115.000000` seconds, Ogg Vorbis, `44,100 Hz`, stereo. Shared playback, trigger, GUI, localisation, and parent-owned runtime validation remain incomplete.
 
 Five severe Kruger portrait animation packages are planned for clone, machine, temporal, xenobiological or alien, and synthesis outcomes. Every animated package requires separate source frames, a static fallback, frame sheet, DDS, preview, contact sheet, manifest, and GFX handoff.
 
-Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`, and the character definition consumes both. A dedicated `210x176` opening report composition derived from the same approved identity is registered as `GFX_report_event_016_brilliant_scientist_appointment` and used by `chaosx.nr16.2` and `.3`. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced later assets and state wiring remain missing. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
+Stage 0 is complete from the exact `portrait_generic_biowarfare_europe_male_01` base. The runtime leader or scientist DDS and `65x67` advisor DDS are registered as `GFX_portrait_KRG_doctor_warren_kruger_stage_0` and `GFX_idea_doctor_warren_kruger_stage_0`, and the character definition consumes both. A dedicated `210x176` opening report composition derived from the same approved identity is registered as `GFX_report_event_016_brilliant_scientist_appointment` and used by `chaosx.nr16.2` and `.3`. Stage I through IV static route portraits and the five-family severe animation package are present in the current asset package with static fallbacks and handoff evidence, while final state routing and parent review remain open. The copied base is explicitly authorized for internal mod use, while external redistribution rights remain unresolved.
 
 Exactly seventeen achievements require completed, grey, and not-eligible icons, for 51 final DDS files.
 
 ## Icon and sprite plan
 
-Stage-0 portrait sprites and later portrait filename contracts are registered in `interface/016_brilliant_scientist.gfx`. Only the stage-0 files exist. Every other listed family still needs stable production, registration where absent, and final wiring.
+Stage-0 and later portrait sprites, static fallbacks, and severe animation frame sheets are registered or documented in `interface/016_brilliant_scientist.gfx`. The runtime package exists, but final state selection and parent-owned validation remain separate from asset production.
 
 | Family | Planned path | Planned registration |
 | --- | --- | --- |
@@ -135,13 +135,13 @@ Biological-weapon work must reuse the existing biowarfare, contamination, Deaths
 
 ## Current blockers
 
-- Gameplay beyond the opening incident, AI beyond the opening choice, Directorate completion, project completion, evolutions, foreign operations, containment, country, focus, terminal, and achievement implementation remain incomplete, so Event 016 remains default-disabled.
-- Stage I through IV portrait assets, every severe animation package, flags, icons, UI art, later report art, news art, super-event images, and visual state wiring remain absent.
-- Super-event text and Event 016-owned audio are complete, but final descriptions, images, localisation, triggers, shared playback definitions, and presentation wiring are absent.
-- Workbook alignment is blocked on final in-game wording.
+- Event 016 remains default-disabled because the current tranches still require parent-owned shared registry and consumer wiring, Event 019 provider adapters, final localisation, workbook alignment, mapped audits, and live scenario validation.
+- The accepted report, super-event, portrait, animation, icon, flag, and Directorate UI packages still require the parent-owned registrations or consumer checks recorded in their handoffs; package existence is not a whole-event completion claim.
+- No Event016-specific 3D unit or building model package is accepted. The seven route-specific unit consumers remain a production and runtime-wiring backlog.
+- Broader news, defeat/remnant, and country-specific flavor content remains queued after the core runtime milestone, and no dedicated Kruger triggerable scenario is required by the accepted design.
 
 ## Future plans
 
-Complete the remaining work in reviewed tranches: Directorate and projects; evolutions, foreign operations, and Event Details; containment and the Kruger State; the national focus tree; terminal systems and super-events; achievements and remaining assets; then localisation, documentation, workbook alignment, all mapped audits, and final enablement. Preserve the completed opening transaction, accepted architecture, stage-0 identity, and Event 016-owned OGGs.
+Continue the parent-owned core handoff: Event 019 provider adapters, shared Event Details and presentation wiring, final localisation, workbook alignment, mapped audits, and live scenario validation. Keep broader flavor, news, defeat or remnant, and Event016-specific 3D production queued behind that core boundary. Preserve the completed opening transaction, accepted architecture, staged identity packages, accepted visual tranches, and Event 016-owned OGGs.
 
 Another improvement-loop pass is appropriate only after the accepted addendum is implemented and new evidence shows a distinct shallow or disconnected mechanic.

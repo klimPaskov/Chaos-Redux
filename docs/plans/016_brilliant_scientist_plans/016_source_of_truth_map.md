@@ -2,6 +2,8 @@
 
 Date: 2026-07-14
 
+> Current-runtime pointer (2026-07-29): this file remains the accepted Event 016 design and disposition record, but its implementation and asset paragraphs are a historical 2026-07-14 snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for the current core-runtime, Event 019 interoperability, deferred-content, and 3D-model handoff. Do not use the older placeholder or asset-missing statements below to decide what has already been produced.
+
 ## Purpose
 
 This file freezes the reconciled Event 016 design before implementation. It records which sources control, which recommendations were promoted or rejected, what exists in the repository, and what the next implementation session must do.
