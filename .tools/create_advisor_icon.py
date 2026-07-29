@@ -7,10 +7,10 @@ The bottom-to-top layer order is:
 3. advisor paper with a soft generated shadow
 
 The portrait is clipped to the frame opening so it cannot cover the visible
-frame. The source frame and paper pixels remain unchanged; their generated
-shadows smooth the transition into the portrait without a transparent or light
-fringe. The script writes both a review PNG and a legacy one-level 32-bit BGRA
-DDS.
+frame. The canonical source files remain unchanged. Working copies have their
+baked shadow alpha removed before consistent generated shadows are applied,
+preventing transparent or light fringes. The script writes both a review PNG
+and a legacy one-level 32-bit BGRA DDS.
 """
 
 from __future__ import annotations
@@ -75,12 +75,12 @@ def parse_args() -> argparse.Namespace:
 			"always preserved."
 		),
 	)
-	parser.add_argument("--rotation", type=float, default=4.0)
+	parser.add_argument("--rotation", type=float, default=10.0)
 	parser.add_argument(
 		"--portrait-zoom",
 		type=float,
-		default=1.06,
-		help="Extra proportional cover margin after corner fitting (default: 1.06).",
+		default=1.16,
+		help="Extra proportional cover margin after corner fitting (default: 1.16).",
 	)
 	parser.add_argument(
 		"--shadow-radius",
@@ -93,6 +93,18 @@ def parse_args() -> argparse.Namespace:
 		type=float,
 		default=0.36,
 		help="Maximum opacity for generated frame and paper shadows (default: 0.36).",
+	)
+	parser.add_argument(
+		"--frame-core-threshold",
+		type=int,
+		default=96,
+		help="Minimum source alpha retained in the shadow-free frame core.",
+	)
+	parser.add_argument(
+		"--paper-core-threshold",
+		type=int,
+		default=176,
+		help="Minimum source alpha retained in the shadow-free paper core.",
 	)
 	parser.add_argument(
 		"--sepia-strength",
@@ -245,6 +257,27 @@ def create_soft_shadow(
 	return shadow
 
 
+def remove_baked_shadow(
+	layer: Image.Image,
+	alpha_threshold: int,
+) -> Image.Image:
+	if not 1 <= alpha_threshold <= 255:
+		raise ValueError("Layer core thresholds must be between 1 and 255")
+
+	source_alpha = layer.getchannel("A")
+	support = source_alpha.point(
+		lambda alpha: 255 if alpha > 0 else 0
+	)
+	core = source_alpha.point(
+		lambda alpha: 255 if alpha >= alpha_threshold else 0
+	)
+	core = core.filter(ImageFilter.GaussianBlur(0.45))
+	clean_alpha = ImageChops.multiply(core, support)
+	clean = layer.copy()
+	clean.putalpha(clean_alpha)
+	return clean
+
+
 def compose(
 	source: Image.Image,
 	frame: Image.Image,
@@ -256,8 +289,13 @@ def compose(
 	zoom: float,
 	shadow_radius: float,
 	shadow_opacity: float,
+	frame_core_threshold: int,
+	paper_core_threshold: int,
 	sepia_strength: float,
 ) -> Image.Image:
+	frame = remove_baked_shadow(frame, frame_core_threshold)
+	paper = remove_baked_shadow(paper, paper_core_threshold)
+
 	card = Image.new("RGBA", CARD_SIZE, (0, 0, 0, 0))
 	card.alpha_composite(create_soft_shadow(frame, shadow_radius, shadow_opacity))
 	card.alpha_composite(frame)
@@ -346,6 +384,8 @@ def main() -> None:
 		args.portrait_zoom,
 		args.shadow_radius,
 		args.shadow_opacity,
+		args.frame_core_threshold,
+		args.paper_core_threshold,
 		args.sepia_strength,
 	)
 	args.preview.parent.mkdir(parents=True, exist_ok=True)
