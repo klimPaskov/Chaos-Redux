@@ -5,7 +5,9 @@ Research date: 2026-07-22. This is a source-mode package only: the twelve files 
 resize, processing, PNG preview, DDS, `.gfx`, advisor art, or runtime wiring is
 included. A row is `blocked` when no verified original bitstream could be
 downloaded in this pass; a row is `needs_user_review` when the source exists but
-rights, watermark, framing, or era fit needs a separate approval.
+rights, watermark, framing, or era fit needs a separate approval; a row is
+`superseded` when it is retained as historical evidence after its consumer
+mapping has been replaced by a newer candidate.
 
 ## Role ledger
 
@@ -22,7 +24,7 @@ rights, watermark, framing, or era fit needs a separate approval.
 | 9 | `CHU_independence_wave_bolgar_civic_presidium` | Shamil Usmanov | `blocked` | [Commons file](https://commons.wikimedia.org/wiki/File:Shamil_Usmanov.jpg); Tatarstan government archive; 1918–20 | Unknown photographer; Commons PD-Russia-1996/US | not downloaded (Wikimedia 429) | Tatar revolutionary/writer, alive to 1937; 187x250 (low-resolution) but direct regional identity. |
 | 10 | `CHU_independence_wave_federal_presidium` | Galimzhan Ibrahimov | `blocked` | [Commons file](https://commons.wikimedia.org/wiki/File:Galimzhan_Ibra%D2%BBimov.jpg); Kazan State University library; 1920s | Unknown photographer; Commons PD-old/PD mark | not downloaded (Wikimedia 429) | Tatar writer/politician (1887–1938), 863x1272 vertical portrait; good Volga/Tatar fit. |
 | 11 | `CHU_independence_wave_middle_volga_congress` | Mirsaid Sultan-Galiev | `source_ready` | [Commons file](https://commons.wikimedia.org/wiki/File:SultanGaliyev0011.jpg); Turkdirlik image archive; before 1940 | USSR photographer; Commons PD-Soviet/US | [`chu_mirsaid_sultan_galiev.jpg`](source_masters/volga/chu_mirsaid_sultan_galiev.jpg) — `4eb3707a50bb6d7ccf193773172b415dd4b1c4f83e09669dd9f2850972e46319` | Tatar/Volga revolutionary, alive and politically relevant before 1936; 1200x1403. Commons metadata has a birth-year discrepancy (1882/1892), but subject identity is stable. |
-| 12 | `CHU_independence_wave_river_security_directorate` | Musa Dzhalil | `needs_user_review` | [Museum source page](https://m-jalil.tatmuseum.ru/my-product/m-dzhalil-konec-1930-kh-godov/); National Museum of Tatarstan object context; late 1930s | Museum page supplies the original image but no explicit reuse license; Commons counterpart is PD-old | [`chu_musa_dzhalil_tatmuseum_original.jpg`](source_masters/volga/chu_musa_dzhalil_tatmuseum_original.jpg) — `0bdef46f14a209b1dc749ff9063af7323006e34668c037f9367b96e609605489` | 496x720 official museum portrait, clearly Tatar male; late-1930s date and rights statement require review before cropping/use. |
+| 12 | `CHU_independence_wave_river_security_directorate` (historical mapping; superseded) | Musa Dzhalil | `superseded` | [Museum source page](https://m-jalil.tatmuseum.ru/my-product/m-dzhalil-konec-1930-kh-godov/); National Museum of Tatarstan object context; late 1930s | Museum page supplies the original image but no explicit reuse license; Commons counterpart is PD-old | [`chu_musa_dzhalil_tatmuseum_original.jpg`](source_masters/volga/chu_musa_dzhalil_tatmuseum_original.jpg) — `0bdef46f14a209b1dc749ff9063af7323006e34668c037f9367b96e609605489` | Historical museum-only source retained as research evidence for the former river-security mapping. It is superseded by the separate Wikimedia Commons 1930s Musa Dzhalil candidate for `CHU_independence_wave_bolgar_civic_presidium` in the companion retry manifest and is not a current river-security candidate. |
 | 13 | `ASY_independence_wave_civic_national_assembly` | Naum Faiq | `needs_user_review` | [Archive.org book scan](https://archive.org/details/naoumfaik0000unse/page/n10/mode/2up); *A Tribute to the Memory of Naoum Faik* (Damascus, 1936); portrait labeled 1920s | Unknown photographer; Commons PD-Syria/PD-US rationale | [`asy_naum_faiq_archive_org_page_n10.jpg`](source_masters/assyria/asy_naum_faiq_archive_org_page_n10.jpg) — `f8c6852056eadc30e61e1baa311185265d8fff2d7849f4c2d894fd5bf41d50bd` | 2876x4709 original page scan includes Arabic title/text around the face; crop is possible but requires visual approval. Assyrian nationalist (1868–1930), era-appropriate. |
 | 14 | `ASY_independence_wave_concordat_council` | Malik Ismail II of Upper Tyari | `blocked` | [Tyareh archive gallery](http://www.tyareh.org/photo-gallery.html), family photograph; early 1930s (Commons group counterpart dated 2 Oct 1912) | “Photo courtesy of the Malik Ismail family”; no reusable license grant; visible Tyareh.org watermark | [`asy_malik_ismail_ii_tyari_family_original.jpg`](source_masters/assyria/asy_malik_ismail_ii_tyari_family_original.jpg) — `0e40fcdffc983266da7d486f339d5b962f172dfb9c361c3e8d3248a264e90ad7` | 629x800 single portrait candidate but heavily watermarked and rights unclear; **do not process/use without family permission or a public-domain replacement**. |
 | 15 | `ASY_independence_wave_levies_guardianship` | Agha Petros | `needs_user_review` | [Atour archival page](http://www.atour.com/history/1900/20000830b.html), original image `agha-commander.jpg`; page headed 1919 | Assyrian Information Management archive; Commons counterpart claims public domain, source page itself gives no explicit license | [`asy_agha_petros_atour_original.jpg`](source_masters/assyria/asy_agha_petros_atour_original.jpg) — `e1deec1794568a765ab26a6c7611c15255748641b827e33d147f47e8826f5990` | 617x1036 full-uniform portrait of Assyrian general; identity/era excellent, but rights confirmation is required before release. |
@@ -40,3 +42,16 @@ an adult 1936 leader portrait and was deliberately rejected.
 There are intentionally no `processed_png/`, `final_dds/`, contact sheet, or
 `.gfx` handoff files in this package. The parent agent may only advance a row
 after a separate visual/rights review and a fresh source-mode processing pass.
+
+## 2026-07-29 supersession note
+
+The original museum-only Musa Dzhalil row above is retained as historical
+research evidence and is explicitly superseded for the river-security role. For
+`CHU_independence_wave_bolgar_civic_presidium`, the current candidate is the
+separate Wikimedia Commons 1930s public-domain source
+`../med_eurasia_gap_retry/source_masters/volga/chu_musa_dzhalil_commons_1930s.jpg`.
+Its source-locked HOI4 repaint chain and independent visual audit are recorded
+in `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/`.
+The independent audit passed the visual gates, but the source-rights review
+remains open; the candidate stays unwired and no advisor art or DDS/GFX
+replacement is implied by this supersession.

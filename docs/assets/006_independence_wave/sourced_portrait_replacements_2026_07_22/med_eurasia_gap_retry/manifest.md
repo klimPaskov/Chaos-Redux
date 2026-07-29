@@ -5,8 +5,10 @@ Research date: 2026-07-22. This is a source-mode package only. Every file in
 original URL. No crop, resize, PNG processing, DDS conversion, `.gfx` edit,
 advisor treatment, or runtime wiring was performed. `source_ready` means the
 source, rights statement, face identity, and role/era fit are strong enough to
-enter a later separately reviewed processing pass. `needs_review` and
-`blocked` are evidence only and must not be wired.
+enter a later separately reviewed processing pass. `needs_user_review` (or the
+legacy `needs_review` label retained in this ledger) means a source,
+rights/provenance, or route-role gate remains open. `blocked` is evidence-only
+and must not be wired.
 
 ## Role ledger
 
@@ -23,6 +25,10 @@ enter a later separately reviewed processing pass. `needs_review` and
 | 9 | `ASY_independence_wave_levies_guardianship` / `GFX_portrait_ASY_independence_wave_levies_guardianship` | Agha Petros | `source_ready` | [Commons file](https://commons.wikimedia.org/wiki/File:Agha_Petros_in_1920,_with_his_uniform,_British_occupied_Iraq,_Baghdad.jpg); [H. G. Donatossian gallery](https://www.lusarvest.org/gallery/donatossian-h-g/) | [Commons original](https://upload.wikimedia.org/wikipedia/commons/e/e7/Agha_Petros_in_1920%2C_with_his_uniform%2C_British_occupied_Iraq%2C_Baghdad.jpg) | 1920; H. G. Donatossian | Commons public-domain mark | [`source_masters/assyria/asy_agha_petros_1920.jpg`](source_masters/assyria/asy_agha_petros_1920.jpg); 794x1130; 295,869 bytes; `ad63874811c26570d9b624dc1c693036c8b1584faf0fe35ce5a6905ae00bccc1` | Agha Petros is a documented Assyrian military leader shown in uniform, giving the levies/guardianship route a direct historical-command identity. He died in 1932, so the alt-history route should treat this as a legacy/continuity choice; the image source and rights chain are otherwise explicit. | Not created | Not created |
 | 10 | `ASY_independence_wave_concordat_council` alternate / `GFX_portrait_ASY_independence_wave_concordat_council` | Malik Ismail II of Upper Tyari | `blocked` | [Tyareh archive gallery](http://www.tyareh.org/photo-gallery.html) | No file copied; the gallery image is not a reusable original URL | Early 1930s candidate; family photograph | “Photo courtesy of the Malik Ismail family”; no reuse grant; visible Tyareh.org watermark | No local source master; no SHA-256 | Recheck remains failed closed: the only located portrait is watermarked and rights-unclear. No copy or substitute was made. | Not created | Not created |
 
+## 2026-07-29 river-security mapping correction
+
+The earlier museum-only Musa Dzhalil entry in the companion Mediterranean/Volga/Assyria ledger is historical evidence and superseded for `CHU_independence_wave_river_security_directorate`; it must not be read as the current river-security candidate. The current Togan candidate remains `needs_user_review` after a visual PASS because user rights/provenance and the Bashkir-to-CHU route-role decision are still open.
+
 ## Rejected alternative evidence
 
 `source_masters/volga/chu_musa_murtazin_car.jpg` is an unchanged 613x413
@@ -35,6 +41,29 @@ the River Security Directorate.
 Mar Eshai Shimun XXIII imagery remains blocked: the Mar Shimun Foundation
 states that its photographs are copyright protected and offers no reusable
 license. No Foundation image was copied.
+
+## 2026-07-29 CHU grounded replacement candidates
+
+The low-resolution Shamil Usmanov row remains rejected. A separate Wikimedia
+Commons source now provides a materially larger, 1930s, public-domain portrait
+of Musa Dzhalil, a Tatar poet and political worker who lived through the Event
+006 baseline. The unchanged source master is
+`source_masters/volga/chu_musa_dzhalil_commons_1930s.jpg` (594x931 RGB,
+SHA-256 `c7e92f3b1e939cfcfcc67a06ab455ab101b8f04509aab75a245d7da97a74869f`).
+It was cropped with the repository exact-pixel crop utility and passed through
+the mandatory source-locked HOI4 repaint evidence chain in
+`docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/`.
+The independent visual audit completed with PASS for likeness, HOI4 style,
+framing/artifacts, and male identity. The Commons/museum source-rights review
+remains open, so the source, crop, raw repaint, and deterministic candidate are
+evidence-only and no character, DDS, or `.gfx` consumer has been changed.
+
+The Ahmet Zeki Velidi Togan Bashkortostan/Commons source remains the candidate
+for `CHU_independence_wave_river_security_directorate`. Its independent visual
+audit also completed with PASS for likeness, HOI4 style, framing/artifacts, and
+male identity, but user rights/provenance review and the Bashkir-to-CHU route-role
+decision remain open. Both grounded candidates therefore remain
+`needs_user_review` and unwired.
 
 ## Processing boundary
 

@@ -1,6 +1,6 @@
 # Event 006 next Soviet-tag admission matrix
 
-Audit date: 2026-07-29. Audited HEAD: `81a3acb99` (`docs: reconcile Event 006 doubled ladder and crisis scope`). Scope is the documented Event 006/Soviet-origin tag system only. CBB, CBD, and Random Events are excluded. This is a static repository audit; no live game was launched and no save was exercised.
+Audit date: 2026-07-29. Audited HEAD: `81a3acb99` (`docs: reconcile Event 006 doubled ladder and crisis scope`). Scope is the documented Event 006/Soviet-origin tag system only. CBB, CBD, Fallout, and Random Events are excluded. This is a static repository audit; no live game was launched and no save was exercised.
 
 ## Decision
 
@@ -57,6 +57,8 @@ The other registry rows in the Volga/Urals/Siberia/Far East band (`IW-033`, `IW-
 The audit ran `git rev-parse --short HEAD` and received `81a3acb99`, read the current adapter and attestation blocks in `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt`, searched the candidate registry for every ranked and Soviet-band row, and cross-checked the accepted resume/source-of-truth packets, package handoffs, and portrait manifest listed above.
 
 An additional exact-surface scan covered the 102 Event 006 tags plus 34 Soviet carriers across vanilla, 122 installed Workshop roots, and sibling local mods, with the Random Events root excluded. It found zero hits in external country definitions, alias or cosmetic blocks, English country-localisation keys, country-history filenames, or flag filenames. The scan was read-only and did not treat incidental prose or unit names as tag definitions.
+
+The repeatable command is `python -B .tools/audit_chaosx_country_tags.py --surface-scan --write-report`, and the result is mirrored in `tag_audit/006_chaosx_country_tag_collision_audit.md`.
 
 This audit changed no gameplay file, registry row, readiness flag, adapter, or `content_attestation` set. The parent commit records this handoff together with the narrow Africa API documentation comment; unrelated parent and user changes remain outside that commit.
 
