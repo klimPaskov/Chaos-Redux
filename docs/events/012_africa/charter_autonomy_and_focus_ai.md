@@ -57,6 +57,8 @@ The plans supply sequence and urgency without bypassing focus availability or co
 The bounded action controller composes all active regional, constitutional, relationship, foreign-power, high-chaos, world, and host-specific profile layers.
 Its early and late dispatchers cover Actions 1 through 102 without scanning every country on a recurring on-action.
 Scramble phase changes and the world-order opening refresh the stored host-policy snapshot immediately, so AI decision weights do not wait for the controller's next cadence.
+The 22 full host playbooks also activate one exact country-specific focus plan.
+Each plan translates its accepted matrix priorities into a distinct combination of shared-opening, host-signature, matching regional-overlay, support-lane, and constitutional-route weights while leaving live focus availability and `ai_will_do` gates authoritative.
 
 The continental tree is installed through `africa_load_continental_focus_tree`.
 That helper checks the active tree before loading, preserves completed-focus history during replacement, records `africa_continental_focus_tree_loaded` only after the new tree is active, and refreshes the layout once.
