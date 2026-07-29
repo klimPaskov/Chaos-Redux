@@ -281,6 +281,16 @@ events_log_set_default_actor_for_current_event = {
 	else_if = {
 		limit = {
 			check_variable = { event_id = constant:africa_event.id }
+			has_global_flag = africa_rsa_branch_used
+			has_event_target = africa_host
+			event_target:africa_host = { exists = yes }
+		}
+		event_target:africa_host = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = constant:africa_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:africa_event.id }
 			has_event_target = africa_prefire_host
 			event_target:africa_prefire_host = { exists = yes }
 		}

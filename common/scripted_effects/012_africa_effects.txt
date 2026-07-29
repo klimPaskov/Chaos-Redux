@@ -238,7 +238,12 @@ africa_select_weighted_prefire_host = {
 	clear_temp_array = africa_host_selection_pool
 	set_temp_variable = { africa_host_selection_pool_count = constant:africa_value.zero }
 	every_country = {
-		limit = { africa_is_eligible_host = yes }
+		limit = {
+			OR = {
+				africa_is_eligible_host = yes
+				africa_rsa_shared_entry_is_eligible = yes
+			}
+		}
 		africa_add_current_country_to_host_selection_pool = yes
 	}
 	if = {
@@ -269,7 +274,10 @@ africa_prepare_random_event_fire = {
 			limit = {
 				has_event_target = africa_prefire_host
 				event_target:africa_prefire_host = {
-					africa_is_eligible_host = yes
+					OR = {
+						africa_is_eligible_host = yes
+						africa_rsa_shared_entry_is_eligible = yes
+					}
 					has_country_flag = africa_prefire_contacts_frozen
 					check_variable = {
 						var = africa_frozen_first_contact_count
@@ -399,7 +407,7 @@ africa_clamp_host_values = {
 africa_initialize_selected_host = {
 	if = {
 		limit = {
-			africa_is_eligible_host = yes
+			africa_can_initialize_selected_host = yes
 			NOT = { has_global_flag = africa_event_active }
 			NOT = { has_country_flag = africa_host_commit_completed }
 			has_country_flag = africa_prefire_contacts_frozen
@@ -1361,11 +1369,13 @@ africa_promote_compact_host_package = {
 # ---------------------------------------------------------------------------
 
 # COUNTRY scope on the committed host. Event 12 deliberately uses one
-# controlled replacement tree; it is never added as a second national tree.
+# controlled replacement tree for generic hosts; original SAF keeps its
+# meaningful vanilla tree while the RSA rupture runs alongside it.
 africa_load_continental_focus_tree = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
+			NOT = { original_tag = SAF }
 			NOT = { has_focus_tree = africa_continental_focus_tree }
 			has_event_target = africa_focus_completion_source
 		}
@@ -1378,6 +1388,7 @@ africa_load_continental_focus_tree = {
 	else_if = {
 		limit = {
 			africa_is_current_host = yes
+			NOT = { original_tag = SAF }
 			NOT = { has_focus_tree = africa_continental_focus_tree }
 		}
 		load_focus_tree = {

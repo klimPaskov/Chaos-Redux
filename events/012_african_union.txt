@@ -18,7 +18,10 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		africa_is_eligible_host = yes
+		OR = {
+			africa_is_eligible_host = yes
+			africa_rsa_shared_entry_is_eligible = yes
+		}
 		has_country_flag = africa_prefire_contacts_frozen
 		check_variable = {
 			var = africa_frozen_first_contact_count
@@ -29,6 +32,13 @@ country_event = {
 
 	immediate = {
 		africa_initialize_selected_host = yes
+		if = {
+			limit = {
+				tag = SAF
+				africa_rsa_allied_branch_can_start = yes
+			}
+			africa_rsa_start_allied_civil_war = yes
+		}
 	}
 
 	option = {

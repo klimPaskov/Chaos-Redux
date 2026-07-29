@@ -18,12 +18,19 @@ The accepted evolution interpretation remains Baseline at tier 4, Evolution I at
 
 The subsystem documents remain separate rather than being deleted or merged: `docs/events/012_africa/charter_autonomy_and_focus_ai.md`, `docs/events/012_africa/evolutions.md`, and `docs/events/012_africa/world_order.md` cover the Charter relationship and focus AI layer, the evolution clock and visual contract, and Scramble/world-order behavior respectively.
 
+## RSA integration helper contract
+
+`africa_rsa_shared_entry_is_eligible` is the narrow prefire trigger for original SAF. It preserves the generic host predicate for every other country, defers the bounded exile-patron check until the frozen contact roster exists, and requires the Allied framework, supported autonomy, Pretoria, Cape, Natal, and the existing African-rooted contact gate. `africa_can_initialize_selected_host` is the shared initializer OR that admits this one meaningful-tree exception.
+
+The canonical `.1` entry calls `africa_rsa_start_allied_civil_war` once only after `africa_rsa_allied_branch_can_start` succeeds. The loader skips `africa_continental_focus_tree` when `original_tag = SAF`, so the vanilla South African tree remains in place. `africa_rsa_record_event_log_history` appends Event 12 system rows with current-scope actors for both opening governments, all three settlement outcomes, exile continuation, and the explicit no-patron terminal. No new icons or sprites are required; the RSA package reuses existing event art and country identity assets.
+
 ## Current implementation ledger
 
 | Surface | Current release-candidate evidence | Disposition | Open boundary |
 | --- | --- | --- | --- |
 | Core event identity | Event 12 constants, registry, entry event, and cluster 6 references | Active evidence | Workbook and final catalog wording remain parent-owned. |
 | Host campaign | 51 host playbooks, with 22 full and 29 compact signatures | Active evidence | Three exact host exceptions remain blocked in the acceptance ledger, and whole-event runtime acceptance is open. |
+| South African Allied rupture | The shared Event 12 entry admits original SAF through the narrow RSA gate, preserves `south_african_focus`, calls the public allied civil-war effect once, and records opening, settlement, exile, and no-patron history rows | Active evidence | Civil-war, settlement, and exile completion still require live-consumer acceptance; no alternate host or fallback split is authorized. |
 | Focus loader | Host and priority loaders restrict replacement to generic or explicitly approved trees, preserve completed-focus history, and use one canonical continental loader | Active evidence | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
 | Action system | 102 parameterized action IDs use the shared quote, payment, outcome, AI, and cleanup kernel | Active evidence | Weighted campaign and live-save acceptance remain open. |
 | Strange formations | Stone cohort, Gorilla heavy infantry, and Pan sappers are gated by `africa_strange_formation_package_ready` | Deferred safely | No model-dependent formation is claimed as spawned or complete. |
@@ -86,14 +93,14 @@ The first ten report images, six current news images, four current super-event i
 ## Simplifications, omissions, and backlog
 
 - No new country tags or cosmetic tags were created for the sixteen priority packages.
-- South Africa is intentionally excluded from ordinary host selection by the generic-focus safety gate; it remains external Allied contact, civil-war, and settlement content. Older SAF host-witness/playbook docs are deferred design reconciliation and a full-content blocker, not an active release-candidate registration blocker.
+- South Africa remains excluded from the generic-focus replacement path, but original SAF can enter Event 12 through the accepted Allied-rupture gate. The route preserves the vanilla `south_african_focus` tree and uses the public civil-war effect exactly once; older SAF host-witness/playbook docs remain historical reconciliation evidence rather than alternate entry mechanics.
 - No strange unit model, entity, or formation output is claimed for elephant logistics, elephant shock, Gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, or plague carriers.
 - The three custom-formation action IDs remain runtime-gated by `africa_strange_formation_package_ready`.
 - The six continent packages and The World remain runtime-gated by `africa_world_package_implementation_ready`.
 - The optional 29 focus families, unconsumed idea/decision families, portrait frames, host overlays, constitutional state kits, route values, and extra animation candidates remain controlled-pool backlog rather than copied or generic replacements.
 - Two super-event audio roles are dormant/unwired, and two original-production roles remain blocked by rights and production evidence.
 - The exact two Afaan Oromoo strings remain deferred and are not referenced in technical identifiers or player-facing localisation.
-- No workbook, spreadsheet export, gameplay, localisation, GFX, GUI, or binary asset file was edited by this documentation pass.
+- No workbook/export, GFX, GUI, or binary asset file was edited in this RSA integration pass, and no live-save validation was performed; the scoped gameplay and localisation edits are recorded in the dated RSA handoff.
 
 ## Parent decisions still required
 
