@@ -1,0 +1,650 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 DIASPORA OWNER-PROTOCOL EFFECTS
+# ============================================================================
+# Target-owned consent, negotiation, withdrawal, capacity, and result ledgers
+# for actions 52, 53, 55, 56, 57, and 58. The host opens one bounded request
+# against the selected target; the target accepts, asks for terms, or refuses.
+# A standing consent flag may be revoked, while emergency consent is always a
+# fresh active state. No effect moves a population, creates a tag, scans the
+# world, or treats a relationship, opinion, or default variable as consent.
+# ============================================================================
+
+# HOST scope. The ledger is initialized by the first validated diaspora quote
+# and remains attached to the current Event 012 host.
+africa_diaspora_initialize_host_ledger = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_diaspora_host_ledger_initialized } }
+		set_variable = { africa_diaspora_passage_capacity = constant:africa_diaspora_capacity.initial_passage }
+		set_variable = { africa_diaspora_housing_capacity = constant:africa_diaspora_capacity.initial_housing }
+		set_variable = { africa_diaspora_investment_capacity = constant:africa_diaspora_capacity.initial_investment }
+		set_variable = { africa_diaspora_emergency_capacity = constant:africa_diaspora_capacity.initial_emergency }
+		set_variable = { africa_diaspora_return_waves = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_skill_programmes = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_project_count = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_owned_project_count = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_safe_evacuation_count = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_veteran_cohort_count = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_local_ownership_share = constant:africa_diaspora_ratio.protected_local_ownership }
+		set_variable = { africa_diaspora_representation_balance = constant:africa_diaspora_change.zero }
+		clear_array = africa_diaspora_origin_groups
+		clear_array = africa_diaspora_skill_families
+		set_country_flag = africa_diaspora_host_ledger_initialized
+	}
+}
+
+# COUNTRY scope on a target. These variables are evidence counters only; their
+# existence never satisfies an action requirement by itself.
+africa_diaspora_initialize_target_ledger = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_diaspora_target_ledger_initialized } }
+		set_variable = { africa_diaspora_return_waves_received = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_skill_programmes_received = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_projects_received = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_owned_projects_received = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_veteran_cohorts = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_safe_evacuation_count = constant:africa_diaspora_change.zero }
+		set_variable = { africa_diaspora_citizenship_grants = constant:africa_diaspora_change.zero }
+		set_country_flag = africa_diaspora_target_ledger_initialized
+	}
+}
+
+# HOST scope. Existing matrix validation runs first. This adds only the
+# diaspora capacity lanes and leaves all non-diaspora actions unchanged.
+africa_diaspora_validate_target_capacity = {
+	set_temp_variable = { africa_diaspora_capacity_validation_result = constant:africa_diaspora_change.zero }
+	if = {
+		limit = { africa_diaspora_action_requires_owner_response = yes }
+		africa_diaspora_initialize_host_ledger = yes
+		if = {
+			limit = { africa_diaspora_target_capacity_is_available = yes }
+			set_temp_variable = { africa_diaspora_capacity_validation_result = constant:africa_diaspora_change.full_project_ownership }
+		}
+	}
+	else = {
+		set_temp_variable = { africa_diaspora_capacity_validation_result = constant:africa_diaspora_change.full_project_ownership }
+	}
+}
+
+# HOST scope. If the target has not supplied the required answer, preserve the
+# quote and open one target event instead of firing the generic preflight error.
+africa_diaspora_prepare_target_response = {
+	if = {
+		limit = {
+			africa_diaspora_action_requires_owner_response = yes
+			africa_diaspora_owner_request_surface_is_valid = yes
+			check_variable = { africa_diaspora_capacity_validation_result > constant:africa_value.zero }
+			NOT = { has_country_flag = africa_diaspora_request_pending }
+			has_event_target = africa_action_target
+		}
+		if = {
+			limit = {
+				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+				event_target:africa_action_target = { NOT = { africa_diaspora_target_emergency_is_active = yes } }
+			}
+			africa_diaspora_open_target_request = yes
+		}
+		else_if = {
+			limit = { event_target:africa_action_target = { NOT = { africa_diaspora_target_consent_is_current = yes } } }
+			africa_diaspora_open_target_request = yes
+		}
+	}
+}
+
+# HOST scope. The selected action and parameters are copied into a small
+# request record so a UI selection cannot replace the owner answer in flight.
+africa_diaspora_open_target_request = {
+	set_country_flag = africa_diaspora_request_pending
+	set_variable = { africa_diaspora_request_action_id = africa_requested_action_id }
+	set_variable = { africa_diaspora_request_origin_group = africa_selected_diaspora_origin_group }
+	set_variable = { africa_diaspora_request_skill_programme = africa_selected_diaspora_skill_programme }
+	if = {
+		limit = { africa_diaspora_request_is_emergency = yes }
+		set_country_flag = africa_diaspora_emergency_request_pending
+	}
+	else = { clr_country_flag = africa_diaspora_emergency_request_pending }
+	save_event_target_as = africa_diaspora_request_host
+	event_target:africa_action_target = {
+		save_event_target_as = africa_diaspora_request_target
+		country_event = { id = chaosx.nr12.310 }
+	}
+}
+
+# HOST scope. This clears only the pending owner exchange; the selected quote
+# and request targets stay available until the caller resumes or cancels it.
+africa_diaspora_clear_pending_request = {
+	clr_country_flag = africa_diaspora_request_pending
+	clr_country_flag = africa_diaspora_emergency_request_pending
+	clr_country_flag = africa_diaspora_terms_offered
+	set_variable = { africa_diaspora_request_action_id = constant:africa_action.none }
+	clear_variable = africa_diaspora_request_origin_group
+	clear_variable = africa_diaspora_request_skill_programme
+}
+
+# HOST scope after target acceptance. Restore the immutable request before
+# rerunning the ordinary action begin path; payment and all matrix validation
+# therefore happen again after the owner response.
+africa_diaspora_resume_pending_action = {
+	if = {
+		limit = { has_event_target = africa_diaspora_request_target }
+		set_variable = { africa_selected_action_id = africa_diaspora_request_action_id }
+		set_variable = { africa_selected_diaspora_origin_group = africa_diaspora_request_origin_group }
+		set_variable = { africa_selected_diaspora_skill_programme = africa_diaspora_request_skill_programme }
+		event_target:africa_diaspora_request_target = { save_event_target_as = africa_action_target }
+		africa_diaspora_clear_pending_request = yes
+		africa_begin_quoted_action_against_target = yes
+		clear_event_target = africa_diaspora_request_target
+		clear_event_target = africa_diaspora_request_host
+	}
+}
+
+# HOST scope after a refusal or host withdrawal. No action record exists yet,
+# so only the quote cursor and pending event targets are discarded.
+africa_diaspora_cancel_pending_request = {
+	africa_diaspora_clear_pending_request = yes
+	set_variable = { africa_selected_action_id = constant:africa_action.none }
+	africa_clear_action_quote = yes
+	africa_clear_selected_action_state_context = yes
+	clear_event_target = africa_diaspora_request_target
+	clear_event_target = africa_diaspora_request_host
+}
+
+# COUNTRY scope on the target. Consent is explicitly recorded by the target;
+# emergency requests additionally create a fresh active emergency state.
+africa_diaspora_accept_target_request = {
+	africa_diaspora_initialize_target_ledger = yes
+	set_country_flag = africa_diaspora_return_consent
+	clr_country_flag = africa_diaspora_consent_refused
+	clr_country_flag = africa_diaspora_consent_withdrawn
+	clr_country_flag = africa_diaspora_terms_requested
+	set_variable = { africa_diaspora_last_consent_day = global.num_days }
+	if = {
+		limit = { event_target:africa_diaspora_request_host = { africa_diaspora_request_is_emergency = yes } }
+		set_country_flag = africa_diaspora_emergency_active
+		set_country_flag = africa_diaspora_emergency_consent_verified
+		clr_country_flag = africa_diaspora_emergency_withdrawn
+	}
+	if = {
+		limit = { has_event_target = africa_diaspora_request_host }
+		event_target:africa_diaspora_request_host = { africa_diaspora_resume_pending_action = yes }
+	}
+}
+
+# COUNTRY scope on the target. This opens host counterterms without changing
+# the standing consent or starting an action record.
+africa_diaspora_request_counterterms = {
+	set_country_flag = africa_diaspora_terms_requested
+	if = {
+		limit = { has_event_target = africa_diaspora_request_host }
+		event_target:africa_diaspora_request_host = { country_event = { id = chaosx.nr12.311 } }
+	}
+}
+
+# COUNTRY scope on the target. Refusal clears any pending consent and leaves a
+# durable refusal witness, while the host quote is safely abandoned.
+africa_diaspora_refuse_target_request = {
+	africa_diaspora_initialize_target_ledger = yes
+	clr_country_flag = africa_diaspora_return_consent
+	clr_country_flag = africa_diaspora_terms_requested
+	set_country_flag = africa_diaspora_consent_refused
+	if = {
+		limit = { has_event_target = africa_diaspora_request_host }
+		event_target:africa_diaspora_request_host = {
+			africa_diaspora_adjust_host_trust_refusal = yes
+			africa_diaspora_cancel_pending_request = yes
+		}
+	}
+}
+
+# COUNTRY scope on the target when the host withdraws its counterterms. The
+# target remains free to answer a later, newly opened request.
+africa_diaspora_close_host_offer = {
+	clr_country_flag = africa_diaspora_terms_requested
+	set_country_flag = africa_diaspora_host_offer_withdrawn
+	if = {
+		limit = { has_event_target = africa_diaspora_request_host }
+		event_target:africa_diaspora_request_host = { africa_diaspora_cancel_pending_request = yes }
+	}
+}
+
+# HOST scope after a negotiated counterterm offer is selected.
+africa_diaspora_offer_counterterms = {
+	set_country_flag = africa_diaspora_terms_offered
+	if = {
+		limit = { has_event_target = africa_diaspora_request_target }
+		event_target:africa_diaspora_request_target = {
+			clr_country_flag = africa_diaspora_terms_requested
+			country_event = { id = chaosx.nr12.312 }
+		}
+	}
+}
+
+# HOST scope. Trust deltas are centralized so refusal, withdrawal, and result
+# branches all clamp through the existing host-value policy.
+africa_diaspora_adjust_host_trust_refusal = {
+	add_to_variable = { africa_diaspora_trust = constant:africa_diaspora_change.refusal_trust }
+	africa_clamp_host_values = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_diaspora_trust
+				value = constant:africa_measure.low
+				compare = less_than
+			}
+		}
+		set_country_flag = africa_diaspora_trust_collapsed
+		africa_achievement_record_diaspora_trust_collapse = yes
+	}
+}
+
+africa_diaspora_adjust_host_trust_withdrawal = {
+	add_to_variable = { africa_diaspora_trust = constant:africa_diaspora_change.withdrawal_trust }
+	africa_clamp_host_values = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_diaspora_trust
+				value = constant:africa_measure.low
+				compare = less_than
+			}
+		}
+		set_country_flag = africa_diaspora_trust_collapsed
+		africa_achievement_record_diaspora_trust_collapse = yes
+	}
+}
+
+africa_diaspora_adjust_host_trust_full = {
+	add_to_variable = { africa_diaspora_trust = constant:africa_diaspora_change.full_trust }
+	africa_clamp_host_values = yes
+}
+
+africa_diaspora_adjust_host_trust_partial = {
+	add_to_variable = { africa_diaspora_trust = constant:africa_diaspora_change.partial_trust }
+	africa_clamp_host_values = yes
+}
+
+africa_diaspora_adjust_host_trust_failure = {
+	add_to_variable = { africa_diaspora_trust = constant:africa_diaspora_change.failure_trust }
+	africa_clamp_host_values = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = africa_diaspora_trust
+				value = constant:africa_measure.low
+				compare = less_than
+			}
+		}
+		set_country_flag = africa_diaspora_trust_collapsed
+		africa_achievement_record_diaspora_trust_collapse = yes
+	}
+}
+
+# COUNTRY scope on an active target. One action consumes one bounded capacity
+# lane only when it resolves fully or partially; failed actions restore it.
+africa_diaspora_consume_capacity_for_active_action = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme }
+				check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme }
+			}
+		}
+		event_target:africa_host = {
+			if = {
+				limit = { check_variable = { africa_diaspora_passage_capacity > constant:africa_diaspora_change.zero } }
+				subtract_from_variable = { africa_diaspora_passage_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing } }
+		event_target:africa_host = {
+			if = {
+				limit = { check_variable = { africa_diaspora_housing_capacity > constant:africa_diaspora_change.zero } }
+				subtract_from_variable = { africa_diaspora_housing_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds } }
+		event_target:africa_host = {
+			if = {
+				limit = { check_variable = { africa_diaspora_investment_capacity > constant:africa_diaspora_change.zero } }
+				subtract_from_variable = { africa_diaspora_investment_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		event_target:africa_host = {
+			if = {
+				limit = { check_variable = { africa_diaspora_emergency_capacity > constant:africa_diaspora_change.zero } }
+				subtract_from_variable = { africa_diaspora_emergency_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			}
+		}
+	}
+}
+
+africa_diaspora_restore_capacity_for_active_action = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme }
+				check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme }
+			}
+		}
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_passage_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			clamp_variable = { var = africa_diaspora_passage_capacity min = constant:africa_diaspora_change.zero max = constant:africa_diaspora_capacity.maximum_passage }
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing } }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_housing_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			clamp_variable = { var = africa_diaspora_housing_capacity min = constant:africa_diaspora_change.zero max = constant:africa_diaspora_capacity.maximum_housing }
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds } }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_investment_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			clamp_variable = { var = africa_diaspora_investment_capacity min = constant:africa_diaspora_change.zero max = constant:africa_diaspora_capacity.maximum_investment }
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_emergency_capacity = constant:africa_diaspora_capacity.capacity_unit }
+			clamp_variable = { var = africa_diaspora_emergency_capacity min = constant:africa_diaspora_change.zero max = constant:africa_diaspora_capacity.maximum_emergency }
+		}
+	}
+}
+
+# COUNTRY scope on an active target. The delay gives the owner a real review
+# point without a recurring scan or a forced movement effect.
+africa_diaspora_open_withdrawal_review = {
+	if = {
+		limit = { africa_diaspora_active_action_is_target_owned = yes }
+		set_country_flag = africa_diaspora_withdrawal_review_open
+		set_variable = { africa_diaspora_withdrawal_generation = africa_active_action_generation }
+		country_event = { id = chaosx.nr12.313 days = constant:africa_diaspora_days.withdrawal_review }
+	}
+}
+
+africa_diaspora_continue_active_action = {
+	clr_country_flag = africa_diaspora_withdrawal_review_open
+	set_country_flag = africa_diaspora_withdrawal_review_resolved
+	clear_variable = africa_diaspora_withdrawal_generation
+}
+
+# COUNTRY scope on the target. Withdrawal clears consent and cancels only the
+# active action; no ownership or territorial state is changed.
+africa_diaspora_withdraw_active_action = {
+	if = {
+		limit = { africa_diaspora_target_can_withdraw = yes }
+		set_country_flag = africa_diaspora_consent_withdrawn
+		clr_country_flag = africa_diaspora_return_consent
+		if = {
+			limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+			clr_country_flag = africa_diaspora_emergency_active
+			set_country_flag = africa_diaspora_emergency_withdrawn
+		}
+		africa_cancel_action = yes
+	}
+}
+
+# COUNTRY scope on any active target. Clear delayed review state before the
+# shared cleanup removes the active record and generation variables.
+africa_diaspora_cleanup_action_state = {
+	if = {
+		limit = { africa_diaspora_active_action_is_target_owned = yes }
+		clr_country_flag = africa_diaspora_withdrawal_review_open
+		clr_country_flag = africa_diaspora_withdrawal_review_resolved
+		clear_variable = africa_diaspora_withdrawal_generation
+	}
+}
+
+# COUNTRY scope on an active target when the shared cancel path resolves.
+africa_diaspora_apply_cancel_cleanup = {
+	if = {
+		limit = { africa_diaspora_active_action_is_target_owned = yes }
+		clr_country_flag = africa_diaspora_return_consent
+		set_country_flag = africa_diaspora_consent_withdrawn
+		if = {
+			limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+			clr_country_flag = africa_diaspora_emergency_active
+			set_country_flag = africa_diaspora_emergency_withdrawn
+		}
+		event_target:africa_host = { africa_diaspora_adjust_host_trust_withdrawal = yes }
+	}
+}
+
+# COUNTRY scope on the resolved target. This dispatcher runs after the shared
+# matrix semantics, so the target-owned ledger can correct only diaspora state
+# without duplicating the 102-action family implementation.
+africa_diaspora_apply_current_outcome = {
+	if = {
+		limit = { check_variable = { africa_active_action_family = constant:africa_action_family.diaspora } }
+		if = {
+			limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full } }
+			africa_diaspora_apply_full_outcome = yes
+		}
+		else_if = {
+			limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.partial } }
+			africa_diaspora_apply_partial_outcome = yes
+		}
+		else_if = {
+			limit = { check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure } }
+			africa_diaspora_apply_failure_outcome = yes
+		}
+	}
+}
+
+# COUNTRY scope on the resolved target. Full results are the only branch that
+# writes protected citizenship/representation and locally owned project proof.
+africa_diaspora_apply_full_outcome = {
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.open_voluntary_return_registry } }
+		africa_diaspora_initialize_host_ledger = yes
+		set_country_flag = africa_voluntary_return_registry_open
+		set_country_flag = africa_return_requires_individual_consent
+		set_country_flag = africa_diaspora_registry_opened
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme } }
+		africa_diaspora_initialize_target_ledger = yes
+		africa_diaspora_consume_capacity_for_active_action = yes
+		set_country_flag = africa_diaspora_passage_completed
+		set_country_flag = africa_diaspora_consent_honoured
+		add_to_variable = { africa_diaspora_return_waves_received = constant:africa_diaspora_change.full_return_wave }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_return_waves = constant:africa_diaspora_change.full_return_wave }
+			if = {
+				limit = {
+					check_variable = { PREV.africa_active_diaspora_origin_group > constant:africa_achievement_origin_group.none }
+					NOT = { check_variable = { PREV.africa_active_diaspora_origin_group > constant:africa_achievement_origin_group.indian_ocean } }
+					NOT = { is_in_array = { array = africa_diaspora_origin_groups value = PREV.africa_active_diaspora_origin_group } }
+				}
+				add_to_array = { array = africa_diaspora_origin_groups value = PREV.africa_active_diaspora_origin_group }
+			}
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing } }
+		africa_diaspora_initialize_target_ledger = yes
+		africa_diaspora_consume_capacity_for_active_action = yes
+		set_country_flag = africa_diaspora_housing_completed
+		add_to_variable = { africa_diaspora_projects_received = constant:africa_diaspora_change.full_housing_project }
+		for_each_scope_loop = {
+			array = africa_action_state_targets
+			set_state_flag = africa_diaspora_local_housing_owned
+		}
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_project_count = constant:africa_diaspora_change.full_housing_project }
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.invite_afro_american_technical_mission } }
+		africa_diaspora_initialize_target_ledger = yes
+		set_country_flag = africa_diaspora_technical_mission_completed
+		add_to_variable = { africa_diaspora_skill_programmes_received = constant:africa_diaspora_change.full_skill_programme }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_skill_programmes = constant:africa_diaspora_change.full_skill_programme }
+			if = {
+				limit = {
+					check_variable = { PREV.africa_active_diaspora_skill_programme > constant:africa_achievement_skill_programme.none }
+					NOT = { check_variable = { PREV.africa_active_diaspora_skill_programme > constant:africa_achievement_skill_programme.administration } }
+					NOT = { is_in_array = { array = africa_diaspora_skill_families value = PREV.africa_active_diaspora_skill_programme } }
+				}
+				add_to_array = { array = africa_diaspora_skill_families value = PREV.africa_active_diaspora_skill_programme }
+			}
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme } }
+		africa_diaspora_initialize_target_ledger = yes
+		africa_diaspora_consume_capacity_for_active_action = yes
+		set_country_flag = africa_diaspora_veterans_received
+		add_to_variable = { africa_diaspora_veteran_cohorts = constant:africa_diaspora_change.full_veteran_cohort }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_veteran_cohort_count = constant:africa_diaspora_change.full_veteran_cohort }
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds } }
+		africa_diaspora_initialize_target_ledger = yes
+		africa_diaspora_consume_capacity_for_active_action = yes
+		set_country_flag = africa_diaspora_bond_issue_completed
+		set_country_flag = africa_diaspora_local_project_owner
+		add_to_variable = { africa_diaspora_owned_projects_received = constant:africa_diaspora_change.full_project_ownership }
+		add_to_variable = { africa_diaspora_projects_received = constant:africa_diaspora_change.full_bond_project }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_owned_project_count = constant:africa_diaspora_change.full_project_ownership }
+			add_to_variable = { africa_diaspora_project_count = constant:africa_diaspora_change.full_bond_project }
+			set_variable = { africa_diaspora_local_ownership_share = constant:africa_diaspora_change.full_local_ownership }
+			set_country_flag = africa_diaspora_local_ownership_protected
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.citizenship_and_representation_convention } }
+		africa_diaspora_initialize_target_ledger = yes
+		set_country_flag = africa_diaspora_citizenship_guaranteed
+		set_country_flag = africa_diaspora_representation_protected
+		add_to_variable = { africa_diaspora_citizenship_grants = constant:africa_diaspora_change.full_citizenship }
+		set_global_flag = africa_achievement_returnee_citizenship_protected
+		set_global_flag = africa_achievement_returnee_representation_protected
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_representation_balance = constant:africa_diaspora_change.full_representation }
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		africa_diaspora_initialize_target_ledger = yes
+		africa_diaspora_consume_capacity_for_active_action = yes
+		clr_country_flag = africa_diaspora_emergency_active
+		set_country_flag = africa_diaspora_emergency_consent_verified
+		set_country_flag = africa_diaspora_emergency_evacuation_completed
+		add_to_variable = { africa_diaspora_safe_evacuation_count = constant:africa_diaspora_change.full_safe_evacuation }
+		event_target:africa_host = {
+			add_to_variable = { africa_diaspora_safe_evacuation_count = constant:africa_diaspora_change.full_safe_evacuation }
+			africa_diaspora_adjust_host_trust_full = yes
+		}
+	}
+}
+
+# COUNTRY scope on the resolved target. Partial results preserve consent but
+# never write the full citizenship, representation, or local-ownership proof.
+africa_diaspora_apply_partial_outcome = {
+	africa_diaspora_consume_capacity_for_active_action = yes
+	event_target:africa_host = { africa_diaspora_adjust_host_trust_partial = yes }
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme } }
+		set_country_flag = africa_diaspora_passage_partial
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing } }
+		set_country_flag = africa_diaspora_housing_partial
+		add_to_variable = { africa_diaspora_projects_received = constant:africa_diaspora_change.partial_project }
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.invite_afro_american_technical_mission } }
+		set_country_flag = africa_diaspora_technical_mission_partial
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme } }
+		set_country_flag = africa_diaspora_veterans_partial
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds } }
+		set_country_flag = africa_diaspora_bonds_partial
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.citizenship_and_representation_convention } }
+		set_country_flag = africa_diaspora_representation_limited
+		set_country_flag = africa_diaspora_citizenship_pending
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		set_country_flag = africa_diaspora_emergency_partial
+		set_country_flag = africa_diaspora_emergency_unresolved
+	}
+}
+
+# COUNTRY scope on the resolved target. Failure restores the capacity lane and
+# records the exact owner-facing disqualifier for the affected branch.
+africa_diaspora_apply_failure_outcome = {
+	africa_diaspora_restore_capacity_for_active_action = yes
+	event_target:africa_host = { africa_diaspora_adjust_host_trust_failure = yes }
+	set_country_flag = africa_forced_relocation_forbidden
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme } }
+		clr_country_flag = africa_diaspora_return_consent
+		set_country_flag = africa_diaspora_consent_expired
+		set_global_flag = africa_achievement_catastrophic_return_loss
+		set_country_flag = africa_diaspora_passage_failed
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing } }
+		set_country_flag = africa_diaspora_housing_failed
+		set_country_flag = africa_diaspora_local_ownership_lost
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.invite_afro_american_technical_mission } }
+		set_country_flag = africa_diaspora_technical_mission_failed
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme } }
+		clr_country_flag = africa_diaspora_return_consent
+		set_country_flag = africa_diaspora_consent_expired
+		set_country_flag = africa_diaspora_veterans_failed
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds } }
+		set_country_flag = africa_diaspora_bonds_failed
+		set_country_flag = africa_diaspora_local_ownership_lost
+		set_global_flag = africa_achievement_corruption_crisis_unresolved
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.citizenship_and_representation_convention } }
+		clr_country_flag = africa_diaspora_return_consent
+		set_country_flag = africa_diaspora_consent_expired
+		set_country_flag = africa_diaspora_representation_denied
+		set_global_flag = africa_achievement_returnee_discrimination
+		set_global_flag = africa_achievement_returnee_representation_denied
+	}
+	if = {
+		limit = { check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		clr_country_flag = africa_diaspora_return_consent
+		clr_country_flag = africa_diaspora_emergency_active
+		set_country_flag = africa_diaspora_emergency_failed
+		set_country_flag = africa_diaspora_emergency_negligence
+		set_global_flag = africa_achievement_diaspora_disaster_negligence
+		set_global_flag = africa_achievement_catastrophic_return_loss
+	}
+}
