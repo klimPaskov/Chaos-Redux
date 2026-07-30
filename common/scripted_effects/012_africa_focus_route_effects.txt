@@ -102,6 +102,95 @@ africa_initialize_constitutional_payoff_axes = {
 	africa_clamp_constitutional_payoff_axes = yes
 }
 
+# Overlay completion is allowed before the constitutional principle is chosen.
+# Keep those regional flags as the source of truth, then apply the route's
+# overlay payoff when a constitution is committed. If an overlay is completed
+# after commitment, the same helper applies its payoff immediately. Every
+# route uses all seven live axes, but the six overlay milestones deliberately
+# place the major and minor gains on different axes for each constitution.
+africa_apply_constitutional_overlay_payoff = {
+	if = {
+		limit = { has_country_flag = africa_constitutional_payoff_axes_active }
+		if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.federal_union } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.continental_republic } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.peoples_union } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.military_continentalism } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.continental_confederation } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.minor_gain } }
+		}
+		else_if = {
+			limit = { check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant } }
+			if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_executive_power = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } add_to_variable = { africa_constitutional_post_unification_rule = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_resource_governance = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } } add_to_variable = { africa_constitutional_withdrawal_protection = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_crisis_resilience = constant:africa_constitution_axis.minor_gain } }
+			else_if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } } add_to_variable = { africa_constitutional_representation = constant:africa_constitution_axis.major_gain } add_to_variable = { africa_constitutional_command_integration = constant:africa_constitution_axis.minor_gain } }
+		}
+		africa_clamp_constitutional_payoff_axes = yes
+	}
+}
+
+# Replays completed overlay milestones at constitutional commitment. The
+# normal overlay reward calls the same payoff helper immediately once a route
+# is active; pre-commit milestones are therefore applied exactly once here.
+africa_replay_constitutional_overlay_payoff = {
+	if = { limit = { has_country_flag = africa_overlay_authority_settled } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_authority } africa_apply_constitutional_overlay_payoff = yes }
+	if = { limit = { has_country_flag = africa_overlay_corridor_charter_written } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } africa_apply_constitutional_overlay_payoff = yes }
+	if = { limit = { has_country_flag = africa_overlay_partner_commitment_prepared } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.bind_partner } africa_apply_constitutional_overlay_payoff = yes }
+	if = { limit = { has_country_flag = africa_overlay_local_terms_settled } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } africa_apply_constitutional_overlay_payoff = yes }
+	if = { limit = { has_country_flag = africa_overlay_council_convened } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.convene_council } africa_apply_constitutional_overlay_payoff = yes }
+	if = { limit = { has_country_flag = africa_overlay_mandate_proven } set_temp_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.prove_mandate } africa_apply_constitutional_overlay_payoff = yes }
+	set_temp_variable = { africa_focus_overlay_step = constant:africa_value.zero }
+}
+
 # Input: temporary africa_requested_constitution. The six grounded origins are
 # exclusive and frozen. Later Covenant commitment changes only the live route.
 africa_commit_constitutional_route = {
@@ -124,6 +213,7 @@ africa_commit_constitutional_route = {
 		}
 		set_country_flag = africa_constitutional_route_committed
 		africa_initialize_constitutional_payoff_axes = yes
+		africa_replay_constitutional_overlay_payoff = yes
 		if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.federal_union } } set_country_flag = africa_origin_route_federal_union }
 		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.continental_republic } } set_country_flag = africa_origin_route_continental_republic }
 		else_if = { limit = { check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns } } set_country_flag = africa_origin_route_council_of_crowns }
@@ -163,6 +253,7 @@ africa_commit_covenant_route = {
 			set_variable = { africa_current_phase = constant:africa_action_phase.high_chaos }
 		}
 		africa_initialize_constitutional_payoff_axes = yes
+		africa_replay_constitutional_overlay_payoff = yes
 		# Grounded origin flags are deliberately retained as constitutional history.
 		africa_refresh_continental_focus_tree_layout = yes
 	}
