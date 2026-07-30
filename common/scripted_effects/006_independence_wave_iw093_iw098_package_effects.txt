@@ -861,6 +861,11 @@ independence_wave_cleanup_iw093_asante = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
 		}
+		# Event 012 owns its own package lifecycle on the original carrier. If
+		# that package survived the Event 006 cleanup, restore its reviewed focus
+		# surface after the Event 006 tree is removed instead of leaving the
+		# package active with only a generic tree.
+		africa_priority_member_ensure_focus_tree_loaded = yes
 	}
 }
 
@@ -915,6 +920,8 @@ independence_wave_cleanup_iw098_sokoto = {
 			load_focus_tree = { tree = generic_focus keep_completed = no }
 		}
 		# Event 012's own focus-tree and lifecycle flags are intentionally not
-		# cleared. This helper only removes the Event 006 generation receipt.
+		# cleared. Restore its reviewed focus surface when its package is still
+		# active; the helper is internally gated and is a no-op otherwise.
+		africa_priority_member_ensure_focus_tree_loaded = yes
 	}
 }
