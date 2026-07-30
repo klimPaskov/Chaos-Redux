@@ -593,6 +593,59 @@ africa_scramble_phase_is_settled = {
 	check_variable = { africa_scramble_phase = constant:africa_scramble_phase.settled }
 }
 
+# COUNTRY scope on a frozen Scramble participant. These flags are written by
+# the one-time participant census and are never inferred by a recurring scan.
+africa_scramble_participant_has_former_colonial_relationship = {
+	has_country_flag = africa_scramble_former_colonial_relationship
+}
+
+africa_scramble_participant_is_ideological_rival = {
+	has_country_flag = africa_scramble_ideological_rival
+}
+
+africa_scramble_participant_has_resource_nationalisation_exposure = {
+	has_country_flag = africa_scramble_resource_nationalisation_exposure
+}
+
+africa_scramble_participant_fears_other_continent_unifier = {
+	has_country_flag = africa_scramble_continent_unifier_fear
+}
+
+africa_scramble_participant_has_south_africa_allied_relationship = {
+	has_country_flag = africa_scramble_south_africa_allied_relationship
+}
+
+africa_scramble_participant_is_coalition_member = {
+	has_country_flag = africa_scramble_coalition_member
+	has_country_flag = africa_scramble_participant
+}
+
+africa_scramble_host_has_resource_nationalisation_mandate = {
+	event_target:africa_host = {
+		OR = {
+			has_country_flag = africa_union_settle_resource_ownership
+			has_country_flag = africa_support_settle_resources
+			has_country_flag = africa_support_resource_contracts
+			has_country_flag = africa_support_resource_revenue_shares
+			check_variable = {
+				var = africa_constitutional_resource_governance
+				value = constant:africa_measure.medium
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+africa_scramble_coalition_has_room = {
+	event_target:africa_host = {
+		check_variable = {
+			var = africa_scramble_coalition_member_count
+			value = constant:africa_scramble_response.coalition_member_cap
+			compare = less_than
+		}
+	}
+}
+
 africa_world_package_sponsorship_gate_is_open = {
 	africa_is_current_host = yes
 	has_global_flag = africa_is_one

@@ -347,7 +347,103 @@ africa_scramble_register_participant = {
 			set_country_flag = africa_scramble_major_power
 			set_country_flag = africa_scramble_recognition_candidate
 		}
+		africa_scramble_classify_participant_interests = yes
 		country_event = { id = africa_world_order.1 }
+	}
+}
+
+# COUNTRY scope on a newly registered participant. The host reference is an
+# explicit Event 12 target and each class is copied into its own host array so
+# later decisions can use bounded target pools without another world scan.
+africa_scramble_classify_participant_interests = {
+	if = {
+		limit = {
+			OR = {
+				original_tag = ENG
+				original_tag = FRA
+				original_tag = BEL
+				original_tag = POR
+				original_tag = ITA
+				original_tag = GER
+				original_tag = SPA
+			}
+			OR = {
+				has_country_flag = africa_scramble_colonial_interest
+				has_country_flag = africa_scramble_foreign_base_holder
+				has_war_with = event_target:africa_host
+				is_faction_leader = yes
+			}
+		}
+		set_country_flag = africa_scramble_former_colonial_relationship
+		event_target:africa_host = {
+			add_to_variable = { africa_scramble_former_colonial_count = constant:africa_value.one }
+			add_to_array = { array = africa_scramble_former_colonial_interests value = PREV }
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_same_ideology = event_target:africa_host }
+			OR = {
+				is_major = yes
+				is_faction_leader = yes
+				has_country_flag = africa_scramble_colonial_interest
+			}
+		}
+		set_country_flag = africa_scramble_ideological_rival
+		event_target:africa_host = {
+			add_to_variable = { africa_scramble_ideological_rival_count = constant:africa_value.one }
+			add_to_array = { array = africa_scramble_ideological_rivals value = PREV }
+		}
+	}
+	if = {
+		limit = {
+			africa_scramble_host_has_resource_nationalisation_mandate = yes
+			OR = {
+				has_country_flag = africa_scramble_colonial_interest
+				has_country_flag = africa_scramble_foreign_base_holder
+				is_major = yes
+				is_faction_leader = yes
+			}
+		}
+		set_country_flag = africa_scramble_resource_nationalisation_exposure
+		event_target:africa_host = {
+			add_to_variable = { africa_scramble_resource_exposure_count = constant:africa_value.one }
+			add_to_array = { array = africa_scramble_resource_exposure_interests value = PREV }
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = africa_world_package_actor
+			has_country_flag = africa_world_package_sovereign_complete
+		}
+		set_country_flag = africa_scramble_continent_unifier_fear
+		event_target:africa_host = {
+			add_to_variable = { africa_scramble_continent_unifier_fear_count = constant:africa_value.one }
+			add_to_array = { array = africa_scramble_continent_unifier_fears value = PREV }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				original_tag = SAF
+				has_country_flag = africa_rsa_allied_intervener
+				has_country_flag = africa_rsa_allied_faction_leader
+				has_country_flag = africa_rsa_allied_union_government
+				AND = {
+					has_event_target = africa_rsa_allied_union_government
+					is_in_faction_with = event_target:africa_rsa_allied_union_government
+				}
+				AND = {
+					has_event_target = africa_host
+					is_in_faction_with = event_target:africa_host
+				}
+			}
+		}
+		set_country_flag = africa_scramble_south_africa_allied_relationship
+		event_target:africa_host = {
+			add_to_variable = { africa_scramble_south_africa_allied_count = constant:africa_value.one }
+			add_to_array = { array = africa_scramble_south_africa_allied_contacts value = PREV }
+		}
 	}
 }
 
@@ -367,9 +463,18 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { africa_scramble_sanction_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_ultimatum_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_expedition_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_expedition_actor_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_coalition_break_count = constant:africa_value.zero }
 		set_variable = { africa_scramble_settlement_score = constant:africa_value.zero }
 		set_variable = { africa_scramble_pressure = constant:africa_measure.medium }
+		set_variable = { africa_scramble_class_pressure = constant:africa_value.zero }
+		set_variable = { africa_scramble_integration_burden = constant:africa_value.zero }
+		set_variable = { africa_scramble_former_colonial_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_ideological_rival_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_resource_exposure_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_continent_unifier_fear_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_south_africa_allied_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_coalition_member_count = constant:africa_value.zero }
 		set_variable = { africa_world_package_candidate_count = constant:africa_value.zero }
 		set_variable = { africa_world_packages_installed_count = constant:africa_value.zero }
 		set_variable = { africa_world_packages_settled_count = constant:africa_value.zero }
@@ -382,6 +487,12 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { africa_world_sponsorship_overextension = constant:africa_value.zero }
 		set_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
 		clear_array = africa_scramble_participants
+		clear_array = africa_scramble_former_colonial_interests
+		clear_array = africa_scramble_ideological_rivals
+		clear_array = africa_scramble_resource_exposure_interests
+		clear_array = africa_scramble_continent_unifier_fears
+		clear_array = africa_scramble_south_africa_allied_contacts
+		clear_array = africa_scramble_coalition_members
 		clear_array = africa_world_package_candidates
 		clear_array = africa_world_package_actors
 		clear_array = africa_world_sponsorship_targets
@@ -391,6 +502,12 @@ africa_initialize_scramble_and_world_packages = {
 		clr_country_flag = africa_world_package_roster_documented
 		clr_country_flag = africa_world_package_roster_partial
 		clr_country_flag = africa_world_package_roster_absence_documented
+		clr_country_flag = africa_scramble_interest_census_complete
+		clr_country_flag = africa_scramble_response_roster_cleaned
+		clr_country_flag = africa_scramble_aftermath_materials_applied
+		clr_country_flag = africa_scramble_expedition_host_cost_applied
+		clr_country_flag = africa_scramble_expedition_coalition_logged
+		clr_country_flag = africa_scramble_defence_material_demanded
 
 		# This explicit post-unification census is the only global participant
 		# discovery pass. It never repeats on a daily/weekly/monthly on_action.
@@ -407,9 +524,17 @@ africa_initialize_scramble_and_world_packages = {
 					is_faction_leader = yes
 					any_owned_state = { is_on_continent = africa }
 				}
+				event_target:africa_host = {
+					check_variable = {
+						var = africa_scramble_participant_count
+						value = constant:africa_scramble_response.participant_census_cap
+						compare = less_than
+					}
+				}
 			}
 			africa_scramble_register_participant = yes
 		}
+		set_country_flag = africa_scramble_interest_census_complete
 
 		set_variable = { africa_scramble_recognition_target = africa_scramble_participant_count }
 		divide_variable = { africa_scramble_recognition_target = constant:africa_world_order.recognition_divisor }
@@ -454,15 +579,184 @@ africa_scramble_clamp_values = {
 	africa_clamp_host_values = yes
 }
 
+# COUNTRY scope on a frozen Scramble participant. Coalition membership is
+# explicit and bounded by the host's six-member response roster.
+africa_scramble_enlist_coalition_member = {
+	if = {
+		limit = {
+			has_country_flag = africa_scramble_participant
+			NOT = { has_country_flag = africa_scramble_coalition_member }
+		}
+		if = {
+			limit = { africa_scramble_coalition_has_room = yes }
+			set_country_flag = africa_scramble_coalition_member
+			event_target:africa_host = {
+				add_to_variable = { africa_scramble_coalition_member_count = constant:africa_value.one }
+				add_to_array = { array = africa_scramble_coalition_members value = PREV }
+			}
+		}
+		else = {
+			set_country_flag = africa_scramble_coalition_capped
+		}
+	}
+}
+
+# COUNTRY scope on a frozen Scramble participant. Used by recognition,
+# coalition-break actions, and final roster cleanup so array membership and
+# flags cannot drift apart.
+africa_scramble_remove_coalition_member = {
+	if = {
+		limit = { has_country_flag = africa_scramble_coalition_member }
+		clr_country_flag = africa_scramble_coalition_member
+		event_target:africa_host = {
+			remove_from_array = { array = africa_scramble_coalition_members value = PREV }
+			if = {
+				limit = { check_variable = { africa_scramble_coalition_member_count > constant:africa_value.zero } }
+				subtract_from_variable = { africa_scramble_coalition_member_count = constant:africa_value.one }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a participant after a response is chosen. These class
+# consequences make the frozen interest census affect pressure and the host's
+# integration burden instead of leaving classes as tooltip-only flags.
+africa_scramble_apply_class_response_consequences = {
+	if = {
+		limit = { has_country_flag = africa_scramble_former_colonial_relationship }
+		set_country_flag = africa_scramble_former_colonial_response_active
+		event_target:africa_host = {
+			set_country_flag = africa_scramble_former_colonial_response_active
+			add_to_variable = { africa_scramble_class_pressure = constant:africa_scramble_response.class_pressure_gain }
+			add_to_variable = { africa_scramble_integration_burden = constant:africa_scramble_response.class_integration_burden }
+		}
+	}
+	if = {
+		limit = { has_country_flag = africa_scramble_ideological_rival }
+		set_country_flag = africa_scramble_ideological_rival_response_active
+		event_target:africa_host = {
+			set_country_flag = africa_scramble_ideological_rival_response_active
+			add_to_variable = { africa_scramble_class_pressure = constant:africa_scramble_response.class_pressure_gain }
+			add_to_variable = { africa_scramble_integration_burden = constant:africa_scramble_response.class_integration_burden }
+		}
+	}
+	if = {
+		limit = { has_country_flag = africa_scramble_resource_nationalisation_exposure }
+		set_country_flag = africa_scramble_resource_nationalisation_response_active
+		event_target:africa_host = {
+			set_country_flag = africa_scramble_resource_nationalisation_response_active
+			add_to_variable = { africa_scramble_class_pressure = constant:africa_scramble_response.class_pressure_gain }
+			add_to_variable = { africa_scramble_integration_burden = constant:africa_scramble_response.class_integration_burden }
+		}
+	}
+	if = {
+		limit = { has_country_flag = africa_scramble_continent_unifier_fear }
+		set_country_flag = africa_scramble_continent_unifier_response_active
+		event_target:africa_host = {
+			set_country_flag = africa_scramble_continent_unifier_response_active
+			add_to_variable = { africa_scramble_class_pressure = constant:africa_scramble_response.class_pressure_gain }
+			add_to_variable = { africa_scramble_integration_burden = constant:africa_scramble_response.class_integration_burden }
+		}
+	}
+	if = {
+		limit = { has_country_flag = africa_scramble_south_africa_allied_relationship }
+		set_country_flag = africa_scramble_south_africa_allied_response_active
+		event_target:africa_host = {
+			set_country_flag = africa_scramble_south_africa_allied_response_active
+			add_to_variable = { africa_scramble_class_pressure = constant:africa_scramble_response.class_pressure_gain }
+			add_to_variable = { africa_scramble_integration_burden = constant:africa_scramble_response.class_integration_burden }
+		}
+	}
+	event_target:africa_host = { africa_scramble_clamp_values = yes }
+}
+
+# COUNTRY scope on the host. One-time post-response investment for the
+# constitutional settlement; guarded so duplicate closure paths cannot pay it
+# twice.
+africa_scramble_apply_aftermath_materials = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_scramble_aftermath_materials_applied } }
+		set_country_flag = africa_scramble_aftermath_materials_applied
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_scramble_response.aftermath_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_scramble_response.aftermath_support_equipment }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.aftermath_convoys }
+		add_stability = constant:africa_scramble_response.aftermath_stability
+		add_war_support = constant:africa_scramble_response.aftermath_war_support
+		add_political_power = constant:africa_scramble_response.aftermath_political_power
+	}
+}
+
+# COUNTRY scope on the host. Remove transient response state from every frozen
+# participant and clear all target arrays when the docket closes.
+africa_scramble_cleanup_response_roster = {
+	if = {
+		limit = { NOT = { has_country_flag = africa_scramble_response_roster_cleaned } }
+		for_each_scope_loop = {
+			array = africa_scramble_participants
+			if = {
+				limit = { has_country_flag = africa_scramble_participant }
+				clr_country_flag = africa_scramble_participant
+				clr_country_flag = africa_scramble_response_invited
+				clr_country_flag = africa_scramble_response_recorded
+				clr_country_flag = africa_scramble_coalition_capped
+				clr_country_flag = africa_scramble_colonial_interest
+				clr_country_flag = africa_scramble_foreign_base_holder
+				clr_country_flag = africa_scramble_ultimatum_candidate
+				clr_country_flag = africa_scramble_major_power
+				clr_country_flag = africa_scramble_recognition_candidate
+				clr_country_flag = africa_scramble_recognised_africa
+				clr_country_flag = africa_scramble_conditional_recognition
+				clr_country_flag = africa_scramble_recognition_negotiation_open
+				clr_country_flag = africa_scramble_sanctions_active
+				clr_country_flag = africa_scramble_ultimatum_issuer
+				clr_country_flag = africa_scramble_former_colonial_relationship
+				clr_country_flag = africa_scramble_ideological_rival
+				clr_country_flag = africa_scramble_resource_nationalisation_exposure
+				clr_country_flag = africa_scramble_continent_unifier_fear
+				clr_country_flag = africa_scramble_south_africa_allied_relationship
+				clr_country_flag = africa_scramble_former_colonial_response_active
+				clr_country_flag = africa_scramble_ideological_rival_response_active
+				clr_country_flag = africa_scramble_resource_nationalisation_response_active
+				clr_country_flag = africa_scramble_continent_unifier_response_active
+				clr_country_flag = africa_scramble_south_africa_allied_response_active
+				clr_country_flag = africa_ai_scramble_response_profile_resolved
+				clr_country_flag = africa_scramble_expedition_planner
+				clr_country_flag = africa_scramble_expedition_leader
+				clr_country_flag = africa_scramble_intervention_war_actor
+				if = { limit = { has_country_flag = africa_scramble_coalition_member } africa_scramble_remove_coalition_member = yes }
+			}
+		}
+		clear_array = africa_scramble_participants
+		clear_array = africa_scramble_former_colonial_interests
+		clear_array = africa_scramble_ideological_rivals
+		clear_array = africa_scramble_resource_exposure_interests
+		clear_array = africa_scramble_continent_unifier_fears
+		clear_array = africa_scramble_south_africa_allied_contacts
+		clear_array = africa_scramble_coalition_members
+		set_variable = { africa_scramble_coalition_member_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_former_colonial_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_ideological_rival_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_resource_exposure_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_continent_unifier_fear_count = constant:africa_value.zero }
+		set_variable = { africa_scramble_south_africa_allied_count = constant:africa_value.zero }
+		set_country_flag = africa_scramble_response_roster_cleaned
+	}
+}
+
 # COUNTRY scope on a participant.
 africa_scramble_choose_recognition = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_recognised_africa } }
 		set_country_flag = africa_scramble_recognised_africa
-		clr_country_flag = africa_scramble_coalition_member
+		africa_scramble_remove_coalition_member = yes
+		add_political_power = constant:africa_scramble_response.recognition_political_power
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_scramble_response.recognition_infantry_equipment }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.recognition_convoys }
+		africa_scramble_apply_class_response_consequences = yes
 		event_target:africa_host = {
 			add_to_variable = { africa_scramble_recognition_count = constant:africa_value.one }
 			add_to_variable = { africa_scramble_settlement_score = constant:africa_value.one }
+			add_stability = constant:africa_scramble_response.recognition_stability
 			set_temp_variable = { africa_scramble_pressure_relief_delta = constant:africa_world_order.scramble_pressure_relief }
 			multiply_temp_variable = { africa_scramble_pressure_relief_delta = constant:africa_world_order.negative_one }
 			add_to_variable = { africa_colonial_pressure = africa_scramble_pressure_relief_delta }
@@ -477,9 +771,13 @@ africa_scramble_choose_conditional_recognition = {
 		limit = { NOT = { has_country_flag = africa_scramble_conditional_recognition } }
 		set_country_flag = africa_scramble_conditional_recognition
 		set_country_flag = africa_scramble_recognition_negotiation_open
+		add_political_power = constant:africa_scramble_response.conditional_recognition_pp_cost
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.conditional_recognition_convoys }
+		africa_scramble_apply_class_response_consequences = yes
 		event_target:africa_host = {
 			add_to_variable = { africa_scramble_conditional_recognition_count = constant:africa_value.one }
 			add_to_variable = { africa_scramble_settlement_score = constant:africa_value.one }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.conditional_recognition_convoys }
 		}
 	}
 }
@@ -489,11 +787,15 @@ africa_scramble_choose_sanctions = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_scramble_sanctions_active } }
 		set_country_flag = africa_scramble_sanctions_active
-		set_country_flag = africa_scramble_coalition_member
+		africa_scramble_enlist_coalition_member = yes
+		add_political_power = constant:africa_scramble_response.sanctions_political_power_gain
+		add_war_support = constant:africa_scramble_response.sanctions_war_support_gain
+		africa_scramble_apply_class_response_consequences = yes
 		event_target:africa_host = {
 			add_to_variable = { africa_scramble_sanction_count = constant:africa_value.one }
 			add_to_variable = { africa_scramble_pressure = constant:africa_world_order.scramble_pressure_gain }
 			add_to_variable = { africa_colonial_pressure = constant:africa_focus_tuning.small_delta }
+			add_stability = constant:africa_scramble_response.sanctions_stability_loss
 			africa_scramble_clamp_values = yes
 		}
 	}
@@ -505,11 +807,17 @@ africa_scramble_choose_ultimatum = {
 		limit = { NOT = { has_country_flag = africa_scramble_ultimatum_issuer } }
 		set_country_flag = africa_scramble_ultimatum_issuer
 		set_country_flag = africa_scramble_expedition_planner
-		set_country_flag = africa_scramble_coalition_member
+		africa_scramble_enlist_coalition_member = yes
+		add_political_power = constant:africa_scramble_response.ultimatum_political_power_cost
+		add_war_support = constant:africa_scramble_response.ultimatum_war_support_gain
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_scramble_response.ultimatum_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_scramble_response.ultimatum_support_equipment }
+		africa_scramble_apply_class_response_consequences = yes
 		event_target:africa_host = {
 			add_to_variable = { africa_scramble_ultimatum_count = constant:africa_value.one }
 			add_to_variable = { africa_scramble_expedition_count = constant:africa_value.one }
 			add_to_variable = { africa_scramble_pressure = constant:africa_world_order.scramble_pressure_major_gain }
+			add_war_support = constant:africa_scramble_response.expedition_host_war_support_loss
 			africa_scramble_clamp_values = yes
 			if = {
 				limit = { NOT = { has_country_flag = africa_scramble_first_ultimatum_logged } }
@@ -560,34 +868,62 @@ africa_scramble_advance_to_intervention_phase = {
 
 africa_scramble_launch_expedition_if_unresolved = {
 	set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.zero }
+	set_temp_variable = { africa_scramble_expedition_loop_break = constant:africa_value.zero }
 	if = {
 		limit = {
 			africa_scramble_phase_is_intervention = yes
 			NOT = { africa_scramble_intervention_requirement_met = yes }
 		}
-		random_country = {
-			limit = {
-				has_country_flag = africa_scramble_expedition_planner
-				has_country_flag = africa_scramble_coalition_member
-				has_capitulated = no
-				NOT = { has_war_with = event_target:africa_host }
-				can_declare_war_on = event_target:africa_host
-			}
-			set_country_flag = africa_scramble_expedition_leader
-			set_country_flag = africa_scramble_intervention_war_actor
-			set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.one }
-			set_global_flag = africa_scramble_intervention_war_active
-			declare_war_on = {
-				target = event_target:africa_host
-				type = topple_government
-			}
-			event_target:africa_host = {
-				set_country_flag = africa_scramble_expedition_launched
-				set_country_flag = africa_scramble_defensive_war_active
-				if = {
-					limit = { NOT = { has_country_flag = africa_scramble_war_news_sent } }
-					set_country_flag = africa_scramble_war_news_sent
-					news_event = { id = africa_world_order.101 }
+		for_each_scope_loop = {
+			array = africa_scramble_coalition_members
+			break = africa_scramble_expedition_loop_break
+			if = {
+				limit = {
+					has_country_flag = africa_scramble_expedition_planner
+					has_country_flag = africa_scramble_coalition_member
+					has_capitulated = no
+					NOT = { has_war_with = event_target:africa_host }
+					can_declare_war_on = event_target:africa_host
+					event_target:africa_host = {
+						check_variable = {
+							var = africa_scramble_expedition_actor_count
+							value = constant:africa_scramble_response.coalition_member_cap
+							compare = less_than
+						}
+					}
+				}
+				set_country_flag = africa_scramble_expedition_leader
+				set_country_flag = africa_scramble_intervention_war_actor
+				set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.one }
+				set_global_flag = africa_scramble_intervention_war_active
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_scramble_response.expedition_infantry_equipment }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_scramble_response.expedition_support_equipment }
+				add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.expedition_convoys }
+				add_war_support = constant:africa_scramble_response.expedition_war_support
+				declare_war_on = {
+					target = event_target:africa_host
+					type = topple_government
+				}
+				event_target:africa_host = {
+					add_to_variable = { africa_scramble_expedition_actor_count = constant:africa_value.one }
+					set_country_flag = africa_scramble_expedition_launched
+					set_country_flag = africa_scramble_defensive_war_active
+					if = {
+						limit = { NOT = { has_country_flag = africa_scramble_expedition_host_cost_applied } }
+						set_country_flag = africa_scramble_expedition_host_cost_applied
+						add_war_support = constant:africa_scramble_response.expedition_host_war_support_loss
+						set_country_flag = africa_scramble_defence_material_demanded
+					}
+					if = {
+						limit = { NOT = { has_country_flag = africa_scramble_expedition_coalition_logged } }
+						set_country_flag = africa_scramble_expedition_coalition_logged
+						country_event = { id = africa_world_order.8 }
+					}
+					if = {
+						limit = { NOT = { has_country_flag = africa_scramble_war_news_sent } }
+						set_country_flag = africa_scramble_war_news_sent
+						news_event = { id = africa_world_order.101 }
+					}
 				}
 			}
 		}
@@ -637,6 +973,8 @@ africa_scramble_ratify_aftermath = {
 		africa_clear_action_quote = yes
 		africa_ai_refresh_host_policy_snapshot = yes
 		country_event = { id = africa_world_order.7 }
+		africa_scramble_apply_aftermath_materials = yes
+		africa_scramble_cleanup_response_roster = yes
 	}
 }
 
@@ -666,6 +1004,8 @@ africa_scramble_close_continental_docket = {
 			}
 			country_event = { id = africa_world_order.110 }
 		}
+		africa_scramble_apply_aftermath_materials = yes
+		africa_scramble_cleanup_response_roster = yes
 	}
 }
 
@@ -2494,7 +2834,7 @@ africa_world_order_apply_full_result = {
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.disrupt_expedition_planning } }
 		clr_country_flag = africa_scramble_expedition_planner
-		clr_country_flag = africa_scramble_coalition_member
+		africa_scramble_remove_coalition_member = yes
 		set_country_flag = africa_scramble_expedition_plan_disrupted
 		event_target:africa_host = {
 			set_country_flag = africa_expedition_plan_disrupted
@@ -2519,7 +2859,7 @@ africa_world_order_apply_full_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.break_intervention_coalition } }
-		clr_country_flag = africa_scramble_coalition_member
+		africa_scramble_remove_coalition_member = yes
 		clr_country_flag = africa_scramble_expedition_planner
 		set_country_flag = africa_intervention_coalition_withdrawn
 		event_target:africa_host = {
@@ -2604,7 +2944,7 @@ africa_world_order_apply_partial_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.disrupt_expedition_planning } }
-		clr_country_flag = africa_scramble_coalition_member
+		africa_scramble_remove_coalition_member = yes
 		set_country_flag = africa_scramble_coalition_withdrawal_delayed
 		event_target:africa_host = { add_to_variable = { africa_scramble_coalition_break_count = constant:africa_value.one } }
 	}
@@ -2619,6 +2959,7 @@ africa_world_order_apply_partial_result = {
 	}
 	else_if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.break_intervention_coalition } }
+		africa_scramble_remove_coalition_member = yes
 		clr_country_flag = africa_scramble_expedition_planner
 		set_country_flag = africa_scramble_intervention_delayed
 		event_target:africa_host = { set_country_flag = africa_scramble_intervention_delayed }
@@ -2881,5 +3222,6 @@ africa_scramble_record_continental_defeat = {
 		clr_global_flag = africa_scramble_response_active
 		set_variable = { africa_scramble_phase = constant:africa_scramble_phase.settled }
 		country_event = { id = africa_world_order.60 }
+		africa_scramble_cleanup_response_roster = yes
 	}
 }
