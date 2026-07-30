@@ -1,0 +1,519 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 WORLD PACKAGE W2 ASIA AND NORTH AMERICA EFFECTS
+# ============================================================================
+# Country-scope helpers for the second-wave Asia and North America package
+# loops. These effects keep route-specific gains and lifecycle proofs in one
+# place while leaving the shared world-order effects, constants, triggers, and
+# decision category owned by the parent implementation.
+#
+# The parent implementation provides the global crisis-result constants
+# (africa_world_package_crisis_result.none/success/compromise/failure) and the
+# africa_world_package_ratification_is_proven trigger. No high-chaos route or
+# implementation-readiness flag is set here.
+# ============================================================================
+
+# COUNTRY scope. Named decision: seat the regional centres by lifting the
+# weakest represented centre, rather than silently replacing any centre.
+africa_asia_seat_regional_centres = {
+	set_country_flag = africa_asia_centres_seated
+	set_country_flag = africa_asia_regional_centres_decision_used
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	if = {
+		limit = {
+			check_variable = { var = africa_asia_eastern_centre value = africa_asia_southern_centre compare = less_than }
+			check_variable = { var = africa_asia_eastern_centre value = africa_asia_inland_centre compare = less_than }
+			check_variable = { var = africa_asia_eastern_centre value = africa_asia_archipelago_centre compare = less_than }
+		}
+		add_to_variable = { africa_asia_eastern_centre = constant:africa_world_order.package_major_gain }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = africa_asia_southern_centre value = africa_asia_eastern_centre compare = less_than }
+			check_variable = { var = africa_asia_southern_centre value = africa_asia_inland_centre compare = less_than }
+			check_variable = { var = africa_asia_southern_centre value = africa_asia_archipelago_centre compare = less_than }
+		}
+		add_to_variable = { africa_asia_southern_centre = constant:africa_world_order.package_major_gain }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = africa_asia_inland_centre value = africa_asia_eastern_centre compare = less_than }
+			check_variable = { var = africa_asia_inland_centre value = africa_asia_southern_centre compare = less_than }
+			check_variable = { var = africa_asia_inland_centre value = africa_asia_archipelago_centre compare = less_than }
+		}
+		add_to_variable = { africa_asia_inland_centre = constant:africa_world_order.package_major_gain }
+	}
+	else = {
+		add_to_variable = { africa_asia_archipelago_centre = constant:africa_world_order.package_major_gain }
+	}
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. Named decision: consent-based food, river, and monsoon
+# coordination. The weaker of the food and southern-centre ledgers receives
+# the larger adjustment.
+africa_asia_coordinate_food_river_monsoon_security = {
+	set_country_flag = africa_asia_food_monsoon_security_action
+	set_country_flag = africa_asia_food_river_board_ratified
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	if = {
+		limit = { check_variable = { var = africa_asia_food_and_river_security value = africa_asia_southern_centre compare = less_than } }
+		add_to_variable = { africa_asia_food_and_river_security = constant:africa_world_order.package_major_gain }
+	}
+	else = {
+		add_to_variable = { africa_asia_southern_centre = constant:africa_world_order.package_major_gain }
+	}
+	add_to_variable = { africa_asia_inland_centre = constant:africa_world_order.package_minor_gain }
+	set_country_flag = africa_asia_food_lane_proof
+	africa_world_clamp_package_mechanic = yes
+	africa_asia_maybe_open_shared_lane_ratification = yes
+}
+
+# COUNTRY scope. Named decision: open rail and maritime corridors without
+# turning a corridor board into a central ownership claim.
+africa_asia_open_rail_maritime_corridors = {
+	set_country_flag = africa_asia_rail_maritime_action
+	set_country_flag = africa_asia_corridor_settlement_ratified
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	if = {
+		limit = {
+			check_variable = { var = africa_asia_corridor_coordination value = africa_asia_eastern_centre compare = less_than }
+			check_variable = { var = africa_asia_corridor_coordination value = africa_asia_archipelago_centre compare = less_than }
+		}
+		add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_major_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = africa_asia_eastern_centre value = africa_asia_archipelago_centre compare = less_than } }
+		add_to_variable = { africa_asia_eastern_centre = constant:africa_world_order.package_major_gain }
+	}
+	else = {
+		add_to_variable = { africa_asia_archipelago_centre = constant:africa_world_order.package_major_gain }
+	}
+	add_to_variable = { africa_asia_inland_centre = constant:africa_world_order.package_minor_gain }
+	set_country_flag = africa_asia_rail_lane_proof
+	africa_world_clamp_package_mechanic = yes
+	africa_asia_maybe_open_shared_lane_ratification = yes
+}
+
+# COUNTRY scope. Shared food, river, and monsoon lane. The proof flag is
+# consumed by the defence/autonomy helper and the later ratification event.
+africa_asia_apply_food_river_monsoon_board = {
+	set_country_flag = africa_asia_food_river_monsoon_board_ready
+	set_country_flag = africa_asia_food_river_board_ratified
+	set_country_flag = africa_asia_food_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_asia_food_and_river_security = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_asia_southern_centre = constant:africa_world_order.package_minor_gain }
+	add_stability = constant:africa_world_package_reward.stability
+	africa_world_clamp_package_mechanic = yes
+	africa_asia_maybe_open_shared_lane_ratification = yes
+}
+
+# COUNTRY scope. Shared rail and maritime lane. If the food lane and the
+# defence/autonomy law are already present, the shared-lane ratification event
+# is opened exactly once.
+africa_asia_apply_rail_maritime_corridors = {
+	set_country_flag = africa_asia_rail_maritime_corridors_ready
+	set_country_flag = africa_asia_corridor_settlement_ratified
+	set_country_flag = africa_asia_rail_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_asia_archipelago_centre = constant:africa_world_order.package_minor_gain }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
+	africa_world_clamp_package_mechanic = yes
+	africa_asia_maybe_open_shared_lane_ratification = yes
+}
+
+# COUNTRY scope. Shared defence/autonomy lane. Withdrawal and union consent
+# remain explicit, while both preceding lane proofs are required before the
+# ratification conversation can begin.
+africa_asia_apply_defence_autonomy_law = {
+	set_country_flag = africa_asia_defence_autonomy_law_ready
+	set_country_flag = africa_asia_common_defence_and_autonomy_law_ratified
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	add_command_power = constant:africa_world_package_reward.command_power
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_package_reward.infantry_equipment }
+	africa_asia_maybe_open_shared_lane_ratification = yes
+}
+
+# COUNTRY scope. Open the Asia shared-lane ratification event once all three
+# grounded lane proofs are present. This also covers named decisions completed
+# after a focus lane.
+africa_asia_maybe_open_shared_lane_ratification = {
+	if = {
+		limit = {
+			has_country_flag = africa_asia_food_lane_proof
+			has_country_flag = africa_asia_rail_lane_proof
+			has_country_flag = africa_asia_defence_autonomy_law_ready
+			OR = {
+				has_country_flag = africa_asia_founding_crisis_success
+				has_country_flag = africa_asia_founding_crisis_compromise
+			}
+			NOT = { has_country_flag = africa_asia_shared_lane_event_fired }
+		}
+		set_country_flag = africa_asia_shared_lane_event_fired
+		set_country_flag = africa_asia_shared_lane_ratification_pending
+		country_event = { id = africa_world_package.305 }
+	}
+}
+
+# COUNTRY scope. Indian Ocean partnership extension. This helper deliberately
+# does not set implementation readiness; it only records the treaty lane.
+africa_asia_apply_indian_ocean_partnership = {
+	set_country_flag = africa_asia_africa_indian_ocean_treaty_ready
+	set_country_flag = africa_asia_indian_ocean_partnership_ratified
+	set_country_flag = africa_asia_indian_ocean_partnership_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_asia_archipelago_centre = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_minor_gain }
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. Founding crisis result helpers used by .302-.304.
+africa_asia_resolve_founding_success = {
+	set_country_flag = africa_asia_founding_crisis_success
+	set_country_flag = africa_asia_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_asia_founding_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_asia_inland_centre = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_asia_resolve_founding_compromise = {
+	set_country_flag = africa_asia_founding_crisis_compromise
+	set_country_flag = africa_asia_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_asia_founding_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_asia_southern_centre = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_asia_resolve_founding_failure = {
+	set_country_flag = africa_asia_founding_crisis_failure
+	set_country_flag = africa_asia_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_asia_founding_crisis_pending
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_asia_inland_centre = constant:africa_world_order.package_major_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. Final Asia proof gate. The parent-owned trigger centralises
+# heartland, constituent, route, and lifecycle proof requirements.
+africa_asia_try_record_ratification_proof = {
+	if = {
+		limit = {
+			africa_world_package_ratification_is_proven = yes
+			OR = {
+				has_country_flag = africa_asia_founding_crisis_success
+				has_country_flag = africa_asia_founding_crisis_compromise
+			}
+		}
+		set_country_flag = africa_asia_package_ratification_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
+	}
+}
+
+# COUNTRY scope. Shared-lane ratification and lifecycle helpers used by .305
+# and .306.
+africa_asia_resolve_shared_lane_success = {
+	set_country_flag = africa_asia_shared_lane_ratified
+	set_country_flag = africa_asia_shared_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_asia_shared_lane_ratification_pending
+	add_to_variable = { africa_asia_food_and_river_security = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_asia_resolve_shared_lane_compromise = {
+	set_country_flag = africa_asia_shared_lane_compromise
+	set_country_flag = africa_asia_shared_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_asia_shared_lane_ratification_pending
+	add_to_variable = { africa_asia_food_and_river_security = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_asia_resolve_lifecycle_stability = {
+	set_country_flag = africa_asia_lifecycle_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_asia_lifecycle_crisis_pending
+	add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_asia_resolve_lifecycle_strain = {
+	set_country_flag = africa_asia_lifecycle_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_asia_lifecycle_crisis_pending
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope on the installed North American package actor. Named
+# decisions strengthen distinct continental institutions without relocating
+# people or transferring ownership of any state.
+africa_north_america_negotiate_caribbean_central_membership = {
+	set_country_flag = africa_north_america_caribbean_membership_negotiated
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_settle_indigenous_land_representation = {
+	set_country_flag = africa_north_america_indigenous_settlement_negotiated
+	set_country_flag = africa_north_america_local_jurisdiction_safeguarded
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_balance_industry_mobility_command = {
+	set_country_flag = africa_north_america_industry_mobility_command_balanced
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. W2 extensions called after the shared North America helpers.
+africa_north_america_extend_resources_withdrawal_law_w2 = {
+	set_country_flag = africa_north_america_resources_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+	}
+	else = {
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_extend_two_ocean_defence_w2 = {
+	set_country_flag = africa_north_america_defence_lane_proof
+	set_country_flag = africa_north_america_two_ocean_defence_ratified
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_command_integration = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_major_loss }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+	}
+	else = {
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_extend_islands_settlement_w2 = {
+	set_country_flag = africa_north_america_islands_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+	}
+	else = {
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	}
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_extend_africa_diaspora_treaty_w2 = {
+	set_country_flag = africa_north_america_diaspora_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	set_country_flag = africa_north_america_voluntary_return_only
+	set_country_flag = africa_north_america_return_requires_local_acceptance
+	set_country_flag = africa_north_america_skills_and_investment_compact
+	if = {
+		limit = { has_country_flag = africa_north_america_republics_route }
+		add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_commonwealth_route }
+		add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_command_route }
+		add_to_variable = { africa_north_america_national_sovereignty = constant:africa_world_order.package_minor_gain }
+	}
+	else_if = {
+		limit = { has_country_flag = africa_north_america_socialist_union_route }
+		add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	}
+	else = {
+		add_to_variable = { africa_north_america_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = {
+			has_country_flag = africa_north_america_resources_lane_proof
+			has_country_flag = africa_north_america_defence_lane_proof
+			has_country_flag = africa_north_america_islands_lane_proof
+			OR = {
+				has_country_flag = africa_north_america_founding_crisis_success
+				has_country_flag = africa_north_america_founding_crisis_compromise
+			}
+			NOT = { has_country_flag = africa_north_america_shared_lane_event_fired }
+		}
+		set_country_flag = africa_north_america_shared_lane_event_fired
+		set_country_flag = africa_north_america_shared_lane_ratification_pending
+		country_event = { id = africa_world_package.405 }
+	}
+}
+
+# COUNTRY scope. Founding crisis result helpers used by .402-.404.
+africa_north_america_resolve_founding_success = {
+	set_country_flag = africa_north_america_founding_crisis_success
+	set_country_flag = africa_north_america_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_north_america_founding_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_resolve_founding_compromise = {
+	set_country_flag = africa_north_america_founding_crisis_compromise
+	set_country_flag = africa_north_america_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_north_america_founding_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_resolve_founding_failure = {
+	set_country_flag = africa_north_america_founding_crisis_failure
+	set_country_flag = africa_north_america_founding_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	clr_country_flag = africa_north_america_founding_crisis_pending
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_major_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. Final North America proof gate. The parent-owned trigger
+# centralises heartland, constituent, route, and lifecycle proof requirements.
+africa_north_america_try_record_ratification_proof = {
+	if = {
+		limit = {
+			africa_world_package_ratification_is_proven = yes
+			OR = {
+				has_country_flag = africa_north_america_founding_crisis_success
+				has_country_flag = africa_north_america_founding_crisis_compromise
+			}
+		}
+		set_country_flag = africa_north_america_package_ratification_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
+	}
+}
+
+africa_north_america_resolve_shared_lane_success = {
+	set_country_flag = africa_north_america_shared_lane_ratified
+	set_country_flag = africa_north_america_shared_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_north_america_shared_lane_ratification_pending
+	add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_caribbean_inclusion = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_resolve_shared_lane_compromise = {
+	set_country_flag = africa_north_america_shared_lane_compromise
+	set_country_flag = africa_north_america_shared_lane_proof
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_north_america_shared_lane_ratification_pending
+	add_to_variable = { africa_north_america_federal_representation = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_north_america_migration_compact = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_resolve_lifecycle_stability = {
+	set_country_flag = africa_north_america_lifecycle_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_north_america_lifecycle_crisis_pending
+	add_to_variable = { africa_north_america_industrial_balance = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_north_america_resolve_lifecycle_strain = {
+	set_country_flag = africa_north_america_lifecycle_crisis_resolved
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	clr_country_flag = africa_north_america_lifecycle_crisis_pending
+	subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	africa_world_clamp_package_mechanic = yes
+}

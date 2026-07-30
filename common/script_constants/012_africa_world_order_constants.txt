@@ -276,6 +276,178 @@ africa_world_package_protocol = {
 	ai_withdrawal_accept = 150
 	ai_withdrawal_safeguard = 100
 	ai_withdrawal_contest = 25
+	# Shared action costs and protocol timing used by the continent boards,
+	# sponsorship review, union clauses, and terminal review decisions.
+	routine_pp_cost = 25
+	negotiated_pp_cost = 35
+	intervention_pp_cost = 50
+	major_action_pp_cost = 50
+	crisis_response_pp_cost = 35
+	ratification_pp_cost = 70
+	lifecycle_review_pp_cost = 45
+	union_convention_pp_cost = 125
+	union_clause_pp_cost = 125
+	union_strain_pp_cost = 75
+	war_preparation_pp_cost = 100
+	terminal_review_pp_cost = 250
+	terminal_handoff_pp_cost = 0
+	ratification_days = 70
+	lifecycle_review_days = 45
+	voluntary_quorum_large = 3
+	voluntary_quorum_sparse = 1
+}
+
+# Grounded sponsorship modes and their offer, response, AI, and cleanup tuning.
+# `high_chaos` is reserved and intentionally unavailable to the current route.
+africa_world_sponsorship_mode = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	none = 0
+	diplomatic = 1
+	material = 2
+	military = 3
+	ideological = 4
+	high_chaos = 5
+
+	counterterm_pp_cost = 35
+	diplomatic_offer_pp = 75
+	material_offer_pp = 50
+	military_offer_pp = 50
+	military_offer_command_power = 25
+	ideological_offer_pp = 100
+
+	diplomatic_legitimacy_gain = 10
+	diplomatic_authority_gain = 5
+	military_capacity_gain = 15
+	military_authority_gain = 10
+	ideological_legitimacy_gain = 10
+	ideological_capacity_gain = 5
+	capture_legitimacy_loss = 15
+
+	ai_accept_base = 40
+	ai_accept_diplomatic = 12
+	ai_accept_material = 10
+	ai_accept_military = 8
+	ai_accept_ideological = 6
+	ai_accept_legitimacy_bonus = 12
+	ai_accept_grievance_penalty = -20
+	ai_negotiate_base = 30
+	ai_negotiate_safeguard_bonus = 20
+	ai_negotiate_material_bonus = 10
+	ai_refuse_base = 20
+	ai_refuse_grievance_bonus = 25
+	ai_refuse_ideological_bonus = 10
+	ai_notice_base = 1
+	ai_counterterms_accept_base = 55
+	ai_counterterms_accept_authority_bonus = 15
+	ai_counterterms_revise_base = 30
+	ai_counterterms_close_base = 15
+	ai_counterterms_candidate_accept_base = 60
+	ai_counterterms_candidate_refuse_base = 40
+	ai_honor_military_base = 60
+	ai_honor_military_authority_bonus = 15
+	ai_contest_military_base = 40
+	ai_mediate_base = 60
+	ai_abandon_mediation_base = 40
+	ai_congress_base = 60
+	ai_capture_base = 25
+	ai_cancel_congress_base = 15
+	ai_offer_diplomatic_base = 45
+	ai_offer_material_base = 45
+	ai_offer_military_base = 35
+	ai_offer_ideological_base = 30
+	obligation_days = 180
+}
+
+# Bilateral union protocol status, approvals, and strain tuning.
+africa_world_union_protocol = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = {
+					{
+						any_key = yes
+						data = int
+					}
+				}
+			}
+		}
+	}
+
+	status = {
+		proposed = 1
+		ballots = 2
+		ratified = 3
+		active = 4
+		strained = 5
+		dissolving = 6
+		dissolved = 7
+	}
+	approval = {
+		pending = 0
+		accepted = 1
+		negotiating = 2
+		refused = 3
+	}
+	tuning = {
+		constituent_yes_required = 1
+		strain_review_threshold = 60
+		strain_event_gain = 15
+		strain_repair = 20
+		strain_min = 0
+		strain_max = 100
+	}
+}
+
+# Registered continental-war protocol status, goals, and partner support.
+africa_world_war_protocol = {
+	schema = {
+		any_key = yes
+		data = {
+			{
+				any_key = yes
+				data = {
+					{
+						any_key = yes
+						data = int
+					}
+				}
+			}
+		}
+	}
+
+	status = {
+		proposed = 1
+		mobilising = 2
+		active = 3
+		armistice = 4
+		settled = 5
+		collapsed = 6
+	}
+	goal = {
+		restore_constituent_sovereignty = 1
+		break_rival_compact = 2
+		compel_constitutional_settlement = 3
+	}
+	tuning = {
+		support_infantry_equipment = 1500
+		support_equipment = 300
+	}
+}
+
+# Terminal political-proof requirements. Identity and super-event gates remain
+# owned by the separate terminal identity package.
+africa_world_terminal_protocol = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	required_actor_approvals = 6
 }
 
 # Public protocol phase values are stored on the package actor. They are

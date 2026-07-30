@@ -35,6 +35,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_asia_regional_congress_system_open
+			country_event = { id = africa_world_package.300 }
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -177,7 +178,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
 		x = 18 y = 4 cost = @world_package_cost
 		prerequisite = { focus = africa_asia_federal_centres_chamber focus = africa_asia_congress_of_revolutionary_republics focus = africa_asia_regional_imperial_chambers focus = africa_asia_liberation_council focus = africa_asia_publish_celestial_covenant_law }
-		completion_reward = { add_to_variable = { africa_asia_food_and_river_security = constant:africa_world_order.package_major_gain } add_to_variable = { africa_asia_southern_centre = constant:africa_world_order.package_minor_gain } africa_world_clamp_package_mechanic = yes add_stability = constant:africa_world_package_reward.stability }
+		completion_reward = { africa_asia_apply_food_river_monsoon_board = yes }
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
 
@@ -193,9 +194,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
 			africa_world_apply_package_focus_progress = yes
-			add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_major_gain }
-			africa_world_clamp_package_mechanic = yes
-			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
+			africa_asia_apply_rail_maritime_corridors = yes
 		}
 		ai_will_do = { factor = @world_package_ai_high }
 	}
@@ -208,10 +207,7 @@ focus_tree = {
 		prerequisite = { focus = africa_asia_food_river_and_monsoon_board }
 		prerequisite = { focus = africa_asia_rail_and_maritime_corridors }
 		completion_reward = {
-			set_country_flag = africa_world_package_withdrawal_law_ratified
-			set_country_flag = africa_world_union_consent
-			add_command_power = constant:africa_world_package_reward.command_power
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:africa_world_package_reward.infantry_equipment }
+			africa_asia_apply_defence_autonomy_law = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -222,7 +218,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
 		x = 24 y = 6 cost = @world_package_cost
 		prerequisite = { focus = africa_asia_common_defence_and_autonomy_law }
-		completion_reward = { set_country_flag = africa_asia_africa_indian_ocean_treaty_ready add_to_variable = { africa_asia_archipelago_centre = constant:africa_world_order.package_minor_gain } add_to_variable = { africa_asia_corridor_coordination = constant:africa_world_order.package_minor_gain } africa_world_clamp_package_mechanic = yes }
+		completion_reward = { africa_asia_apply_indian_ocean_partnership = yes }
 		ai_will_do = { factor = @world_package_ai_high }
 	}
 
@@ -232,15 +228,32 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24 y = 7 cost = @world_package_final_cost
 		prerequisite = { focus = africa_asia_indian_ocean_partnership }
-		available = { has_country_flag = africa_world_package_withdrawal_law_ratified has_country_flag = africa_asia_africa_indian_ocean_treaty_ready }
+		available = {
+			has_country_flag = africa_world_package_withdrawal_law_ratified
+			has_country_flag = africa_asia_africa_indian_ocean_treaty_ready
+			has_country_flag = africa_asia_founding_crisis_resolved
+			OR = {
+				has_country_flag = africa_asia_founding_crisis_success
+				has_country_flag = africa_asia_founding_crisis_compromise
+			}
+			has_country_flag = africa_asia_shared_lane_proof
+			has_country_flag = africa_asia_lifecycle_crisis_resolved
+			africa_world_package_heartland_is_proven = yes
+			africa_world_package_constituent_settlement_is_proven = yes
+			africa_world_package_ratification_is_proven = yes
+		}
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.asian_settlement }
 			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }
 			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
-			set_country_flag = africa_world_package_constitution_ratified
-			africa_world_finalize_distinct_package_identity = yes
+			africa_asia_try_record_ratification_proof = yes
+			if = {
+				limit = { has_country_flag = africa_asia_package_ratification_proof }
+				set_country_flag = africa_world_package_constitution_ratified
+				africa_world_finalize_distinct_package_identity = yes
+			}
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}

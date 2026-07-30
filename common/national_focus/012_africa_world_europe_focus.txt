@@ -38,6 +38,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_europe_settlement_conference_open
+			africa_europe_open_congress = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -179,8 +180,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
 			africa_world_apply_package_focus_progress = yes
-			add_command_power = constant:africa_world_package_reward.command_power
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_world_package_reward.support_equipment }
+			africa_europe_apply_common_defence_law = yes
 		}
 		ai_will_do = { factor = @world_package_ai_high }
 	}
@@ -197,8 +197,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_minor_gain }
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
-			set_country_flag = africa_world_package_withdrawal_law_ratified
-			set_country_flag = africa_world_union_consent
+			africa_europe_apply_withdrawal_crisis_law = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -211,7 +210,7 @@ focus_tree = {
 		prerequisite = { focus = africa_europe_colonial_reckoning }
 		prerequisite = { focus = africa_europe_common_army_and_air_defence }
 		prerequisite = { focus = africa_europe_withdrawal_and_crisis_law }
-		completion_reward = { set_country_flag = africa_europe_africa_post_colonial_treaty_ready subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_major_loss } africa_world_clamp_package_mechanic = yes }
+		completion_reward = { africa_europe_apply_post_colonial_treaty = yes africa_world_clamp_package_mechanic = yes }
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
 
@@ -221,7 +220,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
 		x = 24 y = 6 cost = @world_package_final_cost
 		prerequisite = { focus = africa_europe_post_colonial_treaty }
-		available = { has_country_flag = africa_world_package_withdrawal_law_ratified has_country_flag = africa_europe_africa_post_colonial_treaty_ready }
+		available = {
+			has_country_flag = africa_world_package_withdrawal_law_ratified
+			has_country_flag = africa_europe_africa_post_colonial_treaty_ready
+			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
+			africa_world_package_ratification_is_proven = yes
+		}
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.europe_settlement }
 			set_temp_variable = { africa_world_focus_authority_delta = constant:africa_world_order.package_major_gain }

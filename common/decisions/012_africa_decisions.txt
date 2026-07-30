@@ -1916,19 +1916,321 @@ africa_world_order_actions_category = {
 		}
 	}
 
+	# Grounded sponsorship offers. The preparation helper charges the host,
+	# so these targeted actions use custom-cost checks only.
+	africa_world_choose_diplomatic_sponsorship = {
+		name = africa_world_choose_diplomatic_sponsorship
+		desc = africa_world_choose_diplomatic_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
+		visible = { africa_world_sponsorship_host_can_offer = yes }
+		available = {
+			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
+			political_power > constant:africa_world_sponsorship_mode.diplomatic_offer_pp
+		}
+		custom_cost_trigger = { political_power > constant:africa_world_sponsorship_mode.diplomatic_offer_pp }
+		custom_cost_text = africa_world_sponsorship_diplomatic_offer_cost
+		complete_effect = {
+			FROM = {
+				save_event_target_as = africa_world_sponsorship_candidate
+				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+				africa_world_sponsorship_prepare_offer = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_diplomatic_base }
+	}
+
+	africa_world_choose_material_sponsorship = {
+		name = africa_world_choose_material_sponsorship
+		desc = africa_world_choose_material_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
+		visible = { africa_world_sponsorship_host_can_offer = yes }
+		available = {
+			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
+			political_power > constant:africa_world_sponsorship_mode.material_offer_pp
+		}
+		custom_cost_trigger = { political_power > constant:africa_world_sponsorship_mode.material_offer_pp }
+		custom_cost_text = africa_world_sponsorship_material_offer_cost
+		complete_effect = {
+			FROM = {
+				save_event_target_as = africa_world_sponsorship_candidate
+				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+				africa_world_sponsorship_prepare_offer = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
+	}
+
+	africa_world_choose_military_sponsorship = {
+		name = africa_world_choose_military_sponsorship
+		desc = africa_world_choose_military_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
+		visible = { africa_world_sponsorship_host_can_offer = yes }
+		available = {
+			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
+			political_power > constant:africa_world_sponsorship_mode.military_offer_pp
+			command_power > constant:africa_world_sponsorship_mode.military_offer_command_power
+		}
+		custom_cost_trigger = {
+			political_power > constant:africa_world_sponsorship_mode.military_offer_pp
+			command_power > constant:africa_world_sponsorship_mode.military_offer_command_power
+		}
+		custom_cost_text = africa_world_sponsorship_military_offer_cost
+		complete_effect = {
+			FROM = {
+				save_event_target_as = africa_world_sponsorship_candidate
+				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
+				africa_world_sponsorship_prepare_offer = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_military_base }
+	}
+
+	africa_world_choose_ideological_sponsorship = {
+		name = africa_world_choose_ideological_sponsorship
+		desc = africa_world_choose_ideological_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_world_sponsorship_host_can_offer = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_candidate_is_offerable = yes } }
+		visible = { africa_world_sponsorship_host_can_offer = yes }
+		available = {
+			FROM = { africa_world_sponsorship_candidate_is_offerable = yes }
+			political_power > constant:africa_world_sponsorship_mode.ideological_offer_pp
+		}
+		custom_cost_trigger = { political_power > constant:africa_world_sponsorship_mode.ideological_offer_pp }
+		custom_cost_text = africa_world_sponsorship_ideological_offer_cost
+		complete_effect = {
+			FROM = {
+				save_event_target_as = africa_world_sponsorship_candidate
+				set_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+				africa_world_sponsorship_prepare_offer = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_ideological_base }
+	}
+
+	# Mode-specific obligation actions replace the generic presentation for
+	# newly installed packages while retaining the old action for migration.
+	africa_world_fulfil_diplomatic_sponsorship = {
+		name = africa_world_fulfil_diplomatic_sponsorship
+		desc = africa_world_fulfil_diplomatic_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_sponsorship_targets
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
+		cost = 0
+		complete_effect = {
+			FROM = { save_event_target_as = africa_world_sponsorship_candidate }
+			africa_world_sponsorship_open_diplomatic_mediation = yes
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_mediate_base }
+	}
+
+	africa_world_fulfil_material_sponsorship = {
+		name = africa_world_fulfil_material_sponsorship
+		desc = africa_world_fulfil_material_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_sponsorship_targets
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_material_obligation_is_due = yes } }
+		visible = { africa_is_current_host = yes }
+		available = {
+			FROM = { africa_world_sponsorship_material_obligation_is_due = yes }
+			has_equipment = { infantry_equipment > constant:africa_world_order.sponsorship_equipment }
+			has_equipment = { support_equipment > constant:africa_world_order.sponsorship_support_equipment }
+			has_equipment = { convoy > constant:africa_world_order.sponsorship_convoys }
+		}
+		cost = 0
+		complete_effect = { FROM = { africa_world_sponsorship_fulfil_current_mode = yes } }
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_offer_material_base }
+	}
+
+	africa_world_fulfil_military_sponsorship = {
+		name = africa_world_fulfil_military_sponsorship
+		desc = africa_world_fulfil_military_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_sponsorship_targets
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
+		cost = 0
+		complete_effect = {
+			FROM = {
+				save_event_target_as = africa_world_sponsorship_candidate
+				africa_world_sponsorship_fulfil_current_mode = yes
+			}
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_honor_military_base }
+	}
+
+	africa_world_fulfil_ideological_sponsorship = {
+		name = africa_world_fulfil_ideological_sponsorship
+		desc = africa_world_fulfil_ideological_sponsorship_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_sponsorship_targets
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
+		cost = 0
+		complete_effect = {
+			FROM = { save_event_target_as = africa_world_sponsorship_candidate }
+			africa_world_sponsorship_open_ideological_congress = yes
+		}
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_congress_base }
+	}
+
+	africa_world_sponsorship_diplomatic_obligation = {
+		name = africa_world_sponsorship_diplomatic_obligation
+		desc = africa_world_sponsorship_diplomatic_obligation_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		activation = { africa_is_current_host = yes }
+		target_array = africa_world_sponsorship_targets
+		target_trigger = { FROM = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
+		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				has_global_flag = world_end
+				FROM = { NOT = { africa_world_sponsorship_diplomatic_obligation_is_due = yes } }
+			}
+		}
+		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
+	}
+
+	africa_world_sponsorship_material_obligation = {
+		name = africa_world_sponsorship_material_obligation
+		desc = africa_world_sponsorship_material_obligation_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		activation = { africa_is_current_host = yes }
+		target_array = africa_world_sponsorship_targets
+		target_trigger = { FROM = { africa_world_sponsorship_material_obligation_is_due = yes } }
+		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				has_global_flag = world_end
+				FROM = { NOT = { africa_world_sponsorship_material_obligation_is_due = yes } }
+			}
+		}
+		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
+	}
+
+	africa_world_sponsorship_military_obligation = {
+		name = africa_world_sponsorship_military_obligation
+		desc = africa_world_sponsorship_military_obligation_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		activation = { africa_is_current_host = yes }
+		target_array = africa_world_sponsorship_targets
+		target_trigger = { FROM = { africa_world_sponsorship_military_obligation_is_due = yes } }
+		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				has_global_flag = world_end
+				FROM = { NOT = { africa_world_sponsorship_military_obligation_is_due = yes } }
+			}
+		}
+		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
+	}
+
+	africa_world_sponsorship_ideological_obligation = {
+		name = africa_world_sponsorship_ideological_obligation
+		desc = africa_world_sponsorship_ideological_obligation_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		activation = { africa_is_current_host = yes }
+		target_array = africa_world_sponsorship_targets
+		target_trigger = { FROM = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
+		days_mission_timeout = constant:africa_world_sponsorship_mode.obligation_days
+		is_good = no
+		available = { always = no }
+		cancel_trigger = {
+			OR = {
+				has_global_flag = world_end
+				FROM = { NOT = { africa_world_sponsorship_ideological_obligation_is_due = yes } }
+			}
+		}
+		timeout_effect = { FROM = { africa_world_sponsorship_default_current_mode = yes } }
+	}
+
+	africa_world_renegotiate_sponsorship_safeguards = {
+		name = africa_world_renegotiate_sponsorship_safeguards
+		desc = africa_world_renegotiate_sponsorship_safeguards_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_world_sponsorship_host_can_renegotiate = yes }
+		target_trigger = { FROM = { africa_world_sponsorship_offer_is_pending = yes } }
+		visible = { africa_world_sponsorship_host_can_renegotiate = yes }
+		available = { FROM = { africa_world_sponsorship_offer_is_pending = yes } }
+		cost = 0
+		complete_effect = { FROM = { africa_world_sponsorship_open_counterterms = yes } }
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_negotiate_base }
+	}
+
+	africa_world_close_sponsorship_after_refusal = {
+		name = africa_world_close_sponsorship_after_refusal
+		desc = africa_world_close_sponsorship_after_refusal_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_candidates
+		target_root_trigger = { africa_is_current_host = yes }
+		target_trigger = { FROM = { has_country_flag = africa_world_sponsorship_refused } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { has_country_flag = africa_world_sponsorship_refused } }
+		cost = 0
+		complete_effect = { FROM = { set_country_flag = africa_world_sponsorship_refusal_reviewed } }
+		ai_will_do = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+
 	africa_world_fulfil_sponsorship_obligation = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_sponsorship_targets
 		target_root_trigger = { africa_is_current_host = yes }
-		visible = { FROM = { has_country_flag = africa_world_sponsorship_obligation_due } }
-		target_trigger = { FROM = { africa_world_package_is_installed = yes } }
+		visible = {
+			FROM = {
+				has_country_flag = africa_world_sponsorship_obligation_due
+				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				africa_world_package_is_installed = yes
+				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
+			}
+		}
 		available = {
 			has_equipment = { infantry_equipment > constant:africa_world_order.sponsorship_equipment }
 			has_equipment = { support_equipment > constant:africa_world_order.sponsorship_support_equipment }
 			has_equipment = { convoy > constant:africa_world_order.sponsorship_convoys }
 		}
 		cost = constant:africa_world_order.sponsorship_pp_cost
-		complete_effect = { FROM = { africa_world_fulfil_current_sponsorship_obligation = yes } }
+		complete_effect = {
+			FROM = {
+				if = {
+					limit = { africa_world_sponsorship_mode_is_grounded = yes }
+					africa_world_sponsorship_fulfil_current_mode = yes
+				}
+				else = { africa_world_fulfil_current_sponsorship_obligation = yes }
+			}
+		}
 		ai_will_do = {
 			base = constant:africa_world_order.ai_normal
 			modifier = { factor = constant:africa_world_order.ai_modifier_double NOT = { has_war = yes } }
@@ -1939,7 +2241,12 @@ africa_world_order_actions_category = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_sponsorship_targets
 		activation = { africa_is_current_host = yes }
-		target_trigger = { FROM = { has_country_flag = africa_world_sponsorship_obligation_due } }
+		target_trigger = {
+			FROM = {
+				has_country_flag = africa_world_sponsorship_obligation_due
+				NOT = { africa_world_sponsorship_mode_is_grounded = yes }
+			}
+		}
 		days_mission_timeout = constant:africa_world_order.sponsorship_obligation_days
 		is_good = no
 		available = { always = no }
@@ -1947,10 +2254,23 @@ africa_world_order_actions_category = {
 			OR = {
 				has_global_flag = world_end
 				FROM = { NOT = { africa_world_package_is_installed = yes } }
-				FROM = { NOT = { has_country_flag = africa_world_sponsorship_obligation_due } }
+				FROM = {
+					OR = {
+						NOT = { has_country_flag = africa_world_sponsorship_obligation_due }
+						africa_world_sponsorship_mode_is_grounded = yes
+					}
+				}
 			}
 		}
-		timeout_effect = { FROM = { africa_world_default_current_sponsorship_obligation = yes } }
+		timeout_effect = {
+			FROM = {
+				if = {
+					limit = { africa_world_sponsorship_mode_is_grounded = yes }
+					africa_world_sponsorship_default_current_mode = yes
+				}
+				else = { africa_world_default_current_sponsorship_obligation = yes }
+			}
+		}
 	}
 
 	africa_world_launch_prepared_war = {
@@ -2020,6 +2340,506 @@ africa_world_polity_actions_category = {
 		ai_will_do = { base = constant:africa_world_package_protocol.ai_withdrawal_contest }
 	}
 
+	# Crossroads and Europe package polity boards.
+	africa_crossroads_convene_mandate_exit_board = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_middle_east_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_crossroads_founding_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.counterterm_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.counterterm_pp_cost
+		custom_effect_tooltip = africa_crossroads_convene_mandate_exit_board_tt
+		complete_effect = { africa_crossroads_begin_mandate_exit_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_crossroads_allocate_water_food_and_pipeline_access = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_middle_east_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_crossroads_founding_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.counterterm_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.counterterm_pp_cost
+		custom_effect_tooltip = africa_crossroads_allocate_water_food_and_pipeline_access_tt
+		complete_effect = { africa_crossroads_begin_water_pipeline_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_crossroads_ratify_protected_routes_and_holy_sites = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_middle_east_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_crossroads_founding_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_crossroads_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
+		custom_effect_tooltip = africa_crossroads_ratify_protected_routes_and_holy_sites_tt
+		complete_effect = { africa_crossroads_begin_protected_routes_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_europe_arbitrate_border_and_minority_guarantees = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_europe_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_europe_founding_crisis_pending }
+			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.counterterm_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.counterterm_pp_cost
+		custom_effect_tooltip = africa_europe_arbitrate_border_and_minority_guarantees_tt
+		complete_effect = { africa_europe_begin_border_arbitration_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_europe_allocate_reconstruction_and_industrial_access = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_europe_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_europe_founding_crisis_pending }
+			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.counterterm_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.counterterm_pp_cost
+		custom_effect_tooltip = africa_europe_allocate_reconstruction_and_industrial_access_tt
+		complete_effect = { africa_europe_begin_reconstruction_access_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_europe_settle_colonial_debt_and_external_guarantees = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_europe_package has_country_flag = africa_world_package_polity_foundation_initialised }
+		available = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_europe_founding_crisis_pending }
+			NOT = { has_country_flag = africa_europe_lifecycle_crisis_pending }
+			NOT = { has_country_flag = africa_europe_shared_lane_event_open }
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			political_power > constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
+		}
+		cost = constant:africa_world_package_protocol.withdrawal_safeguard_pp_cost
+		custom_effect_tooltip = africa_europe_settle_colonial_debt_and_external_guarantees_tt
+		complete_effect = { africa_europe_begin_colonial_debt_board = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	# Asia and North America package polity boards.
+	africa_asia_seat_the_regional_centres = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open }
+		available = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open NOT = { has_country_flag = africa_asia_regional_centres_decision_used } }
+		cost = constant:africa_world_package_protocol.routine_pp_cost
+		custom_effect_tooltip = africa_asia_seat_the_regional_centres_tt
+		complete_effect = { africa_asia_seat_regional_centres = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_asia_coordinate_food_river_and_monsoon_security = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open }
+		available = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open NOT = { has_country_flag = africa_asia_food_monsoon_security_action } }
+		cost = constant:africa_world_package_protocol.negotiated_pp_cost
+		custom_effect_tooltip = africa_asia_coordinate_food_river_and_monsoon_security_tt
+		complete_effect = { africa_asia_coordinate_food_river_monsoon_security = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_asia_open_rail_and_maritime_corridors = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open }
+		available = { has_country_flag = africa_world_asia_package has_country_flag = africa_asia_regional_congress_system_open NOT = { has_country_flag = africa_asia_rail_maritime_action } }
+		cost = constant:africa_world_package_protocol.negotiated_pp_cost
+		custom_effect_tooltip = africa_asia_open_rail_and_maritime_corridors_tt
+		complete_effect = { africa_asia_open_rail_maritime_corridors = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_north_america_negotiate_caribbean_and_central_membership = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open }
+		available = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open NOT = { has_country_flag = africa_north_america_caribbean_membership_negotiated } }
+		cost = constant:africa_world_package_protocol.negotiated_pp_cost
+		custom_effect_tooltip = africa_north_america_negotiate_caribbean_and_central_membership_tt
+		complete_effect = { africa_north_america_negotiate_caribbean_central_membership = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_north_america_settle_indigenous_land_and_representation = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open }
+		available = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open NOT = { has_country_flag = africa_north_america_indigenous_settlement_negotiated } }
+		cost = constant:africa_world_package_protocol.negotiated_pp_cost
+		custom_effect_tooltip = africa_north_america_settle_indigenous_land_and_representation_tt
+		complete_effect = { africa_north_america_settle_indigenous_land_representation = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_north_america_balance_industry_mobility_and_command = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open }
+		available = { has_country_flag = africa_world_north_america_package has_country_flag = africa_north_america_continental_bargain_open NOT = { has_country_flag = africa_north_america_industry_mobility_command_balanced } }
+		cost = constant:africa_world_package_protocol.intervention_pp_cost
+		custom_effect_tooltip = africa_north_america_balance_industry_mobility_and_command_tt
+		complete_effect = { africa_north_america_balance_industry_mobility_command = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	# South America and Oceania package polity boards. These use normal costs;
+	# the scripted effects themselves own the action lock and tooltip detail.
+	africa_south_america_balance_the_three_regions = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_south_america_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_south_america_balance_action_lock } }
+		cost = constant:africa_world_package_protocol.routine_action_pp_cost
+		custom_effect_tooltip = africa_south_america_balance_the_three_regions_tt
+		complete_effect = { hidden_effect = { africa_south_america_balance_the_three_regions = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	africa_south_america_audit_resource_concessions_and_debt = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_south_america_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_south_america_resource_debt_action_lock } }
+		cost = constant:africa_world_package_protocol.negotiated_action_pp_cost
+		custom_effect_tooltip = africa_south_america_audit_resource_concessions_and_debt_tt
+		complete_effect = { hidden_effect = { africa_south_america_audit_resource_concessions_and_debt = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	africa_south_america_protect_river_forest_and_corridor_rights = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_south_america_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_south_america_corridor_action_lock } }
+		cost = constant:africa_world_package_protocol.major_action_pp_cost
+		custom_effect_tooltip = africa_south_america_protect_river_forest_and_corridor_rights_tt
+		complete_effect = { hidden_effect = { africa_south_america_protect_river_forest_and_corridor_rights = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	africa_oceania_seat_the_island_congress = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_oceania_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_oceania_island_congress_action_lock } }
+		cost = constant:africa_world_package_protocol.routine_action_pp_cost
+		custom_effect_tooltip = africa_oceania_seat_the_island_congress_tt
+		complete_effect = { hidden_effect = { africa_oceania_seat_the_island_congress = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	africa_oceania_maintain_convoy_air_and_disaster_networks = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_oceania_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_oceania_network_action_lock } }
+		cost = constant:africa_world_package_protocol.negotiated_action_pp_cost
+		custom_effect_tooltip = africa_oceania_maintain_convoy_air_and_disaster_networks_tt
+		complete_effect = { hidden_effect = { africa_oceania_maintain_convoy_air_and_disaster_networks = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	africa_oceania_settle_land_basing_and_evacuation_rights = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_package_is_installed = yes has_country_flag = africa_world_oceania_package NOT = { has_country_flag = africa_world_package_sovereign_complete } }
+		available = { NOT = { has_country_flag = africa_oceania_land_basing_action_lock } }
+		cost = constant:africa_world_package_protocol.major_action_pp_cost
+		custom_effect_tooltip = africa_oceania_settle_land_basing_and_evacuation_rights_tt
+		complete_effect = { hidden_effect = { africa_oceania_settle_land_basing_and_evacuation_rights = yes } }
+		ai_will_do = { base = constant:africa_world_package_protocol.ai_negotiate }
+	}
+
+	# Bilateral union convention and clause sequence. The target is retained in
+	# the global pair by the opener; these actions only expose the matching stage.
+	africa_world_open_union_convention = {
+		name = africa_world_open_union_convention
+		desc = africa_world_open_union_convention_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_world_union_protocol_is_openable = yes }
+		target_trigger = { FROM = { africa_world_union_protocol_target_is_eligible = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_union_protocol_target_is_eligible = yes } }
+		cost = constant:africa_world_package_protocol.union_convention_pp_cost
+		custom_effect_tooltip = africa_world_open_union_convention_effect_tt
+		complete_effect = { africa_world_union_protocol_open = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_ratify_union_constitution = {
+		name = africa_world_ratify_union_constitution
+		desc = africa_world_ratify_union_constitution_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_host
+			has_country_flag = africa_world_union_protocol_ballots_complete
+			NOT = { has_country_flag = africa_world_union_protocol_constitution_ratified }
+		}
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_global_flag = africa_world_union_protocol_open has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_clause_pp_cost
+		complete_effect = { africa_world_union_protocol_ratify_constitution = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_integrate_union_defence = {
+		name = africa_world_integrate_union_defence
+		desc = africa_world_integrate_union_defence_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_host
+			has_country_flag = africa_world_union_protocol_constitution_ratified
+			NOT = { has_country_flag = africa_world_union_protocol_defence_clause_ratified }
+		}
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_global_flag = africa_world_union_protocol_open has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_clause_pp_cost
+		complete_effect = { africa_world_union_protocol_ratify_defence_clause = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_integrate_union_resource = {
+		name = africa_world_integrate_union_resource
+		desc = africa_world_integrate_union_resource_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_host
+			has_country_flag = africa_world_union_protocol_defence_clause_ratified
+			NOT = { has_country_flag = africa_world_union_protocol_resource_clause_ratified }
+		}
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_global_flag = africa_world_union_protocol_open has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_clause_pp_cost
+		complete_effect = { africa_world_union_protocol_ratify_resource_clause = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_integrate_union_withdrawal = {
+		name = africa_world_integrate_union_withdrawal
+		desc = africa_world_integrate_union_withdrawal_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = {
+			has_global_flag = africa_world_union_protocol_open
+			has_country_flag = africa_world_union_protocol_host
+			has_country_flag = africa_world_union_protocol_resource_clause_ratified
+			NOT = { has_country_flag = africa_world_union_protocol_withdrawal_clause_ratified }
+		}
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_global_flag = africa_world_union_protocol_open has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_clause_pp_cost
+		complete_effect = { africa_world_union_protocol_ratify_withdrawal_clause = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_review_union_strain = {
+		name = africa_world_review_union_strain
+		desc = africa_world_review_union_strain_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = { has_country_flag = africa_world_union_protocol_host africa_world_union_protocol_can_review_strain = yes }
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_strain_pp_cost
+		complete_effect = { africa_world_union_protocol_renegotiate = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_dissolve_union_by_treaty = {
+		name = africa_world_dissolve_union_by_treaty
+		desc = africa_world_dissolve_union_by_treaty_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		target_root_trigger = { has_country_flag = africa_world_union_protocol_host africa_world_union_protocol_can_dissolve = yes }
+		target_trigger = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		visible = { has_country_flag = africa_world_union_protocol_host }
+		available = { FROM = { has_country_flag = africa_world_union_protocol_partner } }
+		cost = constant:africa_world_package_protocol.union_convention_pp_cost
+		complete_effect = { africa_world_union_protocol_open_dissolution = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
+
+	# Goal-specific registered-war openers. All three retain ROOT as attacker and
+	# FROM as the nominated defender so the common prepare helper owns the pair.
+	africa_world_prepare_continental_war_restore = {
+		name = africa_world_prepare_continental_war
+		desc = africa_world_prepare_continental_war_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_world_continental_war_protocol_can_prepare = yes }
+		target_trigger = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		cost = constant:africa_world_package_protocol.war_preparation_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_prepare_restore = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_world_prepare_continental_war_break_compact = {
+		name = africa_world_prepare_continental_war
+		desc = africa_world_prepare_continental_war_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_world_continental_war_protocol_can_prepare = yes }
+		target_trigger = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		cost = constant:africa_world_package_protocol.war_preparation_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_prepare_break_compact = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_world_prepare_continental_war_settlement = {
+		name = africa_world_prepare_continental_war
+		desc = africa_world_prepare_continental_war_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_world_package_actors
+		activation = { africa_is_current_host = yes }
+		target_root_trigger = { africa_world_continental_war_protocol_can_prepare = yes }
+		target_trigger = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		visible = { africa_is_current_host = yes }
+		available = { FROM = { africa_world_continental_war_protocol_target_is_registered = yes } }
+		cost = constant:africa_world_package_protocol.war_preparation_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_prepare_constitutional_settlement = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	# War ledger actions remain actor-owned and never infer partners from union
+	# membership; the registered arrays and global pair are authoritative.
+	africa_world_call_registered_continental_partners = {
+		name = africa_world_call_registered_continental_partners
+		desc = africa_world_call_registered_continental_partners_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_continental_war_protocol_attacker }
+		available = { africa_world_continental_war_protocol_is_active = yes africa_world_continental_war_protocol_partner_call_is_valid = yes }
+		cost = constant:africa_world_package_protocol.war_preparation_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_call_registered_partners = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_high }
+	}
+
+	africa_world_offer_continental_armistice = {
+		name = africa_world_offer_continental_armistice
+		desc = africa_world_offer_continental_armistice_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_continental_war_protocol_attacker }
+		available = { africa_world_continental_war_protocol_armistice_is_possible = yes }
+		cost = constant:africa_world_package_protocol.crisis_response_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_offer_armistice = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_impose_constitutional_settlement = {
+		name = africa_world_impose_constitutional_settlement
+		desc = africa_world_impose_constitutional_settlement_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_continental_war_protocol_defender }
+		available = { africa_world_continental_war_protocol_is_active = yes NOT = { has_country_flag = africa_world_continental_war_protocol_settled } }
+		cost = constant:africa_world_package_protocol.crisis_response_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_accept_constitutional_settlement = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_release_contested_constituents = {
+		name = africa_world_release_contested_constituents
+		desc = africa_world_release_contested_constituents_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_country_flag = africa_world_continental_war_protocol_defender }
+		available = { africa_world_continental_war_protocol_is_active = yes NOT = { has_country_flag = africa_world_continental_war_protocol_settled } }
+		cost = constant:africa_world_package_protocol.crisis_response_pp_cost
+		complete_effect = { africa_world_continental_war_protocol_release_constituents = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_open_defeated_package_review = {
+		name = africa_world_open_defeated_package_review
+		desc = africa_world_open_defeated_package_review_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_continental_war_protocol_can_open_defeated_review = yes }
+		available = { africa_world_continental_war_protocol_can_open_defeated_review = yes }
+		cost = constant:africa_world_roster.successor_review_pp
+		complete_effect = { africa_world_union_war_open_defeated_review = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	# Terminal proof reviews deliberately stop at the political handoff marker.
+	africa_world_open_unanimous_union_review = {
+		name = africa_world_open_unanimous_union_review
+		desc = africa_world_open_unanimous_union_review_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_is_current_host = yes NOT = { has_global_flag = africa_the_world_super_event_package_ready } }
+		available = { africa_world_terminal_protocol_cleanup_is_complete = yes }
+		cost = constant:africa_world_package_protocol.terminal_review_pp_cost
+		complete_effect = { africa_world_terminal_protocol_begin_unanimous_union = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
+
+	africa_world_open_last_standing_review = {
+		name = africa_world_open_last_standing_review
+		desc = africa_world_open_last_standing_review_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_is_current_host = yes NOT = { has_global_flag = africa_the_world_super_event_package_ready } }
+		available = { africa_world_terminal_protocol_cleanup_is_complete = yes }
+		cost = constant:africa_world_package_protocol.terminal_review_pp_cost
+		complete_effect = { africa_world_terminal_protocol_begin_last_standing = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_low }
+	}
+
+	africa_world_commit_terminal_political_proof = {
+		name = africa_world_commit_terminal_political_proof
+		desc = africa_world_commit_terminal_political_proof_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_world_terminal_protocol_can_finalize = yes }
+		available = { africa_world_terminal_protocol_can_finalize = yes }
+		cost = constant:africa_world_package_protocol.terminal_review_pp_cost
+		complete_effect = { africa_world_terminal_protocol_finalize = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
+	africa_world_prepare_terminal_handoff = {
+		name = africa_world_prepare_terminal_handoff
+		desc = africa_world_prepare_terminal_handoff_desc
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { has_global_flag = africa_world_terminal_political_proof_complete }
+		available = {
+			has_global_flag = africa_world_terminal_political_proof_complete
+			NOT = { has_global_flag = africa_world_terminal_protocol_handoff_ready }
+		}
+		cost = constant:africa_world_package_protocol.terminal_handoff_pp_cost
+		complete_effect = { africa_world_terminal_protocol_set_handoff_ready = yes }
+		ai_will_do = { base = constant:africa_world_order.ai_normal }
+	}
+
 	africa_world_commit_package_successor = {
 		icon = GFX_decision_012_africa_charter_ledger
 		target_array = africa_world_package_successor_candidates
@@ -2027,7 +2847,7 @@ africa_world_polity_actions_category = {
 		target_root_trigger = { africa_world_package_successor_resolution_is_possible = yes }
 		target_trigger = { FROM = { africa_world_package_successor_candidate_is_valid = yes } }
 		cost = constant:africa_world_roster.successor_review_pp
-		complete_effect = { africa_world_commit_package_successor = yes }
+		complete_effect = { africa_world_union_war_commit_successor = yes }
 		ai_will_do = { base = constant:africa_world_order.ai_normal }
 	}
 
@@ -2036,7 +2856,7 @@ africa_world_polity_actions_category = {
 		visible = { africa_world_package_exile_resolution_is_possible = yes }
 		available = { africa_world_package_exile_resolution_is_possible = yes }
 		cost = constant:africa_world_roster.exile_certification_pp
-		complete_effect = { africa_world_record_exile_resolution = yes }
+		complete_effect = { africa_world_union_war_record_exile = yes }
 		ai_will_do = { base = constant:africa_world_order.ai_normal }
 	}
 
@@ -2045,7 +2865,7 @@ africa_world_polity_actions_category = {
 		visible = { africa_world_package_breakup_resolution_is_possible = yes }
 		available = { africa_world_package_breakup_resolution_is_possible = yes }
 		cost = constant:africa_world_roster.breakup_certification_pp
-		complete_effect = { africa_world_record_package_breakup = yes }
+		complete_effect = { africa_world_union_war_record_breakup = yes }
 		ai_will_do = { base = constant:africa_world_order.ai_low }
 	}
 }

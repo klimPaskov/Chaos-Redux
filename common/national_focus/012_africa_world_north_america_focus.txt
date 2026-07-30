@@ -41,6 +41,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_north_america_continental_bargain_open
+			country_event = { id = africa_world_package.400 }
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -325,6 +326,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
 			africa_world_apply_package_focus_progress = yes
 			africa_north_america_apply_resources_and_withdrawal_law = yes
+			africa_north_america_extend_resources_withdrawal_law_w2 = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -344,6 +346,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_minor_gain }
 			africa_world_apply_package_focus_progress = yes
 			africa_north_america_apply_two_ocean_defence_law = yes
+			africa_north_america_extend_two_ocean_defence_w2 = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
 	}
@@ -354,7 +357,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
 		x = 24 y = 6 cost = @world_package_cost
 		prerequisite = { focus = africa_north_america_atlantic_and_pacific_defence }
-		completion_reward = { africa_north_america_apply_islands_settlement = yes }
+		completion_reward = {
+			africa_north_america_apply_islands_settlement = yes
+			africa_north_america_extend_islands_settlement_w2 = yes
+		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
 
@@ -364,7 +370,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
 		x = 24 y = 7 cost = @world_package_cost
 		prerequisite = { focus = africa_north_america_caribbean_and_atlantic_islands_settlement }
-		completion_reward = { africa_north_america_apply_africa_diaspora_treaty = yes }
+		completion_reward = {
+			africa_north_america_apply_africa_diaspora_treaty = yes
+			africa_north_america_extend_africa_diaspora_treaty_w2 = yes
+		}
 		ai_will_do = { factor = @world_package_ai_high }
 	}
 
@@ -379,6 +388,16 @@ focus_tree = {
 			has_country_flag = africa_north_america_islands_settlement_ratified
 			has_country_flag = africa_north_america_africa_diaspora_treaty_ready
 			africa_north_america_continental_bargain_is_balanced = yes
+			has_country_flag = africa_north_america_founding_crisis_resolved
+			OR = {
+				has_country_flag = africa_north_america_founding_crisis_success
+				has_country_flag = africa_north_america_founding_crisis_compromise
+			}
+			has_country_flag = africa_north_america_shared_lane_proof
+			has_country_flag = africa_north_america_lifecycle_crisis_resolved
+			africa_world_package_heartland_is_proven = yes
+			africa_world_package_constituent_settlement_is_proven = yes
+			africa_world_package_ratification_is_proven = yes
 		}
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.north_american_settlement }
@@ -386,8 +405,12 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_capacity_delta = constant:africa_world_order.package_major_gain }
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
-			set_country_flag = africa_world_package_constitution_ratified
-			africa_world_finalize_distinct_package_identity = yes
+			africa_north_america_try_record_ratification_proof = yes
+			if = {
+				limit = { has_country_flag = africa_north_america_package_ratification_proof }
+				set_country_flag = africa_world_package_constitution_ratified
+				africa_world_finalize_distinct_package_identity = yes
+			}
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}

@@ -1,0 +1,636 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 SOUTH AMERICA AND OCEANIA W2 PLAY LOOPS
+# ============================================================================
+# Country-scoped contracts for the grounded South American and Oceanian
+# packages. The contracts move the existing package variables, open the
+# package-owned event stages, extend the shared focus lanes with proof flags,
+# and close transient state after sovereign completion. They do not create
+# tags, models, high-chaos routes, or recurring world scans.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# South American package contracts
+# ---------------------------------------------------------------------------
+
+africa_south_america_open_world_package_congress = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_south_america_congress_event_seen }
+		}
+		set_country_flag = africa_south_america_three_regions_congress_open
+		set_country_flag = africa_south_america_congress_event_seen
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.opening_congress }
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.none }
+		country_event = { id = africa_world_package.500 }
+	}
+}
+
+# The three named decisions use the existing regional ledger. Each action is
+# guarded by a short-lived lock and becomes available again after the founding
+# response resolves, which keeps the loop repeatable without a world scan.
+africa_south_america_balance_the_three_regions = {
+	africa_south_america_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_south_america_balance_action_lock }
+		}
+		set_country_flag = africa_south_america_balance_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		if = {
+			limit = { check_variable = { africa_south_america_andean_voice < constant:africa_measure.medium } }
+			add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_major_gain }
+		}
+		else_if = {
+			limit = { check_variable = { africa_south_america_amazon_voice < constant:africa_measure.medium } }
+			add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_major_gain }
+		}
+		else = {
+			add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_major_gain }
+		}
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+		africa_south_america_open_founding_dispute = yes
+	}
+}
+
+africa_south_america_audit_resource_concessions_and_debt = {
+	africa_south_america_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_south_america_resource_debt_action_lock }
+		}
+		set_country_flag = africa_south_america_resource_debt_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_major_gain }
+		if = {
+			limit = { check_variable = { africa_south_america_indigenous_representation < constant:africa_measure.medium } }
+			add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		}
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+		africa_south_america_open_founding_dispute = yes
+	}
+}
+
+africa_south_america_protect_river_forest_and_corridor_rights = {
+	africa_south_america_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_south_america_corridor_action_lock }
+		}
+		set_country_flag = africa_south_america_corridor_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:africa_world_package_reward.trains }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+		africa_world_clamp_package_mechanic = yes
+		africa_south_america_open_founding_dispute = yes
+	}
+}
+
+africa_south_america_open_founding_dispute = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_south_america_founding_dispute_open }
+			NOT = { has_country_flag = africa_south_america_founding_crisis_success }
+			NOT = { has_country_flag = africa_south_america_founding_crisis_compromise }
+		}
+		set_country_flag = africa_south_america_founding_dispute_open
+		country_event = { id = africa_world_package.501 }
+	}
+}
+
+africa_south_america_resolve_founding_success = {
+	if = {
+		limit = { has_country_flag = africa_south_america_founding_dispute_open }
+		clr_country_flag = africa_south_america_founding_dispute_open
+		clr_country_flag = africa_south_america_founding_crisis_failure
+		clr_country_flag = africa_south_america_founding_crisis_compromise
+		set_country_flag = africa_south_america_founding_crisis_success
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+		remove_ideas = africa_world_south_america_founding_problem
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+		clr_country_flag = africa_south_america_balance_action_lock
+		clr_country_flag = africa_south_america_resource_debt_action_lock
+		clr_country_flag = africa_south_america_corridor_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.502 }
+	}
+}
+
+africa_south_america_resolve_founding_compromise = {
+	if = {
+		limit = { has_country_flag = africa_south_america_founding_dispute_open }
+		clr_country_flag = africa_south_america_founding_dispute_open
+		clr_country_flag = africa_south_america_founding_crisis_failure
+		clr_country_flag = africa_south_america_founding_crisis_success
+		set_country_flag = africa_south_america_founding_crisis_compromise
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+		remove_ideas = africa_world_south_america_founding_problem
+		add_to_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+		clr_country_flag = africa_south_america_balance_action_lock
+		clr_country_flag = africa_south_america_resource_debt_action_lock
+		clr_country_flag = africa_south_america_corridor_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.503 }
+	}
+}
+
+africa_south_america_resolve_founding_failure = {
+	if = {
+		limit = { has_country_flag = africa_south_america_founding_dispute_open }
+		clr_country_flag = africa_south_america_founding_dispute_open
+		clr_country_flag = africa_south_america_founding_crisis_success
+		clr_country_flag = africa_south_america_founding_crisis_compromise
+		set_country_flag = africa_south_america_founding_crisis_failure
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+		subtract_from_variable = { africa_south_america_andean_voice = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_south_america_amazon_voice = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		clr_country_flag = africa_south_america_balance_action_lock
+		clr_country_flag = africa_south_america_resource_debt_action_lock
+		clr_country_flag = africa_south_america_corridor_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.504 }
+	}
+}
+
+# Shared-lane wrappers retain the accepted helpers and add W2 proof and event
+# hooks without redefining the shared effects file.
+africa_south_america_apply_resource_and_debt_law_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_south_america_apply_resource_and_debt_law = yes
+		set_country_flag = africa_south_america_resource_debt_law_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		africa_south_america_maybe_open_lifecycle_crisis = yes
+	}
+}
+
+africa_south_america_apply_defence_and_corridors_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_south_america_apply_defence_and_corridors = yes
+		set_country_flag = africa_south_america_defence_corridor_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		africa_south_america_maybe_open_lifecycle_crisis = yes
+	}
+}
+
+africa_south_america_apply_south_atlantic_partnership_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_south_america_apply_south_atlantic_partnership = yes
+		set_country_flag = africa_south_america_south_atlantic_partnership_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		if = {
+			limit = { NOT = { has_country_flag = africa_south_america_shared_lane_ratification_event_seen } }
+			set_country_flag = africa_south_america_shared_lane_ratification_event_seen
+			country_event = { id = africa_world_package.505 }
+		}
+	}
+}
+
+africa_south_america_maybe_reopen_shared_lane_ratification = {
+	if = {
+		limit = {
+			has_country_flag = africa_south_america_ratification_review_pending
+			NOT = { has_country_flag = africa_south_america_shared_lane_ratification_event_seen }
+			has_country_flag = africa_south_america_resource_debt_law_proof
+			has_country_flag = africa_south_america_defence_corridor_proof
+			has_country_flag = africa_south_america_south_atlantic_partnership_proof
+			africa_south_america_three_regions_balance_is_settled = yes
+		}
+		clr_country_flag = africa_south_america_ratification_review_pending
+		set_country_flag = africa_south_america_shared_lane_ratification_event_seen
+		country_event = { id = africa_world_package.505 }
+	}
+}
+
+africa_south_america_mark_shared_lane_ratification = {
+	if = {
+		limit = {
+			has_country_flag = africa_south_america_resource_debt_law_proof
+			has_country_flag = africa_south_america_defence_corridor_proof
+			has_country_flag = africa_south_america_south_atlantic_partnership_proof
+		OR = {
+			has_country_flag = africa_south_america_founding_crisis_success
+			has_country_flag = africa_south_america_founding_crisis_compromise
+		}
+		africa_south_america_three_regions_balance_is_settled = yes
+		africa_world_package_heartland_is_proven = yes
+		africa_world_package_constituent_settlement_is_proven = yes
+		}
+		set_country_flag = africa_south_america_shared_lane_ratified
+		clr_country_flag = africa_south_america_ratification_review_pending
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_south_america_complete_sovereign_package_w2 = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			africa_world_package_ratification_is_proven = yes
+			has_country_flag = africa_south_america_shared_lane_ratified
+			has_country_flag = africa_south_america_lifecycle_crisis_resolved
+		}
+		set_country_flag = africa_world_package_constitution_ratified
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
+		africa_world_finalize_distinct_package_identity = yes
+		africa_south_america_cleanup_w2_play_loop = yes
+	}
+}
+
+africa_south_america_maybe_open_lifecycle_crisis = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_south_america_lifecycle_crisis_open }
+			NOT = { has_country_flag = africa_south_america_lifecycle_crisis_resolved }
+			NOT = { has_country_flag = africa_south_america_founding_dispute_open }
+			OR = {
+				check_variable = { africa_south_america_resource_sovereignty < constant:africa_measure.low }
+				check_variable = { africa_south_america_debt_freedom < constant:africa_measure.low }
+				check_variable = { africa_world_package_authority < constant:africa_measure.low }
+			}
+		}
+		set_country_flag = africa_south_america_lifecycle_crisis_open
+		country_event = { id = africa_world_package.506 }
+	}
+}
+
+africa_south_america_resolve_lifecycle_crisis = {
+	if = {
+		limit = { has_country_flag = africa_south_america_lifecycle_crisis_open }
+		clr_country_flag = africa_south_america_lifecycle_crisis_open
+		set_country_flag = africa_south_america_lifecycle_crisis_resolved
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_debt_freedom = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_south_america_impose_emergency_lifecycle_terms = {
+	if = {
+		limit = { has_country_flag = africa_south_america_lifecycle_crisis_open }
+		clr_country_flag = africa_south_america_lifecycle_crisis_open
+		set_country_flag = africa_south_america_lifecycle_crisis_resolved
+		add_to_variable = { africa_south_america_resource_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_south_america_plata_voice = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_south_america_indigenous_representation = constant:africa_world_order.package_minor_gain }
+		add_command_power = constant:africa_world_package_reward.command_power
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_south_america_defer_lifecycle_settlement = {
+	if = {
+		limit = { has_country_flag = africa_south_america_lifecycle_crisis_open }
+		clr_country_flag = africa_south_america_lifecycle_crisis_open
+		set_country_flag = africa_south_america_lifecycle_crisis_resolved
+		set_country_flag = africa_south_america_lifecycle_crisis_failed
+		subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_south_america_cleanup_w2_play_loop = {
+	clr_country_flag = africa_south_america_three_regions_congress_open
+	clr_country_flag = africa_south_america_congress_event_seen
+	clr_country_flag = africa_south_america_founding_dispute_open
+	clr_country_flag = africa_south_america_lifecycle_crisis_open
+	clr_country_flag = africa_south_america_shared_lane_ratification_event_seen
+	clr_country_flag = africa_south_america_ratification_review_pending
+	clr_country_flag = africa_south_america_balance_action_lock
+	clr_country_flag = africa_south_america_resource_debt_action_lock
+	clr_country_flag = africa_south_america_corridor_action_lock
+}
+
+# ---------------------------------------------------------------------------
+# Oceanian package contracts
+# ---------------------------------------------------------------------------
+
+africa_oceania_open_world_package_congress = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_oceania_congress_event_seen }
+		}
+		set_country_flag = africa_oceania_ocean_network_congress_open
+		set_country_flag = africa_oceania_congress_event_seen
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.opening_congress }
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.none }
+		country_event = { id = africa_world_package.600 }
+	}
+}
+
+africa_oceania_seat_the_island_congress = {
+	africa_oceania_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_oceania_island_congress_action_lock }
+		}
+		set_country_flag = africa_oceania_island_congress_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+		africa_oceania_open_founding_dispute = yes
+	}
+}
+
+africa_oceania_maintain_convoy_air_and_disaster_networks = {
+	africa_oceania_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_oceania_network_action_lock }
+		}
+		set_country_flag = africa_oceania_network_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_world_package_reward.convoys }
+		africa_world_clamp_package_mechanic = yes
+		africa_oceania_open_founding_dispute = yes
+	}
+}
+
+africa_oceania_settle_land_basing_and_evacuation_rights = {
+	africa_oceania_maybe_reopen_shared_lane_ratification = yes
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_oceania_land_basing_action_lock }
+		}
+		set_country_flag = africa_oceania_land_basing_action_lock
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_oceania_island_refusal_rights
+		africa_world_clamp_package_mechanic = yes
+		africa_oceania_open_founding_dispute = yes
+	}
+}
+
+africa_oceania_open_founding_dispute = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_oceania_founding_dispute_open }
+			NOT = { has_country_flag = africa_oceania_founding_crisis_success }
+			NOT = { has_country_flag = africa_oceania_founding_crisis_compromise }
+		}
+		set_country_flag = africa_oceania_founding_dispute_open
+		country_event = { id = africa_world_package.601 }
+	}
+}
+
+africa_oceania_resolve_founding_success = {
+	if = {
+		limit = { has_country_flag = africa_oceania_founding_dispute_open }
+		clr_country_flag = africa_oceania_founding_dispute_open
+		clr_country_flag = africa_oceania_founding_crisis_failure
+		clr_country_flag = africa_oceania_founding_crisis_compromise
+		set_country_flag = africa_oceania_founding_crisis_success
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+		remove_ideas = africa_world_oceania_founding_problem
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+		clr_country_flag = africa_oceania_island_congress_action_lock
+		clr_country_flag = africa_oceania_network_action_lock
+		clr_country_flag = africa_oceania_land_basing_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.602 }
+	}
+}
+
+africa_oceania_resolve_founding_compromise = {
+	if = {
+		limit = { has_country_flag = africa_oceania_founding_dispute_open }
+		clr_country_flag = africa_oceania_founding_dispute_open
+		clr_country_flag = africa_oceania_founding_crisis_failure
+		clr_country_flag = africa_oceania_founding_crisis_success
+		set_country_flag = africa_oceania_founding_crisis_compromise
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+		remove_ideas = africa_world_oceania_founding_problem
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+		clr_country_flag = africa_oceania_island_congress_action_lock
+		clr_country_flag = africa_oceania_network_action_lock
+		clr_country_flag = africa_oceania_land_basing_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.603 }
+	}
+}
+
+africa_oceania_resolve_founding_failure = {
+	if = {
+		limit = { has_country_flag = africa_oceania_founding_dispute_open }
+		clr_country_flag = africa_oceania_founding_dispute_open
+		clr_country_flag = africa_oceania_founding_crisis_success
+		clr_country_flag = africa_oceania_founding_crisis_compromise
+		set_country_flag = africa_oceania_founding_crisis_failure
+		set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+		subtract_from_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_oceania_island_representation = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		clr_country_flag = africa_oceania_island_congress_action_lock
+		clr_country_flag = africa_oceania_network_action_lock
+		clr_country_flag = africa_oceania_land_basing_action_lock
+		africa_world_clamp_package_mechanic = yes
+		country_event = { id = africa_world_package.604 }
+	}
+}
+
+africa_oceania_apply_constitution_and_withdrawal_law_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_oceania_apply_constitution_and_withdrawal_law = yes
+		set_country_flag = africa_oceania_constitution_withdrawal_law_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		africa_oceania_maybe_open_lifecycle_crisis = yes
+	}
+}
+
+africa_oceania_apply_pacific_defence_and_disaster_reserve_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_oceania_apply_pacific_defence_and_disaster_reserve = yes
+		set_country_flag = africa_oceania_pacific_reserve_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		africa_oceania_maybe_open_lifecycle_crisis = yes
+	}
+}
+
+africa_oceania_apply_africa_sea_treaty_w2 = {
+	if = {
+		limit = { africa_world_package_is_installed = yes }
+		africa_oceania_apply_africa_sea_treaty = yes
+		set_country_flag = africa_oceania_africa_sea_treaty_proof
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+		if = {
+			limit = { NOT = { has_country_flag = africa_oceania_shared_lane_ratification_event_seen } }
+			set_country_flag = africa_oceania_shared_lane_ratification_event_seen
+			country_event = { id = africa_world_package.605 }
+		}
+	}
+}
+
+africa_oceania_maybe_reopen_shared_lane_ratification = {
+	if = {
+		limit = {
+			has_country_flag = africa_oceania_ratification_review_pending
+			NOT = { has_country_flag = africa_oceania_shared_lane_ratification_event_seen }
+			has_country_flag = africa_oceania_constitution_withdrawal_law_proof
+			has_country_flag = africa_oceania_pacific_reserve_proof
+			has_country_flag = africa_oceania_africa_sea_treaty_proof
+			africa_oceania_ocean_network_is_connected = yes
+		}
+		clr_country_flag = africa_oceania_ratification_review_pending
+		set_country_flag = africa_oceania_shared_lane_ratification_event_seen
+		country_event = { id = africa_world_package.605 }
+	}
+}
+
+africa_oceania_mark_shared_lane_ratification = {
+	if = {
+		limit = {
+			has_country_flag = africa_oceania_constitution_withdrawal_law_proof
+			has_country_flag = africa_oceania_pacific_reserve_proof
+			has_country_flag = africa_oceania_africa_sea_treaty_proof
+		OR = {
+			has_country_flag = africa_oceania_founding_crisis_success
+			has_country_flag = africa_oceania_founding_crisis_compromise
+		}
+		africa_oceania_ocean_network_is_connected = yes
+		africa_world_package_heartland_is_proven = yes
+		africa_world_package_constituent_settlement_is_proven = yes
+		}
+		set_country_flag = africa_oceania_shared_lane_ratified
+		clr_country_flag = africa_oceania_ratification_review_pending
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+		add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_oceania_complete_sovereign_package_w2 = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			africa_world_package_ratification_is_proven = yes
+			has_country_flag = africa_oceania_shared_lane_ratified
+			has_country_flag = africa_oceania_lifecycle_crisis_resolved
+		}
+		set_country_flag = africa_world_package_constitution_ratified
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.sovereign }
+		africa_world_finalize_distinct_package_identity = yes
+		africa_oceania_cleanup_w2_play_loop = yes
+	}
+}
+
+africa_oceania_maybe_open_lifecycle_crisis = {
+	if = {
+		limit = {
+			africa_world_package_is_installed = yes
+			NOT = { has_country_flag = africa_world_package_sovereign_complete }
+			NOT = { has_country_flag = africa_oceania_lifecycle_crisis_open }
+			NOT = { has_country_flag = africa_oceania_lifecycle_crisis_resolved }
+			NOT = { has_country_flag = africa_oceania_founding_dispute_open }
+			OR = {
+				check_variable = { africa_oceania_convoy_reach < constant:africa_measure.low }
+				check_variable = { africa_oceania_indigenous_settlement < constant:africa_measure.low }
+				check_variable = { africa_oceania_naval_protection < constant:africa_measure.low }
+				check_variable = { africa_world_package_authority < constant:africa_measure.low }
+			}
+		}
+		set_country_flag = africa_oceania_lifecycle_crisis_open
+		country_event = { id = africa_world_package.606 }
+	}
+}
+
+africa_oceania_resolve_lifecycle_crisis = {
+	if = {
+		limit = { has_country_flag = africa_oceania_lifecycle_crisis_open }
+		clr_country_flag = africa_oceania_lifecycle_crisis_open
+		set_country_flag = africa_oceania_lifecycle_crisis_resolved
+		add_to_variable = { africa_oceania_convoy_reach = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_dispersed_industry = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_oceania_impose_emergency_lifecycle_terms = {
+	if = {
+		limit = { has_country_flag = africa_oceania_lifecycle_crisis_open }
+		clr_country_flag = africa_oceania_lifecycle_crisis_open
+		set_country_flag = africa_oceania_lifecycle_crisis_resolved
+		add_to_variable = { africa_oceania_naval_protection = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_oceania_air_network = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_oceania_indigenous_settlement = constant:africa_world_order.package_minor_gain }
+		add_command_power = constant:africa_world_package_reward.command_power
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_oceania_defer_lifecycle_settlement = {
+	if = {
+		limit = { has_country_flag = africa_oceania_lifecycle_crisis_open }
+		clr_country_flag = africa_oceania_lifecycle_crisis_open
+		set_country_flag = africa_oceania_lifecycle_crisis_resolved
+		set_country_flag = africa_oceania_lifecycle_crisis_failed
+		subtract_from_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+		subtract_from_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+		africa_world_clamp_package_mechanic = yes
+	}
+}
+
+africa_oceania_cleanup_w2_play_loop = {
+	clr_country_flag = africa_oceania_ocean_network_congress_open
+	clr_country_flag = africa_oceania_congress_event_seen
+	clr_country_flag = africa_oceania_founding_dispute_open
+	clr_country_flag = africa_oceania_lifecycle_crisis_open
+	clr_country_flag = africa_oceania_shared_lane_ratification_event_seen
+	clr_country_flag = africa_oceania_ratification_review_pending
+	clr_country_flag = africa_oceania_island_congress_action_lock
+	clr_country_flag = africa_oceania_network_action_lock
+	clr_country_flag = africa_oceania_land_basing_action_lock
+}

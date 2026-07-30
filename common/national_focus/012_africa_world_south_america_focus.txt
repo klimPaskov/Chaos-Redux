@@ -38,6 +38,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_south_america_three_regions_congress_open
+			africa_south_america_open_world_package_congress = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -353,7 +354,10 @@ focus_tree = {
 		x = 26 y = 4 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_republican_chamber focus = africa_south_america_council_of_three_regions focus = africa_south_america_congress_of_workers_and_communes focus = africa_south_america_civilian_command_statute focus = africa_south_america_council_of_realms focus = africa_south_america_publish_sun_covenant_law }
 		prerequisite = { focus = africa_south_america_resource_concessions_and_debt_audit }
-		completion_reward = { africa_south_america_apply_resource_and_debt_law = yes }
+		completion_reward = {
+			africa_south_america_apply_resource_and_debt_law_w2 = yes
+			custom_effect_tooltip = africa_south_america_resource_debt_law_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
 
@@ -366,7 +370,10 @@ focus_tree = {
 		prerequisite = { focus = africa_south_america_andean_transport_and_mountain_supply }
 		prerequisite = { focus = africa_south_america_amazon_river_and_forest_compact }
 		prerequisite = { focus = africa_south_america_plata_ports_and_two_ocean_system }
-		completion_reward = { africa_south_america_apply_defence_and_corridors = yes }
+		completion_reward = {
+			africa_south_america_apply_defence_and_corridors_w2 = yes
+			custom_effect_tooltip = africa_south_america_defence_corridor_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
 	}
 
@@ -376,7 +383,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY }
 		x = 26 y = 6 cost = @world_package_cost
 		prerequisite = { focus = africa_south_america_continental_defence_and_corridors }
-		completion_reward = { africa_south_america_apply_south_atlantic_partnership = yes }
+		completion_reward = {
+			africa_south_america_apply_south_atlantic_partnership_w2 = yes
+			custom_effect_tooltip = africa_south_america_south_atlantic_partnership_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_high }
 	}
 
@@ -390,7 +400,21 @@ focus_tree = {
 			has_country_flag = africa_world_package_withdrawal_law_ratified
 			has_country_flag = africa_south_america_continental_defence_settled
 			has_country_flag = africa_south_america_africa_partnership_ready
+			has_country_flag = africa_south_america_resource_debt_law_proof
+			has_country_flag = africa_south_america_defence_corridor_proof
+			has_country_flag = africa_south_america_south_atlantic_partnership_proof
+			has_country_flag = africa_south_america_shared_lane_ratified
+			OR = {
+				has_country_flag = africa_south_america_founding_crisis_success
+				has_country_flag = africa_south_america_founding_crisis_compromise
+			}
+			has_country_flag = africa_south_america_lifecycle_crisis_resolved
+			africa_world_package_ratification_is_proven = yes
 			africa_south_america_three_regions_balance_is_settled = yes
+			custom_trigger_tooltip = {
+				tooltip = africa_south_america_ratification_proof_tt
+				africa_world_package_ratification_is_proven = yes
+			}
 		}
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.south_american_settlement }
@@ -399,7 +423,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_world_package_constitution_ratified
-			africa_world_finalize_distinct_package_identity = yes
+			africa_south_america_complete_sovereign_package_w2 = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}

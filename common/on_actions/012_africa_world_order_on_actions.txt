@@ -57,6 +57,54 @@ on_actions = {
 				}
 				FROM = { africa_achievement_record_protection_war_started = yes }
 			}
+			# A grounded military sponsorship obligation is answered only when
+			# the candidate is one side of the newly registered package war.
+			if = {
+				limit = {
+					ROOT = { africa_world_sponsorship_military_obligation_is_due = yes }
+					FROM = { africa_world_package_is_installed = yes }
+				}
+				ROOT = { africa_world_sponsorship_call_military_defence = yes }
+			}
+			if = {
+				limit = {
+					FROM = { africa_world_sponsorship_military_obligation_is_due = yes }
+					ROOT = { africa_world_package_is_installed = yes }
+				}
+				FROM = { africa_world_sponsorship_call_military_defence = yes }
+			}
+			# W4 relation witness. The registered pair is already opened by the
+			# prepare effect; this branch only confirms both scopes and marks the
+			# protocol active without scanning or inferring partner membership.
+			if = {
+				limit = {
+					has_global_flag = africa_world_continental_war_protocol_open
+					has_event_target = africa_world_continental_war_protocol_attacker
+					has_event_target = africa_world_continental_war_protocol_defender
+					OR = {
+						ROOT = { tag = event_target:africa_world_continental_war_protocol_attacker }
+						ROOT = { tag = event_target:africa_world_continental_war_protocol_defender }
+						FROM = { tag = event_target:africa_world_continental_war_protocol_attacker }
+						FROM = { tag = event_target:africa_world_continental_war_protocol_defender }
+					}
+				}
+				if = {
+					limit = { ROOT = { tag = event_target:africa_world_continental_war_protocol_attacker } }
+					ROOT = { set_country_flag = africa_world_continental_war_protocol_active }
+				}
+				if = {
+					limit = { ROOT = { tag = event_target:africa_world_continental_war_protocol_defender } }
+					ROOT = { set_country_flag = africa_world_continental_war_protocol_active }
+				}
+				if = {
+					limit = { FROM = { tag = event_target:africa_world_continental_war_protocol_attacker } }
+					FROM = { set_country_flag = africa_world_continental_war_protocol_active }
+				}
+				if = {
+					limit = { FROM = { tag = event_target:africa_world_continental_war_protocol_defender } }
+					FROM = { set_country_flag = africa_world_continental_war_protocol_active }
+				}
+			}
 		}
 	}
 
@@ -151,6 +199,19 @@ on_actions = {
 			}
 			if = {
 				limit = {
+					has_global_flag = africa_world_continental_war_protocol_open
+					ROOT = {
+						africa_world_package_is_installed = yes
+						has_country_flag = africa_world_package_actor
+						has_country_flag = africa_world_continental_war_protocol_defender
+						has_capitulated = yes
+						NOT = { has_country_flag = africa_world_union_war_defeated_review_open }
+					}
+				}
+				ROOT = { africa_world_union_war_open_defeated_review = yes }
+			}
+			if = {
+				limit = {
 					ROOT = {
 						africa_is_current_host = yes
 						has_global_flag = africa_scramble_intervention_war_active
@@ -214,6 +275,38 @@ on_actions = {
 					}
 				}
 				ROOT = { africa_achievement_record_member_capitulation = yes }
+			}
+		}
+	}
+
+	on_peace = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = africa_world_continental_war_protocol_open
+					has_event_target = africa_world_continental_war_protocol_attacker
+					has_event_target = africa_world_continental_war_protocol_defender
+					OR = {
+						ROOT = { tag = event_target:africa_world_continental_war_protocol_attacker }
+						ROOT = { tag = event_target:africa_world_continental_war_protocol_defender }
+						FROM = { tag = event_target:africa_world_continental_war_protocol_attacker }
+						FROM = { tag = event_target:africa_world_continental_war_protocol_defender }
+					}
+					event_target:africa_world_continental_war_protocol_attacker = {
+						NOT = { has_war_with = event_target:africa_world_continental_war_protocol_defender }
+					}
+				}
+				if = {
+					limit = { event_target:africa_world_continental_war_protocol_attacker = { has_country_flag = africa_world_continental_war_protocol_settled } }
+					event_target:africa_world_continental_war_protocol_attacker = { country_event = { id = africa_world_package.734 } }
+				}
+				else_if = {
+					limit = { event_target:africa_world_continental_war_protocol_defender = { has_country_flag = africa_world_continental_war_protocol_settled } }
+					event_target:africa_world_continental_war_protocol_defender = { country_event = { id = africa_world_package.734 } }
+				}
+				else = {
+					event_target:africa_world_continental_war_protocol_attacker = { africa_world_continental_war_protocol_cleanup = yes }
+				}
 			}
 		}
 	}

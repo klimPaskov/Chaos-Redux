@@ -1322,6 +1322,10 @@ africa_world_handle_package_actor_loss = {
 			NOT = { has_country_flag = africa_world_package_exile_path_resolved }
 			NOT = { has_country_flag = africa_world_package_breakup_recorded }
 		}
+		if = {
+			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
+			africa_world_sponsorship_cleanup_active_state = yes
+		}
 		africa_world_cleanup_package_constituent_protocol = yes
 		set_country_flag = africa_world_package_successor_review_open
 		africa_world_refresh_package_polity_proof = yes
@@ -1503,6 +1507,10 @@ africa_world_record_exile_resolution = {
 		clr_country_flag = africa_world_package_successor_review_open
 		set_variable = { africa_world_package_resolution = constant:africa_world_package_resolution.exile }
 		set_country_flag = africa_world_constituent_exile_recorded
+		if = {
+			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
+			africa_world_sponsorship_cleanup_active_state = yes
+		}
 		africa_world_record_terminal_resolution = yes
 	}
 }
@@ -1525,6 +1533,10 @@ africa_world_record_package_breakup = {
 			clr_country_flag = africa_world_constituent_coerced
 			set_country_flag = africa_world_constituent_withdrawn
 			set_variable = { africa_world_constituent_status = constant:africa_world_constituent_status.withdrawn }
+		}
+		if = {
+			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
+			africa_world_sponsorship_cleanup_active_state = yes
 		}
 		africa_world_record_terminal_resolution = yes
 	}
@@ -1616,7 +1628,41 @@ africa_world_install_current_package = {
 				limit = { PREV = { has_country_flag = africa_world_package_sponsored } }
 				add_to_variable = { africa_world_sponsorship_overextension = constant:africa_world_order.sponsorship_overextension_per_package }
 				add_to_array = { array = africa_world_sponsorship_targets value = PREV }
-				activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
+				if = {
+					limit = {
+						PREV = {
+							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+						}
+					}
+					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_diplomatic_obligation }
+				}
+				else_if = {
+					limit = {
+						PREV = {
+							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+						}
+					}
+					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_material_obligation }
+				}
+				else_if = {
+					limit = {
+						PREV = {
+							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
+						}
+					}
+					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_military_obligation }
+				}
+				else_if = {
+					limit = {
+						PREV = {
+							check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+						}
+					}
+					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_ideological_obligation }
+				}
+				else = {
+					activate_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
+				}
 			}
 		}
 
@@ -2731,6 +2777,10 @@ africa_world_record_terminal_resolution = {
 		limit = {
 			africa_world_package_terminal_resolution_is_proven = yes
 			NOT = { has_country_flag = africa_world_terminal_resolution_counted }
+		}
+		if = {
+			limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
+			africa_world_sponsorship_cleanup_active_state = yes
 		}
 		set_country_flag = africa_world_terminal_resolution_counted
 		event_target:africa_host = { add_to_variable = { africa_world_terminal_resolved_count = constant:africa_value.one } }
