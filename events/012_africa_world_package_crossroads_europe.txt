@@ -1,0 +1,522 @@
+add_namespace = africa_world_package
+
+@crossroads_crisis_review_days = 35
+@europe_crisis_review_days = 35
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 W2 CROSSROADS AND EUROPE PACKAGE LOOPS
+# ============================================================================
+# The two package chains share a namespace but use disjoint event ranges.
+# Crossroads occupies .100-.106 and Continental Settlement occupies
+# .200-.206. Each chain has an opening board, a variable-driven success,
+# compromise, or failure decision, a visible outcome event, a shared-lane
+# ratification event, and a lifecycle crisis review after failure.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Middle East Crossroads Balance .100-.106
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = africa_world_package.100
+	title = africa_world_package.100.t
+	desc = africa_world_package.100.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_congress_open
+		OR = {
+			has_country_flag = africa_crossroads_mandate_exit_board
+			has_country_flag = africa_crossroads_water_pipeline_board
+			has_country_flag = africa_crossroads_protected_routes_board
+		}
+	}
+
+	immediate = {
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	}
+
+	option = {
+		name = africa_world_package.100.a
+		custom_effect_tooltip = africa_world_package.100.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		country_event = { id = africa_world_package.101 days = 1 }
+	}
+}
+
+country_event = {
+	id = africa_world_package.101
+	title = africa_world_package.101.t
+	desc = africa_world_package.101.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_founding_crisis_pending
+		OR = {
+			has_country_flag = africa_crossroads_mandate_exit_board
+			has_country_flag = africa_crossroads_water_pipeline_board
+			has_country_flag = africa_crossroads_protected_routes_board
+		}
+	}
+
+	option = {
+		name = africa_world_package.101.a
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = africa_crossroads_mandate_exit_board
+					check_variable = { var = africa_crossroads_arab_compact value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_crossroads_minority_guarantees value = constant:africa_measure.low compare = greater_than }
+				}
+				AND = {
+					has_country_flag = africa_crossroads_water_pipeline_board
+					check_variable = { var = africa_crossroads_water_security value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_crossroads_oil_sovereignty value = constant:africa_measure.low compare = greater_than }
+					check_variable = { var = africa_crossroads_persian_influence value = constant:africa_measure.low compare = greater_than }
+				}
+				AND = {
+					has_country_flag = africa_crossroads_protected_routes_board
+					check_variable = { var = africa_crossroads_holy_site_legitimacy value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_crossroads_minority_guarantees value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_crossroads_anatolian_power value = constant:africa_measure.low compare = greater_than }
+				}
+			}
+		}
+		custom_effect_tooltip = africa_world_package.101.a.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_high
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				OR = {
+					check_variable = { var = africa_crossroads_arab_compact value = constant:africa_measure.high compare = greater_than }
+					check_variable = { var = africa_crossroads_water_security value = constant:africa_measure.high compare = greater_than }
+				}
+			}
+		}
+		set_country_flag = africa_crossroads_success_pending
+		country_event = { id = africa_world_package.102 days = 1 }
+	}
+
+	option = {
+		name = africa_world_package.101.b
+		custom_effect_tooltip = africa_world_package.101.b.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_normal
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_double
+				check_variable = { var = africa_crossroads_holy_site_legitimacy value = constant:africa_measure.medium compare = less_than }
+			}
+		}
+		set_country_flag = africa_crossroads_compromise_pending
+		country_event = { id = africa_world_package.103 days = 1 }
+	}
+
+	option = {
+		name = africa_world_package.101.c
+		custom_effect_tooltip = africa_world_package.101.c.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_low
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				check_variable = { var = africa_crossroads_minority_guarantees value = constant:africa_measure.low compare = less_than_or_equals }
+			}
+		}
+		set_country_flag = africa_crossroads_failure_pending
+		country_event = { id = africa_world_package.104 days = 1 }
+	}
+}
+
+country_event = {
+	id = africa_world_package.102
+	title = africa_world_package.102.t
+	desc = africa_world_package.102.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_success_pending
+	}
+
+	immediate = {
+		africa_crossroads_resolve_founding_success = yes
+		africa_crossroads_clear_loop_context = yes
+	}
+
+	option = {
+		name = africa_world_package.102.a
+		custom_effect_tooltip = africa_world_package.102.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.103
+	title = africa_world_package.103.t
+	desc = africa_world_package.103.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_compromise_pending
+	}
+
+	immediate = {
+		africa_crossroads_resolve_founding_compromise = yes
+		africa_crossroads_clear_loop_context = yes
+	}
+
+	option = {
+		name = africa_world_package.103.a
+		custom_effect_tooltip = africa_world_package.103.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.104
+	title = africa_world_package.104.t
+	desc = africa_world_package.104.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_failure_pending
+	}
+
+	immediate = {
+		africa_crossroads_resolve_founding_failure = yes
+		africa_crossroads_clear_loop_context = yes
+		country_event = { id = africa_world_package.106 days = @crossroads_crisis_review_days }
+	}
+
+	option = {
+		name = africa_world_package.104.a
+		custom_effect_tooltip = africa_world_package.104.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.105
+	title = africa_world_package.105.t
+	desc = africa_world_package.105.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_shared_lane_event_open
+		OR = {
+			has_country_flag = africa_crossroads_command_lane_pending
+			has_country_flag = africa_crossroads_red_sea_lane_pending
+			has_country_flag = africa_crossroads_withdrawal_lane_pending
+			has_country_flag = africa_crossroads_congress_lane_pending
+		}
+	}
+
+	option = {
+		name = africa_world_package.105.a
+		custom_effect_tooltip = africa_world_package.105.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		africa_crossroads_resolve_shared_lane_success = yes
+	}
+
+	option = {
+		name = africa_world_package.105.b
+		custom_effect_tooltip = africa_world_package.105.b.tt
+		ai_chance = { base = constant:africa_world_order.ai_normal }
+		africa_crossroads_resolve_shared_lane_compromise = yes
+	}
+}
+
+country_event = {
+	id = africa_world_package.106
+	title = africa_world_package.106.t
+	desc = africa_world_package.106.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_middle_east_package
+		has_country_flag = africa_crossroads_lifecycle_crisis_pending
+	}
+
+	option = {
+		name = africa_world_package.106.a
+		custom_effect_tooltip = africa_world_package.106.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		africa_crossroads_resolve_lifecycle_success = yes
+	}
+
+	option = {
+		name = africa_world_package.106.b
+		custom_effect_tooltip = africa_world_package.106.b.tt
+		ai_chance = { base = constant:africa_world_order.ai_normal }
+		africa_crossroads_resolve_lifecycle_compromise = yes
+	}
+
+	option = {
+		name = africa_world_package.106.c
+		custom_effect_tooltip = africa_world_package.106.c.tt
+		ai_chance = { base = constant:africa_world_order.ai_low }
+		africa_crossroads_prolong_lifecycle_crisis = yes
+		country_event = { id = africa_world_package.106 days = @crossroads_crisis_review_days }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Europe Continental Settlement .200-.206
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = africa_world_package.200
+	title = africa_world_package.200.t
+	desc = africa_world_package.200.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_settlement_conference_open
+		OR = {
+			has_country_flag = africa_europe_border_arbitration_board
+			has_country_flag = africa_europe_reconstruction_access_board
+			has_country_flag = africa_europe_colonial_debt_board
+		}
+	}
+
+	immediate = {
+		set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	}
+
+	option = {
+		name = africa_world_package.200.a
+		custom_effect_tooltip = africa_world_package.200.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		country_event = { id = africa_world_package.201 days = 1 }
+	}
+}
+
+country_event = {
+	id = africa_world_package.201
+	title = africa_world_package.201.t
+	desc = africa_world_package.201.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_founding_crisis_pending
+		OR = {
+			has_country_flag = africa_europe_border_arbitration_board
+			has_country_flag = africa_europe_reconstruction_access_board
+			has_country_flag = africa_europe_colonial_debt_board
+		}
+	}
+
+	option = {
+		name = africa_world_package.201.a
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = africa_europe_border_arbitration_board
+					check_variable = { var = africa_europe_border_settlement value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_europe_national_sovereignty value = constant:africa_measure.low compare = greater_than }
+				}
+				AND = {
+					has_country_flag = africa_europe_reconstruction_access_board
+					check_variable = { var = africa_europe_industrial_integration value = constant:africa_measure.medium compare = greater_than }
+					check_variable = { var = africa_europe_ideological_balance value = constant:africa_measure.low compare = greater_than }
+				}
+				AND = {
+					has_country_flag = africa_europe_colonial_debt_board
+					check_variable = { var = africa_europe_colonial_debt value = constant:africa_measure.medium compare = less_than }
+					check_variable = { var = africa_europe_border_settlement value = constant:africa_measure.low compare = greater_than }
+					check_variable = { var = africa_europe_national_sovereignty value = constant:africa_measure.low compare = greater_than }
+				}
+			}
+		}
+		custom_effect_tooltip = africa_world_package.201.a.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_high
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				OR = {
+					check_variable = { var = africa_europe_border_settlement value = constant:africa_measure.high compare = greater_than }
+					check_variable = { var = africa_europe_industrial_integration value = constant:africa_measure.high compare = greater_than }
+				}
+			}
+		}
+		set_country_flag = africa_europe_success_pending
+		country_event = { id = africa_world_package.202 days = 1 }
+	}
+
+	option = {
+		name = africa_world_package.201.b
+		custom_effect_tooltip = africa_world_package.201.b.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_normal
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_double
+				check_variable = { var = africa_europe_ideological_balance value = constant:africa_measure.medium compare = less_than }
+			}
+		}
+		set_country_flag = africa_europe_compromise_pending
+		country_event = { id = africa_world_package.203 days = 1 }
+	}
+
+	option = {
+		name = africa_world_package.201.c
+		custom_effect_tooltip = africa_world_package.201.c.tt
+		ai_chance = {
+			base = constant:africa_world_order.ai_low
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_quadruple
+				check_variable = { var = africa_europe_colonial_debt value = constant:africa_measure.high compare = greater_than }
+			}
+		}
+		set_country_flag = africa_europe_failure_pending
+		country_event = { id = africa_world_package.204 days = 1 }
+	}
+}
+
+country_event = {
+	id = africa_world_package.202
+	title = africa_world_package.202.t
+	desc = africa_world_package.202.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_success_pending
+	}
+
+	immediate = {
+		africa_europe_resolve_founding_success = yes
+		africa_europe_clear_loop_context = yes
+	}
+
+	option = {
+		name = africa_world_package.202.a
+		custom_effect_tooltip = africa_world_package.202.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.203
+	title = africa_world_package.203.t
+	desc = africa_world_package.203.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_compromise_pending
+	}
+
+	immediate = {
+		africa_europe_resolve_founding_compromise = yes
+		africa_europe_clear_loop_context = yes
+	}
+
+	option = {
+		name = africa_world_package.203.a
+		custom_effect_tooltip = africa_world_package.203.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.204
+	title = africa_world_package.204.t
+	desc = africa_world_package.204.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_failure_pending
+	}
+
+	immediate = {
+		africa_europe_resolve_founding_failure = yes
+		africa_europe_clear_loop_context = yes
+		country_event = { id = africa_world_package.206 days = @europe_crisis_review_days }
+	}
+
+	option = {
+		name = africa_world_package.204.a
+		custom_effect_tooltip = africa_world_package.204.a.tt
+	}
+}
+
+country_event = {
+	id = africa_world_package.205
+	title = africa_world_package.205.t
+	desc = africa_world_package.205.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_shared_lane_event_open
+		OR = {
+			has_country_flag = africa_europe_defence_lane_pending
+			has_country_flag = africa_europe_withdrawal_lane_pending
+			has_country_flag = africa_europe_treaty_lane_pending
+		}
+	}
+
+	option = {
+		name = africa_world_package.205.a
+		custom_effect_tooltip = africa_world_package.205.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		africa_europe_resolve_shared_lane_success = yes
+	}
+
+	option = {
+		name = africa_world_package.205.b
+		custom_effect_tooltip = africa_world_package.205.b.tt
+		ai_chance = { base = constant:africa_world_order.ai_normal }
+		africa_europe_resolve_shared_lane_compromise = yes
+	}
+}
+
+country_event = {
+	id = africa_world_package.206
+	title = africa_world_package.206.t
+	desc = africa_world_package.206.d
+	picture = GFX_news_event_012_africa_scramble_response
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_europe_package
+		has_country_flag = africa_europe_lifecycle_crisis_pending
+	}
+
+	option = {
+		name = africa_world_package.206.a
+		custom_effect_tooltip = africa_world_package.206.a.tt
+		ai_chance = { base = constant:africa_world_order.ai_high }
+		africa_europe_resolve_lifecycle_success = yes
+	}
+
+	option = {
+		name = africa_world_package.206.b
+		custom_effect_tooltip = africa_world_package.206.b.tt
+		ai_chance = { base = constant:africa_world_order.ai_normal }
+		africa_europe_resolve_lifecycle_compromise = yes
+	}
+
+	option = {
+		name = africa_world_package.206.c
+		custom_effect_tooltip = africa_world_package.206.c.tt
+		ai_chance = { base = constant:africa_world_order.ai_low }
+		africa_europe_prolong_lifecycle_crisis = yes
+		country_event = { id = africa_world_package.206 days = @europe_crisis_review_days }
+	}
+}

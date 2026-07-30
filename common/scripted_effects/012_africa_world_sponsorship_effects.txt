@@ -1,0 +1,486 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 FOUR-MODE SPONSORSHIP EFFECTS
+# ============================================================================
+# W3 post-unification sponsorship protocol. The host selects one grounded
+# mode, the candidate answers independently, and an accepted package keeps its
+# sovereign country, focus tree, and constituent congress. The helpers use the
+# existing Africa host global event target and the bounded sponsorship target
+# array. They never annex, puppet, subordinate, or run a world scan.
+#
+# Public entry points:
+#   africa_world_sponsorship_prepare_offer
+#   africa_world_sponsorship_accept_offer
+#   africa_world_sponsorship_open_counterterms
+#   africa_world_sponsorship_accept_counterterms_from_host
+#   africa_world_sponsorship_accept_counterterms_as_candidate
+#   africa_world_sponsorship_close_offer
+#   africa_world_sponsorship_fulfil_current_mode
+#   africa_world_sponsorship_default_current_mode
+#   africa_world_sponsorship_call_military_defence
+#   africa_world_sponsorship_open_diplomatic_mediation
+#   africa_world_sponsorship_open_ideological_congress
+#   africa_world_sponsorship_cleanup_active_state
+# ============================================================================
+
+# COUNTRY scope on the Event 012 host. The caller sets
+# africa_world_requested_sponsorship_mode before entering the candidate scope.
+# Costs are charged once when an offer is opened. Material stockpiles remain
+# untouched here and are consumed only by the existing material fulfilment
+# helper after the 180-day obligation is completed.
+africa_world_sponsorship_charge_offer = {
+	if = {
+		limit = { check_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+		set_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_sponsorship_mode.diplomatic_offer_pp }
+		multiply_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_order.negative_one }
+		add_political_power = africa_world_sponsorship_offer_debit
+	}
+	else_if = {
+		limit = { check_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
+		set_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_sponsorship_mode.material_offer_pp }
+		multiply_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_order.negative_one }
+		add_political_power = africa_world_sponsorship_offer_debit
+	}
+	else_if = {
+		limit = { check_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
+		set_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_sponsorship_mode.military_offer_pp }
+		multiply_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_order.negative_one }
+		add_political_power = africa_world_sponsorship_offer_debit
+		set_temp_variable = { africa_world_sponsorship_command_debit = constant:africa_world_sponsorship_mode.military_offer_command_power }
+		multiply_temp_variable = { africa_world_sponsorship_command_debit = constant:africa_world_order.negative_one }
+		add_command_power = africa_world_sponsorship_command_debit
+	}
+	else_if = {
+		limit = { check_variable = { africa_world_requested_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } }
+		set_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_sponsorship_mode.ideological_offer_pp }
+		multiply_temp_variable = { africa_world_sponsorship_offer_debit = constant:africa_world_order.negative_one }
+		add_political_power = africa_world_sponsorship_offer_debit
+	}
+}
+
+# COUNTRY scope on a nominated candidate. The targeted decision saves the
+# candidate as africa_world_sponsorship_candidate before calling this helper.
+africa_world_sponsorship_prepare_offer = {
+	if = {
+		limit = {
+			africa_world_sponsorship_candidate_is_offerable = yes
+			has_variable = africa_world_requested_sponsorship_mode
+			check_variable = {
+				var = africa_world_requested_sponsorship_mode
+				value = constant:africa_world_sponsorship_mode.none
+				compare = greater_than
+			}
+			check_variable = {
+				var = africa_world_requested_sponsorship_mode
+				value = constant:africa_world_sponsorship_mode.high_chaos
+				compare = less_than
+			}
+			event_target:africa_host = { africa_world_sponsorship_host_can_offer = yes }
+		}
+		set_variable = { var = africa_world_sponsorship_mode value = africa_world_requested_sponsorship_mode }
+		set_country_flag = africa_world_sponsorship_offer_pending
+		set_country_flag = africa_world_sponsorship_offer_opened
+		event_target:africa_host = {
+			set_variable = { var = africa_world_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+			set_country_flag = africa_world_sponsorship_offer_pending
+			set_country_flag = africa_world_sponsorship_offer_opened
+			set_variable = { var = africa_world_requested_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+			africa_world_sponsorship_charge_offer = yes
+		}
+		country_event = { id = africa_world_package.20 }
+	}
+}
+
+# COUNTRY scope on the candidate. This calls the existing package installer so
+# sponsorship keeps the original sovereign country and the existing material
+# obligation path. No subject or autonomy effect is applied here.
+africa_world_sponsorship_accept_offer = {
+	if = {
+		limit = {
+			OR = {
+				africa_world_sponsorship_candidate_can_answer = yes
+				africa_world_sponsorship_candidate_can_accept_counterterms = yes
+			}
+			has_event_target = africa_host
+		event_target:africa_host = { africa_is_current_host = yes }
+		}
+		clr_country_flag = africa_world_sponsorship_offer_pending
+		clr_country_flag = africa_world_sponsorship_counterterms_pending
+		set_country_flag = africa_world_sponsorship_accepted
+		if = {
+			limit = { has_country_flag = africa_world_sponsorship_counterterms_accepted }
+			set_country_flag = africa_world_sponsorship_safeguards_active
+		}
+		set_temp_variable = { africa_world_install_status = constant:africa_world_package_status.sponsored }
+		set_temp_variable = { africa_world_install_outcome = constant:africa_action_outcome.full }
+		save_event_target_as = africa_world_sponsorship_candidate
+		africa_world_install_current_package = yes
+		if = {
+			limit = { africa_world_package_is_installed = yes }
+			set_country_flag = africa_world_sponsorship_obligation_opened
+			if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+				set_country_flag = africa_world_sponsorship_diplomatic_duty_active
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
+				set_country_flag = africa_world_sponsorship_material_duty_active
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
+				set_country_flag = africa_world_sponsorship_military_duty_active
+				event_target:africa_host = {
+					diplomatic_relation = { country = ROOT relation = guarantee active = yes }
+				}
+				set_country_flag = africa_world_sponsorship_guarantee_active
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } }
+				set_country_flag = africa_world_sponsorship_ideological_duty_active
+			}
+					event_target:africa_host = {
+						clr_country_flag = africa_world_sponsorship_offer_pending
+						clr_country_flag = africa_world_sponsorship_counterterms_opened
+						set_country_flag = africa_world_sponsorship_accepted
+					set_variable = { var = africa_world_sponsorship_mode value = ROOT.africa_world_sponsorship_mode }
+					country_event = { id = africa_world_package.21 }
+				}
+		}
+	}
+}
+
+# COUNTRY scope on the candidate. Negotiation creates a bounded response
+# window and leaves the package uninstalled until the candidate accepts.
+africa_world_sponsorship_open_counterterms = {
+	if = {
+		limit = { africa_world_sponsorship_candidate_can_answer = yes }
+		clr_country_flag = africa_world_sponsorship_offer_pending
+		set_country_flag = africa_world_sponsorship_counterterms_pending
+		save_event_target_as = africa_world_sponsorship_candidate
+		event_target:africa_host = {
+			set_country_flag = africa_world_sponsorship_counterterms_opened
+			country_event = { id = africa_world_package.22 }
+		}
+	}
+}
+
+# COUNTRY scope on the host while the candidate's counterterms are pending.
+africa_world_sponsorship_charge_counterterms = {
+	if = {
+		limit = { africa_world_sponsorship_host_can_pay_counterterms = yes }
+		set_temp_variable = { africa_world_sponsorship_counterterm_debit = constant:africa_world_sponsorship_mode.counterterm_pp_cost }
+		multiply_temp_variable = { africa_world_sponsorship_counterterm_debit = constant:africa_world_order.negative_one }
+		add_political_power = africa_world_sponsorship_counterterm_debit
+	}
+}
+
+# COUNTRY scope on the host. The host accepts the candidate's negotiated
+# safeguards and then lets the candidate-side installer retain control.
+africa_world_sponsorship_accept_counterterms_from_host = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			has_event_target = africa_world_sponsorship_candidate
+			event_target:africa_world_sponsorship_candidate = { africa_world_sponsorship_candidate_can_accept_counterterms = yes }
+			africa_world_sponsorship_host_can_pay_counterterms = yes
+		}
+		africa_world_sponsorship_charge_counterterms = yes
+		event_target:africa_world_sponsorship_candidate = {
+			set_country_flag = africa_world_sponsorship_counterterms_accepted
+			africa_world_sponsorship_accept_offer = yes
+		}
+	}
+}
+
+# COUNTRY scope on the candidate. The candidate can accept the revised terms
+# after the host sends the final safeguard offer.
+africa_world_sponsorship_accept_counterterms_as_candidate = {
+	if = {
+		limit = {
+			africa_world_sponsorship_candidate_can_accept_counterterms = yes
+			event_target:africa_host = { africa_world_sponsorship_host_can_pay_counterterms = yes }
+		}
+		event_target:africa_host = { africa_world_sponsorship_charge_counterterms = yes }
+		set_country_flag = africa_world_sponsorship_counterterms_accepted
+		africa_world_sponsorship_accept_offer = yes
+	}
+}
+
+# COUNTRY scope on a candidate. Refusal never installs or subordinates the
+# country. The candidate remains eligible for its own independent package path.
+africa_world_sponsorship_close_offer = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = africa_world_sponsorship_offer_pending
+				has_country_flag = africa_world_sponsorship_counterterms_pending
+			}
+		}
+		clr_country_flag = africa_world_sponsorship_offer_pending
+		clr_country_flag = africa_world_sponsorship_counterterms_pending
+		clr_country_flag = africa_world_sponsorship_counterterms_accepted
+		set_country_flag = africa_world_sponsorship_refused
+		set_country_flag = africa_world_sponsorship_refusal_recorded
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = {
+				clr_country_flag = africa_world_sponsorship_offer_pending
+				clr_country_flag = africa_world_sponsorship_counterterms_opened
+				clear_variable = africa_world_requested_sponsorship_mode
+			}
+		}
+		if = {
+			limit = { has_variable = africa_world_package_legitimacy }
+			set_temp_variable = { africa_world_sponsorship_refusal_loss = constant:africa_world_order.package_minor_loss }
+			multiply_temp_variable = { africa_world_sponsorship_refusal_loss = constant:africa_world_order.negative_one }
+			add_to_variable = { africa_world_package_legitimacy = africa_world_sponsorship_refusal_loss }
+			clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+		event_target:africa_host = {
+			clr_country_flag = africa_world_sponsorship_offer_pending
+			clr_country_flag = africa_world_sponsorship_counterterms_opened
+			add_to_variable = { africa_global_rivalry = constant:africa_focus_tuning.small_delta }
+			set_country_flag = africa_world_sponsorship_refusal_recorded
+		}
+	}
+}
+
+# COUNTRY scope on the host. Removes all four mode-specific action and mission
+# instances for the candidate. The existing generic material mission is also
+# removed so a migrated save cannot leave a duplicate obligation visible.
+africa_world_sponsorship_remove_mode_decisions = {
+	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_diplomatic_sponsorship }
+	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_material_sponsorship }
+	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_military_sponsorship }
+	remove_targeted_decision = { target = PREV decision = africa_world_fulfil_ideological_sponsorship }
+	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_diplomatic_obligation }
+	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_material_obligation }
+	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_military_obligation }
+	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_ideological_obligation }
+	remove_targeted_decision = { target = PREV decision = africa_world_sponsorship_obligation }
+}
+
+# COUNTRY scope on the sponsored actor. This does not spend or refund stores.
+# The caller handles the package-specific amount, then this helper removes the
+# target-array and all active mode decisions.
+africa_world_sponsorship_release_host_obligation = {
+	if = {
+		limit = { has_variable = africa_world_sponsorship_overextension }
+		subtract_from_variable = { africa_world_sponsorship_overextension = constant:africa_world_order.sponsorship_overextension_per_package }
+		clamp_variable = { var = africa_world_sponsorship_overextension min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+	}
+	if = {
+		limit = { is_in_array = { array = africa_world_sponsorship_targets value = PREV } }
+		remove_from_array = { array = africa_world_sponsorship_targets value = PREV }
+	}
+	africa_world_sponsorship_remove_mode_decisions = yes
+}
+
+# COUNTRY scope on the candidate. Dispatches to the existing material
+# delivery effect so infantry equipment, support equipment, and convoys are
+# removed exactly once by the established store logic.
+africa_world_sponsorship_fulfil_current_mode = {
+	if = {
+		limit = {
+			africa_world_sponsorship_any_obligation_is_due = yes
+			africa_world_sponsorship_mode_is_grounded = yes
+		}
+		if = {
+			limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
+				africa_world_fulfil_current_sponsorship_obligation = yes
+				set_country_flag = africa_world_sponsorship_material_fulfilled
+				clr_country_flag = africa_world_sponsorship_material_duty_active
+				event_target:africa_host = { africa_world_sponsorship_remove_mode_decisions = yes }
+			country_event = { id = africa_world_package.25 }
+		}
+		else = {
+			clr_country_flag = africa_world_sponsorship_obligation_due
+			set_country_flag = africa_world_sponsorship_obligation_fulfilled
+			clr_country_flag = africa_world_sponsorship_diplomatic_duty_active
+			clr_country_flag = africa_world_sponsorship_military_duty_active
+			clr_country_flag = africa_world_sponsorship_ideological_duty_active
+			if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+				set_country_flag = africa_world_sponsorship_diplomatic_fulfilled
+				set_country_flag = africa_world_diplomatic_conference_protected
+				add_to_variable = { africa_world_package_legitimacy = constant:africa_world_sponsorship_mode.diplomatic_legitimacy_gain }
+				add_to_variable = { africa_world_package_authority = constant:africa_world_sponsorship_mode.diplomatic_authority_gain }
+				country_event = { id = africa_world_package.24 }
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
+				set_country_flag = africa_world_sponsorship_military_fulfilled
+				set_country_flag = africa_world_military_deterrence_active
+				if = {
+					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+					event_target:africa_host = {
+						diplomatic_relation = { country = ROOT relation = guarantee active = no }
+					}
+					clr_country_flag = africa_world_sponsorship_guarantee_active
+				}
+				add_to_variable = { africa_world_package_capacity = constant:africa_world_sponsorship_mode.military_capacity_gain }
+				add_to_variable = { africa_world_package_authority = constant:africa_world_sponsorship_mode.military_authority_gain }
+				country_event = { id = africa_world_package.26 }
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } }
+				set_country_flag = africa_world_sponsorship_ideological_fulfilled
+				set_country_flag = africa_world_ideological_congress_complete
+				add_to_variable = { africa_world_package_legitimacy = constant:africa_world_sponsorship_mode.ideological_legitimacy_gain }
+				add_to_variable = { africa_world_package_capacity = constant:africa_world_sponsorship_mode.ideological_capacity_gain }
+				country_event = { id = africa_world_package.27 }
+			}
+			event_target:africa_host = {
+				africa_world_sponsorship_release_host_obligation = yes
+				set_country_flag = africa_world_sponsorship_obligation_fulfilled
+			}
+			clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			clamp_variable = { var = africa_world_package_capacity min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		}
+	}
+}
+
+# COUNTRY scope on the sponsored actor. Material defaults delegate the
+# established rivalry transition, while the other three modes retain distinct
+# consequences and all close the host's bounded obligation state.
+africa_world_sponsorship_default_current_mode = {
+	if = {
+		limit = { africa_world_sponsorship_any_obligation_is_due = yes }
+		if = {
+			limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material } }
+				africa_world_default_current_sponsorship_obligation = yes
+			set_country_flag = africa_world_sponsorship_material_defaulted
+			clr_country_flag = africa_world_sponsorship_material_duty_active
+			event_target:africa_host = {
+				africa_world_sponsorship_release_host_obligation = yes
+				set_country_flag = africa_world_sponsorship_material_default_recorded
+			}
+		}
+		else = {
+			clr_country_flag = africa_world_sponsorship_obligation_due
+			clr_country_flag = africa_world_package_sponsored
+			clr_country_flag = africa_world_order_partner
+			set_country_flag = africa_world_sponsorship_defaulted
+			set_country_flag = africa_world_package_rival
+			set_country_flag = africa_world_order_rivalry_intensified
+			set_variable = { africa_world_package_status = constant:africa_world_package_status.rival }
+			set_temp_variable = { africa_world_sponsorship_default_loss = constant:africa_world_order.package_major_loss }
+			multiply_temp_variable = { africa_world_sponsorship_default_loss = constant:africa_world_order.negative_one }
+			add_to_variable = { africa_world_package_legitimacy = africa_world_sponsorship_default_loss }
+			clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+			if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+				set_country_flag = africa_world_sponsorship_diplomatic_defaulted
+				set_country_flag = africa_world_sponsorship_rivalry_memory
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military } }
+				set_country_flag = africa_world_sponsorship_military_defaulted
+				set_country_flag = africa_world_sponsorship_union_blocked
+				if = {
+					limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+					event_target:africa_host = {
+						diplomatic_relation = { country = ROOT relation = guarantee active = no }
+					}
+					clr_country_flag = africa_world_sponsorship_guarantee_active
+				}
+			}
+			else_if = {
+				limit = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological } }
+				set_country_flag = africa_world_sponsorship_ideological_defaulted
+				set_country_flag = africa_world_sponsorship_sovereignty_grievance
+			}
+			event_target:africa_host = {
+				africa_world_sponsorship_release_host_obligation = yes
+				add_to_variable = { africa_global_rivalry = constant:africa_focus_tuning.medium_delta }
+				if = {
+					limit = {
+						PREV = { check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic } }
+						has_variable = africa_member_confidence
+					}
+					add_to_variable = { africa_member_confidence = constant:africa_action_result.failure_confidence }
+					clamp_variable = { var = africa_member_confidence min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
+				}
+				set_country_flag = africa_world_sponsorship_default_recorded
+			}
+		}
+		country_event = { id = africa_world_package.28 }
+	}
+}
+
+# COUNTRY scope on a sponsored actor. A bounded war hook calls this after it
+# has identified the registered package and the military duty is still due.
+africa_world_sponsorship_call_military_defence = {
+	if = {
+		limit = { africa_world_sponsorship_military_obligation_is_due = yes has_war = yes }
+		set_country_flag = africa_world_sponsorship_military_defence_call_pending
+		save_event_target_as = africa_world_sponsorship_candidate
+		event_target:africa_host = { country_event = { id = africa_world_package.29 } }
+	}
+}
+
+# COUNTRY scope on the host. The parent military duty decision saves its
+# target as africa_world_sponsorship_candidate before entering this helper.
+africa_world_sponsorship_open_diplomatic_mediation = {
+	if = {
+		limit = { africa_world_sponsorship_host_can_mediate = yes }
+		set_country_flag = africa_world_sponsorship_mediation_opened
+		country_event = { id = africa_world_package.30 }
+	}
+}
+
+africa_world_sponsorship_open_ideological_congress = {
+	if = {
+		limit = { africa_world_sponsorship_host_can_hold_ideological_congress = yes }
+		set_country_flag = africa_world_sponsorship_congress_opened
+		country_event = { id = africa_world_package.31 }
+	}
+}
+
+# COUNTRY scope on a sponsored actor. Capturing an ideological congress is a
+# visible route risk, not an automatic ideology or party-popularity setter.
+africa_world_sponsorship_record_ideological_capture = {
+	if = {
+		limit = { africa_world_sponsorship_ideological_obligation_is_due = yes }
+		set_country_flag = africa_world_sponsorship_ideological_capture
+		set_country_flag = africa_world_sponsorship_sovereignty_grievance
+		set_temp_variable = { africa_world_sponsorship_capture_loss = constant:africa_world_sponsorship_mode.capture_legitimacy_loss }
+		multiply_temp_variable = { africa_world_sponsorship_capture_loss = constant:africa_world_order.negative_one }
+		add_to_variable = { africa_world_package_legitimacy = africa_world_sponsorship_capture_loss }
+		add_to_variable = { africa_world_package_authority = africa_world_sponsorship_capture_loss }
+		clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+		clamp_variable = { var = africa_world_package_authority min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
+	}
+}
+
+# COUNTRY scope on any package actor during actor-loss or terminal cleanup.
+# The host caller must invoke this before removing the actor from the bounded
+# sponsorship target array. Historical default and fulfilment flags remain.
+africa_world_sponsorship_cleanup_active_state = {
+	if = {
+		limit = { africa_world_sponsorship_active_cleanup_is_needed = yes }
+		clr_country_flag = africa_world_sponsorship_offer_pending
+		clr_country_flag = africa_world_sponsorship_counterterms_pending
+		clr_country_flag = africa_world_sponsorship_counterterms_accepted
+		clr_country_flag = africa_world_sponsorship_obligation_due
+		clr_country_flag = africa_world_sponsorship_diplomatic_duty_active
+		clr_country_flag = africa_world_sponsorship_material_duty_active
+		clr_country_flag = africa_world_sponsorship_military_duty_active
+		clr_country_flag = africa_world_sponsorship_ideological_duty_active
+		clr_country_flag = africa_world_sponsorship_military_defence_call_pending
+		if = {
+			limit = { has_country_flag = africa_world_sponsorship_guarantee_active }
+			event_target:africa_host = {
+				diplomatic_relation = { country = ROOT relation = guarantee active = no }
+			}
+			clr_country_flag = africa_world_sponsorship_guarantee_active
+		}
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = {
+				if = { limit = { is_in_array = { array = africa_world_sponsorship_targets value = PREV } } remove_from_array = { array = africa_world_sponsorship_targets value = PREV } }
+				africa_world_sponsorship_remove_mode_decisions = yes
+			}
+		}
+	}
+}

@@ -38,6 +38,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_oceania_ocean_network_congress_open
+			africa_oceania_open_world_package_congress = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
@@ -331,7 +332,10 @@ focus_tree = {
 		x = 24 y = 4 cost = @world_package_cost
 		prerequisite = { focus = africa_oceania_federal_island_chamber focus = africa_oceania_dominion_island_council focus = africa_oceania_peoples_ocean_congress focus = africa_oceania_workers_and_ports_congress focus = africa_oceania_publish_deep_sea_containment_law }
 		prerequisite = { focus = africa_oceania_anti_colonial_liberation_and_land_settlement }
-		completion_reward = { africa_oceania_apply_constitution_and_withdrawal_law = yes }
+		completion_reward = {
+			africa_oceania_apply_constitution_and_withdrawal_law_w2 = yes
+			custom_effect_tooltip = africa_oceania_constitution_withdrawal_law_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}
 
@@ -344,7 +348,10 @@ focus_tree = {
 		prerequisite = { focus = africa_oceania_convoy_and_shipping_network }
 		prerequisite = { focus = africa_oceania_air_routes_and_dispersed_industry }
 		prerequisite = { focus = africa_oceania_island_development_and_evacuation }
-		completion_reward = { africa_oceania_apply_pacific_defence_and_disaster_reserve = yes }
+		completion_reward = {
+			africa_oceania_apply_pacific_defence_and_disaster_reserve_w2 = yes
+			custom_effect_tooltip = africa_oceania_pacific_reserve_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_urgent modifier = { factor = @world_package_ai_preferred_factor has_war = yes } }
 	}
 
@@ -354,7 +361,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_NAVY_XP }
 		x = 24 y = 6 cost = @world_package_cost
 		prerequisite = { focus = africa_oceania_pacific_defence_and_disaster_reserve }
-		completion_reward = { africa_oceania_apply_africa_sea_treaty = yes }
+		completion_reward = {
+			africa_oceania_apply_africa_sea_treaty_w2 = yes
+			custom_effect_tooltip = africa_oceania_africa_sea_treaty_proof_tt
+		}
 		ai_will_do = { factor = @world_package_ai_high }
 	}
 
@@ -368,7 +378,21 @@ focus_tree = {
 			has_country_flag = africa_world_package_withdrawal_law_ratified
 			has_country_flag = africa_oceania_pacific_defence_settled
 			has_country_flag = africa_oceania_africa_sea_treaty_ready
+			has_country_flag = africa_oceania_constitution_withdrawal_law_proof
+			has_country_flag = africa_oceania_pacific_reserve_proof
+			has_country_flag = africa_oceania_africa_sea_treaty_proof
+			has_country_flag = africa_oceania_shared_lane_ratified
+			OR = {
+				has_country_flag = africa_oceania_founding_crisis_success
+				has_country_flag = africa_oceania_founding_crisis_compromise
+			}
+			has_country_flag = africa_oceania_lifecycle_crisis_resolved
+			africa_world_package_ratification_is_proven = yes
 			africa_oceania_ocean_network_is_connected = yes
+			custom_trigger_tooltip = {
+				tooltip = africa_oceania_ratification_proof_tt
+				africa_world_package_ratification_is_proven = yes
+			}
 		}
 		completion_reward = {
 			set_temp_variable = { africa_world_step_id = constant:africa_world_package_step.oceania_settlement }
@@ -377,7 +401,7 @@ focus_tree = {
 			set_temp_variable = { africa_world_focus_legitimacy_delta = constant:africa_world_order.package_major_gain }
 			africa_world_apply_package_focus_progress = yes
 			set_country_flag = africa_world_package_constitution_ratified
-			africa_world_finalize_distinct_package_identity = yes
+			africa_oceania_complete_sovereign_package_w2 = yes
 		}
 		ai_will_do = { factor = @world_package_ai_urgent }
 	}

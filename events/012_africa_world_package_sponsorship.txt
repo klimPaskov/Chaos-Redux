@@ -1,0 +1,422 @@
+add_namespace = africa_world_package
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 FOUR-MODE SPONSORSHIP DIPLOMACY
+# ============================================================================
+# The host selects one grounded sponsorship mode before the candidate answers.
+# The candidate remains sovereign in every branch. These events only present
+# the bounded offer, counterterms, fulfilment, default, and mode-specific duty
+# responses. They never run a world scan or create a subject relationship.
+# ============================================================================
+
+country_event = {
+	id = africa_world_package.20
+	title = africa_world_package.20.t
+	desc = africa_world_package.20.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_sponsorship_candidate_can_answer = yes
+	}
+
+	option = {
+		name = africa_world_package.20.a
+		custom_effect_tooltip = africa_world_package.20.a.tt
+		ai_chance = {
+			base = constant:africa_world_sponsorship_mode.ai_accept_base
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_diplomatic
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_material
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_military
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_ideological
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_legitimacy_bonus
+				has_variable = africa_world_package_legitimacy
+				check_variable = {
+					var = africa_world_package_legitimacy
+					value = constant:africa_measure.medium
+					compare = greater_than
+				}
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_accept_grievance_penalty
+				OR = {
+					has_country_flag = africa_world_sponsorship_sovereignty_grievance
+					has_country_flag = africa_world_sponsorship_defaulted
+				}
+			}
+		}
+		africa_world_sponsorship_accept_offer = yes
+	}
+
+	option = {
+		name = africa_world_package.20.b
+		custom_effect_tooltip = africa_world_package.20.b.tt
+		ai_chance = {
+			base = constant:africa_world_sponsorship_mode.ai_negotiate_base
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_negotiate_safeguard_bonus
+				OR = {
+					has_country_flag = africa_world_sponsorship_sovereignty_grievance
+					has_country_flag = africa_world_package_sovereign_complete
+				}
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_negotiate_material_bonus
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+			}
+		}
+		africa_world_sponsorship_open_counterterms = yes
+	}
+
+	option = {
+		name = africa_world_package.20.c
+		custom_effect_tooltip = africa_world_package.20.c.tt
+		ai_chance = {
+			base = constant:africa_world_sponsorship_mode.ai_refuse_base
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_refuse_grievance_bonus
+				OR = {
+					has_country_flag = africa_world_sponsorship_sovereignty_grievance
+					has_country_flag = africa_world_sponsorship_defaulted
+					has_country_flag = africa_world_package_rival
+				}
+			}
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_refuse_ideological_bonus
+				check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+			}
+		}
+		africa_world_sponsorship_close_offer = yes
+	}
+}
+
+country_event = {
+	id = africa_world_package.21
+	title = africa_world_package.21.t
+	desc = africa_world_package.21.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_event_target = africa_world_sponsorship_candidate
+		event_target:africa_world_sponsorship_candidate = {
+			has_country_flag = africa_world_sponsorship_accepted
+			africa_world_package_is_installed = yes
+			africa_world_sponsorship_mode_is_grounded = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.21.a
+		custom_effect_tooltip = africa_world_package.21.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.22
+	title = africa_world_package.22.t
+	desc = africa_world_package.22.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_event_target = africa_world_sponsorship_candidate
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_counterterms_are_pending = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.22.a
+		custom_effect_tooltip = africa_world_package.22.a.tt
+		trigger = { africa_world_sponsorship_host_can_pay_counterterms = yes }
+		ai_chance = {
+			base = constant:africa_world_sponsorship_mode.ai_counterterms_accept_base
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_counterterms_accept_authority_bonus
+				check_variable = {
+					var = africa_world_package_authority
+					value = constant:africa_measure.medium
+					compare = greater_than
+				}
+			}
+		}
+		africa_world_sponsorship_accept_counterterms_from_host = yes
+	}
+
+	option = {
+		name = africa_world_package.22.b
+		custom_effect_tooltip = africa_world_package.22.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_counterterms_revise_base }
+		event_target:africa_world_sponsorship_candidate = {
+			country_event = { id = africa_world_package.23 }
+		}
+	}
+
+	option = {
+		name = africa_world_package.22.c
+		custom_effect_tooltip = africa_world_package.22.c.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_counterterms_close_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_close_offer = yes
+		}
+	}
+}
+
+country_event = {
+	id = africa_world_package.23
+	title = africa_world_package.23.t
+	desc = africa_world_package.23.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_sponsorship_candidate_can_accept_counterterms = yes
+	}
+
+	option = {
+		name = africa_world_package.23.a
+		custom_effect_tooltip = africa_world_package.23.a.tt
+		trigger = {
+			event_target:africa_host = { africa_world_sponsorship_host_can_pay_counterterms = yes }
+		}
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_counterterms_candidate_accept_base }
+		africa_world_sponsorship_accept_counterterms_as_candidate = yes
+	}
+
+	option = {
+		name = africa_world_package.23.b
+		custom_effect_tooltip = africa_world_package.23.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_counterterms_candidate_refuse_base }
+		africa_world_sponsorship_close_offer = yes
+	}
+}
+
+country_event = {
+	id = africa_world_package.24
+	title = africa_world_package.24.t
+	desc = africa_world_package.24.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_sponsorship_diplomatic_fulfilled
+	}
+
+	option = {
+		name = africa_world_package.24.a
+		custom_effect_tooltip = africa_world_package.24.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.25
+	title = africa_world_package.25.t
+	desc = africa_world_package.25.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_sponsorship_material_fulfilled
+	}
+
+	option = {
+		name = africa_world_package.25.a
+		custom_effect_tooltip = africa_world_package.25.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.26
+	title = africa_world_package.26.t
+	desc = africa_world_package.26.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_sponsorship_military_fulfilled
+	}
+
+	option = {
+		name = africa_world_package.26.a
+		custom_effect_tooltip = africa_world_package.26.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.27
+	title = africa_world_package.27.t
+	desc = africa_world_package.27.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_world_package_is_installed = yes
+		has_country_flag = africa_world_sponsorship_ideological_fulfilled
+	}
+
+	option = {
+		name = africa_world_package.27.a
+		custom_effect_tooltip = africa_world_package.27.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.28
+	title = africa_world_package.28.t
+	desc = africa_world_package.28.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_world_sponsorship_defaulted
+		has_country_flag = africa_world_package_rival
+	}
+
+	option = {
+		name = africa_world_package.28.a
+		custom_effect_tooltip = africa_world_package.28.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_notice_base }
+	}
+}
+
+country_event = {
+	id = africa_world_package.29
+	title = africa_world_package.29.t
+	desc = africa_world_package.29.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_event_target = africa_world_sponsorship_candidate
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_military_call_is_valid = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.29.a
+		custom_effect_tooltip = africa_world_package.29.a.tt
+		trigger = { africa_world_sponsorship_host_can_honor_military_call = yes }
+		ai_chance = {
+			base = constant:africa_world_sponsorship_mode.ai_honor_military_base
+			modifier = {
+				add = constant:africa_world_sponsorship_mode.ai_honor_military_authority_bonus
+				check_variable = {
+					var = africa_world_package_authority
+					value = constant:africa_measure.medium
+					compare = greater_than
+				}
+			}
+		}
+		event_target:africa_world_sponsorship_candidate = {
+			clr_country_flag = africa_world_sponsorship_military_defence_call_pending
+			africa_world_sponsorship_fulfil_current_mode = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.29.b
+		custom_effect_tooltip = africa_world_package.29.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_contest_military_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_default_current_mode = yes
+		}
+	}
+}
+
+country_event = {
+	id = africa_world_package.30
+	title = africa_world_package.30.t
+	desc = africa_world_package.30.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_world_sponsorship_host_can_mediate = yes
+	}
+
+	option = {
+		name = africa_world_package.30.a
+		custom_effect_tooltip = africa_world_package.30.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_mediate_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_fulfil_current_mode = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.30.b
+		custom_effect_tooltip = africa_world_package.30.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_abandon_mediation_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_default_current_mode = yes
+		}
+	}
+}
+
+country_event = {
+	id = africa_world_package.31
+	title = africa_world_package.31.t
+	desc = africa_world_package.31.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		africa_world_sponsorship_host_can_hold_ideological_congress = yes
+	}
+
+	option = {
+		name = africa_world_package.31.a
+		custom_effect_tooltip = africa_world_package.31.a.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_congress_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_fulfil_current_mode = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.31.b
+		custom_effect_tooltip = africa_world_package.31.b.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_capture_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_record_ideological_capture = yes
+			africa_world_sponsorship_fulfil_current_mode = yes
+		}
+	}
+
+	option = {
+		name = africa_world_package.31.c
+		custom_effect_tooltip = africa_world_package.31.c.tt
+		ai_chance = { base = constant:africa_world_sponsorship_mode.ai_cancel_congress_base }
+		event_target:africa_world_sponsorship_candidate = {
+			africa_world_sponsorship_default_current_mode = yes
+		}
+	}
+}

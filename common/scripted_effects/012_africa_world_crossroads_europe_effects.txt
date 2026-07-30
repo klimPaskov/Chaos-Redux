@@ -1,0 +1,639 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 WORLD PACKAGE W2 CROSSROADS AND EUROPE EFFECTS
+# ============================================================================
+# Country-scope helpers for the non-model Middle East Crossroads and Europe
+# Continental Settlement loops. Each helper owns one visible negotiation lane,
+# its route-sensitive package variables, and the cleanup needed by the event
+# chain. The shared world-order effects, constants, and ratification trigger
+# remain parent-owned.
+#
+# These helpers deliberately do not activate high-chaos routes or set any
+# implementation-readiness flag. The high-chaos route may receive a bounded
+# balance adjustment when it is already selected, but it never receives a new
+# route or readiness flag from this file.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Middle East Crossroads opening boards and lane settlement
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Open the Crossroads congress from the root focus. The first
+# board is the mandate-exit board, so the opening crisis has a concrete issue.
+africa_crossroads_open_congress = {
+	set_country_flag = africa_crossroads_congress_open
+	set_country_flag = africa_crossroads_mandate_exit_board
+	set_country_flag = africa_crossroads_founding_crisis_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	country_event = { id = africa_world_package.100 }
+}
+
+# COUNTRY scope. Named decision entry points for the three Crossroads boards.
+africa_crossroads_begin_mandate_exit_board = {
+	clr_country_flag = africa_crossroads_water_pipeline_board
+	clr_country_flag = africa_crossroads_protected_routes_board
+	set_country_flag = africa_crossroads_congress_open
+	set_country_flag = africa_crossroads_mandate_exit_board
+	set_country_flag = africa_crossroads_founding_crisis_pending
+	country_event = { id = africa_world_package.100 }
+}
+
+africa_crossroads_begin_water_pipeline_board = {
+	clr_country_flag = africa_crossroads_mandate_exit_board
+	clr_country_flag = africa_crossroads_protected_routes_board
+	set_country_flag = africa_crossroads_congress_open
+	set_country_flag = africa_crossroads_water_pipeline_board
+	set_country_flag = africa_crossroads_founding_crisis_pending
+	country_event = { id = africa_world_package.100 }
+}
+
+africa_crossroads_begin_protected_routes_board = {
+	clr_country_flag = africa_crossroads_mandate_exit_board
+	clr_country_flag = africa_crossroads_water_pipeline_board
+	set_country_flag = africa_crossroads_congress_open
+	set_country_flag = africa_crossroads_protected_routes_board
+	set_country_flag = africa_crossroads_founding_crisis_pending
+	country_event = { id = africa_world_package.100 }
+}
+
+# COUNTRY scope. Clear only transient Crossroads loop state. Proof flags and
+# package variables deliberately survive so the shared ratification trigger can
+# inspect them later.
+africa_crossroads_clear_loop_context = {
+	clr_country_flag = africa_crossroads_congress_open
+	clr_country_flag = africa_crossroads_mandate_exit_board
+	clr_country_flag = africa_crossroads_water_pipeline_board
+	clr_country_flag = africa_crossroads_protected_routes_board
+	clr_country_flag = africa_crossroads_success_pending
+	clr_country_flag = africa_crossroads_compromise_pending
+	clr_country_flag = africa_crossroads_failure_pending
+	clr_country_flag = africa_crossroads_shared_lane_event_open
+	clr_country_flag = africa_crossroads_command_lane_pending
+	clr_country_flag = africa_crossroads_red_sea_lane_pending
+	clr_country_flag = africa_crossroads_withdrawal_lane_pending
+	clr_country_flag = africa_crossroads_congress_lane_pending
+}
+
+# COUNTRY scope. Desert and mountain command lane. The selected constitutional
+# route changes which public Crossroads ledger receives the command settlement.
+africa_crossroads_apply_command_settlement = {
+	set_country_flag = africa_crossroads_command_settlement_ratified
+	set_country_flag = africa_crossroads_command_lane_pending
+	if = {
+		limit = { has_country_flag = africa_middle_east_arab_federal_route }
+		add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_command_joint_staff
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_plural_crossroads_route }
+		add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_command_civic_guard
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_royal_concert_route }
+		add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_persian_influence = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_command_balancing_council
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_socialist_republics_route }
+		add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_command_workers_board
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_desert_covenant_route }
+		add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_command_desert_accord
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_crossroads_shared_lane_event_open } }
+		set_country_flag = africa_crossroads_shared_lane_event_open
+		country_event = { id = africa_world_package.105 }
+	}
+}
+
+# COUNTRY scope. Red Sea and Nile treaty lane. Resource and water balances are
+# adjusted differently by federal, royal, socialist, and plural routes.
+africa_crossroads_apply_red_sea_nile_treaty = {
+	set_country_flag = africa_crossroads_red_sea_nile_treaty_ratified
+	set_country_flag = africa_crossroads_red_sea_lane_pending
+	if = {
+		limit = { has_country_flag = africa_middle_east_arab_federal_route }
+		add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_nile_basin_commission
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_plural_crossroads_route }
+		add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_shared_water_commission
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_royal_concert_route }
+		add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_port_guarantee_protocol
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_socialist_republics_route }
+		add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_pipeline_public_board
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_desert_covenant_route }
+		add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_desert_water_accord
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_crossroads_shared_lane_event_open } }
+		set_country_flag = africa_crossroads_shared_lane_event_open
+		country_event = { id = africa_world_package.105 }
+	}
+}
+
+# COUNTRY scope. Withdrawal and guarantees lane. The union-level withdrawal
+# proof is written here, while the route branch records the local guarantee.
+africa_crossroads_apply_withdrawal_guarantees_law = {
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	set_country_flag = africa_crossroads_withdrawal_lane_pending
+	set_country_flag = africa_world_package_withdrawal_law_crossroads
+	if = {
+		limit = { has_country_flag = africa_middle_east_arab_federal_route }
+		add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_federal_withdrawal_guarantees
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_plural_crossroads_route }
+		add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_protected_communities_guaranteed
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_royal_concert_route }
+		add_to_variable = { africa_crossroads_anatolian_power = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_crossroads_persian_influence = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_power_guarantee_council
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_socialist_republics_route }
+		add_to_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_republics_withdrawal_protocol
+	}
+	else_if = {
+		limit = { has_country_flag = africa_middle_east_desert_covenant_route }
+		add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_crossroads_desert_guarantee_protocol
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_crossroads_shared_lane_event_open } }
+		set_country_flag = africa_crossroads_shared_lane_event_open
+		country_event = { id = africa_world_package.105 }
+	}
+}
+
+# COUNTRY scope. Final Crossroads congress lane. This lane records the
+# constitution only after the focus has reached all three shared lanes.
+africa_crossroads_apply_settlement_congress = {
+	set_country_flag = africa_crossroads_settlement_congress_complete
+	set_country_flag = africa_world_package_constitution_ratified
+	set_country_flag = africa_crossroads_congress_lane_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.ratification }
+	add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_crossroads_shared_lane_event_open } }
+		set_country_flag = africa_crossroads_shared_lane_event_open
+		country_event = { id = africa_world_package.105 }
+	}
+}
+
+# COUNTRY scope. The shared Crossroads event uses this effect for both a full
+# ratification and a transitional accord. Lane proof is already written by the
+# focus helper, while this effect records the public ratification choice.
+africa_crossroads_resolve_shared_lane_success = {
+	set_country_flag = africa_crossroads_shared_lane_ratified
+	clr_country_flag = africa_crossroads_shared_lane_compromise
+	clr_country_flag = africa_crossroads_shared_lane_event_open
+	clr_country_flag = africa_crossroads_command_lane_pending
+	clr_country_flag = africa_crossroads_red_sea_lane_pending
+	clr_country_flag = africa_crossroads_withdrawal_lane_pending
+	clr_country_flag = africa_crossroads_congress_lane_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_stability = constant:africa_world_package_reward.stability
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_resolve_shared_lane_compromise = {
+	set_country_flag = africa_crossroads_shared_lane_compromise
+	clr_country_flag = africa_crossroads_shared_lane_ratified
+	clr_country_flag = africa_crossroads_shared_lane_event_open
+	clr_country_flag = africa_crossroads_command_lane_pending
+	clr_country_flag = africa_crossroads_red_sea_lane_pending
+	clr_country_flag = africa_crossroads_withdrawal_lane_pending
+	clr_country_flag = africa_crossroads_congress_lane_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_loss }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# COUNTRY scope. Founding crisis result helpers used by .102-.104.
+africa_crossroads_resolve_founding_success = {
+	set_country_flag = africa_crossroads_founding_crisis_success
+	set_country_flag = africa_crossroads_founding_crisis_resolved
+	clr_country_flag = africa_crossroads_founding_crisis_pending
+	clr_country_flag = africa_crossroads_founding_crisis_failure
+	remove_ideas = africa_world_middle_east_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_crossroads_arab_compact = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_resolve_founding_compromise = {
+	set_country_flag = africa_crossroads_founding_crisis_compromise
+	set_country_flag = africa_crossroads_founding_crisis_resolved
+	clr_country_flag = africa_crossroads_founding_crisis_pending
+	clr_country_flag = africa_crossroads_founding_crisis_failure
+	remove_ideas = africa_world_middle_east_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_resolve_founding_failure = {
+	set_country_flag = africa_crossroads_founding_crisis_failure
+	clr_country_flag = africa_crossroads_founding_crisis_pending
+	set_country_flag = africa_crossroads_lifecycle_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_crossroads_water_security = constant:africa_world_order.package_minor_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_resolve_lifecycle_success = {
+	set_country_flag = africa_crossroads_lifecycle_crisis_resolved
+	clr_country_flag = africa_crossroads_lifecycle_crisis_pending
+	clr_country_flag = africa_crossroads_founding_crisis_failure
+	remove_ideas = africa_world_middle_east_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_crossroads_water_security = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_resolve_lifecycle_compromise = {
+	set_country_flag = africa_crossroads_lifecycle_crisis_resolved
+	clr_country_flag = africa_crossroads_lifecycle_crisis_pending
+	clr_country_flag = africa_crossroads_founding_crisis_failure
+	remove_ideas = africa_world_middle_east_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_crossroads_minority_guarantees = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_crossroads_prolong_lifecycle_crisis = {
+	set_country_flag = africa_crossroads_lifecycle_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	subtract_from_variable = { africa_crossroads_holy_site_legitimacy = constant:africa_world_order.package_minor_loss }
+	subtract_from_variable = { africa_crossroads_oil_sovereignty = constant:africa_world_order.package_minor_loss }
+	africa_world_clamp_package_mechanic = yes
+}
+
+# ---------------------------------------------------------------------------
+# Europe Continental Settlement opening boards and lane settlement
+# ---------------------------------------------------------------------------
+
+africa_europe_open_congress = {
+	set_country_flag = africa_europe_settlement_conference_open
+	set_country_flag = africa_europe_border_arbitration_board
+	set_country_flag = africa_europe_founding_crisis_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
+	country_event = { id = africa_world_package.200 }
+}
+
+africa_europe_begin_border_arbitration_board = {
+	clr_country_flag = africa_europe_reconstruction_access_board
+	clr_country_flag = africa_europe_colonial_debt_board
+	set_country_flag = africa_europe_settlement_conference_open
+	set_country_flag = africa_europe_border_arbitration_board
+	set_country_flag = africa_europe_founding_crisis_pending
+	country_event = { id = africa_world_package.200 }
+}
+
+africa_europe_begin_reconstruction_access_board = {
+	clr_country_flag = africa_europe_border_arbitration_board
+	clr_country_flag = africa_europe_colonial_debt_board
+	set_country_flag = africa_europe_settlement_conference_open
+	set_country_flag = africa_europe_reconstruction_access_board
+	set_country_flag = africa_europe_founding_crisis_pending
+	country_event = { id = africa_world_package.200 }
+}
+
+africa_europe_begin_colonial_debt_board = {
+	clr_country_flag = africa_europe_border_arbitration_board
+	clr_country_flag = africa_europe_reconstruction_access_board
+	set_country_flag = africa_europe_settlement_conference_open
+	set_country_flag = africa_europe_colonial_debt_board
+	set_country_flag = africa_europe_founding_crisis_pending
+	country_event = { id = africa_world_package.200 }
+}
+
+africa_europe_clear_loop_context = {
+	clr_country_flag = africa_europe_settlement_conference_open
+	clr_country_flag = africa_europe_border_arbitration_board
+	clr_country_flag = africa_europe_reconstruction_access_board
+	clr_country_flag = africa_europe_colonial_debt_board
+	clr_country_flag = africa_europe_success_pending
+	clr_country_flag = africa_europe_compromise_pending
+	clr_country_flag = africa_europe_failure_pending
+	clr_country_flag = africa_europe_shared_lane_event_open
+	clr_country_flag = africa_europe_defence_lane_pending
+	clr_country_flag = africa_europe_withdrawal_lane_pending
+	clr_country_flag = africa_europe_treaty_lane_pending
+}
+
+# COUNTRY scope. Common army and air defence lane. The route branch determines
+# whether defence is federal, socialist, royal, command-led, or neutral.
+africa_europe_apply_common_defence_law = {
+	set_country_flag = africa_europe_common_defence_ratified
+	set_country_flag = africa_europe_defence_lane_pending
+	if = {
+		limit = { has_country_flag = africa_europe_democratic_federation_route }
+		add_to_variable = { africa_europe_industrial_integration = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_federal_defence_board
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_socialist_union_route }
+		add_to_variable = { africa_europe_industrial_integration = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_peoples_defence_command
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_royal_concert_route }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_industrial_integration = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_crown_defence_council
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_continental_command_route }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_unified_command_statute
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_neutral_confederation_route }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_neutral_defence_guarantees
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_mythic_compact_route }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_mythic_defence_terms
+	}
+	add_command_power = constant:africa_world_package_reward.command_power
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:africa_world_package_reward.support_equipment }
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_europe_shared_lane_event_open } }
+		set_country_flag = africa_europe_shared_lane_event_open
+		country_event = { id = africa_world_package.205 }
+	}
+}
+
+# COUNTRY scope. Withdrawal and crisis law lane. The union-level withdrawal
+# proof is shared while each European route receives a different guarantee.
+africa_europe_apply_withdrawal_crisis_law = {
+	set_country_flag = africa_world_package_withdrawal_law_ratified
+	set_country_flag = africa_world_union_consent
+	set_country_flag = africa_world_package_withdrawal_law_europe
+	set_country_flag = africa_europe_withdrawal_lane_pending
+	if = {
+		limit = { has_country_flag = africa_europe_democratic_federation_route }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_democratic_withdrawal_guarantees
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_socialist_union_route }
+		add_to_variable = { africa_europe_industrial_integration = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_major_gain }
+		set_country_flag = africa_europe_socialist_withdrawal_protocol
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_royal_concert_route }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_crown_withdrawal_council
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_continental_command_route }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_major_gain }
+		add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_command_withdrawal_statute
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_neutral_confederation_route }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_neutral_withdrawal_guarantees
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_mythic_compact_route }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_mythic_withdrawal_terms
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_europe_shared_lane_event_open } }
+		set_country_flag = africa_europe_shared_lane_event_open
+		country_event = { id = africa_world_package.205 }
+	}
+}
+
+# COUNTRY scope. Post-colonial treaty lane. Debt, borders, and sovereign
+# guarantees are intentionally kept as distinct public ledgers.
+africa_europe_apply_post_colonial_treaty = {
+	set_country_flag = africa_europe_post_colonial_treaty_ratified
+	set_country_flag = africa_europe_africa_post_colonial_treaty_ready
+	set_country_flag = africa_europe_treaty_lane_pending
+	if = {
+		limit = { has_country_flag = africa_europe_democratic_federation_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_major_loss }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_reparations_commission
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_socialist_union_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_major_loss }
+		add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_debt_cancellation_protocol
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_royal_concert_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_loss }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_crown_restitution_board
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_continental_command_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_loss }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_major_gain }
+		set_country_flag = africa_europe_security_for_restitution
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_neutral_confederation_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_major_loss }
+		add_to_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_neutral_restitution_court
+	}
+	else_if = {
+		limit = { has_country_flag = africa_europe_mythic_compact_route }
+		subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_loss }
+		add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+		set_country_flag = africa_europe_mythic_restitution_terms
+	}
+	africa_world_clamp_package_mechanic = yes
+	if = {
+		limit = { NOT = { has_country_flag = africa_europe_shared_lane_event_open } }
+		set_country_flag = africa_europe_shared_lane_event_open
+		country_event = { id = africa_world_package.205 }
+	}
+}
+
+africa_europe_resolve_shared_lane_success = {
+	set_country_flag = africa_europe_shared_lane_ratified
+	clr_country_flag = africa_europe_shared_lane_compromise
+	clr_country_flag = africa_europe_shared_lane_event_open
+	clr_country_flag = africa_europe_defence_lane_pending
+	clr_country_flag = africa_europe_withdrawal_lane_pending
+	clr_country_flag = africa_europe_treaty_lane_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_europe_industrial_integration = constant:africa_world_order.package_minor_gain }
+	add_stability = constant:africa_world_package_reward.stability
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_shared_lane_compromise = {
+	set_country_flag = africa_europe_shared_lane_compromise
+	clr_country_flag = africa_europe_shared_lane_ratified
+	clr_country_flag = africa_europe_shared_lane_event_open
+	clr_country_flag = africa_europe_defence_lane_pending
+	clr_country_flag = africa_europe_withdrawal_lane_pending
+	clr_country_flag = africa_europe_treaty_lane_pending
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.shared_lanes }
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_europe_national_sovereignty = constant:africa_world_order.package_minor_loss }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_founding_success = {
+	set_country_flag = africa_europe_founding_crisis_success
+	set_country_flag = africa_europe_founding_crisis_resolved
+	clr_country_flag = africa_europe_founding_crisis_pending
+	clr_country_flag = africa_europe_founding_crisis_failure
+	remove_ideas = africa_world_europe_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_founding_compromise = {
+	set_country_flag = africa_europe_founding_crisis_compromise
+	set_country_flag = africa_europe_founding_crisis_resolved
+	clr_country_flag = africa_europe_founding_crisis_pending
+	clr_country_flag = africa_europe_founding_crisis_failure
+	remove_ideas = africa_world_europe_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	set_variable = { africa_world_package_phase = constant:africa_world_package_phase.route_committed }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_founding_failure = {
+	set_country_flag = africa_europe_founding_crisis_failure
+	clr_country_flag = africa_europe_founding_crisis_pending
+	set_country_flag = africa_europe_lifecycle_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_loss }
+	add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_major_loss }
+	add_to_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_loss }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.failure }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_lifecycle_success = {
+	set_country_flag = africa_europe_lifecycle_crisis_resolved
+	clr_country_flag = africa_europe_lifecycle_crisis_pending
+	clr_country_flag = africa_europe_founding_crisis_failure
+	remove_ideas = africa_world_europe_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_major_gain }
+	add_to_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.success }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_resolve_lifecycle_compromise = {
+	set_country_flag = africa_europe_lifecycle_crisis_resolved
+	clr_country_flag = africa_europe_lifecycle_crisis_pending
+	clr_country_flag = africa_europe_founding_crisis_failure
+	remove_ideas = africa_world_europe_founding_problem
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_world_package_legitimacy = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_europe_ideological_balance = constant:africa_world_order.package_minor_gain }
+	set_variable = { africa_world_package_crisis_result = constant:africa_world_package_crisis_result.compromise }
+	africa_world_clamp_package_mechanic = yes
+}
+
+africa_europe_prolong_lifecycle_crisis = {
+	set_country_flag = africa_europe_lifecycle_crisis_pending
+	add_to_variable = { africa_world_package_authority = constant:africa_world_order.package_major_loss }
+	add_to_variable = { africa_europe_war_memory = constant:africa_world_order.package_minor_gain }
+	add_to_variable = { africa_europe_colonial_debt = constant:africa_world_order.package_minor_gain }
+	subtract_from_variable = { africa_europe_border_settlement = constant:africa_world_order.package_minor_loss }
+	africa_world_clamp_package_mechanic = yes
+}

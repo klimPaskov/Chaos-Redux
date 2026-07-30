@@ -1,0 +1,167 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 FOUR-MODE SPONSORSHIP TRIGGERS
+# ============================================================================
+# Candidate, response, obligation, and cleanup gates for the W3 sponsorship
+# protocol. These triggers never install, subordinate, or transfer a country.
+# They are intentionally event-local and use the existing Africa host global
+# event target plus the bounded sponsorship target array.
+# ============================================================================
+
+# COUNTRY scope on a package candidate or installed package actor.
+africa_world_sponsorship_mode_is_grounded = {
+	has_variable = africa_world_sponsorship_mode
+	check_variable = {
+		var = africa_world_sponsorship_mode
+		value = constant:africa_world_sponsorship_mode.none
+		compare = greater_than
+	}
+	check_variable = {
+		var = africa_world_sponsorship_mode
+		value = constant:africa_world_sponsorship_mode.high_chaos
+		compare = less_than
+	}
+}
+
+africa_world_sponsorship_offer_is_pending = {
+	has_country_flag = africa_world_sponsorship_offer_pending
+	has_event_target = africa_host
+	event_target:africa_host = { africa_is_current_host = yes }
+}
+
+# COUNTRY scope on a candidate. The host gate itself belongs to the root of
+# the targeted decision and is kept separate so the candidate cannot self-open
+# a sponsorship offer.
+africa_world_sponsorship_candidate_is_offerable = {
+	africa_world_package_is_candidate = yes
+	has_country_flag = africa_world_package_implementation_ready
+	NOT = { has_country_flag = africa_world_sponsorship_offer_pending }
+	NOT = { has_country_flag = africa_world_sponsorship_refused }
+	has_event_target = africa_host
+	event_target:africa_host = {
+		africa_is_current_host = yes
+		NOT = { has_country_flag = africa_world_sponsorship_offer_pending }
+	}
+}
+
+africa_world_sponsorship_candidate_can_answer = {
+	africa_world_sponsorship_offer_is_pending = yes
+	africa_world_sponsorship_mode_is_grounded = yes
+	NOT = { has_country_flag = africa_world_sponsorship_counterterms_pending }
+}
+
+africa_world_sponsorship_counterterms_are_pending = {
+	has_country_flag = africa_world_sponsorship_counterterms_pending
+	has_event_target = africa_host
+	event_target:africa_host = { africa_is_current_host = yes }
+}
+
+africa_world_sponsorship_candidate_can_accept_counterterms = {
+	africa_world_sponsorship_counterterms_are_pending = yes
+	africa_world_sponsorship_mode_is_grounded = yes
+}
+
+# COUNTRY scope on the Event 012 host. Sponsorship is intentionally serial:
+# one offer or continuing obligation is active at a time, which keeps the
+# existing host target array and obligation decision bounded.
+africa_world_sponsorship_host_can_offer = {
+	africa_world_package_sponsorship_gate_is_open = yes
+	NOT = { has_country_flag = africa_world_sponsorship_offer_pending }
+	NOT = {
+		any_of_scopes = {
+			array = africa_world_sponsorship_targets
+			has_country_flag = africa_world_sponsorship_obligation_due
+		}
+	}
+}
+
+africa_world_sponsorship_host_can_pay_counterterms = {
+	has_political_power > constant:africa_world_sponsorship_mode.counterterm_pp_cost
+}
+
+africa_world_sponsorship_host_can_renegotiate = {
+	africa_is_current_host = yes
+	has_country_flag = africa_world_sponsorship_offer_pending
+}
+
+africa_world_sponsorship_diplomatic_obligation_is_due = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_sponsorship_obligation_due
+	check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.diplomatic }
+	NOT = { has_country_flag = africa_world_sponsorship_defaulted }
+}
+
+africa_world_sponsorship_material_obligation_is_due = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_sponsorship_obligation_due
+	check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.material }
+	NOT = { has_country_flag = africa_world_sponsorship_defaulted }
+}
+
+africa_world_sponsorship_military_obligation_is_due = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_sponsorship_obligation_due
+	check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.military }
+	NOT = { has_country_flag = africa_world_sponsorship_defaulted }
+}
+
+africa_world_sponsorship_ideological_obligation_is_due = {
+	africa_world_package_is_installed = yes
+	has_country_flag = africa_world_sponsorship_obligation_due
+	check_variable = { africa_world_sponsorship_mode = constant:africa_world_sponsorship_mode.ideological }
+	NOT = { has_country_flag = africa_world_sponsorship_defaulted }
+}
+
+africa_world_sponsorship_any_obligation_is_due = {
+	OR = {
+		africa_world_sponsorship_diplomatic_obligation_is_due = yes
+		africa_world_sponsorship_material_obligation_is_due = yes
+		africa_world_sponsorship_military_obligation_is_due = yes
+		africa_world_sponsorship_ideological_obligation_is_due = yes
+	}
+}
+
+# COUNTRY scope on the sponsored actor. This is called by the bounded war
+# hook after it has already identified the registered package participant.
+africa_world_sponsorship_military_call_is_valid = {
+	africa_world_sponsorship_military_obligation_is_due = yes
+	has_country_flag = africa_world_sponsorship_military_defence_call_pending
+	has_event_target = africa_host
+	event_target:africa_host = { africa_is_current_host = yes }
+}
+
+# COUNTRY scope on the host while a military call event is open.
+africa_world_sponsorship_host_can_honor_military_call = {
+	africa_is_current_host = yes
+	has_event_target = africa_world_sponsorship_candidate
+	event_target:africa_world_sponsorship_candidate = {
+		africa_world_sponsorship_military_obligation_is_due = yes
+		has_country_flag = africa_world_sponsorship_military_defence_call_pending
+	}
+}
+
+africa_world_sponsorship_host_can_mediate = {
+	africa_is_current_host = yes
+	has_event_target = africa_world_sponsorship_candidate
+	event_target:africa_world_sponsorship_candidate = {
+		africa_world_sponsorship_diplomatic_obligation_is_due = yes
+	}
+}
+
+africa_world_sponsorship_host_can_hold_ideological_congress = {
+	africa_is_current_host = yes
+	has_event_target = africa_world_sponsorship_candidate
+	event_target:africa_world_sponsorship_candidate = {
+		africa_world_sponsorship_ideological_obligation_is_due = yes
+	}
+}
+
+# COUNTRY scope on a candidate. The common target array is the authoritative
+# cleanup surface after fulfilment, default, actor loss, or terminal closure.
+africa_world_sponsorship_active_cleanup_is_needed = {
+	OR = {
+		has_country_flag = africa_world_sponsorship_offer_pending
+		has_country_flag = africa_world_sponsorship_counterterms_pending
+		has_country_flag = africa_world_sponsorship_obligation_due
+		has_country_flag = africa_world_sponsorship_military_defence_call_pending
+	}
+}
