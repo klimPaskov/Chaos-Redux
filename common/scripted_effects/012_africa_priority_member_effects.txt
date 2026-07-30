@@ -929,6 +929,15 @@ africa_priority_member_advance_mechanic = {
 					africa_priority_member_package_is_kilwa = yes
 					has_country_flag = africa_priority_kilwa_common_customs_arbitrated
 					has_event_target = africa_host
+					africa_member_host_generation_is_current = yes
+					NOT = { has_war_with = event_target:africa_host }
+					OR = {
+						africa_relationship_is_protected = yes
+						africa_relationship_is_associate = yes
+						africa_relationship_is_chartered = yes
+						africa_relationship_is_autonomous_federal = yes
+						africa_relationship_is_integrated_region = yes
+					}
 				}
 				event_target:africa_host = {
 					set_global_flag = africa_achievement_maritime_convoy_access_active
@@ -937,7 +946,10 @@ africa_priority_member_advance_mechanic = {
 			}
 			if = {
 				limit = { has_event_target = africa_host }
-				event_target:africa_host = { africa_achievement_record_horn_corridor_operational = yes }
+				event_target:africa_host = {
+					africa_achievement_record_horn_corridor_operational = yes
+					africa_achievement_try_record_savanna_settlement = yes
+				}
 			}
 		}
 		if = { limit = { has_event_target = africa_host } event_target:africa_host = { africa_clamp_host_values = yes } }

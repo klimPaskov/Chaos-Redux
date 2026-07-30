@@ -42,8 +42,10 @@ africa_achievement_initialize_normal_host = {
 	set_variable = { global.africa_achievement_weather_armies_defeated = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_active_disease_outbreaks = constant:africa_value.zero }
 	set_variable = { global.africa_achievement_disease_outbreaks_contained = constant:africa_value.zero }
-	set_variable = { global.africa_achievement_foreign_concession_share = constant:africa_measure.minimum }
-	set_variable = { global.africa_achievement_local_ownership_share = constant:africa_measure.maximum }
+	# Share ratios remain unknown until the owning resource or project system
+	# writes a measured result; favourable defaults must not satisfy a trigger.
+	set_variable = { global.africa_achievement_foreign_concession_share = constant:africa_value.invalid }
+	set_variable = { global.africa_achievement_local_ownership_share = constant:africa_value.invalid }
 
 	set_variable = { global.africa_achievement_last_convoy_target_id = constant:africa_value.invalid }
 	set_variable = { global.africa_achievement_last_convoy_start_day = constant:africa_value.invalid }
@@ -368,7 +370,10 @@ africa_achievement_record_full_action = {
 		for_each_scope_loop = {
 			array = africa_action_state_targets
 			if = {
-				limit = { NOT = { has_state_flag = africa_achievement_rail_project_counted } }
+				limit = {
+					has_state_flag = africa_rail_spine_connection_operational
+					NOT = { has_state_flag = africa_achievement_rail_project_counted }
+				}
 				set_state_flag = africa_achievement_rail_project_counted
 				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
 			}
@@ -381,7 +386,10 @@ africa_achievement_record_full_action = {
 		for_each_scope_loop = {
 			array = africa_action_state_targets
 			if = {
-				limit = { NOT = { has_state_flag = africa_achievement_river_project_counted } }
+				limit = {
+					has_state_flag = africa_river_or_lake_transport_operational
+					NOT = { has_state_flag = africa_achievement_river_project_counted }
+				}
 				set_state_flag = africa_achievement_river_project_counted
 				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
 			}
@@ -394,7 +402,10 @@ africa_achievement_record_full_action = {
 		for_each_scope_loop = {
 			array = africa_action_state_targets
 			if = {
-				limit = { NOT = { has_state_flag = africa_achievement_port_project_counted } }
+				limit = {
+					has_state_flag = africa_port_modernisation_operational
+					NOT = { has_state_flag = africa_achievement_port_project_counted }
+				}
 				set_state_flag = africa_achievement_port_project_counted
 				add_to_variable = { global.africa_achievement_maritime_port_count = constant:africa_value.one }
 				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
@@ -1255,6 +1266,155 @@ africa_achievement_record_restoration_identity = {
 	africa_achievement_refresh_host_duration_windows = yes
 }
 
+# COUNTRY scope on the completed IW-102 Kuba overlay when that country is also
+# a current Event 012 relationship member. The overlay owns the final council
+# charter and territorial compact; no cosmetic tag alone can create an
+# achievement identity.
+africa_achievement_record_kuba_restoration_identity = {
+	if = {
+		limit = {
+			is_independence_wave_iw102_kuba_route_active = yes
+			has_country_flag = independence_wave_iw102_kuba_council_charter
+			has_country_flag = independence_wave_iw102_kuba_territorial_compact
+			has_event_target = africa_host
+			africa_member_host_generation_is_current = yes
+		}
+		set_country_flag = africa_achievement_kuba_overlap_settled
+		set_temp_variable = { africa_achievement_restoration_identity_id = constant:africa_achievement_restoration_identity.kuba }
+		africa_achievement_record_restoration_identity = yes
+		clear_variable = africa_achievement_restoration_identity_id
+	}
+}
+
+# HOST scope. The three-court Savanna milestone is written only after each
+# named identity has an exact settlement owner, remains in the current host
+# generation, and is in a cooperative relationship with the same League or
+# federation. This joins the package/overlay owners without inventing a court
+# from an overlay or a count.
+africa_achievement_try_record_savanna_settlement = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = africa_achievement_savanna_owner_ready }
+		}
+		set_temp_variable = { africa_achievement_savanna_luba_ready = constant:africa_value.zero }
+		set_temp_variable = { africa_achievement_savanna_lunda_ready = constant:africa_value.zero }
+		set_temp_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.zero }
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			limit = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				africa_member_host_generation_is_current = yes
+				NOT = { has_war_with = event_target:africa_host }
+				OR = {
+					africa_relationship_is_protected = yes
+					africa_relationship_is_associate = yes
+					africa_relationship_is_chartered = yes
+					africa_relationship_is_autonomous_federal = yes
+					africa_relationship_is_integrated_region = yes
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = africa_achievement_restoration_identity_luba_recorded
+					has_country_flag = africa_priority_member_overlap_disposition_recorded
+				}
+				set_temp_variable = { africa_achievement_savanna_luba_ready = constant:africa_value.one }
+			}
+			if = {
+				limit = {
+					has_country_flag = africa_achievement_restoration_identity_lunda_recorded
+					has_country_flag = africa_priority_member_overlap_disposition_recorded
+				}
+				set_temp_variable = { africa_achievement_savanna_lunda_ready = constant:africa_value.one }
+			}
+			if = {
+				limit = {
+					has_country_flag = africa_achievement_restoration_identity_kuba_recorded
+					has_country_flag = africa_achievement_kuba_overlap_settled
+				}
+				set_temp_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { africa_achievement_savanna_luba_ready = constant:africa_value.one }
+				check_variable = { africa_achievement_savanna_lunda_ready = constant:africa_value.one }
+				check_variable = { africa_achievement_savanna_kuba_ready = constant:africa_value.one }
+				check_variable = {
+					var = global.africa_achievement_savanna_court_count
+					value = constant:africa_achievement_count.savanna_courts
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.savanna_overlaps_settled }
+			africa_achievement_record_milestone = yes
+			set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.savanna_courts_same_order }
+			africa_achievement_record_milestone = yes
+			set_global_flag = africa_achievement_savanna_owner_ready
+		}
+	}
+}
+
+# HOST scope. Rebuild the current-generation medium-confidence regional proof
+# from the relationship registry. This is a live ledger observation, not an
+# action-count proxy: a region enters only when a cooperative member carrying
+# that overlay is still alive and at least medium confidence.
+africa_achievement_refresh_medium_confidence_regions = {
+	clear_array = global.africa_achievement_medium_confidence_regions
+	for_each_scope_loop = {
+		array = africa_relationship_countries
+		limit = {
+			exists = yes
+			NOT = { has_capitulated = yes }
+			africa_member_host_generation_is_current = yes
+			has_variable = africa_regional_overlay
+			check_variable = { africa_regional_overlay > constant:africa_overlay.none }
+			NOT = { check_variable = { africa_regional_overlay > constant:africa_overlay.madagascar_islands } }
+			has_variable = africa_member_confidence
+			check_variable = {
+				var = africa_member_confidence
+				value = constant:africa_measure.medium
+				compare = greater_than_or_equals
+			}
+			OR = {
+				africa_relationship_is_protected = yes
+				africa_relationship_is_associate = yes
+				africa_relationship_is_chartered = yes
+				africa_relationship_is_autonomous_federal = yes
+				africa_relationship_is_integrated_region = yes
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.africa_achievement_medium_confidence_regions
+						value = africa_regional_overlay
+					}
+				}
+			}
+			add_to_array = {
+				array = global.africa_achievement_medium_confidence_regions
+				value = africa_regional_overlay
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.africa_achievement_medium_confidence_regions^num
+				value = constant:africa_achievement_count.continental_regions
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = africa_achievement_all_regions_medium_confidence
+	}
+	else = {
+		clr_global_flag = africa_achievement_all_regions_medium_confidence
+	}
+}
+
 # COUNTRY scope on the current host. The host-owned relationship registry is
 # the narrow live set for duration achievements; this avoids scanning every
 # country and lets pre-unification constitutional challenges start on time.
@@ -1330,6 +1490,7 @@ africa_achievement_refresh_live_duration_counts = {
 	set_variable = { global.africa_achievement_snapshot_sovereign_members = africa_achievement_live_sovereign_members }
 	set_variable = { global.africa_achievement_snapshot_nonhuman_members = africa_achievement_live_nonhuman_members }
 	set_variable = { global.africa_achievement_rival_bloc_member_count = africa_rival_bloc_countries^num }
+	africa_achievement_refresh_medium_confidence_regions = yes
 }
 
 # Any Event 12 scope with the persistent host target available.
