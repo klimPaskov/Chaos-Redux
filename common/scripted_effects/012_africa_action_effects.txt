@@ -3531,6 +3531,7 @@ africa_create_action_record = {
 			}
 		}
 	}
+	event_target:africa_action_target = { africa_diaspora_open_withdrawal_review = yes }
 }
 
 # COUNTRY scope on the host.
@@ -3573,6 +3574,8 @@ africa_begin_quoted_action_against_target = {
 	africa_prepare_first_proof_action_markers = yes
 	africa_prepare_first_proof_recovery_contract = yes
 	africa_validate_action_specific_requirements = yes
+	africa_diaspora_validate_target_capacity = yes
+	africa_diaspora_prepare_target_response = yes
 	if = {
 		limit = {
 			africa_is_current_host = yes
@@ -3581,6 +3584,8 @@ africa_begin_quoted_action_against_target = {
 			africa_can_pay_action_quote = yes
 			check_variable = { africa_action_state_target_valid > constant:africa_value.zero }
 			check_variable = { africa_action_specific_validation_result > constant:africa_value.zero }
+			check_variable = { africa_diaspora_capacity_validation_result > constant:africa_value.zero }
+			NOT = { has_country_flag = africa_diaspora_request_pending }
 			has_event_target = africa_action_target
 			event_target:africa_action_target = { NOT = { has_country_flag = africa_action_record_active } }
 		}
@@ -3613,7 +3618,10 @@ africa_begin_quoted_action_against_target = {
 	}
 	else = {
 		if = {
-			limit = { is_ai = no }
+			limit = {
+				is_ai = no
+				NOT = { has_country_flag = africa_diaspora_request_pending }
+			}
 			country_event = { id = chaosx.nr12.221 }
 		}
 	}
@@ -6633,6 +6641,7 @@ africa_apply_current_action_outcome = {
 		africa_apply_failed_action_family_values = yes
 		africa_apply_action_failure_semantics = yes
 	}
+	africa_diaspora_apply_current_outcome = yes
 	africa_achievement_record_action_outcome = yes
 }
 
@@ -6661,6 +6670,7 @@ africa_remove_current_action_mission = {
 africa_cleanup_action = {
 	if = {
 		limit = { has_country_flag = africa_action_record_active }
+		africa_diaspora_cleanup_action_state = yes
 		set_variable = { africa_last_action_id = africa_active_action_id }
 		set_variable = { africa_last_action_outcome = africa_active_action_outcome }
 		set_variable = { africa_last_action_generation = africa_active_action_generation }
@@ -6766,6 +6776,7 @@ africa_cancel_action = {
 		set_variable = { africa_active_action_status = constant:africa_action_status.cancelled }
 		set_country_flag = africa_action_cancelled_with_cleanup
 		event_target:africa_host = { set_country_flag = africa_any_action_cancelled_with_cleanup }
+		africa_diaspora_apply_cancel_cleanup = yes
 		if = {
 			limit = { africa_is_valid_relationship_target = yes has_variable = africa_member_confidence }
 			add_to_variable = { africa_member_confidence = constant:africa_action_result.cancelled_confidence }

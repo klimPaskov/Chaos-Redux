@@ -1,0 +1,142 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 DIASPORA OWNER-PROTOCOL TRIGGERS
+# ============================================================================
+# These triggers are deliberately narrow. They gate only the six actions that
+# require a target-owned answer and the four capacity lanes maintained by the
+# matching diaspora scripted effects. No trigger scans the world or infers
+# consent from opinion, ownership, or a relationship state.
+# ============================================================================
+
+# HOST scope while a quote is being prepared. Action 54 remains a technical
+# exchange and therefore follows its existing skill parameter validation.
+africa_diaspora_action_requires_owner_response = {
+	OR = {
+		check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+		check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+		check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+		check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+		check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+		check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+	}
+}
+
+# HOST scope while a request event is open. This uses the immutable request
+# cursor rather than the live UI selection.
+africa_diaspora_request_action_is_valid = {
+	OR = {
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.charter_passage_programme }
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.build_returnee_housing }
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.veterans_and_volunteers_programme }
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.diaspora_investment_bonds }
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.citizenship_and_representation_convention }
+		check_variable = { africa_diaspora_request_action_id = constant:africa_action.diaspora_emergency_evacuation }
+	}
+}
+
+# HOST scope while a quote is being prepared. This deliberately omits the
+# target-owned consent/emergency flag, but retains the remaining action surface
+# checks so an invalid target or missing registry never receives a consent
+# event.
+africa_diaspora_owner_request_surface_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+			has_country_flag = africa_voluntary_return_registry_open
+			has_event_target = africa_action_target
+			event_target:africa_action_target = { africa_action_target_is_usable = yes }
+			check_variable = { africa_selected_diaspora_origin_group > constant:africa_achievement_origin_group.none }
+			NOT = { check_variable = { africa_selected_diaspora_origin_group > constant:africa_achievement_origin_group.indian_ocean } }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+			has_country_flag = africa_voluntary_return_registry_open
+			has_event_target = africa_action_target
+			event_target:africa_action_target = { africa_action_target_is_usable = yes }
+			check_variable = { africa_action_state_target_valid > constant:africa_value.zero }
+		}
+		AND = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+				check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+			}
+			has_country_flag = africa_voluntary_return_registry_open
+			has_event_target = africa_action_target
+			event_target:africa_action_target = { africa_action_target_is_usable = yes }
+		}
+	}
+}
+
+# HOST scope. Action 58 is the emergency owner-response branch.
+africa_diaspora_request_is_emergency = {
+	check_variable = { africa_diaspora_request_action_id = constant:africa_action.diaspora_emergency_evacuation }
+}
+
+# COUNTRY scope on a target. Consent is a standing, revocable answer for the
+# registry programmes; refusal and withdrawal flags are evidence, not implicit
+# disqualifiers, and are cleared only by a later owner acceptance.
+africa_diaspora_target_consent_is_current = {
+	has_country_flag = africa_diaspora_return_consent
+}
+
+# COUNTRY scope on a target. Emergency action requires a fresh active emergency
+# flag, even when the standing registry consent remains valid.
+africa_diaspora_target_emergency_is_active = {
+	has_country_flag = africa_diaspora_emergency_active
+}
+
+# HOST scope after the action-specific matrix has validated its target. The
+# ledger is initialized by the caller before this trigger is evaluated.
+africa_diaspora_target_capacity_is_available = {
+	OR = {
+		NOT = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+				check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+				check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+				check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention }
+				check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme }
+				check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme }
+			}
+			check_variable = { var = africa_diaspora_passage_capacity value = constant:africa_diaspora_change.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing }
+			check_variable = { var = africa_diaspora_housing_capacity value = constant:africa_diaspora_change.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds }
+			check_variable = { var = africa_diaspora_investment_capacity value = constant:africa_diaspora_change.zero compare = greater_than }
+		}
+		AND = {
+			check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation }
+			check_variable = { var = africa_diaspora_emergency_capacity value = constant:africa_diaspora_change.zero compare = greater_than }
+		}
+	}
+}
+
+# COUNTRY scope on an active target. This is used by the delayed withdrawal
+# review and by cancellation cleanup; it never changes ownership or borders.
+africa_diaspora_active_action_is_target_owned = {
+	has_country_flag = africa_action_record_active
+	OR = {
+		check_variable = { africa_active_action_id = constant:africa_action.charter_passage_programme }
+		check_variable = { africa_active_action_id = constant:africa_action.build_returnee_housing }
+		check_variable = { africa_active_action_id = constant:africa_action.veterans_and_volunteers_programme }
+		check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds }
+		check_variable = { africa_active_action_id = constant:africa_action.citizenship_and_representation_convention }
+		check_variable = { africa_active_action_id = constant:africa_action.diaspora_emergency_evacuation }
+	}
+}
+
+africa_diaspora_target_can_withdraw = {
+	africa_diaspora_active_action_is_target_owned = yes
+	NOT = { has_country_flag = africa_diaspora_withdrawal_review_resolved }
+}

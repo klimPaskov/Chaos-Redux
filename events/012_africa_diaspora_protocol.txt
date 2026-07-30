@@ -1,0 +1,138 @@
+add_namespace = chaosx.nr12
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 DIASPORA OWNER-PROTOCOL EVENTS
+# ============================================================================
+# The selected target owns every consent, counterterm, refusal, and withdrawal
+# answer. Event targets retain the host/target pair for this one request chain;
+# scripted effects clear those targets after resume, refusal, or host closure.
+# ============================================================================
+
+# Target receives a voluntary diaspora request.
+country_event = {
+	id = chaosx.nr12.310
+	title = chaosx.nr12.310.t
+	desc = chaosx.nr12.310.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_target = africa_diaspora_request_host
+		event_target:africa_diaspora_request_host = {
+			has_country_flag = africa_diaspora_request_pending
+			africa_diaspora_request_action_is_valid = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr12.310.a
+		custom_effect_tooltip = chaosx.nr12.310.a.tt
+		ai_chance = { base = constant:africa_diaspora_ai.owner_accept }
+		africa_diaspora_accept_target_request = yes
+	}
+	option = {
+		name = chaosx.nr12.310.b
+		custom_effect_tooltip = chaosx.nr12.310.b.tt
+		ai_chance = { base = constant:africa_diaspora_ai.owner_negotiate }
+		africa_diaspora_request_counterterms = yes
+	}
+	option = {
+		name = chaosx.nr12.310.c
+		custom_effect_tooltip = chaosx.nr12.310.c.tt
+		ai_chance = { base = constant:africa_diaspora_ai.owner_refuse }
+		africa_diaspora_refuse_target_request = yes
+	}
+}
+
+# Host offers bounded safeguards after the target asks to negotiate.
+country_event = {
+	id = chaosx.nr12.311
+	title = chaosx.nr12.311.t
+	desc = chaosx.nr12.311.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_diaspora_request_pending
+		africa_diaspora_request_action_is_valid = yes
+		has_event_target = africa_diaspora_request_target
+		event_target:africa_diaspora_request_target = { has_country_flag = africa_diaspora_terms_requested }
+	}
+
+	option = {
+		name = chaosx.nr12.311.a
+		custom_effect_tooltip = chaosx.nr12.311.a.tt
+		ai_chance = { base = constant:africa_diaspora_ai.terms_accept }
+		africa_diaspora_offer_counterterms = yes
+	}
+	option = {
+		name = chaosx.nr12.311.b
+		custom_effect_tooltip = chaosx.nr12.311.b.tt
+		ai_chance = { base = constant:africa_diaspora_ai.terms_refuse }
+		event_target:africa_diaspora_request_target = { africa_diaspora_close_host_offer = yes }
+	}
+}
+
+# Target answers the host's safeguards. Acceptance returns to the ordinary
+# quote path; refusal closes the request without an action record.
+country_event = {
+	id = chaosx.nr12.312
+	title = chaosx.nr12.312.t
+	desc = chaosx.nr12.312.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_target = africa_diaspora_request_host
+		event_target:africa_diaspora_request_host = {
+			has_country_flag = africa_diaspora_request_pending
+			has_country_flag = africa_diaspora_terms_offered
+		}
+	}
+
+	option = {
+		name = chaosx.nr12.312.a
+		custom_effect_tooltip = chaosx.nr12.312.a.tt
+		ai_chance = { base = constant:africa_diaspora_ai.terms_accept }
+		africa_diaspora_accept_target_request = yes
+	}
+	option = {
+		name = chaosx.nr12.312.b
+		custom_effect_tooltip = chaosx.nr12.312.b.tt
+		ai_chance = { base = constant:africa_diaspora_ai.terms_refuse }
+		africa_diaspora_refuse_target_request = yes
+	}
+}
+
+# Delayed target-owned review while a diaspora action remains active.
+country_event = {
+	id = chaosx.nr12.313
+	title = chaosx.nr12.313.t
+	desc = chaosx.nr12.313.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = africa_diaspora_withdrawal_review_open
+		africa_diaspora_target_can_withdraw = yes
+		check_variable = {
+			var = africa_active_action_generation
+			value = africa_diaspora_withdrawal_generation
+			compare = equals
+		}
+	}
+
+	option = {
+		name = chaosx.nr12.313.a
+		custom_effect_tooltip = chaosx.nr12.313.a.tt
+		ai_chance = { base = constant:africa_diaspora_ai.withdrawal_continue }
+		africa_diaspora_continue_active_action = yes
+	}
+	option = {
+		name = chaosx.nr12.313.b
+		custom_effect_tooltip = chaosx.nr12.313.b.tt
+		ai_chance = { base = constant:africa_diaspora_ai.withdrawal_request }
+		africa_diaspora_withdraw_active_action = yes
+	}
+}
