@@ -762,6 +762,12 @@ africa_scramble_choose_recognition = {
 			add_to_variable = { africa_colonial_pressure = africa_scramble_pressure_relief_delta }
 			africa_scramble_clamp_values = yes
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.scramble_recognition }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_host.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -779,6 +785,12 @@ africa_scramble_choose_conditional_recognition = {
 			add_to_variable = { africa_scramble_settlement_score = constant:africa_value.one }
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:africa_scramble_response.conditional_recognition_convoys }
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.scramble_conditional_recognition }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_host.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -798,6 +810,12 @@ africa_scramble_choose_sanctions = {
 			add_stability = constant:africa_scramble_response.sanctions_stability_loss
 			africa_scramble_clamp_values = yes
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.scramble_sanctions }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_host.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -825,6 +843,12 @@ africa_scramble_choose_ultimatum = {
 				country_event = { id = africa_world_order.3 }
 			}
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.scramble_ultimatum }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_host.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -1362,6 +1386,16 @@ africa_world_record_constituent_consent = {
 				set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
 			}
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.constituent_ratification }
+		if = {
+			limit = { has_event_target = africa_world_protocol_package }
+			set_temp_variable = { africa_event_log_actor = event_target:africa_world_protocol_package.id }
+		}
+		else = { set_temp_variable = { africa_event_log_actor = ROOT.id } }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -1400,6 +1434,16 @@ africa_world_record_constituent_refusal = {
 				set_variable = { africa_world_package_phase = constant:africa_world_package_phase.constituent_bargaining }
 			}
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.constituent_refusal }
+		if = {
+			limit = { has_event_target = africa_world_protocol_package }
+			set_temp_variable = { africa_event_log_actor = event_target:africa_world_protocol_package.id }
+		}
+		else = { set_temp_variable = { africa_event_log_actor = ROOT.id } }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -1490,6 +1534,16 @@ africa_world_record_constituent_withdrawal = {
 				clamp_variable = { var = africa_world_package_legitimacy min = constant:africa_world_order.package_minimum max = constant:africa_world_order.package_maximum }
 			}
 		}
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.constituent_withdrawal }
+		if = {
+			limit = { has_event_target = africa_world_protocol_package }
+			set_temp_variable = { africa_event_log_actor = event_target:africa_world_protocol_package.id }
+		}
+		else = { set_temp_variable = { africa_event_log_actor = ROOT.id } }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 
@@ -2038,6 +2092,35 @@ africa_world_install_current_package = {
 		}
 		africa_world_initialise_distinct_package_mechanic = yes
 		africa_world_initialise_package_polity_foundation = yes
+		if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.middle_east } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_middle_east }
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.europe } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_europe }
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.asia } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_asia }
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.north_america } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_north_america }
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.south_america } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_south_america }
+		}
+		else_if = {
+			limit = { check_variable = { africa_world_continent_id = constant:africa_world_continent.oceania } }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.package_oceania }
+		}
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = event_target:africa_host.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
 		event_target:africa_host = { africa_world_finalize_package_roster = yes }
 		mark_focus_tree_layout_dirty = yes
 	}
@@ -3202,6 +3285,20 @@ africa_form_terminal_world_identity = {
 		set_country_flag = africa_world_epilogue_open
 		set_variable = { africa_selected_action_family = constant:africa_action_family.world_order }
 		africa_achievement_record_africa_world_formation = yes
+		if = {
+			limit = { has_global_flag = africa_world_terminal_protocol_unanimous_union }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_unanimous_union }
+		}
+		else_if = {
+			limit = { has_global_flag = africa_world_terminal_protocol_last_standing }
+			set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_last_standing }
+		}
+		else = { set_temp_variable = { africa_event_log_payload = constant:africa_event_log.the_world_continental_campaign } }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = constant:africa_value.zero }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.zero }
+		africa_record_event_log_world_order_entry = yes
 	}
 }
 

@@ -33,6 +33,28 @@ separate snapshot ledger keyed by the resulting history sequence. The helper
 is intentionally narrow and does not alter ordinary event catalogue
 population or event firing.
 
+## `africa_record_event_log_world_order_entry`
+
+This Event 12 wrapper supplies the shared event id and fire-once type for a
+world-order history row. The calling outcome still chooses the payload, actor,
+secondary actor, and all flag/route checks.
+
+Temporary inputs:
+
+- `africa_event_log_payload`
+- `africa_event_log_actor`
+- `africa_event_log_has_actor`
+- `africa_event_log_secondary_actor`
+- `africa_event_log_has_secondary_actor`
+
+Outputs and side effects:
+
+- Appends one Event 12 row to the shared history arrays.
+- Refreshes open human Event Log surfaces after the row is appended.
+- Clears the five Event 12 input temporaries and the seven shared logger
+  temporaries it creates.
+- Does not set readiness flags, alter outcome flags, or infer actor scopes.
+
 ## `refresh_events_log_system_history_views`
 
 Scope: the system country after its shared history row and private payload
