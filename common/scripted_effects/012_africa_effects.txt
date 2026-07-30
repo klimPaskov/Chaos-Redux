@@ -1322,6 +1322,17 @@ africa_apply_relationship_transition = {
 		africa_apply_relationship_transition_consequence = yes
 		africa_register_current_relationship_state = yes
 		event_target:africa_host = { africa_reconcile_relationship_counts_and_caps = yes }
+		if = {
+			limit = {
+				has_event_target = africa_host
+				event_target:africa_host = { has_country_flag = africa_achievement_host_actor_eligible }
+			}
+			event_target:africa_host = {
+				africa_achievement_refresh_host_duration_windows = yes
+				africa_achievement_record_horn_corridor_operational = yes
+				africa_achievement_try_record_savanna_settlement = yes
+			}
+		}
 		set_country_flag = africa_relationship_transition_pending_notice
 		set_temp_variable = { africa_relationship_transition_result = constant:africa_value.one }
 	}
@@ -1623,6 +1634,7 @@ africa_apply_overlay_focus_reward = {
 		if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.build_corridor } } set_country_flag = africa_island_convoy_network_open }
 		if = { limit = { check_variable = { africa_focus_overlay_step = constant:africa_focus_overlay_step.settle_local_terms } } set_country_flag = africa_highland_coastal_island_settlement }
 	}
+	africa_apply_constitutional_overlay_payoff = yes
 	africa_clamp_host_values = yes
 	set_temp_variable = { africa_focus_overlay_step = constant:africa_value.zero }
 }
