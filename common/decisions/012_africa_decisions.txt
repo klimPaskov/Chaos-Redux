@@ -1446,6 +1446,24 @@ africa_scramble_actions_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	africa_select_scramble_coalition_member_target = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_scramble_coalition_members
+		activation = { africa_is_current_host = yes has_global_flag = africa_scramble_response_active }
+		target_trigger = {
+			FROM = {
+				africa_action_target_is_usable = yes
+				has_country_flag = africa_scramble_participant
+				has_country_flag = africa_scramble_coalition_member
+				NOT = { has_country_flag = africa_action_record_active }
+			}
+		}
+		available = { FROM = { NOT = { has_country_flag = africa_action_recent_target } } }
+		cost = 0
+		complete_effect = { africa_save_from_as_selected_country_target = yes }
+		ai_will_do = { base = 0 }
+	}
+
 	africa_select_seek_international_recognition = {
 		icon = GFX_decision_012_africa_charter_ledger
 		visible = {

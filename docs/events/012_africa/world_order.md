@@ -30,6 +30,16 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 - Every continent-package loader preserves completed-focus history. The installer remains one-shot through the candidate-to-installed state transition, so activating a reviewed package cannot silently erase earlier national progress.
 
+### Scramble interest census and response roster
+
+The one-time participant census is bounded at `constant:africa_scramble_response.participant_census_cap` and writes explicit host-owned arrays for former colonial relationships, ideological rivals, resource-nationalisation exposure, fear of a complete external continental unifier, and South Africa or Allied relationships. These arrays are frozen when `africa_scramble_interest_census_complete` is set and are never rebuilt by a recurring on-action.
+
+`africa_scramble_enlist_coalition_member` and `africa_scramble_remove_coalition_member` keep the participant flag, the host counter, and `africa_scramble_coalition_members` in lockstep under the six-member cap. Recognition leaves the coalition, sanctions enlist a bounded member, and ultimatum issuers enlist as expedition planners.
+
+Recognition, conditional recognition, sanctions, ultimatums, expedition launches, and aftermath closure now carry material equipment, convoy, political-power, stability, and war-support consequences from `africa_scramble_response` constants. `africa_scramble_apply_class_response_consequences` records host pressure and integration burden for every accepted interest class, while `africa_world_order.8` reports the multi-member expedition response.
+
+The expedition launch iterates only the frozen coalition array and gives every eligible planner a war role and expedition matériel before declaring the existing treaty-enforcement war. `africa_scramble_cleanup_response_roster` clears transient participant and class state, arrays, and class counters after the settlement or defeat log is queued while preserving the host's outcome summary flags.
+
 ## AI policy binding
 
 The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table.
