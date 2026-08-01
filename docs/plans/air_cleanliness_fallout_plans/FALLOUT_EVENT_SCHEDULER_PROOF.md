@@ -1,5 +1,9 @@
 # Fallout Living-World Scheduler Proof
 
+## Current reconciliation after The Pirate Amnesty
+
+The dormant reviewed producer now covers `84` ordinary Fallout rows and `670` defined event blocks through `chaosx.fallout.795`. The Pirate Amnesty is the latest ordinary row with candidate `789`, transaction `710084`, route `7200`, and survivor history `9190`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Harbor Without a City memory, a foreign neighbor, durable Air Winter and survival ledgers, dedicated raider ledgers, and an affordable branch. Its `35` day result and `270` day sea-law review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+
 ## Current reconciliation after The Harbor Without a City
 
 The dormant reviewed producer now covers `83` ordinary Fallout rows and `663` defined event blocks through `chaosx.fallout.788`. The Harbor Without a City is the latest ordinary row with candidate `782`, transaction `710083`, route `7198`, and survivor history `9189`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Ghost Convoy memory, a foreign neighbor, durable Air Winter and survival ledgers, harbor ledgers, and an affordable branch. Its `45` day result and `330` day government review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.

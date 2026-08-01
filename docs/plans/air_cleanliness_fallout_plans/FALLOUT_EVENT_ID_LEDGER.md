@@ -1,5 +1,13 @@
 # Fallout Event ID Ledger
 
+## Current reconciliation after The Pirate Amnesty
+
+The living-world pilot now contains `670` defined event blocks across the reviewed ordinary range through `chaosx.fallout.795`, including the dormant The Pirate Amnesty tranche at `789` through `795`. The current reviewed ordinary row count is `84`. The Pirate Amnesty uses candidate `789`, transaction `710084`, route `7200`, and survivor history `9190`. The reserved route upper bound is `7201`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`.
+
+## The Pirate Amnesty tranche
+
+The Pirate Amnesty follows the closed Harbor Without a City memory. It adds seven dormant state-level event blocks at suffixes `789` through `795` with candidate id `789`, transaction key `710084`, route `7200`, and history `9190`. The row selects the lowest current West African Port Confederacies coastal or naval-base state with a foreign neighbor, freezes Air Winter, Supply Access, crew legitimacy, piracy pressure, escort trust, prize-law funds, crew capacity, seized stores, and raid memory, then offers conditional amnesty, privateer service, public trial, and reef exile branches. Results arrive after thirty-five days and the sea-law review after two hundred seventy days. Dedicated art, Event Log payloads, hidden-AI parity, bounded Deaths failure, Air Winter, ledger, opinion, Supply Access effects, and authenticated cleanup are wired. The chain remains dormant and outside release-floor credit while scheduler activation remains unset.
+
 ## Current reconciliation after The Harbor Without a City
 
 The living-world pilot now contains `663` defined event blocks across the reviewed ordinary range through `788`, including the dormant The Harbor Without a City tranche at `782` through `788`. The current reviewed ordinary row count is `83`. The Harbor Without a City uses candidate `782`, transaction `710083`, route `7198`, and survivor Event Log history `9189`. The reserved route upper bound is `7199`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
