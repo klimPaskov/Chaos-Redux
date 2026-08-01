@@ -1,5 +1,7 @@
 # Event 006 evolution incident resolution core handoff
 
+> Superseded for the Armed Birth force follow-through by `006_armed_birth_frontier_reserve_followthrough_2026_08_01.md`. The five incident effects and events remain the source authority; the current DM-22 gate now exposes a paid, one-shot frontier reserve path.
+
 ## Scope
 
 This tranche closes the shared incident-resolution surface for the five accepted Event 006 evolutions. It does not admit a new country package, replace a vanilla tree, create an advisor asset, or claim whole-event completion.
@@ -23,4 +25,4 @@ This tranche closes the shared incident-resolution surface for the five accepted
 
 ## Remaining risk
 
-The Armed Birth civilian-command/frontier-mobilization choice currently changes the shared security and former-host ledgers, and frontier mobilization can open a reclamation conflict. The package force-materialization adapter still needs to consume the chosen security posture before opening forces are created. Country-specific package content, research-gated admission, focus geometry, formables, AI/balance matrices, assets, and whole-event completion remain open.
+The Armed Birth civilian-command/frontier-mobilization choice changes the shared security and former-host ledgers, and frontier mobilization can open a reclamation conflict. The current DM-22 gate additionally exposes a paid, one-shot reserve materialization path from the audited force template. Country-specific package content, research-gated admission, focus geometry, formables, AI/balance matrices, assets, and whole-event completion remain open.
