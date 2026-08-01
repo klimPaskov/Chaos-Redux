@@ -10,7 +10,7 @@
 - The runtime content-attestation set is thirteen packages across twelve compatible reservation groups and thirteen distinct anchors: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, IW-173, and IW-184.
 - IW-173 HAW is admitted after the v45 country-package audit and v46 Samuel Wilder King portrait audit. King is an additive, non-ruling civilian-large territorial delegate; vanilla David Kalakaua Kawananakoa remains the ruling roster entry.
 - IW-179 FSM remains withdrawn pending a sourced grounded Micronesian replacement. IW-043/IW-058 remain unadmitted; Luka Semyonovich Spasov has an independent v45 visual PASS and a parent-owned replacement on the existing CHU river-security consumer, but that visual pass does not admit the wider package.
-- The portrait shelf is 61 original-size PNG masters in one flat directory with no normalized shelf derivatives and no Event 006 advisor/dossier/small portraits.
+- The portrait shelf is 63 original-size PNG masters in one flat directory with no normalized shelf derivatives and no Event 006 advisor/dossier/small portraits; the two Montenegro masters remain rights-gated evidence only.
 
 ## Files reconciled
 

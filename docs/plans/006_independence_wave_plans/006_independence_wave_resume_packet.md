@@ -8,7 +8,7 @@ Status: **Event 006 is incomplete and the goal remains active.**
 
 Controlling acceptance authority (2026-07-29): Event 006 completion is evaluated from repository source/static evidence. Source inspection, MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. The v33 audit remains the latest dated historical completion matrix; its runtime-only holds are superseded by this rule, while static package-capacity, incomplete package/formable/asset, focus-diagnostic, `6001` rights, unreachable source-route, missing AI/source-proof, and unwired-content blockers remain current.
 
-The current whole-event authority is `subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md` with status **HOLD / PARTIAL**. The current static Event 006 content-attestation set is thirteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-019`, `IW-173`, and `IW-184`) across twelve compatible reservation groups and thirteen distinct anchors. The current portrait evidence shelf contains 61 original-size masters directly under `docs/assets/006_independence_wave/portraits_generated_png/`; normalized 156x210 candidates remain in their package workspaces, and no Event 006 advisor or dossier derivatives are authorized.
+The current whole-event authority is `subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md` with status **HOLD / PARTIAL**. The current static Event 006 content-attestation set is thirteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-019`, `IW-173`, and `IW-184`) across twelve compatible reservation groups and thirteen distinct anchors. The current portrait evidence shelf contains 63 original-size masters directly under `docs/assets/006_independence_wave/portraits_generated_png/`; normalized 156x210 candidates remain in their package workspaces, and no Event 006 advisor or dossier derivatives are authorized. The two Montenegro masters remain rights-gated evidence only.
 
 IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, and IW-098 SOK remain outside the current attestation gate with their existing fail-closed package, sourced-roster, or role evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
 
@@ -32,7 +32,7 @@ The 2026-07-28 doubled-ladder and pre-wave crisis evidence is bounded by
 focused completion audit
 `subagent_handoffs/006_automatic_ladder_host_crisis_completion_audit_2026_07_28.md`.
 
-Current routing authority is `subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md`; older v32/v31/v30 references below are retained only as dated traceability. The current shelf is 61 original-size masters in one flat directory.
+Current routing authority is `subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md`; older v32/v31/v30 references below are retained only as dated traceability. The current shelf is 63 original-size masters in one flat directory.
 
 ## 2026-07-28 IW-012 implementation addendum
 
@@ -77,7 +77,7 @@ staged anchor integration, and paid post-formation projects are implemented
 and documented in `docs/events/006_independence_wave/form39_melanesian_federation.md`. FIJ is not
 in runtime attestation until the IW-157/IW-178 research flags, MFX collision
 reservation and flat-flag review, and the source/date decision are accepted.
-The durable pre-DDS portrait shelf now contains exactly 61 original-size
+The durable pre-DDS portrait shelf now contains exactly 63 original-size
 source-derived masters directly in one flat directory, with no nested folders,
 no normalized 156x210 PNGs, and no advisor or small/dossier derivatives.
 
@@ -105,7 +105,7 @@ Commit `61d059841`, commit `37c4f6036`, and `006_dm58_cost_cleanup_reconciliatio
 
 ## 2026-07-28 reconciliation addendum
 
-The current flat shelf check is `root_pngs=61`, `child_dirs=0`, and `normalized=0`; the manifests and README now describe 61 original-size masters, including the CHU Galimzhan v2, Musa Dzhalil, Ahmet Zeki Velidi Togan, Luka Semyonovich Spasov, and WLS J. H. Thomas and Cornwallis-West repaint masters. The normalized Galimzhan v2 candidate remains in `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/` and has an independent likeness/style/crop/provenance audit PASS with recorded source uncertainty. The approved candidate is parent-promoted to the existing CHU federal-presidium DDS/GFX consumer at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; no `.gfx` rename or duplicate consumer was introduced. Musa and Togan have independent visual PASS results but remain rights/provenance/role-gated evidence only, with no DDS or `.gfx` wiring. Luka Spasov independently passes the v45 audit and is wired only to the existing CHU river-security DDS consumer; IW-043/IW-058 remain unadmitted. The other CHU/ASY grounded rows retain their source-only, blocked, or needs-review statuses. No Event 006 advisor icons were created.
+The current flat shelf check is `root_pngs=63`, `child_dirs=0`, and `normalized=0`; the manifests and README now describe 63 original-size masters, including the CHU Galimzhan v2, Musa Dzhalil, Ahmet Zeki Velidi Togan, Luka Semyonovich Spasov, WLS J. H. Thomas and Cornwallis-West, and MNT Blazo Jovanovic and Blazo Dukanovic repaint masters. The two MNT masters pass visual/style and source/crop-linkage screens but remain rights-gated evidence only. The normalized Galimzhan v2 candidate remains in `docs/assets/006_independence_wave/iw043_iw058_portrait_source_research_2026_07_28/` and has an independent likeness/style/crop/provenance audit PASS with recorded source uncertainty. The approved candidate is parent-promoted to the existing CHU federal-presidium DDS/GFX consumer at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; no `.gfx` rename or duplicate consumer was introduced. Musa and Togan have independent visual PASS results but remain rights/provenance/role-gated evidence only, with no DDS or `.gfx` wiring. Luka Spasov independently passes the v45 audit and is wired only to the existing CHU river-security DDS consumer; IW-043/IW-058 remain unadmitted. The other CHU/ASY grounded rows retain their source-only, blocked, or needs-review statuses. No Event 006 advisor icons were created.
 
 `006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` supersede their older bounded surfaces; v30 remains historical traceability only. The post-commit IW-012 route-arbitration handoffs are static source evidence. The whole goal remains HOLD / PARTIAL for the static blockers; live runtime evidence is optional future QA.
 
@@ -230,7 +230,7 @@ they are not current routing documents.
 - The current portrait authority is the sourced-only workflow in the event-asset
   skill. The flat reference shelf at
   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves exactly
-  61 original-size pre-resize masters directly in one directory, with no nested
+  63 original-size pre-resize masters directly in one directory, with no nested
   folders, normalized 156x210 PNGs, or advisor/small/dossier derivatives;
   `PRE_RESIZE_MANIFEST.md` records the byte/hash inventory. Galimzhan v2 is the
   bounded exception with an independent visual/provenance PASS and parent-promoted
