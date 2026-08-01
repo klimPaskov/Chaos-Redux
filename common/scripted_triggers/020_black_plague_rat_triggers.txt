@@ -287,6 +287,63 @@ black_plague_rat_country_can_devour_rival = {
 	black_plague_rat_can_absorb_adjacent_brood = yes
 }
 
+# COUNTRY scope. Hierarchy choices stay mutually exclusive through the focus
+# route, while these actions let the selected order shape later pulses.
+black_plague_rat_country_can_distribute_the_nests = {
+	black_plague_rat_country_is_active = yes
+	black_plague_rat_hierarchy_is_distributed = yes
+	NOT = { has_country_flag = black_plague_rat_distributed_nests_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.distributed_nests_mass_cost
+		compare = greater_than_or_equals
+	}
+	num_of_controlled_states > constant:black_plague_value.one
+}
+
+black_plague_rat_country_can_seat_the_alpha = {
+	black_plague_rat_country_is_active = yes
+	black_plague_rat_hierarchy_is_dominant = yes
+	NOT = { has_country_flag = black_plague_rat_dominant_alpha_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.dominant_alpha_mass_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_coherence
+		value = constant:black_plague_rat_pool.coherence_low_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+# STATE scope. Emergent Cunning reads a real logistics target through an
+# adjacent RTA-held state and carries a bounded transport exposure into the
+# human enemy. The canonical exposure helper still owns establishment rules.
+black_plague_rat_state_can_decode_route_memory = {
+	black_plague_state_can_receive_ordinary_exposure = yes
+	black_plague_rat_state_has_logistics_pressure_target = yes
+	CONTROLLER = {
+		exists = yes
+		black_plague_country_is_human_host = yes
+		has_war_with = ROOT
+	}
+	any_neighbor_state = { is_controlled_by = ROOT }
+	NOT = { has_state_flag = black_plague_rat_route_memory_cooldown }
+}
+
+black_plague_rat_country_can_decode_route_memory = {
+	black_plague_rat_country_is_active = yes
+	black_plague_rat_hierarchy_is_emergent = yes
+	NOT = { has_country_flag = black_plague_rat_route_memory_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.emergent_route_memory_mass_cost
+		compare = greater_than_or_equals
+	}
+	any_state = { black_plague_rat_state_can_decode_route_memory = yes }
+}
+
 # STATE scope. A weaker state marker can commit local strength to resist the
 # stronger adjacent marker. Both markers remain inside RTA; the timed flag is
 # consumed by the normal absorption comparison and therefore delays, rather

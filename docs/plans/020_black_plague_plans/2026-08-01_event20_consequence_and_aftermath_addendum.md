@@ -8,7 +8,7 @@ This addendum is now a mixed-disposition record rather than an unimplemented tra
 
 | Package | Disposition in the current worktree | Remaining work or decision |
 | --- | --- | --- |
-| A. RTA hierarchy | Implemented statically: the three mutually exclusive roots, follow-ups, `.45` acknowledgement event, hierarchy state, runtime cap/pulse/absorption/candidacy consumers, and route-aware AI are present. | Six dedicated hierarchy icons, additional route-specific decisions, and live route validation remain open. |
+| A. RTA hierarchy | Implemented statically: the three mutually exclusive roots, follow-ups, `.45` acknowledgement event, hierarchy state, runtime cap/pulse/absorption/candidacy consumers, route-aware AI, and three route-specific continuing actions are present. | Six dedicated hierarchy icons and live route validation remain open. |
 | B. RTX route crises | Implemented statically: `.57`, `.58`, and `.59` are defined and called from the route-capstone crisis paths, with route-specific meter and pulse consumers and a dedicated Rat King crisis report card. | There is no declared live scenario proof. |
 | C. Crown Strike | Implemented statically as a shared timed state action: the start gate, costs, dedicated icon, timeout/success effects, and `.64`/`.65` reports are wired. | It is not a native `activate_mission`/`days_mission_timeout` owner and has no live validation. The parent must decide whether the shared state-action API is accepted. |
 | D. Defeat aftermath | Implemented statically for the scoped defeat tranche: `common/on_actions/020_black_plague_on_actions.txt` records narrow capitulation/state-control participants, `common/scripted_effects/020_black_plague_rat_effects.txt` owns the idempotent resolver and participant registry, runtime pulse metrics track duration and peaks, and the resolver emits `.71`, eligible `.72`, gated slot 087, and the existing `.73-.75` path. | The `.73` audience still falls back to the first eligible human response host rather than the saved contributor, broader aftermath narrative/depth and native-mission API review remain open, and no live consumer validation exists. |
@@ -63,8 +63,8 @@ They do reinforce the accepted art requirement that major Event 020 route focuse
 
 ## Delivered tranche and remaining scope
 
-The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, and turns Rat King defeat into a scoped, metrics-gated aftermath path while leaving the established milestone chain intact.
-Remaining accepted scope is broader narrative and route-specific decision depth beyond the implemented 50-focus RTA and 70-focus RTX trees, the native-mission API decision review, the source-frame crisis seal and animated Rat King portrait, source-frame UI animation expansion, release rights attribution, and focused live validation.
+The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, turns Rat King defeat into a scoped, metrics-gated aftermath path, and gives each RTA hierarchy route a concrete repeatable action while leaving the established milestone chain intact.
+Remaining accepted scope is broader narrative depth beyond the implemented 50-focus RTA and 70-focus RTX trees, the native-mission API decision review, the source-frame crisis seal and animated Rat King portrait, source-frame UI animation expansion, release rights attribution, and focused live validation.
 
 ## Package A: RTA hierarchy becomes a real route choice
 

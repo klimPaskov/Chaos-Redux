@@ -48,6 +48,63 @@ black_plague_rat_brood_category = {
 		}
 	}
 
+	# Hierarchy actions convert the three focus routes into continuing choices.
+	# They use the same RTA carrier and capped pulse system as the rest of this
+	# category, so they never create a rival tag or human-style recruitment.
+	black_plague_rat_distribute_the_nests = {
+		icon = GFX_decision_generic_intelligence_operation
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_country_can_distribute_the_nests = yes }
+		custom_cost_trigger = { black_plague_rat_country_can_distribute_the_nests = yes }
+		custom_cost_text = black_plague_rat_distribute_the_nests_cost
+		days_remove = constant:black_plague_rat_decision.distributed_nests_duration_days
+		complete_effect = { black_plague_rat_distribute_the_nests = yes }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = 2 black_plague_rat_hierarchy_is_distributed = yes }
+			modifier = { factor = 2 black_plague_rat_coherence_is_low = yes }
+		}
+	}
+
+	black_plague_rat_seat_the_alpha = {
+		icon = GFX_decision_generic_military
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_country_can_seat_the_alpha = yes }
+		custom_cost_trigger = { black_plague_rat_country_can_seat_the_alpha = yes }
+		custom_cost_text = black_plague_rat_seat_the_alpha_cost
+		days_remove = constant:black_plague_rat_decision.dominant_alpha_duration_days
+		complete_effect = { black_plague_rat_seat_the_alpha = yes }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = 2 black_plague_rat_hierarchy_is_dominant = yes }
+			modifier = { factor = 2 black_plague_rat_hunger_is_crisis = yes }
+		}
+	}
+
+	black_plague_rat_decode_route_memory = {
+		icon = GFX_decision_generic_intelligence_operation
+		state_target = any_state
+		on_map_mode = decision_view_only
+		visible = { black_plague_rat_country_is_active = yes }
+		target_root_trigger = { black_plague_rat_country_is_active = yes }
+		target_trigger = { FROM = { black_plague_rat_state_can_decode_route_memory = yes } }
+		available = {
+			black_plague_rat_country_can_decode_route_memory = yes
+			FROM = { black_plague_rat_state_can_decode_route_memory = yes }
+		}
+		custom_cost_trigger = { black_plague_rat_country_can_decode_route_memory = yes }
+		custom_cost_text = black_plague_rat_decode_route_memory_cost
+		days_remove = constant:black_plague_rat_decision.emergent_route_memory_duration_days
+		complete_effect = { hidden_effect = { FROM = { black_plague_rat_decode_route_memory = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_rat_state_can_decode_route_memory = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { clr_state_flag = black_plague_rat_route_memory_cooldown } } }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.war
+			modifier = { factor = 2 black_plague_rat_hierarchy_is_emergent = yes }
+			modifier = { factor = 2 has_global_flag = black_plague_evolution_ii_active }
+		}
+	}
+
 	black_plague_rat_map_the_burrows = {
 		icon = GFX_decision_generic_intelligence_operation
 		visible = { black_plague_rat_country_is_active = yes }
