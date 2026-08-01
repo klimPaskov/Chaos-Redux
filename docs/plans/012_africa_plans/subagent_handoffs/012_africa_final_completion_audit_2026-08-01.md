@@ -72,3 +72,13 @@ Actions 74–76 and achievements 18, 35, 36, and 40 remain model-gated, with rel
 ## Final classification
 
 No hard Event 012 missing-reference or asset-path load blocker was found. The package is intentionally incomplete at the functional and content layers listed above. Continue with exact owners, approved Event 006 bindings, W5 receipts, super-event rights/audio, native-language review, scenario acceptance, and later model production; do not replace those dependencies with fabricated tags, states, receipts, or fallbacks.
+
+## Continuation audit evidence (2026-08-01)
+
+The resumed implementation pass performed a fresh read-only source scan over `common/` and `events/`: every observed `africa_*` scripted-effect or scripted-trigger invocation resolved to a declared definition, with `missing=0`. This scan is a reference-integrity check only and does not replace live consumer validation.
+
+The authoritative asset matrix still contains exactly 239 rows across the six reconciled dispositions: 50 `installed_runtime`, 21 `installed_dormant`, 133 `deferred_controlled_pool`, 16 `deferred_model_required`, 12 `deferred_runtime_gated`, and 7 `deferred_unique_package_required`.
+
+The current Event catalog workbook and exported Event 12 CSV row agree with the release overview: Event 12 remains `Africa Is One`, `Minor Fire-Once`, cluster 6, `Severe`, with the terminal scenario explicitly gated. No workbook cell was changed in this pass because the Event 12 row already matched the reconciled source, and unrelated workbook edits were preserved.
+
+The focused read-only Event inspector returned `EVENT_INSPECTED_PARTIAL` with `blockers: []` and `blockingDiagnostics: 0`; its workspace-wide analysis remains intentionally deferred. No game process was launched.
