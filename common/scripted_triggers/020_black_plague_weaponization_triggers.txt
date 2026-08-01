@@ -101,6 +101,36 @@ black_plague_weaponization_delivery_is_ready = {
 	NOT = { has_country_flag = black_plague_weaponization_delivery_cooldown }
 }
 
+# COUNTRY scope. Post-project stockpile controls remain inside the shared
+# disease category. Expansion creates one additional native payload; it does
+# not grant instant delivery and remains exposed to the ordinary accident
+# scheduler.
+black_plague_weaponization_can_expand_stockpile = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	has_country_flag = black_plague_weaponized_delivery_ready
+	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+	NOT = { has_country_flag = black_plague_weaponization_stockpile_expansion_cooldown }
+	has_equipment = { support_equipment > constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
+	has_equipment = { motorized_equipment > constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
+	command_power > constant:black_plague_weaponization_program.stockpile_expansion_command_power
+	has_fuel > constant:black_plague_weaponization_program.stockpile_expansion_fuel
+}
+
+# COUNTRY scope. Destruction is a deliberate safety action and can be used
+# even when the payload is not currently deliverable. It removes the native
+# payload, closes the accident scheduler, and leaves the project history intact.
+black_plague_weaponization_can_destroy_stockpile = {
+	black_plague_weaponization_delivery_actor_is_valid = yes
+	has_country_flag = black_plague_weaponization_complete
+	NOT = { has_country_flag = black_plague_weaponization_defensive_conversion }
+	has_equipment = { plague_bomb_1 > 0 }
+	NOT = { has_country_flag = black_plague_weaponization_stockpile_destroy_cooldown }
+	has_equipment = { support_equipment > constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
+	command_power > constant:black_plague_weaponization_program.stockpile_destroy_command_power
+	has_fuel > constant:black_plague_weaponization_program.stockpile_destroy_fuel
+}
+
 # STATE scope. ROOT is the actor country when used from a state-targeted
 # decision. The native payload can seed any reachable enemy human state, and
 # black_plague_apply_exposure handles clear and cured states without a bypass.

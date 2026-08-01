@@ -55,7 +55,7 @@ Five logged evolutions have dynamic active and pre-fire Event Details entries. N
 
 Ordinary disease phases are not evolutions.
 
-The weaponization project has six phases, eighteen unique iteration roles, four mutually exclusive approaches, accidents, condemnation, and payload integration with the existing delivery system. Doctor Wu uses one persistent validated host and accelerates response only through the normal selected-state and resource rules.
+The weaponization project has six phases, eighteen unique iteration roles, four mutually exclusive approaches, accidents, condemnation, and payload integration with the existing delivery system. After completion, the shared category exposes paid expansion and destruction operations for the native payload stockpile; expansion adds one batch under an accident cooldown, while destruction removes the stored payloads without erasing research or delivery history. Doctor Wu uses one persistent validated host and accelerates response only through the normal selected-state and resource rules.
 
 ## Rat countries
 

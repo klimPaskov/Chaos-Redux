@@ -204,6 +204,54 @@ black_plague_weaponization_complete_program = {
 	black_plague_weaponization_clamp_country_values = yes
 }
 
+# COUNTRY scope. Post-project production is a deliberate, paid stockpile
+# expansion rather than an instant strategic reserve. The native payload is
+# added in one batch, the ordinary accident scheduler remains active, and a
+# cooldown keeps the operation from becoming a free production loop.
+black_plague_weaponization_expand_stockpile = {
+	if = {
+		limit = { black_plague_weaponization_can_expand_stockpile = yes }
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
+		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
+		set_temp_variable = { black_plague_weaponization_expansion_command_debit = constant:black_plague_weaponization_program.stockpile_expansion_command_power }
+		multiply_temp_variable = { black_plague_weaponization_expansion_command_debit = -1 }
+		add_command_power = black_plague_weaponization_expansion_command_debit
+		set_temp_variable = { black_plague_weaponization_expansion_fuel_debit = constant:black_plague_weaponization_program.stockpile_expansion_fuel }
+		subtract_from_fuel = black_plague_weaponization_expansion_fuel_debit
+		add_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.stockpile_expansion_batch }
+		set_country_flag = black_plague_weaponization_stockpile_active
+		set_country_flag = black_plague_weaponization_stockpile_expansion_history
+		add_to_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.stockpile_expansion_risk_gain }
+		set_temp_variable = { black_plague_weaponization_expansion_cooldown_days = constant:black_plague_weaponization_program.stockpile_expansion_cooldown_days }
+		set_country_flag = { flag = black_plague_weaponization_stockpile_expansion_cooldown days = black_plague_weaponization_expansion_cooldown_days }
+		black_plague_weaponization_clamp_country_values = yes
+		country_event = { id = chaosx_nr20_weaponization.4 }
+	}
+}
+
+# COUNTRY scope. Destruction removes the entire native payload reserve through
+# a bounded safety amount, closes the accident scheduler, and lowers project
+# risk without erasing the research or delivery history.
+black_plague_weaponization_destroy_stockpile = {
+	if = {
+		limit = { black_plague_weaponization_can_destroy_stockpile = yes }
+		remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.stockpile_destroy_amount }
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
+		set_temp_variable = { black_plague_weaponization_destruction_command_debit = constant:black_plague_weaponization_program.stockpile_destroy_command_power }
+		multiply_temp_variable = { black_plague_weaponization_destruction_command_debit = -1 }
+		add_command_power = black_plague_weaponization_destruction_command_debit
+		set_temp_variable = { black_plague_weaponization_destruction_fuel_debit = constant:black_plague_weaponization_program.stockpile_destroy_fuel }
+		subtract_from_fuel = black_plague_weaponization_destruction_fuel_debit
+		clr_country_flag = black_plague_weaponization_stockpile_active
+		set_country_flag = black_plague_weaponization_stockpile_destroyed_history
+		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.stockpile_destroy_risk_loss }
+		set_temp_variable = { black_plague_weaponization_destruction_cooldown_days = constant:black_plague_weaponization_program.stockpile_destroy_cooldown_days }
+		set_country_flag = { flag = black_plague_weaponization_stockpile_destroy_cooldown days = black_plague_weaponization_destruction_cooldown_days }
+		black_plague_weaponization_clamp_country_values = yes
+		country_event = { id = chaosx_nr20_weaponization.5 }
+	}
+}
+
 # COUNTRY scope. Called from the shared Event 020 country callback. Stockpile
 # failures are rare and consume one native payload before seeding an accidental
 # state; no world-wide loop is introduced.
