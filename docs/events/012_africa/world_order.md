@@ -20,6 +20,8 @@ No response grants African membership, integration, annexation, or cores. The fo
 8. Settled packages can consent to union, remain sovereign, become rivals, fight a prepared continental war, or accept a postwar submission settlement.
 9. The terminal World identity remains unavailable until all continent packages are resolved, chaos is above the terminal threshold, no ordinary settlement remains pending, and the researched final super-event package sets `africa_the_world_super_event_package_ready`.
 
+When a priority member has explicitly chosen the rival-bloc departure route and the current Africa host capitulates to that member, `on_capitulation` calls `africa_priority_member_record_rival_bloc_victory`. The receipt records the member-specific rival victory and feeds the recognised-confederation achievement owner. A normal peace or relationship state never infers victory without this bounded winner/capitulation pair.
+
 When no external candidate carries the reviewed `africa_world_package_implementation_ready` gate, the host can instead close the Continental Docket after satisfying every Scramble recognition, sanctions, ultimatum, intervention, and peace requirement. This records a complete Africa-only settlement, leaves external governments outside the Charter League, and does not open world-order actions.
 
 ## Tuning and shared logic
