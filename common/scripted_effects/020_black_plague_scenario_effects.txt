@@ -42,6 +42,8 @@ black_plague_scenario_set_intensity_tuning = {
 	set_variable = { global.black_plague_scenario_chaos_floor = constant:black_plague_evolution_runtime.scenario_medium_chaos_floor }
 	set_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_scenario.opening_unit_bonus }
 	set_variable = { global.black_plague_scenario_internal_brood_target = constant:black_plague_scenario.medium_internal_brood_target }
+	set_variable = { global.black_plague_scenario_rat_division_floor = constant:black_plague_scenario.medium_rat_division_floor }
+	set_variable = { global.black_plague_scenario_king_division_floor = constant:black_plague_scenario.medium_king_division_floor }
 	if = {
 		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
 		set_variable = { global.black_plague_scenario_established_target = constant:black_plague_evolution_runtime.scenario_low_established_states }
@@ -50,6 +52,8 @@ black_plague_scenario_set_intensity_tuning = {
 		set_variable = { global.black_plague_scenario_chaos_floor = constant:black_plague_evolution_runtime.scenario_low_chaos_floor }
 		set_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_value.one }
 		set_variable = { global.black_plague_scenario_internal_brood_target = constant:black_plague_scenario.low_internal_brood_target }
+		set_variable = { global.black_plague_scenario_rat_division_floor = constant:black_plague_scenario.low_rat_division_floor }
+		set_variable = { global.black_plague_scenario_king_division_floor = constant:black_plague_scenario.low_king_division_floor }
 	}
 	else_if = {
 		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } }
@@ -60,6 +64,8 @@ black_plague_scenario_set_intensity_tuning = {
 		set_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_scenario.opening_unit_bonus }
 		add_to_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_value.one }
 		set_variable = { global.black_plague_scenario_internal_brood_target = constant:black_plague_scenario.high_internal_brood_target }
+		set_variable = { global.black_plague_scenario_rat_division_floor = constant:black_plague_scenario.high_rat_division_floor }
+		set_variable = { global.black_plague_scenario_king_division_floor = constant:black_plague_scenario.high_king_division_floor }
 	}
 	else_if = {
 		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
@@ -70,6 +76,8 @@ black_plague_scenario_set_intensity_tuning = {
 		set_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_scenario.opening_unit_bonus }
 		add_to_variable = { global.black_plague_scenario_division_bonus = constant:black_plague_value.high_band }
 		set_variable = { global.black_plague_scenario_internal_brood_target = constant:black_plague_scenario.maximum_internal_brood_target }
+		set_variable = { global.black_plague_scenario_rat_division_floor = constant:black_plague_scenario.maximum_rat_division_floor }
+		set_variable = { global.black_plague_scenario_king_division_floor = constant:black_plague_scenario.maximum_king_division_floor }
 	}
 	set_variable = { global.black_plague_scenario_opening_deaths_remaining = constant:black_plague_evolution_runtime.scenario_bootstrap_deaths }
 	set_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.zero }
@@ -94,10 +102,7 @@ black_plague_scenario_collect_candidates = {
 		limit = {
 			black_plague_scenario_valid_human_state = yes
 			NOT = { black_plague_state_is_rat_controlled = yes }
-			OR = {
-				black_plague_state_is_severe = yes
-				black_plague_state_is_collapsed = yes
-			}
+			black_plague_state_is_infected_or_worse = yes
 		}
 		add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS }
 	}
@@ -121,6 +126,11 @@ black_plague_scenario_select_europe_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = europe NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = europe NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -131,6 +141,11 @@ black_plague_scenario_select_asia_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = asia NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = asia NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -141,6 +156,11 @@ black_plague_scenario_select_africa_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = africa NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = africa NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -151,6 +171,11 @@ black_plague_scenario_select_north_america_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = north_america NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = north_america NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -161,6 +186,11 @@ black_plague_scenario_select_south_america_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = south_america NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = south_america NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -171,6 +201,11 @@ black_plague_scenario_select_australia_anchor = {
 		clear_temp_array = black_plague_scenario_continent_pool
 		every_state = { limit = { black_plague_scenario_valid_human_state = yes NOT = { black_plague_state_is_established = yes } is_on_continent = australia NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
 		if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		else = {
+			clear_temp_array = black_plague_scenario_continent_pool
+			every_state = { limit = { black_plague_scenario_valid_human_state = yes is_on_continent = australia NOT = { has_state_flag = black_plague_scenario_reserved } } add_to_temp_array = { black_plague_scenario_continent_pool = THIS } }
+			if = { limit = { check_variable = { black_plague_scenario_continent_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_continent_pool save_event_target_as = black_plague_scenario_anchor_state set_state_flag = black_plague_scenario_reserved add_to_array = { array = global.black_plague_scenario_anchor_states value = THIS } add_to_variable = { global.black_plague_scenario_selected_continents = constant:black_plague_value.one } } }
+		}
 		clear_temp_array = black_plague_scenario_continent_pool
 	}
 }
@@ -180,6 +215,18 @@ black_plague_scenario_select_anchor_states = {
 	if = { limit = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.medium } } set_variable = { global.black_plague_scenario_continent_target = constant:black_plague_scenario.medium_continent_target } }
 	else_if = { limit = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.high } } set_variable = { global.black_plague_scenario_continent_target = constant:black_plague_scenario.high_continent_target } }
 	else_if = { limit = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.maximum } } set_variable = { global.black_plague_scenario_continent_target = constant:black_plague_scenario.maximum_continent_target } }
+	# A valid launch may occur in a reduced-world or heavily conquered save.
+	# Never demand more continents than the candidate scan proved usable.
+	if = {
+		limit = {
+			check_variable = {
+				var = global.black_plague_scenario_continent_target
+				value = global.black_plague_scenario_eligible_continents
+				compare = greater_than
+			}
+		}
+		set_variable = { global.black_plague_scenario_continent_target = global.black_plague_scenario_eligible_continents }
+	}
 	black_plague_scenario_select_europe_anchor = yes
 	black_plague_scenario_select_asia_anchor = yes
 	black_plague_scenario_select_africa_anchor = yes
@@ -218,8 +265,7 @@ black_plague_scenario_seed_state = {
 	set_temp_variable = { black_plague_next_phase = black_plague_scenario_seed_phase }
 	black_plague_set_current_state_phase = yes
 	set_state_flag = black_plague_scenario_seeded
-	if = { limit = { black_plague_state_is_severe = yes } set_state_flag = black_plague_scenario_rat_candidate add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
-	if = { limit = { black_plague_state_is_collapsed = yes } set_state_flag = black_plague_scenario_rat_candidate add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
+	if = { limit = { black_plague_state_is_infected_or_worse = yes } set_state_flag = black_plague_scenario_rat_candidate add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
 	if = {
 		limit = {
 			check_variable = { global.black_plague_scenario_rat_candidate_states^num = constant:black_plague_value.zero }
@@ -288,7 +334,12 @@ black_plague_scenario_seed_established_states = {
 
 black_plague_scenario_create_rat_nations = {
 	if = {
+		limit = { RTA = { black_plague_rat_country_is_active = yes } }
+		set_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.one }
+	}
+	if = {
 		limit = {
+			check_variable = { global.black_plague_scenario_rat_target > constant:black_plague_value.zero }
 			check_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.zero }
 			check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
 		}
@@ -309,14 +360,14 @@ black_plague_scenario_create_rat_nations = {
 	}
 }
 
-# Convert additional severe/collapsed scenario candidates into internal RTA
+# Convert additional infected-or-worse scenario candidates into internal RTA
 # warrens. The two-tag correction forbids new country tags, so these broods
 # remain distinct through their state markers, infestation, and brood strength
 # while sharing the carrier's capped pulse system.
 black_plague_scenario_seed_internal_broods = {
 	if = {
 		limit = {
-			RTA = { exists = yes has_country_flag = black_plague_rat_country }
+			RTA = { black_plague_rat_country_is_active = yes }
 			check_variable = { global.black_plague_scenario_internal_brood_target > constant:black_plague_value.one }
 			check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
 		}
@@ -324,9 +375,16 @@ black_plague_scenario_seed_internal_broods = {
 		# loop. The configured target is a total, making repeated launches
 		# idempotent while still filling missing warrens.
 		set_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.zero }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_scenario_internal_brood
+				NOT = { CONTROLLER = { has_country_flag = black_plague_rat_country } }
+			}
+			clr_state_flag = black_plague_scenario_internal_brood
+		}
 		RTA = { add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one } }
 		every_state = {
-			limit = { has_state_flag = black_plague_scenario_internal_brood }
+			limit = { has_state_flag = black_plague_scenario_internal_brood CONTROLLER = { has_country_flag = black_plague_rat_country } }
 			add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
 		}
 		for_loop_effect = {
@@ -394,6 +452,37 @@ black_plague_scenario_expand_king_basin = {
 	}
 }
 
+# Keep a surviving RTA carrier useful when SCN-012 is launched into an already
+# active crisis. Existing divisions are preserved; only the missing intensity
+# floor is created, and the normal locked non-human templates are reused.
+black_plague_scenario_raise_rat_army_to_floor = {
+	RTA = {
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = black_plague_rat_country
+				black_plague_rat_country_is_active = yes
+			}
+			black_plague_rat_refresh_division_cap = yes
+			set_temp_variable = { black_plague_scenario_rat_army_gap = global.black_plague_scenario_rat_division_floor }
+			subtract_from_temp_variable = { black_plague_scenario_rat_army_gap = num_of_divisions }
+			if = {
+				limit = {
+					check_variable = {
+						var = black_plague_scenario_rat_army_gap
+						value = constant:black_plague_value.zero
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { black_plague_rat_starting_divisions = black_plague_scenario_rat_army_gap }
+				black_plague_rat_create_archetype_division = yes
+				add_to_variable = { black_plague_rat_division_count = black_plague_scenario_rat_army_gap }
+				add_to_variable = { black_plague_achievement_rat_divisions_raised = black_plague_scenario_rat_army_gap }
+			}
+		}
+	}
+}
+
 black_plague_scenario_assign_king_army = {
 	RTX = {
 		if = {
@@ -402,12 +491,17 @@ black_plague_scenario_assign_king_army = {
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_sentience } } set_variable = { black_plague_rat_king_sentience = constant:black_plague_evolution_runtime.scenario_royal_sentience } }
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_cohesion } } set_variable = { black_plague_rat_king_cohesion = constant:black_plague_evolution_runtime.scenario_royal_cohesion } }
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_hunger } } set_variable = { black_plague_rat_king_hunger = constant:black_plague_evolution_runtime.scenario_royal_hunger } }
+			set_temp_variable = { black_plague_scenario_king_army_gap = global.black_plague_scenario_king_division_floor }
+			subtract_from_temp_variable = { black_plague_scenario_king_army_gap = num_of_divisions }
 			if = {
 				limit = {
-					NOT = { has_country_flag = black_plague_scenario_king_guard_assigned }
-					num_of_divisions < constant:black_plague_value.one
+					check_variable = {
+						var = black_plague_scenario_king_army_gap
+						value = constant:black_plague_value.zero
+						compare = greater_than
+					}
 				}
-				create_unit = { division = "name = \"Royal Brood Guard\" division_template = \"Royal Rat Guard\" start_experience_factor = 0.35 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = RTX count = global.black_plague_scenario_king_state_target allow_spawning_on_enemy_provs = no }
+				create_unit = { division = "name = \"Royal Brood Guard\" division_template = \"Royal Rat Guard\" start_experience_factor = 0.35 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = RTX count = black_plague_scenario_king_army_gap allow_spawning_on_enemy_provs = no }
 				set_country_flag = black_plague_scenario_king_guard_assigned
 			}
 		}
@@ -537,17 +631,22 @@ black_plague_scenario_start_scheduler = {
 black_plague_triggerable_scenario_launch = {
 	if = {
 		limit = { black_plague_scenario_can_launch_from_triggerable_scenarios = yes }
-		black_plague_scenario_suppress_fire_once = yes
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
-		set_global_flag = black_plague_natural_outbreak_started
+		clr_global_flag = black_plague_triggerable_scenario_setup_failed
 		black_plague_scenario_set_intensity_tuning = yes
-		black_plague_initialize_runtime = yes
-		black_plague_rat_initialize_runtime = yes
-		clear_global_event_target = black_plague_rat_evolution_actor
 		black_plague_scenario_collect_candidates = yes
-		black_plague_scenario_record_history = yes
 		black_plague_scenario_select_anchor_states = yes
-		black_plague_scenario_seed_established_states = yes
+		if = {
+			limit = { black_plague_scenario_setup_preflight_is_ready = yes }
+			# Do not initialize either runtime until the geography, candidate pool,
+			# and reusable RTA/RTX package have passed the fail-closed preflight.
+			# A rejected launch therefore cannot turn an untouched campaign into a
+			# partially initialized disease run.
+			set_global_flag = black_plague_natural_outbreak_started
+			black_plague_initialize_runtime = yes
+			black_plague_rat_initialize_runtime = yes
+			clear_global_event_target = black_plague_rat_evolution_actor
+			black_plague_scenario_seed_established_states = yes
 		black_plague_scenario_create_rat_nations = yes
 		black_plague_activate_evolution_i = yes
 		black_plague_activate_evolution_ii = yes
@@ -555,6 +654,7 @@ black_plague_triggerable_scenario_launch = {
 		black_plague_activate_evolution_iii = yes
 		black_plague_activate_evolution_iv = yes
 		black_plague_scenario_expand_king_basin = yes
+		black_plague_scenario_raise_rat_army_to_floor = yes
 		black_plague_scenario_assign_king_army = yes
 		black_plague_scenario_start_scheduler = yes
 		if = {
@@ -574,7 +674,7 @@ black_plague_triggerable_scenario_launch = {
 		every_state = { limit = { has_state_flag = black_plague_scenario_king_reserved } clr_state_flag = black_plague_scenario_king_reserved }
 		if = {
 			limit = {
-				RTA = { exists = yes has_country_flag = black_plague_rat_country }
+				RTA = { black_plague_rat_country_is_active = yes }
 				RTX = { exists = yes has_country_flag = black_plague_rat_king_country }
 				has_global_flag = black_plague_evolution_i_active
 				has_global_flag = black_plague_evolution_ii_active
@@ -584,8 +684,25 @@ black_plague_triggerable_scenario_launch = {
 				check_variable = { global.black_plague_scheduler_ticket > constant:black_plague_value.zero }
 				any_state = { has_state_flag = black_plague_scheduler_anchor }
 				check_variable = { global.black_plague_scenario_selected_continents > constant:black_plague_value.one }
+				check_variable = {
+					var = global.black_plague_scenario_rat_created
+					value = global.black_plague_scenario_rat_target
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.black_plague_scenario_seeded_states
+					value = global.black_plague_scenario_established_target
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.black_plague_scenario_internal_broods_created
+					value = global.black_plague_scenario_internal_brood_target
+					compare = greater_than_or_equals
+				}
 				check_variable = { global.black_plague_scenario_king_states_transferred > constant:black_plague_value.zero }
 			}
+			black_plague_scenario_suppress_fire_once = yes
+			black_plague_scenario_record_history = yes
 			set_global_flag = black_plague_scenario_shortcut_disqualifier
 			set_global_flag = black_plague_triggerable_scenario_launched
 			news_event = { id = chaosx.nr20.90 }
@@ -600,6 +717,42 @@ black_plague_triggerable_scenario_launch = {
 				set_variable = { global.current_super_event_audio_id = constant:black_plague_identity.rat_king_coronation_audio_id }
 				every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
 				set_global_flag = black_plague_rat_king_coronation_emitted
+			}
+		}
+		else = {
+			# Never leave the scoped bypass or reservation markers behind when a
+			# downstream package/postcondition fails. The launch flag is deliberately
+			# withheld so the triggerable scenario remains retryable and idempotent.
+			set_global_flag = black_plague_triggerable_scenario_setup_failed
+			every_state = {
+				limit = {
+					OR = {
+						has_state_flag = black_plague_scenario_reserved
+						has_state_flag = black_plague_scenario_anchor
+						has_state_flag = black_plague_scenario_king_reserved
+					}
+				}
+				clr_state_flag = black_plague_scenario_reserved
+				clr_state_flag = black_plague_scenario_anchor
+				clr_state_flag = black_plague_scenario_king_reserved
+			}
+		}
+		}
+		else = {
+			# Fail before any state, country, evolution, or log mutation when the
+			# reserved geography cannot satisfy the selected intensity.
+			set_global_flag = black_plague_triggerable_scenario_setup_failed
+			every_state = {
+				limit = {
+					OR = {
+						has_state_flag = black_plague_scenario_reserved
+						has_state_flag = black_plague_scenario_anchor
+						has_state_flag = black_plague_scenario_king_reserved
+					}
+				}
+				clr_state_flag = black_plague_scenario_reserved
+				clr_state_flag = black_plague_scenario_anchor
+				clr_state_flag = black_plague_scenario_king_reserved
 			}
 		}
 		clr_global_flag = black_plague_triggerable_scenario_bootstrap

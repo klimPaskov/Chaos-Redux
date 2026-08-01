@@ -402,7 +402,7 @@ The current runtime resolves the zero-controlled-state condition through an idem
 A limited Rat King restoration can occur only when:
 
 - Evolution IV remains active
-- several Rat Nations survive
+- several RTA brood markers survive
 - one has high proto-sentience and dominance
 - the previous Rat King was defeated before the world-end path passed a permanent failure point
 - a long cooldown has elapsed

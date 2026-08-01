@@ -756,14 +756,14 @@ Event 20 is complete only when every requested surface is implemented or explici
 
 ### Rat Nations
 
-- complete tag pool
+- complete two-tag country package: RTA carrier and RTX King
 - strong dynamic starting armies
 - no manpower or equipment
 - no manual deployment
 - timed growth pulses
 - plague immunity
 - occupation infection
-- mutual non-hostility and dominance absorption
+- internal brood non-hostility and dominance absorption under RTA
 - shared but varied focus tree
 - leader portraits, flags, AI, and cleanup
 
@@ -782,8 +782,8 @@ Event 20 is complete only when every requested surface is implemented or explici
 - Low, Medium, High, and Maximum intensity support
 - many established plague states across several continents
 - immediate Evolutions I through IV
-- several independent Rat Nations and one separate Rat King
-- Rat Nations and the Rat King coexist after bootstrap
+- several internal RTA broods and one separate Rat King
+- RTA broods and the Rat King coexist after bootstrap
 - event, evolution, death, tag, and mapmode data remain idempotent
 - Chaos floor creates instant crisis without setting world end
 - ordinary achievements are protected from scenario shortcuts

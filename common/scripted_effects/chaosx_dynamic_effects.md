@@ -975,3 +975,28 @@ event_target:surviving_country = {
 	union_compatible_researched_technologies_from_donor = yes
 }
 ```
+
+## black_plague_rat_refresh_swarm_meters
+
+This Event 020 country-scope effect refreshes the reusable `RTA` carrier's
+visible Brood Mass support registers during the existing capped growth pulse.
+It derives Disease Dominion from controlled Rat-Controlled states, advances
+Hunger and Coherence, applies hierarchy and hunger pressure, clamps every
+meter to the shared 0 to 100 range, and opens the RTA hunger crisis report when
+the crisis threshold is crossed.
+
+Scope: active `RTA` country only. The effect explicitly excludes `RTX`, whose
+Dominion, Sentience, Cohesion, and Hunger meters use the separate royal pulse.
+
+Inputs: the country flags and variables maintained by
+`020_black_plague_rat_effects.txt`, especially hierarchy, controlled-state
+count, immune-blood hardening, and the existing Brood Mass pulse.
+
+Outputs: `black_plague_rat_hunger`, `black_plague_rat_coherence`,
+`black_plague_rat_disease_dominion`, and the persisted
+`black_plague_rat_dominion_states` display register.
+
+Side effects: can fire `chaosx.nr20.46` once per unresolved Hunger crisis. The
+event choices then either spend mass to restore coordination or feed on one
+controlled state, increasing infestation and devastation without curing the
+underlying plague.

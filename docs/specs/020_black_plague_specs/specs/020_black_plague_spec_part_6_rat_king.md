@@ -16,7 +16,7 @@ The natural Evolution IV path can begin rolling when all of the following are tr
 
 - Chaos is at least 800.
 - Evolution III is recorded.
-- At least two Rat Nations exist or one Rat Nation has already absorbed another.
+- At least two internal RTA broods exist or one RTA brood has already absorbed another.
 - A valid candidate has high Coherence or proto-sentience progress.
 - Rat-controlled territory and cumulative event deaths pass meaningful thresholds.
 - The candidate is not in immediate military collapse.
@@ -58,11 +58,11 @@ A player-controlled Rat Nation receives a clear warning and a limited opportunit
 
 ## Coronation transfer
 
-When Evolution IV resolves naturally, a new Rat King tag receives the world rat package. The triggerable scenario uses a scenario coronation variant because several Rat Nations and the Rat King must exist at the same time from launch.
+When Evolution IV resolves naturally, the separate RTX Rat King tag receives the world rat package. The triggerable scenario uses a scenario coronation variant because several internal RTA broods and RTX must exist at the same time from launch.
 
 ### Required transfer
 
-- all states owned or controlled by active Rat Nations
+- all states owned or controlled by active RTA broods
 - all rat units and valid commanders
 - all established burrow nodes
 - accumulated event-attributed rat deaths and conquest values
@@ -74,7 +74,7 @@ When Evolution IV resolves naturally, a new Rat King tag receives the world rat 
 
 ### Required cleanup
 
-- all base Rat Nation countries are annexed or deactivated safely
+- the RTA carrier is preserved when internal broods coexist with the King, while any later absorbed brood markers deactivate safely
 - base rat decisions and focus trees close
 - obsolete dominance timers stop
 - stale selected targets and event targets clear
@@ -86,7 +86,7 @@ The new country must be independently playable and should not depend on a base R
 
 ### Triggerable scenario coronation variant
 
-The scenario selects a separate Royal Basin and creates the Rat King there. It transfers only the Royal Basin package and any strength budget assigned to that basin. Other scenario-created Rat Nations remain independent for a short royal-consolidation grace period. The King receives its full sentient government, focus tree, mechanics, pulse, leader, and Evolution IV actor state immediately. After the grace period, ordinary dominance, allegiance, absorption, and conquest logic can unify the remaining broods.
+The scenario selects a separate Royal Basin and creates RTX there. It transfers only the Royal Basin package and any strength budget assigned to that basin. Other scenario-created RTA broods remain independent for a short royal-consolidation grace period. RTX receives its full sentient government, focus tree, mechanics, pulse, leader, and Evolution IV actor state immediately. After the grace period, ordinary dominance, allegiance, absorption, and conquest logic can unify the remaining broods.
 
 This variant records Evolution IV once and can use the same coronation super-event. It does not weaken the natural full-transfer path.
 

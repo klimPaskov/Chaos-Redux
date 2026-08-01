@@ -21,7 +21,7 @@ This report does not claim that the entire original content specification is com
 - Six-phase weaponization project, eighteen roles, four approaches, accidents, condemnation, and payload integration.
 - Five logged evolutions with dynamic active and pre-fire Event Details entries.
 - Reusable `RTA` Rat Nation and separate `RTX` Rat King packages with identity, AI, forces, decisions, origin archetypes, and focus trees.
-- Three-way RTA hierarchy route graph with runtime cap, pulse, absorption, candidacy, route-aware AI consumers, and the `.45` acknowledgement event; dedicated hierarchy icons remain absent.
+- Three-way RTA hierarchy route graph with runtime cap, pulse, absorption, candidacy, route-aware AI consumers, and the `.45` acknowledgement event. RTA also carries live Hunger, Coherence, and derived Disease Dominion meters, a staged Fractured Instinct spirit, and the `.46` Hunger crisis event; dedicated hierarchy icons remain absent.
 - RTX route-policy crisis events `.57`, `.58`, and `.59` with route-specific pulse and meter consumers.
 - Crown Strike shared timed state action with `.64` success and `.65` timeout reports; this is not yet a native `activate_mission`/`days_mission_timeout` implementation.
 - Scoped `on_capitulation`/`on_state_control_changed` participant hooks and an idempotent Rat King defeat resolver with `.71`, eligible `.72`, gated slot 087, and `.73-.75` aftermath/sealing events; duration, peak, deaths, and major-participant metrics feed the explicit gate. The `.73` audience still falls back to the first eligible human response host, broader aftermath depth remains compact, and live validation is missing.

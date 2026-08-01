@@ -48,6 +48,18 @@ black_plague_evolution_initialize_terminal_targets = {
 black_plague_evolution_select_actor = {
 	if = {
 		limit = {
+			has_global_flag = black_plague_triggerable_scenario_bootstrap
+			check_variable = {
+				var = black_plague_evolution_stage
+				value = constant:black_plague_evolution_runtime.evolution_i_stage
+				compare = equals
+			}
+		}
+		# SCN-012 has no single origin owner. Leave Evolution I's actor empty
+		# rather than attributing the strain milestone to an arbitrary human host.
+	}
+	else_if = {
+		limit = {
 			NOT = {
 				check_variable = {
 					var = black_plague_evolution_stage
@@ -106,6 +118,17 @@ black_plague_evolution_record_stage = {
 	set_temp_variable = { events_log_evolution_stage = black_plague_evolution_stage }
 	set_temp_variable = { events_log_evolution_tier = black_plague_evolution_stage }
 	if = {
+		limit = {
+			has_global_flag = black_plague_triggerable_scenario_bootstrap
+			check_variable = {
+				var = black_plague_evolution_stage
+				value = constant:black_plague_evolution_runtime.evolution_i_stage
+				compare = equals
+			}
+		}
+		set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.zero }
+	}
+	else_if = {
 		limit = { has_event_target = black_plague_evolution_actor }
 		event_target:black_plague_evolution_actor = { save_event_target_as = events_log_evolution_actor }
 		set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.one }
@@ -181,7 +204,12 @@ black_plague_activate_evolution_ii = {
 				black_plague_rat_state_has_dock_archetype_signal = yes
 				CONTROLLER = { black_plague_country_is_human_host = yes }
 			}
-			CONTROLLER = { save_global_event_target_as = black_plague_rat_evolution_actor }
+			# The milestone belongs to the first verified overseas destination,
+			# not to whichever qualifying port happens to be iterated last.
+			if = {
+				limit = { NOT = { has_event_target = black_plague_rat_evolution_actor } }
+				CONTROLLER = { save_global_event_target_as = black_plague_rat_evolution_actor }
+			}
 		}
 		black_plague_evolution_record_stage = yes
 		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.30 } } }
@@ -198,10 +226,9 @@ black_plague_activate_evolution_iii = {
 		black_plague_rat_activate_evolution_iii = yes
 		if = {
 			limit = { has_global_flag = black_plague_evolution_iii_active }
-			# SCN-012 creates several independent broods inside one reusable
-			# carrier. Evolution III therefore records no country actor for the
-			# bootstrap entry; natural emergence keeps the selected RTA actor.
-			if = { limit = { has_global_flag = black_plague_triggerable_scenario_bootstrap } clear_global_event_target = black_plague_rat_evolution_actor }
+			# SCN-012 keeps all internal broods on the reusable RTA carrier, but the
+			# first carrier is still the meaningful Evolution III actor. The rat
+			# runtime selects that carrier before this wrapper records the row.
 			set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iii_stage }
 			black_plague_evolution_record_stage = yes
 			if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.40 } } }
@@ -225,6 +252,18 @@ black_plague_activate_evolution_iv = {
 			black_plague_evolution_record_stage = yes
 			if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
 		}
+	}
+	else_if = {
+		limit = {
+			black_plague_evolution_iv_is_enabled = yes
+			has_global_flag = black_plague_evolution_iv_active
+			NOT = { has_global_flag = black_plague_rat_king_active }
+			NOT = { has_global_flag = world_end }
+		}
+		# A non-terminal campaign may relaunch SCN-012 after the sentient King
+		# was defeated. Reuse the existing Evolution IV row while rebuilding the
+		# separate RTX country instead of trying to record a sixth evolution.
+		black_plague_rat_activate_evolution_iv = yes
 	}
 }
 
@@ -262,35 +301,35 @@ black_plague_evolution_refresh_king_progress = {
 			if = {
 				limit = { is_on_continent = europe }
 				add_to_variable = { global.black_plague_rat_king_europe_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_europe_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_europe_controlled = constant:black_plague_value.one } }
 			}
 			if = {
 				limit = { is_on_continent = asia }
 				add_to_variable = { global.black_plague_rat_king_asia_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_asia_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_asia_controlled = constant:black_plague_value.one } }
 			}
 			if = {
 				limit = { is_on_continent = africa }
 				add_to_variable = { global.black_plague_rat_king_africa_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_africa_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_africa_controlled = constant:black_plague_value.one } }
 			}
 			if = {
 				limit = { is_on_continent = north_america }
 				add_to_variable = { global.black_plague_rat_king_north_america_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_north_america_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_north_america_controlled = constant:black_plague_value.one } }
 			}
 			if = {
 				limit = { is_on_continent = south_america }
 				add_to_variable = { global.black_plague_rat_king_south_america_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_south_america_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_south_america_controlled = constant:black_plague_value.one } }
 			}
 			if = {
 				limit = { is_on_continent = australia }
 				add_to_variable = { global.black_plague_rat_king_australia_total = constant:black_plague_value.one }
-				if = { limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } } add_to_variable = { global.black_plague_rat_king_australia_controlled = constant:black_plague_value.one } }
+				if = { limit = { OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } add_to_variable = { global.black_plague_rat_king_australia_controlled = constant:black_plague_value.one } }
 			}
 			if = {
-				limit = { AND = { is_controlled_by = RTX OR = { black_plague_state_is_established = yes black_plague_state_is_rat_controlled = yes } } }
+				limit = { is_controlled_by = RTX }
 				add_to_variable = { global.black_plague_rat_king_controlled_states = constant:black_plague_value.one }
 			}
 			if = {
@@ -319,24 +358,32 @@ black_plague_evolution_refresh_king_progress = {
 			}
 			set_variable = { global.black_plague_rat_king_peak_controlled_states = global.black_plague_rat_king_controlled_states }
 		}
+		# Keep the state-count and ratio from the same observed continent. A
+		# later ratio spike on a smaller continent must not combine with an
+		# earlier state-count peak to qualify the aftermath gate.
 		if = {
 			limit = {
-				check_variable = {
-					var = global.black_plague_rat_king_best_continent_states
-					value = global.black_plague_rat_king_peak_continent_states
-					compare = greater_than
+				OR = {
+					check_variable = {
+						var = global.black_plague_rat_king_best_continent_states
+						value = global.black_plague_rat_king_peak_continent_states
+						compare = greater_than
+					}
+					AND = {
+						check_variable = {
+							var = global.black_plague_rat_king_best_continent_states
+							value = global.black_plague_rat_king_peak_continent_states
+							compare = equals
+						}
+						check_variable = {
+							var = global.black_plague_rat_king_best_continent_ratio
+							value = global.black_plague_rat_king_peak_continent_ratio
+							compare = greater_than
+						}
+					}
 				}
 			}
 			set_variable = { global.black_plague_rat_king_peak_continent_states = global.black_plague_rat_king_best_continent_states }
-		}
-		if = {
-			limit = {
-				check_variable = {
-					var = global.black_plague_rat_king_best_continent_ratio
-					value = global.black_plague_rat_king_peak_continent_ratio
-					compare = greater_than
-				}
-			}
 			set_variable = { global.black_plague_rat_king_peak_continent_ratio = global.black_plague_rat_king_best_continent_ratio }
 		}
 	}

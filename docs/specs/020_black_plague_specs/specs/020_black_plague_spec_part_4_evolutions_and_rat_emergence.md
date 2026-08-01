@@ -189,7 +189,7 @@ The event must not violate the user's rule by selecting an island as the initial
 
 ## Working role
 
-**Connected uncontrolled plague basins produce Rat Nations.**
+**Connected uncontrolled plague basins produce internal RTA broods.**
 
 This is the first supernatural evolution. The event should clearly transition from an extreme disease crisis into a nonhuman country crisis without claiming that normal plague biology creates organized mutant states.
 
@@ -338,9 +338,9 @@ Occupation does not create a second disease effect or duplicate death tick.
 
 ## Rat diplomacy
 
-Rat Nations are hostile to every human country. They do not use ordinary alliances, guarantees, trade, or peace behavior.
+The RTA carrier is hostile to every human country. It does not use ordinary alliances, guarantees, trade, or peace behavior.
 
-Rat Nations are not hostile to other Rat Nations. When two rat countries become adjacent, they enter a dominance comparison rather than a normal war.
+RTA broods are not hostile to one another through ordinary diplomacy. When two brood markers become adjacent, they enter a dominance comparison rather than a normal war.
 
 ## Rat dominance and annexation
 
@@ -358,29 +358,29 @@ The score uses:
 
 ### Border absorption
 
-When two Rat Nations share a border for a sustained period:
+When two RTA brood markers share a border for a sustained period:
 
 - the stronger brood begins an absorption countdown
 - the weaker brood can gain temporary resistance through focus or event choices
-- if the score remains decisive, the stronger rat country annexes the weaker
-- all weaker units transfer to the stronger country
+- if the score remains decisive, the stronger brood annexes the weaker basin marker
+- all weaker units transfer to the shared RTA carrier and inherit its surviving brood record
 - disease states and modifiers remain
 - the stronger country gains absorption history and Rat King eligibility
 
-A close score can delay the merge and create a territorial standoff. Rat countries should not repeatedly declare wars that waste units and break the user's unification rule.
+A close score can delay the merge and create a territorial standoff. Brood markers should not repeatedly declare wars that waste units and break the user's unification rule.
 
 ## Multiple emergences
 
-Evolution III can create several Rat Nations in separate uncontrolled basins. The system should avoid excessive tag spam.
+Evolution III can create several internal RTA broods in separate uncontrolled basins. The system must avoid country-tag spam entirely.
 
 ### Limits
 
-- use a finite pre-registered tag pool
-- global active Rat Nation cap scales with Chaos tier and map size
+- use the finite pre-registered two-tag country package, RTA and RTX
+- global active RTA brood cap scales with Chaos tier and map size
 - basin cooldown prevents repeated creation in the same small area
-- after the tag pool is exhausted, new qualifying basins reinforce the nearest compatible rat country or produce a resurgence incident instead of an invalid tag
+- after RTA brood capacity is reached, new qualifying basins reinforce the nearest compatible brood or produce a resurgence incident instead of an invalid tag
 
-The final tag pool count should be chosen after live repository conflict checks. A planning target of twelve to sixteen tags gives enough global variety without requiring unlimited country creation.
+The country package is fixed at RTA and RTX after live repository conflict checks. Basin markers and strength budgets provide global variety without requiring unlimited country creation.
 
 ## Rat country origin archetypes
 
@@ -457,7 +457,7 @@ The plague can still remain active after the rat phase is defeated. Full eradica
 
 At Chaos 600 or higher, Event 20 still begins in one mainland state. The origin starts with Evolution I severity and Evolution II permission. Rat emergence pressure begins at a higher baseline once a connected basin forms.
 
-The ordinary opening should not create a Rat Nation before the player has seen disease spread, state collapse, and the first basin form. The delay can be shorter than a low-chaos campaign, but the chain remains legible. The triggerable scenario is the deliberate exception and creates several full Rat Nation packages immediately.
+The ordinary opening should not create the RTA carrier before the player has seen disease spread, state collapse, and the first basin form. The delay can be shorter than a low-chaos campaign, but the chain remains legible. The triggerable scenario is the deliberate exception and creates several full internal RTA brood packages immediately.
 
 ## Evolution III presentation
 
@@ -473,7 +473,7 @@ The first internationally recognized Rat Nation receives a news event and event 
 
 - fictional period-documentary report image for the first emergence
 - generated collective rat leader portrait for each archetype family
-- unique rat flags or emblems from the registered tag pool
+- unique rat flags or emblems for the RTA and RTX country package
 - rat unit and state status icons
 - possible animated black fog escalation
 

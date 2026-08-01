@@ -6,30 +6,30 @@ All country names, route names, focus names, idea names, unit names, decision na
 
 ## Country role
 
-Rat Nations are persistent nonhuman breakaway countries created by Evolution III. They are not temporary rebel stacks and must not disappear after one battle. Each brood begins in a catastrophic infection basin with a strong initial army, grows new mutated rat formations through timed pulses, infects every state it occupies, and competes with other broods through dominance and absorption.
+RTA is the persistent nonhuman Rat Nation carrier created by Evolution III. It is not a temporary rebel stack and must not disappear after one battle. Each internal brood begins in a catastrophic infection basin with a strong initial army allocation, grows new mutated rat formations through timed pulses, infects every state it occupies, and competes with other broods through dominance and absorption while remaining under the RTA carrier.
 
 Rat Nations have one fixed strategic purpose: expand the plague ecology and survive long enough to become the dominant brood. They do not need ordinary human ideological pluralism. They still need internal choices around hierarchy, mutation, territory, military method, proto-sentience, and rivalry.
 
-## Tag pool
+## Two-tag country package and internal brood pool
 
-The system should reserve a finite pool of rat country tags. A planning target of twelve to sixteen tags is appropriate for a world map with several simultaneous basins.
+The system uses exactly two country tags: RTA for every non-sentient Rat Nation brood and RTX for the separate sentient Rat King. Internal brood identity is represented by state markers, basin variables, strength pools, and capped RTA army allocations. No additional Rat Nation country tags are created.
 
-### Tag rules
+### Country-package rules
 
-- final tags must be checked against vanilla, Chaos Redux, and approved mod conflicts
-- each tag has a country definition, history setup, flag set, localisation family, and focus tree access
-- unused tags remain dormant
-- a tag is assigned only when a valid basin and state package exist
-- destroyed tags return to the pool only after all references, units, targets, and history values are cleaned safely
-- reuse should preserve no old state, leader, focus, AI, or dominance data
+- RTA and RTX must be checked against vanilla, Chaos Redux, and approved mod conflicts
+- both tags have a country definition, history setup, flag set, localisation family, and focus tree access
+- both tags remain dormant until a valid basin and state package exists
+- internal broods are assigned only when a valid basin and state package exist
+- absorbed or destroyed internal broods clear their state markers, strength values, unit allocations, and event targets safely
+- RTA reuse preserves no old state, leader, focus, AI, immunity, route, or dominance data
 
-The implementation can avoid runtime tag reuse if cleanup is unsafe. In that case, the fixed pool becomes a campaign maximum and later basins reinforce existing broods.
+RTA is reusable only after its retirement quarantine clears all old state, leader, focus, AI, immunity, route, unit, and dominance data. RTX is a separate one-at-a-time royal package and is not a second brood carrier.
 
 ## Public identity
 
-Each base Rat Nation should have a short map-readable public name drawn from a brood naming pool. Names should evoke warrens, broods, teeth, burrows, plague, ash, carrion, docks, fields, or ruined cities. They should not use administrative office language.
+RTA should have a short map-readable public name drawn from a brood naming pool. Names should evoke warrens, broods, teeth, burrows, plague, ash, carrion, docks, fields, or ruined cities. They should not use administrative office language.
 
-The public name can vary by origin archetype. The implementation should use scripted or setup-time selection from a small pool rather than one identical name for every tag.
+The RTA public name can vary by origin archetype through scripted localisation, while RTX retains its royal identity. Basin markers and tooltips distinguish multiple RTA broods without inventing country names or tags.
 
 ### Leader identity
 
@@ -72,7 +72,7 @@ The package must be playable when a human takes control. A human rat player uses
 
 ## Triggerable scenario opening
 
-The triggerable scenario creates several full Rat Nation packages immediately. Each brood uses the same valid tag, state, army, focus, portrait, flag, mechanic, and AI rules as a naturally emerged brood. Scenario broods are not reduced temporary versions.
+The triggerable scenario creates several full internal RTA broods immediately and creates or preserves the separate RTX package. Each brood uses the same valid state, army allocation, focus, portrait, flag, mechanic, and AI rules as a naturally emerged RTA brood. Scenario broods are not reduced temporary versions and do not consume extra country tags.
 
 The scenario distributes broods among selected continents and assigns one origin archetype from the local basin. Independent broods remain visible during the initial royal-consolidation grace period even though the Rat King also exists. Dominance timers and royal absorption resume after that grace period.
 
@@ -701,7 +701,7 @@ Every registered rat tag needs a readable base flag in normal, medium, and small
 
 ### Flag design rules
 
-- unique central symbol for each brood tag
+- unique central symbol for each RTA brood marker, with one shared RTA flag family
 - common visual family so the player recognizes Rat Nations
 - no simple recolors of one flag
 - readable at 10 by 7 pixels
@@ -709,7 +709,7 @@ Every registered rat tag needs a readable base flag in normal, medium, and small
 - motifs can include tails, teeth, burrow spirals, grain, docks, trenches, crowns denied, or plague marks
 - ideology variants are created only when the country package can actually display them
 
-A smaller tag pool with complete unique assets is better than a larger pool with duplicated flags.
+A complete two-tag country package with distinct RTA brood markers is better than a larger pool with duplicated flags.
 
 ## Diplomacy and peace
 
@@ -812,8 +812,8 @@ Text direction should communicate animal movement, territorial instinct, emergin
 
 ## Acceptance criteria for Rat Nations
 
-- finite conflict-checked tag pool exists
-- every tag has complete flags, localisation, history setup, focus access, and cleanup
+- finite conflict-checked RTA/RTX country package exists
+- both tags have complete flags, localisation, history setup, focus access, and cleanup
 - base countries use collective rat portraits and institutional leader names
 - shared nonhuman classifiers are updated
 - starting territory is valid and remains plagued

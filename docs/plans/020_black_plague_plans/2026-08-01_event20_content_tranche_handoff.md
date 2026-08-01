@@ -10,6 +10,18 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 ## Implemented in this tranche
 
+- The reusable RTA carrier now has the three missing live pressure registers
+  from the country specification: Hunger, Coherence, and derived Disease
+  Dominion. They initialize with each carrier, update on the existing capped
+  pulse, appear in the Rat category description, and feed route and hierarchy
+  behavior without adding a country tag or a second disease category.
+- RTA hierarchy choices now remove the starting `Fractured Instinct` spirit
+  and raise Coherence. The spirit supplies the early coordination penalty and
+  is cleaned up when the carrier retires or becomes the Rat King source.
+- RTA Hunger now has a player-facing `.46` crisis event. Rationing spends mass
+  to restore coordination, while destructive feeding adds mass at the cost of
+  Coherence and state devastation, infestation, and mapmode dirtiness.
+
 - The shared disease category now includes a selectable Emergency Countermeasure Drive mission with stockpile payment, 90-day timeout, countermeasure progress gain, and timeout exposure and stability pressure.
 - Royal Node strikes now require a military route, resolve against King Dominion, reduce infestation and Dominion on success, block the next royal pulse for a bounded period, and feed Dominion, hunger, and terminal preparation on counterfire.
 - The shared disease category now includes an earned Crown Strike against the Royal Basin and a post-defeat Seal Royal Burrows operation. Crown Strike has route-specific Dominion, Cohesion, and overseas-exposure consequences; Royal Burrow sealing has fixed equipment, manpower, fuel, command-power, factory, Response Capacity, and 180-day costs and does not cure the underlying disease.
@@ -39,7 +51,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 ## Validation evidence
 
 - The touched Event 020 script and localisation files have balanced braces and no unsupported `<=` or `>=` operators.
-- The Event 020 namespace contains 38 unique event IDs with no duplicate IDs.
+- The Event 020 namespace contains 48 unique event IDs with no duplicate IDs.
 - Player-facing Event 020 localisation keys have no duplicate keys; hidden scheduler callbacks intentionally have no title or description keys.
 - Event 020 localisation files retain UTF-8 BOM encoding.
 - The mandatory catalog exporter completed successfully after the workbook update and rewrote all three CSV exports.
@@ -58,8 +70,8 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - No in-game process was launched, so the new scoped defeat hooks, metric gate, `.72` coupling, slot-087 trigger/audio, and `.73` audience behavior also require live consumer validation; the current `.73` audience remains the first eligible human response host.
 - Rat 3D model production is intentionally excluded by the user and remains outside this goal tranche.
 - The bounded report/news art package is now promoted into runtime wiring. Origin recognition and late origin reports use `GFX_report_event_020_black_plague_origin`, overseas establishment uses `GFX_news_event_020_black_plague_overseas`, and Rat emergence/resurgence reports use `GFX_report_event_020_rat_emergence`; the sprites are registered in `interface/020_black_plague_event_pictures.gfx` and the final DDS evidence is recorded in `docs/assets/020_black_plague/event_art/manifest.md`.
-- SCN-012 now converts intensity-scaled severe or collapsed candidates into several internal RTA warrens after the first carrier state. The target is two, three, four, or six total RTA brood states for Low, Medium, High, or Maximum intensity; no additional country tag is created, and the states use the normal Rat-Controlled phase, infestation, brood-strength marker, and capped pulse runtime.
-- SCN-012 now nominates an established anchor for the shared state-owned scheduler and schedules the first `.900` callback before bootstrap cleanup, so scenario launches continue into normal disease, spread, evolution, and rat pulses.
+- SCN-012 now converts intensity-scaled infected-or-worse candidates into several internal RTA warrens after the first carrier state. The target is two, three, four, or six total RTA brood states for Low, Medium, High, or Maximum intensity; no additional country tag is created, and the states use the normal Rat-Controlled phase, infestation, brood-strength marker, and capped pulse runtime.
+- SCN-012 now performs a fail-closed geography/package preflight before initializing the disease or rat registries, nominates an established anchor for the shared state-owned scheduler, and schedules the first `.900` callback before bootstrap cleanup, so scenario launches continue into normal disease, spread, evolution, and rat pulses.
 - Scenario candidate collection now preserves existing established disease states when launched over an active crisis, excludes those states from reseeding, and still offers severe or collapsed human states as internal RTA brood candidates.
 - Natural evolution readiness and activation now respect the five Event 020 disabled-evolution flags. Evolution checks use the existing MTTH-backed next-check date instead of attempting all eligible stages on every weekly pulse; SCN-012 remains an explicit I-IV force path.
 - The contaminated-state mapmode now applies the player-visibility gate before painting an established Black Plague base, preventing private Incubating states from leaking black to unauthorized viewers while preserving black for visible established states.

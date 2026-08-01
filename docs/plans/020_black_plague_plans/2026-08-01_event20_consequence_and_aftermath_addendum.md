@@ -1,5 +1,7 @@
 # Event 020 consequence, hierarchy, and defeat aftermath addendum
 
+> Reconciled after the route-depth tranche: the live RTA carrier now also owns Hunger, Coherence, derived Disease Dominion, the staged Fractured Instinct spirit, and `.46` Hunger crisis handling. Historical focus counts below retain their earlier inspection snapshots; the current tree is 50 RTA focuses and 70 RTX focuses.
+
 ## Reconciliation status (2026-08-01)
 
 This addendum is now a mixed-disposition record rather than an unimplemented tranche proposal.

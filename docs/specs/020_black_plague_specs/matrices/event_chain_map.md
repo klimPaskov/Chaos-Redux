@@ -25,6 +25,7 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.43` | state-level brood absorption | reusable RTA carrier | report or log | yes |
 | `chaosx.nr20.44` | rat resurgence | affected human owner and rat tag | yes | limited by basin cooldown |
 | `chaosx.nr20.45` | hierarchy acknowledgement after the RTA route choice | RTA | yes | one per carrier |
+| `chaosx.nr20.46` | RTA Hunger crisis and destructive feeding choice | RTA | yes | once per unresolved crisis |
 | `chaosx.nr20.50` | Evolution IV candidate selection | leading rat country | yes | no per coronation cycle |
 | `chaosx.nr20.51` | Rat King transfer and coronation | Rat King | yes | no |
 | `chaosx.nr20.52` | coronation super-event launcher | global | super-event | no |

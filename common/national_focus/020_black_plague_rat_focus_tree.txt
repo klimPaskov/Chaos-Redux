@@ -267,6 +267,8 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = black_plague_rat_four_mouths
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.distributed }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
+			remove_ideas = black_plague_rat_fractured_instinct
 			if = { limit = { NOT = { has_country_flag = black_plague_rat_hierarchy_reported } } set_country_flag = black_plague_rat_hierarchy_reported country_event = { id = chaosx.nr20.45 } }
 		}
 	}
@@ -281,6 +283,8 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = black_plague_rat_voice_chosen
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.dominant }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
+			remove_ideas = black_plague_rat_fractured_instinct
 			if = { limit = { NOT = { has_country_flag = black_plague_rat_hierarchy_reported } } set_country_flag = black_plague_rat_hierarchy_reported country_event = { id = chaosx.nr20.45 } }
 		}
 	}
@@ -295,6 +299,8 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = black_plague_rat_marks_read
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.emergent }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
+			remove_ideas = black_plague_rat_fractured_instinct
 			if = { limit = { NOT = { has_country_flag = black_plague_rat_hierarchy_reported } } set_country_flag = black_plague_rat_hierarchy_reported country_event = { id = chaosx.nr20.45 } }
 		}
 	}
@@ -677,7 +683,11 @@ focus_tree = {
 		position = { x = 0 y = 15 }
 		available = { OR = { has_completed_focus = black_plague_rat_challenge_weaker_brood has_completed_focus = black_plague_rat_resist_stronger_brood } }
 		ai_will_do = { factor = @rat_focus_ai_core }
-		completion_reward = { set_country_flag = black_plague_rat_absorb_and_integrate add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_depth.absorb_integrate_mass_gain } }
+		completion_reward = {
+			set_country_flag = black_plague_rat_absorb_and_integrate
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_depth.absorb_integrate_mass_gain }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
+		}
 	}
 	focus = {
 		id = black_plague_rat_symbols_and_maps
@@ -685,7 +695,11 @@ focus_tree = {
 		cost = @rat_focus_long
 		prerequisite = { focus = black_plague_rat_absorb_and_integrate }
 		position = { x = 0 y = 16 }
-		completion_reward = { set_country_flag = black_plague_rat_symbols_maps add_to_variable = { black_plague_rat_sentience = constant:black_plague_rat_depth.symbols_maps_sentience_gain } }
+		completion_reward = {
+			set_country_flag = black_plague_rat_symbols_maps
+			add_to_variable = { black_plague_rat_sentience = constant:black_plague_rat_depth.symbols_maps_sentience_gain }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_state_gain }
+		}
 	}
 	focus = {
 		id = black_plague_rat_command_between_nests
@@ -698,6 +712,7 @@ focus_tree = {
 			set_country_flag = black_plague_rat_command_between_nests
 			set_country_flag = black_plague_rat_king_candidate
 			add_to_variable = { black_plague_rat_sentience = constant:black_plague_rat_depth.command_nests_candidate_gain }
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
 		}
 	}
 }
