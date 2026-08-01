@@ -1254,9 +1254,16 @@ brilliant_scientist_dispatch_project_accident = {
 }
 
 brilliant_scientist_begin_family_project_incident = {
+	set_variable = { brilliant_scientist_active_incident_family = brilliant_scientist_project_family }
+	set_variable = { brilliant_scientist_active_incident_stage = brilliant_scientist_requested_project_stage }
 	set_country_flag = brilliant_scientist_project_incident_active
 	set_country_flag = brilliant_scientist_dangerous_project_incident
 	clr_country_flag = brilliant_scientist_project_incident_response_failed
+	clr_country_flag = brilliant_scientist_project_incident_report_acknowledged
+	clr_country_flag = brilliant_scientist_project_incident_public_notice
+	clr_country_flag = brilliant_scientist_project_incident_security_cordon
+	clr_country_flag = brilliant_scientist_project_incident_kruger_cordon
+	set_country_flag = brilliant_scientist_project_incident_report_pending
 	add_to_variable = { brilliant_scientist_project_incident_count = constant:brilliant_scientist_value.one }
 	if = {
 		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
@@ -1367,6 +1374,79 @@ brilliant_scientist_begin_family_project_incident = {
 		limit = { check_variable = { var = brilliant_scientist_accident_pressure value = constant:brilliant_scientist_accident.severe_threshold compare = greater_than_or_equals } }
 		brilliant_scientist_damage_project = yes
 	}
+	country_event = { id = chaosx.nr16.13 days = constant:brilliant_scientist_directorate_timing.incident_report_days }
+}
+
+# COUNTRY scope. The report is a presentation gate for the active incident.
+# Recovery missions own the concrete costs and deadline; these three outcomes
+# only record the first governance posture and move the existing causal values.
+brilliant_scientist_resolve_project_incident_report_public = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_project_incident_report_pending }
+		clr_country_flag = brilliant_scientist_project_incident_report_pending
+		set_country_flag = brilliant_scientist_project_incident_report_acknowledged
+		set_country_flag = brilliant_scientist_project_incident_public_notice
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.public_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_resolve_project_incident_report_security = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_project_incident_report_pending }
+		clr_country_flag = brilliant_scientist_project_incident_report_pending
+		set_country_flag = brilliant_scientist_project_incident_report_acknowledged
+		set_country_flag = brilliant_scientist_project_incident_security_cordon
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.security_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+brilliant_scientist_resolve_project_incident_report_kruger = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_project_incident_report_pending }
+		clr_country_flag = brilliant_scientist_project_incident_report_pending
+		set_country_flag = brilliant_scientist_project_incident_report_acknowledged
+		set_country_flag = brilliant_scientist_project_incident_kruger_cordon
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_project_incident_report.kruger_grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
+# COUNTRY scope. Used by cancellation and terminal cleanup paths when the
+# report can no longer be shown on the current carrier.
+brilliant_scientist_clear_project_incident_report_pending = {
+	clr_country_flag = brilliant_scientist_project_incident_report_pending
 }
 
 # COUNTRY scope. Input: family.
@@ -1462,6 +1542,7 @@ brilliant_scientist_resolve_family_project_incident = {
 		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_incident }
 	}
 	brilliant_scientist_repair_project = yes
+	brilliant_scientist_clear_project_incident_report_pending = yes
 	clr_country_flag = brilliant_scientist_project_incident_active
 	set_country_flag = brilliant_scientist_project_incident_resolved
 }
@@ -1472,6 +1553,7 @@ brilliant_scientist_fail_family_project_incident = {
 	brilliant_scientist_damage_project = yes
 	add_stability = constant:brilliant_scientist_project_modifier.accident_stability
 	add_war_support = constant:brilliant_scientist_project_modifier.accident_war_support
+	brilliant_scientist_clear_project_incident_report_pending = yes
 	set_country_flag = brilliant_scientist_project_incident_response_failed
 }
 

@@ -1,0 +1,106 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PROJECT INCIDENT REPORT
+# ============================================================================
+# One ordinary report introduces the active family-specific recovery mission.
+# The report records a governance posture and applies only bounded Directorate
+# values. Concrete resources, factory time, deadlines, damage, and repair stay
+# in the family mission layer.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.13
+	title = chaosx.nr16.13.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = brilliant_scientist_accident_pressure
+				value = constant:brilliant_scientist_accident.severe_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		text = chaosx.nr16.13.severe.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = brilliant_scientist_accident_pressure
+				value = constant:brilliant_scientist_accident.major_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		text = chaosx.nr16.13.major.d
+	}
+	desc = { text = chaosx.nr16.13.standard.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			brilliant_scientist_is_active_kruger_state = yes
+		}
+		has_country_flag = brilliant_scientist_project_incident_active
+		has_country_flag = brilliant_scientist_project_incident_report_pending
+		has_variable = brilliant_scientist_active_incident_family
+		NOT = { has_country_flag = world_end }
+	}
+
+	option = {
+		name = chaosx.nr16.13.a
+		ai_chance = {
+			base = constant:brilliant_scientist_project_incident_report_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.public_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_public_science
+					has_country_flag = brilliant_scientist_context_distributed_research
+				}
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.public_factor
+				has_country_flag = brilliant_scientist_public_compact
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_project_incident_report_public_tt
+		hidden_effect = { brilliant_scientist_resolve_project_incident_report_public = yes }
+	}
+
+	option = {
+		name = chaosx.nr16.13.b
+		ai_chance = {
+			base = constant:brilliant_scientist_project_incident_report_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.security_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_strategic_security
+					has_country_flag = brilliant_scientist_secret_directorate
+					has_country_flag = brilliant_scientist_security_posture_military
+				}
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.security_factor
+				has_country_flag = brilliant_scientist_internal_security_section_established
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_project_incident_report_security_tt
+		hidden_effect = { brilliant_scientist_resolve_project_incident_report_security = yes }
+	}
+
+	option = {
+		name = chaosx.nr16.13.c
+		ai_chance = {
+			base = constant:brilliant_scientist_project_incident_report_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.kruger_factor
+				has_country_flag = brilliant_scientist_secret_directorate
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_project_incident_report_ai.kruger_factor
+				has_country_flag = brilliant_scientist_security_posture_private
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_project_incident_report_kruger_tt
+		hidden_effect = { brilliant_scientist_resolve_project_incident_report_kruger = yes }
+	}
+}
