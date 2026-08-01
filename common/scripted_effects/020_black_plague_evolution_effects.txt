@@ -621,10 +621,24 @@ black_plague_activate_evolution_v = {
 	}
 }
 
+# Rebuild the natural Evolution III basin count immediately before the
+# readiness pass. The member trigger only counts human-controlled
+# Infected/Severe/Collapsed states that participate in a three-state path, so
+# the fixed-point minimum remains a real tuning input instead of an unused
+# design note. SCN-012's bootstrap path does not use this gate.
+black_plague_rat_refresh_evolution_iii_basin_count = {
+	set_variable = { global.black_plague_evolution_iii_basin_state_count = constant:black_plague_value.zero }
+	every_state = {
+		limit = { black_plague_rat_state_has_connected_basin_signal = yes }
+		add_to_variable = { global.black_plague_evolution_iii_basin_state_count = constant:black_plague_value.one }
+	}
+}
+
 black_plague_evolution_runtime_pulse = {
 	if = {
 		limit = { black_plague_evolution_check_is_due = yes }
 		set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.zero }
+		black_plague_rat_refresh_evolution_iii_basin_count = yes
 		black_plague_evolution_prepare_prefire_permissions = yes
 		if = {
 			limit = { black_plague_evolution_i_is_ready = yes }
