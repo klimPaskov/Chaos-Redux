@@ -4,7 +4,7 @@
 
 ## Disposition
 
-The Black Plague core-stabilization runtime supplies the epidemic lifecycle, response loop, evolution state machine, Rat country runtime, weaponization bridge, triggerable-scenario transaction, mapmode integration, logs, super-events, and earned terminal route. The live registry now includes the Diseases cluster, the public Black Plague world-end row, the two-tag Rat lifecycle, and SCN-012. The later Event 020 consequence tranche also supplies the `.45` hierarchy acknowledgement, static RTA hierarchy consumers, RTX route crises, Crown Strike reports, and a defeat/aftermath path. Shared completion remains partial because scoped defeat attribution, reconstruction coupling, native-mission API decisions, broader route depth, narrative breadth, selected presentation assets, and live consumer validation remain open.
+The Black Plague core-stabilization runtime supplies the epidemic lifecycle, response loop, evolution state machine, Rat country runtime, weaponization bridge, triggerable-scenario transaction, mapmode integration, logs, super-events, and earned terminal route. The live registry now includes the Diseases cluster, the public Black Plague world-end row, the two-tag Rat lifecycle, and SCN-012. The later Event 020 consequence tranche also supplies the `.45` hierarchy acknowledgement, static RTA hierarchy consumers, RTX route crises, Crown Strike reports, and a scoped, metrics-gated defeat/aftermath path. Shared completion remains partial because broader route depth, narrative breadth, native-mission API decisions, selected crisis/route presentation assets, rights documentation, and live consumer validation remain open.
 
 This report does not claim that the entire original content specification is complete. Narrative expansion and presentation depth remain deliberately queued. Bespoke 3D models are outside the current goal and are not a blocker; Rat units use the valid registered infantry entity documented below.
 
@@ -24,7 +24,7 @@ This report does not claim that the entire original content specification is com
 - Three-way RTA hierarchy route graph with runtime cap, pulse, absorption, candidacy, route-aware AI consumers, and the `.45` acknowledgement event; dedicated hierarchy icons remain absent.
 - RTX route-policy crisis events `.57`, `.58`, and `.59` with route-specific pulse and meter consumers.
 - Crown Strike shared timed state action with `.64` success and `.65` timeout reports; this is not yet a native `activate_mission`/`days_mission_timeout` implementation.
-- Idempotent Rat King defeat resolver with `.71` defeat news and `.73-.75` aftermath/sealing events; defeating-actor capture, reconstruction coupling, and the ID 87 qualification gate remain unresolved.
+- Scoped `on_capitulation`/`on_state_control_changed` participant hooks and an idempotent Rat King defeat resolver with `.71`, eligible `.72`, gated slot 087, and `.73-.75` aftermath/sealing events; duration, peak, deaths, and major-participant metrics feed the explicit gate. The `.73` audience still falls back to the first eligible human response host, broader aftermath depth remains compact, and live validation is missing.
 - Direct, idempotent `SCN-012` launch transaction that forces Evolutions I–IV but never grants Evolution V or world end.
 - Earned Evolution V gates and deterministic terminal takeover.
 - Event-owned seven-day scheduler and batched mapmode refresh.
@@ -51,7 +51,9 @@ The HOI4 event inspection completed without a blocking focused diagnostic, but i
 ## Current tranche delta and unresolved surfaces
 
 The RTA hierarchy, RTX crises, Crown Strike, and static defeat/aftermath surfaces are now present as implementation evidence, so the older broad “additional crisis and aftermath events” wording below is superseded.
-The missing hierarchy event `.45`, scoped actor/on-action resolver path, `.72` reconstruction coupling, native mission API decision, dedicated crisis/Crown/aftermath and Doctor Wu art, hierarchy icons, ID 87 package, workbook/export reconciliation, and focused live validation remain queued.
+The remaining queued work is broader narrative and route depth, the native mission API decision, dedicated crisis/Doctor Wu/route/aftermath art and six hierarchy icons, workbook/export reconciliation, rights attribution, and focused live validation. The scoped actor hooks, defeat metrics/gate, `.72` coupling, and slot-087 package wiring are no longer queued.
+
+Current tranche evidence is `common/on_actions/020_black_plague_on_actions.txt` for the narrow actor hooks; `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, and `common/script_constants/020_black_plague_constants.txt` for participant tracking, duration/peak metrics, and the explicit gate; `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html` for slot-087 art/text/audio registration; and the resolver-owned `.72` dispatch in `common/scripted_effects/020_black_plague_rat_effects.txt`.
 
 ## Deferred content and assets
 
@@ -59,13 +61,13 @@ The following are explicitly outside this core-stabilization commit:
 
 - bespoke Rat Nation and Rat King 3D unit models, materials, rigs, walking/attack/death actions, `.mesh` and `.anim` exports, and reimport evidence are outside the current goal and remain archival production, not a runtime blocker;
 - additional triggerable scenario variants and scenario-specific narrative content;
-- the `.45` hierarchy acknowledgement, deeper route branches, additional accident/court narrative, and any further aftermath expansion;
+- deeper route branches, additional accident/court narrative, and any further aftermath expansion;
 - deeper Rat Nation and Rat King route content beyond the functional core trees;
 - source-frame animated UI and evolution presentation packages;
 - a unique Doctor Wu report image;
 - a dedicated weapon-delivery decision icon instead of the accepted Event 20 military-acceleration art reuse;
 - state-clipped black fog, pending a verified safe engine rendering method;
-- the queued defeat-aftermath super-event 87 and other nonessential narrative presentation.
+- broader nonessential narrative presentation beyond the promoted defeat-aftermath super-event 87 package.
 
 Rat units currently use a valid registered infantry entity so the country package has no missing model reference. This is an engine-safe core consumer, not the requested final rat model package.
 

@@ -24,7 +24,6 @@ black_plague_rat_brood_category = {
 		}
 		days_remove = constant:black_plague_rat_decision.duration_days
 		complete_effect = {
-			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.brood_mass_cost }
 			black_plague_rat_raise_brood_units = yes
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
@@ -36,7 +35,6 @@ black_plague_rat_brood_category = {
 		available = { black_plague_rat_can_absorb_adjacent_brood = yes }
 		days_remove = constant:black_plague_rat_decision.duration_days
 		complete_effect = {
-			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.merger_mass_cost }
 			black_plague_rat_try_absorb_adjacent_brood = yes
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.merger }
@@ -68,7 +66,8 @@ black_plague_rat_brood_category = {
 		days_remove = constant:black_plague_rat_decision.duration_days
 		complete_effect = {
 			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.brood_mass_cost }
-			set_country_flag = black_plague_rat_occupation_infection_drive
+			set_temp_variable = { black_plague_rat_occupation_drive_days = constant:black_plague_rat_decision.occupation_infection_drive_days }
+			set_country_flag = { flag = black_plague_rat_occupation_infection_drive days = black_plague_rat_occupation_drive_days }
 			set_global_flag = black_plague_mapmode_dirty
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.war }
@@ -167,17 +166,6 @@ black_plague_rat_king_court_category = {
 			add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_preparation_gain }
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
-	}
-
-	black_plague_rat_king_choose_a_route = {
-		icon = GFX_decision_generic_political_address
-		visible = { black_plague_rat_country_is_king = yes }
-		available = { check_variable = { var = black_plague_rat_king_route value = constant:black_plague_rat_king_route.undecided compare = equals } }
-		complete_effect = {
-			set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.brood_council }
-			set_country_flag = black_plague_rat_king_route_selected
-		}
-		ai_will_do = { base = constant:black_plague_rat_ai.standard }
 	}
 
 	black_plague_rat_king_mark_terminal_preparation = {

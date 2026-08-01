@@ -76,6 +76,8 @@ black_plague_scenario_set_intensity_tuning = {
 	set_variable = { global.black_plague_scenario_seeded_states = constant:black_plague_value.zero }
 	set_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.zero }
 	set_variable = { global.black_plague_scenario_king_states_transferred = constant:black_plague_value.zero }
+	# This counter is rebuilt immediately before seeding so a repeated launch
+	# can top up existing RTA-marked basins instead of duplicating them.
 	set_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.zero }
 }
 
@@ -302,9 +304,7 @@ black_plague_scenario_create_rat_nations = {
 				save_event_target_as = black_plague_rat_spawn_state
 				black_plague_rat_create_from_state = yes
 			}
-			event_target:black_plague_rat_selected_country = { save_event_target_as = black_plague_rat_evolution_actor }
 			set_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.one }
-			set_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
 		}
 	}
 }
@@ -319,6 +319,15 @@ black_plague_scenario_seed_internal_broods = {
 			RTA = { exists = yes has_country_flag = black_plague_rat_country }
 			check_variable = { global.black_plague_scenario_internal_brood_target > constant:black_plague_value.one }
 			check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
+		}
+		# Count the carrier basin and every existing internal marker before the
+		# loop. The configured target is a total, making repeated launches
+		# idempotent while still filling missing warrens.
+		set_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.zero }
+		RTA = { add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one } }
+		every_state = {
+			limit = { has_state_flag = black_plague_scenario_internal_brood }
+			add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
 		}
 		for_loop_effect = {
 			start = 0
@@ -530,12 +539,11 @@ black_plague_triggerable_scenario_launch = {
 		limit = { black_plague_scenario_can_launch_from_triggerable_scenarios = yes }
 		black_plague_scenario_suppress_fire_once = yes
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
-		set_global_flag = black_plague_triggerable_scenario_launched
-		set_global_flag = black_plague_scenario_shortcut_disqualifier
 		set_global_flag = black_plague_natural_outbreak_started
 		black_plague_scenario_set_intensity_tuning = yes
 		black_plague_initialize_runtime = yes
 		black_plague_rat_initialize_runtime = yes
+		clear_global_event_target = black_plague_rat_evolution_actor
 		black_plague_scenario_collect_candidates = yes
 		black_plague_scenario_record_history = yes
 		black_plague_scenario_select_anchor_states = yes
@@ -558,21 +566,42 @@ black_plague_triggerable_scenario_launch = {
 		black_plague_scenario_refresh_shared_threat = yes
 		black_plague_refresh_mapmode_once = yes
 		disease_containment_board_refresh_open_black_plague_boards = yes
-		news_event = { id = chaosx.nr20.90 }
-		if = {
-			limit = { RTX = { exists = yes has_country_flag = black_plague_rat_king_country } }
-			set_temp_variable = { black_plague_coronation_super_event_id = constant:black_plague_identity.rat_king_coronation_super_event_id }
-			set_temp_variable = { black_plague_coronation_super_event_days = constant:black_plague_evolution_runtime.coronation_super_event_visible_days }
-			set_global_flag = { flag = super_event_visible days = black_plague_coronation_super_event_days value = black_plague_coronation_super_event_id }
-			set_variable = { global.current_super_event_audio_id = constant:black_plague_identity.rat_king_coronation_audio_id }
-			every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
-		}
 		clear_array = global.black_plague_scenario_candidate_states
 		clear_array = global.black_plague_scenario_anchor_states
 		clear_array = global.black_plague_scenario_rat_candidate_states
 		every_state = { limit = { has_state_flag = black_plague_scenario_reserved } clr_state_flag = black_plague_scenario_reserved }
 		every_state = { limit = { has_state_flag = black_plague_scenario_anchor } clr_state_flag = black_plague_scenario_anchor }
 		every_state = { limit = { has_state_flag = black_plague_scenario_king_reserved } clr_state_flag = black_plague_scenario_king_reserved }
+		if = {
+			limit = {
+				RTA = { exists = yes has_country_flag = black_plague_rat_country }
+				RTX = { exists = yes has_country_flag = black_plague_rat_king_country }
+				has_global_flag = black_plague_evolution_i_active
+				has_global_flag = black_plague_evolution_ii_active
+				has_global_flag = black_plague_evolution_iii_active
+				has_global_flag = black_plague_evolution_iv_active
+				has_global_flag = black_plague_rat_king_active
+				check_variable = { global.black_plague_scheduler_ticket > constant:black_plague_value.zero }
+				any_state = { has_state_flag = black_plague_scheduler_anchor }
+				check_variable = { global.black_plague_scenario_selected_continents > constant:black_plague_value.one }
+				check_variable = { global.black_plague_scenario_king_states_transferred > constant:black_plague_value.zero }
+			}
+			set_global_flag = black_plague_scenario_shortcut_disqualifier
+			set_global_flag = black_plague_triggerable_scenario_launched
+			news_event = { id = chaosx.nr20.90 }
+			if = {
+				limit = {
+					RTX = { exists = yes has_country_flag = black_plague_rat_king_country }
+					NOT = { has_global_flag = black_plague_rat_king_coronation_emitted }
+				}
+				set_temp_variable = { black_plague_coronation_super_event_id = constant:black_plague_identity.rat_king_coronation_super_event_id }
+				set_temp_variable = { black_plague_coronation_super_event_days = constant:black_plague_evolution_runtime.coronation_super_event_visible_days }
+				set_global_flag = { flag = super_event_visible days = black_plague_coronation_super_event_days value = black_plague_coronation_super_event_id }
+				set_variable = { global.current_super_event_audio_id = constant:black_plague_identity.rat_king_coronation_audio_id }
+				every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
+				set_global_flag = black_plague_rat_king_coronation_emitted
+			}
+		}
 		clr_global_flag = black_plague_triggerable_scenario_bootstrap
 	}
 }

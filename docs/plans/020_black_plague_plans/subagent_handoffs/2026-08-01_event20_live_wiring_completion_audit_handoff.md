@@ -2,7 +2,20 @@
 
 Date: 2026-08-01
 
-> Historical audit snapshot. The later 2026-08-01 content tranche statically wires the RTA hierarchy consumers, RTX crises `.57-.59`, Crown Strike `.64-.65`, and defeat/aftermath `.71-.75`; this report’s older “absent” wording for those surfaces is superseded. Retain its valid unresolved findings for evolution/scenario/actor/asset validation and whole-spec completion, and use `2026-08-01_event20_documentation_cleanup_handoff.md` as the current documentation disposition.
+> Historical audit snapshot. The later 2026-08-01 content tranche statically wires the RTA hierarchy consumers, RTX crises `.57-.59`, Crown Strike `.64-.65`, scoped defeat/aftermath `.71-.75`, resolver-owned `.72`, and slot-087 presentation; this report’s older “absent” wording for those surfaces is superseded. Retain its valid unresolved findings for evolution/scenario/`.73` audience/asset validation and whole-spec completion, and use `2026-08-01_event20_documentation_cleanup_handoff.md` as the current documentation disposition.
+
+## Reconciliation update (2026-08-01)
+
+The following parent-owned surfaces are now promoted as static implementation evidence and supersede the corresponding absence claims below:
+
+| Surface | Evidence |
+| --- | --- |
+| Scoped defeat actor hooks and participant registry | `common/on_actions/020_black_plague_on_actions.txt` and `common/scripted_effects/020_black_plague_rat_effects.txt` record narrow capitulation/state-control participants and deduplicate major human contributors. |
+| Duration/peak/deaths/participant qualification | `common/scripted_triggers/020_black_plague_rat_triggers.txt`, `common/script_constants/020_black_plague_constants.txt`, `common/script_constants/020_black_plague_evolution_constants.txt`, and Rat/evolution runtime effects track the current explicit gate. |
+| Reconstruction coupling | `black_plague_rat_king_resolve_defeat` dispatches `.72` once after `.71` when the same gate qualifies; `.73-.75` remain the separate aftermath path. |
+| Slot 087 package | `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, `music/chaosx_music_track_list.html`, and the final art/audio/text handoffs promote the image, text, audio ID 103, and wrappers. |
+
+These updates do not claim whole-spec completion, native mission API acceptance, correct `.73` actor audience (the current fallback is the first eligible human response host), release rights completion, or live in-game validation.
 
 ## Boundary and verdict
 
@@ -44,7 +57,7 @@ The evidence below was rechecked after the current evolution-setting, evolution-
 | Weaponization | Finished structurally, presentation and balance partial | `common/special_projects/projects/020_black_plague_weaponization_projects.txt` defines six prototype reward ranges and eighteen unique role tokens. `common/decisions/020_black_plague_weaponization_decisions.txt` defines four mutually exclusive approaches and native payload delivery. `common/scripted_effects/020_black_plague_weaponization_effects.txt` connects accidents, condemnation, stockpile, plague-bomb technology, ordinary exposure, delivery, and three reports. No representative accident, condemnation, delivery, or AI scenario has been evaluated. Resource costs and several AI factors remain literal rather than centralized tuning values. |
 | Exactly two rat countries and internal broods | Finished structurally | `common/country_tags/020_black_plague_rat_countries.txt:8-11` registers only `RTA` and `RTX`. SCN-012 creates one reusable RTA carrier and uses state brood markers for its intensity scaling at `common/scripted_effects/020_black_plague_scenario_effects.txt:264-331`. RTX is created in a separate Royal Basin and RTA remains active during the grace period. |
 | Rat runtime pulses | Partial | The weekly disease pulse calls `black_plague_rat_run_runtime_pulse` at `common/scripted_effects/020_black_plague_effects.txt:1646-1648`. RTA and RTX initialization, zero-manpower and equipment-independent units, capped growth, internal brood absorption, King absorption, Royal Node pulse blocks, AI strategies, and defeat detection are present. Clean newly conquered rat-controlled states have no explicit control-change hook and are converted only after entering the tracked established disease state, so the accepted reliable rat-occupation infection behavior still lacks direct proof. |
-| Rat King defeat and aftermath | Lifecycle cleanup finished statically; accepted aftermath partial | The zero-state pulse now calls idempotent `black_plague_rat_king_resolve_defeat` at `common/scripted_effects/020_black_plague_rat_effects.txt:169-212`. It clears the global active, grace, route-complete, and terminal-preparation state, retires RTX, removes it from the active King array, and emits `.71` once without deleting RTA or surviving plague states. It still does not capture the defeating actor, secure Royal Nodes, open reconstruction, resolve successor eligibility, or implement the accepted playable aftermath. `.72` still fires on global eradication rather than Royal Basin reconstruction. The optional global defeat super-event remains queued behind an eligibility gate. |
+| Rat King defeat and aftermath | Scoped static tranche implemented; playable depth and validation partial | `common/on_actions/020_black_plague_on_actions.txt` and `common/scripted_effects/020_black_plague_rat_effects.txt` now record scoped participants, track duration/peak metrics, and resolve `.71`, eligible `.72`, gated slot 087, and `.73-.75` idempotently while preserving RTA and surviving plague states. `.73` still targets the first eligible human response host rather than the saved actor, Royal Node cleanup remains a separate `.74/.75` action, broader aftermath depth is compact, and live validation is absent. |
 | RTA and RTX focus and AI depth | Partial | The current snapshot contains 35 RTA focuses with 13 explicit `ai_will_do` blocks and 50 RTX focuses with 8 explicit `ai_will_do` blocks. The four RTA origin lanes now have continuing route-module effects and route-aware AI strategies exist, so older no-AI and 31-focus findings are stale. The accepted ranges remain approximately 40 to 50 RTA focuses and 70 to 100 RTX focuses, and the broader hierarchy, administration, captured-knowledge, population-policy, continental-campaign, and aftermath lanes remain compressed or absent. |
 | Achievements | Implemented structurally, runtime validation missing | Fourteen Event 020 achievement entries now exist in `common/achievements/chaos_redux_achievements.txt:3775-3847`, their localisation exists, and `interface/chaosx_achievements.gfx:1519-1560` registers 42 completed, grey, and not-eligible sprites. All 42 DDS files exist. The current content tranche corrected the previously impossible two-tag predicates, but no positive and disqualifying campaign scenarios have validated the achievement contracts. |
 | Catalog | Finished for current public wording | The exported Event row records cluster 8, Severe membership, five evolution texts, and `The Kingdom of Teeth`. The Clusters export contains Diseases ID 8 with member 20. The Scenarios export contains SCN-012 with the corrected RTA and RTX wording. All three rows remain `Needs Testing`, which matches the missing runtime validation. |
@@ -92,11 +105,11 @@ The scheduler helper also clears the prior anchor before proving that a new unes
 
 These paths can leave a partially committed one-shot scenario or downgrade and duplicate an existing King package.
 
-### 5. Rat King defeat cleanup exists, but the accepted aftermath remains absent
+### 5. Rat King defeat cleanup and the scoped aftermath tranche are present, but whole-spec aftermath remains partial
 
 Zero-state RTX defeat now clears active royal runtime, retires the King carrier, removes its active registry entry, and produces `.71` once.
 
-Defeating-actor capture, successor-brood eligibility, Royal Node custody, reconstruction work, and aftermath decisions remain absent.
+Scoped participant capture, peak/duration qualification, resolver-owned reconstruction dispatch, and slot-087 presentation are now present. Remaining gaps are the `.73` audience choice, successor/aftermath depth, Royal Node live proof, release attribution, and whole-spec narrative coverage.
 
 The new `2026-08-01_event20_consequence_and_aftermath_addendum.md` describes a possible next tranche, but it remains under `docs/plans` until accepted and is not implementation evidence.
 
@@ -111,7 +124,7 @@ The new `2026-08-01_event20_consequence_and_aftermath_addendum.md` describes a p
 | Shared Black Plague-specific decisions inside the general disease category | Implemented structurally. The duplicate-category alternative remains rejected. |
 | Weaponization six-phase and eighteen-role project | Implemented structurally. Dedicated delivery art and task-specific accident, AI, and delivery validation remain unresolved. |
 | Deep RTA and RTX country routes | Compact playable subsets with route-aware AI, not accepted full depth. |
-| Rat King defeat aftermath | Zero-state runtime cleanup and the `.71` report are implemented. Defeating-actor ownership, Royal Node and successor resolution, reconstruction, and the playable aftermath remain absent. The optional qualifying defeat super-event remains queued behind its explicit eligibility gate. |
+| Rat King defeat aftermath | Zero-state cleanup, scoped participant/metric tracking, `.71`, eligible `.72`, gated slot 087, and `.73-.75` are implemented statically. `.73` ownership still falls back to the first eligible human response host, broader playable aftermath depth and live proof remain open. |
 | Dedicated event and UI asset package | Partial. Three additional report and news assets are now produced and wired, but accepted severe-crisis and Rat Nation news art, dedicated Royal Node and weapon-delivery icons, route icon depth, and source-frame animations remain queued or absent. |
 | Extra Rat Nation tags, dedicated human Black Plague category, ordinary human-rat diplomacy, and automatic SCN-012 Evolution V | Rejected or superseded and correctly absent. |
 | Rat 3D models | Superseded for the current task by the user no-model instruction and not a blocker. |
@@ -151,7 +164,7 @@ The remaining presentation gaps are requirement gaps rather than unresolved IDs:
 - `GFX_decision_black_plague_weapon_delivery` is an alias to the military-acceleration texture in `interface/020_black_plague_weaponization.gfx:6`.
 - Strike Royal Node uses `GFX_decision_generic_army_support` at `common/decisions/020_black_plague_shared_response_decisions.txt:597-613` instead of the accepted dedicated icon.
 - The animated Rat King portrait and source-frame crisis and readiness animations remain absent. The static portrait is a valid runtime fallback, but it is not the accepted final animation package.
-- Super-events 85 and 86 have registered final art and licensed or public-domain 44.1 kHz audio. The optional defeat super-event 87 remains queued and has no runtime package.
+- Super-events 85 and 86 have registered final art and licensed or public-domain 44.1 kHz audio. Defeat slot 087 now has final art, localisation, audio ID 103, sprite registration, and settings wrappers; runtime gating, rights release record, and live playback remain open.
 
 No model asset is missing under the current completion target.
 
@@ -163,7 +176,7 @@ It overstates completion when it describes evolution timing without disclosing t
 
 `docs/plans/020_black_plague_plans/2026-08-01_event20_content_tranche_handoff.md` correctly says the overall goal is incomplete and discloses compact focus routes and queued assets.
 
-It does not disclose the same-check evolution cascade, actor errors, Evolution IV partial-commit path, Evolution V order, existing-RTX reset, no-anchor scheduler edge, local-report audience broadening, or incomplete Rat King aftermath.
+It does not disclose the same-check evolution cascade, actor errors, Evolution IV partial-commit path, Evolution V order, existing-RTX reset, no-anchor scheduler edge, local-report audience broadening, `.73` audience fallback, or the remaining broader aftermath depth.
 
 The event-art producer handoff and manifest still say main-agent GFX and gameplay wiring remains to be done, while the current content handoff and live files show that wiring has already been promoted.
 
@@ -206,7 +219,7 @@ The fresh parent-owned settings, scenario scheduler, established-state preservat
 - Emergency Countermeasure Drive completion, timeout, cancellation, and target-loss behavior.
 - Royal Node success, counterfire, pulse blocking, AI selection, cooldown, and terminal-pressure behavior.
 - Weaponization phase progression, accident routing, condemnation escalation, defensive conversion, stockpile accident, and delivery behavior.
-- Rat occupation of a clean conquered state, RTA and RTX force-cap behavior, idempotent King defeat cleanup, defeating-actor attribution, and aftermath.
+- Rat occupation of a clean conquered state, RTA and RTX force-cap behavior, scoped King-defeat participant attribution, `.72`/slot-087 gate behavior, `.73` audience routing, and aftermath outcomes.
 - Positive and disqualifying scenarios for all fourteen achievements.
 - Representative balance evidence for disease growth, containment costs, four scenario intensities, RTA and RTX force growth, Royal Node counterplay, and terminal readiness.
 
@@ -221,11 +234,11 @@ No in-game validation is claimed.
 3. Restore the accepted two-gate Evolution V flow so recording unlocks the final route and terminal takeover remains a later earned transaction.
 4. Make SCN-012 preserve an existing RTX through minimum-floor top-ups, create only missing units, delay the permanent launched flag until all required actors and scheduler are proved, and preserve the prior scheduler when no new anchor is available.
 5. Replace local and selective `news_event` reports with correctly scoped report events and complete the corresponding event-picture family without cross-type reuse.
-6. Complete defeating-actor attribution and the accepted Rat King aftermath before promoting the consequence addendum or reserving its new identifiers.
+6. Resolve whether `.73` should use the saved defeating actor, deepen the accepted Rat King aftermath, and validate the promoted `.72`/slot-087 gate before any whole-spec claim.
 7. Run the task-specific validations listed above, then update the overview, content handoff, asset handoff status, and source matrices to match the proven runtime state.
 
 ## Completion claim boundary
 
 The Event 020 core contains substantial finished mechanics and no missing custom runtime identifier in the audited asset surfaces.
 
-It cannot be called complete while due evolution checks can cascade several stages, actors are wrong, Evolution IV can record without a King, Evolution V bypasses its accepted unlock phase, SCN-012 can partially commit or reset an existing RTX, local report audiences are broadened, and the accepted Rat King aftermath remains absent.
+It cannot be called complete while due evolution checks can cascade several stages, actors are wrong, Evolution IV can record without a King, Evolution V bypasses its accepted unlock phase, SCN-012 can partially commit or reset an existing RTX, local report audiences are broadened, `.73` still falls back from the saved actor, and broader accepted aftermath depth/live validation remain open.

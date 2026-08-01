@@ -50,7 +50,7 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
 | `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
 
-Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.65`, and `.71-.75`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` still follows global eradication logic rather than earned aftermath sealing. This matrix remains the behavioral contract and does not claim live-game validation.
+Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.65`, and `.71-.75`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. This matrix remains the behavioral contract and does not claim live-game validation.
 
 ## Runtime families
 

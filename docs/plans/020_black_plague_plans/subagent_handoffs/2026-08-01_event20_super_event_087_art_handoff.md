@@ -1,6 +1,6 @@
 # Event 020 super-event 087 generated-art handoff
 
-The optional Rat King global defeat aftermath image is complete and ready for parent-owned wiring.
+The optional Rat King global defeat aftermath image is complete and promoted in the parent-owned sprite definition. The resolver remains runtime-gated; live consumer validation is still outstanding.
 
 ## Runtime handoff
 
@@ -8,7 +8,7 @@ The optional Rat King global defeat aftermath image is complete and ready for pa
 | --- | --- | --- | --- | --- |
 | `GFX_super_event_087_rat_king_defeat_aftermath` | `gfx/super_events/020_black_plague/super_event_087_rat_king_defeat_aftermath.dds` | `interface/020_black_plague_super_events.gfx` | 457x328 | Super-event ID 87, qualifying long/global defeat aftermath only |
 
-Ready-to-copy definition:
+Promoted definition evidence:
 
 ```text
 spriteType = { name = "GFX_super_event_087_rat_king_defeat_aftermath" texturefile = "gfx/super_events/020_black_plague/super_event_087_rat_king_defeat_aftermath.dds" }
@@ -26,8 +26,8 @@ spriteType = { name = "GFX_super_event_087_rat_king_defeat_aftermath" texturefil
 
 ## Visual fit and boundary
 
-The image is a solemn dawn reconstruction scene: a ruined industrial city, rebuilding workers, a sealed black crown relic and broken throne behind an iron quarantine gate, and sentries keeping watch. It avoids a clean reset or triumph. The two-tag boundary is preserved visually without text: an ochre civic pennant for `RTA` and the chained black crown seal for defeated `RTX`. No 3D model work was performed. Parent owns `.gfx`, event, localisation, GUI, super-event registry, and final runtime validation.
+The image is a solemn dawn reconstruction scene: a ruined industrial city, rebuilding workers, a sealed black crown relic and broken throne behind an iron quarantine gate, and sentries keeping watch. It avoids a clean reset or triumph. The two-tag boundary is preserved visually without text: an ochre civic pennant for `RTA` and the chained black crown seal for defeated `RTX`. No 3D model work was performed. `interface/020_black_plague_super_events.gfx` now registers the stable sprite; the parent still owns final runtime validation and any GUI/consumer checks.
 
 ## Remaining uncertainty
 
-The sprite name is proposed because slot 87 was not pre-registered in the parent prompt. Parent should retain this name unless an existing registry contract requires a different stable identifier.
+The stable sprite name is now registered as `GFX_super_event_087_rat_king_defeat_aftermath`. Retain it unless an existing registry contract requires a documented rename.

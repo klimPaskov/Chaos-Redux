@@ -4,9 +4,11 @@ Date: 2026-08-01.
 
 Scope: text research only for the optional Rat King global-defeat aftermath super-event, slot 87 (`global_defeat_super_event_id = 87`). No gameplay, event, localisation, GFX, audio, or registry files were edited.
 
+The selected title, quote, button, and description are now promoted in `localisation/english/020_black_plague_super_events_l_english.yml`. This handoff remains source/provenance evidence; the parent-owned runtime wiring, final art, and audio package are separate promoted surfaces. Live validation and release rights documentation remain open.
+
 ## Role and integration boundary
 
-Slot 87 should be rare aftermath coverage for a qualifying, continent-spanning Rat King catastrophe. It should fire after news event `chaosx.nr020.71` and before the ordinary reconstruction/aftermath chain (`.72`/`.73`), and it must remain mutually exclusive with world-end super-event 086. A short regional war, a crisis under 365 days, or an ordinary RTX defeat should not produce this super-event.
+Slot 87 should be rare aftermath coverage for a qualifying, continent-spanning Rat King catastrophe. It should fire after news event `chaosx.nr020.71` and before the ordinary aftermath chain (`.72`/`.73`), and it must remain mutually exclusive with world-end super-event 086. The resolver's duration/peak/deaths/major-participant gate, rather than a generic RTX defeat, controls this presentation.
 
 The text should acknowledge that the crown has fallen while hospitals, railways, archives, empty towns, and sealed warrens still carry the cost. It should not expose eligibility thresholds or imply that disease disappeared immediately. The existing 085 and 086 buttons are already `Sic transit gloria mundi.` and `A plague o' both houses!`; slot 87 should use a different register and should not reuse either quotation family.
 
@@ -23,7 +25,7 @@ The text should acknowledge that the crown has fallen while hospitals, railways,
 
 ## Selected main quote
 
-**Recommendation:**
+**Promoted selection:**
 
 > “In visions of the night, like dropping rain,  
 > Descend the many memories of pain”
@@ -55,18 +57,18 @@ The following is original implementation-facing wording, not a quotation:
 - Button: `Lest we forget.`
 - Main quote: `In visions of the night, like dropping rain,` followed by `Descend the many memories of pain`, attributed to Aeschylus, *Agamemnon* (trans. E. D. A. Morshead).
 
-The description is deliberately aftermath-focused: it names the empty surface and the work left behind, does not reveal the gate's numerical thresholds, and does not promise immediate disease clearance. The proposed title is original and distinguishes slot 87 from the existing report title “After the Crown Falls.”
+The description is deliberately aftermath-focused: it names the empty surface and the work left behind, does not reveal the gate's numerical thresholds, and does not promise immediate disease clearance. The promoted title is original and distinguishes slot 87 from the existing report title “After the Crown Falls.”
 
 ## Short implementation recommendation
 
-The main agent should wire the selected text to the existing slot-87 ID and keep its gate after `chaosx.nr020.71`, before ordinary aftermath event `.73`, with the world-end branch 086 excluded. Preserve the quote's source line break and avoid adding a terminal period to `pain` unless it is marked as editorial punctuation. Keep `Lest we forget.` distinct from the 085 and 086 button strings. A unique memorial/lamament track and settings-aware audio ID remain separate research/asset work; neither 101 coronation audio nor 102 world-end audio should be reused.
+Runtime wiring now uses the selected text at slot 87 after `chaosx.nr020.71` and before ordinary aftermath event `.73`, with world-end branch 086 excluded. Preserve the quote's source line break and avoid adding a terminal period to `pain` unless it is marked as editorial punctuation. Keep `Lest we forget.` distinct from the 085 and 086 button strings. The unique memorial track and settings-aware audio ID 103 are promoted separately; neither 101 coronation audio nor 102 world-end audio should be reused.
 
 ## Remaining uncertainty and rights notes
 
 - The quote attribution is high confidence, but the Morshead source line ends `pain` without terminal punctuation. The localisation owner should decide whether the UI's closing quotation mark is sufficient or whether an editorial ellipsis is preferable.
-- The event's global-defeat gate and exact timing remain implementation-owned; this note assumes the addendum's once-only 365-day, multi-continent, multi-major-opponent gate.
+- The event's global-defeat gate and exact timing remain implementation-owned; the current resolver uses the documented duration/peak/deaths/major-participant constants and dispatch order.
 - `Lest we forget.` is a four-word fragment of a public-domain 1897 refrain. Do not copy the full stanza into localisation; the short fragment is enough for the button.
 - `For whom the bell tolls.` is safe as an old fragment but carries a strong Hemingway association; it is not the recommendation.
-- Audio, image provenance, and registry wiring were not researched or changed in this text-only handoff.
+- Audio, image provenance, and registry wiring were not researched or changed in this text-only handoff; the parent-owned tranche now promotes those separate surfaces.
 
 Changed file: this handoff note only.

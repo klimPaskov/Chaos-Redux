@@ -7,11 +7,11 @@ This addendum is now a mixed-disposition record rather than an unimplemented tra
 | Package | Disposition in the current worktree | Remaining work or decision |
 | --- | --- | --- |
 | A. RTA hierarchy | Implemented statically: the three mutually exclusive roots, follow-ups, `.45` acknowledgement event, hierarchy state, runtime cap/pulse/absorption/candidacy consumers, and route-aware AI are present. | Six dedicated hierarchy icons, deeper route depth, and live route validation remain open. |
-| B. RTX route crises | Implemented statically: `.57`, `.58`, and `.59` are defined and called from the route-capstone crisis paths, with route-specific meter and pulse consumers. | The crisis cards still use generic event art and have no declared live scenario proof. |
+| B. RTX route crises | Implemented statically: `.57`, `.58`, and `.59` are defined and called from the route-capstone crisis paths, with route-specific meter and pulse consumers and a dedicated Rat King crisis report card. | There is no declared live scenario proof. |
 | C. Crown Strike | Implemented statically as a shared timed state action: the start gate, costs, dedicated icon, timeout/success effects, and `.64`/`.65` reports are wired. | It is not a native `activate_mission`/`days_mission_timeout` owner and has no live validation. The parent must decide whether the shared state-action API is accepted. |
-| D. Defeat aftermath | Partially implemented: the idempotent resolver, `.71`, `.73`, `.74`, `.75`, and Seal Royal Burrows action exist. | Defeating-actor capture, targeted `on_capitulation`/`on_state_control_changed` hooks, contribution and reconstruction coupling, and the qualifying ID 87 gate remain unresolved. |
+| D. Defeat aftermath | Implemented statically for the scoped defeat tranche: `common/on_actions/020_black_plague_on_actions.txt` records narrow capitulation/state-control participants, `common/scripted_effects/020_black_plague_rat_effects.txt` owns the idempotent resolver and participant registry, runtime pulse metrics track duration and peaks, and the resolver emits `.71`, eligible `.72`, gated slot 087, and the existing `.73-.75` path. | The `.73` audience still falls back to the first eligible human response host rather than the saved contributor, broader aftermath narrative/depth and native-mission API review remain open, and no live consumer validation exists. |
 | Two-tag/no-model boundary | Accepted: `RTA` is the sole Rat Nation carrier, `RTX` is the separate Rat King, internal broods are state markers, and no 3D model production is required for this goal. | Archive-only RTB-RTM assets and bespoke models must not be revived as runtime requirements. |
-| Super-event 87 | Reserved and production-blocked. | Keep the explicit global eligibility gate and final art, quote, audio, localisation, and registry blockers. |
+| Super-event 87 | Implemented statically and runtime-gated: final art, selected text, audio ID 103, settings wrappers, sprite registration, and localisation are present. | The resolver still requires the explicit duration/peak/deaths/participant gate; release attribution, live validation, and broader aftermath depth remain open. |
 
 The dispositions below are the current documentation source for this addendum; they do not claim whole-spec completion or live-game validation.
 
@@ -45,14 +45,14 @@ The snapshot includes the current Event 020 worktree tranche, including its unco
 | Surface | Current evidence | Remaining design gap |
 | --- | --- | --- |
 | Event chain | `events/020_black_death.txt` defines the accepted milestone allocation from `chaosx.nr20.2` through `.75`, plus `.90` and scheduler callbacks; events `.45`, `.57-.59`, `.64-.65`, and `.71-.75` are present | Most implemented milestones remain deliberately compact reports |
-| Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, and Rat emergence uses `GFX_report_event_020_rat_emergence` in the current worktree | Severe crisis, royal route crises, Crown Strike, Doctor Wu, ordinary Rat King defeat, and qualifying global defeat still reuse the scenario image or have no dedicated asset |
+| Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, Rat emergence uses `GFX_report_event_020_rat_emergence`, Severe Crisis, route crises, Crown Strike, Doctor Wu, and Rat King aftermath use dedicated report cards, and qualifying slot 087 uses `GFX_super_event_087_rat_king_defeat_aftermath` in the current worktree | Reconstruction `.72` shares the Rat King aftermath card; the source-frame crisis seal and animated Rat King portrait remain queued |
 | RTA tree | Read-only focus inspection reports 35 playable focuses with zero node intersections and two connector crossings; the three-way hierarchy roots, follow-ups, and `.45` acknowledgement are present | Generic vanilla icon inventory diagnostics remain, six dedicated hierarchy icons are not wired, and the accepted full route-tree depth is still larger than this compact playable shell |
 | RTA routes | Urban, Field, Dock, and War second lanes plus the three-way hierarchy now affect Brood Mass, division caps, spread routes, King candidacy, and route-aware AI | Additional bespoke route decisions and deeper narrative branches remain optional content work |
 | RTX tree | Read-only focus inspection reports 50 playable focuses, including twelve route-policy focuses | The route policy consumers, crises, Crown Strike vulnerabilities, and AI plans are wired; deeper administration and cultural branches remain content work |
 | Human counterplay | Emergency Countermeasure Drive, Royal Node strikes, route crises, Crown Strike, and Royal Burrow sealing have costs, time, success, failure, and reports `.54` through `.75` | Crown Strike is a shared timed state action rather than a native mission owner; dedicated crisis/aftermath art and live validation remain open |
-| Rat King defeat | The rat pulse detects `RTX` with no controlled states, retires it idempotently, fires `chaosx.nr20.71`, and opens `.73` for the first eligible human response host | The resolver does not yet preserve a scoped defeating actor, the `.72` reconstruction path is not coupled to aftermath sealing, and ID 87 remains unwired |
-| Reconstruction | `chaosx.nr20.72` fires immediately with global eradication | It is not tied to the work of securing former Royal Nodes or resolving the crown's archives |
-| Super-events | Coronation ID 85 and world-end ID 86 have unique art, text, audio, and runtime wiring | `constant:black_plague_identity.global_defeat_super_event_id = 87` is reserved but has no trigger, image, localisation, quotation research, audio, or GUI registration |
+| Rat King defeat | `common/on_actions/020_black_plague_on_actions.txt` supplies scoped capitulation and state-control participant hooks; `common/scripted_effects/020_black_plague_rat_effects.txt` deduplicates major human contributors, tracks defeat metrics, and resolves `.71`/`.72`/087/`.73-.75` idempotently | `.73` dispatch still uses the first eligible human response host after defeat rather than the saved actor event target; no live scenario proof exists |
+| Reconstruction | `chaosx.nr20.72` is now a once-only dispatch from `black_plague_rat_king_resolve_defeat` when the same long-war/peak/deaths/participant gate qualifies, immediately after `.71` and before `.73` | `.72` remains separate from later Seal Royal Burrows `.74` completion; broader reconstruction narrative and live validation remain open |
+| Super-events | Coronation ID 85, world-end ID 86, and gated defeat slot 087 have art/text/audio/runtime evidence; slot 087 uses `GFX_super_event_087_rat_king_defeat_aftermath`, localisation `.87`, and audio ID 103 | Release attribution/rights record and live validation remain; the news `.72` event still uses generic report art rather than a dedicated reconstruction picture |
 | Documentation | The overview, route-module contract, event-chain map, decision matrix, and Part 7 now record the live two-tag route, Crown Strike, crises, and aftermath operations | This addendum, the readiness report, historical handoffs, prompts, and asset manifests are being reconciled so stale “missing” claims do not revive rejected work |
 
 The focus inspector also reports missing references for many generic vanilla focus sprites.
@@ -61,8 +61,8 @@ They do reinforce the accepted art requirement that major Event 020 route focuse
 
 ## Delivered tranche and remaining scope
 
-The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, and turns Rat King defeat into a static aftermath path while leaving the established milestone chain intact.
-Remaining accepted scope is the `.45` hierarchy report, scoped defeat attribution and reconstruction coupling, native-mission API decision review, final narrative and presentation breadth, dedicated severe-crisis/Doctor Wu/Crown Strike/Royal Burrow/global-defeat assets, source-frame UI animation, verified licensed audio and quotations for ID 87, workbook/catalog export reconciliation, and deeper optional route branches.
+The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, and turns Rat King defeat into a scoped, metrics-gated aftermath path while leaving the established milestone chain intact.
+Remaining accepted scope is broader narrative and route depth, the native-mission API decision review, the source-frame crisis seal and animated Rat King portrait, source-frame UI animation expansion, workbook/catalog export reconciliation, release rights attribution, and focused live validation.
 
 ## Package A: RTA hierarchy becomes a real route choice
 
@@ -282,7 +282,7 @@ Create `black_plague_rat_king_resolve_defeat` as the only effect that finalizes 
 The current event-owned rat pulse remains a reconciliation check.
 Add targeted calls from `on_capitulation` and from `on_state_control_changed` when the changed state is the Royal Basin or a Royal Node and `RTX` has no controlled states.
 
-Implementation note: the idempotent resolver and pulse fallback are present, but the targeted on-action calls and defeating-actor capture described below are not yet wired in the current worktree.
+Implementation note: the targeted on-action calls, participant registry, defeat-duration/peak metrics, and idempotent resolver are wired in the current worktree. The saved contributor event target is evidence for attribution, while the later `.73` dispatch currently falls back to the first eligible human response host.
 
 The vanilla scope precedent is explicit that `on_capitulation` uses ROOT as the capitulated country and FROM as the winner.
 The vanilla `on_state_control_changed` precedent uses ROOT as the new controller, FROM as the old controller, and FROM.FROM as the state.
@@ -297,11 +297,11 @@ The resolver runs once and must:
 5. Cancel Rat King decisions and active human Crown Strike missions without paying failure rewards.
 6. Keep every surviving Black Plague state, Rat Infestation value, former Royal Node marker, and `RTA` country intact.
 7. Fire the existing global defeat news `chaosx.nr20.71` once.
-8. Send `chaosx.nr20.73` to the saved defeating actor.
-9. Evaluate the qualifying global defeat super-event gate.
+8. Send `chaosx.nr20.73` through the current response-host selection path and preserve the scoped contributor evidence.
+9. Evaluate the qualifying global defeat super-event gate and, when it passes, dispatch `.72` reconstruction and slot 087 once.
 
 Do not set global eradication merely because `RTX` is defeated.
-Do not fire reconstruction `.72` until the aftermath mission or ordinary eradication conditions justify it.
+Do not fire reconstruction `.72` from generic global eradication. The current implementation couples it to the same qualifying Rat King defeat resolver gate; later Seal Royal Burrows `.74` cleanup remains a separate operation.
 
 ### Defeating actor selection
 
@@ -313,6 +313,8 @@ Use this deterministic order:
 
 If the first actor ceases to exist before event delivery, advance to the next recorded contributor.
 Do not search every country and do not assign the choice to `RTX`.
+
+Current implementation note: the narrow hooks and participant registry are present, but the resolver's `.73` dispatch still uses the first eligible human response host. The deterministic saved-actor order above remains the accepted follow-up if the parent chooses to tighten audience ownership.
 
 ### Crown ruins event
 
@@ -335,7 +337,7 @@ Aggressive weaponization AI may preserve the archive only when it can pay the cl
 ### Seal mission outcomes
 
 Reserve `chaosx.nr20.74` as **The Royal Burrows Are Sealed**.
-On success, clear former Royal Node markers only in states that completed cleanup, reduce Rat Infestation by 20 and disease load by 10 in those states, add monitoring memory, and permit reconstruction `.72` when no active rat country or Severe Crisis remains.
+On success, clear former Royal Node markers only in states that completed cleanup, reduce Rat Infestation by 20 and disease load by 10 in those states, and add monitoring memory. The current static tranche dispatches `.72` from the defeat resolver's once-only eligibility gate before `.73`; a later seal-dependent reconstruction narrative remains outside this tranche.
 
 Reserve `chaosx.nr20.75` as **Crownless Warrens**.
 On timeout, keep uncleared Royal Node markers, add 10 Rat Infestation and 10 incoming exposure to one valid uncleared basin, and invoke the existing rat-resurgence report path.
@@ -348,11 +350,11 @@ It is optional campaign presentation with a strict gate, not a replacement for t
 
 All of these hard requirements must be true:
 
-- the Rat King remained active for at least 365 days
-- Event 020 deaths reached at least 50,000,000
-- `RTX` controlled at least 20 states at its recorded peak
-- established Black Plague or Rat-Controlled states reached at least four continents at the recorded peak
-- at least three distinct major human opponents or response contributors were recorded
+- the Rat King remained active for at least `constant:black_plague_rat_defeat_aftermath.minimum_duration_days` (currently 180 days)
+- Event 020 deaths reached `constant:black_plague_evolution_runtime.minimum_king_deaths_for_v` (currently 250,000,000)
+- `RTX` controlled at least `constant:black_plague_rat_defeat_aftermath.minimum_peak_controlled_states` (currently 24) states at its recorded peak
+- established Black Plague or Rat-Controlled states reached at least `constant:black_plague_rat_defeat_aftermath.minimum_peak_continent_states` (currently 12) states on a continent and `minimum_peak_continent_ratio` (currently 0.50) at the recorded peak
+- at least `constant:black_plague_rat_defeat_aftermath.minimum_major_participants` (currently 3) distinct major human response contributors were recorded
 - Evolution IV occurred naturally or through SCN-012, but terminal world end did not fire
 - the qualifying defeat super-event has not fired before
 
@@ -377,7 +379,7 @@ Do not regenerate or rename them.
 | `news_event_020_rat_king_defeat` | news strip, 397 by 153, black and white | generated fictional period-news | `.71` |
 | `report_event_020_rat_king_aftermath` | report card, 210 by 176 | generated fictional documentary | `.73`, `.74`, and `.75` |
 | `report_event_020_doctor_wu` | report card, 210 by 176 | generated period-documentary with the approved fictional Doctor Wu treatment | Event 163 Black Plague bridge reports |
-| `super_event_087_rat_king_defeat` | super-event art, 457 by 328 | generated fictional art | qualifying global defeat only |
+| `GFX_super_event_087_rat_king_defeat_aftermath` | super-event art, 457 by 328 | generated fictional art, final DDS `gfx/super_events/020_black_plague/super_event_087_rat_king_defeat_aftermath.dds` | qualifying global defeat only; registered in `interface/020_black_plague_super_events.gfx` |
 | `decision_strike_royal_node` | decision icon, 33 by 32 | generated icon | existing Royal Node strike |
 | `decision_strike_the_crown` | decision icon, 33 by 32 | generated icon | new Crown Strike mission |
 | `decision_seal_royal_burrows` | decision icon, 33 by 32 | generated icon | new aftermath mission |
@@ -388,7 +390,7 @@ Distributed uses multiple equal knots, Dominant uses one commanding head or fang
 
 Static art is appropriate for this tranche because the new consumers are one-shot event cards, decision icons, and focus-route symbols.
 Motion would not communicate a changing gameplay value on those surfaces.
-The accepted source-frame crisis seal and animated Rat King portrait remain separate queued asset packages and are not replaced by transform-only animation.
+The shared-board rat-infestation badge is now promoted as a four-frame source-authored package. The accepted source-frame crisis seal and animated Rat King portrait remain separate queued asset packages and are not replaced by transform-only animation.
 No 3D asset is requested.
 
 Every asset handoff must retain source PNG, processed PNG, final DDS, exact sprite name, target `.gfx`, dimensions, source mode, prompt or provenance, contact sheet, and consumer crosswalk.
@@ -454,17 +456,14 @@ Use event-owned arrays, the existing seven-day Event 020 pulse, focus completion
 
 ## Implementation order and current dispositions
 
-Steps 2 through 5 are statically represented in the current worktree, with the limitations in the reconciliation table above.
-Step 1 is only partially promoted because the defeat-actor contract remains unresolved.
-Step 6 is intentionally blocked by the ID 87 asset and eligibility gate.
-Steps 7 through 9 remain documentation, asset, and validation work and must not be read as completed by the static wiring.
+Steps 2 through 6 are statically represented in the current worktree, with the limitations in the reconciliation table above. Step 5 includes scoped participant hooks, metric tracking, the duration/peak gate, and the resolver-owned `.72`/087 dispatch. Step 6 includes the final slot-087 art, text, audio, sprite, and settings-wrapper wiring. Steps 7 through 9 remain documentation, asset-depth, rights, workbook, and live-validation work and must not be read as whole-spec completion.
 
 1. Promote the accepted addendum into the source spec and reserve all identifiers.
 2. Rewire the RTA hierarchy graph and add its constant-backed runtime consumers and AI.
 3. Add RTX policy consumers and route crisis events.
 4. Add Crown Strike state targeting, mission lifecycle, route modifiers, reports, and AI.
-5. Add the one-shot Rat King defeat resolver, actor registry, aftermath event, seal mission, and cleanup.
-6. Add global-defeat qualification tracking and trigger only after the ID 87 art, text, quotation, audio, GUI, and sound package is complete.
+5. Add the one-shot Rat King defeat resolver, scoped actor/participant registry, duration and peak metrics, aftermath event, seal mission, and cleanup.
+6. Add global-defeat qualification tracking and trigger only after the ID 87 art, text, quotation, audio, GUI, and sound package is complete; the current tranche promotes the art, text, audio, sprite, and sound-wrapper surfaces.
 7. Wire the static event, decision, and focus assets without renaming the already-wired origin, overseas, or Rat-emergence sprites.
 8. Align localisation, Event Details, event log, docs, manifests, workbook, and export-only catalogs.
 9. Run focus, decision, localisation, event-completion, asset, and documentation audits before any completion claim.
@@ -499,7 +498,7 @@ Steps 7 through 9 remain documentation, asset, and validation work and must not 
 ### Rat King defeat and aftermath
 
 - Capitulation, loss of the last Royal Basin state, and the event-owned pulse all converge on one idempotent defeat resolver.
-- `.71` fires once, a valid defeating actor receives `.73`, and `RTX` cannot continue pulses, decisions, or terminal preparation afterward.
+- `.71` fires once, the resolver preserves scoped defeating-participant evidence and dispatches `.73` through the current first-eligible-human response-host path, and `RTX` cannot continue pulses, decisions, or terminal preparation afterward.
 - `RTA` and established plague states survive until their own cleanup or defeat rules resolve.
 - Sealing former Royal Nodes can succeed through real state cleanup and fire `.74`.
 - Failure fires `.75`, creates bounded resurgence pressure, and never revives `RTX` or creates another tag.
@@ -510,7 +509,7 @@ Steps 7 through 9 remain documentation, asset, and validation work and must not 
 - A short regional Rat King war never shows super-event 87.
 - A 364-day crisis never shows it.
 - A crisis below any hard global, death, territory, continent, or major-participant requirement never shows it.
-- A qualifying 365-day global catastrophe shows it once after `.71` and before `.73`.
+- A qualifying duration/peak/deaths/participant global catastrophe shows it once after `.71` and before `.73`.
 - The super-event uses unique art, unique researched text, unique licensed audio, settings-aware playback, and a complete provenance record.
 - World end and defeat super-events are mutually exclusive.
 
@@ -554,19 +553,18 @@ For engine scopes, use the vanilla `on_capitulation` and `on_state_control_chang
 ## Open questions and blockers
 
 The current shared timed state-action implementation leaves one parent design choice: whether Crown Strike and Seal Royal Burrows satisfy the accepted mission contract or must be converted to native mission fields.
-The remaining `.45`, scoped actor, reconstruction, asset, and ID 87 gaps are implementation or production blockers rather than reasons to redesign the two-tag/no-model boundary.
+The remaining gaps are broader narrative/depth, native-mission API choice, the source-frame crisis seal and animated Rat King portrait, workbook alignment, release attribution, and live validation; they are not reasons to redesign the two-tag/no-model boundary.
 
-The qualifying defeat super-event remains production-blocked until a unique quotation, cultural remark, audio track, and image receive research and asset handoffs.
-Do not substitute another Event 020 super-event package.
+The qualifying defeat super-event art, selected text, audio ID 103, sprite registration, and settings wrappers are promoted. Retain the explicit runtime gate and provenance record; do not substitute another Event 020 super-event package.
 
 The live Event 020 worktree was changing during this review.
 The parent should refresh identifier and diff checks before implementation, preserve the route and event-picture tranche already in progress, and avoid reverting unrelated Event 020 edits.
 
 ## Parent implementation handoff
 
-Current state: the RTA hierarchy graph and most runtime consumers, RTX route crises `.57-.59`, Crown Strike `.64-.65`, and static defeat/aftermath `.71-.75` are present in the worktree.
+Current state: the RTA hierarchy graph and most runtime consumers, RTX route crises `.57-.59`, Crown Strike `.64-.65`, and the scoped, metrics-gated defeat/aftermath `.71-.75` tranche are present in the worktree.
 
-Still required before this addendum can be closed: decide whether the shared timed state-action API is sufficient for Crown Strike or a native mission owner is required, capture the scoped defeating actor through the accepted on-action hooks, couple reconstruction `.72` to the earned aftermath path, add the qualifying ID 87 gate and unique presentation package, replace generic crisis/aftermath art and missing hierarchy icons, and run the task-specific runtime validations.
+Still required before this addendum can be closed: decide whether the shared timed state-action API is sufficient for Crown Strike or a native mission owner is required, deepen the broader aftermath and route narrative, finish the source-frame crisis seal and animated Rat King portrait packages where accepted, align the workbook/export, preserve the audio rights record, and run task-specific runtime validations. Scoped defeat hooks, participant tracking, the current `.72` coupling, the five dedicated report cards, and slot 087 art/text/audio/sprite/sound wiring are implemented.
 
 The two-tag/no-model boundary is accepted and must remain unchanged: `RTA` plus `RTX` only, internal broods as state markers, and no 3D model production in this goal.
 
