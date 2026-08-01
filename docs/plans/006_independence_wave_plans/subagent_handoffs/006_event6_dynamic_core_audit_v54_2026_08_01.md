@@ -45,7 +45,7 @@ Static runtime limits remain: no live scenario-cell playback, save/load, mission
 | Bounded retry and failure cleanup | PASS, source | `common/script_constants/006_independence_wave_crisis_constants.txt:23-33` centralizes 120 mission days, 365 cooldown days, one-day retry delay, and a 14-attempt retry limit. `events/006_independence_wave.txt:99-135` retries only while the requester flag and queue remain, then clears queue/retry/requester state and applies the blocked consequence. | The accepted source contract is bounded retry; live timing remains untested. |
 | Durable cause/resolution receipt and Event Log | PASS, source | `common/scripted_effects/006_independence_wave_crisis_effects.txt:97-131` stores host id, cause, date, receipt flag, and cause Event Log row. `:133-202` maps queued, blocked, cancelled, committed, requester-lost, and unknown outcomes to distinct resolution rows. `events/006_independence_wave.txt:86-90` sets the committed receipt; blocked/cancelled/requester-loss effects set the failure receipt. `common/scripted_localisation/006_independence_wave_crisis_localisation.txt:9-58` resolves cause and outcome payloads. | No rendered Event Log proof. |
 | Requester-loss recovery | PASS, source / runtime HOLD | `common/on_actions/006_independence_wave_crisis_on_actions.txt:9-13` invokes recovery on annexation. `common/scripted_effects/006_independence_wave_crisis_effects.txt:259-296` clears the global queue, sets requester-lost resolution/failure receipt/date, preserves host id, clears requester/runtime flags, writes the requester-lost history payload, and refreshes Event Log views without changing ownership. | Non-annexation removal and live annexation/save-load remain untested. |
-| Defensive stale-queue branch | HOLD, narrow static risk | `events/006_independence_wave.txt:132-135` clears a global crisis queue when the queue exists but the requester flag is absent, but it emits no resolution receipt and cannot clear a requester-scoped retry variable. Authored queue writers set both queue and requester (`006_independence_wave_crisis_effects.txt:204-215`), and the annexation recovery clears both, so this is a defensive corruption/race path rather than a duplicate writer. | Parent should either document this as intentional stale-queue cleanup or add a generation-safe global stale-queue receipt owner in a future narrow repair. No gameplay edit was made here. |
+| Defensive stale-queue branch | PASS, source after parent follow-up repair | The original audit identified the silent branch at `events/006_independence_wave.txt:132-135`. The parent follow-up now clears the global queue and retry/runtime state, writes an explicit unknown resolution/date/host, sets the failure receipt, and records the resolution Event Log row. | Live corruption/save-load playback remains untested. |
 
 ## Cross-system boundaries
 
@@ -66,7 +66,7 @@ No game launch, MCP/live scenario playback, save/load cycle, mission timer obser
 
 ## Changed files
 
-Only this handoff was added.
+Only this handoff was added by the read-only audit. A parent follow-up subsequently patched the stale-queue branch in `events/006_independence_wave.txt` and added `independence_wave_crisis_resolution.unknown` to `common/script_constants/006_independence_wave_crisis_constants.txt`.
 
 No gameplay file was patched.
 
@@ -76,7 +76,7 @@ The current 13-package attestation set and 12 compatible groups do not prove run
 
 The 32 SCN-008 mode/intensity cells remain static-source evidence; live selector persistence, map collisions, rollback, and post-commit cleanup are future QA.
 
-The stale queue-without-requester branch is a narrow defensive HOLD documented above.
+The stale queue-without-requester branch is source-repaired; live corruption/save-load playback remains untested.
 
 Package-specific content, focus geometry, formable reachability, assets, AI balance, and whole-event completion are outside this handoff and remain governed by the current Event 006 source-of-truth map.
 
