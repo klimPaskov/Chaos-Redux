@@ -12,19 +12,14 @@ skill-local root:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
 
-The organized canonical library is `vanilla_reference/`. The user-requested
-`leader_portraits/` directory is a curated male-only, directly browsable
-country-leader and commander review pack. It contains byte-identical copies
-whose mappings and hashes are documented in its manifest; it is a deliberate
-review aid, not a second provenance authority or runtime source.
+The organized canonical library is `vanilla_reference/`. The user-requested `leader_portraits/` directory is a curated male-only, directly browsable country-leader and commander review pack. Its `leaders/` and `commanders/` subfolders contain byte-identical copies whose mappings and hashes are documented in `REFERENCE_MANIFEST.md`; it is a deliberate review aid, not a second provenance authority or runtime source.
 
 Start every review with:
 
 - `vanilla_reference/README.md` for library and contact-sheet rules
 - `vanilla_reference/CATALOG.md` for exact source provenance, native canvas,
   frame count, and owning definition
-- `leader_portraits/README.md` and `leader_portraits/REFERENCE_MANIFEST.md`
-  for the curated portrait review pack
+- `leader_portraits/README.md` and `leader_portraits/REFERENCE_MANIFEST.md` for the curated male-only portrait review pack and its `leaders/` and `commanders/` contact sheets
 
 Reference PNGs teach framing, scale, transparency, style, and engine pipeline.
 They are review material only: never recolor, trace, wire, or ship them as
@@ -131,11 +126,4 @@ and owning UI definition.
 
 ## Maintenance
 
-Add a canonical reference only when it documents a missing family, state, size,
-or engine pipeline. Record exact provenance and native dimensions, update that
-family's local `contact_sheet.png`, and preserve the coverage floor. The
-extractor and catalog distinguish Vanilla HOI4 examples from explicitly marked
-Chaos Redux source or migrated review copies. Add male leader/commander copies
-to `leader_portraits/` only when its manifest and contact sheets are updated in
-the same change. Never add another reference root outside this skill-local
-`assets/` directory or wire reference PNGs into the mod.
+Add a canonical reference only when it documents a missing family, state, size, or engine pipeline. Record exact provenance and native dimensions, update that family's local `contact_sheet.png`, and preserve the coverage floor. The extractor and catalog distinguish Vanilla HOI4 examples from explicitly marked Chaos Redux source or migrated review copies. Add male leader/commander copies to `leader_portraits/leaders/` or `leader_portraits/commanders/` only when the manifest and both family contact sheets are updated in the same change. Never add another reference root outside this skill-local `assets/` directory or wire reference PNGs into the mod.
