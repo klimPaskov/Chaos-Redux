@@ -147,6 +147,8 @@ The `status` column is a row-level release-candidate disposition, not a generic 
 - `deferred_unique_package_required`: the row belongs to a unique continent-scale or other bespoke package whose political, identity, presentation, and runtime surfaces are not yet complete.
 - `pending_runtime_blocker`: a release-candidate consumer expects the row now, but the exact final file or registration is absent. This value is not used when a dormant gate intentionally explains the absence.
 
-The 2026-07-29 release-candidate matrix contains 239 rows with these counts: `installed_runtime` 43, `installed_dormant` 28, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 16, `deferred_unique_package_required` 7, and `pending_runtime_blocker` 0.
+The current 2026-08-01 matrix contains 239 rows with these authoritative counts: `installed_runtime` 50, `installed_dormant` 21, `deferred_runtime_gated` 12, `deferred_controlled_pool` 133, `deferred_model_required` 16, and `deferred_unique_package_required` 7. The historical `pending_runtime_blocker` taxonomy is absent from the current matrix; no row is classified with that status.
+
+The shared `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` now mirrors these six statuses for all 239 `asset_item` rows in matrix order, preserving its UTF-8 BOM. The ledger carries only matrix-status evidence in this reconciliation and does not add independent binary, GFX, visual, or live-consumer proof.
 
 The current matrix retains two suggested-filename aliases that do not erase installed runtime evidence: the Africa-is-one news and super-event rows omit the `africa_` segment in their suggested filenames. The Charter header has no remaining path drift; its exact registered/runtime file is `gfx/interface/012_africa/charter_header_plate.dds`. The registered `.gfx` paths remain authoritative.

@@ -2,7 +2,7 @@
 
 ## Purpose and release boundary
 
-This file is the current documentation index for the Event 012 Africa release candidate. It reconciles the accepted specification, the three subsystem event documents, dated implementation handoffs, current runtime evidence, and the 239-row visual disposition matrix. It does not claim that Event 012 gameplay, live-save behavior, or the full presentation package is complete.
+This file is the current documentation index for the Event 012 Africa release candidate. It reconciles the accepted specification, the three subsystem event documents, dated implementation handoffs, current runtime evidence, the synchronized 239-row visual disposition matrix, and the shared acceptance ledger. It does not claim that Event 012 gameplay, live-save behavior, or the full presentation package is complete.
 
 The accepted identity remains Event 12, a tier-4 Minor Fire-Once event in Formables cluster 6 with Severe member severity and entry event `chaosx.nr12.1`. The Formables cluster remains repeatable, while Event 12 itself remains fire-once.
 
@@ -31,33 +31,34 @@ The canonical `.1` entry calls `africa_rsa_start_allied_civil_war` once only aft
 | Core event identity | Event 12 constants, registry, entry event, and cluster 6 references | Active evidence | Workbook and final catalog wording remain parent-owned. |
 | Host campaign | 51 host playbooks, with 22 full and 29 compact signatures | Active evidence | Three exact host exceptions remain blocked in the acceptance ledger, and whole-event runtime acceptance is open. |
 | South African Allied rupture | The shared Event 12 entry admits original SAF through the narrow RSA gate, preserves `south_african_focus`, calls the public allied civil-war effect once, and records opening, settlement, exile, and no-patron history rows | Active evidence | Civil-war, settlement, and exile completion still require live-consumer acceptance; no alternate host or fallback split is authorized. |
-| Focus loader | Host and priority loaders restrict replacement to generic or explicitly approved trees, preserve completed-focus history, and use one canonical continental loader | Active evidence | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
-| Action system | 102 parameterized action IDs use the shared quote, payment, outcome, AI, and cleanup kernel | Active evidence | Weighted campaign and live-save acceptance remain open. |
+| Focus loader | Host and priority loaders restrict replacement to generic or explicitly approved trees, preserve completed-focus history, and use one canonical continental loader; the payoff ledger records 77 of 78 rows as implemented | Active evidence with one queued external-world row | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
+| Action system | 102 parameterized action IDs use the shared quote, payment, outcome, AI, and cleanup kernel; 90 rows are implemented and rows 73-76 and 85-92 remain `blocked_with_gate` | Active evidence with explicit gates | The six late or episodic families remain list-only decision content: Scramble response, world order, constitutional crises, post-unification governance, host opening, and regional restorations. Weighted campaign and live-save acceptance remain open. |
 | Strange formations | Stone cohort, Gorilla heavy infantry, and Pan sappers are gated by `africa_strange_formation_package_ready` | Deferred safely | No model-dependent formation is claimed as spawned or complete. |
-| World order | Actions 85-92 and the six external packages plus The World are gated by `africa_world_package_implementation_ready` | Deferred safely | Unique continent packages and presentation/audio barriers remain open. |
+| World order | W0-W4 package source and union/war/succession/breakup lifecycle are present; Actions 85-92 and the six external packages plus The World remain gated | Source-implemented, W5 acceptance blocked | The initial all-six certification path lacks authoritative pre-install receipts. `africa_world_package_implementation_ready` and the terminal presentation gate remain unset; unique continent packages and presentation/audio barriers remain open. |
 | Scramble aftermath | Africa-only Scramble aftermath closure exists and does not create external package play | Active evidence | It must remain distinct from world-order package installation. |
-| Priority members | Sixteen packages reuse existing Event 6 or vanilla tags and create no new tags | Promotion-gated package evidence | The packages are runtime-capable only through bounded promotion gates; carrier provenance, ownership, flags, and final package acceptance remain open. |
+| Priority members | Sixteen packages reuse existing Event 6 or vanilla tags and create no new tags; thirteen are conditionally reachable and DYX/Luba, DZX/Lunda, and EMX/Kilwa remain dormant and unbound | Promotion-gated package evidence | End-to-end acceptance for the thirteen reachable packages remains open. The three dormant identities need separately accepted Event 006 map bindings and must not use broad Congo or Tanganyika substitutes. |
 | Sovereign portraits | Sixteen dedicated sovereign DDS files and matching sprite registrations exist | Installed, promotion-gated | The package recruits the portraits only after the bounded priority-member route reaches its gate. |
-| Carrier flags | Seven normal/medium/small flag ladders for `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, and `EQX` exist in the runtime flag folders | Installed, promotion-gated | The ladders are registered on existing Event 6 identities and remain usable only through bounded package promotion; no new tags are authorized. |
-| Achievements | Forty-four registry definitions and 132 three-state DDS files exist | Installed art, open proof | Owner-system milestone and disqualifier callsites still need final audit. |
-| Charter GUI | Twelve static textures and two real frame animations are present and registered | Installed, exact-path review complete | The final 16/16 exact-path review is complete and the registration scan reports no active blocker; no extra animation family is implied. |
+| Carrier flags and route identities | Seven route flag ladders and seven emblem DDS packages are installed and wired by commit `79dbdbac7` | Installed runtime evidence | Older pending-art wording is superseded. The route packages still require bounded promotion and gameplay acceptance; no new tags or cosmetic carriers are authorized. |
+| Achievements | Forty-four registry definitions and 132 three-state DDS files exist; B3 closes the row 24 and row 28 owners and corrects the weather-call disqualifier | Installed art, open proof | Most owner-system milestones and lifetime disqualifiers remain unresolved, including the preserved model, terminal, and external blockers. No proxy completion is claimed. |
+| AI registry | All 64 profile predicates, loaders, registry calls, policy vectors, and 102-action dispatch paths are source-present | Static registry complete, evidence blocked | Two acceptance blockers remain: materially incapable Scramble candidates are not classified with readiness, and the strategy-plan probability adapter returned no usable surface. No campaign simulation or balance completion is claimed. |
+| Charter GUI | Twelve static textures and two rebuilt semantic frame animations are present and registered | Installed, exact-path review complete | The existing eight recurring action families remain in the Charter surface. The six late or episodic families are permanently list-only unless the parent accepts a later specification change; no duplicate Charter buttons are authorized. |
 | Event 13 disaster calls | Event 12-only selected-enemy disaster wrapper call is audited against the unchanged Event 13 public contract | Accepted release-candidate evidence | Exact target and result outputs are verified; no Event 13 source change was made. |
 | Super-event audio | Two researched/produced roles have dormant, unwired candidates; Africa-is-one and The World original-production roles remain blocked | Installed dormant or blocked by role | The four-role package must be wired atomically only after text, image, audio, rights, slot, and identifier checks. |
 | Afaan Oromoo strings | The exact two strings remain absent and are not referenced | Deferred | Native/full-string review and an accepted flavour placement decision are required. |
 
 ## Visual matrix release dispositions
 
-`docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv` is the row-level visual release ledger. It contains no remaining `planned` values. The 239 rows are classified as follows.
+`docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv` is the row-level visual release ledger. It is authoritative for all 239 `asset_item` rows in the shared acceptance ledger, and it contains no `planned` or `pending_runtime_blocker` values. The 239 rows are classified as follows.
 
 | Status | Rows | Row coverage |
 | --- | ---: | --- |
-| `installed_runtime` | 43 | Report/news rows 1-16, Charter static and two frame rows 21-34, and the 13 focus-family rows that have current registered textures. |
-| `installed_dormant` | 28 | Four super-event images 17-20, seven carrier identity rows 139-145, the sixteen selected priority-package visual rows, and the priority mechanic-icon family row 237. |
+| `installed_runtime` | 50 | Current report/news, Charter, semantic animation, route identity, and other active registered consumers recorded by the matrix. |
+| `installed_dormant` | 21 | Dormant super-event, carrier, priority-package, and other installed rows whose consumers remain gated or promotion-controlled. |
 | `deferred_runtime_gated` | 12 | Focus families 129-138, priority promotion card row 236, and route capstone seal row 239. |
 | `deferred_controlled_pool` | 133 | Unconsumed Charter idea/decision families, optional animations, unselected focus families, portrait frames, host overlays, constitutional state kits, route values, and the remaining Tier A candidate pool. |
 | `deferred_model_required` | 16 | High-chaos country visual rows 197-202 and all ten strange-unit identity/model rows 203-212. |
 | `deferred_unique_package_required` | 7 | Middle East, Europe, Asia, North America, South America, Oceania, and The World package rows 213-219. |
-| `pending_runtime_blocker` | 0 | No currently expected release-candidate consumer lacks its exact installed file after the filesystem and GFX check. |
+| `pending_runtime_blocker` | 0 | This historical taxonomy value is absent from the current matrix; deferred rows are classified by their controlled, runtime-gated, model, or unique-package reason instead. |
 
 The matrix retains two suggested-filename aliases that are documented rather than silently corrected: the Africa-is-one news and super rows omit `africa_` in the suggested filename. The Charter header has no remaining path drift; its exact registered/runtime file is `gfx/interface/012_africa/charter_header_plate.dds`.
 
@@ -77,7 +78,7 @@ The first ten report images, six current news images, four current super-event i
 | `012_africa_focus_architecture_handoff.md` | Queued audit evidence | Focus structure and route coverage remain subject to route, AI, icon, topology, and runtime review. |
 | `012_africa_super_event_audio_research_handoff.md` | Historical research, superseded production wording | Roles 2 and 3 have later production evidence in `012_africa_super_event_audio_production_handoff.md`; all audio remains dormant or blocked until atomic wiring. |
 | `012_africa_super_event_audio_production_handoff.md` | Dormant production evidence | Scramble and Continental wars candidates exist, but no four-role runtime registration or playback wiring is claimed. |
-| `012_africa_acceptance_ledger.csv` | Historical working ledger | Its asset-row `queued`/`blocked` vocabulary predates this release matrix. Use the matrix status column and this document for current asset disposition; do not treat the old counts as current. |
+| `012_africa_acceptance_ledger.csv` | Synchronized working ledger | Every `asset_item` row now matches the matrix status exactly and retains its row order and BOM. Other surfaces retain their current implementation, queued, or blocked dispositions. |
 | `subagent_handoffs/012_africa_acceptance_ledger_reconciliation_2026_07_24.md` | Superseded by this release-candidate pass | It remains useful for the 2026-07-24 baseline and prior contradictions, but its “all achievement art missing” and “asset rows mostly queued” statements are historical. |
 
 ## Contradictions and unresolved questions
@@ -87,8 +88,8 @@ The first ten report images, six current news images, four current super-event i
 3. The priority-member handoff says the sixteen sovereign portraits and several visual families remain unresolved, while current runtime folders and GFX registrations contain the installed subset. The handoff now records promotion-gated evidence without promoting the full country packages.
 4. Earlier decision and focus handoffs contained stale pending-DDS or GFX-registration wording. Their release-candidate corrections now record final reaudits and no active registration blocker, while broader matrix rows remain deferred.
 5. Two matrix suggested filenames differ from current registered paths. The exact runtime paths are recorded above; the Charter header path is final and has no remaining alias drift.
-6. The parent fact says seven carrier flag ladders are being installed, while the asset manifest and all 21 runtime TGA files are present. Carrier package integration remains open behind bounded promotion gates.
-7. The source specification expects broad unique continent packages, but the current gate intentionally keeps Actions 85-92 and all seven continent package rows closed. This is a queued package boundary, not a gameplay fallback.
+6. The route identity handoff's older pending-art language is superseded by the seven installed flag-ladder and emblem packages recorded by commit `79dbdbac7`; bounded promotion and gameplay acceptance remain open.
+7. The source specification expects broad unique continent packages, but the current gate intentionally keeps Actions 85-92 and all seven continent-package identity rows closed. W0-W4 source exists; W5 initial certification remains blocked by missing authoritative pre-install receipts. This is a queued package boundary, not a gameplay fallback.
 
 ## Simplifications, omissions, and backlog
 
@@ -96,7 +97,8 @@ The first ten report images, six current news images, four current super-event i
 - South Africa remains excluded from the generic-focus replacement path, but original SAF can enter Event 12 through the accepted Allied-rupture gate. The route preserves the vanilla `south_african_focus` tree and uses the public civil-war effect exactly once; older SAF host-witness/playbook docs remain historical reconciliation evidence rather than alternate entry mechanics.
 - No strange unit model, entity, or formation output is claimed for elephant logistics, elephant shock, Gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, or plague carriers.
 - The three custom-formation action IDs remain runtime-gated by `africa_strange_formation_package_ready`.
-- The six continent packages and The World remain runtime-gated by `africa_world_package_implementation_ready`.
+- The six continent packages and The World remain runtime-gated by `africa_world_package_implementation_ready`; the initial certification setter is intentionally absent until pre-install receipts exist.
+- The six late or episodic action families are permanently list-only and are not duplicated in the Charter GUI.
 - The optional 29 focus families, unconsumed idea/decision families, portrait frames, host overlays, constitutional state kits, route values, and extra animation candidates remain controlled-pool backlog rather than copied or generic replacements.
 - Two super-event audio roles are dormant/unwired, and two original-production roles remain blocked by rights and production evidence.
 - The exact two Afaan Oromoo strings remain deferred and are not referenced in technical identifiers or player-facing localisation.
@@ -105,19 +107,20 @@ The first ten report images, six current news images, four current super-event i
 ## Parent decisions still required
 
 1. Decide whether the two stale Africa-is-one suggested filenames should be normalized in a separate owner patch, preserving the already-registered runtime paths.
-2. Decide when the seven carrier flag ladders have completed bounded Event 6 package promotion acceptance.
-3. Decide whether the broader per-final-focus icon expansion remains queued or is narrowed to the thirteen current family consumers.
-4. Decide when the six continent packages can satisfy `africa_world_package_implementation_ready`, including their unique identity, focus, decision, AI, presentation, and rights surfaces.
-5. Obtain native/full-string review and accepted placement for the two deferred Afaan Oromoo strings, or explicitly reject them without adding substitutes.
+2. Decide when the thirteen conditionally reachable priority packages have complete positive and negative acceptance evidence; keep DYX, DZX, and EMX dormant and unbound.
+3. Decide whether the broader per-final-focus icon expansion remains queued or is narrowed to the current family consumers.
+4. Supply or explicitly reject the authoritative pre-install receipts required before the six-package W5 certification setter can be designed; do not set `africa_world_package_implementation_ready` from static existence.
+5. Resolve the two AI evidence blockers with a material-readiness Scramble scenario and a compatible strategy-plan score probe.
+6. Obtain native/full-string review and accepted placement for the two deferred Afaan Oromoo strings, or explicitly reject them without adding substitutes.
 
 ## Validation record
 
-- Imported the 239-row matrix after editing and confirmed every row has one non-planned disposition and the expected status counts.
+- Imported the 239-row matrix and shared acceptance ledger after reconciliation and confirmed exact key order, BOM preservation, and status counts of 50 `installed_runtime`, 21 `installed_dormant`, 133 `deferred_controlled_pool`, 16 `deferred_model_required`, 12 `deferred_runtime_gated`, and 7 `deferred_unique_package_required`.
 - Checked the first ten report, six news, and four super-event runtime paths against the current filesystem and `interface/012_africa_event_pictures.gfx`.
 - Checked the twelve Charter static textures and two frame-sheet textures against `interface/012_africa_charter.gfx`.
 - Checked the thirteen current focus-family textures and registrations in `gfx/interface/goals/012_africa/` and `interface/012_africa.gfx`.
 - Counted 132 `africa_*.dds` achievement files and 16 sovereign portrait DDS files, and verified their matching sprite registrations.
 - Verified 21 carrier flag TGAs across normal, medium, and small folders and reviewed the existing flag manifest for the seven carrier tags.
-- Confirmed the final 16/16 Charter exact-path review, final focus and decision reaudits, and zero active blockers in the final registration scan.
+- Confirmed the final 16/16 Charter exact-path review, rebuilt semantic animation handoff, seven route flag/emblem packages, final focus and decision reaudits, and zero active blockers in the final registration scan.
 - Confirmed the Event 12-only Event 13 wrapper call preserves the exact selected enemy and result outputs while Event 13 source files remain unchanged.
-- No in-game launch, live-save test, spreadsheet update, or binary visual review was performed because those surfaces remain parent-owned or outside this documentation scope.
+- No in-game launch, live-save test, spreadsheet update, workbook/export edit, or binary visual review was performed because those surfaces remain parent-owned or outside this documentation scope. The AI evidence blockers and W5 receipt gap remain open.
