@@ -1,5 +1,9 @@
 # Fallout Living-World Scheduler Proof
 
+## Current reconciliation after The Harbor Without a City
+
+The dormant reviewed producer now covers `83` ordinary Fallout rows and `663` defined event blocks through `chaosx.fallout.788`. The Harbor Without a City is the latest ordinary row with candidate `782`, transaction `710083`, route `7198`, and survivor history `9189`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Ghost Convoy memory, a foreign neighbor, durable Air Winter and survival ledgers, harbor ledgers, and an affordable branch. Its `45` day result and `330` day government review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+
 ## Current reconciliation after The Ghost Convoy
 
 The dormant reviewed producer now covers `82` ordinary Fallout rows and `656` defined event blocks through `chaosx.fallout.781`. The Ghost Convoy is the latest ordinary row with candidate `775`, transaction `710082`, route `7196`, and survivor history `9188`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Captain's Articles memory, a foreign neighbor, durable Air Winter and survival ledgers, convoy ledgers, and an affordable branch. Its `42` day result and `300` day route review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.

@@ -54,6 +54,7 @@
 50. `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
 51. `specs/83_reviewed_archetype_the_captains_articles.md`
 52. `specs/84_reviewed_archetype_the_ghost_convoy.md`
+53. `specs/85_reviewed_archetype_the_harbor_without_a_city.md`
 
 
 ## Accepted baseline specs included here
