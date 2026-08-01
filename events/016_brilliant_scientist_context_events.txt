@@ -193,6 +193,7 @@ country_event = {
 			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
 			set_country_flag = brilliant_scientist_assistant_conflict_resolved
 			brilliant_scientist_context_recognize_assistant_school = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
 
@@ -216,6 +217,7 @@ country_event = {
 			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
 			set_country_flag = brilliant_scientist_assistant_conflict_resolved
 			brilliant_scientist_context_bind_assistant_service = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
 		}
 	}
 
@@ -233,6 +235,143 @@ country_event = {
 			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
 			set_country_flag = brilliant_scientist_assistant_conflict_resolved
 			brilliant_scientist_context_mediate_assistant_conflict = yes
+			brilliant_scientist_try_schedule_impossible_lecture = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.12
+	title = chaosx.nr16.12.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_impossible_lecture_public
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.12.public.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_impossible_lecture_military
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_secret_directorate
+			}
+		}
+		text = chaosx.nr16.12.military.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_impossible_lecture_industrial
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		text = chaosx.nr16.12.industrial.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_evolved_opening_foreign_opportunities_pending
+				check_variable = {
+					var = brilliant_scientist_exposure
+					value = constant:brilliant_scientist_measure.band_high
+					compare = greater_than
+				}
+			}
+		}
+		text = chaosx.nr16.12.interrupted.d
+	}
+	desc = { text = chaosx.nr16.12.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			brilliant_scientist_is_active_kruger_state = yes
+		}
+		brilliant_scientist_is_evolution_i_enabled = yes
+		has_global_flag = brilliant_scientist_evolution_i_chronology_recorded
+		NOT = { has_global_flag = world_end }
+		has_country_flag = brilliant_scientist_context_briefing_resolved
+		has_country_flag = brilliant_scientist_assistant_conflict_resolved
+		has_country_flag = brilliant_scientist_impossible_lecture_pending
+		NOT = { has_country_flag = brilliant_scientist_impossible_lecture_resolved }
+	}
+
+	option = {
+		name = chaosx.nr16.12.a
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred brilliant_scientist_has_high_independent_capacity = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_impossible_lecture_public_tt
+		hidden_effect = {
+			set_country_flag = brilliant_scientist_impossible_lecture_public
+			brilliant_scientist_resolve_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.12.b
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_secret_directorate
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_secret_directorate }
+		}
+		custom_effect_tooltip = brilliant_scientist_impossible_lecture_military_tt
+		hidden_effect = {
+			set_country_flag = brilliant_scientist_impossible_lecture_military
+			brilliant_scientist_resolve_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.12.c
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_host_archetype_industrial }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+		}
+		custom_effect_tooltip = brilliant_scientist_impossible_lecture_industrial_tt
+		hidden_effect = {
+			set_country_flag = brilliant_scientist_impossible_lecture_industrial
+			brilliant_scientist_resolve_impossible_lecture = yes
+		}
+	}
+	option = {
+		name = chaosx.nr16.12.d
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_evolved_opening_foreign_opportunities_pending }
+			modifier = {
+				factor = constant:brilliant_scientist_evolution_ai.preferred
+				check_variable = {
+					var = brilliant_scientist_exposure
+					value = constant:brilliant_scientist_measure.band_high
+					compare = greater_than
+				}
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_impossible_lecture_interrupted_tt
+		hidden_effect = {
+			set_country_flag = brilliant_scientist_impossible_lecture_interrupted
+			brilliant_scientist_resolve_impossible_lecture = yes
 		}
 	}
 }

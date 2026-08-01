@@ -2850,6 +2850,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 		set_temp_variable = { brilliant_scientist_transfer_breakthrough_classified_count = brilliant_scientist_breakthrough_classified_count }
 		set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.zero }
 		set_temp_variable = { brilliant_scientist_transfer_context_assistant_pending = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_transfer_impossible_lecture_pending = constant:brilliant_scientist_value.zero }
 		if = {
 			limit = { has_country_flag = brilliant_scientist_context_briefing_pending }
 			set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.one }
@@ -2857,6 +2858,10 @@ brilliant_scientist_transfer_kruger_atomically = {
 		if = {
 			limit = { has_country_flag = brilliant_scientist_context_assistant_conflict_pending }
 			set_temp_variable = { brilliant_scientist_transfer_context_assistant_pending = constant:brilliant_scientist_value.one }
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_impossible_lecture_pending }
+			set_temp_variable = { brilliant_scientist_transfer_impossible_lecture_pending = constant:brilliant_scientist_value.one }
 		}
 		for_each_loop = {
 			array = brilliant_scientist_breakthrough_reported_families
@@ -2947,6 +2952,11 @@ brilliant_scientist_transfer_kruger_atomically = {
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_assistant_school_recognized } } set_country_flag = brilliant_scientist_assistant_school_recognized }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_assistant_service_bound } } set_country_flag = brilliant_scientist_assistant_service_bound }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_assistant_cabinet_mediated } } set_country_flag = brilliant_scientist_assistant_cabinet_mediated }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_resolved } } set_country_flag = brilliant_scientist_impossible_lecture_resolved }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_public } } set_country_flag = brilliant_scientist_impossible_lecture_public }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_military } } set_country_flag = brilliant_scientist_impossible_lecture_military }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_industrial } } set_country_flag = brilliant_scientist_impossible_lecture_industrial }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_interrupted } } set_country_flag = brilliant_scientist_impossible_lecture_interrupted }
 			if = {
 				limit = { check_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.one } }
 				set_country_flag = brilliant_scientist_context_briefing_pending
@@ -2956,6 +2966,11 @@ brilliant_scientist_transfer_kruger_atomically = {
 				limit = { check_variable = { brilliant_scientist_transfer_context_assistant_pending = constant:brilliant_scientist_value.one } }
 				set_country_flag = brilliant_scientist_context_assistant_conflict_pending
 				country_event = { id = chaosx.nr16.5 days = 1 }
+			}
+			if = {
+				limit = { check_variable = { brilliant_scientist_transfer_impossible_lecture_pending = constant:brilliant_scientist_value.one } }
+				set_country_flag = brilliant_scientist_impossible_lecture_pending
+				country_event = { id = chaosx.nr16.12 days = 1 }
 			}
 			for_each_loop = {
 				array = brilliant_scientist_transfer_breakthrough_reported_families
