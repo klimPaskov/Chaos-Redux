@@ -1050,3 +1050,17 @@ The chain carries Follow the Recommendation on the Main Grid, Test the Recommend
 The asset evidence is `docs/assets/845_machine_suggests/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_machine_suggests`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-845` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_MACHINE_SUGGESTS_CHAIN_PROOF.md`.
+
+## The First Regional Standard tranche
+
+The First Regional Standard adds dormant suffixes `852` through `858` with candidate id `852`, transaction key `710093`, route `7218`, and history `9199`.
+
+The human opening is `852`, the hidden AI opening is `853`, the human and hidden AI delayed results are `854` and `855`, the human and hidden AI callbacks are `856` and `857`, and cleanup is `858`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Machine Suggests memory, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable open access, proprietary pressure, Medicine, Power, Scrap, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbor, Air Winter values, Supply Access, and standards ledgers.
+
+The chain carries Publish One Open Standard, Protect a Proprietary Standard, Bind It to a Regional Compact, and Keep the Standard Under Military Secrecy branches with distinct survival costs, deterministic result and callback grading, a 70-day result, a 420-day compatibility review, bounded Deaths effects, Air Winter and Supply Access effects, standards, trade, recognition, and bilateral memories, Event Log history `9199`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/852_first_regional_standard/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_first_regional_standard`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-852` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FIRST_REGIONAL_STANDARD_CHAIN_PROOF.md`.
