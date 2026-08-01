@@ -188,3 +188,15 @@ Successor package production, player materialization, general allocation, countr
 | The Returning Disease art and workbook | `docs/assets/712_returning_disease/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout_returning_disease/report_event_fallout_returning_disease.dds`, and `docs/spreadsheets/chaos_redux_events_catalog.xlsx` |
 | The Returning Disease catalog evidence | Exported row `FALLOUT-712` at `docs/spreadsheets/chaos_redux_events_catalog.csv:772`, marked `Needs Testing`, with four authored branches, twelve result outcomes, three callback outcomes, authenticated cancellation, and a visible budget cost of 3. |
 | The Returning Disease status boundary | dormant source package with four branch choices, hidden-AI parity, 24-day result, 210-day callback, bounded Deaths effects, Quarantine memory flags, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Engineer Franchise source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Engineer Franchise design | `docs/specs/air_cleanliness_fallout_specs/specs/87_reviewed_archetype_the_engineer_franchise.md` |
+| The Engineer Franchise runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_ENGINEER_FRANCHISE_CHAIN_PROOF.md` |
+| The Engineer Franchise gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_engineer_franchise_event_triggers.txt`, `common/scripted_effects/fallout_world_end_engineer_franchise_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_engineer_franchise_dynamic_modifiers.txt` |
+| The Engineer Franchise constants and registry | `common/script_constants/fallout_world_end_engineer_franchise_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Engineer Franchise localisation and Event Log | `localisation/english/fallout_world_end_engineer_franchise_l_english.yml`, `common/scripted_localisation/fallout_world_end_engineer_franchise_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Engineer Franchise art and workbook | `docs/assets/796_engineer_franchise/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/engineer_franchise/report_event_fallout_engineer_franchise.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-796` |
+| The Engineer Franchise status boundary | dormant source package with four branch choices, hidden-AI parity, 35-day result, 270-day callback, bounded Deaths effects, government-archetype routes, Event Log history `9191`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

@@ -944,3 +944,17 @@ The chain carries Public Service, Paid Inspection, Political Leverage, and Regio
 The asset evidence is `docs/assets/719_clean_certificate/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-719` is present with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_CLEAN_CERTIFICATE_CHAIN_PROOF.md`.
+
+## The Engineer Franchise tranche
+
+The Engineer Franchise adds dormant suffixes `796` through `802` with candidate id `796`, transaction key `710085`, route `7202`, and history `9191`.
+
+The human opening is `796`, the hidden-AI opening is `797`, the human and hidden-AI delayed results are `798` and `799`, the human and hidden-AI callbacks are `800` and `801`, and cleanup is `802`.
+
+The row requires Manchurian Reactor Keeps memory `46`, the Technate archetype, a closed Reactor Without a Country memory, a current East Asian power or industrial state, a foreign neighboring state, durable Medicine, Cohesion, Recognition, engineering legitimacy, class pressure, and one affordable branch. It selects the lowest eligible native state id and freezes the state, owner, controller, generation, Air Winter values, technical ledgers, and neighbor receipt.
+
+The chain carries Engineer Vote, Public Council, Military Oversight, and Universal Vote branches with distinct costs, deterministic result and callback grading, a 35-day result, a 270-day callback, bounded Deaths effects, state Supply Access and Air Winter effects, government-archetype routing on success, bilateral opinion, technical memory flags, Event Log history `9191`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/796_engineer_franchise/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-796` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_ENGINEER_FRANCHISE_CHAIN_PROOF.md`.
