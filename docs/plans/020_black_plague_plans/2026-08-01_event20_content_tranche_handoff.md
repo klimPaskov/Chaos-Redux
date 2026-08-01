@@ -30,6 +30,9 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The route-module behavior and asset contract are documented in `docs/systems/black_plague_rat_route_modules.md`.
 - Event 20 workbook and exported catalogs include the live Diseases cluster, public Black Plague world-end row, SCN-012 two-tag wording, and current Rat King grace-period detail.
 - Event map documentation records the new Royal Node and mission report identifiers.
+- Scoped Rat King defeat hooks now live in `common/on_actions/020_black_plague_on_actions.txt`; `common/scripted_effects/020_black_plague_rat_effects.txt` records deduplicated major human participants, duration/peak metrics, and idempotent `.71`, eligible `.72`, gated slot 087, and `.73-.75` dispatch.
+- The current qualification constants and trigger are in `common/script_constants/020_black_plague_constants.txt`, `common/script_constants/020_black_plague_evolution_constants.txt`, and `common/scripted_triggers/020_black_plague_rat_triggers.txt`: 180 days, 250,000,000 deaths, 24 peak controlled states, 12 peak continent states at ratio 0.50, and 3 major participants.
+- Slot 087 presentation is promoted: `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html` register the final art, selected text, audio ID 103, and settings wrappers.
 
 ## Validation evidence
 
@@ -47,9 +50,10 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 ## Remaining blockers and deviations
 
 - RTA and RTX focus trees remain compact playable shells rather than the full accepted route depth; the main route-aware AI gates, twelve route-gated King policy focuses, and three route-specific RTX strategy plans are now present, but the broader accepted route architecture remains a follow-up.
-- The accepted narrative and asset package still has queued unique Doctor Wu, outbreak, Rat Nation, weapon-delivery, Royal Node, and source-frame animation surfaces. Crown Strike, route crises, and Royal Burrow aftermath are wired, but their final dedicated art/audio/quote package is still queued.
+- The accepted narrative and asset package still has queued outbreak, Rat Nation, weapon-delivery, reconstruction, crisis-seal, and animated Rat King portrait surfaces. The shared-board rat-infestation source-frame badge, Severe Crisis, Doctor Wu, Crown Strike, route crises, Rat King aftermath, Royal Burrow aftermath, and slot 087 art/text/audio wiring are promoted, but broader dedicated art/depth remains queued.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
+- No in-game process was launched, so the new scoped defeat hooks, metric gate, `.72` coupling, slot-087 trigger/audio, and `.73` audience behavior also require live consumer validation; the current `.73` audience remains the first eligible human response host.
 - Rat 3D model production is intentionally excluded by the user and remains outside this goal tranche.
 - The bounded report/news art package is now promoted into runtime wiring. Origin recognition and late origin reports use `GFX_report_event_020_black_plague_origin`, overseas establishment uses `GFX_news_event_020_black_plague_overseas`, and Rat emergence/resurgence reports use `GFX_report_event_020_rat_emergence`; the sprites are registered in `interface/020_black_plague_event_pictures.gfx` and the final DDS evidence is recorded in `docs/assets/020_black_plague/event_art/manifest.md`.
 - SCN-012 now converts intensity-scaled severe or collapsed candidates into several internal RTA warrens after the first carrier state. The target is two, three, four, or six total RTA brood states for Low, Medium, High, or Maximum intensity; no additional country tag is created, and the states use the normal Rat-Controlled phase, infestation, brood-strength marker, and capped pulse runtime.
@@ -57,10 +61,10 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - Scenario candidate collection now preserves existing established disease states when launched over an active crisis, excludes those states from reseeding, and still offers severe or collapsed human states as internal RTA brood candidates.
 - Natural evolution readiness and activation now respect the five Event 020 disabled-evolution flags. Evolution checks use the existing MTTH-backed next-check date instead of attempting all eligible stages on every weekly pulse; SCN-012 remains an explicit I-IV force path.
 - The contaminated-state mapmode now applies the player-visibility gate before painting an established Black Plague base, preventing private Incubating states from leaking black to unauthorized viewers while preserving black for visible established states.
-- Rat King zero-state defeat now converges through an idempotent resolver that retires RTX, clears active royal and terminal-preparation state, removes its active-country registry entry, and emits the defeat report once without touching RTA or surviving plague states.
+- Rat King zero-state defeat now converges through an idempotent resolver that retires RTX, clears active royal and terminal-preparation state, records scoped participants and peak metrics, removes its active-country registry entry, emits the defeat report once, conditionally dispatches eligible `.72` and gated slot 087, and leaves RTA and surviving plague states intact.
 
 ## Handoff
 
-The Event 020 core and this content tranche are ready for the next content pass and targeted in-game validation.
+The Event 020 core and this content tranche are ready for the next content pass and targeted in-game validation. The scoped defeat/slot-087 wiring is static implementation evidence, not a live completion claim.
 
 The goal remains incomplete until the listed accepted content and presentation blockers are resolved.

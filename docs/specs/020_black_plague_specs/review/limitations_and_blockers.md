@@ -15,7 +15,7 @@ The following implementation references were not mounted and therefore were not 
 - live disease GUI, mapmode, scenario, special-project, focus, decision, and country-package files
 - live asset reference folders
 
-This historical limitation was resolved for the current tranche by inspecting the live runtime surfaces before wiring the two-tag package, shared category, public scenario row, and mapmode hooks. Final asset sprite names and engine-supported black-fog wiring still require their dedicated verification pass.
+This historical limitation was resolved for the current tranche by inspecting the live runtime surfaces before wiring the two-tag package, shared category, public scenario row, mapmode hooks, scoped defeat hooks, and slot-087 package. Engine-supported black-fog wiring and live consumer validation still require their dedicated verification pass.
 
 ## Custom subagent tooling
 
@@ -23,11 +23,11 @@ All 16 supplied subagent contracts were read and their standards were applied ma
 
 ## Asset status
 
-No final image, icon, portrait, flag, DDS, TGA, frame sheet, or animation was produced. The package supplies the asset inventory and production prompt. Final production belongs to implementation and the project asset roles.
+The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets and slot-087 art; broader crisis, Doctor Wu, route/hierarchy, and source-frame animation production remains incomplete. Final asset wiring and live validation remain implementation-owned.
 
 ## Audio status
 
-No audio file was downloaded or converted. The package records verified research leads. Final audio still requires source verification, download, editing, 44.1 kHz conversion, attribution, and wiring.
+The historical planning package supplied research leads only. The current tranche promotes final 44.1 kHz audio IDs 101, 102, and 103 with shared wrappers and catalogue evidence; CC BY-SA release attribution and live playback validation remain open.
 
 ## Mapmode and black fog
 
@@ -37,7 +37,7 @@ State-attached black fog remains technically uncertain. The spec requires a real
 
 ## Triggerable scenario
 
-The scenario design is complete, but the proposed `SCN-008` identifier, registry sort value, exact intensity constants, tag capacity, and bootstrap helper names are provisional. Live implementation must check conflicts and preserve the existing data-driven scenario UI. The scenario must remain idempotent and must not set Evolution V or `world_end`.
+The scenario design is complete and the live implementation uses `SCN-012` with the corrected two-tag contract. The scenario remains idempotent, preserves or creates only the accepted `RTA` and `RTX` actors, and must not set Evolution V or `world_end`; focused launch and lifecycle validation remains open.
 
 ## Balance status
 

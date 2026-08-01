@@ -429,7 +429,7 @@ A defeat aftermath super-event is justified only if the Rat King crisis was glob
 - memorial and anti-biowarfare condemnation effects
 - optional restrictions on future Black Plague weaponization
 
-The reserved global defeat super-event remains intentionally gated behind the catastrophic eligibility package and is not yet wired to a final art, quote, or licensed audio package.
+The reserved global defeat super-event remains intentionally gated behind the catastrophic eligibility package. The current static tranche promotes final slot-087 art, selected quote/localisation, audio ID 103, sprite registration, and shared sound/music wiring; release attribution and live consumer validation remain open.
 
 A short regional rat outbreak should not create a new world order or global treaty.
 

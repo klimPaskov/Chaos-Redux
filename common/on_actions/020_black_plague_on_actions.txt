@@ -1,0 +1,39 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 BLACK PLAGUE ON ACTIONS
+# ============================================================================
+# Narrow defeat hooks only. State-control changes remember the human major
+# powers that reclaim Rat King territory; capitulation resolves RTX immediately
+# and preserves the winning actor before the country is retired. No periodic
+# country or world iteration is introduced here.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = black_plague_rat_king_active
+					FROM = { black_plague_rat_country_is_king = yes }
+					FROM.FROM = {
+						black_plague_state_is_rat_controlled = yes
+						NOT = { is_controlled_by = RTX }
+					}
+				}
+				ROOT = { black_plague_rat_record_defeat_participant = yes }
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { black_plague_rat_country_is_king = yes }
+					FROM = { exists = yes }
+				}
+				FROM = { black_plague_rat_record_defeat_participant = yes }
+				ROOT = { black_plague_rat_king_resolve_defeat = yes }
+			}
+		}
+	}
+}

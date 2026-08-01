@@ -18,6 +18,43 @@ black_plague_rat_country_is_king = {
 	NOT = { has_country_flag = black_plague_rat_king_country_retired }
 }
 
+black_plague_rat_king_defeat_aftermath_is_eligible = {
+	has_global_flag = black_plague_rat_king_defeated
+	has_global_flag = black_plague_evolution_iv_active
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = black_plague_rat_king_defeat_aftermath_emitted }
+	check_variable = {
+		var = global.black_plague_rat_king_duration_days
+		value = constant:black_plague_rat_defeat_aftermath.minimum_duration_days
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_deaths_total
+		value = constant:black_plague_evolution_runtime.minimum_king_deaths_for_v
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_peak_controlled_states
+		value = constant:black_plague_rat_defeat_aftermath.minimum_peak_controlled_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_peak_continent_states
+		value = constant:black_plague_rat_defeat_aftermath.minimum_peak_continent_states
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_peak_continent_ratio
+		value = constant:black_plague_rat_defeat_aftermath.minimum_peak_continent_ratio
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_defeat_participant_count
+		value = constant:black_plague_rat_defeat_aftermath.minimum_major_participants
+		compare = greater_than_or_equals
+	}
+}
+
 black_plague_rat_country_is_nonhuman_army = {
 	OR = {
 		black_plague_rat_country_is_active = yes

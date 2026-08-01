@@ -2,7 +2,13 @@
 
 Date: 2026-08-01
 
-> Historical audit snapshot. The later 2026-08-01 content tranche and live wiring handoffs supersede its “missing” wording for the static RTA hierarchy consumers, RTX crisis events `.57-.59`, Crown Strike `.64-.65`, and defeat/aftermath `.71-.75` surfaces. Retain this report for still-valid whole-spec, route-depth, actor-attribution, asset, scenario, and validation gaps; use `2026-08-01_event20_documentation_cleanup_handoff.md` for the reconciled disposition.
+> Historical audit snapshot. The later 2026-08-01 content tranche and live wiring handoffs supersede its “missing” wording for the static RTA hierarchy consumers, RTX crisis events `.57-.59`, Crown Strike `.64-.65`, scoped defeat/aftermath `.71-.75`, resolver-owned `.72`, and slot-087 presentation surfaces. Retain this report for still-valid whole-spec, route-depth, `.73` audience, asset, scenario, and validation gaps; use `2026-08-01_event20_documentation_cleanup_handoff.md` for the reconciled disposition.
+
+## Reconciliation update (2026-08-01)
+
+The former absence findings for scoped defeat hooks, defeat metrics, resolver-owned reconstruction `.72`, and slot 087 presentation are superseded by the parent-owned tranche. Evidence is `common/on_actions/020_black_plague_on_actions.txt`, `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, `common/script_constants/020_black_plague_constants.txt`, `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html`, with final art/audio/text provenance in the 2026-08-01 slot-087 handoffs.
+
+The audit remains partial: broader narrative and route depth, generic crisis/Doctor Wu/route art, native mission API decisions, `.73` audience ownership, workbook/catalog alignment, release attribution, and live consumer validation remain open. No 3D model work is required by the current boundary.
 
 ## Audit boundary and verdict
 
@@ -50,7 +56,7 @@ This auditor made no gameplay or asset changes; the only auditor-owned write is 
 | RTX focus tree | Playable compact shell, accepted depth missing | The tree has 38 connected focuses and three mutually exclusive government roots. Administration, plague mastery, captured knowledge, human population policy, continental campaign, and route-specific military tradeoffs are missing or compressed. The accepted target is approximately 70 to 100 focuses. |
 | Focus AI | Missing | Neither Event 20 focus tree defines focus-level `ai_will_do`, and no Event 20 focus-factor or AI national-focus plan was found. The current rat AI strategy controls templates and fronts, not route selection or terminal-route preparation. |
 | Rat country package | Partial | Country histories, dormant shell capitals, flags, static portraits, leaders, parties, ideas, locked templates, scripted forces, and rat-only AI templates exist. Natural Evolution III transfers one selected state to RTA at `common/scripted_effects/020_black_plague_rat_effects.txt:558-579`, below the accepted minimum connected basin of three states in `docs/specs/020_black_plague_specs/matrices/tuning_and_balance_targets.md:90-94`. Other missing accepted surfaces include the Fractured Instinct lifecycle spirit, advisors and high command, captured-knowledge and nest-industry progression, a stronger fictional Rat King identity, and the planned animated RTX portrait package. |
-| Two-dimensional event and UI assets | Partial | Current Event 20 art includes static rat portraits, flags, focus and decision icons, one scenario report image, and two super-event images. The accepted outbreak, severe-crisis, overseas-jump, first-emergence, and Rat Nation news images are absent. The unique Doctor Wu report image, dedicated weapon-delivery icon, animated RTX portrait, achievement icon triplets, crisis-seal animation, and readiness animation are absent or explicitly queued. |
+| Two-dimensional event and UI assets | Partial | Current Event 20 art includes static rat portraits, flags, focus and decision icons, one scenario report image, and three super-event images including final slot 087 art. The accepted outbreak, severe-crisis, overseas-jump, first-emergence, and Rat Nation news images are absent. The unique Doctor Wu report image, dedicated weapon-delivery icon, animated RTX portrait, achievement icon triplets, crisis-seal animation, and readiness animation are absent or explicitly queued. |
 | 3D models | Out of scope and not a blocker | The user explicitly removed model production from the completion target. Existing infantry-entity consumers are not treated as an Event 20 completion defect in this audit. |
 | Documentation and catalog | Partial and stale | The live overview has been partly updated for the shared registries, but the spec README, core readiness report, several matrices, follow-up notes, system docs, and the workbook still describe earlier states. |
 
@@ -90,7 +96,7 @@ Mechanical history and evolution details are not substitutes for the accepted pl
 
 The live `.4` is the SCN-012 global report, while the accepted event chain reserves `.4` for the first neighboring threat alert and reserves planning ID `.90` for the scenario launch report.
 
-The remaining planned `.2` through `.72` narrative events are absent.
+The accepted event map is still broader than the compact runtime chain; however, `.45`, `.57-.59`, `.64-.65`, `.71-.75`, and resolver-owned eligible `.72` are now present as static event evidence. The remaining gaps are narrative depth, audience/picture correctness, and live proof rather than an entirely absent defeat aftermath.
 
 The old `chaosx.news.21` at `events/_chaosx_news.txt:233-243` has no caller, uses `GFX_news_event_indian_famine`, and retains obsolete generic localisation in `localisation/english/020_black_death_l_english.yml:4-6`.
 
@@ -122,8 +128,8 @@ They remain accepted-plan omissions that prevent whole-spec completion.
 | SCN-012 with four intensities and no automatic Evolution V | Implemented in the shared scenario UI and bootstrap. Active-crisis RTA reuse, fire-once suppression, initial RTA/RTX grace coexistence, and post-grace transfer fallback are present in the current working tree. Focused launch and lifecycle validation remains unresolved. |
 | Fourteen ordinary achievements | Tracking scaffold only. Visible registry, text, icons, and several attainable predicates are unresolved. |
 | Deep RTA and RTX focus architecture | Compact playable subsets only. The 2026-08-01 focus audit records the missing route families and AI. |
-| Narrative event map and aftermath | Accepted but deferred in the core-readiness report. It has not been promoted to gameplay, rejected, or replaced by a revised event allocation. |
-| Defeat-aftermath super-event | Explicitly queued behind an eligibility gate. No gate or presentation implementation was found. |
+| Narrative event map and aftermath | Partially promoted: `.45`, `.57-.59`, `.64-.65`, `.71-.75`, and resolver-owned eligible `.72` are statically present; broader player-facing chain depth and live proof remain deferred. |
+| Defeat-aftermath super-event | Final gated package is wired statically: slot 087 art/text/audio ID 103, sprite, and settings wrappers are present; release attribution and live validation remain open. |
 | Black fog | Optional engine-dependent enhancement. The omission is disclosed, but the required reproducible engine-surface test artifact is absent. |
 | 3D rat models | Superseded for this task by the user's no-model instruction and not treated as a blocker. |
 
@@ -176,7 +182,7 @@ The CSVs must not be edited directly.
 Current final visual coverage includes:
 
 - one scenario report image, `gfx/event_pictures/020_black_plague/report_event_020_black_plague_unbound.dds`
-- two super-event images, `super_event_085_rat_king_coronation.dds` and `super_event_086_rat_king_takeover.dds`
+- three super-event images, including `super_event_085_rat_king_coronation.dds`, `super_event_086_rat_king_takeover.dds`, and `super_event_087_rat_king_defeat_aftermath.dds`
 - five static rat portraits
 - RTA and RTX flag triplets
 - registered rat focus, idea, response-decision, and weaponization sprites
@@ -238,8 +244,8 @@ No Hearts of Iron IV process was launched.
 3. Implement or explicitly re-disposition the accepted narrative event chain and resolve the `.4` versus `.90` allocation.
 4. Expand the RTA and RTX route families and add route-aware focus AI before claiming focus-tree completion.
 5. Update the authoritative workbook and export the three CSV snapshots.
-6. Reconcile the README, overview, readiness report, matrices, system docs, and obsolete follow-up notes with the current two-tag and shared-registry state.
-7. Run focused rat-lifecycle, scenario, terminal-toggle, event-chain, achievement, and balance validations after those mechanics exist.
+6. Reconcile the README, overview, readiness report, matrices, system docs, asset manifests, and obsolete follow-up notes with the current two-tag and shared-registry state.
+7. Run focused rat-lifecycle, scenario, terminal-toggle, event-chain, defeat-gate, slot-087 playback, achievement, and balance validations after those mechanics exist.
 
 ## Completion claim boundary
 

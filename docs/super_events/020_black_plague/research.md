@@ -1,15 +1,16 @@
 # Event 020 Black Plague super-event research
 
-This note records the audio package for the Rat King coronation and Rat King world-end super-events. Audio IDs 101 and 102 are now promoted into the shared sound and music registries; the separate defeat super-event 87 remains gated and unproduced. Parent-owned text, image, event, localisation, GFX, and final package validation still determine whole Event 020 super-event completeness.
+This note records the audio package for the Rat King coronation, Rat King world-end, and qualifying Rat King defeat-aftermath super-events. Audio IDs 101, 102, and 103 are promoted into the shared sound and music registries; display slot 087 is runtime-gated behind the long/global-war defeat criteria. Parent-owned event/docs alignment, release attribution, and live package validation determine whole Event 020 super-event completeness.
 
 ## Roles and audio decisions
 
-| Super-event | Role | Selected audio | Proposed playback ID | Final duration |
+| Super-event | Role | Selected audio | Playback ID | Final duration |
 | --- | --- | --- | ---: | ---: |
 | Rat King coronation | Global transformation: scattered broods become one sentient sovereign | Kevin MacLeod, `Gregorian Chant`, edited chant-style processional | 101 | 110.000000 s |
 | Rat King world end | Terminal takeover after the Rat King world-end path | Gregorian chant sequence `Dies irae`, recording by Membeth | 102 | 103.650000 s |
+| Rat King defeat aftermath | Global defeat aftermath: the crown is gone, but the world remains scarred and unstable | Henry Purcell, `Dido's Lament`, 2 March 2014 premiere recording by A1 (Commons category credits Andriy Bondarenko) | 103 | 115.000000 s |
 
-The cues are unique to Event 020 and are not reused from another super-event. Audio ID 101 uses the named Kevin MacLeod recording because the author, source, and CC BY 3.0 terms are explicit. Audio ID 102 uses the public-domain Membeth recording because its worldwide dedication is explicit and the medieval composition is public domain. The source evidence, API metadata, legal-code snapshots, hashes, and conversion ledger are kept in `docs/assets/020_black_plague/source_audio/evidence/` and `docs/assets/020_black_plague/audio_manifest.md`.
+The cues are unique to Event 020 and are not reused from another super-event. Audio ID 101 uses the named Kevin MacLeod recording because the author, source, and CC BY 3.0 terms are explicit. Audio ID 102 uses the public-domain Membeth recording because its worldwide dedication is explicit and the medieval composition is public domain. Audio ID 103 uses a CC BY-SA 4.0 premiere recording of Purcell's public-domain lament; the recording and adapted WAV require attribution and compatible share-alike terms. The source evidence, API metadata, legal-code snapshots, hashes, and conversion ledger are kept in `docs/assets/020_black_plague/source_audio/evidence/` and `docs/assets/020_black_plague/audio_manifest.md`.
 
 ## Audio ID 101: Rat King coronation
 
@@ -41,15 +42,30 @@ The cues are unique to Event 020 and are not reused from another super-event. Au
 
 ## Parent wiring evidence
 
-Use `docs/assets/020_black_plague/audio_manifest.md` for the exact six-level registry names, sound wrapper names, paths, volume ladder, and attribution text. The wrappers `chaosx_super_event_rat_king_coronation_track` and `chaosx_super_event_rat_king_world_end_track` and the six-level soundeffect families `chaosx_super_event_101_sound_*` and `chaosx_super_event_102_sound_*` are present in the shared sound registry and catalogue. Runtime branches set `global.current_super_event_audio_id` to `101` or `102` through the existing settings-aware helper. This audio researcher did not edit those shared wiring files; the paths are recorded here as promoted runtime evidence.
+## Audio ID 103: Rat King defeat aftermath / display slot 087
+
+- Title: `Dido's Lament` from Henry Purcell's *Dido and Aeneas*.
+- Composer/work rights: Henry Purcell's 17th-century opera and aria are public domain.
+- Performer and recording source: 2 March 2014 premiere recording uploaded as own work by Wikimedia Commons user `A1`; the Commons category identifies Andriy Bondarenko. The source page does not provide a full cast or venue, so this handoff does not invent one.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Dido%26Aeneas-ukr-32(air%26choir).ogg>; frozen revision <https://commons.wikimedia.org/w/index.php?title=File:Dido%26Aeneas-ukr-32%28air%26choir%29.ogg&oldid=665006997>.
+- Recording licence: CC BY-SA 4.0 (<https://creativecommons.org/licenses/by-sa/4.0/>). Sharing and adaptation require attribution, a licence link, a change notice, and compatible share-alike distribution.
+- Licence confidence: high for the source-file licence and composition status; medium for performer identity because the page names uploader `A1` and the category associates Andriy Bondarenko without a complete performer list.
+- Preserved original: `docs/assets/020_black_plague/source_audio/dido_aeneas_ukr_32_a1_commons_original.ogg` (200.588895 s, 48,000 Hz stereo; SHA-1 `98037d0395d789c3771ffa7f4ca21ce4c90fdba0`; SHA-256 `D5CD478D298C964123D47869BC3298730DB2BC40AFD2E48361B845F5A4749AB3`).
+- Final sound file: `sound/020_black_plague/super_event_087_rat_king_defeat_aftermath.wav` (115.000000 s, exactly 44,100 Hz stereo signed 16-bit PCM; SHA-256 `9F97F8A9CEB8A94884D27E4EC74E3C0BE1EA300B1B9E3187688AEDD16F5E39EF`).
+- Editing: first 115 seconds; no silence trim; `loudnorm=I=-20:TP=-2:LRA=11`; 1.5-second fade-in; 6-second fade-out from source-relative 109 seconds; 48 kHz to 44.1 kHz resample; signed 16-bit PCM render. Final measurement is `-19.6 LUFS`, `4.5 LU LRA`, `-9.5 dBFS` true peak. No generated tone, oscillator, drone, noise bed, stinger, or placeholder was used.
+- Attribution: `Henry Purcell, "Dido's Lament" from Dido and Aeneas; 2 March 2014 premiere recording by A1 (Wikimedia Commons; category credits Andriy Bondarenko), CC BY-SA 4.0. Edited, faded, loudness-normalized, resampled, and excerpted by Chaos Redux.`
+- Fit: the aria's sustained lament and restrained pulse communicate loss, memory, and the fragile recovery after a global threat. It is distinct from Event 020 IDs 101 and 102 and from the repository's existing final tracks.
+- Playback ID: `103`; base sound `chaosx_super_event_rat_king_defeat_aftermath_track`; settings-volume wrappers `chaosx_super_event_103_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`. The wrapper prefix follows the audio ID while display slot `087` remains the super-event image/flag ID. Shared sound definitions and runtime playback are wired in the Event 020 package.
+
+Use `docs/assets/020_black_plague/audio_manifest.md` for the exact six-level registry names, sound wrapper names, paths, volume ladder, and attribution text. The wrappers `chaosx_super_event_rat_king_coronation_track` and `chaosx_super_event_rat_king_world_end_track` and the six-level soundeffect families `chaosx_super_event_101_sound_*` and `chaosx_super_event_102_sound_*` are present in the shared sound registry and catalogue. Audio ID 103 uses `chaosx_super_event_rat_king_defeat_aftermath_track` and `chaosx_super_event_103_sound_*` wrappers at the same ladder. Runtime branches set `global.current_super_event_audio_id` to `101`, `102`, or `103` through the existing settings-aware helper. The shared wiring is now part of the parent Event 020 tranche.
 
 ## Non-selected leads and optional branch
 
-`De profundis.ogg` was not selected because its Commons page leaves the author field blank despite CC BY-SA licensing, so the composition/recording attribution split was not strong enough for a final package. `Rorate Caeli ~ Gregorian Chant.ogg` was not selected because the recording is less directly suited to the coronation role. The optional defeat-aftermath cue is intentionally not prepared until the parent confirms that the long/global-war eligibility gate remains in the accepted implementation.
+`De profundis.ogg` was not selected because its Commons page leaves the author field blank despite CC BY-SA licensing, so the composition/recording attribution split was not strong enough for a final package. `Rorate Caeli ~ Gregorian Chant.ogg` was not selected because the recording is less directly suited to the coronation role. The Purcell recording was selected for the defeat aftermath because it has explicit CC BY-SA 4.0 terms, a public-domain composition, and a direct lament role. The runtime gate remains the long/global-war eligibility trigger documented in the Event 020 effects and triggers.
 
 ## Remaining parent additions
 
-The parent must still maintain final title/description/remark/quote localisation, generated 457x328 images and GFX mappings, super-event slot flags, event docs, and any workbook alignment. The optional defeat super-event 87 additionally requires its own gate, image, quotation, cultural remark, unique audio, settings-aware playback ID, and provenance record. No fallback or default audio is authorized for any completed super-event.
+Wiring is promoted in `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html`. Remaining work is release attribution/CC BY-SA record, docs/workbook alignment, and live validation. The defeat super-event 87 retains its own long/global gate, image, quotation, cultural remark, shared sound definitions, settings-aware playback ID, and runtime helper call; no fallback or default audio is authorized.
 
 ## Text research package
 
