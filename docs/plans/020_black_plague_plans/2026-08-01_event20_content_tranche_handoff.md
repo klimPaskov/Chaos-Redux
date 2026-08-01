@@ -19,6 +19,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The superseded multi-country achievement condition now measures absorbed RTA brood states under the two-tag model.
 - The pre-terminal continent achievement no longer depends on Evolution V having already been recorded, so its route can be evaluated before the terminal takeover.
 - The fourteen Event 020 achievement contracts now have public registry entries and player-facing name, description, eligibility, and completion tooltip localisation.
+- The fourteen Event 020 achievement contracts now have completed, grey, and not-eligible 64x64 DDS triplets, with 42 explicit aliases in `interface/chaosx_achievements.gfx`; source, processed, prompt, contact-sheet, and validation evidence is retained under the ignored Event 020 asset workspace.
 - The RTA and RTX focus trees now apply route-aware AI weights to the four RTA archetype roots, the shared brood/crown progression, the three King governments, first crisis resolution, and the earned terminal route.
 - The Rat King focus tree now includes twelve reachable, route-gated policy focuses: four Absolute Crown focuses, four Council focuses, and four Black-Breath Hierophancy focuses. Their rewards alter the royal meters, brood mass, force cap, overseas permission, and terminal preparation rather than granting human industry or manpower.
 - The rat AI strategy file now has three route-specific RTX plans. Crown concentrates brutes and royal-node defense, Council favors distributed burrow and swarm coverage, and Hierophancy favors dock forces, coastal staging, and overseas pressure.
@@ -39,9 +40,8 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 ## Remaining blockers and deviations
 
-- The achievement registry and Event 020 localisation are wired, but the final completed, grey, and not-eligible icon triplets are still missing.
 - RTA and RTX focus trees remain compact playable shells rather than the full accepted route depth; the main route-aware AI gates, twelve route-gated King policy focuses, and three route-specific RTX strategy plans are now present, but the broader accepted route architecture remains a follow-up.
-- The accepted narrative and asset package still has queued unique Doctor Wu, outbreak, Rat Nation, weapon-delivery, Royal Node, achievement, and source-frame animation surfaces.
+- The accepted narrative and asset package still has queued unique Doctor Wu, outbreak, Rat Nation, weapon-delivery, Royal Node, and source-frame animation surfaces.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
 - Rat 3D model production is intentionally excluded by the user and remains outside this goal tranche.
