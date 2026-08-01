@@ -54,6 +54,10 @@ Focus weights are centralized in the AI-plan file and express an order rather th
 The focus-local `ai_will_do` blocks remain responsible for live League values, member conditions, route choices, and mutually exclusive outcomes.
 The plans supply sequence and urgency without bypassing focus availability or completion rules.
 
+The seven constitutional route families also use `africa_focus_ai_route_pressure` on all 107 route-body focus weights.
+That shared trigger branches on the committed constitution, raises route pressure for low payoff axes, and responds to unresolved mapped action contracts, constitutional crises, and pending postwar review.
+Its multiplier is tuned by `africa_focus_ai_route.pressure_multiplier` so route behavior remains centralised without duplicating AI stores.
+
 The bounded action controller composes all active regional, constitutional, relationship, foreign-power, high-chaos, world, and host-specific profile layers.
 Its early and late dispatchers cover Actions 1 through 102 without scanning every country on a recurring on-action.
 Scramble phase changes and the world-order opening refresh the stored host-policy snapshot immediately, so AI decision weights do not wait for the controller's next cadence.

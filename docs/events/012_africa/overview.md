@@ -123,4 +123,5 @@ The first ten report images, six current news images, four current super-event i
 - Verified 21 carrier flag TGAs across normal, medium, and small folders and reviewed the existing flag manifest for the seven carrier tags.
 - Confirmed the final 16/16 Charter exact-path review, rebuilt semantic animation handoff, seven route flag/emblem packages, final focus and decision reaudits, and zero active blockers in the final registration scan.
 - Confirmed the Event 12-only Event 13 wrapper call preserves the exact selected enemy and result outputs while Event 13 source files remain unchanged.
+- Confirmed the route-AI tranche adds one constitution-aware pressure trigger and modifiers to all 107 previously flat route-body focus weights; branch-aware live timing remains open.
 - No in-game launch, live-save test, spreadsheet update, workbook/export edit, or binary visual review was performed because those surfaces remain parent-owned or outside this documentation scope. The AI evidence blockers and W5 receipt gap remain open.
