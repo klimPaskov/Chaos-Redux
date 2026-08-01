@@ -1009,6 +1009,20 @@ The asset evidence is `docs/assets/824_grid_vote/` with source, processed PNG, r
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GRID_VOTE_CHAIN_PROOF.md`.
 
+## The Laboratory Citizenship tranche
+
+Laboratory Citizenship adds dormant suffixes `838` through `844` with candidate id `838`, transaction key `710091`, route `7214`, and history `9197`.
+
+The human opening is `838`, the hidden-AI opening is `839`, the human and hidden-AI delayed results are `840` and `841`, the human and hidden-AI callbacks are `842` and `843`, and cleanup is `844`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Failed Calculation memory, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable citizenship ledgers, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbor, Air Winter values, Supply Access, and citizenship ledgers.
+
+The chain carries Open Citizenship to Every Repair Household, Tie Citizenship to Service Tiers, Build an Apprentice Citizenship Path, and Keep Civic Rights Under the Senior Engineers branches with distinct survival costs, deterministic result and callback grading, a 56-day result, a 360-day citizenship review, bounded Deaths effects, Air Winter and Supply Access effects, citizenship legitimacy, class pressure, service trust, education capacity, apprentice capacity, civic confidence, bilateral opinion, Event Log history `9197`, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/838_laboratory_citizenship/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_laboratory_citizenship`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-838` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_LABORATORY_CITIZENSHIP_CHAIN_PROOF.md`.
+
 ## The Failed Calculation tranche
 
 The Failed Calculation adds dormant suffixes `831` through `837` with candidate id `831`, transaction key `710090`, route `7212`, and history `9196`.
