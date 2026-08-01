@@ -2340,6 +2340,42 @@ africa_achievement_record_weather_army_defeated = {
 	}
 }
 
+# Any Event 012 scope after a weather-marked hostile country capitulates to the
+# current host. The host is the only winner that can open the owner gate; an
+# ordinary accepted call, peace conference, or opinion change never implies a
+# campaign victory.
+africa_achievement_record_weather_war_won = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			has_country_flag = africa_host_commit_completed
+		}
+		set_global_flag = africa_achievement_rain_command_owner_ready
+		set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.weather_war_won }
+		africa_achievement_record_milestone = yes
+	}
+}
+
+# The weather route is disqualified only by an accepted Event 013 impact on a
+# registered League member. A rejected call does not create this receipt.
+africa_achievement_record_weather_member_disaster = {
+	set_global_flag = africa_achievement_maximum_member_weather_disaster
+}
+
+# An accepted weather impact against a sovereign African state that has not
+# entered a Charter relationship is a neutral-target disqualifier. Relationship
+# state, not opinion, supplies the classification.
+africa_achievement_record_weather_neutral_african = {
+	set_global_flag = africa_achievement_weather_targeted_neutral_african
+}
+
+# The ecological route collapses when the canonical wrath meter reaches its
+# configured rampage threshold. This writer is called after the host value is
+# clamped, so it cannot observe an out-of-range transient.
+africa_achievement_record_weather_wrath_collapse = {
+	set_global_flag = africa_achievement_ecological_wrath_collapse
+}
+
 # HOST scope when the accepted hostile call backfires or the wrapper rejects
 # it after charging the reserved cost. The flag is sticky and is separate from
 # the civilian-target disqualifier used by the ecological achievement.

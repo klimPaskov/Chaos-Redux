@@ -6048,6 +6048,16 @@ africa_apply_failed_action_family_values = {
 		add_to_variable = { africa_rival_pressure = constant:africa_action_result.failure_rival_pressure }
 		clamp_variable = { var = africa_rival_pressure min = constant:africa_measure.minimum max = constant:africa_measure.maximum }
 		africa_clamp_host_values = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_ecological_wrath
+					value = constant:africa_achievement_ratio.ecological_rampage_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			africa_achievement_record_weather_wrath_collapse = yes
+		}
 	}
 }
 
@@ -7304,13 +7314,34 @@ africa_call_hostile_natural_disaster_from_action = {
 				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
 				set_country_flag = africa_natural_disaster_call_accepted
 				PREV = { set_country_flag = africa_natural_disaster_call_accepted_recorded }
-				# Event 013 accepted the exact hostile selected-country call. It is
-				# not a campaign-victory or army-defeat proof, so no Row 38 owner gate
-				# is opened here; civilian and neutral proofs remain separate owners.
+				# Event 013 accepted the exact hostile selected-country call. The
+				# target classifications below are disqualifier receipts only; a
+				# campaign victory still requires the target to capitulate to this host.
 				if = {
 					limit = { check_variable = { natural_disaster_call_has_resolved_primary_country > constant:africa_value.zero } }
-					event_target:natural_disaster_call_resolved_primary_country = {
-						set_country_flag = africa_natural_disaster_targeted
+						event_target:natural_disaster_call_resolved_primary_country = {
+							set_country_flag = africa_natural_disaster_targeted
+							set_variable = { var = africa_natural_disaster_target_host_generation value = event_target:africa_host.africa_host_generation }
+						}
+					if = {
+						limit = {
+							event_target:natural_disaster_call_resolved_primary_country = {
+								OR = {
+									africa_member_host_generation_is_current = yes
+									africa_relationship_is_cooperative = yes
+								}
+							}
+						}
+						africa_achievement_record_weather_member_disaster = yes
+					}
+					if = {
+						limit = {
+							event_target:natural_disaster_call_resolved_primary_country = {
+								capital_scope = { is_on_continent = africa }
+								africa_relationship_is_outside = yes
+							}
+						}
+						africa_achievement_record_weather_neutral_african = yes
 					}
 				}
 				random = {
@@ -7319,6 +7350,16 @@ africa_call_hostile_natural_disaster_from_action = {
 					africa_achievement_record_weather_campaign_backfire = yes
 					add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 					africa_clamp_host_values = yes
+					if = {
+						limit = {
+							check_variable = {
+								var = africa_ecological_wrath
+								value = constant:africa_achievement_ratio.ecological_rampage_threshold
+								compare = greater_than_or_equals
+							}
+						}
+						africa_achievement_record_weather_wrath_collapse = yes
+					}
 				}
 			}
 			else = {
@@ -7328,6 +7369,16 @@ africa_call_hostile_natural_disaster_from_action = {
 				africa_achievement_record_weather_campaign_backfire = yes
 				add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 				africa_clamp_host_values = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = africa_ecological_wrath
+							value = constant:africa_achievement_ratio.ecological_rampage_threshold
+							compare = greater_than_or_equals
+						}
+					}
+					africa_achievement_record_weather_wrath_collapse = yes
+				}
 			}
 		}
 	}

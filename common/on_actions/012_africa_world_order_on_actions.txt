@@ -241,6 +241,31 @@ on_actions = {
 				}
 				FROM = { africa_priority_member_record_rival_bloc_victory = yes }
 			}
+			# A weather-marked hostile country is an army proof only when it
+			# capitulates directly to the current Event 012 host. The target flag
+			# is written by the accepted Event 013 selected-country call; ordinary
+			# peace, a third-party capitulation, or a generic war relation cannot
+			# satisfy the weather campaign owner.
+			if = {
+				limit = {
+					ROOT = {
+						has_country_flag = africa_natural_disaster_targeted
+						has_capitulated = yes
+						has_variable = africa_natural_disaster_target_host_generation
+						check_variable = {
+							var = africa_natural_disaster_target_host_generation
+							value = FROM.africa_host_generation
+							compare = equals
+						}
+					}
+					FROM = {
+						africa_is_current_host = yes
+						has_country_flag = africa_host_commit_completed
+					}
+				}
+				ROOT = { africa_achievement_record_weather_army_defeated = yes }
+				FROM = { africa_achievement_record_weather_war_won = yes }
+			}
 			if = {
 				limit = {
 					ROOT = {
