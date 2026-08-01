@@ -1739,6 +1739,26 @@ black_plague_start_natural_outbreak = {
 				set_state_flag = black_plague_scheduler_anchor
 				set_variable = { global.black_plague_origin_day = global.date }
 				black_plague_initialize_origin_state = yes
+				# The first-cordon achievement compares the eventual player owner
+				# against this origin owner and the deaths suffered by this state.
+				# Write both values once, at the same transaction that establishes
+				# the weighted origin, so the contract cannot remain permanently
+				# unreachable in a natural campaign.
+				if = {
+					limit = {
+						check_variable = {
+							var = global.black_plague_achievement_origin_owner_id
+							value = constant:black_plague_achievement_value.zero
+							compare = equals
+						}
+					}
+					OWNER = { set_variable = { global.black_plague_achievement_origin_owner_id = THIS.id } }
+					set_temp_variable = { black_plague_achievement_origin_death_limit = state_population_k }
+					multiply_temp_variable = { black_plague_achievement_origin_death_limit = constant:black_plague_value.people_per_thousand }
+					multiply_temp_variable = { black_plague_achievement_origin_death_limit = constant:black_plague_achievement_threshold.first_cordon_origin_death_share }
+					round_temp_variable = black_plague_achievement_origin_death_limit
+					set_variable = { global.black_plague_achievement_origin_death_limit_people = black_plague_achievement_origin_death_limit }
+				}
 				black_plague_seed_origin_threatened_ring = yes
 				black_plague_schedule_next_pulse = yes
 			}
