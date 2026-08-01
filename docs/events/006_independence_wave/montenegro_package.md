@@ -1,0 +1,24 @@
+# Event 006 Montenegro package
+
+IW-030 uses the registered vanilla `MNT` carrier and the reserved Montenegro anchor at state 105. The package belongs to the Balkans and Danube region, uses the `mountain_or_frontier` archetype, and follows force mapping profile `mountain_frontier` with military tradition `p30`.
+
+The runtime adapter keeps the vanilla MNT history and flag identity intact. The setup effect installs the shared Event 006 focus framework, baseline civilian economy, export focus, and volunteer-only laws, then records mountain cohesion, crown legitimacy, host routes, the traditional-authority versus assembly power struggle, the Danubian ambition family, the league route, and the dynamic starting force contract. No Event 006 advisor icon is created.
+
+The country-owned decisions cover the timed founding crisis, mountain depots, regional guards, the Cetinje-Podgorica administrative register, former-host ledgers, four government routes, durable sovereignty, and the Balkan network corridor. Every project consumes the shared command, manpower, equipment, train or convoy, stability, war-support, or time cost palette and changes both public Event 006 ledgers and the Montenegro-specific values.
+
+Montenegro reuses the vanilla MNT character definitions and does not copy a history file. The roster handoff is event-owned in `chaosx.nr6.350`, as required for synchronous character recruitment. A generic vanilla Kristo Popovic portrait is not accepted as a grounded Event 006 visual. IW-030 therefore remains fail-closed until an attributed male period portrait is source-locked, repainted in the HOI4 style, audited, and wired without a generic substitute. The global shared-focus geometry audit also remains a package-admission blocker.
+
+## Runtime surfaces
+
+| Surface | File | Runtime identifiers |
+| --- | --- | --- |
+| Tuning | `common/script_constants/006_independence_wave_montenegro_constants.txt` | `independence_wave_montenegro_politics`, `independence_wave_montenegro_pressure`, `independence_wave_montenegro_ai` |
+| Ideas | `common/ideas/006_independence_wave_montenegro_ideas.txt` | `mnt_divided_mountain_authority`, `mnt_mountain_state_compact`, four route ideas |
+| Package effects | `common/scripted_effects/006_independence_wave_montenegro_package_effects.txt` | IW-030 setup, final validation, cleanup, route and ledger effects |
+| Package triggers | `common/scripted_triggers/006_independence_wave_montenegro_package_triggers.txt` | identity, roster, route, force, and completion proofs |
+| Decisions | `common/decisions/006_independence_wave_montenegro_decisions.txt` | timed founding mission plus ten costed projects |
+| AI | `common/ai_strategy/006_independence_wave_montenegro.txt` | mountain survival, host restraint, settled frontier, emergency guard |
+| Roster | `events/006_independence_wave.txt` | synchronous `chaosx.nr6.350` MNT branch |
+| Localisation | `localisation/english/006_independence_wave_montenegro_l_english.yml` | party, idea, decision, and tooltip wording |
+
+The central dispatcher owns the IW-030 setup, final-validation, and cleanup calls. The package remains outside the compile-time content-attestation and scenario-preflight allowlists until the source, portrait, and focus audits are cleared.
