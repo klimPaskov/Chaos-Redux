@@ -29,7 +29,7 @@ Commit `9231c15f5` closes source wiring for the five accepted evolution incident
 
 The shared effects write the country, former-host, Network, League, and revisionist-pressure ledgers, and generation reset plus origin cleanup clear pending and outcome flags. The incident loop does not add a package, alter the thirteen-package attestation set, or change the whole-event **HOLD / PARTIAL** status.
 
-The only evolution-specific follow-through is the Armed Birth force-materialization adapter. Its civilian-command and frontier-mobilization choices change the shared security and former-host ledgers, but package initialization still must consume the chosen security posture before opening forces are created. The implementation evidence is `subagent_handoffs/006_evolution_incident_resolution_core_2026_08_01.md`.
+The evolution-specific follow-through now includes the paid Armed Birth reserve path. Its civilian-command and frontier-mobilization choices change the shared security and former-host ledgers; the frontier outcome also exposes DM-22, which spends the major security package and materializes understrength formations from the audited opening-force template. The implementation evidence is `subagent_handoffs/006_evolution_incident_resolution_core_2026_08_01.md` plus the current DM-22 gate repair.
 
 The current scoped tag boundary is the 102 Event 006 reservation tags plus the 34 Soviet Collapse carriers. `docs/plans/006_independence_wave_plans/subagent_handoffs/006_next_event6_soviet_tag_admission_matrix_2026_07_29.md` is the current package-admission matrix for the Soviet/Volga tranche. CBB, CBD, Fallout, and Random Events are outside this audit boundary; the accepted Random Events exclusion means `REV`, `ZIN`, and `ZZZ` remain unchanged. The exact-surface installed-mod rescan found no external direct-definition, alias/cosmetic, English country-localisation, history-filename, or flag-filename collision for the scoped set.
 
@@ -383,8 +383,9 @@ and player-owned observation are optional future QA.
   and distinct standard versus major focus rewards.
 - Evolution incident resolution core in `9231c15f5`: five paid, generation-scoped
   decisions, two-option events `.360` through `.364`, shared ledger effects,
-  and generation/origin cleanup. Do not repeat this tranche. The Armed Birth
-  force-materialization adapter remains a separate package follow-through.
+   and generation/origin cleanup. Do not repeat this tranche. The frontier
+   reserve materialization is handled through the existing paid DM-22 decision
+   and remains separate from the one-shot opening-force transaction.
 
 ## Immediate continuation order
 
@@ -424,10 +425,10 @@ and player-owned observation are optional future QA.
    or formable IDs.
 8. Run the relevant country-package, decision/mission, localisation, and Event
    006 completion audits before any overall completion claim.
-9. Connect the Armed Birth civilian-command and frontier-mobilization outcomes
-   to the package force-materialization adapter only after command-roster and
-   reinforcement-pathway proof is complete. Keep the five incident families
-   source-closed while this package-owned follow-through remains open.
+9. Preserve the Armed Birth civilian-command and frontier-mobilization split.
+   The frontier outcome must continue to expose only the paid DM-22 reserve
+   decision, while the audited one-shot opening-force transaction remains
+   unchanged.
 
 ## Hard blockers and missing completion evidence
 
@@ -454,9 +455,9 @@ and player-owned observation are optional future QA.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
   complete required HAW/FSM member set because FSM remains unadmitted.
-- The five evolution incident families are no longer an implementation blocker.
-  The Armed Birth choice still needs the package force-materialization adapter
-  to consume its security posture before opening forces are created.
+- The five evolution incident families and their paid frontier-reserve
+  follow-through are no longer an implementation blocker. Package-specific
+  admission, focus, asset, and balance work still remains.
 - The current v33 completion authority and bounded post-v33 handoffs retain
   **HOLD / PARTIAL** for whole-event completion; no overall completion claim is
   authorized.
