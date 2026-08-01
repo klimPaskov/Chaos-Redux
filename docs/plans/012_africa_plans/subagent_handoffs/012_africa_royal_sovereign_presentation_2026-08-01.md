@@ -11,6 +11,7 @@ This tranche gives the sixteen existing priority-member sovereigns a shared visi
 - `common/scripted_effects/012_africa_priority_member_character_effects.txt` applies the trait once after each of the three explicit political settlement routes installs the named sovereign.
 - `localisation/english/012_africa_priority_member_characters_l_english.yml` adds the player-facing trait name and description.
 - `localisation/english/012_africa_priority_member_l_english.yml` replaces the priority package's visible council language with crown, court, and civic-institution wording while retaining technical route keys.
+- `localisation/english/012_africa_priority_member_focus_l_english.yml` carries the same crown-and-court vocabulary through the priority focus overlay and settlement ideas.
 - `localisation/english/012_african_union_l_english.yml` replaces the principal Charter Court display strings, while `localisation/english/012_africa_charter_gui_l_english.yml` changes the constitution card to Court of Crowns; technical keys remain stable.
 
 ## Runtime contract
