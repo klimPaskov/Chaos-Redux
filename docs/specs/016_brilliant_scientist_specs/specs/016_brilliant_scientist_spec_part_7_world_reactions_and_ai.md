@@ -503,6 +503,10 @@ Possible links:
 - Teleportation can divert fragments.
 - Failure can damage a laboratory or create a strange specimen.
 
+The bounded implementation keeps Event 028's prediction, damage, state-building, and news outcomes intact. When the affected country is the active Kruger host, its final asteroid outcome records `brilliant_scientist_asteroid_impact_recorded` and the fixed character receipt once, moving the existing Directorate meters toward exposure, dependence, grievance, and reduced capacity. This does not recover exotic material, advance a project, create a unit, or add an Event Log row.
+
+Event 023's nuclear-milestone option records a delivery-architecture receipt only when SOV is the active host, and Event 027's four doctrine options record one external military-research receipt for an active host. Both bridges leave their source event's technology or doctrine choice unchanged and use fixed-character duplicate guards so transfer and Kruger State formation cannot replay the consequence.
+
 ### Event 30: Time Traveler
 
 Possible links:
