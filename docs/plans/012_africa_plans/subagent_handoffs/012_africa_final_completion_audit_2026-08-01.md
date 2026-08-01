@@ -124,7 +124,7 @@ Rows 30, 32, 33, and 38 need exact accepted owner outcomes before their recorder
 
 Row 37 must remain fail-closed until a real civilian-damage owner exists; creating a proxy from action use or war start would be a forbidden simplification.
 
-This auditor did not implement that patch because gameplay edits are outside the read-only event-completion-auditor role and the exact owner outcome for each remaining row must be approved rather than inferred.
+This auditor did not implement that patch because gameplay edits are outside the read-only event-completion-auditor role and the exact owner outcome for each remaining row must be approved rather than inferred. A later bounded source correction now guards `africa_achievement_record_disease_outbreak_contained` behind a positive active-outbreak ledger value; a research-site cleanup cannot manufacture a containment receipt. The correction is recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_disease_containment_owner_correction_2026-08-01.md`. The older definition-only census below remains historical evidence and does not override the literal source callsites already present for development, diaspora-owned, disease-containment, reserve, socialised-resource, or weather recorders.
 
 ## 7. Meaningful validation evidence and missing validation
 
