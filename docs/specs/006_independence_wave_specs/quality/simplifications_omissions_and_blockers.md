@@ -10,20 +10,20 @@ The controlling 2026-07-29 acceptance decision uses source and static evidence f
 
 The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The approved automatic ladder remains 6/8/10/14/20, with the 14- and 20-country targets fail-closed below admitted package and reservation capacity.
 
-This closure is not a country-package completion claim. The current twelve-package static attestation set, 55 unbound selectable rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `6001` rights blocker remain open. The three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
+This closure is not a country-package completion claim. The current thirteen-package static attestation set, 55 unbound selectable rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `6001` rights blocker remain open. The three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
 
-The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, fifty-nine decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
+The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, eighty decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
 ## Current implementation reconciliation (2026-07-25)
 
 The accepted specification includes the later sourced-portrait decision.
 This section is the current implementation ledger rather than a rewrite of the planning baseline.
-IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, and IW-184 California are the twelve statically content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
+IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California are the thirteen statically content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
 Every other formerly admitted grounded package whose live country leader, route leader, commander, or institutional portrait uses generated art remains withdrawn until sourced real male replacements pass review.
-FORM-48 remains implemented without an annexation fallback, but HAW/FSM package withdrawal prevents a complete currently admitted carrier/member set.
-IW-184 `HBX` is admitted after the full post-wire package audit for William D. Stephens, while IW-173 `HAW` remains withdrawn because its vanilla David Kalakaua Kawananakoa sprite resolves to generic `Portrait_Asia_Generic_land_5.dds`, not a sourced portrait of the real man.
-The source-locked HAW trial built from his correct 1925 archival photograph passed the HOI4 style gate but failed independent likeness review because clipped source highlights forced the repaint to reconstruct identity-bearing facial geometry.
-It remains unwired and supplies no DDS.
+FORM-48 remains implemented without an annexation fallback, but the unadmitted FSM package prevents a complete currently admitted carrier/member set.
+IW-184 `HBX` is admitted after the full post-wire package audit for William D. Stephens, and IW-173 `HAW` is admitted after its package audit with Samuel Wilder King as an additive, non-ruling civilian-large territorial delegate while vanilla David Kalakaua Kawananakoa remains preserved as the ruling roster entry.
+The earlier source-locked HAW trial built from the correct 1925 archival photograph remains historical evidence only after it failed independent likeness review; the accepted King portrait has its own source, crop, HOI4 repaint, and post-wire audit chain.
+
 
 The current scoped tag audit covers the 102 Event 006 reservation tags plus the
 34 Soviet Collapse carriers. It excludes the Random Events Mod by accepted scope,
