@@ -47,6 +47,7 @@ No 3D model surface was added or expected for this audit.
 ## Missing or stale country-package surfaces
 
 - The matrix-required animated RTX portrait package is missing; only `gfx/leaders/020_black_plague/portrait_rat_king_static.dds` is wired.
+- Natural Evolution III currently transfers one selected state to RTA rather than establishing the matrix's one-to-three connected-state basin; subsequent Rat Nation growth is unit-only because `black_plague_rat_try_absorb_adjacent_brood` is intentionally a no-op.
 - The matrix-required route-specific or staged `Fractured Instinct` national spirit is missing from `common/ideas/020_black_plague_rat_ideas.txt`.
 - The matrix's captured-knowledge progression and explicit nest-industry progression are not represented as country technologies or buildings.
 - The current RTX leader text `The Rat King` is an institutional title and does not satisfy the stronger actual-like fictional sovereign name-and-epithet requirement.
