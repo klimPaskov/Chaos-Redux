@@ -93,7 +93,11 @@ The remaining absent owners listed above are intentional blockers and must not b
 
 The parent should review the annexation and external-puppet callbacks against the final Event 012 actor-registration lifecycle before integrating the tranche.
 
-## Second-tranche exact owner audit (2026-07-30)
+## Second-tranche exact owner audit (2026-07-30) — superseded on 2026-08-01
+
+This historical audit is retained for provenance, but its hostile-disaster classification for the civilian-weaponisation disqualifier is no longer an accepted Event 012 owner.
+The current Event 013 result exposes an accepted selected-country call, not a civilian-casualty witness.
+The authoritative disposition is recorded in `012_africa_b3_achievement_owner_closure_2026-08-01.md` and `012_africa_final_completion_audit_2026-08-01.md`: the civilian-disaster helper remains dormant until an exact civilian-damage API or terminal owner is approved.
 
 This tranche re-audited the remaining non-model, non-world rows against the current action, focus, event, natural-disaster, annexation, capitulation, peace-conference, and state-control surfaces.
 
@@ -101,9 +105,10 @@ This tranche re-audited the remaining non-model, non-world rows against the curr
 
 | Helper or owner | Scope and inputs | Outputs and side effects | Exact callsite |
 |---|---|---|---|
-| `africa_achievement_record_disaster_weaponised_against_civilians` | Event 012 host scope after `call_natural_disaster` returns the accepted result; the enclosing caller has already required a selected country at war with the host, an eligible hostile actor, and the reserved action cost. | Sets the existing sticky `africa_achievement_disaster_weaponised_against_civilians` DQ and resets the ecological-stability retention clock. | Accepted branch of `africa_call_hostile_natural_disaster_from_action` in `common/scripted_effects/012_africa_action_effects.txt`; helper body in `common/scripted_effects/012_africa_achievement_effects.txt`. |
+| `africa_achievement_record_disaster_weaponised_against_civilians` | Reserved Event 012 host helper retained for a future exact civilian-damage or terminal owner. The current selected-country hostile wrapper does not provide that witness. | Would set the existing sticky `africa_achievement_disaster_weaponised_against_civilians` DQ and reset the ecological-stability retention clock once an approved owner supplies the civilian-damage proof. | No current callsite. The dormant helper body remains in `common/scripted_effects/012_africa_achievement_effects.txt`; the accepted hostile wrapper in `common/scripted_effects/012_africa_action_effects.txt` deliberately does not call it. |
 
-The accepted result is the narrowest available final witness for Row 37's disaster-weaponisation clause; rejected calls, generic ecological wrath, Event 013 aftermath flags, and random backfire are not treated as equivalent.
+The original proposal treated an accepted hostile selected-country call as the narrowest witness for Row 37's disaster-weaponisation clause.
+That proposal is superseded: accepted calls, impact scales, generic ecological wrath, Event 013 aftermath flags, and random backfire are not treated as civilian-damage proof.
 
 ### Constants and tuning table plan
 
@@ -119,19 +124,20 @@ The helper writes one lifetime global DQ and invalidates the existing ecological
 
 ### Migration plan
 
-Existing hostile disaster callers should continue to route through `africa_call_hostile_natural_disaster_from_action`, so the accepted-result branch remains the single owner for this DQ.
+Existing hostile disaster callers should continue to route through `africa_call_hostile_natural_disaster_from_action`.
+Its accepted-result branch owns target classification, weather campaign receipts, and backfire handling; it must not call the civilian-disaster helper until Event 013 exposes an exact civilian-damage witness or another approved terminal owner is wired.
 
 No migration was possible for the other audited rows because their exact terminal owners are not exposed by the current action, focus, event, state-control, capitulation, or peace-conference callbacks.
 
 ### Remaining exact-owner dispositions
 
-Rows 4–17, 25–31, 34, and 39 remain unchanged except for Row 37's accepted hostile-disaster owner above: no exact writers were found for partition acceptance, archive destruction or suppression, protected-clause cancellation, exit war or coup, coerced return, rival terminal coercion, post-proof region loss, military takeover, republic suspension or centralisation, court deposition, monarchy abolition, takeover, concession cap, famine, permanent emergency rule, genocide, federal annexation, diaspora negligence, returnee discrimination, military-labor-only programming, representation denial, catastrophic return loss, government capture, corruption, connected-region loss, raw-export dependency, forced resource seizure, preventable famine, maximum ecological wrath against civilians, African-core cession, unreversed capitulation, forest rampage, or disease severity outcomes.
+Rows 4–17, 25–31, 34, and 39 remain unchanged; Row 37 has no accepted hostile-disaster owner: no exact writers were found for partition acceptance, archive destruction or suppression, protected-clause cancellation, exit war or coup, coerced return, rival terminal coercion, post-proof region loss, military takeover, republic suspension or centralisation, court deposition, monarchy abolition, takeover, concession cap, famine, permanent emergency rule, genocide, federal annexation, diaspora negligence, returnee discrimination, military-labor-only programming, representation denial, catastrophic return loss, government capture, corruption, connected-region loss, raw-export dependency, forced resource seizure, preventable famine, maximum ecological wrath against civilians, African-core cession, unreversed capitulation, forest rampage, or disease severity outcomes.
 
 The existing congress-agenda completion simplification remains documented and was not broadened in this tranche.
 
 ### Risks, unsupported fields, and validation
 
-The accepted Event 013 result does not expose a separate civilian-casualty field to Event 012, so the helper is intentionally gated on the Event 012 hostile-actor call contract rather than inferred from Event 013 aftermath or wrath values.
+The accepted Event 013 result does not expose a separate civilian-casualty field to Event 012, so the helper remains dormant rather than being inferred from Event 013 aftermath, impact scales, or wrath values.
 
 The state-control callback still lacks a safe region-to-state proof mapping for Row 10 or Row 29 cleanup, and the capitulation callback lacks a later exact reversal witness for Row 34; neither was approximated.
 
