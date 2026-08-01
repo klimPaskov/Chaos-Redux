@@ -767,6 +767,20 @@ africa_achievement_record_action_outcome = {
 	}
 	if = {
 		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.charter_development_fund }
+		}
+		africa_achievement_record_project_exploitation_scandal = yes
+	}
+	if = {
+		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+			check_variable = { africa_active_action_id = constant:africa_action.charter_development_fund }
+		}
+		event_target:africa_host = { africa_achievement_record_development_owner_ready = yes }
+	}
+	if = {
+		limit = {
 			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
 			check_variable = { africa_active_action_id = constant:africa_action.resource_sovereignty_review }
 		}
@@ -2030,6 +2044,7 @@ africa_achievement_refresh_survival_windows = {
 	# Balanced development across all regions.
 	if = {
 		limit = {
+			has_global_flag = africa_achievement_development_owner_ready
 			check_variable = { var = global.africa_achievement_development_project_count value = constant:africa_achievement_count.development_projects compare = greater_than_or_equals }
 			check_variable = { var = global.africa_achievement_developed_regions^num value = constant:africa_achievement_count.continental_regions compare = greater_than_or_equals }
 			check_variable = { var = africa_integration_burden value = constant:africa_measure.high compare = less_than }
@@ -2558,6 +2573,20 @@ africa_achievement_record_foreign_concession_breach = {
 # no generic failure or startup state is used as a proxy.
 africa_achievement_record_raw_export_dependency_crisis = {
 	set_global_flag = africa_achievement_raw_export_dependency_crisis
+}
+
+# HOST scope after a full Charter Development Fund result. The action's
+# transparent fund institution is the positive development owner, while its
+# failure path owns the sticky exploitation-scandal disqualifier.
+africa_achievement_record_development_owner_ready = {
+	set_global_flag = africa_achievement_development_owner_ready
+	africa_achievement_refresh_survival_windows = yes
+}
+
+# COUNTRY scope after a failed Charter Development Fund result.
+africa_achievement_record_project_exploitation_scandal = {
+	set_global_flag = africa_achievement_project_exploitation_scandal
+	africa_achievement_refresh_survival_windows = yes
 }
 
 africa_achievement_record_ecological_bargain_broken = {
