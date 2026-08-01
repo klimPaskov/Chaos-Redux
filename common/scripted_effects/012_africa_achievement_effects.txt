@@ -226,6 +226,27 @@ africa_achievement_record_milestone = {
 	africa_achievement_refresh_host_duration_windows = yes
 }
 
+# COUNTRY scope on a priority member after the bounded rival-bloc victory
+# transaction. The member's refusal and player-origin flags are required before
+# the host receives the recognised-confederation milestone; a relationship or
+# cosmetic snapshot alone is never sufficient.
+africa_achievement_record_recognised_rival_confederation = {
+	if = {
+		limit = {
+			has_country_flag = africa_priority_member_player_origin_validated
+			has_country_flag = africa_priority_member_league_offer_refused
+			has_country_flag = africa_priority_member_rival_bloc_victory
+			africa_relationship_is_rival_bloc = yes
+			has_event_target = africa_host
+		}
+		event_target:africa_host = {
+			set_global_flag = africa_achievement_member_refusal_owner_ready
+			set_temp_variable = { africa_achievement_milestone_id = constant:africa_achievement_milestone.priority_member_alternative_recognised }
+			africa_achievement_record_milestone = yes
+		}
+	}
+}
+
 # COUNTRY scope on the host after both priority-member corridor settlements
 # are live. Aksum's heritage consent and Harar's diversified guarantees are
 # the two existing owner outcomes; this helper only joins those outcomes and
@@ -2188,6 +2209,26 @@ africa_achievement_record_diaspora_owned_project = {
 	}
 }
 
+# HOST scope after the diaspora owner system has committed a full investment
+# bond. The source variable is written by the diaspora ledger in the same
+# transaction, so this is a measured share rather than the ledger's startup
+# floor. The owner-ready marker only proves that a real writer exists; the
+# achievement still requires the project count and its disqualifier checks.
+africa_achievement_record_measured_local_project_ownership = {
+	if = {
+		limit = { has_variable = africa_diaspora_local_ownership_share }
+		set_variable = { global.africa_achievement_local_ownership_share = africa_diaspora_local_ownership_share }
+		set_global_flag = africa_achievement_local_ownership_owner_ready
+	}
+}
+
+# HOST scope when the diaspora target's local-ownership contract fails. This
+# is sticky for the achievement lifetime and prevents a later favourable
+# snapshot from erasing an actual owner loss.
+africa_achievement_record_local_ownership_loss = {
+	set_global_flag = africa_achievement_local_ownership_lost
+}
+
 # Any scope after a unique development project is fully delivered.
 africa_achievement_record_development_project = {
 	add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
@@ -2211,6 +2252,13 @@ africa_achievement_record_weather_army_defeated = {
 		set_country_flag = africa_achievement_weather_army_counted
 		add_to_variable = { global.africa_achievement_weather_armies_defeated = constant:africa_value.one }
 	}
+}
+
+# HOST scope when the accepted hostile call backfires or the wrapper rejects
+# it after charging the reserved cost. The flag is sticky and is separate from
+# the civilian-target disqualifier used by the ecological achievement.
+africa_achievement_record_weather_campaign_backfire = {
+	set_global_flag = africa_achievement_weather_campaign_backfire
 }
 
 africa_achievement_record_disease_outbreak = {
