@@ -22,6 +22,8 @@ Event 054's generic science gift now has a one-time Kruger-host consequence. The
 
 Three existing world incidents now feed bounded host context. Event 032's missile sites record a one-time rocketry-infrastructure lead, Event 044's space-race commitment records a one-time public rocketry posture, and Event 049's first mass-panic report records a one-time public-risk shock. Each uses a fixed-character duplicate guard, carries its country receipt through transfer or sovereignty formation, adjusts the existing Directorate meters, and leaves the source event's technology, idea, stability, and construction outcomes unchanged.
 
+Three additional mapped incidents now record bounded external pressure. Event 023's Soviet nuclear milestone records delivery-architecture pressure only when the Soviet country is the active host, Event 027's doctrine choice records an external military-research posture for an active host, and Event 028's asteroid outcome records a one-time exposure and capacity shock for the affected active host. Their ordinary technologies, doctrines, damage, prediction, news, and construction outcomes remain owned by their source events; none adds a project stage, free unit, evolution, event-log row, or model dependency.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.
