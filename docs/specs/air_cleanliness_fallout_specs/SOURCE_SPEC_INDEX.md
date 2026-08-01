@@ -138,6 +138,7 @@
 - `specs/70_reviewed_archetype_the_hungry_battalion.md`
 - `specs/71_reviewed_archetype_first_red_line.md`
 - `specs/75_reviewed_archetype_returning_disease.md`
+- `specs/76_reviewed_archetype_clean_certificate.md`
 
 ## Matrices
 
