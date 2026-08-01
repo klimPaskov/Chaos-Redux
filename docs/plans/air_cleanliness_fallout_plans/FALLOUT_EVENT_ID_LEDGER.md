@@ -1064,3 +1064,17 @@ The chain carries Publish One Open Standard, Protect a Proprietary Standard, Bin
 The asset evidence is `docs/assets/852_first_regional_standard/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_first_regional_standard`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-852` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FIRST_REGIONAL_STANDARD_CHAIN_PROOF.md`.
+
+## The Repair Charter tranche
+
+The Repair Charter adds dormant suffixes `859` through `865` with candidate id `859`, transaction key `710094`, route `7220`, and history `9200`.
+
+The human opening is `859`, the hidden AI opening is `860`, the human and hidden AI delayed results are `861` and `862`, the human and hidden AI charter audits are `863` and `864`, and cleanup is `865`.
+
+The row requires a current East Asian Technate or Continuity Government carrying a closed First Regional Standard state memory and one of its branch or failure memories, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable open crew access, licensed repair pressure, Medicine, Scrap, Cohesion, and Recognition. It selects the lowest eligible native state and freezes the state, owner, controller, neighbor, generation, Air Winter values, Supply Access, and repair ledgers.
+
+The chain carries Issue an Open Repair Charter, Commission Licensed Repair Houses, Bind Crews to a Council Charter, and Reserve the Charter for Perimeter Corps branches with distinct survival costs, deterministic result and audit grading, a 77-day result, a 450-day charter audit, bounded Deaths effects, Air Winter and Supply Access effects, repair, route, recognition, and bilateral memories, Event Log history `9200`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/859_repair_charter/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_repair_charter`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-859` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_REPAIR_CHARTER_CHAIN_PROOF.md`.
