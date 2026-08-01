@@ -91,7 +91,7 @@ Event 20 uses an event-owned seven-day scheduler rather than adding a world-iter
 
 The authoritative event catalog workbook records Event 20 under cluster 8 (Diseases), Severe member severity, the `The Kingdom of Teeth` terminal scenario row, and SCN-012's RTA/RTX intensity contract. The three catalog CSVs are export-only snapshots regenerated from that workbook.
 
-SCN-012 rebuilds its internal-brood count from the reusable RTA carrier and surviving state markers before attempting any intensity top-up. A repeat launch therefore preserves the minimum brood postcondition even when no unoccupied candidate state remains.
+SCN-012 rebuilds its internal-brood count from the reusable RTA carrier and surviving state markers before attempting any intensity top-up. A repeat launch therefore preserves the minimum brood postcondition even when no unoccupied candidate state remains. The public repeat signal is reconciliation-only: it refreshes runtime counts, air cleanliness, shared threat, mapmode, and the disease board without reseeding, resetting intensity, replaying Evolutions I-IV, or firing a duplicate launch report or coronation.
 
 Primary implementation surfaces include:
 

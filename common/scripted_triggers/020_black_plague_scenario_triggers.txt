@@ -11,7 +11,16 @@ black_plague_scenario_rat_country_package_is_ready = {
 }
 
 black_plague_scenario_rat_king_package_is_ready = {
-	RTX = { exists = yes }
+	RTX = {
+		exists = yes
+		OR = {
+			has_country_flag = black_plague_rat_king_country
+			AND = {
+				NOT = { has_country_flag = black_plague_rat_country }
+				NOT = { num_of_controlled_states > constant:black_plague_value.zero }
+			}
+		}
+	}
 }
 
 black_plague_scenario_commit_provider_is_ready = {
@@ -192,7 +201,13 @@ black_plague_scenario_is_terminally_closed = {
 	}
 }
 
-black_plague_scenario_can_launch_from_triggerable_scenarios = {
+black_plague_scenario_can_reconcile_from_triggerable_scenarios = {
+	has_global_flag = black_plague_triggerable_scenario_launched
+	NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+	NOT = { black_plague_scenario_is_terminally_closed = yes }
+}
+
+black_plague_scenario_can_start_from_triggerable_scenarios = {
 	NOT = { black_plague_scenario_is_terminally_closed = yes }
 	NOT = { has_global_flag = black_plague_triggerable_scenario_launched }
 	NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
@@ -205,4 +220,11 @@ black_plague_scenario_can_launch_from_triggerable_scenarios = {
 		black_plague_scenario_has_existing_crisis = yes
 	}
 	black_plague_scenario_has_usable_rat_slot = yes
+}
+
+black_plague_scenario_can_launch_from_triggerable_scenarios = {
+	OR = {
+		black_plague_scenario_can_reconcile_from_triggerable_scenarios = yes
+		black_plague_scenario_can_start_from_triggerable_scenarios = yes
+	}
 }
