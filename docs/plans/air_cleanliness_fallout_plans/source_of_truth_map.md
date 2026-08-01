@@ -284,3 +284,15 @@ Successor package production, player materialization, general allocation, countr
 | The Machine Suggests localisation and Event Log | `localisation/english/fallout_world_end_machine_suggests_l_english.yml`, `common/scripted_localisation/fallout_world_end_machine_suggests_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Machine Suggests art and workbook | `docs/assets/845_machine_suggests/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/machine_suggests/report_event_fallout_machine_suggests.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-845` |
 | The Machine Suggests status boundary | dormant source package with four machine-authority branches, hidden-AI parity, 63-day result, 390-day protocol review, bounded Deaths effects, machine protocol memories, Event Log history `9198`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The First Regional Standard source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The First Regional Standard design | `docs/specs/air_cleanliness_fallout_specs/specs/95_reviewed_archetype_first_regional_standard.md` |
+| The First Regional Standard runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_FIRST_REGIONAL_STANDARD_CHAIN_PROOF.md` |
+| The First Regional Standard gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_first_regional_standard_event_triggers.txt`, `common/scripted_effects/fallout_world_end_first_regional_standard_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_first_regional_standard_dynamic_modifiers.txt` |
+| The First Regional Standard constants and registry | `common/script_constants/fallout_world_end_first_regional_standard_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The First Regional Standard localisation and Event Log | `localisation/english/fallout_world_end_first_regional_standard_l_english.yml`, `common/scripted_localisation/fallout_world_end_first_regional_standard_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The First Regional Standard art and workbook | `docs/assets/852_first_regional_standard/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/first_regional_standard/report_event_fallout_first_regional_standard.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-852` |
+| The First Regional Standard status boundary | dormant source package with four standards branches, hidden AI parity, 70-day result, 420-day compatibility review, bounded Deaths effects, standards memories, Event Log history `9199`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
