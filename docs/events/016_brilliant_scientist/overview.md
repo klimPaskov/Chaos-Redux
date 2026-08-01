@@ -20,6 +20,8 @@ Event 089's existing technology-sharing invitation now records a Kruger host's p
 
 Event 054's generic science gift now has a one-time Kruger-host consequence. The active host records `brilliant_scientist_assistant_breakthrough_recorded` and the fixed Kruger character records the same receipt across transfer or sovereignty formation; the existing Directorate meters move toward independent research. The random technology grant remains the only technology effect, and this bridge creates no project stage, Event Log row, evolution, asset, or model.
 
+Three existing world incidents now feed bounded host context. Event 032's missile sites record a one-time rocketry-infrastructure lead, Event 044's space-race commitment records a one-time public rocketry posture, and Event 049's first mass-panic report records a one-time public-risk shock. Each uses a fixed-character duplicate guard, carries its country receipt through transfer or sovereignty formation, adjusts the existing Directorate meters, and leaves the source event's technology, idea, stability, and construction outcomes unchanged.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.
