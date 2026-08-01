@@ -16,6 +16,8 @@ When the policy is enabled, a living former host must not already have `independ
 
 When the policy is absent, `independence_wave_scenario_start_all_host_wars` retains the accepted Wars of Separation behavior: every release with a viable former host may open its own separation war, including releases sharing one host.
 
+The Wars of Separation caller explicitly clears the bounded policy before invoking that shared helper, so an interrupted or stale Universal launch cannot change the ordinary type's behavior on a later application.
+
 ## Acceptance witnesses
 
 - `UFH-01`: IW-008 RHI and IW-010 AJX may share the accepted RG-RHINE-SAAR former host. Universal Former Hosts reserves Germany once; the first eligible actor in frozen order opens the war and the later actor receives the regional-threat result.
