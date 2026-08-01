@@ -1,6 +1,8 @@
 # Fallout Living-World Scheduler Proof
 
-## Current reconciliation after The Envoy at the Gate
+## Current reconciliation after The Captain's Articles
+
+The dormant reviewed producer now covers `81` ordinary Fallout rows and `649` defined event blocks through `chaosx.fallout.774`. The Captain's Articles is the latest ordinary row with candidate `768`, transaction `710081`, route `7194`, and survivor history `9187`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a foreign neighbor, durable Air Winter and survival ledgers, port-law ledgers, and an affordable branch. Its `42` day result and `300` day port-law review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
 
 The dormant reviewed producer now covers `80` ordinary Fallout rows and `642` defined event blocks through `chaosx.fallout.767`. The Envoy at the Gate is the latest ordinary row with candidate `761`, transaction `710080`, route `7192`, and survivor history `9186`. It is admitted only from a current-generation Congo Green Basin mutant polity with a deterministic state target that has a foreign neighbor, durable Air Winter and survival ledgers, and an affordable branch. Its `42` day result and `300` day bilateral review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
 

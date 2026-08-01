@@ -20646,3 +20646,105 @@ country_event = {
 	trigger = { fallout_event_761_cleanup_can_enter = yes }
 	immediate = { fallout_event_761_cleanup = yes }
 }
+
+# Dormant Fallout maritime chain: The Captain's Articles
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.768
+	title = chaosx.fallout.768.t
+	desc = chaosx.fallout.768.opening.d
+	picture = GFX_report_event_fallout_captains_articles
+	is_triggered_only = yes
+	trigger = { fallout_event_768_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.768.a
+		trigger = { fallout_event_768_rescue_articles_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_768_requested_branch = constant:fallout_event_768_branch.rescue_articles } fallout_event_768_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.768.a.tt
+	}
+	option = {
+		name = chaosx.fallout.768.b
+		trigger = { fallout_event_768_prize_court_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_768_requested_branch = constant:fallout_event_768_branch.prize_court } fallout_event_768_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.768.b.tt
+	}
+	option = {
+		name = chaosx.fallout.768.c
+		trigger = { fallout_event_768_harbor_muster_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_768_requested_branch = constant:fallout_event_768_branch.harbor_muster } fallout_event_768_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.768.c.tt
+	}
+	option = {
+		name = chaosx.fallout.768.d
+		trigger = { fallout_event_768_fleet_split_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_768_requested_branch = constant:fallout_event_768_branch.fleet_split } fallout_event_768_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.768.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.769
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_768_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_768_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.770
+	title = chaosx.fallout.770.t
+	desc = { text = chaosx.fallout.770.rescue_articles.success.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.rescue_articles compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.770.rescue_articles.partial.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.rescue_articles compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.770.rescue_articles.failure.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.rescue_articles compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.770.prize_court.success.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.prize_court compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.770.prize_court.partial.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.prize_court compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.770.prize_court.failure.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.prize_court compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.770.harbor_muster.success.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.harbor_muster compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.770.harbor_muster.partial.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.harbor_muster compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.770.harbor_muster.failure.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.harbor_muster compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.770.fleet_split.success.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.fleet_split compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.770.fleet_split.partial.d trigger = { check_variable = { fallout_event_768_selected_branch value = constant:fallout_event_768_branch.fleet_split compare = equals } check_variable = { fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.770.fleet_split.failure.d
+	picture = GFX_report_event_fallout_captains_articles
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_768_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.770.a hidden_effect = { fallout_event_768_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.770.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.771
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_768_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_768_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.772
+	title = chaosx.fallout.772.t
+	desc = { text = chaosx.fallout.772.success.d trigger = { check_variable = { fallout_event_768_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.772.partial.d trigger = { check_variable = { fallout_event_768_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.772.failure.d
+	picture = GFX_report_event_fallout_captains_articles
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_768_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_768_registry_is_current = yes }
+	immediate = { fallout_event_768_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.772.a hidden_effect = { fallout_event_768_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.772.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.773
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_768_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_768_registry_is_current = yes }
+	immediate = { fallout_event_768_calculate_callback_outcome = yes fallout_event_768_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.774
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_768_cleanup_can_enter = yes }
+	immediate = { fallout_event_768_cleanup = yes }
+}

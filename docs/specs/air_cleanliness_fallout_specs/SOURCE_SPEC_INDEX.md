@@ -52,6 +52,7 @@
 48. `specs/80_reviewed_archetype_health_without_borders.md`
 49. `specs/81_reviewed_archetype_regional_health_compact.md`
 50. `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
+51. `specs/83_reviewed_archetype_the_captains_articles.md`
 
 
 ## Accepted baseline specs included here
