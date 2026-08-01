@@ -92,8 +92,8 @@ Primary implementation surfaces include:
 
 ## Core-readiness boundary
 
-The scripted core is source-complete for the current gameplay tranche. Static audits resolve the Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths covered by that tranche. The fourteen ordinary-progression achievements now have public registry entries, completion triggers, and localisation; final icon triplets remain an asset handoff.
+The scripted core is source-complete for the current gameplay tranche. Static audits resolve the Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths covered by that tranche. The fourteen ordinary-progression achievements now have public registry entries, completion triggers, localisation, and completed, grey, and not-eligible icon triplets.
 
-Remaining accepted full-design work is intentionally separate: deeper country routes and crises, broader route-specific focus strategy plans, final achievement icon triplets, source-frame UI animation packages, a unique Doctor Wu report image, a dedicated weapon-delivery and Royal Node icon set, and the unimplemented event-map surfaces explicitly marked superseded by the two-tag correction. Bespoke rat 3D units and animations are outside this goal by instruction and are not load-time prerequisites for the Event 20 gameplay systems.
+Remaining accepted full-design work is intentionally separate: deeper country routes and crises, source-frame UI animation packages, a unique Doctor Wu report image, a dedicated weapon-delivery and Royal Node icon set, and the unimplemented event-map surfaces explicitly marked superseded by the two-tag correction. Bespoke rat 3D units and animations are outside this goal by instruction and are not load-time prerequisites for the Event 20 gameplay systems.
 
 The full audit and deferral record is `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`.
