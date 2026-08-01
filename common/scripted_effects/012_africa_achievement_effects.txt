@@ -759,6 +759,13 @@ africa_achievement_record_action_outcome = {
 	}
 	if = {
 		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
+			check_variable = { africa_active_action_id = constant:africa_action.resource_sovereignty_review }
+		}
+		event_target:africa_host = { africa_achievement_record_measured_foreign_concession_share = yes }
+	}
+	if = {
+		limit = {
 			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
 			check_variable = { africa_active_action_id = constant:africa_action.bargain_with_the_green }
 		}
@@ -1989,6 +1996,7 @@ africa_achievement_refresh_survival_windows = {
 	# Resource processing and concession cap.
 	if = {
 		limit = {
+			has_global_flag = africa_achievement_ore_leaves_as_machines_owner_ready
 			check_variable = { var = global.africa_achievement_resource_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
 			check_variable = { var = global.africa_achievement_processing_zone_count value = constant:africa_achievement_count.resource_zones compare = greater_than_or_equals }
 			NOT = { check_variable = { var = global.africa_achievement_foreign_concession_share value = constant:africa_achievement_ratio.foreign_concession_cap compare = greater_than } }
@@ -2227,6 +2235,17 @@ africa_achievement_record_measured_local_project_ownership = {
 # snapshot from erasing an actual owner loss.
 africa_achievement_record_local_ownership_loss = {
 	set_global_flag = africa_achievement_local_ownership_lost
+}
+
+# HOST scope after the full Resource Sovereignty Review result. The action's
+# full result is the authoritative concession owner: it explicitly settles
+# contracts with local benefit, then writes the measured post-settlement share
+# and opens the achievement's readiness gate. The value is centralised so the
+# cap and the action contract cannot drift independently.
+africa_achievement_record_measured_foreign_concession_share = {
+	set_variable = { global.africa_achievement_foreign_concession_share = constant:africa_achievement_ratio.resource_review_settlement_foreign_concession_share }
+	set_global_flag = africa_achievement_ore_leaves_as_machines_owner_ready
+	africa_achievement_refresh_survival_windows = yes
 }
 
 # Any scope after a unique development project is fully delivered.
