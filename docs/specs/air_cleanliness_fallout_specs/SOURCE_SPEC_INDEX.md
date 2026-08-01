@@ -50,6 +50,7 @@
 46. `specs/74_reviewed_archetype_doctors_coup.md`
 47. `specs/79_reviewed_archetype_open_the_sealed_city.md`
 48. `specs/80_reviewed_archetype_health_without_borders.md`
+49. `specs/81_reviewed_archetype_regional_health_compact.md`
 
 
 ## Accepted baseline specs included here
@@ -145,6 +146,7 @@
 - `specs/78_reviewed_archetype_children_of_cordon.md`
 - `specs/79_reviewed_archetype_open_the_sealed_city.md`
 - `specs/80_reviewed_archetype_health_without_borders.md`
+- `specs/81_reviewed_archetype_regional_health_compact.md`
 
 ## Matrices
 

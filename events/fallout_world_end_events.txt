@@ -20442,3 +20442,105 @@ country_event = {
 	trigger = { fallout_event_747_cleanup_can_enter = yes }
 	immediate = { fallout_event_747_cleanup = yes }
 }
+
+# Dormant Fallout regional chain: Regional Health Compact
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.754
+	title = chaosx.fallout.754.t
+	desc = chaosx.fallout.754.opening.d
+	picture = GFX_report_event_fallout_regional_health_compact
+	is_triggered_only = yes
+	trigger = { fallout_event_754_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.754.a
+		trigger = { fallout_event_754_shared_register_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_754_requested_branch = constant:fallout_event_754_branch.shared_register } fallout_event_754_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.754.a.tt
+	}
+	option = {
+		name = chaosx.fallout.754.b
+		trigger = { fallout_event_754_clinic_exchange_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_754_requested_branch = constant:fallout_event_754_branch.clinic_exchange } fallout_event_754_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.754.b.tt
+	}
+	option = {
+		name = chaosx.fallout.754.c
+		trigger = { fallout_event_754_corridor_authority_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_754_requested_branch = constant:fallout_event_754_branch.corridor_authority } fallout_event_754_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.754.c.tt
+	}
+	option = {
+		name = chaosx.fallout.754.d
+		trigger = { fallout_event_754_border_quarantine_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_754_requested_branch = constant:fallout_event_754_branch.border_quarantine } fallout_event_754_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.754.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.755
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_754_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_754_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.756
+	title = chaosx.fallout.756.t
+	desc = { text = chaosx.fallout.756.shared_register.success.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.shared_register compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.756.shared_register.partial.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.shared_register compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.756.shared_register.failure.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.shared_register compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.756.clinic_exchange.success.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.clinic_exchange compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.756.clinic_exchange.partial.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.clinic_exchange compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.756.clinic_exchange.failure.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.clinic_exchange compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.756.corridor_authority.success.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.corridor_authority compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.756.corridor_authority.partial.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.corridor_authority compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.756.corridor_authority.failure.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.corridor_authority compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.756.border_quarantine.success.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.border_quarantine compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.756.border_quarantine.partial.d trigger = { check_variable = { fallout_event_754_selected_branch value = constant:fallout_event_754_branch.border_quarantine compare = equals } check_variable = { fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.756.border_quarantine.failure.d
+	picture = GFX_report_event_fallout_regional_health_compact
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_754_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.regional_health_compact_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.756.a hidden_effect = { fallout_event_754_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.756.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.757
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_754_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.regional_health_compact_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_754_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.758
+	title = chaosx.fallout.758.t
+	desc = { text = chaosx.fallout.758.success.d trigger = { check_variable = { fallout_event_754_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.758.partial.d trigger = { check_variable = { fallout_event_754_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.758.failure.d
+	picture = GFX_report_event_fallout_regional_health_compact
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_754_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.regional_health_compact_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_754_registry_is_current = yes }
+	immediate = { fallout_event_754_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.758.a hidden_effect = { fallout_event_754_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.758.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.759
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_754_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.regional_health_compact_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_754_registry_is_current = yes }
+	immediate = { fallout_event_754_calculate_callback_outcome = yes fallout_event_754_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.760
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_754_cleanup_can_enter = yes }
+	immediate = { fallout_event_754_cleanup = yes }
+}
