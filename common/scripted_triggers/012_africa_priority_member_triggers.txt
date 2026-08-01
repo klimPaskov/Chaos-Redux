@@ -414,6 +414,9 @@ africa_priority_member_can_register_package = {
 	has_event_target = africa_host
 	event_target:africa_host = { has_country_flag = africa_host_commit_completed }
 	NOT = { has_country_flag = africa_priority_member_package_active }
+	# A negotiated partial result must finish its recorded requalification
+	# problem before any low-level caller can register the full package.
+	NOT = { has_country_flag = africa_priority_promotion_requalification_pending }
 	# Event 006 origins keep their Event 006 receipts and additive decisions.
 	# Event 012 loads its Africa package on the same country tag only after the
 	# independent Action 102 promotion and local ratification gates succeed.
