@@ -160,6 +160,7 @@
 - `specs/91_reviewed_archetype_the_grid_vote.md`
 - `specs/92_reviewed_archetype_the_failed_calculation.md`
 - `specs/93_reviewed_archetype_laboratory_citizenship.md`
+- `specs/94_reviewed_archetype_the_machine_suggests.md`
 
 ## Matrices
 

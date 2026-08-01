@@ -5636,6 +5636,74 @@ fallout_event_build_pilot_candidate_registries = {
 			}
 			clear_variable = fallout_event_838_candidate_state_id
 
+			# The Machine Suggests follows a closed Laboratory Citizenship district.
+			# It selects the lowest native host so recommendation, sandbox, review,
+			# and advisory choices resolve against one authenticated protocol state.
+			if = {
+				limit = {
+					has_variable = fallout_government_archetype
+					check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.technate compare = equals }
+					has_variable = fallout_country_memory_id
+					check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.manchurian_reactor_keeps compare = equals }
+					check_variable = { fallout_region_id value = constant:fallout_region.east_asia compare = equals }
+					has_country_flag = fallout_event_366_memory_closed
+				}
+				fallout_event_845_initialize_ledgers = yes
+				set_variable = { fallout_event_845_candidate_state_id = constant:fallout_event_runtime.zero }
+				every_owned_state = {
+					set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+					if = {
+						limit = {
+							fallout_event_pilot_machine_suggests_state_is_current = yes
+							OR = {
+								check_variable = { ROOT.fallout_event_845_candidate_state_id = constant:fallout_event_runtime.zero }
+								check_variable = { var = fallout_event_pilot_state_candidate_id value = ROOT.fallout_event_845_candidate_state_id compare = less_than }
+							}
+						}
+						set_variable = { ROOT.fallout_event_845_candidate_state_id = fallout_event_pilot_state_candidate_id }
+					}
+				}
+				if = {
+					limit = { fallout_event_845_country_is_current = yes }
+					fallout_event_initialize_pilot_candidate_row = yes
+					set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.machine_suggests_candidate_id }
+					set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.machine_suggests_transaction_key }
+					set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.major_arc }
+					set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.government_archetype }
+					set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.archetype }
+					set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.machine_suggests_human }
+					set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.machine_suggests_ai }
+					set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+					set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.rival_orders }
+					set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.generation_change }
+					set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+					set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_845_transaction.visible_budget_cost }
+					set_temp_variable = { fallout_event_pilot_severity = fallout_machine_suggests_machine_risk_current }
+					set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.event_owned }
+					set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_machine_suggests_machine_civic_confidence }
+					set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.event_owned }
+					set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_current_entries^6 }
+					set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
+					set_temp_variable = { fallout_event_pilot_air_winter_phase = air_winter_phase }
+					set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_required_winter = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.power }
+					set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_event_845_threshold.minimum_country_power }
+					set_temp_variable = { fallout_event_pilot_required_route = constant:fallout_event_runtime.one }
+					set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+					set_temp_variable = { fallout_event_pilot_target = fallout_event_845_candidate_state_id }
+					set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.machine_suggests_route }
+					fallout_event_append_pilot_candidate_row = yes
+				}
+				clear_temp_variable = fallout_event_pilot_state_candidate_id
+				clear_variable = fallout_event_845_candidate_state_id
+			}
+			clear_variable = fallout_event_845_candidate_state_id
+
 			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }
 			set_country_flag = fallout_event_candidate_registry_reviewed
