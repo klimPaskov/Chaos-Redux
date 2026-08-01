@@ -1,0 +1,279 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 020 HUMAN LAST-RESPONSE EFFECTS
+# ============================================================================
+# Country-scoped starts, weekly progress, resolution, cancellation, and
+# terminal cleanup for the two human missions in the shared disease category.
+# These effects spend real stockpiles and pressure the Rat King without curing
+# a state or bypassing Evolution V's deterministic terminal rechecks.
+# ============================================================================
+
+# COUNTRY scope. Pays and activates the broad Hold the Line mission.
+black_plague_start_human_last_response_hold = {
+	if = {
+		limit = { black_plague_human_last_response_hold_can_start = yes }
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_last_response.hold_support_equipment }
+		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_last_response.hold_motorized_equipment }
+		remove_equipment_to_stockpile = { type = infantry_equipment amount = constant:black_plague_last_response.hold_infantry_equipment }
+		remove_equipment_to_stockpile = { type = train_equipment amount = constant:black_plague_last_response.hold_trains }
+		subtract_from_fuel = constant:black_plague_last_response.hold_fuel
+		add_manpower = constant:black_plague_last_response.hold_manpower_cost
+		add_command_power = constant:black_plague_last_response.hold_command_power_cost
+		add_stability = constant:black_plague_last_response.hold_stability_cost
+		add_war_support = constant:black_plague_last_response.hold_war_support_cost
+		set_country_flag = black_plague_human_last_response_hold_active
+		clr_country_flag = black_plague_human_last_response_hold_failed
+		clear_variable = black_plague_human_last_response_hold_progress
+		set_variable = { black_plague_human_last_response_hold_progress = constant:black_plague_value.zero }
+		black_plague_register_response_country = yes
+		black_plague_recompute_country_response_capacity = yes
+		if = {
+			limit = { NOT = { has_variable = disease_containment_board_dirty } }
+			set_variable = { disease_containment_board_dirty = constant:black_plague_value.zero }
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		activate_mission = black_plague_shared_last_response_hold_mission
+	}
+}
+
+# COUNTRY scope. Pays and activates the more expensive refuge mission.
+black_plague_start_human_last_response_refuge = {
+	if = {
+		limit = { black_plague_human_last_response_refuge_can_start = yes }
+		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_last_response.refuge_support_equipment }
+		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_last_response.refuge_motorized_equipment }
+		remove_equipment_to_stockpile = { type = infantry_equipment amount = constant:black_plague_last_response.refuge_infantry_equipment }
+		remove_equipment_to_stockpile = { type = train_equipment amount = constant:black_plague_last_response.refuge_trains }
+		subtract_from_fuel = constant:black_plague_last_response.refuge_fuel
+		add_manpower = constant:black_plague_last_response.refuge_manpower_cost
+		add_command_power = constant:black_plague_last_response.refuge_command_power_cost
+		add_stability = constant:black_plague_last_response.refuge_stability_cost
+		add_war_support = constant:black_plague_last_response.refuge_war_support_cost
+		set_country_flag = black_plague_human_last_response_refuge_active
+		clr_country_flag = black_plague_human_last_response_refuge_failed
+		clear_variable = black_plague_human_last_response_refuge_progress
+		set_variable = { black_plague_human_last_response_refuge_progress = constant:black_plague_value.zero }
+		black_plague_register_response_country = yes
+		black_plague_recompute_country_response_capacity = yes
+		if = {
+			limit = { NOT = { has_variable = disease_containment_board_dirty } }
+			set_variable = { disease_containment_board_dirty = constant:black_plague_value.zero }
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		activate_mission = black_plague_shared_last_response_refuge_mission
+	}
+}
+
+# COUNTRY scope. A weekly pulse turns the live board, war state, countermeasure
+# progress, and held ground into visible mission progress.
+black_plague_process_human_last_response_missions = {
+	if = {
+		limit = { has_country_flag = black_plague_human_last_response_hold_active }
+		if = {
+			limit = { NOT = { has_variable = black_plague_human_last_response_hold_progress } }
+			set_variable = { black_plague_human_last_response_hold_progress = constant:black_plague_value.zero }
+		}
+		set_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_hold_base }
+		if = {
+			limit = { has_war_with = RTX }
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_hold_war }
+		}
+		if = {
+			limit = {
+				has_variable = black_plague_countermeasure_progress
+				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_last_response.countermeasure_progress_threshold compare = greater_than_or_equals }
+			}
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_hold_countermeasure }
+		}
+		if = {
+			limit = {
+				any_owned_state = {
+					black_plague_state_is_established = yes
+					is_controlled_by = ROOT
+					NOT = { black_plague_state_is_rat_controlled = yes }
+				}
+			}
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_hold_state }
+		}
+		add_to_variable = { black_plague_human_last_response_hold_progress = black_plague_last_response_progress_gain }
+		clamp_variable = { var = black_plague_human_last_response_hold_progress min = constant:black_plague_value.zero max = constant:black_plague_last_response.success_progress }
+	}
+	if = {
+		limit = { has_country_flag = black_plague_human_last_response_refuge_active }
+		if = {
+			limit = { NOT = { has_variable = black_plague_human_last_response_refuge_progress } }
+			set_variable = { black_plague_human_last_response_refuge_progress = constant:black_plague_value.zero }
+		}
+		set_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_refuge_base }
+		if = {
+			limit = { black_plague_human_last_response_refuge_target_is_held = yes }
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_refuge_node }
+		}
+		if = {
+			limit = { has_variable = black_plague_countermeasure_progress check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_last_response.countermeasure_progress_threshold compare = greater_than_or_equals } }
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_refuge_countermeasure }
+		}
+		if = {
+			limit = {
+				any_owned_state = {
+					black_plague_state_is_established = yes
+					is_controlled_by = ROOT
+					NOT = { black_plague_state_is_rat_controlled = yes }
+				}
+			}
+			add_to_temp_variable = { black_plague_last_response_progress_gain = constant:black_plague_last_response.progress_refuge_state }
+		}
+		add_to_variable = { black_plague_human_last_response_refuge_progress = black_plague_last_response_progress_gain }
+		clamp_variable = { var = black_plague_human_last_response_refuge_progress min = constant:black_plague_value.zero max = constant:black_plague_last_response.success_progress }
+	}
+}
+
+# COUNTRY scope. Success holds the terminal route at a lower pressure and
+# converts the effort into real countermeasure and state containment gains.
+black_plague_resolve_human_last_response_hold_success = {
+	if = {
+		limit = { black_plague_human_last_response_hold_success = yes }
+		clr_country_flag = black_plague_human_last_response_hold_active
+		set_country_flag = black_plague_human_last_response_hold_completed
+		if = {
+			limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
+			set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+		}
+		subtract_from_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_last_response.hold_terminal_loss }
+		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.zero max = constant:black_plague_value.maximum }
+		set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_last_response.hold_countermeasure_gain }
+		black_plague_add_countermeasure_progress = yes
+		random_owned_state = {
+			limit = { black_plague_state_is_established = yes is_controlled_by = ROOT NOT = { black_plague_state_is_rat_controlled = yes } }
+			black_plague_ensure_current_state_values = yes
+			add_to_variable = { black_plague_containment = constant:black_plague_last_response.hold_containment_gain }
+			clamp_variable = { var = black_plague_containment min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		country_event = { id = chaosx.nr20.66 }
+	}
+}
+
+# COUNTRY scope. Success for the refuge mission is stronger but still leaves
+# the disease and the terminal route alive.
+black_plague_resolve_human_last_response_refuge_success = {
+	if = {
+		limit = { black_plague_human_last_response_refuge_success = yes }
+		clr_country_flag = black_plague_human_last_response_refuge_active
+		set_country_flag = black_plague_human_last_response_refuge_completed
+		if = {
+			limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
+			set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+		}
+		subtract_from_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_last_response.refuge_terminal_loss }
+		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.zero max = constant:black_plague_value.maximum }
+		set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_last_response.refuge_countermeasure_gain }
+		black_plague_add_countermeasure_progress = yes
+		random_owned_state = {
+			limit = { black_plague_state_is_established = yes is_controlled_by = ROOT NOT = { black_plague_state_is_rat_controlled = yes } OR = { has_state_flag = black_plague_rat_terminal_capital_target has_state_flag = black_plague_rat_terminal_refuge_node has_state_category = city } }
+			black_plague_ensure_current_state_values = yes
+			add_to_variable = { black_plague_containment = constant:black_plague_last_response.refuge_containment_gain }
+			clamp_variable = { var = black_plague_containment min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		country_event = { id = chaosx.nr20.68 }
+	}
+}
+
+# COUNTRY scope. A timeout raises terminal pressure and exposes surviving
+# established states to another wave rather than silently deleting progress.
+black_plague_resolve_human_last_response_hold_timeout = {
+	if = {
+		limit = { has_country_flag = black_plague_human_last_response_hold_active }
+		clr_country_flag = black_plague_human_last_response_hold_active
+		set_country_flag = black_plague_human_last_response_hold_failed
+		set_temp_variable = { black_plague_last_response_cooldown_days = constant:black_plague_last_response.mission_days }
+		set_country_flag = { flag = black_plague_human_last_response_hold_cooldown days = black_plague_last_response_cooldown_days }
+		if = {
+			limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
+			set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+		}
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_last_response.hold_timeout_terminal_gain }
+		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.zero max = constant:black_plague_value.maximum }
+		RTX = {
+			add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_last_response.hold_timeout_hunger_gain }
+			clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		}
+		for_each_scope_loop = {
+			array = global.black_plague_active_states
+			if = {
+				limit = { is_controlled_by = ROOT black_plague_state_is_established = yes NOT = { black_plague_state_is_rat_controlled = yes } }
+				black_plague_ensure_current_state_values = yes
+				add_to_variable = { black_plague_incoming_exposure = constant:black_plague_last_response.hold_timeout_exposure }
+				clamp_variable = { var = black_plague_incoming_exposure min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+			}
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		country_event = { id = chaosx.nr20.67 }
+	}
+}
+
+# COUNTRY scope. Refuge timeout carries the same pressure logic with a larger
+# exposure penalty because the protected node was lost.
+black_plague_resolve_human_last_response_refuge_timeout = {
+	if = {
+		limit = { has_country_flag = black_plague_human_last_response_refuge_active }
+		clr_country_flag = black_plague_human_last_response_refuge_active
+		set_country_flag = black_plague_human_last_response_refuge_failed
+		set_temp_variable = { black_plague_last_response_cooldown_days = constant:black_plague_last_response.mission_days }
+		set_country_flag = { flag = black_plague_human_last_response_refuge_cooldown days = black_plague_last_response_cooldown_days }
+		if = {
+			limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
+			set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+		}
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_last_response.refuge_timeout_terminal_gain }
+		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.zero max = constant:black_plague_value.maximum }
+		RTX = {
+			add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_last_response.refuge_timeout_hunger_gain }
+			clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		}
+		for_each_scope_loop = {
+			array = global.black_plague_active_states
+			if = {
+				limit = { is_controlled_by = ROOT black_plague_state_is_established = yes NOT = { black_plague_state_is_rat_controlled = yes } }
+				black_plague_ensure_current_state_values = yes
+				add_to_variable = { black_plague_incoming_exposure = constant:black_plague_last_response.refuge_timeout_exposure }
+				clamp_variable = { var = black_plague_incoming_exposure min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+			}
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+		country_event = { id = chaosx.nr20.69 }
+	}
+}
+
+# COUNTRY scope. Losing the last eligible state cancels the objective without
+# inventing a success or timeout; terminal takeover also calls this helper.
+black_plague_cancel_human_last_response_hold = {
+	clr_country_flag = black_plague_human_last_response_hold_active
+	clear_variable = black_plague_human_last_response_hold_progress
+}
+
+black_plague_cancel_human_last_response_refuge = {
+	clr_country_flag = black_plague_human_last_response_refuge_active
+	clear_variable = black_plague_human_last_response_refuge_progress
+}
+
+# COUNTRY scope. Idempotent teardown used by the event-owned runtime and the
+# deterministic terminal takeover before it transfers the remaining world.
+black_plague_clear_human_last_response_runtime = {
+	remove_mission = black_plague_shared_last_response_hold_mission
+	remove_mission = black_plague_shared_last_response_refuge_mission
+	clr_country_flag = black_plague_human_last_response_hold_active
+	clr_country_flag = black_plague_human_last_response_refuge_active
+	clr_country_flag = black_plague_human_last_response_hold_completed
+	clr_country_flag = black_plague_human_last_response_refuge_completed
+	clr_country_flag = black_plague_human_last_response_hold_failed
+	clr_country_flag = black_plague_human_last_response_refuge_failed
+	clr_country_flag = black_plague_human_last_response_hold_cooldown
+	clr_country_flag = black_plague_human_last_response_refuge_cooldown
+	clear_variable = black_plague_human_last_response_hold_progress
+	clear_variable = black_plague_human_last_response_refuge_progress
+}

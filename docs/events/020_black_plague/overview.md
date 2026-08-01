@@ -75,6 +75,10 @@ Black Plague Unbound is implemented in the existing triggerable-scenario UI as `
 
 Evolution V remains gated by Chaos above 1000, catastrophic plague deaths, conquest, the completed Rat King route, and 90 percent control of an eligible continent together with its designated capitals and refuge nodes. Evolution V opens the earned route; the Rat King must then issue the visible final-order decision before deterministic takeover and the world-end super-event can begin.
 
+Once Evolution V opens, human countries that still hold established Black Plague ground can start one of two timed projects in the same shared disease category: Hold the Line or Secure the Refuge. Each pays support, motorized, infantry, train, fuel, manpower, command-power, factory, stability, and war-support costs up front, then gains weekly progress for war, countermeasure progress, and held states. Secure the Refuge additionally requires a held terminal capital, refuge node, or city and receives a node bonus. Success lowers Rat King terminal preparation, adds countermeasure progress, and raises containment without curing a state; timeout raises terminal preparation, Rat King hunger, and incoming exposure. Missions are removed idempotently when a country loses its eligible ground or the terminal takeover begins.
+
+The complete mission contract, exact payment values, progress inputs, outcomes, and file ownership are documented in `docs/events/020_black_plague/last_response_missions.md`.
+
 ## Runtime ownership
 
 Event 20 uses an event-owned seven-day scheduler rather than adding a world-iterating daily, weekly, or monthly on-action. Natural initialization, scenarios, and weekly pulses batch state writes and rebuild the shared mapmode once per transaction. SCN-012 saves one seeded anchor and schedules its first `.900` callback before clearing bootstrap arrays, so a fresh scenario continues into the ordinary runtime. If launched over an active crisis, existing established states are preserved and only unestablished candidates are seeded.
