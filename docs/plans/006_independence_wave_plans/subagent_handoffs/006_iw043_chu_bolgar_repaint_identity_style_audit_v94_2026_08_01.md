@@ -8,9 +8,9 @@ Scope: independent review of the targeted v2 Karim Tinchurin repaint against the
 
 ## Decision
 
-**Overall verdict: HOLD; the v2 candidate remains blocked from DDS promotion and runtime wiring.** V2 materially improves the v1 scalp/hair drift and keeps the bald crown, but the eyes remain too regularized and open, the brow and mouth are stronger than the source, and the nose/lower-face geometry is still smoother and more idealized than the exact crop. Rights/date acceptance is still pending, and no package-local v2 prompt/generation record was found even though the parent task states that the v2 prompt targeted the v1 hair and asymmetry drift.
+**Overall verdict: HOLD; the v2 candidate remains blocked from DDS promotion and runtime wiring.** V2 materially improves the v1 scalp/hair drift and keeps the bald crown, but the eyes remain too regularized and open, the brow and mouth are stronger than the source, and the nose/lower-face geometry is still smoother and more idealized than the exact crop. Rights/date acceptance is still pending. The package-local v2 prompt has since been added and hashed, so the earlier provenance prompt-record caveat is closed; the identity and rights/date holds remain unchanged.
 
-Separate gate verdicts are **identity/likeness: HOLD**, **HOI4 leader style/framing: PASS**, **provenance/chain: HOLD with a prompt-record caveat**, **rights/date: HOLD**, and **DDS/runtime promotion: BLOCKED**.
+Separate gate verdicts are **identity/likeness: HOLD**, **HOI4 leader style/framing: PASS**, **provenance/chain: PASS**, **rights/date: HOLD**, and **DDS/runtime promotion: BLOCKED**.
 
 ## Evidence reviewed
 
@@ -29,7 +29,7 @@ Separate gate verdicts are **identity/likeness: HOLD**, **HOI4 leader style/fram
 | `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/review/karim_tinchurin_v2_face_geometry_close_v94.png` | 3520x1140 RGB PNG | `18f8e73d2f9508109f4e0800e4b0266b5de29e46145646576dbf82772e00ff21` | Evidence-only nearest-neighbour close comparison of source, v1, v2, and v2 candidate faces. |
 | `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/review/karim_tinchurin_leader_refs_native_4x_v93.png` | 2240x2320 RGB PNG | `117037e506cc125bdaa4e7d64a034172ccd75ef62a6439124fe1a9f83cb930fd` | All six curated male country-leader references at native and 4x nearest-neighbour scale; reused as canonical v2 evidence. |
 
-The v1 prompt remains at `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v1.txt` with SHA-256 `579d1dade8b60984add037609a5e16bffdac1c2236bdd75931d92ceface254d3`. The parent task describes a v2 prompt that explicitly targets the v1 hair and asymmetry drift, but no separate v2 prompt TXT, JSON, or generation record was present under the v90 package at review time. Do not treat the v1 prompt hash as the v2 generation record.
+The v1 prompt remains at `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v1.txt` with SHA-256 `579d1dade8b60984add037609a5e16bffdac1c2236bdd75931d92ceface254d3`. The package-local v2 prompt is now present at `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/prompts/karim_tinchurin_hoi4_repaint_v2.txt` with SHA-256 `162908b173cbdef6c07b8bece74c23004c3f0cb34794f67baf14eb8f836d49de`; `hashes.sha256` records that hash alongside the v2 raw and candidate hashes. The v2 prompt is the source-locked retry record and is not being inferred from the v1 text.
 
 The canonical references were `.agents/skills/chaos-redux-event-assets/assets/leader_portraits/leaders/` and its native contact sheet (`19320e58b96b1a5c2766392d5f332c1f56e8a3720aa0a47fa5970971b6b6a79e`). The six inspected native 156x210 references are `afg_mohammed_zahir_shah.png` (`f606bc3c6204e0dbd35d8edceb21f87ae6f93a0ae7ad657382c7e9043e8907a0`), `den_thorvald_stauning.png` (`08732002182bdcb2bff3d78b142cc2b3d75adbdb29d4115f9e89ca5bdc6a21b6`), `eth_haile_selassie.png` (`e06bc1bd67ce70e1fb22e39d4c6d2732327d23a58efeb74b096b456318b7eb4b`), `fin_carl_mannerheim.png` (`7e78e33e0b691b96b584393f2d363c07a302320f7e6300bda0fff261aa98d49e`), `ice_sveinn_bjornsson.png` (`860726d268873f21ae0dbd6fb170482f50fad6393882b97b2b7b7a1814189d14`), and `ire_eamon_de_valera.png` (`ff5f8689f1e8ea75bf88bea4c4a87dcf60518b1e062ea53be4a9ceff3509dcb0`).
 
@@ -52,9 +52,9 @@ V2 is therefore an improved, recognizable source-derived candidate, not yet an i
 
 The v2 candidate is an opaque RGB 156x210 country-leader portrait with centered head-and-shoulders framing, a restrained bust, a quiet painted background, subdued period civilian clothing, and no text, watermark, UI, modern prop, advisor frame, or invented insignia. Native size remains readable and the matte painterly treatment sits within the canonical leader family. The v2 background is darker and the brush texture more pronounced than some references, but this is a presentation caveat rather than a style-gate failure; the current likeness HOLD still prevents runtime admission.
 
-### Provenance and chain - HOLD with prompt-record caveat
+### Provenance and chain - PASS
 
-The immutable master, exact crop, decoded-pixel equality JSON, v2 raw PNG, v2 deterministic 156x210 candidate, v2 processing record, byte-identical flat shelf copy, v1 context, and independent review sheets are present and hashable. The processing record is internally consistent and the crop lineage is unchanged. However, the v2 prompt or generation record is not retained as a package-local file or hash; only the parent task's description and the v1 prompt file are available. Add and hash the exact v2 prompt/generation record before calling provenance complete or converting to DDS.
+The immutable master, exact crop, decoded-pixel equality JSON, v2 raw PNG, v2 deterministic 156x210 candidate, v2 processing record, byte-identical flat shelf copy, package-local v2 prompt, v2 prompt hash entry, v1 context, and independent review sheets are present and hashable. The processing record is internally consistent and the crop lineage is unchanged. The v2 prompt explicitly records the bald crown, eye asymmetry, nose, mouth, jaw, collar, jacket, and no-insignia constraints; this closes the prior package-local prompt-record gap. Provenance is complete for the evidence-only v2 retry, but the identity and rights/date gates still block promotion.
 
 ### Rights and date - HOLD
 
@@ -62,7 +62,7 @@ The unchanged Commons raw snapshot `docs/assets/006_independence_wave/iw043_bolg
 
 ### DDS promotion and runtime wiring - BLOCKED
 
-No DDS conversion, `.gfx` admission, character edit, or runtime replacement is authorized. The existing stable `CHU_independence_wave_bolgar_civic_presidium` consumer remains unchanged. Promotion is blocked by the identity HOLD, provenance prompt-record caveat, and rights/date HOLD even though the canvas/style gate passes.
+No DDS conversion, `.gfx` admission, character edit, or runtime replacement is authorized. The existing stable `CHU_independence_wave_bolgar_civic_presidium` consumer remains unchanged. Promotion is blocked by the identity HOLD and rights/date HOLD even though the canvas/style and provenance gates pass.
 
 ## No-advisor-icon boundary
 
@@ -72,9 +72,8 @@ The reviewed asset is only a full `156x210` country-leader portrait candidate. N
 
 1. Keep the immutable master and exact crop unchanged and use the crop as the sole identity authority for the next source-locked repaint.
 2. Preserve the smaller unequal eyes, lighter brows, broad short nose, thin mouth, compact cheek/jaw proportions, bald crown, and source-visible jacket/collar; do not reintroduce v1's crown hair or symmetrize the face.
-3. Retain the exact v2 prompt or generation record in the package with a hash and link it to the raw v2 file before the next audit.
-4. Re-run independent likeness/style review at native and 4x nearest-neighbour scale on the next raw repaint and deterministic 156x210 candidate.
-5. Record the parent decision on the Commons rights basis and one-year post-baseline source date.
-6. Convert to DDS and wire the existing leader sprite only after separate identity PASS, style PASS, provenance PASS, and rights/date acceptance.
+3. Re-run independent likeness/style review at native and 4x nearest-neighbour scale on the next raw repaint and deterministic 156x210 candidate.
+4. Record the parent decision on the Commons rights basis and one-year post-baseline source date.
+5. Convert to DDS and wire the existing leader sprite only after separate identity PASS, style PASS, provenance PASS, and rights/date acceptance.
 
 **Final status: HOLD for another source-locked repaint; v2 remains BLOCKED from DDS/runtime admission.**
