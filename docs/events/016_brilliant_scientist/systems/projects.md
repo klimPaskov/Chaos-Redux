@@ -19,6 +19,7 @@ The system does not create free units, free equipment, generic technology grants
 6. Every completed stage recalculates accident pressure from Exposure, stage burden, project condition, and suspension state. A failed pressure roll activates the exact family's incident mission and recovery action.
 7. Suspending a project releases half its occupied capacity. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
 8. The first completed Prototype in each family reserves one ordinary `chaosx.nr16.6` report. Public publication and classified retention adjust the existing Directorate values, but the report never grants a second project-stage reward. If several families reach Prototype in one synchronization pass, later families enter `brilliant_scientist_breakthrough_pending_families` and are dispatched in order after the current report closes.
+9. An activated family-specific incident schedules ordinary report `chaosx.nr16.13` before the recovery mission deadline. The report names the active family, scales its language to pressure severity, and lets the player choose public notice, a state security cordon, or a Kruger-led cordon. Each posture changes existing Directorate values and the later containment score without duplicating the mission's concrete response costs.
 
 The first valid primary facility after a resolved Prototype can then receive `chaosx.nr16.7`, and the second resolved Prototype can receive `chaosx.nr16.8`. These reports settle facility terms and method custody as persistent governance receipts rather than advancing a project. A detected foreign operation resolved after any Prototype can schedule `chaosx.nr16.9`, which retains the named actor and operation and offers a bounded diplomatic response. None of these three reports creates another project reward, evolution, or event-log entry.
 
@@ -102,6 +103,8 @@ Each stage checks and then consumes the exact Support Equipment, trucks, trains,
 - damage to the exact family when pressure is severe or the recovery deadline expires.
 
 Every family has its own mission and response action. Technical, industrial, biological, and exotic response classes use different durations and burdens. A timeout damages the family and imposes national stability and war-support losses, but the late recovery action remains available. Recovery removes only the matching family penalty and repairs only the matching ledger entry.
+
+The incident report is a presentation and governance preface, not a second recovery system. Its public, security, and Kruger-led receipts are cleared from the pending gate exactly once, while the selected posture remains as the latest containment input. Transfer and terminal cleanup clear an unshown pending report so it cannot orphan an event on a former carrier.
 
 Repair operations last 60, 90, 120, or 150 days by response class. Their incident deadlines are separately tuned to 120, 150, 180, or 240 days, so an operation begun before the deadline has a real completion window. A repeated incident clears only the matching family's prior resolved marker before activating its new mission.
 
