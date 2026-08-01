@@ -306,6 +306,8 @@ After appointment, one bounded host-context briefing and one assistant-conflict 
 
 The next bounded institutional tranche contains three ordinary reports. After the first resolved Prototype and a still-valid primary facility, `chaosx.nr16.7` records the facility's civic compact, restricted district, or industrial charter. After the second resolved Prototype, `chaosx.nr16.8` snapshots that method family and records public trust, executive reserve, or a patent pool without advancing the project. After the first detected foreign operation resolves, `chaosx.nr16.9` records the named actor and operation and offers controlled exchange, private warning, or public accusation when war and operation type allow an exchange. These reports use the existing Directorate values and accident pressure, write one host receipt plus a matching Kruger-character receipt, and never create an evolution, cluster entry, or second project reward. Ordinary transfer moves only unresolved `.7` or `.8` ownership; resolved consequences remain on the old host and physical state while character history blocks replay. Terminal cleanup clears pending obligations; sovereignty formation preserves character history but clears the former-host reaction surface.
 
+The send-away branch also gives the rejecting country one delayed intelligence report after its referred recipient accepts Kruger. `chaosx.nr16.15` reads the recipient's public or secret appointment posture, consumes the temporary rejection memory exactly once, and records a permanent seen receipt without creating another actor, reward, claim, evolution, or event-log entry.
+
 ### Stage 4: Directorate period
 
 Kruger's network becomes a state within the state. This stage normally aligns with Evolution I or follows soon after it.
