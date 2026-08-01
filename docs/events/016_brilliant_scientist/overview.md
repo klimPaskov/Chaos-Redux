@@ -20,6 +20,8 @@ The host-context reaction tranche adds three ordinary, career-once reports witho
 
 The existing loyalty and relocation dossiers, `chaosx.nr16.10` and `chaosx.nr16.11`, also append the host-archetype clause after their resolved finding or convoy outcome. This is presentation only and does not add a reward, evolution, event-log entry, or new fire path.
 
+The first four Kruger State foundation reports append a formation-origin clause from the retained charter, rebellion, enclave, or takeover flag. This keeps the state-building sequence tied to the way sovereignty was achieved without adding another route, idea, or event chain.
+
 ## Event identity
 
 - Event ID: `16`.
