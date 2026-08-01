@@ -10,7 +10,7 @@ The controlling 2026-07-29 acceptance decision uses source and static evidence f
 
 The core implementation milestone is closed under source and static evidence. The closure covers the automatic and World Collapse loop, the Event 005 and Event 006 reservation and transaction boundary, the shared country-value and host, patron, Network, League, and rival-bloc systems, and the reusable Event 006 country-registration and collection API. The approved automatic ladder remains 6/8/10/14/20, with the 14- and 20-country targets fail-closed below admitted package and reservation capacity.
 
-This closure is not a country-package completion claim. The current thirteen-package static attestation set, 55 unbound selectable rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `6001` rights blocker remain open. The three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
+This closure is not a country-package completion claim. The current fourteen-package static attestation set spans thirteen compatible reservation groups and fourteen distinct anchors, while 180 selectable rows remain unattested, alongside 55 unbound selectable rows, 17 inert reservations, 13 route-only overlays, missing or withdrawn package identities and assets, focus diagnostics, package-specific AI and balance evidence, unresolved formable and route contracts, and the `6001` rights blocker. IW-018 ARX is admitted by the post-wire audit; the three v35 closure handoffs are the bounded implementation evidence, while package-specific handoffs remain the authority for their own content.
 
 The planning output was not shortened or reduced to a quick outline. It contains seven specification parts, nine original matrix CSVs, four design diagrams, twelve research deliverables, seven implementation and production prompts, a 206-package candidate registry, fourteen regional overlays, forty-eight formable families, eighty decision and mission entries, twenty-four AI profiles, forty-eight asset families, and sixteen achievements.
 
@@ -18,7 +18,7 @@ The planning output was not shortened or reduced to a quick outline. It contains
 
 The accepted specification includes the later sourced-portrait decision.
 This section is the current implementation ledger rather than a rewrite of the planning baseline.
-IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California are the thirteen statically content-attested packages after their full package and sourced real-male portrait audits. IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow.
+IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-018 ARX Sardinia, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California are the fourteen statically content-attested packages after their full package and sourced real-male portrait audits. IW-018 is admitted by `006_iw018_arx_postwire_package_audit_v78_2026_08_01.md`; IW-006's Louis Hubert baron Ruquoy/Rucquoy commander repaint and Wallonia country-package audit both pass the current source-locked workflow. IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-179 FSM, IW-030 MNT, IW-177 FIJ, and IW-014 CAT remain **HOLD / fail-closed** and are not inferred from adapter, portrait, or flag evidence.
 Every other formerly admitted grounded package whose live country leader, route leader, commander, or institutional portrait uses generated art remains withdrawn until sourced real male replacements pass review.
 FORM-48 remains implemented without an annexation fallback, but the unadmitted FSM package prevents a complete currently admitted carrier/member set.
 IW-184 `HBX` is admitted after the full post-wire package audit for William D. Stephens, and IW-173 `HAW` is admitted after its package audit with Samuel Wilder King as an additive, non-ruling civilian-large territorial delegate while vanilla David Kalakaua Kawananakoa remains preserved as the ruling roster entry.
@@ -90,6 +90,16 @@ evidence: vanilla maps Siddiq to generic
 `gfx/leaders/Africa/Portrait_Africa_Generic_3.dds`, so sourced real-person
 portraits for Hasan, Siddiq, and all four Asante/Sokoto commanders remain
 blocking requirements. No advisor asset was created or requested.
+
+### Current post-ARX blocker handoffs (2026-08-01)
+
+The current blocker evidence is preserved in the following handoffs; none of these records admits a package or authorizes a fallback asset.
+
+- IW-043 CHU: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw043_chu_country_package_audit_v58_2026_08_01.md` records Mirsaid Sultan-Galiev's exact crop and decoded-pixel equality as evidence only. Its source-locked repaint, independent audit, rights/era decision, and Karim Tinchurin candidate remain open; no DDS, GFX, or package admission follows from the Mirsaid, Galimzhan, Spasov, or Karim evidence.
+- IW-058 ASY: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw058_asy_package_closure_audit_v80_2026_08_01.md` remains fail-closed pending the complete sourced roster, period/role proof, package audit, and formable contracts.
+- IW-093 DOX and IW-098 SOK: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw093_iw098_closure_audit_v51_2026_08_01.md` retains the Prempeh identity/style gate failure, invented/generated commander concerns, rights/date/source blockers, unresolved flags, and FORM-24/25 gaps; no current DDS or sprite artifact is admitted.
+- IW-179 FSM: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw179_micronesia_kabua_kabua_source_closure_2026_08_01.md` keeps FSM withdrawn from the FORM-48 member contract while the Kabua evidence remains weak/review-pending; do not change runtime binding.
+- IW-030 MNT, IW-177 FIJ, and IW-014 CAT remain HOLD for the rights/complete-roster, source-date/member-research, and identity/flag/carrier-contract blockers recorded in their current package handoffs. The shared IW-046 CHU overlay row also remains unadmitted.
 
 ## Design simplifications
 

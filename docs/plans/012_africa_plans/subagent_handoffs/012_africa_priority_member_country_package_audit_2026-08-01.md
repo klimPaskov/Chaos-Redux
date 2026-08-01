@@ -17,6 +17,18 @@ Three packages are dormant and gated: Luba/DYX, Lunda/DZX, and Kilwa/EMX. The in
 
 No priority package is host-only. Event 006 shells HZX/Basotho, EUX/Eswatini, and ELX/Zanzibar are host-only conditional shells and are outside the sixteen package IDs. No package is fully accepted as a whole-country package: all sixteen remain gated by parent formation/release integration, carrier receipt or origin validation, route/runtime review, and asset provenance review even where the final DDS paths resolve.
 
+## Current focus precedence
+
+The seven niche Event 006 carriers remain eligible for Event 012 package registration after the live Event 006 receipt and Action 102 gates succeed.
+
+While `independence_wave_active_origin` or `independence_wave_focus_tree` is still present, `africa_priority_member_ensure_focus_tree_loaded` records `africa_priority_member_focus_tree_overlay_skipped` and preserves the Event 006 focus surface.
+
+The Event 012 ideas, decisions, forces, League behavior, and AI state still load additively during that interval.
+
+After Event 006 cleanup clears the origin/tree, the post-clear retry loads `africa_priority_member_focus_tree` with completed focus receipts preserved when the Event 012 package remains active.
+
+Generic vanilla carriers remain eligible for the Africa tree, while meaningful non-generic trees continue to receive additive package content with the overlay skipped.
+
 ## Country package coverage checklist
 
 | package | carrier | runtime status | package-specific gate |
@@ -77,7 +89,7 @@ All sixteen sovereign character IDs and portrait GFX IDs resolve. Aksum, Nubia, 
 
 ## Focus, decision, idea, and asset issues
 
-The eight-node shared focus tree and all sixteen package-specific scripted payloads are present. The focus inspector accepted the tree with eight titles, zero crossings, and only three long-connector layout warnings. The Event 012 event scan completed with deferred helper/lifecycle projections but no blocking diagnostic. Decision, idea, focus, report, and portrait paths are present; provenance and parent route/runtime acceptance remain open.
+The eight-node shared focus tree and all sixteen package-specific scripted payloads are present. The focus inspector accepted the tree with eight titles, zero crossings, and only three long-connector layout warnings. The Event 012 event scan completed with deferred helper/lifecycle projections but no blocking diagnostic. Decision, idea, focus, report, and portrait paths are present; provenance and parent route/runtime acceptance remain open. The current focus precedence is recorded above; the earlier direct-load evidence remains historical coverage for package reachability, not permission to replace an active Event 006 tree.
 
 ## Starting military, technology, industry, supply, and production
 
@@ -101,6 +113,7 @@ The sixteen `priority_member_package` rows in `docs/plans/012_africa_plans/012_a
 - Event 006 map ledger audit: DOX 274, DSX 558, DUX 901, EQX 719 ready; DYX, DZX, and EMX unbound/disabled.
 - HOI4 focus inspector artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/57ca240f80c326a32c10dad456d9de0f70e883b62fd3d190b85ee3aa11872d93/057e12f7a8ee89d55ea70c9d2fbb54225c806d8db902bd301adae435f76c43ef/focus-inspect.bbbc0b7e1dcfc29b.json`.
 - HOI4 event scan artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a2f0bf93272bbac49df5c7bdcd47ae9e9f5979c1c0e4fd2ebdc9f3cec02e4b23/1da117fc145445237e980bfcaa6e1966ddde6806f5b66c8b82c569261491c15b/event-scan-af323185b9fc.json`. Helper/lifecycle projections were deferred; no blocking diagnostic was returned.
+- Focus-precedence refresh scan artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/184c5100ed01cdc9604cbf8459b20704caf22d41cc79922ccc80d5817124e604/c87fb439f579d7be94a5237c750daff948dfa5a04f1e525a6707d6e8a49b318a/event-scan-fcce0bc1eab2.json`. The bounded refresh still deferred helper/lifecycle projections and returned no blocking diagnostics.
 - No in-game or live-save validation was run; the parent owns live campaign acceptance. No map rewrite was attempted, so no map dry-run/apply/rollback evidence is applicable.
 
 ## Remaining risks and simplifications

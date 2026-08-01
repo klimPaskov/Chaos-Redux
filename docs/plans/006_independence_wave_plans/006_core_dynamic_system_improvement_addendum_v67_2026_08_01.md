@@ -46,7 +46,7 @@ This audit covers only the source-wired core tranche named by the parent:
 
 This audit does not reopen country-package admission, focus content, formables, portraits, flags, advisors, animation, super-event media, achievements, whole-event AI/balance matrices, or live execution matrices.
 
-The thirteen-package attestation set, twelve compatible reservation groups, exact `6/8/10/14/20` automatic ladder, and fail-closed `14`- and `20`-country bands remain controlling facts.
+At the v67 audit snapshot, before the later IW-018 ARX post-wire admission, the attestation set was thirteen packages across twelve compatible reservation groups; those dated counts remain historical evidence for this addendum. The current post-ARX authority is fourteen packages across thirteen compatible groups and fourteen distinct anchors, with the exact `6/8/10/14/20` automatic ladder and fail-closed `14`- and `20`-country bands unchanged.
 
 No fallback, substitute carrier, generic package, weaker wave size, duplicate target, or broad content expansion is authorized.
 
@@ -82,7 +82,7 @@ Current bounded implementation handoffs:
 
 Required syntax and engine evidence was checked against the offline wiki pages for data structures, triggers, effects, modifiers, localisation, scopes, on actions, events, decisions, ideas, AI, focus trees, interfaces, and scripted GUI, together with vanilla documentation for script concepts, script constants, script collections, dynamic variables, triggers, and effects.
 
-The source-level allocator audit was rerun on 2026-08-01 with `python -B .tools/audit_event6_allocator.py` and passed with 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, thirteen attested packages, twelve compatible reservation groups, the `6/8/10/14/20` ladder, and Event 005-first joint reservation ordering.
+The source-level allocator audit recorded in this v67 addendum was run before the later ARX admission and passed with 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, thirteen attested packages, twelve compatible reservation groups, the `6/8/10/14/20` ladder, and Event 005-first joint reservation ordering. The current post-ARX allocator authority is fourteen attested packages across thirteen compatible groups and fourteen anchors; this count change does not reopen or alter the v67 uniqueness repair.
 
 ## Previous addendum disposition
 

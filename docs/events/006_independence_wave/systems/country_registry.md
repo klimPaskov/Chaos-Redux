@@ -161,13 +161,15 @@ origin predicates. Event 006 content continues to require its own package and
 origin markers. Event 012 writes only `africa_priority_origin_*` and Africa
 package flags; it never calls the Event 006 origin effect.
 
-`africa_priority_member_ensure_focus_tree_loaded` now loads the Africa tree only
-for a validated Event 012 package whose current tree is `generic_focus`. An
-existing meaningful tree is preserved and the package runs additively (ideas,
-decisions, forces, and AI remain available). Event 006 and Soviet origins are
-fail-closed before any focus-tree operation. A carrier with an unrecognised or
-missing focus tree is preserved rather than overwritten; this is intentional
-until a supported no-tree predicate is available.
+`africa_priority_member_ensure_focus_tree_loaded` loads the Africa tree for a validated Event 012 package on a generic carrier or an approved Event 006 carrier only when the protected Event 006 origin and full Event 006 tree are absent.
+
+An active `independence_wave_active_origin`, an active `independence_wave_focus_tree`, or a Soviet origin records `africa_priority_member_focus_tree_overlay_skipped` and leaves the meaningful tree untouched.
+
+Event 012 ideas, decisions, forces, and AI still apply additively while the focus overlay is skipped.
+
+The Event 006 end-of-origin and generation-reset helpers retry the overlay only after clearing the protected origin receipt; the existing DOX/SOK cleanup calls remain guarded while Event 006 owns its tree.
+
+An approved Event 006 carrier with no active meaningful tree remains eligible for the Africa tree, while an unrecognised or missing tree on any other carrier is preserved rather than overwritten; this is intentional until a supported no-tree predicate is available.
 
 The two wrappers in
 `common/scripted_effects/006_independence_wave_country_registry_effects.txt`

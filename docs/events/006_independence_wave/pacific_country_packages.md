@@ -58,8 +58,8 @@ dedicated Iceland package reference rather than duplicated in this Pacific
 package document.
 
 The current allocator audit passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, thirteen exact attestations
-across twelve compatible reservation groups and thirteen distinct anchors, the
+selectable packages, 138 SCN-008 ranked packages, fourteen exact attestations
+across thirteen compatible reservation groups and fourteen distinct anchors, the
 doubled 6/8/10/14/20 ladder, and
 Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
@@ -385,12 +385,12 @@ portrait-asset lane:
   `gfx/leaders/006_independence_wave/portrait_FSM_independence_wave_inter_island_congress_chair.dds`.
 
 None of these characters defines a small portrait or an adviser role. The HAW
-King portrait is a sourced, independently audited male leader asset; the HBX
-and FSM assets remain withdrawn where their grounded-source gates are not yet
-complete. The HAW DDS/GFX/character/localisation chain is runtime-wired, while
-the withdrawn HBX/FSM DDS files are generated grounded-polity portraits awaiting
-sourced replacement and do not satisfy visual readiness. The withdrawn HBX/FSM portrait surfaces
-remain outside admission. HAW and FSM use vanilla flags; HBX uses the researched flat 1911 Bear
+King portrait is a sourced, independently audited male leader asset and its DDS,
+GFX, character, and localisation chain is runtime-wired. HBX is admitted after
+its post-wire package audit. The FSM portrait remains withdrawn because its
+generated congress chair is not valid for grounded Micronesia; it awaits a
+sourced replacement and does not satisfy visual readiness. HAW and FSM use
+vanilla flags; HBX uses the researched flat 1911 Bear
 Flag; PFX uses the audited flat ImageGen flag. Protected BAY/RHI hashes remain
 unchanged. The package otherwise reuses these registered Event 006 families
 from `interface/006_independence_wave.gfx`:
