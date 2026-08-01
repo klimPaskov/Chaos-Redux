@@ -24,14 +24,6 @@ would reuse historical runtime and could not be guaranteed to roll back safely.
 The shared scenario window reports the existing terminal state instead of
 attempting a partial relaunch.
 
-## Natural report namespace correction
-
-The first natural-campaign Threatened milestone now uses `chaosx.nr20.12`.
-The SCN-012 launch briefing retains `chaosx.nr20.4`, so a natural outbreak can
-never display the triggerable-scenario report by sharing the old event id.
-The new report has matching title, description, option, and event-chain matrix
-entries.
-
 ## Remaining limitation
 
 The launch still does not have a full inverse transaction for disease state changes, territory transfers, evolution flags, or country activation if a postcondition fails after mutation. The UI now keeps that failure retryable and reports it explicitly; this handoff does not claim atomic rollback or live in-game validation.
