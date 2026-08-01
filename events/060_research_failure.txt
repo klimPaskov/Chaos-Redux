@@ -50,4 +50,26 @@ country_event = {
         set_research_slots = 2
         ai_chance = { base = 100 }
     }
+
+    option = {
+        name = chaosx.nr60.2.b
+        trigger = { brilliant_scientist_can_prevent_research_failure = yes }
+        custom_effect_tooltip = brilliant_scientist_research_failure_prevented_tt
+        hidden_effect = { brilliant_scientist_prevent_research_failure = yes }
+        ai_chance = {
+            base = constant:brilliant_scientist_research_failure_salvage_ai.base
+            modifier = {
+                factor = constant:brilliant_scientist_research_failure_salvage_ai.wartime_factor
+                has_war = yes
+            }
+            modifier = {
+                factor = constant:brilliant_scientist_research_failure_salvage_ai.secret_factor
+                has_country_flag = brilliant_scientist_secret_directorate
+            }
+            modifier = {
+                factor = constant:brilliant_scientist_research_failure_salvage_ai.public_factor
+                has_country_flag = brilliant_scientist_context_public_science
+            }
+        }
+    }
 }

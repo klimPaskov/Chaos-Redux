@@ -556,6 +556,8 @@ Possible links:
 - A stolen incomplete project can trigger a severe failure abroad.
 - Independent teams can fail while learning to reduce dependence.
 
+The implemented baseline uses one guarded recovery choice in `chaosx.nr60.2`. When the active Directorate has the required Political Power, `chaosx.nr60.2.b` preserves the current research-slot total, records a permanent country receipt, and pays for the rescue through the existing Directorate meters. The ordinary two-slot failure and its news report remain available, while stolen-project and independent-team variants remain separate expansion hooks. The intervention is not an Event 016 evolution, project reward, Event Log entry, or model dependency.
+
 ### Event 89: Tech sharing
 
 Possible links:

@@ -14,6 +14,8 @@ Event 025's Antarctic recovery now supplies the matching alien-arms warning when
 
 Event 036's authenticated spacecraft outcome writes `brilliant_scientist_alien_spacecraft_recovered` on the country that recovered the wreckage. When that country is the active Kruger host, `chaosx.nr16.18` records Kruger's recognition once and leaves the physical evidence flag, Alien Arms Theory gate, project costs, and project rewards unchanged. The report does not migrate with Kruger, create a stage, add a log row, claim, evolution, or model dependency.
 
+Event 060's research failure now offers the active Directorate one guarded salvage intervention, `chaosx.nr60.2.b`. It preserves the country's current research-slot total for 50 Political Power, records `brilliant_scientist_research_failure_prevented`, and moves the existing Mandate, Dependence, Exposure, Project Capacity, Independent Capacity, and Grievance meters. The ordinary two-slot failure and news report remain available, and the salvage choice creates no Event 016 log row, evolution, project reward, or model dependency.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.

@@ -149,6 +149,31 @@ brilliant_scientist_clear_context_pending_state = {
 	clr_country_flag = brilliant_scientist_alien_spacecraft_contact_pending
 }
 
+# COUNTRY scope. Kruger can rescue one failed research cycle for the active
+# host. The intervention preserves the current research-slot count, spends a
+# concrete political reserve, and makes the institutional cost visible through
+# the existing bounded Directorate meters. The receipt is permanent for this
+# country so a later failure cannot reopen the same exception.
+brilliant_scientist_prevent_research_failure = {
+	if = {
+		limit = { brilliant_scientist_can_prevent_research_failure = yes }
+		add_political_power = constant:brilliant_scientist_research_failure_salvage.political_power_spend
+		set_country_flag = brilliant_scientist_research_failure_prevented
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_research_failure_salvage.grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
 # COUNTRY scope. Event 025 can resolve before or after Kruger is appointed. The
 # permanent Antarctic idea is the evidence input; this helper only creates the
 # one-time Event 016 warning receipt for an active carrier.

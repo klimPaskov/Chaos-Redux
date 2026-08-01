@@ -72,6 +72,16 @@ brilliant_scientist_is_current_host = {
 	has_character = KRG_warren_kruger
 }
 
+# COUNTRY scope. Event 060 may be salvaged once by the active host. The gate
+# keeps the choice tied to the live Directorate rather than a stale character
+# receipt or a country that merely met Kruger in an earlier chain.
+brilliant_scientist_can_prevent_research_failure = {
+	brilliant_scientist_is_current_host = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_country_flag = brilliant_scientist_research_failure_prevented }
+	political_power > constant:brilliant_scientist_research_failure_salvage.political_power_gate
+}
+
 # Any scope.
 brilliant_scientist_has_current_host = {
 	has_event_target = brilliant_scientist_current_host
