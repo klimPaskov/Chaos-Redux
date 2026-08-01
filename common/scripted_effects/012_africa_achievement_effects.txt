@@ -2384,10 +2384,13 @@ africa_achievement_record_disease_outbreak = {
 
 africa_achievement_record_disease_outbreak_contained = {
 	if = {
+		# A research-site cleanup is not an outbreak containment receipt. Only
+		# decrement and count when a previously recorded weaponisation failure
+		# left an active outbreak in the shared ledger.
 		limit = { check_variable = { global.africa_achievement_active_disease_outbreaks > constant:africa_value.zero } }
 		subtract_from_variable = { global.africa_achievement_active_disease_outbreaks = constant:africa_value.one }
+		add_to_variable = { global.africa_achievement_disease_outbreaks_contained = constant:africa_value.one }
 	}
-	add_to_variable = { global.africa_achievement_disease_outbreaks_contained = constant:africa_value.one }
 }
 
 # COUNTRY scope on a registered high-chaos actor after both rights and
