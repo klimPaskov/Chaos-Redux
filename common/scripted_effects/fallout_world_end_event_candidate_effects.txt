@@ -98,6 +98,7 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_691_candidate_state_id
 	clear_variable = fallout_event_698_candidate_state_id
 	clear_variable = fallout_event_705_candidate_state_id
+	clear_variable = fallout_event_712_candidate_state_id
 	clr_country_flag = fallout_event_candidate_registry_reviewed
 	clear_variable = fallout_event_candidate_registry_generation
 	clear_variable = fallout_event_candidate_registry_day
@@ -4320,6 +4321,90 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_temp_variable = fallout_event_pilot_doctors_coup_supply
 			clear_temp_variable = fallout_event_pilot_doctors_coup_adaptation
 			clear_temp_variable = fallout_event_pilot_doctors_coup_phase
+			# The Returning Disease follows a closed Doctor's Coup memory. It selects
+			# the lowest current state where recurring disease can force a Quarantine
+			# State to choose between containment, targeted care, aid, or concealment.
+			set_temp_variable = { fallout_event_pilot_returning_disease_target = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_disease = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_exposure = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_shelter = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_supply = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_adaptation = constant:fallout_event_runtime.zero }
+			set_temp_variable = { fallout_event_pilot_returning_disease_phase = constant:fallout_event_runtime.zero }
+			every_owned_state = {
+				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
+				if = {
+					limit = {
+						fallout_event_pilot_returning_disease_state_is_current = yes
+						OR = {
+							check_variable = { fallout_event_pilot_returning_disease_target = constant:fallout_event_runtime.zero }
+							check_variable = { var = fallout_event_pilot_state_candidate_id value = fallout_event_pilot_returning_disease_target compare = less_than }
+						}
+					}
+					set_temp_variable = { fallout_event_pilot_returning_disease_target = fallout_event_pilot_state_candidate_id }
+					set_temp_variable = { fallout_event_pilot_returning_disease_disease = air_winter_disease_pressure }
+					set_temp_variable = { fallout_event_pilot_returning_disease_exposure = air_winter_exposure }
+					set_temp_variable = { fallout_event_pilot_returning_disease_shelter = air_winter_shelter_capacity }
+					set_temp_variable = { fallout_event_pilot_returning_disease_supply = fallout_state_supply_access_current }
+					set_temp_variable = { fallout_event_pilot_returning_disease_adaptation = air_winter_adaptation }
+					set_temp_variable = { fallout_event_pilot_returning_disease_phase = air_winter_phase }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { fallout_event_pilot_returning_disease_target value = constant:fallout_event_runtime.zero compare = greater_than }
+					fallout_event_712_candidate_country_can_pay_any_branch = yes
+					has_variable = fallout_first_red_line_public_health
+					check_variable = { fallout_first_red_line_public_health value = constant:fallout_event_712_threshold.minimum_country_public_health compare = greater_than_or_equals }
+					check_variable = { var = global.num_days value = constant:fallout_event_712_threshold.minimum_campaign_day compare = greater_than_or_equals }
+					check_variable = { var = global.num_days value = constant:fallout_event_712_threshold.maximum_campaign_day compare = less_than }
+				}
+				set_variable = { fallout_event_712_candidate_state_id = fallout_event_pilot_returning_disease_target }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.returning_disease_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.returning_disease_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.crisis_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.global_survival_and_society }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.medicine }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.returning_disease_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.returning_disease_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.consolidation }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.generation_change }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_712_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_pilot_returning_disease_exposure }
+				set_temp_variable = { fallout_event_pilot_pressure_source_type = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_event_pilot_returning_disease_disease }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_event_pilot_returning_disease_disease }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.air_winter }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = fallout_event_pilot_returning_disease_phase }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_winter = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.medicine }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_route = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.state }
+				set_temp_variable = { fallout_event_pilot_target = fallout_event_pilot_returning_disease_target }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.returning_disease_route }
+				fallout_event_append_pilot_candidate_row = yes
+			}
+			else = {
+				clear_variable = fallout_event_712_candidate_state_id
+			}
+			clear_temp_variable = fallout_event_pilot_returning_disease_target
+			clear_temp_variable = fallout_event_pilot_returning_disease_disease
+			clear_temp_variable = fallout_event_pilot_returning_disease_exposure
+			clear_temp_variable = fallout_event_pilot_returning_disease_shelter
+			clear_temp_variable = fallout_event_pilot_returning_disease_supply
+			clear_temp_variable = fallout_event_pilot_returning_disease_adaptation
+			clear_temp_variable = fallout_event_pilot_returning_disease_phase
 
 			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }
