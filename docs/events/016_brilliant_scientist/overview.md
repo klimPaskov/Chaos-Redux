@@ -6,6 +6,8 @@ Event 016 is default-enabled as a minor fire-once incident after the core packag
 
 The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, presentation, shared wiring, Event 019 provider interoperability, localisation, workbook alignment, and mapped audit tranches form the core runtime package. The bounded host-context briefing, assistant-conflict follow-up, and first-prototype report now add non-evolution flavour with causal state changes and persistent records. Broader country-specific flavour, bespoke project/news/remnant art, Event016-specific 3D models, quantitative balance evidence, and live consumer validation remain open. This document does not claim the whole event is content-complete.
 
+When a player forwards Kruger to another country, the rejecting country now receives one delayed intelligence report, `chaosx.nr16.15`, after the referred appointment commits. The report reads the recipient's public or secret posture, consumes the temporary rejection memory, and records a permanent one-time receipt without reopening recruitment, creating a second character, adding an event-log row, or claiming a new project reward.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.

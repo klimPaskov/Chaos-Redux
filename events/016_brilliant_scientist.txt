@@ -219,3 +219,51 @@ country_event = {
 		}
 	}
 }
+
+# The country that declined Kruger receives one bounded intelligence report
+# after the referred appointment commits. This is a consequence of the
+# opening choice only; it never reopens recruitment or creates a second actor.
+country_event = {
+	id = chaosx.nr16.15
+	title = chaosx.nr16.15.t
+	desc = {
+		trigger = {
+			has_event_target = brilliant_scientist_send_away_recipient
+			event_target:brilliant_scientist_send_away_recipient = {
+				has_country_flag = brilliant_scientist_public_compact
+			}
+		}
+		text = chaosx.nr16.15.public.d
+	}
+	desc = {
+		trigger = {
+			has_event_target = brilliant_scientist_send_away_recipient
+			event_target:brilliant_scientist_send_away_recipient = {
+				has_country_flag = brilliant_scientist_secret_directorate
+			}
+		}
+		text = chaosx.nr16.15.secret.d
+	}
+	desc = chaosx.nr16.15.default.d
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = brilliant_scientist_rejection_reaction_pending
+		has_country_flag = brilliant_scientist_rejection_memory
+		NOT = { has_country_flag = brilliant_scientist_rejection_reaction_seen }
+		has_event_target = brilliant_scientist_send_away_recipient
+		event_target:brilliant_scientist_send_away_recipient = {
+			has_country_flag = brilliant_scientist_appointment_completed
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.15.a
+		custom_effect_tooltip = brilliant_scientist_rejection_reaction_effect_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_rejection_memory
+			clr_country_flag = brilliant_scientist_rejection_reaction_pending
+			set_country_flag = brilliant_scientist_rejection_reaction_seen
+		}
+	}
+}
