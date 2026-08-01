@@ -139,6 +139,7 @@
 - `specs/71_reviewed_archetype_first_red_line.md`
 - `specs/75_reviewed_archetype_returning_disease.md`
 - `specs/76_reviewed_archetype_clean_certificate.md`
+- `specs/77_reviewed_archetype_border_inspection_crisis.md`
 
 ## Matrices
 
