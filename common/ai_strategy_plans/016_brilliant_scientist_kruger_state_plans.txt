@@ -162,6 +162,42 @@ KRG_xenobiological_plan = {
 	weight = { factor = @krg_plan_weight_project }
 }
 
+KRG_project_synthesis_plan = {
+	name = "KRG project synthesis plan"
+	desc = ""
+	allowed = { brilliant_scientist_is_kruger_sovereign_country = yes }
+	enable = {
+		has_completed_focus = KRG_complete_the_founding_audit
+		brilliant_scientist_can_unlock_synthesis = yes
+		NOT = { has_completed_focus = KRG_the_project_synthesis }
+	}
+	abort = {
+		OR = {
+			has_completed_focus = KRG_the_project_synthesis
+			NOT = { brilliant_scientist_can_unlock_synthesis = yes }
+			NOT = { brilliant_scientist_kruger_focus_is_active = yes }
+		}
+	}
+	ai_national_focuses = {
+		KRG_stabilize_the_laboratory_economy KRG_document_the_carried_portfolio
+		KRG_reopen_the_prototype_works KRG_the_dinosaur_host KRG_the_engineered_legion
+		KRG_the_project_synthesis KRG_define_the_states_purpose KRG_open_the_designed_organism_dossier
+		KRG_build_the_vat_complexes KRG_wake_the_assembly_lines KRG_authenticate_the_temporal_ledger
+		KRG_prepare_strategic_delivery_architecture
+	}
+	focus_factors = {
+		KRG_the_sovereign_directorate = 0 KRG_the_human_scientific_republic = 0
+		KRG_replicated_sovereignty = 0 KRG_machine_ascendancy = 0
+		KRG_the_temporal_continuum = 0 KRG_xenobiological_ascendancy = 0
+	}
+	weight = {
+		factor = @krg_plan_weight_project
+		modifier = { factor = @krg_plan_weight_route_strong has_country_flag = brilliant_scientist_route_project_synthesis }
+		modifier = { factor = @krg_plan_weight_route_preferred has_country_flag = brilliant_scientist_route_machine_ascendancy }
+		modifier = { factor = @krg_plan_weight_route_preferred has_country_flag = brilliant_scientist_route_xenobiological_ascendancy }
+	}
+}
+
 KRG_portal_plan = {
 	name = "KRG portal plan"
 	desc = ""

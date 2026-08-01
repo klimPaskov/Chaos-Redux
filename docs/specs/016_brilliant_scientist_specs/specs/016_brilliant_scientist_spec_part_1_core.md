@@ -1,8 +1,8 @@
 # 016 Brilliant Scientist spec, part 1: core event
 
-## Binding reconciliation, 2026-07-14
+## Binding reconciliation, 2026-08-01
 
-The live event remains a placeholder. This document specifies planned behavior. Host takeover is available only after rare, proven institutional capture across multiple national domains and is never enabled by failed territory selection. Mandate, Dependence, Exposure, and Project Capacity are visible. Independent Capacity and Grievance are hidden causal state. The event retains exactly seventeen achievements and six mapped super-event packages.
+The default-enabled core runtime now implements the planned opening, Directorate, projects, evolutions, containment, Kruger State, terminals, and aftermath surfaces. The current implementation also includes a bounded host-context and first-Prototype report slice; broader country-specific flavour and bespoke report variants remain separate production work. Host takeover is available only after rare, proven institutional capture across multiple national domains and is never enabled by failed territory selection. Mandate, Dependence, Exposure, and Project Capacity are visible. Independent Capacity and Grievance are hidden causal state. The event retains exactly seventeen achievements and six mapped super-event packages.
 
 ## Event identity
 
@@ -299,6 +299,10 @@ Player-facing effect:
 - Kruger's portrait changes slightly.
 - Foreign interest starts growing.
 - The government must choose whether to publish, conceal, weaponize, or destroy the result.
+
+The first completed Prototype in each project family also creates one ordinary Directorate report. The report reserves the family before its defined report-spacing delay, records the family in persistent history, and offers a public publication or classified retention choice. Concurrent Prototype families queue in completion order, and transfer or Kruger State formation carries both the reservation queue and any active report. Publication raises Exposure and Independent Capacity while reducing Dependence and Grievance. Classification lowers Exposure and preserves more immediate capacity while increasing Dependence and Grievance. The first resolved report applies full strength, the next two apply half strength, and later reports apply quarter strength. A family never produces a second report reward when later stages complete, and a transfer or Kruger State formation cannot replay an already-recorded Prototype report.
+
+After appointment, one bounded host-context briefing and one assistant-conflict follow-up provide institutional framing without replacing the host focus tree or creating extra evolutions. Their choices move the same visible and hidden causal values used by the Directorate and bias the first two evolution timings. The policy flags and any pending briefing or assistant obligation follow Kruger across transfer and Kruger State formation without replaying the original value deltas.
 
 ### Stage 4: Directorate period
 

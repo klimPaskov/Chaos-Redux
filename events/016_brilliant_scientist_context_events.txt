@@ -1,0 +1,224 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 HOST-CONTEXT AND INSTITUTIONAL-CONFLICT EVENTS
+# ============================================================================
+# These two ordinary country events deepen the appointment without adding a
+# fifth evolution or changing the fire-once opening. The first records how the
+# host places the laboratory inside its existing state structure. The delayed
+# second event resolves the first assistant and institutional conflict created
+# by that choice. Both use the existing evolution report surfaces and persist
+# their causal state through the shared Directorate variables.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.4
+	title = chaosx.nr16.4.t
+	desc = {
+		trigger = {
+			has_war = yes
+			OR = {
+				has_country_flag = brilliant_scientist_secret_directorate
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		text = chaosx.nr16.4.wartime.d
+	}
+	desc = {
+		trigger = {
+			has_country_flag = brilliant_scientist_public_compact
+			has_government = democratic
+		}
+		text = chaosx.nr16.4.public.d
+	}
+	desc = {
+		trigger = { num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+		text = chaosx.nr16.4.industrial.d
+	}
+	desc = { text = chaosx.nr16.4.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_evolution_1
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_appointment_completed
+		NOT = { has_country_flag = brilliant_scientist_context_briefing_resolved }
+	}
+
+	option = {
+		name = chaosx.nr16.4.a
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_public_compact
+				has_government = democratic
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_public_compact }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_public_science_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_briefing_pending
+			set_country_flag = brilliant_scientist_context_briefing_resolved
+			set_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			brilliant_scientist_context_choose_public_science = yes
+			country_event = { id = chaosx.nr16.5 days = constant:brilliant_scientist_directorate_timing.context_assistant_followup_days }
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.4.b
+		trigger = {
+			OR = {
+				has_war = yes
+				has_country_flag = brilliant_scientist_secret_directorate
+				has_government = fascism
+				has_government = communism
+				has_government = neutrality
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_secret_directorate }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_strategic_security_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_briefing_pending
+			set_country_flag = brilliant_scientist_context_briefing_resolved
+			set_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			brilliant_scientist_context_choose_strategic_security = yes
+			country_event = { id = chaosx.nr16.5 days = constant:brilliant_scientist_directorate_timing.context_assistant_followup_days }
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.4.c
+		trigger = { num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_industrial_mobilization_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_briefing_pending
+			set_country_flag = brilliant_scientist_context_briefing_resolved
+			set_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			brilliant_scientist_context_choose_industrial_mobilization = yes
+			country_event = { id = chaosx.nr16.5 days = constant:brilliant_scientist_directorate_timing.context_assistant_followup_days }
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.4.d_option
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_tech = computing_machine }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.cautious has_war = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_distributed_research_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_briefing_pending
+			set_country_flag = brilliant_scientist_context_briefing_resolved
+			set_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			brilliant_scientist_context_choose_distributed_research = yes
+			country_event = { id = chaosx.nr16.5 days = constant:brilliant_scientist_directorate_timing.context_assistant_followup_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.5
+	title = chaosx.nr16.5.t
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		text = chaosx.nr16.5.school.d
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_assistant_service_bound
+			}
+		}
+		text = chaosx.nr16.5.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.5.industrial.d
+	}
+	desc = { text = chaosx.nr16.5.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_context_assistant_conflict_pending
+		NOT = { has_country_flag = brilliant_scientist_assistant_conflict_resolved }
+	}
+
+	option = {
+		name = chaosx.nr16.5.a
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_public_science
+				has_country_flag = brilliant_scientist_context_distributed_research
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred brilliant_scientist_has_high_independent_capacity = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_recognize_assistant_school_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_recognize_assistant_school = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.5.b
+		trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_context_strategic_security
+				has_country_flag = brilliant_scientist_context_industrial_mobilization
+			}
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_country_flag = brilliant_scientist_secret_directorate }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_bind_assistant_service_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_bind_assistant_service = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.5.c
+		ai_chance = {
+			base = constant:brilliant_scientist_evolution_ai.base
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.preferred has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_evolution_ai.cautious has_war = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_context_mediate_assistant_conflict_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+			set_country_flag = brilliant_scientist_assistant_conflict_resolved
+			brilliant_scientist_context_mediate_assistant_conflict = yes
+		}
+	}
+}

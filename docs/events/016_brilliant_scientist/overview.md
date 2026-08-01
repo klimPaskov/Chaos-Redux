@@ -4,11 +4,17 @@
 
 Event 016 is default-enabled as a minor fire-once incident after the core package audits. The dispatcher resolves one weighted valid host, the player can appoint Doctor Warren Kruger publicly or secretly or forward his unrecruited application once, and AI always appoints him. Both appointment routes create the same fixed character, grant his non-dismissable national-advisor role with exactly `+100%` research speed, add him as a level-five scientist in all six special-project fields, initialize the Directorate state, preserve the chosen host for the event log, and prevent a second opening reward.
 
-The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, presentation, shared wiring, Event 019 provider interoperability, localisation, workbook alignment, and mapped audit tranches form the core runtime package. Deferred report/news and flavor content, Event016-specific 3D models, and live consumer validation remain open. This document does not claim the whole event is content-complete.
+The architecture and identifier maps are frozen in the accepted handoffs under `docs/plans/016_brilliant_scientist_plans/`. Directorate, project portfolio, foreign-operation, containment, territory-planner, Kruger State focus, terminal, achievement, aftermath, presentation, shared wiring, Event 019 provider interoperability, localisation, workbook alignment, and mapped audit tranches form the core runtime package. The bounded host-context briefing, assistant-conflict follow-up, and first-prototype report now add non-evolution flavour with causal state changes and persistent records. Broader country-specific flavour, bespoke project/news/remnant art, Event016-specific 3D models, quantitative balance evidence, and live consumer validation remain open. This document does not claim the whole event is content-complete.
 
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.
+
+## Current bounded flavour tranche
+
+Fourteen days after appointment, the host receives `chaosx.nr16.4`, which selects a university, security, industrial, or distributed institutional settlement from the host's situation. A finite follow-up, `chaosx.nr16.5`, resolves the first assistant conflict through professional recognition, classified service, or cabinet mediation. Each choice changes the visible Directorate values and the hidden Independent Capacity and Grievance state, and the selected settlement changes Evolution I or II timing through MTTH modifiers.
+
+The first Prototype reached in each project family produces one ordinary report, `chaosx.nr16.6`. The report uses the existing Directorate dossier surface, names the family dynamically, and offers public publication or strategic classification. The choice changes the same causal state without granting a second project reward, is recorded once per family, and is visible in the Directorate overview. These `.4`, `.5`, and `.6` reports are intentionally not additional evolutions or event-log entries.
 
 ## Event identity
 

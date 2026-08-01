@@ -18,6 +18,7 @@ The system does not create free units, free equipment, generic technology grants
 5. Advance Weaponization only after the mapped late prerequisites. The stage adds a family-specific military or institutional output and a persistent history record.
 6. Every completed stage recalculates accident pressure from Exposure, stage burden, project condition, and suspension state. A failed pressure roll activates the exact family's incident mission and recovery action.
 7. Suspending a project releases half its occupied capacity. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
+8. The first completed Prototype in each family reserves one ordinary `chaosx.nr16.6` report. Public publication and classified retention adjust the existing Directorate values, but the report never grants a second project-stage reward. If several families reach Prototype in one synchronization pass, later families enter `brilliant_scientist_breakthrough_pending_families` and are dispatched in order after the current report closes.
 
 Prototype projects are not charged a second wrapper clock. Their native facility time, breakthrough points, resources, and prototype iterations are the prototype cost.
 
@@ -39,6 +40,15 @@ A completed family therefore occupies 10, 20, 35, or 50 capacity at its current 
 - `brilliant_scientist_project_dismantled_families`
 - `brilliant_scientist_project_published_families`
 - `brilliant_scientist_project_stolen_families`
+- `brilliant_scientist_breakthrough_reported_families`
+- `brilliant_scientist_breakthrough_pending_families`
+- `brilliant_scientist_breakthrough_public_families`
+- `brilliant_scientist_breakthrough_classified_families`
+- `brilliant_scientist_breakthrough_resolved_count`
+- `brilliant_scientist_breakthrough_public_count`
+- `brilliant_scientist_breakthrough_classified_count`
+
+The country arrays reserve and queue reports while a host owns the Directorate. Dispatch also writes a pending receipt on the single `KRG_warren_kruger` character before the delayed event appears; resolution clears that pending flag and writes reported plus public or classified governance receipts. Transfer and Kruger State formation carry the reserved arrays, governance arrays, counts, and any active report across the handoff. The host-context policy flags and pending `.4` or `.5` obligation are carried without replaying their value deltas. The first resolved report uses full strength, the next two use half strength, and later reports use quarter strength. These character-level receipts survive transfer and Kruger State formation, so a recipient can inherit project history without replaying the first-Prototype governance choice.
 
 ## Family implementation map
 
@@ -130,7 +140,9 @@ Weaponization certification leaves `brilliant_scientist_singularity_arming_state
 - `common/decisions/016_brilliant_scientist_directorate_project_board.txt`
 - `common/script_constants/016_brilliant_scientist_project_constants.txt`
 - `common/scripted_triggers/016_brilliant_scientist_project_triggers.txt`
+- `common/scripted_triggers/016_brilliant_scientist_breakthrough_triggers.txt`
 - `common/scripted_effects/016_brilliant_scientist_project_effects.txt`
+- `common/scripted_effects/016_brilliant_scientist_breakthrough_effects.txt`
 - `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`
 - `common/special_projects/projects/016_brilliant_scientist_projects.txt`
 - `common/technologies/016_brilliant_scientist_project_technologies.txt`

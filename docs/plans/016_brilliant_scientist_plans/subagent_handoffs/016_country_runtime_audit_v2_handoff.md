@@ -2,15 +2,15 @@
 
 Date: 2026-08-01
 
-Scope: static and runtime-contract audit of the KRG country package and the host-to-Kruger State formation paths. This handoff is limited to the country package, its project-derived military contract, and containment/formation cleanup. No gameplay files were patched in this audit.
+Scope: static and runtime-contract audit of the KRG country package and the host-to-Kruger State formation paths. This handoff is limited to the country package, its project-derived military contract, and containment/formation cleanup. The audit itself made no gameplay edits; the parent later applied the bounded instantiation repair recorded below.
 
 ## Executive disposition
 
 The static KRG package is broadly covered: the tag, country definition, dormant history, fixed Warren Kruger character, route portraits and flags, 100-focus tree, route AI plans, project-force equipment/technologies, localisation, and static map data are present. The package is intentionally dormant until a formation or takeover path activates it.
 
-The blocking unresolved issue is country instantiation for the charter, rebellion, and enclave routes. `brilliant_scientist_form_kruger_state_from_verified_plan` requires `KRG = { exists = no }`, then transfers states directly with `set_state_owner_to = KRG` and `set_state_controller_to = KRG` before entering a `KRG = { ... }` scope. The formation path contains no `release`, `release_puppet`, `create_dynamic_country`, or `change_tag` operation. The vanilla effects documentation defines `set_state_owner_to` only as assigning the owner of a state, while `release` and `create_dynamic_country` are the documented country-instantiation effects. Because KRG history has no state cores, this direct assignment is not a proved way to instantiate a playable country and may no-op or leave formation in an invalid scope. Parent implementation must design and validate an explicit instantiation transaction before claiming sovereign formation complete.
+The audit found a country-instantiation gap for the charter, rebellion, and enclave routes. `brilliant_scientist_form_kruger_state_from_verified_plan` required `KRG = { exists = no }`, then transferred states directly with `set_state_owner_to = KRG` and `set_state_controller_to = KRG` before entering a `KRG = { ... }` scope. The vanilla effects documentation defines `set_state_owner_to` only as assigning the owner of a state, while `release` and `create_dynamic_country` are the documented country-instantiation effects. The parent repair now cores only the verified capital for KRG, calls the documented `release = KRG` effect, and leaves the existing route-specific transfer and revalidation sequence in place. This resolves the static instantiation omission; live formation and cleanup acceptance remain user-owned.
 
-This is a runtime-contract finding, not a definitive claim about every engine build. No game launch was performed, and the installed read-only tools cannot prove the dynamic country transition.
+The repair is a source-level contract correction, not a claim about every engine build. No game launch was performed, and the installed read-only tools cannot prove the dynamic country transition.
 
 ## Country-package coverage checklist
 
@@ -39,8 +39,8 @@ No missing static KRG file surface was found. The missing surface is an explicit
 
 ## Missing or stale surfaces
 
-1. Formation instantiation is unresolved at `common/scripted_effects/016_brilliant_scientist_country_effects.txt:753-850`. The state transfer helper starts at line 617 and writes `set_state_owner_to = KRG` and `set_state_controller_to = KRG` at lines 630-631. The form helper checks `KRG = { exists = no }` at line 763 and then immediately transfers the capital and selected states. There is no documented country creation or release effect in this path.
-2. The KRG history file has no state-level cores. Any release-based repair must explicitly account for the target capital/core and the autonomy state, and must be validated against the vanilla release semantics before touching the map transaction.
+1. Live formation acceptance remains open at `common/scripted_effects/016_brilliant_scientist_country_effects.txt`. The repair seeds the verified capital, calls `release = KRG`, and then runs the existing route transfer; a user-owned scenario must confirm intended states, capital, cores/claims, and post-formation cleanup.
+2. The KRG history file remains intentionally coreless at start; the runtime repair supplies only the verified capital core immediately before release, so the dormant tag stays inert outside the formation path.
 3. Workshop collision status is unresolved because the prior broad scan timed out. Vanilla installation scans found no KRG collision. A bounded workshop scan or an explicit collision record is still needed before final tag-uniqueness claims.
 4. The installed technology viewer is not a usable completion proof. `hoi4_tech_inspect` returned `TECH_INSPECTED_PARTIAL` for the portal technology with 651 workspace technologies, 1,787 aggregate issues, and helper projections deferred. There is no installed Technology Tree Viewer. Event 016’s direct source cross-check did find all referenced `brilliant_scientist_*_tech` IDs defined exactly once.
 
@@ -86,14 +86,13 @@ Project on-actions retry deferred force packages on state-control changes and cl
 
 ## Required parent follow-up
 
-1. Resolve the fixed-tag formation transaction before claiming charter, rebellion, or enclave playability. Compare a validated `release`/autonomy-free sequence, a `create_dynamic_country` sequence, or another approved engine-supported instantiation path against vanilla documentation and existing map ownership. Preserve capital/facility selection and ensure the target scope exists before any `set_state_owner_to` call.
+1. Exercise at least one formation and one takeover scenario in the user-owned live session. The agent must not launch HOI4; this handoff records the source-level and read-only checks only.
 2. Re-run a bounded tag-collision check over approved workshop paths and record the result.
-3. Exercise at least one formation and one takeover scenario in the user-owned live session. The agent must not launch HOI4; this handoff records the source-level and read-only checks only.
-4. Revisit `recruit_character` in the opening scripted effect with the country/character implementation owner. Do not silently rewrite it as part of the formation fix.
-5. If the instantiation repair changes state cores, claims, autonomy, or country flags, update the Event 016 country package spec/plan and perform map post-validation with rollback/recovery evidence.
+3. Revisit `recruit_character` in the opening scripted effect with the country/character implementation owner. Do not silently rewrite it as part of the formation fix.
+4. If live acceptance shows a different state-core, claim, autonomy, or country-flag result, update the Event 016 country package spec/plan and retain map recovery evidence.
 
 ## Validation and limitations
 
 Read-only checks completed: required offline wiki and vanilla documentation review; vanilla KRG tag scan; static focus/AI cross-reference (100 focuses, no missing AI focus IDs); Event 016 GFX texture-reference audit (478 references, 0 missing); project-force technology ID cross-reference; and `hoi4_map_inspect` for state 1. The technology inspection was partial and cannot serve as a clean tree proof. No game launch, save mutation, or runtime formation/takeover scenario was performed.
 
-No intentional content simplification was introduced by this audit. The formation instantiation contract, workshop collision status, and live dynamic-territory/cleanup behavior remain unresolved blockers or validation gaps.
+No intentional content simplification was introduced by this audit. The static instantiation omission is repaired; workshop collision status and live dynamic-territory/cleanup behavior remain validation gaps.
