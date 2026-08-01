@@ -82,10 +82,33 @@ The tuning sources are:
 The effects and triggers are:
 
 - `common/scripted_effects/006_independence_wave_evolution_effects.txt`
+- `common/scripted_effects/006_independence_wave_evolution_incident_effects.txt`
 - `common/scripted_triggers/006_independence_wave_evolution_triggers.txt`
 - `common/on_actions/006_independence_wave_evolution_on_actions.txt`
 
 Replicable Independence also exposes `global.independence_wave_replicable_opening_confidence`, initialized at 50 and clamped to 0–100. Lifecycle failures are recorded once per origin generation from government collapse, recognition blockade, command or border failure, congress discredit, and open-sovereignty escalation. Annexation, puppetry, and capitulation are recorded at their transaction boundaries. The allocator applies the low-confidence penalty or high-confidence bonus before candidate weighting, so earlier survival directly changes later wave composition. The League Congress category displays the live value.
+
+## Shared incident resolution
+
+Each active evolution exposes one paid, generation-scoped decision in
+`independence_wave_evolution_incident_category`. The decision consumes an
+existing administration, diplomatic, security, or strategic material package,
+then opens a two-option country event. The options write the country ledger
+and, where applicable, the former-host, Network, or League ledgers through the
+shared transaction effects.
+
+| Stage | Incident families | Runtime surface |
+| --- | --- | --- |
+| The Manuals Cross the Border | institution compact or recognition campaign | `chaosx.nr6.360`, administration cost, capacity or recognition/network trade-off, former-host obligations/property |
+| Old Nations Wake | civic charter settlement or pluralist compact | `chaosx.nr6.361`, diplomatic cost, identity flags, legitimacy/recognition/capacity/instability |
+| Flags Rise Behind the Barracks | civilian chain of command or frontier mobilization | `chaosx.nr6.362`, major security cost, security/instability and bilateral hostility/fear; frontier option can open a reclamation conflict |
+| The Sovereigns Take Their Seats | equal-rights charter or concentrated secretariat | `chaosx.nr6.363`, strategic cost, country/Network and League cohesion/common-cause/patron/confidence changes |
+| No Border Is Final | synchronized claims or containment diplomacy | `chaosx.nr6.364`, strategic cost, territorial pressure and revisionist action versus recognition/Network shelter |
+
+Pending and resolution flags are cleared by both generation reset and origin
+cleanup. This prevents reused `chaosx_country_*` API tags from inheriting a
+previous government's incident decision while retaining the global opening-
+confidence feedback memory.
 
 ## Event 005 Boundary
 
@@ -100,7 +123,7 @@ If bespoke stage icons are commissioned later, stable source names should be reg
 ## Remaining Follow-through
 
 - Complete the package-initialization adapter hook after the command roster and reinforcement-pathway contracts are proven, so Armed Birth force modifiers are consumed before starting-force materialization.
-- Implement and wire the accepted incident families for copied institutions, dormant identities, armed border crises, congress disputes, and open-sovereignty escalation and containment.
+- Connect the Armed Birth incident outcome to the package force-materialization adapter once the command-roster and reinforcement-pathway contracts are proven, so its security choice changes starting-force delivery as well as the shared security ledger.
 - The transaction-boundary hooks for rapid annexation, puppetry, and capitulation now feed the Replicable Independence opening-confidence calculation. Collapse is represented by the existing lifecycle failure flags and is recorded once per generation through the central refresh hook.
 - Revisit MTTH pacing after runtime observations across multiple Event 006 invocations at each chaos tier, especially when several stages are disabled in settings.
 
