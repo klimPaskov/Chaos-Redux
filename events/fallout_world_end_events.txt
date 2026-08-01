@@ -20953,3 +20953,105 @@ country_event = {
 	trigger = { fallout_event_782_cleanup_can_enter = yes }
 	immediate = { fallout_event_782_cleanup = yes }
 }
+
+# Dormant Fallout maritime chain: The Pirate Amnesty
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.789
+	title = chaosx.fallout.789.t
+	desc = chaosx.fallout.789.opening.d
+	picture = GFX_report_event_fallout_pirate_amnesty
+	is_triggered_only = yes
+	trigger = { fallout_event_789_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.789.a
+		trigger = { fallout_event_789_amnesty_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_789_requested_branch = constant:fallout_event_789_branch.amnesty } fallout_event_789_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.789.a.tt
+	}
+	option = {
+		name = chaosx.fallout.789.b
+		trigger = { fallout_event_789_privateer_service_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_789_requested_branch = constant:fallout_event_789_branch.privateer_service } fallout_event_789_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.789.b.tt
+	}
+	option = {
+		name = chaosx.fallout.789.c
+		trigger = { fallout_event_789_public_trial_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_789_requested_branch = constant:fallout_event_789_branch.public_trial } fallout_event_789_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.789.c.tt
+	}
+	option = {
+		name = chaosx.fallout.789.d
+		trigger = { fallout_event_789_exile_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_789_requested_branch = constant:fallout_event_789_branch.exile } fallout_event_789_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.789.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.790
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_789_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_789_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.791
+	title = chaosx.fallout.791.t
+	desc = { text = chaosx.fallout.791.amnesty.success.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.amnesty compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.791.amnesty.partial.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.amnesty compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.791.amnesty.failure.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.amnesty compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.791.privateer_service.success.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.privateer_service compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.791.privateer_service.partial.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.privateer_service compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.791.privateer_service.failure.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.privateer_service compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.791.public_trial.success.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.public_trial compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.791.public_trial.partial.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.public_trial compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.791.public_trial.failure.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.public_trial compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.791.exile.success.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.exile compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.791.exile.partial.d trigger = { check_variable = { fallout_event_789_selected_branch value = constant:fallout_event_789_branch.exile compare = equals } check_variable = { fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.791.exile.failure.d
+	picture = GFX_report_event_fallout_pirate_amnesty
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_789_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.pirate_amnesty_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.791.a hidden_effect = { fallout_event_789_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.791.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.792
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_789_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.pirate_amnesty_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_789_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.793
+	title = chaosx.fallout.793.t
+	desc = { text = chaosx.fallout.793.success.d trigger = { check_variable = { fallout_event_789_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.793.partial.d trigger = { check_variable = { fallout_event_789_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.793.failure.d
+	picture = GFX_report_event_fallout_pirate_amnesty
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_789_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.pirate_amnesty_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_789_registry_is_current = yes }
+	immediate = { fallout_event_789_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.793.a hidden_effect = { fallout_event_789_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.793.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.794
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_789_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.pirate_amnesty_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_789_registry_is_current = yes }
+	immediate = { fallout_event_789_calculate_callback_outcome = yes fallout_event_789_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.795
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_789_cleanup_can_enter = yes }
+	immediate = { fallout_event_789_cleanup = yes }
+}
