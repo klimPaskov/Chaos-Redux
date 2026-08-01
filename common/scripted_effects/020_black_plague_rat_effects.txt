@@ -46,9 +46,11 @@ black_plague_rat_initialize_runtime = {
 		clr_global_flag = black_plague_evolution_v_route_open
 		clr_global_flag = black_plague_evolution_i_recorded
 		clr_global_flag = black_plague_evolution_ii_recorded
+		clr_global_flag = black_plague_evolution_ii_actor_pending
 		clr_global_flag = black_plague_evolution_iii_recorded
 		clr_global_flag = black_plague_evolution_iv_recorded
 		clr_global_flag = black_plague_evolution_v_recorded
+		clr_global_flag = black_plague_evolution_ii_actor_captured
 	}
 	if = {
 		limit = { NOT = { has_variable = global.black_plague_rat_pool_generation } }
@@ -1916,7 +1918,7 @@ black_plague_rat_initialize_king_country = {
 	set_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_pool.king_hunger_initial }
 	clear_variable = black_plague_rat_king_pulse_block_until
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
-	set_variable = { black_plague_rat_division_count = num_of_divisions }
+	set_variable = { black_plague_rat_division_count = num_divisions }
 	set_variable = { black_plague_rat_king_absorbed_brood_states = constant:black_plague_value.zero }
 	set_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_pool.division_cap_maximum }
 	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_maximum }
@@ -1936,8 +1938,15 @@ black_plague_rat_initialize_king_country = {
 	add_ideas = { black_plague_rat_king_dominion black_plague_rat_no_civilian_economy }
 	load_focus_tree = { tree = black_plague_rat_king_focus_tree keep_completed = no }
 	if = {
-		limit = { num_of_divisions < constant:black_plague_value.one }
-		create_unit = { division = "name = \"Royal Brood Guard\" division_template = \"Royal Rat Guard\" start_experience_factor = 0.35 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = 1 allow_spawning_on_enemy_provs = no }
+		limit = {
+			num_divisions < constant:black_plague_value.one
+			# SCN-012 assigns the exact intensity floor in its own commit block.
+			# Deferring the initializer guard there prevents a hidden one-unit
+			# minimum from consuming the scenario's force budget.
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+		}
+		create_unit = { division = "name = \"Royal Brood Guard\" division_template = \"Royal Rat Guard\" start_experience_factor = 0.35 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = THIS count = constant:black_plague_rat_pool.king_starting_guard_divisions allow_spawning_on_enemy_provs = no }
+		set_variable = { black_plague_rat_division_count = constant:black_plague_rat_pool.king_starting_guard_divisions }
 	}
 	add_ai_strategy = { type = template_prio id = rat_swarm value = 3000 }
 	add_ai_strategy = { type = role_ratio id = rat_swarm value = 2 }
@@ -1976,10 +1985,6 @@ black_plague_rat_transfer_to_king = {
 		if = {
 			limit = { has_event_target = black_plague_rat_royal_basin_state }
 		event_target:black_plague_rat_king_source = { set_country_flag = black_plague_rat_king_source_pending }
-			RTX = {
-				set_capital = { state = event_target:black_plague_rat_royal_basin_state remember_old_capital = no }
-				black_plague_rat_initialize_king_country = yes
-			}
 			event_target:black_plague_rat_royal_basin_state = {
 				set_state_flag = black_plague_rat_king_royal_node
 				set_state_flag = black_plague_rat_royal_basin
@@ -1987,6 +1992,13 @@ black_plague_rat_transfer_to_king = {
 				set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
 				black_plague_set_current_state_phase = yes
 				RTX = { transfer_state = PREV add_state_core = PREV }
+			}
+			# RTX was dormant before the basin transfer. Initialize the sovereign
+			# only after it owns a valid state, so the natural Royal Guard has a
+			# legal friendly spawn location instead of an optimistic counter.
+			RTX = {
+				set_capital = { state = event_target:black_plague_rat_royal_basin_state remember_old_capital = no }
+				black_plague_rat_initialize_king_country = yes
 			}
 			set_variable = { global.black_plague_rat_king_grace_end_date = global.date }
 			add_to_variable = { global.black_plague_rat_king_grace_end_date = constant:black_plague_evolution_runtime.royal_grace_period_days }

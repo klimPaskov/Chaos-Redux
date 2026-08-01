@@ -151,6 +151,29 @@ black_plague_shared_state_can_pay_scaled_materials = {
 	}
 }
 
+# COUNTRY scope. The selected-state board owns the target pointer for human
+# responders, while AI countries evaluate their state target through the normal
+# availability trigger. This keeps custom-cost colouring aligned with the
+# population-scaled payment without blocking AI actions that have no board row.
+black_plague_shared_country_can_pay_scaled_selected_state = {
+	OR = {
+		is_ai = yes
+		AND = {
+			has_variable = black_plague_selected_response_state
+			var:black_plague_selected_response_state = {
+				black_plague_shared_state_can_pay_scaled_materials = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Train-routed state actions add their transport reserve to the
+# same selected-state affordability check used by the ordinary board actions.
+black_plague_shared_country_can_pay_scaled_selected_state_with_trains = {
+	black_plague_shared_country_can_pay_scaled_selected_state = yes
+	has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+}
+
 # STATE scope: Prepared / Exposed actions.
 black_plague_shared_can_start_sentinel_surveillance = {
 	black_plague_shared_state_can_start_action = yes

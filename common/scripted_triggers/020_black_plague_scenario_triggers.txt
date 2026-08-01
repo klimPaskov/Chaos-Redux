@@ -89,10 +89,10 @@ black_plague_scenario_has_two_eligible_continents = {
 	}
 }
 
-# Evolution II is forced by SCN-012, so the commit must have at least one
+# Evolution II is forced by SCN-012, so the commit must have at least one real
 # human-controlled port that can own the overseas-spread milestone. The
-# scenario effect may seed this state after the ordinary continent anchors are
-# chosen, but a world with no such port fails closed before any mutation.
+# scenario effect may seed that existing port after the ordinary continent
+# anchors are chosen, but it never fabricates a naval base on a portless map.
 black_plague_scenario_has_human_port = {
 	any_state = {
 		black_plague_scenario_valid_human_state = yes
@@ -159,6 +159,15 @@ black_plague_scenario_setup_preflight_is_ready = {
 	black_plague_scenario_has_minimum_state_candidates = yes
 	black_plague_scenario_has_human_port = yes
 	black_plague_scenario_has_usable_rat_slot = yes
+	# A stale Evolution IV flag without a living King cannot be repaired safely
+	# inside the commit block. Reject it before disease or country mutation.
+	OR = {
+		NOT = { has_global_flag = black_plague_evolution_iv_active }
+		AND = {
+			has_global_flag = black_plague_evolution_iv_active
+			RTX = { black_plague_rat_country_is_king = yes }
+		}
+	}
 	OR = {
 		RTX = { black_plague_rat_country_is_king = yes }
 		any_state = {

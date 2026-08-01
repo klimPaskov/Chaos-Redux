@@ -159,6 +159,36 @@ black_plague_evolution_record_stage = {
 	}
 }
 
+# STATE scope. Evolution II becomes an active route before it has a milestone
+# actor in a natural campaign. The first successful overseas destination owns
+# the row; SCN-012 is the deliberate exception because its verified port is
+# part of the same bootstrap transaction.
+black_plague_capture_evolution_ii_destination_actor = {
+	if = {
+		limit = {
+			has_global_flag = black_plague_evolution_ii_active
+			NOT = { has_global_flag = black_plague_evolution_ii_recorded }
+			NOT = { has_global_flag = black_plague_evolution_ii_actor_captured }
+			check_variable = {
+				var = black_plague_exposure_route
+				value = constant:black_plague_route.overseas_port
+				compare = equals
+			}
+			CONTROLLER = { black_plague_country_is_human_host = yes }
+		}
+		CONTROLLER = { save_global_event_target_as = black_plague_rat_evolution_actor }
+		set_global_flag = black_plague_evolution_ii_actor_captured
+		set_global_flag = black_plague_evolution_ii_recorded
+		clr_global_flag = black_plague_evolution_ii_actor_pending
+		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage }
+		black_plague_evolution_record_stage = yes
+		if = {
+			limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } }
+			CONTROLLER = { news_event = { id = chaosx.nr20.30 } }
+		}
+	}
+}
+
 black_plague_evolution_prepare_prefire_permissions = {
 	if = {
 		limit = { black_plague_evolution_i_is_ready = yes }
@@ -212,27 +242,46 @@ black_plague_activate_evolution_ii = {
 			NOT = { has_global_flag = black_plague_evolution_ii_active }
 		}
 		set_global_flag = black_plague_evolution_ii_active
-		set_global_flag = black_plague_evolution_ii_recorded
 		set_global_flag = black_plague_overseas_spread_enabled
 		set_variable = { global.black_plague_evolution_ii_date = global.date }
 		set_variable = { global.black_plague_overseas_route_generation = constant:black_plague_evolution_runtime.evolution_ii_stage }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage }
 		clear_global_event_target = black_plague_rat_evolution_actor
+		clr_global_flag = black_plague_evolution_ii_actor_captured
+		clr_global_flag = black_plague_evolution_ii_actor_pending
 		every_state = {
 			limit = {
-				black_plague_state_is_established = yes
-				black_plague_rat_state_has_dock_archetype_signal = yes
+				OR = {
+					AND = {
+						has_global_flag = black_plague_triggerable_scenario_bootstrap
+						black_plague_state_is_established = yes
+						black_plague_rat_state_has_dock_archetype_signal = yes
+					}
+					check_variable = {
+						var = black_plague_last_exposure_route
+						value = constant:black_plague_route.overseas_port
+						compare = equals
+					}
+				}
 				CONTROLLER = { black_plague_country_is_human_host = yes }
 			}
 			# The milestone belongs to the first verified overseas destination,
 			# not to whichever qualifying port happens to be iterated last.
 			if = {
-				limit = { NOT = { has_event_target = black_plague_rat_evolution_actor } }
+				limit = { NOT = { has_global_flag = black_plague_evolution_ii_actor_captured } }
 				CONTROLLER = { save_global_event_target_as = black_plague_rat_evolution_actor }
+				set_global_flag = black_plague_evolution_ii_actor_captured
 			}
 		}
-		black_plague_evolution_record_stage = yes
-		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.30 } } }
+		if = {
+			limit = { has_event_target = black_plague_rat_evolution_actor }
+			set_global_flag = black_plague_evolution_ii_recorded
+			black_plague_evolution_record_stage = yes
+			if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.30 } } }
+		}
+		else = {
+			set_global_flag = black_plague_evolution_ii_actor_pending
+		}
 	}
 }
 
@@ -241,6 +290,7 @@ black_plague_activate_evolution_iii = {
 		limit = {
 			black_plague_evolution_iii_is_enabled = yes
 			has_global_flag = black_plague_evolution_ii_active
+			has_global_flag = black_plague_evolution_ii_recorded
 			NOT = { has_global_flag = black_plague_evolution_iii_active }
 		}
 		black_plague_rat_activate_evolution_iii = yes

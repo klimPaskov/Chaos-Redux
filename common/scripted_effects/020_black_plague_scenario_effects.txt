@@ -344,8 +344,9 @@ black_plague_scenario_seed_established_states = {
 # SCN-012 forces Evolution II and its actor contract is a verified human port.
 # Ordinary continent anchors are intentionally weighted for broad geography, so
 # this narrow pass guarantees one usable port without creating a third tag or
-# attributing the milestone to a generic country. Existing established ports
-# are reused; only a missing port is seeded as one additional infected state.
+# attributing the milestone to a generic country. The preflight requires a real
+# naval-base state; this pass reuses an established one or seeds that existing
+# port as one additional infected state.
 black_plague_scenario_ensure_evolution_ii_port = {
 	clear_global_event_target = black_plague_scenario_evolution_ii_port_state
 	every_state = {
@@ -513,8 +514,12 @@ black_plague_scenario_raise_rat_army_to_floor = {
 				black_plague_rat_country_is_active = yes
 			}
 			black_plague_rat_refresh_division_cap = yes
+			# Reconcile the scripted counter with the live army before calculating the
+			# floor. This keeps a preserved RTA carrier from being over- or under-filled
+			# when create_unit updates are deferred until the end of the effect chain.
+			set_variable = { black_plague_rat_division_count = num_divisions }
 			set_temp_variable = { black_plague_scenario_rat_army_gap = global.black_plague_scenario_rat_division_floor }
-			subtract_from_temp_variable = { black_plague_scenario_rat_army_gap = num_of_divisions }
+			subtract_from_temp_variable = { black_plague_scenario_rat_army_gap = black_plague_rat_division_count }
 			if = {
 				limit = {
 					check_variable = {
@@ -540,8 +545,12 @@ black_plague_scenario_assign_king_army = {
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_sentience } } set_variable = { black_plague_rat_king_sentience = constant:black_plague_evolution_runtime.scenario_royal_sentience } }
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_cohesion } } set_variable = { black_plague_rat_king_cohesion = constant:black_plague_evolution_runtime.scenario_royal_cohesion } }
 			if = { limit = { NOT = { has_variable = black_plague_rat_king_hunger } } set_variable = { black_plague_rat_king_hunger = constant:black_plague_evolution_runtime.scenario_royal_hunger } }
+			# The King initializer may have created its guard in this same setup
+			# chain. Reconcile the live count first so every intensity reaches its
+			# promised minimum instead of stopping at the initializer's single guard.
+			set_variable = { black_plague_rat_division_count = num_divisions }
 			set_temp_variable = { black_plague_scenario_king_army_gap = global.black_plague_scenario_king_division_floor }
-			subtract_from_temp_variable = { black_plague_scenario_king_army_gap = num_of_divisions }
+			subtract_from_temp_variable = { black_plague_scenario_king_army_gap = black_plague_rat_division_count }
 			if = {
 				limit = {
 					check_variable = {
@@ -551,6 +560,7 @@ black_plague_scenario_assign_king_army = {
 					}
 				}
 				create_unit = { division = "name = \"Royal Brood Guard\" division_template = \"Royal Rat Guard\" start_experience_factor = 0.35 start_manpower_factor = 0.00 start_equipment_factor = 0.00" owner = RTX count = black_plague_scenario_king_army_gap allow_spawning_on_enemy_provs = no }
+				add_to_variable = { black_plague_rat_division_count = black_plague_scenario_king_army_gap }
 				set_country_flag = black_plague_scenario_king_guard_assigned
 			}
 		}
@@ -750,6 +760,20 @@ black_plague_triggerable_scenario_launch = {
 					compare = greater_than_or_equals
 				}
 				check_variable = { global.black_plague_scenario_king_states_transferred > constant:black_plague_value.zero }
+				RTA = {
+					check_variable = {
+						var = black_plague_rat_division_count
+						value = global.black_plague_scenario_rat_division_floor
+						compare = greater_than_or_equals
+					}
+				}
+				RTX = {
+					check_variable = {
+						var = black_plague_rat_division_count
+						value = global.black_plague_scenario_king_division_floor
+						compare = greater_than_or_equals
+					}
+				}
 			}
 			black_plague_scenario_suppress_fire_once = yes
 			black_plague_scenario_record_history = yes
