@@ -1,6 +1,6 @@
 # Event 020 Black Plague super-event research
 
-This note records the audio package for the Rat King coronation and Rat King world-end super-events. Parent-owned text, image, event, localisation, GFX, sound-definition, and music-registry wiring must be merged here before the full Event 020 super-event package is called complete.
+This note records the audio package for the Rat King coronation and Rat King world-end super-events. Audio IDs 101 and 102 are now promoted into the shared sound and music registries; the separate defeat super-event 87 remains gated and unproduced. Parent-owned text, image, event, localisation, GFX, and final package validation still determine whole Event 020 super-event completeness.
 
 ## Roles and audio decisions
 
@@ -39,17 +39,17 @@ The cues are unique to Event 020 and are not reused from another super-event. Au
 - Courtesy attribution: `Gregorian chant, “Dies irae”; recording by Membeth; source via Wikimedia Commons; public domain. Edited, faded, loudness-normalized, resampled, and excerpted by Chaos Redux.`
 - Fit: the opening sequence's ritual judgment and natural pause give the terminal takeover a final, liturgical weight while remaining short enough for the super-event window.
 
-## Parent wiring handoff
+## Parent wiring evidence
 
-Use `docs/assets/020_black_plague/audio_manifest.md` for the exact six-level registry names, sound wrapper names, paths, volume ladder, and attribution text. Proposed wrappers are `chaosx_super_event_rat_king_coronation_track` and `chaosx_super_event_rat_king_world_end_track`; proposed six-level soundeffect families are `chaosx_super_event_101_sound_*` and `chaosx_super_event_102_sound_*`. Set `global.current_super_event_audio_id` to `101` or `102` through the existing settings-aware helper. Add both final rows to `music/chaosx_music_track_list.html` with the final display-slot IDs. This audio researcher did not edit those shared wiring files.
+Use `docs/assets/020_black_plague/audio_manifest.md` for the exact six-level registry names, sound wrapper names, paths, volume ladder, and attribution text. The wrappers `chaosx_super_event_rat_king_coronation_track` and `chaosx_super_event_rat_king_world_end_track` and the six-level soundeffect families `chaosx_super_event_101_sound_*` and `chaosx_super_event_102_sound_*` are present in the shared sound registry and catalogue. Runtime branches set `global.current_super_event_audio_id` to `101` or `102` through the existing settings-aware helper. This audio researcher did not edit those shared wiring files; the paths are recorded here as promoted runtime evidence.
 
 ## Non-selected leads and optional branch
 
 `De profundis.ogg` was not selected because its Commons page leaves the author field blank despite CC BY-SA licensing, so the composition/recording attribution split was not strong enough for a final package. `Rorate Caeli ~ Gregorian Chant.ogg` was not selected because the recording is less directly suited to the coronation role. The optional defeat-aftermath cue is intentionally not prepared until the parent confirms that the long/global-war eligibility gate remains in the accepted implementation.
 
-## Required parent additions
+## Remaining parent additions
 
-The parent must still add final title/description/remark/quote localisation, generated 457x328 images and GFX mappings, super-event slot flags, settings-aware event wiring, sound definitions, catalogue rows, event docs, and any workbook alignment. No fallback or default audio is authorized for either completed super-event.
+The parent must still maintain final title/description/remark/quote localisation, generated 457x328 images and GFX mappings, super-event slot flags, event docs, and any workbook alignment. The optional defeat super-event 87 additionally requires its own gate, image, quotation, cultural remark, unique audio, settings-aware playback ID, and provenance record. No fallback or default audio is authorized for any completed super-event.
 
 ## Text research package
 

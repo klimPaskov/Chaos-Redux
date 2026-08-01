@@ -24,6 +24,7 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.42` | rat dominance standoff | superseded by the two-tag correction; no third Rat Nation is created | no separate event | no |
 | `chaosx.nr20.43` | state-level brood absorption | reusable RTA carrier | report or log | yes |
 | `chaosx.nr20.44` | rat resurgence | affected human owner and rat tag | yes | limited by basin cooldown |
+| `chaosx.nr20.45` | hierarchy acknowledgement after the RTA route choice | RTA | yes | one per carrier |
 | `chaosx.nr20.50` | Evolution IV candidate selection | leading rat country | yes | no per coronation cycle |
 | `chaosx.nr20.51` | Rat King transfer and coronation | Rat King | yes | no |
 | `chaosx.nr20.52` | coronation super-event launcher | global | super-event | no |
@@ -31,15 +32,25 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.54` | successful Royal Node strike report | responding human country | yes | one per completed strike |
 | `chaosx.nr20.55` | failed Royal Node strike and counterfire report | responding human country | yes | one per failed strike |
 | `chaosx.nr20.56` | emergency countermeasure mission timeout | responding human country | yes | one per failed mission |
+| `chaosx.nr20.57` | Absolute Crown Hunger crisis | Rat King | yes | one route crisis |
+| `chaosx.nr20.58` | Council of Burrows Hunger crisis | Rat King | yes | one route crisis |
+| `chaosx.nr20.59` | Black-Breath Hierophancy Hunger crisis | Rat King | yes | one route crisis |
+| `chaosx.nr20.64` | successful Crown Strike report | responding human country | yes | one per completed strike |
+| `chaosx.nr20.65` | Crown Strike timeout and royal recovery report | responding human country | yes | one per failed strike |
 | `chaosx.nr20.60` | Evolution V resolution | Rat King | yes | no |
 | `chaosx.nr20.61` | continent selected | Rat King | yes | one active target |
 | `chaosx.nr20.62` | continent crowned | Rat King and human world | news | no per target |
 | `chaosx.nr20.63` | world-end terminal launcher | global | super-event | no |
 | `chaosx.nr20.70` | Rat Nations defeated | leading human actor | news or report | no per rat phase |
-| `chaosx.nr20.71` | Rat King defeated | leading human actor | news or super-event if global | no per king cycle |
+| `chaosx.nr20.71` | Rat King defeated | global and response hosts | news or super-event if global | no per king cycle |
 | `chaosx.nr20.72` | global reconstruction milestone | leading recovery actor | report | limited |
+| `chaosx.nr20.73` | Royal Basin defeat aftermath choice | first human response host | yes | one per King defeat |
+| `chaosx.nr20.74` | Royal Burrow sealing success | sealing operation owner | yes | one per completed site |
+| `chaosx.nr20.75` | Royal Burrow sealing timeout | sealing operation owner | yes | one per failed site |
 | `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
 | `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
+
+Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.65`, and `.71-.75`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` still follows global eradication logic rather than earned aftermath sealing. This matrix remains the behavioral contract and does not claim live-game validation.
 
 ## Runtime families
 

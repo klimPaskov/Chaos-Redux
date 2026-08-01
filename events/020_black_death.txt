@@ -91,7 +91,7 @@ news_event = {
 	id = chaosx.nr20.3
 	title = chaosx.nr20.3.t
 	desc = chaosx.nr20.3.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_report_event_020_black_plague_origin
 	is_triggered_only = yes
 	minor_flavor = no
 	major = yes
@@ -113,7 +113,7 @@ news_event = {
 	id = chaosx.nr20.2
 	title = chaosx.nr20.2.t
 	desc = chaosx.nr20.2.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_report_event_020_black_plague_origin
 	is_triggered_only = yes
 	minor_flavor = no
 	major = yes
@@ -218,7 +218,7 @@ news_event = {
 	id = chaosx.nr20.31
 	title = chaosx.nr20.31.t
 	desc = chaosx.nr20.31.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_news_event_020_black_plague_overseas
 	is_triggered_only = yes
 	minor_flavor = no
 	major = yes
@@ -229,7 +229,7 @@ news_event = {
 	id = chaosx.nr20.40
 	title = chaosx.nr20.40.t
 	desc = chaosx.nr20.40.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_report_event_020_rat_emergence
 	is_triggered_only = yes
 	major = yes
 	option = { name = chaosx.nr20.40.a }
@@ -239,7 +239,7 @@ news_event = {
 	id = chaosx.nr20.41
 	title = chaosx.nr20.41.t
 	desc = chaosx.nr20.41.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_report_event_020_rat_emergence
 	is_triggered_only = yes
 	major = yes
 	option = { name = chaosx.nr20.41.a }
@@ -260,11 +260,24 @@ news_event = {
 	id = chaosx.nr20.44
 	title = chaosx.nr20.44.t
 	desc = chaosx.nr20.44.d
-	picture = GFX_report_event_020_black_plague_unbound
+	picture = GFX_report_event_020_rat_emergence
 	is_triggered_only = yes
 	minor_flavor = no
 	major = yes
 	option = { name = chaosx.nr20.44.a }
+}
+
+country_event = {
+	id = chaosx.nr20.45
+	title = chaosx.nr20.45.t
+	desc = chaosx.nr20.45.d
+	picture = GFX_report_event_020_rat_emergence
+	is_triggered_only = yes
+	trigger = {
+		black_plague_rat_country_is_active = yes
+		has_country_flag = black_plague_rat_hierarchy_reported
+	}
+	option = { name = chaosx.nr20.45.a }
 }
 
 news_event = {
@@ -333,6 +346,82 @@ country_event = {
 	option = { name = chaosx.nr20.56.a }
 }
 
+country_event = {
+	id = chaosx.nr20.57
+	title = chaosx.nr20.57.t
+	desc = {
+		trigger = { has_country_flag = black_plague_rat_crown_brittle_command }
+		text = chaosx.nr20.57.d.brittle
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = black_plague_rat_crown_brittle_command } }
+		text = chaosx.nr20.57.d
+	}
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.57.a
+		subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy_crisis.replace_warden_dominion_loss }
+		add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_policy_crisis.replace_warden_cohesion_gain }
+		set_variable = { black_plague_rat_king_pulse_block_until = global.date }
+		add_to_variable = { black_plague_rat_king_pulse_block_until = constant:black_plague_rat_policy_crisis.replace_warden_pulse_block_days }
+		clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_king_cohesion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+	}
+	option = {
+		name = chaosx.nr20.57.b
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_policy_crisis.crisis_route_mass_gain }
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_policy_crisis.crisis_route_terminal_gain }
+		add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy_crisis.crisis_route_hunger_gain }
+		set_country_flag = black_plague_rat_crown_brittle_command
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.58
+	title = chaosx.nr20.58.t
+	desc = chaosx.nr20.58.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.58.a
+		add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_policy_crisis.council_charter_cohesion_gain }
+		add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy_crisis.council_charter_hunger_gain }
+		subtract_from_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_policy_crisis.council_charter_terminal_loss }
+	}
+	option = {
+		name = chaosx.nr20.58.b
+		add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy_crisis.council_speaker_dominion_gain }
+		subtract_from_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_policy_crisis.council_speaker_cohesion_loss }
+		set_country_flag = black_plague_rat_council_emergency_speaker
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.59
+	title = chaosx.nr20.59.t
+	desc = chaosx.nr20.59.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.59.a
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_policy_crisis.hierophancy_consume_mass_gain }
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_policy_crisis.hierophancy_consume_terminal_gain }
+		add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy_crisis.hierophancy_consume_hunger_gain }
+		random_owned_state = {
+			limit = { black_plague_state_is_rat_controlled = yes is_core_of = RTX }
+			add_to_variable = { black_plague_rat_infestation = constant:black_plague_rat_policy_crisis.crisis_infestation_gain }
+		}
+	}
+	option = {
+		name = chaosx.nr20.59.b
+		subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy_crisis.hierophancy_seal_dominion_loss }
+		subtract_from_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_policy_crisis.hierophancy_seal_hunger_loss }
+		set_variable = { global.black_plague_rat_king_route_exposure_suspended_until = global.date }
+		add_to_variable = { global.black_plague_rat_king_route_exposure_suspended_until = constant:black_plague_rat_policy_crisis.hierophancy_suspend_days }
+	}
+}
+
 news_event = {
 	id = chaosx.nr20.60
 	title = chaosx.nr20.60.t
@@ -375,6 +464,24 @@ news_event = {
 	option = { name = chaosx.nr20.63.a }
 }
 
+country_event = {
+	id = chaosx.nr20.64
+	title = chaosx.nr20.64.t
+	desc = chaosx.nr20.64.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = { name = chaosx.nr20.64.a }
+}
+
+country_event = {
+	id = chaosx.nr20.65
+	title = chaosx.nr20.65.t
+	desc = chaosx.nr20.65.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = { name = chaosx.nr20.65.a }
+}
+
 news_event = {
 	id = chaosx.nr20.70
 	title = chaosx.nr20.70.t
@@ -406,6 +513,69 @@ news_event = {
 	minor_flavor = no
 	major = yes
 	option = { name = chaosx.nr20.72.a }
+}
+
+country_event = {
+	id = chaosx.nr20.73
+	title = chaosx.nr20.73.t
+	desc = chaosx.nr20.73.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.73.a
+		set_country_flag = black_plague_rat_king_aftermath_open
+	}
+	option = {
+		name = chaosx.nr20.73.b
+		set_country_flag = black_plague_rat_king_archives_preserved
+		add_to_variable = { black_plague_countermeasure_latent_findings = constant:black_plague_shared_result.royal_seal_archive_findings }
+		set_country_flag = black_plague_rat_king_aftermath_open
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.74
+	title = chaosx.nr20.74.t
+	desc = chaosx.nr20.74.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.74.a
+		set_country_flag = black_plague_rat_king_aftermath_open
+	}
+	option = {
+		name = chaosx.nr20.74.b
+		clr_country_flag = black_plague_rat_king_aftermath_open
+		set_country_flag = black_plague_rat_king_aftermath_closed
+	}
+}
+
+country_event = {
+	id = chaosx.nr20.75
+	title = chaosx.nr20.75.t
+	desc = chaosx.nr20.75.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	immediate = {
+		random_owned_state = {
+			limit = {
+				OR = {
+					has_state_flag = black_plague_rat_king_royal_node
+					has_state_flag = black_plague_royal_basin
+				}
+			}
+			add_to_variable = { black_plague_rat_infestation = constant:black_plague_shared_result.royal_seal_timeout_infestation }
+		}
+	}
+	option = {
+		name = chaosx.nr20.75.a
+		set_country_flag = black_plague_rat_king_aftermath_open
+	}
+	option = {
+		name = chaosx.nr20.75.b
+		clr_country_flag = black_plague_rat_king_aftermath_open
+		set_country_flag = black_plague_rat_king_aftermath_closed
+	}
 }
 
 news_event = {

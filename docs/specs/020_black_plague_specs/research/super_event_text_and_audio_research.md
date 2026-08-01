@@ -1,6 +1,13 @@
 # Super-Event Text and Audio Research
 
-This note provides verified candidates and research leads. Final super-event localisation and audio wiring remain implementation tasks.
+This note preserves the verified quote research and the original candidate comparison. Final Event 020 super-event audio is now selected, mastered, registered, and wired through the settings-aware wrappers. The durable source, licence, edit, hash, and 44.1 kHz evidence is in `docs/assets/020_black_plague/audio_manifest.md`.
+
+## Final runtime audio reconciliation
+
+- Rat King coronation uses `sound/020_black_plague/super_event_101_rat_king_coronation.wav`, a 110-second stereo 16-bit PCM file at 44,100 Hz derived from Kevin MacLeod's CC BY 3.0 `Gregorian Chant` recording. The runtime identifier is `101`.
+- Rat King world end uses `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, a 103.65-second stereo 16-bit PCM file at 44,100 Hz derived from Membeth's public-domain `Dies irae` recording. The runtime identifier is `102`.
+- Both tracks have unique sound wrappers and settings-aware volume ladders in `sound/chaosx_sound.asset`; the Rat King coronation and world-end launchers select the corresponding identifier. The final files were read back as stereo 44.1 kHz WAVs before wiring.
+- The older `De profundis` and untrimmed `Dies irae` paragraphs below are retained as rejected research history. They are not runtime fallbacks.
 
 ## Rat King coronation super-event
 

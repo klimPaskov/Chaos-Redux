@@ -1,5 +1,7 @@
 # Black Plague Decision and Mission Implementation Prompt
 
+> Historical accepted-design prompt, reconciled 2026-08-01: the current Crown Strike and Seal Royal Burrows surfaces are shared timed state actions, not native `activate_mission`/`days_mission_timeout` owners. Do not duplicate them until the parent decides whether the API simplification is accepted. The current two-tag/no-model boundary and the implemented `.57-.59`, `.64-.65`, and `.71-.75` surfaces are recorded in the consequence/aftermath addendum.
+
 Implement the full Event 20 decision and mission system from the accepted spec and `matrices/decision_mission_matrix.md`. Read `AGENTS.md`, `chaos-redux-events`, and `hoi4-decisions-missions` first. Inspect the live shared biological warfare and disease category before editing.
 
 ## Core ownership rule

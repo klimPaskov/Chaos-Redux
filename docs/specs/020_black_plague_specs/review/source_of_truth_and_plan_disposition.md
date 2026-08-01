@@ -43,6 +43,7 @@ The 2026-07-29 two-tag correction supersedes every earlier multi-tag Rat Nation 
 | One bespoke tree per base rat tag | rejected in favor of one deep shared tree with origin archetypes |
 | Ordinary human-rat diplomacy | rejected because it weakens the hostile nonhuman role |
 | Defeat aftermath super-event | queued behind its explicit global-crisis eligibility gate |
+| 2026-08-01 consequence, hierarchy, and aftermath addendum | partially implemented in the current tranche: RTA hierarchy graph and `.45` acknowledgement, RTX crises `.57-.59`, Crown Strike `.64-.65`, and static defeat/aftermath `.71-.75` are present; scoped defeat attribution, reconstruction coupling, ID 87 qualification/assets, dedicated crisis art, and live validation remain queued |
 
 ## Future addenda
 

@@ -36,6 +36,58 @@ black_plague_rat_country_has_brood_mass = {
 	}
 }
 
+# Hierarchy predicates are country-scope consumers for the RTA route variable.
+# The focus tree owns the choice, while runtime effects, cooldowns, and AI read
+# these predicates without duplicating numeric comparisons.
+black_plague_rat_hierarchy_is_distributed = {
+	has_variable = black_plague_rat_hierarchy
+	check_variable = {
+		var = black_plague_rat_hierarchy
+		value = constant:black_plague_rat_hierarchy.distributed
+		compare = equals
+	}
+}
+
+black_plague_rat_hierarchy_is_dominant = {
+	has_variable = black_plague_rat_hierarchy
+	check_variable = {
+		var = black_plague_rat_hierarchy
+		value = constant:black_plague_rat_hierarchy.dominant
+		compare = equals
+	}
+}
+
+black_plague_rat_hierarchy_is_emergent = {
+	has_variable = black_plague_rat_hierarchy
+	check_variable = {
+		var = black_plague_rat_hierarchy
+		value = constant:black_plague_rat_hierarchy.emergent
+		compare = equals
+	}
+}
+
+black_plague_rat_merger_cooldown_ready = {
+	OR = {
+		NOT = { has_variable = black_plague_rat_merger_ready_date }
+		check_variable = {
+			var = global.date
+			value = black_plague_rat_merger_ready_date
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# State-scope target used by the Emergent hierarchy AI. It stays bounded to
+# real logistics objectives already understood by the vanilla state triggers.
+black_plague_rat_state_has_logistics_pressure_target = {
+	OR = {
+		is_capital = yes
+		is_coastal = yes
+		building_count_trigger = { rail_way > 0 }
+		building_count_trigger = { supply_node > 0 }
+	}
+}
+
 black_plague_rat_country_can_raise_brood = {
 	black_plague_rat_country_is_nonhuman_army = yes
 	black_plague_rat_country_has_brood_mass = yes
@@ -61,7 +113,16 @@ black_plague_rat_state_has_spawn_signal = {
 }
 
 black_plague_rat_state_can_spawn = {
-	black_plague_rat_state_has_spawn_signal = yes
+	OR = {
+		black_plague_rat_state_has_spawn_signal = yes
+		# SCN-012 deliberately seeds the RTA carrier during its scoped
+		# bootstrap. Low intensity can begin with Infected states, so the
+		# scenario must not inherit the natural Severe/Collapsed gate.
+		AND = {
+			has_global_flag = black_plague_triggerable_scenario_bootstrap
+			black_plague_state_is_established = yes
+		}
+	}
 	OWNER = { black_plague_country_is_human_host = yes }
 	CONTROLLER = { black_plague_country_is_human_host = yes }
 	NOT = { black_plague_state_is_rat_controlled = yes }
@@ -197,6 +258,7 @@ black_plague_rat_state_is_valid_merger_state = {
 
 black_plague_rat_can_absorb_adjacent_brood = {
 	black_plague_rat_country_is_active = yes
+	black_plague_rat_merger_cooldown_ready = yes
 	has_country_flag = black_plague_rat_dominance_ready
 	NOT = { has_country_flag = black_plague_rat_merger_lock }
 	check_variable = {

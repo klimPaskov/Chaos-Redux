@@ -1,5 +1,7 @@
 # Event 020 incremental decision and mission audit handoff
 
+> Historical audit snapshot, reconciled 2026-08-01. The current Crown Strike and Seal Royal Burrows surfaces use shared timed state actions and the current route-crisis/aftermath event wiring is recorded in the consequence/aftermath addendum. Retain this handoff for still-open mission-API, Rat lifecycle, Royal Node outcome, cost-clarity, and validation findings; do not recreate a second action family from its earlier “missing mission” wording without a parent decision.
+
 ## Scope and result
 
 This incremental audit covered `020_black_plague_shared_response_decisions.txt`, `020_black_plague_response_decisions.txt`, `020_black_plague_rat_decisions.txt`, and `020_black_plague_weaponization_decisions.txt` with their immediate triggers, effects, constants, localisation, the shared disease category, the Event 020 decision/mission matrix, and the accepted two-tag correction.
@@ -39,9 +41,9 @@ The category lifecycle is still not compliant with the accepted coexistence rule
 
 No audited Event 020 decision file contains `days_mission_timeout`, `mission_timeout`, or `activate_mission`.
 
-The current timed content uses `days_remove` decisions, so there is no current mission owner, category, region, success, failure, or duplicate-risk record to assess.
+The current timed content uses `days_remove` decisions, including the now-wired Crown Strike and Seal Royal Burrows shared state actions, so there is no native mission owner, category, region, success, failure, or duplicate-risk record to assess.
 
-The decision matrix's mission rows therefore remain a broader design and implementation gap rather than a local mission defect.
+The decision matrix's native mission rows therefore remain a broader design/API decision rather than a claim that the current shared actions are absent.
 
 ## Cost and requirement clarity notes
 

@@ -23,8 +23,52 @@ black_plague_evolution_runtime_has_active_outbreak = {
 	NOT = { has_global_flag = black_plague_world_end_complete }
 }
 
+black_plague_evolution_i_is_enabled = {
+	OR = {
+		has_global_flag = black_plague_triggerable_scenario_bootstrap
+		NOT = { has_global_flag = events_log_disabled_evolution_20_20_1 }
+	}
+}
+
+black_plague_evolution_ii_is_enabled = {
+	OR = {
+		has_global_flag = black_plague_triggerable_scenario_bootstrap
+		NOT = { has_global_flag = events_log_disabled_evolution_20_20_2 }
+	}
+}
+
+black_plague_evolution_iii_is_enabled = {
+	OR = {
+		has_global_flag = black_plague_triggerable_scenario_bootstrap
+		NOT = { has_global_flag = events_log_disabled_evolution_20_20_3 }
+	}
+}
+
+black_plague_evolution_iv_is_enabled = {
+	OR = {
+		has_global_flag = black_plague_triggerable_scenario_bootstrap
+		NOT = { has_global_flag = events_log_disabled_evolution_20_20_4 }
+	}
+}
+
+black_plague_evolution_v_is_enabled = {
+	NOT = { has_global_flag = events_log_disabled_evolution_20_20_5 }
+}
+
+black_plague_evolution_check_is_due = {
+	OR = {
+		NOT = { has_variable = global.black_plague_rat_next_evolution_check_date }
+		check_variable = {
+			var = global.date
+			value = global.black_plague_rat_next_evolution_check_date
+			compare = greater_than_or_equals
+		}
+	}
+}
+
 black_plague_evolution_i_is_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
+	black_plague_evolution_i_is_enabled = yes
 	NOT = { has_global_flag = black_plague_evolution_i_active }
 	NOT = { has_global_flag = black_plague_evolution_i_recorded }
 	check_variable = {
@@ -50,6 +94,7 @@ black_plague_evolution_i_is_ready = {
 
 black_plague_evolution_ii_is_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
+	black_plague_evolution_ii_is_enabled = yes
 	has_global_flag = black_plague_evolution_i_active
 	NOT = { has_global_flag = black_plague_evolution_ii_active }
 	NOT = { has_global_flag = black_plague_evolution_ii_recorded }
@@ -71,6 +116,7 @@ black_plague_evolution_ii_is_ready = {
 
 black_plague_evolution_iii_is_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
+	black_plague_evolution_iii_is_enabled = yes
 	has_global_flag = black_plague_evolution_ii_active
 	NOT = { has_global_flag = black_plague_evolution_iii_active }
 	NOT = { has_global_flag = black_plague_evolution_iii_recorded }
@@ -90,6 +136,7 @@ black_plague_evolution_iii_is_ready = {
 
 black_plague_evolution_iv_is_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
+	black_plague_evolution_iv_is_enabled = yes
 	has_global_flag = black_plague_evolution_iii_active
 	NOT = { has_global_flag = black_plague_evolution_iv_active }
 	NOT = { has_global_flag = black_plague_evolution_iv_recorded }
@@ -141,6 +188,7 @@ black_plague_evolution_v_has_continent_control = {
 
 black_plague_evolution_v_is_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
+	black_plague_evolution_v_is_enabled = yes
 	world_end_black_plague_scenario_enabled = yes
 	has_global_flag = black_plague_evolution_iv_active
 	has_global_flag = black_plague_rat_king_active
@@ -163,6 +211,54 @@ black_plague_evolution_v_is_ready = {
 	}
 	RTX = {
 		exists = yes
+		check_variable = {
+			var = black_plague_rat_king_dominion
+			value = constant:black_plague_evolution_runtime.minimum_terminal_dominion_for_v
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_king_sentience
+			value = constant:black_plague_evolution_runtime.minimum_terminal_sentience_for_v
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = black_plague_rat_king_cohesion
+			value = constant:black_plague_evolution_runtime.minimum_terminal_cohesion_for_v
+			compare = greater_than_or_equals
+		}
+		NOT = { has_country_flag = black_plague_rat_hunger_crisis }
+	}
+	black_plague_evolution_v_has_royal_route = yes
+	black_plague_evolution_v_has_continent_control = yes
+}
+
+black_plague_evolution_v_terminal_execution_is_ready = {
+	black_plague_evolution_runtime_has_active_outbreak = yes
+	world_end_black_plague_scenario_enabled = yes
+	has_global_flag = black_plague_evolution_v_active
+	has_global_flag = black_plague_evolution_v_route_open
+	has_global_flag = black_plague_rat_king_active
+	has_global_flag = black_plague_rat_king_route_completed
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:black_plague_rat_evolution.evolution_v_chaos_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_deaths_total
+		value = global.black_plague_evolution_v_death_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.black_plague_rat_king_controlled_states
+		value = constant:black_plague_evolution_runtime.minimum_king_states_for_v
+		compare = greater_than_or_equals
+	}
+	RTX = {
+		exists = yes
+		black_plague_rat_country_is_king = yes
 		check_variable = {
 			var = black_plague_rat_king_dominion
 			value = constant:black_plague_evolution_runtime.minimum_terminal_dominion_for_v

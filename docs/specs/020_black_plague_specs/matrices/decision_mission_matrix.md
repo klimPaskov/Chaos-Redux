@@ -94,6 +94,10 @@ These are separate decision entries shown only when Black Plague is selected and
 | Air Reconnaissance Sweep | rat region | aircraft, fuel, air access | fuel and sorties | reveals concentration, reduces surprise | air losses and limited effect in bad weather |
 | Liberate and Quarantine | captured rat state | state retaken | medical reserve, units, transport | prevents immediate spread and resurgence | state remains severe source |
 | Strike Royal Node | Rat King node | intelligence and military reach | elite units, air, supply | lowers Dominion and pulse | failure strengthens world-end pressure |
+| Strike the Crown | Rat King's Royal Basin | Evolution IV, successful node strikes, military route, at-war target | support, motorized, infantry, manpower, fuel, command power, factories, Response Capacity, 180 days | captures the basin and applies route-specific royal losses | timeout feeds Dominion, Hunger, and terminal preparation |
+| Seal Royal Burrows | former Royal Node or Royal Basin after RTX defeat | controlled tracked site, defeat aftermath open | support, motorized, infantry, manpower, fuel, command power, factories, Response Capacity, 180 days | lowers infestation, raises containment, adds countermeasure progress | timeout raises infestation and incoming exposure |
+
+Implementation status note: Crown Strike and Seal Royal Burrows are present in the current shared disease category as timed state actions using the existing `days_remove` lifecycle. They do not currently use native `activate_mission` or `days_mission_timeout` fields, so the behavioral rows above are implemented evidence while the native mission API choice remains a parent decision.
 
 ## Rat Nation actions
 
@@ -119,6 +123,7 @@ These are separate decision entries shown only when Black Plague is selected and
 | Conceal Port Jump | overseas | intelligence and port control | harder attribution | failure reveals route |
 | Select Target Continent | Evolution V | high Dominion, one-time choice | opens world-end campaign | long lock prevents easy switching |
 | Strike Continental Capital | campaign mission | army, plague corridor, supply | world-end progress | failure reduces Dominion |
+| Issue the Final Order | earned Evolution V route | all V gates still true, route completed, no royal hunger crisis | starts deterministic takeover and world-end super-event | gate failure leaves the route open but delays the order |
 | Crown the Continent | mission | 90 percent control and capitals | final route unlock | threshold loss cancels readiness |
 
 ## Mission design rules

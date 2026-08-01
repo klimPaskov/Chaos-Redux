@@ -17,6 +17,7 @@ black_plague_rat_initialize_runtime = {
 		set_variable = { global.black_plague_rat_runtime_generation = constant:black_plague_value.one }
 		set_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_royal_nodes_struck = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_next_evolution_check_date = global.date }
 		set_variable = { global.black_plague_rat_next_growth_date = global.date }
 		clear_array = global.black_plague_rat_countries
@@ -24,12 +25,14 @@ black_plague_rat_initialize_runtime = {
 		clear_array = global.black_plague_rat_controlled_states
 		clear_array = global.black_plague_rat_occupied_states
 		clr_global_flag = black_plague_rat_king_active
+		clr_global_flag = black_plague_rat_king_defeat_resolved
 		clr_global_flag = black_plague_rat_runtime_failure
 		clr_global_flag = black_plague_evolution_i_active
 		clr_global_flag = black_plague_evolution_ii_active
 		clr_global_flag = black_plague_evolution_iii_active
 		clr_global_flag = black_plague_evolution_iv_active
 		clr_global_flag = black_plague_evolution_v_active
+		clr_global_flag = black_plague_evolution_v_route_open
 		clr_global_flag = black_plague_evolution_i_recorded
 		clr_global_flag = black_plague_evolution_ii_recorded
 		clr_global_flag = black_plague_evolution_iii_recorded
@@ -43,6 +46,10 @@ black_plague_rat_initialize_runtime = {
 	if = {
 		limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
 		set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.black_plague_rat_king_royal_nodes_struck } }
+		set_variable = { global.black_plague_rat_king_royal_nodes_struck = constant:black_plague_value.zero }
 	}
 }
 
@@ -130,6 +137,14 @@ black_plague_rat_run_runtime_pulse = {
 				add_to_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_pool.king_sentience_pulse_gain }
 				add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_pool.king_cohesion_pulse_gain }
 				add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_pool.king_hunger_pulse_gain }
+				if = {
+					limit = { has_country_flag = black_plague_rat_crown_dominion }
+					add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy.crown_pulse_dominion_gain }
+				}
+				if = {
+					limit = { has_country_flag = black_plague_rat_council_transparent_hunger }
+					add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_policy.council_pulse_cohesion_gain }
+				}
 				clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 				clamp_variable = { var = black_plague_rat_king_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 				clamp_variable = { var = black_plague_rat_king_cohesion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
@@ -150,6 +165,30 @@ black_plague_rat_run_runtime_pulse = {
 					}
 					set_country_flag = black_plague_rat_hunger_crisis
 					country_event = { id = chaosx.nr20.53 }
+					if = {
+						limit = {
+							has_country_flag = black_plague_rat_crown_dominion
+							NOT = { has_country_flag = black_plague_rat_crown_crisis_fired }
+						}
+						set_country_flag = black_plague_rat_crown_crisis_fired
+						country_event = { id = chaosx.nr20.57 }
+					}
+					if = {
+						limit = {
+							has_country_flag = black_plague_rat_council_transparent_hunger
+							NOT = { has_country_flag = black_plague_rat_council_crisis_fired }
+						}
+						set_country_flag = black_plague_rat_council_crisis_fired
+						country_event = { id = chaosx.nr20.58 }
+					}
+					if = {
+						limit = {
+							has_country_flag = black_plague_rat_hierophant_final_omen
+							NOT = { has_country_flag = black_plague_rat_hierophancy_crisis_fired }
+						}
+						set_country_flag = black_plague_rat_hierophancy_crisis_fired
+						country_event = { id = chaosx.nr20.59 }
+					}
 				}
 				if = {
 					limit = {
@@ -175,10 +214,54 @@ black_plague_rat_run_runtime_pulse = {
 				NOT = { has_country_flag = black_plague_rat_king_defeated }
 			}
 		}
+		black_plague_rat_king_resolve_defeat = yes
+	}
+}
+
+# The pulse is the final reconciliation hook for the sovereign. Other scoped
+# hooks can call this same idempotent effect later without reviving RTX or
+# clearing surviving RTA broods and disease states.
+black_plague_rat_king_resolve_defeat = {
+	if = {
+		limit = { NOT = { has_global_flag = black_plague_rat_king_defeat_resolved } }
+		set_global_flag = black_plague_rat_king_defeat_resolved
 		set_global_flag = black_plague_rat_king_defeated
+		clr_global_flag = black_plague_rat_king_active
+		clr_global_flag = black_plague_rat_king_grace_period
+		clr_global_flag = black_plague_rat_king_route_completed
+		clr_global_flag = black_plague_evolution_v_route_open
+		set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
 		RTX = {
 			set_country_flag = black_plague_rat_king_defeated
+			set_country_flag = black_plague_rat_king_country_retired
+			clr_country_flag = black_plague_rat_king_country
+			clr_country_flag = black_plague_rat_king_active
+			clr_country_flag = black_plague_rat_king_source_pending
+			if = {
+				limit = { is_in_array = { array = global.black_plague_rat_king_countries value = THIS } }
+				remove_from_array = { array = global.black_plague_rat_king_countries value = THIS }
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_flag = black_plague_report_rat_king_defeated } }
+			set_global_flag = black_plague_report_rat_king_defeated
 			news_event = { id = chaosx.nr20.71 }
+		}
+		if = {
+			limit = { NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched } }
+			for_each_scope_loop = {
+				array = global.black_plague_response_countries
+				if = {
+					limit = {
+						exists = yes
+						is_human = yes
+						NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
+					}
+					set_global_flag = black_plague_rat_king_aftermath_dispatched
+					set_country_flag = black_plague_rat_king_aftermath_open
+					country_event = { id = chaosx.nr20.73 }
+				}
+			}
 		}
 	}
 }
@@ -459,6 +542,7 @@ black_plague_rat_initialize_country = {
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
 	set_variable = { black_plague_rat_division_count = black_plague_rat_starting_divisions }
 	set_variable = { black_plague_achievement_rat_divisions_raised = constant:black_plague_value.zero }
+	set_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_value.zero }
 	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_base }
 	set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.undecided }
 	set_variable = { black_plague_rat_last_pulse_date = global.date }
@@ -665,10 +749,45 @@ black_plague_rat_activate_evolution_iii = {
 # ---------------------------------------------------------------------------
 
 black_plague_rat_refresh_division_cap = {
+	if = { limit = { NOT = { has_variable = black_plague_rat_division_cap_bonus } } set_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_value.zero } }
 	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_base }
 	set_temp_variable = { black_plague_rat_state_count = num_of_controlled_states }
 	multiply_temp_variable = { black_plague_rat_state_count = constant:black_plague_rat_pool.division_cap_per_state }
 	add_to_variable = { black_plague_rat_division_cap = black_plague_rat_state_count }
+	if = {
+		limit = { has_variable = black_plague_rat_division_cap_bonus }
+		add_to_variable = { black_plague_rat_division_cap = black_plague_rat_division_cap_bonus }
+	}
+	if = {
+		limit = { has_country_flag = black_plague_rat_citadel_relays }
+		add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_route.citadel_division_cap_gain }
+	}
+	if = {
+		limit = { has_country_flag = black_plague_rat_migration_burrows }
+		add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_route.migration_division_cap_gain }
+	}
+	if = {
+		limit = { has_country_flag = black_plague_rat_tide_court }
+		add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_route.tide_division_cap_gain }
+	}
+	if = {
+		limit = { has_country_flag = black_plague_rat_rail_breach }
+		add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_route.rail_division_cap_gain }
+	}
+	if = {
+		limit = { black_plague_rat_hierarchy_is_distributed = yes }
+		set_temp_variable = { black_plague_rat_hierarchy_state_cap_gain = num_of_controlled_states }
+		multiply_temp_variable = { black_plague_rat_hierarchy_state_cap_gain = constant:black_plague_rat_hierarchy_route.distributed_division_cap_per_state_gain }
+		add_to_variable = { black_plague_rat_division_cap = black_plague_rat_hierarchy_state_cap_gain }
+	}
+	if = {
+		limit = { black_plague_rat_hierarchy_is_dominant = yes }
+		add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_hierarchy_route.dominant_division_cap_gain }
+	}
+	if = {
+		limit = { black_plague_rat_hierarchy_is_emergent = yes }
+		subtract_from_variable = { black_plague_rat_division_cap = constant:black_plague_rat_hierarchy_route.emergent_division_cap_penalty }
+	}
 	clamp_variable = {
 		var = black_plague_rat_division_cap
 		min = constant:black_plague_rat_pool.division_cap_base
@@ -694,6 +813,36 @@ black_plague_rat_process_country_pulse = {
 		limit = { black_plague_rat_country_is_active = yes }
 		black_plague_rat_refresh_division_cap = yes
 		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_pulse_gain }
+		set_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_value.zero }
+		if = {
+			limit = { has_country_flag = black_plague_rat_citadel_relays }
+			add_to_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_rat_route.urban_pulse_mass_gain }
+		}
+		if = {
+			limit = { has_country_flag = black_plague_rat_migration_burrows }
+			add_to_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_rat_route.field_pulse_mass_gain }
+		}
+		if = {
+			limit = { has_country_flag = black_plague_rat_cross_sea_cargo }
+			add_to_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_rat_route.dock_pulse_mass_gain }
+		}
+		if = {
+			limit = { has_country_flag = black_plague_rat_rail_breach }
+			add_to_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_rat_route.war_pulse_mass_gain }
+		}
+		add_to_variable = { black_plague_rat_brood_mass = black_plague_rat_route_pulse_mass_gain }
+		if = {
+			limit = { black_plague_rat_hierarchy_is_distributed = yes }
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_hierarchy_route.distributed_pulse_mass_penalty }
+		}
+		if = {
+			limit = { black_plague_rat_hierarchy_is_dominant = yes }
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_hierarchy_route.dominant_pulse_mass_gain }
+		}
+		if = {
+			limit = { black_plague_rat_hierarchy_is_emergent = yes }
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_hierarchy_route.emergent_pulse_mass_penalty }
+		}
 		set_temp_variable = { black_plague_rat_controlled_state_gain = num_of_controlled_states }
 		multiply_temp_variable = { black_plague_rat_controlled_state_gain = constant:black_plague_rat_pool.brood_mass_state_gain }
 		add_to_variable = { black_plague_rat_brood_mass = black_plague_rat_controlled_state_gain }
@@ -731,7 +880,10 @@ black_plague_rat_try_absorb_adjacent_brood = {
 	# marker and inherit its surviving brood units without inventing another tag.
 	set_variable = { black_plague_rat_merger_report_result = constant:black_plague_value.zero }
 	if = {
-		limit = { black_plague_rat_country_is_active = yes }
+		limit = {
+			black_plague_rat_country_is_active = yes
+			black_plague_rat_merger_cooldown_ready = yes
+		}
 		every_owned_state = {
 			limit = {
 				black_plague_state_is_rat_controlled = yes
@@ -753,6 +905,10 @@ black_plague_rat_try_absorb_adjacent_brood = {
 			set_variable = { black_plague_rat_brood_strength = PREV.black_plague_rat_brood_strength }
 			set_temp_variable = { black_plague_rat_inherited_brood_units = black_plague_rat_brood_units }
 			if = {
+				limit = { ROOT = { black_plague_rat_hierarchy_is_dominant = yes } }
+				add_to_temp_variable = { black_plague_rat_inherited_brood_units = constant:black_plague_rat_hierarchy_route.dominant_marker_extra_units }
+			}
+			if = {
 				limit = { check_variable = { var = black_plague_rat_inherited_brood_units value = constant:black_plague_rat_pool.brood_units_minimum compare = less_than } }
 				set_temp_variable = { black_plague_rat_inherited_brood_units = constant:black_plague_rat_pool.brood_units_minimum }
 			}
@@ -771,6 +927,20 @@ black_plague_rat_try_absorb_adjacent_brood = {
 			clr_state_flag = black_plague_rat_merger_reserved
 		}
 		clr_country_flag = black_plague_rat_merger_lock
+	}
+	if = {
+		limit = { check_variable = { black_plague_rat_merger_report_result = constant:black_plague_value.one } }
+		set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+		if = {
+			limit = { black_plague_rat_hierarchy_is_distributed = yes }
+			set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_hierarchy_route.distributed_merger_cooldown_days }
+		}
+		else_if = {
+			limit = { black_plague_rat_hierarchy_is_dominant = yes }
+			set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_hierarchy_route.dominant_merger_cooldown_days }
+		}
+		set_variable = { black_plague_rat_merger_ready_date = global.date }
+		add_to_variable = { black_plague_rat_merger_ready_date = black_plague_rat_merger_cooldown_days }
 	}
 	if = {
 		limit = {
@@ -948,6 +1118,22 @@ black_plague_rat_select_king_source = {
 			multiply_temp_variable = { black_plague_rat_king_score = constant:black_plague_rat_pool.state_share_for_king }
 			add_to_temp_variable = { black_plague_rat_king_score = black_plague_rat_brood_mass }
 			if = {
+				limit = { black_plague_rat_hierarchy_is_distributed = yes }
+				subtract_from_temp_variable = { black_plague_rat_king_score = constant:black_plague_rat_hierarchy_route.distributed_king_candidacy_penalty }
+			}
+			if = {
+				limit = { black_plague_rat_hierarchy_is_dominant = yes }
+				add_to_temp_variable = { black_plague_rat_king_score = constant:black_plague_rat_hierarchy_route.dominant_king_candidacy_gain }
+			}
+			if = {
+				limit = { black_plague_rat_hierarchy_is_emergent = yes }
+				add_to_temp_variable = { black_plague_rat_king_score = constant:black_plague_rat_hierarchy_route.emergent_king_candidacy_gain }
+			}
+			if = {
+				limit = { check_variable = { var = black_plague_rat_king_score value = constant:black_plague_value.zero compare = less_than } }
+				set_temp_variable = { black_plague_rat_king_score = constant:black_plague_value.zero }
+			}
+			if = {
 				limit = { check_variable = { var = black_plague_rat_king_score value = black_plague_rat_best_king_score compare = greater_than } }
 				set_temp_variable = { black_plague_rat_best_king_score = black_plague_rat_king_score }
 				save_event_target_as = black_plague_rat_king_source
@@ -972,6 +1158,7 @@ black_plague_rat_initialize_king_country = {
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
 	set_variable = { black_plague_rat_division_count = num_of_divisions }
 	set_variable = { black_plague_rat_king_absorbed_brood_states = constant:black_plague_value.zero }
+	set_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_pool.division_cap_maximum }
 	set_variable = { black_plague_rat_division_cap = constant:black_plague_rat_pool.division_cap_maximum }
 	set_variable = { black_plague_rat_last_pulse_date = global.date }
 	set_stability = constant:black_plague_rat_pool.starting_stability
@@ -1060,10 +1247,17 @@ black_plague_rat_transfer_to_king = {
 }
 
 black_plague_rat_activate_evolution_iv = {
-	set_global_flag = black_plague_evolution_iv_active
-	set_global_flag = black_plague_evolution_iv_recorded
-	set_variable = { global.black_plague_evolution_iv_date = global.date }
 	black_plague_rat_select_king_source = yes
-	if = { limit = { has_event_target = black_plague_rat_king_source } black_plague_rat_transfer_to_king = yes }
-	if = { limit = { has_event_target = black_plague_rat_king_source } event_target:black_plague_rat_king_source = { save_event_target_as = black_plague_rat_evolution_actor } }
+	if = {
+		limit = { has_event_target = black_plague_rat_king_source }
+		black_plague_rat_transfer_to_king = yes
+		if = {
+			limit = { has_global_flag = black_plague_rat_king_active }
+			set_global_flag = black_plague_evolution_iv_active
+			set_global_flag = black_plague_evolution_iv_recorded
+			set_variable = { global.black_plague_evolution_iv_date = global.date }
+			 event_target:black_plague_rat_king_source = { save_event_target_as = black_plague_rat_evolution_actor }
+		}
+	}
+	else = { set_global_flag = black_plague_rat_king_activation_failed }
 }

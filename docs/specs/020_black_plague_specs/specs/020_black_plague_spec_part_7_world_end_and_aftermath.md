@@ -395,6 +395,8 @@ The Rat King is defeated when:
 - captured Rat King archives can accelerate the global countermeasure
 - Dominion and Sentience values are archived for event history
 
+The current runtime resolves the zero-controlled-state condition through an idempotent resolver. It retires `RTX`, closes active royal preparation, preserves `RTA`, former Royal Node markers, Rat Infestation, and surviving plague states, and emits `chaosx.nr20.71` once. A human response host then receives `chaosx.nr20.73`, which opens the shared `Seal Royal Burrows` state operation. Successful sealing reports `chaosx.nr20.74`, lowers infestation, raises containment, and adds countermeasure progress; a 180-day timeout reports `chaosx.nr20.75`, raises infestation and incoming exposure, and never revives the King or creates another tag.
+
 ### Possible succession
 
 A limited Rat King restoration can occur only when:
@@ -426,6 +428,8 @@ A defeat aftermath super-event is justified only if the Rat King crisis was glob
 - long-term population recovery and ruined-state programs
 - memorial and anti-biowarfare condemnation effects
 - optional restrictions on future Black Plague weaponization
+
+The reserved global defeat super-event remains intentionally gated behind the catastrophic eligibility package and is not yet wired to a final art, quote, or licensed audio package.
 
 A short regional rat outbreak should not create a new world order or global treaty.
 

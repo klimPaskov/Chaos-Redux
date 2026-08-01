@@ -137,6 +137,156 @@ black_plague_rat_war_ai = {
 	}
 }
 
+# Second-lane focus strategies. The flags are set by the reachable RTA route
+# modules and bias the existing capped templates toward their intended terrain;
+# they never create a human recruitment or equipment path.
+black_plague_rat_citadel_route_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_citadel_relays
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = 650 }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 2 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			has_state_category = city
+		}
+		value = 420
+	}
+}
+
+black_plague_rat_migration_route_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_migration_burrows
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = 600 }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 2 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			NOT = { has_state_category = city }
+		}
+		value = 400
+	}
+}
+
+black_plague_rat_tide_route_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_cross_sea_cargo
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = 800 }
+	ai_strategy = { type = role_ratio id = rat_dock_stowaways value = 2 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			is_coastal = yes
+		}
+		value = 450
+	}
+}
+
+black_plague_rat_rail_route_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		has_country_flag = black_plague_rat_rail_breach
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_brutes value = 750 }
+	ai_strategy = { type = role_ratio id = rat_brutes value = 2 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			black_plague_state_has_army_presence = yes
+		}
+		value = 480
+	}
+}
+
+# Hierarchy route strategies consume the completed RTA hierarchy variable. They
+# only bias existing rat templates and front requests. Focus AI remains the
+# owner of the one-time Distributed, Dominant, or Emergent route choice.
+black_plague_rat_hierarchy_distributed_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		black_plague_rat_hierarchy_is_distributed = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = constant:black_plague_rat_hierarchy_route.distributed_burrow_template_priority }
+	ai_strategy = { type = template_prio id = rat_swarm value = constant:black_plague_rat_hierarchy_route.distributed_swarm_template_priority }
+	ai_strategy = { type = role_ratio id = rat_burrowers value = 2 }
+	ai_strategy = { type = spare_unit_factor value = constant:black_plague_rat_hierarchy_route.distributed_spare_unit_factor }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+		}
+		value = constant:black_plague_rat_hierarchy_route.distributed_front_request_priority
+	}
+}
+
+black_plague_rat_hierarchy_dominant_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		black_plague_rat_hierarchy_is_dominant = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_brutes value = constant:black_plague_rat_hierarchy_route.dominant_brute_template_priority }
+	ai_strategy = { type = template_prio id = rat_carrion_guard value = constant:black_plague_rat_hierarchy_route.dominant_guard_template_priority }
+	ai_strategy = { type = role_ratio id = rat_brutes value = 2 }
+	ai_strategy = { type = force_concentration_factor value = constant:black_plague_rat_hierarchy_route.dominant_concentration_factor }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			has_state_flag = black_plague_rat_nation_state
+		}
+		value = constant:black_plague_rat_hierarchy_route.dominant_front_request_priority
+	}
+}
+
+black_plague_rat_hierarchy_emergent_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		black_plague_rat_hierarchy_is_emergent = yes
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = constant:black_plague_rat_hierarchy_route.emergent_dock_template_priority }
+	ai_strategy = { type = template_prio id = rat_brutes value = constant:black_plague_rat_hierarchy_route.emergent_brute_template_priority }
+	ai_strategy = { type = role_ratio id = rat_dock_stowaways value = 2 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+			black_plague_rat_state_has_logistics_pressure_target = yes
+		}
+		value = constant:black_plague_rat_hierarchy_route.emergent_front_request_priority
+	}
+}
+
 black_plague_rat_king_ai = {
 	allowed = { original_tag = RTX }
 	enable = { has_country_flag = black_plague_rat_king_country }

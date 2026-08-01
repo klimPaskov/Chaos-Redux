@@ -1,5 +1,7 @@
 # Black Plague Coding-Agent Prompt
 
+> Historical prompt snapshot, reconciled 2026-08-01: the later two-tag correction supersedes multi-tag and independent-Rat-Nation language in this file. Current runtime identity is `RTA` plus `RTX`; internal broods are RTA state markers, SCN-012 is the active scenario identifier, and no 3D model production is required for the current goal. Read the current overview, consequence/aftermath addendum, and source-of-truth disposition before taking action. Do not revive rejected tags or duplicate the statically wired `.57-.59`, `.64-.65`, and `.71-.75` surfaces.
+
 Implement Chaos Redux Event 20 Black Plague from the complete accepted specification under `docs/specs/020_black_plague_specs/`. Treat every mapped mechanic, evolution, country package, focus route, decision family, asset, achievement, and super-event as acceptance criteria.
 
 ## Mandatory reading before editing

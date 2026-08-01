@@ -1,5 +1,20 @@
 # Event 020 consequence, hierarchy, and defeat aftermath addendum
 
+## Reconciliation status (2026-08-01)
+
+This addendum is now a mixed-disposition record rather than an unimplemented tranche proposal.
+
+| Package | Disposition in the current worktree | Remaining work or decision |
+| --- | --- | --- |
+| A. RTA hierarchy | Implemented statically: the three mutually exclusive roots, follow-ups, `.45` acknowledgement event, hierarchy state, runtime cap/pulse/absorption/candidacy consumers, and route-aware AI are present. | Six dedicated hierarchy icons, deeper route depth, and live route validation remain open. |
+| B. RTX route crises | Implemented statically: `.57`, `.58`, and `.59` are defined and called from the route-capstone crisis paths, with route-specific meter and pulse consumers. | The crisis cards still use generic event art and have no declared live scenario proof. |
+| C. Crown Strike | Implemented statically as a shared timed state action: the start gate, costs, dedicated icon, timeout/success effects, and `.64`/`.65` reports are wired. | It is not a native `activate_mission`/`days_mission_timeout` owner and has no live validation. The parent must decide whether the shared state-action API is accepted. |
+| D. Defeat aftermath | Partially implemented: the idempotent resolver, `.71`, `.73`, `.74`, `.75`, and Seal Royal Burrows action exist. | Defeating-actor capture, targeted `on_capitulation`/`on_state_control_changed` hooks, contribution and reconstruction coupling, and the qualifying ID 87 gate remain unresolved. |
+| Two-tag/no-model boundary | Accepted: `RTA` is the sole Rat Nation carrier, `RTX` is the separate Rat King, internal broods are state markers, and no 3D model production is required for this goal. | Archive-only RTB-RTM assets and bespoke models must not be revived as runtime requirements. |
+| Super-event 87 | Reserved and production-blocked. | Keep the explicit global eligibility gate and final art, quote, audio, localisation, and registry blockers. |
+
+The dispositions below are the current documentation source for this addendum; they do not claim whole-spec completion or live-game validation.
+
 ## Status and planning boundary
 
 This is a bounded improvement-loop addendum for the next Event 020 content tranche.
@@ -29,25 +44,25 @@ The snapshot includes the current Event 020 worktree tranche, including its unco
 
 | Surface | Current evidence | Remaining design gap |
 | --- | --- | --- |
-| Event chain | `events/020_black_death.txt` defines the accepted milestone allocation from `chaosx.nr20.2` through `.72`, plus `.90` and scheduler callbacks | Most milestones are deliberately one-option reports, but route crises and post-defeat choices do not exist |
+| Event chain | `events/020_black_death.txt` defines the accepted milestone allocation from `chaosx.nr20.2` through `.75`, plus `.90` and scheduler callbacks; events `.45`, `.57-.59`, `.64-.65`, and `.71-.75` are present | Most implemented milestones remain deliberately compact reports |
 | Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, and Rat emergence uses `GFX_report_event_020_rat_emergence` in the current worktree | Severe crisis, royal route crises, Crown Strike, Doctor Wu, ordinary Rat King defeat, and qualifying global defeat still reuse the scenario image or have no dedicated asset |
-| RTA tree | Read-only focus inspection reports 31 playable focuses with zero connector crossings and zero node intersections | `black_plague_rat_hierarchy` is set to Distributed or Dominant but has no consumer outside the focus tree, and the Emergent value already defined in constants is unreachable |
-| RTA routes | Urban, Field, Dock, and War second lanes now affect Brood Mass, division caps, spread routes, and route-aware AI | The political hierarchy remains a serial pair rather than a mutually exclusive choice with lasting strengths and weaknesses |
-| RTX tree | Read-only focus inspection reports 50 playable focuses, including twelve route-policy focuses | The twelve policy completion flags have no runtime consumer outside the focus tree and localisation, so their route identity is mostly one-time meter adjustment |
-| Human counterplay | Emergency Countermeasure Drive and Royal Node strikes have costs, time, success, failure, and reports `.54` through `.56` | There is no earned attack on the sovereign that can interrupt terminal preparation after Royal Nodes are broken |
-| Rat King defeat | The rat pulse detects `RTX` with no controlled states, sets defeated flags, and fires `chaosx.nr20.71` | It does not choose a defeating actor, clear the full royal lifecycle, open an aftermath decision, start reconstruction, or evaluate the reserved global defeat super-event ID 87 |
+| RTA tree | Read-only focus inspection reports 35 playable focuses with zero node intersections and two connector crossings; the three-way hierarchy roots, follow-ups, and `.45` acknowledgement are present | Generic vanilla icon inventory diagnostics remain, six dedicated hierarchy icons are not wired, and the accepted full route-tree depth is still larger than this compact playable shell |
+| RTA routes | Urban, Field, Dock, and War second lanes plus the three-way hierarchy now affect Brood Mass, division caps, spread routes, King candidacy, and route-aware AI | Additional bespoke route decisions and deeper narrative branches remain optional content work |
+| RTX tree | Read-only focus inspection reports 50 playable focuses, including twelve route-policy focuses | The route policy consumers, crises, Crown Strike vulnerabilities, and AI plans are wired; deeper administration and cultural branches remain content work |
+| Human counterplay | Emergency Countermeasure Drive, Royal Node strikes, route crises, Crown Strike, and Royal Burrow sealing have costs, time, success, failure, and reports `.54` through `.75` | Crown Strike is a shared timed state action rather than a native mission owner; dedicated crisis/aftermath art and live validation remain open |
+| Rat King defeat | The rat pulse detects `RTX` with no controlled states, retires it idempotently, fires `chaosx.nr20.71`, and opens `.73` for the first eligible human response host | The resolver does not yet preserve a scoped defeating actor, the `.72` reconstruction path is not coupled to aftermath sealing, and ID 87 remains unwired |
 | Reconstruction | `chaosx.nr20.72` fires immediately with global eradication | It is not tied to the work of securing former Royal Nodes or resolving the crown's archives |
 | Super-events | Coronation ID 85 and world-end ID 86 have unique art, text, audio, and runtime wiring | `constant:black_plague_identity.global_defeat_super_event_id = 87` is reserved but has no trigger, image, localisation, quotation research, audio, or GUI registration |
-| Documentation | The overview records the two-tag runtime and new RTA route modules | `shared_response.md` still describes Royal Node strikes as future work, the event-art manifest still says its three assets are unwired, the audio manifest still says IDs 101 and 102 are unwired, and the Rat identity manifest still presents superseded RTB through RTM flags as runtime requirements |
+| Documentation | The overview, route-module contract, event-chain map, decision matrix, and Part 7 now record the live two-tag route, Crown Strike, crises, and aftermath operations | This addendum, the readiness report, historical handoffs, prompts, and asset manifests are being reconciled so stale “missing” claims do not revive rejected work |
 
 The focus inspector also reports missing references for many generic vanilla focus sprites.
 Those diagnostics reflect its bounded sprite inventory and are not proof that vanilla sprites fail in game.
 They do reinforce the accepted art requirement that major Event 020 route focuses should receive event-specific icons instead of remaining visually generic.
 
-## Design objective
+## Delivered tranche and remaining scope
 
-The next tranche should make political route choices change how the rat systems behave, give human players one difficult late counterstroke before Evolution V resolves, and turn Rat King defeat into a playable aftermath instead of a terminal notification.
-The tranche should leave the established milestone chain intact and add only events that carry route choice, military consequence, or postwar custody.
+The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, and turns Rat King defeat into a static aftermath path while leaving the established milestone chain intact.
+Remaining accepted scope is the `.45` hierarchy report, scoped defeat attribution and reconstruction coupling, native-mission API decision review, final narrative and presentation breadth, dedicated severe-crisis/Doctor Wu/Crown Strike/Royal Burrow/global-defeat assets, source-frame UI animation, verified licensed audio and quotations for ID 87, workbook/catalog export reconciliation, and deeper optional route branches.
 
 ## Package A: RTA hierarchy becomes a real route choice
 
@@ -192,6 +207,8 @@ Reserve `black_plague_shared_action.strike_the_crown = 33`.
 Add `black_plague_shared_strike_the_crown` inside `chaosx_disease_containment_category`.
 It is a state-targeted selectable mission aimed at the current `RTX` capital or preserved Royal Basin target.
 
+Implementation note: the current worktree exposes this surface as a shared timed state action using `days_remove`; it does not yet own native `activate_mission` or `days_mission_timeout` fields. The design below remains the accepted behavior contract while the parent decides whether the API simplification is sufficient.
+
 This is not a second Royal Node action.
 Royal Node strikes create the opening.
 The Crown Strike asks a human country to capture the sovereign basin before the terminal route hardens again.
@@ -264,6 +281,8 @@ It avoids the mission when the target is isolated behind an unreachable sea zone
 Create `black_plague_rat_king_resolve_defeat` as the only effect that finalizes Rat King defeat.
 The current event-owned rat pulse remains a reconciliation check.
 Add targeted calls from `on_capitulation` and from `on_state_control_changed` when the changed state is the Royal Basin or a Royal Node and `RTX` has no controlled states.
+
+Implementation note: the idempotent resolver and pulse fallback are present, but the targeted on-action calls and defeating-actor capture described below are not yet wired in the current worktree.
 
 The vanilla scope precedent is explicit that `on_capitulation` uses ROOT as the capitulated country and FROM as the winner.
 The vanilla `on_state_control_changed` precedent uses ROOT as the new controller, FROM as the old controller, and FROM.FROM as the state.
@@ -376,18 +395,20 @@ Every asset handoff must retain source PNG, processed PNG, final DDS, exact spri
 
 ## Documentation and source-of-truth promotion
 
-Keep this addendum in `docs/plans/020_black_plague_plans/` until the parent accepts it.
-After acceptance, promote the design rather than leaving two competing sources:
+This addendum remains the working disposition record under `docs/plans/020_black_plague_plans/`.
+The event-chain map, decision matrix, Part 7 aftermath spec, overview, and route-module contract already carry the statically implemented `.57-.59`, `.64-.65`, and `.73-.75` surfaces.
+Do not create duplicate implementation work from the historical package prose.
+Promote only the still-accepted design gaps rather than leaving two competing sources:
 
 - merge the three-way RTA hierarchy and its exact consumers into Part 5 and the focus architecture matrix
 - merge RTX route crises and Crown Strike vulnerability into Part 6
 - merge the Crown Strike mission, defeat resolver, aftermath choice, seal mission, and super-event 87 gate into Part 7
 - merge AI, tuning, validation, and asset requirements into Part 8
-- update `event_chain_map.md` with `.45`, `.57` through `.59`, `.64`, `.65`, and `.73` through `.75`
+- keep `.45`, `.57` through `.59`, `.64`, `.65`, and `.73` through `.75` aligned with the current event-chain map
 - update `decision_mission_matrix.md`, `ai_strategy_matrix.md`, `asset_inventory.md`, `focus_tree_route_architecture.md`, `implementation_acceptance_checklist.md`, and `tuning_and_balance_targets.md`
 - preserve the two-tag correction as the highest-priority country rule
 
-After implementation, update:
+The following documentation updates are already promoted or being reconciled:
 
 - `docs/events/020_black_plague/overview.md`
 - `docs/events/020_black_plague/shared_response.md`
@@ -396,7 +417,7 @@ After implementation, update:
 - `docs/assets/020_black_plague/rat_identity_asset_manifest.md`
 - `docs/assets/020_black_plague/audio_manifest.md`
 - the Event 020 super-event research and music-catalog records
-- the Event 020 workbook row first, followed by `.tools/export_event_catalog_csv.py`
+- the Event 020 workbook row remains parent-owned; this cleanup does not edit the workbook or export-only CSVs
 
 The Rat identity manifest must classify RTB through RTM flag art as archival unused production after the two-tag correction.
 It must not present those tags as Event 020 runtime requirements.
@@ -431,7 +452,12 @@ Gameplay and presentation files likely affected by an accepted implementation ar
 Do not add a world-periodic daily, weekly, or monthly on-action.
 Use event-owned arrays, the existing seven-day Event 020 pulse, focus completion, decision outcomes, `on_capitulation`, and narrowly gated `on_state_control_changed` calls.
 
-## Implementation order
+## Implementation order and current dispositions
+
+Steps 2 through 5 are statically represented in the current worktree, with the limitations in the reconciliation table above.
+Step 1 is only partially promoted because the defeat-actor contract remains unresolved.
+Step 6 is intentionally blocked by the ID 87 asset and eligibility gate.
+Steps 7 through 9 remain documentation, asset, and validation work and must not be read as completed by the static wiring.
 
 1. Promote the accepted addendum into the source spec and reserve all identifiers.
 2. Rewire the RTA hierarchy graph and add its constant-backed runtime consumers and AI.
@@ -527,8 +553,8 @@ For engine scopes, use the vanilla `on_capitulation` and `on_state_control_chang
 
 ## Open questions and blockers
 
-No gameplay design choice is blocking the parent.
-The recommended defaults above are complete enough to implement.
+The current shared timed state-action implementation leaves one parent design choice: whether Crown Strike and Seal Royal Burrows satisfy the accepted mission contract or must be converted to native mission fields.
+The remaining `.45`, scoped actor, reconstruction, asset, and ID 87 gaps are implementation or production blockers rather than reasons to redesign the two-tag/no-model boundary.
 
 The qualifying defeat super-event remains production-blocked until a unique quotation, cultural remark, audio track, and image receive research and asset handoffs.
 Do not substitute another Event 020 super-event package.
@@ -538,16 +564,13 @@ The parent should refresh identifier and diff checks before implementation, pres
 
 ## Parent implementation handoff
 
-Design problem: Event 020 has broad milestone coverage, but RTA hierarchy has no runtime meaning, RTX policy flags have no continuing consumers, the human response lacks an earned sovereign strike, and Rat King defeat has no actor-owned aftermath or qualifying global presentation.
+Current state: the RTA hierarchy graph and most runtime consumers, RTX route crises `.57-.59`, Crown Strike `.64-.65`, and static defeat/aftermath `.71-.75` are present in the worktree.
 
-Proposed tranche: four new RTA hierarchy focuses using two reused roots, four route crisis or hierarchy events, one Crown Strike mission with two reports, one defeat aftermath choice with two outcome reports, and conditional super-event 87.
+Still required before this addendum can be closed: decide whether the shared timed state-action API is sufficient for Crown Strike or a native mission owner is required, capture the scoped defeating actor through the accepted on-action hooks, couple reconstruction `.72` to the earned aftermath path, add the qualifying ID 87 gate and unique presentation package, replace generic crisis/aftermath art and missing hierarchy icons, and run the task-specific runtime validations.
 
-Research basis: the accepted plague science, quarantine, Wu Lien-teh, Haffkine, transport-route, regional mortality, and rat king folklore notes, plus the Event 016 qualifying-defeat architecture and vanilla capitulation scopes.
+The two-tag/no-model boundary is accepted and must remain unchanged: `RTA` plus `RTX` only, internal broods as state markers, and no 3D model production in this goal.
 
-Implementation surfaces: event script, RTA focus tree, rat and shared-response constants, effects, triggers, decisions, AI, targeted on-action hooks, localisation, Event Details, event log, GFX, sound, assets, docs, manifests, workbook, and exported catalogs.
+Research basis remains the accepted plague science, quarantine, Wu Lien-teh, Haffkine, transport-route, regional mortality, and Rat King folklore notes, plus the Event 016 qualifying-defeat architecture and vanilla capitulation scopes.
 
-Prior addendum status: `rat_absorption_follow_up.md` is resolved and superseded by the live state-marker absorption path.
-No other unresolved Event 020 improvement addendum blocks this pass.
-
-Promotion disposition: keep this file in `docs/plans/020_black_plague_plans/` until accepted.
-If accepted, merge it into Parts 5 through 8 and their matrices before implementation completion is claimed.
+`rat_absorption_follow_up.md` is resolved and superseded by the live state-marker absorption path.
+No additional improvement addendum should be spawned for this surface until the parent either implements, promotes, queues with a reason, or rejects the remaining gaps above.

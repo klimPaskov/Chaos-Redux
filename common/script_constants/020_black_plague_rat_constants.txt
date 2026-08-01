@@ -107,6 +107,29 @@ black_plague_rat_pool = {
 	royal_node_failure_dominion_threshold = 70
 }
 
+# Route modules add a small, persistent identity to the shared RTA carrier.
+# They change the capped brood pulse or physical spread routes without creating
+# another country tag or bypassing Evolution II's overseas gate.
+black_plague_rat_route = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	urban_pulse_mass_gain = 3
+	field_pulse_mass_gain = 2
+	dock_pulse_mass_gain = 2
+	war_pulse_mass_gain = 1
+	citadel_division_cap_gain = 10
+	migration_division_cap_gain = 8
+	tide_division_cap_gain = 8
+	rail_division_cap_gain = 12
+	urban_exposure_bonus = 4
+	field_exposure_bonus = 3
+	dock_exposure_bonus = 5
+	war_exposure_bonus = 4
+}
+
 black_plague_rat_archetype = {
 	schema = {
 		any_key = yes
@@ -132,6 +155,44 @@ black_plague_rat_hierarchy = {
 	emergent = 3
 }
 
+# Hierarchy route tuning for the shared RTA carrier. Every value is positive
+# so callers can apply explicit add or subtract effects without unary negative
+# variable tokens. These modifiers never create another country tag or bypass
+# the established global division cap.
+black_plague_rat_hierarchy_route = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	distributed_division_cap_per_state_gain = 2
+	distributed_pulse_mass_penalty = 2
+	distributed_merger_cooldown_days = 45
+	distributed_king_candidacy_penalty = 15
+	distributed_burrow_template_priority = 900
+	distributed_swarm_template_priority = 700
+	distributed_spare_unit_factor = 180
+	distributed_front_request_priority = 520
+
+	dominant_pulse_mass_gain = 4
+	dominant_division_cap_gain = 12
+	dominant_marker_extra_units = 1
+	dominant_merger_cooldown_days = 75
+	dominant_king_candidacy_gain = 10
+	dominant_brute_template_priority = 1000
+	dominant_guard_template_priority = 800
+	dominant_concentration_factor = 300
+	dominant_front_request_priority = 700
+
+	emergent_pulse_mass_penalty = 2
+	emergent_division_cap_penalty = 10
+	emergent_route_exposure_gain = 3
+	emergent_king_candidacy_gain = 20
+	emergent_dock_template_priority = 1000
+	emergent_brute_template_priority = 700
+	emergent_front_request_priority = 650
+}
+
 black_plague_rat_king_route = {
 	schema = {
 		any_key = yes
@@ -142,6 +203,52 @@ black_plague_rat_king_route = {
 	absolute_crown = 1
 	brood_council = 2
 	black_breath_hierophancy = 3
+}
+
+# Continuing policy consumers for the three Rat King governments. These are
+# deliberately small pulse/route modifiers; the existing meter clamps and
+# terminal gates remain authoritative.
+black_plague_rat_policy = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	crown_pulse_dominion_gain = 3
+	council_pulse_cohesion_gain = 2
+	hierophancy_route_exposure_gain = 3
+	crown_strike_extra_dominion_loss = 10
+	council_strike_extra_cohesion_loss = 15
+	hierophancy_strike_terminal_loss = 15
+	hierophancy_route_suspend_days = 90
+}
+
+black_plague_rat_policy_crisis = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	replace_warden_dominion_loss = 10
+	replace_warden_cohesion_gain = 15
+	replace_warden_pulse_block_days = 30
+
+	council_charter_cohesion_gain = 15
+	council_charter_hunger_gain = 5
+	council_speaker_dominion_gain = 10
+	council_speaker_cohesion_loss = 10
+	council_charter_terminal_loss = 10
+
+	hierophancy_consume_mass_gain = 20
+	hierophancy_consume_terminal_gain = 10
+	hierophancy_consume_hunger_gain = 15
+	hierophancy_seal_dominion_loss = 10
+	hierophancy_seal_hunger_loss = 15
+	hierophancy_suspend_days = 60
+	crisis_infestation_gain = 10
+	crisis_route_terminal_gain = 5
+	crisis_route_mass_gain = 15
+	crisis_route_hunger_gain = 10
 }
 
 black_plague_rat_decision = {
