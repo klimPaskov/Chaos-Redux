@@ -7,7 +7,8 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.1` | canonical random-event entry and origin selection | global then origin owner | hidden setup plus owner report dispatch | no |
 | `chaosx.nr20.2` | early owner recognition | origin owner | yes | no |
 | `chaosx.nr20.3` | late owner recognition after failed surveillance | origin owner | yes | no |
-| `chaosx.nr20.4` | first neighboring threat alert | exposed neighbor | yes | limited by country |
+| `chaosx.nr20.4` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
+| `chaosx.nr20.12` | first neighboring threat alert | exposed neighbor | yes | limited by country |
 | `chaosx.nr20.5` | first foreign infection | new infected country | yes | limited by country |
 | `chaosx.nr20.6` | first state enters Severe Crisis | state owner | yes | first global plus selective local reports |
 | `chaosx.nr20.7` | first successful Containment | state owner | yes | first global, later local only |
@@ -53,9 +54,9 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.74` | Royal Burrow sealing success | sealing operation owner | yes | one per completed site |
 | `chaosx.nr20.75` | Royal Burrow sealing timeout | sealing operation owner | yes | one per failed site |
 | `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
-| `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
+| `chaosx.nr20.90` | reserved scenario-history detail projection | shared event-log detail surface | no separate event | no |
 
-Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.75`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.
+Implementation status note: the current worktree defines and calls `.12`, `.45`, `.57-.59`, `.64-.75`, and `.90`; `.4` is the scenario launch report, while `.90` is the scenario-history detail projection used by the triggerable-scenario bootstrap. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.
 
 ## Runtime families
 
