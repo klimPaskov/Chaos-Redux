@@ -1,0 +1,258 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THE CAPTAIN'S ARTICLES TRIGGERS
+# ============================================================================
+# Port command admission and generation-bound receipt checks. The row only
+# appears for the West African Port Confederacies maritime remnant and selects
+# one current native coastal state. Every delayed lane revalidates the same state,
+# owner, controller, and port receipt.
+
+fallout_event_pilot_captains_articles_state_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { air_winter_shelter_capacity value = constant:fallout_event_768_threshold.minimum_state_shelter compare = greater_than_or_equals }
+	check_variable = { fallout_state_supply_access_current value = constant:fallout_event_768_threshold.minimum_state_supply compare = greater_than_or_equals }
+	check_variable = { air_winter_adaptation value = constant:fallout_event_768_threshold.minimum_state_adaptation compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_768_threshold.minimum_state_disease compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_768_threshold.maximum_state_disease compare = less_than }
+	check_variable = { air_winter_exposure value = constant:fallout_event_768_threshold.minimum_state_exposure compare = greater_than_or_equals }
+	check_variable = { air_winter_exposure value = constant:fallout_event_768_threshold.maximum_state_exposure compare = less_than }
+	check_variable = { state_population_k value = constant:fallout_event_768_threshold.minimum_population_k compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	OR = {
+		is_coastal = yes
+		check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_event_runtime.one compare = greater_than_or_equals }
+	}
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+	owner = {
+		fallout_event_country_can_receive_ordinary_event = yes
+		has_variable = fallout_government_archetype
+		check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.maritime_remnant compare = equals }
+		has_variable = fallout_captains_articles_port_legitimacy_current
+		has_variable = fallout_captains_articles_piracy_pressure_current
+		check_variable = { fallout_captains_articles_port_legitimacy_current value = constant:fallout_event_768_threshold.minimum_port_legitimacy compare = greater_than_or_equals }
+		check_variable = { fallout_captains_articles_piracy_pressure_current value = constant:fallout_event_768_threshold.minimum_piracy_pressure compare = greater_than_or_equals }
+	}
+	NOT = { has_state_flag = fallout_event_768_registry_reserved }
+	NOT = { has_state_flag = fallout_event_768_registry_committed }
+	NOT = { has_state_flag = fallout_event_768_memory_closed }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_project }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_completed }
+}
+
+fallout_event_768_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_768_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_768_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_captains_articles_state_is_current = yes
+	}
+	check_variable = { fallout_event_768_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_768_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_768_rescue_articles_affordable = yes
+		fallout_event_768_prize_court_affordable = yes
+		fallout_event_768_harbor_muster_affordable = yes
+		fallout_event_768_fleet_split_affordable = yes
+	}
+}
+
+fallout_event_768_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_government_archetype
+	check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.maritime_remnant compare = equals }
+	has_variable = fallout_country_memory_id
+	check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.west_african_port_confederacies compare = equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_768_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_768_threshold.maximum_campaign_day compare = less_than }
+	has_variable = fallout_event_768_candidate_state_id
+	check_variable = { fallout_event_768_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_variable = fallout_captains_articles_port_legitimacy_current
+	has_variable = fallout_captains_articles_piracy_pressure_current
+	check_variable = { fallout_captains_articles_port_legitimacy_current value = constant:fallout_event_768_threshold.minimum_port_legitimacy compare = greater_than_or_equals }
+	check_variable = { fallout_captains_articles_piracy_pressure_current value = constant:fallout_event_768_threshold.minimum_piracy_pressure compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_768_threshold.minimum_country_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_768_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_768_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	fallout_event_768_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_768_chain_committed }
+	NOT = { has_country_flag = fallout_event_768_pending }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_768_candidate_state_id compare = equals }
+		fallout_event_pilot_captains_articles_state_is_current = yes
+	}
+}
+
+fallout_event_768_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_human compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_768_country_is_current = yes
+	fallout_event_768_opening_target_is_current = yes
+}
+
+fallout_event_768_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_ai compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_768_country_is_current = yes
+	fallout_event_768_opening_target_is_current = yes
+}
+
+fallout_event_768_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { state_population_k value = constant:fallout_event_768_threshold.minimum_population_k compare = greater_than }
+	OR = {
+		is_coastal = yes
+		check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_event_runtime.one compare = greater_than_or_equals }
+	}
+	owner = {
+		has_variable = fallout_country_memory_id
+		check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.west_african_port_confederacies compare = equals }
+	}
+	NOT = { has_state_flag = fallout_event_768_memory_closed }
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+}
+
+fallout_event_768_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_768_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_768_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_768_registry_state_is_current = yes
+	}
+	check_variable = { fallout_event_768_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_768_registry_is_current = {
+	has_variable = fallout_event_768_registry_generation
+	has_variable = fallout_event_768_registry_owner
+	has_variable = fallout_event_768_candidate_id
+	has_variable = fallout_event_768_registry_target_type
+	has_variable = fallout_event_768_registry_target
+	has_variable = fallout_event_768_target_state_id
+	has_variable = fallout_event_768_selected_branch
+	has_variable = fallout_event_768_result_outcome
+	has_variable = fallout_event_768_result_generation
+	has_variable = fallout_event_768_frozen_generation
+	has_variable = fallout_event_768_frozen_owner
+	has_variable = fallout_event_768_frozen_controller
+	has_variable = fallout_event_768_frozen_shelter
+	has_variable = fallout_event_768_frozen_supply
+	has_variable = fallout_event_768_frozen_adaptation
+	has_variable = fallout_event_768_frozen_exposure
+	has_variable = fallout_event_768_frozen_disease
+	has_variable = fallout_event_768_frozen_neighbor_state_id
+	has_variable = fallout_event_768_frozen_neighbor_owner
+	has_variable = fallout_event_768_frozen_neighbor_controller
+	check_variable = { fallout_event_768_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_768_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_768_candidate_id value = constant:fallout_event_candidate_pilot.captains_articles_candidate_id compare = equals }
+	check_variable = { fallout_event_768_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_768_registry_target value = fallout_event_768_target_state_id compare = equals }
+	check_variable = { fallout_event_768_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_768_result_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_768_frozen_neighbor_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_country_flag = fallout_event_768_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_768_target_state_id compare = equals }
+		fallout_event_768_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_768_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_768_frozen_controller value = CONTROLLER compare = equals }
+	}
+	var:fallout_event_768_frozen_neighbor_state_id = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		check_variable = { var = ROOT.fallout_event_768_frozen_neighbor_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_768_frozen_neighbor_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_768_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_768_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_768_branch.upper_bound compare = less_than }
+	fallout_event_768_registry_is_current = yes
+}
+
+fallout_event_768_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_768_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_768_branch.upper_bound compare = less_than }
+	fallout_event_768_registry_is_current = yes
+}
+
+fallout_event_768_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.captains_articles_cleanup compare = equals }
+	fallout_event_768_registry_is_current = yes
+}
+
+fallout_event_768_rescue_articles_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_768_cost.rescue_articles_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_768_cost.rescue_articles_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_768_cost.rescue_articles_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_768_prize_court_affordable = {
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_768_cost.prize_court_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_768_cost.prize_court_power compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_768_cost.prize_court_recognition compare = greater_than_or_equals }
+}
+fallout_event_768_harbor_muster_affordable = {
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_768_cost.harbor_muster_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_768_cost.harbor_muster_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_768_cost.harbor_muster_cohesion compare = greater_than_or_equals }
+}
+fallout_event_768_fleet_split_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_768_cost.fleet_split_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_768_cost.fleet_split_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_768_cost.fleet_split_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_768_cost.fleet_split_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_768_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { fallout_event_768_requested_branch value = constant:fallout_event_768_branch.rescue_articles compare = equals } } fallout_event_768_rescue_articles_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_768_requested_branch value = constant:fallout_event_768_branch.prize_court compare = equals } } fallout_event_768_prize_court_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_768_requested_branch value = constant:fallout_event_768_branch.harbor_muster compare = equals } } fallout_event_768_harbor_muster_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_768_requested_branch value = constant:fallout_event_768_branch.fleet_split compare = equals } } fallout_event_768_fleet_split_affordable = yes }
+}
+
+# End of The Captain's Articles triggers.

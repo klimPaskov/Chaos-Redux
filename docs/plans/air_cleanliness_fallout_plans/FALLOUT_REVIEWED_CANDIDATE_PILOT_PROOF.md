@@ -1,6 +1,8 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after The Envoy at the Gate
+## Current reconciliation after The Captain's Articles
+
+The reviewed candidate producer now covers `81` ordinary dormant rows through The Captain's Articles candidate `768`, with `649` defined event blocks through `chaosx.fallout.774` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7195`. Candidate 768 uses transaction `710081`, route `7194`, and survivor Event Log history `9187`. The producer selects the lowest valid West African Port Confederacies coastal or naval-base state with a foreign neighbor after authenticating the maritime-remnant memory, then admits durable Air Winter and survival rows with port ledgers and one affordable branch. Rescue articles, prize court, harbor muster, and fleet split share deterministic `42` day result and `300` day callback contracts, hidden-AI parity, bounded Deaths failure, Air Winter, port-ledger, opinion, and Supply Access effects, cleanup, dedicated localisation, survivor Event Log routing, dedicated report art, a reviewed source specification, and `FALLOUT_CAPTAINS_ARTICLES_CHAIN_PROOF.md`. This is static source evidence rather than an accepted runtime path.
 
 The reviewed candidate producer now covers `80` ordinary dormant rows through The Envoy at the Gate candidate `761`, with `642` defined event blocks through `chaosx.fallout.767` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7193`. Candidate 761 uses transaction `710080`, route `7192`, and survivor Event Log history `9186`. The producer selects the lowest valid owned Congo Green Basin state with a foreign neighbor after authenticating the mutant polity memory, then admits durable Air Winter and survival rows with one affordable branch. This is static source evidence rather than an accepted runtime path.
 

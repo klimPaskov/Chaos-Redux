@@ -1,6 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after The Envoy at the Gate
+## Current reconciliation after The Captain's Articles
+
+The living-world pilot now contains `649` defined event blocks across the reviewed ordinary range through `774`, including the dormant The Captain's Articles tranche at `768` through `774`. The current reviewed ordinary row count is `81`. The Captain's Articles uses candidate `768`, transaction `710081`, route `7194`, and survivor Event Log history `9187`. The reserved route upper bound is `7195`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 The living-world pilot now contains `642` defined event blocks across the reviewed ordinary range through `767`, including the dormant The Envoy at the Gate tranche at `761` through `767`. The current reviewed ordinary row count is `80`. The Envoy at the Gate uses candidate `761`, transaction `710080`, route `7192`, and survivor Event Log history `9186`. The reserved route upper bound is `7193`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
