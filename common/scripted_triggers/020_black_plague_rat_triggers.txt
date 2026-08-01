@@ -29,6 +29,22 @@ black_plague_rat_country_is_king = {
 	NOT = { has_country_flag = black_plague_rat_king_country_retired }
 }
 
+# STATE scope. The Rat King can only project a royal strike into a real enemy
+# human state. The state remains eligible while clear or cured so a successful
+# operation can reopen the shared disease lifecycle, but rat-controlled land
+# and a recent target cooldown are excluded from the selector.
+black_plague_rat_king_royal_strike_target_is_valid = {
+	exists = yes
+	CONTROLLER = {
+		exists = yes
+		black_plague_country_is_human_host = yes
+		has_war_with = ROOT
+	}
+	black_plague_state_can_receive_exposure = yes
+	NOT = { black_plague_state_is_rat_controlled = yes }
+	NOT = { has_state_flag = black_plague_rat_king_royal_strike_cooldown }
+}
+
 black_plague_rat_king_defeat_aftermath_is_eligible = {
 	has_global_flag = black_plague_rat_king_defeated
 	has_global_flag = black_plague_evolution_iv_active
