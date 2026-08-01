@@ -72,6 +72,14 @@ focus_tree = {
 	# Frontier command is a sibling Sokoto settlement to the sultanic and
 	# northern constitutional routes.
 	shared_focus = independence_wave_iw098_authorize_frontier_command
+	# Import the CAT additive overlay roots so the vanilla carrier can resolve
+	# every package-specific focus when its reviewed adapter is later admitted.
+	shared_focus = independence_wave_cat_secure_barcelona_port_focus
+	shared_focus = independence_wave_cat_integrate_factory_workers_focus
+	shared_focus = independence_wave_cat_reconcile_assembly_focus
+	shared_focus = independence_wave_cat_settle_iberian_charter_focus
+	shared_focus = independence_wave_cat_open_mediterranean_corridor_focus
+	shared_focus = independence_wave_cat_ratify_catalan_sovereignty_focus
 
 	# ------------------------------------------------------------------------
 	# Lane 1: survival and state construction
@@ -3513,4 +3521,95 @@ shared_focus = {
 	available = { is_independence_wave_cor_package = yes has_country_flag = independence_wave_network_member }
 	completion_reward = { custom_effect_tooltip = independence_wave_cor_authorize_form05_delegation_tt hidden_effect = { independence_wave_cor_focus_authorize_form05_delegation = yes } }
 	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+# ---------------------------------------------------------------------------
+# IW-014 Catalonia additive overlay. CAT keeps its vanilla carrier identity
+# and receives these package-specific industrial, assembly, host, and network
+# focuses after the shared Event 006 framework is assigned.
+# ---------------------------------------------------------------------------
+
+shared_focus = {
+	id = independence_wave_cat_secure_barcelona_port_focus
+	icon = GFX_goal_independence_wave_afx_industrial_reserve
+	prerequisite = { focus = independence_wave_prepare_capital_administration }
+	x = 80
+	y = 1
+	cost = @independence_wave_focus_short
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+	allow_branch = { is_independence_wave_cat_package = yes can_use_independence_wave_full_focus_framework = yes }
+	available = { is_independence_wave_cat_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_secure_barcelona_port_tt hidden_effect = { independence_wave_cat_focus_secure_port = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor NOT = { has_country_flag = independence_wave_cat_port_secured } } }
+}
+
+shared_focus = {
+	id = independence_wave_cat_integrate_factory_workers_focus
+	icon = GFX_goal_independence_wave_afx_industrial_succession
+	prerequisite = { focus = independence_wave_cat_secure_barcelona_port_focus }
+	relative_position_id = independence_wave_cat_secure_barcelona_port_focus
+	x = -1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MANPOWER }
+	available = { is_independence_wave_cat_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_integrate_factory_workers_tt hidden_effect = { independence_wave_cat_focus_integrate_workers = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_war = yes } }
+}
+
+shared_focus = {
+	id = independence_wave_cat_reconcile_assembly_focus
+	icon = GFX_goal_independence_wave_afx_basin_government
+	prerequisite = { focus = independence_wave_prepare_first_assembly }
+	relative_position_id = independence_wave_cat_secure_barcelona_port_focus
+	x = 1
+	y = 1
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cat_package = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_reconcile_assembly_tt hidden_effect = { independence_wave_cat_focus_reconcile_assembly = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_cat_provisional_authority } }
+}
+
+shared_focus = {
+	id = independence_wave_cat_settle_iberian_charter_focus
+	icon = GFX_goal_independence_wave_former_host_settlement
+	prerequisite = { focus = independence_wave_cat_integrate_factory_workers_focus }
+	prerequisite = { focus = independence_wave_cat_reconcile_assembly_focus }
+	relative_position_id = independence_wave_cat_secure_barcelona_port_focus
+	x = 0
+	y = 2
+	cost = @independence_wave_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cat_package = yes has_independence_wave_living_former_host = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_settle_iberian_charter_tt hidden_effect = { independence_wave_cat_focus_settle_host = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_independence_wave_living_former_host = yes } }
+}
+
+shared_focus = {
+	id = independence_wave_cat_open_mediterranean_corridor_focus
+	icon = GFX_goal_independence_wave_cor_customs
+	prerequisite = { focus = independence_wave_cat_settle_iberian_charter_focus }
+	relative_position_id = independence_wave_cat_secure_barcelona_port_focus
+	x = 0
+	y = 3
+	cost = @independence_wave_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+	available = { is_independence_wave_cat_package = yes has_country_flag = independence_wave_network_member }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_open_mediterranean_corridor_tt hidden_effect = { independence_wave_cat_focus_open_mediterranean_network = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_league_member } }
+}
+
+shared_focus = {
+	id = independence_wave_cat_ratify_catalan_sovereignty_focus
+	icon = GFX_goal_independence_wave_high_chaos_sovereignty
+	prerequisite = { focus = independence_wave_cat_open_mediterranean_corridor_focus }
+	relative_position_id = independence_wave_cat_secure_barcelona_port_focus
+	x = 0
+	y = 4
+	cost = @independence_wave_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	available = { is_independence_wave_cat_package = yes has_stable_independence_wave_cat_compact = yes has_independence_wave_cat_route_government = yes }
+	completion_reward = { custom_effect_tooltip = independence_wave_cat_ratify_catalan_sovereignty_tt hidden_effect = { independence_wave_cat_focus_ratify_sovereignty = yes } }
+	ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.strong_preference_factor has_country_flag = independence_wave_founding_settlement_complete } }
 }

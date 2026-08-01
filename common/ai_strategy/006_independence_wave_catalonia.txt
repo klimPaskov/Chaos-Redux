@@ -1,0 +1,58 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-014 CATALONIA AI
+# ============================================================================
+# Additive strategy layers for vanilla CAT. The carrier keeps vanilla history
+# and AI; these layers respond to the package's industrial/assembly ledgers,
+# host settlement, and chosen route government.
+# ============================================================================
+
+independence_wave_cat_industrial_survival = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_iw_014_setup_complete
+		has_country_flag = independence_wave_cat_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_catalonia_ai.army_priority }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_catalonia_ai.production_priority }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:independence_wave_catalonia_ai.artillery_priority }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_catalonia_ai.support_priority }
+	ai_strategy = { type = build_building id = infrastructure value = constant:independence_wave_catalonia_ai.infrastructure_priority }
+	ai_strategy = { type = build_building id = bunker value = constant:independence_wave_catalonia_ai.defense_priority }
+}
+
+independence_wave_cat_host_restraint = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_iw_014_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_cat_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_catalonia_ai.founding_restraint }
+}
+
+independence_wave_cat_settled_industry = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_cat_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_catalonia_ai.industrial_expansion_priority }
+	ai_strategy = { type = build_building id = industrial_complex value = constant:independence_wave_catalonia_ai.industrial_expansion_priority }
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_catalonia_ai.settled_restraint }
+}
+
+independence_wave_cat_emergency_command = {
+	allowed = { original_tag = CAT }
+	enable = {
+		is_independence_wave_cat_package = yes
+		has_country_flag = independence_wave_cat_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_catalonia_ai.emergency_army_priority }
+	ai_strategy = { type = build_building id = bunker value = constant:independence_wave_catalonia_ai.defense_priority }
+}
