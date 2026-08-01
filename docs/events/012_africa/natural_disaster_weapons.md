@@ -85,3 +85,7 @@ Partial and failed Event 012 action outcomes do not call Event 013; only a full 
 The Event 013 wrapper and contract files are unchanged and remain the source of truth for family availability, target-state eligibility, scale bounds, sequence planning, result semantics, and report/news presentation.
 
 The Event 012 `strange-force` actions remain outside this integration and retain their existing documented formation-consumer gap.
+
+## Strength boundary
+
+Disaster severity is earned through the existing promotion, constitutional, ecological, war-readiness, payment, and target-size receipts. It is never derived from ethnicity, a tribal label, or an unreviewed cultural stereotype. A promoted sovereign or covenant route can therefore deliver a stronger call because its documented political and ecological authority is higher, while every call still targets one selected enemy and remains bounded by the Event 013 contract.
