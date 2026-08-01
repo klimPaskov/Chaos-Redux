@@ -4,7 +4,7 @@
 
 After user acceptance, the files under this `020_black_plague_specs` folder should become the Event 20 design source of truth.
 
-The obsolete catalog rows remain records that implementation and the spreadsheet worker must replace after final in-game wording exists. The supplied scenario catalog has no Black Plague entry, so the proposed scenario identifier remains provisional until the live registry is checked.
+The obsolete catalog rows remain historical records. The live implementation registers Event 20 in the Diseases cluster (`8`) and the triggerable scenario as `SCN-012`; the workbook and exported snapshots carry those accepted identifiers.
 
 ## Spec hierarchy
 
@@ -16,6 +16,8 @@ The obsolete catalog rows remain records that implementation and the spreadsheet
 6. Manual planning reviews and limitations in `review/`
 
 When two files appear to conflict, the later user corrections and Part 9 control the triggerable scenario. The detailed matrices control implementation detail unless a main spec states a stronger rule.
+
+The 2026-07-29 two-tag correction supersedes every earlier multi-tag Rat Nation pool: `RTA` is the only reusable Rat Nation carrier, `RTX` is the separate Rat King, and additional broods are state-level markers, infestation, mass, and pulse state inside `RTA`.
 
 ## Plan disposition
 
