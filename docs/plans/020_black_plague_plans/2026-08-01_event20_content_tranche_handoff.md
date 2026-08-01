@@ -20,6 +20,8 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The pre-terminal continent achievement no longer depends on Evolution V having already been recorded, so its route can be evaluated before the terminal takeover.
 - The fourteen Event 020 achievement contracts now have public registry entries and player-facing name, description, eligibility, and completion tooltip localisation.
 - The RTA and RTX focus trees now apply route-aware AI weights to the four RTA archetype roots, the shared brood/crown progression, the three King governments, first crisis resolution, and the earned terminal route.
+- The Rat King focus tree now includes twelve reachable, route-gated policy focuses: four Absolute Crown focuses, four Council focuses, and four Black-Breath Hierophancy focuses. Their rewards alter the royal meters, brood mass, force cap, overseas permission, and terminal preparation rather than granting human industry or manpower.
+- The rat AI strategy file now has three route-specific RTX plans. Crown concentrates brutes and royal-node defense, Council favors distributed burrow and swarm coverage, and Hierophancy favors dock forces, coastal staging, and overseas pressure.
 - Event 20 workbook and exported catalogs include the live Diseases cluster, public Black Plague world-end row, SCN-012 two-tag wording, and current Rat King grace-period detail.
 - Event map documentation records the new Royal Node and mission report identifiers.
 
@@ -32,12 +34,13 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The mandatory catalog exporter completed successfully after the workbook update and rewrote all three CSV exports.
 - `hoi4_event_inspect` returned `status: ok`, `code: EVENT_INSPECTED_PARTIAL`, and `blockingDiagnostics: 0` for `events/020_black_death.txt` after the tranche.
 - `hoi4_focus_inspect` returned `status: ok` for both Event 020 trees after the AI-weight pass; layout metrics retained zero connector crossings and zero node intersections. Its inline report still lists generic vanilla icon references as workspace-scoped diagnostics.
+- After the route-policy expansion, `hoi4_focus_inspect` reports 50 RTX focuses, 56 connectors, zero connector crossings, and zero node intersections. `hoi4_focus_render` also returned `status: ok`; its only remaining inline diagnostics are the known generic vanilla icon inventory limitation.
 - The MCP report remains focused and workspace-partial; it reports deferred workspace-wide helper and lifecycle projections and is not a claim of full game validation.
 
 ## Remaining blockers and deviations
 
 - The achievement registry and Event 020 localisation are wired, but the final completed, grey, and not-eligible icon triplets are still missing.
-- RTA and RTX focus trees remain compact playable shells rather than the full accepted route depth; the main route-aware AI gates are now present, but broader route-specific AI strategy plans remain a follow-up.
+- RTA and RTX focus trees remain compact playable shells rather than the full accepted route depth; the main route-aware AI gates, twelve route-gated King policy focuses, and three route-specific RTX strategy plans are now present, but the broader accepted route architecture remains a follow-up.
 - The accepted narrative and asset package still has queued unique Doctor Wu, outbreak, Rat Nation, weapon-delivery, Royal Node, achievement, and source-frame animation surfaces.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
