@@ -93,6 +93,8 @@ The authoritative event catalog workbook records Event 20 under cluster 8 (Disea
 
 SCN-012 rebuilds its internal-brood count from the reusable RTA carrier and surviving state markers before attempting any intensity top-up. A repeat launch therefore preserves the minimum brood postcondition even when no unoccupied candidate state remains. The public repeat signal is reconciliation-only: it refreshes runtime counts, air cleanliness, shared threat, mapmode, and the disease board without reseeding, resetting intensity, replaying Evolutions I-IV, or firing a duplicate launch report or coronation.
 
+State control changes are also a direct rat-occupation route. When RTA or RTX captures an eligible non-Rat-Controlled state, the narrow `on_state_control_changed` hook applies the rat-occupation provenance and Rat-Controlled phase through the shared exposure adapter, records one mortality transaction, applies the immediate devastation cost, registers the reusable RTA brood marker when appropriate, and marks the shared mapmode dirty. Already Rat-Controlled states are left idempotently untouched.
+
 Primary implementation surfaces include:
 
 - `common/script_constants/020_black_plague_*.txt`

@@ -297,6 +297,38 @@ black_plague_rat_run_runtime_pulse = {
 	}
 }
 
+# STATE scope from on_state_control_changed. An eligible non-Rat-Controlled
+# state captured by either rat carrier becomes an established Rat-Controlled infection immediately;
+# the shared exposure adapter owns phase, provenance, mapmode, and ledger
+# updates, while this hook adds one exact-loss mortality transaction and the
+# reusable RTA brood marker without creating another country tag.
+black_plague_rat_infect_controlled_state = {
+	if = {
+		limit = {
+			CONTROLLER = { black_plague_rat_country_is_active = yes }
+			NOT = { black_plague_state_is_rat_controlled = yes }
+			black_plague_state_can_receive_exposure = yes
+		}
+		set_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.rat_occupation_base }
+		set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.rat_occupation }
+		set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+		black_plague_apply_exposure = yes
+		black_plague_apply_current_state_mortality_once = yes
+		black_plague_apply_current_state_devastation = yes
+		if = {
+			limit = { CONTROLLER = { black_plague_rat_country_is_active = yes NOT = { has_country_flag = black_plague_rat_king_country } } }
+			set_state_flag = black_plague_rat_nation_state
+			black_plague_rat_initialize_state_brood_marker = yes
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = global.black_plague_rat_controlled_states value = THIS } } }
+			add_to_array = { array = global.black_plague_rat_controlled_states value = THIS }
+			add_to_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.one }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
 # COUNTRY scope. Track distinct major human governments that reclaim royal
 # territory. The array is intentionally finite in practice and is reset when a
 # new King is crowned, so the defeat aftermath cannot inherit an old campaign.
