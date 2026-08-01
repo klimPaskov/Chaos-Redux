@@ -296,3 +296,15 @@ Successor package production, player materialization, general allocation, countr
 | The First Regional Standard localisation and Event Log | `localisation/english/fallout_world_end_first_regional_standard_l_english.yml`, `common/scripted_localisation/fallout_world_end_first_regional_standard_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The First Regional Standard art and workbook | `docs/assets/852_first_regional_standard/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/first_regional_standard/report_event_fallout_first_regional_standard.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-852` |
 | The First Regional Standard status boundary | dormant source package with four standards branches, hidden AI parity, 70-day result, 420-day compatibility review, bounded Deaths effects, standards memories, Event Log history `9199`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Repair Charter source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Repair Charter design | `docs/specs/air_cleanliness_fallout_specs/specs/96_reviewed_archetype_repair_charter.md` |
+| The Repair Charter runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REPAIR_CHARTER_CHAIN_PROOF.md` |
+| The Repair Charter gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_repair_charter_event_triggers.txt`, `common/scripted_effects/fallout_world_end_repair_charter_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_repair_charter_dynamic_modifiers.txt` |
+| The Repair Charter constants and registry | `common/script_constants/fallout_world_end_repair_charter_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Repair Charter localisation and Event Log | `localisation/english/fallout_world_end_repair_charter_l_english.yml`, `common/scripted_localisation/fallout_world_end_repair_charter_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Repair Charter art and workbook | `docs/assets/859_repair_charter/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/repair_charter/report_event_fallout_repair_charter.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-859` |
+| The Repair Charter status boundary | dormant source package with four repair branches, hidden-AI parity, 77-day result, 450-day charter audit, bounded Deaths effects, repair memories, Event Log history `9200`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
