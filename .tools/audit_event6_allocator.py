@@ -536,6 +536,41 @@ def main() -> int:
 		"SCN-008 Great Partition does not alter pre-reservation partition setup",
 		errors,
 	)
+	try:
+		former_host_type = extract_script_block(scenario, "independence_wave_scenario_start_universal_belligerence")
+		separation_type = extract_script_block(scenario, "independence_wave_scenario_apply_type")
+		host_war = extract_script_block(scenario, "independence_wave_scenario_start_host_war")
+	except ValueError as exc:
+		errors.append(str(exc))
+		former_host_type = ""
+		separation_type = ""
+		host_war = ""
+	# Universal Former Hosts consumes a distinct-host ledger, but Wars of
+	# Separation deliberately keeps one viable host war per release. Guard this
+	# boundary so a future refactor cannot leak the temporary uniqueness policy
+	# into the ordinary per-release host-war rule.
+	require(
+		"set_variable = { global.independence_wave_scenario_former_host_unique_policy = constant:independence_wave_scenario_registry.one }" in former_host_type
+		and "independence_wave_scenario_clear_belligerence_target_marks = yes" in former_host_type,
+		"SCN-008 Universal Former Hosts does not enable and clear its bounded target ledger",
+		errors,
+	)
+	separation_position = separation_type.find("constant:independence_wave_scenario_type.wars_of_separation")
+	if separation_position >= 0:
+		separation_branch = separation_type[separation_position:]
+		require(
+			"clear_variable = global.independence_wave_scenario_former_host_unique_policy" in separation_branch
+			and "independence_wave_scenario_start_all_host_wars = yes" in separation_branch,
+			"SCN-008 Wars of Separation does not clear former-host uniqueness before per-release host wars",
+			errors,
+		)
+	require(
+		"check_variable = { global.independence_wave_scenario_former_host_unique_policy" in host_war
+		and "global.independence_wave_scenario_belligerence_targets" in host_war
+		and "remove_from_array = { array = global.independence_wave_scenario_belligerence_targets" in host_war,
+		"SCN-008 host-war helper lacks bounded former-host target reservation/rollback",
+		errors,
+	)
 
 	joint = read("common/scripted_effects/005_006_liberations_collision_effects.txt")
 	require_order(
