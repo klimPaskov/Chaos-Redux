@@ -246,34 +246,41 @@ black_plague_scenario_select_anchor_states = {
 
 black_plague_scenario_seed_state = {
 	black_plague_ensure_current_state_values = yes
-	set_variable = { black_plague_provenance = constant:black_plague_provenance.natural }
-	set_variable = { black_plague_load = constant:black_plague_evolution_runtime.scenario_seed_load }
-	set_variable = { black_plague_mortality_pressure = constant:black_plague_evolution_runtime.scenario_seed_mortality }
-	set_variable = { black_plague_spread_pressure = constant:black_plague_evolution_runtime.scenario_seed_spread }
-	set_variable = { black_plague_containment = constant:black_plague_evolution_runtime.scenario_seed_containment }
-	set_variable = { black_plague_treatment_coverage = constant:black_plague_evolution_runtime.scenario_seed_treatment }
-	set_variable = { black_plague_relapse_risk = constant:black_plague_evolution_runtime.scenario_seed_relapse }
-	set_variable = { black_plague_rat_infestation = constant:black_plague_evolution_runtime.scenario_seed_infestation }
-	set_variable = { black_plague_incoming_exposure = constant:black_plague_value.zero }
-	set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.infected }
 	if = {
-		limit = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.medium } }
-		set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.severe_crisis }
+		limit = { has_state_flag = black_plague_scenario_seeded }
+		set_temp_variable = { black_plague_scenario_state_was_seeded = constant:black_plague_value.one }
 	}
-	else_if = {
-		limit = { check_variable = { global.black_plague_scenario_intensity > constant:triggerable_scenario_intensity.medium } }
-		set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.severe_crisis }
-	}
-	if = {
-		limit = {
-			has_state_flag = black_plague_scenario_anchor
-			check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+	else = {
+		set_temp_variable = { black_plague_scenario_state_was_seeded = constant:black_plague_value.zero }
+		set_variable = { black_plague_provenance = constant:black_plague_provenance.natural }
+		set_variable = { black_plague_load = constant:black_plague_evolution_runtime.scenario_seed_load }
+		set_variable = { black_plague_mortality_pressure = constant:black_plague_evolution_runtime.scenario_seed_mortality }
+		set_variable = { black_plague_spread_pressure = constant:black_plague_evolution_runtime.scenario_seed_spread }
+		set_variable = { black_plague_containment = constant:black_plague_evolution_runtime.scenario_seed_containment }
+		set_variable = { black_plague_treatment_coverage = constant:black_plague_evolution_runtime.scenario_seed_treatment }
+		set_variable = { black_plague_relapse_risk = constant:black_plague_evolution_runtime.scenario_seed_relapse }
+		set_variable = { black_plague_rat_infestation = constant:black_plague_evolution_runtime.scenario_seed_infestation }
+		set_variable = { black_plague_incoming_exposure = constant:black_plague_value.zero }
+		set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.infected }
+		if = {
+			limit = { check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.medium } }
+			set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.severe_crisis }
 		}
-		set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.collapsed }
+		else_if = {
+			limit = { check_variable = { global.black_plague_scenario_intensity > constant:triggerable_scenario_intensity.medium } }
+			set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.severe_crisis }
+		}
+		if = {
+			limit = {
+				has_state_flag = black_plague_scenario_anchor
+				check_variable = { global.black_plague_scenario_intensity = constant:triggerable_scenario_intensity.maximum }
+			}
+			set_temp_variable = { black_plague_scenario_seed_phase = constant:black_plague_phase.collapsed }
+		}
+		set_temp_variable = { black_plague_next_phase = black_plague_scenario_seed_phase }
+		black_plague_set_current_state_phase = yes
+		set_state_flag = black_plague_scenario_seeded
 	}
-	set_temp_variable = { black_plague_next_phase = black_plague_scenario_seed_phase }
-	black_plague_set_current_state_phase = yes
-	set_state_flag = black_plague_scenario_seeded
 	if = { limit = { black_plague_state_is_infected_or_worse = yes } set_state_flag = black_plague_scenario_rat_candidate add_to_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS } }
 	if = {
 		limit = {
@@ -306,7 +313,16 @@ black_plague_scenario_seed_state = {
 		set_state_flag = black_plague_scenario_opening_deaths_applied
 	}
 	black_plague_register_current_state = yes
-	add_to_variable = { global.black_plague_scenario_seeded_states = constant:black_plague_value.one }
+	if = {
+		limit = {
+			check_variable = {
+				var = black_plague_scenario_state_was_seeded
+				value = constant:black_plague_value.zero
+				compare = equals
+			}
+		}
+		add_to_variable = { global.black_plague_scenario_seeded_states = constant:black_plague_value.one }
+	}
 	every_neighbor_state = {
 		limit = {
 			black_plague_scenario_valid_human_state = yes
@@ -689,7 +705,17 @@ black_plague_scenario_start_scheduler = {
 
 black_plague_triggerable_scenario_launch = {
 	if = {
-		limit = { black_plague_scenario_can_launch_from_triggerable_scenarios = yes }
+		limit = { black_plague_scenario_can_reconcile_from_triggerable_scenarios = yes }
+		set_global_flag = black_plague_triggerable_scenario_bootstrap
+		black_plague_rebuild_runtime_counts = yes
+		black_plague_refresh_air_cleanliness_source = yes
+		black_plague_scenario_refresh_shared_threat = yes
+		black_plague_refresh_mapmode_once = yes
+		disease_containment_board_refresh_open_black_plague_boards = yes
+		clr_global_flag = black_plague_triggerable_scenario_bootstrap
+	}
+	else_if = {
+		limit = { black_plague_scenario_can_start_from_triggerable_scenarios = yes }
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
 		clr_global_flag = black_plague_triggerable_scenario_setup_failed
 		black_plague_scenario_set_intensity_tuning = yes
@@ -799,7 +825,11 @@ black_plague_triggerable_scenario_launch = {
 				}
 				set_variable = { global.black_plague_scenario_king_state_target = global.black_plague_scenario_king_states_transferred }
 			}
-			news_event = { id = chaosx.nr20.90 }
+			if = {
+				limit = { NOT = { has_global_flag = black_plague_scenario_report_emitted } }
+				news_event = { id = chaosx.nr20.90 }
+				set_global_flag = black_plague_scenario_report_emitted
+			}
 			if = {
 				limit = {
 					RTX = { exists = yes has_country_flag = black_plague_rat_king_country }
