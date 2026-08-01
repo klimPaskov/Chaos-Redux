@@ -20021,3 +20021,105 @@ country_event = {
 	trigger = { fallout_event_719_cleanup_can_enter = yes }
 	immediate = { fallout_event_719_cleanup = yes }
 }
+
+# Dormant Fallout Quarantine chain: Border Inspection Crisis
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.726
+	title = chaosx.fallout.726.t
+	desc = chaosx.fallout.726.d
+	picture = GFX_report_event_fallout_border_inspection_crisis
+	is_triggered_only = yes
+	trigger = { fallout_event_726_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.726.a
+		trigger = { fallout_event_726_close_border_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_726_requested_branch = constant:fallout_event_726_branch.close_border } fallout_event_726_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.726.a.tt
+	}
+	option = {
+		name = chaosx.fallout.726.b
+		trigger = { fallout_event_726_joint_team_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_726_requested_branch = constant:fallout_event_726_branch.joint_team } fallout_event_726_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.726.b.tt
+	}
+	option = {
+		name = chaosx.fallout.726.c
+		trigger = { fallout_event_726_exemptions_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_726_requested_branch = constant:fallout_event_726_branch.exemptions } fallout_event_726_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.726.c.tt
+	}
+	option = {
+		name = chaosx.fallout.726.e
+		trigger = { fallout_event_726_military_inspection_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_726_requested_branch = constant:fallout_event_726_branch.military_inspection } fallout_event_726_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.726.e.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.727
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_726_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_726_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.728
+	title = chaosx.fallout.728.t
+	desc = { text = chaosx.fallout.728.close_border.success.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.close_border compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.728.close_border.partial.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.close_border compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.728.close_border.failure.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.close_border compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.728.joint_team.success.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.joint_team compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.728.joint_team.partial.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.joint_team compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.728.joint_team.failure.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.joint_team compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.728.exemptions.success.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.exemptions compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.728.exemptions.partial.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.exemptions compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.728.exemptions.failure.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.exemptions compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.728.military_inspection.success.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.military_inspection compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.728.military_inspection.partial.d trigger = { check_variable = { fallout_event_726_selected_branch value = constant:fallout_event_726_branch.military_inspection compare = equals } check_variable = { fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.728.military_inspection.failure.d
+	picture = GFX_report_event_fallout_border_inspection_crisis
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_726_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.border_inspection_crisis_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.728.a hidden_effect = { fallout_event_726_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.728.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.729
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_726_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.border_inspection_crisis_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_726_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.730
+	title = chaosx.fallout.730.t
+	desc = { text = chaosx.fallout.730.success.d trigger = { check_variable = { fallout_event_726_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.730.partial.d trigger = { check_variable = { fallout_event_726_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.730.failure.d
+	picture = GFX_report_event_fallout_border_inspection_crisis
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_726_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.border_inspection_crisis_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { fallout_event_726_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.730.a hidden_effect = { fallout_event_726_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.730.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.731
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_726_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.border_inspection_crisis_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_726_calculate_callback_outcome = yes fallout_event_726_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.732
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_726_cleanup_can_enter = yes }
+	immediate = { fallout_event_726_cleanup = yes }
+}
