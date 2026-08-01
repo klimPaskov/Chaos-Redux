@@ -8,6 +8,8 @@ Scope: Read-only final audit of the current Event 006 Independence Wave country-
 
 No gameplay, map, localisation, interface, asset, country, history, focus, decision, idea, AI, or registry source was changed by this audit.
 
+> Focus-classification note (2026-08-01): The later v70 focus audit supersedes this handoff's generic-continuous-focus classification. The current fourteen blocking diagnostics are authored Event 006 focus-layout blockers; the v69 package-local findings remain bounded package evidence and do not authorize a focus or whole-event completion claim.
+
 ## Disposition
 
 The current central content-attestation trigger contains exactly the canonical thirteen package IDs: `IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-019`, `IW-173`, and `IW-184`. The same gate is consumed by ordinary execution preflight and SCN-008 scenario preflight.
@@ -118,7 +120,7 @@ The only open identity-facing issue is HAW documentation/provenance drift descri
 
 ## Focus, decision, idea, and asset issues
 
-All thirteen packages have package-specific focus/decision/idea/AI/localisation surfaces in source. The shared Event 006 focus artifact remains visually dense: 184 focuses, 223 connectors, 28 long connectors, 45 unsatisfied crossings, 7 through-node connectors, and 5 same-row spacing warnings. The fourteen blocking diagnostics reported by the focus inspector are generic continuous-focus icon/localisation errors outside the Event 006 node set. A safe coordinate-only repair was not attempted because all crossing diagnostics report empty movable-focus sets.
+All thirteen packages have package-specific focus/decision/idea/AI/localisation surfaces in source. The shared Event 006 focus artifact remains visually dense: 184 regular focuses, 223 connectors, 28 long connectors, 45 crossings, and 7 through-node intersections. The later v70 focus audit supersedes this handoff's earlier classification of fourteen blocking diagnostics as generic continuous-focus errors outside the Event 006 node set; the current blockers are authored Event 006 focus-layout diagnostics, and CAT's additive/full-framework carrier contract remains unresolved. A safe coordinate-only repair was not attempted because the crossing diagnostics report empty movable-focus sets.
 
 The decision/mission audit v71 found no current contract defect across package categories, 59 timed missions, 133 custom-cost localisation triplets, AI blocks, timeout/cancellation effects, or cleanup. Package decision and ledger IDs remain exact and centralised.
 

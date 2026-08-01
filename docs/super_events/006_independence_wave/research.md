@@ -96,10 +96,7 @@ country through the existing volume-mode helper.
 
 Package 1 records
 `independence_wave_radical_bloc_qualification_recorded` and the exact qualified
-actor. It does not award an achievement. The accepted Radical Bloc achievement
-definition and its later containment-survival predicate are not yet registered;
-the achievements tranche must consume this qualification without awarding it
-early. Packages 2-5 do not set the qualification.
+actor. It does not award an achievement. The accepted Radical Bloc achievement definition and trigger scaffolding are registered, but no currently admitted route completes the later containment-survival proof. The achievements tranche must consume this qualification only through the reviewed qualification, containment, and disqualification contract and must not award it early. Packages 2-5 do not set the qualification.
 
 ## Audio production and rights
 
