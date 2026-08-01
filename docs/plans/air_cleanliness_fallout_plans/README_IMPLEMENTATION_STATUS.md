@@ -929,3 +929,13 @@ The chain carries Negotiate a Safe Roster, Compel the Duty Roster, Cool the Reac
 The asset evidence is `docs/assets/810_reactor_shift/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_reactor_shift`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-810` is present with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_REACTOR_SHIFT_CHAIN_PROOF.md`.
+
+## The Patent After the End tranche
+
+The Patent After the End is a dormant ordinary Fallout chain at `chaosx.fallout.817` through `chaosx.fallout.823` with candidate `817`, transaction `710088`, route `7208`, and Event Log history `9194`.
+
+It follows a closed Reactor Shift district in the Manchurian Reactor Keeps Technate. The candidate selects the lowest current East Asian industrial or arms state with a foreign neighbor, surviving population, native infrastructure, produced Air Winter values, bounded Disease Pressure, durable Medicine, Cohesion, Recognition, patent legitimacy, market pressure, and an affordable branch.
+
+The four branches are Publish the Designs, Protect Inventor Rights, Keep the Archive Secret, and License the Region. The chain freezes country, state, neighbor, generation, Air Winter, Supply Access, and patent ledgers, resolves after `35` days, schedules a `270` day second-year review, applies bounded Deaths failure, writes patent, research, production, trade, legitimacy, espionage, and bilateral memories, records Event Log history `9194`, preserves hidden-AI parity, and closes through authenticated cleanup. Dedicated report art and a catalog row are wired.
+
+The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker. Static proof is recorded in `FALLOUT_PATENT_AFTER_END_CHAIN_PROOF.md`.
