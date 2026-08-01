@@ -21463,5 +21463,106 @@ country_event = {
 	trigger = { fallout_event_817_cleanup_can_enter = yes }
 	immediate = { fallout_event_817_cleanup = yes }
 }
+# Dormant Fallout technate chain: The Grid Vote
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.824
+	title = chaosx.fallout.824.t
+	desc = chaosx.fallout.824.opening.d
+	picture = GFX_report_event_fallout_grid_vote
+	is_triggered_only = yes
+	trigger = { fallout_event_824_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.824.a
+		trigger = { fallout_event_824_neighbors_equal_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_824_requested_branch = constant:fallout_event_824_branch.neighbors_equal } fallout_event_824_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.824.a.tt
+	}
+	option = {
+		name = chaosx.fallout.824.b
+		trigger = { fallout_event_824_favored_clients_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_824_requested_branch = constant:fallout_event_824_branch.favored_clients } fallout_event_824_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.824.b.tt
+	}
+	option = {
+		name = chaosx.fallout.824.c
+		trigger = { fallout_event_824_domestic_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_824_requested_branch = constant:fallout_event_824_branch.domestic_first } fallout_event_824_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.824.c.tt
+	}
+	option = {
+		name = chaosx.fallout.824.d
+		trigger = { fallout_event_824_military_network_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_824_requested_branch = constant:fallout_event_824_branch.military_network } fallout_event_824_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.824.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.825
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_824_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_824_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.826
+	title = chaosx.fallout.826.t
+	desc = { text = chaosx.fallout.826.neighbors_equal.success.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.neighbors_equal compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.826.neighbors_equal.partial.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.neighbors_equal compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.826.neighbors_equal.failure.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.neighbors_equal compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.826.favored_clients.success.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.favored_clients compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.826.favored_clients.partial.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.favored_clients compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.826.favored_clients.failure.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.favored_clients compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.826.domestic_first.success.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.domestic_first compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.826.domestic_first.partial.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.domestic_first compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.826.domestic_first.failure.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.domestic_first compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.826.military_network.success.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.military_network compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.826.military_network.partial.d trigger = { check_variable = { fallout_event_824_selected_branch value = constant:fallout_event_824_branch.military_network compare = equals } check_variable = { fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.826.military_network.failure.d
+	picture = GFX_report_event_fallout_grid_vote
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_824_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.grid_vote_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.826.a hidden_effect = { fallout_event_824_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.826.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.827
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_824_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.grid_vote_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_824_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.828
+	title = chaosx.fallout.828.t
+	desc = { text = chaosx.fallout.828.success.d trigger = { check_variable = { fallout_event_824_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.828.partial.d trigger = { check_variable = { fallout_event_824_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.828.failure.d
+	picture = GFX_report_event_fallout_grid_vote
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_824_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.grid_vote_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_824_registry_is_current = yes }
+	immediate = { fallout_event_824_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.828.a hidden_effect = { fallout_event_824_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.828.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.829
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_824_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.grid_vote_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_824_registry_is_current = yes }
+	immediate = { fallout_event_824_calculate_callback_outcome = yes fallout_event_824_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.830
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_824_cleanup_can_enter = yes }
+	immediate = { fallout_event_824_cleanup = yes }
+}
 
 

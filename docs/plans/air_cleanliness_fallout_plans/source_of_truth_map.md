@@ -236,3 +236,15 @@ Successor package production, player materialization, general allocation, countr
 | Patent After the End localisation and Event Log | `localisation/english/fallout_world_end_patent_after_end_l_english.yml`, `common/scripted_localisation/fallout_world_end_patent_after_end_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | Patent After the End art and workbook | `docs/assets/817_patent_after_end/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/patent_after_end/report_event_fallout_patent_after_end.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-817` |
 | Patent After the End status boundary | dormant source package with four ownership branches, hidden-AI parity, 35-day result, 270-day second-year review, bounded Deaths effects, patent and institution memories, Event Log history `9194`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Grid Vote source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Grid Vote design | `docs/specs/air_cleanliness_fallout_specs/specs/91_reviewed_archetype_the_grid_vote.md` |
+| The Grid Vote runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_GRID_VOTE_CHAIN_PROOF.md` |
+| The Grid Vote gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_grid_vote_event_triggers.txt`, `common/scripted_effects/fallout_world_end_grid_vote_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_grid_vote_dynamic_modifiers.txt` |
+| The Grid Vote constants and registry | `common/script_constants/fallout_world_end_grid_vote_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Grid Vote localisation and Event Log | `localisation/english/fallout_world_end_grid_vote_l_english.yml`, `common/scripted_localisation/fallout_world_end_grid_vote_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Grid Vote art and workbook | `docs/assets/824_grid_vote/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` |
+| The Grid Vote status boundary | dormant source package with four power-allocation branches, hidden-AI parity, 42-day result, 330-day second-year callback, bounded Deaths effects, grid memories, Event Log history `9195`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

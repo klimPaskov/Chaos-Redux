@@ -994,3 +994,17 @@ The chain carries Publish the Designs, Protect Inventor Rights, Keep the Archive
 The asset evidence is `docs/assets/817_patent_after_end/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_patent_after_end`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-817` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_PATENT_AFTER_END_CHAIN_PROOF.md`.
+
+## The Grid Vote tranche
+
+The Grid Vote adds dormant suffixes `824` through `830` with candidate id `824`, transaction key `710089`, route `7210`, and history `9195`.
+
+The human opening is `824`, the hidden-AI opening is `825`, the human and hidden-AI delayed results are `826` and `827`, the human and hidden-AI callbacks are `828` and `829`, and cleanup is `830`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Patent After the End memory, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable grid ledgers, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbor, Air Winter values, Supply Access, and grid ledgers.
+
+The chain carries Share Power With Every Neighbor, Favor the Settlements That Built the Lines, Reserve Power for Domestic Districts, and Bind the Grid to Military Corridors branches with distinct survival costs, deterministic result and callback grading, a 42-day result, a 330-day second-year review, bounded Deaths effects, Air Winter and Supply Access effects, grid legitimacy, dependency pressure, export trust, reserve power, client capacity, diplomatic power, bilateral opinion, Event Log history `9195`, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/824_grid_vote/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_grid_vote`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GRID_VOTE_CHAIN_PROOF.md`.
