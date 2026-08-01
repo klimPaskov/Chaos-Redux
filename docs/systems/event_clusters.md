@@ -11,7 +11,7 @@ The registered clusters are:
 - **Diplomatic Panic** (`constant:event_cluster_id.diplomatic_panic = 3`): pressure spikes, ministry reactions, and relation shocks without direct new war goals.
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeated Event 013 disaster seasons that grow from local incidents into varied, regional, and abnormal sequences as chaos rises.
-- **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
+- **Formables** (`constant:event_cluster_id.formables = 6`): negotiated restoration and union projects. Africa Is One is its required Severe member: a protection-first Charter League can grow through aid, guarantees, liberation recognition, consent, constitutional routes, and rival settlements without instant annexation or continent-wide cores. The repeatable cluster can accept later formable members without changing Event 12's Fire-Once identity.
 - **Economy (pos)** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
 - **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that must be contained rather than removed instantly. Event 020, Black Plague, is the first required member.
 
@@ -55,7 +55,7 @@ Important constants:
 - `event_cluster_peace.cooldown_days = 120`
 - `event_cluster_natural_disasters.unlock_tier = 0`
 - `event_cluster_natural_disasters.cooldown_days = 120`
-- `event_cluster_formables.unlock_tier = 0`
+- `event_cluster_formables.unlock_tier = 3`
 - `event_cluster_formables.cooldown_days = 120`
 - `event_cluster_economy_positive.unlock_tier = 0`
 - `event_cluster_economy_positive.cooldown_days = 120`
@@ -85,7 +85,7 @@ Current membership:
 | Natural Disasters | Event 13, Wider Disaster Seasons varied season | Medium | 60% optional participation from Gathering Storm, tier 1 |
 | Natural Disasters | Event 13, Regional Cascades season | High | 60% optional participation from Rising Chaos, tier 2 |
 | Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
-| Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
+| Formables | Event 12, Africa Is One | Severe | Required member at Chaos Tier 4; the repeatable cluster unlocks at Chaos Tier 3 |
 | Economy (pos) | Event 18, Resources Found | Medium | Required repeatable member |
 | Diseases | Event 20, Black Plague | Severe | Required one-time member; uses the shared disease response category and state-targeted containment loop |
 
