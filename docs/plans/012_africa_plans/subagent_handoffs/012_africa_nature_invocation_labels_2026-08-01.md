@@ -2,18 +2,19 @@
 
 ## Scope
 
-This bounded content tranche gives the existing priority-member nature decisions package-specific visible invocation names. It does not create tags, countries, target stores, effects, or natural-disaster families.
+This bounded content tranche gives the existing priority-member nature page, launch tooltip, and decisions package-specific visible invocation names. It does not create tags, countries, target stores, effects, or natural-disaster families.
 
 ## Changed files
 
 - `common/scripted_localisation/012_africa_scripted_localisation.txt`
 - `localisation/english/012_african_union_l_english.yml`
 - `docs/events/012_africa/natural_disaster_weapons.md`
+- `docs/events/012_africa/overview.md`
 
 ## Runtime contract
 
 - The two existing decisions still use `africa_natural_disaster_enemy_targets` and the shared reserve, cooldown, revalidation, Event 013 bridge, and cleanup kernels.
-- The action descriptions now resolve through `GetAfricaPriorityMemberNatureInvocationName`, selecting one label from the existing 16 package predicates.
+- The arsenal page, launch tooltip, and action descriptions now resolve through `GetAfricaPriorityMemberNatureInvocationName`, selecting one label from the existing 16 package predicates.
 - If a package is not mapped, the scripted localisation falls back to `Unrecorded Nature Invocation`; no technical identifier or tag is generated from the display text.
 
 ## Validation
