@@ -44,6 +44,8 @@ accepted Event 006 design. The current portrait authority is the sourced-only
 gate in the accepted specification and the reusable event-asset skill. Earlier
 generated portrait packages remain provenance evidence, not visual acceptance.
 
+Post-snapshot CHU source handoff (2026-08-01): `subagent_handoffs/006_iw043_chu_portrait_source_v58_2026_08_01.md` records an exact Mirsaid Sultan-Galiev crop/equality proof and the Karim Tinchurin collision-free male civic candidate. Karim's source-locked HOI4 repaint and deterministic candidate pass the bounded visual chain, but rights/era sign-off and the independent final audit remain open. Mirsaid still needs the source-locked repaint and independent audit. The Validi Togan and Galimyan Tagan alternatives remain blocked by vanilla and Kaiserreich ownership respectively. No DDS, GFX, advisor asset, identity transfer, or package attestation was added.
+
 Post-snapshot crisis repair (2026-07-29): the host-facing crisis category now
 stays visible through the active mission, the mission uses the documented
 `activation` surface without an ineffective mission-local `visible` block, the
