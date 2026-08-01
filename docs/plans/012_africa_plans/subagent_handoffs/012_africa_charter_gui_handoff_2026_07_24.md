@@ -44,7 +44,7 @@ Migration is intentionally narrow: existing decision buttons continue to own act
 
 `012_africa_charter_gui_scripted_localisation.txt` provides names for the constitution, overlay, selected relationship, protection, clauses, departure pressure, overlap, corridor, settlement, rival warning, action family, and the two diaspora selectors. Every player-facing key is in the UTF-8-with-BOM `012_africa_charter_gui_l_english.yml` file.
 
-The GUI uses no new event targets. Member and state scope persistence is delegated to the existing bounded arrays and refresh effects. The overlay cursor is a host normal variable intended to live while the decision category is open; there is no category-close scripted GUI callback in the supported surface, so it is not cleared here. The animation toggle uses the existing `africa_charter_gui_show_animation` flag and can be toggled without affecting gameplay state.
+The GUI uses no new event targets. Member and state scope persistence is delegated to the existing bounded arrays and refresh effects. The overlay cursor is a host normal variable intended to live while the decision category is open; there is no category-close scripted GUI callback in the supported surface, so it is not cleared here. The Charter seal animates after League formation is complete, while the authority ring animates when Charter authority reaches the medium threshold. Their static fallbacks remain visible before those semantic states are met.
 
 ## Reserved sprite matrix
 
