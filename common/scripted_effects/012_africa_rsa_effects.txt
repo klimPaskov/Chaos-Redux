@@ -973,6 +973,23 @@ africa_rsa_transfer_host_to_exile_patron = {
 		set_variable = { africa_diaspora_settlement_capacity = FROM.africa_diaspora_settlement_capacity }
 		set_variable = { africa_diaspora_trust = FROM.africa_diaspora_trust }
 		set_variable = { africa_common_defence_stockpile = FROM.africa_common_defence_stockpile }
+		if = {
+			limit = { FROM = { has_variable = africa_common_reserve_deployment_sequence } }
+			set_variable = { africa_common_reserve_deployment_sequence = FROM.africa_common_reserve_deployment_sequence }
+		}
+		if = {
+			limit = { FROM = { has_country_flag = africa_common_reserve_active } }
+			set_country_flag = africa_common_reserve_active
+			set_country_flag = africa_common_reserve_activation_recorded
+			if = {
+				limit = { FROM = { has_variable = africa_common_reserve_activation_day } }
+				set_variable = { africa_common_reserve_activation_day = FROM.africa_common_reserve_activation_day }
+			}
+			if = {
+				limit = { FROM = { has_variable = africa_common_reserve_activation_deadline_day } }
+				set_variable = { africa_common_reserve_activation_deadline_day = FROM.africa_common_reserve_activation_deadline_day }
+			}
+		}
 		set_variable = { africa_member_representation_balance = FROM.africa_member_representation_balance }
 		set_variable = { africa_restoration_legitimacy = FROM.africa_restoration_legitimacy }
 		set_variable = { africa_ecological_wrath = FROM.africa_ecological_wrath }

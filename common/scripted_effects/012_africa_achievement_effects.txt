@@ -2276,12 +2276,56 @@ africa_achievement_record_development_project = {
 	add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
 }
 
+# Any Event 012 country scope after the reserve deployment lifecycle has a
+# real writer. This gate does not award the achievement; it only proves that
+# deployment, deadline, capital-loss, and offensive-use owners are wired.
+africa_achievement_record_common_reserve_owner_ready = {
+	set_global_flag = africa_achievement_common_reserve_owner_ready
+}
+
+# Any Event 012 country scope when a defensive reserve promise settles after
+# its deadline.
+africa_achievement_record_reserve_deadline_missed = {
+	set_global_flag = africa_achievement_reserve_deadline_missed
+}
+
+# Any Event 012 country scope when a protected capital is lost during a reserve
+# deployment.
+africa_achievement_record_reserve_capital_loss = {
+	set_global_flag = africa_achievement_protected_capital_lost
+}
+
+# Any Event 012 country scope when a protected partner attacks while the common reserve posture
+# is open. The posture never funds that offensive war, but the misuse is still
+# recorded as a sticky achievement disqualifier.
+africa_achievement_record_reserve_offensive_abuse = {
+	set_global_flag = africa_achievement_reserve_offensive_abuse
+}
+
 # COUNTRY scope on the defended partner after the common reserve arrives by
-# the deadline and the partner's capital remains held.
+# the deadline and the partner's capital remains held. The deployment sequence
+# allows the same country to answer more than one distinct war without using a
+# second store or a permanent one-country cap.
 africa_achievement_record_reserve_war_answered = {
 	if = {
 		limit = { NOT = { has_country_flag = africa_achievement_reserve_war_counted } }
 		set_country_flag = africa_achievement_reserve_war_counted
+	}
+	if = {
+		limit = {
+			has_variable = africa_common_reserve_deployment_sequence
+			OR = {
+				NOT = { has_variable = africa_achievement_reserve_last_sequence }
+				NOT = {
+					check_variable = {
+						var = africa_achievement_reserve_last_sequence
+						value = africa_common_reserve_deployment_sequence
+						compare = equals
+					}
+				}
+			}
+		}
+		set_variable = { africa_achievement_reserve_last_sequence = africa_common_reserve_deployment_sequence }
 		add_to_variable = { global.africa_achievement_reserve_wars_answered = constant:africa_value.one }
 	}
 }
