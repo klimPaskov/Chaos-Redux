@@ -8,6 +8,11 @@
 # No effect performs a world-country scan or creates repeatable free formations.
 # ============================================================================
 
+# @ constants are file-scoped in Clausewitz. Keep this local copy beside the
+# role-creation effect; the character definition carries the same expiry for
+# its history-defined roles.
+@pacific_character_expire = 1965.1.1.1
+
 # ---------------------------------------------------------------------------
 # Shared Pacific package foundations
 # ---------------------------------------------------------------------------
@@ -22,6 +27,32 @@ independence_wave_prepare_hbx_origin_leadership = {
 	if = {
 		limit = { NOT = { has_character = HBX_independence_wave_civic_convention_chair } }
 		recruit_character = HBX_independence_wave_civic_convention_chair
+	}
+}
+
+# Hawai'i retains David Kalakaua Kawananakoa as the vanilla ruling leader.
+# Samuel Wilder King is an additive Event 006 territorial-delegate role and is
+# deliberately not promoted, so the package never overwrites a living roster.
+independence_wave_prepare_haw_origin_leadership = {
+	if = {
+		limit = { NOT = { has_character = HAW_independence_wave_territorial_delegate } }
+		recruit_character = HAW_independence_wave_territorial_delegate
+	}
+	if = {
+		limit = {
+			has_character = HAW_independence_wave_territorial_delegate
+			NOT = { has_country_leader = { ruling_only = no character = HAW_independence_wave_territorial_delegate } }
+		}
+		add_country_leader_role = {
+			character = HAW_independence_wave_territorial_delegate
+			promote_leader = no
+			country_leader = {
+				ideology = centrism
+				desc = HAW_independence_wave_territorial_delegate_desc
+				expire = @pacific_character_expire
+				traits = { }
+			}
+		}
 	}
 }
 
@@ -688,6 +719,7 @@ independence_wave_setup_iw_173_hawaii = {
 	if = {
 		limit = { can_initialize_independence_wave_iw_173_package = yes }
 		independence_wave_ensure_pacific_baseline_laws = yes
+		independence_wave_prepare_haw_origin_leadership = yes
 		set_variable = { independence_wave_haw_shipping_security = constant:independence_wave_pacific_pressure.haw_start }
 		independence_wave_refresh_haw_lifecycle = yes
 		set_country_flag = independence_wave_pacific_provisional_command_established
@@ -937,6 +969,11 @@ independence_wave_cleanup_iw_173_hawaii = {
 		clr_country_flag = independence_wave_emergency_military_route_excluded
 		clr_country_flag = independence_wave_popular_council_route_excluded
 		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		if = {
+			limit = { has_country_leader = { ruling_only = no character = HAW_independence_wave_territorial_delegate } }
+			remove_country_leader_role = { character = HAW_independence_wave_territorial_delegate ideology = centrism }
+		}
+		if = { limit = { has_character = HAW_independence_wave_territorial_delegate } retire_character = HAW_independence_wave_territorial_delegate }
 		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
