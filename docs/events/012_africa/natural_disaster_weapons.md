@@ -84,6 +84,8 @@ The two host selector decisions are visible only for an eligible nature host tha
 
 The member AI cycle uses the same recorded authority ladder as the player tooltip and Event 013 strength bridge. Trace authority suppresses opportunistic use, low authority remains conservative, medium authority is neutral, high authority is more willing to spend the caller reserve, and ancestral authority is the strongest AI preference. This changes willingness only after the package, politics, mechanic, war, target, cost, cooldown, and host-generation gates already pass.
 
+The decision page exposes that recorded ladder as a visible Trace, Low, Medium, High, or Ancestral label. The label is presentation-only and reads the package value written during registration. It does not create a second store, a new carrier tag, or an alternate severity calculation.
+
 The generic bounded-roster fallback excludes both actions, so the AI cannot select a peaceful or non-nature target and rely on a weaker downstream failure.
 
 ## Limitations and follow-up
