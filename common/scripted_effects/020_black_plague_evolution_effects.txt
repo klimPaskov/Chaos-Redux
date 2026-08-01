@@ -476,6 +476,41 @@ black_plague_evolution_compare_king_continent = {
 	}
 }
 
+# STATE scope. The terminal route consumes the remaining population of each
+# human state exactly once before transfer. This deliberately uses the shared
+# exact-loss contract so the ordinary deaths ledger and Chaos accounting stay
+# synchronized with every other Black Plague mortality path.
+black_plague_apply_terminal_takeover_loss_once = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = black_plague_terminal_takeover_death_recorded }
+			check_variable = {
+				var = state_population_k
+				value = constant:black_plague_value.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { black_plague_terminal_loss_requested = state_population_k }
+		multiply_temp_variable = { black_plague_terminal_loss_requested = constant:black_plague_value.people_per_thousand }
+		set_temp_variable = { state_civilian_population_loss_requested = black_plague_terminal_loss_requested }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:black_plague_mortality.terminal_population_floor }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.black_plague }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:black_plague_value.one }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:black_plague_value.one }
+		set_temp_variable = { state_civilian_population_loss_applied = constant:black_plague_value.zero }
+		set_temp_variable = { state_civilian_population_loss_result = constant:black_plague_value.zero }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:black_plague_value.one }
+		apply_exact_state_civilian_population_loss = yes
+		if = {
+			limit = { check_variable = { state_civilian_population_loss_applied > constant:black_plague_value.zero } }
+			add_to_variable = { black_plague_deaths_applied = state_civilian_population_loss_applied }
+			add_to_variable = { global.black_plague_deaths_total = state_civilian_population_loss_applied }
+		}
+		set_state_flag = black_plague_terminal_takeover_death_recorded
+	}
+}
+
 black_plague_evolution_v_perform_terminal_takeover = {
 	if = {
 		limit = { black_plague_evolution_v_terminal_execution_is_ready = yes }
@@ -488,6 +523,7 @@ black_plague_evolution_v_perform_terminal_takeover = {
 				set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
 				set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
 				black_plague_set_current_state_phase = yes
+				black_plague_apply_terminal_takeover_loss_once = yes
 				set_state_flag = black_plague_rat_terminal_takeover_state
 				RTX = { transfer_state = PREV add_state_core = PREV }
 			}
