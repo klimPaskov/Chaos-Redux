@@ -63,17 +63,15 @@ FIJ/PNG/WPG consent-led adapter, MFX X-ending cosmetic identity, state-anchor
 array, autonomous-member cleanup, and material post-formation projects; the
 adapter remains fail-closed because IW-157/WPG and IW-178/PNG are sensitive
 packages without accepted named-community research and the MFX flag is still
-`needs_user_review`. FIJ stays outside runtime attestation. The durable Event
-006 portrait shelf is documented as 63 original-size pre-resize masters directly
-in one flat directory, with no nested folders, no normalized 156x210 PNGs, and no
-advisor or small/dossier derivatives. The shelf inventory remains internally
-inconsistent: the README and `PRE_RESIZE_MANIFEST.md` now document the 63-row
-snapshot, while the prior README 61-count statement is retained only as a dated
-stale observation in the v79 audit; a read-only physical check found 68 PNG files,
-including four ARX masters and the CHU Mirsaid master not listed in that manifest.
-This reconciliation preserves the 63-row documentation snapshot without
-reclassifying the 63-versus-68 discrepancy.
-Galimzhan Ibrahimov's independently approved
+`needs_user_review`. FIJ stays outside runtime attestation. The current flat Event
+006 portrait shelf authority records 77 original-size pre-resize masters directly
+in one directory after the CHU Bolgar v90 original-size repaint copy. The shelf
+remains reference-only, with no normalized 156x210 PNGs, advisor portraits,
+dossier derivatives, or small portraits authorized. The v90 Karim Tinchurin source
+and repaint evidence is documented in `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/`
+and `subagent_handoffs/006_iw043_chu_bolgar_civic_portrait_source_v90_2026_08_01.md`;
+its status is `needs_user_review`, and no DDS, `.gfx`, character, or content
+attestation promotion occurred. Galimzhan Ibrahimov's independently approved
 v2 candidate is parent-promoted to the existing CHU federal-presidium DDS consumer
 at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`;
 the flat shelf remains evidence-only and no duplicate `.gfx` consumer was added.
@@ -296,7 +294,7 @@ used by the mechanics foundation are:
 
 Generated report, news, and super-event scenes are registered in `interface/006_independence_wave_event_pictures.gfx`. The committed wave report uses `GFX_report_event_006_asset_001_wave_summary`; its displayed wave, country, region, host, armed-state, and earlier-network facts are copied into a presentation ledger before the plan can be reset.
 
-Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. The pre-DDS source-based portrait shelf is indexed at `docs/assets/006_independence_wave/portraits_generated_png/` and is reference-only: it contains exactly 63 original-size RGB masters in one flat directory, with no nested folders, no normalized 156x210 PNGs, and no advisor or small/dossier derivatives. The two Montenegro evidence masters pass the visual/style and source/crop-linkage screens but remain rights-gated and are not runtime admissions. Every grounded portrait still requires the attributed-source, crop, identity-preserving HOI4 repaint, independent audit, and runtime promotion gates recorded in the asset skill. Galimzhan Ibrahimov's v2 candidate is parent-promoted to `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_federal_presidium.dds` at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; Samuel Wilder King's HAW portrait is independently passed and wired to its additive civilian-large role, while Luka Semyonovich Spasov's CHU v45 portrait evidence passes without admitting the CHU package; the shelf itself has no runtime references. ASSET040-ASSET043 use 64x64 authored frames at 5 FPS with static fallbacks and runtime DDS under `gfx/interface/006_independence_wave/animations/`. The persistent Statehood Ledger readout selects the matching semantic frame from each authored strip through the centralized frame constants and refresh effect; the free-running animated siblings remain registered for future transition surfaces and are not used to cycle contradictory gameplay states.
+Final source, processed PNG, DDS, provenance, and contact-sheet records for produced assets live under `docs/assets/006_independence_wave/`. The current pre-DDS source-based portrait shelf is indexed at `docs/assets/006_independence_wave/portraits_generated_png/` and is reference-only: the current shelf authority records 77 original-size RGB masters in one flat directory after the CHU Bolgar v90 original-size repaint copy, with no nested folders, normalized 156x210 PNGs, advisor portraits, or small/dossier derivatives authorized. The v90 Karim Tinchurin source/repaint package is `docs/assets/006_independence_wave/iw043_bolgar_civic_presidium_source_v90/` with `needs_user_review` and no DDS, `.gfx`, character, or attestation promotion. The two Montenegro evidence masters pass the visual/style and source/crop-linkage screens but remain rights-gated and are not runtime admissions. Every grounded portrait still requires the attributed-source, crop, identity-preserving HOI4 repaint, independent audit, and runtime promotion gates recorded in the asset skill. Galimzhan Ibrahimov's v2 candidate is parent-promoted to `gfx/leaders/006_independence_wave/portrait_CHU_independence_wave_federal_presidium.dds` at SHA-256 `977e0f8d359930f75e01e380a36893ef6a8f25a5b1ce5bbd8cc3c2f3abf6b5f5`; Samuel Wilder King's HAW portrait is independently passed and wired to its additive civilian-large role, while Luka Semyonovich Spasov's CHU v45 portrait evidence passes without admitting the CHU package; the shelf itself has no runtime references. ASSET040-ASSET043 use 64x64 authored frames at 5 FPS with static fallbacks and runtime DDS under `gfx/interface/006_independence_wave/animations/`. The persistent Statehood Ledger readout selects the matching semantic frame from each authored strip through the centralized frame constants and refresh effect; the free-running animated siblings remain registered for future transition surfaces and are not used to cycle contradictory gameplay states.
 
 DM-57's sponsorship transaction uses the existing decision and route art. It introduces no additional icon or sprite requirement.
 
