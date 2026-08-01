@@ -10,6 +10,92 @@ africa_focus_has_continental_tree = {
 	has_focus_tree = africa_continental_focus_tree
 }
 
+# Route-body focus AI pressure. This is intentionally live-state driven: a
+# committed constitution selects one route, and low constitutional axes,
+# unresolved proof/action contracts, or a documented crisis make that route's
+# next focus more attractive. It does not add a new tag or scan other nations.
+africa_focus_ai_route_pressure = {
+	OR = {
+		has_country_flag = africa_focus_route_action_ai_contract_pending
+		has_country_flag = africa_route_viability_under_review
+		has_country_flag = africa_constitutional_crisis_escalated
+		has_country_flag = africa_postwar_constitutional_review_pending
+		AND = {
+			has_variable = africa_focus_pending_route_action
+			africa_focus_pending_route_action_is_unresolved = yes
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.federal_union }
+			OR = {
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_resource_governance check_variable = { africa_constitutional_resource_governance < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_command_integration check_variable = { africa_constitutional_command_integration < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_withdrawal_protection check_variable = { africa_constitutional_withdrawal_protection < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.continental_republic }
+			OR = {
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_executive_power check_variable = { africa_constitutional_executive_power < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_resource_governance check_variable = { africa_constitutional_resource_governance < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_post_unification_rule check_variable = { africa_constitutional_post_unification_rule < constant:africa_constitution_axis.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.council_of_crowns }
+			OR = {
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_executive_power check_variable = { africa_constitutional_executive_power < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_withdrawal_protection check_variable = { africa_constitutional_withdrawal_protection < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_post_unification_rule check_variable = { africa_constitutional_post_unification_rule < constant:africa_constitution_axis.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.peoples_union }
+			OR = {
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_executive_power check_variable = { africa_constitutional_executive_power < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_resource_governance check_variable = { africa_constitutional_resource_governance < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_command_integration check_variable = { africa_constitutional_command_integration < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.military_continentalism }
+			OR = {
+				AND = { has_variable = africa_constitutional_command_integration check_variable = { africa_constitutional_command_integration < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_executive_power check_variable = { africa_constitutional_executive_power < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_emergency_rule_debt check_variable = { africa_emergency_rule_debt > constant:africa_focus_route_threshold.maximum_capstone_emergency_debt } }
+				AND = { has_variable = africa_continental_war_readiness check_variable = { africa_continental_war_readiness < constant:africa_measure.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.continental_confederation }
+			OR = {
+				AND = { has_variable = africa_constitutional_representation check_variable = { africa_constitutional_representation < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_withdrawal_protection check_variable = { africa_constitutional_withdrawal_protection < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_resource_governance check_variable = { africa_constitutional_resource_governance < constant:africa_constitution_axis.low } }
+			}
+		}
+		AND = {
+			check_variable = { africa_constitution = constant:africa_constitution.ancestral_covenant }
+			OR = {
+				AND = { has_variable = africa_ecological_wrath check_variable = { africa_ecological_wrath > constant:africa_focus_route_threshold.minimum_covenant_pressure } }
+				AND = { has_variable = africa_constitutional_command_integration check_variable = { africa_constitutional_command_integration < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_resource_governance check_variable = { africa_constitutional_resource_governance < constant:africa_constitution_axis.low } }
+				AND = { has_variable = africa_constitutional_crisis_resilience check_variable = { africa_constitutional_crisis_resilience < constant:africa_constitution_axis.low } }
+			}
+		}
+	}
+}
+
 africa_focus_has_grounded_origin = {
 	OR = {
 		has_country_flag = africa_origin_route_federal_union

@@ -52,7 +52,7 @@ Achievement rows 30, 32, 33, 37, and 38 remain fail-closed because exact concess
 - Action 73 remains gated by fictional-pathogen review and the Event 13 API contract. Actions 74–76 remain model-gated. Other gated rows retain their recorded route or package conditions.
 - The target-scoped `days_mission_timeout = FROM.africa_active_action_duration_days` contract has analogous scoped vanilla evidence but no exact vanilla `FROM.` precedent, so runtime parser confirmation remains required.
 - DYX, DZX, and EMX require exact approved Event 006 map bindings. HZX, EUX, and ELX remain host-only shells until Event 006 or scenario setup supplies real ownership.
-- The focus implementation retains 107 flat route-body AI weights, static overlay-layout diagnostics, and no live branch/world-order acceptance evidence.
+- The focus implementation now has route-aware pressure modifiers on all 107 route-body blocks; static overlay-layout diagnostics and the absence of live branch/world-order acceptance evidence remain.
 - The AI audit could not prove Scramble material readiness intrinsically and returned `PROBABILITY_SURFACE_EMPTY` for strategy-plan probability analysis.
 - The two requested Afaan Oromoo strings remain absent until complete-string verification and native-speaker review supplies approved text and placement.
 - Some portrait, icon, and source-asset provenance remains incomplete. No unreviewed source-language names were added.
