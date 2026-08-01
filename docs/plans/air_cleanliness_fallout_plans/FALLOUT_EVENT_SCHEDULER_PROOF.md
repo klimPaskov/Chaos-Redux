@@ -1,8 +1,8 @@
 # Fallout Living-World Scheduler Proof
 
-## Current reconciliation after Border Inspection Crisis
+## Current reconciliation after Children of the Cordon
 
-The dormant reviewed producer now covers `75` ordinary Fallout rows and `607` defined event blocks through `chaosx.fallout.732`. Border Inspection Crisis is the latest ordinary row with candidate `726`, transaction `710075`, route `7182`, and survivor history `9181`. It is admitted only from a current-generation Quarantine country with a completed Clean Certificate memory, a native controlled Air Winter state target with a foreign neighbor, durable survival ledgers, and an affordable branch. Its `30` day result and `180` day seasonal review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+The dormant reviewed producer now covers `76` ordinary Fallout rows and `614` defined event blocks through `chaosx.fallout.739`. Children of the Cordon is the latest ordinary row with candidate `733`, transaction `710076`, route `7184`, and survivor history `9182`. It is admitted only from a current-generation country with a completed Border Inspection Crisis memory, durable survival ledgers, a generation-change count, and an affordable branch. Its `32` day result and `240` day cohort callback remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
 
 Doctor's Coup uses four authored medical-authority branches, hidden-AI parity, deterministic grading, Air Winter and Supply Access effects, bounded Deaths failure, infrastructure damage, government-archetype and civil-authority memories, survivor-country Event Log routing, dedicated report art, and authenticated cleanup. It is a content tranche only. It does not activate the scheduler, register the Fallout consequence as an ordinary event, or claim runtime delivery.
 
@@ -21,6 +21,8 @@ The Second Dust Bowl uses four authored branches, a 35-day result, a 240-day pla
 The completion audit repairs now preserve the selected state in the opening envelope, use unscoped temporary variables for result state effects, include infrastructure and all seven durable ledgers in callback grading, and retain hidden-AI priority competition. Radio Island, Rail Spine Vote, Canal Schedule, Second Dust Bowl, Great Lakes Lock Winter, Tunnel Ward Committees, Metro Republic Below, Mine Generator, and Old Airfield generation-reset paths now cancel stale openings with state-bound target snapshots. Delayed-row cleanup remains separately unproven for the older rows. This tranche is a static source record with runtime and wider scheduler blockers, not an accepted execution path.
 
 The New Year Without Fireworks uses four authored branches, a 21-day result, a 330-day anniversary callback, bounded Deaths, hidden-AI parity, dedicated report art, and a workbook row. The chain remains dormant and does not schedule itself again.
+
+Children of the Cordon uses four authored generation-change branches, hidden-AI parity, deterministic grading from Cohesion, Food, Shelter, generation count, and movement law, bounded Deaths failure, future-leader and government-route memories, dedicated report art, Event Log history `9182`, and authenticated cleanup. It is a country-only content tranche. It does not activate the scheduler, register the Fallout consequence as an ordinary event, create a country, or claim runtime delivery.
 
 ## Current tranche note
 

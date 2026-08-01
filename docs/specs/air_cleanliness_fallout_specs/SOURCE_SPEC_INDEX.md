@@ -140,6 +140,7 @@
 - `specs/75_reviewed_archetype_returning_disease.md`
 - `specs/76_reviewed_archetype_clean_certificate.md`
 - `specs/77_reviewed_archetype_border_inspection_crisis.md`
+- `specs/78_reviewed_archetype_children_of_cordon.md`
 
 ## Matrices
 
