@@ -249,7 +249,10 @@ black_plague_scenario_create_rat_nations = {
 		black_plague_rat_select_free_slot = yes
 		if = {
 			limit = { check_variable = { black_plague_rat_slot_result = constant:black_plague_value.one } }
-			event_target:black_plague_scenario_selected_rat_state = { black_plague_rat_create_from_state = yes }
+			event_target:black_plague_scenario_selected_rat_state = {
+				save_event_target_as = black_plague_rat_spawn_state
+				black_plague_rat_create_from_state = yes
+			}
 			event_target:black_plague_rat_selected_country = { save_event_target_as = black_plague_rat_evolution_actor }
 			set_variable = { global.black_plague_scenario_rat_created = constant:black_plague_value.one }
 		}
