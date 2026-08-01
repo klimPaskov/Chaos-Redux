@@ -1008,3 +1008,17 @@ The chain carries Share Power With Every Neighbor, Favor the Settlements That Bu
 The asset evidence is `docs/assets/824_grid_vote/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_grid_vote`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GRID_VOTE_CHAIN_PROOF.md`.
+
+## The Failed Calculation tranche
+
+The Failed Calculation adds dormant suffixes `831` through `837` with candidate id `831`, transaction key `710090`, route `7212`, and history `9196`.
+
+The human opening is `831`, the hidden-AI opening is `832`, the human and hidden-AI delayed results are `833` and `834`, the human and hidden-AI callbacks are `835` and `836`, and cleanup is `837`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Grid Vote memory, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable calculation ledgers, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbor, Air Winter values, Supply Access, and calculation ledgers.
+
+The chain carries Open the Ledger to a Public Inquiry, Seal the Calculation, Blame the Operator, and Rebuild the Model branches with distinct survival costs, deterministic result and callback grading, a 49-day result, a 300-day technical audit, bounded Deaths effects, Air Winter and Supply Access effects, calculation legitimacy, inquiry pressure, operator trust, safety margin, recovery capacity, research confidence, bilateral opinion, Event Log history `9196`, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/831_failed_calculation/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_failed_calculation`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FAILED_CALCULATION_CHAIN_PROOF.md`.

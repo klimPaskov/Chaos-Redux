@@ -248,3 +248,15 @@ Successor package production, player materialization, general allocation, countr
 | The Grid Vote localisation and Event Log | `localisation/english/fallout_world_end_grid_vote_l_english.yml`, `common/scripted_localisation/fallout_world_end_grid_vote_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Grid Vote art and workbook | `docs/assets/824_grid_vote/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/grid_vote/report_event_fallout_grid_vote.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` |
 | The Grid Vote status boundary | dormant source package with four power-allocation branches, hidden-AI parity, 42-day result, 330-day second-year callback, bounded Deaths effects, grid memories, Event Log history `9195`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Failed Calculation source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Failed Calculation design | `docs/specs/air_cleanliness_fallout_specs/specs/92_reviewed_archetype_the_failed_calculation.md` |
+| The Failed Calculation runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_FAILED_CALCULATION_CHAIN_PROOF.md` |
+| The Failed Calculation gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_failed_calculation_event_triggers.txt`, `common/scripted_effects/fallout_world_end_failed_calculation_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_failed_calculation_dynamic_modifiers.txt` |
+| The Failed Calculation constants and registry | `common/script_constants/fallout_world_end_failed_calculation_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Failed Calculation localisation and Event Log | `localisation/english/fallout_world_end_failed_calculation_l_english.yml`, `common/scripted_localisation/fallout_world_end_failed_calculation_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Failed Calculation art and workbook | `docs/assets/831_failed_calculation/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/failed_calculation/report_event_fallout_failed_calculation.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` |
+| The Failed Calculation status boundary | dormant source package with four technical accountability branches, hidden-AI parity, 49-day result, 300-day technical audit, bounded Deaths effects, calculation memories, Event Log history `9196`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
