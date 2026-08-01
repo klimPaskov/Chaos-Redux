@@ -20853,6 +20853,110 @@ country_event = {
 	immediate = { fallout_event_880_cleanup = yes }
 }
 
+# Dormant Fallout mutant settlement chain: Mixed Settlement Petition
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.887
+	title = chaosx.fallout.887.t
+	desc = chaosx.fallout.887.opening.d
+	picture = GFX_report_event_fallout_mixed_settlement
+	is_triggered_only = yes
+	trigger = { fallout_event_887_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.887.a
+		trigger = { fallout_event_887_equal_citizenship_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_887_requested_branch = constant:fallout_event_887_branch.equal_citizenship } fallout_event_887_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.887.a.tt
+	}
+	option = {
+		name = chaosx.fallout.887.b
+		trigger = { fallout_event_887_separate_districts_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_887_requested_branch = constant:fallout_event_887_branch.separate_districts } fallout_event_887_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.887.b.tt
+	}
+	option = {
+		name = chaosx.fallout.887.c
+		trigger = { fallout_event_887_supervised_integration_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_887_requested_branch = constant:fallout_event_887_branch.supervised_integration } fallout_event_887_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.887.c.tt
+	}
+	option = {
+		name = chaosx.fallout.887.d
+		trigger = { fallout_event_887_refuse_settlement_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_887_requested_branch = constant:fallout_event_887_branch.refuse_settlement } fallout_event_887_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.887.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.888
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_887_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_887_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.889
+	title = chaosx.fallout.889.t
+	desc = { text = chaosx.fallout.889.equal_citizenship.success.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.equal_citizenship compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.889.equal_citizenship.partial.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.equal_citizenship compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.889.equal_citizenship.failure.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.equal_citizenship compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.889.separate_districts.success.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.separate_districts compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.889.separate_districts.partial.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.separate_districts compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.889.separate_districts.failure.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.separate_districts compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.889.supervised_integration.success.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.supervised_integration compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.889.supervised_integration.partial.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.supervised_integration compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.889.supervised_integration.failure.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.supervised_integration compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.889.refuse_settlement.success.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.refuse_settlement compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.889.refuse_settlement.partial.d trigger = { check_variable = { fallout_event_887_selected_branch value = constant:fallout_event_887_branch.refuse_settlement compare = equals } check_variable = { fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.889.refuse_settlement.failure.d
+	picture = GFX_report_event_fallout_mixed_settlement
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_887_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mixed_settlement_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.889.a hidden_effect = { fallout_event_887_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.889.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.890
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_887_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mixed_settlement_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_887_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.891
+	title = chaosx.fallout.891.t
+	desc = { text = chaosx.fallout.891.success.d trigger = { check_variable = { fallout_event_887_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.891.partial.d trigger = { check_variable = { fallout_event_887_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.891.failure.d
+	picture = GFX_report_event_fallout_mixed_settlement
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_887_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mixed_settlement_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_887_registry_is_current = yes }
+	immediate = { fallout_event_887_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.891.a hidden_effect = { fallout_event_887_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.891.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.892
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_887_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mixed_settlement_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_887_registry_is_current = yes }
+	immediate = { fallout_event_887_calculate_callback_outcome = yes fallout_event_887_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.893
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_887_cleanup_can_enter = yes }
+	immediate = { fallout_event_887_cleanup = yes }
+}
+
+
+
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
 

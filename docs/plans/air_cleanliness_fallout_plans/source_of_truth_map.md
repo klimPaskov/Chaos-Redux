@@ -339,3 +339,15 @@ Successor package production, player materialization, general allocation, countr
 | The Clinic or Council localisation and Event Log | `localisation/english/fallout_world_end_clinic_or_council_l_english.yml`, `common/scripted_localisation/fallout_world_end_clinic_or_council_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Clinic or Council art and workbook | `docs/assets/880_clinic_or_council/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/clinic_or_council/report_event_fallout_clinic_or_council.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-880` |
 | The Clinic or Council status boundary | dormant source package with four fictional care-governance branches, hidden AI parity, 35-day result, 240-day first-season review, bounded Deaths effects, care and bilateral memories, Event Log history `9203`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Mixed Settlement Petition source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Mixed Settlement Petition design | `docs/specs/air_cleanliness_fallout_specs/specs/100_reviewed_archetype_mixed_settlement.md` |
+| The Mixed Settlement Petition runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_MIXED_SETTLEMENT_CHAIN_PROOF.md` |
+| The Mixed Settlement Petition gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_mixed_settlement_event_triggers.txt`, `common/scripted_effects/fallout_world_end_mixed_settlement_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_mixed_settlement_dynamic_modifiers.txt` |
+| The Mixed Settlement Petition constants and registry | `common/script_constants/fallout_world_end_mixed_settlement_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Mixed Settlement Petition localisation and Event Log | `localisation/english/fallout_world_end_mixed_settlement_l_english.yml`, `common/scripted_localisation/fallout_world_end_mixed_settlement_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Mixed Settlement Petition art and workbook | `docs/assets/887_mixed_settlement/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/mixed_settlement/report_event_fallout_mixed_settlement.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-887` |
+| The Mixed Settlement Petition status boundary | dormant source package with four fictional mixed-community branches, hidden AI parity, 42-day result, 300-day first-year review, bounded Deaths effects, settlement and bilateral memories, Event Log history `9204`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
