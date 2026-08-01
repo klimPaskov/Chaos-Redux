@@ -6,9 +6,9 @@ Status: **Incomplete. No hard static load blocker was found, but accepted gamepl
 
 Mode: Read-only completion audit.
 
-Audited revision: current Event 012 source at `dbcb62bed`; the Event 012 scoped source is clean against that revision.
+Audited revision: current Event 012 source at `3ba90abaf`; the Event 012 scoped source is clean against that revision.
 
-The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision. The later Event 012 corrections `b7ba59bd9` and `dbcb62bed` are also included.
+The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision. The later Event 012 corrections `b7ba59bd9`, `dbcb62bed`, `9e573505a`, and `3ba90abaf` are also included.
 
 The shared worktree also contains unrelated Event 016, Event 020, fallout, workbook, and catalog-export changes; those changes were not treated as Event 012 gameplay evidence.
 
@@ -38,7 +38,7 @@ Limits: this was not an engine launch, live campaign, GUI click, sound playback,
 
 ## 2a. Post-audit source corrections
 
-Two narrow owner corrections landed after the earlier source census and are included in the audited revision. The disease-containment recorder now requires a positive active-outbreak ledger value, so research-site cleanup cannot manufacture an outbreak-containment receipt. Both Scramble aftermath settlement paths now call `africa_achievement_capture_scramble_settlement_snapshot` before response-roster cleanup, so the settled hostile-control count is preserved for negotiated and Africa-only deferred closure as well as the coalition-break action. These corrections do not close live acceptance, W5, model, audio, native-review, or external-package gates.
+Three narrow owner corrections landed after the earlier source census and are included in the audited revision. The disease-containment recorder now requires a positive active-outbreak ledger value, so research-site cleanup cannot manufacture an outbreak-containment receipt. Both Scramble aftermath settlement paths now call `africa_achievement_capture_scramble_settlement_snapshot` before response-roster cleanup, so the settled hostile-control count is preserved for negotiated and Africa-only deferred closure as well as the coalition-break action. The rival-confederation achievement refresh now requires the member's own `africa_priority_member_rival_bloc_victory` receipt in addition to the existing host target, so a reused helper cannot award the milestone from a relationship or departure state alone. These corrections do not close live acceptance, W5, model, audio, native-review, or external-package gates.
 
 ## 3. Completion status by surface
 

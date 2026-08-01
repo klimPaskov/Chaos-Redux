@@ -96,6 +96,7 @@ The first ten report images, six current news images, four current super-event i
 - No new country tags or cosmetic tags were created for the sixteen priority packages.
 - South Africa remains excluded from the generic-focus replacement path, but original SAF can enter Event 12 through the accepted Allied-rupture gate. The route preserves the vanilla `south_african_focus` tree and uses the public civil-war effect exactly once; older SAF host-witness/playbook docs remain historical reconciliation evidence rather than alternate entry mechanics.
 - No strange unit model, entity, or formation output is claimed for elephant logistics, elephant shock, Gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, or plague carriers.
+- The exact deferred country-visual and unit-model crosswalk is recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_model_requirements_2026-08-01.md`; no model-readiness gate is opened while production is explicitly deferred.
 - The three custom-formation action IDs remain runtime-gated by `africa_strange_formation_package_ready`.
 - The six continent packages and The World remain runtime-gated by `africa_world_package_implementation_ready`; the initial certification setter is intentionally absent until pre-install receipts exist.
 - The six late or episodic action families are permanently list-only and are not duplicated in the Charter GUI.
