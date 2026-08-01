@@ -10,12 +10,13 @@ Status: implemented as a narrow owner patch; the achievement remains incomplete 
 - The helper writes the global measured share and `africa_achievement_ore_leaves_as_machines_owner_ready` in the host scope. It does not clear a prior concession-breach flag or erase an earlier failure.
 - The helper refreshes the survival windows after the write, while the five-year resource timer now requires the owner-ready marker; reaching the zone and processing counts before a review cannot start the clock from an unknown share.
 - `africa_ore_leaves_as_machines_is_complete` now requires the owner-ready marker, so the startup `invalid` share cannot satisfy the achievement.
+- A failed surveyed `create_local_processing_chain` now records `africa_achievement_raw_export_dependency_crisis`, and the action validation requires the documented resource-survey prerequisite before that failure can occur.
 
 ## Acceptance alignment
 
-This closes the missing exact owner for the live foreign-concession share without using a generic action-success proxy. The value is deliberately below `foreign_concession_cap` and is centralised beside the achievement thresholds. The existing failure owner remains sticky through `africa_achievement_record_foreign_concession_breach`.
+This closes the missing exact owner for the live foreign-concession share and adds the direct raw-export failure owner without using a generic action-success proxy. The measured value is deliberately below `foreign_concession_cap` and is centralised beside the achievement thresholds. Both failure flags remain sticky through their dedicated helpers.
 
-The achievement is not completion-ready yet. The matrix still requires authoritative writers for the raw-export dependency crisis and forced-resource-seizure disqualifiers; neither was invented or inferred from an unrelated action outcome in this tranche.
+The achievement is not completion-ready yet. The forced-resource-seizure disqualifier still lacks an authoritative owner and was not inferred from an unrelated action outcome in this tranche.
 
 ## Validation and remaining risk
 
