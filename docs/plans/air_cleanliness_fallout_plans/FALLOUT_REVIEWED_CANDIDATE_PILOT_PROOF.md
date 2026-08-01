@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after False Positive
+## Current reconciliation after Permit Market
 
-The reviewed candidate producer now covers `70` ordinary dormant rows through False Positive candidate `691`, with `572` defined event blocks through `chaosx.fallout.697` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7173`. Candidate 691 uses transaction `710070`, route `7172`, and survivor Event Log history `9176`. The producer selects the lowest eligible native Quarantine Air Winter state and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+The reviewed candidate producer now covers `71` ordinary dormant rows through Permit Market candidate `698`, with `579` defined event blocks through `chaosx.fallout.704` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7175`. Candidate 698 uses transaction `710071`, route `7174`, and survivor Event Log history `9177`. The producer selects the lowest eligible native Quarantine Air Winter state after a closed False Positive memory and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+
+Permit Market follows False Positive. Its four branches resolve after eighteen days and schedule a two hundred ten day callback. The chain freezes current Air Winter and Quarantine ledgers, applies deterministic movement-permit effects, routes failures through Deaths, changes no tags or states, records survivor-country Event Log payloads, and clears both delayed tickets through idempotent cleanup. It uses dedicated report art and remains dormant because neither scheduler activation flag is set.
 
 False Positive follows a completed First Red Line memory. Its four branches resolve after fourteen days and schedule a one hundred fifty day callback. The chain freezes current Air Winter and Quarantine ledgers, applies deterministic branch-specific result effects, routes failures through Deaths, changes no tags or states, records survivor-country Event Log payloads, and clears both delayed tickets through idempotent cleanup. It uses dedicated report art and remains dormant because neither scheduler activation flag is set.
 
@@ -28,7 +30,7 @@ Great Lakes Lock Winter is the North American coastal row with candidate `663`, 
 
 Status: dormant, statically reconciled, tranche audit clear, completion blocked by scheduler and runtime gates, not release-floor credit.
 
-Current tranche note: False Positive is the latest reviewed candidate at `691`, transaction `710070`, route `7172`, events `691` through `697`, and history `9176`. The producer now carries seventy ordinary rows and 572 defined event blocks. The older count and constant paragraphs below are historical snapshots retained for audit traceability.
+Current tranche note: Permit Market is the latest reviewed candidate at `698`, transaction `710071`, route `7174`, events `698` through `704`, and history `9177`. The producer now carries seventy-one ordinary rows and 579 defined event blocks. The older count and constant paragraphs below are historical snapshots retained for audit traceability.
 
 The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-eight global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 

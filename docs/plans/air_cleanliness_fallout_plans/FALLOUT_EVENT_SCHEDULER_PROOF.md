@@ -1,8 +1,10 @@
 # Fallout Living-World Scheduler Proof
 
-## Current reconciliation after False Positive
+## Current reconciliation after Permit Market
 
-The dormant reviewed producer now covers `70` ordinary Fallout rows and `572` defined event blocks through `chaosx.fallout.697`. False Positive is the latest ordinary row with candidate `691`, transaction `710070`, route `7172`, and survivor history `9176`. It is admitted only from a current-generation Quarantine country with a completed First Red Line memory, a native controlled Air Winter state target, durable survival ledgers, and an affordable branch. Its `14` day result and `150` day callback remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+The dormant reviewed producer now covers `71` ordinary Fallout rows and `579` defined event blocks through `chaosx.fallout.704`. Permit Market is the latest ordinary row with candidate `698`, transaction `710071`, route `7174`, and survivor history `9177`. It is admitted only from a current-generation Quarantine country with a completed False Positive memory, a native controlled Air Winter state target, durable survival ledgers, and an affordable branch. Its `18` day result and `210` day callback remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
+
+Permit Market uses four authored movement-permit branches, hidden-AI parity, deterministic grading, Air Winter and Supply Access effects, bounded Deaths failure, infrastructure damage, survivor-country Event Log routing, dedicated report art, and authenticated cleanup. It is a content tranche only. It does not activate the scheduler, register the Fallout consequence as an ordinary event, or claim runtime delivery.
 
 False Positive uses four authored branches, hidden-AI parity, deterministic grading, Air Winter and Supply Access effects, bounded Deaths failure, infrastructure damage, survivor-country Event Log routing, dedicated report art, and authenticated cleanup. It is a content tranche only. It does not activate the scheduler, register the Fallout consequence as an ordinary event, or claim runtime delivery.
 
@@ -14,7 +16,7 @@ The New Year Without Fireworks uses four authored branches, a 21-day result, a 3
 
 ## Current tranche note
 
-False Positive is the current reviewed row at candidate `691`, transaction `710070`, route `7172`, events `691` through `697`, and history `9176`. The ordinary pilot now has seventy rows and 572 defined blocks. Older count paragraphs below are historical snapshots. Both scheduler activation flags remain unset.
+Permit Market is the current reviewed row at candidate `698`, transaction `710071`, route `7174`, events `698` through `704`, and history `9177`. The ordinary pilot now has seventy-one rows and 579 defined blocks. Older count paragraphs below are historical snapshots. Both scheduler activation flags remain unset.
 
 ## Status
 
