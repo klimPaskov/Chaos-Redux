@@ -396,7 +396,7 @@ africa_achievement_record_full_action = {
 					NOT = { has_state_flag = africa_achievement_rail_project_counted }
 				}
 				set_state_flag = africa_achievement_rail_project_counted
-				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+				africa_achievement_record_development_project = yes
 			}
 		}
 		set_temp_variable = { africa_achievement_corridor_system_id = constant:africa_achievement_corridor_system.rail }
@@ -412,7 +412,7 @@ africa_achievement_record_full_action = {
 					NOT = { has_state_flag = africa_achievement_river_project_counted }
 				}
 				set_state_flag = africa_achievement_river_project_counted
-				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+				africa_achievement_record_development_project = yes
 			}
 		}
 		set_temp_variable = { africa_achievement_corridor_system_id = constant:africa_achievement_corridor_system.river }
@@ -429,7 +429,7 @@ africa_achievement_record_full_action = {
 				}
 				set_state_flag = africa_achievement_port_project_counted
 				add_to_variable = { global.africa_achievement_maritime_port_count = constant:africa_value.one }
-				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+				africa_achievement_record_development_project = yes
 			}
 		}
 		set_temp_variable = { africa_achievement_corridor_system_id = constant:africa_achievement_corridor_system.port }
@@ -444,10 +444,10 @@ africa_achievement_record_full_action = {
 				set_state_flag = africa_achievement_processing_project_counted
 				add_to_variable = { global.africa_achievement_resource_zone_count = constant:africa_value.one }
 				add_to_variable = { global.africa_achievement_processing_zone_count = constant:africa_value.one }
-				add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+				africa_achievement_record_development_project = yes
 				if = {
 					limit = { event_target:africa_host = { check_variable = { africa_constitution = constant:africa_constitution.peoples_union } } }
-					add_to_variable = { global.africa_achievement_union_socialised_projects = constant:africa_value.one }
+					africa_achievement_record_socialised_resource_project = yes
 				}
 			}
 		}
@@ -458,7 +458,7 @@ africa_achievement_record_full_action = {
 			NOT = { has_country_flag = africa_achievement_food_reserve_project_counted }
 		}
 		set_country_flag = africa_achievement_food_reserve_project_counted
-		add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+		africa_achievement_record_development_project = yes
 	}
 	if = {
 		limit = {
@@ -466,7 +466,7 @@ africa_achievement_record_full_action = {
 			NOT = { has_country_flag = africa_achievement_development_fund_project_counted }
 		}
 		set_country_flag = africa_achievement_development_fund_project_counted
-		add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+		africa_achievement_record_development_project = yes
 	}
 	if = {
 		limit = {
@@ -474,7 +474,7 @@ africa_achievement_record_full_action = {
 			NOT = { has_country_flag = africa_achievement_industrial_plan_project_counted }
 		}
 		set_country_flag = africa_achievement_industrial_plan_project_counted
-		add_to_variable = { global.africa_achievement_development_project_count = constant:africa_value.one }
+		africa_achievement_record_development_project = yes
 	}
 
 	# Voluntary diaspora actions never manufacture consent. The action semantics
@@ -505,9 +505,7 @@ africa_achievement_record_full_action = {
 			check_variable = { africa_active_action_id = constant:africa_action.diaspora_investment_bonds }
 			NOT = { has_country_flag = africa_achievement_diaspora_owned_project_counted }
 		}
-		set_country_flag = africa_achievement_diaspora_owned_project_counted
-		add_to_variable = { global.africa_achievement_diaspora_owned_project_count = constant:africa_value.one }
-		add_to_variable = { global.africa_achievement_diaspora_project_count = constant:africa_value.one }
+		africa_achievement_record_diaspora_owned_project = yes
 	}
 
 	# Rival resolutions count only a crisis that was registered by the monitor
@@ -559,11 +557,7 @@ africa_achievement_record_full_action = {
 	}
 	if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.contain_emergent_disease } }
-		add_to_variable = { global.africa_achievement_disease_outbreaks_contained = constant:africa_value.one }
-		if = {
-			limit = { check_variable = { global.africa_achievement_active_disease_outbreaks > constant:africa_value.zero } }
-			subtract_from_variable = { global.africa_achievement_active_disease_outbreaks = constant:africa_value.one }
-		}
+		africa_achievement_record_disease_outbreak_contained = yes
 	}
 	if = {
 		limit = { check_variable = { africa_active_action_id = constant:africa_action.weaponise_fictional_pathogen } }
