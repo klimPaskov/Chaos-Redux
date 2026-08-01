@@ -182,3 +182,32 @@ The v4 raw/candidate files and processing JSON form a coherent, hash-matched sou
 5. Re-run independent identity and style review on the next candidate. Only separate identity PASS and style PASS can unlock DDS and runtime wiring.
 
 **v4 final status: HOLD.** Processing and source linkage pass with a manifest caveat, but identity and style remain below the admission threshold. The source lead may continue, while v4 must not be used as a runtime portrait or as a relabel for `MNT_kristo_popovic`.
+
+## v5 independent audit (2026-08-01)
+
+**Overall verdict: HOLD. MNT cannot proceed to runtime admission on v5.** V5 is a validly processed native candidate and is a modest visual improvement in palette and moustache restraint, but the grounded-real-person identity gate remains failed closed.
+
+### Evidence and processing
+
+| Evidence | Dimensions/mode | SHA-256 or proof | Verdict |
+| --- | --- | --- | --- |
+| `generated_portraits/portrait_MNT_mitar_martinovic_hoi4_repaint_raw_v5.png` | 1114x1412 RGB PNG | `4ff2aba90318de05fe3ec00be7bfb6ee272663e2c2bce83b2ddfc335b2c407d3` | Raw repaint retained and linked to the source-crop pipeline. |
+| `generated_portraits/portrait_MNT_mitar_martinovic_hoi4_156x210_v5.png` | 156x210 RGB PNG | `7f4186eb160ffbb9e44c3e297ea6b28d6470ff7c5c27ce50d2302ffe5a18ecf4` | Exact native dimensions confirmed; no DDS or runtime wiring. |
+| `generated_portraits/portrait_MNT_mitar_martinovic_processing_v5.json` | Crop `[27,0,1086,1412]`, LANCZOS to `[156,210]` | Source/output hashes match the files; `source_link` names the immutable crop | **PASS** processing/provenance chain. The active generated-portrait manifest now records the v5 rows and `pending_independent_audit_v5`. |
+| Immutable crop `source_crops/mnt_mitar_martinovic_1912_head_shoulders.png` | 530x670 RGB PNG | `493846b7202b528ce81260a0227d5c4880575f97cc0cb45715b116390e37de2e` | Exact source crop remains unchanged and is the identity reference. |
+
+### Separate visual verdicts
+
+- **Identity: HOLD.** At native and 4x nearest-neighbour inspection, v5 still levels and opens the two eyes into near-mirrored shapes with generic spacing and gaze; the source's uneven eyelids and asymmetry are not preserved. The nose remains a more idealized, vertically lengthened bridge/tip rather than the source's broad short nose. The cheek mass and lower face are narrower and more vertically elongated than the source's compact proportions. The broad moustache remains recognizable and is less aggressively curled than earlier attempts, but its ends and even mass still differ and cannot compensate for the eye/nose/jaw drift.
+- **Cap/medal source linkage: HOLD.** V5 retains the military cap, rosettes, collar braid, diagonal strap, and medal-bearing composition, but the cap device is enlarged and rendered as a bright gold crown/leaf/cross motif whose silhouette is not source-locked. The painted rosettes, gold collar/medal detail, and blue/red award colors are not established by the grayscale source and include unsupported re-interpretation.
+- **HOI4 style/framing: PASS with caveat.** The valid 156x210 candidate is centered, head-and-shoulders, period-military, neutral-background, and broadly compatible with the canonical HOI4 leader/commander painted family. V5 is smoother and less muddy than v4, though the bright cap emblem and still-soft eye planes need refinement if a future identity PASS is achieved.
+- **Role/period fit: PASS with caveat.** The general's uniform and bust framing fit the admitted Martinovic role and early-twentieth-century source context; the source is 1912 for a 1936 scenario and must retain the documented era-gap note.
+
+### Required disposition
+
+1. Keep v5 raw and native files as evidence-only; do not convert DDS or wire `.gfx`.
+2. Request another source-locked repaint that preserves the source's eye asymmetry/spacing, broad short nose, compact cheek and jaw proportions, and flatter moustache ends.
+3. Remove or source-lock the enlarged crown/leaf/cross cap device and unsupported award colors/details before another identity review.
+4. Re-run the independent likeness gate on the next candidate. Only identity PASS plus the existing processing/provenance PASS can unlock runtime work.
+
+**v5 final status: HOLD.** Provenance/processing PASS and HOI4 style PASS-with-caveat do not offset the non-compensable identity HOLD. The MNT source lead may continue to another repaint, but v5 cannot be promoted or wired.
