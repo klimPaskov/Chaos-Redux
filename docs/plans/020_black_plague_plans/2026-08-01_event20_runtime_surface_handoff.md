@@ -15,6 +15,15 @@ SCN-012 setup-failure branches now clear the temporary port, selected-rat, inter
 - `localisation/english/020_black_plague_response_l_english.yml` retains a UTF-8 BOM.
 - Only the two live rat tags remain registered: `RTA` and `RTX`.
 
+## Terminal relaunch lock
+
+SCN-012 now fails closed before mutation when the campaign has already recorded
+Evolution V, completed terminal takeover, reached world end, or resolved the
+Rat King as defeated. Re-entering the I-IV bootstrap after one of those states
+would reuse historical runtime and could not be guaranteed to roll back safely.
+The shared scenario window reports the existing terminal state instead of
+attempting a partial relaunch.
+
 ## Remaining limitation
 
 The launch still does not have a full inverse transaction for disease state changes, territory transfers, evolution flags, or country activation if a postcondition fails after mutation. The UI now keeps that failure retryable and reports it explicitly; this handoff does not claim atomic rollback or live in-game validation.

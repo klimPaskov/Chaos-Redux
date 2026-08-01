@@ -170,8 +170,21 @@ black_plague_scenario_setup_preflight_is_ready = {
 	}
 }
 
+# SCN-012 is a bootstrap for the I-IV crisis. Once the natural campaign has
+# recorded the terminal evolution or the separate King has been resolved as
+# defeated, re-entering the bootstrap would reuse historical state that cannot
+# be rolled back safely. Fail closed before the launch effect mutates anything.
+black_plague_scenario_is_terminally_closed = {
+	OR = {
+		has_global_flag = world_end
+		has_global_flag = black_plague_evolution_v_recorded
+		has_global_flag = black_plague_terminal_takeover_complete
+		has_global_flag = black_plague_rat_king_defeated
+	}
+}
+
 black_plague_scenario_can_launch_from_triggerable_scenarios = {
-	NOT = { has_global_flag = world_end }
+	NOT = { black_plague_scenario_is_terminally_closed = yes }
 	NOT = { has_global_flag = black_plague_triggerable_scenario_launched }
 	NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
 	black_plague_scenario_rat_country_package_is_ready = yes
