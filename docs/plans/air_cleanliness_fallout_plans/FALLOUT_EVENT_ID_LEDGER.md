@@ -958,3 +958,17 @@ The chain carries Engineer Vote, Public Council, Military Oversight, and Univers
 The asset evidence is `docs/assets/796_engineer_franchise/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-796` is present with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_ENGINEER_FRANCHISE_CHAIN_PROOF.md`.
+
+## The Load Shedding tranche
+
+Load Shedding adds dormant suffixes `803` through `809` with candidate id `803`, transaction key `710086`, route `7204`, and history `9192`.
+
+The human opening is `803`, the hidden-AI opening is `804`, the human and hidden-AI delayed results are `805` and `806`, the human and hidden-AI first-winter callbacks are `807` and `808`, and cleanup is `809`.
+
+The row requires Manchurian Reactor Keeps memory `46`, the Technate archetype, a durable Engineer Franchise branch memory, a closed Engineer Franchise state memory, a current East Asian power or industrial state, a foreign neighboring state, durable Medicine, Cohesion, Recognition, load legitimacy, sector pressure, and one affordable branch. It selects the lowest eligible native state id and freezes the state, owner, controller, generation, Air Winter values, Supply Access, load ledgers, material ledgers, and neighbor receipt.
+
+The chain carries Hospital Priority, Food Priority, Industry Priority, and Defense Priority branches with distinct costs, deterministic result and callback grading, a 28-day result, a 240-day first-winter callback, bounded Deaths effects, state Supply Access and Air Winter effects, sector memory, bilateral opinion, Event Log history `9192`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not change the government archetype, request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/803_load_shedding/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-803` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_LOAD_SHEDDING_CHAIN_PROOF.md`.

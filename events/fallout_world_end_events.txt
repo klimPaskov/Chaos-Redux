@@ -21157,3 +21157,105 @@ country_event = {
 	trigger = { fallout_event_796_cleanup_can_enter = yes }
 	immediate = { fallout_event_796_cleanup = yes }
 }
+
+# Dormant Fallout technate chain: The Load Shedding
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.803
+	title = chaosx.fallout.803.t
+	desc = chaosx.fallout.803.opening.d
+	picture = GFX_report_event_fallout_load_shedding
+	is_triggered_only = yes
+	trigger = { fallout_event_803_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.803.a
+		trigger = { fallout_event_803_hospital_priority_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_803_requested_branch = constant:fallout_event_803_branch.hospital_priority } fallout_event_803_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.803.a.tt
+	}
+	option = {
+		name = chaosx.fallout.803.b
+		trigger = { fallout_event_803_food_priority_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_803_requested_branch = constant:fallout_event_803_branch.food_priority } fallout_event_803_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.803.b.tt
+	}
+	option = {
+		name = chaosx.fallout.803.c
+		trigger = { fallout_event_803_industry_priority_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_803_requested_branch = constant:fallout_event_803_branch.industry_priority } fallout_event_803_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.803.c.tt
+	}
+	option = {
+		name = chaosx.fallout.803.d
+		trigger = { fallout_event_803_defense_priority_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_803_requested_branch = constant:fallout_event_803_branch.defense_priority } fallout_event_803_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.803.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.804
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_803_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_803_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.805
+	title = chaosx.fallout.805.t
+	desc = { text = chaosx.fallout.805.hospital_priority.success.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.hospital_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.805.hospital_priority.partial.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.hospital_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.805.hospital_priority.failure.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.hospital_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.805.food_priority.success.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.food_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.805.food_priority.partial.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.food_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.805.food_priority.failure.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.food_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.805.industry_priority.success.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.industry_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.805.industry_priority.partial.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.industry_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.805.industry_priority.failure.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.industry_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.805.defense_priority.success.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.defense_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.805.defense_priority.partial.d trigger = { check_variable = { fallout_event_803_selected_branch value = constant:fallout_event_803_branch.defense_priority compare = equals } check_variable = { fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.805.defense_priority.failure.d
+	picture = GFX_report_event_fallout_load_shedding
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_803_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.load_shedding_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.805.a hidden_effect = { fallout_event_803_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.805.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.806
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_803_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.load_shedding_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_803_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.807
+	title = chaosx.fallout.807.t
+	desc = { text = chaosx.fallout.807.success.d trigger = { check_variable = { fallout_event_803_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.807.partial.d trigger = { check_variable = { fallout_event_803_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.807.failure.d
+	picture = GFX_report_event_fallout_load_shedding
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_803_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.load_shedding_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_803_registry_is_current = yes }
+	immediate = { fallout_event_803_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.807.a hidden_effect = { fallout_event_803_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.807.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.808
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_803_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.load_shedding_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_803_registry_is_current = yes }
+	immediate = { fallout_event_803_calculate_callback_outcome = yes fallout_event_803_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.809
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_803_cleanup_can_enter = yes }
+	immediate = { fallout_event_803_cleanup = yes }
+}
