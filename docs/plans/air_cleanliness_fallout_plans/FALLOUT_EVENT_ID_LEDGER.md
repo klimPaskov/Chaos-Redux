@@ -1100,3 +1100,15 @@ The chain carries Choose the River Name, Carry the Old Nationality, Reject the B
 The asset evidence is `docs/assets/873_name_we_choose/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_name_we_choose`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-873` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_NAME_WE_CHOOSE_CHAIN_PROOF.md`.
+
+## The Clinic or Council tranche
+
+The Clinic or Council adds dormant suffixes `880` through `886` with candidate id `880`, transaction key `710097`, route `7226`, and history `9203`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed The Name We Choose state memory, a current living care state, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign neighbor, Clinic Legitimacy, Outside Medicine Pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and care ledgers.
+
+The chain carries Medical Oversight, Elected Council, Joint Rule, and Reject Outside Medicine branches with distinct costs, deterministic result and first-season review grading, a 35-day result, a 240-day review, bounded Deaths effects, Air Winter and Supply Access effects, care-governance memory, bilateral opinion, Event Log history `9203`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/880_clinic_or_council/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_clinic_or_council`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-880` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_CLINIC_OR_COUNCIL_CHAIN_PROOF.md`.

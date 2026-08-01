@@ -165,6 +165,7 @@
 - `specs/96_reviewed_archetype_repair_charter.md`
 - `specs/97_reviewed_archetype_power_citizenship.md`
 - `specs/98_reviewed_archetype_name_we_choose.md`
+- `specs/99_reviewed_archetype_clinic_or_council.md`
 
 ## Matrices
 

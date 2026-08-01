@@ -1,0 +1,1 @@
+Generated fictional high-chaos report art for Fallout candidate 880, Clinic or Council. The scene is a Congo Green Basin pump-house clinic during first cold rain, with a clinic board, ward council, paired seals, triage slate, and foreign witness. The prompt avoids real people, readable text, logos, gore, and ordinary radiation biology.
