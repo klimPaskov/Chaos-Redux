@@ -56,12 +56,12 @@ evidence only and authorize no runtime or readiness claim.
 
 | Package | Current sourced portrait evidence | Runtime disposition |
 |---|---|---|
-| IW-004 BRI | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
-| IW-007 AGX | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
-| IW-017 COR | sourced and independently approved real-male civic and command portraits | admitted after a fresh package audit |
-| IW-008 RHI | protected sourced Josef Friedrich Matthes portrait only; remaining sourced roles are unfinished | closed |
-| IW-009 BAY | protected sourced Rupprecht portrait only; remaining sourced roles are unfinished | closed |
-| IW-019 ASX | Sturzo, Lanza di Scalea, and Rizzo refinishes pass image review; Rizzo must be separated from the army command role | closed pending role-correct roster and post-wire audit |
+| IW-004 BRI | sourced and independently approved real-male civic and command portraits | exact static attestation retained; current package and portrait audits bounded |
+| IW-007 AGX | sourced and independently approved real-male civic and command portraits | exact static attestation retained; shared-focus and broader package evidence remain PARTIAL |
+| IW-017 COR | sourced and independently approved real-male civic and command portraits | exact static attestation retained; v66 package audit PARTIAL for shared-focus and unavailable runtime/Technology Viewer evidence |
+| IW-008 RHI | protected sourced Josef Friedrich Matthes plus approved sourced roles | exact static attestation retained; current package, portrait, and ownership audits bounded |
+| IW-009 BAY | protected sourced Rupprecht plus approved sourced roles | exact static attestation retained; current portrait and post-wiring audits bounded |
+| IW-019 ASX | Sturzo, Lanza di Scalea, Rizzo, and Di Benedetto refinishes pass role-correct review | exact static attestation retained; current package, portrait, and consumer-role audits bounded |
 | All other grounded packages | generated, generic, photographic, incomplete, or unresolved portrait evidence is rejected | closed until a complete sourced roster passes |
 
 Rupprecht and Matthes are protected from alteration, not exemptions from the

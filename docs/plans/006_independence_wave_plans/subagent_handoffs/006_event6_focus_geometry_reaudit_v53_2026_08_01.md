@@ -4,6 +4,8 @@ Date: 2026-08-01
 Status: blocked for a safe coordinate-only repair; source intentionally unchanged.
 Scope: `common/national_focus/006_independence_wave_focus.txt`, `independence_wave_focus_tree`.
 
+> Superseded classification notice (2026-08-01): The later v70 focus audit is the current diagnostic authority and classifies fourteen blocking diagnostics as authored Event 006 focus-layout blockers. This v53 handoff's generic-continuous-focus classification is retained as historical MCP evidence only and must not be used for current completion routing.
+
 ## Decision
 
 No small semantics-preserving coordinate patch was applied. The MCP layout report resolves all 184 Event 006 focus nodes to explicit fixed positions, and every one of the 45 unsatisfied crossing diagnostics reports `movableFocusIds=[]`. The warnings are distributed across the shared settlement trunk, government branches, league branches, and package overlays; moving one or two nodes would not be a local repair and would risk new crossings, through-node connectors, or branch readability. Prerequisites, mutual exclusions, effects, AI weights, icons, and localisation were not changed.
@@ -148,7 +150,7 @@ Every crossing entry has empty `movableFocusIds` and fixed or relative endpoints
 | Event 006 rewards | 184/184 plan focuses carry completion rewards | Preserved; no reward mismatch was introduced or corrected in this geometry pass. |
 | Event 006 AI | 184/184 plan focuses carry AI data and availability | Preserved; no route-aware AI values changed. |
 
-The render/inspect gate still reports 14 blocking diagnostics, but they are outside Event 006: 14 missing generic continuous-focus sprites in `game:common/continuous_focus/generic.txt` (`DEN_undermine_overlord_continuous_focus`, two ETH focuses, two SWI focuses, and nine generic continuous focuses) plus missing `continuous_restrict_freedom_desc`. Those errors are not safe to fix by changing Event 006 coordinates or icons and remain a separate parent-owned asset/localisation issue.
+The historical v53 render/inspect gate reported 14 blocking diagnostics as outside Event 006, namely missing generic continuous-focus sprites in `game:common/continuous_focus/generic.txt` (`DEN_undermine_overlord_continuous_focus`, two ETH focuses, two SWI focuses, and nine generic continuous focuses) plus missing `continuous_restrict_freedom_desc`. The later v70 audit supersedes that classification and records the current fourteen blockers as authored Event 006 focus-layout diagnostics; this handoff remains evidence for the unchanged coordinate trial only.
 
 ## Missing or simplified content
 
@@ -157,7 +159,7 @@ No Event 006 route, focus ID, prerequisite, mutual exclusion, effect, icon, loca
 ## High-priority follow-up
 
 1. Keep this source unchanged unless the parent explicitly approves a route-wide geometry pass that moves whole branch cohorts and re-runs inspect/render.
-2. Resolve the 14 generic continuous-focus icon/localisation errors in their own asset/localisation task if the global focus gate must pass.
+2. The earlier recommendation to resolve 14 generic continuous-focus icon/localisation errors is superseded by v70; use the current Event 006 focus-layout blocker list for any parent-owned repair decision.
 3. If geometry warnings must be cleared, treat the founding-settlement trunk, package fan-out, and final sovereignty convergence as coordinated layout cohorts; do not move isolated endpoints.
 
 ## Validation and remaining risks
@@ -166,4 +168,4 @@ Meaningful validation completed: `hoi4.focus_inspect`, `hoi4.focus_render`, and 
 
 Skipped: no coordinate trial patch or `hoi4.focus_rewrite` dry-run was applied because all crossing diagnostics had empty movable sets and the requested change was explicitly limited to a smallest safe repair.
 
-Remaining risk: the current fixed-coordinate plan is visually dense and retains 85 layout warnings (28 long, 45 crossings, 7 through-node, 5 spacing), while the global validation gate remains blocked by 14 unrelated generic continuous-focus asset/localisation errors. Any future geometry patch must preserve all 184 IDs and semantics and should be reviewed against the linked artifacts.
+Remaining risk: the current fixed-coordinate plan is visually dense and retains 85 layout warnings (28 long, 45 crossings, 7 through-node, 5 spacing), while the current v70 authority retains fourteen authored Event 006 focus-layout blockers. Any future geometry patch must preserve all 184 IDs and semantics and should be reviewed against the linked artifacts.

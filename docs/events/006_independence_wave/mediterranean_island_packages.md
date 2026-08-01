@@ -17,7 +17,7 @@ only when it is not living and still owns the vanilla `generic_focus` tree.
 mod-provided meaningful COR tree fails the setup gate and rolls the release
 back instead of being overwritten.
 
-IW-017 Corsica and IW-019 Sicily are admitted after their current portrait and full post-wiring country-package audits.
+IW-017 Corsica and IW-019 Sicily remain in the exact static attestation set after their current portrait and post-wiring country-package evidence; the v66 COR audit is PARTIAL because shared focus diagnostics, runtime compile/allocation evidence, and Technology Tree Viewer evidence remain unavailable, while no patchable COR-local defect was found.
 Adolphe Landry, Jean Chiappe, Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto have attributed source masters, explicit head-and-shoulders crops, independently reviewed identity-preserving HOI4 treatments, and pixel-identical runtime DDS files.
 Rizzo is the civilian-large Straits Security Directorate political leader under a separately audited fictional-office disclosure, while Di Benedetto is the sole army-large corps commander.
 Neither package creates advisor, dossier, `_small`, female, or fallback portrait assets.
