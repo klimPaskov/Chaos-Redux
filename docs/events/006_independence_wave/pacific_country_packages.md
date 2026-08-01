@@ -65,7 +65,7 @@ Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
 local mods, archives, and reports zero collisions; it remains historical scan
 evidence rather than current environment proof. The durable Event 006 portrait
-shelf now contains 61 original-size masters with no normalized or advisor
+shelf now contains 63 original-size masters with no normalized or advisor
 derivatives.
 
 ## Availability and release safety
