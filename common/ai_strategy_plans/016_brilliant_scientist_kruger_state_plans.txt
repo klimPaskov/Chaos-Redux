@@ -1,8 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 016 KRUGER STATE AI STRATEGY PLANS
 # ============================================================================
-# Staged origin, operational-project, diplomatic, and terminal plans. Invalid
-# identities and terminal doctrines receive exact zero factors.
+# Staged origin, takeover post-audit, operational-project, diplomatic, and
+# terminal plans. Invalid identities and terminal doctrines receive exact zero
+# factors.
 # ============================================================================
 
 @krg_plan_weight_origin = 4
@@ -84,6 +85,45 @@ KRG_takeover_consolidation_plan = {
 		KRG_restore_the_ordinary_chain_of_command KRG_found_the_counterintelligence_bureau KRG_a_state_without_friends
 	}
 	weight = { factor = @krg_plan_weight_origin }
+}
+
+KRG_takeover_post_audit_plan = {
+	name = "KRG takeover post-audit plan"
+	desc = ""
+	allowed = { brilliant_scientist_is_kruger_sovereign_country = yes }
+	enable = {
+		brilliant_scientist_formed_by_takeover = yes
+		has_completed_focus = KRG_complete_the_founding_audit
+		brilliant_scientist_kruger_focus_identity_is_open = yes
+	}
+	abort = {
+		OR = {
+			NOT = { brilliant_scientist_kruger_focus_is_active = yes }
+			NOT = { brilliant_scientist_formed_by_takeover = yes }
+			has_country_flag = brilliant_scientist_sovereign_identity_locked
+		}
+	}
+	ai_national_focuses = {
+		KRG_define_the_states_purpose KRG_preserve_the_directorate KRG_rule_by_demonstration
+		KRG_the_sovereign_directorate KRG_restore_human_government KRG_convene_the_scientific_assembly
+		KRG_the_human_scientific_republic KRG_settle_accounts_with_the_former_host
+	}
+	focus_factors = {
+		KRG_the_sovereign_directorate = @krg_plan_weight_route_strong
+		KRG_preserve_the_directorate = @krg_plan_weight_route_preferred
+		KRG_restore_human_government = @krg_plan_weight_route_disfavored
+	}
+	weight = {
+		factor = @krg_plan_weight_doctrine
+		modifier = {
+			factor = @krg_plan_weight_route_strong
+			has_country_flag = brilliant_scientist_krg_founding_policy_directed
+		}
+		modifier = {
+			factor = @krg_plan_weight_route_preferred
+			has_country_flag = brilliant_scientist_krg_founding_policy_civic
+		}
+	}
 }
 
 KRG_clone_sovereignty_plan = {

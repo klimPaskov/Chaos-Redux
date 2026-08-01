@@ -68,19 +68,23 @@ Focus 001 resolves the five-visible-liability conflict without removing any mech
 
 ## AI strategy plans
 
-Exactly 15 named KRG plans provide formation-origin, identity, project-family, diplomatic, integration, and terminal sequencing:
+Exactly 19 named KRG plans provide formation-origin, takeover post-audit, identity, project-family, diplomatic, integration, and terminal sequencing:
 
 - `KRG_charter_republic_plan`
 - `KRG_rebellion_directorate_plan`
 - `KRG_enclave_survival_plan`
 - `KRG_takeover_consolidation_plan`
+- `KRG_takeover_post_audit_plan`
 - `KRG_clone_sovereignty_plan`
 - `KRG_machine_ascendancy_plan`
 - `KRG_paleogenetic_plan`
 - `KRG_xenobiological_plan`
+- `KRG_project_synthesis_plan`
 - `KRG_portal_plan`
 - `KRG_temporal_plan`
-- `KRG_exotic_biological_plan`
+- `KRG_alien_arms_plan`
+- `KRG_biological_containment_plan`
+- `KRG_biological_last_resort_plan`
 - `KRG_commonwealth_plan`
 - `KRG_submission_plan`
 - `KRG_laboratory_world_plan`

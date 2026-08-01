@@ -341,13 +341,17 @@ Focus-level weights are a safety net. Deterministic route ownership belongs in K
 | `KRG_rebellion_directorate_plan` | R, high Grievance: 001-010, 041-047, dominant project lane, 012-014, 089-091, 093-098 | Defend facilities/supply first, recover archives, prioritize former host, integrate before another major war |
 | `KRG_enclave_survival_plan` | E or tiny KRG: 001-010, 031-040, 041-046, 089-092, 094 | Abort expansion while corridor/patron/supply missions fail; never start Singularity as a weak enclave |
 | `KRG_takeover_consolidation_plan` | T: 001-010, 031-040, 041-047, selected identity, 089-091 | Suppress institutional resistance, preserve inherited logistics, no territorial-origin assumptions |
+| `KRG_takeover_post_audit_plan` | T after 010: 011-017, 089-092 | Resolve the captured government's identity after the founding audit, favouring direct Directorate authority while keeping a civic route available |
 | `KRG_clone_sovereignty_plan` | CLN Deployment, medical/equipment capacity: 048-053 and 018-021 | Stop growth at cap or when medical/equipment burden fails; sustained fronts, not free replacement spam |
 | `KRG_machine_ascendancy_plan` | ROB Deployment, power/material surplus: 054-059 and 022-025 | Protect power/assembly, avoid low-power deep offensives, stabilize rogue nodes before expansion |
 | `KRG_paleogenetic_plan` | PAL Deployment, feed/land/handlers/transport: 060-065 | Use rough-terrain shock and intimidation; avoid urban, heavy-air, and unsupported operations |
 | `KRG_xenobiological_plan` | XEN Deployment, exact control, reagents/power/containment: 066-071 and optionally 029 | Use fort breaking and facility defense; resolve control crisis before production |
+| `KRG_project_synthesis_plan` | Paleogenetic and xenobiological Deployment plus a third coherent route: 031-035, 060-071, selected synthesis identity | Preserve separate ledgers while steering a mixed-family state toward the Synthesis capstone |
 | `KRG_portal_plan` | POR Deployment, two defensible terminals: 072-076 | Reinforce enclaves and seize facilities; never expose an undefended terminal or create units through transit |
 | `KRG_temporal_plan` | TMP Deployment, authenticated anchor, debt below severe: 077-082 and 026-028 | Spend actions only on named strategic crises; stabilize when the weakness window is defensible; never use routine battle retries |
-| `KRG_exotic_biological_plan` | Exact ALI/BIO prerequisites: 083-088 | Preserve rare elite equipment; biological offense requires extreme ideology/threat and evaluates condemnation/self-contamination |
+| `KRG_alien_arms_plan` | Exact ALI prerequisites with high-energy delivery: 083-086 | Preserve rare elite equipment and interface security; avoid unsupported attrition |
+| `KRG_biological_containment_plan` | Biological Prototype with a settled containment doctrine: 031-035, 041-047 | Establish containment before delivery and keep ordinary security in the loop |
+| `KRG_biological_last_resort_plan` | Biological Weaponization, valid delivery, high-energy reach: 083-088 | Reserve biological offense for severe threats and evaluate condemnation or self-contamination |
 | `KRG_commonwealth_plan` | 092, recognition opportunity, rights-compatible identity | Offer compacts/asylum/inspection and prefer protectorates or negotiated integration |
 | `KRG_submission_plan` | 093, strong army, Evolution IV/global reach | Demand submission before war, target facilities/resources/ports/rails, avoid simultaneous wars beyond supply |
 | `KRG_laboratory_world_plan` | 099, overwhelming control, verified nonterminal state | Integrate and administer before terminal readiness; never proceed while armed/fail-deadly |
@@ -403,7 +407,7 @@ Coverage is complete for charter, rebellion, enclave, takeover, direct Directora
 4. `brilliant_scientist_refresh_kruger_focus_route_layout` owns `mark_focus_tree_layout_dirty` and is called after the sovereign runtime is reconciled.
 5. `brilliant_scientist_form_sovereign_directorate`, `brilliant_scientist_can_unlock_synthesis`, and `brilliant_scientist_unlock_synthesis` are implemented in the focus-owned helper layer.
 6. Project-stage gates call named operational triggers. The only same-file status-array readers cover High Energy and Rocketry, which have no project-force family helper.
-7. Final English focus localisation and 15 route AI strategy plans are present. The interface registers stable normal and shine sprites for every focus, but all 100 bespoke DDS files remain an explicit art-production blocker.
+7. Final English focus localisation and 19 route AI strategy plans are present, including the post-audit takeover handoff and the mixed-family Synthesis plan. The interface registers stable normal and shine sprites for every focus, and the 100 registered focus DDS files are present; visual acceptance remains a parent-owned review surface.
 8. Source-level layout and reference audits pass. The HOI4 focus inspector could not return a render because its artifact store reported `ARTIFACT_STORAGE_LIMIT`; no engine-render claim is made.
 
 No fallback, placeholder branch, absent-project unlock, free-unit loop, generic repeated ladder, or terminal shortcut is included in this architecture.
