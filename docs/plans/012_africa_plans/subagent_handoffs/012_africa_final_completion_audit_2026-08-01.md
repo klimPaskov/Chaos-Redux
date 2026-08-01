@@ -30,11 +30,11 @@ This is static evidence, not a live-game acceptance result. The project rule res
 
 ## Definition-only and ownership findings
 
-The static reachability scan found 52 Event 012 helpers with no non-definition text reference. This does not create a parser or load error, but it prevents a completion claim until each helper is either connected to an exact owner or formally retired.
+The static reachability scan found 51 Event 012 helpers with no non-definition text reference. This does not create a parser or load error, but it prevents a completion claim until each helper is either connected to an exact owner or formally retired.
 
 High-risk functional examples are:
 
-- `africa_priority_member_record_rival_bloc_victory`, whose exact peace or capitulation caller remains external.
+- `africa_priority_member_record_rival_bloc_victory` now has a bounded `on_capitulation` caller for a rival priority member defeating the current host; ordinary peace remains intentionally non-qualifying.
 - `africa_world_terminal_protocol_cleanup_after_identity`, which awaits the atomic terminal identity consumer.
 - `africa_priority_member_cleanup_runtime`, which awaits the owning terminal/reset transaction.
 - `africa_rsa_allied_settlement_is_complete` and `africa_rsa_civil_war_first_proof_satisfied`, which are currently consumer-facing proof APIs without a static caller.

@@ -221,6 +221,26 @@ on_actions = {
 				limit = { ROOT = { has_country_flag = africa_common_reserve_deployment_active } }
 				ROOT = { africa_common_reserve_resolve_deployment = yes }
 			}
+			# ROOT is the capitulated country and FROM is the winner. A rival
+			# priority member earns its victory receipt only when it defeats the
+			# current host after choosing the explicit rival-bloc departure route.
+			# This is a bounded capitulation owner; ordinary peace does not infer
+			# victory from a relationship or an opinion value.
+			if = {
+				limit = {
+					ROOT = {
+						africa_is_current_host = yes
+						has_country_flag = africa_host_commit_completed
+					}
+					FROM = {
+						africa_priority_member_has_package = yes
+						africa_relationship_is_rival_bloc = yes
+						has_country_flag = africa_priority_member_rival_departure_chosen
+						NOT = { has_capitulated = yes }
+					}
+				}
+				FROM = { africa_priority_member_record_rival_bloc_victory = yes }
+			}
 			if = {
 				limit = {
 					ROOT = {

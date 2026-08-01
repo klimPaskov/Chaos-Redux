@@ -63,7 +63,7 @@ Hostile weather actions should continue through `africa_call_hostile_natural_dis
 
 ## Risks and unsupported analysis
 
-`africa_priority_member_record_rival_bloc_victory` is documented as the bounded peace, capitulation, or scripted-victory transaction, but this tranche did not invent an external caller where the repository does not expose one; reachability of that transaction remains a parent-level audit item.
+`africa_priority_member_record_rival_bloc_victory` now has the parent-owned bounded `on_capitulation` caller for a rival priority member defeating the current host. A non-capitulation peace winner receipt remains intentionally deferred; ordinary peace still cannot infer victory.
 
 The Event 013 result does not expose a separate civilian-casualty field to Event 012, so no civilian-damage owner was inferred from accepted result, impact scales, wrath values, or aftermath flags.
 

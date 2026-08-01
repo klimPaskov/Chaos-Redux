@@ -534,7 +534,7 @@ Whole package layer remains incomplete until the parent integrates:
 - base and ideology flag coverage for the seven existing Event 006 country tags where the Independence Wave package has not yet supplied complete runtime flags; no Event 012 priority-member cosmetic flag family is permitted
 - 63 unresolved focus, idea, post-settlement decision, and report DDS assets; 40 decision DDS files are present and documented
 - verified source-generation provenance for the 40 present decision icons; their retained source files have no embedded generator, prompt, author, or licence metadata
-- parent victory or peace callsites for africa_priority_member_record_rival_bloc_victory
+- the bounded host-capitulation caller for `africa_priority_member_record_rival_bloc_victory` is installed; a non-capitulation peace winner receipt remains intentionally deferred
 - authorised post-registration player-switch callsites for africa_achievement_register_valid_priority_player
 - parent terminal cleanup callsite after achievement and ending evaluation
 - final country-package, localisation, decision/mission, and asset audits
