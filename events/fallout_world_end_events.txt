@@ -20344,3 +20344,101 @@ country_event = {
 	trigger = { fallout_event_740_cleanup_can_enter = yes }
 	immediate = { fallout_event_740_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.747
+	title = chaosx.fallout.747.t
+	desc = chaosx.fallout.747.opening.d
+	picture = GFX_report_event_fallout_health_without_borders
+	is_triggered_only = yes
+	trigger = { fallout_event_747_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.747.a
+		trigger = { fallout_event_747_health_compact_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.health_compact } fallout_event_747_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.747.a.tt
+	}
+	option = {
+		name = chaosx.fallout.747.b
+		trigger = { fallout_event_747_client_inspections_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.client_inspections } fallout_event_747_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.747.b.tt
+	}
+	option = {
+		name = chaosx.fallout.747.c
+		trigger = { fallout_event_747_isolation_doctrine_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.isolation_doctrine } fallout_event_747_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.747.c.tt
+	}
+	option = {
+		name = chaosx.fallout.747.d
+		trigger = { fallout_event_747_humanitarian_service_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.humanitarian_service } fallout_event_747_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.747.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.748
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_747_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_747_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.749
+	title = chaosx.fallout.749.t
+	desc = { text = chaosx.fallout.749.health_compact.success.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.health_compact } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.749.health_compact.partial.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.health_compact } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.749.health_compact.failure.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.health_compact } } }
+	desc = { text = chaosx.fallout.749.client_inspections.success.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.client_inspections } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.749.client_inspections.partial.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.client_inspections } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.749.client_inspections.failure.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.client_inspections } } }
+	desc = { text = chaosx.fallout.749.isolation_doctrine.success.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.749.isolation_doctrine.partial.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.749.isolation_doctrine.failure.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } } }
+	desc = { text = chaosx.fallout.749.humanitarian_service.success.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.humanitarian_service } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.749.humanitarian_service.partial.d trigger = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.humanitarian_service } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.749.humanitarian_service.failure.d
+	picture = GFX_report_event_fallout_health_without_borders
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_747_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.health_without_borders_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.749.a hidden_effect = { fallout_event_747_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.749.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.750
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_747_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.health_without_borders_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_747_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.751
+	title = chaosx.fallout.751.t
+	desc = { text = chaosx.fallout.751.success.d trigger = { check_variable = { fallout_event_747_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.751.partial.d trigger = { check_variable = { fallout_event_747_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.751.failure.d
+	picture = GFX_report_event_fallout_health_without_borders
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_747_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.health_without_borders_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_747_registry_is_current = yes }
+	option = { name = chaosx.fallout.751.a hidden_effect = { fallout_event_747_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.751.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.752
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_747_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.health_without_borders_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_747_registry_is_current = yes }
+	immediate = { fallout_event_747_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.753
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_747_cleanup_can_enter = yes }
+	immediate = { fallout_event_747_cleanup = yes }
+}

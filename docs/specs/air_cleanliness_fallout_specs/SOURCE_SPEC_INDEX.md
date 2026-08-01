@@ -49,6 +49,7 @@
 45. `specs/73_reviewed_archetype_permit_market.md`
 46. `specs/74_reviewed_archetype_doctors_coup.md`
 47. `specs/79_reviewed_archetype_open_the_sealed_city.md`
+48. `specs/80_reviewed_archetype_health_without_borders.md`
 
 
 ## Accepted baseline specs included here
@@ -143,6 +144,7 @@
 - `specs/77_reviewed_archetype_border_inspection_crisis.md`
 - `specs/78_reviewed_archetype_children_of_cordon.md`
 - `specs/79_reviewed_archetype_open_the_sealed_city.md`
+- `specs/80_reviewed_archetype_health_without_borders.md`
 
 ## Matrices
 
