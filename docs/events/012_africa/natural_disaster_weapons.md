@@ -82,6 +82,8 @@ The two host selector decisions are visible only for an eligible nature host tha
 
 `africa_ai_selected_target_is_candidate_for_action` has a dedicated branch for actions 69 and 70 that uses the same host eligibility, war, cost, cooldown, and exact enemy-target gate as human execution. Priority members use `africa_priority_member_natural_disaster_ai_cycle`, which refreshes the same bounded roster, selects a random target and one of the two actions, and calls the shared member wrapper.
 
+The member AI cycle uses the same recorded authority ladder as the player tooltip and Event 013 strength bridge. Trace authority suppresses opportunistic use, low authority remains conservative, medium authority is neutral, high authority is more willing to spend the caller reserve, and ancestral authority is the strongest AI preference. This changes willingness only after the package, politics, mechanic, war, target, cost, cooldown, and host-generation gates already pass.
+
 The generic bounded-roster fallback excludes both actions, so the AI cannot select a peaceful or non-nature target and rely on a weaker downstream failure.
 
 ## Limitations and follow-up

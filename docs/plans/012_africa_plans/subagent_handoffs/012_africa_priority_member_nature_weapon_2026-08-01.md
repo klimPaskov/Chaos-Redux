@@ -16,6 +16,8 @@ This tranche extends the existing Event 012 Rain/Drought action IDs 69 and 70 to
 - `localisation/english/012_african_union_l_english.yml` adds category, decision, dynamic-cost, and launch tooltip strings.
 - `docs/events/012_africa/natural_disaster_weapons.md` and `docs/events/012_africa/overview.md` record the shared-host/member contract.
 
+The follow-up AI parity pass adds authority-aware willingness to the existing `africa_priority_member_natural_disaster_ai_cycle`. Trace and low-authority packages are conservative, medium is neutral, and high or ancestral packages are progressively more willing to spend the caller reserve. The decision still uses the existing eligibility, target, cost, cooldown, host-generation, and shared-action gates.
+
 ## Runtime contract
 
 The member decision saves the selected enemy as `africa_natural_disaster_member_action_target`, then `africa_begin_priority_member_natural_disaster_action` saves the member as global `africa_natural_disaster_action_actor` and the target as global `africa_action_target`. The current host runs `africa_begin_quoted_action_against_target`, so quote, payment, mission, outcome, event log, and cleanup remain the existing generation-safe path.
