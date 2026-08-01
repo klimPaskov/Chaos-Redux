@@ -22,7 +22,7 @@ After Evolution V opens its earned route, a human country that still holds estab
 
 ## Icons and UI wiring
 
-The decisions use existing vanilla decision sprites for generic research, civil support, intelligence operation, quarantine, faction integration, and medical missions. Event-020-specific decision art is defined in `interface/020_black_plague_response.gfx` and stored under `gfx/interface/decisions/020_black_plague/`. Crown Strike uses `GFX_decision_black_plague_strike_the_crown`, and post-defeat sealing uses `GFX_decision_black_plague_seal_royal_burrows`. The final icon package, source frames, DDS files, contact sheet, and crosswalk are documented in `docs/plans/020_black_plague_plans/subagent_handoffs/2026-07-24_black_plague_response_decision_icons_handoff.md`.
+The decisions use existing vanilla decision sprites for generic research, civil support, intelligence operation, quarantine, faction integration, and medical missions. Event-020-specific decision art is defined in `interface/020_black_plague_response.gfx` and stored under `gfx/interface/decisions/020_black_plague/`. Royal Node counterstrike uses `GFX_decision_black_plague_strike_royal_node`, Crown Strike uses `GFX_decision_black_plague_strike_the_crown`, and post-defeat sealing uses the animated `GFX_decision_black_plague_seal_royal_burrows_animated` with the existing static seal key available as fallback. The Royal Node icon provenance is documented in `docs/assets/020_black_plague/manifests/royal_node_decision_icon_manifest.md`, and the seal animation package is documented in `docs/assets/020_black_plague/royal_burrows_seal_animation/manifest.md`.
 
 ## Future depth
 
