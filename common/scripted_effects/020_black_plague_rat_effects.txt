@@ -1007,10 +1007,14 @@ black_plague_rat_activate_evolution_iii = {
 		}
 		if = {
 			limit = { check_variable = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } }
+			clear_global_event_target = black_plague_rat_evolution_actor
 			for_each_scope_loop = {
 				array = global.black_plague_rat_countries
 				if = {
-					limit = { black_plague_rat_country_is_active = yes }
+					limit = {
+						black_plague_rat_country_is_active = yes
+						NOT = { has_event_target = black_plague_rat_evolution_actor }
+					}
 					save_global_event_target_as = black_plague_rat_evolution_actor
 				}
 			}
@@ -1023,6 +1027,7 @@ black_plague_rat_activate_evolution_iii = {
 				value = constant:black_plague_value.one
 				compare = greater_than_or_equals
 			}
+			has_event_target = black_plague_rat_evolution_actor
 		}
 		set_global_flag = black_plague_evolution_iii_active
 		set_global_flag = black_plague_evolution_iii_recorded

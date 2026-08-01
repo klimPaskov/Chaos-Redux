@@ -136,7 +136,27 @@ black_plague_evolution_record_stage = {
 	else = {
 		set_temp_variable = { events_log_evolution_has_actor = constant:black_plague_value.zero }
 	}
-	record_events_log_evolution_entry = yes
+	# Evolution I in SCN-012 is deliberately an originless strain milestone,
+	# but every later row must carry a verified country actor. Do not write a
+	# misleading actorless row when a natural destination or rat carrier could
+	# not be resolved.
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = black_plague_evolution_stage
+					value = constant:black_plague_evolution_runtime.evolution_i_stage
+					compare = equals
+				}
+				check_variable = {
+					var = events_log_evolution_has_actor
+					value = constant:black_plague_value.one
+					compare = equals
+				}
+			}
+		}
+		record_events_log_evolution_entry = yes
+	}
 }
 
 black_plague_evolution_prepare_prefire_permissions = {
@@ -246,11 +266,24 @@ black_plague_activate_evolution_iv = {
 		black_plague_rat_activate_evolution_iv = yes
 		if = {
 			limit = { has_global_flag = black_plague_evolution_iv_active }
+			# The source RTA is only a transfer candidate. The evolution belongs
+			# to the separate sentient country, including when an already-active
+			# RTX is preserved by SCN-012.
 			clear_global_event_target = black_plague_rat_evolution_actor
-			RTX = { save_global_event_target_as = black_plague_rat_evolution_actor }
-			set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iv_stage }
-			black_plague_evolution_record_stage = yes
-			if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
+			if = {
+				limit = { RTX = { black_plague_rat_country_is_king = yes } }
+				RTX = { save_global_event_target_as = black_plague_rat_evolution_actor }
+				set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iv_stage }
+				black_plague_evolution_record_stage = yes
+				if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
+			}
+			else = {
+				# A stale global King flag must not consume Evolution IV without a
+				# real RTX country to own the milestone.
+				clr_global_flag = black_plague_evolution_iv_active
+				clr_global_flag = black_plague_evolution_iv_recorded
+				set_global_flag = black_plague_rat_king_activation_failed
+			}
 		}
 	}
 	else_if = {
@@ -515,17 +548,26 @@ black_plague_evolution_runtime_pulse = {
 		else_if = {
 			limit = { black_plague_evolution_ii_is_ready = yes }
 			black_plague_activate_evolution_ii = yes
-			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			if = {
+				limit = { has_global_flag = black_plague_evolution_ii_active }
+				set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			}
 		}
 		else_if = {
 			limit = { black_plague_evolution_iii_is_ready = yes }
 			black_plague_activate_evolution_iii = yes
-			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			if = {
+				limit = { has_global_flag = black_plague_evolution_iii_active }
+				set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			}
 		}
 		else_if = {
 			limit = { black_plague_evolution_iv_is_ready = yes }
 			black_plague_activate_evolution_iv = yes
-			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			if = {
+				limit = { has_global_flag = black_plague_evolution_iv_active }
+				set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+			}
 		}
 		if = {
 			limit = {
