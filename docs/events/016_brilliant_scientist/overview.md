@@ -18,6 +18,8 @@ The first Prototype reached in each project family produces one ordinary report,
 
 The host-context reaction tranche adds three ordinary, career-once reports without creating a new evolution or project reward. After the first resolved Prototype and a valid primary facility, `chaosx.nr16.7` records whether the facility becomes a civic compact, restricted district, or industrial charter. After the second resolved Prototype, `chaosx.nr16.8` records whether that method enters public trust, executive reserve, or a patent pool. After the first detected foreign operation resolves, `chaosx.nr16.9` names the exact actor and operation and offers controlled exchange, a private warning, or public accusation when the exchange gate is valid. Each resolution changes existing Directorate meters, stores a host and Kruger-character receipt, and is prevented from replaying. Ordinary transfer carries only unresolved `.7` or `.8` ownership; resolved facility and custody consequences remain with the old host and physical state while the character receipt prevents replay. Terminal exit clears pending obligations, while sovereignty formation discards former-host presentation state after the character history has been retained.
 
+The existing loyalty and relocation dossiers, `chaosx.nr16.10` and `chaosx.nr16.11`, also append the host-archetype clause after their resolved finding or convoy outcome. This is presentation only and does not add a reward, evolution, event-log entry, or new fire path.
+
 ## Event identity
 
 - Event ID: `16`.
