@@ -1,0 +1,44 @@
+# IW-058 ASY portrait-source research handoff v91
+
+Research date: 2026-08-01. Scope was limited to real-person source research for the existing IW-058 Assyria institutional consumers. This handoff does not edit characters, gameplay, localisation, GFX, DDS files, advisor icons, or central portrait attestation.
+
+## Outcome
+
+Two collision-free historical source masters and exact lossless head-and-shoulders crops are preserved for parent review. Both are marked `needs_user_review` because the Commons public-domain assertions do not fully identify the original photographer and first-publication chain. No candidate is promoted to runtime or treated as a cleared portrait.
+
+The source masters are immutable downloads from the linked Commons originals. Crops were produced with `extract_portrait_source_crop.py` and each JSON file records decoded-pixel equality against its source crop.
+
+## Candidate packages
+
+| Existing consumer | Historical identity | Role and date fit | Source and rights basis | Local source master | Exact crop | Status and uncertainty |
+|---|---|---|---|---|---|---|
+| `ASY_independence_wave_concordat_council` | Philoxenos Yuhanon (Hanna) Dolabani (1885–1969) | Syriac Orthodox cleric, scholar, and later metropolitan. The archival source is explicitly captioned “1930 Rabban Hanna Dolabani in Jerusalem,” so he was alive and active in the 1936 window; frame him as a church-council clerical or scholarly representative, not as a 1936 patriarch. | [Commons file](https://commons.wikimedia.org/wiki/File:Yuhanon_Dolabani_in_Jerusalem,_1930.png) and [original PNG](https://upload.wikimedia.org/wikipedia/commons/d/db/Yuhanon_Dolabani_in_Jerusalem%2C_1930.png). The file records source [archive book page](https://archive.org/details/dolabanimetropol0000hori/page/n31/mode/2up), date 1930, unknown author, `PD-Palestine`, and `PD-old`/public-domain metadata. The 1988 archive scan is a later reproduction; first publication and photographer remain unidentified. | `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/source_masters/ASY_yuhanon_dolabani_jerusalem_1930.png` (643x785 RGBA, SHA-256 `C5C5747BA121EDC400E1E89E598A9DEEEE29B2A2CF26B3444FF4A698B082E5B2`) | `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/source_crops/ASY_concordat_council_yuhanon_dolabani_head_shoulders.png` (crop `0,25,455,420`, 455x395 RGBA, SHA-256 `FD6B0D2A791F559FBEFF6A605E9699B467AB443AA946FC5D48B9BE2CD9DAC40C`). Equality evidence: `crop_metadata/ASY_concordat_council_yuhanon_dolabani_crop.json`. | `needs_user_review`: role/date fit and image detail are strong, but the source-country copyright term cannot be independently confirmed because the original photographer and first-publication date are not supplied. Do not wire until rights review accepts the Commons PD-Palestine evidence. |
+| `ASY_independence_wave_levies_guardianship` | Shamoun Hanne Haydo (1870–1964) | Syriac/Assyrian village-defense leader of Sare and Bsorino. The biographical record places his leadership from 1900 through his death in 1964, so he is alive in the 1936 window and is a direct emergency-security/guardianship fit. | [Commons file](https://commons.wikimedia.org/wiki/File:Syriac-Aramean_Warrior_and_Leader,_Shamoun_Hanne_Haydo.png) and [original PNG](https://upload.wikimedia.org/wikipedia/commons/8/87/Syriac-Aramean_Warrior_and_Leader%2C_Shamoun_Hanne_Haydo.png). Commons records an early-20th-century image, unknown author, `PD-Turkey`, and public social-source links ([Instagram slide](https://www.instagram.com/suryoyotho/p/DPeVzBCCHRt/), [X post](https://x.com/thesuraye/status/1561187923340365825/photo/2), [Facebook source](https://www.facebook.com/photo?fbid=2550299391696533)). The source description says it was sent by a friend close to the Haydo family; original photographer and exact date are not identified. | `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/source_masters/ASY_shamoun_hanne_haydo_early_20c.png` (950x1514 RGBA, SHA-256 `2F34457778A84AE4E54F65DACEDB588D97CCE0E4FE78B1D52B46C61DE992FE7B`) | `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/source_crops/ASY_levies_guardianship_shamoun_hanne_haydo_head_shoulders.png` (crop `110,25,840,760`, 730x735 RGBA, SHA-256 `00CA79DD73E4A9D1596A2BE7833B34A4560221894222F862AC112E49A73EF998`). Equality evidence: `crop_metadata/ASY_levies_guardianship_shamoun_hanne_haydo_crop.json`. | `needs_user_review`: the role/date and visual legibility are strong, but the public-domain status relies on a Commons PD-Turkey assertion over an unknown-author family/social source. This is a new source lead and is not the previously rejected standing-portrait PDF; it still needs an explicit rights decision before repaint or wiring. |
+
+## Civic and other route checks
+
+No defensible new collision-free civic-national portrait was found in this pass.
+
+| Lead | Result | Reason not supplied as a new source package |
+|---|---|---|
+| Rev. Joel E. Werda/Warda | Blocked | Existing Paris-delegation crop is only 283x378 and the v38 audit did not verify later-life identity or a 1936 civic office. This pass did not duplicate it. |
+| Abraham K. Yoosuf / Major A.K. Yoosuf | Blocked by timing | The 1921 Paris delegation source identifies him, but the biographical article gives Abraham K. Yoosuf as 1866–1924. He cannot be presented as a living 1936 civic officeholder without an explicit legacy-continuity design decision. |
+| Yusuf Malek | Rejected collision | The 1935 Commons portrait is otherwise clear, but the approved collision scan records Kaiserreich ownership as `ASY_yusuf_malek`. No transfer contract exists. |
+| Malik Ismail II of Upper Tyari | Existing blocker remains | Existing 1918/19 source and crop are retained in v37, but the exact IW-058 date versus his 1936 death and active-office status remain unresolved. |
+| Gallo Shabo | Existing owner | The strongest already-cleared project source is already owned as `ASY_gallo_shabo` for the Provisional National Council and cannot be silently reused for Civic National Assembly. |
+| Malke Hanne Haydo | Timing blocker | The 1908 solo PD-Ottoman image is detailed and role-labelled, but the historical record places his death in 1917, outside the living 1936 window. |
+| Hurmiz Malik Chikko | Identity/date mismatch | Commons labels a 1933 group image “Hurmiz Malik Chikko,” but the biographical record dates Hurmiz to 1934–1963, making that caption impossible for the named person. |
+
+## Crop and handoff evidence
+
+The two source masters and crops are under `docs/assets/006_independence_wave/asy_portrait_source_research_v91_2026_08_01/`.
+
+`crop_metadata/ASY_concordat_council_yuhanon_dolabani_crop.json` reports `status: exact_source_crop_verified`, source dimensions `[643,785]`, crop dimensions `[455,395]`, and `decoded_pixels_equal: true`.
+
+`crop_metadata/ASY_levies_guardianship_shamoun_hanne_haydo_crop.json` reports `status: exact_source_crop_verified`, source dimensions `[950,1514]`, crop dimensions `[730,735]`, and `decoded_pixels_equal: true`.
+
+No processed HOI4 repaint, 156x210 PNG, DDS, contact sheet, or `.gfx` edit was made. Parent-owned stable sprite names remain `GFX_portrait_ASY_independence_wave_concordat_council` and `GFX_portrait_ASY_independence_wave_levies_guardianship` if a candidate is later admitted. The package remains civilian-large only and creates no advisor or small-portrait asset.
+
+## Parent next gate
+
+The parent should decide whether Commons PD-Palestine evidence for Dolabani and Commons PD-Turkey evidence for Haydo are sufficient for the project's source-rights gate. If either is accepted, pass the exact crop—not the full-body source—to the source-locked real-person repaint workflow, then run the independent portrait audit before any DDS promotion or runtime wiring. If either rights gate is rejected, retain the local files as evidence-only and keep the corresponding route fail-closed.
