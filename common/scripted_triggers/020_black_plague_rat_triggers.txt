@@ -375,9 +375,43 @@ black_plague_rat_state_has_spawn_signal = {
 	}
 }
 
+# STATE scope. Evolution III needs an uncontrolled connected basin rather than
+# one isolated collapse. Infected, Severe Crisis, and Collapsed states qualify;
+# containment and Rat-Controlled ground do not. The nested neighbour walk proves
+# a three-state path, and the final comparison prevents the walk from counting
+# the origin state again when a two-state border is traversed in both directions.
+black_plague_rat_state_is_connected_basin_member = {
+	black_plague_state_is_established = yes
+	OR = {
+		black_plague_state_is_infected = yes
+		black_plague_state_is_severe = yes
+		black_plague_state_is_collapsed = yes
+	}
+	check_variable = {
+		var = black_plague_rat_infestation
+		value = constant:black_plague_threshold.relapse_exposure
+		compare = greater_than_or_equals
+	}
+	OWNER = { black_plague_country_is_human_host = yes }
+	CONTROLLER = { black_plague_country_is_human_host = yes }
+	NOT = { black_plague_state_is_rat_controlled = yes }
+}
+
+black_plague_rat_state_has_connected_basin_signal = {
+	black_plague_rat_state_is_connected_basin_member = yes
+	any_neighbor_state = {
+		black_plague_rat_state_is_connected_basin_member = yes
+		any_neighbor_state = {
+			black_plague_rat_state_is_connected_basin_member = yes
+			NOT = { state = PREV.PREV }
+		}
+	}
+}
+
 black_plague_rat_state_can_spawn = {
 	OR = {
 		black_plague_rat_state_has_spawn_signal = yes
+		black_plague_rat_state_has_connected_basin_signal = yes
 		# SCN-012 deliberately seeds the RTA carrier during its scoped
 		# bootstrap. Low intensity can begin with Infected states, so the
 		# scenario must not inherit the natural Severe/Collapsed gate.
@@ -475,7 +509,7 @@ black_plague_rat_evolution_iii_is_eligible = {
 		compare = greater_than_or_equals
 	}
 	any_state = { black_plague_state_is_collapsed = yes }
-	any_state = { black_plague_rat_state_has_spawn_signal = yes }
+	any_state = { black_plague_rat_state_has_connected_basin_signal = yes }
 }
 
 black_plague_rat_evolution_iv_is_eligible = {
