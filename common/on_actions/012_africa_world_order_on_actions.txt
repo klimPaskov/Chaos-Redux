@@ -195,6 +195,14 @@ on_actions = {
 				limit = { FROM = { africa_world_package_is_installed = yes } }
 				FROM = { africa_world_handle_package_actor_loss = yes }
 			}
+			# A priority-member country can be removed by an ordinary annexation
+			# before a later relationship callback runs. Consume its transient
+			# package mission and relationship runtime only after the achievement
+			# and world-package loss owners above have read the immutable proof.
+			if = {
+				limit = { FROM = { has_country_flag = africa_priority_member_package_active } }
+				FROM = { africa_priority_member_cleanup_runtime = yes }
+			}
 		}
 	}
 

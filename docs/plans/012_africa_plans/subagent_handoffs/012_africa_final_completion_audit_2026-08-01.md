@@ -36,7 +36,7 @@ High-risk functional examples are:
 
 - `africa_priority_member_record_rival_bloc_victory` now has a bounded `on_capitulation` caller for a rival priority member defeating the current host; ordinary peace remains intentionally non-qualifying.
 - `africa_world_terminal_protocol_cleanup_after_identity`, which awaits the atomic terminal identity consumer.
-- `africa_priority_member_cleanup_runtime`, which awaits the owning terminal/reset transaction.
+- `africa_priority_member_cleanup_runtime` now has a bounded `on_annex` caller after achievement and world-package loss evaluation; it clears only transient package mission/relationship state while preserving lifetime proof flags. Live annexation-consumer acceptance remains open.
 - `africa_rsa_allied_settlement_is_complete` and `africa_rsa_civil_war_first_proof_satisfied`, which are currently consumer-facing proof APIs without a static caller.
 - `africa_select_mapped_first_proof_action`, `africa_confirm_all_required_first_proof_regions`, `africa_confirm_first_proof_domestic_settlement`, and `africa_confirm_first_proof_reform`, whose orchestration ownership is not proven.
 - Thirteen achievement recorders without an exact caller, covering development and diaspora projects, civilian disaster weaponisation, disease containment, model-based elephant proofs, forced-relocation/scenario proof, other-world-end proof, socialised projects, and the terminal super-event. The common-reserve deployment recorder now has an exact Action 80 and protection-war caller, but its six-war live acceptance is still open. Weather-army defeat and weather-war ownership now have an exact accepted-target plus direct-host-capitulation caller, while row 38's three-target live proof remains open.
