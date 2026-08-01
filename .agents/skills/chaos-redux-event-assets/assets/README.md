@@ -17,13 +17,10 @@ The organized canonical library is `vanilla_reference/`. The user-requested `lea
 Start every review with:
 
 - `vanilla_reference/README.md` for library and contact-sheet rules
-- `vanilla_reference/CATALOG.md` for exact source provenance, native canvas,
-  frame count, and owning definition
+- `vanilla_reference/CATALOG.md` for exact source provenance, native canvas, frame count, and owning definition
 - `leader_portraits/README.md` and `leader_portraits/REFERENCE_MANIFEST.md` for the curated male-only portrait review pack and its `leaders/` and `commanders/` contact sheets
 
-Reference PNGs teach framing, scale, transparency, style, and engine pipeline.
-They are review material only: never recolor, trace, wire, or ship them as
-runtime assets.
+Reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
 
 ## Reference families
 
