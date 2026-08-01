@@ -5,6 +5,8 @@
 # - Loads all 102 matrix concepts into one stable profile contract.
 # - Quotes and revalidates concrete, target-scaled resource costs.
 # - Starts one generation-safe action record and one of four shared missions.
+# - Copies the 102-row duration range/default and objective contract into each
+#   quote and target record while retaining the shared mission routing bands.
 # - Resolves full, partial, failure, and cancellation outcomes idempotently.
 # - Keeps AI and player execution on the same begin/resolve/cleanup effects.
 # ============================================================================
@@ -1683,9 +1685,740 @@ africa_prepare_action_profile = {
 		set_temp_variable = { africa_uses_convoys = constant:africa_value.one }
 		set_temp_variable = { africa_uses_civilian = constant:africa_value.one }
 	}
+	africa_prepare_action_contract = yes
 }
 
 # Converts the profile tier and component flags into concrete base costs.
+
+# COUNTRY scope before quote calculation. Copies the matrix duration range and
+# objective contract into temporary profile fields. The shared band remains the
+# mission routing key; the per-record day value is copied to the target later.
+africa_prepare_action_contract = {
+	set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_duration.instant_days }
+	set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_duration.instant_days }
+	set_temp_variable = { africa_profile_duration_days = constant:africa_action_duration.instant_days }
+	set_temp_variable = { africa_profile_objective = constant:africa_action_objective.none }
+	set_temp_variable = { africa_profile_response_days = constant:africa_action_duration.instant_days }
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.guarantee_sovereignty } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.guarantee_sovereignty_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.guarantee_sovereignty_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.guarantee_sovereignty_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.guarantee_sovereignty_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.open_aid_corridor } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.open_aid_corridor_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.open_aid_corridor_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.open_aid_corridor_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.open_aid_corridor_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.dispatch_charter_mission } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.dispatch_charter_mission_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.dispatch_charter_mission_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.dispatch_charter_mission_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.dispatch_charter_mission_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.deploy_volunteers } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.deploy_volunteers_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.deploy_volunteers_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.deploy_volunteers_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.deploy_volunteers_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.intervene_against_coloniser } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.intervene_against_coloniser_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.intervene_against_coloniser_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.intervene_against_coloniser_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.intervene_against_coloniser_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.evacuate_leaders_archives } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.evacuate_leaders_archives_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.evacuate_leaders_archives_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.evacuate_leaders_archives_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.evacuate_leaders_archives_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.recognise_provisional_government } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.recognise_provisional_government_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.recognise_provisional_government_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.recognise_provisional_government_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.recognise_provisional_government_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.secure_border_sanctuary } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.secure_border_sanctuary_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.secure_border_sanctuary_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.secure_border_sanctuary_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.secure_border_sanctuary_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.break_blockade } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.break_blockade_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.break_blockade_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.break_blockade_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.break_blockade_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.emergency_relief_column } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.emergency_relief_column_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.emergency_relief_column_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.emergency_relief_column_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.emergency_relief_column_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_defence_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_defence_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_defence_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_defence_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_defence_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_development_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_development_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_development_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_development_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_development_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_federal_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_federal_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_federal_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_federal_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_federal_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_crown_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_crown_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_crown_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_crown_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_crown_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_peoples_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_peoples_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_peoples_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_peoples_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_peoples_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_security_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_security_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_security_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_security_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_security_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_sacred_ecological_compact } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_sacred_ecological_compact_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_sacred_ecological_compact_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_sacred_ecological_compact_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_sacred_ecological_compact_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.renegotiate_accession_clauses } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.renegotiate_accession_clauses_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.renegotiate_accession_clauses_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.renegotiate_accession_clauses_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.renegotiate_accession_clauses_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.hold_accession_referendum } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.hold_accession_referendum_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.hold_accession_referendum_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.hold_accession_referendum_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.hold_accession_referendum_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.admit_member_in_emergency } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.admit_member_in_emergency_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.admit_member_in_emergency_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.admit_member_in_emergency_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.admit_member_in_emergency_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.convene_regional_congress } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.convene_regional_congress_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.convene_regional_congress_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.convene_regional_congress_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.convene_regional_congress_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.settle_overlapping_claims } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.settle_overlapping_claims_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.settle_overlapping_claims_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.settle_overlapping_claims_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.settle_overlapping_claims_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.create_regional_charter } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.create_regional_charter_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.create_regional_charter_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.create_regional_charter_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.create_regional_charter_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.form_regional_federation } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.form_regional_federation_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.form_regional_federation_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.form_regional_federation_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.form_regional_federation_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.restore_historical_polity } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.restore_historical_polity_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.restore_historical_polity_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.restore_historical_polity_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.restore_historical_polity_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.approve_direct_integration_schedule } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.approve_direct_integration_schedule_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.approve_direct_integration_schedule_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.approve_direct_integration_schedule_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.approve_direct_integration_schedule_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.guarantee_regional_representation } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.guarantee_regional_representation_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.guarantee_regional_representation_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.guarantee_regional_representation_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.guarantee_regional_representation_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.fund_congress_security } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.fund_congress_security_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.fund_congress_security_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.fund_congress_security_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.fund_congress_security_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.invite_diaspora_delegates } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.invite_diaspora_delegates_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.invite_diaspora_delegates_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.invite_diaspora_delegates_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.invite_diaspora_delegates_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.enforce_congress_settlement } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.enforce_congress_settlement_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.enforce_congress_settlement_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.enforce_congress_settlement_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.enforce_congress_settlement_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.build_administrative_bridge } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.build_administrative_bridge_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.build_administrative_bridge_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.build_administrative_bridge_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.build_administrative_bridge_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.connect_member_capitals } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.connect_member_capitals_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.connect_member_capitals_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.connect_member_capitals_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.connect_member_capitals_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.standardise_customs } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.standardise_customs_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.standardise_customs_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.standardise_customs_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.standardise_customs_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.integrate_security_services } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.integrate_security_services_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.integrate_security_services_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.integrate_security_services_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.integrate_security_services_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.harmonise_officer_corps } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.harmonise_officer_corps_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.harmonise_officer_corps_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.harmonise_officer_corps_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.harmonise_officer_corps_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.negotiate_autonomy_statute } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.negotiate_autonomy_statute_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.negotiate_autonomy_statute_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.negotiate_autonomy_statute_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.negotiate_autonomy_statute_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.launch_local_settlement_programme } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.launch_local_settlement_programme_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.launch_local_settlement_programme_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.launch_local_settlement_programme_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.launch_local_settlement_programme_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.grant_core_recognition } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.grant_core_recognition_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.grant_core_recognition_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.grant_core_recognition_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.grant_core_recognition_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.impose_emergency_administration } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.impose_emergency_administration_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.impose_emergency_administration_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.impose_emergency_administration_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.impose_emergency_administration_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.federalise_restored_polities } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.federalise_restored_polities_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.federalise_restored_polities_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.federalise_restored_polities_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.federalise_restored_polities_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.survey_continental_resources } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.survey_continental_resources_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.survey_continental_resources_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.survey_continental_resources_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.survey_continental_resources_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.build_regional_rail_spine } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.build_regional_rail_spine_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.build_regional_rail_spine_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.build_regional_rail_spine_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.build_regional_rail_spine_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.expand_river_transport } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.expand_river_transport_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.expand_river_transport_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.expand_river_transport_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.expand_river_transport_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.modernise_continental_port } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.modernise_continental_port_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.modernise_continental_port_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.modernise_continental_port_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.modernise_continental_port_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.create_local_processing_chain } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.create_local_processing_chain_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.create_local_processing_chain_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.create_local_processing_chain_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.create_local_processing_chain_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.continental_procurement_contract } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.continental_procurement_contract_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.continental_procurement_contract_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.continental_procurement_contract_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.continental_procurement_contract_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.food_security_reserve } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.food_security_reserve_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.food_security_reserve_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.food_security_reserve_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.food_security_reserve_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.resource_sovereignty_review } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.resource_sovereignty_review_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.resource_sovereignty_review_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.resource_sovereignty_review_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.resource_sovereignty_review_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.charter_development_fund } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.charter_development_fund_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.charter_development_fund_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.charter_development_fund_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.charter_development_fund_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.continental_industrial_plan } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.continental_industrial_plan_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.continental_industrial_plan_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.continental_industrial_plan_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.continental_industrial_plan_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.open_voluntary_return_registry } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.open_voluntary_return_registry_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.open_voluntary_return_registry_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.open_voluntary_return_registry_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.open_voluntary_return_registry_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.charter_passage_programme } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.charter_passage_programme_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.charter_passage_programme_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.charter_passage_programme_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.charter_passage_programme_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.build_returnee_housing } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.build_returnee_housing_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.build_returnee_housing_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.build_returnee_housing_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.build_returnee_housing_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.invite_afro_american_technical_mission } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.invite_afro_american_technical_mission_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.invite_afro_american_technical_mission_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.invite_afro_american_technical_mission_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.invite_afro_american_technical_mission_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.veterans_and_volunteers_programme } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.veterans_and_volunteers_programme_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.veterans_and_volunteers_programme_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.veterans_and_volunteers_programme_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.veterans_and_volunteers_programme_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.diaspora_investment_bonds } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.diaspora_investment_bonds_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.diaspora_investment_bonds_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.diaspora_investment_bonds_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.diaspora_investment_bonds_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.citizenship_and_representation_convention } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.citizenship_and_representation_convention_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.citizenship_and_representation_convention_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.citizenship_and_representation_convention_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.citizenship_and_representation_convention_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.diaspora_emergency_evacuation } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.diaspora_emergency_evacuation_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.diaspora_emergency_evacuation_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.diaspora_emergency_evacuation_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.diaspora_emergency_evacuation_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.monitor_rival_bloc } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.monitor_rival_bloc_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.monitor_rival_bloc_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.monitor_rival_bloc_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.monitor_rival_bloc_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_rival_arbitration } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_rival_arbitration_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_rival_arbitration_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_rival_arbitration_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_rival_arbitration_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.support_rival_member_defection } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.support_rival_member_defection_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.support_rival_member_defection_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.support_rival_member_defection_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.support_rival_member_defection_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.counter_foreign_patronage } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.counter_foreign_patronage_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.counter_foreign_patronage_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.counter_foreign_patronage_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.counter_foreign_patronage_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.prepare_member_exit_terms } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.prepare_member_exit_terms_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.prepare_member_exit_terms_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.prepare_member_exit_terms_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.prepare_member_exit_terms_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.suspend_disloyal_member } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.suspend_disloyal_member_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.suspend_disloyal_member_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.suspend_disloyal_member_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.suspend_disloyal_member_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.emergency_leadership_vote } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.emergency_leadership_vote_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.emergency_leadership_vote_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.emergency_leadership_vote_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.emergency_leadership_vote_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.contain_regional_secession_war } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.contain_regional_secession_war_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.contain_regional_secession_war_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.contain_regional_secession_war_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.contain_regional_secession_war_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.consult_oracle_network } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.consult_oracle_network_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.consult_oracle_network_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.consult_oracle_network_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.consult_oracle_network_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.bargain_with_the_green } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.bargain_with_the_green_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.bargain_with_the_green_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.bargain_with_the_green_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.bargain_with_the_green_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.petition_the_rain_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.petition_the_rain_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.petition_the_rain_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.petition_the_rain_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.defy_the_drought_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.defy_the_drought_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.defy_the_drought_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.defy_the_drought_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.contain_emergent_disease } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.contain_emergent_disease_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.contain_emergent_disease_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.contain_emergent_disease_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.contain_emergent_disease_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.research_disease_countermeasure } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.research_disease_countermeasure_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.research_disease_countermeasure_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.research_disease_countermeasure_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.research_disease_countermeasure_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.weaponise_fictional_pathogen } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.weaponise_fictional_pathogen_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.weaponise_fictional_pathogen_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.weaponise_fictional_pathogen_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.weaponise_fictional_pathogen_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.awaken_stone_cohort } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.awaken_stone_cohort_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.awaken_stone_cohort_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.awaken_stone_cohort_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.awaken_stone_cohort_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.train_gorilla_heavy_infantry } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.train_gorilla_heavy_infantry_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.train_gorilla_heavy_infantry_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.train_gorilla_heavy_infantry_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.train_gorilla_heavy_infantry_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.organise_pan_sappers } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.organise_pan_sappers_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.organise_pan_sappers_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.organise_pan_sappers_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.organise_pan_sappers_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.seek_international_recognition } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.seek_international_recognition_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.seek_international_recognition_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.seek_international_recognition_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.seek_international_recognition_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.prepare_anti_sanctions_network } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.prepare_anti_sanctions_network_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.prepare_anti_sanctions_network_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.prepare_anti_sanctions_network_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.prepare_anti_sanctions_network_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.answer_foreign_ultimatum } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.answer_foreign_ultimatum_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.answer_foreign_ultimatum_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.answer_foreign_ultimatum_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.answer_foreign_ultimatum_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.mobilise_continental_defence } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.mobilise_continental_defence_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.mobilise_continental_defence_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.mobilise_continental_defence_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.mobilise_continental_defence_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.disrupt_expedition_planning } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.disrupt_expedition_planning_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.disrupt_expedition_planning_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.disrupt_expedition_planning_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.disrupt_expedition_planning_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.offer_base_withdrawal_treaty } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.offer_base_withdrawal_treaty_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.offer_base_withdrawal_treaty_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.offer_base_withdrawal_treaty_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.offer_base_withdrawal_treaty_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.call_global_anti_colonial_conference } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.call_global_anti_colonial_conference_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.call_global_anti_colonial_conference_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.call_global_anti_colonial_conference_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.call_global_anti_colonial_conference_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.break_intervention_coalition } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.break_intervention_coalition_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.break_intervention_coalition_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.break_intervention_coalition_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.break_intervention_coalition_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.sponsor_continent_unifier } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.sponsor_continent_unifier_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.sponsor_continent_unifier_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.sponsor_continent_unifier_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.sponsor_continent_unifier_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.mediate_continent_union } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.mediate_continent_union_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.mediate_continent_union_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.mediate_continent_union_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.mediate_continent_union_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.prepare_continental_war } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.prepare_continental_war_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.prepare_continental_war_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.prepare_continental_war_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.prepare_continental_war_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.force_continent_submission } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.force_continent_submission_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.force_continent_submission_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.force_continent_submission_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.force_continent_submission_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.form_dynamic_two_continent_union } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.form_dynamic_two_continent_union_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.form_dynamic_two_continent_union_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.form_dynamic_two_continent_union_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.form_dynamic_two_continent_union_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.declare_the_world_is_one } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.declare_the_world_is_one_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.declare_the_world_is_one_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.declare_the_world_is_one_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.declare_the_world_is_one_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.administer_world_regions } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.administer_world_regions_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.administer_world_regions_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.administer_world_regions_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.administer_world_regions_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.contain_terminal_high_chaos } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.contain_terminal_high_chaos_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.contain_terminal_high_chaos_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.contain_terminal_high_chaos_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.contain_terminal_high_chaos_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.convene_federal_deadlock_conference } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.convene_federal_deadlock_conference_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.convene_federal_deadlock_conference_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.convene_federal_deadlock_conference_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.convene_federal_deadlock_conference_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.conduct_first_continental_election } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.conduct_first_continental_election_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.conduct_first_continental_election_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.conduct_first_continental_election_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.conduct_first_continental_election_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.arbitrate_continental_succession } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.arbitrate_continental_succession_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.arbitrate_continental_succession_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.arbitrate_continental_succession_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.arbitrate_continental_succession_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.balance_food_and_industrial_plan } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.balance_food_and_industrial_plan_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.balance_food_and_industrial_plan_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.balance_food_and_industrial_plan_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.balance_food_and_industrial_plan_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.review_victorious_commander_loyalty } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.review_victorious_commander_loyalty_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.review_victorious_commander_loyalty_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.review_victorious_commander_loyalty_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.review_victorious_commander_loyalty_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.ratify_confederal_emergency_action } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.ratify_confederal_emergency_action_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.ratify_confederal_emergency_action_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.ratify_confederal_emergency_action_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.ratify_confederal_emergency_action_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.review_covenant_obligation } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.review_covenant_obligation_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.review_covenant_obligation_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.review_covenant_obligation_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.review_covenant_obligation_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.hold_postwar_constitutional_review } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.hold_postwar_constitutional_review_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.hold_postwar_constitutional_review_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.hold_postwar_constitutional_review_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.hold_postwar_constitutional_review_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.recover_failed_host_proof } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.recover_failed_host_proof_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.recover_failed_host_proof_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.recover_failed_host_proof_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.recover_failed_host_proof_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_requested_action_id = constant:africa_action.promote_priority_member_package } }
+		set_temp_variable = { africa_profile_duration_minimum = constant:africa_action_contract.promote_priority_member_package_minimum_days }
+		set_temp_variable = { africa_profile_duration_maximum = constant:africa_action_contract.promote_priority_member_package_maximum_days }
+		set_temp_variable = { africa_profile_duration_days = constant:africa_action_contract.promote_priority_member_package_default_days }
+		set_temp_variable = { africa_profile_objective = constant:africa_action_contract.promote_priority_member_package_objective }
+	}
+	if = {
+		limit = { check_variable = { africa_profile_kernel = constant:africa_action_kernel.offer_response } }
+		set_temp_variable = { africa_profile_response_days = africa_profile_duration_days }
+	}
+}
+
 africa_load_action_base_costs = {
 	set_temp_variable = { africa_cost_pp = constant:africa_action_cost.zero }
 	set_temp_variable = { africa_cost_cp = constant:africa_action_cost.zero }
@@ -1779,6 +2512,11 @@ africa_clear_action_quote = {
 	set_variable = { africa_quote_phase = constant:africa_action_phase.any }
 	set_variable = { africa_quote_target_mode = constant:africa_action_target_mode.none }
 	set_variable = { africa_quote_duration_band = constant:africa_action_duration_band.instant }
+	set_variable = { africa_quote_duration_minimum = constant:africa_action_duration.instant_days }
+	set_variable = { africa_quote_duration_maximum = constant:africa_action_duration.instant_days }
+	set_variable = { africa_quote_duration_days = constant:africa_action_duration.instant_days }
+	set_variable = { africa_quote_response_days = constant:africa_action_duration.instant_days }
+	set_variable = { africa_quote_objective = constant:africa_action_objective.none }
 	set_variable = { africa_quote_risk = constant:africa_action_risk.medium }
 	set_variable = { africa_quote_required_constitution = constant:africa_constitution.uncommitted }
 	set_variable = { africa_quote_cost_pp = constant:africa_action_cost.zero }
@@ -1968,6 +2706,11 @@ africa_refresh_selected_action_quote = {
 		set_variable = { africa_quote_phase = africa_profile_phase }
 		set_variable = { africa_quote_target_mode = africa_profile_target_mode }
 		set_variable = { africa_quote_duration_band = africa_profile_duration_band }
+		set_variable = { africa_quote_duration_minimum = africa_profile_duration_minimum }
+		set_variable = { africa_quote_duration_maximum = africa_profile_duration_maximum }
+		set_variable = { africa_quote_duration_days = africa_profile_duration_days }
+		set_variable = { africa_quote_response_days = africa_profile_response_days }
+		set_variable = { africa_quote_objective = africa_profile_objective }
 		set_variable = { africa_quote_risk = africa_profile_risk }
 		set_variable = { africa_quote_required_constitution = africa_profile_required_constitution }
 		set_variable = { africa_quote_cost_pp = africa_cost_pp }
@@ -3491,6 +4234,16 @@ africa_create_action_record = {
 		set_variable = { africa_active_action_generation = ROOT.africa_action_generation }
 		set_variable = { africa_active_action_host_generation = ROOT.africa_host_generation }
 		set_variable = { africa_active_action_duration_band = ROOT.africa_quote_duration_band }
+		set_variable = { africa_active_action_duration_minimum = ROOT.africa_quote_duration_minimum }
+		set_variable = { africa_active_action_duration_maximum = ROOT.africa_quote_duration_maximum }
+		set_variable = { africa_active_action_duration_days = ROOT.africa_quote_duration_days }
+		set_variable = { africa_active_action_response_days = ROOT.africa_quote_response_days }
+		set_variable = { africa_active_action_objective = ROOT.africa_quote_objective }
+		set_variable = { africa_active_action_started_at_war = constant:africa_value.zero }
+		if = {
+			limit = { has_war = yes }
+			set_variable = { africa_active_action_started_at_war = constant:africa_value.one }
+		}
 		set_variable = { africa_active_action_target_mode = ROOT.africa_quote_target_mode }
 		set_variable = { africa_active_action_risk = africa_effective_action_risk }
 		africa_apply_constitutional_action_risk_adjustment = yes
@@ -3608,7 +4361,7 @@ africa_begin_quoted_action_against_target = {
 			africa_activate_shared_action_mission = yes
 			if = {
 				limit = { check_variable = { africa_quote_kernel = constant:africa_action_kernel.offer_response } }
-				event_target:africa_action_target = { country_event = { id = chaosx.nr12.210 } }
+				event_target:africa_action_target = { country_event = { id = chaosx.nr12.210 days = africa_active_action_response_days } }
 			}
 		}
 		set_temp_variable = { africa_action_begin_result = constant:africa_value.one }
@@ -6721,6 +7474,12 @@ africa_cleanup_action = {
 		clear_variable = africa_active_action_generation
 		clear_variable = africa_active_action_host_generation
 		clear_variable = africa_active_action_duration_band
+		clear_variable = africa_active_action_duration_minimum
+		clear_variable = africa_active_action_duration_maximum
+		clear_variable = africa_active_action_duration_days
+		clear_variable = africa_active_action_response_days
+		clear_variable = africa_active_action_objective
+		clear_variable = africa_active_action_started_at_war
 		clear_variable = africa_active_action_target_mode
 		clear_variable = africa_active_action_risk
 		clear_variable = africa_active_action_cost_pp

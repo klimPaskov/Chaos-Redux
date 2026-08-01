@@ -372,6 +372,7 @@ africa_charter_council_category = {
 		}
 		custom_cost_trigger = { africa_can_pay_action_quote = yes }
 		custom_cost_text = africa_selected_action_dynamic_cost
+		custom_effect_tooltip = africa_selected_action_duration_contract
 		complete_effect = { FROM = { save_event_target_as = africa_action_target } africa_begin_quoted_action_against_target = yes }
 		ai_will_do = { base = 0 }
 	}
@@ -386,6 +387,7 @@ africa_charter_council_category = {
 		}
 		custom_cost_trigger = { africa_can_pay_action_quote = yes }
 		custom_cost_text = africa_selected_action_dynamic_cost
+		custom_effect_tooltip = africa_selected_action_duration_contract
 		complete_effect = { save_event_target_as = africa_action_target africa_begin_quoted_action_against_target = yes }
 		ai_will_do = { base = 0 }
 	}
@@ -395,13 +397,15 @@ africa_charter_council_category = {
 		target_array = africa_active_action_short_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_short } }
-		days_mission_timeout = var:africa_action_short_days
+		days_mission_timeout = FROM.africa_active_action_duration_days
 		is_good = yes
-		available = { hidden_trigger = { always = no } }
+		available = { FROM = { africa_action_objective_is_complete = yes } }
+		complete_effect = { FROM = { africa_resolve_action = yes } }
 		cancel_trigger = {
 			OR = {
 				NOT = { has_global_flag = africa_event_active }
 				FROM = { NOT = { africa_active_action_generation_is_current = yes } }
+				FROM = { africa_action_contract_should_cancel = yes }
 			}
 		}
 		cancel_effect = { FROM = { africa_cancel_action = yes } }
@@ -413,13 +417,15 @@ africa_charter_council_category = {
 		target_array = africa_active_action_medium_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_medium } }
-		days_mission_timeout = var:africa_action_medium_days
+		days_mission_timeout = FROM.africa_active_action_duration_days
 		is_good = yes
-		available = { hidden_trigger = { always = no } }
+		available = { FROM = { africa_action_objective_is_complete = yes } }
+		complete_effect = { FROM = { africa_resolve_action = yes } }
 		cancel_trigger = {
 			OR = {
 				NOT = { has_global_flag = africa_event_active }
 				FROM = { NOT = { africa_active_action_generation_is_current = yes } }
+				FROM = { africa_action_contract_should_cancel = yes }
 			}
 		}
 		cancel_effect = { FROM = { africa_cancel_action = yes } }
@@ -431,13 +437,15 @@ africa_charter_council_category = {
 		target_array = africa_active_action_long_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_long } }
-		days_mission_timeout = var:africa_action_long_days
+		days_mission_timeout = FROM.africa_active_action_duration_days
 		is_good = yes
-		available = { hidden_trigger = { always = no } }
+		available = { FROM = { africa_action_objective_is_complete = yes } }
+		complete_effect = { FROM = { africa_resolve_action = yes } }
 		cancel_trigger = {
 			OR = {
 				NOT = { has_global_flag = africa_event_active }
 				FROM = { NOT = { africa_active_action_generation_is_current = yes } }
+				FROM = { africa_action_contract_should_cancel = yes }
 			}
 		}
 		cancel_effect = { FROM = { africa_cancel_action = yes } }
@@ -449,13 +457,15 @@ africa_charter_council_category = {
 		target_array = africa_active_action_epic_targets
 		activation = { africa_is_current_host = yes }
 		target_trigger = { FROM = { has_country_flag = africa_action_record_active has_country_flag = africa_action_duration_epic } }
-		days_mission_timeout = var:africa_action_epic_days
+		days_mission_timeout = FROM.africa_active_action_duration_days
 		is_good = yes
-		available = { hidden_trigger = { always = no } }
+		available = { FROM = { africa_action_objective_is_complete = yes } }
+		complete_effect = { FROM = { africa_resolve_action = yes } }
 		cancel_trigger = {
 			OR = {
 				NOT = { has_global_flag = africa_event_active }
 				FROM = { NOT = { africa_active_action_generation_is_current = yes } }
+				FROM = { africa_action_contract_should_cancel = yes }
 			}
 		}
 		cancel_effect = { FROM = { africa_cancel_action = yes } }

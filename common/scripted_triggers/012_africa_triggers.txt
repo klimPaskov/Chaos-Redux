@@ -1147,6 +1147,35 @@ africa_active_action_generation_is_current = {
 	}
 }
 
+# COUNTRY scope on an active target. Objective completion is deliberately
+# narrow: war-end rows can resolve when the target is no longer at war, while
+# response rows resolve through their delayed response event and all other
+# rows use their contract timeout or existing action callbacks.
+africa_action_objective_is_complete = {
+	has_country_flag = africa_action_record_active
+	africa_active_action_generation_is_current = yes
+	OR = {
+		AND = {
+			check_variable = { africa_active_action_objective = constant:africa_action_objective.peace_or_timeout }
+			check_variable = { africa_active_action_started_at_war = constant:africa_value.one }
+			NOT = { has_war = yes }
+		}
+		AND = {
+			check_variable = { africa_active_action_objective = constant:africa_action_objective.war_preparation }
+			has_war_with = ROOT
+		}
+	}
+}
+
+# COUNTRY scope on an active target. Target invalidation is kept separate from
+# objective completion so cancellation still reaches the shared cleanup path.
+africa_action_contract_should_cancel = {
+	OR = {
+		has_capitulated = yes
+		NOT = { exists = yes }
+	}
+}
+
 # COUNTRY scope on the host. Phase ordering is explicit rather than inferred
 # from date, opinion, or the number of annexed states.
 africa_action_phase_has_reached_opening = {
