@@ -143,4 +143,105 @@ brilliant_scientist_context_mediate_assistant_conflict = {
 brilliant_scientist_clear_context_pending_state = {
 	clr_country_flag = brilliant_scientist_context_briefing_pending
 	clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
+	clr_country_flag = brilliant_scientist_impossible_lecture_pending
+}
+
+# COUNTRY scope. The Evolution I report is scheduled only after both context
+# choices have resolved. The pending flag gives transfer and sovereignty code a
+# durable obligation to carry instead of creating a second report path.
+brilliant_scientist_try_schedule_impossible_lecture = {
+	if = {
+		limit = {
+			OR = {
+				brilliant_scientist_is_current_host = yes
+				brilliant_scientist_is_active_kruger_state = yes
+			}
+			brilliant_scientist_is_evolution_i_enabled = yes
+			has_global_flag = brilliant_scientist_evolution_i_chronology_recorded
+			NOT = { has_global_flag = world_end }
+			has_country_flag = brilliant_scientist_context_briefing_resolved
+			has_country_flag = brilliant_scientist_assistant_conflict_resolved
+			NOT = { has_country_flag = brilliant_scientist_impossible_lecture_pending }
+			NOT = { has_country_flag = brilliant_scientist_impossible_lecture_resolved }
+		}
+		set_country_flag = brilliant_scientist_impossible_lecture_pending
+		country_event = { id = chaosx.nr16.12 days = constant:brilliant_scientist_directorate_timing.impossible_lecture_days }
+	}
+}
+
+# COUNTRY scope. The report opens the shared computation family at Theory at
+# most once. Its four presentation variants move the existing hidden causal
+# values through a centralized policy vector and leave a permanent character
+# receipt for future continuity checks.
+brilliant_scientist_resolve_impossible_lecture = {
+	if = {
+		limit = {
+			OR = {
+				brilliant_scientist_is_current_host = yes
+				brilliant_scientist_is_active_kruger_state = yes
+			}
+			brilliant_scientist_is_evolution_i_enabled = yes
+			has_global_flag = brilliant_scientist_evolution_i_chronology_recorded
+			NOT = { has_global_flag = world_end }
+			has_country_flag = brilliant_scientist_impossible_lecture_pending
+			NOT = { has_country_flag = brilliant_scientist_impossible_lecture_resolved }
+		}
+		set_country_flag = brilliant_scientist_impossible_lecture_resolved
+		clr_country_flag = brilliant_scientist_impossible_lecture_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_impossible_lecture_witnessed }
+
+		set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { has_country_flag = brilliant_scientist_impossible_lecture_public }
+			set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_impossible_lecture.public_mandate }
+			set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_impossible_lecture.public_exposure }
+			set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_impossible_lecture.public_capacity }
+			set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_impossible_lecture.public_independent_capacity }
+			set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_impossible_lecture.public_grievance }
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_impossible_lecture_military }
+			set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_impossible_lecture.military_mandate }
+			set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_impossible_lecture.military_dependence }
+			set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_impossible_lecture.military_exposure }
+			set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_impossible_lecture.military_capacity }
+			set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_impossible_lecture.military_grievance }
+		}
+		else_if = {
+			limit = { has_country_flag = brilliant_scientist_impossible_lecture_industrial }
+			set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_impossible_lecture.industrial_mandate }
+			set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_impossible_lecture.industrial_dependence }
+			set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_impossible_lecture.industrial_exposure }
+			set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_impossible_lecture.industrial_capacity }
+			set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_impossible_lecture.industrial_independent_capacity }
+			set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_impossible_lecture.industrial_grievance }
+		}
+		else = {
+			set_temp_variable = { brilliant_scientist_policy_mandate = constant:brilliant_scientist_impossible_lecture.interrupted_mandate }
+			set_temp_variable = { brilliant_scientist_policy_dependence = constant:brilliant_scientist_impossible_lecture.interrupted_dependence }
+			set_temp_variable = { brilliant_scientist_policy_exposure = constant:brilliant_scientist_impossible_lecture.interrupted_exposure }
+			set_temp_variable = { brilliant_scientist_policy_capacity = constant:brilliant_scientist_impossible_lecture.interrupted_capacity }
+			set_temp_variable = { brilliant_scientist_policy_independent_capacity = constant:brilliant_scientist_impossible_lecture.interrupted_independent_capacity }
+			set_temp_variable = { brilliant_scientist_policy_grievance = constant:brilliant_scientist_impossible_lecture.interrupted_grievance }
+		}
+		brilliant_scientist_apply_evolution_policy_vector = yes
+
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory }
+		brilliant_scientist_advance_project_to_requested_stage = yes
+		if = {
+			limit = { check_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.one } }
+			brilliant_scientist_apply_project_stage_output = yes
+			brilliant_scientist_refresh_project_accident_pressure = yes
+			brilliant_scientist_dispatch_project_accident = yes
+			brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
+			brilliant_scientist_refresh_international_recognition_score = yes
+		}
+		brilliant_scientist_refresh_kruger_portrait_stage = yes
+	}
 }
