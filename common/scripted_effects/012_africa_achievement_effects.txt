@@ -759,6 +759,14 @@ africa_achievement_record_action_outcome = {
 	}
 	if = {
 		limit = {
+			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.failure }
+			check_variable = { africa_active_action_id = constant:africa_action.create_local_processing_chain }
+			has_country_flag = africa_resource_survey_complete
+		}
+		africa_achievement_record_raw_export_dependency_crisis = yes
+	}
+	if = {
+		limit = {
 			check_variable = { africa_active_action_outcome = constant:africa_action_outcome.full }
 			check_variable = { africa_active_action_id = constant:africa_action.resource_sovereignty_review }
 		}
@@ -2543,6 +2551,13 @@ africa_achievement_record_foreign_concession_breach = {
 	set_global_flag = africa_achievement_foreign_concession_cap_breached
 	set_variable = { global.africa_achievement_resource_concession_start_day = constant:africa_value.invalid }
 	set_variable = { global.africa_achievement_resource_concession_deadline_day = constant:africa_achievement_days.unset_deadline }
+}
+
+# COUNTRY scope on a surveyed resource target after a failed local processing
+# chain. The failed project is the explicit owner of the raw-export crisis;
+# no generic failure or startup state is used as a proxy.
+africa_achievement_record_raw_export_dependency_crisis = {
+	set_global_flag = africa_achievement_raw_export_dependency_crisis
 }
 
 africa_achievement_record_ecological_bargain_broken = {
