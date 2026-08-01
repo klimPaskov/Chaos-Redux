@@ -1,20 +1,20 @@
 # Event 016 planning completion status
 
-## Reconciled status, 2026-07-29
+## Reconciled status, 2026-08-01
 
 The default-enabled Event 016 core runtime is implemented. The opening selects one valid host, creates one fixed Doctor Warren Kruger identity, and prevents duplicate appointment, transfer, and reward paths. Public appointment grants the promised `+100%` research speed, AI accepts, and the player can appoint publicly, appoint secretly, or refer Kruger to another valid country.
 
-The decision-led Directorate, fifteen project families, four logged evolutions, foreign contest, containment board, dynamic Kruger State formation, 100-focus country tree, project-derived forces, six super-events, seventeen achievements, aftermath system, event log, details window, assets, sound, localisation, and catalog records are statically wired. The host focus tree is never replaced. The sovereignty deadline now derives from Mandate, the dangerous-project portfolio, war, good-faith cooperation, and recent dangerous incidents.
+The decision-led Directorate, fifteen project families, four logged evolutions, foreign contest, containment board, dynamic Kruger State formation, 100-focus country tree, project-derived forces, six super-events, seventeen achievements, aftermath system, event log, details window, assets, sound, localisation, and catalog records are statically wired. The host focus tree is never replaced. The sovereignty deadline now derives from Mandate, the dangerous-project portfolio, war, good-faith cooperation, and recent dangerous incidents. The bounded `.4` and `.5` host-context slice and `.6` first-Prototype report now include a character-level receipt guard, so transfers cannot replay a family report.
 
-The current implementation map and acceptance boundary are recorded in `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. The implementation is not a whole-content completion claim. Expanded country-context flavor, broader project/news/remnant art, quantitative route-balance evidence, seven bespoke 3D entity packages, and user-owned live acceptance scenarios remain blocked.
+The current implementation map and acceptance boundary are recorded in `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. The implementation is not a whole-content completion claim. A bounded host-context and first-prototype flavour slice is implemented, with transfer and formation persistence for context flags, pending context events, queued family reports, governance receipts, and attenuated repeated report deltas. The fixed-tag sovereignty transaction now seeds the verified capital, uses the documented `release = KRG` instantiation effect, and then executes the existing route-specific transfer. Broader country-context flavor, bespoke project/news/remnant art, quantitative route-balance evidence, seven bespoke 3D entity packages, and user-owned live acceptance scenarios remain blocked.
 
-The mandatory improvement-loop planner ran before the core-runtime acceptance pass. Its R1 through R7 recommendations were promoted, rejected, or queued in the accepted source-of-truth map. It must not be rerun until a genuinely new design gap exists.
+The mandatory improvement-loop planner ran before the core-runtime acceptance pass. Its R1 through R7 recommendations were promoted, rejected, or queued in the accepted source-of-truth map. The second persistence addendum promoted V2-R1 through V2-R5, kept broader flavour and bespoke art queued, and rejected scope expansion into new routes, countries, GUI systems, animations, or 3D packages. It must not be rerun until a genuinely new design gap exists.
 
 ## Historical planning snapshot, 2026-07-14
 
 The mandatory improvement-loop addendum was produced and received a complete parent disposition. R2, R3, R4, R5, and R7 are promoted. R1 and R6 are rejected. The reconciled source of truth preserves exactly seventeen achievements and all six mapped super-event packages.
 
-Documentation planning was process-closed for implementation entry. The statements in this historical section describe the pre-implementation snapshot and are superseded by the 2026-07-29 status above.
+Documentation planning was process-closed for implementation entry. The statements in this historical section describe the pre-implementation snapshot and are superseded by the 2026-08-01 status above.
 
 Presentation work has advanced in two bounded tranches. Six-package text and audio research is complete, and the six final Event 016-owned WAVs use visible IDs `90` through `95`. The exact stage-0 leader and advisor DDS files are complete and registered in `interface/016_brilliant_scientist.gfx`. All super-event images, later portrait source art and runtime files, severe animation packages, achievement icons, flags, project art, UI art, final descriptions, and shared presentation wiring remain incomplete.
 
@@ -44,7 +44,7 @@ Six-package super-event title, button, quotation, and audio research is complete
 ## Current blocked work
 
 - Seven reusable 3D entity packages remain unproduced: portal raider, clone infantry, autonomous robot, paleogenetic creature, xenobiological organism, alien-interface infantry, and temporal guard.
-- Expanded country-context and institutional-conflict flavor remains queued.
+- The bounded host-context and institutional-conflict slice is implemented in `chaosx.nr16.4` and `.5`; broader country-specific flavor remains queued.
 - Broader project-breakthrough, accident/security, black-and-white news, and defeat/remnant art remains queued. Existing events use registered Event 016 reports or existing generic report surfaces, with no missing texture reference.
 - Quantitative small/medium/major research timelines, AI completion rates, force-production pacing, rebellion strength, and weak/normal/dominant Singularity timing evidence remain incomplete.
 - User-owned live acceptance remains incomplete for opening/referral, all four evolutions, containment and territory loss, terminal/Fallout transitions, Event 019 provider lifecycles, and Directorate GUI interaction.
@@ -65,9 +65,10 @@ The earlier blocker was cleared when `chaosx_improvement_loop_planner` produced 
 - Super-event text research: complete for six packages.
 - Super-event audio research and Event 016-owned WAVs: complete for IDs `90` through `95`.
 - Kruger stage-0 source, leader DDS, advisor DDS, and sprite registration: complete.
-- Default-enabled core gameplay runtime: implemented and statically audited.
+- Default-enabled core gameplay runtime: implemented and statically audited, including the fixed-tag KRG release repair; live formation acceptance remains open.
 - Kruger State focus tree: 100 focuses, fully localized and asset-backed, with route-specific AI plans.
 - Character, advisor, scientist, leader, event-log actor, and later-leader identity: one fixed identity wired.
 - Project portfolio, evolutions, containment, terminals, aftermath, achievements, super-events, and Event 019 interoperability: implemented and statically wired.
 - 3D model production: intentionally not started under the user's current instruction.
-- Expanded flavor/news/remnant content, quantitative balance proof, and live consumer acceptance: blocked.
+- Bounded context and first-prototype report flavour: implemented and statically audited.
+- Broader flavor/news/remnant content, quantitative balance proof, and live consumer acceptance: blocked.

@@ -1,0 +1,502 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 FIRST-PROTOTYPE REPORT EFFECTS
+# ============================================================================
+# A first Prototype in each project family produces one ordinary report. The
+# report does not grant a second project reward: it only records the family,
+# presents a public or classified governance choice, and adjusts the existing
+# Directorate causal values through the shared bounded effects.
+# ============================================================================
+
+# COUNTRY scope. Inputs are the temporary project family and requested stage
+# supplied by the project output bridge.
+brilliant_scientist_dispatch_breakthrough_report = {
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+			NOT = { brilliant_scientist_breakthrough_report_already_recorded = yes }
+			NOT = { is_in_array = { array = brilliant_scientist_breakthrough_reported_families value = brilliant_scientist_project_family } }
+			NOT = { is_in_array = { array = brilliant_scientist_breakthrough_pending_families value = brilliant_scientist_project_family } }
+			OR = {
+				brilliant_scientist_is_current_host = yes
+				brilliant_scientist_is_active_kruger_state = yes
+			}
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_breakthrough_report_active }
+			add_to_array = { array = brilliant_scientist_breakthrough_pending_families value = brilliant_scientist_project_family }
+			brilliant_scientist_mark_breakthrough_family_pending_on_kruger = yes
+		}
+		else = {
+			add_to_array = { array = brilliant_scientist_breakthrough_reported_families value = brilliant_scientist_project_family }
+			brilliant_scientist_mark_breakthrough_family_pending_on_kruger = yes
+			set_variable = { brilliant_scientist_last_breakthrough_project_family = brilliant_scientist_project_family }
+			set_variable = { brilliant_scientist_last_breakthrough_project_stage = brilliant_scientist_requested_project_stage }
+			set_country_flag = brilliant_scientist_breakthrough_report_active
+			country_event = { id = chaosx.nr16.6 days = constant:brilliant_scientist_directorate_timing.breakthrough_report_spacing_days }
+		}
+	}
+}
+
+# COUNTRY scope. Starts the next queued first-Prototype report after the
+# current public/classified decision has committed. The queue is finite and
+# family-based, so two native project completions in one synchronization pass
+# cannot silently discard the later report.
+brilliant_scientist_dispatch_next_breakthrough_report = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = brilliant_scientist_breakthrough_report_active }
+			OR = {
+				brilliant_scientist_is_current_host = yes
+				brilliant_scientist_is_active_kruger_state = yes
+			}
+		}
+		set_temp_variable = { brilliant_scientist_next_breakthrough_found = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_next_breakthrough_index = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_next_breakthrough_family = constant:brilliant_scientist_project_family.none }
+		for_each_loop = {
+			array = brilliant_scientist_breakthrough_pending_families
+			value = brilliant_scientist_next_breakthrough_family_entry
+			index = brilliant_scientist_next_breakthrough_index_entry
+			if = {
+				limit = { check_variable = { brilliant_scientist_next_breakthrough_found = constant:brilliant_scientist_value.zero } }
+				set_temp_variable = { brilliant_scientist_next_breakthrough_family = brilliant_scientist_next_breakthrough_family_entry }
+				set_temp_variable = { brilliant_scientist_next_breakthrough_index = brilliant_scientist_next_breakthrough_index_entry }
+				set_temp_variable = { brilliant_scientist_next_breakthrough_found = constant:brilliant_scientist_value.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_next_breakthrough_found = constant:brilliant_scientist_value.one } }
+			remove_from_array = { array = brilliant_scientist_breakthrough_pending_families index = brilliant_scientist_next_breakthrough_index }
+			add_to_array = { array = brilliant_scientist_breakthrough_reported_families value = brilliant_scientist_next_breakthrough_family }
+			set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_next_breakthrough_family }
+			brilliant_scientist_mark_breakthrough_family_pending_on_kruger = yes
+			set_variable = { brilliant_scientist_last_breakthrough_project_family = brilliant_scientist_next_breakthrough_family }
+			set_variable = { brilliant_scientist_last_breakthrough_project_stage = constant:brilliant_scientist_project_stage.prototype }
+			set_country_flag = brilliant_scientist_breakthrough_report_active
+			country_event = { id = chaosx.nr16.6 days = constant:brilliant_scientist_directorate_timing.breakthrough_report_spacing_days }
+		}
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_project_family. The
+# pending receipt is written before the delayed `.6` presentation so a carrier
+# change cannot make the same family eligible for a second report.
+brilliant_scientist_mark_breakthrough_family_pending_on_kruger = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_computation_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_electronics_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_materials_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_rocketry_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_high_energy_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biomedical_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_teleportation_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_cloning_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_robotics_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_temporal_breakthrough_pending }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_singularity_breakthrough_pending }
+	}
+}
+
+# CHARACTER scope through the fixed KRG_warren_kruger token. Pending reports
+# are discarded only when Directorate closure makes their governance choice
+# impossible; resolved public/classified history is never removed.
+brilliant_scientist_clear_breakthrough_pending_receipts_on_kruger = {
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_computation_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_electronics_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_materials_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_rocketry_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_high_energy_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_biomedical_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_teleportation_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_cloning_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_robotics_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_temporal_breakthrough_pending
+		clr_character_flag = brilliant_scientist_personal_singularity_breakthrough_pending
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_project_family. The
+# receipt is attached to the one Kruger character, so it survives transfer and
+# state formation even when a recipient rebuilds its local project arrays.
+brilliant_scientist_record_breakthrough_family_on_kruger = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_computation_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_computation_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_electronics_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_electronics_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_materials_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_materials_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_rocketry_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_rocketry_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_high_energy_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_high_energy_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_biomedical_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_biomedical_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_teleportation_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_teleportation_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_cloning_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_cloning_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_robotics_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_robotics_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_temporal_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_temporal_breakthrough_reported
+		}
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		KRG_warren_kruger = {
+			clr_character_flag = brilliant_scientist_personal_singularity_breakthrough_pending
+			set_character_flag = brilliant_scientist_personal_singularity_breakthrough_reported
+		}
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_project_family. Public
+# governance is a character receipt as well as a carrier-local history array.
+brilliant_scientist_record_breakthrough_public_on_kruger = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_computation_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_electronics_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_materials_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_rocketry_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_high_energy_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biomedical_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_teleportation_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_cloning_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_robotics_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_temporal_breakthrough_public }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_singularity_breakthrough_public }
+	}
+}
+
+# COUNTRY scope. Input: temporary brilliant_scientist_project_family.
+brilliant_scientist_record_breakthrough_classified_on_kruger = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_computation_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_electronics_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_materials_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_rocketry_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_high_energy_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biomedical_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_teleportation_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_cloning_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_robotics_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_paleogenetics_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_xenobiological_synthesis_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_biological_weapons_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_alien_arms_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_temporal_breakthrough_classified }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_singularity_breakthrough_classified }
+	}
+}
+
+# COUNTRY scope. Scales the current report delta by the number of already
+# resolved family reports. The reservation and queue never call this helper.
+brilliant_scientist_apply_breakthrough_delta_potency = {
+	set_temp_variable = { brilliant_scientist_breakthrough_potency = constant:brilliant_scientist_breakthrough_report.potency_first }
+	if = {
+		limit = {
+			has_variable = brilliant_scientist_breakthrough_resolved_count
+			check_variable = { brilliant_scientist_breakthrough_resolved_count > constant:brilliant_scientist_value.zero }
+		}
+		set_temp_variable = { brilliant_scientist_breakthrough_potency = constant:brilliant_scientist_breakthrough_report.potency_early }
+	}
+	if = {
+		limit = {
+			has_variable = brilliant_scientist_breakthrough_resolved_count
+			check_variable = { brilliant_scientist_breakthrough_resolved_count > constant:brilliant_scientist_value.two }
+		}
+		set_temp_variable = { brilliant_scientist_breakthrough_potency = constant:brilliant_scientist_breakthrough_report.potency_late }
+	}
+	multiply_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_breakthrough_potency }
+}
+
+# COUNTRY scope. Publish the validated Prototype and leave an institutional
+# record that survives later transfer or state formation.
+brilliant_scientist_record_breakthrough_public = {
+	set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_last_breakthrough_project_family }
+	brilliant_scientist_record_breakthrough_family_on_kruger = yes
+	brilliant_scientist_record_breakthrough_public_on_kruger = yes
+	add_to_array = { array = brilliant_scientist_breakthrough_public_families value = brilliant_scientist_last_breakthrough_project_family }
+	set_country_flag = brilliant_scientist_breakthrough_public_history
+	clr_country_flag = brilliant_scientist_last_breakthrough_classified
+	set_country_flag = brilliant_scientist_last_breakthrough_public
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_mandate }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_dependence }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_dependence = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_exposure }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_capacity }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_independent_capacity }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.public_grievance }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_grievance = yes
+	add_to_variable = { brilliant_scientist_breakthrough_public_count = constant:brilliant_scientist_value.one }
+	add_to_variable = { brilliant_scientist_breakthrough_resolved_count = constant:brilliant_scientist_value.one }
+	clamp_variable = { var = brilliant_scientist_breakthrough_public_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
+	clamp_variable = { var = brilliant_scientist_breakthrough_resolved_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
+	clr_country_flag = brilliant_scientist_breakthrough_report_active
+	brilliant_scientist_dispatch_next_breakthrough_report = yes
+}
+
+# COUNTRY scope. Keep the Prototype inside a classified ledger. This raises
+# personal reliance and security discipline while preserving more capacity for
+# the next project stage.
+brilliant_scientist_record_breakthrough_classified = {
+	set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_last_breakthrough_project_family }
+	brilliant_scientist_record_breakthrough_family_on_kruger = yes
+	brilliant_scientist_record_breakthrough_classified_on_kruger = yes
+	add_to_array = { array = brilliant_scientist_breakthrough_classified_families value = brilliant_scientist_last_breakthrough_project_family }
+	set_country_flag = brilliant_scientist_breakthrough_classified_history
+	clr_country_flag = brilliant_scientist_last_breakthrough_public
+	set_country_flag = brilliant_scientist_last_breakthrough_classified
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_mandate }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_mandate = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_dependence }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_dependence = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_exposure }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_exposure = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_capacity }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_project_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_independent_capacity }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_independent_capacity = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_breakthrough_report.classified_grievance }
+	brilliant_scientist_apply_breakthrough_delta_potency = yes
+	brilliant_scientist_change_grievance = yes
+	add_to_variable = { brilliant_scientist_breakthrough_classified_count = constant:brilliant_scientist_value.one }
+	add_to_variable = { brilliant_scientist_breakthrough_resolved_count = constant:brilliant_scientist_value.one }
+	clamp_variable = { var = brilliant_scientist_breakthrough_classified_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
+	clamp_variable = { var = brilliant_scientist_breakthrough_resolved_count min = constant:brilliant_scientist_value.zero max = constant:brilliant_scientist_event.project_family_count }
+	clr_country_flag = brilliant_scientist_breakthrough_report_active
+	brilliant_scientist_dispatch_next_breakthrough_report = yes
+}

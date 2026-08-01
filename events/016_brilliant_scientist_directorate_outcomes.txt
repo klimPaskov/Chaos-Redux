@@ -85,3 +85,151 @@ country_event = {
 
 	option = { name = chaosx.nr16.11.a }
 }
+
+country_event = {
+	id = chaosx.nr16.6
+	title = chaosx.nr16.6.t
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.computation } }
+		text = chaosx.nr16.6.computation.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.electronics } }
+		text = chaosx.nr16.6.electronics.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.materials } }
+		text = chaosx.nr16.6.materials.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		text = chaosx.nr16.6.rocketry.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		text = chaosx.nr16.6.high_energy.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		text = chaosx.nr16.6.biomedical.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		text = chaosx.nr16.6.teleportation.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.cloning } }
+		text = chaosx.nr16.6.cloning.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.robotics } }
+		text = chaosx.nr16.6.robotics.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		text = chaosx.nr16.6.paleogenetics.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		text = chaosx.nr16.6.xenobiological_synthesis.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		text = chaosx.nr16.6.biological_weapons.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		text = chaosx.nr16.6.alien_arms.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.temporal } }
+		text = chaosx.nr16.6.temporal.d
+	}
+	desc = {
+		trigger = { check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.singularity } }
+		text = chaosx.nr16.6.singularity.d
+	}
+	desc = { text = chaosx.nr16.6.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			brilliant_scientist_is_active_kruger_state = yes
+		}
+		has_country_flag = brilliant_scientist_breakthrough_report_active
+		has_variable = brilliant_scientist_last_breakthrough_project_family
+	}
+	option = {
+		name = chaosx.nr16.6.a
+		custom_effect_tooltip = brilliant_scientist_breakthrough_public_tt
+		ai_chance = {
+			base = constant:brilliant_scientist_breakthrough_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.public_context_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_public_science
+					has_country_flag = brilliant_scientist_context_distributed_research
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.public_school_factor has_country_flag = brilliant_scientist_assistant_school_recognized }
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.public_compact_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.public_extreme_exposure_factor
+				check_variable = { brilliant_scientist_exposure > constant:brilliant_scientist_measure.band_extreme }
+			}
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.public_wartime_factor has_war = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.dangerous_public_factor
+				OR = {
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.biological_weapons }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.alien_arms }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.temporal }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.high_energy }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.singularity }
+				}
+			}
+		}
+		hidden_effect = { brilliant_scientist_record_breakthrough_public = yes }
+	}
+	option = {
+		name = chaosx.nr16.6.b
+		custom_effect_tooltip = brilliant_scientist_breakthrough_classified_tt
+		ai_chance = {
+			base = constant:brilliant_scientist_breakthrough_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.classified_context_factor
+				OR = {
+					has_country_flag = brilliant_scientist_context_strategic_security
+					has_country_flag = brilliant_scientist_context_industrial_mobilization
+				}
+			}
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.classified_service_factor has_country_flag = brilliant_scientist_assistant_service_bound }
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.classified_secret_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.classified_extreme_dependence_factor
+				check_variable = { brilliant_scientist_dependence > constant:brilliant_scientist_measure.band_extreme }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.classified_extreme_grievance_factor
+				check_variable = { brilliant_scientist_grievance > constant:brilliant_scientist_measure.band_extreme }
+			}
+			modifier = { factor = constant:brilliant_scientist_breakthrough_ai.classified_wartime_factor has_war = yes }
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.low_capacity_classified_factor
+				check_variable = { brilliant_scientist_project_capacity < constant:brilliant_scientist_measure.band_low }
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_breakthrough_ai.dangerous_classified_factor
+				OR = {
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.biological_weapons }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.alien_arms }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.temporal }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.high_energy }
+					check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.singularity }
+				}
+			}
+		}
+		hidden_effect = { brilliant_scientist_record_breakthrough_classified = yes }
+	}
+}

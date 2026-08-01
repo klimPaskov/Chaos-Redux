@@ -1111,6 +1111,39 @@ brilliant_scientist_foreign_host_accept_protection = {
 	event_target:brilliant_scientist_foreign_operation_actor = { country_event = { id = chaosx.nr16.111 } }
 }
 
+# COUNTRY scope. A host transfer or non-sovereign departure ends the old
+# host's bilateral frameworks. Historical "ever accepted" flags remain local
+# history, while live partner/site pointers and reciprocal partner flags are
+# cleared so later decisions cannot address the departed Directorate.
+brilliant_scientist_clear_foreign_relationships = {
+	clr_country_flag = brilliant_scientist_controlled_research_access_opened
+	clr_country_flag = brilliant_scientist_joint_laboratory_framework_active
+	clr_country_flag = brilliant_scientist_foreign_protection_framework_active
+	clr_country_flag = brilliant_scientist_foreign_action_in_progress
+	clr_country_flag = brilliant_scientist_foreign_approach_under_review
+	brilliant_scientist_clear_foreign_context = yes
+	if = {
+		limit = { has_event_target = brilliant_scientist_controlled_research_access_partner }
+		event_target:brilliant_scientist_controlled_research_access_partner = { clr_country_flag = brilliant_scientist_controlled_research_access_partner }
+		clear_global_event_target = brilliant_scientist_controlled_research_access_partner
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_joint_laboratory_partner }
+		event_target:brilliant_scientist_joint_laboratory_partner = { clr_country_flag = brilliant_scientist_joint_laboratory_partner }
+		clear_global_event_target = brilliant_scientist_joint_laboratory_partner
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_joint_laboratory_site }
+		event_target:brilliant_scientist_joint_laboratory_site = { clr_state_flag = brilliant_scientist_joint_laboratory_site }
+		clear_global_event_target = brilliant_scientist_joint_laboratory_site
+	}
+	if = {
+		limit = { has_event_target = brilliant_scientist_foreign_protection_partner }
+		event_target:brilliant_scientist_foreign_protection_partner = { clr_country_flag = brilliant_scientist_foreign_protection_partner }
+		clear_global_event_target = brilliant_scientist_foreign_protection_partner
+	}
+}
+
 brilliant_scientist_foreign_host_accept_limited_protection = {
 	event_target:brilliant_scientist_foreign_operation_actor = {
 		set_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.partial }

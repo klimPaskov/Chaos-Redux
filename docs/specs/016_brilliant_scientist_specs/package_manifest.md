@@ -8,9 +8,9 @@
 | Scientist | Doctor Warren Kruger |
 | Entry classification | Minor fire-once |
 | Source status | Reconciled implementation specification |
-| Package date | 2026-07-29 |
+| Package date | 2026-08-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime implemented; optional content, 3D production, balance evidence, and live acceptance remain blocked |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded context/first-Prototype flavour implemented; broader optional content, 3D production, balance evidence, and live acceptance remain blocked |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |

@@ -8,6 +8,8 @@ Temporal mechanics replace the loose paradox-pressure label with temporal debt. 
 
 Origin evidence may lock exactly one campaign conclusion: extraterrestrial provenance, temporal displacement, manufactured continuity, or unresolved. Public proof is evidence-gated, and later transformation never proves extraterrestrial origin by itself. Strategic Singularity and Laboratory World use mutually exclusive terminal commitments.
 
+The implemented first-Prototype report bridge is deliberately narrower than a second project reward. When a family advances into Prototype through the native project board or a mapped special-project completion, the current host or active Kruger State reserves that family once, writes a pending receipt on `KRG_warren_kruger`, opens the ordinary `chaosx.nr16.6` report, and stores the public or classified governance result. If another family reaches Prototype while the report is open, it is queued and dispatched after the current choice commits. Transfer and sovereignty formation copy the queue, governance receipts, visible report family, and any active event obligation to the new carrier. The first resolved report applies full value strength, the next two apply half strength, and later reports apply quarter strength. The report choice changes Mandate, Dependence, Exposure, Project Capacity, Independent Capacity, and Grievance through the shared Directorate effects. Replayed stages, transfers, inheritance, and later Deployment or Weaponization do not create another report for the same family.
+
 ## Portfolio role
 
 Kruger's projects are the main record of what the host enabled and what a later Kruger State inherits. The portfolio should create hard choices rather than a checklist where every project is completed in one campaign.

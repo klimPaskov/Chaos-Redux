@@ -2,13 +2,13 @@
 
 Date: 2026-07-29
 
-Status: current documentation reconciliation for the core-runtime milestone. This map is not a whole-event content-completion claim. Event 016 is default-enabled only after the core runtime audit and provider bridge described below; deferred scenarios, flavor, reports, and 3D production remain blocked.
+Status: current documentation reconciliation for the core-runtime milestone and the bounded flavour tranche. This map is not a whole-event content-completion claim. Event 016 is default-enabled only after the core runtime audit and provider bridge described below; broader scenarios, bespoke art, quantitative balance evidence, and 3D production remain blocked.
 
 ## Purpose and authority
 
 The ten-part specification and its matrices under `docs/specs/016_brilliant_scientist_specs/` remain the accepted Event 016 design source. The 2026-07-14 `016_source_of_truth_map.md`, resume packet, completion handoff, package manifest, and asset inventory remain useful design and historical evidence, but their implementation and asset counters are superseded for current-runtime decisions by this map. Current gameplay files, filesystem inventories, git history, and subagent handoffs are evidence of present work, not automatic approval of a whole-event completion claim.
 
-Event 016 is included in the default-enabled allowlist for ordinary fire-once selection. Its optional future scenarios, flavor events, expanded report/news presentation, and dedicated 3D packages remain outside this core acceptance.
+Event 016 is included in the default-enabled allowlist for ordinary fire-once selection. The host-context and first-prototype report slice is now accepted as bounded ordinary flavour; optional future scenarios, broader country-specific flavor, expanded report/news presentation, quantitative balance evidence, and dedicated 3D packages remain outside this acceptance.
 
 ## Core-runtime milestone required now
 
@@ -58,8 +58,8 @@ The adapters retain Event 016 project stage, capacity, equipment, sustainment, c
 | Deferred surface | Accepted boundary |
 | --- | --- |
 | Dedicated Kruger triggerable scenario | The accepted depth review says no new Kruger scenario is required. Existing Army of Clones `SCN-002` remains independent and receives only a connection hook; it must not be silently converted into Event 016. |
-| Early and country-specific flavor events | The specification calls for institutional-conflict and host-context flavor, but the implementation must avoid a separate full chain for every tag. These flavor layers are queued after core wiring and are not evidence of a missing core mechanic. |
-| Remaining report, news, defeat, and remnant art | The seven current report DDS files and six super-event DDS files are accepted. The inventory still calls for broader project-breakthrough, accident or security, black-and-white news, and defeat or remnant variants; no Event 016 news DDS is present, so those variants remain queued. |
+| Early and country-specific flavor events | `chaosx.nr16.4` and `.5` implement one bounded host-context and assistant-conflict slice without a separate chain for every tag. Broader country-specific flavour remains queued. |
+| Remaining report, news, defeat, and remnant art | `chaosx.nr16.6` supplies first-prototype report content through the existing Directorate dossier surface, queues concurrent families, and does not add a second project reward. Bespoke project-breakthrough, accident or security, black-and-white news, and defeat or remnant variants remain queued; no Event 016 news DDS is present. |
 | Final presentation and catalog surfaces | Shared super-event playback, localisation, Event Details, event-log wording, workbook rows, and the mapped static audits are aligned. Live GUI/audio/event presentation remains user-owned. |
 | Event016-specific 3D production | No Event 016 unit or building `.mesh`, `.anim`, entity `.asset`, or entity `.gfx` package is accepted. The backlog below is intentionally separate from the completed generic 3D pilot showcase. |
 
@@ -72,6 +72,10 @@ The production backlog is one reviewed model and runtime consumer package for ea
 The complete `chaosx_anomaly_recon_trooper` and `chaosx_anomaly_signal_beacon` pilot packages under `docs/assets/chaos_redux_3d_model_pilots/` are independent showcase consumers. They prove the 3D pipeline workflow only and must not be counted as Event 016 model completion or reused as an unapproved substitute.
 
 ## 2026-07-29 final static-audit corrections
+
+- The second improvement-loop persistence addendum is promoted for this tranche. Host-context flags and pending `.4` or `.5` obligations survive transfer and formation without replaying their value deltas. First-Prototype reports write a pending character receipt before presentation, reserve one family, queue concurrent families, carry active and governance receipts, apply full, half, or quarter potency by resolved count, and use context-aware AI weighting.
+
+- The fixed-tag sovereignty transaction now cores only the verified formation capital immediately before the documented `release = KRG` effect, then reuses the route-specific state-transfer and portfolio initializer. This closes the static country-instantiation omission; live formation and takeover scenarios remain user-owned acceptance work.
 
 - The sovereignty deadline is no longer fixed at sixty days. `brilliant_scientist_calculate_sovereignty_deadline` derives a bounded 30-to-120-day mission from Mandate, deployed or weaponized project burden, war, public or institutional good faith, and dangerous incidents.
 - Generic Sovereign Directorate identity now uses `drop_cosmetic_tag = yes`; no active path references the unregistered base tag as a cosmetic tag.

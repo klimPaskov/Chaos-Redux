@@ -2,7 +2,7 @@
 
 Date: 2026-08-01
 
-Status: bounded second improvement-loop pass for the implemented `chaosx.nr16.4`, `.5`, and `.6` tranche. This is a plan-only document and does not claim gameplay implementation.
+Status: promoted and resolved after the bounded `chaosx.nr16.4`, `.5`, and `.6` persistence tranche. V2-R1 through V2-R5 are implemented and statically reviewed. Broader country flavour and bespoke Prototype, news, defeat, and remnant art remain queued. V2-R6 closes this addendum without claiming whole-event completion.
 
 ## Process gate and prior-plan status
 
@@ -224,7 +224,7 @@ These references provide institutional direction only. Doctor Warren Kruger rema
 
 ## Implementation surfaces affected
 
-This plan does not edit gameplay files. Parent implementation would likely touch only the existing bounded tranche and transfer helpers:
+The parent implemented the bounded persistence contract in the existing tranche and transfer helpers:
 
 - `events/016_brilliant_scientist_context_events.txt`
 - `events/016_brilliant_scientist_directorate_outcomes.txt`
@@ -241,17 +241,17 @@ This plan does not edit gameplay files. Parent implementation would likely touch
 - Existing Event 016 Directorate outcome and GUI localisation
 - The exact documentation and spec promotion surfaces in V2-R6
 
-No new focus, decision category, mission family, scripted GUI, country tag, super-event, achievement, news event, spreadsheet row, 2D asset, animation, or 3D package is required.
+No new focus, decision category, mission family, scripted GUI, country tag, super-event, achievement, news event, spreadsheet row, 2D asset, animation, or 3D package was added for this gap.
 
 ## Parent disposition recommendation
 
 | Item | Recommended disposition | Reason |
 | --- | --- | --- |
-| V2-R1 context persistence | Accept and promote | Restores causal meaning after transfer and formation without replaying events |
-| V2-R2 transactional report queue | Accept and promote | Prevents lost, overwritten, or choice-ambiguous family reports |
-| V2-R3 report attenuation | Accept and promote | Preserves the first breakthrough while keeping later family choices meaningful |
-| V2-R4 AI weighting | Accept and promote | Makes AI read posture and extreme state rather than repeating a fixed choice |
-| V2-R5 log and current asset boundary | Accept and promote | Keeps ordinary reports out of evolution history and requires no new art |
+| V2-R1 context persistence | Accepted and promoted | Restores causal meaning after transfer and formation without replaying events |
+| V2-R2 transactional report queue | Accepted and promoted | Prevents lost, overwritten, or choice-ambiguous family reports |
+| V2-R3 report attenuation | Accepted and promoted | Preserves the first breakthrough while keeping later family choices meaningful |
+| V2-R4 AI weighting | Accepted and promoted | Makes AI read posture and extreme state rather than repeating a fixed choice |
+| V2-R5 log and current asset boundary | Accepted and promoted | Keeps ordinary reports out of evolution history and requires no new art |
 | Expanded country flavour and bespoke Prototype art | Keep queued | Separate production may improve variety later but does not solve this transaction gap |
 | New evolution, route, GUI, focus branch, country, achievement, or super-event | Reject for this gap | Each would expand scope without repairing causal persistence or report correctness |
 

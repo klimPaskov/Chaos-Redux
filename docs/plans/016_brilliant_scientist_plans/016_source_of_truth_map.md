@@ -116,6 +116,7 @@ Exactly five packages are planned:
 | Source | Status | Disposition |
 | --- | --- | --- |
 | `016_brilliant_scientist_improvement_loop_addendum.md` | Closed | R2, R3, R4, R5, and R7 promoted. R1 and R6 rejected. Do not run another planner pass until promoted work is implemented or new implementation evidence creates a distinct gap. |
+| `016_context_and_first_prototype_persistence_addendum.md` | Closed and promoted for the bounded tranche | V2-R1 through V2-R5 are implemented in the current host-context and first-Prototype report surfaces. Broader country flavour and bespoke report, news, defeat, and remnant art remain queued. V2-R6 closes the addendum without adding a route, GUI, country, evolution, animation, or 3D package. |
 | `subagent_handoffs/016_repo_integration_map.md` | Accepted evidence | Controls implementation touchpoints, ordering, and current placeholder evidence. Its achievement count, visible-state wording, and shared ID reservations were reconciled. |
 | `subagent_handoffs/016_vanilla_engine_precedents.md` | Accepted evidence | Controls known engine precedents and confirms the seventeen-achievement registry footprint of 17 blocks, 34 localisation keys, and 51 DDS files. |
 | `subagent_handoffs/016_super_event_text_research_handoff.md` | Accepted text research | All six retained packages have selected text and evidence. This does not complete images, final descriptions, localisation, triggers, shared playback, or presentation wiring. Audio later completed in its dedicated package. |

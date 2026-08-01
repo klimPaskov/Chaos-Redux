@@ -1,6 +1,6 @@
 # Event 016 Brilliant Scientist planning package
 
-> Reconciled 2026-07-29. The binding current-runtime map is [`docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`](../../plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md). Event 016 has a default-enabled core runtime milestone, but it is not a whole-event completion claim: deferred scenarios, flavor, report/news expansion, Event 016-specific 3D production, and live consumer validation remain open. The older 2026-07-14 default-disabled and placeholder statements below are historical snapshot wording.
+> Reconciled 2026-08-01. The binding current-runtime map is [`docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`](../../plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md). Event 016 has a default-enabled core runtime and a bounded host-context and first-Prototype flavour slice, but it is not a whole-event completion claim: broader scenarios and country flavour, bespoke project/news/remnant art, Event 016-specific 3D production, quantitative balance evidence, and live consumer validation remain open. The older 2026-07-14 default-disabled and placeholder statements below are historical snapshot wording.
 
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
@@ -82,7 +82,7 @@ The event can remain a powerful scientific success story. It can become a secret
 - Kruger rebellion strength and starting forces are derived from approved projects, facilities, authority, dependence, security, and chaos state.
 - Clone, robot, dinosaur, monster, portal, temporal, biological, and exotic-army outcomes are mechanically distinct.
 - The terminal capitulation weapon may fire from any starting chaos tier only by first pushing global chaos over the normal world-end threshold and then entering the existing terminal pipeline.
-- Six-package super-event title, quotation, button, and audio research is complete. Final Event 016-owned WAVs use visible IDs `90` through `95`. Final descriptions, images, localisation, triggers, shared sound definitions, settings-aware playback, and live presentation wiring remain incomplete.
+- Six-package super-event title, quotation, button, and audio research is complete. Final Event 016-owned WAVs use visible IDs `90` through `95`. The six super-event DDS files, descriptions, localisation, triggers, shared sound definitions, settings-aware playback, and documentation are wired; live presentation acceptance remains user-owned.
 - All fifteen Kruger leader or scientist DDS files and matching `65x67` advisor DDS files are present under their registered Stage 0 through IV sprite contracts. The fourteen later advisor cards have been migrated to the canonical advisor-template compositor without changing their runtime identifiers. Final gameplay state-selection review and the independent status of animation packages remain tracked separately.
 - All severe portrait animations use real per-frame source artwork, a frame sheet, and a static fallback.
 - The unnumbered catalog idea `Crazy Scientist` is absorbed and redesigned inside Event 16. Its standalone concept is superseded. The spreadsheet row remains a post-localisation alignment task and must not recreate a second event.
