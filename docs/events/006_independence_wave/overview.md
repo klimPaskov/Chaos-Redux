@@ -8,6 +8,8 @@ The accepted design authority remains `docs/specs/006_independence_wave_specs/`.
 
 Country-package implementation references are grouped by region. See the [Northern and Western Europe package reference](northern_western_europe_packages.md) and the [Pacific country-package and FORM-48 reference](pacific_country_packages.md).
 
+The reusable tag and region contract is documented in [Country API and regional carrier map](country_api.md). Later events should consume these `chaosx_country_*` collections and origin-gated dispatchers instead of inventing another carrier for a country already represented by Event 006.
+
 ## Controlling acceptance authority (2026-07-29)
 
 Event 006 completion is judged from source and static evidence. Repository source inspection, MCP inspections, transaction and source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static package capacity, incomplete packages and formables, asset gaps, focus diagnostics, `6001` rights, unreachable source routes, missing AI/source proof, and unwired content remain blockers where listed below.
