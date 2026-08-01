@@ -2731,9 +2731,126 @@ africa_refresh_selected_action_quote = {
 	}
 }
 
+# COUNTRY scope on a priority member. This is an explicit refresh requested by
+# the member's decision surface, not a recurring world scan. Rain and drought
+# share one bounded enemy roster and one target proof flag.
+africa_clear_priority_member_natural_disaster_targets = {
+	for_each_scope_loop = {
+		array = africa_natural_disaster_enemy_targets
+		clr_country_flag = africa_natural_disaster_member_target_validated
+	}
+	clear_array = africa_natural_disaster_enemy_targets
+}
+
+africa_refresh_priority_member_natural_disaster_targets = {
+	if = {
+		limit = { africa_natural_disaster_member_actor_is_eligible = yes }
+		africa_clear_priority_member_natural_disaster_targets = yes
+		every_country = {
+			limit = { africa_natural_disaster_member_target_is_valid = yes }
+			set_country_flag = africa_natural_disaster_member_target_validated
+			ROOT = { add_to_array = { array = africa_natural_disaster_enemy_targets value = PREV } }
+		}
+	}
+}
+
+# COUNTRY scope on a priority member. The member selects the enemy and pays
+# the caller-side reserve; the current Event 012 host then owns the existing
+# generation-safe action record and mission lifecycle.
+africa_begin_priority_member_natural_disaster_action = {
+	set_temp_variable = { africa_priority_member_nature_begin_result = constant:africa_value.zero }
+	if = {
+		limit = {
+			africa_natural_disaster_member_actor_is_eligible = yes
+			africa_natural_disaster_member_cost_is_available = yes
+			has_event_target = africa_natural_disaster_member_action_target
+			event_target:africa_natural_disaster_member_action_target = {
+				africa_natural_disaster_member_target_is_valid = yes
+			}
+			has_event_target = africa_host
+			event_target:africa_host = {
+				check_variable = { africa_selected_action_id = constant:africa_action.none }
+				NOT = { has_country_flag = africa_action_quote_ready }
+			}
+		}
+		save_global_event_target_as = africa_natural_disaster_action_actor
+		event_target:africa_natural_disaster_member_action_target = {
+			save_global_event_target_as = africa_action_target
+			set_country_flag = africa_natural_disaster_member_target_validated
+		}
+		set_country_flag = africa_natural_disaster_member_nature_action_active
+		event_target:africa_host = {
+			set_variable = { africa_selected_action_id = ROOT.africa_natural_disaster_member_action_id }
+			africa_begin_quoted_action_against_target = yes
+		}
+		if = {
+			limit = {
+				has_event_target = africa_action_target
+				event_target:africa_action_target = { has_country_flag = africa_action_record_active }
+			}
+			set_temp_variable = { africa_priority_member_nature_begin_result = constant:africa_value.one }
+		}
+		else = {
+			event_target:africa_natural_disaster_action_actor = {
+				if = {
+					limit = { has_country_flag = africa_natural_disaster_weapon_reserved }
+					set_temp_variable = { africa_natural_disaster_refund_pp = constant:africa_natural_disaster.caller_pp_cost }
+					add_political_power = africa_natural_disaster_refund_pp
+					set_temp_variable = { africa_natural_disaster_refund_cp = constant:africa_natural_disaster.caller_cp_cost }
+					add_command_power = africa_natural_disaster_refund_cp
+					clear_temp_variable = africa_natural_disaster_refund_pp
+					clear_temp_variable = africa_natural_disaster_refund_cp
+					clr_country_flag = africa_natural_disaster_weapon_reserved
+				}
+				clr_country_flag = africa_natural_disaster_member_nature_action_active
+			}
+			event_target:africa_host = {
+				set_variable = { africa_selected_action_id = constant:africa_action.none }
+				africa_clear_action_quote = yes
+				africa_clear_selected_action_state_context = yes
+			}
+			event_target:africa_action_target = { clr_country_flag = africa_natural_disaster_member_target_validated }
+			clr_country_flag = africa_natural_disaster_member_nature_action_active
+			clear_global_event_target = africa_action_target
+			clear_global_event_target = africa_natural_disaster_action_actor
+		}
+		africa_clear_priority_member_natural_disaster_targets = yes
+		clear_variable = africa_natural_disaster_member_action_id
+	}
+}
+
+# COUNTRY scope on a priority member. The AI uses the same explicit target
+# roster and shared action entry point as the player; it never creates a
+# second action ledger or scans the world on an on_action.
+africa_priority_member_run_natural_disaster_ai_action = {
+	if = {
+		limit = { africa_natural_disaster_member_actor_is_eligible = yes }
+		africa_refresh_priority_member_natural_disaster_targets = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_natural_disaster_enemy_targets^num
+					value = constant:africa_value.zero
+					compare = greater_than
+				}
+			}
+			random_scope_in_array = {
+				array = africa_natural_disaster_enemy_targets
+				save_event_target_as = africa_natural_disaster_member_action_target
+			}
+			random_list = {
+				1 = { set_variable = { africa_natural_disaster_member_action_id = constant:africa_action.petition_the_rain } }
+				1 = { set_variable = { africa_natural_disaster_member_action_id = constant:africa_action.defy_the_drought } }
+			}
+			africa_begin_priority_member_natural_disaster_action = yes
+		}
+	}
+}
+
 # COUNTRY scope on the host. Reserve the caller-side Event 013 payment before
 # the shared action ledger is created, so the quoted action cannot start and
-# later discover that its hostile nature call is unaffordable.
+# later discover that its hostile nature call is unaffordable. A member caller
+# pays from its own stockpile through the same reservation contract.
 africa_reserve_natural_disaster_weapon_cost = {
 	set_temp_variable = { africa_natural_disaster_cost_reserved = constant:africa_value.zero }
 	if = {
@@ -2742,6 +2859,30 @@ africa_reserve_natural_disaster_weapon_cost = {
 				check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
 				check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought }
 			}
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				africa_natural_disaster_member_cost_is_available = yes
+			}
+		}
+		event_target:africa_natural_disaster_action_actor = {
+			set_temp_variable = { africa_natural_disaster_payment_pp = constant:africa_natural_disaster.caller_pp_cost }
+			multiply_temp_variable = { africa_natural_disaster_payment_pp = constant:africa_action_cost.negation_multiplier }
+			add_political_power = africa_natural_disaster_payment_pp
+			set_temp_variable = { africa_natural_disaster_payment_cp = constant:africa_natural_disaster.caller_cp_cost }
+			multiply_temp_variable = { africa_natural_disaster_payment_cp = constant:africa_action_cost.negation_multiplier }
+			add_command_power = africa_natural_disaster_payment_cp
+			set_country_flag = africa_natural_disaster_weapon_reserved
+			set_country_flag = africa_natural_disaster_member_nature_action_active
+		}
+		set_temp_variable = { africa_natural_disaster_cost_reserved = constant:africa_value.one }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
+				check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought }
+			}
+			NOT = { has_event_target = africa_natural_disaster_action_actor }
 			africa_natural_disaster_weapon_cost_is_available = yes
 		}
 		set_temp_variable = { africa_natural_disaster_payment_pp = constant:africa_natural_disaster.caller_pp_cost }
@@ -3576,7 +3717,13 @@ africa_validate_action_specific_requirements = {
 		limit = {
 			check_variable = { africa_requested_action_id = constant:africa_action.petition_the_rain }
 			africa_natural_disaster_weapon_actor_is_eligible = yes
-			has_war = yes
+			OR = {
+				has_war = yes
+				AND = {
+					has_event_target = africa_natural_disaster_action_actor
+					event_target:africa_natural_disaster_action_actor = { has_war = yes }
+				}
+			}
 			africa_natural_disaster_weapon_cost_is_available = yes
 			has_event_target = africa_action_target
 			event_target:africa_action_target = {
@@ -3591,7 +3738,13 @@ africa_validate_action_specific_requirements = {
 		limit = {
 			check_variable = { africa_requested_action_id = constant:africa_action.defy_the_drought }
 			africa_natural_disaster_weapon_actor_is_eligible = yes
-			has_war = yes
+			OR = {
+				has_war = yes
+				AND = {
+					has_event_target = africa_natural_disaster_action_actor
+					event_target:africa_natural_disaster_action_actor = { has_war = yes }
+				}
+			}
 			africa_natural_disaster_weapon_cost_is_available = yes
 			has_event_target = africa_action_target
 			event_target:africa_action_target = {
@@ -7131,6 +7284,21 @@ africa_prepare_hostile_natural_disaster_strength = {
 		limit = { check_variable = { africa_natural_disaster_weapon_action_id = constant:africa_action.defy_the_drought } }
 		add_to_temp_variable = { africa_natural_disaster_weapon_strength = constant:africa_natural_disaster_strength.drought_action_strength }
 	}
+	# A priority member's package authority is an explicit actor signal. The
+	# host still owns the shared ledger, but the member's bounded nature ladder
+	# raises the Event 013 impact envelope so stronger packages hit harder.
+	if = {
+		limit = {
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				has_variable = africa_priority_member_nature_power
+			}
+		}
+		set_temp_variable = { africa_natural_disaster_member_power = event_target:africa_natural_disaster_action_actor.africa_priority_member_nature_power }
+		multiply_temp_variable = { africa_natural_disaster_member_power = constant:africa_natural_disaster_strength.priority_member_nature_strength_per_level }
+		add_to_temp_variable = { africa_natural_disaster_weapon_strength = africa_natural_disaster_member_power }
+		clear_temp_variable = africa_natural_disaster_member_power
+	}
 
 	# Pressure and war-readiness are read from the live host ledger. Existing
 	# Africa measure bands keep the thresholds shared with the rest of Event 012.
@@ -7250,12 +7418,26 @@ africa_call_hostile_natural_disaster_from_action = {
 			check_variable = { africa_active_action_natural_disaster_cost_reserved > constant:africa_value.zero }
 			has_event_target = africa_host
 			NOT = { africa_is_current_host = yes }
-			has_war_with = event_target:africa_host
-			event_target:africa_host = {
-				africa_natural_disaster_weapon_actor_is_eligible = yes
-				has_war = yes
-				has_country_flag = africa_natural_disaster_weapon_reserved
-				NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+			OR = {
+				AND = {
+					has_war_with = event_target:africa_host
+					event_target:africa_host = {
+						africa_natural_disaster_weapon_actor_is_eligible = yes
+						has_war = yes
+						has_country_flag = africa_natural_disaster_weapon_reserved
+						NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+					}
+				}
+				AND = {
+					has_event_target = africa_natural_disaster_action_actor
+					event_target:africa_natural_disaster_action_actor = {
+						africa_natural_disaster_member_actor_is_eligible = yes
+						has_war_with = ROOT
+						has_country_flag = africa_natural_disaster_weapon_reserved
+						NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+					}
+					event_target:africa_host = { africa_natural_disaster_weapon_actor_is_eligible = yes }
+				}
 			}
 		}
 		save_event_target_as = natural_disaster_call_target_country
@@ -7285,6 +7467,25 @@ africa_call_hostile_natural_disaster_from_action = {
 				limit = { has_country_flag = africa_covenant_route_capstone }
 				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.catastrophic }
 			}
+			if = {
+				limit = {
+					has_event_target = africa_natural_disaster_action_actor
+					event_target:africa_natural_disaster_action_actor = {
+						check_variable = { africa_priority_member_nature_power > constant:africa_priority_member_nature_power.high }
+					}
+				}
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.catastrophic }
+			}
+			else_if = {
+				limit = {
+					has_event_target = africa_natural_disaster_action_actor
+					NOT = { has_country_flag = africa_covenant_route_capstone }
+					event_target:africa_natural_disaster_action_actor = {
+						check_variable = { africa_priority_member_nature_power > constant:africa_priority_member_nature_power.low }
+					}
+				}
+				set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.regional }
+			}
 			africa_prepare_hostile_natural_disaster_strength = yes
 			set_variable = { africa_last_natural_disaster_call_strength = africa_natural_disaster_weapon_strength }
 			set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
@@ -7311,9 +7512,25 @@ africa_call_hostile_natural_disaster_from_action = {
 			set_country_flag = { flag = africa_natural_disaster_weapon_cooldown days = var:africa_natural_disaster_cooldown_days }
 			clear_variable = africa_natural_disaster_cooldown_days
 			if = {
+				limit = { has_event_target = africa_natural_disaster_action_actor }
+				event_target:africa_natural_disaster_action_actor = {
+					set_variable = { africa_last_natural_disaster_call_result = event_target:africa_host.africa_last_natural_disaster_call_result }
+					set_variable = { africa_last_natural_disaster_call_reject_reason = event_target:africa_host.africa_last_natural_disaster_call_reject_reason }
+					set_variable = { africa_last_natural_disaster_call_sequence_id = event_target:africa_host.africa_last_natural_disaster_call_sequence_id }
+					set_variable = { africa_last_natural_disaster_call_primary_family = event_target:africa_host.africa_last_natural_disaster_call_primary_family }
+					set_variable = { africa_last_natural_disaster_call_primary_job_count = event_target:africa_host.africa_last_natural_disaster_call_primary_job_count }
+					set_variable = { africa_last_natural_disaster_call_skipped_primary_count = event_target:africa_host.africa_last_natural_disaster_call_skipped_primary_count }
+					set_variable = { africa_last_natural_disaster_call_strength = event_target:africa_host.africa_last_natural_disaster_call_strength }
+					set_temp_variable = { africa_natural_disaster_cooldown_days = constant:africa_natural_disaster.cooldown_days }
+					set_country_flag = { flag = africa_natural_disaster_weapon_cooldown days = var:africa_natural_disaster_cooldown_days }
+					clear_variable = africa_natural_disaster_cooldown_days
+				}
+			}
+			if = {
 				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
 				set_country_flag = africa_natural_disaster_call_accepted
 				PREV = { set_country_flag = africa_natural_disaster_call_accepted_recorded }
+				if = { limit = { has_event_target = africa_natural_disaster_action_actor } event_target:africa_natural_disaster_action_actor = { set_country_flag = africa_natural_disaster_call_accepted } }
 				# Event 013 accepted the exact hostile selected-country call. The
 				# target classifications below are disqualifier receipts only; a
 				# campaign victory still requires the target to capitulate to this host.
@@ -7344,9 +7561,10 @@ africa_call_hostile_natural_disaster_from_action = {
 						africa_achievement_record_weather_neutral_african = yes
 					}
 				}
-				random = {
+					random = {
 					chance = constant:africa_natural_disaster.backfire_chance
 					set_country_flag = africa_natural_disaster_backfire_recorded
+					if = { limit = { has_event_target = africa_natural_disaster_action_actor } event_target:africa_natural_disaster_action_actor = { set_country_flag = africa_natural_disaster_backfire_recorded } }
 					africa_achievement_record_weather_campaign_backfire = yes
 					add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 					africa_clamp_host_values = yes
@@ -7365,7 +7583,9 @@ africa_call_hostile_natural_disaster_from_action = {
 			else = {
 				set_country_flag = africa_natural_disaster_call_rejected
 				PREV = { set_country_flag = africa_natural_disaster_call_rejected_recorded }
+				if = { limit = { has_event_target = africa_natural_disaster_action_actor } event_target:africa_natural_disaster_action_actor = { set_country_flag = africa_natural_disaster_call_rejected } }
 				set_country_flag = africa_natural_disaster_backfire_recorded
+				if = { limit = { has_event_target = africa_natural_disaster_action_actor } event_target:africa_natural_disaster_action_actor = { set_country_flag = africa_natural_disaster_backfire_recorded } }
 				africa_achievement_record_weather_campaign_backfire = yes
 				add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 				africa_clamp_host_values = yes
@@ -7491,6 +7711,15 @@ africa_cleanup_action = {
 			if = {
 				limit = { check_variable = { PREV.africa_active_action_natural_disaster_cost_reserved > constant:africa_value.zero } }
 				clr_country_flag = africa_natural_disaster_weapon_reserved
+			}
+			if = {
+				limit = { has_event_target = africa_natural_disaster_action_actor }
+				event_target:africa_natural_disaster_action_actor = {
+					clr_country_flag = africa_natural_disaster_weapon_reserved
+					clr_country_flag = africa_natural_disaster_member_nature_action_active
+				}
+				clear_global_event_target = africa_natural_disaster_action_actor
+				clear_global_event_target = africa_action_target
 			}
 			if = { limit = { is_in_array = { array = africa_active_action_targets value = PREV } } remove_from_array = { array = africa_active_action_targets value = PREV } }
 			if = { limit = { is_in_array = { array = africa_active_action_short_targets value = PREV } } remove_from_array = { array = africa_active_action_short_targets value = PREV } }

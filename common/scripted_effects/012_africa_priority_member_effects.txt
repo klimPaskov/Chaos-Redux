@@ -577,6 +577,27 @@ africa_priority_member_register_requested_package = {
 			africa_priority_member_can_register_package = yes
 		}
 		set_variable = { africa_priority_member_package_id = africa_priority_requested_package_id }
+		set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.none }
+		# The package map keeps the capability distinct without introducing a
+		# second store or a new country identity. Values are intentionally small;
+		# the shared nature bridge adds them to route, wrath, war-readiness, and
+		# target-size inputs before Event 013 clamps the final envelope.
+		if = { limit = { africa_priority_member_package_is_asante = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.low } }
+		if = { limit = { africa_priority_member_package_is_oyo = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.trace } }
+		if = { limit = { africa_priority_member_package_is_sokoto = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.low } }
+		if = { limit = { africa_priority_member_package_is_kanem_bornu = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.high } }
+		if = { limit = { africa_priority_member_package_is_manden = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.low } }
+		if = { limit = { africa_priority_member_package_is_kongo = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.high } }
+		if = { limit = { africa_priority_member_package_is_buganda = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.medium } }
+		if = { limit = { africa_priority_member_package_is_aksum = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.medium } }
+		if = { limit = { africa_priority_member_package_is_harar = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.low } }
+		if = { limit = { africa_priority_member_package_is_kilwa = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.medium } }
+		if = { limit = { africa_priority_member_package_is_nubia = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.high } }
+		if = { limit = { africa_priority_member_package_is_luba = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.high } }
+		if = { limit = { africa_priority_member_package_is_lunda = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.ancestral } }
+		if = { limit = { africa_priority_member_package_is_great_zimbabwe = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.high } }
+		if = { limit = { africa_priority_member_package_is_merina = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.medium } }
+		if = { limit = { africa_priority_member_package_is_zulu = yes } set_variable = { africa_priority_member_nature_power = constant:africa_priority_member_nature_power.low } }
 		set_variable = { africa_priority_member_mechanic_progress = constant:africa_priority_member_progress.minimum }
 		set_variable = { africa_priority_member_security_readiness = constant:africa_priority_member_progress.minimum }
 		set_variable = { africa_priority_member_post_settlement_progress = constant:africa_priority_member_progress.minimum }
@@ -1876,6 +1897,9 @@ africa_priority_member_cleanup_runtime = {
 	clear_variable = africa_priority_member_mechanic_progress
 	clear_variable = africa_priority_member_security_readiness
 	clear_variable = africa_priority_member_post_settlement_progress
+	clear_variable = africa_priority_member_nature_power
+	clr_country_flag = africa_natural_disaster_weapon_reserved
+	clr_country_flag = africa_natural_disaster_member_nature_action_active
 	clr_country_flag = africa_priority_member_package_active
 	clr_country_flag = africa_priority_member_overlap_dispute_active
 	clr_country_flag = africa_priority_member_counterproposal_active

@@ -1106,6 +1106,12 @@ africa_natural_disaster_weapon_actor_is_eligible = {
 			check_variable = { africa_ecological_wrath > constant:africa_focus_route_threshold.minimum_covenant_pressure }
 		}
 		AND = {
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				africa_natural_disaster_member_actor_is_eligible = yes
+			}
+		}
+		AND = {
 			OR = {
 				has_country_flag = africa_covenant_route_committed
 				has_country_flag = africa_covenant_favour_and_wrath
@@ -1119,10 +1125,21 @@ africa_natural_disaster_weapon_actor_is_eligible = {
 # COUNTRY scope on the Event 012 host before a hostile nature action is
 # reserved. Action quote costs are checked separately by africa_can_pay_action_quote.
 africa_natural_disaster_weapon_cost_is_available = {
-	has_political_power > constant:africa_natural_disaster.caller_pp_cost
-	command_power > constant:africa_natural_disaster.caller_cp_cost
-	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
-	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+	OR = {
+		AND = {
+			NOT = { has_event_target = africa_natural_disaster_action_actor }
+			has_political_power > constant:africa_natural_disaster.caller_pp_cost
+			command_power > constant:africa_natural_disaster.caller_cp_cost
+			NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+			NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+		}
+		AND = {
+			has_event_target = africa_natural_disaster_action_actor
+			event_target:africa_natural_disaster_action_actor = {
+				africa_natural_disaster_member_cost_is_available = yes
+			}
+		}
+	}
 }
 
 # COUNTRY scope on the selected target. ROOT is the Event 012 host when this
@@ -1130,7 +1147,54 @@ africa_natural_disaster_weapon_cost_is_available = {
 africa_natural_disaster_weapon_target_is_valid = {
 	exists = yes
 	NOT = { africa_is_current_host = yes }
+	OR = {
+		has_war_with = ROOT
+		AND = {
+			has_country_flag = africa_natural_disaster_member_target_validated
+			ROOT = { has_event_target = africa_natural_disaster_action_actor }
+		}
+	}
+}
+
+# COUNTRY scope on a non-host priority member. The member route is deliberately
+# narrower than the host route: the Event 006-backed package, its host receipt,
+# political settlement, and its distinct mechanic must all be complete before
+# the member may call a hostile nature action.
+africa_natural_disaster_member_actor_is_eligible = {
+	africa_priority_member_has_package = yes
+	has_event_target = africa_host
+	africa_member_host_generation_is_current = yes
+	has_global_flag = africa_evolution_iii_logged
+	has_country_flag = africa_priority_member_politics_settled
+	has_country_flag = africa_priority_member_mechanic_complete
+	has_variable = africa_priority_member_nature_power
+	check_variable = { africa_priority_member_nature_power > constant:africa_priority_member_nature_power.none }
+	has_war = yes
+	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+	NOT = { has_country_flag = africa_natural_disaster_member_nature_action_active }
+	NOT = { africa_is_current_host = yes }
+}
+
+# COUNTRY scope on a priority member before the caller-side Event 013 reserve.
+africa_natural_disaster_member_cost_is_available = {
+	has_political_power > constant:africa_natural_disaster.caller_pp_cost
+	command_power > constant:africa_natural_disaster.caller_cp_cost
+	NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown }
+	NOT = { has_country_flag = africa_natural_disaster_weapon_reserved }
+}
+
+# COUNTRY scope on a priority member's selected enemy. The flag is written by
+# the explicit target roster and is cleared when the shared action starts or
+# cleans up; war eligibility is still rechecked by the Event 013 bridge.
+africa_natural_disaster_member_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { africa_is_current_host = yes }
+	africa_action_target_is_usable = yes
 	has_war_with = ROOT
+	NOT = { has_country_flag = africa_action_record_active }
+	NOT = { has_country_flag = africa_action_recent_target }
 }
 
 # COUNTRY scope on an active target.

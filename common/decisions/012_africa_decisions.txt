@@ -1438,6 +1438,68 @@ africa_high_chaos_actions_category = {
 
 }
 
+africa_priority_member_natural_disaster_actions_category = {
+	africa_priority_member_refresh_natural_disaster_targets = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { africa_natural_disaster_member_actor_is_eligible = yes }
+		available = { africa_natural_disaster_member_actor_is_eligible = yes }
+		cost = 0
+		days_re_enable = constant:africa_natural_disaster.cooldown_days
+		complete_effect = { africa_refresh_priority_member_natural_disaster_targets = yes }
+		ai_will_do = { base = 0 }
+	}
+
+	africa_priority_member_petition_the_rain = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_natural_disaster_enemy_targets
+		activation = { africa_natural_disaster_member_actor_is_eligible = yes }
+		target_root_trigger = { africa_natural_disaster_member_actor_is_eligible = yes }
+		target_trigger = { FROM = { africa_natural_disaster_member_target_is_valid = yes } }
+		visible = { africa_natural_disaster_member_actor_is_eligible = yes }
+		available = { africa_natural_disaster_member_cost_is_available = yes }
+		custom_cost_trigger = { africa_natural_disaster_member_cost_is_available = yes }
+		custom_cost_text = africa_priority_member_natural_disaster_dynamic_cost
+		custom_effect_tooltip = africa_priority_member_natural_disaster_launch_tt
+		cost = 0
+		complete_effect = {
+			FROM = { save_event_target_as = africa_natural_disaster_member_action_target }
+			set_variable = { africa_natural_disaster_member_action_id = constant:africa_action.petition_the_rain }
+			africa_begin_priority_member_natural_disaster_action = yes
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	africa_priority_member_defy_the_drought = {
+		icon = GFX_decision_012_africa_charter_ledger
+		target_array = africa_natural_disaster_enemy_targets
+		activation = { africa_natural_disaster_member_actor_is_eligible = yes }
+		target_root_trigger = { africa_natural_disaster_member_actor_is_eligible = yes }
+		target_trigger = { FROM = { africa_natural_disaster_member_target_is_valid = yes } }
+		visible = { africa_natural_disaster_member_actor_is_eligible = yes }
+		available = { africa_natural_disaster_member_cost_is_available = yes }
+		custom_cost_trigger = { africa_natural_disaster_member_cost_is_available = yes }
+		custom_cost_text = africa_priority_member_natural_disaster_dynamic_cost
+		custom_effect_tooltip = africa_priority_member_natural_disaster_launch_tt
+		cost = 0
+		complete_effect = {
+			FROM = { save_event_target_as = africa_natural_disaster_member_action_target }
+			set_variable = { africa_natural_disaster_member_action_id = constant:africa_action.defy_the_drought }
+			africa_begin_priority_member_natural_disaster_action = yes
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	africa_priority_member_natural_disaster_ai_cycle = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = { is_ai = yes africa_natural_disaster_member_actor_is_eligible = yes }
+		available = { is_ai = yes africa_natural_disaster_member_actor_is_eligible = yes }
+		cost = 0
+		days_re_enable = constant:africa_natural_disaster.cooldown_days
+		complete_effect = { africa_priority_member_run_natural_disaster_ai_action = yes }
+		ai_will_do = { base = constant:africa_priority_member_ai.nature }
+	}
+}
+
 africa_scramble_actions_category = {
 	africa_select_scramble_participant_target = {
 		icon = GFX_decision_012_africa_charter_ledger
