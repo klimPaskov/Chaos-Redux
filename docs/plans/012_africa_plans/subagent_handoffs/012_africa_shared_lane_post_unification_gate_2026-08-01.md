@@ -25,3 +25,13 @@ Before the patch, grounded routes could select the sponsorship lane before the c
 ## Remaining limits
 
 The patch does not add live world-order target feasibility or simulation evidence. The existing shared sponsorship effect and downstream target/action checks remain the source of truth once the post-unification lane is entered.
+
+## Acceptance slice
+
+| Surface | Current evidence | Disposition |
+| --- | --- | --- |
+| Shared opening and regional overlays | Existing Event 012 focus audit records the shared opening, nine regional overlays, host signatures, and post-formation bands in `africa_continental_focus_tree`. | No change in this tranche. |
+| Seven constitutional routes | Existing route bands contain the six grounded routes plus the gated Covenant route; the prior route-AI tranche supplies 107 live-state pressure call sites. | No route locks or layout coordinates changed. |
+| Shared support lanes | Thirty-six shared-lane focuses exist, and ten payoff anchors call `africa_apply_route_sensitive_support_reward`, which stores the selected constitution and applies axis-specific payoffs. | Sponsorship entry now matches the matrix post-unification phase. |
+| Priority member overlay | `africa_priority_member_focus_tree` has eight focuses and sixteen package IDs; Action 102 registration and the existing loader keep package activation bounded. | No package, tag, model, or icon changes. |
+| Localisation and icons | The patch adds no player-facing key or asset reference. | Existing keys and icon IDs remain unchanged. |
