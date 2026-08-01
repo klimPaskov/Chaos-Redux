@@ -971,4 +971,12 @@ The chain carries Hospital Priority, Food Priority, Industry Priority, and Defen
 
 The asset evidence is `docs/assets/803_load_shedding/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-803` is present with `Needs Testing` status.
 
+## The Reactor Shift tranche
+
+The Reactor Shift adds dormant suffixes `810` through `816` with candidate id `810`, transaction key `710087`, route `7206`, and history `9193`.
+
+The human opening is `810`, the hidden-AI opening is `811`, the human and hidden-AI delayed results are `812` and `813`, the human and hidden-AI first-winter callbacks are `814` and `815`, and cleanup is `816`.
+
+The asset evidence is `docs/assets/810_reactor_shift/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-810` is present with `Needs Testing` status.
+
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_LOAD_SHEDDING_CHAIN_PROOF.md`.

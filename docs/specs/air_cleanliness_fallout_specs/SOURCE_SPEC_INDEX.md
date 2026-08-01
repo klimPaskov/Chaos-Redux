@@ -58,6 +58,7 @@
 54. `specs/86_reviewed_archetype_the_pirate_amnesty.md`
 55. `specs/87_reviewed_archetype_the_engineer_franchise.md`
 56. `specs/88_reviewed_archetype_load_shedding.md`
+57. `specs/89_reviewed_archetype_reactor_shift.md`
 
 
 ## Accepted baseline specs included here
