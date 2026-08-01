@@ -126,8 +126,7 @@ If bespoke stage icons are commissioned later, stable source names should be reg
 
 ## Remaining Follow-through
 
-- Complete the package-initialization adapter hook after the command roster and reinforcement-pathway contracts are proven, so Armed Birth force modifiers are consumed before starting-force materialization.
-- Connect the Armed Birth incident outcome to the package force-materialization adapter once the command-roster and reinforcement-pathway contracts are proven, so its security choice changes starting-force delivery as well as the shared security ledger.
+- Keep the civilian-command outcome on the one-shot opening-force authorization path and keep the frontier-mobilization outcome tied to the paid DM-22 reserve decision. The frontier choice therefore materializes a bounded, understrength reserve from the audited force template without adding a free-unit loop or changing the synchronized release transaction.
 - The transaction-boundary hooks for rapid annexation, puppetry, and capitulation now feed the Replicable Independence opening-confidence calculation. Collapse is represented by the existing lifecycle failure flags and is recorded once per generation through the central refresh hook.
 - Revisit MTTH pacing after runtime observations across multiple Event 006 invocations at each chaos tier, especially when several stages are disabled in settings.
 
