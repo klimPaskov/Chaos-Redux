@@ -18,6 +18,8 @@ Event 060's research failure now offers the active Directorate one guarded salva
 
 Event 089's existing technology-sharing invitation now records a Kruger host's posture once. Joining a generic sharing group writes `brilliant_scientist_tech_sharing_network_joined` and moves the existing meters toward open exchange, while refusal writes `brilliant_scientist_tech_sharing_refused` and moves them toward private control. The generic Event 089 membership and refusal outcomes remain unchanged for every other country, and no new sharing group, project, log row, evolution, asset, or model is introduced.
 
+Event 054's generic science gift now has a one-time Kruger-host consequence. The active host records `brilliant_scientist_assistant_breakthrough_recorded` and the fixed Kruger character records the same receipt across transfer or sovereignty formation; the existing Directorate meters move toward independent research. The random technology grant remains the only technology effect, and this bridge creates no project stage, Event Log row, evolution, asset, or model.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.

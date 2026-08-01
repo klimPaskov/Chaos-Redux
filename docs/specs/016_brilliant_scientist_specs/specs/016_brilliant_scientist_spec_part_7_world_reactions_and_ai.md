@@ -548,6 +548,8 @@ Possible links:
 - Foreign scientists send aid to the host or counter-Kruger coalition.
 - Public-science route increases beneficial scientific exchange.
 
+The implemented baseline keeps Event 054's generic random-technology outcome and adds a guarded consequence only when the recipient is the active Kruger host. The host records `brilliant_scientist_assistant_breakthrough_recorded`, the fixed character records `brilliant_scientist_personal_assistant_breakthrough_recorded`, and the existing Directorate meters move toward independent research. The character receipt prevents a repeat after transfer or sovereignty formation. No project stage, Event Log entry, evolution, asset, or model is created; foreign-aid and counter-Kruger variants remain separate expansion hooks.
+
 ### Event 60: Research Failure
 
 Possible links:
