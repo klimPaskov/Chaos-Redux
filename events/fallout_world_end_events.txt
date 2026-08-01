@@ -20123,3 +20123,126 @@ country_event = {
 	trigger = { fallout_event_726_cleanup_can_enter = yes }
 	immediate = { fallout_event_726_cleanup = yes }
 }
+
+# Fallout Quarantine generation chain: Children of the Cordon
+# -------------------------------------------------------------------
+# Dormant Fallout global-survival chain: Children of the Cordon
+# -------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.733
+	title = chaosx.fallout.733.t
+	desc = chaosx.fallout.733.d
+	picture = GFX_report_event_fallout_children_of_cordon
+	is_triggered_only = yes
+	trigger = { fallout_event_733_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.733.a
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_733_cost.reform_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_733_cost.reform_power compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_733_cost.reform_scrap compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_733_requested_branch = constant:fallout_event_733_branch.reform } fallout_event_733_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.733.a.tt
+		ai_chance = { base = constant:fallout_event_733_ai.reform_priority }
+	}
+	option = {
+		name = chaosx.fallout.733.b
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_733_cost.service_travel_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_733_cost.service_travel_scrap compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_733_cost.service_travel_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_733_requested_branch = constant:fallout_event_733_branch.service_travel } fallout_event_733_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.733.b.tt
+		ai_chance = { base = constant:fallout_event_733_ai.service_travel_priority }
+	}
+	option = {
+		name = chaosx.fallout.733.c
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_733_cost.strict_continuation_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_733_cost.strict_continuation_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_733_cost.strict_continuation_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_733_requested_branch = constant:fallout_event_733_branch.strict_continuation } fallout_event_733_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.733.c.tt
+		ai_chance = { base = constant:fallout_event_733_ai.strict_continuation_priority }
+	}
+	option = {
+		name = chaosx.fallout.733.d_option
+		trigger = {
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_733_cost.local_food compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_733_cost.local_medicine compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_733_cost.local_recognition compare = greater_than_or_equals }
+		}
+		hidden_effect = { set_temp_variable = { fallout_event_733_requested_branch = constant:fallout_event_733_branch.local_autonomy } fallout_event_733_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.733.d_option.tt
+		ai_chance = { base = constant:fallout_event_733_ai.local_autonomy_priority }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.734
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_733_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_733_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.735
+	title = chaosx.fallout.735.t
+	desc = { text = chaosx.fallout.735.reform.success.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.reform } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.735.reform.partial.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.reform } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.735.reform.failure.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.reform } } }
+	desc = { text = chaosx.fallout.735.service_travel.success.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.service_travel } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.735.service_travel.partial.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.service_travel } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.735.service_travel.failure.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.service_travel } } }
+	desc = { text = chaosx.fallout.735.strict_continuation.success.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.strict_continuation } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.735.strict_continuation.partial.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.strict_continuation } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.735.strict_continuation.failure.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.strict_continuation } } }
+	desc = { text = chaosx.fallout.735.local.success.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.local_autonomy } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.735.local.partial.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.local_autonomy } check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.735.local.failure.d trigger = { check_variable = { fallout_event_733_selected_branch = constant:fallout_event_733_branch.local_autonomy } } }
+	picture = GFX_report_event_fallout_children_of_cordon
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_733_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_of_cordon_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.735.a hidden_effect = { fallout_event_733_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.735.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.736
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_733_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_of_cordon_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_733_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.737
+	title = chaosx.fallout.737.t
+	desc = { text = chaosx.fallout.737.success.d trigger = { check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.737.partial.d trigger = { check_variable = { fallout_event_733_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.737.failure.d
+	picture = GFX_report_event_fallout_children_of_cordon
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_of_cordon_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_733_registry_is_current = yes }
+	option = { name = chaosx.fallout.737.a hidden_effect = { fallout_event_733_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.737.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.738
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_issued_delayed_result_is_current = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.children_of_cordon_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_733_registry_is_current = yes }
+	immediate = { fallout_event_733_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.739
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_733_cleanup_can_enter = yes }
+	immediate = { fallout_event_733_cleanup = yes }
+}

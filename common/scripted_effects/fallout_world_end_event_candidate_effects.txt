@@ -4572,6 +4572,50 @@ fallout_event_build_pilot_candidate_registries = {
 			clear_temp_variable = fallout_event_pilot_border_inspection_crisis_adaptation
 			clear_temp_variable = fallout_event_pilot_border_inspection_crisis_phase
 
+			# Children of the Cordon follows a completed Border Inspection Crisis
+			# memory in any owned state. It is a country-level generation change
+			# chain, so the candidate stores no invented state or character target.
+			if = {
+				limit = { fallout_event_733_country_is_current = yes }
+				fallout_event_initialize_pilot_candidate_row = yes
+				set_temp_variable = { fallout_event_pilot_candidate_id = constant:fallout_event_candidate_pilot.children_of_cordon_candidate_id }
+				set_temp_variable = { fallout_event_pilot_transaction_key = constant:fallout_event_candidate_pilot.children_of_cordon_transaction_key }
+				set_temp_variable = { fallout_event_pilot_class = constant:fallout_event_class.routine_incident }
+				set_temp_variable = { fallout_event_pilot_primary_family = constant:fallout_event_primary_family.recovery_and_late_world_order }
+				set_temp_variable = { fallout_event_pilot_cooldown_family = constant:fallout_event_cooldown_family.generation_change }
+				set_temp_variable = { fallout_event_pilot_human_token = constant:fallout_event_id.children_of_cordon_human }
+				set_temp_variable = { fallout_event_pilot_ai_token = constant:fallout_event_id.children_of_cordon_ai }
+				set_temp_variable = { fallout_event_pilot_phase_mode = constant:fallout_event_review_phase_mode.preferred }
+				set_temp_variable = { fallout_event_pilot_phase = constant:fallout_event_phase.new_states }
+				set_temp_variable = { fallout_event_pilot_secondary_phase = constant:fallout_event_phase.open_continuation }
+				set_temp_variable = { fallout_event_pilot_crisis_mode = constant:fallout_event_crisis_break_mode.eligible }
+				set_temp_variable = { fallout_event_pilot_visible_budget_cost = constant:fallout_event_733_transaction.visible_budget_cost }
+				set_temp_variable = { fallout_event_733_candidate_severity = fallout_generation_change_count }
+				multiply_temp_variable = { fallout_event_733_candidate_severity = constant:fallout_event_733_threshold.generation_severity_factor }
+				clamp_temp_variable = { var = fallout_event_733_candidate_severity min = constant:fallout_event_runtime.zero max = constant:fallout_event_733_threshold.maximum_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_severity = fallout_event_733_candidate_severity }
+				set_temp_variable = { fallout_event_pilot_severity_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure = fallout_survival_current_entries^1 }
+				set_temp_variable = { fallout_event_pilot_mechanic_pressure_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_state_value = fallout_survival_cohesion_current }
+				set_temp_variable = { fallout_event_pilot_state_value_source = constant:fallout_event_pressure_source_type.survival_resource }
+				set_temp_variable = { fallout_event_pilot_air_winter_phase = constant:fallout_event_air_winter_phase.phase_zero }
+				set_temp_variable = { fallout_event_pilot_government_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_winter_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_crisis_resource_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_route_match = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_archetype = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_winter = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_resource_index = constant:fallout_survival_resource.food }
+				set_temp_variable = { fallout_event_pilot_required_resource = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_required_route = constant:fallout_event_runtime.one }
+				set_temp_variable = { fallout_event_pilot_target_type = constant:fallout_event_subject_type.none }
+				set_temp_variable = { fallout_event_pilot_target = constant:fallout_event_runtime.zero }
+				set_temp_variable = { fallout_event_pilot_route = constant:fallout_event_candidate_pilot.children_of_cordon_route }
+				fallout_event_append_pilot_candidate_row = yes
+				clear_temp_variable = fallout_event_733_candidate_severity
+			}
+
 			set_variable = { fallout_event_candidate_registry_generation = fallout_event_runtime_generation }
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }
 			set_country_flag = fallout_event_candidate_registry_reviewed
