@@ -83,6 +83,9 @@ The effects and triggers are:
 
 - `common/scripted_effects/006_independence_wave_evolution_effects.txt`
 - `common/scripted_triggers/006_independence_wave_evolution_triggers.txt`
+- `common/on_actions/006_independence_wave_evolution_on_actions.txt`
+
+Replicable Independence also exposes `global.independence_wave_replicable_opening_confidence`, initialized at 50 and clamped to 0–100. Lifecycle failures are recorded once per origin generation from government collapse, recognition blockade, command or border failure, congress discredit, and open-sovereignty escalation. Annexation, puppetry, and capitulation are recorded at their transaction boundaries. The allocator applies the low-confidence penalty or high-confidence bonus before candidate weighting, so earlier survival directly changes later wave composition. The League Congress category displays the live value.
 
 ## Event 005 Boundary
 
@@ -94,11 +97,11 @@ No bespoke visual asset is required for this tranche. The stages use the existin
 
 If bespoke stage icons are commissioned later, stable source names should be registered in `interface/006_independence_wave.gfx`, with final DDS files under `gfx/interface/goals/006_independence_wave/evolutions/`. Suggested sprite names are `GFX_independence_wave_evolution_1` through `GFX_independence_wave_evolution_5`. No current gameplay or localisation key references those optional sprites.
 
-## Required Follow-through
+## Remaining Follow-through
 
 - Complete the package-initialization adapter hook after the command roster and reinforcement-pathway contracts are proven, so Armed Birth force modifiers are consumed before starting-force materialization.
 - Implement and wire the accepted incident families for copied institutions, dormant identities, armed border crises, congress disputes, and open-sovereignty escalation and containment.
-- Feed rapid annexation, puppetry, and collapse among earlier Event 6 countries into the Replicable Independence opening-confidence calculation.
+- The transaction-boundary hooks for rapid annexation, puppetry, and capitulation now feed the Replicable Independence opening-confidence calculation. Collapse is represented by the existing lifecycle failure flags and is recorded once per generation through the central refresh hook.
 - Revisit MTTH pacing after runtime observations across multiple Event 006 invocations at each chaos tier, especially when several stages are disabled in settings.
 
 Dedicated evolution art is not currently referenced by the Events Log. If that UI gains per-evolution sprite support, register stable sprites in `interface/006_independence_wave.gfx` and place the final DDS files under `gfx/interface/goals/006_independence_wave/evolutions/`; do not introduce unused assets.

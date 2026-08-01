@@ -11,6 +11,148 @@
 # ============================================================================
 
 # ---------------------------------------------------------------------------
+# Cross-generation opening confidence and failure feedback
+# ---------------------------------------------------------------------------
+
+# Global value used by Replicable Independence weighting. Inputs are the
+# temporary `independence_wave_evolution_feedback_delta` and
+# `independence_wave_evolution_feedback_type_input` values. The last type/date
+# and total count make the otherwise hidden cross-generation memory inspectable
+# in the League category and diagnostics without creating a second event origin.
+independence_wave_clamp_replicable_opening_confidence = {
+	if = {
+		limit = { NOT = { has_variable = global.independence_wave_replicable_opening_confidence } }
+		set_variable = { global.independence_wave_replicable_opening_confidence = constant:independence_wave_evolution_feedback.opening_confidence_start }
+	}
+	clamp_variable = {
+		var = global.independence_wave_replicable_opening_confidence
+		min = constant:independence_wave_evolution_feedback.opening_confidence_minimum
+		max = constant:independence_wave_evolution_feedback.opening_confidence_maximum
+	}
+}
+
+independence_wave_record_evolution_feedback = {
+	independence_wave_clamp_replicable_opening_confidence = yes
+	add_to_variable = { global.independence_wave_replicable_opening_confidence = independence_wave_evolution_feedback_delta }
+	independence_wave_clamp_replicable_opening_confidence = yes
+	if = {
+		limit = { NOT = { has_variable = global.independence_wave_evolution_feedback_count } }
+		set_variable = { global.independence_wave_evolution_feedback_count = constant:independence_wave_value.minimum }
+	}
+	add_to_variable = { global.independence_wave_evolution_feedback_count = constant:independence_wave_plan.loop_increment }
+	set_variable = { global.independence_wave_last_evolution_feedback = independence_wave_evolution_feedback_type_input }
+	set_variable = { global.independence_wave_last_evolution_feedback_date = global.date }
+}
+
+# COUNTRY scope. Lifecycle failures are recorded once per origin generation so
+# a refresh triggered by a tooltip, focus, decision, or host change cannot apply
+# the same penalty repeatedly. Congress failure is global because it is one
+# shared incident rather than one failure per member.
+independence_wave_record_evolution_failure_feedback = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_government_failure
+			NOT = { has_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_copied_institutions_recorded
+		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_copied_institutions_failure }
+		set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.copied_institutions_failure }
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_recognition_blockade_active
+			NOT = { has_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_dormant_identity_recorded
+		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_dormant_identity_failure }
+		set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.dormant_identity_failure }
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			OR = {
+				has_country_flag = independence_wave_warlord_command_failure
+				has_country_flag = independence_wave_permanent_border_war_active
+				has_country_flag = independence_wave_host_reclamation_conflict
+			}
+			NOT = { has_country_flag = independence_wave_evolution_feedback_armed_border_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_armed_border_recorded
+		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_armed_border_failure }
+		set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.armed_border_failure }
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			OR = {
+				has_country_flag = independence_wave_league_member_discredited
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.congress_failed }
+			}
+			NOT = { has_global_flag = independence_wave_evolution_feedback_congress_recorded }
+		}
+		set_global_flag = independence_wave_evolution_feedback_congress_recorded
+		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_congress_failure }
+		set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.congress_failure }
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_open_sovereignty_applied
+			OR = {
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+				AND = {
+					has_country_flag = independence_wave_host_reclamation_conflict
+					has_independence_wave_critical_instability = yes
+				}
+			}
+			NOT = { has_country_flag = independence_wave_evolution_feedback_sovereignty_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_sovereignty_recorded
+		set_temp_variable = { independence_wave_evolution_feedback_delta = constant:independence_wave_evolution_feedback.opening_confidence_sovereignty_escalation }
+		set_temp_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.sovereignty_escalation }
+		independence_wave_record_evolution_feedback = yes
+	}
+}
+
+# COUNTRY scope. The caller supplies the origin-loss type and delta. The
+# per-generation flags make repeated capitulation or puppet callbacks harmless.
+independence_wave_record_origin_loss_feedback = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			check_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_annexed }
+			NOT = { has_country_flag = independence_wave_evolution_feedback_origin_annexed_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_origin_annexed_recorded
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			check_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_puppeted }
+			NOT = { has_country_flag = independence_wave_evolution_feedback_origin_puppeted_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_origin_puppeted_recorded
+		independence_wave_record_evolution_feedback = yes
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			check_variable = { independence_wave_evolution_feedback_type_input = constant:independence_wave_evolution_feedback_type.origin_capitulated }
+			NOT = { has_country_flag = independence_wave_evolution_feedback_origin_capitulated_recorded }
+		}
+		set_country_flag = independence_wave_evolution_feedback_origin_capitulated_recorded
+		independence_wave_record_evolution_feedback = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
 # Event Log context and actor selection
 # ---------------------------------------------------------------------------
 

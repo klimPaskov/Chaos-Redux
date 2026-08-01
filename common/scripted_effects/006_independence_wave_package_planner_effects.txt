@@ -526,6 +526,30 @@ independence_wave_calculate_candidate_allocation_weight = {
 		set_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_allocation_weight.base }
 		if = {
 			limit = {
+				has_global_flag = independence_wave_plan_replicable_independence
+				has_variable = global.independence_wave_replicable_opening_confidence
+				check_variable = {
+					var = global.independence_wave_replicable_opening_confidence
+					value = constant:independence_wave_evolution_feedback.opening_confidence_low_threshold
+					compare = less_than
+				}
+			}
+			subtract_from_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_evolution_feedback.opening_confidence_low_penalty }
+		}
+		else_if = {
+			limit = {
+				has_global_flag = independence_wave_plan_replicable_independence
+				has_variable = global.independence_wave_replicable_opening_confidence
+				check_variable = {
+					var = global.independence_wave_replicable_opening_confidence
+					value = constant:independence_wave_evolution_feedback.opening_confidence_high_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_temp_variable = { independence_wave_candidate_weight = constant:independence_wave_evolution_feedback.opening_confidence_high_bonus }
+		}
+		if = {
+			limit = {
 				has_event_target = liberation_candidate_anchor
 				event_target:liberation_candidate_anchor = { has_valid_independence_wave_breakaway_sponsorship_record = yes }
 			}
