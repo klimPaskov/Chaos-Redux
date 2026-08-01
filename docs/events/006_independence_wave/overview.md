@@ -26,6 +26,16 @@ The shared Event 006 core milestone is closed under source and static evidence. 
 
 The three closure handoffs are `subagent_handoffs/006_core_loop_closure_v35_2026_07_29.md`, `subagent_handoffs/006_dynamic_systems_closure_v35_2026_07_29.md`, and `subagent_handoffs/006_registry_api_closure_v35_2026_07_29.md`. They are implementation evidence for this bounded milestone and do not replace the v33 whole-event completion authority or admit any additional country package.
 
+## Evolution incident resolution loop (2026-08-01)
+
+Commit `9231c15f5` closes the shared resolution layer for all five accepted evolution incident families. Each active stage exposes one paid, generation-scoped decision, fires one of `chaosx.nr6.360` through `chaosx.nr6.364`, and offers two outcomes that write the relevant country, former-host, Network, League, or revisionist-pressure ledgers through shared effects.
+
+The five families are copied institutions and recognition, dormant identity settlement, armed border command or mobilization, sovereign congress charter or secretariat, and open-sovereignty claims or containment. Generation reset and origin cleanup clear pending and resolution flags, so reused `chaosx_country_*` carriers do not inherit an earlier government's choice.
+
+This loop is source-closed and does not change the thirteen-package attestation set. The Armed Birth civilian-command and frontier-mobilization outcomes still need the package force-materialization adapter to consume the chosen security posture before opening forces are created. Package-specific content, package admission, AI and balance evidence, formables, focus geometry, static asset gates, and `6001` rights remain separate blockers under the whole-event **HOLD / PARTIAL** authority.
+
+The implementation handoff is `../../plans/006_independence_wave_plans/subagent_handoffs/006_evolution_incident_resolution_core_2026_08_01.md`.
+
 ## Current runtime admission and documentation supersession (2026-08-01)
 
 The exact compile-time content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These thirteen packages span twelve compatible reservation groups and thirteen distinct anchors, and have the current package and sourced-portrait or approved-vanilla-identity evidence required by the static runtime gate.

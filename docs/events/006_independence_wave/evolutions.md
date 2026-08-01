@@ -4,6 +4,8 @@
 
 Event 006 has five visible evolution stages that change both future release plans and countries already created by the Independence Wave. The evolution state is global and canonical, while delivery is restricted to the aligned Event 006 active-country and generation arrays. The system does not scan the world and is not attached to a daily, weekly, or monthly on action.
 
+Each stage has one shared incident family with two paid outcomes. These incident families are a country-facing resolution layer inside the five evolution stages, not additional evolution rows.
+
 The five player-facing stages are:
 
 1. **The Manuals Cross the Border**
@@ -89,6 +91,8 @@ The effects and triggers are:
 Replicable Independence also exposes `global.independence_wave_replicable_opening_confidence`, initialized at 50 and clamped to 0–100. Lifecycle failures are recorded once per origin generation from government collapse, recognition blockade, command or border failure, congress discredit, and open-sovereignty escalation. Annexation, puppetry, and capitulation are recorded at their transaction boundaries. The allocator applies the low-confidence penalty or high-confidence bonus before candidate weighting, so earlier survival directly changes later wave composition. The League Congress category displays the live value.
 
 ## Shared incident resolution
+
+The shared incident-resolution core is source-wired by commit `9231c15f5` and recorded in `subagent_handoffs/006_evolution_incident_resolution_core_2026_08_01.md`. It does not promote a country package or change the whole-event **HOLD / PARTIAL** disposition.
 
 Each active evolution exposes one paid, generation-scoped decision in
 `independence_wave_evolution_incident_category`. The decision consumes an

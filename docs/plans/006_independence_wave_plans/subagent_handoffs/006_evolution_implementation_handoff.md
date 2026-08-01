@@ -1,5 +1,7 @@
 # Event 006 Evolution Implementation Handoff
 
+> Historical/superseded incident-status notice (2026-08-01): This handoff records the stage-only implementation pass. Its remaining-risk sentence that the five evolution incident families still require country-event implementation is superseded by commit `9231c15f5` and `006_evolution_incident_resolution_core_2026_08_01.md`. Preserve this body for the stage progression evidence. Use the current source-of-truth map and resume packet for routing.
+
 ## Scope Delivered
 
 Implemented the five accepted Event 006 evolution stages as one centralized system with pre-fire frozen-plan effects and active aligned-registry delivery:

@@ -1,5 +1,7 @@
 # Event 006 documentation cleanup handoff v36
 
+> Historical/superseded routing notice (2026-08-01): This v36 handoff predates the five-family evolution incident resolution loop and the current thirteen-package attestation reconciliation. Its bounded v35 core/API findings remain historical evidence. Use `006_source_of_truth_map.md`, `006_independence_wave_resume_packet.md`, and `006_documentation_reconciliation_post_evolution_incident_2026_08_01.md` for current Event 006 documentation authority.
+
 Date: 2026-07-29
 
 Scope: documentation reconciliation for the bounded milestone that closes the shared Event 006 core loop, dynamic systems, and reusable country-registration API under source and static evidence. Country-specific package content remains outside this milestone.

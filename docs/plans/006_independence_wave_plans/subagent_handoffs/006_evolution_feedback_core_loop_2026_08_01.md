@@ -1,5 +1,7 @@
 # Event 006 evolution feedback core-loop handoff
 
+> Historical/superseded incident-status notice (2026-08-01): This handoff closes opening-confidence and lifecycle feedback only. Its remaining-risk sentence that the five evolution incident families still require a content tranche is superseded by commit `9231c15f5` and `006_evolution_incident_resolution_core_2026_08_01.md`. Preserve its feedback evidence and use the current source-of-truth map and resume packet for routing.
+
 ## Scope
 
 This tranche closes the documented cross-generation Replicable Independence opening-confidence and origin-loss feedback gap without admitting any new country package.
