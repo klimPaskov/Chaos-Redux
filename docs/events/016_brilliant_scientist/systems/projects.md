@@ -20,6 +20,7 @@ The system does not create free units, free equipment, generic technology grants
 7. Suspending a project releases half its occupied capacity. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
 8. The first completed Prototype in each family reserves one ordinary `chaosx.nr16.6` report. Public publication and classified retention adjust the existing Directorate values, but the report never grants a second project-stage reward. If several families reach Prototype in one synchronization pass, later families enter `brilliant_scientist_breakthrough_pending_families` and are dispatched in order after the current report closes.
 9. An activated family-specific incident schedules ordinary report `chaosx.nr16.13` before the recovery mission deadline. The report names the active family, scales its language to pressure severity, and lets the player choose public notice, a state security cordon, or a Kruger-led cordon. Each posture changes existing Directorate values and the later containment score without duplicating the mission's concrete response costs.
+10. Once both the Paleogenetics and Xenobiological Synthesis prototypes exist, the host can convene the one-time cross-domain review. The review occupies two civilian factories for 120 days and consumes political authority, support equipment, motorized equipment, fuel, and manpower. Its ordinary report `chaosx.nr16.14` preserves separate ledgers with a countermeasure, authorizes a persistent controlled synthesis programme with a supply and consumer-goods burden, or dismantles the protocol with a countermeasure receipt. No option creates a second family, unit, or free project reward.
 
 The first valid primary facility after a resolved Prototype can then receive `chaosx.nr16.7`, and the second resolved Prototype can receive `chaosx.nr16.8`. These reports settle facility terms and method custody as persistent governance receipts rather than advancing a project. A detected foreign operation resolved after any Prototype can schedule `chaosx.nr16.9`, which retains the named actor and operation and offers a bounded diplomatic response. None of these three reports creates another project reward, evolution, or event-log entry.
 
@@ -106,6 +107,8 @@ Every family has its own mission and response action. Technical, industrial, bio
 
 The incident report is a presentation and governance preface, not a second recovery system. Its public, security, and Kruger-led receipts are cleared from the pending gate exactly once, while the selected posture remains as the latest containment input. Transfer and terminal cleanup clear an unshown pending report so it cannot orphan an event on a former carrier.
 
+The cross-domain review is a separate governance gate, not a hidden merge of biological histories. Paleogenetics remains the reconstruction ledger and Xenobiological Synthesis remains the directed-control ledger. The authorize outcome records `brilliant_scientist_synthesis_validated` plus both ledger receipts and adds `brilliant_scientist_host_synthesis_program`; the preserve and dismantle outcomes record `brilliant_scientist_synthesis_countermeasure_ready`. Completed, pending, and in-progress receipts transfer with the single Kruger character and are carried into Kruger State formation, while `brilliant_scientist_personal_host_synthesis_review_completed` prevents the report from replaying after a transfer or sovereignty change.
+
 Repair operations last 60, 90, 120, or 150 days by response class. Their incident deadlines are separately tuned to 120, 150, 180, or 240 days, so an operation begun before the deadline has a real completion window. A repeated incident clears only the matching family's prior resolved marker before activating its new mission.
 
 New native projects also have one project-specific prototype reward with a cautious verification option and a live-test option. Caution loses prototype progress. The live test immediately checks the matching family's current accident pressure.
@@ -148,6 +151,11 @@ Weaponization certification leaves `brilliant_scientist_singularity_arming_state
 - `common/scripted_triggers/016_brilliant_scientist_breakthrough_triggers.txt`
 - `common/scripted_effects/016_brilliant_scientist_project_effects.txt`
 - `common/scripted_effects/016_brilliant_scientist_breakthrough_effects.txt`
+- `common/decisions/016_brilliant_scientist_directorate_synthesis.txt`
+- `common/scripted_triggers/016_brilliant_scientist_synthesis_triggers.txt`
+- `common/scripted_effects/016_brilliant_scientist_synthesis_effects.txt`
+- `events/016_brilliant_scientist_synthesis_events.txt`
+- `common/dynamic_modifiers/016_brilliant_scientist_directorate_modifiers.txt`
 - `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`
 - `common/special_projects/projects/016_brilliant_scientist_projects.txt`
 - `common/technologies/016_brilliant_scientist_project_technologies.txt`
