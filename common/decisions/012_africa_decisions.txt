@@ -1496,7 +1496,29 @@ africa_priority_member_natural_disaster_actions_category = {
 		cost = 0
 		days_re_enable = constant:africa_natural_disaster.cooldown_days
 		complete_effect = { africa_priority_member_run_natural_disaster_ai_action = yes }
-		ai_will_do = { base = constant:africa_priority_member_ai.nature }
+		ai_will_do = {
+			base = constant:africa_priority_member_ai.nature
+			modifier = {
+				check_variable = { var = africa_priority_member_nature_power value = constant:africa_priority_member_nature_power.trace }
+				factor = constant:africa_priority_member_ai.nature_trace_factor
+			}
+			modifier = {
+				check_variable = { var = africa_priority_member_nature_power value = constant:africa_priority_member_nature_power.low }
+				factor = constant:africa_priority_member_ai.nature_low_factor
+			}
+			modifier = {
+				check_variable = { var = africa_priority_member_nature_power value = constant:africa_priority_member_nature_power.medium }
+				factor = constant:africa_priority_member_ai.nature_medium_factor
+			}
+			modifier = {
+				check_variable = { var = africa_priority_member_nature_power value = constant:africa_priority_member_nature_power.high }
+				factor = constant:africa_priority_member_ai.nature_high_factor
+			}
+			modifier = {
+				check_variable = { var = africa_priority_member_nature_power value = constant:africa_priority_member_nature_power.ancestral }
+				factor = constant:africa_priority_member_ai.nature_ancestral_factor
+			}
+		}
 	}
 }
 
