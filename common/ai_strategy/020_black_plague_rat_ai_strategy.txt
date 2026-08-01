@@ -164,3 +164,67 @@ black_plague_rat_king_ai = {
 		value = 500
 	}
 }
+
+# Government-route strategy plans. These alter template preference and front
+# requests after the King chooses a government; they never create human
+# recruitment, production, or ordinary diplomacy behavior.
+black_plague_rat_king_absolute_crown_ai = {
+	allowed = { original_tag = RTX }
+	enable = {
+		has_country_flag = black_plague_rat_king_country
+		has_country_flag = black_plague_rat_absolute_crown_route
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_brutes value = 850 }
+	ai_strategy = { type = template_prio id = rat_carrion_guard value = 650 }
+	ai_strategy = { type = force_concentration_factor value = 250 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = black_plague_rat_king_royal_node
+			is_controlled_by = ROOT
+		}
+		value = 650
+	}
+}
+
+black_plague_rat_king_council_ai = {
+	allowed = { original_tag = RTX }
+	enable = {
+		has_country_flag = black_plague_rat_king_country
+		has_country_flag = black_plague_rat_brood_council_route
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_burrowers value = 700 }
+	ai_strategy = { type = template_prio id = rat_swarm value = 550 }
+	ai_strategy = { type = spare_unit_factor value = 180 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			has_state_flag = black_plague_rat_nation_state
+			is_controlled_by = ROOT
+			NOT = { has_state_flag = black_plague_rat_king_royal_node }
+		}
+		value = 420
+	}
+}
+
+black_plague_rat_king_hierophancy_ai = {
+	allowed = { original_tag = RTX }
+	enable = {
+		has_country_flag = black_plague_rat_king_country
+		has_country_flag = black_plague_rat_breath_hierophancy_route
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = 800 }
+	ai_strategy = { type = template_prio id = rat_brutes value = 650 }
+	ai_strategy = { type = force_concentration_factor value = 180 }
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			is_coastal = yes
+			is_controlled_by = ROOT
+		}
+		value = 600
+	}
+}

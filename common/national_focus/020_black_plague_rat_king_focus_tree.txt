@@ -283,6 +283,162 @@ focus_tree = {
 		}
 	}
 
+	# Route-specific population and government policy lanes. These branches are
+	# deliberately optional side routes: the player receives one lane from the
+	# government route selected above, while the common crisis and terminal lanes
+	# remain available without hiding the route's distinct costs.
+	focus = {
+		id = black_plague_rat_crown_preserve_and_rule
+		icon = GFX_goal_generic_national_unity
+		cost = @rat_king_focus_normal
+		available = { has_country_flag = black_plague_rat_absolute_crown_route }
+		position = { x = -12 y = 10 }
+		ai_will_do = { factor = @rat_king_focus_ai_route }
+		completion_reward = {
+			set_country_flag = black_plague_rat_crown_preserve_and_rule
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+			subtract_from_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
+		}
+	}
+	focus = {
+		id = black_plague_rat_crown_granary_tithe
+		icon = GFX_goal_generic_construct_civ_factory
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_crown_preserve_and_rule }
+		position = { x = -12 y = 11 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_crown_granary_tithe
+			add_to_variable = { black_plague_rat_brood_mass = @rat_king_brood_gain }
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_crown_capital_seals
+		icon = GFX_goal_generic_fortify_city
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_crown_granary_tithe }
+		position = { x = -12 y = 12 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_crown_capital_seals
+			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_standard }
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_crown_dominion
+		icon = GFX_goal_black_plague_rat_absolute_crown
+		cost = @rat_king_focus_long
+		prerequisite = { focus = black_plague_rat_crown_capital_seals }
+		position = { x = -12 y = 13 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_crown_dominion
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+			add_to_variable = { global.black_plague_rat_king_terminal_preparation = @rat_king_terminal_preparation_gain }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_council_houses_of_memory
+		icon = GFX_focus_generic_court
+		cost = @rat_king_focus_normal
+		available = { has_country_flag = black_plague_rat_brood_council_route }
+		position = { x = 0 y = 10 }
+		ai_will_do = { factor = @rat_king_focus_ai_route }
+		completion_reward = {
+			set_country_flag = black_plague_rat_council_houses_of_memory
+			add_to_variable = { black_plague_rat_king_sentience = @rat_king_sentience_gain }
+			add_to_variable = { black_plague_rat_king_cohesion = @rat_king_cohesion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_council_shared_ration_charter
+		icon = GFX_goal_generic_construct_civ_factory
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_council_houses_of_memory }
+		position = { x = 0 y = 11 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_council_shared_ration_charter
+			subtract_from_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
+			add_to_variable = { black_plague_rat_king_cohesion = @rat_king_cohesion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_council_safeguards
+		icon = GFX_goal_generic_defence
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_council_shared_ration_charter }
+		position = { x = 0 y = 12 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_council_safeguards
+			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_standard }
+			add_to_variable = { black_plague_rat_king_cohesion = @rat_king_cohesion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_council_transparent_hunger
+		icon = GFX_goal_generic_national_unity
+		cost = @rat_king_focus_long
+		prerequisite = { focus = black_plague_rat_council_safeguards }
+		position = { x = 0 y = 13 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_council_transparent_hunger
+			add_to_variable = { black_plague_rat_king_sentience = @rat_king_sentience_gain }
+			add_to_variable = { global.black_plague_rat_king_terminal_preparation = @rat_king_terminal_preparation_gain }
+		}
+	}
+
+	focus = {
+		id = black_plague_rat_hierophant_empty_the_cities
+		icon = GFX_goal_generic_major_war
+		cost = @rat_king_focus_normal
+		available = { has_country_flag = black_plague_rat_breath_hierophancy_route }
+		position = { x = 12 y = 10 }
+		ai_will_do = { factor = @rat_king_focus_ai_route }
+		completion_reward = {
+			set_country_flag = black_plague_rat_hierophant_empty_the_cities
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+			add_to_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
+		}
+	}
+	focus = {
+		id = black_plague_rat_hierophant_ashen_liturgy
+		icon = GFX_focus_generic_vatican_agents
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_hierophant_empty_the_cities }
+		position = { x = 12 y = 11 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_hierophant_ashen_liturgy
+			add_to_variable = { black_plague_rat_king_sentience = @rat_king_sentience_gain }
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+		}
+	}
+	focus = {
+		id = black_plague_rat_hierophant_black_breath_processions
+		icon = GFX_goal_black_plague_rat_breath_hierophancy
+		cost = @rat_king_focus_normal
+		prerequisite = { focus = black_plague_rat_hierophant_ashen_liturgy }
+		position = { x = 12 y = 12 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_hierophant_black_breath_processions
+			set_global_flag = black_plague_overseas_spread_enabled
+			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_strong }
+			add_to_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
+		}
+	}
+	focus = {
+		id = black_plague_rat_hierophant_final_omen
+		icon = GFX_goal_black_plague_rat_earned_terminal_route
+		cost = @rat_king_focus_long
+		prerequisite = { focus = black_plague_rat_hierophant_black_breath_processions }
+		position = { x = 12 y = 13 }
+		completion_reward = {
+			set_country_flag = black_plague_rat_hierophant_final_omen
+			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
+			add_to_variable = { global.black_plague_rat_king_terminal_preparation = @rat_king_terminal_preparation_gain }
+			add_to_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
+		}
+	}
+
 	# Advanced royal forces.
 	focus = {
 		id = black_plague_rat_royal_armouries
