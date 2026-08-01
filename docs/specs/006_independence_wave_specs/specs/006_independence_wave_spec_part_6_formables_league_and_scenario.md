@@ -785,6 +785,8 @@ Purpose:
 
 Countries without a viable host war remain independent and receive regional threat missions.
 
+Wars of Separation evaluates one viable former-host war per released country, so multiple releases may share a surviving host in this type.
+
 ### Universal Belligerence
 
 Released countries begin in broad conflict according to a defined scenario rule.
@@ -796,6 +798,8 @@ Recommended variants within the type selector:
 - war with all nearby nonleague countries
 
 The UI must explain the selected rule clearly. The scenario should not create an unbounded every-country war without performance and diplomacy review.
+
+Universal Belligerence: Former Hosts reserves each surviving former-host target at most once per launch. A later release that shares an already reserved host receives the regional-threat result, while failed declarations release the reservation for a later eligible actor. Neighboring Releases and Nearby Nonleague States use the same bounded target-reservation contract.
 
 ### Patron Worlds
 

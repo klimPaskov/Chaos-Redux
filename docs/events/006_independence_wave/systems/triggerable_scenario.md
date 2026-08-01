@@ -46,8 +46,8 @@ The implementation has six numeric scenario families and eight player-facing sel
 
 - **Sovereign Scatter** removes release-created faction ties and seeds survival/local-diplomacy AI.
 - **Common Congress** registers every release in the Event 006 network and league, then scales charter phase and shared reserve by intensity.
-- **Wars of Separation** places each release with a viable independent former host into a defensive host war; invalid host wars become regional-threat missions.
-- **Universal Belligerence** selects one bounded rule: former hosts, neighboring releases, or nearby nonleague states. A release opens at most one war and a target can be reserved only once.
+- **Wars of Separation** places each release with a viable independent former host into a defensive host war; invalid host wars become regional-threat missions. Multiple releases may share a host here because the rule is one viable separation war per release.
+- **Universal Belligerence** selects one bounded rule: former hosts, neighboring releases, or nearby nonleague states. A release opens at most one war, and its selected target is reserved only once per launch. The Former Hosts rule applies that distinct-target reservation to surviving hosts; a later release sharing that host receives the regional-threat result.
 - **Patron Worlds** assigns at most one major patron per release, preferring matching ideology and regional reach before wider major-power reach. Patron influence and aid scale with intensity.
 - **Great Partition** expands the pre-release territory tier, increases host claims and border pressure, and opens researched ambition/formable access without weakening host-survival proof.
 
@@ -79,7 +79,7 @@ The ledger uses the final Event 006 border-arbitration decision icon, `GFX_decis
 
 ## Validation Targets
 
-Completion testing must cover all 32 selectable type/rule and intensity combinations, all 138 bound attempts, all 55 disabled rows, the 13 route-only overlays, zero-ready failure, mixed living/unready/anchor-collision failures, host-capital survival, Event 005 reserved-tag/state collisions, bounded-war uniqueness, patron reach, league counts, summary array alignment, and repeated launches after the transaction barrier resets.
+Completion testing must cover all 32 selectable type/rule and intensity combinations, all 138 bound attempts, all 55 disabled rows, the 13 route-only overlays, zero-ready failure, mixed living/unready/anchor-collision failures, host-capital survival, Event 005 reserved-tag/state collisions, Universal Former Hosts distinct-target reservation, Wars of Separation shared-host behavior, patron reach, league counts, summary array alignment, and repeated launches after the transaction barrier resets.
 
 ## Further Work
 
