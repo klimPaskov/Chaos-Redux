@@ -165,4 +165,55 @@ chaosx_disease_containment_category = {
 			modifier = { factor = 0 FROM = { black_plague_state_is_rat_controlled = yes } }
 		}
 	}
+
+	black_plague_weaponization_expand_stockpile = {
+		name = black_plague_weaponization_expand_stockpile
+		desc = black_plague_weaponization_expand_stockpile_desc
+		icon = GFX_decision_black_plague_weapon_delivery
+		visible = {
+			black_plague_weaponization_delivery_actor_is_valid = yes
+			has_country_flag = black_plague_weaponization_complete
+			has_country_flag = black_plague_weaponized_delivery_ready
+		}
+		available = { black_plague_weaponization_can_expand_stockpile = yes }
+		cancel_trigger = { NOT = { black_plague_weaponization_can_expand_stockpile = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_expand_stockpile = yes }
+		custom_cost_text = black_plague_weaponization_expand_stockpile_cost
+		days_remove = constant:black_plague_weaponization_program.stockpile_expansion_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.stockpile_expansion_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_expand_stockpile_effect
+			hidden_effect = { black_plague_weaponization_expand_stockpile = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.delivery
+			modifier = { factor = constant:black_plague_weaponization_ai.war_factor has_war = yes }
+		}
+	}
+
+	black_plague_weaponization_destroy_stockpile = {
+		name = black_plague_weaponization_destroy_stockpile
+		desc = black_plague_weaponization_destroy_stockpile_desc
+		icon = GFX_decision_black_plague_weapon_defensive_conversion
+		visible = {
+			black_plague_weaponization_delivery_actor_is_valid = yes
+			has_country_flag = black_plague_weaponization_complete
+			has_equipment = { plague_bomb_1 > 0 }
+		}
+		available = { black_plague_weaponization_can_destroy_stockpile = yes }
+		cancel_trigger = { NOT = { black_plague_weaponization_can_destroy_stockpile = yes } }
+		custom_cost_trigger = { black_plague_weaponization_can_destroy_stockpile = yes }
+		custom_cost_text = black_plague_weaponization_destroy_stockpile_cost
+		days_remove = constant:black_plague_weaponization_program.stockpile_destroy_days
+		modifier = { civilian_factory_use = constant:black_plague_weaponization_program.stockpile_destroy_civilian_factories }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_weaponization_destroy_stockpile_effect
+			hidden_effect = { black_plague_weaponization_destroy_stockpile = yes }
+		}
+		ai_will_do = {
+			base = constant:black_plague_weaponization_ai.defensive_factor
+			modifier = { factor = 2 has_government = democratic }
+			modifier = { factor = 1.5 NOT = { has_war = yes } }
+		}
+	}
 }
