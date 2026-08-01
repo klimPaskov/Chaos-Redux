@@ -1,10 +1,12 @@
 # Event 020 RTA hierarchy runtime handoff
 
+Parent follow-on note (2026-08-01): the current worktree extends this runtime handoff with three shared-category continuing actions. Distributed Instinct uses `black_plague_rat_distribute_the_nests`, Dominant Beast uses `black_plague_rat_seat_the_alpha`, and Emergent Cunning uses the selected-state `black_plague_rat_decode_route_memory` action. The latter now consumes the canonical internal-transport exposure ledger for a valid human enemy logistics target; the original ownership note below is historical for the bounded hierarchy-runtime tranche.
+
 ## Scope
 
 This handoff covers the bounded Package A runtime tranche for the shared `RTA` Rat Nation carrier.
 The patch preserves the existing two-tag model, route-module flags, cap refresh, pulse scheduler, state-marker absorption, and Rat King source selection.
-No tags, events, decisions, focus nodes, assets, models, or world-periodic on-actions were added.
+No tags, focus nodes, assets, models, or world-periodic on-actions were added in the bounded tranche recorded below. The parent follow-on adds only the three route actions named above inside the existing shared category.
 
 ## Files changed
 
@@ -62,12 +64,11 @@ The global 180-division maximum remains authoritative, and all subtractive effec
 
 ## Risks and follow-up
 
-- The Emergent `+3` route-exposure constant is declared but not consumed here because the existing spread-effects file is outside this subagent's assigned ownership and has concurrent parent edits.
+- The historical Emergent `+3` route-exposure constant remains a separate pulse tuning value. The parent follow-on's selected-state route-memory action uses its own centralized exposure amount and the canonical transport ledger; it does not bypass ordinary establishment rules.
 - The focus tree currently contains concurrent hierarchy graph work, so the parent must re-run focus inspection after its three-way route rewrite and confirm that each route writes exactly one hierarchy value.
 - No HOI4 runtime launch or live save validation was performed, in line with repository instructions.
 - No dedicated Clausewitz parser is installed in the repository, so validation is limited to targeted reference checks, brace hygiene, and read-only MCP evidence.
 
 ## Parent follow-up
 
-Wire `constant:black_plague_rat_hierarchy_route.emergent_route_exposure_gain` into the valid transport or rat-occupation route branch in the spread-effects surface when that file's ownership tranche is ready.
-Re-run the RTA focus and AI audits after the parent hierarchy graph changes and preserve the two-tag `RTA` and `RTX` invariant.
+The parent follow-on has supplied the route-memory action in the shared decision category. Re-run the RTA focus and AI audits after any future hierarchy graph changes and preserve the two-tag `RTA` and `RTX` invariant.

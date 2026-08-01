@@ -62,7 +62,7 @@ The following are explicitly outside this core-stabilization commit:
 - bespoke Rat Nation and Rat King 3D unit models, materials, rigs, walking/attack/death actions, `.mesh` and `.anim` exports, and reimport evidence are outside the current goal and remain archival production, not a runtime blocker;
 - additional triggerable scenario variants and scenario-specific narrative content;
 - deeper route branches, additional accident/court narrative, and any further aftermath expansion;
-- additional route-specific decisions, court crises, and aftermath content beyond the implemented 50-focus RTA and 70-focus RTX trees;
+- broader route-specific narrative, court-crisis presentation, and aftermath depth beyond the implemented 50-focus RTA and 70-focus RTX trees and the currently wired continuing decisions;
 - source-frame animated UI and evolution presentation packages;
 - a unique Doctor Wu report image;
 - a dedicated weapon-delivery decision icon instead of the accepted Event 20 military-acceleration art reuse;

@@ -10,6 +10,8 @@ Event 20 keeps one reusable Rat Nation carrier, `RTA`, while the Rat King remain
 
 The hierarchy focus roots are mutually exclusive. `Capped Pulses` requires one hierarchy follow-up and one of the four fixed origin terminals, so every route remains reachable without changing the two-tag country package.
 
+Each hierarchy route also has a continuing action in the existing `black_plague_rat_brood_category`. Distributed Instinct can distribute nest signals after the carrier controls more than one state, restoring Coherence and increasing the persistent cap. Dominant Beast can seat an alpha command pattern when Coherence is stable, increasing Sentience and cap while raising Hunger. Emergent Cunning can decode a selected human enemy capital, coastal, rail, or supply target beside rat-held ground; it spends Brood Mass and applies a bounded internal-transport exposure through the canonical disease ledger with a state cooldown.
+
 ## Runtime behavior
 
 - Urban `Citadel Warrens` and `Citadel Relays` add a continuing Brood Mass pulse contribution, a capped division-cap bonus, and a physical exposure bonus from rat-controlled sources.
@@ -31,7 +33,8 @@ After the Rat King loses every controlled state, the idempotent defeat resolver 
 - `common/national_focus/020_black_plague_rat_focus_tree.txt` owns route focus flags and one-time rewards.
 - `common/scripted_effects/020_black_plague_rat_effects.txt` owns persistent cap bonuses and pulse mass.
 - `common/scripted_effects/020_black_plague_spread_effects.txt` owns route-proven exposure modifiers.
-- `common/scripted_triggers/020_black_plague_rat_triggers.txt` owns hierarchy predicates and merger-cooldown readiness.
+- `common/scripted_triggers/020_black_plague_rat_triggers.txt` owns hierarchy predicates, merger-cooldown readiness, and continuing-action target gates.
+- `common/decisions/020_black_plague_rat_decisions.txt` owns the three route-locked continuing actions inside the shared category.
 - `common/ai_strategy/020_black_plague_rat_ai_strategy.txt` biases existing rat templates toward cities, rural corridors, coasts, or army fronts after a route is completed.
 
 ## UI and asset contract
@@ -40,4 +43,4 @@ The route modules reuse the existing RTA focus icons and shared disease mapmode 
 
 ## Future extension
 
-A later content pass can add further route-specific scripted decisions (city undermining, granary migration, cargo stowaway, or depot collapse) using the same shared disease category. Such decisions must select a real state, pay material and time costs, and remain gated by the corresponding route flag and live Evolution state.
+A later content pass can add further route-specific scripted decisions (city undermining, granary migration, cargo stowaway, or depot collapse) using the same shared disease category. Such decisions must select a real state, pay material and time costs, and remain gated by the corresponding route flag and live Evolution state. The three hierarchy actions above are already the minimum continuing route layer; further actions should not duplicate their cooldowns or bypass the canonical spread ledger.

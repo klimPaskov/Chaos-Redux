@@ -112,6 +112,9 @@ Implementation status note: Crown Strike and Seal Royal Burrows are present in t
 | Scatter Brood | country | low Coherence allowed | more weak swarms | split and Hunger risk |
 | Devour Rival | adjacent weaker Rat Nation | dominance standoff | accelerates absorption | failure damages Coherence |
 | Resist Absorption | weaker Rat Nation | near-equal score, state objective | delays or reverses merge | commits army and territory |
+| Distribute the Nest Signals | RTA country with more than one controlled state | Distributed Instinct, Brood Mass, open cooldown | restores Coherence and raises capped force capacity | spends mass and remains unavailable during the signal cooldown |
+| Seat the Alpha | RTA country with stable Coherence | Dominant Beast, Brood Mass, open cooldown | raises Sentience and capped force capacity while marking King candidacy | raises Hunger and spends mass and time |
+| Decode the Route Memory | selected human enemy logistics state beside rat-held ground | Emergent Cunning, at war, Brood Mass, valid transport target | applies bounded internal-transport exposure through the shared disease ledger and raises Sentience | target cooldown and normal exposure rules prevent free global spread |
 
 ## Rat King actions
 

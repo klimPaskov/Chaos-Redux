@@ -812,6 +812,9 @@ black_plague_rat_initialize_country = {
 	clr_country_flag = black_plague_rat_concentrate_brood_cooldown
 	clr_country_flag = black_plague_rat_scatter_brood_cooldown
 	clr_country_flag = black_plague_rat_devour_rival_cooldown
+	clr_country_flag = black_plague_rat_distributed_nests_cooldown
+	clr_country_flag = black_plague_rat_dominant_alpha_cooldown
+	clr_country_flag = black_plague_rat_route_memory_cooldown
 	set_variable = { black_plague_rat_slot_id = black_plague_rat_selected_slot }
 	clear_variable = black_plague_rat_retirement_date
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
@@ -1280,6 +1283,69 @@ black_plague_rat_devour_rival = {
 		set_temp_variable = { black_plague_rat_devour_cooldown_days = constant:black_plague_rat_decision.devour_rival_cooldown_days }
 		set_country_flag = { flag = black_plague_rat_devour_rival_cooldown days = black_plague_rat_devour_cooldown_days }
 		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# COUNTRY scope. Distributed Instinct trades mass for a wide signal lattice.
+# The cap gain is persistent, while the timed flag prevents repeated clicks
+# from turning the route into an uncapped force loop.
+black_plague_rat_distribute_the_nests = {
+	if = {
+		limit = { black_plague_rat_country_can_distribute_the_nests = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.distributed_nests_mass_cost }
+		add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.distributed_nests_coherence_gain }
+		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.distributed_nests_division_cap_gain }
+		set_temp_variable = { black_plague_rat_distributed_nests_cooldown_days = constant:black_plague_rat_decision.distributed_nests_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_distributed_nests_cooldown days = black_plague_rat_distributed_nests_cooldown_days }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		black_plague_rat_refresh_division_cap = yes
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# COUNTRY scope. Dominant Beast seats one command pattern at the cost of
+# hunger. The extra Sentience and cap feed the existing King-candidacy and
+# capped-pulse systems without creating a second country.
+black_plague_rat_seat_the_alpha = {
+	if = {
+		limit = { black_plague_rat_country_can_seat_the_alpha = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.dominant_alpha_mass_cost }
+		add_to_variable = { black_plague_rat_sentience = constant:black_plague_rat_decision.dominant_alpha_sentience_gain }
+		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.dominant_alpha_division_cap_gain }
+		add_to_variable = { black_plague_rat_hunger = constant:black_plague_rat_decision.dominant_alpha_hunger_gain }
+		set_country_flag = black_plague_rat_king_candidate
+		set_temp_variable = { black_plague_rat_dominant_alpha_cooldown_days = constant:black_plague_rat_decision.dominant_alpha_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_dominant_alpha_cooldown days = black_plague_rat_dominant_alpha_cooldown_days }
+		clamp_variable = { var = black_plague_rat_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		black_plague_rat_refresh_division_cap = yes
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# COUNTRY scope. Emergent Cunning spends mass to decode a real transport
+# target. FROM remains the selected state, so the exposure route is recorded
+# once by the shared disease ledger and receives the normal cooldown.
+black_plague_rat_decode_route_memory = {
+	if = {
+		limit = {
+			black_plague_rat_country_can_decode_route_memory = yes
+			FROM = { black_plague_rat_state_can_decode_route_memory = yes }
+		}
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.emergent_route_memory_mass_cost }
+		add_to_variable = { black_plague_rat_sentience = constant:black_plague_rat_decision.emergent_route_memory_sentience_gain }
+		set_temp_variable = { black_plague_rat_route_memory_cooldown_days = constant:black_plague_rat_decision.emergent_route_memory_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_route_memory_cooldown days = black_plague_rat_route_memory_cooldown_days }
+		FROM = {
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.emergent_route_memory_exposure }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+			black_plague_apply_exposure = yes
+			set_temp_variable = { black_plague_route_memory_state_cooldown_days = constant:black_plague_rat_decision.emergent_route_memory_duration_days }
+			set_state_flag = { flag = black_plague_rat_route_memory_cooldown days = black_plague_route_memory_state_cooldown_days }
+		}
+		clamp_variable = { var = black_plague_rat_sentience min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		set_global_flag = black_plague_mapmode_dirty
 	}
 }

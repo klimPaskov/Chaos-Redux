@@ -44,6 +44,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 - The RTA brood category also exposes `Strip the Outer Districts` and state-targeted `Establish a Burrow Node`. Feeding trades Hunger for Brood Mass and visible infestation/devastation in one rat-held state under a timed scar/cooldown; Burrow Nodes spend Brood Mass and return local Brood Mass plus Coherence during their timed pulse window. Both remain inside the existing category and use only the reusable `RTA` carrier.
 - RTA can also `Follow the Refugee Road` into a selected human enemy state adjacent to rat-held ground. The decision spends Brood Mass, applies the canonical refugee-movement exposure with Rat Occupation provenance, and sets a state cooldown so the route cannot cascade within one pulse.
 - The same RTA category now exposes `Concentrate Brood`, `Scatter Brood`, `Devour Rival`, and state-targeted `Resist Absorption`. Concentration delays the shared growth clock while raising the persistent cap and Coherence; scattering spends low Coherence for a capped two-formation burst and adds Hunger; Devour Rival clears the merger clock for one immediate state-marker absorption attempt; Resist Absorption spends carrier mass to reinforce a weaker marker and set a timed shield that the automatic merger comparison respects.
+- Each RTA hierarchy route now has a continuing choice in the same category. Distributed Instinct can distribute nest signals across more than one controlled state for Coherence and capped capacity; Dominant Beast can seat an alpha command pattern for Sentience and capacity at a Hunger cost; Emergent Cunning can decode a selected human enemy rail, supply, capital, or coastal logistics state beside rat-held ground through the canonical internal-transport exposure ledger.
 - The RTX court's Royal Strike is now a state-targeted wartime operation. It selects a human-controlled enemy state, spends Dominion and Brood Mass, reserves one civilian factory for 45 days, applies the canonical Rat Occupation exposure, records the selected state as a short-lived event target, and reports the strike to that controller through `chaosx.nr20.76`; separate country and state cooldowns prevent repeat targeting for 90 days.
 - The weaponization category now exposes paid post-project stockpile controls. Expand the native payload reserve in one-batch, 60-day runs that consume support equipment, motorized transport, command power, fuel, and two civilian factories while raising risk; destroy the entire reserve in a guarded 30-day operation that consumes support equipment, command power, fuel, lowers risk, and closes the accident scheduler until another expansion.
 - RTA and RTX focus and decision division-cap rewards now write to `black_plague_rat_division_cap_bonus`; the pulse refresh reapplies that persistent bonus instead of overwriting it when controlled-state counts are recalculated.
@@ -57,7 +58,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 ## Validation evidence
 
 - The touched Event 020 script and localisation files have balanced braces and no unsupported `<=` or `>=` operators.
-- The Event 020 namespace contains 48 unique event IDs with no duplicate IDs.
+- The Event 020 namespace contains 53 unique event IDs with no duplicate IDs.
 - Player-facing Event 020 localisation keys have no duplicate keys; hidden scheduler callbacks intentionally have no title or description keys.
 - Event 020 localisation files retain UTF-8 BOM encoding.
 - The mandatory catalog exporter completed successfully after the workbook update and rewrote all three CSV exports.
@@ -69,7 +70,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 ## Remaining blockers and deviations
 
-- The RTA and RTX trees now meet the accepted focus-count floors at 50 and 70 nodes. Route-specific decisions and court operations are wired; remaining narrative depth is primarily report text, dedicated crisis art, and live route validation.
+- The RTA and RTX trees now meet the accepted focus-count floors at 50 and 70 nodes. Route-specific decisions, the three hierarchy actions, and court operations are wired; remaining narrative depth is primarily report text, dedicated crisis art, and live route validation.
 - The accepted narrative and asset package still has queued outbreak, Rat Nation, weapon-delivery, reconstruction, crisis-seal, and animated Rat King portrait surfaces. The shared-board rat-infestation source-frame badge, five evolution report cards, Severe Crisis, Doctor Wu, Crown Strike, route crises, Rat King aftermath, Royal Burrow aftermath, and slot 087 art/text/audio wiring are promoted, but broader dedicated art/depth remains queued.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
