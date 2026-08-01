@@ -267,3 +267,33 @@ country_event = {
 		}
 	}
 }
+
+# Event 030's temporary traveler contact becomes a durable temporal lead when
+# it reaches an active Event 016 host. This report records the cross-event clue
+# once; it grants no project stage, reward, log row, evolution, or claim.
+country_event = {
+	id = chaosx.nr16.16
+	title = chaosx.nr16.16.t
+	desc = {
+		trigger = { has_idea = time_traveler }
+		text = chaosx.nr16.16.current.d
+	}
+	desc = chaosx.nr16.16.archived.d
+	picture = GFX_report_event_time_traveler
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_time_traveler_contact
+		has_country_flag = brilliant_scientist_time_traveler_contact_pending
+		NOT = { has_country_flag = brilliant_scientist_time_traveler_contact_report_seen }
+	}
+
+	option = {
+		name = chaosx.nr16.16.a
+		custom_effect_tooltip = brilliant_scientist_time_traveler_contact_effect_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_time_traveler_contact_pending
+			set_country_flag = brilliant_scientist_time_traveler_contact_report_seen
+		}
+	}
+}
