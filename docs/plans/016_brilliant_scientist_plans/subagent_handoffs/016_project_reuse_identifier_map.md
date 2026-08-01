@@ -303,7 +303,7 @@ The lifecycle files are concurrent implementation work. Event 016 integration de
 
 ### 13. Alien arms and exotic-energy weapons
 
-- **Reuse cross-event gate:** Event 025 Antarctic UFO success idea <code>antarctica_success</code> is the current stable recovered-artifact prerequisite.
+- **Reuse cross-event gate:** Event 025 Antarctic UFO success idea <code>antarctica_success</code> remains the actual recovered-artifact prerequisite. Its qualifying success now also presents the bounded Event 016 report <code>chaosx.nr16.17</code> and writes the persistent receipt <code>brilliant_scientist_alien_artifact_contact</code>; the report does not replace the idea gate or assert an origin conclusion.
 - **Conditional Event 036 hook:** no stable live recovery marker was found. If Event 036 supplies an authenticated spacecraft/artifact outcome, set exact flag <code>brilliant_scientist_alien_spacecraft_recovered</code> in that narrow outcome. Do not infer it from event history or generic chaos.
 - **New project:** <code>sp_brilliant_scientist_alien_arms</code>; <code>specialization_nuclear</code>, <code>nuclear_facility</code>; breakthrough 3; long/large; steel 4, tungsten 7, chromium 6, rubber 3.
 - **New outputs:** <code>brilliant_scientist_exotic_guard_tech</code>; unit <code>kruger_exotic_guard</code>; <code>kruger_exotic_arms_equipment</code>/<code>kruger_exotic_arms_equipment_1</code>.
@@ -435,7 +435,7 @@ Read-only scans covered:
 
 Findings:
 
-- No live Chaos Redux or vanilla definition exists for any reserved <code>sp_brilliant_scientist_*</code> project, <code>brilliant_scientist_*_tech</code> operational technology, <code>kruger_*</code> unit/equipment identifier, new wrapper, Paleogenetic/Xenobiological site/control marker, Temporal cross-event flag, alien-spacecraft flag, or Singularity pending/source adapter identifier in this handoff.
+- No live Chaos Redux or vanilla definition exists for any reserved <code>sp_brilliant_scientist_*</code> project, <code>brilliant_scientist_*_tech</code> operational technology, <code>kruger_*</code> unit/equipment identifier, new wrapper, Paleogenetic/Xenobiological site/control marker, alien-spacecraft flag, or Singularity pending/source adapter identifier in this handoff. The Temporal cross-event flag is now implemented in the Event 030/Event 016 bounded receipt described above.
 - No <code>KRG</code> country definition exists in Chaos Redux or vanilla. The tag is clear in the inspected approved reference mods as well.
 - Existing radar, rocket, nuclear, biological-agent, delivery-technology, bioweapon equipment, containment, contamination, Deaths, and Condemnation identifiers are live and must be reused.
 - <code>sp_mengele_cloning</code> is live but is deliberately excluded from reuse because its country-specific availability and output contract do not represent Event 016.

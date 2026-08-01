@@ -2677,6 +2677,7 @@ brilliant_scientist_appoint_kruger_from_opening = {
 			set_country_flag = brilliant_scientist_context_briefing_pending
 			country_event = { id = chaosx.nr16.4 days = constant:brilliant_scientist_directorate_timing.context_briefing_days }
 		}
+		brilliant_scientist_try_schedule_alien_artifact_contact = yes
 		if = {
 			limit = {
 				check_variable = { brilliant_scientist_opening_appointment_committed = constant:brilliant_scientist_value.one }
@@ -2872,6 +2873,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 		set_temp_variable = { brilliant_scientist_transfer_impossible_lecture_pending = constant:brilliant_scientist_value.zero }
 		set_temp_variable = { brilliant_scientist_transfer_cross_domain_review_pending = constant:brilliant_scientist_value.zero }
 		set_temp_variable = { brilliant_scientist_transfer_time_traveler_contact_pending = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_transfer_alien_artifact_contact_pending = constant:brilliant_scientist_value.zero }
 		if = {
 			limit = { has_country_flag = brilliant_scientist_context_briefing_pending }
 			set_temp_variable = { brilliant_scientist_transfer_context_briefing_pending = constant:brilliant_scientist_value.one }
@@ -2896,6 +2898,10 @@ brilliant_scientist_transfer_kruger_atomically = {
 		if = {
 			limit = { has_country_flag = brilliant_scientist_time_traveler_contact_pending }
 			set_temp_variable = { brilliant_scientist_transfer_time_traveler_contact_pending = constant:brilliant_scientist_value.one }
+		}
+		if = {
+			limit = { has_country_flag = brilliant_scientist_alien_artifact_contact_pending }
+			set_temp_variable = { brilliant_scientist_transfer_alien_artifact_contact_pending = constant:brilliant_scientist_value.one }
 		}
 		for_each_loop = {
 			array = brilliant_scientist_breakthrough_reported_families
@@ -3021,6 +3027,8 @@ brilliant_scientist_transfer_kruger_atomically = {
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_assistant_cabinet_mediated } } set_country_flag = brilliant_scientist_assistant_cabinet_mediated }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_time_traveler_contact } } set_country_flag = brilliant_scientist_time_traveler_contact }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_time_traveler_contact_report_seen } } set_country_flag = brilliant_scientist_time_traveler_contact_report_seen }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_alien_artifact_contact } } set_country_flag = brilliant_scientist_alien_artifact_contact }
+			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_alien_artifact_contact_report_seen } } set_country_flag = brilliant_scientist_alien_artifact_contact_report_seen }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_resolved } } set_country_flag = brilliant_scientist_impossible_lecture_resolved }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_public } } set_country_flag = brilliant_scientist_impossible_lecture_public }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_impossible_lecture_military } } set_country_flag = brilliant_scientist_impossible_lecture_military }
@@ -3051,6 +3059,11 @@ brilliant_scientist_transfer_kruger_atomically = {
 				limit = { check_variable = { brilliant_scientist_transfer_time_traveler_contact_pending = constant:brilliant_scientist_value.one } }
 				set_country_flag = brilliant_scientist_time_traveler_contact_pending
 				country_event = { id = chaosx.nr16.16 days = constant:brilliant_scientist_directorate_timing.time_traveler_contact_report_days }
+			}
+			if = {
+				limit = { check_variable = { brilliant_scientist_transfer_alien_artifact_contact_pending = constant:brilliant_scientist_value.one } }
+				set_country_flag = brilliant_scientist_alien_artifact_contact_pending
+				country_event = { id = chaosx.nr16.17 days = constant:brilliant_scientist_directorate_timing.alien_artifact_contact_report_days }
 			}
 			for_each_loop = {
 				array = brilliant_scientist_transfer_breakthrough_reported_families

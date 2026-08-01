@@ -145,6 +145,28 @@ brilliant_scientist_clear_context_pending_state = {
 	clr_country_flag = brilliant_scientist_context_assistant_conflict_pending
 	clr_country_flag = brilliant_scientist_impossible_lecture_pending
 	clr_country_flag = brilliant_scientist_time_traveler_contact_pending
+	clr_country_flag = brilliant_scientist_alien_artifact_contact_pending
+}
+
+# COUNTRY scope. Event 025 can resolve before or after Kruger is appointed. The
+# permanent Antarctic idea is the evidence input; this helper only creates the
+# one-time Event 016 warning receipt for an active carrier.
+brilliant_scientist_try_schedule_alien_artifact_contact = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_idea = antarctica_success
+			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			NOT = { has_country_flag = brilliant_scientist_alien_artifact_contact }
+			NOT = { has_country_flag = brilliant_scientist_alien_artifact_contact_report_seen }
+		}
+		set_country_flag = brilliant_scientist_alien_artifact_contact
+		set_country_flag = brilliant_scientist_alien_artifact_contact_pending
+		country_event = {
+			id = chaosx.nr16.17
+			days = constant:brilliant_scientist_directorate_timing.alien_artifact_contact_report_days
+		}
+	}
 }
 
 # COUNTRY scope. The Evolution I report is scheduled only after both context
