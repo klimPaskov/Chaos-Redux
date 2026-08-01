@@ -1,0 +1,276 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT THE REACTOR SHIFT TRIGGERS
+# ============================================================================
+# Technical governance admission and generation-bound receipt checks. The row
+# only appears for the Manchurian Reactor Keeps technate after a Load Shedding
+# state memory closes on a current native power or industrial state.
+# Every delayed lane revalidates the same state, owner, controller, neighbor,
+# and load receipt.
+
+fallout_event_pilot_reactor_shift_state_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { air_winter_shelter_capacity value = constant:fallout_event_810_threshold.minimum_state_shelter compare = greater_than_or_equals }
+	check_variable = { fallout_state_supply_access_current value = constant:fallout_event_810_threshold.minimum_state_supply compare = greater_than_or_equals }
+	check_variable = { air_winter_adaptation value = constant:fallout_event_810_threshold.minimum_state_adaptation compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_810_threshold.minimum_state_disease compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_810_threshold.maximum_state_disease compare = less_than }
+	check_variable = { air_winter_exposure value = constant:fallout_event_810_threshold.minimum_state_exposure compare = greater_than_or_equals }
+	check_variable = { air_winter_exposure value = constant:fallout_event_810_threshold.maximum_state_exposure compare = less_than }
+	check_variable = { state_population_k value = constant:fallout_event_810_threshold.minimum_population_k compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	has_state_flag = fallout_event_803_memory_closed
+	OR = {
+		check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_810_threshold.minimum_industry compare = greater_than_or_equals }
+		check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_810_threshold.minimum_arms_factory compare = greater_than_or_equals }
+	}
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+	owner = {
+		fallout_event_country_can_receive_ordinary_event = yes
+		has_variable = fallout_government_archetype
+		check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.technate compare = equals }
+		has_country_flag = fallout_event_366_memory_closed
+		has_variable = fallout_reactor_shift_safety_legitimacy_current
+		has_variable = fallout_reactor_shift_operator_fatigue_current
+		OR = {
+			has_country_flag = fallout_load_shedding_hospital_priority_memory
+			has_country_flag = fallout_load_shedding_food_priority_memory
+			has_country_flag = fallout_load_shedding_industry_priority_memory
+			has_country_flag = fallout_load_shedding_defense_priority_memory
+		}
+		check_variable = { fallout_reactor_shift_safety_legitimacy_current value = constant:fallout_event_810_threshold.minimum_safety_legitimacy compare = greater_than_or_equals }
+		check_variable = { fallout_reactor_shift_operator_fatigue_current value = constant:fallout_event_810_threshold.minimum_operator_fatigue compare = greater_than_or_equals }
+	}
+	NOT = { has_state_flag = fallout_event_810_registry_reserved }
+	NOT = { has_state_flag = fallout_event_810_registry_committed }
+	NOT = { has_state_flag = fallout_event_810_memory_closed }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_project }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_completed }
+}
+
+fallout_event_810_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_810_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_810_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_reactor_shift_state_is_current = yes
+	}
+	check_variable = { fallout_event_810_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_810_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_810_negotiate_safe_roster_affordable = yes
+		fallout_event_810_compel_duty_roster_affordable = yes
+		fallout_event_810_cooldown_shutdown_affordable = yes
+		fallout_event_810_recruit_foreign_team_affordable = yes
+	}
+}
+
+fallout_event_810_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_government_archetype
+	check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.technate compare = equals }
+	has_variable = fallout_country_memory_id
+	check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.manchurian_reactor_keeps compare = equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_810_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_810_threshold.maximum_campaign_day compare = less_than }
+	has_variable = fallout_event_810_candidate_state_id
+	check_variable = { fallout_event_810_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_variable = fallout_reactor_shift_safety_legitimacy_current
+	has_variable = fallout_reactor_shift_operator_fatigue_current
+	check_variable = { fallout_reactor_shift_safety_legitimacy_current value = constant:fallout_event_810_threshold.minimum_safety_legitimacy compare = greater_than_or_equals }
+	check_variable = { fallout_reactor_shift_operator_fatigue_current value = constant:fallout_event_810_threshold.minimum_operator_fatigue compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_810_threshold.minimum_country_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_810_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_810_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_region_id value = constant:fallout_region.east_asia compare = equals }
+	has_country_flag = fallout_event_366_memory_closed
+	OR = {
+		has_country_flag = fallout_load_shedding_hospital_priority_memory
+		has_country_flag = fallout_load_shedding_food_priority_memory
+		has_country_flag = fallout_load_shedding_industry_priority_memory
+		has_country_flag = fallout_load_shedding_defense_priority_memory
+	}
+	fallout_event_810_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_810_chain_committed }
+	NOT = { has_country_flag = fallout_event_810_pending }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_810_candidate_state_id compare = equals }
+		fallout_event_pilot_reactor_shift_state_is_current = yes
+	}
+}
+
+fallout_event_810_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.reactor_shift_human compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_810_country_is_current = yes
+	fallout_event_810_opening_target_is_current = yes
+}
+
+fallout_event_810_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.reactor_shift_ai compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_810_country_is_current = yes
+	fallout_event_810_opening_target_is_current = yes
+}
+
+fallout_event_810_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { state_population_k value = constant:fallout_event_810_threshold.minimum_population_k compare = greater_than }
+	owner = { has_country_flag = fallout_event_366_memory_closed }
+	has_state_flag = fallout_event_803_memory_closed
+	owner = {
+		has_variable = fallout_country_memory_id
+		check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.manchurian_reactor_keeps compare = equals }
+	}
+	NOT = { has_state_flag = fallout_event_810_memory_closed }
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+	OR = {
+		check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_810_threshold.minimum_industry compare = greater_than_or_equals }
+		check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_810_threshold.minimum_arms_factory compare = greater_than_or_equals }
+	}
+}
+
+fallout_event_810_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_810_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_810_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_810_registry_state_is_current = yes
+	}
+	check_variable = { fallout_event_810_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_810_registry_is_current = {
+	has_variable = fallout_event_810_registry_generation
+	has_variable = fallout_event_810_registry_owner
+	has_variable = fallout_event_810_candidate_id
+	has_variable = fallout_event_810_registry_target_type
+	has_variable = fallout_event_810_registry_target
+	has_variable = fallout_event_810_target_state_id
+	has_variable = fallout_event_810_selected_branch
+	has_variable = fallout_event_810_result_outcome
+	has_variable = fallout_event_810_result_generation
+	has_variable = fallout_event_810_frozen_generation
+	has_variable = fallout_event_810_frozen_owner
+	has_variable = fallout_event_810_frozen_controller
+	has_variable = fallout_event_810_frozen_shelter
+	has_variable = fallout_event_810_frozen_supply
+	has_variable = fallout_event_810_frozen_adaptation
+	has_variable = fallout_event_810_frozen_exposure
+	has_variable = fallout_event_810_frozen_disease
+	has_variable = fallout_event_810_frozen_neighbor_state_id
+	has_variable = fallout_event_810_frozen_neighbor_owner
+	has_variable = fallout_event_810_frozen_neighbor_controller
+	check_variable = { fallout_event_810_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_810_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_810_candidate_id value = constant:fallout_event_candidate_pilot.reactor_shift_candidate_id compare = equals }
+	check_variable = { fallout_event_810_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_810_registry_target value = fallout_event_810_target_state_id compare = equals }
+	check_variable = { fallout_event_810_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_810_result_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_810_frozen_neighbor_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_country_flag = fallout_event_810_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_810_target_state_id compare = equals }
+		fallout_event_810_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_810_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_810_frozen_controller value = CONTROLLER compare = equals }
+	}
+	var:fallout_event_810_frozen_neighbor_state_id = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		check_variable = { var = ROOT.fallout_event_810_frozen_neighbor_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_810_frozen_neighbor_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_810_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_810_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_810_branch.upper_bound compare = less_than }
+	fallout_event_810_registry_is_current = yes
+}
+
+fallout_event_810_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_810_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_810_branch.upper_bound compare = less_than }
+	fallout_event_810_registry_is_current = yes
+}
+
+fallout_event_810_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.reactor_shift_cleanup compare = equals }
+	fallout_event_810_registry_is_current = yes
+}
+
+fallout_event_810_negotiate_safe_roster_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_810_cost.negotiate_safe_roster_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_810_cost.negotiate_safe_roster_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_810_cost.negotiate_safe_roster_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_810_compel_duty_roster_affordable = {
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_810_cost.compel_duty_roster_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_810_cost.compel_duty_roster_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_810_cost.compel_duty_roster_cohesion compare = greater_than_or_equals }
+}
+fallout_event_810_cooldown_shutdown_affordable = {
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_810_cost.cooldown_shutdown_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_810_cost.cooldown_shutdown_power compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_810_cost.cooldown_shutdown_medicine compare = greater_than_or_equals }
+}
+fallout_event_810_recruit_foreign_team_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_810_cost.recruit_foreign_team_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_810_cost.recruit_foreign_team_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_810_cost.recruit_foreign_team_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_810_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { fallout_event_810_requested_branch value = constant:fallout_event_810_branch.negotiate_safe_roster compare = equals } } fallout_event_810_negotiate_safe_roster_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_810_requested_branch value = constant:fallout_event_810_branch.compel_duty_roster compare = equals } } fallout_event_810_compel_duty_roster_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_810_requested_branch value = constant:fallout_event_810_branch.cooldown_shutdown compare = equals } } fallout_event_810_cooldown_shutdown_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_810_requested_branch value = constant:fallout_event_810_branch.recruit_foreign_team compare = equals } } fallout_event_810_recruit_foreign_team_affordable = yes }
+}
+
+# End of The Reactor Shift triggers.

@@ -212,3 +212,15 @@ Successor package production, player materialization, general allocation, countr
 | Load Shedding localisation and Event Log | `localisation/english/fallout_world_end_load_shedding_l_english.yml`, `common/scripted_localisation/fallout_world_end_load_shedding_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | Load Shedding art and workbook | `docs/assets/803_load_shedding/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/load_shedding/report_event_fallout_load_shedding.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-803` |
 | Load Shedding status boundary | dormant source package with four sector-priority branches, hidden-AI parity, 28-day result, 240-day first-winter callback, bounded Deaths effects, sector memories, Event Log history `9192`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Reactor Shift source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| Reactor Shift design | `docs/specs/air_cleanliness_fallout_specs/specs/89_reviewed_archetype_reactor_shift.md` |
+| Reactor Shift runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REACTOR_SHIFT_CHAIN_PROOF.md` |
+| Reactor Shift gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_reactor_shift_event_triggers.txt`, `common/scripted_effects/fallout_world_end_reactor_shift_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_reactor_shift_dynamic_modifiers.txt` |
+| Reactor Shift constants and registry | `common/script_constants/fallout_world_end_reactor_shift_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| Reactor Shift localisation and Event Log | `localisation/english/fallout_world_end_reactor_shift_l_english.yml`, `common/scripted_localisation/fallout_world_end_reactor_shift_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| Reactor Shift art and workbook | `docs/assets/810_reactor_shift/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/reactor_shift/report_event_fallout_reactor_shift.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-810` |
+| Reactor Shift status boundary | dormant source package with four operator branches, hidden-AI parity, 35-day result, 270-day first-winter callback, bounded Deaths effects, operator memory, Event Log history `9193`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
