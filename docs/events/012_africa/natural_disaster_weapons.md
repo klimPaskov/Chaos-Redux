@@ -8,7 +8,7 @@ Both surfaces use the shared timed-country/country target contract so human and 
 
 ## Package-specific invocation names
 
-The two decisions keep one shared mechanic and one shared target store, but their descriptions identify the promoted package's bounded nature tradition. The labels are presentation only: authority, route, ecological pressure, target size, costs, severity, cleanup, and Event 013 dispatch remain governed by the shared scripted effects.
+The two decisions keep one shared mechanic and one shared target store, but their arsenal page, launch tooltip, and descriptions identify the promoted package's bounded nature tradition. The labels are presentation only: authority, route, ecological pressure, target size, costs, severity, cleanup, and Event 013 dispatch remain governed by the shared scripted effects.
 
 | Package | Visible invocation |
 | --- | --- |
