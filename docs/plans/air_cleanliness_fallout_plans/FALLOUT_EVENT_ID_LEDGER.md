@@ -1,8 +1,10 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after Permit Market
+## Current reconciliation after Doctor's Coup
 
-The living-world pilot now contains `579` defined event blocks across the reviewed ordinary range through `704`, including the dormant Permit Market tranche at `698` through `704`. The current reviewed ordinary row count is `71`. Permit Market uses candidate `698`, transaction `710071`, route `7174`, and survivor Event Log history `9177`. The reserved route upper bound is `7175`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `586` defined event blocks across the reviewed ordinary range through `711`, including the dormant Doctor's Coup tranche at `705` through `711`. The current reviewed ordinary row count is `72`. Doctor's Coup uses candidate `705`, transaction `710072`, route `7176`, and survivor Event Log history `9178`. The reserved route upper bound is `7177`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+
+Doctor's Coup is the Quarantine follow-up to Permit Market. It selects one current native Air Winter state with the prior memory closed and freezes owner, controller, generation, shelter, supply, adaptation, exposure, disease, public-health, grievance, medical-authority, civil-legitimacy, fatigue, coup-risk, and cause-memory receipts. Accept Medical Rule, Build a Medical Coalition, Arrest the Medical Leadership, and Call a Public Vote share a `30` day result and `240` day callback. Results and callbacks change Air Winter, Supply Access, Medicine, Recognition, Cohesion, public health, grievance, medical authority, civil legitimacy, medical fatigue, coup risk, cause memory, government archetype, and bounded Deaths loss. The chain writes survivor-country Event Log memory only, uses dedicated report art, and remains dormant behind the unset scheduler activation flags. Its dedicated proof is `FALLOUT_DOCTORS_COUP_CHAIN_PROOF.md`.
 
 Permit Market is the Quarantine follow-up to False Positive. It selects one current native Air Winter state with the prior memory closed and freezes owner, controller, generation, shelter, supply, adaptation, exposure, disease, public-health, grievance, reliability, compensation, fatigue, backlog, and cause-memory receipts. Issue Local Passes, Audit Every Register, Delegate Permits to the Wards, and Sell Temporary Permits share an `18` day result and `210` day callback. Results and callbacks change Air Winter, Supply Access, Medicine, Recognition, Cohesion, public health, movement grievance, registry reliability, compensation, fatigue, backlog, cause memory, and bounded Deaths loss. The chain writes survivor-country Event Log memory only, uses dedicated report art, and remains dormant behind the unset scheduler activation flags. Its dedicated proof is `FALLOUT_PERMIT_MARKET_CHAIN_PROOF.md`.
 
@@ -853,4 +855,18 @@ The asset evidence is `docs/assets/698_permit_market/` with source, processed PN
 
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_PERMIT_MARKET_CHAIN_PROOF.md`.
 
-The documented living-world total is now `579` and the countable Fallout living-world total remains `0 of 660`.
+The documented living-world total was `579` before Doctor's Coup and the countable Fallout living-world total remains `0 of 660`.
+
+## Doctor's Coup tranche
+
+Doctor's Coup adds dormant suffixes `705` through `711` with candidate id `705`, transaction key `710072`, route `7176`, and history `9178`.
+
+The human opening is `705`, the hidden-AI opening is `706`, the human and hidden-AI delayed results are `707` and `708`, the human and hidden-AI callbacks are `709` and `710`, and cleanup is `711`.
+
+The row requires a current-generation owner-controlled Quarantine state with a completed Permit Market memory, a produced Air Winter snapshot, Shelter Capacity, Supply Access, Adaptation, bounded Exposure and Disease Pressure, surviving population, and at least one affordable branch. It chooses the lowest eligible native state id and freezes the state, owner, controller, generation, Air Winter values, public-health ledgers, grievance, medical authority, civil legitimacy, medical fatigue, coup risk, and cause memory.
+
+The chain carries Accept Medical Rule, Build a Medical Coalition, Arrest the Medical Leadership, and Call a Public Vote branches with exact costs, deterministic result and callback grading, a 30-day result, a 240-day hospital review callback, bounded Deaths effects, infrastructure damage on result failure, government-archetype and civil-authority memories, Event Log history `9178`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/705_doctors_coup/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-705` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_DOCTORS_COUP_CHAIN_PROOF.md`.

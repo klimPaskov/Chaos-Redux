@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after Permit Market
+## Current reconciliation after Doctor's Coup
 
-The reviewed candidate producer now covers `71` ordinary dormant rows through Permit Market candidate `698`, with `579` defined event blocks through `chaosx.fallout.704` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7175`. Candidate 698 uses transaction `710071`, route `7174`, and survivor Event Log history `9177`. The producer selects the lowest eligible native Quarantine Air Winter state after a closed False Positive memory and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+The reviewed candidate producer now covers `72` ordinary dormant rows through Doctor's Coup candidate `705`, with `586` defined event blocks through `chaosx.fallout.711` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7177`. Candidate 705 uses transaction `710072`, route `7176`, and survivor Event Log history `9178`. The producer selects the lowest eligible native Quarantine Air Winter state after a closed Permit Market memory and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+
+Doctor's Coup follows Permit Market. Its four branches resolve after thirty days and schedule a two hundred forty day medical-board callback. The chain freezes current Air Winter, Supply Access, public-health, grievance, civil-authority, medical-authority, fatigue, coup-risk, and cause-memory ledgers. Accept Medical Rule can establish the technate government archetype, Build a Medical Coalition can share authority between clinic and council, Arrest the Medical Leadership can preserve civil rule under a hard security memory, and Call a Public Vote can return the dispute to ward delegates. Results and callbacks change the surviving country's medicine, recognition, cohesion, public health, grievance, Air Winter, supply access, and government memories. Failures route bounded losses through Deaths, damage the target infrastructure, write survivor-country Event Log memory, and clear both delayed tickets through authenticated cleanup. The chain uses dedicated report art and remains dormant because neither scheduler activation flag is set.
 
 Permit Market follows False Positive. Its four branches resolve after eighteen days and schedule a two hundred ten day callback. The chain freezes current Air Winter and Quarantine ledgers, applies deterministic movement-permit effects, routes failures through Deaths, changes no tags or states, records survivor-country Event Log payloads, and clears both delayed tickets through idempotent cleanup. It uses dedicated report art and remains dormant because neither scheduler activation flag is set.
 
@@ -30,7 +32,7 @@ Great Lakes Lock Winter is the North American coastal row with candidate `663`, 
 
 Status: dormant, statically reconciled, tranche audit clear, completion blocked by scheduler and runtime gates, not release-floor credit.
 
-Current tranche note: Permit Market is the latest reviewed candidate at `698`, transaction `710071`, route `7174`, events `698` through `704`, and history `9177`. The producer now carries seventy-one ordinary rows and 579 defined event blocks. The older count and constant paragraphs below are historical snapshots retained for audit traceability.
+Current tranche note: Doctor's Coup is the latest reviewed candidate at `705`, transaction `710072`, route `7176`, events `705` through `711`, and history `9178`. The producer now carries seventy-two ordinary rows and 586 defined event blocks. The older count and constant paragraphs below are historical snapshots retained for audit traceability.
 
 The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-eight global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 

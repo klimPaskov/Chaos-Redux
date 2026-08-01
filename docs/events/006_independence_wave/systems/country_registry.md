@@ -44,7 +44,7 @@ excluded) are:
 ## Static groups versus collections
 
 The named collections in
-`common/collections/006_independence_wave_country_collections.txt` use the
+`common/collections/chaosx_country_collections.txt` use the
 same country-group arrays. Collections are an active runtime view: a dormant
 tag that is not currently instantiated contributes no country scope. Use the
 static arrays (or the exact registry scripted triggers) for dormant reservation
