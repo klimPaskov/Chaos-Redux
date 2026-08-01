@@ -1,0 +1,87 @@
+# CHAOS REDUX - EVENT 016 DIRECTORATE CROSS-DOMAIN REVIEW
+# ============================================================================
+# A one-time host decision that keeps the paleogenetics and xenobiological
+# ledgers separate until the cabinet chooses preservation, authorization, or
+# dismantling. The review uses ordinary resources and a real factory burden.
+# ============================================================================
+
+brilliant_scientist_directorate_category = {
+	brilliant_scientist_convene_cross_domain_review = {
+		icon = GFX_decision_generic_research
+		visible = {
+			brilliant_scientist_is_current_host = yes
+			OR = {
+				brilliant_scientist_cross_domain_review_is_ready = yes
+				has_country_flag = brilliant_scientist_cross_domain_review_in_progress
+				has_country_flag = brilliant_scientist_cross_domain_review_pending
+			}
+		}
+		available = {
+			brilliant_scientist_cross_domain_review_is_ready = yes
+			brilliant_scientist_can_pay_cross_domain_review = yes
+		}
+		cost = constant:brilliant_scientist_cross_domain_review.political_power
+		custom_cost_trigger = { brilliant_scientist_can_pay_cross_domain_review = yes }
+		custom_cost_text = brilliant_scientist_convene_cross_domain_review_cost
+		modifier = { civilian_factory_use = constant:brilliant_scientist_cross_domain_review.civilian_factory_use }
+		days_remove = constant:brilliant_scientist_directorate_timing.cross_domain_review_days
+		complete_effect = {
+			set_country_flag = brilliant_scientist_cross_domain_review_in_progress
+			set_country_flag = brilliant_scientist_cross_domain_review_pending
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = constant:brilliant_scientist_cross_domain_review.support_equipment_spend
+			}
+			add_equipment_to_stockpile = {
+				type = motorized_equipment
+				amount = constant:brilliant_scientist_cross_domain_review.motorized_equipment_spend
+			}
+			add_fuel = constant:brilliant_scientist_cross_domain_review.fuel_spend
+			add_manpower = constant:brilliant_scientist_cross_domain_review.manpower_spend
+		}
+		cancel_if_not_visible = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_is_current_host = yes }
+				NOT = { has_country_flag = brilliant_scientist_paleogenetics_prototype_completed }
+				NOT = { has_country_flag = brilliant_scientist_xenobiological_synthesis_prototype_completed }
+				has_country_flag = brilliant_scientist_host_synthesis_destroyed
+				has_country_flag = brilliant_scientist_synthesis_validated
+				has_global_flag = world_end
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = brilliant_scientist_cross_domain_review_in_progress
+			if = {
+				limit = { brilliant_scientist_is_current_host = yes }
+				clr_country_flag = brilliant_scientist_cross_domain_review_pending
+			}
+		}
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_cross_domain_review_in_progress
+			if = {
+				limit = { brilliant_scientist_is_current_host = yes }
+				country_event = { id = chaosx.nr16.14 days = 1 }
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_cross_domain_review_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.security_factor
+				OR = {
+					has_country_flag = brilliant_scientist_internal_security_section_established
+					has_country_flag = brilliant_scientist_security_posture_military
+				}
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.exposure_factor
+				brilliant_scientist_has_high_exposure = yes
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.independent_capacity_factor
+				brilliant_scientist_has_high_independent_capacity = yes
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_convene_cross_domain_review_effect_tt
+	}
+}

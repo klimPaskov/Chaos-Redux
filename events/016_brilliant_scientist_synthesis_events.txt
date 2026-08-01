@@ -1,0 +1,82 @@
+# CHAOS REDUX - EVENT 016 HOST CROSS-DOMAIN REVIEW
+# ============================================================================
+# Ordinary report only. This is not a new Event Log or super-event entry; it
+# resolves the one-time host decision that makes the two biological ledgers
+# interact without silently merging their project histories.
+# ============================================================================
+
+add_namespace = chaosx.nr16
+
+country_event = {
+	id = chaosx.nr16.14
+	title = chaosx.nr16.14.t
+	desc = chaosx.nr16.14.d
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_cross_domain_review_resolution_is_valid = yes
+	}
+
+	option = {
+		name = chaosx.nr16.14.a
+		ai_chance = {
+			base = constant:brilliant_scientist_cross_domain_review_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.separate_factor
+				OR = {
+					has_country_flag = brilliant_scientist_public_compact
+					has_country_flag = brilliant_scientist_internal_security_section_established
+				}
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.exposure_factor
+				brilliant_scientist_has_high_exposure = yes
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_cross_domain_review_separate_tt
+		hidden_effect = {
+			brilliant_scientist_resolve_cross_domain_review_separate = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.14.b
+		ai_chance = {
+			base = constant:brilliant_scientist_cross_domain_review_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.authorize_factor
+				OR = {
+					has_country_flag = brilliant_scientist_sovereign_science_authority
+					has_country_flag = brilliant_scientist_host_archetype_industrial
+				}
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.authorize_factor
+				brilliant_scientist_has_high_project_capacity = yes
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_cross_domain_review_authorize_tt
+		hidden_effect = {
+			brilliant_scientist_resolve_cross_domain_review_authorize = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr16.14.c
+		ai_chance = {
+			base = constant:brilliant_scientist_cross_domain_review_ai.base
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.destroy_factor
+				brilliant_scientist_has_extreme_exposure = yes
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_cross_domain_review_ai.destroy_factor
+				brilliant_scientist_has_low_independent_capacity = yes
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_cross_domain_review_destroy_tt
+		hidden_effect = {
+			brilliant_scientist_resolve_cross_domain_review_destroy = yes
+		}
+	}
+}
