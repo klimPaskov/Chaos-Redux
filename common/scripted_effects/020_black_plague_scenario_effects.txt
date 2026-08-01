@@ -377,8 +377,6 @@ black_plague_scenario_seed_internal_broods = {
 	if = {
 		limit = {
 			RTA = { black_plague_rat_country_is_active = yes }
-			check_variable = { global.black_plague_scenario_internal_brood_target > constant:black_plague_value.one }
-			check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
 		}
 		# Count the carrier basin and every existing internal marker before the
 		# loop. The configured target is a total, making repeated launches
@@ -396,33 +394,39 @@ black_plague_scenario_seed_internal_broods = {
 			limit = { has_state_flag = black_plague_scenario_internal_brood CONTROLLER = { has_country_flag = black_plague_rat_country } }
 			add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
 		}
-		for_loop_effect = {
-			start = 0
-			end = global.black_plague_scenario_internal_brood_target
-			value = black_plague_scenario_internal_brood_index
-			if = {
-				limit = {
-					check_variable = { global.black_plague_scenario_internal_broods_created < global.black_plague_scenario_internal_brood_target }
-					check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
-				}
-				random_scope_in_array = {
-					array = global.black_plague_scenario_rat_candidate_states
-					save_event_target_as = black_plague_scenario_internal_brood_state
-					remove_from_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS }
-				}
+		if = {
+			limit = {
+				check_variable = { global.black_plague_scenario_internal_brood_target > constant:black_plague_value.one }
+				check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
+			}
+			for_loop_effect = {
+				start = 0
+				end = global.black_plague_scenario_internal_brood_target
+				value = black_plague_scenario_internal_brood_index
 				if = {
-					limit = { has_event_target = black_plague_scenario_internal_brood_state }
-					event_target:black_plague_scenario_internal_brood_state = {
-						set_state_flag = black_plague_rat_nation_state
-						set_state_flag = black_plague_scenario_internal_brood
-						set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
-						set_variable = { black_plague_rat_infestation = constant:black_plague_evolution_runtime.scenario_rat_infestation }
-						set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
-						black_plague_set_current_state_phase = yes
-						black_plague_rat_initialize_state_brood_marker = yes
-						RTA = { transfer_state = PREV add_state_core = PREV }
+					limit = {
+						check_variable = { global.black_plague_scenario_internal_broods_created < global.black_plague_scenario_internal_brood_target }
+						check_variable = { global.black_plague_scenario_rat_candidate_states^num > constant:black_plague_value.zero }
 					}
-					add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
+					random_scope_in_array = {
+						array = global.black_plague_scenario_rat_candidate_states
+						save_event_target_as = black_plague_scenario_internal_brood_state
+						remove_from_array = { array = global.black_plague_scenario_rat_candidate_states value = THIS }
+					}
+					if = {
+						limit = { has_event_target = black_plague_scenario_internal_brood_state }
+						event_target:black_plague_scenario_internal_brood_state = {
+							set_state_flag = black_plague_rat_nation_state
+							set_state_flag = black_plague_scenario_internal_brood
+							set_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+							set_variable = { black_plague_rat_infestation = constant:black_plague_evolution_runtime.scenario_rat_infestation }
+							set_temp_variable = { black_plague_next_phase = constant:black_plague_phase.rat_controlled }
+							black_plague_set_current_state_phase = yes
+							black_plague_rat_initialize_state_brood_marker = yes
+							RTA = { transfer_state = PREV add_state_core = PREV }
+						}
+						add_to_variable = { global.black_plague_scenario_internal_broods_created = constant:black_plague_value.one }
+					}
 				}
 			}
 		}
