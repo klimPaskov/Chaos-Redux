@@ -807,6 +807,9 @@ black_plague_rat_initialize_country = {
 	clr_country_flag = black_plague_rat_hunger_crisis
 	clr_country_flag = black_plague_rat_king_route_selected
 	clr_country_flag = black_plague_rat_terminal_preparation_action
+	clr_country_flag = black_plague_rat_concentrate_brood_cooldown
+	clr_country_flag = black_plague_rat_scatter_brood_cooldown
+	clr_country_flag = black_plague_rat_devour_rival_cooldown
 	set_variable = { black_plague_rat_slot_id = black_plague_rat_selected_slot }
 	clear_variable = black_plague_rat_retirement_date
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
@@ -1192,6 +1195,123 @@ black_plague_rat_follow_refugee_road = {
 	}
 }
 
+# COUNTRY scope. Concentration delays the shared rat growth clock and invests
+# the saved pulse into a larger, more coordinated capped force.
+black_plague_rat_concentrate_brood = {
+	if = {
+		limit = { black_plague_rat_country_can_concentrate_brood = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.concentrate_brood_mass_cost }
+		add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.concentrate_brood_coherence_gain }
+		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.concentrate_brood_division_cap_gain }
+		set_variable = { global.black_plague_rat_next_growth_date = global.date }
+		add_to_variable = { global.black_plague_rat_next_growth_date = constant:black_plague_rat_decision.concentrate_brood_pulse_delay_days }
+		set_temp_variable = { black_plague_rat_concentrate_cooldown_days = constant:black_plague_rat_decision.concentrate_brood_pulse_delay_days }
+		set_country_flag = { flag = black_plague_rat_concentrate_brood_cooldown days = black_plague_rat_concentrate_cooldown_days }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# COUNTRY scope. Scattering turns low Coherence into a short, bounded burst of
+# weak brood formations. The two formations are still capped and use the
+# existing zero-manpower, zero-equipment growth templates.
+black_plague_rat_scatter_brood = {
+	if = {
+		limit = { black_plague_rat_country_can_scatter_brood = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.scatter_brood_mass_cost }
+		subtract_from_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.scatter_brood_coherence_loss }
+		add_to_variable = { black_plague_rat_hunger = constant:black_plague_rat_decision.scatter_brood_hunger_gain }
+		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.scatter_brood_division_cap_gain }
+		black_plague_rat_refresh_division_cap = yes
+		set_temp_variable = { black_plague_rat_scatter_gap = black_plague_rat_division_cap }
+		subtract_from_temp_variable = { black_plague_rat_scatter_gap = black_plague_rat_division_count }
+		for_loop_effect = {
+			start = constant:black_plague_value.zero
+			end = constant:black_plague_rat_decision.scatter_brood_batch
+			value = black_plague_rat_scatter_index
+			if = {
+				limit = {
+					check_variable = { var = black_plague_rat_scatter_gap value = constant:black_plague_value.zero compare = greater_than }
+					check_variable = { var = black_plague_rat_division_count value = black_plague_rat_division_cap compare = less_than }
+				}
+				black_plague_rat_create_growth_division = yes
+				add_to_variable = { black_plague_rat_division_count = constant:black_plague_value.one }
+				add_to_variable = { black_plague_achievement_rat_divisions_raised = constant:black_plague_value.one }
+				subtract_from_variable = { black_plague_rat_scatter_gap = constant:black_plague_value.one }
+			}
+		}
+		set_temp_variable = { black_plague_rat_scatter_cooldown_days = constant:black_plague_rat_decision.scatter_brood_duration_days }
+		set_country_flag = { flag = black_plague_rat_scatter_brood_cooldown days = black_plague_rat_scatter_cooldown_days }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# COUNTRY scope. Devouring clears the merger clock for one immediate attempt;
+# the normal state-marker absorption effect still owns inheritance and unit
+# transfer, so failed attempts remain visible through a Coherence setback.
+black_plague_rat_devour_rival = {
+	if = {
+		limit = { black_plague_rat_country_can_devour_rival = yes }
+		set_variable = { black_plague_rat_merger_ready_date = global.date }
+		black_plague_rat_try_absorb_adjacent_brood = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = black_plague_rat_merger_report_result
+					value = constant:black_plague_value.one
+					compare = equals
+				}
+			}
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.devour_rival_coherence_gain }
+		}
+		else = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.devour_rival_mass_cost }
+			subtract_from_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hunger_penalty }
+		}
+		set_temp_variable = { black_plague_rat_devour_cooldown_days = constant:black_plague_rat_decision.devour_rival_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_devour_rival_cooldown days = black_plague_rat_devour_cooldown_days }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# STATE scope. A weaker marker spends RTA mass to reinforce its basin and set
+# a timed absorption shield. The state remains infected and rat-controlled;
+# only the next dominance comparison is delayed.
+black_plague_rat_resist_absorption = {
+	if = {
+		limit = {
+			black_plague_rat_state_can_resist_absorption = yes
+			CONTROLLER = {
+				check_variable = {
+					var = black_plague_rat_brood_mass
+					value = constant:black_plague_rat_decision.resist_absorption_mass_cost
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		CONTROLLER = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.resist_absorption_mass_cost }
+			subtract_from_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.resist_absorption_coherence_loss }
+			add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.resist_absorption_division_cap_gain }
+			clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		}
+		black_plague_rat_initialize_state_brood_marker = yes
+		add_to_variable = { black_plague_rat_brood_strength = constant:black_plague_rat_decision.resist_absorption_strength_gain }
+		clamp_variable = {
+			var = black_plague_rat_brood_strength
+			min = constant:black_plague_rat_pool.brood_strength_minimum
+			max = constant:black_plague_rat_pool.brood_strength_maximum
+		}
+		clr_state_flag = black_plague_rat_brood_absorbed
+		set_temp_variable = { black_plague_rat_resist_absorption_days = constant:black_plague_rat_decision.resist_absorption_state_duration_days }
+		set_state_flag = { flag = black_plague_rat_resist_absorption days = black_plague_rat_resist_absorption_days }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
 black_plague_rat_process_country_pulse = {
 	if = {
 		limit = {
@@ -1518,6 +1638,10 @@ black_plague_rat_cleanup_retired_country = {
 			set_global_flag = black_plague_report_rat_nation_defeated
 			news_event = { id = chaosx.nr20.70 }
 		}
+		every_state = {
+			limit = { has_state_flag = black_plague_rat_resist_absorption }
+			clr_state_flag = black_plague_rat_resist_absorption
+		}
 		clr_country_flag = black_plague_rat_country
 		clr_country_flag = black_plague_rat_brood_system_active
 		clr_country_flag = black_plague_rat_no_normal_recruitment
@@ -1567,6 +1691,9 @@ black_plague_rat_cleanup_retired_country = {
 		clr_country_flag = black_plague_rat_hunger_crisis
 		clr_country_flag = black_plague_rat_king_route_selected
 		clr_country_flag = black_plague_rat_terminal_preparation_action
+		clr_country_flag = black_plague_rat_concentrate_brood_cooldown
+		clr_country_flag = black_plague_rat_scatter_brood_cooldown
+		clr_country_flag = black_plague_rat_devour_rival_cooldown
 		remove_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_dominion black_plague_rat_fractured_instinct }
 		clear_variable = black_plague_rat_hunger
 		clear_variable = black_plague_rat_coherence
