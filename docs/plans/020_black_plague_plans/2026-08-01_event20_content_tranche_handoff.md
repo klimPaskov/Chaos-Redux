@@ -23,6 +23,7 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
   Coherence and state devastation, infestation, and mapmode dirtiness.
 
 - The shared disease category now includes a selectable Emergency Countermeasure Drive mission with stockpile payment, 90-day timeout, countermeasure progress gain, and timeout exposure and stability pressure.
+- The shared disease category now includes two Evolution V human last-response missions: Hold the Line and Secure the Refuge. They pay equipment, trains, fuel, manpower, command power, civilian factories, stability, and war-support costs, gain weekly progress from live war/countermeasure/held-state conditions, lower terminal preparation on success, and raise royal pressure and exposure on timeout. Runtime and terminal cleanup remove both missions idempotently.
 - Royal Node strikes now require a military route, resolve against King Dominion, reduce infestation and Dominion on success, block the next royal pulse for a bounded period, and feed Dominion, hunger, and terminal preparation on counterfire.
 - The shared disease category now includes an earned Crown Strike against the Royal Basin and a post-defeat Seal Royal Burrows operation. Crown Strike has route-specific Dominion, Cohesion, and overseas-exposure consequences; Royal Burrow sealing has fixed equipment, manpower, fuel, command-power, factory, Response Capacity, and 180-day costs and does not cure the underlying disease.
 - Royal Node success and counterfire have player-facing country reports `chaosx.nr20.54` and `chaosx.nr20.55`.

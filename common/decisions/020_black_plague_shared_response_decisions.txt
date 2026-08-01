@@ -48,6 +48,42 @@ chaosx_disease_containment_category = {
 		ai_will_do = { base = constant:black_plague_response_ai.critical }
 	}
 
+	# Evolution V opens two human-only last-response projects. They remain in
+	# this shared disease category and are deliberately not a third category.
+	black_plague_shared_start_last_response_hold = {
+		name = black_plague_shared_start_last_response_hold
+		desc = black_plague_shared_start_last_response_hold_desc
+		icon = GFX_decision_black_plague_strike_the_crown
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { black_plague_human_last_response_hold_can_start = yes }
+		custom_cost_trigger = { black_plague_human_last_response_hold_can_start = yes }
+		custom_cost_text = black_plague_shared_start_last_response_hold_cost
+		modifier = { civilian_factory_use = constant:black_plague_last_response.hold_civilian_factories }
+		days_remove = constant:black_plague_last_response.launch_days
+		complete_effect = {
+			custom_effect_tooltip = black_plague_shared_start_last_response_hold_effect_tt
+			hidden_effect = { black_plague_start_human_last_response_hold = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	black_plague_shared_start_last_response_refuge = {
+		name = black_plague_shared_start_last_response_refuge
+		desc = black_plague_shared_start_last_response_refuge_desc
+		icon = GFX_decision_black_plague_seal_royal_burrows
+		visible = { black_plague_response_decisions_are_visible = yes }
+		available = { black_plague_human_last_response_refuge_can_start = yes }
+		custom_cost_trigger = { black_plague_human_last_response_refuge_can_start = yes }
+		custom_cost_text = black_plague_shared_start_last_response_refuge_cost
+		modifier = { civilian_factory_use = constant:black_plague_last_response.refuge_civilian_factories }
+		days_remove = constant:black_plague_last_response.launch_days
+		complete_effect = {
+			custom_effect_tooltip = black_plague_shared_start_last_response_refuge_effect_tt
+			hidden_effect = { black_plague_start_human_last_response_refuge = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+
 	black_plague_shared_sentinel_surveillance = {
 		name = black_plague_shared_sentinel_surveillance
 		desc = black_plague_shared_sentinel_surveillance_desc
@@ -658,6 +694,49 @@ chaosx_disease_containment_category = {
 		cancel_trigger = { FROM = { NOT = { black_plague_shared_can_seal_royal_burrows = yes } } }
 		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
 		ai_will_do = { base = constant:black_plague_response_ai.preferred }
+	}
+
+	# Activated objectives are hidden until the matching start decision pays its
+	# full package. The mission engine evaluates success daily; the Event 20
+	# country pulse supplies weekly progress and the timeout consequences.
+	black_plague_shared_last_response_hold_mission = {
+		icon = GFX_decision_black_plague_strike_the_crown
+		allowed = { black_plague_country_is_human_host = yes }
+		activation = { has_country_flag = black_plague_human_last_response_hold_active }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:black_plague_last_response.mission_days
+		available = { black_plague_human_last_response_hold_success = yes }
+		cancel_trigger = { black_plague_human_last_response_hold_is_invalid = yes }
+		cancel_effect = { black_plague_cancel_human_last_response_hold = yes }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_shared_last_response_hold_complete_tt
+			hidden_effect = { black_plague_resolve_human_last_response_hold_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = black_plague_shared_last_response_hold_timeout_tt
+			hidden_effect = { black_plague_resolve_human_last_response_hold_timeout = yes }
+		}
+	}
+
+	black_plague_shared_last_response_refuge_mission = {
+		icon = GFX_decision_black_plague_seal_royal_burrows
+		allowed = { black_plague_country_is_human_host = yes }
+		activation = { has_country_flag = black_plague_human_last_response_refuge_active }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:black_plague_last_response.mission_days
+		available = { black_plague_human_last_response_refuge_success = yes }
+		cancel_trigger = { black_plague_human_last_response_refuge_is_invalid = yes }
+		cancel_effect = { black_plague_cancel_human_last_response_refuge = yes }
+		complete_effect = {
+			custom_effect_tooltip = black_plague_shared_last_response_refuge_complete_tt
+			hidden_effect = { black_plague_resolve_human_last_response_refuge_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = black_plague_shared_last_response_refuge_timeout_tt
+			hidden_effect = { black_plague_resolve_human_last_response_refuge_timeout = yes }
+		}
 	}
 
 	# Country-level knowledge actions remain in this shared category so the
