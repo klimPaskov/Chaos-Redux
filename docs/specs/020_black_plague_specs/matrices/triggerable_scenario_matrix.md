@@ -50,7 +50,7 @@ The live implementation uses `SCN-012` and the two-tag correction below is autho
 | 8 | Evolution III | logged with first brood actor | one row only |
 | 9 | Rat King | separate Royal Basin and country created | preserve existing King when present |
 | 10 | Evolution IV | logged with Rat King actor | one row only |
-| 11 | global systems | Chaos floor, world threat, pulses, Deaths, air cleanliness | shared helpers and one opening death pass |
+| 11 | global systems | Chaos floor, world threat, pulses, Deaths, air cleanliness | shared helpers, one opening death pass, and one saved scheduler anchor that queues the first `.900` callback |
 | 12 | UI | disease board and full mapmode rebuild | one batch refresh after setup |
 | 13 | cleanup | temporary arrays, reservations, bypasses cleared | permanent scenario flag retained |
 
@@ -67,6 +67,11 @@ These appear as separate decision entries inside the general disease category.
 | Purge Vermin from Rail Yards and Docks | reduces rail, port, and Evolution II spread at throughput cost |
 | Demolish Infested Blocks | emergency overreaction that sharply lowers local infestation but causes displacement and heavy economic damage |
 | Purge the Warrens after Liberation | removes rat-control remnants from retaken states and prevents resurgence |
+| Strike the Royal Node | earned military strike after Evolution IV; success delays a royal pulse, while counterfire raises Dominion, Hunger, and terminal preparation |
+| Strike the Crown | earned Royal Basin assault after sufficient successful node strikes; route-specific consequences apply and the operation never cures the plague |
+| Seal Royal Burrows | post-defeat state operation against former Royal Nodes or the Royal Basin; lowers infestation and raises containment over 180 days with fixed material and command costs |
+
+Royal King Hunger crises are country events rather than ordinary disease phases. The Absolute Crown, Council of Burrows, and Black-Breath Hierophancy each expose a distinct crisis choice and feed their route policy consumers.
 
 ## Mapmode contract
 
@@ -89,7 +94,7 @@ These appear as separate decision entries inside the general disease category.
 | --- | --- |
 | Low launch on ordinary map | three continents, two or more broods, one King, no world end |
 | Maximum launch | every eligible continent, capped actors and units, Chaos no higher than 999 from bootstrap |
-| Event 20 already active | existing progress retained, missing states and actors added, no duplicate history |
+| Event 20 already active | existing progress retained, unestablished candidates added without reseeding established states, missing actors added, no duplicate history |
 | Rat Nation already active | existing `RTA` brood markers count toward target, no duplicated tag or units |
 | Rat King already active | existing King retained, no duplicate Evolution IV row |
 | small or altered map | targets scale down after minimum validity, no invalid state or capital |

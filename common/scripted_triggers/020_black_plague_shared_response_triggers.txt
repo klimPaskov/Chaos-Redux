@@ -413,3 +413,92 @@ black_plague_shared_can_strike_royal_node = {
 	black_plague_shared_royal_node_state_can_start_action = yes
 	ROOT = { black_plague_shared_country_can_pay_royal_node = yes }
 }
+
+# STATE scope. The Crown Strike is a second, earned operation against the
+# sovereign basin, not another Royal Node raid. It remains visible only after
+# Evolution IV, enough successful node strikes, and a real military route.
+black_plague_shared_crown_target_is_valid = {
+	black_plague_state_is_rat_controlled = yes
+	OR = {
+		has_state_flag = black_plague_royal_basin
+		AND = { is_capital = yes CONTROLLER = { tag = RTX } }
+	}
+	CONTROLLER = { tag = RTX }
+}
+
+black_plague_shared_crown_target_can_continue = {
+	OR = {
+		is_controlled_by = RTX
+		is_controlled_by = ROOT
+	}
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_global_flag = black_plague_rat_king_defeated }
+}
+
+black_plague_shared_country_can_pay_crown_strike = {
+	has_equipment = { support_equipment > constant:black_plague_shared_result.crown_strike_support_equipment }
+	has_equipment = { motorized_equipment > constant:black_plague_shared_result.crown_strike_motorized_equipment }
+	has_equipment = { infantry_equipment > constant:black_plague_shared_result.crown_strike_infantry_equipment }
+	has_manpower > constant:black_plague_shared_result.crown_strike_manpower
+	has_fuel > constant:black_plague_shared_result.crown_strike_fuel
+	command_power > constant:black_plague_shared_result.crown_strike_command_power
+	black_plague_country_has_response_capacity_five = yes
+}
+
+black_plague_shared_can_strike_crown = {
+	black_plague_shared_crown_target_is_valid = yes
+	black_plague_shared_crown_target_can_continue = yes
+	black_plague_shared_state_has_military_route = yes
+	ROOT = {
+		black_plague_country_can_direct_response = yes
+		is_human = yes
+		is_at_war_with = RTX
+		has_country_flag = black_plague_royal_node_strike_contributor
+		black_plague_shared_country_can_pay_crown_strike = yes
+	}
+	has_global_flag = black_plague_evolution_iv_active
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_global_flag = black_plague_rat_king_defeated }
+	check_variable = { global.black_plague_rat_king_royal_nodes_struck > constant:black_plague_value.one }
+	RTX = {
+		exists = yes
+		has_country_flag = black_plague_rat_king_country
+		OR = {
+			NOT = { has_variable = black_plague_rat_king_route }
+			NOT = { check_variable = { var = black_plague_rat_king_route value = constant:black_plague_rat_king_route.brood_council compare = equals } }
+			check_variable = { global.black_plague_rat_king_royal_nodes_struck > constant:black_plague_value.two }
+		}
+	}
+}
+
+# STATE scope. Once RTX has been defeated, former royal nodes remain tracked
+# as contaminated historical sites. This operation seals one site at a time;
+# it never clears the disease phase or removes ordinary countermeasure work.
+black_plague_shared_country_can_pay_royal_seal = {
+	has_equipment = { support_equipment > constant:black_plague_shared_result.royal_seal_support_equipment }
+	has_equipment = { motorized_equipment > constant:black_plague_shared_result.royal_seal_motorized_equipment }
+	has_equipment = { infantry_equipment > constant:black_plague_shared_result.royal_seal_infantry_equipment }
+	has_manpower > constant:black_plague_shared_result.royal_seal_manpower
+	has_fuel > constant:black_plague_shared_result.royal_seal_fuel
+	command_power > constant:black_plague_shared_result.royal_seal_command_power
+	black_plague_country_has_response_capacity_three = yes
+}
+
+black_plague_shared_can_seal_royal_burrows = {
+	has_global_flag = black_plague_rat_king_defeated
+	black_plague_state_is_tracked = yes
+	is_controlled_by = ROOT
+	OR = {
+		has_state_flag = black_plague_rat_king_royal_node
+		has_state_flag = black_plague_royal_basin
+	}
+	NOT = { has_state_flag = black_plague_shared_action_active }
+	NOT = { has_state_flag = black_plague_shared_action_cooldown }
+	NOT = { has_state_flag = black_plague_royal_burrows_sealed }
+	ROOT = {
+		black_plague_response_decisions_are_visible = yes
+		has_country_flag = black_plague_rat_king_aftermath_open
+		black_plague_country_can_direct_response = yes
+		black_plague_shared_country_can_pay_royal_seal = yes
+	}
+}

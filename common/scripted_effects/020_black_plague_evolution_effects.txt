@@ -93,27 +93,33 @@ black_plague_evolution_prepare_prefire_permissions = {
 		limit = { black_plague_evolution_i_is_ready = yes }
 		set_global_flag = black_plague_evolution_i_prefire_visible
 	}
+	else = { clr_global_flag = black_plague_evolution_i_prefire_visible }
 	if = {
 		limit = { black_plague_evolution_ii_is_ready = yes }
 		set_global_flag = black_plague_evolution_ii_prefire_visible
 	}
+	else = { clr_global_flag = black_plague_evolution_ii_prefire_visible }
 	if = {
 		limit = { black_plague_evolution_iii_is_ready = yes }
 		set_global_flag = black_plague_evolution_iii_prefire_visible
 	}
+	else = { clr_global_flag = black_plague_evolution_iii_prefire_visible }
 	if = {
 		limit = { black_plague_evolution_iv_is_ready = yes }
 		set_global_flag = black_plague_evolution_iv_prefire_visible
 	}
+	else = { clr_global_flag = black_plague_evolution_iv_prefire_visible }
 	if = {
 		limit = { black_plague_evolution_v_is_ready = yes }
 		set_global_flag = black_plague_evolution_v_prefire_visible
 	}
+	else = { clr_global_flag = black_plague_evolution_v_prefire_visible }
 }
 
 black_plague_activate_evolution_i = {
 	if = {
 		limit = {
+			black_plague_evolution_i_is_enabled = yes
 			NOT = { has_global_flag = black_plague_evolution_i_active }
 		}
 		set_global_flag = black_plague_evolution_i_active
@@ -130,6 +136,7 @@ black_plague_activate_evolution_i = {
 black_plague_activate_evolution_ii = {
 	if = {
 		limit = {
+			black_plague_evolution_ii_is_enabled = yes
 			has_global_flag = black_plague_evolution_i_active
 			NOT = { has_global_flag = black_plague_evolution_ii_active }
 		}
@@ -139,6 +146,15 @@ black_plague_activate_evolution_ii = {
 		set_variable = { global.black_plague_evolution_ii_date = global.date }
 		set_variable = { global.black_plague_overseas_route_generation = constant:black_plague_evolution_runtime.evolution_ii_stage }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage }
+		clear_event_target = black_plague_rat_evolution_actor
+		every_state = {
+			limit = {
+				black_plague_state_is_established = yes
+				black_plague_rat_state_has_dock_archetype_signal = yes
+				CONTROLLER = { black_plague_country_is_human_host = yes }
+			}
+			CONTROLLER = { save_event_target_as = black_plague_rat_evolution_actor }
+		}
 		black_plague_evolution_record_stage = yes
 		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.30 } } }
 	}
@@ -147,6 +163,7 @@ black_plague_activate_evolution_ii = {
 black_plague_activate_evolution_iii = {
 	if = {
 		limit = {
+			black_plague_evolution_iii_is_enabled = yes
 			has_global_flag = black_plague_evolution_ii_active
 			NOT = { has_global_flag = black_plague_evolution_iii_active }
 		}
@@ -160,13 +177,19 @@ black_plague_activate_evolution_iii = {
 black_plague_activate_evolution_iv = {
 	if = {
 		limit = {
+			black_plague_evolution_iv_is_enabled = yes
 			has_global_flag = black_plague_evolution_iii_active
 			NOT = { has_global_flag = black_plague_evolution_iv_active }
 		}
 		black_plague_rat_activate_evolution_iv = yes
-		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iv_stage }
-		black_plague_evolution_record_stage = yes
-		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
+		if = {
+			limit = { has_global_flag = black_plague_evolution_iv_active }
+			clear_event_target = black_plague_rat_evolution_actor
+			RTX = { save_event_target_as = black_plague_rat_evolution_actor }
+			set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iv_stage }
+			black_plague_evolution_record_stage = yes
+			if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
+		}
 	}
 }
 
@@ -305,7 +328,7 @@ black_plague_evolution_compare_king_continent = {
 
 black_plague_evolution_v_perform_terminal_takeover = {
 	if = {
-		limit = { NOT = { has_global_flag = black_plague_terminal_takeover_complete } }
+		limit = { black_plague_evolution_v_terminal_execution_is_ready = yes }
 		set_global_flag = black_plague_terminal_takeover_active
 		every_country = {
 			limit = { black_plague_country_is_human_host = yes }
@@ -345,26 +368,61 @@ black_plague_evolution_v_perform_terminal_takeover = {
 
 black_plague_activate_evolution_v = {
 	if = {
-		limit = { black_plague_evolution_v_is_ready = yes }
+		limit = {
+			black_plague_evolution_v_is_enabled = yes
+			black_plague_evolution_v_is_ready = yes
+		}
 		set_global_flag = black_plague_evolution_v_active
 		set_global_flag = black_plague_evolution_v_recorded
+		set_global_flag = black_plague_evolution_v_route_open
 		set_variable = { global.black_plague_evolution_v_date = global.date }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_v_stage }
+		clear_event_target = black_plague_rat_evolution_actor
+		RTX = { save_event_target_as = black_plague_rat_evolution_actor }
 		black_plague_evolution_record_stage = yes
 		ROOT = { news_event = { id = chaosx.nr20.60 } }
-		black_plague_evolution_v_perform_terminal_takeover = yes
 	}
 }
 
 black_plague_evolution_runtime_pulse = {
-	black_plague_evolution_prepare_prefire_permissions = yes
-	if = { limit = { black_plague_evolution_i_is_ready = yes } black_plague_activate_evolution_i = yes }
-	if = { limit = { black_plague_evolution_ii_is_ready = yes } black_plague_activate_evolution_ii = yes }
-	if = { limit = { black_plague_evolution_iii_is_ready = yes } black_plague_activate_evolution_iii = yes }
-	if = { limit = { black_plague_evolution_iv_is_ready = yes } black_plague_activate_evolution_iv = yes }
 	if = {
-		limit = { has_global_flag = black_plague_rat_king_active }
-		black_plague_evolution_refresh_king_progress = yes
+		limit = { black_plague_evolution_check_is_due = yes }
+		set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.zero }
+		black_plague_evolution_prepare_prefire_permissions = yes
+		if = {
+			limit = { black_plague_evolution_i_is_ready = yes }
+			black_plague_activate_evolution_i = yes
+			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+		}
+		else_if = {
+			limit = { black_plague_evolution_ii_is_ready = yes }
+			black_plague_activate_evolution_ii = yes
+			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+		}
+		else_if = {
+			limit = { black_plague_evolution_iii_is_ready = yes }
+			black_plague_activate_evolution_iii = yes
+			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+		}
+		else_if = {
+			limit = { black_plague_evolution_iv_is_ready = yes }
+			black_plague_activate_evolution_iv = yes
+			set_temp_variable = { black_plague_evolution_advanced_this_check = constant:black_plague_value.one }
+		}
+		if = {
+			limit = {
+				has_global_flag = black_plague_rat_king_active
+				check_variable = { var = black_plague_evolution_advanced_this_check value = constant:black_plague_value.zero compare = equals }
+			}
+			black_plague_evolution_refresh_king_progress = yes
+		}
+		if = {
+			limit = {
+				black_plague_evolution_v_is_ready = yes
+				check_variable = { var = black_plague_evolution_advanced_this_check value = constant:black_plague_value.zero compare = equals }
+			}
+			black_plague_activate_evolution_v = yes
+		}
+		black_plague_rat_schedule_next_evolution_check = yes
 	}
-	if = { limit = { black_plague_evolution_v_is_ready = yes } black_plague_activate_evolution_v = yes }
 }

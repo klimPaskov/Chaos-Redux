@@ -12,7 +12,7 @@ State pulse flags are cleared when the state becomes Cured or when the disease e
 
 ## Country knowledge actions
 
-The shared category includes Publish Findings, Restricted Alliance Exchange, Hoard Protocol, Steal Foreign Progress, and International Medical Mission. They require the countermeasure programme or recorded findings, use equipment and fuel rather than political power, and feed the existing 0–100 countermeasure progress producer. Intelligence theft requires a real intelligence agency and operative; it does not use a synthetic `operative_recruited` flag.
+The shared category includes Publish Findings, Restricted Alliance Exchange, Hoard Protocol, Steal Foreign Progress, International Medical Mission, Emergency Countermeasure Drive, route-crisis responses, Royal Node strikes, Crown Strike, and post-defeat Seal Royal Burrows. They require the countermeasure programme or recorded findings, use equipment and fuel rather than political power, and feed the existing 0–100 countermeasure progress producer. Intelligence theft requires a real intelligence agency and operative; it does not use a synthetic `operative_recruited` flag.
 
 ## Integration points
 
@@ -20,8 +20,8 @@ The shared category includes Publish Findings, Restricted Alliance Exchange, Hoa
 
 ## Icons and UI wiring
 
-The decisions use existing vanilla decision sprites for generic research, civil support, intelligence operation, quarantine, faction integration, and medical missions. Event-020-specific decision art is defined in `interface/020_black_plague_response.gfx` and stored under `gfx/interface/decisions/020_black_plague/`. The final icon package, source frames, DDS files, contact sheet, and crosswalk are documented in `docs/plans/020_black_plague_plans/subagent_handoffs/2026-07-24_black_plague_response_decision_icons_handoff.md`.
+The decisions use existing vanilla decision sprites for generic research, civil support, intelligence operation, quarantine, faction integration, and medical missions. Event-020-specific decision art is defined in `interface/020_black_plague_response.gfx` and stored under `gfx/interface/decisions/020_black_plague/`. Crown Strike uses `GFX_decision_black_plague_strike_the_crown`, and post-defeat sealing uses `GFX_decision_black_plague_seal_royal_burrows`. The final icon package, source frames, DDS files, contact sheet, and crosswalk are documented in `docs/plans/020_black_plague_plans/subagent_handoffs/2026-07-24_black_plague_response_decision_icons_handoff.md`.
 
 ## Future depth
 
-Future response work can add state-specific scripted tooltips for each population band, faction-level findings diplomacy, and Rat King royal-node strikes without changing the shared category or action API. Any new action must reserve a new constant id, add a phase-gated trigger, define a real cost and duration, add a player-facing name/description/cost tooltip, and extend terminal cleanup.
+Future response work can add state-specific scripted tooltips for each population band and faction-level findings diplomacy without changing the shared category or action API. Crown Strike and Seal Royal Burrows currently use the shared timed state-action API; the parent must decide before converting them to native mission fields. Any new action must reserve a new constant id, add a phase-gated trigger, define a real cost and duration, add a player-facing name/description/cost tooltip, and extend terminal cleanup.

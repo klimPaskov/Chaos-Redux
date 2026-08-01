@@ -6,7 +6,7 @@ This folder is the complete source specification for the Black Plague rework.
 
 ## Core design
 
-Event 20 begins naturally in one weighted vulnerable mainland state. The disease kills real population over time, spreads through state and transport routes, uses the shared disease and biological warfare interface, supports non-instant countermeasures and a long weaponization project, evolves into Rat Nations and a sentient Rat King, and can end in a terminal Rat King world takeover. A separate triggerable scenario can immediately seed many states on several continents, activate Evolutions I through IV, and create independent Rat Nations plus the Rat King for an instant global challenge.
+Event 20 begins naturally in one weighted vulnerable mainland state. The disease kills real population over time, spreads through state and transport routes, uses the shared disease and biological warfare interface, supports non-instant countermeasures and a long weaponization project, evolves into a reusable `RTA` Rat Nation carrier and a sentient `RTX` Rat King, and can end in a terminal Rat King world takeover. A separate triggerable scenario can immediately seed many states on several continents, activate Evolutions I through IV, and create or preserve one `RTA` carrier with internal brood state markers plus the separate `RTX` Royal Basin for an instant global challenge.
 
 The later correction in `corrections/2026-07-29_two_rat_tags.md` supersedes all multi-tag Rat Nation requirements. Runtime country identity is limited to the reusable Rat Nation `RTA` and the separate Rat King `RTX`.
 
@@ -46,4 +46,4 @@ The later correction in `corrections/2026-07-29_two_rat_tags.md` supersedes all 
 
 ## Package status
 
-This is a complete planning handoff for the full design, with a separate core-stabilization implementation tranche documented by the current Event 020 overview and readiness report. It does not claim that the shared registry gaps, deferred narrative, presentation, bespoke 3D, workbook, or live balance-validation surfaces are complete.
+This is a complete planning handoff for the full design, with a separate core-stabilization implementation tranche documented by the current Event 020 overview and readiness report. The current goal accepts the two-tag/no-model boundary: bespoke 3D production is not required, while the `.45` hierarchy report, defeat attribution/reconstruction coupling, deferred narrative, presentation, ID 87 package, workbook, and live balance-validation surfaces remain incomplete.

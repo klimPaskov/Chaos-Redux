@@ -320,7 +320,7 @@ focus_tree = {
 		position = { x = -12 y = 12 }
 		completion_reward = {
 			set_country_flag = black_plague_rat_crown_capital_seals
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_standard }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_standard }
 			add_to_variable = { black_plague_rat_king_dominion = @rat_king_dominion_gain }
 		}
 	}
@@ -370,7 +370,7 @@ focus_tree = {
 		position = { x = 0 y = 12 }
 		completion_reward = {
 			set_country_flag = black_plague_rat_council_safeguards
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_standard }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_standard }
 			add_to_variable = { black_plague_rat_king_cohesion = @rat_king_cohesion_gain }
 		}
 	}
@@ -421,7 +421,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = black_plague_rat_hierophant_black_breath_processions
 			set_global_flag = black_plague_overseas_spread_enabled
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_strong }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_strong }
 			add_to_variable = { black_plague_rat_king_hunger = @rat_king_hunger_relief }
 		}
 	}
@@ -444,16 +444,20 @@ focus_tree = {
 		id = black_plague_rat_royal_armouries
 		icon = GFX_goal_generic_army_doctrines
 		cost = @rat_king_focus_normal
-		# Government routes are mutually exclusive; any completed route opens the shared royal forces lane.
-		prerequisite = {
-			focus = black_plague_rat_court_of_teeth
-			focus = black_plague_rat_warren_charter
-			focus = black_plague_rat_crown_of_ash
+		# Government routes are mutually exclusive; any completed route opens
+		# the shared royal forces lane.
+		prerequisite = { focus = black_plague_rat_king_the_four_registers }
+		available = {
+			OR = {
+				has_completed_focus = black_plague_rat_court_of_teeth
+				has_completed_focus = black_plague_rat_warren_charter
+				has_completed_focus = black_plague_rat_crown_of_ash
+			}
 		}
 		position = { x = -4 y = 10 }
 		completion_reward = {
 			set_country_flag = black_plague_rat_royal_armouries
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_strong }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_strong }
 		}
 	}
 	focus = {
@@ -475,7 +479,7 @@ focus_tree = {
 		position = { x = -2 y = 11 }
 		completion_reward = {
 			set_country_flag = black_plague_rat_tunnel_columns
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_standard }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_standard }
 		}
 	}
 	focus = {
@@ -639,7 +643,7 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = black_plague_rat_terminal_armature
 			add_to_variable = { global.black_plague_rat_king_terminal_preparation = @rat_king_terminal_preparation_gain }
-			add_to_variable = { black_plague_rat_division_cap = @rat_king_division_cap_gain_terminal }
+			add_to_variable = { black_plague_rat_division_cap_bonus = @rat_king_division_cap_gain_terminal }
 		}
 	}
 	focus = {

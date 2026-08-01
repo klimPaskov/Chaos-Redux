@@ -33,5 +33,5 @@ The report source scenes are a neglected mainland care station and an organized 
 - Report PNGs are exact 210x176 RGBA cards with transparent corners and alpha range 0-255.
 - News PNG is exact 397x153 grayscale and retains the requested black-and-white press treatment.
 - All three DDS files were created with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and validated as one-level 32-bit uncompressed BGRA with the expected header masks, `DDSCAPS_TEXTURE`, and exact byte lengths.
-- Main agent must add the three sprites to the existing target `.gfx` file and connect the relevant report/news consumers.
+- The main agent promoted the three sprites into `interface/020_black_plague_event_pictures.gfx` and connected origin recognition (`chaosx.nr20.2` and `.3`), overseas establishment (`chaosx.nr20.31`), and Rat emergence/resurgence (`chaosx.nr20.40`, `.41`, and `.44`) consumers. The remaining Event 20 report families intentionally retain the established unbound image until their dedicated packages are accepted.
 - No blocker or needs-user-review item remains for this bounded package.

@@ -1,5 +1,7 @@
 # Black Plague Goal Prompt
 
+> Historical prompt snapshot, reconciled 2026-08-01: the two-tag correction supersedes the finite multi-tag and independent-Rat-Nation requirements below. Current runtime identity is `RTA` plus `RTX`, internal broods are state markers, SCN-012 is the active scenario identifier, and no 3D model production is required for the current goal. Use the current overview and consequence/aftermath addendum before planning any follow-up work.
+
 Rework Chaos Redux Event 20 from `docs/specs/020_black_plague_specs/`. Read the pack, `AGENTS.md`, relevant skills, live systems, offline wiki, vanilla documentation, and precedents. Treat later corrections as acceptance criteria.
 
 Replace the continent modifier with one weighted mainland origin. Favor populous, underdeveloped, crowded, occupied, and weakly protected states. Implement Threatened, Incubating, Infected, Severe Crisis, Collapsed, Contained, Recovery, Cured, and Rat-Controlled conditions. Apply nonlinear deaths, feed Deaths and Chaos once, and let neglect devastate states. Spread through borders, transport, troops, refugees, war, ports, strikes, and rats.

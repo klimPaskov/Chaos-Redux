@@ -53,7 +53,7 @@ black_plague_rat_brood_category = {
 		complete_effect = {
 			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.brood_mass_cost }
 			set_country_flag = black_plague_rat_decision_burrow_map
-			add_to_variable = { black_plague_rat_division_cap = constant:black_plague_rat_decision.division_cap_gain }
+			add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.division_cap_gain }
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.standard }
 	}
@@ -198,5 +198,18 @@ black_plague_rat_king_court_category = {
 			set_country_flag = black_plague_rat_terminal_preparation_action
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_king_execute_terminal_takeover = {
+		icon = GFX_goal_black_plague_rat_earned_terminal_route
+		visible = {
+			black_plague_rat_country_is_king = yes
+			black_plague_evolution_v_terminal_execution_is_ready = yes
+		}
+		available = { black_plague_evolution_v_terminal_execution_is_ready = yes }
+		custom_cost_text = black_plague_rat_king_execute_terminal_takeover_cost
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = { black_plague_evolution_v_perform_terminal_takeover = yes }
+		ai_will_do = { base = constant:black_plague_rat_ai.maximum }
 	}
 }
