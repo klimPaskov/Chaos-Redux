@@ -1,0 +1,57 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-030 MONTENEGRO AI
+# ============================================================================
+# Additive strategy layers for the vanilla MNT carrier. The vanilla history
+# and generic AI remain intact. These priorities respond to the package's
+# founding crisis, mountain-force profile, host pressure, and route choice.
+# ============================================================================
+
+independence_wave_mnt_mountain_survival = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_iw_030_setup_complete
+		has_country_flag = independence_wave_mnt_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_montenegro_ai.army_priority }
+	ai_strategy = { type = equipment_production_factor id = infantry value = constant:independence_wave_montenegro_ai.production_priority }
+	ai_strategy = { type = equipment_production_factor id = artillery value = constant:independence_wave_montenegro_ai.artillery_priority }
+	ai_strategy = { type = equipment_production_factor id = support value = constant:independence_wave_montenegro_ai.support_priority }
+	ai_strategy = { type = build_building id = infrastructure value = constant:independence_wave_montenegro_ai.infrastructure_priority }
+	ai_strategy = { type = build_building id = bunker value = constant:independence_wave_montenegro_ai.defense_priority }
+}
+
+independence_wave_mnt_host_restraint = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_iw_030_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_mnt_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_montenegro_ai.founding_restraint }
+}
+
+independence_wave_mnt_settled_frontier = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_mnt_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_montenegro_ai.traditional_army_priority }
+	ai_strategy = { type = avoid_starting_wars value = constant:independence_wave_montenegro_ai.settled_restraint }
+}
+
+independence_wave_mnt_emergency_guard = {
+	allowed = { original_tag = MNT }
+	enable = {
+		is_independence_wave_mnt_package = yes
+		has_country_flag = independence_wave_mnt_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = constant:independence_wave_montenegro_ai.emergency_army_priority }
+	ai_strategy = { type = build_building id = bunker value = constant:independence_wave_montenegro_ai.defense_priority }
+}
