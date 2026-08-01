@@ -11,6 +11,10 @@ on_actions = {
 	on_war_relation_added = {
 		effect = {
 			if = {
+				limit = { has_event_target = africa_host }
+				event_target:africa_host = { africa_common_reserve_clear_expired_posture = yes }
+			}
+			if = {
 				limit = {
 					ROOT = { africa_is_current_host = yes }
 					FROM = { has_country_flag = africa_scramble_expedition_leader }
@@ -56,6 +60,27 @@ on_actions = {
 					}
 				}
 				FROM = { africa_achievement_record_protection_war_started = yes }
+			}
+			# ROOT is the attacker and FROM is the defender in this callback. A
+			# live common-reserve posture therefore funds only the protected
+			# partner's defensive war, one stockpile-backed deployment at a time.
+			if = {
+				limit = { FROM = { africa_common_reserve_can_cover_defensive_war = yes } }
+				FROM = { africa_common_reserve_deploy_on_defensive_war = yes }
+			}
+			# A protected partner that starts an offensive war while the reserve
+			# posture is open never receives reserve material, but the attempted
+			# misuse remains a lifetime disqualifier for the achievement.
+			if = {
+				limit = {
+					ROOT = {
+						africa_relationship_is_protected = yes
+						has_country_flag = africa_achievement_counted_protected_partner
+					}
+					has_event_target = africa_host
+					event_target:africa_host = { has_country_flag = africa_common_reserve_active }
+				}
+				event_target:africa_host = { africa_achievement_record_reserve_offensive_abuse = yes }
 			}
 			# A grounded military sponsorship obligation is answered only when
 			# the candidate is one side of the newly registered package war.
@@ -137,6 +162,10 @@ on_actions = {
 	on_annex = {
 		effect = {
 			if = {
+				limit = { FROM = { has_country_flag = africa_common_reserve_deployment_active } }
+				FROM = { africa_achievement_record_reserve_capital_loss = yes africa_common_reserve_resolve_deployment = yes }
+			}
+			if = {
 				limit = {
 					FROM = {
 						OR = {
@@ -188,6 +217,10 @@ on_actions = {
 
 	on_capitulation = {
 		effect = {
+			if = {
+				limit = { ROOT = { has_country_flag = africa_common_reserve_deployment_active } }
+				ROOT = { africa_common_reserve_resolve_deployment = yes }
+			}
 			if = {
 				limit = {
 					ROOT = {
@@ -281,6 +314,14 @@ on_actions = {
 
 	on_peace = {
 		effect = {
+			if = {
+				limit = { ROOT = { has_country_flag = africa_common_reserve_deployment_active } }
+				ROOT = { africa_common_reserve_resolve_deployment = yes }
+			}
+			if = {
+				limit = { FROM = { has_country_flag = africa_common_reserve_deployment_active } }
+				FROM = { africa_common_reserve_resolve_deployment = yes }
+			}
 			if = {
 				limit = {
 					has_global_flag = africa_world_continental_war_protocol_open

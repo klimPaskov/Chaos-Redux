@@ -1,0 +1,137 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 COMMON RESERVE EFFECTS
+# ============================================================================
+# The shared reserve is a bounded defensive deployment ledger. Action 80 opens
+# the posture; the existing protection-war on_action supplies one exact,
+# defender-only deployment at a time; peace or capitulation closes it. No
+# recurring world scan and no second stockpile are introduced.
+# ============================================================================
+
+# COUNTRY scope on the current host after a full Mobilise Continental Defence
+# result. The action validator already proved the Scramble intervention phase;
+# this effect only opens the reusable defensive posture once.
+africa_common_reserve_activate = {
+	if = {
+		limit = {
+			check_variable = { africa_active_action_id = constant:africa_action.mobilise_continental_defence }
+			africa_common_reserve_mobilise_is_valid = yes
+			NOT = { has_country_flag = africa_common_reserve_active }
+		}
+		set_country_flag = africa_common_reserve_active
+		set_country_flag = africa_common_reserve_activation_recorded
+		set_variable = { africa_common_reserve_activation_day = global.num_days }
+		set_variable = { africa_common_reserve_activation_deadline_day = global.num_days }
+		add_to_variable = { africa_common_reserve_activation_deadline_day = constant:africa_common_reserve.deployment_window_days }
+		if = {
+			limit = { NOT = { has_variable = africa_common_reserve_deployment_sequence } }
+			set_variable = { africa_common_reserve_deployment_sequence = constant:africa_value.zero }
+		}
+	}
+}
+
+# COUNTRY scope on the host from an existing war callback. Expiry is cleaned
+# opportunistically when a war callback arrives; no global daily iterator is
+# needed for this bounded posture.
+africa_common_reserve_clear_expired_posture = {
+	if = {
+		limit = {
+			has_country_flag = africa_common_reserve_active
+			has_variable = africa_common_reserve_activation_deadline_day
+			check_variable = {
+				var = global.num_days
+				value = africa_common_reserve_activation_deadline_day
+				compare = greater_than_or_equals
+			}
+		}
+		clr_country_flag = africa_common_reserve_active
+	}
+}
+
+# COUNTRY scope on a protected partner from on_war_relation_added. ROOT is the
+# attacker in that callback, so this branch can never fund an offensive war.
+africa_common_reserve_deploy_on_defensive_war = {
+	if = {
+		limit = { africa_common_reserve_can_cover_defensive_war = yes }
+		set_country_flag = africa_common_reserve_deployment_active
+		set_variable = { africa_common_reserve_deployment_started_day = global.num_days }
+		set_variable = { africa_common_reserve_deployment_deadline_day = global.num_days }
+		add_to_variable = { africa_common_reserve_deployment_deadline_day = constant:africa_common_reserve.deployment_window_days }
+		event_target:africa_host = {
+			subtract_from_variable = { africa_common_defence_stockpile = constant:africa_common_reserve.deployment_cost }
+			if = {
+				limit = { NOT = { has_variable = africa_common_reserve_deployment_sequence } }
+				set_variable = { africa_common_reserve_deployment_sequence = constant:africa_value.zero }
+			}
+			add_to_variable = { africa_common_reserve_deployment_sequence = constant:africa_value.one }
+		}
+		set_variable = { africa_common_reserve_deployment_host_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { africa_common_reserve_deployment_sequence = event_target:africa_host.africa_common_reserve_deployment_sequence }
+		africa_achievement_record_common_reserve_owner_ready = yes
+	}
+}
+
+# COUNTRY scope on a deployed partner. Capital loss and a late settlement are
+# sticky achievement disqualifiers; only an on-time, non-capitulated settlement
+# can call the exact positive owner.
+africa_common_reserve_resolve_deployment = {
+	if = {
+		limit = { has_country_flag = africa_common_reserve_deployment_active }
+		set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.one }
+		if = {
+			limit = { has_capitulated = yes }
+			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+			africa_achievement_record_reserve_capital_loss = yes
+		}
+		if = {
+			limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
+			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+			africa_achievement_record_reserve_capital_loss = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.num_days
+					value = africa_common_reserve_deployment_deadline_day
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+			africa_achievement_record_reserve_deadline_missed = yes
+		}
+		if = {
+			limit = { check_variable = { africa_common_reserve_settlement_valid > constant:africa_value.zero } }
+			set_country_flag = africa_common_reserve_deployment_completed
+			africa_achievement_record_reserve_war_answered = yes
+		}
+		clr_country_flag = africa_common_reserve_deployment_active
+		clear_variable = africa_common_reserve_deployment_started_day
+		clear_variable = africa_common_reserve_deployment_deadline_day
+		clear_variable = africa_common_reserve_deployment_host_generation
+		clear_variable = africa_common_reserve_deployment_sequence
+		if = {
+			limit = { has_event_target = africa_host }
+			event_target:africa_host = {
+				if = {
+					limit = {
+						OR = {
+							check_variable = {
+								var = africa_common_defence_stockpile
+								value = constant:africa_common_reserve.deployment_cost
+								compare = less_than
+							}
+							AND = {
+								has_variable = africa_common_reserve_activation_deadline_day
+								check_variable = {
+									var = global.num_days
+									value = africa_common_reserve_activation_deadline_day
+									compare = greater_than_or_equals
+								}
+							}
+						}
+					}
+					clr_country_flag = africa_common_reserve_active
+				}
+			}
+		}
+	}
+}

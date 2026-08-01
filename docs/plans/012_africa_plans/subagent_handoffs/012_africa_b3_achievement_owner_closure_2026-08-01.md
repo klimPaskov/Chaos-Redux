@@ -33,7 +33,7 @@ Row 30 remains blocked because no exact measured foreign-concession-share writer
 
 Row 32 remains blocked because no exact project-exploitation-scandal owner was found; `africa_achievement_development_owner_ready` is unchanged and remains closed.
 
-Row 33 remains blocked because no common-reserve deployment, deadline, protected-capital, or offensive-abuse lifecycle owner was found; `africa_achievement_common_reserve_owner_ready` is unchanged and remains closed.
+Row 33's earlier B3 audit remains superseded for this surface. The dedicated `012_africa_common_reserve_deployment_2026-08-01.md` handoff now records the deployment, deadline, protected-capital, and offensive-abuse owners; `africa_achievement_common_reserve_owner_ready` is opened only after the first exact deployment. Six-war live acceptance remains blocked.
 
 Row 38 receives only the narrow semantic correction that an accepted hostile selected-country call does not open a campaign owner or mark civilian weaponisation, while accepted random backfire and rejection now set the separate backfire disqualifier; weather-army defeat, campaign victory, maximum-tier member disaster, neutral targeting, and ecological-wrath collapse owners remain absent, so `africa_achievement_rain_command_owner_ready` remains closed.
 

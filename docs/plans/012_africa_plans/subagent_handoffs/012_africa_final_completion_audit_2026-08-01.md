@@ -39,10 +39,10 @@ High-risk functional examples are:
 - `africa_priority_member_cleanup_runtime`, which awaits the owning terminal/reset transaction.
 - `africa_rsa_allied_settlement_is_complete` and `africa_rsa_civil_war_first_proof_satisfied`, which are currently consumer-facing proof APIs without a static caller.
 - `africa_select_mapped_first_proof_action`, `africa_confirm_all_required_first_proof_regions`, `africa_confirm_first_proof_domestic_settlement`, and `africa_confirm_first_proof_reform`, whose orchestration ownership is not proven.
-- Fifteen achievement recorders without an exact caller, covering development and diaspora projects, civilian disaster weaponisation, disease containment, model-based elephant proofs, forced-relocation/scenario proof, other-world-end proof, reserve answers, socialised projects, weather-army defeat, and the terminal super-event.
+- Fourteen achievement recorders without an exact caller, covering development and diaspora projects, civilian disaster weaponisation, disease containment, model-based elephant proofs, forced-relocation/scenario proof, other-world-end proof, socialised projects, weather-army defeat, and the terminal super-event. The common-reserve deployment recorder now has an exact Action 80 and protection-war caller, but its six-war live acceptance is still open.
 - Remaining definition-only helpers are bounded host/contact convenience APIs, five Scramble-interest subpredicates, world counterterm/refusal/completion predicates, reset/breach helpers, and an unused protection-first AI predicate. They are dormant or API-like scaffolding, not evidence that their gameplay is reachable.
 
-Achievement rows 30, 32, 33, 37, and 38 remain fail-closed because exact concession-share, exploitation-scandal, reserve-war lifecycle, civilian-damage, and campaign-victory owners are not available.
+Achievement rows 30, 32, 37, and 38 remain fail-closed because exact concession-share, exploitation-scandal, civilian-damage, and campaign-victory owners are not available. Row 33 now has the reserve-war lifecycle owner; it remains fail-closed until six distinct defensive-war scenarios and the deadline/capital/offensive disqualifier paths are accepted.
 
 ## Simplifications, omissions, and blockers
 

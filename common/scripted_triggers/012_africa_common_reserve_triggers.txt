@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 COMMON RESERVE TRIGGERS
+# ============================================================================
+# The reserve uses Event 012's existing host stockpile. These triggers are
+# deliberately narrow: they validate the post-unification mobilisation action
+# and a protected partner's defensive war without scanning the world.
+# ============================================================================
+
+# COUNTRY scope on the current host. Transport proof is a real route or focus
+# receipt, not an opinion threshold or a passive reserve default.
+africa_common_reserve_transport_network_ready = {
+	OR = {
+		has_country_flag = africa_command_prove_common_logistics
+		has_country_flag = africa_command_logistics_first
+		has_country_flag = africa_support_common_logistics
+		has_country_flag = africa_regional_rail_spine_operational
+		has_country_flag = africa_river_transport_operational
+		has_country_flag = africa_continental_port_modernised
+		has_country_flag = africa_member_transport_connection_complete
+	}
+}
+
+# COUNTRY scope on the host while selecting Action 80. The action remains
+# gated by the existing Scramble phase check in the action validator.
+africa_common_reserve_mobilise_is_valid = {
+	africa_is_current_host = yes
+	has_global_flag = africa_is_one
+	has_variable = africa_common_defence_stockpile
+	check_variable = {
+		var = africa_common_defence_stockpile
+		value = constant:africa_common_reserve.minimum_stockpile
+		compare = greater_than_or_equals
+	}
+	africa_common_reserve_transport_network_ready = yes
+	NOT = { has_country_flag = africa_common_reserve_active }
+}
+
+# COUNTRY scope on a protected partner while ROOT is the attacking side of a
+# new war relation. The partner must still hold its own capital, and the host
+# must have a live reserve stockpile to fund this exact deployment.
+africa_common_reserve_can_cover_defensive_war = {
+	has_event_target = africa_host
+	africa_relationship_is_protected = yes
+	has_country_flag = africa_achievement_counted_protected_partner
+	NOT = { has_country_flag = africa_common_reserve_deployment_active }
+	NOT = { has_capitulated = yes }
+	capital_scope = { is_controlled_by = PREV }
+	event_target:africa_host = {
+		has_country_flag = africa_unifier_host
+		has_country_flag = africa_host_commit_completed
+		has_variable = africa_host_generation
+		has_country_flag = africa_common_reserve_active
+		has_variable = africa_common_defence_stockpile
+		has_variable = africa_common_reserve_activation_deadline_day
+		check_variable = {
+			var = global.num_days
+			value = africa_common_reserve_activation_deadline_day
+			compare = less_than
+		}
+		check_variable = {
+			var = africa_common_defence_stockpile
+			value = constant:africa_common_reserve.deployment_cost
+			compare = greater_than_or_equals
+		}
+	}
+}
