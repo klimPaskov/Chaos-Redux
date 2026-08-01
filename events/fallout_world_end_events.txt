@@ -20246,3 +20246,101 @@ country_event = {
 	trigger = { fallout_event_733_cleanup_can_enter = yes }
 	immediate = { fallout_event_733_cleanup = yes }
 }
+
+country_event = {
+	id = chaosx.fallout.740
+	title = chaosx.fallout.740.t
+	desc = chaosx.fallout.740.opening.d
+	picture = GFX_report_event_fallout_open_the_sealed_city
+	is_triggered_only = yes
+	trigger = { fallout_event_740_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.740.a
+		trigger = { fallout_event_740_reopen_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_740_requested_branch = constant:fallout_event_740_branch.reopen_city } fallout_event_740_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.740.a.tt
+	}
+	option = {
+		name = chaosx.fallout.740.b
+		trigger = { fallout_event_740_scientific_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_740_requested_branch = constant:fallout_event_740_branch.scientific_access } fallout_event_740_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.740.b.tt
+	}
+	option = {
+		name = chaosx.fallout.740.c
+		trigger = { fallout_event_740_military_salvage_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_740_requested_branch = constant:fallout_event_740_branch.military_salvage } fallout_event_740_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.740.c.tt
+	}
+	option = {
+		name = chaosx.fallout.740.d
+		trigger = { fallout_event_740_memorial_branch_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_740_requested_branch = constant:fallout_event_740_branch.permanent_memorial } fallout_event_740_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.740.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.741
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_740_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_740_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.742
+	title = chaosx.fallout.742.t
+	desc = { text = chaosx.fallout.742.reopen.success.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.reopen_city } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.742.reopen.partial.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.reopen_city } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.742.reopen.failure.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.reopen_city } } }
+	desc = { text = chaosx.fallout.742.scientific.success.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.scientific_access } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.742.scientific.partial.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.scientific_access } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.742.scientific.failure.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.scientific_access } } }
+	desc = { text = chaosx.fallout.742.salvage.success.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.military_salvage } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.742.salvage.partial.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.military_salvage } check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.742.salvage.failure.d trigger = { check_variable = { fallout_event_740_selected_branch = constant:fallout_event_740_branch.military_salvage } } }
+	desc = { text = chaosx.fallout.742.memorial.success.d trigger = { check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.742.memorial.partial.d trigger = { check_variable = { fallout_event_740_result_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.742.memorial.failure.d
+	picture = GFX_report_event_fallout_open_the_sealed_city
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_740_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.open_the_sealed_city_result } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } }
+	option = { name = chaosx.fallout.742.a hidden_effect = { fallout_event_740_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.742.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.743
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_740_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.open_the_sealed_city_result_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } }
+	immediate = { fallout_event_740_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.744
+	title = chaosx.fallout.744.t
+	desc = { text = chaosx.fallout.744.success.d trigger = { check_variable = { fallout_event_740_callback_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.744.partial.d trigger = { check_variable = { fallout_event_740_callback_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = chaosx.fallout.744.failure.d
+	picture = GFX_report_event_fallout_open_the_sealed_city
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_740_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.open_the_sealed_city_callback } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.human_visible } fallout_event_740_registry_is_current = yes }
+	option = { name = chaosx.fallout.744.a hidden_effect = { fallout_event_740_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.744.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.745
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_740_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token = constant:fallout_event_id.open_the_sealed_city_callback_ai } check_variable = { fallout_event_dispatch_issued_mode = constant:fallout_event_dispatch_mode.hidden_ai } fallout_event_740_registry_is_current = yes }
+	immediate = { fallout_event_740_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.746
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_740_cleanup_can_enter = yes }
+	immediate = { fallout_event_740_cleanup = yes }
+}
