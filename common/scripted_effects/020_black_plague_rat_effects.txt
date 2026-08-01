@@ -1164,6 +1164,34 @@ black_plague_rat_establish_burrow_node = {
 	}
 }
 
+# COUNTRY scope with FROM = a selected human enemy STATE. This is the RTA
+# refugee route: it spends Brood Mass, sends a bounded exposure through the
+# canonical spread adapter, and leaves a state cooldown so the action cannot
+# become a same-pulse infinite infection loop.
+black_plague_rat_follow_refugee_road = {
+	if = {
+		limit = {
+			black_plague_rat_country_is_active = yes
+			check_variable = {
+				var = black_plague_rat_brood_mass
+				value = constant:black_plague_rat_decision.refugee_road_mass_cost
+				compare = greater_than_or_equals
+			}
+			FROM = { black_plague_rat_state_can_follow_refugee_road = yes }
+		}
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.refugee_road_mass_cost }
+		FROM = {
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.refugee_road_exposure }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.refugee_movement }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+			black_plague_apply_exposure = yes
+			set_temp_variable = { black_plague_refugee_road_cooldown_days = constant:black_plague_rat_decision.refugee_road_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_refugee_road_cooldown days = black_plague_refugee_road_cooldown_days }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
 black_plague_rat_process_country_pulse = {
 	if = {
 		limit = {
