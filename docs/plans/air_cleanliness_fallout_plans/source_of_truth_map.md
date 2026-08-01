@@ -320,3 +320,15 @@ Successor package production, player materialization, general allocation, countr
 | The Power as Citizenship localisation and Event Log | `localisation/english/fallout_world_end_power_citizenship_l_english.yml`, `common/scripted_localisation/fallout_world_end_power_citizenship_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Power as Citizenship art and workbook | `docs/assets/866_power_citizenship/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/power_citizenship/report_event_fallout_power_citizenship.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-866` |
 | The Power as Citizenship status boundary | dormant source package with four government-purpose branches, hidden-AI parity, 77-day result, 450-day citizenship audit, bounded Deaths effects, power-citizenship identity and government memories, Event Log history `9201`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Name We Choose source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Name We Choose design | `docs/specs/air_cleanliness_fallout_specs/specs/98_reviewed_archetype_name_we_choose.md` |
+| The Name We Choose runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_NAME_WE_CHOOSE_CHAIN_PROOF.md` |
+| The Name We Choose gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_name_we_choose_event_triggers.txt`, `common/scripted_effects/fallout_world_end_name_we_choose_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_name_we_choose_dynamic_modifiers.txt` |
+| The Name We Choose constants and registry | `common/script_constants/fallout_world_end_name_we_choose_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Name We Choose localisation and Event Log | `localisation/english/fallout_world_end_name_we_choose_l_english.yml`, `common/scripted_localisation/fallout_world_end_name_we_choose_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Name We Choose art and workbook | `docs/assets/873_name_we_choose/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/name_we_choose/report_event_fallout_name_we_choose.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-873` |
+| The Name We Choose status boundary | dormant source package with four fictional identity branches, hidden AI parity, 42-day result, 300-day generation review, bounded Deaths effects, identity and bilateral memories, Event Log history `9202`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

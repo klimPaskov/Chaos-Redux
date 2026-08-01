@@ -1086,3 +1086,17 @@ The chain carries Make Power a Public Service, Constitute an Engineer State, Bui
 The asset evidence is `docs/assets/866_power_citizenship/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_power_citizenship`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-866` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_REPAIR_CHARTER_CHAIN_PROOF.md`.
+
+## The Name We Choose tranche
+
+The Name We Choose adds dormant suffixes `873` through `879` with candidate id `873`, transaction key `710096`, route `7224`, and history `9202`.
+
+The human opening is `873`, the hidden AI opening is `874`, the human and hidden AI delayed results are `875` and `876`, the human and hidden AI generation reviews are `877` and `878`, and cleanup is `879`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a current living state, current Air Winter and Supply Access receipts, surviving population, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign neighbor, civic legitimacy, outside pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, neighbor, generation, Air Winter values, Supply Access, and identity ledgers.
+
+The chain carries Choose the River Name, Carry the Old Nationality, Reject the Biological Label, and Take a Religious Identity branches with distinct survival costs, deterministic result and generation-review grading, a 42-day result, a 300-day generation review, bounded Deaths effects, Air Winter and Supply Access effects, identity, civic, migration, bilateral opinion, and fictional altered-society memories, Event Log history `9202`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/873_name_we_choose/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_name_we_choose`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-873` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_NAME_WE_CHOOSE_CHAIN_PROOF.md`.
