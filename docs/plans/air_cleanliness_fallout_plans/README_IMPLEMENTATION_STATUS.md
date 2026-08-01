@@ -951,3 +951,15 @@ The four branches are Share Power With Every Neighbor, Favor the Settlements Tha
 The asset evidence is `docs/assets/824_grid_vote/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_grid_vote`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` is present with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GRID_VOTE_CHAIN_PROOF.md`.
+
+## The Failed Calculation tranche
+
+The Failed Calculation is a dormant ordinary Fallout chain at `chaosx.fallout.831` through `chaosx.fallout.837` with candidate `831`, transaction `710090`, route `7212`, and Event Log history `9196`.
+
+It follows a closed Grid Vote district in the Manchurian Reactor Keeps Technate. The candidate selects the lowest current East Asian industrial or arms state with a foreign neighbor, surviving population, native infrastructure, produced Air Winter values, bounded Disease Pressure, durable Medicine, Cohesion, Recognition, calculation legitimacy, inquiry pressure, and an affordable branch.
+
+The four branches are Open the Ledger to a Public Inquiry, Seal the Calculation, Blame the Operator, and Rebuild the Model. The chain freezes country, state, neighbor, generation, Air Winter, Supply Access, and technical ledgers, resolves after `49` days, schedules a `300` day technical audit, applies bounded Deaths failure, writes calculation, research, safety, and bilateral memories, records Event Log history `9196`, preserves hidden-AI parity, and uses authenticated cleanup.
+
+The asset evidence is `docs/assets/831_failed_calculation/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_failed_calculation`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` will carry `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven without launching HOI4. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. Static proof is recorded in `FALLOUT_FAILED_CALCULATION_CHAIN_PROOF.md`.

@@ -158,6 +158,7 @@
 - `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
 - `specs/90_reviewed_archetype_patent_after_end.md`
 - `specs/91_reviewed_archetype_the_grid_vote.md`
+- `specs/92_reviewed_archetype_the_failed_calculation.md`
 
 ## Matrices
 
