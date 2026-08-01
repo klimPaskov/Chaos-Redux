@@ -512,6 +512,8 @@ Possible links:
 - A future Kruger can become a rare variant.
 - Contradictory timelines can create diplomacy and identity events.
 
+The implemented baseline uses the safe prerequisite-and-warning link. When `chaosx.nr30.2` reaches the active Event 016 host, it writes one persistent contact receipt and presents `chaosx.nr16.16`. The report records the warning without creating a second actor, stage, reward, claim, evolution, or Event Log entry; the future-variant and diplomacy expansions remain separate design options.
+
 ### Event 32: Missiles
 
 Possible links:

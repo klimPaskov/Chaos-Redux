@@ -8,6 +8,8 @@ The architecture and identifier maps are frozen in the accepted handoffs under `
 
 When a player forwards Kruger to another country, the rejecting country now receives one delayed intelligence report, `chaosx.nr16.15`, after the referred appointment commits. The report reads the recipient's public or secret posture, consumes the temporary rejection memory, and records a permanent one-time receipt without reopening recruitment, creating a second character, adding an event-log row, or claiming a new project reward.
 
+Event 030's Time Traveler contact now becomes a durable Event 016 temporal lead when it reaches the active Kruger host. `chaosx.nr16.16` records that contact once, keeps the lead after the 365-day traveler idea expires, and adds no project stage, reward, evolution, event-log row, claim, or model dependency.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.

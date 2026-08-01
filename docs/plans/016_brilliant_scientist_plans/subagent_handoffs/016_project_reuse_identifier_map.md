@@ -316,8 +316,8 @@ The lifecycle files are concurrent implementation work. Event 016 integration de
 
 ### 14. Temporal mechanics
 
-- **Reuse cross-event signal:** Event 030 currently supplies the timed idea <code>time_traveler</code>.
-- **Conditional persistent hook:** if Event 030 integration needs to survive the timed idea, set exact flag <code>brilliant_scientist_time_traveler_contact</code> in the qualifying outcome. The flag is not a substitute for the Event 016 evidence/authentication gates.
+- **Reuse cross-event signal:** Event 030 supplies the timed idea <code>time_traveler</code> and, when its report reaches an active Event 016 host, the one-time temporal-contact report <code>chaosx.nr16.16</code>.
+- **Implemented persistent hook:** the qualifying Event 030 outcome writes exact flag <code>brilliant_scientist_time_traveler_contact</code>, queues <code>brilliant_scientist_time_traveler_contact_pending</code>, and resolves it once into <code>brilliant_scientist_time_traveler_contact_report_seen</code>. The receipt survives expiry of the timed idea and follows ordinary transfer and sovereignty inheritance. It is not a substitute for the Event 016 evidence/authentication gates.
 - **New project:** <code>sp_brilliant_scientist_temporal_mechanics</code>; <code>specialization_nuclear</code>, <code>nuclear_facility</code>; breakthrough 4; very-long/insane; steel 6, tungsten 8, chromium 8, rubber 4.
 - **New outputs:** <code>brilliant_scientist_temporal_guard_tech</code>; unit <code>kruger_temporal_guard</code>; <code>kruger_temporal_equipment</code>/<code>kruger_temporal_equipment_1</code>.
 - **Stages:** Theory requires Computation, High Energy, and authenticated temporal evidence; Prototype allows one bounded information/object result; Deployment unlocks forecast, one-use recovery, and displacement; Weaponization unlocks tightly capped continuity/guard actions.
@@ -439,7 +439,7 @@ Findings:
 - No <code>KRG</code> country definition exists in Chaos Redux or vanilla. The tag is clear in the inspected approved reference mods as well.
 - Existing radar, rocket, nuclear, biological-agent, delivery-technology, bioweapon equipment, containment, contamination, Deaths, and Condemnation identifiers are live and must be reused.
 - <code>sp_mengele_cloning</code> is live but is deliberately excluded from reuse because its country-specific availability and output contract do not represent Event 016.
-- <code>antarctica_success</code> is a stable Event 025 gate. Event 036 has no stable recovery marker, Event 030 has only timed <code>time_traveler</code>, and no live Teleportation Experiment implementation was found.
+- <code>antarctica_success</code> is a stable Event 025 gate. Event 036 has no stable recovery marker, and no live Teleportation Experiment implementation was found. Event 030 now has the bounded Event 016 temporal-contact receipt described above; no broader Event 030 variant or diplomacy chain is implied.
 - Visible super-event slots 85 through 89 have Event 015 ownership evidence. Event 016 90 through 95 have no competing live selector/localisation/GFX owner; Event 016’s corrected audio files use those numbers.
 - Event 016 world-end IDs 11 and 12 have no competing live world-end registry owner. The triggerable-scenario value 12 belongs to a different identifier namespace and is not a collision.
 
