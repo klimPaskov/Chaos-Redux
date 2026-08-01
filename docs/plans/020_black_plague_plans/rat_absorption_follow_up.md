@@ -2,22 +2,26 @@
 
 ## Status
 
-Deferred for parent review because a correct resolution changes the Rat Nation mechanic rather than merely cleaning its implementation.
+Resolved and superseded by the live two-tag state-marker implementation.
+
+No further design addendum is required for this gap.
 
 ## Finding
 
 `black_plague_rat_absorb_a_weaker_brood` spends Brood Mass and calls `black_plague_rat_try_absorb_adjacent_brood`.
 
-The helper is intentionally empty and explains that the current one-carrier model has no country-to-country annex transaction.
+The helper now selects a valid adjacent state-level brood marker inside the single `RTA` carrier, reserves it, records absorption, inherits its bounded surviving-unit value, adds Brood Mass, refreshes the shared division cap, and emits `chaosx.nr20.43` once.
 
-The decision description nevertheless promises adjacent territorial absorption and inherited strength.
+It does not annex another Rat Nation country and does not require another tag.
 
-## Required design decision
+## Accepted resolution
 
-Do not alter this during cleanup because a correct change needs a defined state-level payoff, valid target selection, AI conditions, cap interaction, and retirement cleanup.
-
-Either implement an explicit state-level absorption result with a one-time target and cooldown, or remove the decision and its localisation as obsolete.
+Keep the paid decision and its state-level payoff.
+Treat additional broods as Rat Infestation, brood-strength markers, unit inheritance, and internal consolidation inside `RTA`.
+Preserve the two-tag correction with `RTA` as the base carrier and `RTX` as the separate Rat King.
 
 ## Evidence
 
 The absorption helper and call site are in `common/scripted_effects/020_black_plague_rat_effects.txt` and `common/decisions/020_black_plague_rat_decisions.txt`.
+The state eligibility and absorbed-marker checks are in `common/scripted_triggers/020_black_plague_rat_triggers.txt`.
+The two-tag correction is `docs/specs/020_black_plague_specs/corrections/2026-07-29_two_rat_tags.md`.
