@@ -21055,3 +21055,105 @@ country_event = {
 	trigger = { fallout_event_789_cleanup_can_enter = yes }
 	immediate = { fallout_event_789_cleanup = yes }
 }
+
+# Dormant Fallout technate chain: The Engineer Franchise
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.796
+	title = chaosx.fallout.796.t
+	desc = chaosx.fallout.796.opening.d
+	picture = GFX_report_event_fallout_engineer_franchise
+	is_triggered_only = yes
+	trigger = { fallout_event_796_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.796.a
+		trigger = { fallout_event_796_engineer_vote_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_796_requested_branch = constant:fallout_event_796_branch.engineer_vote } fallout_event_796_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.796.a.tt
+	}
+	option = {
+		name = chaosx.fallout.796.b
+		trigger = { fallout_event_796_public_council_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_796_requested_branch = constant:fallout_event_796_branch.public_council } fallout_event_796_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.796.b.tt
+	}
+	option = {
+		name = chaosx.fallout.796.c
+		trigger = { fallout_event_796_military_oversight_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_796_requested_branch = constant:fallout_event_796_branch.military_oversight } fallout_event_796_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.796.c.tt
+	}
+	option = {
+		name = chaosx.fallout.796.d
+		trigger = { fallout_event_796_universal_vote_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_796_requested_branch = constant:fallout_event_796_branch.universal_vote } fallout_event_796_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.796.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.797
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_796_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_796_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.798
+	title = chaosx.fallout.798.t
+	desc = { text = chaosx.fallout.798.engineer_vote.success.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.engineer_vote compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.798.engineer_vote.partial.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.engineer_vote compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.798.engineer_vote.failure.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.engineer_vote compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.798.public_council.success.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.public_council compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.798.public_council.partial.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.public_council compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.798.public_council.failure.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.public_council compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.798.military_oversight.success.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.military_oversight compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.798.military_oversight.partial.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.military_oversight compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.798.military_oversight.failure.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.military_oversight compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.798.universal_vote.success.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.universal_vote compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.798.universal_vote.partial.d trigger = { check_variable = { fallout_event_796_selected_branch value = constant:fallout_event_796_branch.universal_vote compare = equals } check_variable = { fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.798.universal_vote.failure.d
+	picture = GFX_report_event_fallout_engineer_franchise
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_796_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.engineer_franchise_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.798.a hidden_effect = { fallout_event_796_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.798.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.799
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_796_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.engineer_franchise_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_796_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.800
+	title = chaosx.fallout.800.t
+	desc = { text = chaosx.fallout.800.success.d trigger = { check_variable = { fallout_event_796_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.800.partial.d trigger = { check_variable = { fallout_event_796_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.800.failure.d
+	picture = GFX_report_event_fallout_engineer_franchise
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_796_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.engineer_franchise_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_796_registry_is_current = yes }
+	immediate = { fallout_event_796_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.800.a hidden_effect = { fallout_event_796_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.800.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.801
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_796_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.engineer_franchise_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_796_registry_is_current = yes }
+	immediate = { fallout_event_796_calculate_callback_outcome = yes fallout_event_796_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.802
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_796_cleanup_can_enter = yes }
+	immediate = { fallout_event_796_cleanup = yes }
+}
