@@ -649,7 +649,35 @@ chaosx_disease_containment_category = {
 		remove_effect = { hidden_effect = { FROM = { black_plague_finish_shared_state_action = yes } } }
 		cancel_trigger = { FROM = { NOT = { black_plague_shared_royal_node_state_can_start_action = yes } } }
 		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_shared_state_action = yes } } }
-		ai_will_do = { base = constant:black_plague_response_ai.emergency }
+		ai_will_do = {
+			base = constant:black_plague_response_ai.emergency
+			modifier = {
+				factor = constant:black_plague_response_ai.royal_node_urgent_factor
+				check_variable = {
+					var = global.black_plague_rat_king_terminal_preparation
+					value = constant:black_plague_response_ai.royal_node_terminal_pressure_threshold
+					compare = greater_than
+				}
+			}
+			modifier = {
+				factor = constant:black_plague_response_ai.royal_node_high_factor
+				RTX = {
+					check_variable = {
+						var = black_plague_rat_king_dominion
+						value = constant:black_plague_response_ai.royal_node_dominion_threshold
+						compare = greater_than
+					}
+				}
+			}
+			modifier = {
+				factor = constant:black_plague_response_ai.royal_node_severe_factor
+				black_plague_country_has_active_severe_state = yes
+			}
+			modifier = {
+				factor = constant:black_plague_response_ai.royal_node_war_factor
+				has_war = yes
+			}
+		}
 	}
 
 	black_plague_shared_strike_the_crown = {
