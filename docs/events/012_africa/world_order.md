@@ -2,7 +2,9 @@
 
 ## Purpose
 
-This subsystem begins after `africa_is_one` and preserves the original Event 12 host. It resolves the foreign Scramble response through recognition, conditional recognition, sanctions, ultimatums, an optional expedition war, and an aftermath congress. It then exposes six continent-package candidates and the later world-order routes.
+This subsystem begins after `africa_is_one` and preserves the original Event 12 host. It resolves the foreign Scramble response through recognition, conditional recognition, sanctions, ultimatums, an optional expedition war, and an aftermath congress. W1-W4 source now includes the six continent-package polity loops, sponsorship, union, war, succession, breakup, and terminal lifecycle, while initial W5 package certification remains blocked by absent authoritative pre-install receipts.
+
+The package sections below are source and design evidence, not a claim that any external package is runtime-ready. The current asset and presentation dispositions are authoritative only in `docs/specs/012_africa_specs/matrices/012_africa_asset_animation_matrix.csv`, and the six late or episodic action families remain list-only decision content rather than duplicate Charter controls.
 
 No response grants African membership, integration, annexation, or cores. The foreign response is a diplomatic and military settlement around the already negotiated Charter League.
 
@@ -13,8 +15,8 @@ No response grants African membership, integration, annexation, or cores. The fo
 3. Each participant explicitly chooses recognition, conditional recognition, sanctions, or an ultimatum in `africa_world_order.1`.
 4. Four timed phases track diplomatic shock, coalition formation, intervention or settlement, and aftermath.
 5. Intervention can produce a real war. Pairwise on-actions record war, capitulation, and peace without periodic country iteration.
-6. During the aftermath, Action 85 installs one documented actor for each of the six external continent packages. Sponsorship creates a separate 180-day material obligation.
-7. Full world-order opening requires all six dedicated packages and a resolved Scramble. A documented mixed or absent roster can instead close the Africa-only docket without opening world-order actions.
+6. During the aftermath, Action 85 can install one documented actor for each of the six external continent packages only after the per-candidate `africa_world_package_implementation_ready` gate is intentionally certified. Sponsorship creates a separate 180-day material obligation.
+7. Full world-order opening requires all six dedicated packages, a resolved Scramble, and the missing initial W5 certification receipt contract. A documented mixed or absent roster can instead close the Africa-only docket without opening world-order actions.
 8. Settled packages can consent to union, remain sovereign, become rivals, fight a prepared continental war, or accept a postwar submission settlement.
 9. The terminal World identity remains unavailable until all continent packages are resolved, chaos is above the terminal threshold, no ordinary settlement remains pending, and the researched final super-event package sets `africa_the_world_super_event_package_ready`.
 
@@ -42,11 +44,11 @@ The expedition launch iterates only the frozen coalition array and gives every e
 
 ## AI policy binding
 
-The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table.
+The exact 64-profile registry now controls the Scramble and world-order campaign instead of remaining a read-only scoring table. Static registration is complete, but two evidence blockers remain: the Scramble classifier does not itself prove material readiness, and the strategy-plan probability adapter returned no usable surface. No campaign simulation or balance completion claim follows from the registry.
 
 - `africa_ai_run_profiled_late_action_cycle` is an AI-only host decision with a fourteen-day re-enable period. It runs only for the current Event 12 host and reads the maintained Scramble participant, package candidate, package actor, and relationship arrays. It performs no country census.
 - The host refresh composes its regional overlay, constitution, and full-host playbook. A selected target then contributes its relationship, foreign-power, high-chaos, or continent profile before final approval.
-- Actions 77 through 92 receive separate semantic priorities and exact availability checks. The dispatcher selects only a real target that satisfies the same action-specific validator used by the player quote path.
+- Actions 77 through 92 receive separate semantic priorities and exact availability checks. The dispatcher selects only a real target that satisfies the same action-specific validator used by the player quote path. The full dispatcher covers all 102 action rows; rows 73-76 and 85-92 retain their explicit runtime gates.
 - Every approved AI action passes through `africa_begin_quoted_action_against_target`. Dynamic costs, capacity, target cooldowns, shared missions, full and partial outcomes, failure, and cleanup therefore remain identical for player and AI use.
 - Partial-outcome tolerance changes high-risk action weighting. Retry stance reads the target's immutable last-action ledger and can require resource recovery before another attempt.
 - The host stores the last composite policy, all active layer IDs, selected action, selected target, partial tolerance, retry stance, and launch counters as normal variables for audit and save-state inspection.
@@ -67,7 +69,7 @@ The six package mechanics are distinct and use separate public values:
 - South America: Andes, Amazon, and Plata Balance, including three regional voices, indigenous representation, resources, and foreign debt.
 - Oceania: Ocean Network, including convoy reach, island representation, naval protection, indigenous settlement, air routes, and dispersed industry.
 
-All six packages have dedicated dormant focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Their runtime implementation gates remain closed until each package receives its complete political, decision, identity, and presentation surfaces. The 121 focus icons, 121 shine partners, 38 idea icons, and 39 public identity flag ladders are installed, but visual completion does not substitute for the remaining gameplay gates.
+All six packages have dedicated dormant focus architectures in their respective `common/national_focus/012_africa_world_<region>_focus.txt` files. Their runtime implementation gates remain closed until each package receives its complete political, decision, identity, and presentation surfaces and the host receives the missing pre-install certification receipts. Static source or registration evidence does not substitute for the remaining gameplay gates; use the authoritative asset matrix for each row's exact status.
 
 ## Middle East implementation
 
@@ -111,7 +113,7 @@ After every mandatory lane is completed, the route payoffs produce the following
 
 ### North America focus icon contracts
 
-All twenty sprites and their shine partners are registered in `interface/012_africa_world_order.gfx`. Their final DDS files, generated source tiles, processed PNGs, manifest rows, provenance, hashes, and contact-sheet review are complete under the Event 12 world-order asset package.
+Some North America focus sprites and registrations are present, but the package remains dormant and its exact visual row status is controlled by the authoritative asset matrix. No static sprite or manifest evidence sets package readiness or substitutes for missing political-package receipts.
 
 - `GFX_goal_012_africa_continent_sponsorship_north_america_continental_bargain` uses `goal_012_north_america_continental_bargain.dds`.
 - `GFX_goal_012_africa_continent_sponsorship_north_america_industrial_grid` uses `goal_012_north_america_industrial_grid.dds`.
@@ -153,7 +155,7 @@ The South Atlantic partnership covers shipping, cultural links, voluntary diaspo
 
 ### South America focus icon contracts
 
-All twenty-one sprites and their shine partners are registered in `interface/012_africa_world_order.gfx`. Their final DDS files, generated source tiles, processed PNGs, manifest rows, provenance, hashes, and contact-sheet review are complete under the Event 12 world-order asset package.
+Some South America focus sprites and registrations are present, but the package remains dormant and its exact visual row status is controlled by the authoritative asset matrix. No static sprite or manifest evidence sets package readiness or substitutes for missing political-package receipts.
 
 - `GFX_goal_012_africa_continent_sponsorship_south_america_three_regions_balance` uses `goal_012_south_america_three_regions_balance.dds`.
 - `GFX_goal_012_africa_continent_sponsorship_south_america_andean_transport` uses `goal_012_south_america_andean_transport.dds`.
@@ -197,7 +199,7 @@ The Africa treaty covers convoy protection, island obligations, and Indian Ocean
 
 ### Oceania focus icon contracts
 
-All twenty sprites and their shine partners are registered in `interface/012_africa_world_order.gfx`. Their final DDS files, generated source tiles, processed PNGs, manifest rows, provenance, hashes, and contact-sheet review are complete under the Event 12 world-order asset package.
+Some Oceania focus sprites and registrations are present, but the package remains dormant and its exact visual row status is controlled by the authoritative asset matrix. No static sprite or manifest evidence sets package readiness or substitutes for missing political-package receipts.
 
 - `GFX_goal_012_africa_continent_sponsorship_oceania_ocean_network` uses `goal_012_oceania_ocean_network.dds`.
 - `GFX_goal_012_africa_continental_representation_oceania_island_congress` uses `goal_012_oceania_island_congress.dds`.
@@ -238,20 +240,20 @@ The accepted matrix entries are registered in `interface/012_africa_world_order.
 - Continental-wars super-event: `GFX_super_event_012_africa_continental_wars`
 - Terminal World package: `GFX_012_the_world_<asset>` plus its separate researched final image and audio record
 
-The 121 focus icons, 121 shine definitions, 38 idea icons, and 39 three-size public identity flag ladders have complete runtime binaries and review evidence. News, super-event, animation, and terminal presentation rows retain their individual matrix dispositions; missing binaries or rights packages remain blockers rather than being replaced by fallback art.
+World-order source and some registrations exist, but the 239-row matrix is the only current visual disposition authority. Installed rows may be runtime or dormant; deferred rows remain controlled-pool, runtime-gated, model-required, or unique-package-required. Missing binaries, rights packages, and pre-install package receipts remain blockers rather than being replaced by fallback art.
 
 ## Cleanup
 
 Scramble phase flags and intervention-war flags are cleared at settlement or defeat. Sponsorship missions remove their target from the bounded sponsorship array on fulfilment or default. Continental-war target flags are cleared when war launches or resolves. The final World effect closes incompatible world-order and Scramble flags only after its complete presentation readiness gate passes.
 
-## Future implementation work
+## Remaining acceptance work
 
-- Complete the political, military, decision, leadership, and presentation surfaces still required for all six continent packages.
-- Add route-specific post-settlement decisions and breakup rules for every two-continent union.
-- Extend the same live profile dispatcher to the opening, protection, accession, congress, integration, economy, diaspora, rival, high-chaos, constitutional-crisis, and priority-package actions 1 through 76 and 93 through 102.
-- Complete the remaining accepted news, super-event, animation, and audio assets with no substitutions.
-- Research and approve the high-chaos continent routes before enabling their review flags.
-- Research and wire the four super-event roles only after final text, images, licensed music, slots, and unique audio IDs are complete.
+- Define and review authoritative pre-install route, constituent, AI, focus, idea, identity, localisation, asset, documentation, and W0-W4 receipts before adding the W5 all-six certification trigger and atomic setter. Static source existence is not a receipt.
+- Run positive and negative acceptance scenarios for the thirteen conditionally reachable priority packages; keep DYX/Luba, DZX/Lunda, and EMX/Kilwa dormant and unbound until separately accepted Event 006 map packages exist.
+- Resolve the two AI evidence blockers with a materially incapable Scramble scenario and a compatible strategy-plan score probe; do not bulk-rewrite the 107 flat focus weights from an empty probability surface.
+- Preserve the permanent list-only disposition for Scramble response, world order, constitutional crises, post-unification governance, host opening, and regional restorations rather than adding duplicate Charter controls.
+- Complete or explicitly defer the remaining news, super-event, animation, and audio rows by the authoritative asset matrix, with no substitutions or fabricated rights evidence.
+- Research and approve high-chaos continent routes, terminal presentation, and super-event roles only after their separate text, identity, model, rights, and runtime gates pass.
 
 ## World-order roster and polity foundation (tranche 1)
 
@@ -280,4 +282,4 @@ The new shared tuning category is `africa_world_roster` in `common/script_consta
 
 ### Cleanup and unsupported surfaces
 
-The on-action hooks do not run a recurring all-country scan. Successor candidate flags are cleared when a successor is committed or a breakup is certified, constituent member flags are cleared during breakup, installed actors are removed from the candidate store, pending roster entries are removed when a candidate installs, and absent entries are retained as the documented historical disposition. This tranche does not set `africa_the_world_super_event_package_ready` or any model readiness flag. Full package readiness remains separately gated until the accepted political and settlement surfaces are complete. Dynamic union wars and terminal presentation remain outside this foundation tranche.
+The on-action hooks do not run a recurring all-country scan. Successor candidate flags are cleared when a successor is committed or a breakup is certified, constituent member flags are cleared during breakup, installed actors are removed from the candidate store, pending roster entries are removed when a candidate installs, and absent entries are retained as the documented historical disposition. W0-W4 source includes the dynamic union-war and terminal lifecycle, but initial W5 certification remains queued because the pre-install receipt contract is absent. This documentation pass does not set `africa_world_package_implementation_ready`, `africa_the_world_super_event_package_ready`, or any model readiness flag; terminal presentation remains independently gated.

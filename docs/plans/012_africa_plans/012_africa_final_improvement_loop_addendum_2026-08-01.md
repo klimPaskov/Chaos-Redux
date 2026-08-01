@@ -14,7 +14,7 @@ The current campaign already contains the intended mechanical spine: host proof,
 
 The remaining value lies in connecting and accepting those systems, not widening them.
 
-This is not a closure handoff because accepted non-model work remains unresolved: the W5 world-package certification tranche has not been implemented, most achievement rows still lack complete owner and lifetime-disqualifier proof, thirteen priority packages still need end-to-end acceptance, the sixty-four AI rows lack complete scenario evidence, and release documentation and catalog surfaces do not yet describe the current implementation consistently.
+This is not a closure handoff because accepted non-model work remains unresolved: the W5 world-package certification tranche has not been implemented, most achievement rows still lack complete owner and lifetime-disqualifier proof, thirteen priority packages still need end-to-end acceptance, and the sixty-four AI rows retain two evidence blockers. The Event 012 release documents and shared asset ledger are reconciled by the 2026-08-01 documentation cleanup; the workbook and export surfaces remain parent-owned.
 
 The next implementation sequence must therefore finish the accepted integration work in this file and in `012_africa_non_model_world_package_implementation_addendum_2026-07-30.md`, leave every model and external-review gate closed, run the bounded acceptance scenarios, reconcile the release surfaces, and then stop the improvement loop.
 
@@ -66,7 +66,7 @@ The following facts are current enough to guide the final tranche.
 | World order | W0-W4 source is present and `africa_world_package_implementation_ready` has no initial atomic certification writer | Implement W5 B1; keep terminal presentation independently gated. |
 | Charter GUI | Twelve static textures, two real frame sheets with static fallbacks, and the decision-category GUI are present | No new GUI page. Accept the existing eight recurring families and the six late list-only families under B2. |
 | Route identities | Seven final route flag ladders and seven emblem DDS files were installed and wired by commit `79dbdbac7` | Treat older pending-art language as stale evidence. |
-| Asset matrix | The current 239-row matrix records 50 `installed_runtime`, 21 `installed_dormant`, 12 `deferred_runtime_gated`, 133 `deferred_controlled_pool`, 16 `deferred_model_required`, and 7 `deferred_unique_package_required` | The historical ledger's 225 queued and 14 blocked asset rows are not current visual truth. |
+| Asset matrix | The current 239-row matrix records 50 `installed_runtime`, 21 `installed_dormant`, 12 `deferred_runtime_gated`, 133 `deferred_controlled_pool`, 16 `deferred_model_required`, and 7 `deferred_unique_package_required` | The shared acceptance ledger now mirrors these six statuses for all 239 `asset_item` rows; the prior 225 queued/14 blocked vocabulary is superseded. |
 
 Read-only `hoi4.event_inspect` returned `EVENT_INSPECTED_PARTIAL` for the Event 12 namespace and produced no direct blocker in its bounded response.
 
@@ -102,7 +102,7 @@ Implement in this order:
 2. B2: Charter, overlay, constitution, and thirteen reachable priority-package acceptance and final presentation disposition.
 3. B3: achievement owner and lifetime-disqualifier closure for currently reachable non-model rows.
 4. B4: AI, focus, Scramble, package, and terminal scenario acceptance, with patches only for demonstrated failures.
-5. B5: localisation, Event Log/detail, documentation, ledger, spec, workbook, and final audit reconciliation.
+5. B5: localisation, Event Log/detail, documentation, ledger, spec, workbook, and final audit reconciliation. The documentation and asset-ledger portion is reconciled by `docs/plans/012_africa_plans/documentation_cleanup_handoff.md`; workbook/export alignment remains parent-owned.
 
 ### C. Model-gated work explicitly deferred
 
@@ -148,11 +148,11 @@ The main agent should not schedule these as missing mechanics:
 
 The following documentation is specifically stale or historical:
 
-- `docs/events/012_africa/world_order.md` lines 249-251 still describe the six political packages and Actions 1-76 and 93-102 AI dispatcher as future work even though their source exists;
-- the same document's foundation-era statement that dynamic union wars remain outside the tranche is superseded by W4 integration;
+- `docs/events/012_africa/world_order.md` previously described the six political packages and Actions 1-76 and 93-102 AI dispatcher as future work; the 2026-08-01 cleanup supersedes those lines with source-implemented W1-W4 and a W5 pre-install receipt blocker;
+- the same document's foundation-era statement that dynamic union wars remain outside the tranche is corrected to record W4 union/war/terminal source and the independent W5 gate;
 - `012_africa_full_goal_completion_delta_2026-07-30.md` is a fixed-commit audit predating G1, RSA, focus, achievement, Scramble, AI, Event Log, and W1-W4 integration;
 - `012_africa_d1_action_disposition_2026-07-30.md` predates the 2026-08-01 duration/objective tranche;
-- the historical acceptance ledger remains stale for assets and, until its concurrent edits are reviewed, for some focus/action dispositions;
+- the shared acceptance ledger now mirrors all 239 asset rows to the authoritative matrix; its 90/12 action and 77/1 focus dispositions are retained, while achievement, AI, polity, host, and priority blockers remain intentionally open;
 - earlier Charter, focus-icon, priority-asset, achievement-art, and route-identity handoffs contain correction sections that supersede their missing-file statements.
 
 ## 6. Final integration principle: one receipt lattice
@@ -351,7 +351,7 @@ After B1-B4 pass, reconcile the following without changing stable IDs:
 1. Replace the implementation-history wording in `africa_world_order.110.d` and `africa_world_order_terminal_presentation_not_ready_tt` with in-world political wording.
 2. Update `docs/events/012_africa/world_order.md` so its future-work section no longer lists implemented W1-W4 or the full action dispatcher as absent.
 3. Update `docs/events/012_africa/overview.md`, `charter_autonomy_and_focus_ai.md`, the implementation source map, and the documentation cleanup handoff with the accepted current action, focus, route-identity, priority, AI, Scramble, and world-package dispositions.
-4. Reconcile the acceptance ledger row by row without overwriting concurrent D1 or focus-audit edits and without copying the stale asset taxonomy back over the 239-row visual matrix.
+4. Reconcile the acceptance ledger row by row without overwriting concurrent D1 or focus-audit edits and without copying the stale asset taxonomy back over the 239-row visual matrix. The 239 asset rows now match the matrix exactly; non-asset dispositions remain as recorded by their latest handoffs.
 5. Promote accepted W0-W5 state, IDs, lifecycle, AI behavior, and acceptance rules into `012_africa_spec_part_5_high_chaos_world_order.md`, the relevant AI and decision matrices, and the world-order diagrams.
 6. Promote the final Charter list-only UI decision into the Charter and presentation specification if the parent accepts it.
 7. Update Event Log and Event Details branches only from implemented outcome payloads; baseline plus Evolutions I-III remain the only evolution rows.
