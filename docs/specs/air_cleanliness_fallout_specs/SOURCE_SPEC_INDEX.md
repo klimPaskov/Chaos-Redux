@@ -133,6 +133,7 @@
 - `specs/69_fallout_tag_preservation_technology_and_fracture.md`
 - `specs/69_reviewed_archetype_work_for_rations.md`
 - `specs/70_reviewed_archetype_the_hungry_battalion.md`
+- `specs/71_reviewed_archetype_first_red_line.md`
 
 ## Matrices
 

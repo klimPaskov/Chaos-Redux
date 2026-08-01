@@ -2,7 +2,7 @@
 
 ## Current reconciliation after The Battalion's Bread List
 
-The living-world pilot now contains `558` defined event blocks across the reviewed ordinary range through `683`, including the dormant Battalion's Bread List tranche at `677` through `683`. The current reviewed ordinary row count is `68`. The Battalion's Bread List uses candidate `677`, transaction `710068`, route `7168`, and survivor Event Log history `9174`. The reserved route upper bound is `7169`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `565` defined event blocks across the reviewed ordinary range through `690`, including the dormant First Red Line tranche at `684` through `690`. The current reviewed ordinary row count is `69`. The First Red Line uses candidate `684`, transaction `710069`, route `7170`, and survivor Event Log history `9175`. The reserved route upper bound is `7171`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 Metro Republic Below reserves candidate `614`, transaction `710059`, route `7159`, and Event Log history `9165`. Its human opening, hidden AI opening, delayed result pair, callback pair, and cleanup are Fallout-owned. No zombie id, file, asset, audio, sprite, or path is reused.
 
@@ -802,3 +802,19 @@ The asset evidence is `docs/assets/663_great_lakes_lock_winter/` with source, pr
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
 
 The documented living-world total is now `544` and the countable Fallout living-world total remains `0 of 660`.
+
+## The First Red Line tranche
+
+The First Red Line adds dormant suffixes `684` through `690` with candidate id `684`, transaction key `710069`, route `7170`, and history `9175`.
+
+The human opening is `684`, the hidden-AI opening is `685`, the human and hidden-AI delayed results are `686` and `687`, the human and hidden-AI callbacks are `688` and `689`, and cleanup is `690`.
+
+The row requires a current-generation owner-controlled Quarantine state with a produced Air Winter snapshot, Shelter Capacity, Supply Access, Adaptation, bounded Exposure and Disease Pressure, surviving population, and at least one affordable branch. It chooses the lowest eligible native state id.
+
+The chain carries Strict Cordon, Medical Checkpoints, Controlled Evacuation, and Local Self-Control branches with exact costs, deterministic result and callback grading, a 21-day result, a 180-day callback, bounded Deaths effects, infrastructure damage on result failure, Air Winter ledger effects, durable public-health and cause-memory ledgers, Event Log history `9175`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/684_first_red_line/` with source, processed PNG, runtime DDS, manifest hashes, and sprite `GFX_report_event_fallout_first_red_line`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-684` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FIRST_RED_LINE_CHAIN_PROOF.md`.
+
+The documented living-world total is now `565` and the countable Fallout living-world total remains `0 of 660`.
