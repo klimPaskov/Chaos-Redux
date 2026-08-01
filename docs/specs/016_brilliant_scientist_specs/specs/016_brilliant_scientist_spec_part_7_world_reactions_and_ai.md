@@ -8,6 +8,8 @@ AI must evaluate paleogenetics and xenobiological synthesis as separate producti
 
 Kruger becomes internationally important only after his work produces evidence worth acting on. Foreign reactions should grow from the host's visible scientific lead, public fame, exposed facilities, project prototypes, and weapon use.
 
+The first detected foreign operation resolved after a Prototype can open the ordinary host reaction `chaosx.nr16.9`. The host keeps the exact actor and operation in the transaction, then chooses a controlled exchange only when the actor is not at war and the operation was not an extraction or assassination attempt; otherwise a private warning or public accusation remains available. Controlled exchange grants the actor one capped family-theory result from the host's latest breakthrough and improves bilateral opinion, while warning lowers opinion quietly and accusation raises Mandate, Exposure, and the actor's foreign-interest pressure. The event writes one host and one Kruger-character receipt and cannot be replayed after the foreign-resolution transaction, transfer, terminal cleanup, or sovereignty formation.
+
 The system should avoid two weak extremes.
 
 - Every country should not receive constant generic suspicion events.

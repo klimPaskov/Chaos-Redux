@@ -220,6 +220,7 @@ brilliant_scientist_foreign_record_resolution = {
 				add_to_variable = { brilliant_scientist_foreign_operations_detected = constant:brilliant_scientist_foreign_consequence.operation_increment }
 			}
 			brilliant_scientist_refresh_international_recognition_score = yes
+			brilliant_scientist_try_fire_foreign_reaction = yes
 		}
 	}
 }
@@ -553,6 +554,13 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 			add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.protection_framework }
 			add_to_temp_variable = { brilliant_scientist_foreign_detection_score = constant:brilliant_scientist_foreign_detection.protection_framework }
 		}
+		if = {
+			limit = {
+				has_event_target = brilliant_scientist_primary_facility
+				event_target:brilliant_scientist_primary_facility = { has_state_flag = brilliant_scientist_primary_facility_restricted_district }
+			}
+			subtract_from_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_host_reaction_delta.foreign_success_penalty }
+		}
 		set_temp_variable = { brilliant_scientist_foreign_host_component = brilliant_scientist_foreign_security_alert }
 		multiply_temp_variable = { brilliant_scientist_foreign_host_component = constant:brilliant_scientist_foreign_score.security_alert_factor }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = brilliant_scientist_foreign_host_component }
@@ -884,6 +892,7 @@ brilliant_scientist_foreign_commit_confirmed_death = {
 		brilliant_scientist_clear_evolution_schedule_state = yes
 		brilliant_scientist_remove_kruger_roles = yes
 		brilliant_scientist_reconcile_old_host_after_transfer = yes
+		brilliant_scientist_clear_host_reaction_state_on_terminal_exit = yes
 		if = { limit = { has_character = KRG_warren_kruger } retire_character = KRG_warren_kruger }
 		clr_country_flag = brilliant_scientist_current_host
 		set_country_flag = brilliant_scientist_kruger_confirmed_dead
