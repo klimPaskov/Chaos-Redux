@@ -12,6 +12,8 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 
 - The triggerable SCN-012 bridge is now safe to signal again after a successful launch. A repeat signal performs only runtime-count, air-cleanliness, shared-threat, mapmode, and board reconciliation; it does not reseed states, reset intensity values, re-run Evolutions I-IV, create another report, or emit another coronation. The initial seed preserves already established scenario state ledgers and increments the seeded-state counter only for newly seeded anchors. The public launch status distinguishes repeat reconciliation from a terminally unavailable launch, and the scoped bootstrap flag is cleared in both paths.
 
+- The narrow `on_state_control_changed` hook now makes eligible non-Rat-Controlled states captured by RTA or RTX immediately Rat-Controlled through the shared exposure adapter. It records one mortality transaction, applies the occupation devastation, registers the reusable RTA brood marker where applicable, and updates the shared controlled-state registry and mapmode without adding a tag.
+
 - The reusable RTA carrier now has the three missing live pressure registers
   from the country specification: Hunger, Coherence, and derived Disease
   Dominion. They initialize with each carrier, update on the existing capped
