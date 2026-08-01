@@ -42,13 +42,15 @@ The host stores Event 013 result, reject reason, sequence ID, resolved family, p
 
 The host also stores the attempted call's calculated strength in `africa_last_natural_disaster_call_strength`, including when Event 013 rejects the exact target because no eligible controlled state exists.
 
-Accepted calls set `africa_natural_disaster_call_accepted` and mark the numeric resolved-primary-country target with `africa_natural_disaster_targeted`.
+Accepted calls set `africa_natural_disaster_call_accepted`, mark the numeric resolved-primary-country target with `africa_natural_disaster_targeted`, and copy the current `africa_host_generation` onto that target. The same accepted result records the member-disaster disqualifier when the target is already a current-generation Charter member or cooperative partner, and records the neutral-African disqualifier when the target is an African sovereign with an outside relationship.
+
+When the marked target later capitulates directly to the same Event 012 host generation, the `on_capitulation` owner calls `africa_achievement_record_weather_army_defeated` on that distinct target and opens the weather-war milestone through `africa_achievement_record_weather_war_won`. A host transfer, peace conference, or third-party victory cannot satisfy this owner.
 
 The target receipt flags used by scripted localisation are cleared when a new Rain or Drought action record starts, so a later result cannot inherit an earlier call's wording.
 
 Rejected calls set `africa_natural_disaster_call_rejected` and record a bounded wrath increase as a backfire.
 
-Accepted calls have a 20 percent bounded backfire chance that records `africa_natural_disaster_backfire_recorded` and increases ecological wrath.
+Accepted calls have a 20 percent bounded backfire chance that records `africa_natural_disaster_backfire_recorded` and increases ecological wrath. After the host meter is clamped, reaching `africa_achievement_ratio.ecological_rampage_threshold` records `africa_achievement_ecological_wrath_collapse`, which is a lifetime disqualifier for the weather achievement.
 
 Every attempted call starts the 180-day `africa_natural_disaster_weapon_cooldown` flag.
 
