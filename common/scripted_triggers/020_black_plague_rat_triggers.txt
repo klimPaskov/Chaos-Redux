@@ -190,13 +190,30 @@ black_plague_rat_country_is_valid_merger_target = {
 
 black_plague_rat_state_is_valid_merger_state = {
 	black_plague_state_is_rat_controlled = yes
-	CONTROLLER = {
-		black_plague_rat_country_is_valid_merger_target = yes
-		check_variable = {
-			var = black_plague_rat_brood_mass
-			value = ROOT.black_plague_rat_brood_mass
-			compare = less_than
+	CONTROLLER = { black_plague_rat_country_is_valid_merger_target = yes }
+	NOT = { has_state_flag = black_plague_rat_merger_reserved }
+	NOT = { has_state_flag = black_plague_rat_brood_absorbed }
+}
+
+black_plague_rat_can_absorb_adjacent_brood = {
+	black_plague_rat_country_is_active = yes
+	has_country_flag = black_plague_rat_dominance_ready
+	NOT = { has_country_flag = black_plague_rat_merger_lock }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.merger_mass_cost
+		compare = greater_than_or_equals
+	}
+	any_owned_state = {
+		black_plague_state_is_rat_controlled = yes
+		NOT = { has_state_flag = black_plague_rat_brood_absorbed }
+		any_neighbor_state = {
+			black_plague_rat_state_is_valid_merger_state = yes
+			check_variable = {
+				var = black_plague_rat_brood_strength
+				value = PREV.black_plague_rat_brood_strength
+				compare = less_than
+			}
 		}
 	}
-	NOT = { has_state_flag = black_plague_rat_merger_reserved }
 }

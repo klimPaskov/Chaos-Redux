@@ -7,6 +7,7 @@
 # ============================================================================
 
 black_plague_rat_brood_category = {
+	icon = GFX_decision_category_contamination_defense
 	visible = {
 		OR = {
 			black_plague_rat_country_is_active = yes
@@ -27,6 +28,18 @@ black_plague_rat_brood_category = {
 			black_plague_rat_raise_brood_units = yes
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_absorb_a_weaker_brood = {
+		icon = GFX_decision_generic_military
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_can_absorb_adjacent_brood = yes }
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.merger_mass_cost }
+			black_plague_rat_try_absorb_adjacent_brood = yes
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.merger }
 	}
 
 	black_plague_rat_map_the_burrows = {
@@ -61,28 +74,17 @@ black_plague_rat_brood_category = {
 		ai_will_do = { base = constant:black_plague_rat_ai.war }
 	}
 
-	black_plague_rat_absorb_a_weaker_brood = {
-		icon = GFX_decision_generic_political_discourse
-		visible = { black_plague_rat_country_is_active = yes }
-		available = {
-			has_country_flag = black_plague_rat_dominance_ready
-			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.merger_mass_cost compare = greater_than_or_equals }
-		}
-		days_remove = constant:black_plague_rat_decision.duration_days
-		complete_effect = {
-			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.merger_mass_cost }
-			black_plague_rat_try_absorb_adjacent_brood = yes
-		}
-		ai_will_do = { base = constant:black_plague_rat_ai.merger }
-	}
-
 	black_plague_rat_harden_the_immune_blood = {
 		icon = GFX_decision_generic_civil_support
 		visible = { black_plague_rat_country_is_active = yes }
-		available = { NOT = { has_country_flag = black_plague_rat_disease_immune } }
+		available = {
+			NOT = { has_country_flag = black_plague_rat_immune_blood_hardened }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.brood_mass_cost compare = greater_than_or_equals }
+		}
 		days_remove = constant:black_plague_rat_decision.duration_days
 		complete_effect = {
-			set_country_flag = black_plague_rat_disease_immune
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.brood_mass_cost }
+			set_country_flag = black_plague_rat_immune_blood_hardened
 			set_country_flag = black_plague_rat_plague_immune
 			add_ideas = black_plague_rat_dominion
 		}
@@ -106,6 +108,7 @@ black_plague_rat_brood_category = {
 }
 
 black_plague_rat_king_court_category = {
+	icon = GFX_decision_category_contamination_defense
 	visible = { black_plague_rat_country_is_king = yes }
 
 	black_plague_rat_king_hold_a_hunger_court = {

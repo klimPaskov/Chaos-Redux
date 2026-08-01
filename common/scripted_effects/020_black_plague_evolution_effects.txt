@@ -123,6 +123,7 @@ black_plague_activate_evolution_i = {
 		set_variable = { global.black_plague_strain_generation = constant:black_plague_evolution_runtime.evolution_i_stage }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_i_stage }
 		black_plague_evolution_record_stage = yes
+		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.20 } } }
 	}
 }
 
@@ -139,6 +140,7 @@ black_plague_activate_evolution_ii = {
 		set_variable = { global.black_plague_overseas_route_generation = constant:black_plague_evolution_runtime.evolution_ii_stage }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage }
 		black_plague_evolution_record_stage = yes
+		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.30 } } }
 	}
 }
 
@@ -151,6 +153,7 @@ black_plague_activate_evolution_iii = {
 		black_plague_rat_activate_evolution_iii = yes
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iii_stage }
 		black_plague_evolution_record_stage = yes
+		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.40 } } }
 	}
 }
 
@@ -163,6 +166,7 @@ black_plague_activate_evolution_iv = {
 		black_plague_rat_activate_evolution_iv = yes
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_iv_stage }
 		black_plague_evolution_record_stage = yes
+		if = { limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } } ROOT = { news_event = { id = chaosx.nr20.50 } } }
 	}
 }
 
@@ -283,6 +287,20 @@ black_plague_evolution_compare_king_continent = {
 		divide_temp_variable = { black_plague_king_scan_ratio = global.black_plague_rat_king_australia_total }
 		if = { limit = { check_variable = { var = black_plague_king_scan_ratio value = global.black_plague_rat_king_best_continent_ratio compare = greater_than } } set_variable = { global.black_plague_rat_king_best_continent_ratio = black_plague_king_scan_ratio } set_variable = { global.black_plague_rat_king_best_continent_states = global.black_plague_rat_king_australia_controlled } }
 	}
+	if = {
+		limit = {
+			has_global_flag = black_plague_rat_king_active
+			RTX = { exists = yes }
+			NOT = { has_global_flag = black_plague_report_terminal_continent_selected }
+			check_variable = {
+				var = global.black_plague_rat_king_best_continent_ratio
+				value = constant:black_plague_evolution_runtime.minimum_king_continent_ratio_for_v
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = black_plague_report_terminal_continent_selected
+		RTX = { country_event = { id = chaosx.nr20.61 } }
+	}
 }
 
 black_plague_evolution_v_perform_terminal_takeover = {
@@ -304,6 +322,7 @@ black_plague_evolution_v_perform_terminal_takeover = {
 			set_country_flag = black_plague_rat_terminal_sovereign
 			add_ideas = black_plague_rat_king_dominion
 		}
+		ROOT = { news_event = { id = chaosx.nr20.62 } }
 		set_global_flag = black_plague_terminal_takeover_complete
 		set_global_flag = black_plague_world_end_complete
 		set_global_flag = world_end
@@ -320,6 +339,7 @@ black_plague_evolution_v_perform_terminal_takeover = {
 			limit = { is_ai = no }
 			play_current_super_event_audio = yes
 		}
+		ROOT = { news_event = { id = chaosx.nr20.63 } }
 	}
 }
 
@@ -331,6 +351,7 @@ black_plague_activate_evolution_v = {
 		set_variable = { global.black_plague_evolution_v_date = global.date }
 		set_temp_variable = { black_plague_evolution_stage = constant:black_plague_evolution_runtime.evolution_v_stage }
 		black_plague_evolution_record_stage = yes
+		ROOT = { news_event = { id = chaosx.nr20.60 } }
 		black_plague_evolution_v_perform_terminal_takeover = yes
 	}
 }

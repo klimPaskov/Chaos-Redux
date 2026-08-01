@@ -15,7 +15,7 @@ The following implementation references were not mounted and therefore were not 
 - live disease GUI, mapmode, scenario, special-project, focus, decision, and country-package files
 - live asset reference folders
 
-This prevents the package from truthfully fixing final IDs, tags, file paths, GUI anchors, sprite names, helper names, mapmode colour hooks, scenario registry IDs, or engine-supported black-fog wiring. The coding prompt requires live inspection before gameplay edits.
+This historical limitation was resolved for the current tranche by inspecting the live runtime surfaces before wiring the two-tag package, shared category, public scenario row, and mapmode hooks. Final asset sprite names and engine-supported black-fog wiring still require their dedicated verification pass.
 
 ## Custom subagent tooling
 
@@ -45,7 +45,7 @@ The package provides outcome bands, tuning targets, and 20 balance or scenario c
 
 ## Catalog and spreadsheet status
 
-The supplied CSV catalogs were read. The source workbook was not mounted, so it was not edited. `catalog_update_draft.md` defines the Event 20, cluster, and proposed scenario changes. The spreadsheet worker must update the live workbook after final localisation exists.
+The supplied CSV catalogs were read and the live workbook was updated after final runtime localisation. The exported CSVs remain derived snapshots; future event-content changes must continue to update the workbook first and then run the exporter.
 
 ## Simplification disclosure
 

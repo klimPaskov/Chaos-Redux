@@ -222,6 +222,27 @@ black_plague_initialize_runtime = {
 		clr_global_flag = black_plague_pulses_suppressed
 		clr_global_flag = black_plague_terminal_takeover_complete
 		clr_global_flag = black_plague_mapmode_refresh_deferred
+		clr_global_flag = black_plague_state_was_established
+		clr_global_flag = black_plague_system_eradicated
+		clr_global_flag = black_plague_report_origin_recognition
+		clr_global_flag = black_plague_report_first_threatened
+		clr_global_flag = black_plague_report_late_origin_recognition
+		clr_global_flag = black_plague_report_first_foreign_infection
+		clr_global_flag = black_plague_report_first_overseas_infection
+		clr_global_flag = black_plague_report_first_severe
+		clr_global_flag = black_plague_report_first_contained
+		clr_global_flag = black_plague_report_first_relapse
+		clr_global_flag = black_plague_report_first_cured
+		clr_global_flag = black_plague_report_countermeasure_milestone
+		clr_global_flag = black_plague_report_rat_emergence
+		clr_global_flag = black_plague_report_rat_resurgence
+		clr_global_flag = black_plague_report_rat_absorption
+		clr_global_flag = black_plague_report_rat_nation_defeated
+		clr_global_flag = black_plague_rat_king_defeated
+		clr_global_flag = black_plague_report_terminal_continent_selected
+		clr_global_flag = black_plague_report_ten_million_deaths
+		clr_global_flag = black_plague_report_eradication
+		clr_global_flag = black_plague_report_reconstruction
 		set_variable = { global.black_plague_runtime_generation = constant:black_plague_value.one }
 		set_variable = { global.black_plague_scheduler_ticket = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_pulse_sequence = constant:black_plague_value.zero }
@@ -598,8 +619,192 @@ black_plague_set_current_state_phase = {
 			set_temp_variable = { black_plague_monitoring_memory_duration = constant:black_plague_timing.monitoring_memory_days }
 			set_state_flag = { flag = black_plague_monitoring_memory days = black_plague_monitoring_memory_duration }
 		}
+		black_plague_emit_first_milestone_report = yes
 	}
 	black_plague_register_current_state = yes
+	if = { limit = { black_plague_state_is_established = yes } set_global_flag = black_plague_state_was_established }
+}
+
+# STATE scope. Reports are deliberately global one-shot notices. The scenario
+# bootstrap suppresses them because SCN-012 has its own launch briefing and
+# must not flood the player with natural-campaign reports on day one.
+black_plague_emit_origin_recognition_report = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			NOT = { has_global_flag = black_plague_report_origin_recognition }
+			has_event_target = black_plague_origin_controller
+
+		}
+		set_global_flag = black_plague_report_origin_recognition
+		event_target:black_plague_origin_controller = { news_event = { id = chaosx.nr20.2 } }
+	}
+}
+
+black_plague_emit_first_milestone_report = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_threatened = yes
+			NOT = { has_global_flag = black_plague_report_first_threatened }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_threatened
+		CONTROLLER = { news_event = { id = chaosx.nr20.4 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			has_state_flag = black_plague_origin_state
+			black_plague_state_is_severe = yes
+			NOT = { has_global_flag = black_plague_report_late_origin_recognition }
+			has_event_target = black_plague_origin_controller
+		}
+		set_global_flag = black_plague_report_late_origin_recognition
+		event_target:black_plague_origin_controller = { news_event = { id = chaosx.nr20.3 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_infected = yes
+			NOT = { has_global_flag = black_plague_report_first_foreign_infection }
+			CONTROLLER = {
+				exists = yes
+				NOT = { tag = event_target:black_plague_origin_controller }
+			}
+		}
+		set_global_flag = black_plague_report_first_foreign_infection
+		CONTROLLER = { news_event = { id = chaosx.nr20.5 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_infected = yes
+			NOT = { has_global_flag = black_plague_report_first_overseas_infection }
+			check_variable = { black_plague_last_exposure_route = constant:black_plague_route.overseas_port }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_overseas_infection
+		CONTROLLER = { news_event = { id = chaosx.nr20.31 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_severe = yes
+			NOT = { has_global_flag = black_plague_report_first_severe }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_severe
+		CONTROLLER = { news_event = { id = chaosx.nr20.6 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_contained = yes
+			NOT = { has_global_flag = black_plague_report_first_contained }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_contained
+		CONTROLLER = { news_event = { id = chaosx.nr20.7 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_infected = yes
+			check_variable = { black_plague_provenance = constant:black_plague_provenance.relapse }
+			NOT = { has_global_flag = black_plague_report_first_relapse }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_relapse
+		CONTROLLER = { news_event = { id = chaosx.nr20.8 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_cured = yes
+			NOT = { has_global_flag = black_plague_report_first_cured }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_first_cured
+		CONTROLLER = { news_event = { id = chaosx.nr20.9 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_infected = yes
+			NOT = { has_global_flag = black_plague_report_countermeasure_milestone }
+			CONTROLLER = {
+				exists = yes
+				check_variable = {
+					var = black_plague_countermeasure_progress
+					value = constant:black_plague_reporting.countermeasure_milestone
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		set_global_flag = black_plague_report_countermeasure_milestone
+		CONTROLLER = { country_event = { id = chaosx.nr20.21 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_rat_controlled = yes
+			NOT = { has_global_flag = black_plague_report_rat_emergence }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_rat_emergence
+		CONTROLLER = { news_event = { id = chaosx.nr20.41 } }
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			black_plague_state_is_infected = yes
+			check_variable = { black_plague_provenance = constant:black_plague_provenance.rat_occupation }
+			NOT = { black_plague_controller_is_rat_country = yes }
+			NOT = { has_global_flag = black_plague_report_rat_resurgence }
+			CONTROLLER = { exists = yes }
+		}
+		set_global_flag = black_plague_report_rat_resurgence
+		CONTROLLER = { news_event = { id = chaosx.nr20.44 } }
+	}
+}
+
+# ROOT or state scope. The global death counter is already fed by the shared
+# population-loss adapter, so this report observes that ledger without adding
+# a second death path.
+black_plague_emit_death_threshold_report = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			NOT = { has_global_flag = black_plague_report_ten_million_deaths }
+			check_variable = {
+				var = global.black_plague_deaths_total
+				value = constant:black_plague_reporting.first_ten_million_deaths
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = black_plague_report_ten_million_deaths
+		ROOT = { news_event = { id = chaosx.nr20.10 } }
+	}
+}
+
+black_plague_emit_eradication_report = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap }
+			NOT = { has_global_flag = black_plague_report_eradication }
+			has_global_flag = black_plague_state_was_established
+			check_variable = { global.black_plague_established_state_count = constant:black_plague_value.zero }
+		}
+		set_global_flag = black_plague_report_eradication
+		set_global_flag = black_plague_system_eradicated
+		ROOT = { news_event = { id = chaosx.nr20.11 } }
+		if = {
+			limit = { NOT = { has_global_flag = black_plague_report_reconstruction } }
+			set_global_flag = black_plague_report_reconstruction
+			ROOT = { news_event = { id = chaosx.nr20.72 } }
+		}
+	}
 }
 
 black_plague_refresh_current_state_modifier = {
@@ -1436,6 +1641,8 @@ black_plague_run_weekly_pulse = {
 		black_plague_rebuild_runtime_counts = yes
 		black_plague_run_spread_phase = yes
 		black_plague_rebuild_runtime_counts = yes
+		black_plague_emit_death_threshold_report = yes
+		black_plague_emit_eradication_report = yes
 		black_plague_evolution_runtime_pulse = yes
 		black_plague_rat_run_runtime_pulse = yes
 		black_plague_achievement_process_runtime_pulse = yes
@@ -1536,6 +1743,7 @@ black_plague_start_natural_outbreak = {
 				black_plague_schedule_next_pulse = yes
 			}
 			set_global_flag = black_plague_natural_outbreak_started
+			black_plague_emit_origin_recognition_report = yes
 			if = {
 				limit = { doctor_wu_has_current_host = yes }
 				event_target:doctor_wu_current_host = { black_plague_on_doctor_wu_host_committed = yes }

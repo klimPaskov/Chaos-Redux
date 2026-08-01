@@ -5741,6 +5741,10 @@ defined_text = {
 		localization_key = fallout.event_log.first_red_line.detail
 	}
 	text = {
+		trigger = { check_variable = { var = event_id value = constant:fallout_event_691_log.history_id compare = equals } }
+		localization_key = fallout.event_log.false_positive.detail
+	}
+	text = {
 		trigger = { check_variable = { var = event_id value = constant:fallout_event_415_bilateral_log.history_id compare = equals } }
 		localization_key = fallout.event_log.refugee_train_bilateral.detail
 	}
@@ -9316,6 +9320,10 @@ defined_text = {
 		localization_key = fallout.event_log.first_red_line.name
 	}
 	text = {
+		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_event_691_log.history_id compare = equals } }
+		localization_key = fallout.event_log.false_positive.name
+	}
+	text = {
 		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:fallout_event_415_bilateral_log.history_id compare = equals } }
 		localization_key = fallout.event_log.refugee_train_bilateral.name
 	}
@@ -10863,6 +10871,16 @@ defined_text = {
 			localization_key = chaosx.event_cluster.economy_positive.name
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_view_cluster_id_entries^events_log_history_index
+					value = constant:event_cluster_id.diseases
+					compare = equals
+				}
+			}
+			localization_key = chaosx.event_cluster.diseases.name
+		}
+		text = {
 			trigger = { always = yes }
 			localization_key = chaosx.event_cluster.invalid.name
 	}
@@ -10979,6 +10997,16 @@ defined_text = {
 			localization_key = chaosx.event_cluster.economy_positive.name
 		}
 		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_cluster_view_id_entries^events_log_cluster_index
+					value = constant:event_cluster_id.diseases
+					compare = equals
+				}
+			}
+			localization_key = chaosx.event_cluster.diseases.name
+		}
+		text = {
 			trigger = { always = yes }
 			localization_key = chaosx.event_cluster.invalid.name
 	}
@@ -11055,6 +11083,16 @@ defined_text = {
 				}
 			}
 			localization_key = chaosx.event_cluster.economy_positive.name
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = events_log_selected_cluster_id
+					value = constant:event_cluster_id.diseases
+					compare = equals
+				}
+			}
+			localization_key = chaosx.event_cluster.diseases.name
 		}
 		text = {
 			trigger = { always = yes }
@@ -11209,6 +11247,16 @@ defined_text = {
 				}
 			}
 			localization_key = chaosx.events_log.window.cluster_details.description.economy_positive
+		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = events_log_selected_cluster_id
+					value = constant:event_cluster_id.diseases
+					compare = equals
+				}
+			}
+			localization_key = chaosx.events_log.window.cluster_details.description.diseases
 		}
 		text = {
 			trigger = { always = yes }
@@ -12575,6 +12623,7 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogWorldEndScenarioRowTitle
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.zombie_apocalypse compare = equals } } localization_key = chaosx.events_log.world_end.zombie_apocalypse.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.black_plague compare = equals } } localization_key = chaosx.events_log.world_end.black_plague.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.fallout compare = equals } } localization_key = chaosx.events_log.world_end.fallout.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.world_in_fury compare = equals } } localization_key = chaosx.events_log.world_end.world_in_fury.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.last_shores compare = equals } } localization_key = chaosx.events_log.world_end.last_shores.title }
@@ -12588,6 +12637,7 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogSelectedWorldEndScenarioTitle
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.zombie_apocalypse } } localization_key = chaosx.events_log.world_end.zombie_apocalypse.title }
+	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.black_plague } } localization_key = chaosx.events_log.world_end.black_plague.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.fallout } } localization_key = chaosx.events_log.world_end.fallout.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.world_in_fury } } localization_key = chaosx.events_log.world_end.world_in_fury.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.last_shores } } localization_key = chaosx.events_log.world_end.last_shores.title }
@@ -12601,6 +12651,7 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogWorldEndScenarioRowOwnerName
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.zombie_outbreak } } localization_key = chaosx.event_name.2 }
+	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.black_plague } } localization_key = chaosx.event_name.20 }
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.fallout } } localization_key = chaosx.events_log.world_end.fallout.title }
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.fury } } localization_key = chaosx.event_name.7 }
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.death } } localization_key = chaosx.event_name.10 }
@@ -12612,6 +12663,7 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogSelectedWorldEndScenarioOwnerName
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.zombie_outbreak } } localization_key = chaosx.event_name.2 }
+	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.black_plague } } localization_key = chaosx.event_name.20 }
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.fallout } } localization_key = chaosx.events_log.world_end.fallout.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.fury } } localization_key = chaosx.event_name.7 }
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.death } } localization_key = chaosx.event_name.10 }
@@ -12639,6 +12691,7 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogSelectedWorldEndScenarioDetails
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.zombie_apocalypse } } localization_key = chaosx.events_log.world_end.zombie_apocalypse.details }
+	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.black_plague } } localization_key = chaosx.events_log.world_end.black_plague.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.fallout } } localization_key = chaosx.events_log.world_end.fallout.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.world_in_fury } } localization_key = chaosx.events_log.world_end.world_in_fury.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.last_shores } } localization_key = chaosx.events_log.world_end.last_shores.details }

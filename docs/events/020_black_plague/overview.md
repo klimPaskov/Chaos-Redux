@@ -1,8 +1,10 @@
 # Event 20: Black Plague
 
-Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live core contract. Additional narrative content and bespoke 3D models remain later production tranches.
+Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live runtime contract and the content currently wired into it. The gameplay package is load-ready, while the accepted full-design audit still tracks deeper routes, achievement presentation, and some asset expansion as remaining work.
 
-The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Doctor Wu remains a separate Event 163 companion registration. Shared completion remains partial: the accepted Diseases cluster and the public Black Plague world-end row are not yet registered, and the paid Rat absorption decision still awaits a design-backed payoff.
+The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Doctor Wu remains a separate Event 163 companion registration. Event 20 is registered in the shared Diseases cluster and in the public world-end scenario catalog; the terminal row remains inactive until Evolution V's earned conditions are met.
+
+The player-facing report chain is wired under `events/020_black_death.txt`. Natural play reports origin recognition, the first threatened neighbour, late origin recognition, the first foreign and overseas infections, Severe Crisis, Containment, relapse, cure, countermeasure learning, ten million deaths, eradication, Rat emergence, resurgence, brood absorption, the sentient crown, the royal crisis, Royal Node success or counterfire, emergency countermeasure timeout, and the earned terminal route. SCN-012 uses `chaosx.nr20.90` for its launch briefing; the `.4` allocation remains the first neighboring-threat report.
 
 ## Natural origin
 
@@ -37,7 +39,7 @@ Spread is produced from a frozen source snapshot and resolved through a target l
 
 Event 20 uses `chaosx_disease_containment_category`, the existing disease interface, and the existing contamination mapmode. It does not create a dedicated Black Plague category.
 
-The selected-state response surface provides rat cleaning, sealed food storage, sewer and burrow clearance, flea control, rail-yard and dock purges, demolition of lost blocks, emergency hospitals, quarantine, cordons, treatment, and Doctor Wu's protocol. Visibility and availability depend on the selected state, its phase, control, and response conditions. Actions have material, military, economic, and time costs. National countermeasure progress runs from 0 to 100 and reduces deaths and spread while enabling sustained cleanup.
+The selected-state response surface provides rat cleaning, sealed food storage, sewer and burrow clearance, flea control, rail-yard and dock purges, demolition of lost blocks, emergency hospitals, quarantine, cordons, treatment, and Doctor Wu's protocol. Visibility and availability depend on the selected state, its phase, control, and response conditions. Actions have material, military, economic, and time costs. National countermeasure progress runs from 0 to 100 and reduces deaths and spread while enabling sustained cleanup. The shared disease category also exposes a timed Emergency Countermeasure Drive, while Royal Node strikes can reduce King Dominion and delay a royal pulse or fail and feed the terminal route.
 
 Authorized established Black Plague states retain a black base in the shared mapmode. Phase, containment, weaponization, and rat control are conveyed by the existing border and tooltip layers while other diseases retain their own colors. State-clipped black fog is not used because the supported scripted-mapmode layers do not provide a verified safe clipping mechanism.
 
@@ -57,9 +59,9 @@ The weaponization project has six phases, eighteen unique iteration roles, four 
 
 ## Rat countries
 
-The country package uses the reusable Rat Nation tag `RTA` and the separate Rat King tag `RTX`. The Rat Nation chooses one of four origin archetypes from its founding basin and represents additional broods through rat-controlled states, capped force-growth pulses, and internal brood mass rather than extra country tags. The package includes country identity, leaders, flags, ideas, AI, locked zero-manpower division templates, starting forces, decisions, focus trees, plague immunity, and occupation-driven infection.
+The country package uses the reusable Rat Nation tag `RTA` and the separate Rat King tag `RTX`. The Rat Nation chooses one of four origin archetypes from its founding basin and represents additional broods through rat-controlled states, state-level brood strength markers, capped force-growth pulses, and internal brood mass rather than extra country tags. Stronger adjacent markers can absorb weaker warrens through the paid brood decision and inherit their surviving brood units. The package includes country identity, leaders, flags, ideas, common and archetype AI, route-aware focus weights, locked zero-manpower division templates, starting forces, decisions, focus trees, plague immunity, and occupation-driven infection.
 
-Rat units do not consume human manpower or normal equipment and cannot be manually deployed. Their current map models intentionally use the registered infantry entity as a temporary engine-safe visual consumer. Bespoke Rat Nation and Rat King unit models and skeletal animations are required in a later 3D production tranche.
+Rat units do not consume human manpower or normal equipment and cannot be manually deployed. Their current map models intentionally use the registered infantry entity as an engine-safe visual consumer. Bespoke Rat Nation and Rat King unit models and skeletal animations are outside this gameplay-readiness tranche and are not required for Event 20's scripted systems to load.
 
 ## SCN-012 and terminal route
 
@@ -70,6 +72,8 @@ Evolution V remains gated by Chaos above 1000, catastrophic plague deaths, conqu
 ## Runtime ownership
 
 Event 20 uses an event-owned seven-day scheduler rather than adding a world-iterating daily, weekly, or monthly on-action. Natural initialization, scenarios, and weekly pulses batch state writes and rebuild the shared mapmode once per transaction.
+
+The authoritative event catalog workbook records Event 20 under cluster 8 (Diseases), Severe member severity, the `The Kingdom of Teeth` terminal scenario row, and SCN-012's RTA/RTX intensity contract. The three catalog CSVs are export-only snapshots regenerated from that workbook.
 
 Primary implementation surfaces include:
 
@@ -88,8 +92,8 @@ Primary implementation surfaces include:
 
 ## Core-readiness boundary
 
-The scripted core is source-complete for the stabilization tranche. Static audits resolve the Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths covered by that tranche. The package includes final runtime icons, country flags and portraits, super-event images, and licensed 44.1 kHz music.
+The scripted core is source-complete for the current gameplay tranche. Static audits resolve the Event 20 custom constants, scripted calls, event callers, GFX references, and texture paths covered by that tranche. The fourteen ordinary-progression achievements now have public registry entries, completion triggers, and localisation; final icon triplets remain an asset handoff.
 
-Later content production remains intentionally separate: bespoke rat 3D units and animations, additional scenario variants, more narrative events, deeper country routes and crises, visible achievement presentation, source-frame UI animation packages, a unique Doctor Wu report image, and a dedicated weapon-delivery icon. Shared registry work also remains open for the Diseases cluster, the public Black Plague terminal world-end row, and the design-backed Rat absorption payoff.
+Remaining accepted full-design work is intentionally separate: deeper country routes and crises, broader route-specific focus strategy plans, final achievement icon triplets, source-frame UI animation packages, a unique Doctor Wu report image, a dedicated weapon-delivery and Royal Node icon set, and the unimplemented event-map surfaces explicitly marked superseded by the two-tag correction. Bespoke rat 3D units and animations are outside this goal by instruction and are not load-time prerequisites for the Event 20 gameplay systems.
 
 The full audit and deferral record is `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`.

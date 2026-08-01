@@ -1117,6 +1117,19 @@ initialize_world_end_scenario_registry = {
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 
+	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.black_plague }
+	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.black_plague }
+	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.primary }
+	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
+	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
+	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
+	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.black_plague }
+	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.black_plague }
+	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.black_plague }
+	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.black_plague }
+	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
+	world_end_scenario_registry_add_entry = yes
+
 	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.fallout }
 	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.fallout }
 	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.primary }
@@ -1299,6 +1312,10 @@ events_log_evaluate_world_end_scenario_active = {
 	}
 	else_if = {
 		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.strategic_singularity } has_global_flag = world_end_brilliant_scientist_singularity }
+		set_temp_variable = { events_log_world_end_scenario_active = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.black_plague } has_global_flag = world_end_black_plague }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 }

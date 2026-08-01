@@ -85,6 +85,19 @@ black_plague_shared_rat_state_can_start_action = {
 	ROOT = { black_plague_country_can_direct_response = yes }
 }
 
+# STATE scope; royal-node counterfire is a deliberate exception to the normal
+# selected-or-controlled target rule because the node is held by RTX.
+black_plague_shared_royal_node_state_can_start_action = {
+	black_plague_state_is_tracked = yes
+	black_plague_state_is_rat_controlled = yes
+	has_state_flag = black_plague_rat_king_royal_node
+	NOT = { has_state_flag = black_plague_shared_action_active }
+	NOT = { has_state_flag = black_plague_shared_action_cooldown }
+	black_plague_response_state_has_access = yes
+	black_plague_shared_state_has_military_route = yes
+	ROOT = { black_plague_country_can_direct_response = yes }
+}
+
 # The common floor prevents an action from draining an unavailable stockpile;
 # the action effect applies the population scale before payment.
 black_plague_shared_country_can_pay_standard_materials = {
@@ -97,6 +110,13 @@ black_plague_shared_country_can_pay_country_materials = {
 	has_equipment = { support_equipment > constant:black_plague_shared_cost.country_support_equipment }
 	has_equipment = { motorized_equipment > constant:black_plague_shared_cost.country_motorized_equipment }
 	has_fuel > constant:black_plague_shared_cost.country_fuel
+}
+
+black_plague_shared_country_can_pay_royal_node = {
+	black_plague_shared_country_can_pay_country_materials = yes
+	has_equipment = { infantry_equipment > constant:black_plague_shared_cost.country_infantry_equipment }
+	has_manpower > constant:black_plague_shared_cost.country_manpower
+	command_power > constant:black_plague_shared_cost.country_command_power
 }
 
 # STATE scope; ROOT is the responding country. The begin effect scales the
@@ -170,7 +190,10 @@ black_plague_shared_can_start_port_inspections = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
 	black_plague_shared_state_is_coastal_hub = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
+	ROOT = {
+		black_plague_shared_country_can_pay_standard_materials = yes
+		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+	}
 }
 
 black_plague_shared_can_start_troop_restrictions = {
@@ -199,9 +222,10 @@ black_plague_shared_can_start_civilian_travel = {
 black_plague_shared_can_start_relief_corridor = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_infected_or_worse = yes
+	OR = { has_state_flag = black_plague_quarantine_active has_state_flag = black_plague_cordon_active }
 	ROOT = {
-		OR = { has_state_flag = black_plague_quarantine_active has_state_flag = black_plague_cordon_active }
 		black_plague_shared_country_can_pay_standard_materials = yes
+		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
 	}
 }
 
@@ -223,7 +247,10 @@ black_plague_shared_can_start_transport_seal = {
 black_plague_shared_can_start_evacuation = {
 	black_plague_shared_state_can_start_action = yes
 	black_plague_shared_state_is_prepared_or_exposed = yes
-	ROOT = { black_plague_shared_country_can_pay_standard_materials = yes }
+	ROOT = {
+		black_plague_shared_country_can_pay_standard_materials = yes
+		has_equipment = { train_equipment > constant:black_plague_shared_cost.standard_trains }
+	}
 }
 
 black_plague_shared_can_start_foreign_medical_mission = {
@@ -383,7 +410,6 @@ black_plague_shared_can_liberate_and_quarantine = {
 }
 
 black_plague_shared_can_strike_royal_node = {
-	black_plague_shared_rat_state_can_start_action = yes
-	has_state_flag = black_plague_rat_king_royal_node
-	ROOT = { black_plague_shared_country_can_pay_country_materials = yes }
+	black_plague_shared_royal_node_state_can_start_action = yes
+	ROOT = { black_plague_shared_country_can_pay_royal_node = yes }
 }
