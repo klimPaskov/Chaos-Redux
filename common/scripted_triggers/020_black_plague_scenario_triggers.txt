@@ -93,6 +93,20 @@ black_plague_scenario_has_free_rat_slot = {
 	NOT = { has_global_flag = black_plague_rat_slot_rta_in_use }
 }
 
+black_plague_scenario_has_usable_rat_slot = {
+	OR = {
+		black_plague_scenario_has_free_rat_slot = yes
+		RTA = { exists = yes has_country_flag = black_plague_rat_country }
+	}
+}
+
+black_plague_scenario_has_existing_crisis = {
+	OR = {
+		has_global_flag = black_plague_system_started
+		check_variable = { var = global.black_plague_established_state_count value = constant:black_plague_value.zero compare = greater_than }
+	}
+}
+
 black_plague_scenario_has_minimum_state_candidates = {
 	any_state = { black_plague_scenario_valid_human_state = yes }
 }
@@ -105,6 +119,9 @@ black_plague_scenario_can_launch_from_triggerable_scenarios = {
 	black_plague_scenario_rat_king_package_is_ready = yes
 	black_plague_scenario_commit_provider_is_ready = yes
 	black_plague_scenario_has_two_eligible_continents = yes
-	black_plague_scenario_has_minimum_state_candidates = yes
-	black_plague_scenario_has_free_rat_slot = yes
+	OR = {
+		black_plague_scenario_has_minimum_state_candidates = yes
+		black_plague_scenario_has_existing_crisis = yes
+	}
+	black_plague_scenario_has_usable_rat_slot = yes
 }

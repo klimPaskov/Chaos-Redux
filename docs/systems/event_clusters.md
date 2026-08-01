@@ -13,6 +13,7 @@ The registered clusters are:
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeated Event 013 disaster seasons that grow from local incidents into varied, regional, and abnormal sequences as chaos rises.
 - **Formables** (`constant:event_cluster_id.formables = 6`): reserved cluster for future formable-event work.
 - **Economy (pos)** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
+- **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that must be contained rather than removed instantly. Event 020, Black Plague, is the first required member.
 
 ## Runtime Flow
 
@@ -42,6 +43,7 @@ Important constants:
 - `event_cluster_id.peace = 4`
 - `event_cluster_id.natural_disasters = 5`
 - `event_cluster_id.formables = 6`
+- `event_cluster_id.diseases = 8`
 - `event_cluster_type.one_time`, `event_cluster_type.repeatable`, and `event_cluster_type.major` define how the cluster applies global pacing.
 - `event_cluster_wars.unlock_tier = 1`
 - `event_cluster_wars.cooldown_days = 120`
@@ -57,6 +59,7 @@ Important constants:
 - `event_cluster_formables.cooldown_days = 120`
 - `event_cluster_economy_positive.unlock_tier = 0`
 - `event_cluster_economy_positive.cooldown_days = 120`
+- `event_cluster_diseases.unlock_tier = 0`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
 - `event_cluster_roll_chance_default.*` defines tier-based cluster roll chance
 - `event_cluster_member_participation.*` defines member participation chance
@@ -84,6 +87,7 @@ Current membership:
 | Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
 | Formables | Event 12, Africa Is One | Low | Reserved placeholder member |
 | Economy (pos) | Event 18, Resources Found | Medium | Required repeatable member |
+| Diseases | Event 20, Black Plague | Severe | Required one-time member; uses the shared disease response category and state-targeted containment loop |
 
 When Event 17 is queued as a Diplomatic Panic member, its normal pre-fire helper builds the weighted eligible-minor pool and saves its own `random_faction_target_country`. The cluster route does not prefer the current player or reuse another member's actor as the Event 17 target.
 

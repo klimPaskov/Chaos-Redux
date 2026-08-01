@@ -19,6 +19,9 @@
 @rat_king_division_cap_gain_strong = 25
 @rat_king_division_cap_gain_terminal = 35
 @rat_king_terminal_preparation_gain = 25
+@rat_king_focus_ai_route = 5
+@rat_king_focus_ai_crisis = 10
+@rat_king_focus_ai_terminal = 20
 
 focus_tree = {
 	id = black_plague_rat_king_focus_tree
@@ -121,6 +124,13 @@ focus_tree = {
 		mutually_exclusive = { focus = black_plague_rat_brood_council }
 		mutually_exclusive = { focus = black_plague_rat_breath_hierophancy }
 		position = { x = -8 y = 6 }
+		ai_will_do = {
+			factor = @rat_king_focus_ai_route
+			modifier = {
+				factor = @rat_king_focus_ai_route
+				check_variable = { var = black_plague_rat_king_dominion value = 60 compare = greater_than }
+			}
+		}
 		completion_reward = {
 			set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.absolute_crown }
 			set_country_flag = black_plague_rat_absolute_crown_route
@@ -170,6 +180,13 @@ focus_tree = {
 		mutually_exclusive = { focus = black_plague_rat_absolute_crown }
 		mutually_exclusive = { focus = black_plague_rat_breath_hierophancy }
 		position = { x = 0 y = 6 }
+		ai_will_do = {
+			factor = @rat_king_focus_ai_route
+			modifier = {
+				factor = @rat_king_focus_ai_route
+				check_variable = { var = black_plague_rat_king_cohesion value = 60 compare = greater_than }
+			}
+		}
 		completion_reward = {
 			set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.brood_council }
 			set_country_flag = black_plague_rat_brood_council_route
@@ -219,6 +236,13 @@ focus_tree = {
 		mutually_exclusive = { focus = black_plague_rat_absolute_crown }
 		mutually_exclusive = { focus = black_plague_rat_brood_council }
 		position = { x = 8 y = 6 }
+		ai_will_do = {
+			factor = @rat_king_focus_ai_route
+			modifier = {
+				factor = @rat_king_focus_ai_route
+				check_variable = { var = black_plague_rat_king_sentience value = 60 compare = greater_than }
+			}
+		}
 		completion_reward = {
 			set_variable = { black_plague_rat_king_route = constant:black_plague_rat_king_route.black_breath_hierophancy }
 			set_country_flag = black_plague_rat_breath_hierophancy_route
@@ -390,6 +414,13 @@ focus_tree = {
 		prerequisite = { focus = black_plague_rat_human_minds_in_chains }
 		prerequisite = { focus = black_plague_rat_refugee_memory }
 		position = { x = 0 y = 14 }
+		ai_will_do = {
+			factor = @rat_king_focus_ai_crisis
+			modifier = {
+				factor = @rat_king_focus_ai_terminal
+				check_variable = { var = black_plague_rat_king_hunger value = 70 compare = greater_than }
+			}
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_first_crisis_resolved
 			add_to_variable = { black_plague_rat_king_cohesion = @rat_king_cohesion_gain }
@@ -490,6 +521,13 @@ focus_tree = {
 			check_variable = { var = black_plague_rat_king_cohesion value = constant:black_plague_evolution_runtime.minimum_terminal_cohesion_for_v compare = greater_than_or_equals }
 		}
 		position = { x = 0 y = 20 }
+		ai_will_do = {
+			factor = @rat_king_focus_ai_terminal
+			modifier = {
+				factor = @rat_king_focus_ai_terminal
+				black_plague_evolution_v_is_ready = yes
+			}
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_king_route_completed
 			set_global_flag = black_plague_rat_king_route_completed

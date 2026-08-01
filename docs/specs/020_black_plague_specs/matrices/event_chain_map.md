@@ -21,13 +21,16 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.31` | first overseas infection | destination owner | news | no global, local later |
 | `chaosx.nr20.40` | Evolution III resolution and first rat emergence | basin owner and new rat tag | report plus news | no |
 | `chaosx.nr20.41` | later rat emergence | basin owner and new rat tag | selective report | yes with basin and global caps |
-| `chaosx.nr20.42` | rat dominance standoff | two rat countries | yes for rat player, hidden AI | yes |
-| `chaosx.nr20.43` | rat absorption | winning rat country | report or log | yes |
+| `chaosx.nr20.42` | rat dominance standoff | superseded by the two-tag correction; no third Rat Nation is created | no separate event | no |
+| `chaosx.nr20.43` | state-level brood absorption | reusable RTA carrier | report or log | yes |
 | `chaosx.nr20.44` | rat resurgence | affected human owner and rat tag | yes | limited by basin cooldown |
 | `chaosx.nr20.50` | Evolution IV candidate selection | leading rat country | yes | no per coronation cycle |
 | `chaosx.nr20.51` | Rat King transfer and coronation | Rat King | yes | no |
 | `chaosx.nr20.52` | coronation super-event launcher | global | super-event | no |
 | `chaosx.nr20.53` | disputed crown crisis | Rat King | yes | limited |
+| `chaosx.nr20.54` | successful Royal Node strike report | responding human country | yes | one per completed strike |
+| `chaosx.nr20.55` | failed Royal Node strike and counterfire report | responding human country | yes | one per failed strike |
+| `chaosx.nr20.56` | emergency countermeasure mission timeout | responding human country | yes | one per failed mission |
 | `chaosx.nr20.60` | Evolution V resolution | Rat King | yes | no |
 | `chaosx.nr20.61` | continent selected | Rat King | yes | one active target |
 | `chaosx.nr20.62` | continent crowned | Rat King and human world | news | no per target |
@@ -36,7 +39,7 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.71` | Rat King defeated | leading human actor | news or super-event if global | no per king cycle |
 | `chaosx.nr20.72` | global reconstruction milestone | leading recovery actor | report | limited |
 | `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
-| `chaosx.nr20.90` planning allocation | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
+| `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
 
 ## Runtime families
 

@@ -26,6 +26,10 @@
 @rat_cap_gain_war = 20
 @rat_cap_gain_war_large = 22
 @rat_cap_gain_global = 25
+@rat_focus_ai_default = 5
+@rat_focus_ai_archetype = 5
+@rat_focus_ai_core = 10
+@rat_focus_ai_crown = 4
 
 focus_tree = {
 	id = black_plague_rat_focus_tree
@@ -91,6 +95,10 @@ focus_tree = {
 		prerequisite = { focus = black_plague_rat_feral_quarantine }
 		position = { x = -7 y = 3 }
 		available = { has_country_flag = black_plague_rat_archetype_urban }
+		ai_will_do = {
+			factor = @rat_focus_ai_default
+			modifier = { factor = @rat_focus_ai_archetype has_country_flag = black_plague_rat_archetype_urban }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_urban_doctrine
 			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_urban }
@@ -126,6 +134,10 @@ focus_tree = {
 		prerequisite = { focus = black_plague_rat_feral_quarantine }
 		position = { x = -3 y = 3 }
 		available = { has_country_flag = black_plague_rat_archetype_field }
+		ai_will_do = {
+			factor = @rat_focus_ai_default
+			modifier = { factor = @rat_focus_ai_archetype has_country_flag = black_plague_rat_archetype_field }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_field_doctrine
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_field }
@@ -161,6 +173,10 @@ focus_tree = {
 		prerequisite = { focus = black_plague_rat_no_human_rations }
 		position = { x = 3 y = 3 }
 		available = { has_country_flag = black_plague_rat_archetype_dock }
+		ai_will_do = {
+			factor = @rat_focus_ai_default
+			modifier = { factor = @rat_focus_ai_archetype has_country_flag = black_plague_rat_archetype_dock }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_dock_doctrine
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_dock }
@@ -196,6 +212,10 @@ focus_tree = {
 		prerequisite = { focus = black_plague_rat_no_human_rations }
 		position = { x = 7 y = 3 }
 		available = { has_country_flag = black_plague_rat_archetype_war }
+		ai_will_do = {
+			factor = @rat_focus_ai_default
+			modifier = { factor = @rat_focus_ai_archetype has_country_flag = black_plague_rat_archetype_war }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_war_doctrine
 			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_urban_large }
@@ -230,6 +250,7 @@ focus_tree = {
 		cost = @rat_focus_normal
 		prerequisite = { focus = black_plague_rat_no_human_rations }
 		position = { x = 0 y = 3 }
+		ai_will_do = { factor = @rat_focus_ai_core }
 		completion_reward = {
 			set_country_flag = black_plague_rat_brood_signal
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_signal }
@@ -270,6 +291,7 @@ focus_tree = {
 			focus = black_plague_rat_frontline_burrows
 		}
 		position = { x = 0 y = 6 }
+		ai_will_do = { factor = @rat_focus_ai_core }
 		completion_reward = {
 			set_country_flag = black_plague_rat_capped_pulses
 			add_to_variable = { black_plague_rat_division_cap = @rat_cap_gain_global }
@@ -281,6 +303,7 @@ focus_tree = {
 		cost = @rat_focus_long
 		prerequisite = { focus = black_plague_rat_capped_pulses }
 		position = { x = 0 y = 7 }
+		ai_will_do = { factor = @rat_focus_ai_core }
 		completion_reward = {
 			set_country_flag = black_plague_rat_disease_immune
 			set_country_flag = black_plague_rat_plague_immune
@@ -292,6 +315,7 @@ focus_tree = {
 		cost = @rat_focus_long
 		prerequisite = { focus = black_plague_rat_immune_blood }
 		position = { x = 0 y = 8 }
+		ai_will_do = { factor = @rat_focus_ai_core }
 		completion_reward = {
 			set_country_flag = black_plague_rat_annex_doctrine
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_royal }
@@ -303,6 +327,10 @@ focus_tree = {
 		cost = @rat_focus_long
 		prerequisite = { focus = black_plague_rat_annex_the_weak }
 		position = { x = 0 y = 9 }
+		ai_will_do = {
+			factor = @rat_focus_ai_crown
+			modifier = { factor = @rat_focus_ai_core has_global_flag = black_plague_evolution_iv_active }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_king_candidate
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_crown }

@@ -13,6 +13,27 @@ black_plague_scenario_register_commit_provider = {
 	set_global_flag = black_plague_scenario_commit_provider_ready
 }
 
+black_plague_scenario_suppress_fire_once = {
+	set_global_flag = black_plague_triggerable_scenario_suppressed_fire_once
+	set_temp_variable = { black_plague_scenario_event_id = constant:black_plague_identity.event_id }
+	if = {
+		limit = { NOT = { is_in_array = { global.disabled_events = black_plague_scenario_event_id } } }
+		add_to_array = { global.disabled_events = black_plague_scenario_event_id }
+	}
+	if = {
+		limit = { NOT = { is_in_array = { global.fired_events = black_plague_scenario_event_id } } }
+		add_to_array = { global.fired_events = black_plague_scenario_event_id }
+	}
+	if = {
+		limit = { is_in_array = { global.fire_once_events = black_plague_scenario_event_id } }
+		remove_from_array = { global.fire_once_events = black_plague_scenario_event_id }
+	}
+	set_temp_variable = { new_weight = 0 }
+	set_event_weight = yes
+	update_unfired_events_counts = yes
+	calculate_dynamic_major_weight_gain = yes
+}
+
 black_plague_scenario_set_intensity_tuning = {
 	set_variable = { global.black_plague_scenario_intensity = triggerable_scenarios_intensity }
 	set_variable = { global.black_plague_scenario_established_target = constant:black_plague_evolution_runtime.scenario_medium_established_states }
@@ -376,6 +397,7 @@ black_plague_scenario_refresh_shared_threat = {
 black_plague_triggerable_scenario_launch = {
 	if = {
 		limit = { black_plague_scenario_can_launch_from_triggerable_scenarios = yes }
+		black_plague_scenario_suppress_fire_once = yes
 		set_global_flag = black_plague_triggerable_scenario_bootstrap
 		set_global_flag = black_plague_triggerable_scenario_launched
 		set_global_flag = black_plague_scenario_shortcut_disqualifier
@@ -403,7 +425,7 @@ black_plague_triggerable_scenario_launch = {
 		black_plague_scenario_refresh_shared_threat = yes
 		black_plague_refresh_mapmode_once = yes
 		disease_containment_board_refresh_open_black_plague_boards = yes
-		news_event = { id = chaosx.nr20.4 }
+		news_event = { id = chaosx.nr20.90 }
 		if = {
 			limit = { RTX = { exists = yes has_country_flag = black_plague_rat_king_country } }
 			set_temp_variable = { black_plague_coronation_super_event_id = constant:black_plague_identity.rat_king_coronation_super_event_id }
