@@ -1,0 +1,250 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT NAME WE CHOOSE TRIGGERS
+# ============================================================================
+# Mutant identity admission and generation-bound receipt checks. The row only
+# appears for the Congo Green Basin mutant polity and selects one current civic
+# state with a foreign neighbor. Every delayed lane revalidates the same state,
+# owner, and witness partner.
+
+fallout_event_pilot_name_we_choose_state_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { air_winter_shelter_capacity value = constant:fallout_event_873_threshold.minimum_state_shelter compare = greater_than_or_equals }
+	check_variable = { fallout_state_supply_access_current value = constant:fallout_event_873_threshold.minimum_state_supply compare = greater_than_or_equals }
+	check_variable = { air_winter_adaptation value = constant:fallout_event_873_threshold.minimum_state_adaptation compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_873_threshold.minimum_state_disease compare = greater_than_or_equals }
+	check_variable = { air_winter_disease_pressure value = constant:fallout_event_873_threshold.maximum_state_disease compare = less_than }
+	check_variable = { air_winter_exposure value = constant:fallout_event_873_threshold.minimum_state_exposure compare = greater_than_or_equals }
+	check_variable = { air_winter_exposure value = constant:fallout_event_873_threshold.maximum_state_exposure compare = less_than }
+	check_variable = { state_population_k value = constant:fallout_event_873_threshold.minimum_population_k compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = greater_than }
+	check_variable = { air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+	owner = {
+		fallout_event_country_can_receive_ordinary_event = yes
+		has_variable = fallout_government_archetype
+		check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.mutant_polity compare = equals }
+		has_variable = fallout_name_we_choose_civic_legitimacy_current
+		has_variable = fallout_name_we_choose_external_pressure_current
+		check_variable = { fallout_name_we_choose_civic_legitimacy_current value = constant:fallout_event_873_threshold.minimum_civic_legitimacy compare = greater_than_or_equals }
+		check_variable = { fallout_name_we_choose_external_pressure_current value = constant:fallout_event_873_threshold.minimum_external_pressure compare = greater_than_or_equals }
+	}
+	NOT = { has_state_flag = fallout_event_873_registry_reserved }
+	NOT = { has_state_flag = fallout_event_873_registry_committed }
+	NOT = { has_state_flag = fallout_event_873_memory_closed }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_project }
+	NOT = { has_state_flag = air_winter_controlled_evacuation_completed }
+}
+
+fallout_event_873_opening_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_873_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_873_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_pilot_name_we_choose_state_is_current = yes
+	}
+	check_variable = { fallout_event_873_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_873_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_873_local_identity_affordable = yes
+		fallout_event_873_old_nationality_affordable = yes
+		fallout_event_873_biological_label_affordable = yes
+		fallout_event_873_religious_identity_affordable = yes
+	}
+}
+
+fallout_event_873_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_government_archetype
+	check_variable = { fallout_government_archetype value = constant:fallout_government_archetype.mutant_polity compare = equals }
+	has_variable = fallout_country_memory_id
+	check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.congo_green_basin compare = equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_873_threshold.minimum_campaign_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = constant:fallout_event_873_threshold.maximum_campaign_day compare = less_than }
+	has_variable = fallout_event_873_candidate_state_id
+	check_variable = { fallout_event_873_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_variable = fallout_name_we_choose_civic_legitimacy_current
+	has_variable = fallout_name_we_choose_external_pressure_current
+	check_variable = { fallout_name_we_choose_civic_legitimacy_current value = constant:fallout_event_873_threshold.minimum_civic_legitimacy compare = greater_than_or_equals }
+	check_variable = { fallout_name_we_choose_external_pressure_current value = constant:fallout_event_873_threshold.minimum_external_pressure compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_873_threshold.minimum_country_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_873_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_873_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	fallout_event_873_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_873_chain_committed }
+	NOT = { has_country_flag = fallout_event_873_pending }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_873_candidate_state_id compare = equals }
+		fallout_event_pilot_name_we_choose_state_is_current = yes
+	}
+}
+
+fallout_event_873_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_human compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_873_country_is_current = yes
+	fallout_event_873_opening_target_is_current = yes
+}
+
+fallout_event_873_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_ai compare = equals }
+	check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_873_country_is_current = yes
+	fallout_event_873_opening_target_is_current = yes
+}
+
+fallout_event_873_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { state_population_k value = constant:fallout_event_873_threshold.minimum_population_k compare = greater_than }
+	owner = {
+		has_variable = fallout_country_memory_id
+		check_variable = { fallout_country_memory_id value = constant:fallout_country_memory.congo_green_basin compare = equals }
+	}
+	NOT = { has_state_flag = fallout_event_873_memory_closed }
+	any_neighbor_state = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		owner = { exists = yes }
+		fallout_survival_state_identity_row_is_current = yes
+	}
+}
+
+fallout_event_873_target_is_current = {
+	check_variable = { fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_873_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_873_target_context_loaded = constant:fallout_event_runtime.one }
+		exists = yes
+		owner = { tag = ROOT }
+		fallout_event_873_registry_state_is_current = yes
+	}
+	check_variable = { fallout_event_873_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_873_registry_is_current = {
+	has_variable = fallout_event_873_registry_generation
+	has_variable = fallout_event_873_registry_owner
+	has_variable = fallout_event_873_candidate_id
+	has_variable = fallout_event_873_registry_target_type
+	has_variable = fallout_event_873_registry_target
+	has_variable = fallout_event_873_target_state_id
+	has_variable = fallout_event_873_selected_branch
+	has_variable = fallout_event_873_result_outcome
+	has_variable = fallout_event_873_result_generation
+	has_variable = fallout_event_873_frozen_generation
+	has_variable = fallout_event_873_frozen_owner
+	has_variable = fallout_event_873_frozen_controller
+	has_variable = fallout_event_873_frozen_shelter
+	has_variable = fallout_event_873_frozen_supply
+	has_variable = fallout_event_873_frozen_adaptation
+	has_variable = fallout_event_873_frozen_exposure
+	has_variable = fallout_event_873_frozen_disease
+	has_variable = fallout_event_873_frozen_neighbor_state_id
+	has_variable = fallout_event_873_frozen_neighbor_owner
+	has_variable = fallout_event_873_frozen_neighbor_controller
+	check_variable = { fallout_event_873_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_873_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_event_873_candidate_id value = constant:fallout_event_candidate_pilot.name_we_choose_candidate_id compare = equals }
+	check_variable = { fallout_event_873_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { fallout_event_873_registry_target value = fallout_event_873_target_state_id compare = equals }
+	check_variable = { fallout_event_873_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_873_result_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { fallout_event_873_frozen_neighbor_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	has_country_flag = fallout_event_873_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_873_target_state_id compare = equals }
+		fallout_event_873_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_873_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_873_frozen_controller value = CONTROLLER compare = equals }
+	}
+	var:fallout_event_873_frozen_neighbor_state_id = {
+		exists = yes
+		NOT = { is_owned_by = ROOT }
+		check_variable = { var = ROOT.fallout_event_873_frozen_neighbor_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_873_frozen_neighbor_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_873_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_873_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_873_branch.upper_bound compare = less_than }
+	fallout_event_873_registry_is_current = yes
+}
+
+fallout_event_873_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_873_branch.none compare = greater_than }
+	check_variable = { fallout_event_dispatch_issued_branch value = constant:fallout_event_873_branch.upper_bound compare = less_than }
+	fallout_event_873_registry_is_current = yes
+}
+
+fallout_event_873_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_cleanup compare = equals }
+	fallout_event_873_registry_is_current = yes
+}
+
+fallout_event_873_local_identity_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_873_cost.local_identity_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_873_cost.local_identity_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_873_cost.local_identity_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_873_old_nationality_affordable = {
+	check_variable = { fallout_survival_current_entries^4 value = constant:fallout_event_873_cost.old_nationality_scrap compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^6 value = constant:fallout_event_873_cost.old_nationality_power compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_873_cost.old_nationality_recognition compare = greater_than_or_equals }
+}
+fallout_event_873_biological_label_affordable = {
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_873_cost.biological_label_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_873_cost.biological_label_recognition compare = greater_than_or_equals }
+	check_variable = { fallout_survival_cohesion_current value = constant:fallout_event_873_cost.biological_label_cohesion compare = greater_than_or_equals }
+}
+fallout_event_873_religious_identity_affordable = {
+	check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_873_cost.religious_identity_food compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_873_cost.religious_identity_medicine compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^5 value = constant:fallout_event_873_cost.religious_identity_fuel compare = greater_than_or_equals }
+	check_variable = { fallout_survival_current_entries^9 value = constant:fallout_event_873_cost.religious_identity_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_873_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { fallout_event_873_requested_branch value = constant:fallout_event_873_branch.local_identity compare = equals } } fallout_event_873_local_identity_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_873_requested_branch value = constant:fallout_event_873_branch.old_nationality compare = equals } } fallout_event_873_old_nationality_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_873_requested_branch value = constant:fallout_event_873_branch.biological_label compare = equals } } fallout_event_873_biological_label_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_event_873_requested_branch value = constant:fallout_event_873_branch.religious_identity compare = equals } } fallout_event_873_religious_identity_affordable = yes }
+}
+
+# End of The Name We Choose triggers.

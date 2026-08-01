@@ -20545,6 +20545,7 @@ country_event = {
 	immediate = { fallout_event_754_cleanup = yes }
 }
 
+
 # Dormant Fallout mutant diplomacy chain: The Envoy at the Gate
 # ---------------------------------------------------------------------------
 
@@ -20646,6 +20647,109 @@ country_event = {
 	trigger = { fallout_event_761_cleanup_can_enter = yes }
 	immediate = { fallout_event_761_cleanup = yes }
 }
+
+# Dormant Fallout mutant identity chain: The Name We Choose
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.873
+	title = chaosx.fallout.873.t
+	desc = chaosx.fallout.873.opening.d
+	picture = GFX_report_event_fallout_name_we_choose
+	is_triggered_only = yes
+	trigger = { fallout_event_873_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.873.a
+		trigger = { fallout_event_873_local_identity_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_873_requested_branch = constant:fallout_event_873_branch.local_identity } fallout_event_873_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.873.a.tt
+	}
+	option = {
+		name = chaosx.fallout.873.b
+		trigger = { fallout_event_873_old_nationality_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_873_requested_branch = constant:fallout_event_873_branch.old_nationality } fallout_event_873_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.873.b.tt
+	}
+	option = {
+		name = chaosx.fallout.873.c
+		trigger = { fallout_event_873_biological_label_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_873_requested_branch = constant:fallout_event_873_branch.biological_label } fallout_event_873_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.873.c.tt
+	}
+	option = {
+		name = chaosx.fallout.873.d
+		trigger = { fallout_event_873_religious_identity_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_873_requested_branch = constant:fallout_event_873_branch.religious_identity } fallout_event_873_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.873.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.874
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_873_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_873_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.875
+	title = chaosx.fallout.875.t
+	desc = { text = chaosx.fallout.875.local_identity.success.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.local_identity compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.875.local_identity.partial.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.local_identity compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.875.local_identity.failure.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.local_identity compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.875.old_nationality.success.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.old_nationality compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.875.old_nationality.partial.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.old_nationality compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.875.old_nationality.failure.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.old_nationality compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.875.biological_label.success.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.biological_label compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.875.biological_label.partial.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.biological_label compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.875.biological_label.failure.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.biological_label compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.875.religious_identity.success.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.religious_identity compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.875.religious_identity.partial.d trigger = { check_variable = { fallout_event_873_selected_branch value = constant:fallout_event_873_branch.religious_identity compare = equals } check_variable = { fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.875.religious_identity.failure.d
+	picture = GFX_report_event_fallout_name_we_choose
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_873_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.875.a hidden_effect = { fallout_event_873_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.875.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.876
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_873_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_873_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.877
+	title = chaosx.fallout.877.t
+	desc = { text = chaosx.fallout.877.success.d trigger = { check_variable = { fallout_event_873_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.877.partial.d trigger = { check_variable = { fallout_event_873_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.877.failure.d
+	picture = GFX_report_event_fallout_name_we_choose
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_873_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_873_registry_is_current = yes }
+	immediate = { fallout_event_873_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.877.a hidden_effect = { fallout_event_873_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.877.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.878
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_873_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.name_we_choose_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_873_registry_is_current = yes }
+	immediate = { fallout_event_873_calculate_callback_outcome = yes fallout_event_873_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.879
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_873_cleanup_can_enter = yes }
+	immediate = { fallout_event_873_cleanup = yes }
+}
+
 
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
