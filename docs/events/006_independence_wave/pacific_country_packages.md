@@ -2,15 +2,14 @@
 
 ## Scope
 
-Current visual status (2026-07-26): IW-173 HAW remains withdrawn from runtime
-attestation, but a source-ready Samuel Wilder King candidate now exists. The
-candidate is a male Hawaiian-born territorial delegate who served in 1936 and
-has an immutable public-domain source, exact crop proof, source-locked HOI4
-repaint, deterministic 156x210 PNG, and processing metadata under the HAW
-source-clearance folder. It remains evidence-only until an independent
-likeness/style/provenance audit and an explicit package decision preserve the
-accepted vanilla leadership contract. No DDS, `.gfx`, character, advisor, or
-leader-replacement consumer is wired.
+Current visual status (2026-08-01): IW-173 HAW has passed the independent v46
+portrait audit and is wired as an additive runtime package. Samuel Wilder King
+is a sourced male Hawaiian-born territorial delegate who served in 1936. His
+immutable public-domain source, exact crop proof, source-locked HOI4 repaint,
+deterministic 156x210 PNG, durable archival-source ComfyUI pair, DDS, `.gfx`,
+character role, and localisation are aligned. The vanilla David Kalakaua
+Kawananakoa ruling roster remains untouched; no advisor, dossier, commander,
+operative, or `_small` consumer exists.
 
 This document owns the playable Event 006 country-package contract for the
 three exact countries that support FORM-48 without duplicating its shared
@@ -27,7 +26,7 @@ force map align on these IDs. California is the exact carrier candidate.
 Hawai'i and Micronesia remain autonomous countries and never become replacement
 tags for a Pacific federation.
 
-## Current promotion state (2026-07-24)
+## Current promotion state (2026-08-01)
 
 IW-184 `HBX` is in
 `has_independence_wave_runtime_package_content_attestation_for_execution_id`
@@ -35,15 +34,13 @@ after its current post-wire country-package audit. William D. Stephens is the
 sourced real-male civic leader with an independently approved identity-preserving
 HOI4 repaint wired to the stable civilian-large consumer; no advisor, dossier,
 operative, commander, or `_small` derivative is authorized. IW-173 `HAW` is
-withdrawn because vanilla maps the real David Kalakaua Kawananakoa to generic
-`Portrait_Asia_Generic_land_5.dds`. A source-locked repaint trial of the correct
-1925 archival photograph passed HOI4 style review but failed the independent
-non-compensable likeness gate because the source clips identity-bearing facial
-highlights; no DDS was created or wired. IW-179 `FSM` remains withdrawn because
-its generated congress chair is not valid for grounded Micronesia. HAW and FSM
-remain outside runtime attestation, so FORM-48 cannot satisfy its complete
-carrier/member contract. Earlier promotion audits remain gameplay evidence, not
-current portrait or admission authority.
+admitted after the v46 source/likeness/style audit and v44 post-wire country
+package audit. Samuel Wilder King is an additive non-ruling territorial-delegate
+role; the vanilla David Kalakaua Kawananakoa ruling roster remains untouched.
+IW-179 `FSM` remains withdrawn because its generated congress chair is not valid
+for grounded Micronesia. FSM remains outside runtime attestation, so FORM-48
+cannot satisfy its complete carrier/member contract. Earlier withdrawn HAW
+portrait trials remain historical evidence only.
 
 FORM-48 is family 48 with HBX as carrier and HAW/FSM as sovereign autonomous
 members. `independence_wave_form48_register_readiness` binds the family and,
@@ -52,22 +49,23 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
 FORM-42. The current whole-event authority is
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v31_2026_07_28.md`,
-which retains **HOLD / PARTIAL** while HAW/FSM admission, live allocation,
-scenario, focus geometry, AI, and synchronized transaction evidence remain open.
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md`,
+which retains **HOLD / PARTIAL** while FSM admission, live allocation, scenario,
+focus geometry, AI, and synchronized transaction evidence remain open.
 IW-012 Iceland belongs to the Northern and Western Europe scope and its static
 admission is documented in `northern_western_europe_packages.md` and the
 dedicated Iceland package reference rather than duplicated in this Pacific
 package document.
 
-The current v31 allocator audit passes 149 publishers, 126 automatic/high-chaos
-selectable packages, 138 SCN-008 ranked packages, eleven exact attestations
-across ten compatible reservation groups, the doubled 6/8/10/14/20 ladder, and
+The current allocator audit passes 149 publishers, 126 automatic/high-chaos
+selectable packages, 138 SCN-008 ranked packages, thirteen exact attestations
+across twelve compatible reservation groups and thirteen distinct anchors, the
+doubled 6/8/10/14/20 ladder, and
 Event 005-first joint reservation ordering. The older 2026-07-18 installed scan
 covers 108 Event 006-owned identifiers, 122 Workshop directories, three sibling
 local mods, archives, and reports zero collisions; it remains historical scan
 evidence rather than current environment proof. The durable Event 006 portrait
-shelf now contains 54 original-size masters with no normalized or advisor
+shelf now contains 61 original-size masters with no normalized or advisor
 derivatives.
 
 ## Availability and release safety
@@ -82,9 +80,10 @@ Each wrapper still requires the shared dormant-origin proof. The regional
 planner also requires its exact anchor and reservation group, so a living,
 reserved, Event 5-owned, or already released tag cannot be overwritten.
 
-These adapters remain implemented. None is currently present in
-`has_independence_wave_runtime_package_content_attestation_for_execution_id`.
-The allocator may execute an attested adapter only when the exact country, focus,
+These adapters remain implemented. IW-173 HAW is present in
+`has_independence_wave_runtime_package_content_attestation_for_execution_id`;
+IW-184 HBX is also admitted, while IW-179 FSM remains outside that gate. The
+allocator may execute an attested adapter only when the exact country, focus,
 decision/mission, localisation, portrait-DDS, host, anchor, reservation, Event
 005, force, and transaction gates pass at runtime.
 
@@ -172,8 +171,11 @@ concurrent focus consumes first.
 Vanilla `HAW - Hawaii.txt` explicitly creates David Kalakaua Kawananakoa,
 Joseph Poindexter, and Charles Fujimoto. The neutrality leader David Kalakaua
 Kawananakoa remains the ruler during exact setup, and the prepared-package
-proof checks that result. No Pacific package effect recruits, promotes,
-retires, or replaces a Hawaiian leader.
+proof checks that result. Event 006 additionally recruits Samuel Wilder King
+and gives him a non-ruling centrism territorial-delegate role with a sourced
+large portrait; setup and cleanup remove only that Event 006 role and character.
+No Pacific package effect promotes, retires, or replaces a vanilla Hawaiian
+leader.
 
 The accepted Hawaiian route contract is traditional monarchy,
 constitutional government, labor, and patron client. In the shared Event 006
@@ -187,7 +189,8 @@ government decision surface is registered in the Pacific package. The bespoke
 shared focus group connects Hawai'i's Level-2 shipping, coastwatch,
 former-host, network, formable-preparation, and Pacific-delegation play to that
 framework without recruiting, promoting, retiring, or replacing any vanilla
-Hawaiian leader.
+Hawaiian leader. Samuel Wilder King's additive non-ruling Event 006 role is
+guarded separately by the exact IW-173 setup and cleanup effects.
 
 The strategic delegation project publishes
 `independence_wave_haw_pacific_delegation_ready`. That flag proves only that
@@ -244,8 +247,10 @@ package mappings:
 
 The package establishes an institutional provisional command and proves its
 crisis or mature command spirit before publishing the shared command-readiness
-flag. The two origin leaders are explicitly male country leaders, not advisers
-or commanders. Hawai'i's complete vanilla roster remains untouched;
+flag. The origin leaders and the additive HAW delegate are explicitly male
+country leader consumers, not advisers or commanders. Hawai'i's complete
+vanilla ruling roster remains untouched; Samuel Wilder King is non-ruling and
+exists only during the exact Event 006 package lifecycle;
 Micronesia receives an exact Event 006-only congress chair because vanilla
 provides no named leader. Starting forces are created once for the current
 Event 006 generation through the existing dynamic force loader. No package
@@ -346,8 +351,9 @@ The registry publishes the
 `independence_wave_form48_registry_surface_registered` marker and retains the
 FORM-48 readiness attestation after coordinated PASS audits. The six shared
 readiness flags are bound to family 48. IW-184 HBX is in the runtime
-content-attestation set, while IW-173 HAW and IW-179 FSM remain outside it; the
-family therefore still lacks a complete admitted member/carrier set.
+content-attestation set, and IW-173 HAW now joins it after its v44 package and
+v46 portrait audits. IW-179 FSM remains outside it, so the family still lacks
+a complete admitted member/carrier set.
 
 Package cleanup calls the dedicated FORM-48 origin cleanup before removing its
 family state. It then removes the package mission, decisions, ideas, pressure
@@ -367,18 +373,24 @@ Event 006 full framework active.
 ## Asset and icon wiring
 
 No custom Event 006 adviser icons/assets/sprites/portrait blocks are created by
-this lane. Two stable male large-portrait consumers are registered
+this lane. Three stable male large-portrait consumers are registered
 in `interface/006_independence_wave_pacific_portraits.gfx` for the separate
 portrait-asset lane:
 
 - `GFX_portrait_HBX_independence_wave_civic_convention` ->
   `gfx/leaders/006_independence_wave/portrait_HBX_independence_wave_civic_convention.dds`;
+- `GFX_portrait_HAW_independence_wave_territorial_delegate` ->
+  `gfx/leaders/006_independence_wave/portrait_HAW_independence_wave_territorial_delegate.dds`;
 - `GFX_portrait_FSM_independence_wave_inter_island_congress_chair` ->
   `gfx/leaders/006_independence_wave/portrait_FSM_independence_wave_inter_island_congress_chair.dds`.
 
-Neither character defines a small portrait or an adviser role. Their current
-DDS files are generated grounded-polity portraits awaiting sourced replacement
-and do not satisfy visual readiness. HAW and FSM use vanilla flags; HBX uses the researched flat 1911 Bear
+None of these characters defines a small portrait or an adviser role. The HAW
+King portrait is a sourced, independently audited male leader asset; the HBX
+and FSM assets remain withdrawn where their grounded-source gates are not yet
+complete. The HAW DDS/GFX/character/localisation chain is runtime-wired, while
+the withdrawn HBX/FSM DDS files are generated grounded-polity portraits awaiting
+sourced replacement and do not satisfy visual readiness. The withdrawn HBX/FSM portrait surfaces
+remain outside admission. HAW and FSM use vanilla flags; HBX uses the researched flat 1911 Bear
 Flag; PFX uses the audited flat ImageGen flag. Protected BAY/RHI hashes remain
 unchanged. The package otherwise reuses these registered Event 006 families
 from `interface/006_independence_wave.gfx`:
@@ -458,8 +470,10 @@ The package audit should cover at least:
     tree only from exact IW-173's active Event 006 tree, preserves every HAW
     political leader and FSM's owning tree, and retires only the exact Event
     006 HBX/FSM origin characters.
-12. The HBX and FSM portrait sprites resolve to the two asset-lane DDS files,
-    remain male large portraits, and have no adviser or small-icon consumer.
+12. The HBX, HAW, and FSM portrait sprites resolve to the three asset-lane DDS
+    files, remain male large portraits, and have no adviser or small-icon
+    consumer. HAW's consumer is the admitted Samuel Wilder King role; FSM's
+    consumer remains withdrawn pending a sourced Micronesian chair.
 13. A human HAW/FSM invitation exposes only autonomous accept/withhold; none
     of the three generic FORM-01/02/04 choices is visible or AI-usable.
 14. Post-formation initialization does nothing before `active`, `committed`,
@@ -480,10 +494,13 @@ The package audit should cover at least:
 ## Future plans
 
 - The dedicated decision/mission, localisation, country-package, focus/icon,
-  architecture, flag, and postformation audits remain gameplay evidence. The
-  portrait-source decision keeps IW-173 and IW-179 outside runtime attestation
-  until their sourced replacements pass; IW-184 HBX remains admitted after its
-  post-wire package audit, and the parent completion audit remains pending.
+  architecture, flag, and postformation audits remain gameplay evidence. IW-173
+  HAW is admitted after the v44 package audit and v46 independent portrait PASS,
+  with Samuel Wilder King's additive non-ruling DDS/GFX/character/localisation
+  chain wired while David Kalakaua Kawananakoa remains the vanilla ruler. IW-179
+  FSM remains outside runtime attestation until its sourced replacement passes;
+  IW-184 HBX remains admitted after its post-wire package audit, and the parent
+  completion audit remains pending.
 - Keep FORM-06 through FORM-47 (including FORM-42) fail-closed until each owning
   family completes its own admission work; do not weaken the exact FORM-48
   runtime gates.
