@@ -939,3 +939,15 @@ It follows a closed Reactor Shift district in the Manchurian Reactor Keeps Techn
 The four branches are Publish the Designs, Protect Inventor Rights, Keep the Archive Secret, and License the Region. The chain freezes country, state, neighbor, generation, Air Winter, Supply Access, and patent ledgers, resolves after `35` days, schedules a `270` day second-year review, applies bounded Deaths failure, writes patent, research, production, trade, legitimacy, espionage, and bilateral memories, records Event Log history `9194`, preserves hidden-AI parity, and closes through authenticated cleanup. Dedicated report art and a catalog row are wired.
 
 The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker. Static proof is recorded in `FALLOUT_PATENT_AFTER_END_CHAIN_PROOF.md`.
+
+## The Grid Vote tranche
+
+The Grid Vote is a dormant ordinary Fallout chain at `chaosx.fallout.824` through `chaosx.fallout.830` with candidate `824`, transaction `710089`, route `7210`, and Event Log history `9195`.
+
+It follows a closed Patent After the End district in the Manchurian Reactor Keeps Technate. The candidate selects the lowest current East Asian industrial or arms state with a foreign neighbor, surviving population, native infrastructure, produced Air Winter values, bounded Disease Pressure, durable Medicine, Cohesion, Recognition, grid legitimacy, dependency pressure, and an affordable branch.
+
+The four branches are Share Power With Every Neighbor, Favor the Settlements That Built the Lines, Reserve Power for Domestic Districts, and Bind the Grid to Military Corridors. The chain freezes country, state, neighbor, generation, Air Winter, Supply Access, and grid ledgers, resolves after `42` days, schedules a `330` day second-year review, applies bounded Deaths failure, writes grid, trade, legitimacy, and bilateral memories, records Event Log history `9195`, preserves hidden-AI parity, and uses authenticated cleanup.
+
+The asset evidence is `docs/assets/824_grid_vote/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_grid_vote`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-824` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_GRID_VOTE_CHAIN_PROOF.md`.
