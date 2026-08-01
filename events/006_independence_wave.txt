@@ -179,12 +179,12 @@ country_event = {
 	}
 }
 
-# Internal synchronous character handoff for the attested Corsica and Pacific
-# packages. Static characters are recruited from an event, never from a
-# scripted effect or on action. The calling setup effect remains responsible
-# for validating the package-specific roster and role contract.
+# Internal synchronous character handoff for Event 006 package rosters.
+# Static characters are recruited from an event, never from a scripted effect
+# or on action. The calling setup effect remains responsible for validating
+# the package-specific roster and role contract.
 country_event = {
-	id = chaosx.nr6.15
+	id = chaosx.nr6.350
 	hidden = yes
 	is_triggered_only = yes
 
@@ -203,6 +203,86 @@ country_event = {
 		else_if = {
 			limit = { is_independence_wave_haw_package = yes }
 			if = { limit = { NOT = { has_character = HAW_independence_wave_territorial_delegate } } recruit_character = HAW_independence_wave_territorial_delegate }
+		}
+		else_if = {
+			limit = { is_independence_wave_fsm_package = yes }
+			if = { limit = { NOT = { has_character = FSM_independence_wave_inter_island_congress_chair } } recruit_character = FSM_independence_wave_inter_island_congress_chair }
+		}
+		else_if = {
+			limit = { is_independence_wave_fij_package = yes }
+			if = { limit = { NOT = { has_character = FIJ_independence_wave_founding_congress_chair } } recruit_character = FIJ_independence_wave_founding_congress_chair }
+		}
+		else_if = {
+			limit = { is_independence_wave_iw043_country = yes }
+			if = { limit = { NOT = { has_character = CHU_independence_wave_middle_volga_congress } } recruit_character = CHU_independence_wave_middle_volga_congress }
+			if = { limit = { NOT = { has_character = CHU_independence_wave_federal_presidium } } recruit_character = CHU_independence_wave_federal_presidium }
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = independence_wave_iw043_route_restoration
+						has_country_flag = independence_wave_route_traditional_restoration
+					}
+					NOT = { has_character = CHU_independence_wave_bolgar_civic_presidium }
+				}
+				recruit_character = CHU_independence_wave_bolgar_civic_presidium
+			}
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = independence_wave_iw043_route_emergency_guard
+						has_country_flag = independence_wave_route_emergency_military
+					}
+					NOT = { has_character = CHU_independence_wave_river_security_directorate }
+				}
+				recruit_character = CHU_independence_wave_river_security_directorate
+			}
+		}
+		else_if = {
+			limit = { is_independence_wave_iw058_country = yes }
+			if = { limit = { NOT = { has_character = ASY_independence_wave_provisional_national_council } } recruit_character = ASY_independence_wave_provisional_national_council }
+			if = { limit = { NOT = { has_character = ASY_independence_wave_concordat_council } } recruit_character = ASY_independence_wave_concordat_council }
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = independence_wave_iw058_route_civic_assembly
+						has_country_flag = independence_wave_route_constitutional_republic
+						has_country_flag = independence_wave_route_popular_council
+					}
+					NOT = { has_character = ASY_independence_wave_civic_national_assembly }
+				}
+				recruit_character = ASY_independence_wave_civic_national_assembly
+			}
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = independence_wave_iw058_route_levies_guardianship
+						has_country_flag = independence_wave_route_emergency_military
+					}
+					NOT = { has_character = ASY_independence_wave_levies_guardianship }
+				}
+				recruit_character = ASY_independence_wave_levies_guardianship
+			}
+		}
+		else_if = {
+			limit = { is_independence_wave_iw093_prepared_scope = yes }
+			if = { limit = { NOT = { has_character = DOX_prempeh_ii } } recruit_character = DOX_prempeh_ii }
+			if = { limit = { NOT = { has_character = DOX_kwame_frimpong } } recruit_character = DOX_kwame_frimpong }
+			if = { limit = { NOT = { has_character = DOX_kwaku_ntim } } recruit_character = DOX_kwaku_ntim }
+		}
+		else_if = {
+			limit = {
+				is_independence_wave_iw098_prepared_scope = yes
+				is_independence_wave_iw098_event012_state_safe = yes
+			}
+			if = { limit = { NOT = { has_character = SOK_muhammad_dikko } } recruit_character = SOK_muhammad_dikko }
+			if = { limit = { NOT = { has_character = SOK_bello_rabah } } recruit_character = SOK_bello_rabah }
+			if = {
+				limit = {
+					is_independence_wave_iw098_post_cutover = yes
+					NOT = { has_character = SOK_siddiq_abubakar }
+				}
+				recruit_character = SOK_siddiq_abubakar
+			}
 		}
 	}
 }
