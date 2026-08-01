@@ -399,6 +399,9 @@ independence_wave_reset_current_generation = {
 
 	clr_country_flag = independence_wave_active_origin
 	clr_country_flag = independence_wave_origin_ended
+	# A concurrently registered Event 012 package can retry its focus overlay
+	# only after the Event 006 origin receipt has been cleared.
+	africa_priority_member_ensure_focus_tree_loaded = yes
 	clr_country_flag = independence_wave_origin_prepared
 	clr_country_flag = independence_wave_origin_activation_ready
 	clr_country_flag = independence_wave_origin_package_validated
@@ -2871,6 +2874,10 @@ independence_wave_end_active_origin = {
 			clear_global_event_target = independence_wave_league_leader_target
 		}
 		independence_wave_registry_clear_event6_origin = yes
+		# Event 012 may have registered additively while Event 006 still owned
+		# the origin/tree. Retry its focus overlay only after that ownership has
+		# been cleared; the loader remains fail-closed while Event 006 is active.
+		africa_priority_member_ensure_focus_tree_loaded = yes
 		clr_country_flag = independence_wave_anchor_opening
 		clr_country_flag = independence_wave_government_route_locked
 		clr_country_flag = independence_wave_route_constitutional_republic

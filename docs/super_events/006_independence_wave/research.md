@@ -14,6 +14,15 @@ Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID
 audio ID 6001 remain reserved but have no image dispatch, localisation
 dispatch, audio assets, wrapper definitions, or firing effect.
 
+Current package boundary (2026-08-01): the allocator admits fourteen packages
+across thirteen compatible reservation groups and fourteen distinct anchors,
+including IW-018 ARX and IW-173 HAW. FORM-48 has its HBX carrier and HAW member
+admitted, while IW-179 FSM remains withdrawn; the hidden-formable route therefore
+remains dormant and no synthetic readiness flag or ordinary formable substitutes
+for the missing complete carrier/member set. IW-043 CHU and IW-058 ASY remain
+outside runtime attestation even though Luka Semyonovich Spasov has a v45 visual
+PASS and parent-owned runtime replacement.
+
 ## Every Border a Casus Belli
 
 The public package is fixed to the accepted design:
@@ -69,11 +78,13 @@ sponsorships do not qualify.
 
 Packages 1, 2, 3, and 5 have reachable runtime producers. Package 4's exact
 predicate and publication branch are wired, but no currently promoted formable
-can carry `hidden_high_chaos`: the only registered families with that
-capability are FORM-42 and FORM-48, and both remain fail-closed. Package 4
-therefore cannot fire until one of those families and its carrier country
-package is fully implemented, audited, and readiness-promoted. No ordinary
-formable or synthetic readiness flag substitutes for that missing carrier.
+has a complete `hidden_high_chaos` carrier/member path: the only registered
+families with that capability are FORM-42 and FORM-48, and both remain
+fail-closed. FORM-48 now has admitted HBX and HAW surfaces but still lacks the
+admitted FSM member required by its contract. Package 4 therefore cannot fire
+until one of those families and its carrier country package is fully
+implemented, audited, and readiness-promoted. No ordinary formable or synthetic
+readiness flag substitutes for that missing carrier.
 
 Revisionist pressure and completed revisionist actions are separate ledgers.
 World Collapse multiplies the visible pressure gained from high-chaos focuses;

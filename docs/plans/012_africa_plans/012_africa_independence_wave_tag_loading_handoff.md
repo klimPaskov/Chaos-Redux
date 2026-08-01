@@ -20,7 +20,11 @@ A supported carrier must still pass the bounded promotion survey, the compact vi
 
 Active Independence Wave origins are eligible for the later Event 012 package on the same country scope. The seven niche shells must pass the shared `africa_priority_member_has_active_event6_shell_receipt` predicate, which reads the live Event 006 origin lifecycle before either the promotion survey or package registration can accept their identity. The final `africa_priority_member_can_register_package` gate also requires `africa_priority_member_has_supported_carrier_identity`, so a stale or copied origin flag cannot load the package onto an unowned tag. A bare `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, or `EQX` original tag remains dormant and non-actionable.
 
-The seven niche Event 006 tags load `africa_priority_member_focus_tree` after full Event 012 registration and preserve completed focus receipts with `keep_completed = yes`.
+The seven niche Event 006 tags remain eligible for the full Event 012 package after Action 102, but the focus loader now preserves an active Event 006 origin or `independence_wave_focus_tree` and records `africa_priority_member_focus_tree_overlay_skipped` while Event 006 owns that surface.
+
+The Event 012 ideas, decisions, forces, League behavior, AI state, and country package still load additively during that protected interval.
+
+After Event 006 cleanup clears the origin/tree, its post-clear retry loads `africa_priority_member_focus_tree` with `keep_completed = yes` when the Event 012 package remains active.
 
 Existing vanilla carriers load the Event 012 tree only when they use `generic_focus`.
 
@@ -77,6 +81,8 @@ The portrait brief requires dramatic, fantastical, source-locked HOI4-style inst
 At game start, the seven niche shells are absent and cannot satisfy `africa_priority_member_promotion_survey_is_available` or `africa_priority_member_can_register_package` merely because their original tags are registered in Event 006 files.
 
 When Event 006 legitimately creates an active shell and leaves its live origin receipt in place, the same tag can enter the bounded survey, pass Action 102, and register the normal Event 012 package without a tag, territory, core, subject, faction, or cosmetic change.
+
+While the Event 006 origin/tree remains active, the package focus overlay is skipped and the additive package payload remains available; the post-clear Event 006 lifecycle retry loads the Africa tree only after that protected surface is gone.
 
 When Event 006 has not created `DYX`, `DZX`, or `EMX`, those three tags remain blocked and non-actionable. This patch adds no allocator row or fallback route.
 
