@@ -21,7 +21,7 @@ IW-017 Corsica and IW-019 Sicily remain in the exact static attestation set afte
 Adolphe Landry, Jean Chiappe, Luigi Sturzo, Pietro Lanza di Scalea, Luigi Rizzo, and Vincenzo Di Benedetto have attributed source masters, explicit head-and-shoulders crops, independently reviewed identity-preserving HOI4 treatments, and pixel-identical runtime DDS files.
 Rizzo is the civilian-large Straits Security Directorate political leader under a separately audited fictional-office disclosure, while Di Benedetto is the sole army-large corps commander.
 Neither package creates advisor, dossier, `_small`, female, or fallback portrait assets.
-IW-018 Sardinia remains visually withdrawn because it lacks sourced real male crown-route and command identities, and its Emilio Lussu treatment still needs a compliant painted finish.
+IW-018 Sardinia now has a source-locked, independently reviewed Emilio Lussu civic portrait, a Sardinian-born royal-court statesman Luigi Arborio Mella di Sant'Elia for the crown route, and a Sardinia-linked Italian commander Vittorio Verne under the stable ARX_gavino_piras script key. The three promoted runtime DDS files, corrected `.gfx` sprites, characters, localisation, and post-wire package audit are aligned. Exact Pala and Piras identities remain blocked and are not relabelled. No advisor icons or portrait derivatives were created.
 
 ## Release and host-survival contract
 
@@ -87,8 +87,8 @@ Government settlements:
 
 - an island constitution under Emilio Lussu;
 - a Sardinian labor compact under Emilio Lussu;
-- a crown consultative state under Vittorio Pala; or
-- a mountain-guard directorate under Gavino Piras.
+- a crown consultative state under Sardinian-born royal-court statesman Luigi Arborio Mella di Sant'Elia; or
+- a mountain-guard directorate under Sardinia-linked Italian commander Vittorio Verne.
 
 The patron-client and radical-sovereignty shared routes are excluded. The
 country receives the full Event 006 focus framework plus a six-focus Sardinian
