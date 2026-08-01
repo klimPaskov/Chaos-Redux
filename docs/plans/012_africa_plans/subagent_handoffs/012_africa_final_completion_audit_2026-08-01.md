@@ -6,9 +6,9 @@ Status: **Incomplete. No hard static load blocker was found, but accepted gamepl
 
 Mode: Read-only completion audit.
 
-Audited revision: current Event 012 source at `e50e59c33`; the Event 012 scoped source is clean against that revision.
+Audited revision: current Event 012 source at `dbcb62bed`; the Event 012 scoped source is clean against that revision.
 
-The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision.
+The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision. The later Event 012 corrections `b7ba59bd9` and `dbcb62bed` are also included.
 
 The shared worktree also contains unrelated Event 016, Event 020, fallout, workbook, and catalog-export changes; those changes were not treated as Event 012 gameplay evidence.
 
@@ -36,6 +36,10 @@ No hard Event 012 load-safety blocker was found in the bounded static audit.
 
 Limits: this was not an engine launch, live campaign, GUI click, sound playback, model reimport, or branch-aware focus render.
 
+## 2a. Post-audit source corrections
+
+Two narrow owner corrections landed after the earlier source census and are included in the audited revision. The disease-containment recorder now requires a positive active-outbreak ledger value, so research-site cleanup cannot manufacture an outbreak-containment receipt. Both Scramble aftermath settlement paths now call `africa_achievement_capture_scramble_settlement_snapshot` before response-roster cleanup, so the settled hostile-control count is preserved for negotiated and Africa-only deferred closure as well as the coalition-break action. These corrections do not close live acceptance, W5, model, audio, native-review, or external-package gates.
+
 ## 3. Completion status by surface
 
 | Surface | Status | Evidence and disposition |
@@ -54,7 +58,7 @@ Limits: this was not an engine launch, live campaign, GUI click, sound playback,
 | RSA | Source-complete; runtime acceptance open | Original SAF can enter through the narrow Allied-rupture gate, preserves `south_african_focus`, and calls the public civil-war effect once. Opening, three settlement, exile, and no-patron log payloads exist. Civil-war, settlement, exile, and weighted candidate behavior lack live acceptance; the weighted selector can choose an RSA candidate before the frozen-roster patron test and then reject it without a fallback. |
 | Diaspora | Source-complete; UI/runtime acceptance open | Consent, counterterms, refusal, withdrawal, emergency, capacity, skills, citizenship, representation, and local-ownership writers exist. Temporary targets are cleaned up. The route is voluntary and has no forced-relocation fallback. The Charter GUI does not expose the newer capacity lanes, although the action surface remains usable. |
 | Baseline and Evolutions I-III | Source and current catalog present; committed catalog stale | Baseline tier 4, Evolution I tier 4, Evolution II tier 5, and Evolution III tier 6 content exists. Evolution IV was deliberately recast as post-unification state rather than an extra event-log row. The current dirty workbook/export row contains the three evolutions, cluster metadata, `Needs Testing`, and the gated World scenario; the committed `HEAD` CSV contains only Evolution I and leaves the later event metadata blank. |
-| Scramble | Source-complete; scenario acceptance open | Five interest classes, a bounded coalition, material outcomes, and Africa-only closure exist. The final launch validator prevents an unsafe declaration, but participant ranking does not prove naval/deployable strength, ports, distance, or material readiness and can starve viable candidates. Several classification subhelpers are definition-only, suggesting an inlined implementation or stale scaffolding. |
+| Scramble | Source-complete; scenario acceptance open | Five interest classes, a bounded coalition, material outcomes, and Africa-only closure exist. The final launch validator prevents an unsafe declaration, and both aftermath settlement paths capture the settled hostile-control snapshot before transient roster cleanup. Participant ranking still does not prove naval/deployable strength, ports, distance, or material readiness and can starve viable candidates. Several classification subhelpers are definition-only, suggesting an inlined implementation or stale scaffolding. |
 | W0-W5 and terminal World | W0-W4 source-complete; W5 blocked | W0-W4 include roster, consent/refusal/counterterms/withdrawal/coercion, six continent loops, four sponsorship modes, union, war, succession, exile, breakup, and terminal lifecycle. There is no initial all-six certification trigger/setter for W5. The only writer of `africa_world_package_implementation_ready` serves successor continuity, not initial package certification. `africa_the_world_super_event_package_ready` remains unset. |
 | 44 achievements | Registry/art complete; gameplay acceptance blocked | All 44 definitions, localisation triplets, and 132 three-state DDS files exist. The shared ledger still marks all 44 blocked. The latest B3 work gives narrow evidence for row 24 and row 28, and row 24 now has a bounded direct-host capitulation caller; live victory acceptance remains open. Rows 30, 32, 33, 37, and 38 retain exact-owner gaps; row 37 deliberately fails closed because the civilian-damage owner does not exist. Four rows are model-gated and row 44 is terminal-gated. |
 | 64 AI profiles | Static registry complete; acceptance blocked | All 64 profiles have exact predicates, loader/registry calls, and action revalidation: nine overlays, 22 hosts, seven routes, eight member/rival, five external, six high-chaos, and seven world profiles. Profile 42 is the intentional terminal exception. The Scramble material-readiness/rank-starvation issue and the strategy-plan probability adapter's `PROBABILITY_SURFACE_EMPTY` result remain blockers. No 64-scenario campaign proof exists. |
