@@ -12,6 +12,17 @@ black_plague_rat_country_is_active = {
 	NOT = { has_country_flag = black_plague_rat_country_retired }
 }
 
+# Rat immunity is a country-level army contract. It does not suppress the
+# civilian population loss applied to plague states, including rat-controlled
+# occupied states; it gates the non-human force surface instead.
+black_plague_rat_country_is_plague_immune = {
+	exists = yes
+	OR = {
+		has_country_flag = black_plague_rat_disease_immune
+		has_country_flag = black_plague_rat_plague_immune
+	}
+}
+
 black_plague_rat_country_is_king = {
 	exists = yes
 	has_country_flag = black_plague_rat_king_country
@@ -61,6 +72,7 @@ black_plague_rat_country_is_nonhuman_army = {
 		black_plague_rat_country_is_king = yes
 	}
 	has_country_flag = black_plague_rat_no_normal_recruitment
+	black_plague_rat_country_is_plague_immune = yes
 	uses_normal_civilian_systems = no
 }
 
@@ -69,6 +81,45 @@ black_plague_rat_country_has_brood_mass = {
 	check_variable = {
 		var = black_plague_rat_brood_mass
 		value = constant:black_plague_rat_pool.brood_mass_raise_cost
+		compare = greater_than_or_equals
+	}
+}
+
+# RTA pressure predicates. These are kept separate from the Rat King meters so
+# the shared carrier can expose the same state to decisions, AI, and reports
+# without creating another country tag or category.
+black_plague_rat_hunger_is_crisis = {
+	has_variable = black_plague_rat_hunger
+	check_variable = {
+		var = black_plague_rat_hunger
+		value = constant:black_plague_rat_pool.hunger_crisis_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_rat_hunger_is_relieved = {
+	has_variable = black_plague_rat_hunger
+	check_variable = {
+		var = black_plague_rat_hunger
+		value = constant:black_plague_rat_pool.hunger_crisis_release
+		compare = less_than
+	}
+}
+
+black_plague_rat_coherence_is_low = {
+	has_variable = black_plague_rat_coherence
+	check_variable = {
+		var = black_plague_rat_coherence
+		value = constant:black_plague_rat_pool.coherence_low_threshold
+		compare = less_than
+	}
+}
+
+black_plague_rat_coherence_is_high = {
+	has_variable = black_plague_rat_coherence
+	check_variable = {
+		var = black_plague_rat_coherence
+		value = constant:black_plague_rat_pool.coherence_high_threshold
 		compare = greater_than_or_equals
 	}
 }

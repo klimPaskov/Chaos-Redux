@@ -174,6 +174,11 @@ black_plague_rat_run_runtime_pulse = {
 		RTX = {
 			if = {
 				limit = { exists = yes has_country_flag = black_plague_rat_king_country }
+				if = {
+					limit = { NOT = { black_plague_rat_country_is_plague_immune = yes } }
+					set_country_flag = black_plague_rat_disease_immune
+					set_country_flag = black_plague_rat_plague_immune
+				}
 				add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_pool.king_dominion_pulse_gain }
 				add_to_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_pool.king_sentience_pulse_gain }
 				add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_pool.king_cohesion_pulse_gain }
@@ -320,10 +325,37 @@ black_plague_rat_king_resolve_defeat = {
 			clr_country_flag = black_plague_rat_crown_tithe_operation
 			clr_country_flag = black_plague_rat_council_audit_operation
 			clr_country_flag = black_plague_rat_hierophant_broadcast_operation
+			clr_country_flag = black_plague_rat_absolute_crown
+			clr_country_flag = black_plague_rat_absolute_crown_route
+			clr_country_flag = black_plague_rat_brood_council
+			clr_country_flag = black_plague_rat_brood_council_route
+			clr_country_flag = black_plague_rat_breath_hierophancy
+			clr_country_flag = black_plague_rat_breath_hierophancy_route
+			clr_country_flag = black_plague_rat_crown_dominion
+			clr_country_flag = black_plague_rat_crown_final_edict
+			clr_country_flag = black_plague_rat_crown_warden_protocol
+			clr_country_flag = black_plague_rat_council_transparent_hunger
+			clr_country_flag = black_plague_rat_hierophant_final_omen
+			clr_country_flag = black_plague_rat_hierophant_terminal_omen
+			clr_country_flag = black_plague_rat_royal_template_lock
+			clr_country_flag = black_plague_rat_terminal_armature
+			clr_country_flag = black_plague_rat_terminal_capital_network
+			clr_country_flag = black_plague_rat_terminal_refuge_network
+			clr_country_flag = black_plague_rat_king_route_completed
+			clear_variable = black_plague_rat_king_route
+			clear_variable = black_plague_rat_king_dominion
+			clear_variable = black_plague_rat_king_sentience
+			clear_variable = black_plague_rat_king_cohesion
+			clear_variable = black_plague_rat_king_hunger
 			clr_country_flag = black_plague_rat_disease_immune
 			clr_country_flag = black_plague_rat_plague_immune
 			remove_ideas = { black_plague_rat_king_dominion black_plague_rat_no_civilian_economy }
+			delete_unit_template_and_units = { division_template = "Rat Brood" disband = no }
+			delete_unit_template_and_units = { division_template = "Rat Shock Brood" disband = no }
 			delete_unit_template_and_units = { division_template = "Royal Rat Guard" disband = no }
+			delete_unit_template_and_units = { division_template = "Rat Burrow Column" disband = no }
+			delete_unit_template_and_units = { division_template = "Rat Carrion Guard" disband = no }
+			delete_unit_template_and_units = { division_template = "Rat Dock Stowaways" disband = no }
 			if = {
 				limit = { is_in_array = { array = global.black_plague_rat_king_countries value = THIS } }
 				remove_from_array = { array = global.black_plague_rat_king_countries value = THIS }
@@ -431,7 +463,17 @@ black_plague_rat_select_free_slot = {
 	if = {
 		limit = {
 			NOT = { has_global_flag = black_plague_rat_slot_rta_in_use }
-			RTA = { exists = yes }
+			RTA = {
+				exists = yes
+				OR = {
+					NOT = { has_variable = black_plague_rat_retirement_date }
+					check_variable = {
+						var = global.date
+						value = black_plague_rat_retirement_date
+						compare = greater_than_or_equals
+					}
+				}
+			}
 		}
 		RTA = { save_event_target_as = black_plague_rat_selected_country }
 		set_global_flag = black_plague_rat_slot_rta_in_use
@@ -682,7 +724,7 @@ black_plague_rat_initialize_country = {
 			exists = yes
 			has_country_flag = black_plague_rat_slot_release_pending
 		}
-		clr_country_flag = black_plague_rat_slot_release_pending
+	clr_country_flag = black_plague_rat_slot_release_pending
 	}
 	set_country_flag = black_plague_rat_country
 	set_country_flag = black_plague_rat_no_normal_recruitment
@@ -735,7 +777,11 @@ black_plague_rat_initialize_country = {
 	clr_country_flag = black_plague_rat_king_route_selected
 	clr_country_flag = black_plague_rat_terminal_preparation_action
 	set_variable = { black_plague_rat_slot_id = black_plague_rat_selected_slot }
+	clear_variable = black_plague_rat_retirement_date
 	set_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_initial }
+	set_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_initial }
+	set_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_initial }
+	set_variable = { black_plague_rat_disease_dominion = constant:black_plague_value.zero }
 	set_variable = { black_plague_rat_division_count = black_plague_rat_starting_divisions }
 	set_variable = { black_plague_achievement_rat_divisions_raised = constant:black_plague_value.zero }
 	set_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_value.zero }
@@ -785,7 +831,7 @@ black_plague_rat_initialize_country = {
 			ideology = despotism
 		}
 	}
-	add_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy }
+	add_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_fractured_instinct }
 	load_focus_tree = { tree = black_plague_rat_focus_tree keep_completed = no }
 	add_ai_strategy = { type = template_prio id = rat_swarm value = 2500 }
 	add_ai_strategy = { type = template_prio id = infantry value = -1000 }
@@ -1040,7 +1086,19 @@ black_plague_rat_raise_brood_units = {
 
 black_plague_rat_process_country_pulse = {
 	if = {
-		limit = { black_plague_rat_country_is_active = yes }
+		limit = {
+			black_plague_rat_country_is_active = yes
+			NOT = { has_country_flag = black_plague_rat_king_country }
+		}
+		# Keep the army contract self-healing if a generic cleanup or a route
+		# transition removed one of the rat immunity markers. State mortality is
+		# intentionally unchanged, so occupied human populations remain infected.
+		if = {
+			limit = { NOT = { black_plague_rat_country_is_plague_immune = yes } }
+			set_country_flag = black_plague_rat_disease_immune
+			set_country_flag = black_plague_rat_plague_immune
+		}
+		black_plague_rat_refresh_swarm_meters = yes
 		black_plague_rat_refresh_division_cap = yes
 		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.brood_mass_pulse_gain }
 		set_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_value.zero }
@@ -1119,6 +1177,100 @@ black_plague_rat_process_country_pulse = {
 			set_country_flag = black_plague_rat_dominance_ready
 		}
 		set_variable = { black_plague_rat_last_pulse_date = global.date }
+	}
+}
+
+# COUNTRY scope. The reusable RTA carrier exposes Brood Mass, Hunger,
+# Coherence, and a derived Disease Dominion register. The meters are updated
+# only during the existing capped pulse, so the two-tag runtime remains bounded
+# and the King keeps its separate Dominion, Sentience, Cohesion, and Hunger
+# system.
+black_plague_rat_refresh_swarm_meters = {
+	if = {
+		limit = {
+			black_plague_rat_country_is_active = yes
+			NOT = { has_country_flag = black_plague_rat_king_country }
+		}
+		if = {
+			limit = { NOT = { has_variable = black_plague_rat_hunger } }
+			set_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_initial }
+		}
+		if = {
+			limit = { NOT = { has_variable = black_plague_rat_coherence } }
+			set_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_initial }
+		}
+		if = {
+			limit = { NOT = { has_variable = black_plague_rat_disease_dominion } }
+			set_variable = { black_plague_rat_disease_dominion = constant:black_plague_value.zero }
+		}
+
+		# Disease Dominion is derived from controlled plague territory and the
+		# permanent immune-blood route. It is a display and pacing register, not
+		# a second manually purchased resource.
+		set_variable = { black_plague_rat_dominion_states = num_of_controlled_states }
+		set_variable = { black_plague_rat_disease_dominion = black_plague_rat_dominion_states }
+		multiply_variable = { black_plague_rat_disease_dominion = constant:black_plague_rat_pool.disease_dominion_per_controlled_state }
+		if = {
+			limit = { has_country_flag = black_plague_rat_immune_blood_hardened }
+			add_to_variable = { black_plague_rat_disease_dominion = constant:black_plague_rat_pool.disease_dominion_hardened_bonus }
+		}
+		clamp_variable = {
+			var = black_plague_rat_disease_dominion
+			min = constant:black_plague_value.minimum
+			max = constant:black_plague_value.maximum
+		}
+
+		# Hunger rises once per pulse. Rat-controlled territory relieves it,
+		# while hierarchy and stable territory improve Coherence.
+		add_to_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_pulse_gain }
+		set_temp_variable = { black_plague_rat_hunger_relief = num_of_controlled_states }
+		multiply_temp_variable = { black_plague_rat_hunger_relief = constant:black_plague_rat_pool.hunger_relief_per_controlled_state }
+		subtract_from_variable = { black_plague_rat_hunger = black_plague_rat_hunger_relief }
+		set_temp_variable = { black_plague_rat_coherence_gain = num_of_controlled_states }
+		multiply_temp_variable = { black_plague_rat_coherence_gain = constant:black_plague_rat_pool.coherence_state_gain }
+		add_to_variable = { black_plague_rat_coherence = black_plague_rat_coherence_gain }
+		if = {
+			limit = {
+				OR = {
+					black_plague_rat_hierarchy_is_distributed = yes
+					black_plague_rat_hierarchy_is_dominant = yes
+					black_plague_rat_hierarchy_is_emergent = yes
+				}
+			}
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hierarchy_gain }
+		}
+
+		# Hunger trades directly against coordination. A settled, high-coherence
+		# brood receives a small additional stabilisation pulse.
+		if = {
+			limit = { black_plague_rat_hunger_is_crisis = yes }
+			subtract_from_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_hunger_penalty }
+		}
+		if = {
+			limit = {
+				black_plague_rat_coherence_is_high = yes
+				black_plague_rat_hunger_is_relieved = yes
+			}
+			add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.coherence_state_gain }
+		}
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+
+		if = {
+			limit = {
+				black_plague_rat_hunger_is_crisis = yes
+				NOT = { has_country_flag = black_plague_rat_hunger_crisis }
+			}
+			set_country_flag = black_plague_rat_hunger_crisis
+			country_event = { id = chaosx.nr20.46 }
+		}
+		if = {
+			limit = {
+				has_country_flag = black_plague_rat_hunger_crisis
+				black_plague_rat_hunger_is_relieved = yes
+			}
+			clr_country_flag = black_plague_rat_hunger_crisis
+		}
 	}
 }
 
@@ -1293,7 +1445,11 @@ black_plague_rat_cleanup_retired_country = {
 		clr_country_flag = black_plague_rat_hunger_crisis
 		clr_country_flag = black_plague_rat_king_route_selected
 		clr_country_flag = black_plague_rat_terminal_preparation_action
-		remove_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_dominion }
+		remove_ideas = { black_plague_rat_brood_instinct black_plague_rat_no_civilian_economy black_plague_rat_dominion black_plague_rat_fractured_instinct }
+		clear_variable = black_plague_rat_hunger
+		clear_variable = black_plague_rat_coherence
+		clear_variable = black_plague_rat_dominion_states
+		clear_variable = black_plague_rat_disease_dominion
 		delete_unit_template_and_units = { division_template = "Rat Brood" disband = no }
 		delete_unit_template_and_units = { division_template = "Rat Shock Brood" disband = no }
 		delete_unit_template_and_units = { division_template = "Royal Rat Guard" disband = no }
@@ -1307,6 +1463,7 @@ black_plague_rat_cleanup_retired_country = {
 		if = { limit = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
 		set_variable = { black_plague_rat_retirement_date = global.date }
 		add_to_variable = { black_plague_rat_retirement_date = constant:black_plague_rat_pool.retirement_quarantine_days }
+		set_country_flag = black_plague_rat_slot_release_pending
 	}
 }
 
@@ -1482,6 +1639,9 @@ black_plague_rat_initialize_king_country = {
 	set_variable = { global.black_plague_rat_king_defeat_participant_count = constant:black_plague_value.zero }
 	clr_global_flag = black_plague_rat_king_defeat_aftermath_emitted
 	clr_global_flag = black_plague_rat_king_reconstruction_reported
+	clr_global_flag = black_plague_rat_king_defeat_resolved
+	clr_global_flag = black_plague_rat_king_defeated
+	clr_global_flag = black_plague_report_rat_king_defeated
 	set_country_flag = black_plague_rat_king_country
 	set_country_flag = black_plague_rat_no_normal_recruitment
 	set_country_flag = black_plague_rat_king_active
@@ -1591,8 +1751,11 @@ black_plague_rat_transfer_to_king = {
 				set_variable = { global.current_super_event_audio_id = constant:black_plague_identity.rat_king_coronation_audio_id }
 				every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
 			}
-			RTX = { country_event = { id = chaosx.nr20.51 } }
-			news_event = { id = chaosx.nr20.52 }
+			if = {
+				limit = { NOT = { has_global_flag = black_plague_triggerable_scenario_bootstrap } }
+				RTX = { country_event = { id = chaosx.nr20.51 } }
+				news_event = { id = chaosx.nr20.52 }
+			}
 		}
 		else = {
 			set_global_flag = black_plague_rat_king_activation_failed

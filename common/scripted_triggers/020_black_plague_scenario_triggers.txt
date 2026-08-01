@@ -91,12 +91,23 @@ black_plague_scenario_has_two_eligible_continents = {
 
 black_plague_scenario_has_free_rat_slot = {
 	NOT = { has_global_flag = black_plague_rat_slot_rta_in_use }
+	RTA = {
+		exists = yes
+		OR = {
+			NOT = { has_variable = black_plague_rat_retirement_date }
+			check_variable = {
+				var = global.date
+				value = black_plague_rat_retirement_date
+				compare = greater_than_or_equals
+			}
+		}
+	}
 }
 
 black_plague_scenario_has_usable_rat_slot = {
 	OR = {
 		black_plague_scenario_has_free_rat_slot = yes
-		RTA = { exists = yes has_country_flag = black_plague_rat_country }
+		RTA = { black_plague_rat_country_is_active = yes }
 	}
 }
 
@@ -109,6 +120,31 @@ black_plague_scenario_has_existing_crisis = {
 
 black_plague_scenario_has_minimum_state_candidates = {
 	any_state = { black_plague_scenario_valid_human_state = yes }
+}
+
+# Called after intensity tuning, candidate collection, and continent-anchor
+# selection. This is the fail-closed gate for the SCN-012 commit block: if it
+# cannot reserve the requested geography, no disease, country, or evolution
+# mutation is attempted.
+black_plague_scenario_setup_preflight_is_ready = {
+	check_variable = {
+		var = global.black_plague_scenario_selected_continents
+		value = global.black_plague_scenario_continent_target
+		compare = greater_than_or_equals
+	}
+	check_variable = { global.black_plague_scenario_anchor_states^num > constant:black_plague_value.zero }
+	check_variable = { global.black_plague_scenario_candidate_states^num > constant:black_plague_value.zero }
+	black_plague_scenario_has_minimum_state_candidates = yes
+	black_plague_scenario_has_usable_rat_slot = yes
+	OR = {
+		RTX = { black_plague_rat_country_is_king = yes }
+		any_state = {
+			black_plague_scenario_valid_human_state = yes
+			NOT = { has_state_flag = black_plague_scenario_reserved }
+			NOT = { has_state_flag = black_plague_scenario_anchor }
+			NOT = { has_state_flag = black_plague_scenario_king_reserved }
+		}
+	}
 }
 
 black_plague_scenario_can_launch_from_triggerable_scenarios = {

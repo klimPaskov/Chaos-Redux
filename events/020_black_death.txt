@@ -280,6 +280,48 @@ country_event = {
 	option = { name = chaosx.nr20.45.a }
 }
 
+country_event = {
+	id = chaosx.nr20.46
+	title = chaosx.nr20.46.t
+	desc = chaosx.nr20.46.d
+	picture = GFX_report_event_020_rat_emergence
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr20.46.a
+		subtract_from_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_crisis_resolution_cost }
+		add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.hunger_crisis_coherence_gain }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.hunger_crisis_mass_cost }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		clr_country_flag = black_plague_rat_hunger_crisis
+		ai_chance = {
+			factor = 75
+			modifier = { factor = 2 black_plague_rat_coherence_is_low = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr20.46.b
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_pool.hunger_crisis_brood_gain }
+		add_to_variable = { black_plague_rat_hunger = constant:black_plague_rat_pool.hunger_crisis_resolution_cost }
+		subtract_from_variable = { black_plague_rat_coherence = constant:black_plague_rat_pool.hunger_crisis_coherence_loss }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		random_owned_state = {
+			limit = { black_plague_state_is_rat_controlled = yes }
+			add_to_variable = { black_plague_rat_infestation = constant:black_plague_rat_pool.hunger_crisis_state_infestation_gain }
+			black_plague_apply_current_state_devastation = yes
+		}
+		set_global_flag = black_plague_mapmode_dirty
+		clr_country_flag = black_plague_rat_hunger_crisis
+		ai_chance = {
+			factor = 25
+			modifier = { factor = 2 check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_pool.brood_mass_dominance_gate compare = greater_than_or_equals } }
+		}
+	}
+}
+
 news_event = {
 	id = chaosx.nr20.50
 	title = chaosx.nr20.50.t

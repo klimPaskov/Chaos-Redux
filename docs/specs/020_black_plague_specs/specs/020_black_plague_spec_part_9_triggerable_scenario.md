@@ -13,7 +13,7 @@ The scenario launches a global crisis in one confirmation action. It must immedi
 - establish Black Plague infection in many states across several continents
 - activate the stronger Evolution I strain
 - activate Evolution II overseas spread
-- create several independent Rat Nations from selected plague basins
+- create the reusable RTA Rat Nation carrier and several internal broods from selected plague basins
 - create the separate Rat King country immediately
 - start human containment, rat growth, and Rat King systems in a valid live state
 - raise the Chaos Meter to an intensity-scaled crisis floor without directly starting world end
@@ -47,7 +47,7 @@ The detail view shows:
 - selected intensity
 - target number of continents
 - target number of established plague states
-- target number of Rat Nations
+- target number of internal rat broods carried by RTA
 - expected Rat King starting territory and army band
 - Chaos Meter floor
 - warning that human-owned states can be infected or transferred to rat countries
@@ -67,7 +67,7 @@ Valid launch requires:
 - no active `world_end` state
 - no prior successful Black Plague triggerable scenario launch
 - at least two eligible inhabited continents with valid human-owned states
-- at least one free Rat Nation tag and one free Rat King tag
+- the two-country rat package is available: RTA as the reusable brood carrier and RTX as the separate Rat King
 - enough valid states to create at least the minimum Low-intensity package
 - no unresolved map transfer that would leave the Rat King without a valid capital
 
@@ -82,7 +82,7 @@ The launch must not be blocked by:
 - prior natural Black Plague history
 - lack of a normal first-origin state
 
-If Event 20 is already active through natural play, the scenario upgrades the existing crisis. It adds the missing multi-continent seeds, forces any missing Evolutions I through IV, creates missing Rat Nations, and creates the Rat King if absent. It must not create a second disease identity, duplicate event history, duplicate evolution records, or duplicate country packages.
+If Event 20 is already active through natural play, the scenario upgrades the existing crisis. It adds the missing multi-continent seeds, forces any missing Evolutions I through IV, seeds missing internal broods on RTA, and creates the Rat King if absent. It must not create a second disease identity, duplicate event history, duplicate evolution records, or duplicate country packages.
 
 ## Bootstrap state
 
@@ -93,7 +93,7 @@ The bootstrap state allows the launch to:
 - bypass ordinary origin selection
 - seed several continents in one operation
 - force Evolutions I through IV without waiting for mean-time resolution
-- create Rat Nations from scenario-selected basins that already satisfy safe territory requirements
+- seed internal RTA broods from scenario-selected basins that already satisfy safe territory requirements
 - create a scenario form of the Rat King without first absorbing every brood
 - suppress ordinary spread and mortality pulses until initial registration is complete
 - batch mapmode and disease-board rebuilding after all state and country setup is finished
@@ -105,7 +105,7 @@ The bootstrap state is cleared at the end of the launch sequence even if some ta
 The launch should resolve in a deterministic order so every dependent system reads valid data.
 
 1. Set the scenario bootstrap state and permanent scenario-launched flag.
-2. Initialize Event 20 disease, state registry, tag pool, decision, mapmode, and event-log data when missing.
+2. Initialize Event 20 disease, state registry, the two-country rat package, decision, mapmode, and event-log data when missing.
 3. Mark the ordinary fire-once Event 20 entry as fired so the random event cannot create a second opening.
 4. Record one Event 20 history entry when no valid history entry already exists.
 5. Build the eligible continent list and select the intensity-scaled target continents.
@@ -114,11 +114,11 @@ The launch should resolve in a deterministic order so every dependent system rea
 8. Initialize Disease Load, Mortality Pressure, Spread Pressure, Containment, Treatment Coverage, Relapse Risk, and Rat Infestation for every seeded state.
 9. Activate and record Evolution I if missing.
 10. Activate and record Evolution II if missing.
-11. Select connected severe basins and create the intensity-scaled independent Rat Nations.
+11. Select connected severe basins and seed the intensity-scaled internal RTA broods.
 12. Activate and record Evolution III if missing, using the first created Rat Nation as actor.
 13. Select or construct one Royal Basin and create the separate Rat King country.
 14. Activate and record Evolution IV if missing, using the Rat King as actor.
-15. Assign Rat Nation and Rat King armies, focus trees, mechanics, decisions, AI, portraits, flags, and growth pulses.
+15. Assign RTA brood armies and Rat King armies, focus trees, mechanics, decisions, AI, portraits, flags, and growth pulses.
 16. Apply the intensity-scaled Chaos floor and refresh shared world-threat state.
 17. Schedule ordinary mortality, spread, containment, brood growth, dominance, and Rat King pulses.
 18. Rebuild the disease board and perform one full disease-mapmode refresh.
@@ -159,7 +159,7 @@ Anchor scoring favors:
 - occupation, resistance, refugees, and active troop movement
 - dense urban districts
 - existing disease exposure
-- enough connected states to support a Rat Nation where the intensity calls for one
+- enough connected states to support an RTA brood where the intensity calls for one
 
 Strong disease prevention lowers the score but cannot make a state absolutely immune to this manual scenario.
 
@@ -171,7 +171,7 @@ Each anchor creates an intensity-scaled seed ring.
 - Connected inner-ring states begin as Infected or Severe Crisis.
 - A smaller outer ring begins as Threatened or known Incubating.
 - Ports and rail hubs can receive nonadjacent linked seeds because Evolution II is active at launch.
-- States selected for Rat Nations or the Rat King begin with high Rat Infestation and active plague.
+- States selected for RTA broods or the Rat King begin with high Rat Infestation and active plague.
 
 The scenario should distribute states among several countries and landmasses. It must not satisfy the target by infecting a single huge connected block on one continent.
 
@@ -189,11 +189,11 @@ Intensity controls both scale and severity.
 
 Opening losses are recorded once in the shared Deaths system and Event 20 total. They represent the scenario beginning after the disease has already been spreading in the selected basins. All later deaths use the ordinary nonlinear mortality model.
 
-## Rat Nation creation
+## RTA carrier and internal broods
 
-Several independent Rat Nations appear during launch. They are not visual placeholders and they are not temporary event armies.
+The scenario uses exactly one non-sentient Rat Nation country, RTA. Several independent broods appear during launch as state-scoped RTA basin markers, strength pools, and army allocations. They are not visual placeholders and they are not temporary event armies, but they do not consume additional country tags.
 
-Each scenario Rat Nation receives:
+Each scenario brood receives:
 
 - one valid connected plague basin
 - a guaranteed capital
@@ -202,13 +202,13 @@ Each scenario Rat Nation receives:
 - its normal nonhuman classification
 - Brood Mass, Hunger, Coherence, and Disease Dominion initialization
 - its normal brood pulse and burrow system
-- its shared Rat Nation focus tree with the correct origin module
-- hostility toward human countries
+- the shared RTA focus tree with the correct origin module
+- hostility toward human countries through the RTA carrier
 - normal rat dominance behavior after the launch grace period
 
-The scenario selector should distribute broods across the chosen continents when valid. Maximum intensity should not place every brood next to the Rat King or inside one war zone.
+The scenario selector should distribute broods across the chosen continents when valid. Maximum intensity should not place every brood next to the Rat King or inside one war zone. Brood identity is carried by state flags, basin variables, and the shared RTA country; no additional Rat Nation tags are created or reused.
 
-If the map cannot support the target number of valid broods, the scenario scales the brood count down and transfers the unused strength budget into the remaining broods within performance caps. It must not create invalid one-state tags or reuse an occupied tag.
+If the map cannot support the target number of valid broods, the scenario scales the brood count down and transfers the unused strength budget into the remaining broods within performance caps. It must not create invalid one-state tags or allocate another country tag.
 
 ## Immediate Rat King creation
 
@@ -234,7 +234,7 @@ The Rat King receives:
 - the deep Rat King focus tree through the coronation and government opening
 - claims or scripted authority over the other broods through the normal royal unification system
 
-The scenario does not transfer every Rat Nation to the King during bootstrap. That would erase the requested immediate coexistence of Rat Nations and the Rat King. Independent broods remain on the map for an initial royal-consolidation grace period. After that period, normal dominance, allegiance, absorption, and conquest logic resumes.
+The scenario does not transfer every RTA brood to the King during bootstrap. That would erase the requested immediate coexistence of RTA broods and the Rat King. Independent broods remain on the map for an initial royal-consolidation grace period. After that period, normal dominance, allegiance, absorption, and conquest logic resumes.
 
 The grace period blocks instant scripted annexation only. It does not make human countries safe from rats, stop plague spread, or prevent ordinary wars against rat actors.
 
@@ -252,7 +252,7 @@ Overseas route logic is active immediately. Ports, convoys, troop routes, and ra
 
 ### Evolution III
 
-Rat Nation content is active immediately. The first scenario-created brood owns the Evolution III actor record. Later broods are additional emergences, not duplicate Evolution III rows.
+RTA content is active immediately. The first scenario-created brood owns the Evolution III actor record. Later broods are additional emergences, not duplicate Evolution III rows.
 
 ### Evolution IV
 
@@ -266,16 +266,16 @@ Evolution V is not recorded or unlocked solely by scenario launch. The Rat King 
 
 The exact values belong in centralized scenario tuning data. The ranges below are design targets and should scale down safely on smaller or heavily altered maps.
 
-| Intensity | Continents | Established Black Plague states | Independent Rat Nations | Rat King starting states | Chaos floor | Opening character |
+| Intensity | Continents | Established Black Plague states | Internal RTA broods | Rat King starting states | Chaos floor | Opening character |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | Low | 3 | 12 to 18 | 2 to 3 | 1 to 2 | 400 | several regional crises and a young royal basin |
 | Medium | 4 | 24 to 36 | 4 to 6 | 2 to 4 | 600 | broad intercontinental emergency with established broods |
 | High | 5 or every eligible continent when fewer exist | 45 to 65 | 7 to 10 | 4 to 6 | 800 | global military and medical crisis from the first day |
-| Maximum | every eligible inhabited continent | 75 to 110 | 10 to 16, capped by the safe tag pool | 7 to 10 | 999 | near-world-collapse setup with many severe states and a powerful Rat King |
+| Maximum | every eligible inhabited continent | 75 to 110 | 6 internal RTA broods | 7 to 10 | 999 | near-world-collapse setup with many severe states and a powerful Rat King |
 
 The target number of infected states is a global target, not a per-continent target. The selector allocates states according to continent population, vulnerability, valid connected basins, and performance caps.
 
-Rat army strength scales from:
+RTA army strength scales from:
 
 - the selected intensity
 - infected population in the assigned basin
@@ -296,7 +296,7 @@ The scenario then lets:
 - opening population losses feed the Deaths tracker once
 - ordinary disease deaths raise Chaos through the shared conversion
 - infected state contributions affect air cleanliness through the normal outbreak system
-- active Rat Nations and the Rat King refresh the shared world-threat source
+- the active RTA carrier and the Rat King refresh the shared world-threat source
 - deliberate later weapon use affect condemnation normally
 
 The scenario should not create fake historical death totals merely to unlock Evolution V. Only the bounded opening loss and later real state-population deaths count.
@@ -355,7 +355,7 @@ Human-country AI:
 - seeks international medical support when emergency burden exceeds capacity
 - prepares anti-rat fronts where a brood or Rat King borders the country
 
-Rat Nation AI:
+RTA carrier AI:
 
 - begins in survival and expansion mode
 - secures its plague corridor and first burrow node
@@ -376,13 +376,13 @@ Rat King AI:
 
 The scenario reuses existing active state and country registries. It does not clear successful human containment, remove existing countermeasure progress, or reset disease history. It adds enough new states and actors to reach the selected scenario intensity, then activates missing evolved systems.
 
-### Rat Nations already exist
+### RTA broods already exist
 
-Existing valid Rat Nations count toward the intensity target. The scenario creates only the missing number of broods. Existing rat states and units are not duplicated.
+Existing RTA states and internal brood markers count toward the intensity target. The scenario creates only the missing number of broods. Existing rat states and units are not duplicated.
 
 ### Rat King already exists
 
-The existing Rat King is preserved. The scenario strengthens its starting package only enough to meet the selected intensity floor, seeds the missing global outbreak, and creates missing independent broods. Evolution IV is not recorded twice.
+The existing Rat King is preserved. The scenario strengthens its starting package only enough to meet the selected intensity floor, seeds the missing global outbreak, and creates missing internal RTA broods. Evolution IV is not recorded twice.
 
 ### Repeated launch
 
@@ -392,7 +392,7 @@ After a successful launch, the scenario row remains visible for history and deta
 
 The scenario launch is all-or-nothing for core identity.
 
-If the launch cannot create a valid Rat King capital or cannot allocate the minimum required tags, it should fail before changing the map. It should not leave a half-built outbreak.
+If the launch cannot create a valid Rat King capital or cannot allocate the two-country rat package, it should fail before changing the map. It should not leave a half-built outbreak.
 
 If optional target counts cannot be met after the minimum valid setup exists, the scenario scales down and reports the actual result through dynamic detail text or a launch summary.
 
@@ -422,7 +422,7 @@ Each intensity must be tested as its own start condition.
 
 - at least three continents when the map supports them
 - at least twelve established plague states
-- at least two independent Rat Nations
+- at least two internal RTA broods
 - one valid Rat King country
 - human containment remains possible with coordinated play
 
@@ -451,7 +451,7 @@ Each intensity must be tested as its own start condition.
 ### Cross-case validation
 
 - launching while the natural outbreak is active produces no duplicate disease identity
-- launching with existing Rat Nations creates only missing actors
+- launching with existing RTA states creates only missing internal brood markers
 - launching with an existing Rat King preserves it
 - evolution history has at most one row for each of I through IV
 - Event 20 history records once
@@ -471,9 +471,9 @@ The scenario is complete only when:
 - it launches directly without normal chaos, event, date, or evolution prerequisites
 - it establishes many Black Plague states across several continents
 - it immediately activates Evolutions I through IV
-- it creates several independent Rat Nations
+- it seeds several internal RTA broods without creating additional tags
 - it creates the separate Rat King immediately
-- Rat Nations and the Rat King coexist after bootstrap
+- RTA broods and the Rat King coexist after bootstrap
 - Low, Medium, High, and Maximum produce materially different valid setups
 - the Chaos floor creates immediate crisis but does not directly trigger world end
 - the existing disease category receives generic and Black Plague-specific decisions
