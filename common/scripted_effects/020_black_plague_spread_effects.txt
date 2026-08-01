@@ -117,8 +117,57 @@ black_plague_calculate_current_source_exposure = {
 		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_hierarchy_route.emergent_route_exposure_gain }
 	}
 	if = {
+		limit = { CONTROLLER = { has_country_flag = black_plague_rat_burrow_warfare } }
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_depth.burrow_warfare_exposure_gain }
+	}
+	if = {
+		limit = { CONTROLLER = { has_country_flag = black_plague_rat_consume_state } }
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_depth.consume_state_exposure_gain }
+	}
+	if = {
 		limit = { CONTROLLER = { has_country_flag = black_plague_rat_occupation_infection_drive } }
 		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.occupation_infection_exposure_bonus }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_rat_citadel_operation }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.land_border }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+			}
+		}
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.route_operation_exposure_gain }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_rat_migration_operation }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.refugee_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+			}
+		}
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.route_operation_exposure_gain }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_rat_tide_operation }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
+			}
+		}
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.route_operation_exposure_gain }
+	}
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_rat_rail_operation }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+			}
+		}
+		add_to_temp_variable = { black_plague_exposure_amount = constant:black_plague_rat_decision.route_operation_exposure_gain }
 	}
 	if = {
 		limit = { has_global_flag = black_plague_evolution_i_active }

@@ -287,6 +287,49 @@ black_plague_rat_hierarchy_emergent_ai = {
 	}
 }
 
+# Depth-layer route strategy. The focus choice supplies the flags; this plan
+# keeps the AI's existing non-human templates and front requests aligned with
+# the chosen mutation and military method.
+black_plague_rat_depth_route_ai = {
+	allowed = { original_tag = RTA }
+	enable = {
+		has_country_flag = black_plague_rat_country
+		OR = {
+			has_country_flag = black_plague_rat_mass_swarm
+			has_country_flag = black_plague_rat_giant_mutation
+			has_country_flag = black_plague_rat_burrow_warfare
+			has_country_flag = black_plague_rat_flood_front
+			has_country_flag = black_plague_rat_break_strongpoints
+			has_country_flag = black_plague_rat_hunt_roads
+			has_country_flag = black_plague_rat_hold_nest
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = template_prio
+		id = rat_swarm
+		value = 700
+	}
+	ai_strategy = {
+		type = template_prio
+		id = rat_brutes
+		value = 700
+	}
+	ai_strategy = {
+		type = template_prio
+		id = rat_burrowers
+		value = 700
+	}
+	ai_strategy = {
+		type = front_unit_request
+		state_trigger = {
+			NOT = { is_controlled_by = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+		}
+		value = 560
+	}
+}
+
 black_plague_rat_king_ai = {
 	allowed = { original_tag = RTX }
 	enable = { has_country_flag = black_plague_rat_king_country }

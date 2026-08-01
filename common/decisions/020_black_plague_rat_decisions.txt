@@ -56,6 +56,78 @@ black_plague_rat_brood_category = {
 		ai_will_do = { base = constant:black_plague_rat_ai.standard }
 	}
 
+	black_plague_rat_citadel_stockpile = {
+		icon = GFX_decision_generic_consumer_goods
+		visible = { black_plague_rat_country_is_active = yes has_country_flag = black_plague_rat_citadel_relays }
+		available = {
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.route_operation_mass_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_citadel_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_mass_cost }
+			add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.route_operation_division_cap_gain }
+			set_temp_variable = { black_plague_rat_route_operation_days = constant:black_plague_rat_decision.route_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_citadel_operation days = black_plague_rat_route_operation_days }
+			set_global_flag = black_plague_mapmode_dirty
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.standard }
+	}
+
+	black_plague_rat_open_migration_lanes = {
+		icon = GFX_decision_generic_army_support
+		visible = { black_plague_rat_country_is_active = yes has_country_flag = black_plague_rat_migration_burrows }
+		available = {
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.route_operation_mass_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_migration_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_mass_cost }
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_brood_mass_gain }
+			set_temp_variable = { black_plague_rat_route_operation_days = constant:black_plague_rat_decision.route_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_migration_operation days = black_plague_rat_route_operation_days }
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_tide_manifest = {
+		icon = GFX_decision_generic_consumer_goods
+		visible = { black_plague_rat_country_is_active = yes has_country_flag = black_plague_rat_cross_sea_cargo }
+		available = {
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.route_operation_mass_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_tide_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_mass_cost }
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_brood_mass_gain }
+			set_temp_variable = { black_plague_rat_route_operation_days = constant:black_plague_rat_decision.route_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_tide_operation days = black_plague_rat_route_operation_days }
+			set_global_flag = black_plague_mapmode_dirty
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.war }
+	}
+
+	black_plague_rat_rail_breach_order = {
+		icon = GFX_decision_generic_military
+		visible = { black_plague_rat_country_is_active = yes has_country_flag = black_plague_rat_rail_breach }
+		available = {
+			has_war = yes
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.route_operation_mass_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_rail_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.route_operation_mass_cost }
+			add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.route_operation_division_cap_gain }
+			set_temp_variable = { black_plague_rat_route_operation_days = constant:black_plague_rat_decision.route_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_rail_operation days = black_plague_rat_route_operation_days }
+			set_global_flag = black_plague_mapmode_dirty
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.war }
+	}
+
 	black_plague_rat_infect_the_occupation_line = {
 		icon = GFX_decision_death_quarantine_line
 		visible = { black_plague_rat_country_is_active = yes }
@@ -184,6 +256,58 @@ black_plague_rat_king_court_category = {
 			subtract_from_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_decision.terminal_cohesion_cost }
 			add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_preparation_gain }
 			set_country_flag = black_plague_rat_terminal_preparation_action
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_king_crown_tithe = {
+		icon = GFX_decision_generic_consumer_goods
+		visible = { black_plague_rat_country_is_king = yes has_country_flag = black_plague_rat_absolute_crown_route }
+		available = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.king_policy_operation_meter_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_crown_tithe_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.king_policy_operation_meter_cost }
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.king_policy_operation_dominion_gain }
+			set_temp_variable = { black_plague_rat_policy_operation_days = constant:black_plague_rat_decision.king_policy_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_crown_tithe_operation days = black_plague_rat_policy_operation_days }
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_king_council_audit = {
+		icon = GFX_decision_generic_intelligence_operation
+		visible = { black_plague_rat_country_is_king = yes has_country_flag = black_plague_rat_brood_council_route }
+		available = {
+			check_variable = { var = black_plague_rat_king_cohesion value = constant:black_plague_rat_decision.king_policy_operation_meter_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_council_audit_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_decision.king_policy_operation_meter_cost }
+			add_to_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_decision.king_policy_operation_sentience_gain }
+			add_to_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_decision.king_policy_operation_cohesion_gain }
+			set_temp_variable = { black_plague_rat_policy_operation_days = constant:black_plague_rat_decision.king_policy_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_council_audit_operation days = black_plague_rat_policy_operation_days }
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.standard }
+	}
+
+	black_plague_rat_king_hierophant_broadcast = {
+		icon = GFX_decision_generic_research
+		visible = { black_plague_rat_country_is_king = yes has_country_flag = black_plague_rat_breath_hierophancy_route }
+		available = {
+			check_variable = { var = black_plague_rat_king_sentience value = constant:black_plague_rat_decision.king_policy_operation_meter_cost compare = greater_than_or_equals }
+			NOT = { has_country_flag = black_plague_rat_hierophant_broadcast_operation }
+		}
+		days_remove = constant:black_plague_rat_decision.duration_days
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_decision.king_policy_operation_meter_cost }
+			add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.king_policy_operation_terminal_gain }
+			set_temp_variable = { black_plague_rat_policy_operation_days = constant:black_plague_rat_decision.king_policy_operation_duration_days }
+			set_country_flag = { flag = black_plague_rat_hierophant_broadcast_operation days = black_plague_rat_policy_operation_days }
 		}
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
 	}
