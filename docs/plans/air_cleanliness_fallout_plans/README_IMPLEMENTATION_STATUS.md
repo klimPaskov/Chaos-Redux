@@ -1033,3 +1033,13 @@ It selects the lowest current Congo Green Basin state after The Name We Choose s
 The four branches are Give the Clinic Board Oversight, Elect a Ward Council, Bind Board and Council Together, and Reject the Outside Medicine Office. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and care ledgers, resolves after `35` days, schedules a `240` day first-season review, applies bounded Deaths failure, writes care-governance and bilateral memories, records Event Log history `9203`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
 
 The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_CLINIC_OR_COUNCIL_CHAIN_PROOF.md`.
+
+## The Mixed Settlement Petition tranche
+
+Mixed Settlement Petition is a dormant ordinary Fallout chain at `chaosx.fallout.887` through `chaosx.fallout.893` with candidate `887`, transaction `710098`, route `7228`, and Event Log history `9204`.
+
+It follows a closed Clinic or Council state memory in the Congo Green Basin mutant polity. The candidate selects the lowest current settlement state with a foreign neighbor, surviving population, current Air Winter and Supply Access values, Settlement Legitimacy, Settlement Boundary Pressure, Medicine, Cohesion, Recognition, and one affordable branch.
+
+The four branches are Grant Equal Citizenship, Keep Separate Districts, Supervise the Integration, and Refuse the Settlement Petition. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and settlement ledgers, resolves after `42` days, schedules a `300` day first-year review, applies bounded Deaths failure, writes mixed-community and bilateral memories, records Event Log history `9204`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
+
+The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_MIXED_SETTLEMENT_CHAIN_PROOF.md`.

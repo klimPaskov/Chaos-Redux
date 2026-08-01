@@ -1112,3 +1112,17 @@ The chain carries Medical Oversight, Elected Council, Joint Rule, and Reject Out
 The asset evidence is `docs/assets/880_clinic_or_council/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_clinic_or_council`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-880` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_CLINIC_OR_COUNCIL_CHAIN_PROOF.md`.
+
+## The Mixed Settlement Petition tranche
+
+Mixed Settlement Petition adds dormant suffixes `887` through `893` with candidate id `887`, transaction key `710098`, route `7228`, and history `9204`.
+
+The human opening is `887`, the hidden AI opening is `888`, the human and hidden AI delayed results are `889` and `890`, the human and hidden AI first-year reviews are `891` and `892`, and cleanup is `893`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Clinic or Council state memory, a current living settlement state, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign neighbor, Settlement Legitimacy, Settlement Boundary Pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and settlement ledgers.
+
+The chain carries Grant Equal Citizenship, Keep Separate Districts, Supervise the Integration, and Refuse the Settlement Petition branches with distinct survival costs, deterministic result and first-year review grading, a 42-day result, a 300-day review, bounded Deaths effects, Air Winter and Supply Access effects, mixed-community memory, bilateral opinion, Event Log history `9204`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/887_mixed_settlement/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_mixed_settlement`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-887` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_MIXED_SETTLEMENT_CHAIN_PROOF.md`.

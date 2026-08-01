@@ -166,6 +166,7 @@
 - `specs/97_reviewed_archetype_power_citizenship.md`
 - `specs/98_reviewed_archetype_name_we_choose.md`
 - `specs/99_reviewed_archetype_clinic_or_council.md`
+- `specs/100_reviewed_archetype_mixed_settlement.md`
 
 ## Matrices
 
