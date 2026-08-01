@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after The Battalion's Bread List
+## Current reconciliation after The First Red Line
 
-The reviewed candidate producer now covers `68` ordinary dormant rows through The Battalion's Bread List candidate `677`, with `558` defined event blocks through `chaosx.fallout.683` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7169`. Candidate 677 uses transaction `710068`, route `7168`, and survivor Event Log history `9174`. The producer selects the lowest eligible native Food Compact granary state with a current Work for Rations policy receipt and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+The reviewed candidate producer now covers `69` ordinary dormant rows through The First Red Line candidate `684`, with `565` defined event blocks through `chaosx.fallout.690` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7171`. Candidate 684 uses transaction `710069`, route `7170`, and survivor Event Log history `9175`. The producer selects the lowest eligible native Quarantine Air Winter state and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+
+The First Red Line requires the current Quarantine government, a produced Air Winter snapshot, Shelter Capacity, Supply Access, Adaptation, bounded Disease Pressure and Exposure, and one complete affordable branch. Strict Cordon, Medical Checkpoints, Controlled Evacuation, and Local Self-Control share deterministic `21` day result and `180` day callback contracts, hidden-AI parity, bounded Deaths failure, infrastructure damage, Air Winter ledger effects, public-health memory, Event Log history `9175`, dedicated report art, and authenticated cleanup. Its dedicated proof is `FALLOUT_FIRST_RED_LINE_CHAIN_PROOF.md`.
 
 Candidate 677 requires a current owner and generation receipt written by Work for Rations, minimum Cohesion, configured army manpower, a produced Air Winter snapshot, and one complete affordable branch. Its protected issue, equal measure, field requisition, and rear-echelon stand-down routes share one deterministic `28` day result, one `210` day callback, branch-aware hidden AI, Deaths-backed failure, durable military-food memory, and authenticated cleanup. Its dedicated proof is `FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md`.
 
@@ -79,9 +81,9 @@ and generation markers instead of selecting a fallback.
   triggers, and scheduler effect files remain balanced.
 - The Animal Feed effect file balances at 420 braces, its trigger file at 39,
   and its four dynamic-modifier blocks at 8 braces.
-- The candidate pilot constants define sixty-eight candidate ids, sixty-eight transaction keys, and sixty-eight route ids in a dedicated Fallout namespace. The Battalion's Bread List candidate `677` is emitted by the candidate producer after Work for Rations and carries a typed state target, a global-survival route with no false regional claim, Food Compact government proof, a durable Work for Rations policy receipt, Air Winter winter proof, food-resource proof, controller proof, a first-year issue gate, minimum Cohesion, configured army manpower, and at least one affordable branch.
+- The candidate pilot constants define sixty-nine candidate ids, sixty-nine transaction keys, and sixty-nine route ids in a dedicated Fallout namespace. The First Red Line candidate `684` is emitted by the candidate producer after the current-generation Quarantine Air Winter state gate and carries a typed state target, a global-survival route with no false regional claim, Quarantine government proof, Air Winter pressure proof, Medicine resource proof, controller proof, first-winter issue proof, and at least one affordable branch.
 - The event tokens resolve to existing dormant Fallout event blocks 100 through
-  126, 153 through 200, 204 through 309, 656 through 683, and the hidden companion ranges
+  126, 153 through 200, 204 through 309, 656 through 690, and the hidden companion ranges
   `1009` through `1018`. No zombie event id, file, asset, audio, sprite, or
   path is reused.
 - The ordinary candidate eligibility trigger admits major-arc rows only through
