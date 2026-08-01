@@ -567,6 +567,8 @@ Possible links:
 - Joint laboratories can evolve into a technology-sharing faction.
 - Kruger State can create a submission-based sharing group.
 
+The implemented baseline preserves Event 089's generic group selection and adds a guarded Event 016 consequence for the active host. Joining a group records `brilliant_scientist_tech_sharing_network_joined` and moves the existing Directorate meters toward open exchange. Refusal records `brilliant_scientist_tech_sharing_refused` and moves them toward private control. Each posture can be recorded once, and neither path creates a new technology group, project family, Event Log entry, evolution, asset, or model dependency. A future Kruger State sharing faction remains a separate route surface.
+
 ### Event 137: Research Investment
 
 Possible links:
