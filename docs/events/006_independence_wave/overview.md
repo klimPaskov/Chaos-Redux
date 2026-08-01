@@ -30,7 +30,9 @@ The three closure handoffs are `subagent_handoffs/006_core_loop_closure_v35_2026
 
 The exact compile-time content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These thirteen packages span twelve compatible reservation groups and thirteen distinct anchors, and have the current package and sourced-portrait or approved-vanilla-identity evidence required by the static runtime gate.
 
-IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, and IW-098 SOK remain outside this attestation set with their current fail-closed package, sourced-roster, or role evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
+IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, IW-098 SOK, and IW-030 MNT remain outside this attestation set with their current fail-closed package, sourced-roster, role, or shared-focus evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
+
+IW-030 Montenegro now has a bounded registered-carrier package for state 105: its synchronous vanilla roster handoff, mountain-cohesion and crown-legitimacy ledgers, host settlement, four route governments, costed decisions, lifecycle ideas, force mapping, AI, and cleanup adapters are implemented. The package remains closed to automatic and scenario admission until a non-generic sourced male portrait roster and an accepted resolution of the shared focus-tree geometry diagnostics are recorded; no MNT history copy, flag replacement, or advisor icon is used.
 
 The parent core-contract re-audit is recorded in
 `../../plans/006_independence_wave_plans/subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
