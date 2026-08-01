@@ -10,7 +10,7 @@ The Council lane builds a burrow census, common stores, mobile hospices, shared 
 
 The Hierophancy lane builds flea liturgy, sea breath, burial rations, ash strongholds, echoes of Doctor Wu, and a terminal omen. It trades hunger risk for dominion, overseas-capable reach, advanced formations, and sentience.
 
-Two shared late lanes sit beside the crisis and terminal branches. Royal Node Watch improves register cohesion and sentience after the first crisis. Crown Strike Preparations improves dominion, the non-human division cap, and terminal preparation while preserving the Evolution V route gate.
+Two shared late lanes sit beside the crisis and terminal branches. Royal Node Watch improves register cohesion and sentience after the first crisis. Crown Strike Preparations improves dominion, the non-human division cap, and terminal preparation while preserving the Evolution V route gate. The court's state-targeted Royal Strike uses the dedicated Royal Node sprite and the canonical exposure route, keeping the rat-side operation legible beside the shared human counterstrike.
 
 Every added reward writes to an existing Rat King register or existing terminal-preparation variable. No focus creates a country tag, a human division, normal equipment, or a political-power store. The existing Evolution V gate still requires the route flag, sentience/cohesion thresholds, terminal preparation, continental control, designated capitals, and refuge nodes before the world-end effect can fire.
 
