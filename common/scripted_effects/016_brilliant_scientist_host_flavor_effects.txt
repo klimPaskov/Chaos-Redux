@@ -1,0 +1,57 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 HOST ARCHETYPE STATE
+# ============================================================================
+# Assigns one mutually exclusive presentation archetype to the current host.
+# This state is deliberately separate from Mandate, Dependence, Exposure,
+# Capacity, Independent Capacity, and Grievance. It only gives the existing
+# host-context reports and AI a country-shaped presentation layer.
+# ============================================================================
+
+# COUNTRY scope. Clears any previous recipient's archetype and assigns the
+# highest-priority classification supported by the current country's facts.
+brilliant_scientist_assign_host_flavor = {
+	clr_country_flag = brilliant_scientist_host_archetype_university
+	clr_country_flag = brilliant_scientist_host_archetype_industrial
+	clr_country_flag = brilliant_scientist_host_archetype_militarized
+	clr_country_flag = brilliant_scientist_host_archetype_threatened
+	clr_country_flag = brilliant_scientist_host_archetype_colonial
+	clr_country_flag = brilliant_scientist_host_archetype_refugee
+	clr_country_flag = brilliant_scientist_host_archetype_default
+
+	if = {
+		limit = { is_exile_host = yes }
+		set_country_flag = brilliant_scientist_host_archetype_refugee
+	}
+	else_if = {
+		limit = { num_subjects > constant:brilliant_scientist_host_flavor_gate.colonial_subjects }
+		set_country_flag = brilliant_scientist_host_archetype_colonial
+	}
+	else_if = {
+		limit = {
+			num_researched_technologies > constant:brilliant_scientist_host_flavor_gate.university_technology
+			num_of_civilian_factories > constant:brilliant_scientist_host_flavor_gate.university_civilian_factories
+		}
+		set_country_flag = brilliant_scientist_host_archetype_university
+	}
+	else_if = {
+		limit = { num_of_factories > constant:brilliant_scientist_host_flavor_gate.industrial_factories }
+		set_country_flag = brilliant_scientist_host_archetype_industrial
+	}
+	else_if = {
+		limit = { num_of_military_factories > constant:brilliant_scientist_host_flavor_gate.militarized_military_factories }
+		set_country_flag = brilliant_scientist_host_archetype_militarized
+	}
+	else_if = {
+		limit = {
+			is_major = no
+			OR = {
+				has_war = yes
+				num_of_controlled_states < constant:brilliant_scientist_host_flavor_gate.threatened_states
+			}
+		}
+		set_country_flag = brilliant_scientist_host_archetype_threatened
+	}
+	else = {
+		set_country_flag = brilliant_scientist_host_archetype_default
+	}
+}
