@@ -963,3 +963,13 @@ The four branches are Open the Ledger to a Public Inquiry, Seal the Calculation,
 The asset evidence is `docs/assets/831_failed_calculation/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_failed_calculation`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` will carry `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven without launching HOI4. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. Static proof is recorded in `FALLOUT_FAILED_CALCULATION_CHAIN_PROOF.md`.
+
+## The Laboratory Citizenship tranche
+
+Laboratory Citizenship is a dormant ordinary Fallout chain at `chaosx.fallout.838` through `chaosx.fallout.844` with candidate `838`, transaction `710091`, route `7214`, and Event Log history `9197`.
+
+It follows a closed Failed Calculation district in the Manchurian Reactor Keeps Technate. The candidate selects the lowest current East Asian industrial or arms state with a foreign neighbor, surviving population, native infrastructure, produced Air Winter values, bounded Disease Pressure, durable Medicine, Power, Scrap, Cohesion, Recognition, citizenship legitimacy, class pressure, and an affordable branch.
+
+The four branches are Open Citizenship to Every Repair Household, Tie Citizenship to Service Tiers, Build an Apprentice Citizenship Path, and Keep Civic Rights Under the Senior Engineers. The chain freezes country, state, neighbor, generation, Air Winter, Supply Access, and civic ledgers, resolves after `56` days, schedules a `360` day citizenship review, applies bounded Deaths failure, writes citizenship, education, service, confidence, and bilateral memories, records Event Log history `9197`, preserves hidden-AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
+
+The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. The exact engine-native all-valid-province thermonuclear sweep remains a separate blocker. Static proof is recorded in `FALLOUT_LABORATORY_CITIZENSHIP_CHAIN_PROOF.md`.

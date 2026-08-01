@@ -260,3 +260,15 @@ Successor package production, player materialization, general allocation, countr
 | The Failed Calculation localisation and Event Log | `localisation/english/fallout_world_end_failed_calculation_l_english.yml`, `common/scripted_localisation/fallout_world_end_failed_calculation_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Failed Calculation art and workbook | `docs/assets/831_failed_calculation/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/failed_calculation/report_event_fallout_failed_calculation.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` |
 | The Failed Calculation status boundary | dormant source package with four technical accountability branches, hidden-AI parity, 49-day result, 300-day technical audit, bounded Deaths effects, calculation memories, Event Log history `9196`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Laboratory Citizenship source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| Laboratory Citizenship design | `docs/specs/air_cleanliness_fallout_specs/specs/93_reviewed_archetype_laboratory_citizenship.md` |
+| Laboratory Citizenship runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_LABORATORY_CITIZENSHIP_CHAIN_PROOF.md` |
+| Laboratory Citizenship gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_laboratory_citizenship_event_triggers.txt`, `common/scripted_effects/fallout_world_end_laboratory_citizenship_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_laboratory_citizenship_dynamic_modifiers.txt` |
+| Laboratory Citizenship constants and registry | `common/script_constants/fallout_world_end_laboratory_citizenship_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| Laboratory Citizenship localisation and Event Log | `localisation/english/fallout_world_end_laboratory_citizenship_l_english.yml`, `common/scripted_localisation/fallout_world_end_laboratory_citizenship_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| Laboratory Citizenship art and workbook | `docs/assets/838_laboratory_citizenship/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/laboratory_citizenship/report_event_fallout_laboratory_citizenship.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-838` |
+| Laboratory Citizenship status boundary | dormant source package with four civic-access branches, hidden-AI parity, 56-day result, 360-day citizenship review, bounded Deaths effects, citizenship and education memories, Event Log history `9197`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

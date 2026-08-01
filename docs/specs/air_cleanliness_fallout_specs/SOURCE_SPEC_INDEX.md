@@ -159,6 +159,7 @@
 - `specs/90_reviewed_archetype_patent_after_end.md`
 - `specs/91_reviewed_archetype_the_grid_vote.md`
 - `specs/92_reviewed_archetype_the_failed_calculation.md`
+- `specs/93_reviewed_archetype_laboratory_citizenship.md`
 
 ## Matrices
 
