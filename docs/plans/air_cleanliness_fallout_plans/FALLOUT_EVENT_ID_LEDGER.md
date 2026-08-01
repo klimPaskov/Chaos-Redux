@@ -980,3 +980,17 @@ The human opening is `810`, the hidden-AI opening is `811`, the human and hidden
 The asset evidence is `docs/assets/810_reactor_shift/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-810` is present with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_LOAD_SHEDDING_CHAIN_PROOF.md`.
+
+## The Patent After the End tranche
+
+The Patent After the End adds dormant suffixes `817` through `823` with candidate id `817`, transaction key `710088`, route `7208`, and history `9194`.
+
+The human opening is `817`, the hidden-AI opening is `818`, the human and hidden-AI delayed results are `819` and `820`, the human and hidden-AI callbacks are `821` and `822`, and cleanup is `823`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Reactor Shift memory, current Air Winter and Supply Access receipts, a surviving industrial or arms factory, a foreign neighbour, durable patent and market ledgers, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbour, Air Winter values, technical identity, and patent ledgers.
+
+The chain carries Publish the Designs, Protect Inventor Rights, Keep the Archive Secret, and License the Region branches with distinct survival costs, deterministic result and callback grading, a 35-day result, a 270-day second-year review, bounded Deaths effects, Air Winter and Supply Access effects, patent, research, production, trade, legitimacy, espionage, and bilateral memory, Event Log history `9194`, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/817_patent_after_end/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_patent_after_end`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-817` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_PATENT_AFTER_END_CHAIN_PROOF.md`.

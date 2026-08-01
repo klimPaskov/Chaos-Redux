@@ -224,3 +224,15 @@ Successor package production, player materialization, general allocation, countr
 | Reactor Shift localisation and Event Log | `localisation/english/fallout_world_end_reactor_shift_l_english.yml`, `common/scripted_localisation/fallout_world_end_reactor_shift_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | Reactor Shift art and workbook | `docs/assets/810_reactor_shift/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/reactor_shift/report_event_fallout_reactor_shift.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-810` |
 | Reactor Shift status boundary | dormant source package with four operator branches, hidden-AI parity, 35-day result, 270-day first-winter callback, bounded Deaths effects, operator memory, Event Log history `9193`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Patent After the End source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| Patent After the End design | `docs/specs/air_cleanliness_fallout_specs/specs/90_reviewed_archetype_patent_after_end.md` |
+| Patent After the End runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_PATENT_AFTER_END_CHAIN_PROOF.md` |
+| Patent After the End gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_patent_after_end_event_triggers.txt`, `common/scripted_effects/fallout_world_end_patent_after_end_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_patent_after_end_dynamic_modifiers.txt` |
+| Patent After the End constants and registry | `common/script_constants/fallout_world_end_patent_after_end_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| Patent After the End localisation and Event Log | `localisation/english/fallout_world_end_patent_after_end_l_english.yml`, `common/scripted_localisation/fallout_world_end_patent_after_end_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| Patent After the End art and workbook | `docs/assets/817_patent_after_end/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/patent_after_end/report_event_fallout_patent_after_end.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-817` |
+| Patent After the End status boundary | dormant source package with four ownership branches, hidden-AI parity, 35-day result, 270-day second-year review, bounded Deaths effects, patent and institution memories, Event Log history `9194`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

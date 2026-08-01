@@ -21362,3 +21362,106 @@ country_event = {
 	trigger = { fallout_event_810_cleanup_can_enter = yes }
 	immediate = { fallout_event_810_cleanup = yes }
 }
+# Dormant Fallout technate chain: The Patent After the End
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.817
+	title = chaosx.fallout.817.t
+	desc = chaosx.fallout.817.opening.d
+	picture = GFX_report_event_fallout_patent_after_end
+	is_triggered_only = yes
+	trigger = { fallout_event_817_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.817.a
+		trigger = { fallout_event_817_public_domain_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_817_requested_branch = constant:fallout_event_817_branch.public_domain } fallout_event_817_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.817.a.tt
+	}
+	option = {
+		name = chaosx.fallout.817.b
+		trigger = { fallout_event_817_inventor_rights_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_817_requested_branch = constant:fallout_event_817_branch.inventor_rights } fallout_event_817_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.817.b.tt
+	}
+	option = {
+		name = chaosx.fallout.817.c
+		trigger = { fallout_event_817_state_secrecy_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_817_requested_branch = constant:fallout_event_817_branch.state_secrecy } fallout_event_817_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.817.c.tt
+	}
+	option = {
+		name = chaosx.fallout.817.d
+		trigger = { fallout_event_817_regional_licensing_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_817_requested_branch = constant:fallout_event_817_branch.regional_licensing } fallout_event_817_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.817.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.818
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_817_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_817_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.819
+	title = chaosx.fallout.819.t
+	desc = { text = chaosx.fallout.819.public_domain.success.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.public_domain compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.819.public_domain.partial.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.public_domain compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.819.public_domain.failure.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.public_domain compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.819.inventor_rights.success.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.inventor_rights compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.819.inventor_rights.partial.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.inventor_rights compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.819.inventor_rights.failure.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.inventor_rights compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.819.state_secrecy.success.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.state_secrecy compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.819.state_secrecy.partial.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.state_secrecy compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.819.state_secrecy.failure.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.state_secrecy compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.819.regional_licensing.success.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.regional_licensing compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.819.regional_licensing.partial.d trigger = { check_variable = { fallout_event_817_selected_branch value = constant:fallout_event_817_branch.regional_licensing compare = equals } check_variable = { fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.819.regional_licensing.failure.d
+	picture = GFX_report_event_fallout_patent_after_end
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_817_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.patent_after_end_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.819.a hidden_effect = { fallout_event_817_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.819.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.820
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_817_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.patent_after_end_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_817_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.821
+	title = chaosx.fallout.821.t
+	desc = { text = chaosx.fallout.821.success.d trigger = { check_variable = { fallout_event_817_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.821.partial.d trigger = { check_variable = { fallout_event_817_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.821.failure.d
+	picture = GFX_report_event_fallout_patent_after_end
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_817_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.patent_after_end_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_817_registry_is_current = yes }
+	immediate = { fallout_event_817_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.821.a hidden_effect = { fallout_event_817_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.821.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.822
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_817_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.patent_after_end_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_817_registry_is_current = yes }
+	immediate = { fallout_event_817_calculate_callback_outcome = yes fallout_event_817_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.823
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_817_cleanup_can_enter = yes }
+	immediate = { fallout_event_817_cleanup = yes }
+}
+
+

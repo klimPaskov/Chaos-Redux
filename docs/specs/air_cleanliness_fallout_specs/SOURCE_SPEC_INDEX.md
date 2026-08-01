@@ -156,6 +156,7 @@
 - `specs/80_reviewed_archetype_health_without_borders.md`
 - `specs/81_reviewed_archetype_regional_health_compact.md`
 - `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
+- `specs/90_reviewed_archetype_patent_after_end.md`
 
 ## Matrices
 
