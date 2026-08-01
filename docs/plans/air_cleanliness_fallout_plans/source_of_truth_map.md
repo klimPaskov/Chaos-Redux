@@ -351,3 +351,15 @@ Successor package production, player materialization, general allocation, countr
 | The Mixed Settlement Petition localisation and Event Log | `localisation/english/fallout_world_end_mixed_settlement_l_english.yml`, `common/scripted_localisation/fallout_world_end_mixed_settlement_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Mixed Settlement Petition art and workbook | `docs/assets/887_mixed_settlement/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/mixed_settlement/report_event_fallout_mixed_settlement.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-887` |
 | The Mixed Settlement Petition status boundary | dormant source package with four fictional mixed-community branches, hidden AI parity, 42-day result, 300-day first-year review, bounded Deaths effects, settlement and bilateral memories, Event Log history `9204`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Fertility Question source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Fertility Question design | `docs/specs/air_cleanliness_fallout_specs/specs/101_reviewed_archetype_fertility_question.md` |
+| The Fertility Question runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_FERTILITY_QUESTION_CHAIN_PROOF.md` |
+| The Fertility Question gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_fertility_question_event_triggers.txt`, `common/scripted_effects/fallout_world_end_fertility_question_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_fertility_question_dynamic_modifiers.txt` |
+| The Fertility Question constants and registry | `common/script_constants/fallout_world_end_fertility_question_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Fertility Question localisation and Event Log | `localisation/english/fallout_world_end_fertility_question_l_english.yml`, `common/scripted_localisation/fallout_world_end_fertility_question_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Fertility Question art and workbook | `docs/assets/894_fertility_question/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fertility_question/report_event_fallout_fertility_question.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-894` |
+| The Fertility Question status boundary | dormant source package with four fictional household branches, hidden AI parity, 49-day result, 365-day next-generation review, bounded Deaths effects, household and bilateral memories, Event Log history `9205`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

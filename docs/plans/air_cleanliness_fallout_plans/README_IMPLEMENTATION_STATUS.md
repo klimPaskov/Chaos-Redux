@@ -1043,3 +1043,13 @@ It follows a closed Clinic or Council state memory in the Congo Green Basin muta
 The four branches are Grant Equal Citizenship, Keep Separate Districts, Supervise the Integration, and Refuse the Settlement Petition. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and settlement ledgers, resolves after `42` days, schedules a `300` day first-year review, applies bounded Deaths failure, writes mixed-community and bilateral memories, records Event Log history `9204`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
 
 The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_MIXED_SETTLEMENT_CHAIN_PROOF.md`.
+
+## The Fertility Question tranche
+
+The Fertility Question is a dormant ordinary Fallout chain at `chaosx.fallout.970` through `chaosx.fallout.976` with candidate `894`, transaction `710099`, route `7230`, and Event Log history `9205`.
+
+It follows the closed Mixed Settlement Petition state memory in the Congo Green Basin mutant polity. The candidate selects the lowest current household state with a foreign witness, surviving population, current Air Winter and Supply Access values, family legitimacy, cohort pressure, Medicine, Cohesion, Recognition, and an affordable branch.
+
+The four branches are Offer Voluntary Household Support, Build Public Cohort Services, Open Two-Witness Adoption Houses, and Keep an Emergency Register Only. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and household ledgers, resolves after `49` days, schedules a `365` day next-generation review, applies bounded Deaths failure, writes household, generation, demographic memory, and bilateral memories, records Event Log history `9205`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired.
+
+The chain does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population between states, or add a recurring scheduler. It remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and player-visible art remain unproven without launching HOI4. Static proof is recorded in `FALLOUT_FERTILITY_QUESTION_CHAIN_PROOF.md`.

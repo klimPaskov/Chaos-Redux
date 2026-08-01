@@ -1126,3 +1126,17 @@ The chain carries Grant Equal Citizenship, Keep Separate Districts, Supervise th
 The asset evidence is `docs/assets/887_mixed_settlement/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_mixed_settlement`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-887` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_MIXED_SETTLEMENT_CHAIN_PROOF.md`.
+
+## The Fertility Question tranche
+
+The Fertility Question adds dormant event ids `970` through `976` with candidate id `894`, transaction key `710099`, route `7230`, and history `9205`. These event ids avoid the existing manual Fallout entry at `900`, manual callback at `903`, and manual batch and verifier range through `966`.
+
+The human opening is `970`, the hidden AI opening is `971`, the human and hidden AI delayed results are `972` and `973`, the human and hidden AI next-generation reviews are `974` and `975`, and cleanup is `976`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Mixed Settlement Petition state memory, a current living household state, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign neighbor, family legitimacy, cohort pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and household ledgers.
+
+The chain carries Offer Voluntary Household Support, Build Public Cohort Services, Open Two-Witness Adoption Houses, and Keep an Emergency Register Only branches with distinct survival costs, deterministic result and next-generation review grading, a 49-day result, a 365-day review, bounded Deaths effects, Air Winter and Supply Access effects, household and bilateral memories, Event Log history `9205`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/894_fertility_question/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_fertility_question`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-894` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_FERTILITY_QUESTION_CHAIN_PROOF.md`.
