@@ -1,8 +1,16 @@
 # Fallout Event ID Ledger
 
+## Current reconciliation after The Harbor Without a City
+
+The living-world pilot now contains `663` defined event blocks across the reviewed ordinary range through `788`, including the dormant The Harbor Without a City tranche at `782` through `788`. The current reviewed ordinary row count is `83`. The Harbor Without a City uses candidate `782`, transaction `710083`, route `7198`, and survivor Event Log history `9189`. The reserved route upper bound is `7199`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+
 ## Current reconciliation after The Ghost Convoy
 
 The living-world pilot now contains `656` defined event blocks across the reviewed ordinary range through `781`, including the dormant The Ghost Convoy tranche at `775` through `781`. The current reviewed ordinary row count is `82`. The Ghost Convoy uses candidate `775`, transaction `710082`, route `7196`, and survivor Event Log history `9188`. The reserved route upper bound is `7197`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+
+## The Harbor Without a City tranche
+
+The Harbor Without a City follows the closed Ghost Convoy memory. It adds seven dormant state-level event blocks at suffixes `782` through `788` with candidate id `782`, transaction key `710083`, route `7198`, and history `9189`. The row selects the lowest current West African Port Confederacies coastal or naval-base state with a foreign neighbor, freezes Air Winter, Supply Access, harbor authority, inland grievance, garrison trust, claim pressure, evacuee capacity, port food reserve, and Cause Memory, then offers port republic, inland alliance, military occupation, and evacuation branches. Results arrive after forty-five days and the government review after three hundred thirty days. Dedicated art, Event Log payloads, hidden-AI parity, bounded Deaths failure, and authenticated cleanup are wired. The chain remains dormant and outside release-floor credit while scheduler activation remains unset.
 
 The living-world pilot now contains `649` defined event blocks across the reviewed ordinary range through `774`, including the dormant The Captain's Articles tranche at `768` through `774`. The current reviewed ordinary row count is `81`. The Captain's Articles uses candidate `768`, transaction `710081`, route `7194`, and survivor Event Log history `9187`. The reserved route upper bound is `7195`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
