@@ -744,6 +744,18 @@ africa_ai_action_80_has_target = {
 	NOT = { has_country_flag = africa_continental_defence_mobilised }
 }
 
+# COUNTRY scope on a foreign Scramble participant. This is a ranking gate,
+# not a replacement for the shared action validator: an expedition profile
+# needs a deployable army, available manpower, and a controlled coastal base.
+africa_ai_scramble_expedition_materially_ready = {
+	has_army_size > constant:africa_ai_scramble_material.expedition_army_size_floor
+	has_manpower > constant:africa_ai_scramble_material.expedition_manpower_floor
+	any_controlled_state = {
+		is_coastal = yes
+		naval_base > constant:africa_ai_scramble_material.expedition_naval_base_floor
+	}
+}
+
 africa_ai_action_81_has_target = {
 	has_global_flag = africa_scramble_response_active
 	any_of_scopes = {
