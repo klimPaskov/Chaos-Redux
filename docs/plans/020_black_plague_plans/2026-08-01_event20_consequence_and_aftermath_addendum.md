@@ -47,7 +47,7 @@ The snapshot includes the current Event 020 worktree tranche, including its unco
 | Surface | Current evidence | Remaining design gap |
 | --- | --- | --- |
 | Event chain | `events/020_black_death.txt` defines the accepted milestone allocation from `chaosx.nr20.2` through `.75`, plus `.90` and scheduler callbacks; events `.45`, `.57-.59`, `.64-.65`, and `.71-.75` are present | Most implemented milestones remain deliberately compact reports |
-| Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, Rat emergence uses `GFX_report_event_020_rat_emergence`, Severe Crisis, route crises, Crown Strike, Doctor Wu, and Rat King aftermath use dedicated report cards, and qualifying slot 087 uses `GFX_super_event_087_rat_king_defeat_aftermath` in the current worktree | Reconstruction `.72` shares the Rat King aftermath card; the source-frame crisis seal and animated Rat King portrait remain queued |
+| Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, Rat emergence uses `GFX_report_event_020_rat_emergence`, Severe Crisis, route crises, Crown Strike, Doctor Wu, and Rat King aftermath use dedicated report cards, qualifying slot 087 uses `GFX_super_event_087_rat_king_defeat_aftermath`, and the Royal Burrows decision uses `GFX_decision_black_plague_seal_royal_burrows_animated` with its static fallback | Reconstruction `.72` shares the Rat King aftermath card; broader dedicated aftermath art and live validation remain open |
 | RTA tree | Read-only focus inspection reports 35 playable focuses with zero node intersections and two connector crossings; the three-way hierarchy roots, follow-ups, and `.45` acknowledgement are present | Generic vanilla icon inventory diagnostics remain, six dedicated hierarchy icons are not wired, and the accepted full route-tree depth is still larger than this compact playable shell |
 | RTA routes | Urban, Field, Dock, and War second lanes plus the three-way hierarchy now affect Brood Mass, division caps, spread routes, King candidacy, route-aware AI, and seven timed route operations across the RTA/RTX decision categories | Further report prose and dedicated route art remain optional presentation work |
 | RTX tree | Read-only focus inspection reports 50 playable focuses, including twelve route-policy focuses | The route policy consumers, crises, Crown Strike vulnerabilities, and AI plans are wired; deeper administration and cultural branches remain content work |
@@ -64,7 +64,7 @@ They do reinforce the accepted art requirement that major Event 020 route focuse
 ## Delivered tranche and remaining scope
 
 The current tranche gives political route choices runtime effects, wires the late Crown Strike counterstroke, turns Rat King defeat into a scoped, metrics-gated aftermath path, and gives each RTA hierarchy route a concrete repeatable action while leaving the established milestone chain intact.
-Remaining accepted scope is broader narrative depth beyond the implemented 50-focus RTA and 70-focus RTX trees, the native-mission API decision review, the source-frame crisis seal and animated Rat King portrait, source-frame UI animation expansion, release rights attribution, and focused live validation.
+Remaining accepted scope is broader narrative depth beyond the implemented 50-focus RTA and 70-focus RTX trees, the native-mission API decision review, source-frame UI animation expansion, release rights attribution, and focused live validation. The Royal Burrows seal and animated Rat King portrait packages are now promoted; no 3D asset is requested.
 
 ## Package A: RTA hierarchy becomes a real route choice
 
@@ -392,7 +392,7 @@ Distributed uses multiple equal knots, Dominant uses one commanding head or fang
 
 Static art is appropriate for this tranche because the new consumers are one-shot event cards, decision icons, and focus-route symbols.
 Motion would not communicate a changing gameplay value on those surfaces.
-The shared-board rat-infestation badge is now promoted as a four-frame source-authored package. The accepted source-frame crisis seal and animated Rat King portrait remain separate queued asset packages and are not replaced by transform-only animation.
+The shared-board rat-infestation badge, Royal Burrows seal, and Rat King portrait are promoted as source-authored frame packages. They are not replaced by transform-only animation.
 No 3D asset is requested.
 
 Every asset handoff must retain source PNG, processed PNG, final DDS, exact sprite name, target `.gfx`, dimensions, source mode, prompt or provenance, contact sheet, and consumer crosswalk.
@@ -555,7 +555,7 @@ For engine scopes, use the vanilla `on_capitulation` and `on_state_control_chang
 ## Open questions and blockers
 
 The current shared timed state-action implementation leaves one parent design choice: whether Crown Strike and Seal Royal Burrows satisfy the accepted mission contract or must be converted to native mission fields.
-The remaining gaps are broader narrative/depth, native-mission API choice, the source-frame crisis seal and animated Rat King portrait, workbook alignment, release attribution, and live validation; they are not reasons to redesign the two-tag/no-model boundary.
+The remaining gaps are broader narrative/depth, native-mission API choice, workbook alignment, release attribution, and live validation; they are not reasons to redesign the two-tag/no-model boundary.
 
 The qualifying defeat super-event art, selected text, audio ID 103, sprite registration, and settings wrappers are promoted. Retain the explicit runtime gate and provenance record; do not substitute another Event 020 super-event package.
 
@@ -566,7 +566,7 @@ The parent should refresh identifier and diff checks before implementation, pres
 
 Current state: the RTA hierarchy graph and most runtime consumers, RTX route crises `.57-.59`, Crown Strike `.64-.65`, and the scoped, metrics-gated defeat/aftermath `.71-.75` tranche are present in the worktree.
 
-Still required before this addendum can be closed: decide whether the shared timed state-action API is sufficient for Crown Strike or a native mission owner is required, deepen the broader aftermath and route-specific decision narrative beyond the current focus trees, finish the source-frame crisis seal and animated Rat King portrait packages where accepted, preserve the audio rights record, and run task-specific runtime validations. Scoped defeat hooks, participant tracking, the current `.72` coupling, the five dedicated evolution report cards, and slot 087 art/text/audio/sprite/sound wiring are implemented.
+Still required before this addendum can be closed: decide whether the shared timed state-action API is sufficient for Crown Strike or a native mission owner is required, deepen the broader aftermath and route-specific decision narrative beyond the current focus trees, preserve the audio rights record, and run task-specific runtime validations. Scoped defeat hooks, participant tracking, the current `.72` coupling, the five dedicated evolution report cards, the source-frame Royal Burrows seal and Rat King portrait packages, and slot 087 art/text/audio/sprite/sound wiring are implemented.
 
 The two-tag/no-model boundary is accepted and must remain unchanged: `RTA` plus `RTX` only, internal broods as state markers, and no 3D model production in this goal.
 
