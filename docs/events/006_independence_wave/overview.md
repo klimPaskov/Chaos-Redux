@@ -28,7 +28,12 @@ The three closure handoffs are `subagent_handoffs/006_core_loop_closure_v35_2026
 
 ## Current runtime admission and documentation supersession (2026-08-01)
 
-The exact compile-time content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These thirteen packages have the current package and sourced-portrait or approved-vanilla-identity evidence required by the static runtime gate.
+The exact compile-time content-attestation set is IW-001 Scotland, IW-002 Wales, IW-004 Brittany, IW-006 Wallonia, IW-007 Frisia, IW-008 Rhineland, IW-009 Bavaria, IW-010 Saar, IW-012 Iceland, IW-017 Corsica, IW-019 Sicily, IW-173 Hawai'i, and IW-184 California. These thirteen packages span twelve compatible reservation groups and thirteen distinct anchors, and have the current package and sourced-portrait or approved-vanilla-identity evidence required by the static runtime gate.
+
+IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, and IW-098 SOK remain outside this attestation set with their current fail-closed package, sourced-roster, or role evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
+
+The parent core-contract re-audit is recorded in
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
 
 IW-177 Fiji is the current accepted alternative package tranche, not an
 attested package. It reuses the vanilla `FIJ` tag and flag/history baseline at
