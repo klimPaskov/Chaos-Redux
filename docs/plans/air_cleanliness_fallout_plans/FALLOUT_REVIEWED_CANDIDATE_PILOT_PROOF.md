@@ -1,8 +1,10 @@
 # Fallout Reviewed Candidate Pilot Proof
 
-## Current reconciliation after The First Red Line
+## Current reconciliation after False Positive
 
-The reviewed candidate producer now covers `69` ordinary dormant rows through The First Red Line candidate `684`, with `565` defined event blocks through `chaosx.fallout.690` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7171`. Candidate 684 uses transaction `710069`, route `7170`, and survivor Event Log history `9175`. The producer selects the lowest eligible native Quarantine Air Winter state and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+The reviewed candidate producer now covers `70` ordinary dormant rows through False Positive candidate `691`, with `572` defined event blocks through `chaosx.fallout.697` and `0 of 660` countable release-floor blocks. The reviewed route upper bound is `7173`. Candidate 691 uses transaction `710070`, route `7172`, and survivor Event Log history `9176`. The producer selects the lowest eligible native Quarantine Air Winter state and preserves it in the dispatch envelope. Each opening gate rehydrates and rechecks that issued target, so this is static source evidence rather than an accepted runtime path.
+
+False Positive follows a completed First Red Line memory. Its four branches resolve after fourteen days and schedule a one hundred fifty day callback. The chain freezes current Air Winter and Quarantine ledgers, applies deterministic branch-specific result effects, routes failures through Deaths, changes no tags or states, records survivor-country Event Log payloads, and clears both delayed tickets through idempotent cleanup. It uses dedicated report art and remains dormant because neither scheduler activation flag is set.
 
 The First Red Line requires the current Quarantine government, a produced Air Winter snapshot, Shelter Capacity, Supply Access, Adaptation, bounded Disease Pressure and Exposure, and one complete affordable branch. Strict Cordon, Medical Checkpoints, Controlled Evacuation, and Local Self-Control share deterministic `21` day result and `180` day callback contracts, hidden-AI parity, bounded Deaths failure, infrastructure damage, Air Winter ledger effects, public-health memory, Event Log history `9175`, dedicated report art, and authenticated cleanup. Its dedicated proof is `FALLOUT_FIRST_RED_LINE_CHAIN_PROOF.md`.
 
@@ -25,6 +27,8 @@ The Second Dust Bowl is the North American plains row with candidate `656`, tran
 Great Lakes Lock Winter is the North American coastal row with candidate `663`, transaction `710066`, event ids `663` through `669`, and Event Log history `9172`. It requires a native coastal state with a non-damaged naval base and infrastructure, uses four authored branches, resolves after exactly `35` days, and schedules a `270`-day thaw callback. Its hidden-AI lane scores all affordable branches with deterministic tie order, and its cleanup gate accepts a result-only schedule-error receipt without a callback ticket. Its generation-reset abort path statically cancels stale openings and delayed receipts before runtime teardown. Its dedicated proof is `FALLOUT_GREAT_LAKES_LOCK_WINTER_PROOF.md`.
 
 Status: dormant, statically reconciled, tranche audit clear, completion blocked by scheduler and runtime gates, not release-floor credit.
+
+Current tranche note: False Positive is the latest reviewed candidate at `691`, transaction `710070`, route `7172`, events `691` through `697`, and history `9176`. The producer now carries seventy ordinary rows and 572 defined event blocks. The older count and constant paragraphs below are historical snapshots retained for audit traceability.
 
 The Fallout scheduler now owns a reviewed ordinary-candidate producer for sixty-eight global-survival pilot chains. The producer is deliberately narrower than the future 660-block release surface. It exists to prove the candidate-array contract, target-shape contract, and deterministic state selection without opening either scheduler activation flag.
 
