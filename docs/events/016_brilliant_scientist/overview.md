@@ -12,6 +12,8 @@ Event 030's Time Traveler contact now becomes a durable Event 016 temporal lead 
 
 Event 025's Antarctic recovery now supplies the matching alien-arms warning when its success reaches an active Kruger host. `chaosx.nr16.17` records the recovered interface once and leaves `antarctica_success` as the actual project prerequisite; the report does not prove an origin, advance a stage, create a reward, add a log row, or introduce a model dependency.
 
+Event 036's authenticated spacecraft outcome writes `brilliant_scientist_alien_spacecraft_recovered` on the country that recovered the wreckage. When that country is the active Kruger host, `chaosx.nr16.18` records Kruger's recognition once and leaves the physical evidence flag, Alien Arms Theory gate, project costs, and project rewards unchanged. The report does not migrate with Kruger, create a stage, add a log row, claim, evolution, or model dependency.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.

@@ -146,6 +146,7 @@ brilliant_scientist_clear_context_pending_state = {
 	clr_country_flag = brilliant_scientist_impossible_lecture_pending
 	clr_country_flag = brilliant_scientist_time_traveler_contact_pending
 	clr_country_flag = brilliant_scientist_alien_artifact_contact_pending
+	clr_country_flag = brilliant_scientist_alien_spacecraft_contact_pending
 }
 
 # COUNTRY scope. Event 025 can resolve before or after Kruger is appointed. The
@@ -156,7 +157,7 @@ brilliant_scientist_try_schedule_alien_artifact_contact = {
 		limit = {
 			brilliant_scientist_is_current_host = yes
 			has_idea = antarctica_success
-			NOT = { has_global_flag = brilliant_scientist_event_resolved }
+			NOT = { has_global_flag = world_end }
 			NOT = { has_country_flag = brilliant_scientist_alien_artifact_contact }
 			NOT = { has_country_flag = brilliant_scientist_alien_artifact_contact_report_seen }
 		}
@@ -165,6 +166,26 @@ brilliant_scientist_try_schedule_alien_artifact_contact = {
 		country_event = {
 			id = chaosx.nr16.17
 			days = constant:brilliant_scientist_directorate_timing.alien_artifact_contact_report_days
+		}
+	}
+}
+
+# COUNTRY scope. Event 036 records physical spacecraft evidence on the country
+# that recovered it. This helper only presents the one-time lead when that
+# evidence belongs to the active Kruger host and never advances Alien Arms.
+brilliant_scientist_try_schedule_alien_spacecraft_contact = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = brilliant_scientist_alien_spacecraft_recovered
+			NOT = { has_global_flag = world_end }
+			NOT = { has_country_flag = brilliant_scientist_alien_spacecraft_contact_pending }
+			NOT = { has_country_flag = brilliant_scientist_alien_spacecraft_contact_report_seen }
+		}
+		set_country_flag = brilliant_scientist_alien_spacecraft_contact_pending
+		country_event = {
+			id = chaosx.nr16.18
+			days = constant:brilliant_scientist_directorate_timing.alien_spacecraft_contact_report_days
 		}
 	}
 }

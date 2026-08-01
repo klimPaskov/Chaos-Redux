@@ -514,7 +514,7 @@ Possible links:
 
 The implemented baseline uses the safe prerequisite-and-warning link. When `chaosx.nr30.2` reaches the active Event 016 host, it writes one persistent contact receipt and presents `chaosx.nr16.16`. The report records the warning without creating a second actor, stage, reward, claim, evolution, or Event Log entry; the future-variant and diplomacy expansions remain separate design options.
 
-The Event 025 baseline uses the same bounded form. When `chaosx.nr25.3` reaches the active Event 016 host, it writes one persistent Antarctic artifact receipt and presents `chaosx.nr16.17`. The report records recognition without proving alien origin or creating a second actor, stage, reward, claim, evolution, or Event Log entry; spacecraft recovery and foreign-expedition variants remain separate design options.
+The Event 025 baseline uses the same bounded form. When `chaosx.nr25.3` reaches the active Event 016 host, it writes one persistent Antarctic artifact receipt and presents `chaosx.nr16.17`. The report records recognition without proving alien origin or creating a second actor, stage, reward, claim, evolution, or Event Log entry. The Event 036 baseline now writes `brilliant_scientist_alien_spacecraft_recovered` only in its authenticated spacecraft outcome, then presents `chaosx.nr16.18` once when the recovering country is the active host. That report preserves the physical evidence gate and creates no project, reward, actor, claim, evolution, or Event Log entry. Spacecraft recovery and foreign-expedition variants beyond this receipt remain separate design options.
 
 ### Event 32: Missiles
 

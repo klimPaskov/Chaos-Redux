@@ -327,3 +327,29 @@ country_event = {
 		}
 	}
 }
+
+# Event 036's recovered spacecraft becomes a bounded alien-arms lead when the
+# evidence belongs to an active Event 016 host. The physical recovery flag is
+# retained on its owning country and the report does not advance the project.
+country_event = {
+	id = chaosx.nr16.18
+	title = chaosx.nr16.18.t
+	desc = chaosx.nr16.18.d
+	picture = GFX_report_event_alien_spacecraft
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_alien_spacecraft_recovered
+		has_country_flag = brilliant_scientist_alien_spacecraft_contact_pending
+		NOT = { has_country_flag = brilliant_scientist_alien_spacecraft_contact_report_seen }
+	}
+
+	option = {
+		name = chaosx.nr16.18.a
+		custom_effect_tooltip = brilliant_scientist_alien_spacecraft_contact_effect_tt
+		hidden_effect = {
+			clr_country_flag = brilliant_scientist_alien_spacecraft_contact_pending
+			set_country_flag = brilliant_scientist_alien_spacecraft_contact_report_seen
+		}
+	}
+}
