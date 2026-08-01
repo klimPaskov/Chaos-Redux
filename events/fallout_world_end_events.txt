@@ -20957,6 +20957,112 @@ country_event = {
 
 
 
+# Dormant Fallout mutant household chain: The Fertility Question
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.970
+	title = chaosx.fallout.970.t
+	desc = chaosx.fallout.970.opening.d
+	picture = GFX_report_event_fallout_fertility_question
+	is_triggered_only = yes
+	trigger = { fallout_event_894_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.970.a
+		trigger = { fallout_event_894_voluntary_support_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_894_requested_branch = constant:fallout_event_894_branch.voluntary_support } fallout_event_894_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.970.a.tt
+	}
+	option = {
+		name = chaosx.fallout.970.b
+		trigger = { fallout_event_894_state_program_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_894_requested_branch = constant:fallout_event_894_branch.state_program } fallout_event_894_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.970.b.tt
+	}
+	option = {
+		name = chaosx.fallout.970.c
+		trigger = { fallout_event_894_adoption_network_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_894_requested_branch = constant:fallout_event_894_branch.adoption_network } fallout_event_894_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.970.c.tt
+	}
+	option = {
+		name = chaosx.fallout.970.d
+		trigger = { fallout_event_894_no_intervention_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_894_requested_branch = constant:fallout_event_894_branch.no_intervention } fallout_event_894_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.970.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.971
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_894_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_894_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.972
+	title = chaosx.fallout.972.t
+	desc = { text = chaosx.fallout.972.voluntary_support.success.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.voluntary_support compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.972.voluntary_support.partial.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.voluntary_support compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.972.voluntary_support.failure.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.voluntary_support compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.972.state_program.success.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.state_program compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.972.state_program.partial.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.state_program compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.972.state_program.failure.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.state_program compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.972.adoption_network.success.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.adoption_network compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.972.adoption_network.partial.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.adoption_network compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.972.adoption_network.failure.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.adoption_network compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.972.no_intervention.success.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.no_intervention compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.972.no_intervention.partial.d trigger = { check_variable = { fallout_event_894_selected_branch value = constant:fallout_event_894_branch.no_intervention compare = equals } check_variable = { fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.972.no_intervention.failure.d
+	picture = GFX_report_event_fallout_fertility_question
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_894_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.fertility_question_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.972.a hidden_effect = { fallout_event_894_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.972.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.973
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_894_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.fertility_question_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_894_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.974
+	title = chaosx.fallout.974.t
+	desc = { text = chaosx.fallout.974.success.d trigger = { check_variable = { fallout_event_894_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.974.partial.d trigger = { check_variable = { fallout_event_894_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.974.failure.d
+	picture = GFX_report_event_fallout_fertility_question
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_894_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.fertility_question_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_894_registry_is_current = yes }
+	immediate = { fallout_event_894_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.974.a hidden_effect = { fallout_event_894_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.974.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.975
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_894_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.fertility_question_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_894_registry_is_current = yes }
+	immediate = { fallout_event_894_calculate_callback_outcome = yes fallout_event_894_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.976
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_894_cleanup_can_enter = yes }
+	immediate = { fallout_event_894_cleanup = yes }
+}
+
+
+
+
+
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
 
