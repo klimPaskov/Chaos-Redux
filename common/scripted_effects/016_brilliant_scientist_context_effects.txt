@@ -228,6 +228,37 @@ brilliant_scientist_record_tech_sharing_refusal = {
 	}
 }
 
+# COUNTRY scope. Event 054 grants a generic random technology. If the active
+# Kruger host receives that gift, keep the assistants' independent contribution
+# as a one-time Directorate receipt. The fixed character flag prevents a second
+# reward after transfer or sovereignty formation; the country flag preserves the
+# local history and tooltip state.
+brilliant_scientist_record_assistant_breakthrough = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			NOT = { has_country_flag = brilliant_scientist_assistant_breakthrough_recorded }
+			KRG_warren_kruger = {
+				NOT = { has_character_flag = brilliant_scientist_personal_assistant_breakthrough_recorded }
+			}
+		}
+		set_country_flag = brilliant_scientist_assistant_breakthrough_recorded
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_assistant_breakthrough_recorded }
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.mandate }
+		brilliant_scientist_change_mandate = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.dependence }
+		brilliant_scientist_change_dependence = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.exposure }
+		brilliant_scientist_change_exposure = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.project_capacity }
+		brilliant_scientist_change_project_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.independent_capacity }
+		brilliant_scientist_change_independent_capacity = yes
+		set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_assistant_breakthrough.grievance }
+		brilliant_scientist_change_grievance = yes
+	}
+}
+
 # COUNTRY scope. Event 025 can resolve before or after Kruger is appointed. The
 # permanent Antarctic idea is the evidence input; this helper only creates the
 # one-time Event 016 warning receipt for an active carrier.
