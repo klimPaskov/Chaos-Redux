@@ -1,6 +1,8 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after The Captain's Articles
+## Current reconciliation after The Ghost Convoy
+
+The living-world pilot now contains `656` defined event blocks across the reviewed ordinary range through `781`, including the dormant The Ghost Convoy tranche at `775` through `781`. The current reviewed ordinary row count is `82`. The Ghost Convoy uses candidate `775`, transaction `710082`, route `7196`, and survivor Event Log history `9188`. The reserved route upper bound is `7197`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 
 The living-world pilot now contains `649` defined event blocks across the reviewed ordinary range through `774`, including the dormant The Captain's Articles tranche at `768` through `774`. The current reviewed ordinary row count is `81`. The Captain's Articles uses candidate `768`, transaction `710081`, route `7194`, and survivor Event Log history `9187`. The reserved route upper bound is `7195`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
 

@@ -1,6 +1,8 @@
 # Fallout Living-World Scheduler Proof
 
-## Current reconciliation after The Captain's Articles
+## Current reconciliation after The Ghost Convoy
+
+The dormant reviewed producer now covers `82` ordinary Fallout rows and `656` defined event blocks through `chaosx.fallout.781`. The Ghost Convoy is the latest ordinary row with candidate `775`, transaction `710082`, route `7196`, and survivor history `9188`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Captain's Articles memory, a foreign neighbor, durable Air Winter and survival ledgers, convoy ledgers, and an affordable branch. Its `42` day result and `300` day route review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
 
 The dormant reviewed producer now covers `81` ordinary Fallout rows and `649` defined event blocks through `chaosx.fallout.774`. The Captain's Articles is the latest ordinary row with candidate `768`, transaction `710081`, route `7194`, and survivor history `9187`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a foreign neighbor, durable Air Winter and survival ledgers, port-law ledgers, and an affordable branch. Its `42` day result and `300` day port-law review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
 

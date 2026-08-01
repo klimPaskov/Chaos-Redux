@@ -20748,3 +20748,106 @@ country_event = {
 	trigger = { fallout_event_768_cleanup_can_enter = yes }
 	immediate = { fallout_event_768_cleanup = yes }
 }
+
+
+# Dormant Fallout maritime chain: The Ghost Convoy
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.775
+	title = chaosx.fallout.775.t
+	desc = chaosx.fallout.775.opening.d
+	picture = GFX_report_event_fallout_ghost_convoy
+	is_triggered_only = yes
+	trigger = { fallout_event_775_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.775.a
+		trigger = { fallout_event_775_approach_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_775_requested_branch = constant:fallout_event_775_branch.approach } fallout_event_775_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.775.a.tt
+	}
+	option = {
+		name = chaosx.fallout.775.b
+		trigger = { fallout_event_775_shadow_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_775_requested_branch = constant:fallout_event_775_branch.shadow } fallout_event_775_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.775.b.tt
+	}
+	option = {
+		name = chaosx.fallout.775.c
+		trigger = { fallout_event_775_avoid_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_775_requested_branch = constant:fallout_event_775_branch.avoid } fallout_event_775_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.775.c.tt
+	}
+	option = {
+		name = chaosx.fallout.775.d
+		trigger = { fallout_event_775_signal_publicly_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_775_requested_branch = constant:fallout_event_775_branch.signal_publicly } fallout_event_775_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.775.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.776
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_775_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_775_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.777
+	title = chaosx.fallout.777.t
+	desc = { text = chaosx.fallout.777.approach.success.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.approach compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.777.approach.partial.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.approach compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.777.approach.failure.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.approach compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.777.shadow.success.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.shadow compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.777.shadow.partial.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.shadow compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.777.shadow.failure.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.shadow compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.777.avoid.success.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.avoid compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.777.avoid.partial.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.avoid compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.777.avoid.failure.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.avoid compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.777.signal_publicly.success.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.signal_publicly compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.777.signal_publicly.partial.d trigger = { check_variable = { fallout_event_775_selected_branch value = constant:fallout_event_775_branch.signal_publicly compare = equals } check_variable = { fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.777.signal_publicly.failure.d
+	picture = GFX_report_event_fallout_ghost_convoy
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_775_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.ghost_convoy_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.777.a hidden_effect = { fallout_event_775_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.777.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.778
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_775_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.ghost_convoy_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_775_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.779
+	title = chaosx.fallout.779.t
+	desc = { text = chaosx.fallout.779.success.d trigger = { check_variable = { fallout_event_775_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.779.partial.d trigger = { check_variable = { fallout_event_775_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.779.failure.d
+	picture = GFX_report_event_fallout_ghost_convoy
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_775_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.ghost_convoy_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_775_registry_is_current = yes }
+	immediate = { fallout_event_775_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.779.a hidden_effect = { fallout_event_775_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.779.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.780
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_775_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.ghost_convoy_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_775_registry_is_current = yes }
+	immediate = { fallout_event_775_calculate_callback_outcome = yes fallout_event_775_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.781
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_775_cleanup_can_enter = yes }
+	immediate = { fallout_event_775_cleanup = yes }
+}
