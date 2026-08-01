@@ -6,6 +6,29 @@ The current host keeps the canonical Rain/Drought selectors. A completed priorit
 
 Both surfaces use the shared timed-country/country target contract so human and AI selection pass the same selected enemy into the action record and Event 013 call.
 
+## Package-specific invocation names
+
+The two decisions keep one shared mechanic and one shared target store, but their descriptions identify the promoted package's bounded nature tradition. The labels are presentation only: authority, route, ecological pressure, target size, costs, severity, cleanup, and Event 013 dispatch remain governed by the shared scripted effects.
+
+| Package | Visible invocation |
+| --- | --- |
+| Asante | Golden Stool Rain Rite |
+| Oyo | Alaafin's Thunder Road |
+| Sokoto | Harmattan Break |
+| Kanem-Bornu | Lake Chad Tempest |
+| Manden | Niger River's Wrath |
+| Kongo | Forest-Basin Tempest |
+| Buganda | Lake Victoria Stormcall |
+| Aksum | Highland and Red Sea Thunder |
+| Harar | Harar Rain Covenant |
+| Kilwa | Kilwa Monsoon Spear |
+| Nubia | Nile Flood Oath |
+| Luba | Copperbelt Earthshock |
+| Lunda | Ancestral Rainfront |
+| Great Zimbabwe | Stone Country Storm |
+| Merina | Highland Cyclone Crown |
+| Zulu | Thunder of the Royal Shield |
+
 ## Runtime contract
 
 `africa_natural_disaster_weapon_actor_is_eligible` remains the host-side bridge in `common/scripted_triggers/012_africa_triggers.txt`.
