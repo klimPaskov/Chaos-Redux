@@ -21772,3 +21772,106 @@ country_event = {
 }
 
 
+# Dormant Fallout technate chain: The Machine Suggests
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.845
+	title = chaosx.fallout.845.t
+	desc = chaosx.fallout.845.opening.d
+	picture = GFX_report_event_fallout_machine_suggests
+	is_triggered_only = yes
+	trigger = { fallout_event_845_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.845.a
+		trigger = { fallout_event_845_follow_recommendation_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_845_requested_branch = constant:fallout_event_845_branch.follow_recommendation } fallout_event_845_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.845.a.tt
+	}
+	option = {
+		name = chaosx.fallout.845.b
+		trigger = { fallout_event_845_sandbox_test_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_845_requested_branch = constant:fallout_event_845_branch.sandbox_test } fallout_event_845_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.845.b.tt
+	}
+	option = {
+		name = chaosx.fallout.845.c
+		trigger = { fallout_event_845_human_review_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_845_requested_branch = constant:fallout_event_845_branch.human_review } fallout_event_845_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.845.c.tt
+	}
+	option = {
+		name = chaosx.fallout.845.d
+		trigger = { fallout_event_845_advisory_status_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_845_requested_branch = constant:fallout_event_845_branch.advisory_status } fallout_event_845_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.845.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.846
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_845_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_845_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.847
+	title = chaosx.fallout.847.t
+	desc = { text = chaosx.fallout.847.follow_recommendation.success.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.follow_recommendation compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.847.follow_recommendation.partial.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.follow_recommendation compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.847.follow_recommendation.failure.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.follow_recommendation compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.847.sandbox_test.success.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.sandbox_test compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.847.sandbox_test.partial.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.sandbox_test compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.847.sandbox_test.failure.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.sandbox_test compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.847.human_review.success.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.human_review compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.847.human_review.partial.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.human_review compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.847.human_review.failure.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.human_review compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.847.advisory_status.success.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.advisory_status compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.847.advisory_status.partial.d trigger = { check_variable = { fallout_event_845_selected_branch value = constant:fallout_event_845_branch.advisory_status compare = equals } check_variable = { fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.847.advisory_status.failure.d
+	picture = GFX_report_event_fallout_machine_suggests
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_845_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.machine_suggests_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.847.a hidden_effect = { fallout_event_845_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.847.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.848
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_845_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.machine_suggests_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_845_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.849
+	title = chaosx.fallout.849.t
+	desc = { text = chaosx.fallout.849.success.d trigger = { check_variable = { fallout_event_845_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.849.partial.d trigger = { check_variable = { fallout_event_845_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.849.failure.d
+	picture = GFX_report_event_fallout_machine_suggests
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_845_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.machine_suggests_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_845_registry_is_current = yes }
+	immediate = { fallout_event_845_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.849.a hidden_effect = { fallout_event_845_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.849.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.850
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_845_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.machine_suggests_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_845_registry_is_current = yes }
+	immediate = { fallout_event_845_calculate_callback_outcome = yes fallout_event_845_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.851
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_845_cleanup_can_enter = yes }
+	immediate = { fallout_event_845_cleanup = yes }
+}
+
+

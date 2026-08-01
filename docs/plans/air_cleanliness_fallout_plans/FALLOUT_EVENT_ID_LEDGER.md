@@ -1036,3 +1036,17 @@ The chain carries Open the Ledger to a Public Inquiry, Seal the Calculation, Bla
 The asset evidence is `docs/assets/831_failed_calculation/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_failed_calculation`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-831` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FAILED_CALCULATION_CHAIN_PROOF.md`.
+
+## The Machine Suggests tranche
+
+The Machine Suggests adds dormant suffixes `845` through `851` with candidate id `845`, transaction key `710092`, route `7216`, and history `9198`.
+
+The human opening is `845`, the hidden-AI opening is `846`, the human and hidden-AI delayed results are `847` and `848`, the human and hidden-AI callbacks are `849` and `850`, and cleanup is `851`.
+
+The row requires a current East Asian Technate identity with Manchurian Reactor Keeps memory, a host state carrying the closed Laboratory Citizenship memory, current Air Winter and Supply Access receipts, surviving infrastructure, a foreign neighbor, durable machine ledgers, and one affordable branch. It selects the lowest eligible native state and freezes the state, owner, controller, generation, neighbor, Air Winter values, Supply Access, and machine ledgers.
+
+The chain carries Follow the Recommendation on the Main Grid, Test the Recommendation in a Sealed District, Reject It for a Human Review, and Grant the Machine an Advisory Seat branches with distinct survival costs, deterministic result and callback grading, a 63-day result, a 390-day protocol review, bounded Deaths effects, Air Winter and Supply Access effects, machine influence, machine risk, human review trust, efficiency margin, exception capacity, machine civic confidence, bilateral opinion, Event Log history `9198`, hidden-AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/845_machine_suggests/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_machine_suggests`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-845` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_MACHINE_SUGGESTS_CHAIN_PROOF.md`.
