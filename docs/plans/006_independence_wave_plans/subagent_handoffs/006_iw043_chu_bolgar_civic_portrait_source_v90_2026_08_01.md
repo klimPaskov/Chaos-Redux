@@ -17,6 +17,7 @@ Scope: bounded source research for the unresolved `CHU_independence_wave_bolgar_
 - Role source snapshot: `source_metadata/tinchurin_state_theatre_source_page.html`, SHA-256 `a9adbe5fc96fa41847a1cf4f5b92a6d37b187ccf998fb87a34af5b8ce38955c9`; source URL is the official Tinchurin State Theatre biography listed in the package manifest.
 - Exact frontal head-and-shoulders crop: `source_crops/karim_tinchurin_head_shoulders.png`, rectangle `(760,45,1505,1080)`, `745x1035`, RGB, SHA-256 `1f44b5b72318839a4ccdf6f922a5fc5be53a278aaca25e6621ed870d4cb7cadf`.
 - Crop equality: `crop_metadata/karim_tinchurin_crop.json` reports `decoded_pixels_equal: true` and matching RGBA rectangle/output hash `693e7e77897665cc5895195d528c4d1cc5b4c12e6f4dd23816356071b752e103`; extracted with `.agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_crop.py` v1.0.
+- Existing downstream evidence (not recreated or promoted by this tranche) remains in `docs/assets/006_independence_wave/iw043_iw058_portrait_rights_research_2026_07_29/repaints_raw/CHU_bolgar_civic_presidium_karim_tinchurin_hoi4_repaint_v1.png`, `repaints_processed/CHU_bolgar_civic_presidium_karim_tinchurin_156x210_candidate.png`, and the matching review/processing metadata. Those files are evidence only until the independent portrait audit and rights/date decision pass.
 
 ## Disposition
 
