@@ -234,6 +234,20 @@ black_plague_rat_state_can_establish_burrow_node = {
 	NOT = { has_state_flag = black_plague_rat_burrow_node_active }
 }
 
+# STATE scope. A refugee-road action must have a real human enemy target next
+# to RTA-held ground; the canonical exposure effect still applies all ordinary
+# monitoring and phase rules to the destination.
+black_plague_rat_state_can_follow_refugee_road = {
+	black_plague_state_can_receive_ordinary_exposure = yes
+	CONTROLLER = {
+		exists = yes
+		black_plague_country_is_human_host = yes
+		has_war_with = ROOT
+	}
+	NOT = { has_state_flag = black_plague_rat_refugee_road_cooldown }
+	any_neighbor_state = { is_controlled_by = ROOT }
+}
+
 black_plague_rat_state_has_spawn_signal = {
 	black_plague_state_is_established = yes
 	OR = {
