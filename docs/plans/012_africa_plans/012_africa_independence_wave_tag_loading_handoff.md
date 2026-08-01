@@ -18,7 +18,7 @@ Action 102 remains the only full-package gate.
 
 A supported carrier must still pass the bounded promotion survey, the compact viability checks, the host commitment gate, local ratification, and the exact package-origin match before `africa_priority_member_package_active` is written.
 
-Active Independence Wave origins are eligible for the later Event 012 package on the same country scope. The seven niche shells must pass the shared `africa_priority_member_has_active_event6_shell_receipt` predicate, which reads the live Event 006 origin lifecycle before either the promotion survey or package registration can accept their identity. A bare `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, or `EQX` original tag remains dormant and non-actionable.
+Active Independence Wave origins are eligible for the later Event 012 package on the same country scope. The seven niche shells must pass the shared `africa_priority_member_has_active_event6_shell_receipt` predicate, which reads the live Event 006 origin lifecycle before either the promotion survey or package registration can accept their identity. The final `africa_priority_member_can_register_package` gate also requires `africa_priority_member_has_supported_carrier_identity`, so a stale or copied origin flag cannot load the package onto an unowned tag. A bare `DOX`, `DSX`, `DUX`, `DYX`, `DZX`, `EMX`, or `EQX` original tag remains dormant and non-actionable.
 
 The seven niche Event 006 tags load `africa_priority_member_focus_tree` after full Event 012 registration and preserve completed focus receipts with `keep_completed = yes`.
 
