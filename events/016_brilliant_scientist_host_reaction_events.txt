@@ -1,0 +1,197 @@
+add_namespace = chaosx.nr16
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 HOST-CONTEXT REACTION REPORTS
+# ============================================================================
+# Ordinary report incidents. They are career-once governance consequences,
+# not logged evolutions and not additional project rewards.
+# ============================================================================
+
+country_event = {
+	id = chaosx.nr16.7
+	title = chaosx.nr16.7.t
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_public_science }
+		text = chaosx.nr16.7.public.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_strategic_security }
+		text = chaosx.nr16.7.security.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_industrial_mobilization }
+		text = chaosx.nr16.7.industrial.d
+	}
+	desc = {
+		trigger = { has_country_flag = brilliant_scientist_context_distributed_research }
+		text = chaosx.nr16.7.distributed.d
+	}
+	desc = { text = chaosx.nr16.7.default.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_reaction_facility_pending
+		NOT = { has_country_flag = brilliant_scientist_reaction_facility_resolved }
+		has_event_target = brilliant_scientist_primary_facility
+		event_target:brilliant_scientist_primary_facility = {
+			is_owned_by = ROOT
+			has_state_flag = brilliant_scientist_primary_facility
+		}
+	}
+	option = {
+		name = chaosx.nr16.7.a
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_public_science }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_facility_civic_compact_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_facility_civic_compact = yes }
+	}
+	option = {
+		name = chaosx.nr16.7.b
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_strategic_security }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_restricted_factor brilliant_scientist_has_high_exposure = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_facility_restricted_district_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_facility_restricted_district = yes }
+	}
+	option = {
+		name = chaosx.nr16.7.c
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_industrial_mobilization }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor num_of_factories > constant:brilliant_scientist_opening_ai.industrial_factory_gate }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_exposure = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor has_war = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_facility_industrial_charter_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_facility_industrial_charter = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.8
+	title = chaosx.nr16.8.t
+	desc = {
+		trigger = { has_government = democratic }
+		text = chaosx.nr16.8.democratic.d
+	}
+	desc = {
+		trigger = { has_government = communism }
+		text = chaosx.nr16.8.communist.d
+	}
+	desc = {
+		trigger = { has_government = fascism }
+		text = chaosx.nr16.8.fascist.d
+	}
+	desc = { text = chaosx.nr16.8.neutral.d }
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_reaction_custody_pending
+		NOT = { has_country_flag = brilliant_scientist_reaction_custody_resolved }
+		has_variable = brilliant_scientist_reaction_custody_family
+	}
+	option = {
+		name = chaosx.nr16.8.a
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_public_science }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_grievance = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_public_trust_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_public_trust = yes }
+	}
+	option = {
+		name = chaosx.nr16.8.b
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_government = fascism }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_government = communism }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_executive_reserve_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_executive_reserve = yes }
+	}
+	option = {
+		name = chaosx.nr16.8.c
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_industrial_mobilization }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_public_compact }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor brilliant_scientist_has_high_exposure = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_dangerous_factor brilliant_scientist_accident_pressure > constant:brilliant_scientist_accident.major_threshold }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_patent_pool_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_patent_pool = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr16.9
+	title = chaosx.nr16.9.t
+	desc = chaosx.nr16.9.d
+	picture = GFX_report_event_016_brilliant_scientist_directorate_dossier
+	is_triggered_only = yes
+	trigger = {
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_reaction_foreign_pending
+		NOT = { has_country_flag = brilliant_scientist_reaction_foreign_resolved }
+		has_event_target = brilliant_scientist_foreign_operation_actor
+		has_event_target = brilliant_scientist_foreign_operation_host
+		event_target:brilliant_scientist_foreign_operation_host = { tag = ROOT }
+	}
+	option = {
+		name = chaosx.nr16.9.a
+		trigger = {
+			NOT = { has_war_with = event_target:brilliant_scientist_foreign_operation_actor }
+			NOT = { check_variable = { brilliant_scientist_reaction_foreign_operation = constant:brilliant_scientist_foreign_operation.extraction } }
+			NOT = { check_variable = { brilliant_scientist_reaction_foreign_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_context_public_science }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_dangerous_factor check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_dangerous_factor check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_dangerous_factor check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.temporal } }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_dangerous_factor check_variable = { brilliant_scientist_last_breakthrough_project_family = constant:brilliant_scientist_project_family.singularity } }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_controlled_exchange_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_controlled_exchange = yes }
+	}
+	option = {
+		name = chaosx.nr16.9.b
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_country_flag = brilliant_scientist_secret_directorate }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor brilliant_scientist_has_high_exposure = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_cautious_factor has_war = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_private_warning_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_private_warning = yes }
+	}
+	option = {
+		name = chaosx.nr16.9.c
+		ai_chance = {
+			base = constant:brilliant_scientist_host_reaction_delta.ai_base
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor brilliant_scientist_has_high_mandate = yes }
+			modifier = { factor = constant:brilliant_scientist_host_reaction_delta.ai_preferred_factor brilliant_scientist_has_high_exposure = yes }
+		}
+		custom_effect_tooltip = brilliant_scientist_reaction_public_accusation_tt
+		hidden_effect = { brilliant_scientist_resolve_reaction_public_accusation = yes }
+	}
+}

@@ -16,6 +16,8 @@ Fourteen days after appointment, the host receives `chaosx.nr16.4`, which select
 
 The first Prototype reached in each project family produces one ordinary report, `chaosx.nr16.6`. The report uses the existing Directorate dossier surface, names the family dynamically, and offers public publication or strategic classification. The choice changes the same causal state without granting a second project reward, is recorded once per family, and is visible in the Directorate overview. These `.4`, `.5`, and `.6` reports are intentionally not additional evolutions or event-log entries.
 
+The host-context reaction tranche adds three ordinary, career-once reports without creating a new evolution or project reward. After the first resolved Prototype and a valid primary facility, `chaosx.nr16.7` records whether the facility becomes a civic compact, restricted district, or industrial charter. After the second resolved Prototype, `chaosx.nr16.8` records whether that method enters public trust, executive reserve, or a patent pool. After the first detected foreign operation resolves, `chaosx.nr16.9` names the exact actor and operation and offers controlled exchange, a private warning, or public accusation when the exchange gate is valid. Each resolution changes existing Directorate meters, stores a host and Kruger-character receipt, and is prevented from replaying. Ordinary transfer carries only unresolved `.7` or `.8` ownership; resolved facility and custody consequences remain with the old host and physical state while the character receipt prevents replay. Terminal exit clears pending obligations, while sovereignty formation discards former-host presentation state after the character history has been retained.
+
 ## Event identity
 
 - Event ID: `16`.

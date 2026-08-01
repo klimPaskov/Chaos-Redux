@@ -20,6 +20,8 @@ The system does not create free units, free equipment, generic technology grants
 7. Suspending a project releases half its occupied capacity. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
 8. The first completed Prototype in each family reserves one ordinary `chaosx.nr16.6` report. Public publication and classified retention adjust the existing Directorate values, but the report never grants a second project-stage reward. If several families reach Prototype in one synchronization pass, later families enter `brilliant_scientist_breakthrough_pending_families` and are dispatched in order after the current report closes.
 
+The first valid primary facility after a resolved Prototype can then receive `chaosx.nr16.7`, and the second resolved Prototype can receive `chaosx.nr16.8`. These reports settle facility terms and method custody as persistent governance receipts rather than advancing a project. A detected foreign operation resolved after any Prototype can schedule `chaosx.nr16.9`, which retains the named actor and operation and offers a bounded diplomatic response. None of these three reports creates another project reward, evolution, or event-log entry.
+
 Prototype projects are not charged a second wrapper clock. Their native facility time, breakthrough points, resources, and prototype iterations are the prototype cost.
 
 ## Stage and capacity contract

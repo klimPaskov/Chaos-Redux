@@ -494,6 +494,27 @@ brilliant_scientist_initialize_host_state = {
 	clear_variable = brilliant_scientist_temporal_bound_target_id
 	set_variable = { brilliant_scientist_origin_conclusion = constant:brilliant_scientist_origin.none }
 	set_variable = { brilliant_scientist_terminal_commitment = constant:brilliant_scientist_terminal_commitment.none }
+	clear_array = brilliant_scientist_reaction_public_trust_families
+	clear_array = brilliant_scientist_reaction_executive_reserve_families
+	clear_array = brilliant_scientist_reaction_patent_pool_families
+	clr_country_flag = brilliant_scientist_reaction_facility_pending
+	clr_country_flag = brilliant_scientist_reaction_facility_resolved
+	clr_country_flag = brilliant_scientist_reaction_custody_pending
+	clr_country_flag = brilliant_scientist_reaction_custody_resolved
+	clr_country_flag = brilliant_scientist_reaction_foreign_pending
+	clr_country_flag = brilliant_scientist_reaction_foreign_resolved
+	clr_country_flag = brilliant_scientist_reaction_facility_civic_compact
+	clr_country_flag = brilliant_scientist_reaction_facility_restricted_district
+	clr_country_flag = brilliant_scientist_reaction_facility_industrial_charter
+	clr_country_flag = brilliant_scientist_reaction_public_trust
+	clr_country_flag = brilliant_scientist_reaction_executive_reserve
+	clr_country_flag = brilliant_scientist_reaction_patent_pool
+	clr_country_flag = brilliant_scientist_reaction_controlled_exchange
+	clr_country_flag = brilliant_scientist_reaction_private_warning
+	clr_country_flag = brilliant_scientist_reaction_public_accusation
+	clear_variable = brilliant_scientist_reaction_custody_family
+	clear_variable = brilliant_scientist_reaction_foreign_operation
+	clear_variable = brilliant_scientist_reaction_exchange_family
 	brilliant_scientist_initialize_project_ledgers = yes
 	brilliant_scientist_select_primary_facility = yes
 	brilliant_scientist_refresh_government_control = yes
@@ -2915,6 +2936,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 			}
 			set_temp_variable = { brilliant_scientist_recruitment_posture = brilliant_scientist_transfer_posture }
 			brilliant_scientist_initialize_host_state = yes
+			brilliant_scientist_copy_host_reaction_history_to_recipient = yes
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_context_public_science } } set_country_flag = brilliant_scientist_context_public_science }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_context_strategic_security } } set_country_flag = brilliant_scientist_context_strategic_security }
 			if = { limit = { event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_context_industrial_mobilization } } set_country_flag = brilliant_scientist_context_industrial_mobilization }
@@ -2972,6 +2994,8 @@ brilliant_scientist_transfer_kruger_atomically = {
 			brilliant_scientist_sync_evolution_runtime = yes
 			clr_country_flag = brilliant_scientist_character_transaction_lock
 		}
+		brilliant_scientist_clear_host_reaction_pending_state = yes
+		brilliant_scientist_clear_host_reaction_foreign_character_pending_state = yes
 
 		clr_country_flag = brilliant_scientist_character_transaction_lock
 		clr_global_flag = brilliant_scientist_character_transaction_lock
@@ -3344,6 +3368,24 @@ brilliant_scientist_refresh_project_accident_pressure = {
 		multiply_temp_variable = { brilliant_scientist_accident_stage_pressure = constant:brilliant_scientist_accident.suspended_factor }
 	}
 	add_to_variable = { brilliant_scientist_accident_pressure = brilliant_scientist_accident_stage_pressure }
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_primary_facility
+			event_target:brilliant_scientist_primary_facility = { has_state_flag = brilliant_scientist_primary_facility_civic_compact }
+		}
+		subtract_from_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	}
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_primary_facility
+			event_target:brilliant_scientist_primary_facility = { has_state_flag = brilliant_scientist_primary_facility_industrial_charter }
+		}
+		add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_reaction_patent_pool }
+		add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	}
 	clamp_variable = { var = brilliant_scientist_accident_pressure min = constant:brilliant_scientist_accident.minimum max = constant:brilliant_scientist_accident.maximum }
 	round_variable = brilliant_scientist_accident_pressure
 }
@@ -3599,6 +3641,7 @@ brilliant_scientist_mark_singularity_terminal_fired = {
 	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
 	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
 	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	brilliant_scientist_clear_host_reaction_state_on_terminal_exit = yes
 	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.terminal }
 }
 
@@ -3612,6 +3655,7 @@ brilliant_scientist_mark_lab_world_terminal_fired = {
 	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
 	clr_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_active
 	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	brilliant_scientist_clear_host_reaction_state_on_terminal_exit = yes
 }
 
 # Any scope. Clears only transient Event 016 pointers. Persistent project,

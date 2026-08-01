@@ -4,6 +4,10 @@ Date: 2026-07-14
 
 > Current-runtime pointer (2026-07-29): this file remains the accepted Event 016 design and disposition record, but its implementation and asset paragraphs are a historical 2026-07-14 snapshot. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for the current core-runtime, Event 019 interoperability, deferred-content, and 3D-model handoff. Do not use the older placeholder or asset-missing statements below to decide what has already been produced.
 
+## Current bounded-reaction disposition, 2026-08-01
+
+The context-reaction addendum `docs/plans/016_brilliant_scientist_plans/016_host_context_reaction_tranche_addendum.md` is accepted as a narrow implementation tranche. `chaosx.nr16.7` settles the first valid primary facility after the first resolved Prototype; `chaosx.nr16.8` settles custody of the second resolved Prototype; and `chaosx.nr16.9` answers the first detected foreign operation resolved after a Prototype. The three reports are ordinary incidents, reuse the registered Directorate dossier image, store matching host and Kruger-character receipts, and do not create an evolution, project reward, country, focus route, GUI, cluster entry, or 3D package. Transfer carries only unresolved `.7` or `.8` ownership, while resolved facility and custody consequences remain with the old host and physical state; the character receipt prevents replay. Terminal cleanup clears pending obligations, and sovereignty formation clears the former-host reaction surface after retaining character history. Broader country-specific flavour, bespoke report/news/remnant presentation, quantitative balance evidence, live consumer validation, and Event 016-specific 3D production remain outside this tranche.
+
 ## Purpose
 
 This file freezes the reconciled Event 016 design before implementation. It records which sources control, which recommendations were promoted or rejected, what exists in the repository, and what the next implementation session must do.

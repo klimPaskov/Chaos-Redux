@@ -1,0 +1,374 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 HOST-CONTEXT REACTION EFFECTS
+# ============================================================================
+# Three career-once report incidents follow the first successful Prototype
+# reports and the first detected foreign operation. They reuse the Directorate
+# causal values and foreign ledger; they never advance a project, create an
+# evolution, or grant a second Prototype reward.
+# ============================================================================
+
+# COUNTRY scope. Schedules the first primary-facility compact report.
+brilliant_scientist_try_schedule_primary_facility_reaction = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = {
+				var = brilliant_scientist_breakthrough_resolved_count
+				value = constant:brilliant_scientist_value.one
+				compare = equals
+			}
+			NOT = { has_country_flag = brilliant_scientist_reaction_facility_pending }
+			NOT = { has_country_flag = brilliant_scientist_reaction_facility_resolved }
+			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_facility_resolved } }
+			has_event_target = brilliant_scientist_primary_facility
+			event_target:brilliant_scientist_primary_facility = {
+				is_owned_by = ROOT
+				has_state_flag = brilliant_scientist_primary_facility
+			}
+		}
+		set_country_flag = brilliant_scientist_reaction_facility_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_reaction_facility_pending }
+		country_event = { id = chaosx.nr16.7 days = constant:brilliant_scientist_host_reaction_delay.facility_days }
+	}
+}
+
+# COUNTRY scope. Schedules the second-report custody decision and snapshots
+# the completed family before the delayed report opens.
+brilliant_scientist_try_schedule_custody_reaction = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = {
+				var = brilliant_scientist_breakthrough_resolved_count
+				value = constant:brilliant_scientist_value.two
+				compare = equals
+			}
+			has_variable = brilliant_scientist_last_breakthrough_project_family
+			NOT = { has_country_flag = brilliant_scientist_reaction_custody_pending }
+			NOT = { has_country_flag = brilliant_scientist_reaction_custody_resolved }
+			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_custody_resolved } }
+		}
+		set_variable = { brilliant_scientist_reaction_custody_family = brilliant_scientist_last_breakthrough_project_family }
+		set_country_flag = brilliant_scientist_reaction_custody_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_reaction_custody_pending }
+		country_event = { id = chaosx.nr16.8 days = constant:brilliant_scientist_host_reaction_delay.custody_days }
+	}
+}
+
+# COUNTRY scope on a resolved-operation host while regular actor and host
+# targets are still valid. This does not scan countries or create a substitute
+# target; the foreign-resolution transaction owns both scopes.
+brilliant_scientist_try_fire_foreign_reaction = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { brilliant_scientist_breakthrough_resolved_count > constant:brilliant_scientist_value.zero }
+			has_event_target = brilliant_scientist_foreign_operation_actor
+			has_event_target = brilliant_scientist_foreign_operation_host
+			event_target:brilliant_scientist_foreign_operation_actor = {
+				check_variable = { brilliant_scientist_foreign_last_operation_detected > constant:brilliant_scientist_value.zero }
+			}
+			NOT = { has_country_flag = brilliant_scientist_reaction_foreign_pending }
+			NOT = { has_country_flag = brilliant_scientist_reaction_foreign_resolved }
+			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_foreign_resolved } }
+		}
+		set_variable = { brilliant_scientist_reaction_foreign_operation = event_target:brilliant_scientist_foreign_operation_actor.brilliant_scientist_foreign_live_operation }
+		set_country_flag = brilliant_scientist_reaction_foreign_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_reaction_foreign_pending }
+		event_target:brilliant_scientist_foreign_operation_host = {
+			country_event = { id = chaosx.nr16.9 days = constant:brilliant_scientist_host_reaction_delay.foreign_days }
+		}
+	}
+}
+
+# COUNTRY scope. Clears only unresolved report ownership. Resolved flags and
+# outcome history remain on the old host; the fixed character receipt is the
+# replay guard when Kruger later changes carrier.
+brilliant_scientist_clear_host_reaction_pending_state = {
+	clr_country_flag = brilliant_scientist_reaction_facility_pending
+	clr_country_flag = brilliant_scientist_reaction_custody_pending
+	clr_country_flag = brilliant_scientist_reaction_foreign_pending
+	clear_variable = brilliant_scientist_reaction_custody_family
+	clear_variable = brilliant_scientist_reaction_foreign_operation
+}
+
+# CHARACTER scope is intentionally separate from the host cleanup. Ordinary
+# transfer clears the former host's pending flags but must retain these flags
+# on the same fixed Kruger identity for the recipient's delayed report.
+brilliant_scientist_clear_host_reaction_character_pending_state = {
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_facility_pending
+		clr_character_flag = brilliant_scientist_personal_reaction_custody_pending
+		clr_character_flag = brilliant_scientist_personal_reaction_foreign_pending
+	}
+}
+
+# CHARACTER scope. `.9` is intentionally not transferred with `.7` or `.8`.
+brilliant_scientist_clear_host_reaction_foreign_character_pending_state = {
+	KRG_warren_kruger = { clr_character_flag = brilliant_scientist_personal_reaction_foreign_pending }
+}
+
+# COUNTRY scope on a new ordinary-transfer carrier. Resolved consequences stay
+# with the old host and its physical state; the fixed character receipt blocks
+# replay. Only unresolved `.7` or `.8` ownership and the `.8` family snapshot
+# move to the recipient.
+brilliant_scientist_copy_host_reaction_history_to_recipient = {
+	if = {
+		limit = {
+			event_target:brilliant_scientist_transfer_old_host = {
+				has_country_flag = brilliant_scientist_reaction_custody_pending
+				has_variable = brilliant_scientist_reaction_custody_family
+			}
+		}
+		set_variable = { brilliant_scientist_reaction_custody_family = event_target:brilliant_scientist_transfer_old_host.brilliant_scientist_reaction_custody_family }
+	}
+	if = {
+		limit = {
+			event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_reaction_facility_pending }
+			NOT = { has_country_flag = brilliant_scientist_reaction_facility_resolved }
+			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_facility_resolved } }
+			has_event_target = brilliant_scientist_primary_facility
+			event_target:brilliant_scientist_primary_facility = { is_owned_by = ROOT has_state_flag = brilliant_scientist_primary_facility }
+		}
+		set_country_flag = brilliant_scientist_reaction_facility_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_reaction_facility_pending }
+		country_event = { id = chaosx.nr16.7 days = constant:brilliant_scientist_host_reaction_delay.facility_days }
+	}
+	if = {
+		limit = {
+			event_target:brilliant_scientist_transfer_old_host = { has_country_flag = brilliant_scientist_reaction_custody_pending }
+			NOT = { has_country_flag = brilliant_scientist_reaction_custody_resolved }
+			KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_reaction_custody_resolved } }
+			has_variable = brilliant_scientist_reaction_custody_family
+		}
+		set_country_flag = brilliant_scientist_reaction_custody_pending
+		KRG_warren_kruger = { set_character_flag = brilliant_scientist_personal_reaction_custody_pending }
+		country_event = { id = chaosx.nr16.8 days = constant:brilliant_scientist_host_reaction_delay.custody_days }
+	}
+}
+
+# COUNTRY scope. Permanent removal and world-end callers clear every pending
+# host and character obligation. Resolved history remains as a receipt so a
+# terminal transition cannot erase the record of an earlier response.
+brilliant_scientist_clear_host_reaction_state_on_terminal_exit = {
+	brilliant_scientist_clear_host_reaction_pending_state = yes
+	brilliant_scientist_clear_host_reaction_character_pending_state = yes
+}
+
+# COUNTRY scope. Used only by the KRG carrier after sovereignty formation: the
+# former host's delayed .7/.8 obligations are not replayed as sovereign events.
+brilliant_scientist_clear_host_reaction_state_after_sovereignty = {
+	brilliant_scientist_clear_host_reaction_pending_state = yes
+	brilliant_scientist_clear_host_reaction_character_pending_state = yes
+	clr_country_flag = brilliant_scientist_reaction_facility_resolved
+	clr_country_flag = brilliant_scientist_reaction_custody_resolved
+	clr_country_flag = brilliant_scientist_reaction_foreign_resolved
+	clr_country_flag = brilliant_scientist_reaction_facility_civic_compact
+	clr_country_flag = brilliant_scientist_reaction_facility_restricted_district
+	clr_country_flag = brilliant_scientist_reaction_facility_industrial_charter
+	clr_country_flag = brilliant_scientist_reaction_public_trust
+	clr_country_flag = brilliant_scientist_reaction_executive_reserve
+	clr_country_flag = brilliant_scientist_reaction_patent_pool
+	clr_country_flag = brilliant_scientist_reaction_controlled_exchange
+	clr_country_flag = brilliant_scientist_reaction_private_warning
+	clr_country_flag = brilliant_scientist_reaction_public_accusation
+	clear_array = brilliant_scientist_reaction_public_trust_families
+	clear_array = brilliant_scientist_reaction_executive_reserve_families
+	clear_array = brilliant_scientist_reaction_patent_pool_families
+	clear_variable = brilliant_scientist_reaction_exchange_family
+}
+
+# COUNTRY scope. Primary-facility civic compact.
+brilliant_scientist_resolve_reaction_facility_civic_compact = {
+	event_target:brilliant_scientist_primary_facility = {
+		clr_state_flag = brilliant_scientist_primary_facility_civic_compact
+		clr_state_flag = brilliant_scientist_primary_facility_restricted_district
+		clr_state_flag = brilliant_scientist_primary_facility_industrial_charter
+		set_state_flag = brilliant_scientist_primary_facility_civic_compact
+	}
+	set_country_flag = brilliant_scientist_reaction_facility_resolved
+	clr_country_flag = brilliant_scientist_reaction_facility_pending
+	set_country_flag = brilliant_scientist_reaction_facility_civic_compact
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_exposure = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_grievance = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_facility_pending
+		set_character_flag = brilliant_scientist_personal_reaction_facility_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_civic_compact
+	}
+}
+
+# COUNTRY scope. Primary-facility restricted district.
+brilliant_scientist_resolve_reaction_facility_restricted_district = {
+	event_target:brilliant_scientist_primary_facility = {
+		clr_state_flag = brilliant_scientist_primary_facility_civic_compact
+		clr_state_flag = brilliant_scientist_primary_facility_restricted_district
+		clr_state_flag = brilliant_scientist_primary_facility_industrial_charter
+		set_state_flag = brilliant_scientist_primary_facility_restricted_district
+	}
+	set_country_flag = brilliant_scientist_reaction_facility_resolved
+	clr_country_flag = brilliant_scientist_reaction_facility_pending
+	set_country_flag = brilliant_scientist_reaction_facility_restricted_district
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_exposure = yes
+	brilliant_scientist_change_grievance = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_facility_pending
+		set_character_flag = brilliant_scientist_personal_reaction_facility_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_restricted_district
+	}
+}
+
+# COUNTRY scope. Primary-facility industrial charter.
+brilliant_scientist_resolve_reaction_facility_industrial_charter = {
+	event_target:brilliant_scientist_primary_facility = {
+		clr_state_flag = brilliant_scientist_primary_facility_civic_compact
+		clr_state_flag = brilliant_scientist_primary_facility_restricted_district
+		clr_state_flag = brilliant_scientist_primary_facility_industrial_charter
+		set_state_flag = brilliant_scientist_primary_facility_industrial_charter
+	}
+	set_country_flag = brilliant_scientist_reaction_facility_resolved
+	clr_country_flag = brilliant_scientist_reaction_facility_pending
+	set_country_flag = brilliant_scientist_reaction_facility_industrial_charter
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_project_capacity = yes
+	brilliant_scientist_change_dependence = yes
+	if = {
+		limit = { NOT = { has_variable = brilliant_scientist_accident_pressure } }
+		set_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_value.zero }
+	}
+	add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	clamp_variable = { var = brilliant_scientist_accident_pressure min = constant:brilliant_scientist_accident.minimum max = constant:brilliant_scientist_accident.maximum }
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_facility_pending
+		set_character_flag = brilliant_scientist_personal_reaction_facility_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_industrial_charter
+	}
+}
+
+# COUNTRY scope. Custody of the second resolved method.
+brilliant_scientist_resolve_reaction_public_trust = {
+	set_country_flag = brilliant_scientist_reaction_custody_resolved
+	clr_country_flag = brilliant_scientist_reaction_custody_pending
+	set_country_flag = brilliant_scientist_reaction_public_trust
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_reaction_public_trust_families value = brilliant_scientist_reaction_custody_family } } } add_to_array = { array = brilliant_scientist_reaction_public_trust_families value = brilliant_scientist_reaction_custody_family } }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_dependence = yes
+	brilliant_scientist_change_grievance = yes
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_exposure = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_custody_pending
+		set_character_flag = brilliant_scientist_personal_reaction_custody_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_public_trust
+	}
+}
+
+# COUNTRY scope. Custody of the second resolved method by executive reserve.
+brilliant_scientist_resolve_reaction_executive_reserve = {
+	set_country_flag = brilliant_scientist_reaction_custody_resolved
+	clr_country_flag = brilliant_scientist_reaction_custody_pending
+	set_country_flag = brilliant_scientist_reaction_executive_reserve
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_reaction_executive_reserve_families value = brilliant_scientist_reaction_custody_family } } } add_to_array = { array = brilliant_scientist_reaction_executive_reserve_families value = brilliant_scientist_reaction_custody_family } }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_mandate = yes
+	brilliant_scientist_change_dependence = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_exposure = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_custody_pending
+		set_character_flag = brilliant_scientist_personal_reaction_custody_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_executive_reserve
+	}
+}
+
+# COUNTRY scope. Custody of the second resolved method through a patent pool.
+brilliant_scientist_resolve_reaction_patent_pool = {
+	set_country_flag = brilliant_scientist_reaction_custody_resolved
+	clr_country_flag = brilliant_scientist_reaction_custody_pending
+	set_country_flag = brilliant_scientist_reaction_patent_pool
+	if = { limit = { NOT = { is_in_array = { array = brilliant_scientist_reaction_patent_pool_families value = brilliant_scientist_reaction_custody_family } } } add_to_array = { array = brilliant_scientist_reaction_patent_pool_families value = brilliant_scientist_reaction_custody_family } }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_project_capacity = yes
+	brilliant_scientist_change_exposure = yes
+	if = {
+		limit = { NOT = { has_variable = brilliant_scientist_accident_pressure } }
+		set_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_value.zero }
+	}
+	add_to_variable = { brilliant_scientist_accident_pressure = constant:brilliant_scientist_host_reaction_delta.accident_minor }
+	clamp_variable = { var = brilliant_scientist_accident_pressure min = constant:brilliant_scientist_accident.minimum max = constant:brilliant_scientist_accident.maximum }
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_custody_pending
+		set_character_flag = brilliant_scientist_personal_reaction_custody_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_patent_pool
+	}
+}
+
+# COUNTRY scope. Controlled exchange with the exact detected actor.
+brilliant_scientist_resolve_reaction_controlled_exchange = {
+	set_country_flag = brilliant_scientist_reaction_foreign_resolved
+	clr_country_flag = brilliant_scientist_reaction_foreign_pending
+	set_country_flag = brilliant_scientist_reaction_controlled_exchange
+	set_variable = { brilliant_scientist_reaction_exchange_family = brilliant_scientist_last_breakthrough_project_family }
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		set_variable = { brilliant_scientist_foreign_selected_project_family = event_target:brilliant_scientist_foreign_operation_host.brilliant_scientist_reaction_exchange_family }
+		brilliant_scientist_foreign_grant_selected_family_theory = yes
+		set_country_flag = brilliant_scientist_foreign_reaction_exchanged
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_reaction_exchange }
+	}
+	add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_reaction_exchange }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_exposure = yes
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_grievance = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_foreign_pending
+		set_character_flag = brilliant_scientist_personal_reaction_foreign_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_controlled_exchange
+	}
+}
+
+# COUNTRY scope. Quiet warning to the detected actor.
+brilliant_scientist_resolve_reaction_private_warning = {
+	set_country_flag = brilliant_scientist_reaction_foreign_resolved
+	clr_country_flag = brilliant_scientist_reaction_foreign_pending
+	set_country_flag = brilliant_scientist_reaction_private_warning
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		set_country_flag = brilliant_scientist_foreign_reaction_warned
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_reaction_warning }
+	}
+	add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_reaction_warning }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	multiply_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_foreign_consequence.negative_one }
+	brilliant_scientist_change_exposure = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_foreign_pending
+		set_character_flag = brilliant_scientist_personal_reaction_foreign_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_private_warning
+	}
+}
+
+# COUNTRY scope. Public accusation of the exact detected actor.
+brilliant_scientist_resolve_reaction_public_accusation = {
+	set_country_flag = brilliant_scientist_reaction_foreign_resolved
+	clr_country_flag = brilliant_scientist_reaction_foreign_pending
+	set_country_flag = brilliant_scientist_reaction_public_accusation
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		add_to_variable = { brilliant_scientist_foreign_interest = constant:brilliant_scientist_host_reaction_delta.foreign_interest_increment }
+		clamp_variable = { var = brilliant_scientist_foreign_interest min = constant:brilliant_scientist_foreign.interest_minimum max = constant:brilliant_scientist_foreign.interest_maximum }
+		add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_host modifier = brilliant_scientist_foreign_reaction_accusation }
+	}
+	add_opinion_modifier = { target = event_target:brilliant_scientist_foreign_operation_actor modifier = brilliant_scientist_foreign_reaction_accusation }
+	set_temp_variable = { brilliant_scientist_value_delta = constant:brilliant_scientist_host_reaction_delta.variable_minor }
+	brilliant_scientist_change_mandate = yes
+	brilliant_scientist_change_exposure = yes
+	KRG_warren_kruger = {
+		clr_character_flag = brilliant_scientist_personal_reaction_foreign_pending
+		set_character_flag = brilliant_scientist_personal_reaction_foreign_resolved
+		set_character_flag = brilliant_scientist_personal_reaction_public_accusation
+	}
+}

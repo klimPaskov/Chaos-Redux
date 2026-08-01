@@ -105,6 +105,8 @@ The host may:
 - restrict the currently selected actor's access;
 - terminate standing controlled access, joint-laboratory, and protection frameworks.
 
+The first Prototype and facility records also produce three finite host-context reports. `chaosx.nr16.7` settles the primary facility as a civic compact, restricted district, or industrial charter and applies a small causal shift to the existing meters. `chaosx.nr16.8` settles custody of the second resolved Prototype as public trust, executive reserve, or patent pool and adds the family to a persistent receipt array without changing its project stage. `chaosx.nr16.9` is owned by the foreign-resolution transaction and gives the host a named-actor response. These reports use the registered Directorate dossier picture, have dynamic family and operation text, and write matching host and Kruger-character history flags. They are ordinary incidents rather than evolutions, decisions, or additional rewards.
+
 Controlled access, the joint laboratory, and the protection framework each have one successful lifetime establishment per host. Termination removes an active framework but retains its historical establishment flag, so a terminate/reopen loop cannot manufacture infrastructure or repeatedly harvest institutional meter changes.
 
 The joint laboratory persists its country and state through:
