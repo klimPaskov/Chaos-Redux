@@ -1,6 +1,6 @@
 # Black Plague Triggerable Scenario Matrix
 
-All names are working labels. Final IDs and sort values must be checked against the live scenario registry.
+The live implementation uses `SCN-012` and the two-tag correction below is authoritative.
 
 ## Scenario registry row
 
@@ -12,19 +12,19 @@ All names are working labels. Final IDs and sort values must be checked against 
 | Intensity control | Low, Medium, High, Maximum |
 | Direct launch | yes, except impossible setup or active world end |
 | Forced event state | Event 20 plus Evolutions I through IV |
-| Immediate actors | several Rat Nations and one separate Rat King |
+| Immediate actors | one reusable `RTA` Rat Nation carrier with internal brood basins and one separate `RTX` Rat King |
 | World end | not launched |
 | Repeat launch | blocked after success |
 | Achievement handling | permanent scenario shortcut disqualifier |
 
 ## Intensity targets
 
-| Intensity | Eligible continents targeted | Established plague states | Independent Rat Nations | Rat King states | Chaos floor | Rat opening strength |
+| Intensity | Eligible continents targeted | Established plague states | Internal `RTA` brood coverage | Rat King states | Chaos floor | Rat opening strength |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Low | 3 | 12 to 18 | 2 to 3 | 1 to 2 | 400 | young but viable broods and royal core |
-| Medium | 4 | 24 to 36 | 4 to 6 | 2 to 4 | 600 | established regional rat armies |
-| High | 5 or all when fewer exist | 45 to 65 | 7 to 10 | 4 to 6 | 800 | strong multi-front rat war |
-| Maximum | every eligible inhabited continent | 75 to 110 | 10 to 16, tag capped | 7 to 10 | 999 | near-world-collapse armies under performance caps |
+| Low | 3 | 12 to 18 | 1 `RTA` carrier with several internal broods | 1 to 2 | 400 | young but viable broods and royal core |
+| Medium | 4 | 24 to 36 | 1 `RTA` carrier with several internal broods | 2 to 4 | 600 | established regional rat armies |
+| High | 5 or all when fewer exist | 45 to 65 | 1 `RTA` carrier with many internal broods | 4 to 6 | 800 | strong multi-front rat war |
+| Maximum | every eligible inhabited continent | 75 to 110 | 1 `RTA` carrier with capped internal broods | 7 to 10 | 999 | near-world-collapse armies under performance caps |
 
 ## Seed-state mix
 
@@ -46,7 +46,7 @@ All names are working labels. Final IDs and sort values must be checked against 
 | 4 | disease values | status and seven Black Plague state values initialized | one registry entry per state |
 | 5 | Evolution I | stronger strain active and logged | skip record when already present |
 | 6 | Evolution II | overseas spread active and logged | skip record when already present |
-| 7 | Rat Nations | missing independent broods created | existing valid broods count toward target |
+| 7 | Rat Nation carrier | missing internal broods and state markers created inside `RTA` | existing valid `RTA` brood markers count toward target; no new rat tag |
 | 8 | Evolution III | logged with first brood actor | one row only |
 | 9 | Rat King | separate Royal Basin and country created | preserve existing King when present |
 | 10 | Evolution IV | logged with Rat King actor | one row only |
@@ -90,7 +90,7 @@ These appear as separate decision entries inside the general disease category.
 | Low launch on ordinary map | three continents, two or more broods, one King, no world end |
 | Maximum launch | every eligible continent, capped actors and units, Chaos no higher than 999 from bootstrap |
 | Event 20 already active | existing progress retained, missing states and actors added, no duplicate history |
-| Rat Nations already active | existing broods count toward target, no duplicated tags or units |
+| Rat Nation already active | existing `RTA` brood markers count toward target, no duplicated tag or units |
 | Rat King already active | existing King retained, no duplicate Evolution IV row |
 | small or altered map | targets scale down after minimum validity, no invalid state or capital |
 | mapmode | every established Black Plague state is black immediately after launch |

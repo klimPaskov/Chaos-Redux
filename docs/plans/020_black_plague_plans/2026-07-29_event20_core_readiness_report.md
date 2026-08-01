@@ -2,7 +2,7 @@
 
 ## Disposition
 
-The Black Plague core-stabilization runtime supplies the epidemic lifecycle, response loop, evolution state machine, Rat country runtime, weaponization bridge, triggerable-scenario transaction, mapmode integration, logs, super-events, and earned terminal route. Shared completion remains partial: the natural event is default enabled, but the accepted Diseases cluster and the public Black Plague world-end row are not registered, and the Rat absorption decision still needs a design disposition.
+The Black Plague core-stabilization runtime supplies the epidemic lifecycle, response loop, evolution state machine, Rat country runtime, weaponization bridge, triggerable-scenario transaction, mapmode integration, logs, super-events, and earned terminal route. The live registry now includes the Diseases cluster, the public Black Plague world-end row, the two-tag Rat lifecycle, and SCN-012. Shared completion remains partial because broader route depth, narrative breadth, selected presentation assets, and live consumer validation remain open.
 
 This report does not claim that the entire original content specification is complete. Narrative expansion, bespoke models, and presentation depth remain deliberately queued.
 
@@ -18,7 +18,7 @@ This report does not claim that the entire original content specification is com
 - Doctor Wu host bridge.
 - Six-phase weaponization project, eighteen roles, four approaches, accidents, condemnation, and payload integration.
 - Five logged evolutions with dynamic active and pre-fire Event Details entries.
-- Finite Rat Nation pool and separate Rat King package with identity, AI, forces, decisions, origin archetypes, and focus trees.
+- Reusable `RTA` Rat Nation and separate `RTX` Rat King packages with identity, AI, forces, decisions, origin archetypes, and focus trees.
 - Direct, idempotent `SCN-012` launch transaction that forces Evolutions I–IV but never grants Evolution V or world end.
 - Earned Evolution V gates and deterministic terminal takeover.
 - Event-owned seven-day scheduler and batched mapmode refresh.
@@ -35,7 +35,8 @@ Specific source checks found:
 - matching definitions and callers for the Event 20 root, pulse callbacks, scenario callbacks, Doctor Wu callbacks, and weaponization callbacks;
 - the reusable Rat Nation tag `RTA` and separate Rat King tag `RTX`, with matching country history, OOB, flags, portraits, leaders, AI, ideas, and locked zero-manpower templates;
 - valid focus prerequisites after correcting two impossible mutually exclusive route locks;
-- 23 Rat Nation and 38 Rat King focus nodes with complete title/description coverage, registered regular and shine sprites, and zero rendered connector crossings or intersections;
+- 23 Rat Nation and 50 Rat King focus nodes with complete title/description coverage, route-aware AI weights, registered regular and shine sprites, and zero rendered connector crossings or intersections;
+- fourteen Event 20 achievement contracts with registry entries, completion triggers, localisation, and completed, grey, and not-eligible icon triplets;
 - 31 shared response decisions with resolved, action-specific cost strings and population-band material displays;
 - 44.1 kHz stereo super-event audio with matching visible and dynamic audio IDs.
 
@@ -49,11 +50,7 @@ The following are explicitly outside this core-stabilization commit:
 - additional triggerable scenario variants and scenario-specific narrative content;
 - additional outbreak, response, brood, court, crisis, accident, and aftermath events;
 - deeper Rat Nation and Rat King route content beyond the functional core trees;
-- the accepted Severe Diseases cluster registration, member projection, UI/localisation mappings, and workbook cluster row;
-- the public Black Plague terminal row in the world-end scenario registry, Event Details, localisation, and workbook;
-- a design-backed resolution for the paid Rat absorption decision, whose current helper intentionally performs no territorial absorption;
 - source-frame animated UI and evolution presentation packages;
-- visible achievement registry, icons, and player-facing achievement presentation;
 - a unique Doctor Wu report image;
 - a dedicated weapon-delivery decision icon instead of the accepted Event 20 military-acceleration art reuse;
 - state-clipped black fog, pending a verified safe engine rendering method;
@@ -69,4 +66,4 @@ The 2026-07-24 Part 9 adapter and completion-audit handoffs describe an earlier 
 
 The user should treat the commit as the stable source baseline for an in-game smoke test. Any live finding belongs to a follow-up stabilization patch. Additional content and model production can proceed from this baseline without redesigning the core state machine.
 
-The editable event catalog workbook and its exported Events snapshot identify Event 20 as a minor fire-once event. The cluster and world-end scenario catalogs do not yet contain the accepted Diseases cluster or public Black Plague terminal route.
+The authoritative workbook and exported snapshots contain the live Event 20 row, Diseases cluster membership, public terminal row, and SCN-012 scenario contract. Historical pre-implementation reports in this directory retain their original wording where they document earlier fail-closed states.

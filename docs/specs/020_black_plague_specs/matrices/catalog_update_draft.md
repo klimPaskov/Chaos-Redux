@@ -16,7 +16,7 @@ This file defines the catalog fields that must be replaced after implementation.
 | Evo V | A successful Rat King can unlock a world-end focus path after enough conquest and deaths. |
 | World-End Scenario | The Rat King completes the world-end path, controls a continent, and takes over the world. |
 | Type | Minor Fire-Once |
-| Cluster ID | final registered Diseases cluster ID, planning candidate `5` |
+| Cluster ID | `8` (live Diseases cluster) |
 | Member Severity | Severe |
 | Status | To be changed from To Be Reworked only after full implementation and audit |
 
@@ -24,7 +24,7 @@ This file defines the catalog fields that must be replaced after implementation.
 
 | Field | Planned value or direction |
 | --- | --- |
-| Cluster ID | next verified free cluster ID, planning candidate `5` |
+| Cluster ID | `8` (live registered cluster) |
 | Cluster Name | Diseases |
 | Details | Disease incidents create persistent state outbreaks, population loss, containment choices, medical responses, and links to the biological warfare system. Final wording should match in-game cluster detail localisation. |
 | Members | `20` initially |
@@ -36,12 +36,12 @@ This file defines the catalog fields that must be replaced after implementation.
 
 | Field | Planned value or direction |
 | --- | --- |
-| Scenario ID | next verified free scenario ID, planning candidate `SCN-008` |
+| Scenario ID | `SCN-012` (live registered scenario) |
 | Scenario Name | working label Black Plague Unbound, final wording must be direct and specific |
-| Details | Immediately establishes Black Plague in many states across several continents, activates Evolutions I through IV, creates several independent Rat Nations, and creates the Rat King. It does not trigger Evolution V or world end. |
+| Details | Immediately establishes Black Plague in many states across several continents, activates Evolutions I through IV, seeds internal brood basins in the reusable `RTA` Rat Nation carrier, and creates the separate `RTX` Rat King. It does not trigger Evolution V or world end. |
 | Type Options | fixed profile, working label Instant Plague Kingdoms |
-| Intensity Scaling | Low, Medium, High, and Maximum control continent count, infected-state count and severity, Rat Nation count, Rat King territory and army strength, and the Chaos floor. |
-| Status | To Be Implemented, then Needs Testing after scenario registration and launch validation |
+| Intensity Scaling | Low, Medium, High, and Maximum control continent count, infected-state count and severity, internal `RTA` brood coverage, Rat King territory and army strength, and the Chaos floor; the number of rat country tags never scales above `RTA` and `RTX`. |
+| Status | Registered and wired; live launch and balance validation remain required |
 
 ## Related catalog notes
 
