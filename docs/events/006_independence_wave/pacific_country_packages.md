@@ -68,6 +68,13 @@ evidence rather than current environment proof. The durable Event 006 portrait
 shelf now contains 63 original-size masters with no normalized or advisor
 derivatives.
 
+That sentence is a dated historical snapshot. The current portrait-shelf authority
+is 78 original-size PNG masters in one flat directory, with 73 indexed rows and
+five older physical files outside the index; no normalized 156x210 shelf files,
+advisor portraits, dossier derivatives, or small consumers are authorized. CHU
+Karim Tinchurin v3 and ASY Haydo remain rights/date-gated evidence, and the
+alternate ASY Barsoum package remains pending independent audit.
+
 ## Availability and release safety
 
 The planner uses exact immutable availability wrappers:
