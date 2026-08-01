@@ -179,6 +179,34 @@ country_event = {
 	}
 }
 
+# Internal synchronous character handoff for the attested Corsica and Pacific
+# packages. Static characters are recruited from an event, never from a
+# scripted effect or on action. The calling setup effect remains responsible
+# for validating the package-specific roster and role contract.
+country_event = {
+	id = chaosx.nr6.15
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { is_independence_wave_cor_package = yes }
+			if = { limit = { NOT = { has_character = COR_corsican_municipal_congress } } recruit_character = COR_corsican_municipal_congress }
+			if = { limit = { NOT = { has_character = COR_jean_chiappe } } recruit_character = COR_jean_chiappe }
+			if = { limit = { NOT = { has_character = COR_paolo_pietri } } recruit_character = COR_paolo_pietri }
+			if = { limit = { NOT = { has_character = COR_antone_rocchi } } recruit_character = COR_antone_rocchi }
+		}
+		else_if = {
+			limit = { is_independence_wave_hbx_package = yes }
+			if = { limit = { NOT = { has_character = HBX_independence_wave_civic_convention_chair } } recruit_character = HBX_independence_wave_civic_convention_chair }
+		}
+		else_if = {
+			limit = { is_independence_wave_haw_package = yes }
+			if = { limit = { NOT = { has_character = HAW_independence_wave_territorial_delegate } } recruit_character = HAW_independence_wave_territorial_delegate }
+		}
+	}
+}
+
 # Delayed expiry callback for the coordinator-bound DM-58 operation. The
 # coordinator target prevents an older scheduled callback from cleaning a
 # later operation started by another country after the timed global flag has

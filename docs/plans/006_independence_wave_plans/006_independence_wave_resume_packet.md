@@ -10,6 +10,11 @@ Controlling acceptance authority (2026-07-29): Event 006 completion is evaluated
 
 The current whole-event authority is `subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md` with status **HOLD / PARTIAL**. The current static Event 006 content-attestation set is thirteen packages (`IW-001`, `IW-002`, `IW-004`, `IW-006`, `IW-007`, `IW-008`, `IW-009`, `IW-010`, `IW-012`, `IW-017`, `IW-019`, `IW-173`, and `IW-184`) across twelve compatible reservation groups and thirteen distinct anchors. The current portrait evidence shelf contains 61 original-size masters directly under `docs/assets/006_independence_wave/portraits_generated_png/`; normalized 156x210 candidates remain in their package workspaces, and no Event 006 advisor or dossier derivatives are authorized.
 
+IW-043 CHU, IW-058 ASY, IW-179 FSM, IW-093 DOX, and IW-098 SOK remain outside the current attestation gate with their existing fail-closed package, sourced-roster, or role evidence blockers. No custom Event 006 advisor icons, advisor portrait/sprite blocks, dossier portraits, or small derivatives are authorized.
+
+The bounded v49 core-contract re-audit and hidden-event character-recruit repair
+are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
+
 ### Shared core and registry API milestone closed
 
 The automatic and World Collapse loop, Event 005 and Event 006 reservation and transaction boundary, shared dynamic systems, and reusable country-registration API are source-closed under the 2026-07-29 acceptance authority. The approved automatic ladder remains 6/8/10/14/20. The 14- and 20-country targets remain fail-closed below admitted package and reservation capacity. Do not reopen these shared surfaces unless a later source audit identifies a regression.
@@ -31,7 +36,7 @@ Current routing authority is `subagent_handoffs/006_event_completion_audit_v33_2
 
 ## 2026-07-28 IW-012 implementation addendum
 
-IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the bounded Event 006 carrier overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The ordinary full-tree recognition branch is not imported into ICE; the imported `independence_wave_overlay_join_network` focus is the reviewed pre-Compact network path and raises Network Standing from 10 to 20 after its two prerequisites. The current compile-time attestation set is thirteen packages: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, IW-173, and IW-184, across twelve compatible reservation groups. IW-173 HAW is admitted after the v45 package audit and v46 Samuel Wilder King portrait audit as an additive non-ruling role that preserves vanilla David Kalakaua Kawananakoa. The post-commit route-arbitration closure in `3570ed8ff` and `72d8549e3` is recorded by `006_iw012_decision_ai_reaudit_2026_07_28.md` and `006_iw012_formal_route_ai_closure_implementation_2026_07_28.md`; it closes source-level route-writer and state-aware AI arbitration while static probability/source-input and transaction/source audits remain required. Live focus visibility, route-AI timing, allocator execution, save/load, host-survival observation, force-materialization observation, and player-owned scenario execution are optional future QA. Whole-event completion remains HOLD / PARTIAL for the static blockers.
+IW-012 now has a registered-tag ICE adapter with a supported integer-weight AI profile, an exact vanilla-path `iceland_tree` carrier that imports the bounded Event 006 carrier overlay and four ICE route consumers, a serialized project-only decision guard that leaves the harbour survival mission active, and an explicit FORM-02 guard against vanilla Nordic identity flags. The ordinary full-tree recognition branch is not imported into ICE; the imported `independence_wave_overlay_join_network` focus is the reviewed pre-Compact network path and raises Network Standing from 10 to 20 after its two prerequisites. The current compile-time attestation set is thirteen packages: IW-001, IW-002, IW-004, IW-006, IW-007, IW-008, IW-009, IW-010, IW-012, IW-017, IW-019, IW-173, and IW-184, across twelve compatible reservation groups and thirteen distinct anchors. IW-173 HAW is admitted after the v45 package audit and v46 Samuel Wilder King portrait audit as an additive non-ruling role that preserves vanilla David Kalakaua Kawananakoa. The post-commit route-arbitration closure in `3570ed8ff` and `72d8549e3` is recorded by `006_iw012_decision_ai_reaudit_2026_07_28.md` and `006_iw012_formal_route_ai_closure_implementation_2026_07_28.md`; it closes source-level route-writer and state-aware AI arbitration while static probability/source-input and transaction/source audits remain required. Live focus visibility, route-AI timing, allocator execution, save/load, host-survival observation, force-materialization observation, and player-owned scenario execution are optional future QA. Whole-event completion remains HOLD / PARTIAL for the static blockers.
 
 The IW-012 route-arbitration closure is source-implemented: Armed Neutrality no longer writes the government route, and the four formal route focuses use state-aware weights while preserving their package gates, costs, durations, route rewards, and mutual exclusions. The six project AI blocks use the same visible ledger and host/war signals. Static source checks pass; the probability/source-input matrix and transaction/source audit remain required, while live shared-focus visibility, AI timing, save/load, and player-owned observation are optional future QA.
 
@@ -104,9 +109,9 @@ The current flat shelf check is `root_pngs=61`, `child_dirs=0`, and `normalized=
 
 `006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` supersede their older bounded surfaces; v30 remains historical traceability only. The post-commit IW-012 route-arbitration handoffs are static source evidence. The whole goal remains HOLD / PARTIAL for the static blockers; live runtime evidence is optional future QA.
 
-Any remaining v23/v28/v30/v31/v32, 49/50/51/54-master, or pre-repair wording later in this packet is
+Any remaining v23/v28/v30/v31/v32, 49/50/51/54/56-master, or pre-repair wording later in this packet is
 historical traceability rather than current authority. Use the v33 completion
-handoff, the 56-file flat-shelf manifests, and the bounded 2026-07-28/29 handoffs
+handoff, the 61-file flat-shelf manifests, and the bounded 2026-07-28/29 handoffs
 above for the current status. The installed-mod scan includes MFX and reports
 zero reserved/custom-cosmetic collisions, but that result does not admit FORM-39
 or make its `needs_user_review` package a readiness fallback.
@@ -225,7 +230,7 @@ they are not current routing documents.
 - The current portrait authority is the sourced-only workflow in the event-asset
   skill. The flat reference shelf at
   `docs/assets/006_independence_wave/portraits_generated_png/` now preserves exactly
-  56 original-size pre-resize masters directly in one directory, with no nested
+  61 original-size pre-resize masters directly in one directory, with no nested
   folders, normalized 156x210 PNGs, or advisor/small/dossier derivatives;
   `PRE_RESIZE_MANIFEST.md` records the byte/hash inventory. Galimzhan v2 is the
   bounded exception with an independent visual/provenance PASS and parent-promoted
@@ -351,7 +356,7 @@ and player-owned observation are optional future QA.
   Sardinia has sourced Lussu but two unresolved roles. No advisor icons were
   created.
 - Pacific IW-173 HAW, IW-179 FSM, IW-184 HBX, and FORM-48 gameplay, focus/icon, architecture, decision/mission, localisation, flags, and postformation logic remain implemented.
-  HAW's generic vanilla portrait and FSM's generated congress chair keep those two country admissions withdrawn, making FORM-48 unreachable until their sourced replacements pass.
+  HAW is admitted after the v45 package and v46 Samuel Wilder King portrait audits; FSM's generated congress chair remains withdrawn, making FORM-48 unreachable until FSM's sourced replacement passes.
   HBX is admitted after its full post-wire country-package PASS, and its William D. Stephens portrait is sourced, independently approved, wired, and byte-identical to the runtime DDS.
   Exact IW-184 content attestation, the automatic-readiness wrapper, and the Event 005-aware capacity witness are implemented; live ordinary, joint, and SCN-008 execution evidence remains pending.
   HAW trial 01 remains rejected on exact likeness despite its style pass and supplies no DDS. Retry 03 remains rejected on archive rights despite its strong adult visual match and supplies no crop, repaint, or DDS.
@@ -424,7 +429,7 @@ and player-owned observation are optional future QA.
   “no animation consumer” wording is superseded by the v23 audit.
 - FORM-06 through FORM-47 remain incomplete and fail-closed; FORM-42 is still
   specifically blocked. FORM-48 remains implemented but unreachable through its
-  complete required HAW/FSM member set because those two packages are not admitted.
+  complete required HAW/FSM member set because FSM remains unadmitted.
 - The current v33 completion authority and bounded post-v33 handoffs retain
   **HOLD / PARTIAL** for whole-event completion; no overall completion claim is
   authorized.

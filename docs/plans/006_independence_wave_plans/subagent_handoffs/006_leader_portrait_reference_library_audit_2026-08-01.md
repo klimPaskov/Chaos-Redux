@@ -22,7 +22,7 @@ No gameplay, `.gfx`, localisation, advisor-card, or runtime asset files were cha
 
 ## Changes
 
-No documentation or skill patch was necessary: the scoped README, manifest, contact-sheet evidence, and routing text are internally consistent with the audited files. The existing working-tree change to `assets/README.md` is preserved; unrelated worktree changes were not touched.
+No semantic documentation or skill patch was necessary: the scoped README, manifest, contact-sheet evidence, and routing text are internally consistent with the audited files. The touched README lines were only reflowed to keep each sentence on one physical line; the existing working-tree change to `assets/README.md` is preserved, and unrelated worktree changes were not touched.
 
 ## Validation evidence
 
