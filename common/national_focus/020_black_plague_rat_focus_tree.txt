@@ -264,6 +264,12 @@ focus_tree = {
 		position = { x = -4 y = 4 }
 		mutually_exclusive = { focus = black_plague_rat_choose_a_voice }
 		mutually_exclusive = { focus = black_plague_rat_read_the_marks }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_sprawl_factor num_of_controlled_states > constant:black_plague_value.one }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_sprawl_factor has_country_flag = black_plague_rat_archetype_field }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_sprawl_factor has_country_flag = black_plague_rat_archetype_urban }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_four_mouths
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.distributed }
@@ -280,6 +286,12 @@ focus_tree = {
 		position = { x = 4 y = 4 }
 		mutually_exclusive = { focus = black_plague_rat_four_mouths }
 		mutually_exclusive = { focus = black_plague_rat_read_the_marks }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_concentration_factor NOT = { num_of_controlled_states > constant:black_plague_value.one } }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_concentration_factor has_country_flag = black_plague_rat_archetype_war }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_hunger_factor black_plague_rat_hunger_is_crisis = yes }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_voice_chosen
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.dominant }
@@ -296,6 +308,11 @@ focus_tree = {
 		position = { x = 0 y = 4 }
 		mutually_exclusive = { focus = black_plague_rat_four_mouths }
 		mutually_exclusive = { focus = black_plague_rat_choose_a_voice }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_overseas_factor has_global_flag = black_plague_evolution_ii_active }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_overseas_factor has_country_flag = black_plague_rat_archetype_dock }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_marks_read
 			set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.emergent }
@@ -310,6 +327,11 @@ focus_tree = {
 		cost = @rat_focus_normal
 		prerequisite = { focus = black_plague_rat_four_mouths }
 		position = { x = -4 y = 5 }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor has_country_flag = black_plague_rat_archetype_field }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor num_of_controlled_states > constant:black_plague_value.one }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_many_nests_one_signal
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_signal }
@@ -321,6 +343,11 @@ focus_tree = {
 		cost = @rat_focus_normal
 		prerequisite = { focus = black_plague_rat_choose_a_voice }
 		position = { x = 4 y = 5 }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor has_country_flag = black_plague_rat_archetype_war }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor black_plague_rat_hunger_is_crisis = yes }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_fang_above_the_warren
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_royal }
@@ -332,6 +359,11 @@ focus_tree = {
 		cost = @rat_focus_normal
 		prerequisite = { focus = black_plague_rat_read_the_marks }
 		position = { x = 0 y = 5 }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor has_global_flag = black_plague_evolution_ii_active }
+			modifier = { factor = constant:black_plague_rat_ai.hierarchy_followup_factor has_country_flag = black_plague_rat_archetype_dock }
+		}
 		completion_reward = {
 			set_country_flag = black_plague_rat_stolen_route_memory
 			add_to_variable = { black_plague_rat_brood_mass = @rat_mass_gain_signal }
