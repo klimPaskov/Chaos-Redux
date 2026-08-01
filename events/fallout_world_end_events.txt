@@ -19613,3 +19613,105 @@ country_event = {
 	trigger = { fallout_event_691_cleanup_can_enter = yes }
 	immediate = { fallout_event_691_cleanup = yes }
 }
+
+# Dormant Fallout Quarantine chain: Permit Market
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.698
+	title = chaosx.fallout.698.t
+	desc = chaosx.fallout.698.d
+	picture = GFX_report_event_fallout_permit_market
+	is_triggered_only = yes
+	trigger = { fallout_event_698_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.698.a
+		trigger = { fallout_event_698_issue_local_passes_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_698_requested_branch = constant:fallout_event_698_branch.issue_local_passes } fallout_event_698_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.698.a.tt
+	}
+	option = {
+		name = chaosx.fallout.698.b
+		trigger = { fallout_event_698_audit_registry_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_698_requested_branch = constant:fallout_event_698_branch.audit_registry } fallout_event_698_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.698.b.tt
+	}
+	option = {
+		name = chaosx.fallout.698.c
+		trigger = { fallout_event_698_delegate_wards_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_698_requested_branch = constant:fallout_event_698_branch.delegate_wards } fallout_event_698_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.698.c.tt
+	}
+	option = {
+		name = chaosx.fallout.698.d
+		trigger = { fallout_event_698_sell_temporary_permits_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_698_requested_branch = constant:fallout_event_698_branch.sell_temporary_permits } fallout_event_698_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.698.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.699
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_698_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_698_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.700
+	title = chaosx.fallout.700.t
+	desc = { text = chaosx.fallout.700.issue.success.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.issue_local_passes compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.700.issue.partial.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.issue_local_passes compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.700.issue.failure.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.issue_local_passes compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.700.audit.success.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.audit_registry compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.700.audit.partial.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.audit_registry compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.700.audit.failure.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.audit_registry compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.700.delegate.success.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.delegate_wards compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.700.delegate.partial.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.delegate_wards compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.700.delegate.failure.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.delegate_wards compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.700.sell.success.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.sell_temporary_permits compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.700.sell.partial.d trigger = { check_variable = { fallout_event_698_selected_branch value = constant:fallout_event_698_branch.sell_temporary_permits compare = equals } check_variable = { fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.700.sell.failure.d
+	picture = GFX_report_event_fallout_permit_market
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_698_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.permit_market_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.700.a hidden_effect = { fallout_event_698_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.700.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.701
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_698_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.permit_market_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_698_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.702
+	title = chaosx.fallout.702.t
+	desc = { text = chaosx.fallout.702.success.d trigger = { check_variable = { fallout_event_698_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.702.partial.d trigger = { check_variable = { fallout_event_698_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.702.failure.d
+	picture = GFX_report_event_fallout_permit_market
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_698_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.permit_market_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { fallout_event_698_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.702.a hidden_effect = { fallout_event_698_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.702.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.703
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_698_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.permit_market_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_698_calculate_callback_outcome = yes fallout_event_698_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.704
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_698_cleanup_can_enter = yes }
+	immediate = { fallout_event_698_cleanup = yes }
+}

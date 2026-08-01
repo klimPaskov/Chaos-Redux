@@ -46,6 +46,7 @@
 42. `specs/46_reviewed_global_survival_men_at_km12.md`
 43. `specs/50_reviewed_global_survival_the_ammunition_winter.md`
 44. `specs/72_reviewed_archetype_false_positive.md`
+45. `specs/73_reviewed_archetype_permit_market.md`
 
 
 ## Accepted baseline specs included here

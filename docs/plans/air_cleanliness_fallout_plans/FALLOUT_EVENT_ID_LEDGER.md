@@ -1,8 +1,10 @@
 # Fallout Event ID Ledger
 
-## Current reconciliation after False Positive
+## Current reconciliation after Permit Market
 
-The living-world pilot now contains `572` defined event blocks across the reviewed ordinary range through `697`, including the dormant False Positive tranche at `691` through `697`. The current reviewed ordinary row count is `70`. False Positive uses candidate `691`, transaction `710070`, route `7172`, and survivor Event Log history `9176`. The reserved route upper bound is `7173`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+The living-world pilot now contains `579` defined event blocks across the reviewed ordinary range through `704`, including the dormant Permit Market tranche at `698` through `704`. The current reviewed ordinary row count is `71`. Permit Market uses candidate `698`, transaction `710071`, route `7174`, and survivor Event Log history `9177`. The reserved route upper bound is `7175`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`. Historical count snapshots below are retained as corrections and are superseded by this paragraph.
+
+Permit Market is the Quarantine follow-up to False Positive. It selects one current native Air Winter state with the prior memory closed and freezes owner, controller, generation, shelter, supply, adaptation, exposure, disease, public-health, grievance, reliability, compensation, fatigue, backlog, and cause-memory receipts. Issue Local Passes, Audit Every Register, Delegate Permits to the Wards, and Sell Temporary Permits share an `18` day result and `210` day callback. Results and callbacks change Air Winter, Supply Access, Medicine, Recognition, Cohesion, public health, movement grievance, registry reliability, compensation, fatigue, backlog, cause memory, and bounded Deaths loss. The chain writes survivor-country Event Log memory only, uses dedicated report art, and remains dormant behind the unset scheduler activation flags. Its dedicated proof is `FALLOUT_PERMIT_MARKET_CHAIN_PROOF.md`.
 
 False Positive is the Quarantine follow-up to First Red Line. It selects one current native Air Winter state with a completed red-line memory and frozen owner, controller, generation, shelter, supply, adaptation, exposure, disease, public-health, grievance, reliability, compensation, fatigue, backlog, and cause-memory receipts. Release and Compensate, Maintain the Cordon, Ward Tribunal, and Rotate Inspection Teams share a `14` day result and `150` day callback. Results and callbacks change Air Winter, Supply Access, Medicine, Recognition, Cohesion, public health, grievance, reliability, compensation, fatigue, backlog, cause memory, and bounded Deaths loss. The chain writes survivor-country Event Log memory only, uses dedicated report art, and remains dormant behind the unset scheduler activation flags. Its dedicated proof is `FALLOUT_FALSE_POSITIVE_CHAIN_PROOF.md`.
 
@@ -836,3 +838,19 @@ The asset evidence is `docs/assets/691_false_positive/` with source, processed P
 The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_FALSE_POSITIVE_CHAIN_PROOF.md`.
 
 The documented living-world total is now `572` and the countable Fallout living-world total remains `0 of 660`.
+
+## Permit Market tranche
+
+Permit Market adds dormant suffixes `698` through `704` with candidate id `698`, transaction key `710071`, route `7174`, and history `9177`.
+
+The human opening is `698`, the hidden-AI opening is `699`, the human and hidden-AI delayed results are `700` and `701`, the human and hidden-AI callbacks are `702` and `703`, and cleanup is `704`.
+
+The row requires a current-generation owner-controlled Quarantine state with a completed False Positive memory, a produced Air Winter snapshot, Shelter Capacity, Supply Access, Adaptation, bounded Exposure and Disease Pressure, surviving population, and at least one affordable branch. It chooses the lowest eligible native state id and freezes the state, owner, controller, generation, Air Winter values, public-health ledgers, grievance, reliability, compensation, fatigue, backlog, and cause memory.
+
+The chain carries Issue Local Passes, Audit Every Register, Delegate Permits to the Wards, and Sell Temporary Permits branches with exact costs, deterministic result and callback grading, an 18-day result, a 210-day callback, bounded Deaths effects, infrastructure damage on result failure, Air Winter and Supply Access ledger effects, durable movement memory, Event Log history `9177`, hidden-AI parity, dedicated report art, and authenticated cleanup. It does not request Fallout, register the Fallout consequence as an ordinary event, create a country, transfer population across states, or add a recurring scheduler.
+
+The asset evidence is `docs/assets/698_permit_market/` with source, processed PNG, runtime DDS, prompt, manifest, and review notes. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-698` is present with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Both scheduler activation flags remain unset. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_PERMIT_MARKET_CHAIN_PROOF.md`.
+
+The documented living-world total is now `579` and the countable Fallout living-world total remains `0 of 660`.
