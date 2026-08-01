@@ -21974,3 +21974,105 @@ country_event = {
 	trigger = { fallout_event_859_cleanup_can_enter = yes }
 	immediate = { fallout_event_859_cleanup = yes }
 }
+
+# Dormant Fallout technate chain: Power as Citizenship
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.866
+	title = chaosx.fallout.866.t
+	desc = chaosx.fallout.866.opening.d
+	picture = GFX_report_event_fallout_power_citizenship
+	is_triggered_only = yes
+	trigger = { fallout_event_866_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.866.a
+		trigger = { fallout_event_866_public_service_republic_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_866_requested_branch = constant:fallout_event_866_branch.public_service_republic } fallout_event_866_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.866.a.tt
+	}
+	option = {
+		name = chaosx.fallout.866.b
+		trigger = { fallout_event_866_engineer_state_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_866_requested_branch = constant:fallout_event_866_branch.engineer_state } fallout_event_866_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.866.b.tt
+	}
+	option = {
+		name = chaosx.fallout.866.c
+		trigger = { fallout_event_866_grid_empire_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_866_requested_branch = constant:fallout_event_866_branch.grid_empire } fallout_event_866_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.866.c.tt
+	}
+	option = {
+		name = chaosx.fallout.866.d
+		trigger = { fallout_event_866_machine_transition_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_866_requested_branch = constant:fallout_event_866_branch.machine_transition } fallout_event_866_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.866.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.867
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_866_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_866_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.868
+	title = chaosx.fallout.868.t
+	desc = { text = chaosx.fallout.868.public_service_republic.success.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.public_service_republic compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.868.public_service_republic.partial.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.public_service_republic compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.868.public_service_republic.failure.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.public_service_republic compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.868.engineer_state.success.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.engineer_state compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.868.engineer_state.partial.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.engineer_state compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.868.engineer_state.failure.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.engineer_state compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.868.grid_empire.success.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.grid_empire compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.868.grid_empire.partial.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.grid_empire compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.868.grid_empire.failure.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.grid_empire compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.868.machine_transition.success.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.machine_transition compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.868.machine_transition.partial.d trigger = { check_variable = { fallout_event_866_selected_branch value = constant:fallout_event_866_branch.machine_transition compare = equals } check_variable = { fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.868.machine_transition.failure.d
+	picture = GFX_report_event_fallout_power_citizenship
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_866_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.power_citizenship_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.868.a hidden_effect = { fallout_event_866_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.868.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.869
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_866_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.power_citizenship_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_866_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.870
+	title = chaosx.fallout.870.t
+	desc = { text = chaosx.fallout.870.success.d trigger = { check_variable = { fallout_event_866_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.870.partial.d trigger = { check_variable = { fallout_event_866_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.870.failure.d
+	picture = GFX_report_event_fallout_power_citizenship
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_866_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.power_citizenship_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_866_registry_is_current = yes }
+	immediate = { fallout_event_866_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.870.a hidden_effect = { fallout_event_866_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.870.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.871
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_866_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.power_citizenship_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_866_registry_is_current = yes }
+	immediate = { fallout_event_866_calculate_callback_outcome = yes fallout_event_866_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.872
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_866_cleanup_can_enter = yes }
+	immediate = { fallout_event_866_cleanup = yes }
+}

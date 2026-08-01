@@ -308,3 +308,15 @@ Successor package production, player materialization, general allocation, countr
 | The Repair Charter localisation and Event Log | `localisation/english/fallout_world_end_repair_charter_l_english.yml`, `common/scripted_localisation/fallout_world_end_repair_charter_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Repair Charter art and workbook | `docs/assets/859_repair_charter/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/repair_charter/report_event_fallout_repair_charter.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-859` |
 | The Repair Charter status boundary | dormant source package with four repair branches, hidden-AI parity, 77-day result, 450-day charter audit, bounded Deaths effects, repair memories, Event Log history `9200`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Power as Citizenship source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Power as Citizenship design | `docs/specs/air_cleanliness_fallout_specs/specs/97_reviewed_archetype_power_citizenship.md` |
+| The Power as Citizenship runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_POWER_CITIZENSHIP_CHAIN_PROOF.md` |
+| The Power as Citizenship gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_power_citizenship_event_triggers.txt`, `common/scripted_effects/fallout_world_end_power_citizenship_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_power_citizenship_dynamic_modifiers.txt` |
+| The Power as Citizenship constants and registry | `common/script_constants/fallout_world_end_power_citizenship_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Power as Citizenship localisation and Event Log | `localisation/english/fallout_world_end_power_citizenship_l_english.yml`, `common/scripted_localisation/fallout_world_end_power_citizenship_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Power as Citizenship art and workbook | `docs/assets/866_power_citizenship/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/power_citizenship/report_event_fallout_power_citizenship.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-866` |
+| The Power as Citizenship status boundary | dormant source package with four government-purpose branches, hidden-AI parity, 77-day result, 450-day citizenship audit, bounded Deaths effects, power-citizenship identity and government memories, Event Log history `9201`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
