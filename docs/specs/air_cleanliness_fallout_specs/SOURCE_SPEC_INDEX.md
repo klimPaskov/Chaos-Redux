@@ -163,6 +163,7 @@
 - `specs/94_reviewed_archetype_the_machine_suggests.md`
 - `specs/95_reviewed_archetype_first_regional_standard.md`
 - `specs/96_reviewed_archetype_repair_charter.md`
+- `specs/97_reviewed_archetype_power_citizenship.md`
 
 ## Matrices
 

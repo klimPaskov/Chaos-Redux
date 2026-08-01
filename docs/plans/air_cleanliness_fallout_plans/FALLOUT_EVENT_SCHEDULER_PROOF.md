@@ -851,6 +851,12 @@ The row remains dormant and contributes zero countable blocks because scheduler 
 
 The reviewed ordinary producer now carries The Repair Charter at candidate `859`, transaction `710094`, route `7220`, with Event Log history `9200` and defined event blocks `859` through `865`.
 
+## Power as Citizenship scheduler tranche
+
+The reviewed ordinary producer now carries Power as Citizenship at candidate `866`, transaction `710095`, route `7222`, with Event Log history `9201` and defined event blocks `866` through `872`.
+
+The candidate is a dormant Fallout-owned ordinary consequence. It follows a closed Repair Charter state memory in the Manchurian Reactor Keeps, selects the lowest eligible East Asian state, freezes country, state, neighbor, generation, Air Winter, Supply Access, and power-citizenship receipts, and supplies human and hidden AI event tokens to the shared delayed queue. It does not activate Fallout, write scenario logs, request a blackout, create a country, or add a recurring scheduler.
+
 The candidate admits a current-generation East Asian Technate or Continuity Government with Manchurian Reactor Keeps memory, a closed First Regional Standard state, one of the prior branch or failure memories, durable open crew access, licensed repair pressure, Medicine, Scrap, Cohesion, Recognition, and at least one affordable branch. It selects the lowest current owner-controlled industrial or arms state with a foreign neighboring state, produced Air Winter values, surviving population, native infrastructure, and bounded Disease Pressure. The dispatch envelope records one state target and one idempotent ordinary request.
 
 The four branches use authored repair text and distinct costs. The effects freeze country, state, neighbor, Air Winter, Supply Access, and repair ledgers, recheck affordability before committing, consume the issued opening receipt, refund and cancel if scheduling or receipt consumption fails, resolve after exactly `77` days, schedule the charter audit after exactly `450` days, apply bounded Deaths failure, write repair, route, recognition, and bilateral memories, record Event Log payloads, preserve hidden AI parity, and close through authenticated cleanup.

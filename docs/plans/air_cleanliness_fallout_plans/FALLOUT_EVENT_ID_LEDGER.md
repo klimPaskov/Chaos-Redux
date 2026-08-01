@@ -1077,4 +1077,12 @@ The chain carries Issue an Open Repair Charter, Commission Licensed Repair House
 
 The asset evidence is `docs/assets/859_repair_charter/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_repair_charter`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-859` is recorded with `Needs Testing` status.
 
+## Power as Citizenship tranche
+
+Power as Citizenship adds dormant suffixes `866` through `872` with candidate id `866`, transaction key `710095`, route `7222`, and history `9201`.
+
+The chain carries Make Power a Public Service, Constitute an Engineer State, Build a Grid Empire, and Authorize a Machine Transition branches with distinct survival costs, deterministic result and citizenship-audit grading, a 77-day result, a 450-day citizenship audit, bounded Deaths effects, Air Winter and Supply Access effects, government identity, power-citizenship ledgers, bilateral memories, Event Log history `9201`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/866_power_citizenship/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_power_citizenship`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-866` is recorded with `Needs Testing` status.
+
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The manual survival contract remains a direct `90` to `95` percent prestrike population-loss band. The dedicated proof is `FALLOUT_REPAIR_CHARTER_CHAIN_PROOF.md`.
