@@ -341,6 +341,42 @@ black_plague_scenario_seed_established_states = {
 	clear_temp_array = black_plague_scenario_seed_pool
 }
 
+# SCN-012 forces Evolution II and its actor contract is a verified human port.
+# Ordinary continent anchors are intentionally weighted for broad geography, so
+# this narrow pass guarantees one usable port without creating a third tag or
+# attributing the milestone to a generic country. Existing established ports
+# are reused; only a missing port is seeded as one additional infected state.
+black_plague_scenario_ensure_evolution_ii_port = {
+	clear_global_event_target = black_plague_scenario_evolution_ii_port_state
+	every_state = {
+		limit = {
+			black_plague_state_is_established = yes
+			black_plague_scenario_valid_human_state = yes
+			black_plague_rat_state_has_dock_archetype_signal = yes
+		}
+		if = {
+			limit = { NOT = { has_event_target = black_plague_scenario_evolution_ii_port_state } }
+			save_global_event_target_as = black_plague_scenario_evolution_ii_port_state
+		}
+	}
+	if = {
+		limit = { NOT = { has_event_target = black_plague_scenario_evolution_ii_port_state } }
+		every_state = {
+			limit = {
+				black_plague_scenario_valid_human_state = yes
+				black_plague_rat_state_has_dock_archetype_signal = yes
+				NOT = { has_state_flag = black_plague_scenario_seeded }
+			}
+			if = {
+				limit = { NOT = { has_event_target = black_plague_scenario_evolution_ii_port_state } }
+				black_plague_scenario_seed_state = yes
+				save_global_event_target_as = black_plague_scenario_evolution_ii_port_state
+			}
+		}
+	}
+	clear_global_event_target = black_plague_scenario_evolution_ii_port_state
+}
+
 black_plague_scenario_create_rat_nations = {
 	if = {
 		limit = { RTA = { black_plague_rat_country_is_active = yes } }
@@ -660,6 +696,7 @@ black_plague_triggerable_scenario_launch = {
 			black_plague_rat_initialize_runtime = yes
 			clear_global_event_target = black_plague_rat_evolution_actor
 			black_plague_scenario_seed_established_states = yes
+			black_plague_scenario_ensure_evolution_ii_port = yes
 		black_plague_scenario_create_rat_nations = yes
 		black_plague_activate_evolution_i = yes
 		black_plague_activate_evolution_ii = yes
