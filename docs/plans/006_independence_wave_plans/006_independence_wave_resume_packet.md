@@ -4,7 +4,7 @@ Updated: 2026-08-01 after the Event 006 v33 completion audit, the IW-012 ICE pac
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-The current documentation pass also records commit `9231c15f5` and its five-family evolution incident resolution handoff. The thirteen-package attestation set and the shared-core versus package-blocker boundary remain unchanged.
+The current documentation pass also records commit `9231c15f5` and its five-family evolution incident resolution handoff. The v67 SCN-008 repair adds a temporary target-uniqueness policy only to Universal Former Hosts; Wars of Separation retains one viable host war per release. The thirteen-package attestation set and the shared-core versus package-blocker boundary remain unchanged.
 
 ## 2026-07-29 current-authority reconciliation
 
@@ -20,6 +20,10 @@ are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
 ### Shared core and registry API milestone closed
 
 The automatic and World Collapse loop, Event 005 and Event 006 reservation and transaction boundary, shared dynamic systems, and reusable country-registration API are source-closed under the 2026-07-29 acceptance authority. The approved automatic ladder remains 6/8/10/14/20. The 14- and 20-country targets remain fail-closed below admitted package and reservation capacity. Do not reopen these shared surfaces unless a later source audit identifies a regression.
+
+### SCN-008 Former Hosts target policy repaired
+
+The v67 improvement-loop addendum found one bounded post-commit defect: Universal Former Hosts reused the ordinary host-war loop without reserving a shared former host. `common/scripted_effects/006_independence_wave_scenario_effects.txt` now sets `global.independence_wave_scenario_former_host_unique_policy` only for that Universal branch, marks and rolls back targets through the existing belligerence array, and guards cleanup against stale host scopes. The accepted Wars of Separation path leaves the policy disabled and still allows each release its own viable host war. The implementation handoff is `subagent_handoffs/006_scn008_former_host_target_uniqueness_2026_08_01.md`; RHI/AJX shared-Germany, failed-declaration rollback, repeat-launch cleanup, and WOS-control checks remain the static witnesses.
 
 This milestone itself did not admit package content; the later IW-173 HAW tranche is recorded separately below. Country-specific leaders, portraits, flags, parties, focuses, decisions, ideas, forces, technology, AI, formables, assets, localisation, route adapters, and package-level source proof remain queued or fail-closed as recorded below. The three closure handoffs are `subagent_handoffs/006_core_loop_closure_v35_2026_07_29.md`, `subagent_handoffs/006_dynamic_systems_closure_v35_2026_07_29.md`, and `subagent_handoffs/006_registry_api_closure_v35_2026_07_29.md`.
 

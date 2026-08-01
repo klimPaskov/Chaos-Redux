@@ -12,6 +12,8 @@ Audited-core disposition: **PARTIAL — five core families PASS at source; SCN-0
 
 Expansion disposition: **STOP broad expansion; implement only the Universal Belligerence former-host uniqueness repair defined below**
 
+Resolution: **IMPLEMENTED** in `common/scripted_effects/006_independence_wave_scenario_effects.txt` and documented in `subagent_handoffs/006_scn008_former_host_target_uniqueness_2026_08_01.md`. Universal Former Hosts now enables the bounded distinct-target policy; Wars of Separation remains per-release. Allocator, tag-surface, source-syntax, and focused event-lint checks passed after the repair.
+
 ## Executive disposition
 
 The Event 006 core does not need another allocator, registry, evolution, ledger, crisis, decision family, GUI layer, country package, focus route, formable, or super-event concept before the country-content phase.
@@ -96,9 +98,7 @@ No unresolved prior addendum is being repeated.
 | Armed Birth frontier-reserve follow-through | Source-implemented and supersedes the earlier missing-force-follow-through statement | Do not propose another force route. |
 | SCN-008 source audit and mode-cardinality reconciliation | Source-implemented for 138/55/13 registry treatment and eight modes by four intensities | Preserve all findings except the newly identified Former Hosts target-uniqueness defect. |
 
-The v67 document becomes the only open improvement-loop addendum for this bounded core surface.
-
-It must be implemented, explicitly rejected with a reason, or queued with a reason before another improvement-loop pass is requested for the same core.
+The v67 document was the only open improvement-loop addendum for this bounded core surface. It is now resolved by the implementation handoff above; another improvement-loop pass for the same core is not warranted unless a later source audit identifies a regression.
 
 ## PASS/PARTIAL matrix
 
@@ -285,7 +285,7 @@ No MCP evidence expands this planner's ownership, and the parent remains respons
 
 ## Promotion and closure rule
 
-Keep this document in `docs/plans/006_independence_wave_plans/` while the target-uniqueness repair is open.
+Keep this resolved addendum in `docs/plans/006_independence_wave_plans/` as the design and audit record for the repaired target policy.
 
 After acceptance and implementation, promote only the durable rule into `docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md`:
 
@@ -293,6 +293,6 @@ After acceptance and implementation, promote only the durable rule into `docs/sp
 
 Implementation identifiers, commit hashes, test results, and cleanup evidence belong in the dated handoff, source-of-truth map, resume packet, and event system documentation rather than in the durable spec.
 
-Once the repair is implemented and the validation scenarios pass, mark this addendum resolved and proceed to the already selected country-content phase.
+The repair is implemented and its bounded static validation passes. Proceed to the already selected country-content phase while retaining the whole-event HOLD / PARTIAL disposition.
 
 Do not request another core improvement-loop pass unless a later source audit finds a new regression after this addendum has been dispositioned.

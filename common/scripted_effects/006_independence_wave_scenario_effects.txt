@@ -803,23 +803,43 @@ independence_wave_scenario_assign_patrons = {
 # Current scope: one released country. The Event 6 country opens the accepted
 # separation war against its surviving former host. Failed or unlawful
 # declarations become regional threat missions and never count as witnesses.
+# Universal Former Hosts enables the same per-launch belligerence reservation
+# used by the neighboring-release and nearby-nonleague rules, so two releases
+# cannot open duplicate wars against one surviving host. Wars of Separation
+# leaves this policy disabled and retains one viable host war per release.
 independence_wave_scenario_start_host_war = {
 	save_event_target_as = independence_wave_scenario_war_actor
 	set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.no_packages }
+	set_temp_variable = { independence_wave_scenario_host_target_saved = constant:independence_wave_scenario_registry.no_packages }
 	clr_country_flag = independence_wave_danger_former_host_war_actor
 	clear_variable = independence_wave_danger_former_host_war_batch_id
 	if = {
 		limit = {
 			is_independence_wave_active_country = yes
 			has_variable = independence_wave_former_host
-			var:independence_wave_former_host = { exists = yes NOT = { tag = event_target:independence_wave_scenario_war_actor } }
+			var:independence_wave_former_host = {
+				exists = yes
+				NOT = { tag = event_target:independence_wave_scenario_war_actor }
+				OR = {
+					NOT = { check_variable = { global.independence_wave_scenario_former_host_unique_policy = constant:independence_wave_scenario_registry.one } }
+					NOT = { has_country_flag = independence_wave_scenario_belligerence_targeted }
+				}
+			}
 		}
 		var:independence_wave_former_host = { save_event_target_as = independence_wave_scenario_war_host }
+		set_temp_variable = { independence_wave_scenario_host_target_saved = constant:independence_wave_scenario_registry.one }
 		if = {
 			limit = {
 				has_event_target = independence_wave_scenario_war_host
 				NOT = { has_war_with = event_target:independence_wave_scenario_war_host }
 				can_declare_war_on = event_target:independence_wave_scenario_war_host
+			}
+			if = {
+				limit = { check_variable = { global.independence_wave_scenario_former_host_unique_policy = constant:independence_wave_scenario_registry.one } }
+				event_target:independence_wave_scenario_war_host = {
+					set_country_flag = independence_wave_scenario_belligerence_targeted
+					add_to_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
+				}
 			}
 			event_target:independence_wave_scenario_war_actor = {
 				declare_war_on = {
@@ -830,6 +850,17 @@ independence_wave_scenario_start_host_war = {
 					limit = { has_war_with = event_target:independence_wave_scenario_war_host }
 					set_temp_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one }
 				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { global.independence_wave_scenario_former_host_unique_policy = constant:independence_wave_scenario_registry.one }
+				check_variable = { independence_wave_scenario_host_target_saved = constant:independence_wave_scenario_registry.one }
+				NOT = { check_variable = { independence_wave_scenario_war_started = constant:independence_wave_scenario_registry.one } }
+			}
+			event_target:independence_wave_scenario_war_host = {
+				clr_country_flag = independence_wave_scenario_belligerence_targeted
+				remove_from_array = { array = global.independence_wave_scenario_belligerence_targets value = THIS }
 			}
 		}
 	}
@@ -969,6 +1000,7 @@ independence_wave_scenario_clear_belligerence_target_marks = {
 		clr_country_flag = independence_wave_scenario_belligerence_targeted
 	}
 	clear_array = global.independence_wave_scenario_belligerence_targets
+	clear_variable = global.independence_wave_scenario_former_host_unique_policy
 }
 
 independence_wave_scenario_start_universal_belligerence = {
@@ -978,7 +1010,9 @@ independence_wave_scenario_start_universal_belligerence = {
 	independence_wave_scenario_clear_belligerence_target_marks = yes
 	if = {
 		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.former_hosts } }
+		set_variable = { global.independence_wave_scenario_former_host_unique_policy = constant:independence_wave_scenario_registry.one }
 		independence_wave_scenario_start_all_host_wars = yes
+		clear_variable = global.independence_wave_scenario_former_host_unique_policy
 	}
 	else_if = {
 		limit = { check_variable = { global.independence_wave_scenario_last_belligerence_rule = constant:independence_wave_scenario_belligerence_rule.neighboring_releases } }
