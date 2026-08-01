@@ -524,6 +524,8 @@ Possible links:
 - Kruger State can seize missile sites.
 - Singularity delivery can use missile infrastructure.
 
+The implemented baseline records Event 032's missile-site outcome once for the active Kruger host. `brilliant_scientist_missile_crisis_recorded` and the matching fixed-character receipt move the existing Directorate meters toward a more exposed, infrastructure-dependent rocketry posture. Event 032 keeps its ordinary technology and construction effects; no project stage, Event Log row, evolution, asset, or model is added. Kruger State missile-site seizure and Singularity delivery remain separate route hooks.
+
 ### Event 44: Space Race
 
 Possible links:
@@ -532,6 +534,8 @@ Possible links:
 - Portal or alien projects create a competing route.
 - A peaceful public-science host can gain prestige without weaponization.
 
+The implemented baseline records Event 044's space-race commitment once for the active Kruger host. The country and character receipts move the existing Directorate meters toward public, independent rocketry without granting the Space Race idea, completing a project, or adding an Event Log row, evolution, asset, or model. Portal, alien, and prestige variants remain separate expansion hooks.
+
 ### Event 49: Mass Panic
 
 Possible links:
@@ -539,6 +543,8 @@ Possible links:
 - Public monster, clone, temporal, or alien evidence raises panic.
 - A secret program can suppress early panic at the cost of later scandal.
 - Kruger State world-threat actions can intensify global panic.
+
+The implemented baseline records Event 049's first mass-panic report once for the active Kruger host. The public-risk receipt raises Exposure and Grievance while reducing Mandate, Project Capacity, and Independent Capacity through the existing bounded helpers; Event 049 keeps its normal panic idea and stability path. No project stage, Event Log row, evolution, asset, or model is created, and secret suppression or Kruger State escalation remain separate hooks.
 
 ### Event 54: Gift from scientists
 
