@@ -132,6 +132,17 @@ country_event = {
 		else_if = {
 			limit = { has_global_flag = independence_wave_crisis_release_queued }
 			clr_global_flag = independence_wave_crisis_release_queued
+			# A queued callback can outlive its requester flag after a malformed
+			# scope handoff or interrupted save.  Resolve that defensive branch as
+			# an explicit unknown failure so the shared receipt/Event Log surface
+			# cannot retain a silent global queue.
+			set_variable = { global.independence_wave_last_crisis_resolution = constant:independence_wave_crisis_resolution.unknown }
+			set_variable = { global.independence_wave_last_crisis_host = THIS.id }
+			set_variable = { global.independence_wave_last_crisis_date = global.date }
+			set_global_flag = independence_wave_crisis_failure_receipt
+			independence_wave_clear_crisis_retry = yes
+			independence_wave_clear_crisis_runtime = yes
+			independence_wave_record_crisis_resolution_history = yes
 		}
 	}
 }

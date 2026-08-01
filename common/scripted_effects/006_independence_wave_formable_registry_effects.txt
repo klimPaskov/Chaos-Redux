@@ -861,6 +861,10 @@ independence_wave_formable_issue_founding_invitations = {
 									is_independence_wave_form04_eligible_member = yes
 								}
 								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } }
+									is_independence_wave_form07_member_candidate = yes
+								}
+								AND = {
 									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } }
 									is_independence_wave_form48_eligible_member = yes
 								}
@@ -1024,6 +1028,7 @@ independence_wave_formable_evaluate_candidate_consent = {
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_atlantic_compact }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation }
+				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
 			}
@@ -1100,11 +1105,16 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 									AND = {
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation } } }
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation } } }
+										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } } }
 									}
 									is_independence_wave_form48_eligible_member = yes
 									AND = {
 										ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation } }
 										is_independence_wave_form39_eligible_member = yes
+									}
+									AND = {
+										ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } }
+										is_independence_wave_form07_member_candidate = yes
 									}
 								}
 							}
@@ -1327,6 +1337,10 @@ independence_wave_formable_fail_transaction = {
 			}
 		}
 		independence_wave_form0124_rollback_identity = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } }
+		independence_wave_form07_rollback_identity = yes
 	}
 	if = {
 		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.low_countries_federation } }
@@ -1577,6 +1591,7 @@ independence_wave_formable_cleanup_runtime = {
 	}
 	independence_wave_formable_close_founding_proposal = yes
 	independence_wave_form0124_cleanup_runtime = yes
+	independence_wave_form07_cleanup_runtime = yes
 	independence_wave_form48_origin_cleanup = yes
 	independence_wave_form39_cleanup_runtime = yes
 	independence_wave_formable_clear_member_ledgers = yes

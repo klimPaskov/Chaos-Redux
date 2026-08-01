@@ -7,8 +7,11 @@ The Event 006 formable registry is the shared discovery and transaction framewor
 All 48 accepted family rows have stable discovery metadata, but the shared
 framework does not declare a family operational by metadata alone. FORM-01
 through FORM-05 remain promoted from their owning adapters, and FORM-48 is now
-promoted after the Pacific package and coordinated adapter audits. FORM-06
-through FORM-47 remain fail-closed, including FORM-42. No formable or cosmetic
+promoted after the Pacific package and coordinated adapter audits. FORM-07 now
+has a bounded Iberian adapter surface for CAT/NAV/GLC, but remains fail-closed
+until its researched X identity, flag package, and identity contract are
+approved. FORM-06 and FORM-08 through FORM-47 remain fail-closed, including
+FORM-42. No formable or cosmetic
 tag is assigned by this shared registry; a family still requires its owning
 package's audited territory, collision-safe X-ending identity, complete flag
 package, identity adapter, and reviewed integration policy.
@@ -131,6 +134,28 @@ FORM-01, FORM-02, and FORM-04 autonomous settlements record the exact carrier, c
 
 FORM-48 uses the same directional-ownership rule through its private `has_independence_wave_form48_current_autonomous_binding` trigger. The trigger runs in HAW/FSM member scope, takes no caller-supplied inputs, and requires the saved carrier pointer, saved carrier generation, autonomous FORM-48 family, the member's live Event 006 generation, and the carrier's live Event 006 generation/family to match. It has no outputs or side effects. `independence_wave_form48_remove_event6_autonomous_relations` is its only relation-mutation call site: a stale or cross-generation binding still has its local markers cleared, but cannot remove access or guarantees from another transaction.
 
+### FORM-07 Iberian adapter (current, fail-closed)
+
+FORM-07 binds only the researched CAT/NAV/GLC corridor: CAT state 165, NAV
+state 172, and GLC state 171. The adapter requires each package's exact
+original tag, package ID, Event 006 setup marker, anchor ownership/control,
+regional-power proof, compatible constitutional or popular-council route,
+bilateral connection, frozen invitation consent, and the negotiated or
+revolutionary method/consent policy. It stages autonomous-member relations
+with directional ownership markers and provides generation-checked integration,
+rollback, and cleanup effects over the frozen member ledger.
+
+The adapter deliberately does not invent an Iberian X-ending identity or flag.
+Its readiness registration, identity adapter, commit proof, and integration
+adapter therefore remain false until a source-approved identity, flag triplet,
+and identity review set the explicit FORM-07 flags. The all-three corridor
+proof also remains false while the NAV/IW-013 and GLC/IW-015 package adapters
+are incomplete. CAT stays outside content attestation and cannot enter
+automatic or scenario release capacity through this source surface. The
+implementation files are
+`common/scripted_triggers/006_independence_wave_form07_triggers.txt` and
+`common/scripted_effects/006_independence_wave_form07_effects.txt`.
+
 ## Family adapter contract
 
 A family adapter must bind its attestations by setting independence_wave_formable_readiness_family to the same stable family ID loaded in independence_wave_formable_profile_family. It must then complete all of the following before a congress can open:
@@ -155,7 +180,9 @@ own audited adapter. FORM-48 now follows the same contract: its registration
 binds family 48, sets the six shared adapter flags, sets
 `independence_wave_form48_registry_surface_registered`, and sets
 `independence_wave_form48_readiness_attested` only after the coordinated Pacific
-PASS audits. FORM-06 through FORM-47 remain fail-closed, including FORM-42.
+PASS audits. FORM-07 remains fail-closed under its identity, flag, and
+NAV/GLC package contract. FORM-06 and FORM-08 through FORM-47 remain
+fail-closed, including FORM-42.
 Earlier FORM-48 handoffs that recorded unset flags are preserved as historical
 evidence, not current status.
 
