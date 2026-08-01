@@ -203,6 +203,37 @@ black_plague_rat_country_can_raise_brood = {
 	}
 }
 
+# COUNTRY scope. Feeding is an explicit rat choice rather than an automatic
+# population-loss path: it trades Hunger relief for Brood Mass and leaves a
+# visible state scar that the normal disease pulse can later worsen or clear.
+black_plague_rat_country_can_strip_outer_districts = {
+	black_plague_rat_country_is_active = yes
+	NOT = { has_country_flag = black_plague_rat_feeding_cooldown }
+	check_variable = {
+		var = black_plague_rat_hunger
+		value = constant:black_plague_rat_decision.feeding_hunger_threshold
+		compare = greater_than_or_equals
+	}
+	any_owned_state = { black_plague_rat_state_can_strip_outer_districts = yes }
+}
+
+# STATE scope. RTA-owned plague ground is the only valid feeding target; the
+# separate Rat King has its own royal policy and never uses this operation.
+black_plague_rat_state_can_strip_outer_districts = {
+	black_plague_state_is_rat_controlled = yes
+	CONTROLLER = { black_plague_rat_country_is_active = yes }
+	NOT = { has_state_flag = black_plague_rat_feeding_scar }
+}
+
+# STATE scope. One burrow node can be established per timed window. The node
+# is consumed by the RTA pulse for local Brood Mass and Coherence, so it is not
+# a cosmetic flag or a duplicate country tag.
+black_plague_rat_state_can_establish_burrow_node = {
+	black_plague_state_is_rat_controlled = yes
+	CONTROLLER = { black_plague_rat_country_is_active = yes }
+	NOT = { has_state_flag = black_plague_rat_burrow_node_active }
+}
+
 black_plague_rat_state_has_spawn_signal = {
 	black_plague_state_is_established = yes
 	OR = {

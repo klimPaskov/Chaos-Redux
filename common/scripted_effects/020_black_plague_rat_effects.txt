@@ -1115,6 +1115,55 @@ black_plague_rat_raise_brood_units = {
 	}
 }
 
+# COUNTRY scope. Feeding is a deliberate RTA operation. It relieves Hunger,
+# creates Brood Mass, and scars one rat-controlled state; it never calls the
+# ordinary population-loss adapter a second time and never spends human
+# manpower or equipment.
+black_plague_rat_strip_outer_districts = {
+	if = {
+		limit = { black_plague_rat_country_can_strip_outer_districts = yes }
+		random_owned_state = {
+			limit = { black_plague_rat_state_can_strip_outer_districts = yes }
+			add_to_variable = { black_plague_rat_infestation = constant:black_plague_rat_decision.feeding_state_infestation_gain }
+			set_temp_variable = { black_plague_rat_feeding_scar_days = constant:black_plague_rat_decision.feeding_cooldown_days }
+			set_state_flag = { flag = black_plague_rat_feeding_scar days = black_plague_rat_feeding_scar_days }
+			black_plague_apply_current_state_devastation = yes
+		}
+		subtract_from_variable = { black_plague_rat_hunger = constant:black_plague_rat_decision.feeding_hunger_relief }
+		add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.feeding_brood_mass_gain }
+		clamp_variable = { var = black_plague_rat_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		clamp_variable = { var = black_plague_rat_brood_mass min = constant:black_plague_value.minimum max = constant:black_plague_rat_pool.brood_mass_cap }
+		set_temp_variable = { black_plague_rat_feeding_cooldown_days = constant:black_plague_rat_decision.feeding_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_feeding_cooldown days = black_plague_rat_feeding_cooldown_days }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
+# STATE scope. Establish a timed node that the RTA pulse consumes for local
+# mass and Coherence. The node is intentionally state-owned so recapture or
+# absorption removes its benefit with the territory instead of leaving a
+# hidden national bonus behind.
+black_plague_rat_establish_burrow_node = {
+	if = {
+		limit = {
+			black_plague_rat_state_can_establish_burrow_node = yes
+			CONTROLLER = {
+				check_variable = {
+					var = black_plague_rat_brood_mass
+					value = constant:black_plague_rat_decision.burrow_node_mass_cost
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		CONTROLLER = {
+			subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.burrow_node_mass_cost }
+		}
+		set_temp_variable = { black_plague_rat_burrow_node_days = constant:black_plague_rat_decision.burrow_node_duration_days }
+		set_state_flag = { flag = black_plague_rat_burrow_node_active days = black_plague_rat_burrow_node_days }
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
 black_plague_rat_process_country_pulse = {
 	if = {
 		limit = {
@@ -1160,6 +1209,20 @@ black_plague_rat_process_country_pulse = {
 		if = {
 			limit = { has_country_flag = black_plague_rat_hunt_roads }
 			add_to_temp_variable = { black_plague_rat_route_pulse_mass_gain = constant:black_plague_rat_depth.hunt_roads_pulse_mass_gain }
+		}
+		set_temp_variable = { black_plague_rat_burrow_node_count = constant:black_plague_value.zero }
+		every_owned_state = {
+			limit = { has_state_flag = black_plague_rat_burrow_node_active }
+			add_to_temp_variable = { black_plague_rat_burrow_node_count = constant:black_plague_value.one }
+		}
+		if = {
+			limit = { check_variable = { black_plague_rat_burrow_node_count > constant:black_plague_value.zero } }
+			set_temp_variable = { black_plague_rat_burrow_node_mass_gain = black_plague_rat_burrow_node_count }
+			multiply_temp_variable = { black_plague_rat_burrow_node_mass_gain = constant:black_plague_rat_decision.burrow_node_pulse_mass_gain }
+			add_to_variable = { black_plague_rat_brood_mass = black_plague_rat_burrow_node_mass_gain }
+			set_temp_variable = { black_plague_rat_burrow_node_coherence_gain = black_plague_rat_burrow_node_count }
+			multiply_temp_variable = { black_plague_rat_burrow_node_coherence_gain = constant:black_plague_rat_decision.burrow_node_coherence_gain }
+			add_to_variable = { black_plague_rat_coherence = black_plague_rat_burrow_node_coherence_gain }
 		}
 		if = {
 			limit = { has_country_flag = black_plague_rat_challenge_weaker_brood }
