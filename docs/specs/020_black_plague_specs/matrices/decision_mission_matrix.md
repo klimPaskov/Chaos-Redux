@@ -118,6 +118,7 @@ Implementation status note: Crown Strike and Seal Royal Burrows are present in t
 | Working action | System | Cost | Effect | Risk |
 | --- | --- | --- | --- | --- |
 | Choose Royal Pulse Doctrine | army pulse | cooldown, Brood Cohesion | changes next pulse composition | wrong choice weakens current front |
+| Send the Royal Strike | selected enemy state during a war | Dominion, Brood Mass, one civilian factory slot, 45-day operation and 90-day state cooldown | applies a canonical Rat Occupation exposure and reopens the shared disease lifecycle in the selected state | consumes royal reserves and exposes the target to human countermeasures |
 | Appoint Regional Brood | administration | Dominion and Sentience | local supply and control | council or crown tension |
 | Preserve Feeding Province | population policy | slower immediate Brood Mass | long-term stable contribution | resistance and intelligence leaks |
 | Empty the City | population policy | state value and future supply | rapid deaths and Brood Mass | Hunger crisis later |

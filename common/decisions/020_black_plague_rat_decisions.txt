@@ -219,17 +219,35 @@ black_plague_rat_king_court_category = {
 	}
 
 	black_plague_rat_king_send_the_royal_strike = {
+		name = black_plague_rat_king_send_the_royal_strike
+		desc = black_plague_rat_king_send_the_royal_strike_desc
 		icon = GFX_decision_generic_military
+		state_target = any_state
+		on_map_mode = decision_view_only
 		visible = { black_plague_rat_country_is_king = yes }
+		target_root_trigger = { black_plague_rat_country_is_king = yes }
+		target_trigger = { FROM = { black_plague_rat_king_royal_strike_target_is_valid = yes } }
 		available = {
 			has_war = yes
-			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.king_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.royal_strike_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.royal_strike_brood_mass_cost compare = greater_than_or_equals }
+			FROM = { black_plague_rat_king_royal_strike_target_is_valid = yes }
+			NOT = { has_country_flag = black_plague_rat_king_royal_strike_cooldown }
 		}
-		days_remove = constant:black_plague_rat_decision.duration_days
-		complete_effect = {
-			subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.king_dominion_cost }
-			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.brood_mass_cost }
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_rat_country_is_king = yes }
+				FROM = { NOT = { black_plague_rat_king_royal_strike_target_is_valid = yes } }
+			}
 		}
+		custom_cost_trigger = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.royal_strike_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.royal_strike_brood_mass_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = black_plague_rat_king_send_the_royal_strike_cost
+		modifier = { civilian_factory_use = constant:black_plague_rat_decision.royal_strike_civilian_factories }
+		days_remove = constant:black_plague_rat_decision.royal_strike_duration_days
+		complete_effect = { black_plague_rat_king_send_royal_strike = yes }
 		ai_will_do = { base = constant:black_plague_rat_ai.war }
 	}
 

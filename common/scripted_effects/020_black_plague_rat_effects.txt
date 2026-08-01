@@ -124,6 +124,35 @@ black_plague_rat_schedule_next_growth_pulse = {
 	add_to_variable = { global.black_plague_rat_next_growth_date = constant:black_plague_rat_pool.rat_pulse_days }
 }
 
+# COUNTRY scope with FROM = selected enemy STATE. The royal operation spends
+# only rat-specific reserves and a civilian factory slot; it never recruits
+# human manpower or consumes ordinary equipment. The canonical exposure effect
+# applies the damage so deaths, phases, spread, provenance, and mapmode state
+# remain shared with every other Black Plague route.
+black_plague_rat_king_send_royal_strike = {
+	if = {
+		limit = {
+			black_plague_rat_country_is_king = yes
+			FROM = { black_plague_rat_king_royal_strike_target_is_valid = yes }
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.royal_strike_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.royal_strike_brood_mass_cost compare = greater_than_or_equals }
+		}
+		subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.royal_strike_dominion_cost }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.royal_strike_brood_mass_cost }
+		set_temp_variable = { black_plague_rat_royal_strike_cooldown = constant:black_plague_rat_decision.royal_strike_cooldown_days }
+		set_country_flag = { flag = black_plague_rat_king_royal_strike_cooldown days = black_plague_rat_royal_strike_cooldown }
+		FROM = {
+			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.rat_occupation_base }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.rat_occupation }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.rat_occupation }
+			set_temp_variable = { black_plague_state_strike_cooldown_days = constant:black_plague_rat_decision.royal_strike_cooldown_days }
+			black_plague_apply_exposure = yes
+			set_state_flag = { flag = black_plague_rat_king_royal_strike_cooldown days = black_plague_state_strike_cooldown_days }
+		}
+		set_global_flag = black_plague_mapmode_dirty
+	}
+}
+
 black_plague_rat_run_runtime_pulse = {
 	black_plague_rat_initialize_runtime = yes
 	if = {
