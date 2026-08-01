@@ -51,6 +51,7 @@
 47. `specs/79_reviewed_archetype_open_the_sealed_city.md`
 48. `specs/80_reviewed_archetype_health_without_borders.md`
 49. `specs/81_reviewed_archetype_regional_health_compact.md`
+50. `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
 
 
 ## Accepted baseline specs included here
@@ -147,6 +148,7 @@
 - `specs/79_reviewed_archetype_open_the_sealed_city.md`
 - `specs/80_reviewed_archetype_health_without_borders.md`
 - `specs/81_reviewed_archetype_regional_health_compact.md`
+- `specs/82_reviewed_archetype_the_envoy_at_the_gate.md`
 
 ## Matrices
 

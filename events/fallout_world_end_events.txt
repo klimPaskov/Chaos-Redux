@@ -20544,3 +20544,105 @@ country_event = {
 	trigger = { fallout_event_754_cleanup_can_enter = yes }
 	immediate = { fallout_event_754_cleanup = yes }
 }
+
+# Dormant Fallout mutant diplomacy chain: The Envoy at the Gate
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.761
+	title = chaosx.fallout.761.t
+	desc = chaosx.fallout.761.opening.d
+	picture = GFX_report_event_fallout_mutant_envoy_at_gate
+	is_triggered_only = yes
+	trigger = { fallout_event_761_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.761.a
+		trigger = { fallout_event_761_open_recognition_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_761_requested_branch = constant:fallout_event_761_branch.open_recognition } fallout_event_761_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.761.a.tt
+	}
+	option = {
+		name = chaosx.fallout.761.b
+		trigger = { fallout_event_761_medical_inspection_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_761_requested_branch = constant:fallout_event_761_branch.medical_inspection } fallout_event_761_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.761.b.tt
+	}
+	option = {
+		name = chaosx.fallout.761.c
+		trigger = { fallout_event_761_symbolic_meeting_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_761_requested_branch = constant:fallout_event_761_branch.symbolic_meeting } fallout_event_761_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.761.c.tt
+	}
+	option = {
+		name = chaosx.fallout.761.d
+		trigger = { fallout_event_761_refuse_contact_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_761_requested_branch = constant:fallout_event_761_branch.refuse_contact } fallout_event_761_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.761.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.762
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_761_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_761_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.763
+	title = chaosx.fallout.763.t
+	desc = { text = chaosx.fallout.763.open_recognition.success.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.open_recognition compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.763.open_recognition.partial.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.open_recognition compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.763.open_recognition.failure.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.open_recognition compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.763.medical_inspection.success.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.medical_inspection compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.763.medical_inspection.partial.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.medical_inspection compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.763.medical_inspection.failure.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.medical_inspection compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.763.symbolic_meeting.success.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.symbolic_meeting compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.763.symbolic_meeting.partial.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.symbolic_meeting compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.763.symbolic_meeting.failure.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.symbolic_meeting compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.763.refuse_contact.success.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.refuse_contact compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.763.refuse_contact.partial.d trigger = { check_variable = { fallout_event_761_selected_branch value = constant:fallout_event_761_branch.refuse_contact compare = equals } check_variable = { fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.763.refuse_contact.failure.d
+	picture = GFX_report_event_fallout_mutant_envoy_at_gate
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_761_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mutant_envoy_gate_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.763.a hidden_effect = { fallout_event_761_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.763.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.764
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_761_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mutant_envoy_gate_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_761_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.765
+	title = chaosx.fallout.765.t
+	desc = { text = chaosx.fallout.765.success.d trigger = { check_variable = { fallout_event_761_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.765.partial.d trigger = { check_variable = { fallout_event_761_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.765.failure.d
+	picture = GFX_report_event_fallout_mutant_envoy_at_gate
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_761_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mutant_envoy_gate_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_761_registry_is_current = yes }
+	immediate = { fallout_event_761_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.765.a hidden_effect = { fallout_event_761_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.765.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.766
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_761_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.mutant_envoy_gate_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_761_registry_is_current = yes }
+	immediate = { fallout_event_761_calculate_callback_outcome = yes fallout_event_761_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.767
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_761_cleanup_can_enter = yes }
+	immediate = { fallout_event_761_cleanup = yes }
+}
