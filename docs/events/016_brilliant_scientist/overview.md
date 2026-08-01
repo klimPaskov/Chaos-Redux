@@ -16,6 +16,8 @@ Event 036's authenticated spacecraft outcome writes `brilliant_scientist_alien_s
 
 Event 060's research failure now offers the active Directorate one guarded salvage intervention, `chaosx.nr60.2.b`. It preserves the country's current research-slot total for 50 Political Power, records `brilliant_scientist_research_failure_prevented`, and moves the existing Mandate, Dependence, Exposure, Project Capacity, Independent Capacity, and Grievance meters. The ordinary two-slot failure and news report remain available, and the salvage choice creates no Event 016 log row, evolution, project reward, or model dependency.
 
+Event 089's existing technology-sharing invitation now records a Kruger host's posture once. Joining a generic sharing group writes `brilliant_scientist_tech_sharing_network_joined` and moves the existing meters toward open exchange, while refusal writes `brilliant_scientist_tech_sharing_refused` and moves them toward private control. The generic Event 089 membership and refusal outcomes remain unchanged for every other country, and no new sharing group, project, log row, evolution, asset, or model is introduced.
+
 The accepted design source is `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and the ten-part specification under `docs/specs/016_brilliant_scientist_specs/`. The current runtime and resume pointer is `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`.
 
 The dedicated runtime-facing evolution guide is `docs/events/016_brilliant_scientist/evolutions.md`.
