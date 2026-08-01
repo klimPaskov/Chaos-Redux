@@ -248,6 +248,63 @@ black_plague_rat_state_can_follow_refugee_road = {
 	any_neighbor_state = { is_controlled_by = ROOT }
 }
 
+# COUNTRY scope. These four basin actions are the player-facing counterpart
+# to the RTA hierarchy markers: they spend the carrier's living reserves and
+# never allocate another country tag or normal army resource.
+black_plague_rat_country_can_concentrate_brood = {
+	black_plague_rat_country_is_active = yes
+	NOT = { has_country_flag = black_plague_rat_concentrate_brood_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.concentrate_brood_mass_cost
+		compare = greater_than_or_equals
+	}
+}
+
+black_plague_rat_country_can_scatter_brood = {
+	black_plague_rat_country_is_active = yes
+	NOT = { has_country_flag = black_plague_rat_scatter_brood_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.scatter_brood_mass_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_coherence
+		value = constant:black_plague_rat_decision.scatter_brood_coherence_threshold
+		compare = less_than
+	}
+}
+
+black_plague_rat_country_can_devour_rival = {
+	black_plague_rat_country_is_active = yes
+	NOT = { has_country_flag = black_plague_rat_devour_rival_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.devour_rival_mass_cost
+		compare = greater_than_or_equals
+	}
+	black_plague_rat_can_absorb_adjacent_brood = yes
+}
+
+# STATE scope. A weaker state marker can commit local strength to resist the
+# stronger adjacent marker. Both markers remain inside RTA; the timed flag is
+# consumed by the normal absorption comparison and therefore delays, rather
+# than deletes, the dominance system.
+black_plague_rat_state_can_resist_absorption = {
+	black_plague_state_is_rat_controlled = yes
+	CONTROLLER = { black_plague_rat_country_is_active = yes }
+	NOT = { has_state_flag = black_plague_rat_resist_absorption }
+	any_neighbor_state = {
+		black_plague_rat_state_is_valid_merger_state = yes
+		check_variable = {
+			var = black_plague_rat_brood_strength
+			value = PREV.black_plague_rat_brood_strength
+			compare = greater_than
+		}
+	}
+}
+
 black_plague_rat_state_has_spawn_signal = {
 	black_plague_state_is_established = yes
 	OR = {
@@ -403,6 +460,7 @@ black_plague_rat_state_is_valid_merger_state = {
 	CONTROLLER = { black_plague_rat_country_is_valid_merger_target = yes }
 	NOT = { has_state_flag = black_plague_rat_merger_reserved }
 	NOT = { has_state_flag = black_plague_rat_brood_absorbed }
+	NOT = { has_state_flag = black_plague_rat_resist_absorption }
 }
 
 black_plague_rat_can_absorb_adjacent_brood = {

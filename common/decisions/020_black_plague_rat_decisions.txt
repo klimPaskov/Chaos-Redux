@@ -116,6 +116,63 @@ black_plague_rat_brood_category = {
 		}
 	}
 
+	black_plague_rat_concentrate_brood = {
+		icon = GFX_decision_generic_military
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_country_can_concentrate_brood = yes }
+		days_remove = constant:black_plague_rat_decision.concentrate_brood_duration_days
+		complete_effect = { black_plague_rat_concentrate_brood = yes }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = 2 black_plague_rat_coherence_is_low = yes }
+		}
+	}
+
+	black_plague_rat_scatter_brood = {
+		icon = GFX_decision_generic_army_support
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_country_can_scatter_brood = yes }
+		days_remove = constant:black_plague_rat_decision.scatter_brood_duration_days
+		complete_effect = { black_plague_rat_scatter_brood = yes }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.standard
+			modifier = { factor = 3 black_plague_rat_hunger_is_crisis = yes }
+		}
+	}
+
+	black_plague_rat_devour_rival = {
+		icon = GFX_decision_generic_military
+		visible = { black_plague_rat_country_is_active = yes }
+		available = { black_plague_rat_country_can_devour_rival = yes }
+		days_remove = constant:black_plague_rat_decision.devour_rival_duration_days
+		complete_effect = { black_plague_rat_devour_rival = yes }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.merger
+			modifier = { factor = 2 black_plague_rat_coherence_is_high = yes }
+		}
+	}
+
+	black_plague_rat_resist_absorption = {
+		icon = GFX_decision_generic_army_support
+		state_target = any_owned_state
+		on_map_mode = decision_view_only
+		visible = { black_plague_rat_country_is_active = yes }
+		target_root_trigger = { black_plague_rat_country_is_active = yes }
+		target_trigger = { FROM = { black_plague_rat_state_can_resist_absorption = yes } }
+		available = {
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.resist_absorption_mass_cost compare = greater_than_or_equals }
+			FROM = { black_plague_rat_state_can_resist_absorption = yes }
+		}
+		days_remove = constant:black_plague_rat_decision.resist_absorption_duration_days
+		complete_effect = { hidden_effect = { FROM = { black_plague_rat_resist_absorption = yes } } }
+		cancel_trigger = { FROM = { NOT = { black_plague_rat_state_can_resist_absorption = yes } } }
+		cancel_effect = { hidden_effect = { FROM = { clr_state_flag = black_plague_rat_resist_absorption } } }
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.merger
+			modifier = { factor = 2 FROM = { has_state_flag = black_plague_rat_brood_absorbed } }
+		}
+	}
+
 	black_plague_rat_citadel_stockpile = {
 		icon = GFX_decision_generic_consumer_goods
 		visible = { black_plague_rat_country_is_active = yes has_country_flag = black_plague_rat_citadel_relays }
