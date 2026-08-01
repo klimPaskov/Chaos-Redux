@@ -7301,7 +7301,9 @@ africa_call_hostile_natural_disaster_from_action = {
 				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
 				set_country_flag = africa_natural_disaster_call_accepted
 				PREV = { set_country_flag = africa_natural_disaster_call_accepted_recorded }
-				africa_achievement_record_disaster_weaponised_against_civilians = yes
+				# Event 013 accepted the exact hostile selected-country call. It is
+				# not a campaign-victory or army-defeat proof, so no Row 38 owner gate
+				# is opened here; civilian and neutral proofs remain separate owners.
 				if = {
 					limit = { check_variable = { natural_disaster_call_has_resolved_primary_country > constant:africa_value.zero } }
 					event_target:natural_disaster_call_resolved_primary_country = {
@@ -7311,6 +7313,7 @@ africa_call_hostile_natural_disaster_from_action = {
 				random = {
 					chance = constant:africa_natural_disaster.backfire_chance
 					set_country_flag = africa_natural_disaster_backfire_recorded
+					africa_achievement_record_weather_campaign_backfire = yes
 					add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 					africa_clamp_host_values = yes
 				}
@@ -7319,6 +7322,7 @@ africa_call_hostile_natural_disaster_from_action = {
 				set_country_flag = africa_natural_disaster_call_rejected
 				PREV = { set_country_flag = africa_natural_disaster_call_rejected_recorded }
 				set_country_flag = africa_natural_disaster_backfire_recorded
+				africa_achievement_record_weather_campaign_backfire = yes
 				add_to_variable = { africa_ecological_wrath = constant:africa_natural_disaster.backfire_wrath }
 				africa_clamp_host_values = yes
 			}

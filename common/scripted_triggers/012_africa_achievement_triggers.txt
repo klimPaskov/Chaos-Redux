@@ -323,7 +323,8 @@ africa_the_old_gold_roads_is_complete = {
 
 africa_member_who_said_no_is_complete = {
 	africa_achievement_event12_actor_is_eligible = yes
-	# Reviewed owner gate: refusal alternative, League destruction, puppet, and terminal-chaos owners are not yet runtime-backed.
+	# Reviewed owner gate: the refusal alternative is transaction-backed; League
+	# destruction, puppet, and terminal-chaos disqualifier owners remain audited.
 	has_global_flag = africa_achievement_member_refusal_owner_ready
 	has_country_flag = africa_priority_member_player_origin_validated
 	has_country_flag = africa_priority_member_league_offer_refused
@@ -366,11 +367,13 @@ africa_four_oceans_homeward_is_complete = {
 
 africa_capital_without_capture_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
+	has_global_flag = africa_achievement_local_ownership_owner_ready
 	check_variable = { var = global.africa_achievement_diaspora_owned_project_count value = constant:africa_achievement_count.diaspora_owned_projects compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_local_ownership_share value = constant:africa_achievement_ratio.protected_local_ownership compare = greater_than_or_equals }
 	NOT = { has_global_flag = africa_achievement_foreign_government_capture }
 	NOT = { has_global_flag = africa_achievement_diaspora_government_capture }
 	NOT = { has_global_flag = africa_achievement_corruption_crisis_unresolved }
+	NOT = { has_global_flag = africa_achievement_local_ownership_lost }
 }
 
 africa_rails_rivers_roads_and_ports_is_complete = {
@@ -464,6 +467,10 @@ africa_elephants_crossed_the_desert_is_complete = {
 
 africa_the_forest_kept_its_word_is_complete = {
 	africa_achievement_normal_host_is_eligible = yes
+	# Reviewed owner gate: the accepted hostile selected-country call is not
+	# civilian-casualty proof, and no exact civilian-damage owner is exposed yet.
+	# Keep Row 37 fail-closed until that owner is wired.
+	has_global_flag = africa_achievement_ecological_covenant_owner_ready
 	africa_achievement_uses_high_chaos = yes
 	check_variable = { var = global.africa_achievement_ecological_bargains_honoured value = constant:africa_achievement_count.ecological_bargains compare = greater_than_or_equals }
 	check_variable = { var = global.africa_achievement_disasters_contained value = constant:africa_achievement_count.disasters_contained compare = greater_than_or_equals }
@@ -482,6 +489,7 @@ africa_rain_on_command_is_complete = {
 	has_global_flag = africa_achievement_weather_war_won
 	NOT = { has_global_flag = africa_achievement_maximum_member_weather_disaster }
 	NOT = { has_global_flag = africa_achievement_weather_targeted_neutral_african }
+	NOT = { has_global_flag = africa_achievement_weather_campaign_backfire }
 	NOT = { has_global_flag = africa_achievement_ecological_wrath_collapse }
 }
 
