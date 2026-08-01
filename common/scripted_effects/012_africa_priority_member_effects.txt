@@ -249,12 +249,14 @@ africa_priority_member_resolve_requalification_issue = {
 }
 
 # COUNTRY scope after complete package registration. The seven niche African
-# country tags registered by Event 006 receive the Event 012 priority-member
-# tree directly. The reusable carrier pool is exposed as
-# `collection:chaosx_country_africa` for future African events. Existing
-# vanilla carriers receive this tree only when they still use the generic tree.
-# A meaningful vanilla tree remains intact while Event 012 decisions, ideas,
-# forces, and AI apply additively.
+# country tags registered by Event 006 may receive the Event 012 priority-member
+# tree only after their active Event 006 origin and full Event 006 tree are no
+# longer present. While Event 006 owns the active origin or focus tree, record
+# the skipped overlay and leave the Event 006 surface intact; Event 012
+# decisions, ideas, forces, and AI still apply additively. The reusable carrier
+# pool is exposed as `collection:chaosx_country_africa` for future African
+# events. Existing vanilla carriers receive this tree only when they still use
+# the generic tree.
 africa_priority_member_ensure_focus_tree_loaded = {
 	if = {
 		limit = {
@@ -263,6 +265,20 @@ africa_priority_member_ensure_focus_tree_loaded = {
 		clr_country_flag = africa_priority_member_focus_tree_loaded
 		clr_country_flag = africa_priority_member_focus_tree_overlay_skipped
 		if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_active_origin
+					has_focus_tree = independence_wave_focus_tree
+					is_independence_wave_registry_soviet_origin = yes
+				}
+			}
+			# Event 006 and Soviet origins retain their meaningful focus surface.
+			# The package payload remains available through additive ideas,
+			# decisions, forces, and AI; a later lifecycle call may retry the
+			# overlay after the protected origin/tree has been cleared.
+			set_country_flag = africa_priority_member_focus_tree_overlay_skipped
+		}
+		else_if = {
 			limit = { has_focus_tree = africa_priority_member_focus_tree }
 			set_country_flag = africa_priority_member_focus_tree_loaded
 		}
