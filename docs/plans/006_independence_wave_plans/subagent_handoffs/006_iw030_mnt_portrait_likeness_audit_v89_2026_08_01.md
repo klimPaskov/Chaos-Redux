@@ -142,3 +142,43 @@ The raw v3 has a stable package path and hash, and the source/crop lineage is au
 5. Add the corrected v3-or-later raw/candidate/processing rows to `generated_portraits/manifest.md`, using full paths and matching hashes, then obtain independent identity and style PASS before DDS or `.gfx` work.
 
 **v3 final status: HOLD.** Identity and style remain below threshold, and the supposed 156x210 candidate is invalid by exact decoded dimensions and crop-equality evidence. The source lead may continue, but v3 is not admissible as a runtime portrait or as a relabel for `MNT_kristo_popovic`.
+
+## v4 independent audit (2026-08-01)
+
+**v4 overall verdict: HOLD.** V4 fixes the v3 processing defect: the named candidate decodes to exactly 156x210 and its processing JSON records the full raw/output paths, crop, hashes, and immutable-crop source link. The visual identity gate still fails closed, however, because the eyes, nose, lower-face proportions, moustache silhouette, and cap emblem remain visibly genericized or reinterpreted. No DDS or runtime admission is authorized.
+
+### v4 evidence and processing check
+
+| v4 evidence | Dimensions/mode | SHA-256 or proof | Finding |
+| --- | --- | --- | --- |
+| `docs/assets/006_independence_wave/iw030_mnt_portrait_source_research_v87_2026_08_01/generated_portraits/portrait_MNT_mitar_martinovic_hoi4_repaint_raw_v4.png` | 1115x1410 RGB PNG | `aadd994e42f2592f7a4479b0af66c9743ad7258c48f1b3d61da0f656166bd842` | Raw v4 ImageGen repaint under audit. |
+| `docs/assets/006_independence_wave/iw030_mnt_portrait_source_research_v87_2026_08_01/generated_portraits/portrait_MNT_mitar_martinovic_hoi4_156x210_v4.png` | **156x210 RGB PNG** | `18810f98092b9b0a88fa93da69d31383151280cb2261ebb7e6c3eea11c36c9f2` | Valid native candidate dimensions confirmed from the decoded file. |
+| `docs/assets/006_independence_wave/iw030_mnt_portrait_source_research_v87_2026_08_01/generated_portraits/portrait_MNT_mitar_martinovic_processing_v4.json` | Processing record | Crop `[29,0,1086,1410]` to 1057x1410, Pillow LANCZOS to `[156,210]`, source/output hashes match files | Processing metadata is internally consistent and source-linked to the immutable archival crop. |
+
+The immutable source master remains 684x1135 RGB with SHA-256 `202d349544bb4b36ee696120222c1ccfdb25e1a8c7213e65eef9ce910d185a76`, and the exact 530x670 crop remains SHA-256 `493846b7202b528ce81260a0227d5c4880575f97cc0cb45715b116390e37de2e` with decoded-pixel equality proof. V4 raw and native files were reviewed at native size and 4x nearest-neighbour enlargement against that crop and the canonical leader/commander contact sheets.
+
+### v4 identity verdict: HOLD
+
+- **Eyes and spacing: HOLD.** V4 keeps the frontal pose but opens and levels the eyes into nearly mirrored shapes with similar spacing and pupils. The source has uneven eyelids, eye openings, and gaze asymmetry that remain identity-bearing; v4's gaze is a generic symmetrical officer gaze.
+- **Nose: HOLD.** V4's bridge is more vertically elongated and its tip/nostrils are more sculpted and narrow than the source's broad short bridge and rounded broad tip. The central highlight and lower-nose contour are not source-locked.
+- **Jaw and face proportions: HOLD.** V4 retains a broad forehead but narrows the cheeks and lengthens/tapers the lower face and chin relative to the source's compact lower facial mass. The native 156x210 candidate makes this genericization more apparent.
+- **Moustache: partial PASS only.** The dark broad moustache remains the strongest anchor and v4 is less exaggerated than v1, but the outer ends still curl upward and the overall mass is smoother and more evenly shaped than the source's flatter, uneven moustache. It cannot compensate for the eye/nose/jaw drift.
+- **Cap emblem and medals: HOLD.** V4's bright cap device is larger and has a crossed/leaf-like silhouette unlike the small source-specific heraldic device. Rosettes, collar braid, diagonal strap, and medal details are painted as high-contrast re-interpretations; the grayscale source does not establish their exact colors or authorize invented award geometry.
+
+### v4 style and framing verdict: HOLD
+
+V4 has centered head-and-shoulders framing, a neutral painted background, and an early-twentieth-century military presentation that broadly fits the HOI4 portrait family and Martinovic's general role. The valid native candidate is legible at 156x210, but its face and eye planes are soft/muddy and the brush texture is coarser and more repetitive than the canonical leader/commander references. The oversized bright cap device and painted uniform embellishments also pull the image away from a controlled source-locked HOI4 dossier portrait.
+
+### v4 provenance verdict: PASS with caveat
+
+The v4 raw/candidate files and processing JSON form a coherent, hash-matched source-to-output chain, and the JSON explicitly links the pipeline to the immutable archival crop. The active `generated_portraits/manifest.md` still lists only the earlier repaint rows, so add a v4 row and its final audit status before any durable promotion. This packaging caveat does not change the identity HOLD and does not authorize DDS or `.gfx` work.
+
+### v4 required disposition
+
+1. Keep v4 raw and native files evidence-only; do not convert to DDS or wire `.gfx`.
+2. Request a further source-locked repaint preserving the source's uneven eyes, broad short nose, compact cheek/jaw proportions, and flatter moustache ends.
+3. Keep the cap device, rosette pattern, collar braid, diagonal straps, and medals source-faithful; remove the enlarged crossed/leaf-like emblem and unsupported color/award additions.
+4. Add the v4 raw/candidate/processing entries to `generated_portraits/manifest.md` with matching hashes and record the separate identity/style HOLD verdict.
+5. Re-run independent identity and style review on the next candidate. Only separate identity PASS and style PASS can unlock DDS and runtime wiring.
+
+**v4 final status: HOLD.** Processing and source linkage pass with a manifest caveat, but identity and style remain below the admission threshold. The source lead may continue, while v4 must not be used as a runtime portrait or as a relabel for `MNT_kristo_popovic`.

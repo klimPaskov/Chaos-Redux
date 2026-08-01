@@ -28,7 +28,7 @@ The canonical `.1` entry calls `africa_rsa_start_allied_civil_war` once only aft
 
 | Surface | Current release-candidate evidence | Disposition | Open boundary |
 | --- | --- | --- | --- |
-| Core event identity | Event 12 constants, registry, entry event, and cluster 6 references | Active evidence | Workbook and final catalog wording remain parent-owned. |
+| Core event identity | Event 12 constants, registry, entry event, cluster 6 references, and the tier-3 Formables unlock | Active evidence | The workbook and exported cluster row now mirror the runtime member contract; Event 12 itself remains open for live acceptance. |
 | Host campaign | 51 host playbooks, with 22 full and 29 compact signatures | Active evidence | Three exact host exceptions remain blocked in the acceptance ledger, and whole-event runtime acceptance is open. |
 | South African Allied rupture | The shared Event 12 entry admits original SAF through the narrow RSA gate, preserves `south_african_focus`, calls the public allied civil-war effect once, and records opening, settlement, exile, and no-patron history rows | Active evidence | Civil-war, settlement, and exile completion still require live-consumer acceptance; no alternate host or fallback split is authorized. |
 | Focus loader | Host and priority loaders restrict replacement to generic or explicitly approved trees, preserve completed-focus history, and use one canonical continental loader; the payoff ledger records 77 of 78 rows as implemented | Active evidence with one queued external-world row | Focus route, AI, visual, and live-consumer audits remain separate completion gates. |
