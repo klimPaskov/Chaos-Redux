@@ -481,6 +481,29 @@ def main() -> int:
 		"SCN-008 does not keep a bounded belligerence-target cleanup ledger",
 		errors,
 	)
+	scenario_matrix = read(
+		"docs/plans/006_independence_wave_plans/subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md"
+	)
+	cell_ids = re.findall(r"`SCN-008/[^`]+`", scenario_matrix)
+	require(
+		len(cell_ids) == 32 and len(set(cell_ids)) == 32,
+		f"SCN-008 static acceptance matrix must contain 32 unique cells, found {len(set(cell_ids))}",
+		errors,
+	)
+	require(
+		all(label in scenario_matrix for label in ("Sovereign Scatter", "Common Congress", "Wars of Separation", "Universal Belligerence: former hosts", "Universal Belligerence: neighboring releases", "Universal Belligerence: nearby non-league", "Patron Worlds", "Great Partition")),
+		"SCN-008 static acceptance matrix is missing one or more of the eight player-facing modes",
+		errors,
+	)
+	edge_matrix = read(
+		"docs/plans/006_independence_wave_plans/subagent_handoffs/006_scn008_edge_case_static_matrix_2026_08_02.md"
+	)
+	edge_ids = re.findall(r"`EDGE-SCN-\d{3}`", edge_matrix)
+	require(
+		len(edge_ids) == 8 and len(set(edge_ids)) == 8,
+		f"SCN-008 edge-case static receipt must contain 8 unique cases, found {len(set(edge_ids))}",
+		errors,
+	)
 	try:
 		intensity_tuning = extract_script_block(scenario, "independence_wave_scenario_set_intensity_tuning")
 		type_application = extract_script_block(scenario, "independence_wave_scenario_apply_type")
