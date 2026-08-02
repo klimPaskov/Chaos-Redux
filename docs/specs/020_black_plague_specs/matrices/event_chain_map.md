@@ -60,7 +60,14 @@ Event numbers after the canonical entry are retained here as the accepted Event 
 | `chaosx.nr20.77` | Rat King government route acknowledgement | Rat King | yes | one per carrier route selection |
 | `chaosx.nr20.78` | RTA route-operation report | RTA | yes | one per completed route operation |
 | `chaosx.nr20.79` | Rat King policy-operation report | Rat King | yes | one per completed royal policy operation |
-| `chaosx.nr20.80` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
+| `chaosx.nr20.80` | target-continent choice dialog | Rat King | yes | one active target |
+| `chaosx.nr20.81` | Crown campaign success report | Rat King | yes | one per completed crown campaign |
+| `chaosx.nr20.82` | Crown campaign failure report | Rat King | yes | one per failed crown campaign |
+| `chaosx.nr20.83` | Close the Harbors success report | Rat King | yes | one per completed harbor operation |
+| `chaosx.nr20.84` | Silence the Capitals success report | Rat King | yes | one per completed capital operation |
+| `chaosx.nr20.85` | Close the Harbors failure report | Rat King | yes | one per failed harbor operation |
+| `chaosx.nr20.86` | Silence the Capitals failure report | Rat King | yes | one per failed capital operation |
+| `chaosx.nr20.87` onward | weaponization iteration pool when event events are used | project owner | yes | project controlled |
 | `chaosx.nr20.90` | triggerable scenario launch report after bootstrap | global and affected human players | yes | no |
 
 Implementation status note: the current worktree defines and calls `.45`, `.57-.59`, `.64-.79`, and `.90`; these rows are implemented static event evidence rather than future allocations. Reconstruction `.72` is now a once-only eligibility-gated dispatch from `black_plague_rat_king_resolve_defeat`, after `.71` and before the separate `.73-.75` aftermath path; it no longer represents an unconditional global-eradication callback. The `.66-.69` entries report the two human last-response missions that share the disease category after Evolution V opens. This matrix remains the behavioral contract and does not claim live-game validation.

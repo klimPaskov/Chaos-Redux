@@ -602,6 +602,77 @@ black_plague_rat_king_court_category = {
 		}
 	}
 
+	# Selected-continent campaign middle. These are state-targeted timed
+	# operations in the same RTX court category; they do not create a second
+	# disease category or a third rat tag.
+	black_plague_rat_king_close_the_harbors = {
+		name = black_plague_rat_king_close_the_harbors
+		desc = black_plague_rat_king_close_the_harbors_desc
+		icon = GFX_decision_black_plague_strike_royal_node
+		state_target = any
+		on_map_mode = decision_view_only
+		visible = { black_plague_rat_country_is_king = yes has_global_flag = black_plague_evolution_v_route_open }
+		target_root_trigger = { black_plague_rat_king_terminal_campaign_country_is_ready = yes }
+		target_trigger = { FROM = { black_plague_rat_king_terminal_harbor_target_is_valid = yes } }
+		available = {
+			black_plague_rat_king_terminal_campaign_country_is_ready = yes
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_harbor_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_harbor_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_harbor_division_cap_cost compare = greater_than_or_equals }
+			FROM = { black_plague_rat_king_terminal_harbor_target_is_valid = yes }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_harbor_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_harbor_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_harbor_division_cap_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = black_plague_rat_king_close_the_harbors_cost
+		modifier = { civilian_factory_use = constant:black_plague_rat_decision.terminal_campaign_civilian_factories }
+		days_remove = constant:black_plague_rat_decision.terminal_campaign_duration_days
+		complete_effect = { black_plague_rat_king_complete_terminal_harbor_campaign = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_rat_king_terminal_campaign_country_is_ready = yes }
+				FROM = { NOT = { black_plague_rat_king_terminal_harbor_target_is_valid = yes } }
+			}
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.high }
+	}
+
+	black_plague_rat_king_silence_the_capitals = {
+		name = black_plague_rat_king_silence_the_capitals
+		desc = black_plague_rat_king_silence_the_capitals_desc
+		icon = GFX_goal_black_plague_rat_four_mouths
+		state_target = any
+		on_map_mode = decision_view_only
+		visible = { black_plague_rat_country_is_king = yes has_global_flag = black_plague_evolution_v_route_open }
+		target_root_trigger = { black_plague_rat_king_terminal_campaign_country_is_ready = yes }
+		target_trigger = { FROM = { black_plague_rat_king_terminal_capital_target_is_valid = yes } }
+		available = {
+			black_plague_rat_king_terminal_campaign_country_is_ready = yes
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_capital_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_capital_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_capital_division_cap_cost compare = greater_than_or_equals }
+			FROM = { black_plague_rat_king_terminal_capital_target_is_valid = yes }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.terminal_campaign_capital_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_brood_mass value = constant:black_plague_rat_decision.terminal_campaign_capital_brood_mass_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_division_cap_bonus value = constant:black_plague_rat_decision.terminal_campaign_capital_division_cap_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = black_plague_rat_king_silence_the_capitals_cost
+		modifier = { civilian_factory_use = constant:black_plague_rat_decision.terminal_campaign_civilian_factories }
+		days_remove = constant:black_plague_rat_decision.terminal_campaign_duration_days
+		complete_effect = { black_plague_rat_king_complete_terminal_capital_campaign = yes }
+		cancel_trigger = {
+			OR = {
+				NOT = { black_plague_rat_king_terminal_campaign_country_is_ready = yes }
+				FROM = { NOT = { black_plague_rat_king_terminal_capital_target_is_valid = yes } }
+			}
+		}
+		ai_will_do = { base = constant:black_plague_rat_ai.maximum }
+	}
+
 	# Start the visible Crown-the-Continent campaign after the selected target
 	# already satisfies the geographic threshold. The hidden mission then holds
 	# that progress for a long period before it grants the earned crown flag.
@@ -647,7 +718,15 @@ black_plague_rat_king_court_category = {
 			check_variable = { var = global.date value = global.black_plague_rat_king_crown_continent_end_date compare = greater_than_or_equals }
 		}
 		cancel_trigger = { black_plague_rat_king_crown_continent_is_invalid = yes }
-		cancel_effect = { clr_country_flag = black_plague_rat_king_crown_continent_active }
+		cancel_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = world_end } }
+				black_plague_rat_king_crown_continent_timeout = yes
+			}
+			else = {
+				clr_country_flag = black_plague_rat_king_crown_continent_active
+			}
+		}
 		complete_effect = { black_plague_rat_king_crown_continent_complete = yes }
 		timeout_effect = { black_plague_rat_king_crown_continent_timeout = yes }
 	}

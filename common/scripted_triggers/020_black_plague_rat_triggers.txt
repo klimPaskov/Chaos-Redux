@@ -45,6 +45,45 @@ black_plague_rat_king_royal_strike_target_is_valid = {
 	NOT = { has_state_flag = black_plague_rat_king_royal_strike_cooldown }
 }
 
+# Selected-continent campaign targets. The country trigger keeps the operation
+# inside the earned RTX route; the state triggers enforce the target marker,
+# human opposition, and a live enemy war before a decision can be committed.
+black_plague_rat_king_terminal_campaign_country_is_ready = {
+	black_plague_rat_country_is_king = yes
+	has_global_flag = black_plague_evolution_v_route_open
+	has_global_flag = black_plague_rat_king_route_completed
+	has_global_flag = black_plague_rat_king_target_continent_selected
+	has_war = yes
+	NOT = { has_country_flag = black_plague_rat_king_terminal_campaign_active }
+	NOT = { has_country_flag = black_plague_rat_king_terminal_harbor_campaign_active }
+	NOT = { has_country_flag = black_plague_rat_king_terminal_capital_campaign_active }
+}
+
+black_plague_rat_king_terminal_campaign_state_is_valid = {
+	exists = yes
+	has_state_flag = black_plague_rat_king_target_continent_state
+	CONTROLLER = {
+		exists = yes
+		black_plague_country_is_human_host = yes
+		has_war_with = ROOT
+	}
+	black_plague_state_can_receive_exposure = yes
+	NOT = { black_plague_state_is_rat_controlled = yes }
+}
+
+black_plague_rat_king_terminal_harbor_target_is_valid = {
+	black_plague_rat_king_terminal_campaign_state_is_valid = yes
+	is_coastal = yes
+	naval_base > 0
+	NOT = { has_state_flag = black_plague_rat_king_terminal_harbor_cooldown }
+}
+
+black_plague_rat_king_terminal_capital_target_is_valid = {
+	black_plague_rat_king_terminal_campaign_state_is_valid = yes
+	has_state_flag = black_plague_rat_terminal_capital_target
+	NOT = { has_state_flag = black_plague_rat_king_terminal_capital_cooldown }
+}
+
 black_plague_rat_king_defeat_aftermath_is_eligible = {
 	has_global_flag = black_plague_rat_king_defeated
 	has_global_flag = black_plague_evolution_iv_active
