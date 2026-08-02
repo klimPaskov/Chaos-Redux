@@ -4,6 +4,8 @@
 # The five entries below are true evolutions. Threatened, Incubating, Infected,
 # Severe Crisis, Collapsed, Contained, Recovery, Cured, and Rat-Controlled are
 # ordinary disease phases and never satisfy an evolution-history check.
+# Evolution V uses the Rat King's committed target-continent ledger rather than
+# combining the best ratio and strategic targets from different continents.
 # ============================================================================
 
 black_plague_state_is_infected_or_worse = {
@@ -173,30 +175,31 @@ black_plague_evolution_v_has_royal_route = {
 }
 
 black_plague_evolution_v_has_continent_control = {
-	has_variable = global.black_plague_rat_king_best_continent_ratio
+	has_global_flag = black_plague_rat_king_target_continent_selected
+	has_variable = global.black_plague_rat_king_target_continent_ratio
 	check_variable = {
-		var = global.black_plague_rat_king_best_continent_ratio
+		var = global.black_plague_rat_king_target_continent_ratio
 		value = constant:black_plague_evolution_runtime.minimum_king_continent_ratio_for_v
 		compare = greater_than_or_equals
 	}
 	check_variable = {
-		var = global.black_plague_rat_king_best_continent_states
+		var = global.black_plague_rat_king_target_continent_states
 		value = constant:black_plague_evolution_runtime.minimum_king_continent_states_for_v
 		compare = greater_than_or_equals
-		}
+	}
 	check_variable = {
-		var = global.black_plague_rat_king_capital_targets_controlled
+		var = global.black_plague_rat_king_target_capital_targets_controlled
 		value = constant:black_plague_evolution_runtime.minimum_capital_targets_for_v
 		compare = greater_than_or_equals
 	}
 	check_variable = {
-		var = global.black_plague_rat_king_refuge_targets_controlled
+		var = global.black_plague_rat_king_target_refuge_targets_controlled
 		value = constant:black_plague_evolution_runtime.minimum_refuge_targets_for_v
 		compare = greater_than_or_equals
 	}
 }
 
-black_plague_evolution_v_is_ready = {
+black_plague_evolution_v_non_continent_gates_are_ready = {
 	black_plague_evolution_runtime_has_active_outbreak = yes
 	black_plague_evolution_v_is_enabled = yes
 	world_end_black_plague_scenario_enabled = yes
@@ -221,26 +224,94 @@ black_plague_evolution_v_is_ready = {
 		value = constant:black_plague_evolution_runtime.minimum_king_states_for_v
 		compare = greater_than_or_equals
 	}
-	RTX = {
-		exists = yes
-		check_variable = {
-			var = black_plague_rat_king_dominion
-			value = constant:black_plague_evolution_runtime.minimum_terminal_dominion_for_v
-			compare = greater_than_or_equals
-		}
-		check_variable = {
-			var = black_plague_rat_king_sentience
-			value = constant:black_plague_evolution_runtime.minimum_terminal_sentience_for_v
-			compare = greater_than_or_equals
-		}
-		check_variable = {
-			var = black_plague_rat_king_cohesion
-			value = constant:black_plague_evolution_runtime.minimum_terminal_cohesion_for_v
-			compare = greater_than_or_equals
-		}
-		NOT = { has_country_flag = black_plague_rat_hunger_crisis }
-	}
 	black_plague_evolution_v_has_royal_route = yes
+}
+
+black_plague_evolution_v_is_ready = {
+	black_plague_evolution_v_non_continent_gates_are_ready = yes
+	black_plague_evolution_v_has_continent_control = yes
+	# Crown the Continent is the final validation operation after Evolution V
+	# opens; it must not be required to open the route itself.
+}
+
+black_plague_rat_king_target_continent_is_candidate = {
+	black_plague_evolution_v_non_continent_gates_are_ready = yes
+	NOT = { has_global_flag = black_plague_rat_king_target_continent_selected }
+	OR = {
+		check_variable = { var = global.black_plague_rat_king_europe_total value = constant:black_plague_value.zero compare = greater_than }
+		check_variable = { var = global.black_plague_rat_king_asia_total value = constant:black_plague_value.zero compare = greater_than }
+		check_variable = { var = global.black_plague_rat_king_africa_total value = constant:black_plague_value.zero compare = greater_than }
+		check_variable = { var = global.black_plague_rat_king_north_america_total value = constant:black_plague_value.zero compare = greater_than }
+		check_variable = { var = global.black_plague_rat_king_south_america_total value = constant:black_plague_value.zero compare = greater_than }
+		check_variable = { var = global.black_plague_rat_king_australia_total value = constant:black_plague_value.zero compare = greater_than }
+	}
+}
+
+black_plague_rat_king_target_continent_candidate_europe = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_europe_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_target_continent_candidate_asia = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_asia_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_target_continent_candidate_africa = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_africa_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_target_continent_candidate_north_america = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_north_america_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_target_continent_candidate_south_america = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_south_america_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_target_continent_candidate_australia = {
+	black_plague_rat_king_target_continent_is_candidate = yes
+	check_variable = { var = global.black_plague_rat_king_australia_total value = constant:black_plague_value.zero compare = greater_than }
+}
+
+black_plague_rat_king_crown_continent_is_complete = {
+	black_plague_evolution_v_has_continent_control = yes
+	NOT = { has_global_flag = world_end }
+}
+
+black_plague_rat_king_crown_continent_can_start = {
+	black_plague_rat_country_is_king = yes
+	has_global_flag = black_plague_evolution_v_route_open
+	has_global_flag = black_plague_rat_king_route_completed
+	black_plague_rat_king_crown_continent_is_complete = yes
+	NOT = { has_global_flag = black_plague_rat_king_continent_crowned }
+	NOT = { has_country_flag = black_plague_rat_king_crown_continent_active }
+	NOT = { has_country_flag = black_plague_rat_king_crown_continent_cooldown }
+	NOT = { has_country_flag = black_plague_rat_hunger_crisis }
+	check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.target_continent_crown_dominion_cost compare = greater_than_or_equals }
+	check_variable = { var = black_plague_rat_king_sentience value = constant:black_plague_rat_decision.target_continent_crown_sentience_cost compare = greater_than_or_equals }
+	check_variable = { var = black_plague_rat_king_cohesion value = constant:black_plague_rat_decision.target_continent_crown_cohesion_cost compare = greater_than_or_equals }
+}
+
+black_plague_rat_king_crown_continent_is_invalid = {
+	OR = {
+		NOT = { black_plague_rat_country_is_king = yes }
+		has_global_flag = world_end
+		NOT = { has_global_flag = black_plague_evolution_v_route_open }
+		NOT = { black_plague_rat_king_crown_continent_is_complete = yes }
+	}
+}
+
+black_plague_rat_king_crown_continent_success = {
+	has_country_flag = black_plague_rat_king_crown_continent_active
+	black_plague_rat_king_crown_continent_is_complete = yes
+}
+
+black_plague_evolution_v_terminal_execution_requires_crown = {
+	has_global_flag = black_plague_rat_king_continent_crowned
 	black_plague_evolution_v_has_continent_control = yes
 }
 
@@ -290,6 +361,7 @@ black_plague_evolution_v_terminal_execution_is_ready = {
 	}
 	black_plague_evolution_v_has_royal_route = yes
 	black_plague_evolution_v_has_continent_control = yes
+	black_plague_evolution_v_terminal_execution_requires_crown = yes
 }
 
 black_plague_scenario_launch_is_available = {

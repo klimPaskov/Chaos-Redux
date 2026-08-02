@@ -243,6 +243,8 @@ black_plague_initialize_runtime = {
 		clr_global_flag = black_plague_report_rat_nation_defeated
 		clr_global_flag = black_plague_rat_king_defeated
 		clr_global_flag = black_plague_report_terminal_continent_selected
+		clr_global_flag = black_plague_rat_king_target_continent_selected
+		clr_global_flag = black_plague_rat_king_continent_crowned
 		clr_global_flag = black_plague_report_ten_million_deaths
 		clr_global_flag = black_plague_report_eradication
 		clr_global_flag = black_plague_report_reconstruction
@@ -252,6 +254,12 @@ black_plague_initialize_runtime = {
 		set_variable = { global.black_plague_deaths_total = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_starting_world_population_k = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_evolution_v_death_threshold = constant:black_plague_evolution_runtime.minimum_king_deaths_for_v }
+		set_variable = { global.black_plague_rat_king_target_continent = constant:black_plague_evolution_runtime.target_continent_none }
+		set_variable = { global.black_plague_rat_king_target_continent_total = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_continent_ratio = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_continent_states = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_capital_targets_controlled = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_refuge_targets_controlled = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_active_state_count = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_established_state_count = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_source_state_count = constant:black_plague_value.zero }
@@ -301,7 +309,19 @@ black_plague_initialize_runtime = {
 			}
 		}
 	}
+	black_plague_terminal_route_backfill = yes
 	black_plague_achievement_initialize_runtime = yes
+}
+
+# These terminal-route fields are also backfilled when a save was created
+# before the target-continent contract existed.
+black_plague_terminal_route_backfill = {
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_continent } } set_variable = { global.black_plague_rat_king_target_continent = constant:black_plague_evolution_runtime.target_continent_none } }
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_continent_total } } set_variable = { global.black_plague_rat_king_target_continent_total = constant:black_plague_value.zero } }
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_continent_ratio } } set_variable = { global.black_plague_rat_king_target_continent_ratio = constant:black_plague_value.zero } }
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_continent_states } } set_variable = { global.black_plague_rat_king_target_continent_states = constant:black_plague_value.zero } }
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_capital_targets_controlled } } set_variable = { global.black_plague_rat_king_target_capital_targets_controlled = constant:black_plague_value.zero } }
+	if = { limit = { NOT = { has_variable = global.black_plague_rat_king_target_refuge_targets_controlled } } set_variable = { global.black_plague_rat_king_target_refuge_targets_controlled = constant:black_plague_value.zero } }
 }
 
 black_plague_ensure_current_state_values = {

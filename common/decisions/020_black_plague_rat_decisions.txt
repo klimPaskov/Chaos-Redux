@@ -568,6 +568,90 @@ black_plague_rat_king_court_category = {
 		ai_will_do = { base = constant:black_plague_rat_ai.high }
 	}
 
+	# Evolution V is a committed campaign target, not an automatic best-ratio
+	# shortcut. Human RTX players receive a real continent choice; AI RTX uses
+	# the same progress ledger to select the strongest valid route.
+	black_plague_rat_king_select_target_continent = {
+		name = black_plague_rat_king_select_target_continent
+		desc = black_plague_rat_king_select_target_continent_desc
+		icon = GFX_goal_black_plague_rat_read_the_marks
+		visible = { black_plague_rat_country_is_king = yes }
+		available = {
+			black_plague_rat_king_target_continent_is_candidate = yes
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.target_continent_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_king_sentience value = constant:black_plague_rat_decision.target_continent_sentience_cost compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.target_continent_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_king_sentience value = constant:black_plague_rat_decision.target_continent_sentience_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = black_plague_rat_king_select_target_continent_cost
+		days_remove = constant:black_plague_rat_decision.target_continent_selection_days
+		complete_effect = {
+			if = {
+				limit = { is_ai = yes }
+				black_plague_rat_king_select_best_target_continent = yes
+			}
+			else = {
+				country_event = { id = chaosx.nr20.80 }
+			}
+		}
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.maximum
+			modifier = { factor = 2 black_plague_rat_hierarchy_is_emergent = yes }
+		}
+	}
+
+	# Start the visible Crown-the-Continent campaign after the selected target
+	# already satisfies the geographic threshold. The hidden mission then holds
+	# that progress for a long period before it grants the earned crown flag.
+	black_plague_rat_king_crown_the_continent = {
+		name = black_plague_rat_king_crown_the_continent
+		desc = black_plague_rat_king_crown_the_continent_desc
+		icon = GFX_goal_black_plague_rat_earned_terminal_route
+		visible = { black_plague_rat_country_is_king = yes }
+		available = { black_plague_rat_king_crown_continent_can_start = yes }
+		custom_cost_trigger = {
+			check_variable = { var = black_plague_rat_king_dominion value = constant:black_plague_rat_decision.target_continent_crown_dominion_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_king_sentience value = constant:black_plague_rat_decision.target_continent_crown_sentience_cost compare = greater_than_or_equals }
+			check_variable = { var = black_plague_rat_king_cohesion value = constant:black_plague_rat_decision.target_continent_crown_cohesion_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = black_plague_rat_king_crown_the_continent_cost
+		days_remove = constant:black_plague_rat_decision.duration_days
+		cancel_trigger = { NOT = { black_plague_rat_king_crown_continent_is_complete = yes } }
+		complete_effect = {
+			subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.target_continent_crown_dominion_cost }
+			subtract_from_variable = { black_plague_rat_king_sentience = constant:black_plague_rat_decision.target_continent_crown_sentience_cost }
+			subtract_from_variable = { black_plague_rat_king_cohesion = constant:black_plague_rat_decision.target_continent_crown_cohesion_cost }
+			set_variable = { global.black_plague_rat_king_crown_continent_end_date = global.date }
+			add_to_variable = { global.black_plague_rat_king_crown_continent_end_date = constant:black_plague_rat_decision.target_continent_crown_duration_days }
+			set_country_flag = black_plague_rat_king_crown_continent_active
+		}
+		ai_will_do = {
+			base = constant:black_plague_rat_ai.maximum
+			modifier = { factor = 2 black_plague_rat_hierarchy_is_dominant = yes }
+		}
+	}
+
+	black_plague_rat_king_crown_the_continent_mission = {
+		name = black_plague_rat_king_crown_the_continent_mission
+		desc = black_plague_rat_king_crown_the_continent_mission_desc
+		icon = GFX_goal_black_plague_rat_earned_terminal_route
+		allowed = { black_plague_rat_country_is_king = yes }
+		activation = { has_country_flag = black_plague_rat_king_crown_continent_active }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:black_plague_rat_decision.target_continent_crown_duration_days
+		available = {
+			black_plague_rat_king_crown_continent_success = yes
+			check_variable = { var = global.date value = global.black_plague_rat_king_crown_continent_end_date compare = greater_than_or_equals }
+		}
+		cancel_trigger = { black_plague_rat_king_crown_continent_is_invalid = yes }
+		cancel_effect = { clr_country_flag = black_plague_rat_king_crown_continent_active }
+		complete_effect = { black_plague_rat_king_crown_continent_complete = yes }
+		timeout_effect = { black_plague_rat_king_crown_continent_timeout = yes }
+	}
+
 	black_plague_rat_king_execute_terminal_takeover = {
 		icon = GFX_black_plague_rat_king_terminal_readiness_animated
 		visible = {
