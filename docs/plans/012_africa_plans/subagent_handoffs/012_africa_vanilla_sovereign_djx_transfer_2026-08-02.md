@@ -41,4 +41,3 @@ No Hearts of Iron IV process or live save was launched.
 ## Remaining risk
 
 Live package registration should confirm that each vanilla carrier receives exactly one sovereign, that the `DJX` roster is emptied for that character, and that repeated package recovery calls do not duplicate or orphan the leader.
-
