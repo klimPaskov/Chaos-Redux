@@ -79,7 +79,7 @@ content disclosure, contact-sheet review, and independent visual audit.
 | ASSET-005 | League formation super-event image | 457x328 alternate-history congress and charter composition |
 | ASSET-006 | Revisionist milestone super-event image | 457x328 coordinated armed delegations or mobilized bloc; not a generic political map |
 | ASSET-007 through ASSET-019 | Thirteen focus-icon families | 94x86; each implemented focus receives adapted, distinct art. Do not resize an idea or decision icon into a focus icon. |
-| ASSET-020 through ASSET-026 | Seven idea-icon families | 64x64; separate source compositions for each idea family and its meaningful stages |
+| ASSET-020 through ASSET-026 | Seven earlier idea-icon families | 64x64; separate source compositions for each idea family and its meaningful stages |
 | ASSET-027 through ASSET-038 | Twelve decision-icon families | 32x32; simple silhouettes designed at decision-icon scale, not downscaled focus art |
 | ASSET-039 | Main mechanic scripted-GUI panel | Implementation-defined source canvas with deterministic slicing; visual art remains separate from functional layout |
 | ASSET-040 | Recognition seal animation | Real frame sequence plus static fallback; hidden, weak, rising, strong, and entrenched visual states |
@@ -91,6 +91,7 @@ content disclosure, contact-sheet review, and independent visual audit.
 | ASSET-046 | Formable flags and emblems | Mixed sourced and generated flag triplets plus UI sizes. The league emblem may also receive a real-frame animated UI package. |
 | ASSET-047 | Sixteen achievement icon families | 64x64 plus grey and not-eligible variants; one distinct composition per final achievement ID |
 | ASSET-048 | Regional report variants | 210x176; generated or sourced by exact scene, prioritizing signature packages and heavily used regions |
+| ASSET-049 | Post-Release Instability idea icon | 64x64; distinct cracked-foundation treatment for IDEA-06, separate from the other lifecycle families |
 
 ## Focus-icon family directions
 
