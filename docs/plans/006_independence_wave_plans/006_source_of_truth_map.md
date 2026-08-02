@@ -782,6 +782,10 @@ repair are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_
 
 ## Current authority correction (2026-08-02)
 
+### Current count override (2026-08-03)
+
+The current portrait shelf contains 80 original-size PNG masters, all 80 indexed or explicitly recorded as 79 manifest rows plus the retry-2 tail record. The current generic focus surface contains 184 direct definitions, 134 full shared definitions, and 27 import roots, for 318 unique definitions and 345 raw source entries. Any older 80/74/6 or 295/111/50 wording below is dated traceability only and does not describe the current state.
+
 The long completion-state and portrait-shelf paragraphs above are dated
 traceability snapshots, not current arithmetic. Current authority is 80
 original-size masters with all 80 indexed or explicitly recorded (79 table
