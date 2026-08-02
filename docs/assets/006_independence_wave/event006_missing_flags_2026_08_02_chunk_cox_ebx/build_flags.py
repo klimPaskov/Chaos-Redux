@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Event 006 COX--CYX researched flag tranche.
+"""Build the Event 006 COX--EBX researched flag tranche.
 
 The retained ImageGen source masters are the design source.  This script only
 performs mechanical cover-cropping, palette flattening, resizing, contact-sheet
@@ -41,7 +41,38 @@ SPECS = (
     ("CWX", "Jabal Shammar", "CWX_jabal_shammar_imagegen_raw.png", "CWX_jabal_shammar.png", "https://en.wikipedia.org/wiki/Emirate_of_Jabal_Shammar; https://commons.wikimedia.org/wiki/File:Flag_of_the_Emirate_of_Ha%27il.svg", "historical Rashidi/Ha'il reconstruction: red field with golden crescent and eight-point star"),
     ("CXX", "Hadhramaut", "CXX_hadhramaut_imagegen_raw.png", "CXX_hadhramaut.png", "https://en.wikipedia.org/wiki/Hadhramaut; https://en.wikipedia.org/wiki/File:Kathiri_flag.svg", "generated Hadhramaut civic synthesis from Kathiri regional colours: gold-green-gold bands, red hoist triangle, three white stars"),
     ("CYX", "Mahra", "CYX_mahra_imagegen_raw.png", "CYX_mahra.png", "https://en.wikipedia.org/wiki/Mahra_Sultanate; https://commons.wikimedia.org/wiki/File:Flag_of_the_Mahra_Sultanate.svg", "historical Mahra reconstruction: green-white-red bands with a centered black crescent and star"),
+    ("DAX", "Jabal al-Druze Autonomous State", "DAX_jabal_druze_imagegen_raw.png", "DAX_jabal_druze.png", "https://en.wikipedia.org/wiki/Jabal_al-Druze_State; https://commons.wikimedia.org/wiki/File:Flag_of_Jabal_ad-Druze_(state).svg", "generated reconstruction from the mandate-era blue-white-red hoist and green-red-yellow-deep-blue band geometry visible in the supplied reference; not claimed as an exact standard"),
+    ("DBX", "Syrian Coastal Autonomous State", "DBX_alawite_imagegen_raw.png", "DBX_alawite.png", "https://en.wikipedia.org/wiki/Alawite_State; https://commons.wikimedia.org/wiki/File:Flag_of_the_Alawite_State_(1920%E2%80%931936).svg", "historical Alawite State reconstruction: blue hoist, white field, gold sun, and red corner geometry"),
+    ("DFX", "Kabylia", "DFX_kabylia_imagegen_raw.png", "DFX_kabylia.png", "https://en.wikipedia.org/wiki/Kabylia; https://commons.wikimedia.org/wiki/File:Flag_of_Kabylia.svg", "generated Kabylian regional synthesis: blue-over-yellow field with centered red angular civic glyph; not claimed as an exact standard"),
+    ("DHX", "Tripolitania", "DHX_tripoli_imagegen_raw.png", "DHX_tripoli.png", "https://en.wikipedia.org/wiki/Tripolitania; https://commons.wikimedia.org/wiki/File:Maritime_flag_of_Regency_of_Tripoli_(18th_century).svg", "historical Tripolitanian maritime reconstruction: deep green field with three white crescents"),
+    ("HYX", "Fezzan", "HYX_fezzan_imagegen_raw.png", "HYX_fezzan.png", "https://en.wikipedia.org/wiki/Fezzan; https://commons.wikimedia.org/wiki/File:Tripolitania-fezzan-cyrenaica.jpg", "generated Fezzan desert-oasis synthesis from the supplied period map: ochre field, indigo route band, white date palm, teal oasis, and three stars; not claimed as an attested historical flag"),
+    ("DKX", "Darfur", "DKX_darfur_imagegen_raw.png", "DKX_darfur.png", "https://en.wikipedia.org/wiki/Darfur; https://commons.wikimedia.org/wiki/File:Darfur_location_map.png", "generated Darfur sultanate synthesis from the supplied regional map: indigo and ochre fields, red hoist triangle, white baobab, and three dots; not claimed as an attested historical flag"),
+    ("DLX", "Wadai", "DLX_wadai_imagegen_raw.png", "DLX_wadai.png", "https://en.wikipedia.org/wiki/Wadai_Empire; https://commons.wikimedia.org/wiki/File:CentralEastAfrica1750.png", "generated Wadai sultanate synthesis from the supplied regional map: indigo field, ochre and green bands, white fortified gate, and gold civic star; not claimed as an attested historical flag"),
+    ("DPX", "Fante", "DPX_fante_imagegen_raw.png", "DPX_fante.png", "https://en.wikipedia.org/wiki/Fante_people; https://commons.wikimedia.org/wiki/File:Flag_of_Ghana.svg", "generated Fante coastal-confederacy synthesis using Akan red-gold-green palette, crossed canoe oars, and a coastal star; deliberately not a Ghana flag"),
+    ("DVX", "Hausa Federation", "DVX_hausa_imagegen_raw.png", "DVX_hausa.png", "https://en.wikipedia.org/wiki/Hausa_people; https://commons.wikimedia.org/wiki/File:Flag_of_the_Hausa_people.svg", "generated federal adaptation of the sourced Hausa interlaced knot: white field, deep-green eight-loop emblem, and narrow hoist accent"),
+    ("EBX", "Aro Confederacy", "EBX_aro_imagegen_raw.png", "EBX_aro.png", "https://en.wikipedia.org/wiki/Aro_Confederacy; https://commons.wikimedia.org/wiki/File:Flag_of_Nigeria_(1914%E2%80%931952).svg", "generated Aro trade-network synthesis from the supplied colonial-context reference: indigo field, red hoist, gold center band, and white four-cowrie knot; not claimed as an attested historical flag"),
 )
+
+PACKAGE_IDS = {
+    "COX": "IW-067",
+    "CPX": "IW-068",
+    "CQX": "IW-069",
+    "CUX": "IW-073",
+    "CVX": "IW-074",
+    "CWX": "IW-075",
+    "CXX": "IW-076",
+    "CYX": "IW-077",
+    "DAX": "IW-079",
+    "DBX": "IW-080",
+    "DFX": "IW-084",
+    "DHX": "IW-086",
+    "HYX": "IW-087",
+    "DKX": "IW-089",
+    "DLX": "IW-090",
+    "DPX": "IW-094",
+    "DVX": "IW-100",
+    "EBX": "IW-106",
+}
 
 
 def sha256(path: Path) -> str:
@@ -85,9 +116,9 @@ def tga_header(path: Path) -> dict[str, int | str]:
 
 def contact_sheets(source_images: dict[str, Image.Image], final_images: dict[str, dict[str, Image.Image]]) -> None:
     font = ImageFont.load_default()
-    source_sheet = Image.new("RGB", (1600, 900), (235, 235, 235))
+    source_sheet = Image.new("RGB", (1600, 1900), (235, 235, 235))
     draw = ImageDraw.Draw(source_sheet)
-    draw.text((16, 12), "Event 006 COX-CYX ImageGen flag source masters", fill=(0, 0, 0), font=font)
+    draw.text((16, 12), "Event 006 COX-EBX ImageGen flag source masters", fill=(0, 0, 0), font=font)
     for index, (tag, identity, *_rest) in enumerate(SPECS):
         row, col = divmod(index, 2)
         x, y = 16 + col * 790, 42 + row * 205
@@ -97,9 +128,9 @@ def contact_sheets(source_images: dict[str, Image.Image], final_images: dict[str
         source_sheet.paste(preview, (x, y + 18))
     source_sheet.save(CONTACT_DIR / "source_masters_contact_sheet.png")
 
-    ladder = Image.new("RGB", (1300, 1160), (235, 235, 235))
+    ladder = Image.new("RGB", (1300, 2550), (235, 235, 235))
     draw = ImageDraw.Draw(ladder)
-    draw.text((16, 12), "Event 006 COX-CYX final flag ladders (nearest-neighbour review)", fill=(0, 0, 0), font=font)
+    draw.text((16, 12), "Event 006 COX-EBX final flag ladders (nearest-neighbour review)", fill=(0, 0, 0), font=font)
     scales = {"normal": 2, "medium": 3, "small": 12}
     x_positions = {"normal": 160, "medium": 420, "small": 620}
     for name in SIZES:
@@ -150,7 +181,7 @@ def process() -> None:
             size_records[role] = {"dimensions": list(size), "processed_png": png_path.relative_to(PACKAGE_ROOT).as_posix(), "package_tga": tga_path.relative_to(PACKAGE_ROOT).as_posix(), "runtime_tga": runtime_path.relative_to(REPO_ROOT).as_posix(), "processed_png_sha256": sha256(png_path), "package_tga_sha256": sha256(tga_path), "runtime_tga_sha256": sha256(runtime_path), "tga_header": header}
         final_images[tag] = tag_outputs
         ref_path = REFERENCE_DIR / reference_name
-        records[tag] = {"package_id": {"COX": "IW-067", "CPX": "IW-068", "CQX": "IW-069", "CUX": "IW-073", "CVX": "IW-074", "CWX": "IW-075", "CXX": "IW-076", "CYX": "IW-077"}[tag], "identity": identity, "source_mode": "imagegen", "source_png": source_path.relative_to(PACKAGE_ROOT).as_posix(), "source_dimensions": list(source.size), "source_sha256": sha256(source_path), "reference_file": ref_path.relative_to(PACKAGE_ROOT).as_posix(), "reference_sha256": sha256(ref_path), "design_reference": design_reference, "geometry_note": geometry, "processed_master": master_path.relative_to(PACKAGE_ROOT).as_posix(), "processed_master_sha256": sha256(master_path), "sizes": size_records, "status": "handed_off"}
+        records[tag] = {"package_id": PACKAGE_IDS[tag], "identity": identity, "source_mode": "imagegen", "source_png": source_path.relative_to(PACKAGE_ROOT).as_posix(), "source_dimensions": list(source.size), "source_sha256": sha256(source_path), "reference_file": ref_path.relative_to(PACKAGE_ROOT).as_posix(), "reference_sha256": sha256(ref_path), "design_reference": design_reference, "geometry_note": geometry, "processed_master": master_path.relative_to(PACKAGE_ROOT).as_posix(), "processed_master_sha256": sha256(master_path), "sizes": size_records, "status": "handed_off"}
     contact_sheets(source_images, final_images)
     validation = {"package": "006_independence_wave/event006_missing_flags_2026_08_02_chunk_cox_ebx", "asset_type": "historical and historically grounded flat flags", "target_sizes": {key: list(value) for key, value in SIZES.items()}, "flags": records, "contact_sheets": ["contact_sheets/source_masters_contact_sheet.png", "contact_sheets/final_size_ladder_enlarged_contact_sheet.png"]}
     (METADATA_DIR / "flag_validation.json").write_text(json.dumps(validation, indent=2) + "\n", encoding="utf-8")
