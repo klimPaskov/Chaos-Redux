@@ -170,6 +170,7 @@
 - `specs/101_reviewed_archetype_fertility_question.md`
 - `specs/102_reviewed_archetype_old_doctors_trial.md`
 - `specs/103_reviewed_archetype_adaptation_rite.md`
+- `specs/104_reviewed_archetype_children_of_two_settlements.md`
 
 ## Matrices
 
