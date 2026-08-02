@@ -1,6 +1,6 @@
 # Event 016 completion audit v2 handoff
 
-Date: 2026-08-01
+Date: 2026-08-02
 
 Agent: `chaosx_event_completion_auditor`
 
@@ -9,6 +9,8 @@ Mode: read-only gameplay audit; documentation report and handoff only.
 ## Outcome
 
 This is a pre-correction audit snapshot. Its findings were accepted as the implementation tranche that followed and are preserved below for traceability.
+
+The blocking findings below are historical and do not describe the current source. The parent resolution at the end of this handoff and the 2026-08-02 dated reconciliation in the audit report are the current status pointers.
 
 The audit report is `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_completion_audit_v2.md`.
 

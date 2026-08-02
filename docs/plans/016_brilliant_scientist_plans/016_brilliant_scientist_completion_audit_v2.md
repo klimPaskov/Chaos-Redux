@@ -6,6 +6,8 @@ Audit owner: `chaosx_event_completion_auditor`
 
 Audit mode: read-only gameplay audit. This report adds no gameplay, localisation, workbook, or asset changes.
 
+> Follow-up scope note (2026-08-01): this audit predates the report-presentation continuations in commits `01b1a2f3d` and `4b59b0adf`. It does not audit the `.10`/`.11` host-archetype clauses or the first four KRG foundation formation-origin clauses. Use the current core-runtime map and the continuation handoff for those surfaces.
+
 ## Executive disposition
 
 Historical audit note: this audit was run before the parent applied the bounded persistence and AI correction tranche. The F1-F4 findings below are retained as the evidence that drove the patch; the current disposition is recorded immediately after this historical snapshot.
@@ -32,32 +34,40 @@ The parent implemented and statically reviewed the bounded correction tranche. E
 
 These changes resolve F1-F4 at the source-contract level, but they do not close the whole Event 016 goal. Broader country-specific flavour and report/news/remnant presentation, seven Event 016 3D packages, quantitative balance evidence, workshop collision review, and user-owned live acceptance remain open.
 
+## Dated reconciliation, 2026-08-02
+
+Current source inspection confirms that F1-F4 are historical findings from the pre-correction audit, not live defects in the current source. `events/016_brilliant_scientist_directorate_outcomes.txt:163-238` uses event-option `ai_chance`; `common/scripted_effects/016_brilliant_scientist_breakthrough_effects.txt:12-79` writes character-level pending receipts and queues concurrent families; and `common/scripted_effects/016_brilliant_scientist_country_effects.txt:140-197,777-884` carries context, report, queue, and active-state history through transfer and Kruger State formation. The original findings remain below as historical evidence for the correction tranche.
+
+The 2026-08-02 continuation also records durable Event 060/089 context receipts, cross-domain review and containment exclusivity, opening and cross-event presentation, observer and time-traveller reachability, and project-family incident risk clauses. These bounded continuations do not change the whole-event completion boundary. Broader report/news/remnant and country flavour work, quantitative balance evidence, user-owned live consumer validation, and all seven Event 016-specific 3D packages remain deferred.
+
 ## Completion status by surface
 
 | Surface | Status | Current evidence and limit |
 | --- | --- | --- |
 | Opening, host selection, and fire-once history | Finished statically; live proof missing | The prior core audit established the default-enabled dispatcher, public and secret appointments, one-time referral, actor correction, and AI appointment routes. The current bounded context scheduler is added after appointment in `common/scripted_effects/016_brilliant_scientist_effects.txt:2607-2614`. |
 | One Kruger identity, advisor, and special-project scientist | Finished statically | The fixed `KRG_warren_kruger` identity and one-role transfer lifecycle remain the accepted implementation. No new duplicate identity or fallback scientist was introduced by the flavour tranche. |
-| Host values, Directorate UI, facilities, staff, governance, security, and recovery | Finished for the prior static core; partial history inheritance | The existing Directorate exposes the four intended visible values and keeps Independent Capacity and Grievance qualitative. The new context choices use the shared bounded value effects. KRG formation inheritance at `common/scripted_effects/016_brilliant_scientist_country_effects.txt:134-320` copies the established evolution policies and Directorate receipts but does not copy the new context flags or the latest breakthrough display/history state. |
+| Host values, Directorate UI, facilities, staff, governance, security, and recovery | Finished for the current static core; live history migration proof missing | The existing Directorate exposes the four intended visible values and keeps Independent Capacity and Grievance qualitative. Context flags, breakthrough history, and active report state are restored in `common/scripted_effects/016_brilliant_scientist_country_effects.txt:140-197,777-884`; live transfer and formation behavior remains user-owned validation. |
 | Bounded host-context reports `.4` and `.5` | Finished statically; live timing and transfer behavior unproved | `events/016_brilliant_scientist_context_events.txt:14-128` implements `.4` with four context-sensitive options and `ai_chance`; `:130-220` implements `.5` with three assistant-conflict outcomes and `ai_chance`. The selected flags modify Evolution I and II MTTH at `common/mtth/016_brilliant_scientist_mtth.txt:60-63,93-94`. |
 | Fifteen project families and four stages | Finished for the prior static core | `common/script_constants/016_brilliant_scientist_constants.txt:235-272` defines families 1 through 15 and Theory, Prototype, Deployment, and Weaponization. Existing project-board and special-project bridges call the shared stage-output path. |
-| First-Prototype report `.6` | **Partial; blocking defects** | Fifteen family-specific descriptions exist at `events/016_brilliant_scientist_directorate_outcomes.txt:89-152`, and stage output calls the dispatcher at `common/scripted_effects/016_brilliant_scientist_project_effects.txt:560-585`. The receipt, queue, and AI defects below prevent the promised one-report-per-family and AI-equivalent behavior. |
+| First-Prototype report `.6` | Finished statically; live scheduling and transfer proof missing | Fifteen family-specific descriptions exist at `events/016_brilliant_scientist_directorate_outcomes.txt:89-152`, both options use `ai_chance` at `:163-238`, and stage output calls the dispatcher at `common/scripted_effects/016_brilliant_scientist_project_effects.txt:560-585`. Character-level pending receipts, a persistent family queue, and next-report dispatch are present at `common/scripted_effects/016_brilliant_scientist_breakthrough_effects.txt:12-79,431-506`. |
 | Exactly four evolutions and prefire/active rules | Finished statically; live pacing missing | The prior audit established `.21` through `.24` as the only visible evolutions, with `.90` as a scheduler pulse. The new context flags add bounded timing modifiers without creating Evolution V. |
-| Foreign actors and AI | Finished for the prior static core; `.6` AI partial | The prior foreign-operation package and AI matrix remain present. The new `.4/.5` events use the correct option key; `.6` does not. |
-| Confrontation, resolutions, and KRG country formation | Finished statically; live territory proof missing | The accepted dynamic territory transaction and institutional-capture-only takeover remain present. The new country-local breakthrough history is not included in the exact inheritance helper. |
+| Foreign actors and AI | Finished statically; live weighting and reachability proof missing | The prior foreign-operation package and AI matrix remain present. The `.4`, `.5`, and `.6` event options use the supported `ai_chance` surface. The 2026-08-02 observer, time-traveller, and cross-event contact continuations retain existing receipts and gates; live operation timing remains unproved. |
+| Confrontation, resolutions, and KRG country formation | Finished statically; live territory proof missing | The accepted dynamic territory transaction and institutional-capture-only takeover remain present. Context flags, breakthrough history, pending queues, and active report state are carried through the formation snapshot and exact inheritance helpers; live territory and formation scenarios remain unproved. |
 | KRG focus tree and AI | Finished statically | The current tree contains 100 focus blocks and both terminal focuses are mutually exclusive at `common/national_focus/016_brilliant_scientist_kruger_state_focus.txt:2547-2600`. The asset folder contains 100 focus DDS files. Live route selection and balance remain unproved. |
 | Project-derived forces and Event 019 providers | Finished statically; live provider lifecycle missing | The prior provider audit established IDs 504 through 508 and native portal/temporal consumers. The seven sub-units still use ordinary infantry, mechanized, or cavalry sprites in `common/units/016_brilliant_scientist_project_forces.txt:13-267`. |
 | Exactly six super-events, world threat, terminals, Fallout, and cleanup | Finished statically; live terminal scenarios missing | IDs 90 through 95 remain defined at `common/script_constants/016_brilliant_scientist_constants.txt:928-939`; six final DDS images and six WAV files exist. Laboratory World and Strategic Singularity are mutually exclusive in the focus tree. The prior terminal audit records rejection recovery and target cleanup, but live competing-Fallout, capitulation, lost-state, no-remnant, and settlement paths remain unproved. |
 | Defeat aftermath | Finished statically; broader presentation queued | The qualifying-defeat package and aftermath receipts remain wired. Bespoke defeat and remnant presentation remains explicitly queued in the current core map. |
 | Exactly seventeen achievements and 51 states | Finished statically | `common/achievements/chaos_redux_achievements.txt:3205-3290` contains 17 Event 016 definitions. The filesystem and GFX registration each contain 51 Event 016 achievement states. `public_method` and `clean_break` remain distinct at `common/scripted_triggers/016_brilliant_scientist_achievement_triggers.txt:161-175,189-212`. |
-| Event log, details, documentation, and workbook | Partial | Main details, four evolution details, and both world-end descriptions match the editable workbook row for Event 16. New docs correctly describe `.4/.5/.6` as ordinary reports, but they overstate `.6` receipt persistence and one-per-family delivery. The package checksum ledger verifies all 54 listed entries but does not include the new flavour handoff despite describing plans and handoffs as in scope. |
+| Event log, details, documentation, and workbook | Partial at the acceptance boundary | Main details, four evolution details, and both world-end descriptions match the editable workbook row for Event 16. The current maps and handoffs describe `.4` through `.11`, KRG foundation presentation, and the 2026-08-02 bounded continuations without claiming whole-event completion. Workbook and live presentation acceptance remain parent-owned boundaries. |
 | Two-dimensional assets and animation | Finished for accepted static packages; live presentation missing | Current evidence remains 15 leader/scientist portraits, 15 advisor cards, six real severe-stage frame sheets with static fallbacks, 64 Directorate UI textures, 100 focus icons, 51 achievement states, seven flag triplets, seven report images, six super-event images, and six WAV cues. Live GUI, animation, and sound acceptance remains missing. |
 | Event 016-specific 3D | **Blocked** | No approved Event 016 `.mesh`, `.anim`, entity `.asset`, or entity `.gfx` package exists. The independent anomaly pilot packages are not Event 016 assets. |
 | Quantitative balance and exploit evidence | **Blocked** | Static direction and clamp checks exist, but the required small/medium/major research timelines, AI completion rates, force production, rebellion strength, and weak/normal/dominant Singularity timing observations remain absent. |
 
-## Blocking and material findings
+## Historical blocking and material findings
 
-### F1. `.6` uses a decision/focus AI key inside event options
+> The following F1-F4 sections are historical findings from the pre-correction audit. Their required actions describe the patch that was applied and are not current work items.
+
+### Historical F1. `.6` used a decision/focus AI key inside event options
 
 Severity: high; AI-equivalent requirement not met.
 
@@ -67,7 +77,7 @@ Consequently the intended context-biased publication versus classification choic
 
 Required action: replace the two event-option weight blocks with supported `ai_chance` blocks and validate the option probabilities under public-science, strategic-security, assistant-school, classified-service, wartime, and peacetime contexts.
 
-### F2. Persistent receipt is written after the one-day transfer window
+### Historical F2. Persistent receipt was written after the one-day transfer window
 
 Severity: critical; explicit cross-transfer guarantee can fail.
 
@@ -79,7 +89,7 @@ If Kruger transfers or KRG formation changes the carrier during that one-day int
 
 Required action: commit an identity-persistent pending or delivered receipt atomically with dispatch, migrate or retarget the pending report to the verified carrier, and clear or finalize that pending state only through an explicit resolution path. Validate a transfer and a KRG formation between dispatch and presentation.
 
-### F3. One active report silently drops another family's first Prototype
+### Historical F3. One active report silently dropped another family's first Prototype
 
 Severity: critical; the one-report-per-family guarantee can fail without transfer.
 
@@ -89,7 +99,7 @@ This is reachable in one effect chain: `brilliant_scientist_sync_native_project_
 
 Required action: use a real pending-family queue or a persistent per-family pending receipt, dispatch the next report after the previous one resolves, and rebuild the queue safely after transfer/formation. Validate two native projects synchronized in one call and two project completions on the same day.
 
-### F4. New context and report history is not part of exact KRG inheritance
+### Historical F4. New context and report history was not part of exact KRG inheritance
 
 Severity: medium; persistent UI/history and documentation claim are partial.
 
@@ -109,6 +119,8 @@ Required action: define which new history is intentionally carrier-visible, copy
 
 ### Queued content that prevents a whole-content claim
 
+Current boundary note, 2026-08-02: the `.4` through `.9` causal slice and the presentation-only `.10` through `.11` and KRG foundation continuations are already recorded above. The historical `.4/.5` wording in the next line is retained as audit-era evidence.
+
 - Broader country-specific context and institutional-conflict flavour remains queued beyond `.4/.5`.
 - Bespoke project breakthrough and accident/security art, black-and-white news presentation, and defeat/remnant variants remain queued. `.6` reuses the Directorate dossier by accepted bounded tranche scope, but this is not completion of the broader presentation requirements.
 - No dedicated Event 016 triggerable scenario is required by the accepted design; its absence is not a gap.
@@ -121,23 +133,27 @@ The ordinary infantry/mechanized/cavalry presentation used by the seven project-
 
 ### Stale or overstated documentation
 
-- `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md:7` says the character guard prevents transfer replay. This is false during the dispatch-to-resolution interval.
-- `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_context_and_breakthrough_flavour_tranche_handoff.md:13-19,28` says the receipt survives transfer and that both receipt layers were checked. It does not record the late-write race, active-report drop, or unsupported event-option AI key.
-- `docs/events/016_brilliant_scientist/systems/projects.md:21,43-45` and `docs/events/016_brilliant_scientist/overview.md:17` claim one report per family and transfer-safe persistence without disclosing the two failure sequences.
-- `docs/plans/016_brilliant_scientist_plans/016_kruger_state_100_focus_architecture.md:5` still says bespoke focus-icon production is outstanding, while the current asset folder and core-runtime map record all 100 icons.
+The entries below are historical audit observations. The current map and 2026-08-02 continuation handoffs govern present status, and no F1-F4 item is an active defect in the current source.
+
+The old completion-status, context-tranche, and project-mechanic wording cited below is retained for traceability. Current status is governed by the corrected runtime source and `016_core_runtime_handoff_map.md`.
+
+- Historical note for `docs/specs/016_brilliant_scientist_specs/handoffs/016_completion_status.md:7`: the pre-correction race made the character guard insufficient during dispatch-to-resolution. The current source writes the pending receipt before scheduling `.6`.
+- Historical note for `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_context_and_breakthrough_flavour_tranche_handoff.md:13-19,28`: its accepted wording predates the correction details. The current dispatcher, queue, and event-option key are recorded in the dated reconciliation above.
+- Historical note for `docs/events/016_brilliant_scientist/systems/projects.md:21,43-45` and `docs/events/016_brilliant_scientist/overview.md:17`: the persistent-record wording predates the correction details. The current dispatcher, queue, pending receipt, and inheritance contracts are governed by the current source map; the broader event docs remain historical until their status text is separately reconciled.
+- Historical note for `docs/plans/016_brilliant_scientist_plans/016_kruger_state_100_focus_architecture.md:5`: the status line now records all 100 runtime focus icons as present. Engine render and parent visual acceptance remain open.
 - `docs/specs/016_brilliant_scientist_specs/package_checksums.sha256` passes for all 54 listed files, but the ledger's stated plan/handoff scope omits the new context/breakthrough handoff and current core-runtime map. Either narrow the scope statement or include current authoritative plans and handoffs when the gameplay findings are corrected.
 
 ## Accepted-plan disposition
 
 | Plan or accepted source | Disposition |
 | --- | --- |
-| Ten-part Event 016 specification and matrices | Core runtime substantially implemented; whole package partial because the new `.6` contract, 3D, broader presentation, quantitative balance, and live acceptance remain open. |
+| Ten-part Event 016 specification and matrices | Core runtime substantially implemented; whole package partial because broader presentation, 3D, quantitative balance, and live acceptance remain open. The former `.6` contract defects are resolved at the source-contract layer. |
 | Improvement-loop addendum R1-R7 | Closed and still binding. R2, R3, R4, R5, and R7 are promoted; R1 and R6 are rejected. The current findings do not create a new design ambiguity. |
 | `016_krg_hazardous_mission_pressure_accepted_plan.md` | Implemented in the current decision/mission layer according to the prior mapped audit; live mission pacing remains part of quantitative and consumer validation. |
 | `016_territory_planner.md` | Implemented at the static transaction layer; dynamic lost-control, occupied-state, invalid-plan, no-remnant, and successful-transfer scenarios remain live-validation gaps. |
-| `016_kruger_state_100_focus_architecture.md` | Implemented: 100 focus blocks, 100 icons, terminal mutual exclusion, consumers, and AI plans are present. The plan's icon-outstanding sentence is stale. |
+| `016_kruger_state_100_focus_architecture.md` | Implemented: 100 focus blocks, 100 icons, terminal mutual exclusion, consumers, and AI plans are present. Engine render and parent visual acceptance remain open. |
 | Event 019 provider integration | Implemented statically for providers 504 through 508; live release, management, defeat cleanup, final cleanup, and parent-isolation proof remain missing. |
-| Bounded context and breakthrough flavour tranche | `.4/.5` accepted implementation is substantially present. `.6` and persistent receipt are partial and cannot retain the tranche's accepted label until F1-F3 are corrected and re-audited. |
+| Bounded context and breakthrough flavour tranche | Accepted bounded implementation at the static source-contract layer. `.4` through `.9` causal reports, `.10` and `.11` presentation continuations, and the KRG foundation origin clause are present. Live scheduling, transfer, and presentation validation remains open. |
 | Seven-family 3D backlog | Explicitly deferred and still unimplemented. The anomaly pilot showcase is not a substitute. |
 | Broader flavour/news/remnant work | Queued with explicit disclosure; still incomplete content. |
 
@@ -162,15 +178,15 @@ The ordinary infantry/mechanized/cavalry presentation used by the seven project-
 
 ## Required next actions
 
-1. Correct F1-F3 as one narrow first-Prototype transaction patch: supported `ai_chance`, atomic character-level pending/receipt state, a persistent per-family queue, transfer/formation retargeting, and explicit next-report dispatch.
-2. Decide and implement the durable inheritance contract for F4, then correct the overview, project mechanic doc, completion status, context tranche handoff, core-runtime map, manifest wording, and checksum ledger.
-3. Re-run a focused event-chain and probability audit for `.6`, including simultaneous completion and mid-presentation carrier changes.
-4. Complete the already-required quantitative balance matrix before any balance-completion claim.
-5. Obtain user-owned live evidence for the enumerated opening, evolution, territory, terminal, provider, GUI, animation, and audio scenarios.
-6. Keep broader flavour/news/remnant work and each of the seven 3D packages explicitly queued until separately approved and delivered; do not treat generic sprites or pilot models as completion.
+1. Re-run a focused event-chain and probability audit for `.6`, including simultaneous completion and mid-presentation carrier changes, against the corrected source contracts.
+2. Complete the already-required quantitative balance matrix before any balance-completion claim.
+3. Obtain user-owned live evidence for the enumerated opening, evolution, territory, terminal, provider, GUI, animation, and audio scenarios.
+4. Keep broader flavour/news/remnant work and each of the seven 3D packages explicitly queued until separately approved and delivered; do not treat generic sprites or pilot models as completion.
 
 ## Improvement-loop recommendation
 
 Do **not** run another improvement-loop planner pass now.
 
 The accepted R1-R7 addendum is closed, and the current defects are implementation, transaction-lifecycle, documentation, asset-production, balance-evidence, and live-validation gaps under an already explicit design. A new pass would duplicate accepted planning rather than resolve a genuinely new depth question. Reconsider the planner only if the corrective implementation reveals a new design choice that the existing receipt, inheritance, flavour, or presentation contracts do not answer.
+
+Current-runtime note, 2026-08-02: the F1-F4 items above are historical findings, not current defects. Broader presentation, quantitative balance evidence, live consumer validation, and seven Event 016-specific 3D packages remain deferred.
