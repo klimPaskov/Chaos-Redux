@@ -46,3 +46,11 @@ The decision AI requires a reserve above payment gates and goes to zero under se
 ## Validation and remaining risk
 
 The parent must run targeted static syntax, brace, unsupported-operator, duplicate-localisation, BOM, and read-only Event 016 inspection for the new decision and `.195` event. The handoff does not claim live game acceptance, quantitative campaign balance, or transfer/formation scenario completion. The native CBRN lifecycle remains blocked by the missing reservation/cancel callback, and the seven generic Event 016 model packages remain deferred by user instruction.
+
+## Parent validation record, 2026-08-03
+
+- The eight touched gameplay files have balanced Clausewitz braces and contain no unsupported `<=` or `>=` operators.
+- `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml` is UTF-8 with BOM, contains 292 unique keys, and covers the decision, delayed event, option, tooltip, and outcome identifiers listed above.
+- The decision icon and `.195` report texture are registered in `interface/016_brilliant_scientist_project_icons.gfx` and `interface/016_brilliant_scientist.gfx`; both referenced DDS files exist.
+- Read-only `hoi4_event_inspect` lint for `chaosx.nr16.195` returned `status = ok`, no blockers, and no blocking diagnostics. The analyzer reported only its workspace-wide helper-projection deferral (`MCP_INLINE_FILES_TRUNCATED`), so this is source-level evidence rather than live campaign acceptance.
+- No HOI4 executable was launched. Quantitative balance, transfer/formation scenarios, and live user acceptance remain open by design.
