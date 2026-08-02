@@ -26,6 +26,8 @@ The shared Event Log identity is Event `16`, evolution type `16`, stages `1` thr
 
 The evolution incidents are `chaosx.nr16.21` through `chaosx.nr16.24`. Their report images are registered as `GFX_report_event_016_brilliant_scientist_evolution_1` through `GFX_report_event_016_brilliant_scientist_evolution_4`.
 
+Each evolution report retains the host archetype selected at appointment or transfer. The same clause that describes the university, industrial, militarized, threatened, colonial, refugee, or default institutional environment now appears in all four evolution openings, so the escalation reads as a continuation of the host's actual political setting rather than a generic global incident. The evolution AI uses that retained archetype as a bounded preference: universities and refugee networks favor open or supervised settlements, industrial and colonial hosts favor production or chartered authority, and militarized or threatened hosts favor security and containment. These modifiers only weight existing options; they do not add a fifth evolution, a new flag family, or a separate meter.
+
 ## Evolved openings
 
 An evolved opening strengthens the initial appointment package without bypassing the player's decision or creating a second Kruger.
