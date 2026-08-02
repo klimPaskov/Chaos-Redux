@@ -7738,6 +7738,27 @@ africa_cleanup_action = {
 			if = {
 				limit = { check_variable = { PREV.africa_active_action_natural_disaster_cost_reserved > constant:africa_value.zero } }
 				clr_country_flag = africa_natural_disaster_weapon_reserved
+				# A weather attempt has consumed the caller reserve even when the
+				# shared action resolves partial or failed and therefore never calls
+				# Event 013. Preserve the same actor cooldown used by the full bridge;
+				# the guard avoids extending a cooldown already written by that bridge.
+				if = {
+					limit = { NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown } }
+					set_temp_variable = { africa_natural_disaster_cooldown_days = constant:africa_natural_disaster.cooldown_days }
+					set_country_flag = { flag = africa_natural_disaster_weapon_cooldown days = var:africa_natural_disaster_cooldown_days }
+					clear_variable = africa_natural_disaster_cooldown_days
+				}
+				if = {
+					limit = { has_event_target = africa_natural_disaster_action_actor }
+					event_target:africa_natural_disaster_action_actor = {
+						if = {
+							limit = { NOT = { has_country_flag = africa_natural_disaster_weapon_cooldown } }
+							set_temp_variable = { africa_natural_disaster_cooldown_days = constant:africa_natural_disaster.cooldown_days }
+							set_country_flag = { flag = africa_natural_disaster_weapon_cooldown days = var:africa_natural_disaster_cooldown_days }
+							clear_variable = africa_natural_disaster_cooldown_days
+						}
+					}
+				}
 			}
 			if = {
 				limit = { has_event_target = africa_natural_disaster_action_actor }
