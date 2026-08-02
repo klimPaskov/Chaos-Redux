@@ -4,6 +4,8 @@ Updated: 2026-08-02 after the Event 006 v98 narrowed generic-focus completion au
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
+Current static completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`.
+
 The Statehood Ledger source-semantic matrix receipt `subagent_handoffs/006_gui_semantic_matrix_static_receipt_2026_08_02.md` passes `.tools/audit_event6_gui_matrix.py`. It records the five tabs, recognition/dependency/League/formable frame mappings, animation sibling exclusivity, refresh, and generation cleanup; live rendering and save/load evidence remain outside scope.
 
 The current whole-event authority is `subagent_handoffs/006_event6_narrowed_generic_focus_completion_audit_v98_2026_08_02.md`. It supersedes v97, v96, and earlier completion matrices for current disposition while preserving their dated evidence. Its whole-event verdict remains partial: fourteen packages are attested, 179 non-overlay rows remain unattested, focus/probability inspection remains tool-limited, CAT/FORM-07 remains fail-closed for content readiness, `6001` remains rights-blocked, and no new package admission or fallback is authorized. The narrowed generic focus contract itself is a static PASS, and the new identity-neutral baseline AI contract is source-wired for every admitted generic-tree or reviewed additive carrier. Bespoke trees and live/in-game testing remain out of scope.

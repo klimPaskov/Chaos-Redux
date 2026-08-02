@@ -1,5 +1,7 @@
 # Event 006 source-of-truth map
 
+Current completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`; it supersedes no accepted design and records only current static checks and remaining gates.
+
 <!-- Documentation reconciliation: the current allocator passes fourteen attested packages across thirteen compatible reservation groups and fourteen distinct anchors; allocator, crisis, registry, evolution, and ledger cores are source-closed; v67 Universal Former Hosts target uniqueness is implemented while Wars of Separation remains per-release; global completion remains open. -->
 
 ## 2026-08-02 current whole-event authority (v98)
