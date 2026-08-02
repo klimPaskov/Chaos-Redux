@@ -369,6 +369,13 @@ Canonical portrait paths:
 - army and navy commanders: `assets/vanilla_reference/portraits/commanders/`
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
+
+The explicit user-facing leader reference shelf is also mirrored at
+`assets/leader_portraits/`. It is a review-only compatibility path for agents
+that need a direct portrait folder; keep it byte-aligned with the canonical
+`assets/vanilla_reference/portraits/leaders/` shelf and use its
+`REFERENCE_MANIFEST.md` for the current file list. Do not wire either reference
+shelf into runtime GFX, and do not infer Event 006 advisor assets from it.
 Country leaders, commanders, and operatives are full `156x210` portrait textures.
 For portrait work, inspect the canonical role-specific contact sheet.
 Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
@@ -426,8 +433,13 @@ The reusable achievement not-eligible compositing overlay lives at
 input rather than a reference example, so it is excluded from the achievement
 contact sheet and coverage count.
 
-Do not add new reference images outside the skill-local `assets/` root.
-Add semantic references under `assets/vanilla_reference/` only with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog.
+Do not add new reference images outside the skill-local `assets/` root. Add
+semantic references under `assets/vanilla_reference/` with exact provenance,
+dimensions, and contact-sheet coverage recorded in its catalog. The explicit
+`assets/leader_portraits/` compatibility shelf is the one allowed mirrored
+exception: it must contain only byte-aligned copies of the curated leader
+references plus its own manifest/contact sheet, and it is never a new source of
+truth or a runtime asset folder.
 
 Before generating, sourcing, processing, or wiring an asset, read the library
 rules, inspect the matching category and contact sheet, and follow the vanilla
