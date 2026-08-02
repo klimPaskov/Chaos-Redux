@@ -1154,3 +1154,17 @@ The chain carries Open a Public Trial, Convene a Truth Commission, Pardon the Do
 The asset evidence is `docs/assets/901_old_doctor_trial/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_old_doctor_trial`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-901` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_OLD_DOCTOR_TRIAL_CHAIN_PROOF.md`.
+
+## The Adaptation Rite
+
+The Adaptation Rite adds dormant event ids `1030` through `1036` with candidate id `908`, transaction key `710101`, route `7234`, and history `9207`.
+
+The human opening is `1030`, the hidden AI opening is `1031`, the human and hidden AI delayed results are `1032` and `1033`, the human and hidden AI thaw reviews are `1034` and `1035`, and cleanup is `1036`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Old Doctor's Trial state memory, a current living ward, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign witness, rite legitimacy, tradition pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and adaptation ledgers.
+
+The chain carries Civic Rite, Religious Rite, Scientific Certification, and Reject Ritual branches with distinct survival costs, deterministic result and thaw-review grading, a 63-day result, a 360-day review, bounded Deaths effects, Air Winter and Supply Access effects, fictional altered-society memory, bilateral opinion, Event Log history `9207`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/908_adaptation_rite/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_adaptation_rite`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-908` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_ADAPTATION_RITE_CHAIN_PROOF.md`.
