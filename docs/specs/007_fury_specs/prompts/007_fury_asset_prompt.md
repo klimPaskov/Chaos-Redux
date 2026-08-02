@@ -94,19 +94,11 @@ Sprite: `GFX_news_event_fury_first_conquest`
 
 Direction: 1936 to 1945 documentary-style black and white news image. A small capital building or border office with soldiers, files, and a map being carried inside. No readable generated text. No modern equipment.
 
-### Fury stall report image, 210x176
+### Shared Fury report image, 210x176
 
-Suggested file: `report_event_fury_overextension.dds`
-Sprite: `GFX_report_event_fury_overextension`
+Sprite: `GFX_report_event_random_war`
 
-Direction: period documentary image of exhausted soldiers and clerks in a damaged office with maps and supply crates.
-
-### Fury defeated report image, 210x176
-
-Suggested file: `report_event_fury_defeated.dds`
-Sprite: `GFX_report_event_fury_defeated`
-
-Direction: abandoned war office, empty map table, border signs being restored.
+Fury report events reuse the existing random-war report-card image. The separately processed `fury_war_office.dds` remains available under the Event 007 asset path, but it is not an active report-event consumer.
 
 ## Super-event images, 457x328
 

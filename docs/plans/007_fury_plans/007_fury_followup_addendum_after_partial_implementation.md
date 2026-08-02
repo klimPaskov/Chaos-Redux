@@ -332,7 +332,7 @@ This phase was not queued; final Fury-specific assets, audio, source notes, and 
 
 Asset families:
 
-- report image for Fury start or War Office report: final DDS at `gfx/event_pictures/007_fury/fury_war_office.dds`
+- retained processed report-card art for optional Fury reuse: `gfx/event_pictures/007_fury/fury_war_office.dds`; active Fury reports use `GFX_report_event_random_war`
 - news image for `chaosx.news.7007`: final DDS at `gfx/event_pictures/007_fury/fury_first_conquest.dds`
 - major-Fury super-event image: generated final art is wired at `gfx/super_events/007_fury/fury_becomes_a_state.dds`; source and processed PNGs live under `docs/assets/007_fury/super_events/fury_becomes_a_state/`.
 - World in Fury terminal super-event image: generated final art is wired at `gfx/super_events/007_fury/super_event_world_in_fury.dds`; source and processed PNGs live under `docs/assets/007_fury/super_events/world_in_fury/`.
