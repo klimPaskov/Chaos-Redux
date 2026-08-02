@@ -6,7 +6,7 @@ Status: **Event 006 is incomplete and the goal remains active.**
 
 Current static completion evidence is consolidated in `subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`.
 
-The parent-owned reflow receipt `subagent_handoffs/006_focus_geometry_reflow_parent_2026_08_02.md` is the current focus-geometry evidence, with 184 regular nodes and 186 visible prerequisite connectors and no Event 006 crossings, node intersections, long connectors, or too-close pairs. The v111 audit remains useful route and source-coverage evidence but its 14-diagnostic layout result is pre-reflow historical evidence. The clean reflow does not change the incomplete whole-event status.
+The parent-owned reflow receipt `subagent_handoffs/006_focus_geometry_reflow_parent_2026_08_02.md` is the current focus-geometry evidence, with 184 regular nodes and 186 visible prerequisite connectors and no Event 006 crossings, node intersections, long connectors, or too-close pairs. The follow-up handoff `subagent_handoffs/006_focus_presentation_ai_compensation_parent_2026_08_02.md` restores six visible prerequisite lines and preserves vanilla-equivalent AI priority on the remaining 31 hidden edges; one intentional independent-command isolation warning remains. The v111 audit remains useful route and source-coverage evidence but its 14-diagnostic layout result is pre-reflow historical evidence. The clean reflow and compensation do not change the incomplete whole-event status.
 
 ## Current-state override (2026-08-02)
 

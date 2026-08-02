@@ -10,6 +10,8 @@ Event 006 remains **HOLD / PARTIAL** as a whole.
 
 The prior P0 clean-checkout formable-mirror defect is **CLOSED**. The prior P5 focus-layout diagnostic is also **CLOSED** as a geometry defect. The focus reflow introduces a narrower design and validation gap: 35 visible prerequisite blocks were converted to hidden `available` gates. This preserves focus eligibility but changes player-facing dependency presentation and removes the engine's documented implicit AI preference boost for focuses whose direct prerequisite was just completed.
 
+The parent follow-up `006_focus_presentation_ai_compensation_parent_2026_08_02.md` is the current resolution for that narrower gap. It restores six high-value visible prerequisite lines and adds the centralized `constant:independence_wave_focus_ai.prerequisite_boost = 1.5` modifier to each of the remaining 31 hidden prerequisite edges. The rows below preserve this audit's pre-compensation findings as dated evidence; current routing treats the presentation/AI gap as closed, with one intentional independent-command isolation warning.
+
 ## Completion status by surface
 
 | Surface | Status | Current evidence |
@@ -19,15 +21,15 @@ The prior P0 clean-checkout formable-mirror defect is **CLOSED**. The prior P5 f
 | Event 006 guard predicates | **PASS / CLOSED** | CHU is guarded once and ASY twice. The scripted guards resolve to the exact IW-043 or IW-058 package, original-tag, Event 006 origin/state, and Soviet Collapse exclusion predicates. |
 | Generic focus geometry | **PASS / CLOSED** | Fresh inspect/render: 184 nodes, 186 visible connectors, zero crossings, zero node intersections, zero long connectors, and zero too-close same-row pairs. |
 | Focus eligibility after reflow | **BOUNDED PASS** | Removed direct prerequisites are represented by hidden `available = { has_completed_focus = ... }` gates, including capstone OR paths. This preserves completion eligibility under the documented engine distinction. |
-| Focus player presentation | **PARTIAL / DESIGN GAP** | Thirty-five visible prerequisite blocks are now hidden availability gates. Their connector lines and prerequisite-group tooltip presentation are absent by design. Two route-choice focuses consequently remain renderer-isolated. |
-| Focus AI equivalence | **PARTIAL / VALIDATION GAP** | The source `ai_will_do` blocks remain, but converting direct prerequisites to availability gates removes the documented 1.5 generated-AI-value multiplier that applies when a focus's prerequisite was just completed. No compensating factor or explicit acceptance is recorded. |
+| Focus player presentation | **BOUNDED PASS** | The parent compensation handoff restores six high-value visible prerequisite lines. The remaining hidden gates retain exact eligibility semantics; one independent-command focus remains intentionally isolated in the renderer. |
+| Focus AI equivalence | **BOUNDED PASS** | The parent compensation handoff applies `constant:independence_wave_focus_ai.prerequisite_boost = 1.5` to every remaining hidden prerequisite edge, matching the documented vanilla nudge. Broader runtime AI sweeps remain open. |
 | Package capacity and admission | **HOLD** | Fourteen packages are attested; 179 non-overlay registry rows remain unattested and 55 selectable rows remain unbound. No accepted synchronized disjoint witness closes the 14- or 20-country modes. |
 | Formable availability | **HOLD** | The compatibility source is fixed, but only 11 of 48 registry formable families are readiness-allowlisted. Package, identity, member-adapter, and source-proof gates still block multiple families. |
 | Super-event 6001 | **BLOCKED** | Art exists, but no complete runtime dispatch/localisation/audio/WAV/wrapper/firing package is accepted. Audio remains rights-blocked. |
 | Super-event 6002 | **PARTIAL** | Runtime wiring exists, but its hidden-formable and 20-country paths inherit unresolved formable and capacity blockers. |
-| AI and balance | **PARTIAL** | Probability discovery is bounded, generic `ai_strategy_factor` evidence remains unresolved, no final whole-event balance acceptance exists, and the reflow adds the AI-weighting gap above. |
+| AI and balance | **PARTIAL** | Probability discovery is bounded and generic `ai_strategy_factor` evidence remains unresolved; no final whole-event balance acceptance exists. The parent compensation handoff closes the reflow-specific AI-weighting gap, but not the broader AI/balance gate. |
 | Assets and source proof | **PARTIAL / BLOCKED** | Unattested packages and named formable families retain source, identity, flag, portrait, or member-adapter blockers. The accepted zero-advisor-icon boundary is not itself a blocker. |
-| Catalog and current documentation | **PARTIAL / STALE** | Workbook/export statuses remain partial/playable rather than complete. Current routing documents were updated for the clean focus geometry, but historical/current-authority rows still preserve pre-reflow figures and none disclose the 35-gate presentation/AI consequence. |
+| Catalog and current documentation | **PARTIAL / STALE** | Workbook/export statuses remain partial/playable rather than complete. Current routing documents now reference the parent presentation/AI compensation handoff; this audit retains the pre-compensation 35-gate consequence as dated evidence. |
 
 ## P0 closure evidence: vanilla formable mirror
 
@@ -106,7 +108,7 @@ These are source/static receipts. They do not substitute for the missing package
 
 ## Remaining blockers and recommended next actions
 
-1. Record a parent decision on the 35 hidden prerequisite groups: accept the presentation/AI change explicitly, or restore selected visible edges and compensate AI weighting.
+1. Retain the parent presentation/AI compensation handoff as the accepted resolution of the pre-compensation 35-hidden-prerequisite finding; continue to audit only if later source changes reintroduce a mismatch.
 2. Keep the 14- and 20-country modes fail-closed until an accepted synchronized, reservation-aware, host-compatible disjoint witness exists.
 3. Continue package admission and source-proof work; do not infer readiness from registry membership.
 4. Close formable families only after their package, identity, flag, member-adapter, and readiness conditions pass; the repaired vanilla mirror does not close those gates.
@@ -117,4 +119,4 @@ These are source/static receipts. They do not substitute for the missing package
 
 ## Simplifications, omissions, and blockers
 
-The focus reflow uses hidden availability gates in place of 35 visible prerequisite groups. That is a material presentation and AI-behavior simplification and is not yet explicitly accepted. No other simplification was introduced by this read-only audit. The audit did not run Hearts of Iron IV, alter gameplay, validate live/save-load behavior, promote assets, modify the workbook, or resolve any remaining package, formable, super-event, asset, AI, balance, or catalog blocker.
+The focus reflow originally used hidden availability gates in place of 35 visible prerequisite groups. The parent presentation/AI compensation handoff restores six visible lines and supplies a centralized vanilla-equivalent AI nudge for the remaining 31 hidden edges, so that specific simplification is resolved. No other simplification was introduced by this read-only audit. The audit did not run Hearts of Iron IV, alter gameplay, validate live/save-load behavior, promote assets, modify the workbook, or resolve any remaining package, formable, super-event, asset, broader AI, balance, or catalog blocker.
