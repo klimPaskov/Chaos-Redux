@@ -10,7 +10,7 @@
 | Source status | Reconciled implementation specification |
 | Package date | 2026-08-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11`, ten authored country-tag clauses added to `.4` through `.9` and the base/evolved opening and referral reports, and formation-origin presentation added to the first four KRG foundation reports; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11`, ten authored country-tag clauses added to `.4` through `.9`, the base/evolved opening and referral reports, and the loyalty/relocation dossiers, and formation-origin presentation added to the first four KRG foundation reports; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |

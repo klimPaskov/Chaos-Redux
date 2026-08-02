@@ -3675,6 +3675,18 @@ natural_disaster_configure_scheduled_state = {
 	set_variable = { natural_disaster_caller_type = natural_disaster_call_caller_type }
 	set_variable = { natural_disaster_caller_event_id = natural_disaster_call_caller_event_id }
 	set_variable = { natural_disaster_caller_country = ROOT }
+	if = {
+		limit = {
+			check_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.hostile_actor }
+			check_variable = { natural_disaster_call_caller_event_id = constant:africa_natural_disaster.caller_event_id }
+		}
+		set_state_flag = natural_disaster_event012_weaponisation_pending
+		set_variable = { natural_disaster_event012_weaponisation_sequence_id = natural_disaster_sequence_id }
+	}
+	else = {
+		clr_state_flag = natural_disaster_event012_weaponisation_pending
+		clear_variable = natural_disaster_event012_weaponisation_sequence_id
+	}
 	set_variable = { natural_disaster_schedule_date = global.date }
 	add_to_variable = { natural_disaster_schedule_date = natural_disaster_schedule_delay }
 	set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.warning }
@@ -5331,11 +5343,18 @@ natural_disaster_apply_population_loss = {
 natural_disaster_record_event012_civilian_weaponisation = {
 	if = {
 		limit = {
+			has_state_flag = natural_disaster_event012_weaponisation_pending
 			has_variable = natural_disaster_caller_type
 			check_variable = { natural_disaster_caller_type = constant:natural_disaster_caller.hostile_actor }
 			has_variable = natural_disaster_caller_event_id
 			check_variable = { natural_disaster_caller_event_id = constant:africa_natural_disaster.caller_event_id }
 			has_variable = natural_disaster_caller_country
+			has_variable = natural_disaster_event012_weaponisation_sequence_id
+			check_variable = {
+				var = natural_disaster_event012_weaponisation_sequence_id
+				value = natural_disaster_sequence_id
+				compare = equals
+			}
 			has_variable = natural_disaster_last_deaths
 			check_variable = { natural_disaster_last_deaths > 0 }
 			NOT = { has_global_flag = africa_achievement_disaster_weaponised_against_civilians }
@@ -5343,6 +5362,8 @@ natural_disaster_record_event012_civilian_weaponisation = {
 		var:natural_disaster_caller_country = {
 			africa_achievement_record_disaster_weaponised_against_civilians = yes
 		}
+		clr_state_flag = natural_disaster_event012_weaponisation_pending
+		clear_variable = natural_disaster_event012_weaponisation_sequence_id
 	}
 }
 
@@ -9448,6 +9469,8 @@ natural_disaster_execute_impact = {
 			clr_state_flag = natural_disaster_warning_active
 			clr_state_flag = natural_disaster_warning_scheduled
 			clr_state_flag = natural_disaster_impact_scheduled
+			clr_state_flag = natural_disaster_event012_weaponisation_pending
+			clear_variable = natural_disaster_event012_weaponisation_sequence_id
 			set_variable = { natural_disaster_card_state = constant:natural_disaster_card_state.expired }
 			controller = { natural_disaster_refresh_category_display_family = yes }
 		}
