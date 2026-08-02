@@ -8,7 +8,7 @@ The architecture and identifier maps are frozen in the accepted handoffs under `
 
 When a player forwards Kruger to another country, the rejecting country now receives one delayed intelligence report, `chaosx.nr16.15`, after the referred appointment commits. The report reads the recipient's public or secret posture, consumes the temporary rejection memory, and records a permanent one-time receipt without reopening recruitment, creating a second character, adding an event-log row, or claiming a new project reward.
 
-Event 030's Time Traveler contact now becomes a durable Event 016 temporal lead when it reaches the active Kruger host. `chaosx.nr16.16` records that contact once, keeps the lead after the 365-day traveler idea expires, and adds no project stage, reward, evolution, event-log row, claim, or model dependency.
+Event 030's Time Traveler contact now becomes a durable Event 016 temporal lead when it reaches the active Kruger host. The appointment also checks for a traveler who arrived before recruitment, while a post-appointment Event 030 report uses the same guarded scheduler; `chaosx.nr16.16` records that contact once, keeps the lead after the 365-day traveler idea expires, and adds no project stage, reward, evolution, event-log row, claim, or model dependency.
 
 Event 025's Antarctic recovery now supplies the matching alien-arms warning when its success reaches an active Kruger host. `chaosx.nr16.17` records the recovered interface once and leaves `antarctica_success` as the actual project prerequisite; the report does not prove an origin, advance a stage, create a reward, add a log row, or introduce a model dependency.
 
