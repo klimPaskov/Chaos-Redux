@@ -24,6 +24,7 @@ The MCP probability service lists all 11 weighted-logic adapters. A targeted `ai
 | `python -B .tools/audit_event6_scenario_matrix.py` | Pass: all 32 SCN-008 mode/intensity cells and all 8 required edge cases. |
 | `python -B .tools/audit_event6_gui_matrix.py` | Pass: five Statehood Ledger tabs, recognition/dependency/League/formable frame families, cleanup, and static/animated sibling exclusivity. Runtime rendering and save/load are not claimed. |
 | `python -B .tools/audit_chaosx_country_tags.py --surface-scan` | Pass: 136 protected Event 006/Soviet tags, zero external country-definition collisions, zero external identity-surface collisions, one intentionally skipped Random Events root. |
+| Registry tag-policy check | Pass: all 102 `reserve_new_event6_X_tag` rows resolve to tags ending in `X`; the 91 non-X resolved tags are explicit registered-tag reuses. |
 | Flat portrait shelf reconciliation | Pass: 80 physical original-size PNG masters and 80 indexed or explicitly recorded entries (79 table rows plus the retry-2 DOX tail record); no 156x210 shelf files or Event 006 advisor art. |
 
 ## Admission and content boundary
