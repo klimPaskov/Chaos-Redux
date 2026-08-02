@@ -33,6 +33,10 @@ The source masters, processed PNGs, DDS conversion inputs, decoded DDS review im
 - The 16 stable runtime DDS files match their corresponding v3 conversion outputs byte-for-byte. The runtime files are the only tracked files changed by the asset pass.
 - The v3 decoded contact sheet was reviewed for plain matte backgrounds, single-sovereign composition, readable silhouettes, and removal of the earlier council/scenic/sacred-object treatment.
 
+## Runtime source boundary
+
+The 16 DDS files remain stable asset registrations, but the parent-owned character effects now require an independently reviewed source-locked portrait before adding a country-leader role. Kanem-Bornu, Harar, Kongo, and Merina satisfy that gate. Held historical rows remain role-dormant despite their installed review assets; those ImageGen outputs are not treated as sourced historical people and cannot silently fill a source gap.
+
 ## Remaining boundaries
 
 This refresh supplies portraits only. The 16 model-required visual rows remain deferred and no 3D unit/model files were created. Portrait recruitment still requires the existing package promotion, ratification, carrier provenance, and gameplay acceptance gates. Native-speaker review of the two requested Afaan Oromoo flavour strings remains unresolved and is unrelated to these visuals.
