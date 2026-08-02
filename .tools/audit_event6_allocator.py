@@ -627,6 +627,36 @@ def main() -> int:
 	):
 		require(needle in shared, f"host-survival priority is missing {needle}", errors)
 
+	# The pre-wave crisis is part of the core loop rather than a package
+	# admission shortcut. Keep its pressure, payment, queue, and failure
+	# surfaces tied together so later package work cannot silently remove the
+	# low-stability or badly-occupied entry path.
+	crisis_triggers = read("common/scripted_triggers/006_independence_wave_crisis_triggers.txt")
+	crisis_effects = read("common/scripted_effects/006_independence_wave_crisis_effects.txt")
+	crisis_decisions = read("common/decisions/006_independence_wave_crisis_decisions.txt")
+	for needle, label in (
+		("has_stability < constant:independence_wave_crisis.stability_threshold", "low-stability pressure"),
+		("any_owned_state = {", "occupied-owned-state pressure"),
+		("any_controlled_state = {", "occupied-foreign-state pressure"),
+		("can_independence_wave_crisis_release_barrier = yes", "shared release barrier"),
+	):
+		require(needle in crisis_triggers, f"pre-wave crisis is missing {label}", errors)
+	for needle, label in (
+		("independence_wave_pay_crisis_cost = yes", "concrete crisis payment"),
+		("independence_wave_queue_crisis_release = yes", "queued normal-wave release"),
+		("independence_wave_apply_crisis_blocked_consequence = yes", "blocked-pressure consequence"),
+		("independence_wave_record_crisis_resolution_history = yes", "resolution history receipt"),
+		("independence_wave_recover_crisis_requester_loss =", "requester-loss recovery"),
+	):
+		require(needle in crisis_effects or needle in crisis_decisions, f"pre-wave crisis is missing {label}", errors)
+	require(
+		"selectable_mission = yes" in crisis_decisions
+		and "cancel_trigger =" in crisis_decisions
+		and "timeout_effect =" in crisis_decisions,
+		"pre-wave crisis mission does not expose cancel and timeout lifecycle",
+		errors,
+	)
+
 	if errors:
 		print("Event 006 allocator audit FAILED")
 		for error in errors:
@@ -642,6 +672,7 @@ def main() -> int:
 	print("- automatic counts: 6 / 8 / 10 / 14 / 20 (World Collapse 20)")
 	print("- scenario intensities: low anchor/fragile; medium compact/viable; high extended/armed; maximum extended/high-chaos")
 	print("- scenario types: scatter; congress; host wars; universal belligerence; patrons; partition")
+	print("- pre-wave crisis: low stability or severe occupation pressure; paid mission; queued release; bounded failure receipt")
 	print("- order: all anchors -> compact -> extended -> lock")
 	print("- joint order: Event 005 anchors -> Event 006 anchors -> optional territory -> lock")
 	return 0
