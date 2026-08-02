@@ -1,0 +1,84 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 HOST TRANSFER TRIGGERS
+# ============================================================================
+# The host-transfer transaction is a one-use, generation-bound continuity path.
+# Candidates come only from the old host's recorded Charter relationship pool;
+# no world scan or opinion threshold invents a successor.
+# ============================================================================
+
+# Any scope. A staged host ledger exists while the old owner is being removed or
+# a resolver is reviewing a constitutional/crisis selection.
+africa_host_transfer_is_pending = {
+	has_global_flag = africa_event_active
+	has_global_flag = africa_host_transfer_pending
+	NOT = { has_global_flag = africa_host_successor_consumed }
+	has_variable = global.africa_host_transfer_old_generation
+}
+
+# COUNTRY scope on a recorded member while the old host still exists. This is
+# the only candidate gate used by the pre-annex constitutional designation.
+africa_host_transfer_designatable_candidate_is_valid = {
+	exists = yes
+	africa_is_valid_relationship_target = yes
+	NOT = { has_country_flag = africa_unifier_host }
+	has_variable = africa_member_host_generation
+	africa_member_host_generation_is_current = yes
+	OR = {
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+	africa_has_mapped_host_playbook = yes
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+}
+
+# COUNTRY scope on a staged member after the old host pointer has been cleared.
+# The generation receipt is compared with the snapshot, not with a live host.
+africa_host_transfer_candidate_is_valid = {
+	exists = yes
+	africa_is_valid_relationship_target = yes
+	NOT = { has_country_flag = africa_unifier_host }
+	has_variable = africa_member_host_generation
+	has_variable = global.africa_host_transfer_old_generation
+	check_variable = {
+		var = africa_member_host_generation
+		value = global.africa_host_transfer_old_generation
+		compare = equals
+	}
+	OR = {
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+	africa_has_mapped_host_playbook = yes
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+}
+
+# Any scope. This is the explicit congress/crisis result gate for a selected
+# successor. The target is saved by a targeted decision before commit.
+africa_host_transfer_selected_successor_is_valid = {
+	africa_host_transfer_is_pending = yes
+	has_event_target = africa_host_transfer_successor
+	event_target:africa_host_transfer_successor = {
+		africa_host_transfer_candidate_is_valid = yes
+	}
+}
+
+# Any scope. A designated successor exists before an annexation callback and can
+# therefore receive the focus-completion copy while the old host remains valid.
+africa_host_transfer_designated_successor_is_valid = {
+	has_event_target = africa_host_transfer_designated_successor
+	event_target:africa_host_transfer_designated_successor = {
+		africa_host_transfer_designatable_candidate_is_valid = yes
+	}
+}
+
+# Any scope. The visible resolver event and its targeted decision surface are
+# only open on the actual annexer/resolver recorded by the on-action bridge.
+africa_host_transfer_resolution_is_open = {
+	africa_host_transfer_is_pending = yes
+	has_global_flag = africa_host_transfer_resolution_open
+	has_country_flag = africa_host_transfer_resolver
+}

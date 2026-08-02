@@ -73,6 +73,22 @@ Priority packages keep their existing-tree safeguard and also preserve completed
 When South Africa's settlement transfers League custody to the saved exile patron, the old host is retained as the chain-local `africa_focus_completion_source`.
 The canonical loader copies completed continental focuses from that source into the successor's tree while the separate RSA transfer continues to carry variables, flags, arrays, relationship state, and reconciled relationship counts and capacity caps.
 
+## Host succession lifecycle
+
+Ordinary annexation of the current host is a staged transaction rather than an implicit change of owner.
+The annexer records the old host as the resolver, cancels active action records and their shared missions, snapshots the scalar League ledger and bounded arrays, releases Event 12 subject statuses, and clears the old host pointer before the victim scope disappears.
+The candidate pool is copied from the old host's existing relationship roster only.
+Each candidate must retain the old host-generation receipt, a cooperative Charter relationship, a mapped full or compact playbook, an African government, and a live non-terminal country identity.
+
+The host can record one constitutional successor before annexation for an atomic handoff.
+If no designation exists, a resolver event either commits the sole valid candidate, opens the targeted successor congress for several valid candidates, or records an explicit suspended-host crisis when the pool is empty or the resolver declines.
+The successful transfer increments `africa_host_generation`, rebuilds the League rosters on the successor, retargets member autonomy, resets action and quote generations, refreshes the focus layout, and records a dedicated Event Log payload.
+The suspended path intentionally retains the staged ledger and obligations for review instead of inventing a host or treating opinion as consent.
+
+The immediate designation route copies completed continental focuses from `africa_previous_host` while that source still exists.
+The staged post-annex congress reloads the continental tree and marks `africa_host_focus_completion_transfer_deferred` because the removed host cannot be used as a focus-copy source after the on-action chain ends.
+This deferred completion-copy behavior is a known release-candidate simplification and remains a live acceptance item.
+
 ## Interactions
 
 - The relationship state machine remains the sole writer of the member relationship stage and its country arrays.
