@@ -23,9 +23,25 @@ Their availability checks now use `greater_than_or_equals`, matching the display
 
 No critical or high-severity syntax, scope, tag-creation, relationship-transition, or opinion-only promotion defect was found.
 
-A medium-severity documentation-to-code cleanup discrepancy remains: `africa_promote_compact_host_package` clears `africa_compact_promotion_refused` and `africa_compact_access_failure` only inside a successful promotion branch, while `africa_compact_host_can_be_promoted` rejects either flag before that branch can run.
+### Medium: refusal and failure gates have no writers
 
-The refusal gate is therefore correctly hard in gameplay, but the documentation claim that the package clears stale refusal or access-failure state after all conditions pass is not literally achievable by this path.
+`africa_compact_host_can_be_promoted` rejects `africa_compact_overlap_dispute_active`, `africa_compact_access_failure`, and `africa_compact_promotion_refused`, while the evidence trigger also rejects the refusal flag.
+
+An Event 012-wide static search found no `set_country_flag` writer for any of those three flags, and the only references are their triggers plus the promotion effect's two clears.
+
+The documented refusal, access-failure, and overlap-dispute scenarios therefore cannot occur through current source, so their gates are inert rather than hard lifecycle controls.
+
+### Low: unreachable cleanup and documentation discrepancy
+
+`africa_promote_compact_host_package` clears `africa_compact_promotion_refused` and `africa_compact_access_failure` only inside a successful promotion branch, while `africa_compact_host_can_be_promoted` rejects either flag before that branch can run.
+
+Even after writers exist, this path cannot clear either active flag, so the documentation claim that it cleans stale refusal or access-failure state after all conditions pass is not literally achievable by this path.
+
+### Low: unavailable-state detail is not locally described
+
+The decisions have name, description, and success-effect tooltip keys, but the long availability contracts are invoked directly without `custom_trigger_tooltip` wrappers or dedicated requirement tooltip keys.
+
+The player-facing descriptions describe the general contract, but they do not identify the currently failed item when the decision is disabled.
 
 ## Meaningful validation
 
@@ -33,10 +49,18 @@ Verified that both decision call sites resolve to their matching scripted trigge
 
 Source review of the exact proof and promotion effects confirmed they alter only host depth, package flags, authority, integration burden, and evidence flags, with no tag creation, ownership, controller, core, faction, relationship, or opinion effect.
 
+The reused ledger sprite is registered in `interface/012_africa.gfx`, and its referenced DDS asset exists.
+
+An Event 012-wide static search of `common`, `events`, and `history` confirmed that the refusal, access-failure, and overlap-dispute flags have no writer.
+
 ## Skipped validation
 
 No game launch or live-session validation was run, because live consumer validation belongs to the user and this audit is limited to static source evidence.
 
 ## Remaining issue
 
-Parent review should decide whether to remove the unreachable flag-clearing lines or revise `docs/events/012_africa/compact_promotion.md` to describe them as defensive no-ops, without weakening the refusal gate.
+Parent review needs an accepted source for each refusal, access-failure, and overlap-dispute writer, together with an explicit repair or expiry path where those states should be recoverable.
+
+After those writers exist, remove the unreachable clear calls or move cleanup to a recovery effect whose gate can actually see the active state, while preserving the refusal gate.
+
+Add compact-proof and compact-promotion custom requirement tooltips when the parent selects the final failure and recovery lifecycle, so the disabled state exposes concise current requirements instead of a long raw scripted-trigger contract.
