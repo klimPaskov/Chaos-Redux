@@ -29,6 +29,8 @@ Event numbers after the canonical entry are retained here as the accepted Event 
 | `chaosx.nr20.45` | hierarchy acknowledgement after the RTA route choice | RTA | yes | one per carrier |
 | `chaosx.nr20.46` | RTA Hunger crisis and destructive feeding choice | RTA | yes | once per unresolved crisis |
 | `chaosx.nr20.47` | RTA military-method acknowledgement and first route pulse | RTA | yes | one per carrier |
+| `chaosx.nr20.48` | RTA mutation-route acknowledgement | RTA | yes | one per carrier |
+| `chaosx.nr20.49` | RTA territorial-economy acknowledgement | RTA | yes | one per carrier |
 | `chaosx.nr20.50` | Evolution IV candidate selection | leading rat country | yes | no per coronation cycle |
 | `chaosx.nr20.51` | Rat King transfer and coronation | Rat King | yes | no |
 | `chaosx.nr20.52` | coronation super-event launcher | global | super-event | no |
