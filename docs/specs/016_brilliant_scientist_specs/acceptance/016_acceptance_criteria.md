@@ -94,6 +94,7 @@ The accepted 2026-08-02 addendum is implemented in the working tree as a ten-cou
 - [ ] Every stage has visible costs, benefits, risks, and AI validity.
 - [ ] Project slots and capacity prevent all families from completing instantly.
 - [ ] Project synergies unlock real events, decisions, units, or countermeasures rather than tiny modifier dust.
+- [ ] The Advanced Materials plus Rocketry synergy opens a paid, state-targeted high-speed qualification action with a delayed national-board or Kruger-proprietary ownership result, concrete resource burden, transfer cleanup, and persistent history.
 - [ ] Accidents are family-specific and create playable response missions.
 - [ ] Unauthorized projects require campaign evidence before they affect rebellion strength.
 - [ ] Project stages are preserved for rebellion, achievements, aftermath, and foreign countermeasures.
