@@ -21,6 +21,8 @@ Repeated production is separated into two steps:
 
 Cancelled or invalidated work does not refund a sunk material or temporal commitment.
 
+The first four foundation reports keep the country's history readable through two presentation clauses. `GetBrilliantScientistKrgOriginClause` identifies the charter, rebellion, enclave, or takeover that created the state, while `GetBrilliantScientistKrgPortfolioClause` selects the highest-priority active project-force family reconstructed from the carried ledger. The portfolio clause describes the surviving institution in-world and adds no stage, equipment, unit, technology, meter, or route effect.
+
 ## Stale-target contract
 
 All 29 timed state-target decisions have a `cancel_trigger` that rechecks the exact target family while the timer is active. A state that changes owner, controller, facility role, construction eligibility, crisis status, or diplomatic eligibility cannot complete through a stale `FROM` scope. The former-host settlement also cancels when its saved country target disappears.
