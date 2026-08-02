@@ -1,6 +1,6 @@
 # Event 020 Rat King route depth
 
-The separate `RTX` Rat King now has a 70-focus tree in `common/national_focus/020_black_plague_rat_king_focus_tree.txt`. The tree stays inside the two-tag boundary: `RTA` remains the base Rat Nation and `RTX` remains the separate sentient King.
+The separate `RTX` Rat King now has a 71-node tree in `common/national_focus/020_black_plague_rat_king_focus_tree.txt`. The tree stays inside the two-tag boundary: `RTA` remains the base Rat Nation and `RTX` remains the separate sentient King.
 
 The opening establishes the Royal Basin, crown, registers, refuge nodes, and capital seals. The player then chooses one mutually exclusive government route: Absolute Crown, Brood Council, or Black-Breath Hierophancy. Each route has its original four-focus core and an additional six-focus lane that explores a distinct royal cost profile.
 

@@ -1,6 +1,6 @@
 # Event 20: Black Plague
 
-Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live runtime contract and the content currently wired into it. The scripted gameplay core, 50-focus RTA route, 70-focus RTX route, and scoped Rat King defeat/slot-087 presentation tranche are wired for static validation, while the accepted full-design audit still tracks broader narrative depth, presentation polish, rights attribution, and live validation as remaining work.
+Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live runtime contract and the content currently wired into it. The scripted gameplay core, 51-node RTA route, 71-node RTX route, and scoped Rat King defeat/slot-087 presentation tranche are wired for static validation, while the accepted full-design audit still tracks broader narrative depth, presentation polish, rights attribution, and live validation as remaining work.
 
 The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Doctor Wu remains a separate Event 163 companion registration. Event 20 is registered in the shared Diseases cluster and in the public world-end scenario catalog; the terminal row remains inactive until Evolution V's earned conditions are met.
 
