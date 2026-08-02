@@ -34,7 +34,7 @@ The pack, its altered territory, and the field archive are fictional high-chaos 
 
 ## Assets
 
-`GFX_report_event_fallout_ash_wolves` is a dedicated generated report image registered in `interface/fallout_world_end.gfx`. Source, processed PNG, DDS, prompt, manifest, and handoff live under `docs/assets/air_cleanliness_fallout/fallout_ash_wolves/`.
+`GFX_report_event_fallout_ash_wolves` is a dedicated generated report image registered in `interface/fallout_consolidated.gfx`. Source, processed PNG, DDS, prompt, manifest, and handoff live under `docs/assets/air_cleanliness_fallout/fallout_ash_wolves/`.
 
 ## Review boundary
 

@@ -13,8 +13,8 @@ The delayed result is twenty-eight days and the permit review is two hundred ten
 
 ## Implementation handoff
 
-- Constants live in `common/script_constants/fallout_world_end_dead_city_permit_constants.txt`.
-- The candidate row is appended in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+- Constants live in `common/script_constants/fallout_consolidated_constants.txt`.
+- The candidate row is appended in `common/scripted_effects/fallout_consolidated_effects.txt`.
 - Triggers, effects, modifiers, Event Log payload localisation, events, and player-facing localisation are separate Fallout-owned files or mappings.
 - The report image has a dedicated source, processed preview, DDS, manifest, and GFX handoff.
 - It does not reuse Zombie paths or the Air Winter dead-city salvage image.

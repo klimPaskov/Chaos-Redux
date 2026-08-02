@@ -21,7 +21,7 @@ The identities are dedicated to the Mine Generator and do not reuse zombie ids, 
 
 ## Engine-sensitive surfaces
 
-The direct admission surface is `fallout_event_642_state_has_native_resource_work` in `common/scripted_triggers/fallout_world_end_mine_generator_event_triggers.txt`.
+The direct admission surface is `fallout_event_642_state_has_native_resource_work` in `common/scripted_triggers/fallout_consolidated_triggers.txt`.
 
 It is a state-scoped `has_resources_amount` OR over coal, steel, tungsten, chromium, and aluminium with the fixed display priority coal, steel, tungsten, chromium, then aluminium. Each amount comparison uses the file-scoped zero required by the engine-facing trigger syntax.
 
@@ -99,7 +99,7 @@ History `9169` records the four opening choices, branch-specific success, partia
 
 The country is recorded as the primary actor and the authenticated state as the secondary actor.
 
-The event, result, callback, modifier, and Event Log localisation is in `localisation/english/fallout_world_end_mine_generator_l_english.yml` with a UTF-8 BOM.
+The event, result, callback, modifier, and Event Log localisation is in `localisation/english/fallout_consolidated_l_english.yml` with a UTF-8 BOM.
 
 The Event Log detail router is `GetFalloutEvent642EventLogDetail` and is connected to the central event log name and detail routers.
 

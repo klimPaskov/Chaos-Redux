@@ -38,4 +38,4 @@ The candidate remains dormant until the Fallout scheduler activation gates, host
 
 ## Asset wiring
 
-The generated source and processed PNG live under `docs/assets/air_cleanliness_fallout/fallout_orchard_flowers/`. The final DDS lives at `gfx/event_pictures/fallout/report_event_fallout_orchard_flowers.dds`. The sprite is registered in `interface/fallout_world_end.gfx`, and events 408, 410, and 412 use the dedicated sprite. No Zombie Apocalypse asset, path, audio, or sprite is reused.
+The generated source and processed PNG live under `docs/assets/air_cleanliness_fallout/fallout_orchard_flowers/`. The final DDS lives at `gfx/event_pictures/fallout/report_event_fallout_orchard_flowers.dds`. The sprite is registered in `interface/fallout_consolidated.gfx`, and events 408, 410, and 412 use the dedicated sprite. No Zombie Apocalypse asset, path, audio, or sprite is reused.

@@ -6,8 +6,8 @@ Owner: decision and mission audit subagent.
 
 Changed files:
 
-- `common/decisions/fallout_nzl_lifeboat_decisions.txt`
-- `localisation/english/fallout_nzl_lifeboat_l_english.yml`
+- `common/decisions/fallout_consolidated_decisions.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
 
 The category file was inspected but needs no edit: its `allowed` and `visible`
 conditions already fail closed on `fallout_nzl_lifeboat_package_is_current`.
@@ -126,7 +126,7 @@ AI uses random country selection.
 ## Cleanup and exploit-risk handoff
 
 The chain architect has merged these items into the central NZL reset block in
-`common/scripted_effects/fallout_nzl_lifeboat_effects.txt`. They must remain in
+`common/scripted_effects/fallout_consolidated_effects.txt`. They must remain in
 NZL/ROOT scope:
 
 ```txt
@@ -184,7 +184,7 @@ no broken sprite reference:
 
 The asset brief did not request these six sprites. Asset production should add
 the DDS files, source/processed PNGs, prompt records, contact sheet, manifest,
-and `interface/fallout_world_end.gfx` entries. That GFX wiring is parent-owned.
+and `interface/fallout_consolidated.gfx` entries. That GFX wiring is parent-owned.
 
 ## Validation evidence and limits
 

@@ -21,7 +21,7 @@ The release-floor count remains unchanged.
 
 The opening uses `fallout_event_country_can_receive_ordinary_event` and
 `fallout_event_issued_ordinary_receipt_is_current`. The single coordinator in
-`common/scripted_effects/fallout_world_end_food_event_effects.txt` captures the
+`common/scripted_effects/fallout_consolidated_effects.txt` captures the
 issued mode, target, token, and ticket, reserves a delayed row, then consumes
 the exact ordinary receipt. If the receipt cannot be consumed, the newly
 reserved row is cancelled with `caller_cancelled`.
@@ -47,7 +47,7 @@ every owned state through `apply_exact_state_civilian_population_loss` with the
 `fallout_aftermath` Deaths reason. No direct state-population mutation is used.
 
 The callback opens two authored decision surfaces in
-`common/decisions/fallout_food_security_decisions.txt`:
+`common/decisions/fallout_consolidated_decisions.txt`:
 
 - `fallout_event_100_ration_law` spends food and filters during a three-week
   review, then restores food, recognition, and cohesion if the review closes.
@@ -62,7 +62,7 @@ authority. The event picture is the reviewed Fallout asset
 
 The two callback decisions use the existing Fallout icon
 `GFX_idea_fallout_state_grade`, registered in
-`interface/fallout_world_end.gfx` and sourced from
+`interface/fallout_consolidated.gfx` and sourced from
 `gfx/interface/ideas/fallout_world_end/idea_fallout_state_grade.dds`. No zombie
 asset, sprite, or path is referenced. A future food-security asset tranche may
 replace this shared Fallout idea icon after the decision family is expanded.

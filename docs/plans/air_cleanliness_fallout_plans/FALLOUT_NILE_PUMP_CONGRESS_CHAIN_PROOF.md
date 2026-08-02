@@ -8,7 +8,7 @@ The chain is owned by `events/fallout_world_end_events.txt` under `add_namespace
 
 ## Candidate and target
 
-`fallout_world_end_event_candidate_effects.txt` resets a country-owned candidate state id, scans current owned states, and keeps the lowest eligible native id. The state trigger requires the current generation, owner control, durable Fallout and Air Winter rows, rural category, positive population, food, supply, adaptation, reclamation, exposure and disease limits, and a non-damaged infrastructure level. The country gate requires sub-Saharan Africa, campaign day 730 through 5999, food, clean water, cohesion, recognition, and at least one complete branch cost.
+`fallout_consolidated_effects.txt` resets a country-owned candidate state id, scans current owned states, and keeps the lowest eligible native id. The state trigger requires the current generation, owner control, durable Fallout and Air Winter rows, rural category, positive population, food, supply, adaptation, reclamation, exposure and disease limits, and a non-damaged infrastructure level. The country gate requires sub-Saharan Africa, campaign day 730 through 5999, food, clean water, cohesion, recognition, and at least one complete branch cost.
 
 ## Branch and delayed-result proof
 

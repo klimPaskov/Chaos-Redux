@@ -27,4 +27,4 @@ AI chooses a branch through authored recognition, medicine, scrap, and cohesion 
 
 ## Asset and localisation surfaces
 
-The dedicated report art is `GFX_report_event_fallout_counterfeit_antibiotics` and is documented under `docs/assets/air_cleanliness_fallout/fallout_counterfeit_antibiotics/`. Localisation is in `localisation/english/fallout_world_end_counterfeit_antibiotics_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.
+The dedicated report art is `GFX_report_event_fallout_counterfeit_antibiotics` and is documented under `docs/assets/air_cleanliness_fallout/fallout_counterfeit_antibiotics/`. Localisation is in `localisation/english/fallout_consolidated_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.

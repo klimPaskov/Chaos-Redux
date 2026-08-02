@@ -1,5 +1,9 @@
 # Fallout Living-World Scheduler Proof
 
+## Public catalog boundary
+
+Fallout candidate identities and dormant survivor rows are internal scheduler records. They are not public event catalog fields. The workbook and all exported catalog snapshots intentionally omit Fallout rows, while post-consequence runtime callbacks remain owned by `chaosx.fallout`.
+
 ## Current reconciliation after The Pirate Amnesty
 
 The dormant reviewed producer now covers `84` ordinary Fallout rows and `670` defined event blocks through `chaosx.fallout.795`. The Pirate Amnesty is the latest ordinary row with candidate `789`, transaction `710084`, route `7200`, and survivor history `9190`. It is admitted only from a current-generation West African Port Confederacies maritime remnant with a deterministic coastal or naval-base state target that has a closed Harbor Without a City memory, a foreign neighbor, durable Air Winter and survival ledgers, dedicated raider ledgers, and an affordable branch. Its `35` day result and `270` day sea-law review remain behind the unset activation flags. The countable release-floor total remains `0 of 660`.
@@ -92,24 +96,24 @@ The Year Zero, Orchard Flowers, Skilled List, and False Spring Losses pilots use
 
 ## Owned files in this tranche
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_year_zero_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_year_zero_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_orchard_flowers_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_orchard_flowers_event_effects.txt`
-- `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
-- `common/scripted_effects/fallout_world_end_well_queue_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_well_queue_event_triggers.txt`
-- `common/dynamic_modifiers/fallout_world_end_well_queue_dynamic_modifiers.txt`
-- `common/scripted_effects/fallout_world_end_animal_feed_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_animal_feed_event_triggers.txt`
-- `common/dynamic_modifiers/fallout_world_end_animal_feed_dynamic_modifiers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
 - `events/fallout_world_end_events.txt` event suffixes `153` through `174`
-- `interface/fallout_world_end.gfx` Well Queue report sprite registration
-- `localisation/english/fallout_world_end_well_queue_l_english.yml`
-- `localisation/english/fallout_world_end_animal_feed_l_english.yml`
+- `interface/fallout_consolidated.gfx` Well Queue report sprite registration
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `docs/assets/fallout_well_queue/manifest.md`
 - `docs/assets/fallout_well_queue/gfx_handoff.md`
@@ -236,7 +240,7 @@ The installed official documentation is the primary syntax reference:
 
 The exact installed documentation surfaces used for the numerical tranche are `script_concept_documentation.md:216-226` for script constants, `triggers_documentation.md:1036` for `all_of`, `triggers_documentation.md:1515` for `any_of`, `triggers_documentation.md:2110` for `check_variable`, `triggers_documentation.md:5336-5343` for the state-scope `is_capital` trigger, `triggers_documentation.md:7440` for trigger-side `round_temp_variable`, `triggers_documentation.md:7482` for trigger-side `set_temp_variable`, `effects_documentation.md:2943` for `country_event`, `effects_documentation.md:4296` for `for_each_scope_loop`, `effects_documentation.md:4312-4328` for the default exclusive `for_loop_effect` end comparison, `effects_documentation.md:4833` for `meta_effect`, `effects_documentation.md:6476` for `round_temp_variable`, and `effects_documentation.md:7820` for `set_temp_variable`. The offline `Data structures - Hearts of Iron 4 Wiki.md` sections at lines 254, 415-417, and 817 onward cover event targets, unscoped temporary-variable lifetime, and arrays.
 
-Repository precedents are `006_independence_wave_effects.txt` and `006_independence_wave_triggers.txt` for aligned scope registries and reciprocal row validation, plus `020_black_plague_effects.txt` for delayed scheduler state. Dynamic event dispatch precedents are `013_natural_disasters_effects.txt`, `air_cleanliness_winter_event_effects.txt`, and `fallout_manual_scenario_effects.txt`. Each formats an integer variable into a namespaced `country_event` id through `meta_effect`. The Fallout substrate retains separate schema and identifier ownership.
+Repository precedents are `006_independence_wave_effects.txt` and `006_independence_wave_triggers.txt` for aligned scope registries and reciprocal row validation, plus `020_black_plague_effects.txt` for delayed scheduler state. Dynamic event dispatch precedents are `013_natural_disasters_effects.txt`, `fallout_consolidated_effects.txt`, and `fallout_consolidated_effects.txt`. Each formats an integer variable into a namespaced `country_event` id through `meta_effect`. The Fallout substrate retains separate schema and identifier ownership.
 
 A refreshed exact read-only `hoi4.event_inspect` trace for `chaosx.fallout.62` used selector `{ kind: event, eventId: chaosx.fallout.62 }`, depth 2, 24 nodes, and 48 edges. The installed service returned `EVENT_HELPER_PROJECTION_LIMIT` at its fixed 200,000-helper ceiling before scanning a file or producing an artifact. This is a tooling limit and is not used as engine proof.
 

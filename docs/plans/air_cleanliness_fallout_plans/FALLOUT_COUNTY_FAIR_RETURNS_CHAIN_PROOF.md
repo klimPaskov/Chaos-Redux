@@ -8,9 +8,9 @@ Status: implementation tranche complete at source level, dormant by scheduler co
 
 The chain owns `chaosx.fallout.572` through `.578`, candidate `572`, transaction `710054`, route `7154`, and Event Log history `9159`.
 
-Gameplay source is split across `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_county_fair_returns_event_triggers.txt`, `common/scripted_effects/fallout_world_end_county_fair_returns_event_effects.txt`, the County Fair script constants, the County Fair dynamic modifiers, and the County Fair candidate producer block.
+Gameplay source is split across `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, the County Fair script constants, the County Fair dynamic modifiers, and the County Fair candidate producer block.
 
-Presentation source is `localisation/english/fallout_world_end_county_fair_returns_l_english.yml`, the dedicated Event Log scripted localisation, the shared Event Log actor and history mappings, `interface/fallout_world_end.gfx`, and the dedicated report DDS.
+Presentation source is `localisation/english/fallout_consolidated_l_english.yml`, the dedicated Event Log scripted localisation, the shared Event Log actor and history mappings, `interface/fallout_consolidated.gfx`, and the dedicated report DDS.
 
 ## Static proof
 

@@ -12,9 +12,9 @@ Status: candidate package prepared and parent-wired on 2026-07-26. This handoff 
 
 - Seven focus DDS files are under `gfx/interface/goals/fallout_successor_b7_usa/` at 94x86.
 - Four idea DDS files are under `gfx/interface/ideas/fallout_successor_b7_usa/` at 60x68.
-- `interface/fallout_successor_b7_usa.gfx` registers all eleven runtime names.
-- `common/national_focus/fallout_successor_b7_usa_focus.txt` references the seven dedicated focus sprites.
-- `common/ideas/fallout_successor_b7_usa_ideas.txt` references the four dedicated idea sprites.
+- `interface/fallout_consolidated.gfx` registers all eleven runtime names.
+- `common/national_focus/fallout_consolidated_focus.txt` references the seven dedicated focus sprites.
+- `common/ideas/fallout_consolidated_ideas.txt` references the four dedicated idea sprites.
 
 ## Evidence
 

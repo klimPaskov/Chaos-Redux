@@ -20,7 +20,7 @@ This brief owns one fictional Fallout report image for the reviewed Food Compact
 | Processed path | `docs/assets/677_hungry_battalion/processed_png/report_event_fallout_hungry_battalion.png` |
 | Runtime path | `gfx/event_pictures/fallout/report_event_fallout_hungry_battalion.dds` |
 | Sprite | `GFX_report_event_fallout_hungry_battalion` |
-| Registry | `interface/fallout_world_end.gfx` |
+| Registry | `interface/fallout_consolidated.gfx` |
 
 The asset worker must inspect the canonical report-event contact sheet before generation. The temporary workspace must retain the final prompt, source master, processed PNG, DDS decode, contact sheet, SHA-256 hashes, manifest, requirement-to-runtime crosswalk, and GFX handoff.
 

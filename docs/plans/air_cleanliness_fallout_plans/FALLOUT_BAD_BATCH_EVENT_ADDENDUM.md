@@ -554,7 +554,7 @@ transparent corners, and a soft shadow through the repository report-event
 processor. The active workspace must retain the prompt, generated source PNG,
 processed PNG, manifest, requirement-to-runtime crosswalk, and
 `gfx_handoff.md`. The main agent owns the sprite registration in
-`interface/fallout_world_end.gfx`. Asset production belongs in a later
+`interface/fallout_consolidated.gfx`. Asset production belongs in a later
 event-asset handoff. This addendum creates no image, DDS, sprite registration,
 or manifest.
 
@@ -594,12 +594,12 @@ check.
 If accepted, the implementation should touch or create only the appropriate
 parts of these surfaces:
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_triggers/fallout_world_end_bad_batch_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_bad_batch_event_effects.txt`
-- `common/dynamic_modifiers/fallout_world_end_bad_batch_dynamic_modifiers.txt`
-- `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt` for the narrow
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt` for the narrow
   greenhouse provenance capture and reset
 - `events/fallout_world_end_events.txt`
 - a dedicated Bad Batch Event Log detail selector under
@@ -608,7 +608,7 @@ parts of these surfaces:
 - the existing event-detail history routing effect
 - English localisation for events, options, tooltips, modifiers, Event Log, and
   event details
-- `interface/fallout_world_end.gfx` and the dedicated asset package after asset
+- `interface/fallout_consolidated.gfx` and the dedicated asset package after asset
   production
 - the event id ledger, scheduler proof, implementation status, source-of-truth
   map, and a new Bad Batch implementation proof after the code exists

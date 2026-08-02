@@ -8,10 +8,10 @@ The implementation creates class-specific ground, weather, ash, vegetation, ice,
 
 ## Authoritative files
 
-- `common/script_constants/air_cleanliness_winter_visual_constants.txt`
-- `common/scripted_effects/air_cleanliness_winter_visual_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`
 - `gfx/entities/air_cleanliness_winter_regional_visuals.asset`
 - `gfx/entities/air_cleanliness_winter_regional_visuals.gfx`

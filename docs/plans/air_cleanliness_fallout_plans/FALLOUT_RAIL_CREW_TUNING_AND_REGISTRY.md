@@ -16,7 +16,7 @@ The rail value is read from the native state `rail_way` field. A state without a
 
 ## Tuning tables
 
-The contract is centralized in `common/script_constants/fallout_world_end_event_constants.txt`.
+The contract is centralized in `common/script_constants/fallout_consolidated_constants.txt`.
 
 - Result delay is 3 days.
 - Callback delay is 7 days.
@@ -48,11 +48,11 @@ The callback turns a successful result into a named crew institution, a forced-l
 
 ## Files and wiring
 
-- `common/scripted_triggers/fallout_world_end_rail_event_triggers.txt` owns target and registry authentication.
-- `common/scripted_effects/fallout_world_end_rail_event_effects.txt` owns scoring, result effects, Deaths calls, native rail damage, history payloads, callback scheduling, and cleanup.
-- `common/dynamic_modifiers/fallout_world_end_rail_security_dynamic_modifiers.txt` owns state and country consequence modifiers.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns target and registry authentication.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns scoring, result effects, Deaths calls, native rail damage, history payloads, callback scheduling, and cleanup.
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt` owns state and country consequence modifiers.
 - `events/fallout_world_end_events.txt` owns human, hidden AI, delayed result, callback, and cleanup event blocks.
-- `localisation/english/fallout_world_end_l_english.yml` owns concrete text for the four choices, three outcome bands for each branch, callback outcomes, modifiers, and event-log payloads.
+- `localisation/english/fallout_consolidated_l_english.yml` owns concrete text for the four choices, three outcome bands for each branch, callback outcomes, modifiers, and event-log payloads.
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps history `9107` and its fifteen payloads.
 - `FALLOUT_EVENT_ID_LEDGER.md` records IDs `114` through `120`, `122`, and hidden AI IDs `1014` through `1018`.
 

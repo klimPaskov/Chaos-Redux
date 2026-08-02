@@ -8,10 +8,10 @@
 - Transaction key: `710034`
 - Route: `7134`
 - Event Log history: `9139`
-- Dedicated constants: `common/script_constants/fallout_world_end_ship_that_will_not_dock_constants.txt`
-- Dedicated effects: `common/scripted_effects/fallout_world_end_ship_that_will_not_dock_event_effects.txt`
-- Dedicated triggers: `common/scripted_triggers/fallout_world_end_ship_that_will_not_dock_event_triggers.txt`
-- Dedicated dynamic modifiers: `common/dynamic_modifiers/fallout_world_end_ship_that_will_not_dock_dynamic_modifiers.txt`
+- Dedicated constants: `common/script_constants/fallout_consolidated_constants.txt`
+- Dedicated effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Dedicated triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- Dedicated dynamic modifiers: `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
 
 ## Static proof
 

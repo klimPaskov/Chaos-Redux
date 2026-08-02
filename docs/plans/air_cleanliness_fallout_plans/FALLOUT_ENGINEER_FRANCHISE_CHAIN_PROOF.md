@@ -6,14 +6,14 @@ The Engineer Franchise is a dormant ordinary Fallout technate chain. It uses can
 
 ## Source surfaces
 
-- Candidate producer: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`
-- Constants: `common/script_constants/fallout_world_end_event_constants.txt` and `common/script_constants/fallout_world_end_engineer_franchise_constants.txt`
-- Triggers: `common/scripted_triggers/fallout_world_end_engineer_franchise_event_triggers.txt`
-- Effects: `common/scripted_effects/fallout_world_end_engineer_franchise_event_effects.txt`
+- Candidate producer: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Constants: `common/script_constants/fallout_consolidated_constants.txt` and `common/script_constants/fallout_consolidated_constants.txt`
+- Triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- Effects: `common/scripted_effects/fallout_consolidated_effects.txt`
 - Events: `events/fallout_world_end_events.txt`
-- Localisation: `localisation/english/fallout_world_end_engineer_franchise_l_english.yml`
-- Event Log routing: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_localisation/fallout_world_end_engineer_franchise_event_log_scripted_localisation.txt`
-- Presentation: `interface/fallout_world_end.gfx` and the dedicated report DDS
+- Localisation: `localisation/english/fallout_consolidated_l_english.yml`
+- Event Log routing: `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
+- Presentation: `interface/fallout_consolidated.gfx` and the dedicated report DDS
 
 ## Mechanics proof
 

@@ -36,7 +36,7 @@ The image is fictional and contains no real people, flags, readable text, or reu
 
 The effects file has balanced braces `898/898`. The trigger file has balanced braces `81/81`. The candidate registry remains balanced at `2776/2776`. The events file remains balanced at `11571/11571`. The dynamic modifier file has balanced braces `9/9`. The shared reset hook contains one Rail Spine abort call in numeric order.
 
-The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 621, 623, and 625 resolve to the dedicated localisation file. The new effects, triggers, and candidate row reference 181 unique Rail Spine constants, all present in `fallout_world_end_rail_spine_vote_constants.txt`.
+The seven new event ids each occur once. The dedicated localisation has 62 unique keys and a UTF-8 BOM. The event references for 621, 623, and 625 resolve to the dedicated localisation file. The new effects, triggers, and candidate row reference 181 unique Rail Spine constants, all present in `fallout_consolidated_constants.txt`.
 
 ## Workbook and release floor
 

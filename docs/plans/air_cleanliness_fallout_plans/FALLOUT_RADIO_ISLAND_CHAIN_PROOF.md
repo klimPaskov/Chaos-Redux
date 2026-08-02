@@ -68,7 +68,7 @@ The processed report image is `docs/assets/600_radio_island_chain/processed_210x
 
 The runtime DDS is `gfx/event_pictures/fallout/report_event_fallout_radio_island_chain.dds` with SHA-256 `8cbdfb43937b4cd4c4fd39fcdd334228a3812386a455af39daac1e60c3798d73`, DDS magic `DDS `, a 124-byte header, width 210, height 176, 32 bits per pixel, and a 147968-byte file length equal to the expected BGRA payload.
 
-The sprite `GFX_report_event_fallout_radio_island_chain` is registered in `interface/fallout_world_end.gfx` and the manifest records source, processed, runtime, prompt, and handoff provenance.
+The sprite `GFX_report_event_fallout_radio_island_chain` is registered in `interface/fallout_consolidated.gfx` and the manifest records source, processed, runtime, prompt, and handoff provenance.
 
 The event catalogue workbook uses Events row 248 for `FALLOUT-600`, and the refreshed Events CSV export has SHA-256 `435579e209f6b9daafcbf4b069f61ad12988375dbada75dd8d78ff34ddeba14e`.
 

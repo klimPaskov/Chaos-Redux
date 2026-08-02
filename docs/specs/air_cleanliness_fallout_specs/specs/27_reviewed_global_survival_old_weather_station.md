@@ -33,7 +33,7 @@ Human and hidden-AI paths use the same transaction, target, branch, result, call
 
 ## Localisation, Event Log, and asset surfaces
 
-Concrete station, observer, military warning, radio exchange, and archive language is in `localisation/english/fallout_world_end_old_weather_station_l_english.yml`.
+Concrete station, observer, military warning, radio exchange, and archive language is in `localisation/english/fallout_consolidated_l_english.yml`.
 History `9132` has fifteen branch and callback payloads.
 The dedicated report picture is `GFX_report_event_fallout_old_weather_station` and its manifest and GFX handoff live under `docs/assets/air_cleanliness_fallout/fallout_old_weather_station/`.
 

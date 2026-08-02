@@ -97,11 +97,11 @@ These are runtime validation limits, not approved fallbacks. The source route, c
 
 - `common/on_actions/chaosx_on_actions_chaos_meter.txt`
 - `common/scripted_effects/chaos_meter_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_visual_effects.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
-- `common/script_constants/air_cleanliness_winter_presentation_states.txt`
-- `common/script_constants/air_cleanliness_winter_visual_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
 - `gfx/entities/air_cleanliness_winter_regional_visuals.asset`
 - `gfx/entities/air_cleanliness_winter_regional_visuals.gfx`
 - `gfx/entities/air_cleanliness_winter_regional_particles.asset`

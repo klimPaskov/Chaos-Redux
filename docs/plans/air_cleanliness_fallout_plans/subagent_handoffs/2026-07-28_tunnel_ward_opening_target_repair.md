@@ -6,7 +6,7 @@ Scope: keep the existing Tunnel Ward Committees generation-reset route state-bou
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_tunnel_ward_committees_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_TUNNEL_WARD_COMMITTEES_PROOF.md`
 
 Implementation evidence:

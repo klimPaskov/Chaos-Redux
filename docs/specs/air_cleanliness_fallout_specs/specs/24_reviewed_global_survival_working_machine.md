@@ -58,7 +58,7 @@ The state modifiers use reviewed existing icons.
 `GFX_idea_generic_research_bonus` marks an integrated, venerated, or isolated protocol.
 `GFX_idea_013_disaster_recovery_mobilization` marks a partial or dismantled protocol.
 `GFX_idea_country_without_breath` marks unsafe service.
-The report sprite is `GFX_report_event_fallout_working_machine` in `interface/fallout_world_end.gfx` and points to `gfx/event_pictures/fallout/report_event_fallout_working_machine.dds`.
+The report sprite is `GFX_report_event_fallout_working_machine` in `interface/fallout_consolidated.gfx` and points to `gfx/event_pictures/fallout/report_event_fallout_working_machine.dds`.
 
 ## Future expansion
 

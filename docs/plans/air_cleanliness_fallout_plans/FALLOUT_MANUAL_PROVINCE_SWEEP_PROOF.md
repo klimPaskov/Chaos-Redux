@@ -69,7 +69,7 @@ If later runtime observation shows native rejection, the sweep must remain block
 
 ## Generated batches
 
-`common/scripted_effects/fallout_manual_province_sweep_effects.txt` contains 41 effects named `fallout_manual_execute_batch_0` through `fallout_manual_execute_batch_40`.
+`common/scripted_effects/fallout_consolidated_effects.txt` contains 41 effects named `fallout_manual_execute_batch_0` through `fallout_manual_execute_batch_40`.
 
 - Batches 0 through 39 contain 250 targets each.
 - Batch 40 contains 154 targets.

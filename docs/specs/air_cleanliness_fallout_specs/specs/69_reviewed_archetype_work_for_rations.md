@@ -51,7 +51,7 @@ Cleanup releases the result and callback tickets, clears only this chain's tempo
 
 ## Assets and localisation
 
-The chain needs a dedicated fictional Fallout report image showing a Food Compact harvest crew, ration ledgers, field shelter, and winter machinery under ash-dark light. The source, processed PNG, DDS, sprite registration, hash manifest, and prompt record belong under `docs/assets/670_work_for_rations/`. The event picture sprite must be `GFX_report_event_fallout_work_for_rations` in `interface/fallout_world_end.gfx`.
+The chain needs a dedicated fictional Fallout report image showing a Food Compact harvest crew, ration ledgers, field shelter, and winter machinery under ash-dark light. The source, processed PNG, DDS, sprite registration, hash manifest, and prompt record belong under `docs/assets/670_work_for_rations/`. The event picture sprite must be `GFX_report_event_fallout_work_for_rations` in `interface/fallout_consolidated.gfx`.
 
 Visible event titles, descriptions, option labels, tooltips, result text, callback text, Event Log name, Event Log detail, and cancellation wording must use concrete Food Compact and regional language. Working labels are not final localisation.
 

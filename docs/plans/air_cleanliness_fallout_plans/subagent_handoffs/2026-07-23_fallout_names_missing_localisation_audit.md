@@ -2,8 +2,8 @@
 
 ## Changed files
 
-- `localisation/english/fallout_world_end_names_missing_l_english.yml`
-- `common/dynamic_modifiers/fallout_world_end_names_missing_dynamic_modifiers.txt`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
 
 ## Changed key
 

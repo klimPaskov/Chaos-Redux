@@ -8,13 +8,13 @@ Status: narrow lifecycle, target-safety, and cost-clarity patch complete. The pa
 
 ## Changed files
 
-- `common/decisions/categories/fallout_nzl_lifeboat_categories.txt`
+- `common/decisions/categories/fallout_consolidated_categories.txt`
   - `fallout_nzl_lifeboat_category` now uses the static `original_tag = NZL` allowed gate and retains the current-package visible gate.
-- `common/decisions/fallout_nzl_lifeboat_decisions.txt`
+- `common/decisions/fallout_consolidated_decisions.txt`
   - Added package-current activation gates to all seven selectable missions.
   - Added missing state or live-requirement checks to six custom-cost triggers.
   - `fallout_nzl_rebuild_partner_relief_port` cancels if the exact partner becomes hostile during the project.
-- `localisation/english/fallout_nzl_lifeboat_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
   - Corrected the dairy convoy and partner-port cost displays to use the registered motorized and support-equipment text icons.
 
 ## Before and after behavior
@@ -127,7 +127,7 @@ Focus integration is complete for every unlock flag consumed by this category. E
 
 ## Localisation and tooltip notes
 
-All 18 decision titles and descriptions resolve. All 15 custom-cost keys have base, blocked, and tooltip variants. The localisation file remains UTF-8 with BOM. All 18 decision sprites and the category sprite are registered in `interface/fallout_world_end.gfx`.
+All 18 decision titles and descriptions resolve. All 15 custom-cost keys have base, blocked, and tooltip variants. The localisation file remains UTF-8 with BOM. All 18 decision sprites and the category sprite are registered in `interface/fallout_consolidated.gfx`.
 
 ## Cleanup and exploit-risk notes
 

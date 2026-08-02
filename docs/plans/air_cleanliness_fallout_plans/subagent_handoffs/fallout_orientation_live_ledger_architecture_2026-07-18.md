@@ -18,7 +18,7 @@ The current implementation has no accepted durable opening producer for Cohesion
 
 `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SURVIVAL_NUMERICAL_CONTRACT_PROPOSAL.md` defines nine accepted resources. Recognition is index 9. Cohesion is not an accepted resource index and has no accepted formula.
 
-`common/scripted_effects/fallout_survival_ledger_effects.txt` writes only the accepted initial and current resource arrays in the country-row producer and commit path. The dormant orientation transaction currently requires `fallout_orientation_requested_cohesion`, freezes it, and copies it into the private `fallout_orientation_cohesion` variable in `common/scripted_effects/fallout_world_end_event_effects.txt` near lines 3473 and 3506.
+`common/scripted_effects/fallout_consolidated_effects.txt` writes only the accepted initial and current resource arrays in the country-row producer and commit path. The dormant orientation transaction currently requires `fallout_orientation_requested_cohesion`, freezes it, and copies it into the private `fallout_orientation_cohesion` variable in `common/scripted_effects/fallout_consolidated_effects.txt` near lines 3473 and 3506.
 
 The 35 Food, 35 Shelter capacity, and 30 Recognition formula in `FALLOUT_ORIENTATION_LIVE_LEDGER_NUMERICAL_CONTRACT_PROPOSAL.md` is a design proposal. It is not an implementation fact and may not be coded before user approval.
 
@@ -30,11 +30,11 @@ The accepted survival numerical contract defines opening Logistics as:
 clamp(20 * fallout_building_damage_after_non_damaged_infrastructure, 0, 100)
 ```
 
-`common/scripted_effects/fallout_survival_ledger_effects.txt` calculates that value as a temporary signal near lines 377 through 379. The producer uses it inside several resource formulas but does not persist it as a state Supply Access value.
+`common/scripted_effects/fallout_consolidated_effects.txt` calculates that value as a temporary signal near lines 377 through 379. The producer uses it inside several resource formulas but does not persist it as a state Supply Access value.
 
-No `air_winter_supply` ledger exists. `air_winter_local_supply_factor` is a phase-derived negative modifier input in `common/scripted_effects/air_cleanliness_winter_effects.txt` near lines 1158 through 1192. It is not a 0 through 100 supply ledger. `air_winter_survival_value` is a derived viability value and is not a supply resource.
+No `air_winter_supply` ledger exists. `air_winter_local_supply_factor` is a phase-derived negative modifier input in `common/scripted_effects/fallout_consolidated_effects.txt` near lines 1158 through 1192. It is not a 0 through 100 supply ledger. `air_winter_survival_value` is a derived viability value and is not a supply resource.
 
-`fallout_orientation_state_supply` appears only in `common/scripted_effects/fallout_world_end_event_effects.txt` near lines 4199, 4228 through 4233, 4365, 4399, 4413, and 4427. No native supply modifier or Air Winter calculation consumes it. It is therefore a shadow value and cannot satisfy the accepted live state-result requirement.
+`fallout_orientation_state_supply` appears only in `common/scripted_effects/fallout_consolidated_effects.txt` near lines 4199, 4228 through 4233, 4365, 4399, 4413, and 4427. No native supply modifier or Air Winter calculation consumes it. It is therefore a shadow value and cannot satisfy the accepted live state-result requirement.
 
 Promoting the accepted Logistics formula into immutable opening and mutable current Supply Access is feasible architecture, but the promotion, field names, schema change, and native modifier translation require user approval.
 
@@ -50,13 +50,13 @@ The canonical state values are:
 - `air_winter_reclamation`
 - `air_winter_water_security`
 
-Their initialization, normalization, and mutation are implemented in `common/scripted_effects/air_cleanliness_winter_effects.txt` near lines 568 through 617 and 1005 through 1146.
+Their initialization, normalization, and mutation are implemented in `common/scripted_effects/fallout_consolidated_effects.txt` near lines 568 through 617 and 1005 through 1146.
 
 The optional `air_winter_recovery_bonus` feeds state recovery pressure near lines 715 through 734. This proves a potential durable integration input. It does not by itself authorize orientation to own or mutate that input. The proposal's rule that an orientation Recovery gain writes both the bonus and current Recovery requires user approval.
 
 ### Deaths
 
-Orientation state loss calls `apply_exact_state_civilian_population_loss` and records `fallout_aftermath` as the reason in `common/scripted_effects/fallout_world_end_event_effects.txt` near lines 4115 through 4133. Country loss traverses the stable Fallout state ledger near lines 4059 through 4112.
+Orientation state loss calls `apply_exact_state_civilian_population_loss` and records `fallout_aftermath` as the reason in `common/scripted_effects/fallout_consolidated_effects.txt` near lines 4115 through 4133. Country loss traverses the stable Fallout state ledger near lines 4059 through 4112.
 
 The shared helper and Deaths gate live in `common/scripted_effects/chaosx_dynamic_effects.txt` near lines 659 through 727. Air Winter monthly loss uses the same shared system with the Air Winter exposure reason. The Deaths surface is proven statically and is not a blocker for this ledger proposal.
 
@@ -72,7 +72,7 @@ Installed official documentation proves:
 
 No documented effect removes exactly one damaged infrastructure level while preserving total level. Vanilla source contains no reviewed negative `damage_building` precedent and no dedicated repair effect.
 
-The orientation trigger file correctly keeps the capital repair and state-result gates unset near `common/scripted_triggers/fallout_world_end_event_triggers.txt` lines 1636 through 1644 and 1937 through 1952. Construction, an increased total level, repair speed, or a variable receipt is not an exact substitute.
+The orientation trigger file correctly keeps the capital repair and state-result gates unset near `common/scripted_triggers/fallout_consolidated_triggers.txt` lines 1636 through 1644 and 1937 through 1952. Construction, an increased total level, repair speed, or a variable receipt is not an exact substitute.
 
 ## Read-only event inspection
 

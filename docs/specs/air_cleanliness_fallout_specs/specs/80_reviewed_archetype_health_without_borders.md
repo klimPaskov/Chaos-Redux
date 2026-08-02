@@ -31,6 +31,6 @@ The survivor Event Log history is `9184`. Choice, result, callback, and cancella
 
 ## Asset and review surface
 
-The dedicated report image is `GFX_report_event_fallout_health_without_borders`, registered in `interface/fallout_world_end.gfx`. Source, processed PNG, runtime DDS, manifest, and GFX handoff live under `docs/assets/747_health_without_borders/`.
+The dedicated report image is `GFX_report_event_fallout_health_without_borders`, registered in `interface/fallout_consolidated.gfx`. Source, processed PNG, runtime DDS, manifest, and GFX handoff live under `docs/assets/747_health_without_borders/`.
 
 The authoritative workbook row is `FALLOUT-747` with `Needs Testing` status. The chain remains dormant and contributes zero release-floor blocks until the shared scheduler activation gates are deliberately promoted.

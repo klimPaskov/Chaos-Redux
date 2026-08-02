@@ -26,12 +26,12 @@ The source and destination checks use `fallout_successor_state_inventory_row_is_
 
 ## Files
 
-- `common/script_constants/fallout_nzl_lifeboat_constants.txt`
-- `common/script_constants/fallout_successor_b7_constants.txt`
-- `common/scripted_triggers/fallout_nzl_lifeboat_triggers.txt`
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
-- `common/scripted_effects/fallout_successor_b7_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 
 ## Boundary
 

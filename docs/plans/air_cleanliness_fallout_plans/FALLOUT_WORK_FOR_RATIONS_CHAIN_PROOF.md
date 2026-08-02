@@ -34,7 +34,7 @@ The cleanup effect is idempotent. It requires the issued cleanup ticket, current
 
 ## Public history and presentation
 
-The dedicated sprite is `GFX_report_event_fallout_work_for_rations`, registered in `interface/fallout_world_end.gfx` and backed by `gfx/event_pictures/fallout/report_event_fallout_work_for_rations.dds`. The source and processed images, hashes, prompt, and handoff are under `docs/assets/670_work_for_rations/`. The visible opening, result, and callback use concrete Food Compact and Air Winter text. Hidden AI events have no player popup.
+The dedicated sprite is `GFX_report_event_fallout_work_for_rations`, registered in `interface/fallout_consolidated.gfx` and backed by `gfx/event_pictures/fallout/report_event_fallout_work_for_rations.dds`. The source and processed images, hashes, prompt, and handoff are under `docs/assets/670_work_for_rations/`. The visible opening, result, and callback use concrete Food Compact and Air Winter text. Hidden AI events have no player popup.
 
 The authoritative workbook row is `Events!A258:M258` with identity `FALLOUT-670`. Its player-facing Details cell matches the current opening, branch, result, callback, and survivor-history wording. Evo I through Evo V, World-End Scenario columns, and internal mechanical columns are blank. The exported Events CSV was regenerated with SHA-256 `3ad6d6d633b738b51da1a0e987923d4c8666bc381de25d5b99d5db1ba52a81c4`.
 

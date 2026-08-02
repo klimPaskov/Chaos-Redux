@@ -12,11 +12,11 @@ The path is deliberately structural. The Refugee Train row now has an authored b
 
 ## Ownership
 
-`common/scripted_effects/fallout_world_end_event_candidate_effects.txt` owns the relationship-row no-partner sentinel and the authored payload handoff point.
+`common/scripted_effects/fallout_consolidated_effects.txt` owns the relationship-row no-partner sentinel and the authored payload handoff point.
 
-`common/scripted_triggers/fallout_world_end_event_triggers.txt` owns the generation-bound reciprocal candidate proof. A relationship row is eligible only when its partner index is current, both candidate registries are current and aligned, and the partner carries the exact reciprocal candidate identity, transaction key, class, bilateral opportunity, event-token pair, visible cost, and back-reference to the source registry index.
+`common/scripted_triggers/fallout_consolidated_triggers.txt` owns the generation-bound reciprocal candidate proof. A relationship row is eligible only when its partner index is current, both candidate registries are current and aligned, and the partner carries the exact reciprocal candidate identity, transaction key, class, bilateral opportunity, event-token pair, visible cost, and back-reference to the source registry index.
 
-`common/scripted_effects/fallout_world_end_event_effects.txt` owns the selected relationship wrapper and partner-row lookup. It freezes the initiator and responder response tokens, control modes, visible costs, shared due day, parent arc ticket, and cleanup token, then calls the existing `fallout_event_reserve_bilateral_transaction` API.
+`common/scripted_effects/fallout_consolidated_effects.txt` owns the selected relationship wrapper and partner-row lookup. It freezes the initiator and responder response tokens, control modes, visible costs, shared due day, parent arc ticket, and cleanup token, then calls the existing `fallout_event_reserve_bilateral_transaction` API.
 
 `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`, `README_IMPLEMENTATION_STATUS.md`, and `source_of_truth_map.md` own the proof and status reconciliation.
 

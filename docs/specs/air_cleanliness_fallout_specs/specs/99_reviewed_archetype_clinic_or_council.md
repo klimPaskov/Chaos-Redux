@@ -29,7 +29,7 @@ The chain never requests Fallout, changes the government archetype, creates a co
 
 ## Wiring and assets
 
-Runtime constants live in `common/script_constants/fallout_world_end_clinic_or_council_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_world_end_clinic_or_council_event_triggers.txt` and `common/scripted_effects/fallout_world_end_clinic_or_council_event_effects.txt`. The candidate producer is `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`. Dynamic modifiers, opinion modifiers, Event Log routing, events, and localisation use the dedicated Clinic or Council names.
+Runtime constants live in `common/script_constants/fallout_consolidated_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_consolidated_triggers.txt` and `common/scripted_effects/fallout_consolidated_effects.txt`. The candidate producer is `common/scripted_effects/fallout_consolidated_effects.txt`. Dynamic modifiers, opinion modifiers, Event Log routing, events, and localisation use the dedicated Clinic or Council names.
 
 The dedicated generated report art and manifest live under `docs/assets/880_clinic_or_council/`. Runtime art is `gfx/event_pictures/fallout/report_event_fallout_clinic_or_council.dds` registered as `GFX_report_event_fallout_clinic_or_council`.
 

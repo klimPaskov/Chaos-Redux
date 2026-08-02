@@ -111,7 +111,7 @@ Freeze the cohort and receiving capacity at issue:
 
 `arrival pressure = clamp(round(base cohort * 1000 / max(destination civilian population, 1)), 0, 100)`
 
-All coefficients, bounds, thresholds, branch shares, costs, and deltas belong in `common/script_constants/fallout_world_end_event_constants.txt`.
+All coefficients, bounds, thresholds, branch shares, costs, and deltas belong in `common/script_constants/fallout_consolidated_constants.txt`.
 The result may clamp actual removal to the source state's current safe removable population, but it may not recalculate the cohort, capacity, viability, or projected outcome from later world state.
 
 ## Four player choices
@@ -276,7 +276,7 @@ Create one fictional documentary report image centered on a numbered metal shelt
 Do not show monsters, gore, contemporary insignia, or a generic ruined skyline.
 The human opening, result, and callback may share this dedicated family image.
 
-Register `GFX_report_event_fallout_door_list` in `interface/fallout_world_end.gfx`.
+Register `GFX_report_event_fallout_door_list` in `interface/fallout_consolidated.gfx`.
 Place the DDS under `gfx/event_pictures/fallout/`.
 The handoff requires source PNG, processed `210 x 176` PNG, final DDS, prompt and provenance note, manifest, preview, and exact sprite path.
 A static report image is sufficient because animation would not improve the admission decision.

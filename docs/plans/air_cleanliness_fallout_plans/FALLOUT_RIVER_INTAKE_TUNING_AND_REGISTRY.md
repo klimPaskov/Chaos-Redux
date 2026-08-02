@@ -14,7 +14,7 @@ Every delayed result and cleanup trigger rechecks the generation, owner, state f
 
 ## Tuning tables
 
-The contract is centralized in `common/script_constants/fallout_world_end_event_constants.txt`.
+The contract is centralized in `common/script_constants/fallout_consolidated_constants.txt`.
 
 - Result delay is 2 days.
 - Callback delay is 5 days.
@@ -38,11 +38,11 @@ The callback resolves into a written water compact, an unequal-access memory, or
 
 ## Files and wiring
 
-- `common/scripted_triggers/fallout_world_end_water_event_triggers.txt` owns target and registry authentication.
-- `common/scripted_effects/fallout_world_end_water_event_effects.txt` owns scoring, result effects, Deaths calls, history payloads, callback scheduling, and cleanup.
-- `common/dynamic_modifiers/fallout_world_end_water_security_dynamic_modifiers.txt` owns state and country consequence modifiers.
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns target and registry authentication.
+- `common/scripted_effects/fallout_consolidated_effects.txt` owns scoring, result effects, Deaths calls, history payloads, callback scheduling, and cleanup.
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt` owns state and country consequence modifiers.
 - `events/fallout_world_end_events.txt` owns human, hidden AI, delayed result, callback, and cleanup event blocks.
-- `localisation/english/fallout_world_end_l_english.yml` owns concrete text for the four choices, three outcome bands, callback outcomes, modifiers, and event-log payloads.
+- `localisation/english/fallout_consolidated_l_english.yml` owns concrete text for the four choices, three outcome bands, callback outcomes, modifiers, and event-log payloads.
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps history 9106 and its fifteen payloads.
 - `FALLOUT_EVENT_ID_LEDGER.md` records IDs 107 through 113 and the hidden AI IDs 1009 through 1013.
 

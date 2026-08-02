@@ -31,7 +31,7 @@ spriteType = {
 }
 ```
 
-The parent registered the sprite in `interface/fallout_world_end.gfx` and kept the sprite name and DDS path stable after the event-id collision rescan.
+The parent registered the sprite in `interface/fallout_consolidated.gfx` and kept the sprite name and DDS path stable after the event-id collision rescan.
 
 ## Scope and risks
 

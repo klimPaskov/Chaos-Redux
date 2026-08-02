@@ -81,7 +81,7 @@ aggressor is shown only while its current receipt remains valid.
 
 `common/script_constants/event_system_constants.txt` owns the shared type
 value `event_system_event_type.fallout_country_memory = 4`.
-`common/script_constants/fallout_nzl_event_log_constants.txt` owns the four
+`common/script_constants/fallout_consolidated_constants.txt` owns the four
 dedicated ids, family tokens, Rescue Passage choice, and payload identities.
 
 The History filter includes Fallout memories. The shared history row displays
@@ -125,19 +125,19 @@ provide the precedent for storing country ids as actor scopes.
 ## Files owned by this tranche
 
 - `common/script_constants/event_system_constants.txt`
-- `common/script_constants/fallout_nzl_event_log_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 - `common/scripted_effects/chaosx_events_log_effects.md`
-- `common/scripted_effects/fallout_nzl_event_log_effects.txt`
-- `common/scripted_effects/fallout_nzl_event_log_effects.md`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
 - `interface/chaosx_events_log_popup.gui`
 - `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- `common/decisions/fallout_nzl_lifeboat_decisions.txt`
-- `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`
+- `common/decisions/fallout_consolidated_decisions.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_nzl_event_log_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 
 ## Blockers carried forward
 

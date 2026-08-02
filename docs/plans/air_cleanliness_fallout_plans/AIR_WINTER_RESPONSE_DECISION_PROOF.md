@@ -58,7 +58,7 @@ Controlled evacuation transfers 15 percent of the source population. Final evacu
 4. Convert the transfer to people once with `population_people_per_k`.
 5. Round the people value once and cache both representations.
 
-This avoids whole-thousand quantization and follows the official overflow-safe dynamic-variable guidance. All divisors, floors, ceilings, shares, and conversion values live in `common/script_constants/air_cleanliness_winter_response_constants.txt`.
+This avoids whole-thousand quantization and follows the official overflow-safe dynamic-variable guidance. All divisors, floors, ceilings, shares, and conversion values live in `common/script_constants/fallout_consolidated_constants.txt`.
 
 The receiver pressure increase is proportional to transfer population divided by receiver population. A receiver floor prevents a near-empty state from producing an undefined or extreme divisor. A quote is invalid when the resulting receiver pressure exceeds the configured ceiling.
 
@@ -105,7 +105,7 @@ The abandonment vote and mass decontamination save FROM as the regular `air_wint
 
 ## Asset wiring
 
-`interface/air_cleanliness_winter.gfx` registers the category and decision sprites under dedicated Fallout-owned paths. The priority selector uses `GFX_decision_air_winter_response_priority`. Its source, transparent master, processed PNG, decoded proof, DDS, contact sheet, prompt, manifest row, and handoff are recorded under `docs/assets/air_cleanliness_fallout/`.
+`interface/fallout_consolidated.gfx` registers the category and decision sprites under dedicated Fallout-owned paths. The priority selector uses `GFX_decision_air_winter_response_priority`. Its source, transparent master, processed PNG, decoded proof, DDS, contact sheet, prompt, manifest row, and handoff are recorded under `docs/assets/air_cleanliness_fallout/`.
 
 ## Static validation scenarios
 

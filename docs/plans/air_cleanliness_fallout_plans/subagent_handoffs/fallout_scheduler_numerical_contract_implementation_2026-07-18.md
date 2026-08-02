@@ -8,7 +8,7 @@ performed.
 
 ## Owned files changed
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
   - Added typed scheduler enums for country size, phase mode, repeatability,
     crisis breaks, Air Winter, and pressure provenance.
   - Added phase-by-frozen-size cooldown table, inclusive AI registry-count
@@ -17,7 +17,7 @@ performed.
   - Advanced empty-only compact child-ledger schemas to v3 and ordinary
     receipts to v2 with explicit previous-empty versions.
 
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
   - Added current-runtime schema-3 empty-row migration proof and old
     global-ready v1 empty ordinary-receipt re-promotion proof.
   - Added candidate source/pressure provenance, bounded required/match booleans,
@@ -31,7 +31,7 @@ performed.
     `relationship` candidates until their typed atomic reserve payloads exist.
   - Added the index-zero fatigue invariant (`family_fatigue_entries^0 = 0`).
 
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Added fatigue decay using the shared decay constant while preserving the
     zero family slot. Opening fatigue/history is applied only after an issued
     ordinary receipt is current.

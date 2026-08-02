@@ -7,16 +7,16 @@ Status: audited with narrow setup patches and activation remains intentionally d
 
 ## Changed files
 
-- `common\countries\fallout_nzl_lifeboat_cosmetics.txt`
+- `common\countries\fallout_consolidated_countries.txt`
   - Added the three cosmetic identities used by the runtime route effects.
   - Added `NZL_FALLOUT_LIFEBOAT_STATE`, `NZL_FALLOUT_PACIFIC_RELIEF_REPUBLIC`,
     and `NZL_FALLOUT_SOUTHERN_REFUGE` color and UI color blocks.
-- `common\scripted_effects\fallout_nzl_lifeboat_effects.txt`
+- `common\scripted_effects\fallout_consolidated_effects.txt`
   - Added explicit province priorities to the three bounded starting
     formations: Wellington `1814`, Auckland `4543`, and Canterbury `2197`.
   - Added Auckland `4543` as the priority for the one-shot Southern Escort
     Volunteers formation.
-- `common\scripted_effects\fallout_nzl_lifeboat_effects.md`
+- `common\scripted_effects\fallout_consolidated_effects.txt`
   - Documented the bounded formation placement contract.
 - `docs\plans\air_cleanliness_fallout_plans\FALLOUT_NZL_LIFEBOAT_ENGINE_PROOF.md`
   - Reconciled the starting-force note with the explicit province priorities.
@@ -30,7 +30,7 @@ asset was added.
 - Carrier tag: `NZL` remains the only gameplay tag. The package is additive and
   does not replace vanilla NZL history or OOB setup.
 - Cosmetic identities: all three runtime `set_cosmetic_tag` identifiers now
-  have definitions in `common\countries\fallout_nzl_lifeboat_cosmetics.txt`.
+  have definitions in `common\countries\fallout_consolidated_countries.txt`.
 - Exact core states: `284` Wellington, `1079` Auckland, `723` Canterbury,
   `1080` Marlborough, and `1081` Otago are validated by the package trigger.
 - Capital choices: `284` is the first choice and `1079` is the reviewed
@@ -44,7 +44,7 @@ asset was added.
   applies the route politics, and writes all four route party names.
 - Ideas: fourteen ideas are defined with `allowed = { always = no }`, runtime
   lifecycle removal, route identity spirits, and icon references.
-- Localisation: `localisation\english\fallout_nzl_lifeboat_l_english.yml` is
+- Localisation: `localisation\english\fallout_consolidated_l_english.yml` is
   UTF-8 with BOM and covers country identities, parties, characters, traits,
   ideas, decisions, focuses, event text, achievement text, and tooltips.
 - Focuses: 42 authored focus IDs are present. Every focus has an icon,
@@ -52,7 +52,7 @@ asset was added.
 - AI: both route plans contain the 42 focus IDs in ordered lists, with current
   package and route gates. Advisor idea tokens match generated character IDs.
 - Decisions: 18 category actions are present and the current focus-open flags
-  have consumers in `common\decisions\fallout_nzl_lifeboat_decisions.txt`.
+  have consumers in `common\decisions\fallout_consolidated_decisions.txt`.
 - On actions: war, capitulation, peace conference, annexation, and state
   control hooks use narrow exact-target checks. No recurring world iteration is
   used by the NZL package.
@@ -64,19 +64,19 @@ asset was added.
 
 Inspected package surfaces:
 
-- `common\national_focus\fallout_nzl_lifeboat_focus.txt`
-- `common\ideas\fallout_nzl_lifeboat_ideas.txt`
-- `common\characters\fallout_nzl_lifeboat_characters.txt`
-- `common\country_leader\fallout_nzl_lifeboat_traits.txt`
-- `common\ai_strategy_plans\fallout_nzl_lifeboat_ai.txt`
-- `common\on_actions\fallout_nzl_lifeboat_on_actions.txt`
-- `common\scripted_triggers\fallout_nzl_lifeboat_triggers.txt`
-- `common\scripted_effects\fallout_nzl_lifeboat_effects.txt`
-- `common\script_constants\fallout_nzl_lifeboat_constants.txt`
-- `common\decisions\fallout_nzl_lifeboat_decisions.txt`
-- `common\decisions\categories\fallout_nzl_lifeboat_categories.txt`
-- `interface\fallout_world_end.gfx`
-- `localisation\english\fallout_nzl_lifeboat_l_english.yml`
+- `common\national_focus\fallout_consolidated_focus.txt`
+- `common\ideas\fallout_consolidated_ideas.txt`
+- `common\characters\fallout_consolidated_characters.txt`
+- `common\country_leader\fallout_consolidated_leader_traits.txt`
+- `common\ai_strategy_plans\fallout_consolidated_ai.txt`
+- `common\on_actions\fallout_consolidated_on_actions.txt`
+- `common\scripted_triggers\fallout_consolidated_triggers.txt`
+- `common\scripted_effects\fallout_consolidated_effects.txt`
+- `common\script_constants\fallout_consolidated_constants.txt`
+- `common\decisions\fallout_consolidated_decisions.txt`
+- `common\decisions\categories\fallout_consolidated_categories.txt`
+- `interface\fallout_consolidated.gfx`
+- `localisation\english\fallout_consolidated_l_english.yml`
 
 The static characters file is intentionally empty. Runtime generation owns the
 six character tokens and prevents duplicate definitions.
@@ -105,11 +105,11 @@ province from a state.
 The generated leader roster and party names are present and localized. The
 three leader DDS files are present. Dairy Relief Commissioner and Storm Port
 Engineer advisor DDS files are present and registered in
-`interface\fallout_world_end.gfx`.
+`interface\fallout_consolidated.gfx`.
 
 Radio Service Coordinator remains blocked. The effect references
 `GFX_portrait_NZL_fallout_radio_service_coordinator_small`, but there is no
-matching sprite declaration in `interface\fallout_world_end.gfx` and no runtime
+matching sprite declaration in `interface\fallout_consolidated.gfx` and no runtime
 DDS under `gfx\`. The asset manifest and blocker review both record that the
 processor rejected all candidates. No fallback portrait was introduced.
 

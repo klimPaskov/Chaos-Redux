@@ -23,10 +23,10 @@ The result delay is `42` days and the first-year review delay is `300` days. Suc
 
 ## Wiring evidence
 
-- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_mixed_settlement_event_triggers.txt`, `common/scripted_effects/fallout_world_end_mixed_settlement_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_mixed_settlement_dynamic_modifiers.txt`.
-- Constants and candidate registry: `common/script_constants/fallout_world_end_mixed_settlement_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
-- Event Log: `common/scripted_localisation/fallout_world_end_mixed_settlement_event_log_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and `localisation/english/fallout_world_end_mixed_settlement_l_english.yml`.
-- Opinion and assets: `common/opinion_modifiers/fallout_mixed_settlement_opinion_modifiers.txt`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fallout/report_event_fallout_mixed_settlement.dds`, and `docs/assets/887_mixed_settlement/`.
+- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, and `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`.
+- Constants and candidate registry: `common/script_constants/fallout_consolidated_constants.txt`, `common/script_constants/fallout_consolidated_constants.txt`, and `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Event Log: `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and `localisation/english/fallout_consolidated_l_english.yml`.
+- Opinion and assets: `common/opinion_modifiers/fallout_consolidated_opinion_modifiers.txt`, `interface/fallout_consolidated.gfx`, `gfx/event_pictures/fallout/report_event_fallout_mixed_settlement.dds`, and `docs/assets/887_mixed_settlement/`.
 
 Static audit covers duplicate ids, constants, predecessor memory gating, candidate wiring, branch and delayed references, Event Log history routing, localisation key coverage, dedicated art wiring, and wording hygiene. No HOI4 runtime was launched.
 

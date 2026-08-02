@@ -6,12 +6,12 @@ Implemented as a dormant, uncounted global-survival pilot. The chain is not acti
 
 ## Changed files
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/dynamic_modifiers/fallout_world_end_rail_security_dynamic_modifiers.txt`
-- `common/scripted_triggers/fallout_world_end_rail_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_rail_event_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_world_end_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 - `docs/assets/fallout_world_end/living_world_pilot/manifest.md`
 - `docs/assets/fallout_world_end/living_world_pilot/gfx_handoff.md`

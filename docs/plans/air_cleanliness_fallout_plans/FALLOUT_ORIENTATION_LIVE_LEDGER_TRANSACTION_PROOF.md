@@ -46,9 +46,9 @@ clamp(-0.50 + 0.005 * current Supply Access, -0.50, 0)
 
 ## Transaction ownership
 
-`common/script_constants/fallout_world_end_event_constants.txt` promotes `fallout_survival_ledger_schema.version` from 2 to 3. It records schema 2 as `previous_without_orientation_live_ledgers`. No migration effect fabricates schema-3 values. An uncommitted older row can only be cleared and rebuilt through the existing ordinary numerical coordinator. A committed older row fails the current-schema triggers.
+`common/script_constants/fallout_consolidated_constants.txt` promotes `fallout_survival_ledger_schema.version` from 2 to 3. It records schema 2 as `previous_without_orientation_live_ledgers`. No migration effect fabricates schema-3 values. An uncommitted older row can only be cleared and rebuilt through the existing ordinary numerical coordinator. A committed older row fails the current-schema triggers.
 
-`common/scripted_effects/fallout_survival_ledger_effects.txt` remains the sole opening producer. It writes Cohesion only after all nine country resource entries exist. It writes Supply Access from the durable post-rewrite infrastructure receipt inside the existing frozen-state array pass. Independent replay values bind both opening calculations before the row commit flags. The global ready flag remains the final successful transaction write.
+`common/scripted_effects/fallout_consolidated_effects.txt` remains the sole opening producer. It writes Cohesion only after all nine country resource entries exist. It writes Supply Access from the durable post-rewrite infrastructure receipt inside the existing frozen-state array pass. Independent replay values bind both opening calculations before the row commit flags. The global ready flag remains the final successful transaction write.
 
 The only mutable Cohesion writer is `fallout_survival_apply_cohesion_delta`. The only mutable Supply Access writer is `fallout_state_apply_supply_access_delta`. Both helpers own their inclusive 0 through 100 clamps. The state helper also recalculates the native impact and immediately refreshes the modifier.
 
@@ -65,7 +65,7 @@ The official installed documentation proves these surfaces:
 
 Repository precedent uses `local_supply_impact_factor = var:...` in `common/dynamic_modifiers/013_natural_disasters_state_modifiers.txt`. Existing Chaos Redux effects add state dynamic modifiers once and call `force_update_dynamic_modifier = yes` after variable changes.
 
-`common/dynamic_modifiers/fallout_world_end_orientation_dynamic_modifiers.txt` defines the dedicated `fallout_state_supply_access` state modifier. Produced rows receive it only after the Supply Access replay commits. Not-applicable Air Winter rows retain typed zero access, never receive the modifier, and cannot pass the orientation target trigger.
+`common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt` defines the dedicated `fallout_state_supply_access` state modifier. Produced rows receive it only after the Supply Access replay commits. Not-applicable Air Winter rows retain typed zero access, never receive the modifier, and cannot pass the orientation target trigger.
 
 The Supply Access modifier stacks with the existing Air Winter phase `local_supplies` modifier. Supply Access never exceeds zero native impact, so it cannot create an above-normal local supply bonus.
 
@@ -86,7 +86,7 @@ Every state result prepares signed temporary deltas and calls `fallout_orientati
 
 Grade and phase remain frozen display and score facts. They are not state result stores. A stale state row prevents result authentication. The failed resolution records `fallout_orientation_diagnostic.state_ledger_not_current` and applies no state result.
 
-The Air Winter recalculation in `common/scripted_effects/air_cleanliness_winter_effects.txt` adds `air_winter_recovery_bonus` to recovery pressure. Writing the same accepted delta to the bonus and current recovery value preserves it through later recalculation while making it visible immediately.
+The Air Winter recalculation in `common/scripted_effects/fallout_consolidated_effects.txt` adds `air_winter_recovery_bonus` to recovery pressure. Writing the same accepted delta to the bonus and current recovery value preserves it through later recalculation while making it visible immediately.
 
 ## Static arithmetic review
 

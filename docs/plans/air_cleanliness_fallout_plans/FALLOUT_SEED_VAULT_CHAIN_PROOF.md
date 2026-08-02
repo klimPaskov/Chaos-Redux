@@ -11,8 +11,8 @@ countable toward the 660 block release floor and has no activation setter.
 - Transaction key: `710007`
 - Candidate route: `7107`
 - Event Log history id: `9112`
-- Gameplay effect file: `common/scripted_effects/fallout_world_end_seed_vault_event_effects.txt`
-- Trigger file: `common/scripted_triggers/fallout_world_end_seed_vault_event_triggers.txt`
+- Gameplay effect file: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Trigger file: `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - Event picture sprite: `GFX_fallout_seed_vault_report`
 
 The chain is Fallout-owned. It does not reference zombie events, zombie assets,
@@ -56,7 +56,7 @@ or a failed harvest memory.
 
 History `9112` has fifteen explicit payloads, four policy bands with three
 outcomes each, and three callback outcomes. The detail selector lives in
-`common/scripted_localisation/fallout_world_end_seed_vault_event_log_scripted_localisation.txt`.
+`common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`.
 The Event Log name and detail mapping is registered in
 `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` and
 the history id is accepted by the event detail routing effect.
@@ -71,7 +71,7 @@ The dedicated report package is under `docs/assets/fallout_seed_vault/` with a
 retained generated source, processed 210 by 176 preview, prompt provenance,
 manifest, and final legacy BGRA DDS at
 `gfx/event_pictures/fallout/seed_vault_report.dds`. The sprite is
-registered in `interface/fallout_world_end.gfx` and human events `188`, `190`,
+registered in `interface/fallout_consolidated.gfx` and human events `188`, `190`,
 `191`, `192`, `193`, and `198` reference it. The scene is fictional, contains
 no readable text, and uses no existing Fallout or zombie art.
 

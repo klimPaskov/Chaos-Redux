@@ -646,16 +646,16 @@ Those strategic-singularity hunks are not recorded by this numerical tranche. Ai
 
 The numerical tranche touches only reviewed Fallout-owned files and aligned documentation.
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/script_constants/fallout_world_end_constants.txt` for the required world-transition schema promotion only
-- `common/scripted_effects/fallout_survival_ledger_effects.txt`
-- `common/scripted_triggers/fallout_survival_ledger_triggers.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt` for the required world-transition schema promotion only
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_SURVIVAL_LEDGER_IDENTITY_TRANSACTION_PROOF.md`
 - a new numerical transaction proof under the same plan folder
 
-`common/script_constants/fallout_world_end_constants.txt` contains overlapping strategic-singularity work. The numerical implementation changes only the world-transition schema, its predecessor marker, and the deterministic population-loss ladder there. Numerical coefficients remain in the dedicated Fallout event constants file.
+`common/script_constants/fallout_consolidated_constants.txt` contains overlapping strategic-singularity work. The numerical implementation changes only the world-transition schema, its predecessor marker, and the deterministic population-loss ladder there. Numerical coefficients remain in the dedicated Fallout event constants file.
 
 Any new reusable dynamic helper must be documented in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change. This implementation adds no shared dynamic helper.
 

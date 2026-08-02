@@ -14,7 +14,7 @@ The four branches are public inquiry, sealed calculation, operator accountabilit
 
 ## Event Log and localisation
 
-`fallout_event_831_log.history_id = 9196`. The detail router in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps the history to `fallout.event_log.failed_calculation.detail`. The dedicated scripted localisation returns branch and outcome payloads from `fallout_event_831_log`. All visible event, tooltip, callback, modifier, opinion, Event Log, and cancellation keys are in `localisation/english/fallout_world_end_failed_calculation_l_english.yml` with UTF-8 BOM encoding.
+`fallout_event_831_log.history_id = 9196`. The detail router in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps the history to `fallout.event_log.failed_calculation.detail`. The dedicated scripted localisation returns branch and outcome payloads from `fallout_event_831_log`. All visible event, tooltip, callback, modifier, opinion, Event Log, and cancellation keys are in `localisation/english/fallout_consolidated_l_english.yml` with UTF-8 BOM encoding.
 
 ## Asset proof
 

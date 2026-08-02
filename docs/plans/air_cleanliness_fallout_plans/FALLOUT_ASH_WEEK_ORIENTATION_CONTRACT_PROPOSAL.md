@@ -23,11 +23,11 @@ The package explains the successor's actual survival ledger, establishes durable
 Implementation may touch only the following Fallout-owned surfaces:
 
 - `events/fallout_world_end_events.txt`
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_event_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - Fallout event localisation and scripted localisation files
-- `interface/fallout_world_end.gfx` for dedicated report sprites
+- `interface/fallout_consolidated.gfx` for dedicated report sprites
 - dedicated files under `gfx/event_pictures/fallout/`
 - the Fallout event log, event details, manifests, proof documents, and workbook after implementation facts exist
 

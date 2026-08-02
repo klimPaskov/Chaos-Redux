@@ -6,8 +6,8 @@ The parent agent completed and reviewed the dormant River Ration League scripted
 
 ## Gameplay files
 
-- `common/scripted_effects/fallout_world_end_river_ration_league_event_effects.txt`
-- `common/scripted_triggers/fallout_world_end_river_ration_league_event_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 
 ## Implemented helpers
 

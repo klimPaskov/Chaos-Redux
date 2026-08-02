@@ -12,7 +12,7 @@ This proof covers the dormant ordinary Fallout chain Laboratory Citizenship. It 
 - Event blocks: `chaosx.fallout.838` through `chaosx.fallout.844`.
 - Event Log history: `9197`.
 - Human opening, hidden AI opening, human result, hidden AI result, human callback, hidden AI callback, and cleanup use the seven event blocks in that order.
-- The candidate is registered in `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` after candidate `831`.
+- The candidate is registered in `common/scripted_effects/fallout_consolidated_effects.txt` after candidate `831`.
 
 ## Candidate boundary
 
@@ -28,7 +28,7 @@ The hidden AI branch scorer uses the same affordability checks, branch constants
 
 ## Localisation, Event Log, and assets
 
-Opening, branch tooltips, all twelve result descriptions, callback descriptions, Event Log payloads, dynamic modifier names, and opinion modifier names are present in `localisation/english/fallout_world_end_laboratory_citizenship_l_english.yml` with UTF-8 BOM encoding. Event Log detail and name routers are present in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`. The dedicated sprite is `GFX_report_event_fallout_laboratory_citizenship`, backed by the DDS and manifest in `docs/assets/838_laboratory_citizenship/`.
+Opening, branch tooltips, all twelve result descriptions, callback descriptions, Event Log payloads, dynamic modifier names, and opinion modifier names are present in `localisation/english/fallout_consolidated_l_english.yml` with UTF-8 BOM encoding. Event Log detail and name routers are present in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`. The dedicated sprite is `GFX_report_event_fallout_laboratory_citizenship`, backed by the DDS and manifest in `docs/assets/838_laboratory_citizenship/`.
 
 ## Validation boundary
 

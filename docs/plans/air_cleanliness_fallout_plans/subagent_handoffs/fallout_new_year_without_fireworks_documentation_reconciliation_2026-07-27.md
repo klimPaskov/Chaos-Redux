@@ -82,7 +82,7 @@ No spec, gameplay, localisation, interface, asset, or workbook source file was e
 
 - Targeted `rg` checks confirm the four current summaries carry candidate `649`, event range `649` through `655`, transaction `710064`, route `7164`, history `9170`, `64` rows, `530` blocks, and route upper bound `7165` where applicable.
 - The candidate pilot constants block contains `64` candidate ids, `64` transaction keys, and `64` route ids.
-- `interface/fallout_world_end.gfx:665-666` contains the static New Year sprite registration and points to the expected runtime DDS path.
+- `interface/fallout_consolidated.gfx:665-666` contains the static New Year sprite registration and points to the expected runtime DDS path.
 - `docs/spreadsheets/chaos_redux_events_catalog.csv:612` contains `FALLOUT-649` and the requested ids, dormant wording, runtime blocker wording, and `Needs Testing` status.
 - The tranche proof records the supplied `EVENT_INSPECTED_PARTIAL` artifact and `validation.passed=false` limitation.
 - `git diff --check` was run on the documentation files changed by this reconciliation.

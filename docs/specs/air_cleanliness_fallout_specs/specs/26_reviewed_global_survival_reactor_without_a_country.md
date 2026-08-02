@@ -35,7 +35,7 @@ Human and hidden-AI paths use the same transaction, target, branch, result, call
 
 ## Localisation, Event Log, and asset surfaces
 
-Concrete reactor, cooling, claimant, military, engineer, and shutdown language is in `localisation/english/fallout_world_end_reactor_without_a_country_l_english.yml`.
+Concrete reactor, cooling, claimant, military, engineer, and shutdown language is in `localisation/english/fallout_consolidated_l_english.yml`.
 History `9131` has fifteen branch and callback payloads.
 The dedicated report picture is `GFX_report_event_fallout_reactor_without_a_country` and its manifest and GFX handoff live under `docs/assets/air_cleanliness_fallout/fallout_reactor_without_a_country/`.
 

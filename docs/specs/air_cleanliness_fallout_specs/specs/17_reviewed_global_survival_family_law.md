@@ -56,7 +56,7 @@ save recovery, or multiplayer behavior.
 
 The dedicated generated report image uses the repository 210 by 176 report-card
 workflow. Runtime sprite registration is `GFX_report_event_fallout_shelter_marriage_law`
-in `interface/fallout_world_end.gfx`, with source, processed preview, DDS,
+in `interface/fallout_consolidated.gfx`, with source, processed preview, DDS,
 manifest, and handoff under `docs/assets/air_cleanliness_fallout/fallout_shelter_marriage_law/`.
 The player-facing text is concrete to shelter registries, ration inheritance,
 guardianship, and cross-shelter identity. It does not use working labels.

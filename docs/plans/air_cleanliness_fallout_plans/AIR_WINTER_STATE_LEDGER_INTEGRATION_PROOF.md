@@ -4,7 +4,7 @@
 
 The reviewed `air_winter_presentation_states` typed arrays are consumed by
 `air_winter_refresh_presentation_class_from_ledger` in
-`common/scripted_effects/air_cleanliness_winter_effects.txt`.
+`common/scripted_effects/fallout_consolidated_effects.txt`.
 
 The exact runtime call site is the first operation in
 `air_winter_update_state`. The existing Air Cleanliness host invokes that
@@ -92,7 +92,7 @@ intentionally not remigrated.
 
 ## Changed identifiers and files
 
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
   - Added `air_winter_refresh_presentation_class_from_ledger` (STATE scope).
   - Added its call before the gameplay-validity gate in
     `air_winter_update_state`.

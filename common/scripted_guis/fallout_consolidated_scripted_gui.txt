@@ -1,0 +1,57 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT_CONSOLIDATED_SCRIPTED_GUI.TXT
+# Consolidated Fallout and Air Cleanliness loader surface.
+# Source files are preserved in lexical order to retain existing load order.
+# ============================================================================
+
+# ============================================================================
+# Consolidated source: common/scripted_guis/air_cleanliness_winter_visual_proof_scripted_gui.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - AIR WINTER NORMAL-MAP GRADE PROOF
+# ============================================================================
+# Proof-only, non-interactive atmospheric layer for state 64. The parent
+# attachment and interface ordering must pass the installed-game proof gate
+# before this route is promoted to final global cold and soot grades.
+# ============================================================================
+
+@AIR_WINTER_NORMAL_MAP_GRADE_PROOF_STATE = 64
+
+scripted_gui = {
+	air_winter_normal_map_grade_proof_gui = {
+		context_type = player_context
+		window_name = "air_winter_normal_map_grade_proof"
+		parent_window_window = "mapicons_container"
+
+		visible = {
+			@AIR_WINTER_NORMAL_MAP_GRADE_PROOF_STATE = {
+				check_variable = { air_winter_phase > constant:air_winter_phase.clear }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/scripted_guis/fallout_world_end_scripted_gui.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FALLOUT WORLD END SCRIPTED GUI
+# ============================================================================
+# Parentless player-context overlay for the Fallout blackout transition. The
+# independent parentless window follows the documented top-level draw route.
+# Pointer input is intercepted by the full-screen opaque blocker in the GUI.
+# ============================================================================
+
+scripted_gui = {
+	fallout_world_end_blackout_scripted_gui = {
+		context_type = player_context
+		window_name = "fallout_world_end_blackout_window"
+		dirty = fallout_blackout_gui_dirty
+		ai_enabled = { always = no }
+
+		visible = {
+			is_ai = no
+			has_global_flag = fallout_transition_active
+		}
+	}
+}

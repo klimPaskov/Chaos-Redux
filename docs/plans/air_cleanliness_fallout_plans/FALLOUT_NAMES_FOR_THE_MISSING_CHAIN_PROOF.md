@@ -26,7 +26,7 @@ The four branches have authored costs and distinct effects. Deterministic viabil
 
 ## Asset and Event Log proof
 
-`GFX_report_event_fallout_names_missing` is registered in `interface/fallout_world_end.gfx` and points to the dedicated 210 by 176 DDS. Source, processed preview, manifest, provenance, hashes, and the sprite handoff are under `docs/assets/air_cleanliness_fallout/fallout_names_missing/`. History 9118 has central Event Log name and detail mappings, plus fifteen payload detail keys.
+`GFX_report_event_fallout_names_missing` is registered in `interface/fallout_consolidated.gfx` and points to the dedicated 210 by 176 DDS. Source, processed preview, manifest, provenance, hashes, and the sprite handoff are under `docs/assets/air_cleanliness_fallout/fallout_names_missing/`. History 9118 has central Event Log name and detail mappings, plus fifteen payload detail keys.
 
 ## Unproven runtime surfaces
 

@@ -14,7 +14,7 @@ Status: documentation-only handoff. No gameplay files, scenario registry entries
 
 Official `effects_documentation.md` lines 4745-4758 document `launch_nuke` in COUNTRY scope with `province`, `use_nuke`, and `nuke_type` (including `thermonuclear_bomb`). Vanilla `common/raids/nuclear_raids.txt` lines 797-801 and 833-837 pass a variable-backed province to that effect with `use_nuke = no` and `nuke_type = thermonuclear_bomb`.
 
-The generated Chaos Redux substrate uses that same native call. `common/scripted_effects/fallout_manual_province_sweep_effects.txt` lines 4-8 pin the installed-map and ledger hashes and require regeneration after map changes; lines 12-25 show the first batch's numeric ranges and native launch. The generated file contains 41 batches: 0-39 contain 250 IDs each and 40 contains 154. The independent proof records 10,154 unique assigned land IDs and one native call per ID.
+The generated Chaos Redux substrate uses that same native call. `common/scripted_effects/fallout_consolidated_effects.txt` lines 4-8 pin the installed-map and ledger hashes and require regeneration after map changes; lines 12-25 show the first batch's numeric ranges and native launch. The generated file contains 41 batches: 0-39 contain 250 IDs each and 40 contains 154. The independent proof records 10,154 unique assigned land IDs and one native call per ID.
 
 ### Engine-native enumeration: BLOCKED
 
@@ -24,7 +24,7 @@ The documented `all_provinces` syntax (`effects_documentation.md` lines 1934-194
 
 ### Batch completion and seven-day handoff: source contract PROVEN, runtime completion BLOCKED
 
-`common/scripted_effects/fallout_manual_scenario_effects.txt` validates generation, cursor, expected batch size, issued-strike deltas, and callback observations. The completion verifier requires issued = observed = 10,154, 1,081 unique struck states, and a state strike sum of 10,154 before countdown. `fallout_manual_begin_countdown` stores the start day, adds the seven-day constant, and schedules `chaosx.fallout.903 days = @FALLOUT_MANUAL_COUNTDOWN_DAYS`.
+`common/scripted_effects/fallout_consolidated_effects.txt` validates generation, cursor, expected batch size, issued-strike deltas, and callback observations. The completion verifier requires issued = observed = 10,154, 1,081 unique struck states, and a state strike sum of 10,154 before countdown. `fallout_manual_begin_countdown` stores the start day, adds the seven-day constant, and schedules `chaosx.fallout.903 days = @FALLOUT_MANUAL_COUNTDOWN_DAYS`.
 
 Official `country_event` documentation supports an exact `days = 7` delay. `docs/plans/air_cleanliness_fallout_plans/ENGINE_SURFACE_PROOF.md` lines 58-64 correctly limits that proof to a surviving event owner. Source-level barriers are therefore structurally present, but runtime callback delivery and native acceptance are unobserved.
 
@@ -42,7 +42,7 @@ Static documentation cannot prove that every one of the 10,154 calls is accepted
 
 The vanilla `common/on_actions/00_on_actions.txt` `on_nuke_drop` branch schedules twelve one-day news events per nuke. If every generated call reaches that branch, the current batch would schedule roughly 121,848 one-day news-event attempts. Frame-time, save, and multiplayer bounds for 250 calls per batch are not proven without a runtime run. These concerns are separate from the missing engine-native enumerator and must not be conflated with static ledger coverage.
 
-The public Triggerable Scenario registry still has no Fallout row. `common/script_constants/fallout_manual_scenario_constants.txt` reserves ID 14 after live maximum 13, but the registry/dispatch intentionally omit SCN-014 while proof and runtime gates remain unresolved.
+The public Triggerable Scenario registry still has no Fallout row. `common/script_constants/fallout_consolidated_constants.txt` reserves ID 14 after live maximum 13, but the registry/dispatch intentionally omit SCN-014 while proof and runtime gates remain unresolved.
 
 ## Recommended parent action
 

@@ -6,13 +6,13 @@ Status: focus and AI safety patch complete. The package remains dormant.
 
 ## Changed files
 
-- `common/national_focus/fallout_nzl_lifeboat_focus.txt`
+- `common/national_focus/fallout_consolidated_focus.txt`
   - All 42 focus nodes now include `fallout_nzl_lifeboat_package_is_current = yes` in `available`.
   - Existing state and route conditions remain in their original `available` blocks.
   - All 42 nodes now use `cancel_if_invalid = yes`. No focus was intentionally excluded.
   - `fallout_nzl_bind_the_two_islands` now uses the generation-aware `fallout_nzl_opening_result_is_current` and `fallout_nzl_domestic_result_is_current` triggers.
   - The parent-owned native `navy_experience` effect remains at `fallout_nzl_southern_cross_patrols` line 521.
-- `common/ai_strategy_plans/fallout_nzl_lifeboat_ai.txt`
+- `common/ai_strategy_plans/fallout_consolidated_ai.txt`
   - Added missing prerequisite focuses to both route plans.
   - Added a valid-partner gate to the humanitarian pre-route enable path.
   - Added the existing sea-lane security constant as a narrow isolation enable condition.
@@ -42,14 +42,14 @@ The following items are not fixed by the narrow focus safety patch:
    - `fallout_nzl_quiet_seas_decisions_open` from `fallout_nzl_demand_quiet_seas` at focus line 670.
    These orphan unlock flags leave the home guard, dairy convoy, postwar relief, and quiet-seas promises shallow.
 2. `fallout_nzl_license_every_sea_road` at line 268 only opens `fallout_nzl_last_berth_closure` and grants harbor capacity. Its description and the accepted focus specification also promise numbered permits, patrol windows, piracy reduction, and a convoy operating tradeoff.
-3. `fallout_nzl_count_the_living` at line 24 sets the census receipt and starts event 127 or 128. Visible mechanic values are initialized in `fallout_nzl_activate_lifeboat_package` in `common/scripted_effects/fallout_nzl_lifeboat_effects.txt`, not by the focus itself. This is safe while activation remains the single initialization boundary, but the focus description and specification role are not one-to-one.
+3. `fallout_nzl_count_the_living` at line 24 sets the census receipt and starts event 127 or 128. Visible mechanic values are initialized in `fallout_nzl_activate_lifeboat_package` in `common/scripted_effects/fallout_consolidated_effects.txt`, not by the focus itself. This is safe while activation remains the single initialization boundary, but the focus description and specification role are not one-to-one.
 4. The accepted specification names `fallout_nzl_port_militia_training_mission` and `fallout_nzl_arm_rescue_cutters_action` as focus identifiers. The implementation focus identifiers are `fallout_nzl_port_militia_drill` and `fallout_nzl_armed_rescue_cutters`, while the decision identifiers use the specification names. This is a documentation and identifier reconciliation task.
-5. Focus-created idea stages can exceed the stated three active focus-created spirits. A valid sequence can retain `fallout_nzl_dairy_relief_fleet_idea`, a route identity idea, `fallout_nzl_lifeboat_navy_idea`, and `fallout_nzl_two_island_supply_ring_idea`. `fallout_nzl_two_island_supply_ring` removes the harbor stage ideas and storm ports, but not the dairy relief fleet or final navy idea. The specification promises a route-maturity Food Compact, but no such idea exists in `common/ideas/fallout_nzl_lifeboat_ideas.txt`. The four activation foundation ideas are not counted as focus-created for this finding.
+5. Focus-created idea stages can exceed the stated three active focus-created spirits. A valid sequence can retain `fallout_nzl_dairy_relief_fleet_idea`, a route identity idea, `fallout_nzl_lifeboat_navy_idea`, and `fallout_nzl_two_island_supply_ring_idea`. `fallout_nzl_two_island_supply_ring` removes the harbor stage ideas and storm ports, but not the dairy relief fleet or final navy idea. The specification promises a route-maturity Food Compact, but no such idea exists in `common/ideas/fallout_consolidated_ideas.txt`. The four activation foundation ideas are not counted as focus-created for this finding.
 6. The live Fallout allocator still has no caller for `fallout_nzl_activate_lifeboat_package`. Samoa and Aotearoa conflict receipts remain unresolved. The dormant boundary must remain closed.
 
 ## Icon coverage
 
-The focus file references 24 unique NZL goal sprites. All 24 have matching definitions in `interface/fallout_world_end.gfx` and matching DDS files under `gfx/interface/goals/fallout_world_end_nzl_lifeboat_state`. The table records deliberate reuse rather than missing assets.
+The focus file references 24 unique NZL goal sprites. All 24 have matching definitions in `interface/fallout_consolidated.gfx` and matching DDS files under `gfx/interface/goals/fallout_world_end_nzl_lifeboat_state`. The table records deliberate reuse rather than missing assets.
 
 | Icon | Focus identifiers using it |
 | --- | --- |
@@ -82,7 +82,7 @@ No icon ID or asset was changed in this audit. The focus inspector's remaining b
 
 ## Localisation and reward mismatch list
 
-All 42 focus title and `_desc` keys exist in `localisation/english/fallout_nzl_lifeboat_l_english.yml`. The mismatches that need broader content work are:
+All 42 focus title and `_desc` keys exist in `localisation/english/fallout_consolidated_l_english.yml`. The mismatches that need broader content work are:
 
 - `fallout_nzl_home_guard_rolls` says district defenders and state call-up records, but its only reward is the orphan `fallout_nzl_home_guard_decision_open` flag.
 - `fallout_nzl_dairy_relief_fleet` says protected dairy sailings, but its decision flag has no consumer.
@@ -114,7 +114,7 @@ The localisation file is UTF-8 with BOM and no focus key is missing. No localisa
 
 Meaningful checks completed:
 
-- `hoi4.focus_inspect` on `common/national_focus/fallout_nzl_lifeboat_focus.txt` and `fallout_nzl_lifeboat_focus_tree` recognized all 42 focuses. It reported layout hash `9f0b08848257a2a99f989ffffa4aa7a3d1e560e05cac8d4a3c9aac6a91f83911`, 52 connectors, zero crossings, zero node intersections, zero same-row spacing violations, and three long connectors.
+- `hoi4.focus_inspect` on `common/national_focus/fallout_consolidated_focus.txt` and `fallout_nzl_lifeboat_focus_tree` recognized all 42 focuses. It reported layout hash `9f0b08848257a2a99f989ffffa4aa7a3d1e560e05cac8d4a3c9aac6a91f83911`, 52 connectors, zero crossings, zero node intersections, zero same-row spacing violations, and three long connectors.
 - The same inspection found no NZL focus icon reference error and resolved all 42 focus titles. Its 14 blocking diagnostics are shared generic continuous-focus sprite errors outside this package, plus NZL search-filter warnings.
 - `hoi4.focus_render` produced review artifacts. Updated SVG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f77e6bc08744da7cfe9b692c01b2a94c126531812006c0ef68673c781d65918a/a179452b9e8bebb4a9861267b146cb97af27c686147a128f222ab09af465ff17/fallout_nzl_lifeboat_focus_tree.focus.svg`.
 - A repository count confirms 42 focus `available` gates and 42 `cancel_if_invalid` entries after the patch.

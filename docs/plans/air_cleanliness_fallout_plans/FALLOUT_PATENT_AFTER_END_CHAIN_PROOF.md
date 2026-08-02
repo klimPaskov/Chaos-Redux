@@ -4,15 +4,15 @@ The Patent After the End is a dormant ordinary Fallout chain. It owns candidate 
 
 ## Authored surfaces
 
-- `common/script_constants/fallout_world_end_patent_after_end_constants.txt`
-- `common/scripted_triggers/fallout_world_end_patent_after_end_event_triggers.txt`
-- `common/scripted_effects/fallout_world_end_patent_after_end_event_effects.txt`
-- `common/dynamic_modifiers/fallout_world_end_patent_after_end_dynamic_modifiers.txt`
-- `common/opinion_modifiers/fallout_patent_after_end_opinion_modifiers.txt`
-- `common/scripted_localisation/fallout_world_end_patent_after_end_event_log_scripted_localisation.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/opinion_modifiers/fallout_consolidated_opinion_modifiers.txt`
+- `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 - `events/fallout_world_end_events.txt`
-- `localisation/english/fallout_world_end_patent_after_end_l_english.yml`
-- `interface/fallout_world_end.gfx`
+- `localisation/english/fallout_consolidated_l_english.yml`
+- `interface/fallout_consolidated.gfx`
 - `gfx/event_pictures/fallout/report_event_fallout_patent_after_end.dds`
 - `docs/assets/817_patent_after_end/`
 

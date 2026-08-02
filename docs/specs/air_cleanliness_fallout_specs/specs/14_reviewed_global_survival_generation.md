@@ -14,7 +14,7 @@ Fallout-owned dormant row until the accepted scheduler activation conditions
 are satisfied. It uses no Zombie identity, path, sprite, audio, or asset.
 
 The numerical fields are centralized in
-`common/script_constants/fallout_world_end_event_constants.txt`. The candidate
+`common/script_constants/fallout_consolidated_constants.txt`. The candidate
 producer must bind its Medicine pressure, frozen Cohesion value, frozen Shelter
 receipt, and civilian-Deaths severity to current receipts. The opening reserves visible
 budget three. The visible human result and callback reserve one each. Hidden AI

@@ -8,12 +8,12 @@ The same tranche makes immediate Fallout population loss deterministic by grade 
 
 ## Source files
 
-- `common/script_constants/fallout_world_end_event_constants.txt`
-- `common/script_constants/fallout_world_end_constants.txt`
-- `common/scripted_effects/fallout_survival_ledger_effects.txt`
-- `common/scripted_triggers/fallout_survival_ledger_triggers.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
 
 ## Frozen numerical inputs
 

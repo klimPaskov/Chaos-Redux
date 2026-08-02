@@ -6,7 +6,7 @@ This handoff covers the generation-reset guard for the dormant Radio Island chai
 
 ## Changed files
 
-- `common/scripted_effects/fallout_world_end_radio_island_chain_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_RADIO_ISLAND_CHAIN_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/README_IMPLEMENTATION_STATUS.md`

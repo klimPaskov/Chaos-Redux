@@ -1,5 +1,9 @@
 # Fallout Event ID Ledger
 
+## Public catalog boundary
+
+The `FALLOUT-*` identities in this implementation ledger are internal candidate labels for dormant survivor content. They are not public event registrations. The Events, Clusters, and Scenarios sheets and all three exported catalog snapshots intentionally contain no Fallout rows. Historical catalogue wording below is retained only to preserve tranche provenance.
+
 ## Current reconciliation after The Pirate Amnesty
 
 The living-world pilot now contains `670` defined event blocks across the reviewed ordinary range through `chaosx.fallout.795`, including the dormant The Pirate Amnesty tranche at `789` through `795`. The current reviewed ordinary row count is `84`. The Pirate Amnesty uses candidate `789`, transaction `710084`, route `7200`, and survivor history `9190`. The reserved route upper bound is `7201`. Every row remains dormant and uncounted, so the release-floor total is still `0 of 660`.
@@ -224,7 +228,7 @@ The scan found existing Fallout suffixes in the request, transition, manual stri
 
 The ordinary scheduler remains locked until the Ash-week orientation package has all five required parts: national orientation, capital or main-state condition, immediate resource crisis, government-archetype introduction, and the first character or institution. Completing orientation still does not approve or activate the scheduler.
 
-The three pilot report assets exist and their sprites are registered in `interface/fallout_world_end.gfx`. The immediate-resource asset is attached to human events `70` and `72`, and the government asset is attached to human events `74` and `76`. The capital asset remains unattached because its exact repair surface is blocked. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
+The three pilot report assets exist and their sprites are registered in `interface/fallout_consolidated.gfx`. The immediate-resource asset is attached to human events `70` and `72`, and the government asset is attached to human events `74` and `76`. The capital asset remains unattached because its exact repair surface is blocked. Event counting cannot begin until the gameplay rows, AI resolution, delayed results, callbacks, cleanup, target registries, and event asset references pass manual review.
 
 The typed constants for suffixes `100` through `126` are identity reservations only. Primary ownership is `global survival and society`. Food, water, and transport are cooldown families and do not own release-floor counts.
 

@@ -25,9 +25,9 @@ Human and hidden AI lanes share the same helper effects. Cleanup clears reservat
 
 ## Wiring evidence
 
-- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_power_citizenship_event_triggers.txt`, `common/scripted_effects/fallout_world_end_power_citizenship_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_power_citizenship_dynamic_modifiers.txt`.
-- Constants and candidate registry: `common/script_constants/fallout_world_end_power_citizenship_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
-- Event Log: `common/scripted_localisation/fallout_world_end_power_citizenship_event_log_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the authored localisation file.
-- Art: `docs/assets/866_power_citizenship/`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/fallout/report_event_fallout_power_citizenship.dds`.
+- Gameplay: `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_consolidated_triggers.txt`, `common/scripted_effects/fallout_consolidated_effects.txt`, and `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`.
+- Constants and candidate registry: `common/script_constants/fallout_consolidated_constants.txt`, `common/script_constants/fallout_consolidated_constants.txt`, and `common/scripted_effects/fallout_consolidated_effects.txt`.
+- Event Log: `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, and the authored localisation file.
+- Art: `docs/assets/866_power_citizenship/`, `interface/fallout_consolidated.gfx`, and `gfx/event_pictures/fallout/report_event_fallout_power_citizenship.dds`.
 
 Focused Event Inspector evidence is recorded after the runtime files and event ids are complete. The analysis is intentionally focused and may defer workspace-wide helper projection. No HOI4 runtime was launched.

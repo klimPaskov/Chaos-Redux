@@ -6,8 +6,8 @@ Scope: replace the reviewed candidate `621` reset shortcut with an exact stale-r
 
 Changed files:
 
-- `common/scripted_effects/fallout_world_end_rail_spine_vote_event_effects.txt`
-- `common/scripted_effects/fallout_world_end_event_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_RAIL_SPINE_VOTE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_REVIEWED_CANDIDATE_PILOT_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/FALLOUT_EVENT_SCHEDULER_PROOF.md`

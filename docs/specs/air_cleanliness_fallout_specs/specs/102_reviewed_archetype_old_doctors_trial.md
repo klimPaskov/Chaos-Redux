@@ -39,7 +39,7 @@ The accused former director, river midwives, hill delegates, and foreign witness
 
 ## Runtime surfaces and assets
 
-Gameplay constants live in `common/script_constants/fallout_world_end_old_doctor_trial_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_world_end_old_doctor_trial_event_triggers.txt` and `common/scripted_effects/fallout_world_end_old_doctor_trial_event_effects.txt`. The shared candidate producer is `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`.
+Gameplay constants live in `common/script_constants/fallout_consolidated_constants.txt`. Triggers and effects live in `common/scripted_triggers/fallout_consolidated_triggers.txt` and `common/scripted_effects/fallout_consolidated_effects.txt`. The shared candidate producer is `common/scripted_effects/fallout_consolidated_effects.txt`.
 
 Dynamic modifiers, opinion modifiers, Event Log routing, events, and localisation use dedicated Old Doctor's Trial names. The fictional report image source, processed preview, manifest, and GFX handoff are under `docs/assets/901_old_doctor_trial/`. Runtime art is `gfx/event_pictures/fallout/report_event_fallout_old_doctor_trial.dds` registered as `GFX_report_event_fallout_old_doctor_trial`.
 

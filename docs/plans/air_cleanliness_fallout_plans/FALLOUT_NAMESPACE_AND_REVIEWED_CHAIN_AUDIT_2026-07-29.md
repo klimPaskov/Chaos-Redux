@@ -52,7 +52,7 @@ The callback pair performs a later ration review after `210` days and preserves 
 
 The cleanup event is hidden, generation-bound, and called only after the callback receipt is current.
 
-Dedicated localisation covers the opening, government-aware ration authority, four choices, branch-specific result text, callback outcomes, tooltips, survivor-memory Event Log wording, and modifiers in `localisation/english/fallout_world_end_hungry_battalion_l_english.yml`.
+Dedicated localisation covers the opening, government-aware ration authority, four choices, branch-specific result text, callback outcomes, tooltips, survivor-memory Event Log wording, and modifiers in `localisation/english/fallout_consolidated_l_english.yml`.
 
 The prerequisite Work for Rations chain now writes a durable policy generation and owner receipt for every branch. Candidate 677 rejects stale branch flags without that receipt.
 

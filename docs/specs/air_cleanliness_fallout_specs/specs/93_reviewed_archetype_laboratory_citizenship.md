@@ -31,13 +31,13 @@ The hidden AI event scores all four authored branches with the same affordabilit
 
 | Surface | Owned file or identifier |
 | --- | --- |
-| Constants | `common/script_constants/fallout_world_end_laboratory_citizenship_constants.txt` |
-| Candidate registry | `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `838` |
-| Triggers | `common/scripted_triggers/fallout_world_end_laboratory_citizenship_event_triggers.txt` |
-| Effects | `common/scripted_effects/fallout_world_end_laboratory_citizenship_event_effects.txt` |
+| Constants | `common/script_constants/fallout_consolidated_constants.txt` |
+| Candidate registry | `common/scripted_effects/fallout_consolidated_effects.txt`, candidate `838` |
+| Triggers | `common/scripted_triggers/fallout_consolidated_triggers.txt` |
+| Effects | `common/scripted_effects/fallout_consolidated_effects.txt` |
 | Events | `events/fallout_world_end_events.txt`, `chaosx.fallout.838` through `.844` |
 | Event Log | `fallout_event_838_log.history_id = 9197`, name and detail routers |
-| Localisation | `localisation/english/fallout_world_end_laboratory_citizenship_l_english.yml` |
+| Localisation | `localisation/english/fallout_consolidated_l_english.yml` |
 | Report art | `GFX_report_event_fallout_laboratory_citizenship` and `docs/assets/838_laboratory_citizenship/` |
 | Catalog | `FALLOUT-838`, candidate events `838` through `844`, status `Needs Testing` |
 

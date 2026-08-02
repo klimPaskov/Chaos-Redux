@@ -22,8 +22,8 @@ The same selector records ordinary Phase 2 candidates and first-frost marker row
 Installed engine references:
 
 - `documentation/triggers_documentation.md` documents `is_capital` for state scope
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt` owns the reviewed highland presentation class
-- `common/scripted_effects/air_cleanliness_winter_event_effects.txt` routes Phase 2 candidates before candidate scoring
+- `common/scripted_triggers/fallout_consolidated_triggers.txt` owns the reviewed highland presentation class
+- `common/scripted_effects/fallout_consolidated_effects.txt` routes Phase 2 candidates before candidate scoring
 
 `has_terrain = mountain` is not used. Its documented scope does not provide the required state classifier.
 

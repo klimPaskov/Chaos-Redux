@@ -25,7 +25,7 @@ The four branches use distinct costs.
 | Public trial | Scrap 2, Power 2, Medicine 2 | Secure witnesses, inspect holds, and hold a public prize court. |
 | Reef exile | Food 2, Fuel 2, Recognition 2 | Escort the crews away and preserve their charts in the archive. |
 
-The player-facing opening, branch tooltips, delayed results, callback, Event Log detail, and cleanup wording are in `localisation/english/fallout_world_end_pirate_amnesty_l_english.yml`.
+The player-facing opening, branch tooltips, delayed results, callback, Event Log detail, and cleanup wording are in `localisation/english/fallout_consolidated_l_english.yml`.
 
 ## Resolution contract
 
@@ -39,16 +39,16 @@ The hidden AI route uses the same branch affordability, frozen receipts, determi
 
 | Surface | File |
 |---|---|
-| Constants | `common/script_constants/fallout_world_end_pirate_amnesty_constants.txt` |
-| Effects | `common/scripted_effects/fallout_world_end_pirate_amnesty_event_effects.txt` |
-| Triggers | `common/scripted_triggers/fallout_world_end_pirate_amnesty_event_triggers.txt` |
-| Dynamic modifiers | `common/dynamic_modifiers/fallout_world_end_pirate_amnesty_dynamic_modifiers.txt` |
-| Opinion modifiers | `common/opinion_modifiers/fallout_pirate_amnesty_opinion_modifiers.txt` |
+| Constants | `common/script_constants/fallout_consolidated_constants.txt` |
+| Effects | `common/scripted_effects/fallout_consolidated_effects.txt` |
+| Triggers | `common/scripted_triggers/fallout_consolidated_triggers.txt` |
+| Dynamic modifiers | `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt` |
+| Opinion modifiers | `common/opinion_modifiers/fallout_consolidated_opinion_modifiers.txt` |
 | Event script | `events/fallout_world_end_events.txt` |
-| Event Log scripted localisation | `common/scripted_localisation/fallout_world_end_pirate_amnesty_event_log_scripted_localisation.txt` |
+| Event Log scripted localisation | `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` |
 | Shared Event Log routing | `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
-| Localisation | `localisation/english/fallout_world_end_pirate_amnesty_l_english.yml` |
-| Sprite registration | `interface/fallout_world_end.gfx` |
+| Localisation | `localisation/english/fallout_consolidated_l_english.yml` |
+| Sprite registration | `interface/fallout_consolidated.gfx` |
 | Runtime report DDS | `gfx/event_pictures/fallout/report_event_fallout_pirate_amnesty.dds` |
 
 The dedicated asset manifest and handoff are under `docs/assets/789_pirate_amnesty/`.

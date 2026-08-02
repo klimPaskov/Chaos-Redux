@@ -1,5 +1,13 @@
 # Air Cleanliness and Fallout Implementation Status
 
+## Current universal-tree tranche
+
+The core Fallout mechanics now include one generation-bound generic focus tree for every country after map return. It supplies government routes, recovery, military mobilisation, the Frontier Pact, dynamic claims and ultimata, a coarse deterministic region assignment for every country, nine regional lanes, and a Year Ten federation route. Bespoke country trees remain intentionally outside the current user-approved scope. See [FALLOUT_GENERIC_FOCUS_TREE_PROOF.md](FALLOUT_GENERIC_FOCUS_TREE_PROOF.md).
+
+## Public catalog boundary
+
+Fallout candidate identities such as `FALLOUT-929` are internal implementation labels only. The Events, Clusters, and Scenarios sheets and their exported CSV snapshots contain no Fallout rows. Historical tranche paragraphs below may retain candidate identities for source traceability, but they are not public event registrations.
+
 ## Manual population replay correction
 
 The manual thermonuclear path now calculates the standard rewrite delta from live `state_population_k` after native strikes and the exact aggregate consequence. This prevents the later phase from replaying the frozen prestrike loss and registering duplicate Fallout Deaths. The approved 90 to 95 percent survivor target remains generation-bound, and any native overshoot still fails the dormant preflight contract.
@@ -22,7 +30,7 @@ The latest dormant tranche is The Ghost Convoy at `chaosx.fallout.775` through `
 
 The latest dormant tranche is The Captain's Articles at `chaosx.fallout.768` through `chaosx.fallout.774`, candidate `768`, transaction `710081`, route `7194`, and survivor Event Log history `9187`. Its source package defines one state-targeted West African Port Confederacies maritime-remnant row with a deterministic coastal or naval-base selector that requires a foreign neighbor, current Air Winter and survival ledgers, dedicated port-law ledgers, and at least one complete affordable branch. Write the rescue articles, seat a prize court, call a harbor muster, and split the fleet by vote share deterministic `42` day result and `300` day port-law review contracts, hidden-AI parity, bounded Deaths failure, Air Winter, port-ledger, opinion, and Supply Access effects, cleanup, dedicated localisation, survivor Event Log routing, dedicated report art, a reviewed source specification, and `FALLOUT_CAPTAINS_ARTICLES_CHAIN_PROOF.md`. The reviewed ordinary pilot now has `81` rows and `649` defined blocks through `chaosx.fallout.774`. Countable release-floor credit remains `0 of 660` while both scheduler activation flags remain unset. This is static evidence and not runtime acceptance.
 
-The latest dormant tranche is The Envoy at the Gate at `chaosx.fallout.761` through `chaosx.fallout.767`, candidate `761`, transaction `710080`, route `7192`, and survivor Event Log history `9186`. Its source package defines one state-targeted Congo Green Basin mutant-polity row with a deterministic state selector that requires a foreign neighbor, current Air Winter and survival ledgers, dedicated civic legitimacy and external pressure, and at least one complete affordable branch. Open recognition, Offer a Voluntary Inspection, Hold a Symbolic Meeting, and Refuse Contact share deterministic `42` day result and `300` day bilateral review contracts, hidden-AI parity, bounded Deaths failure, Air Winter, envoy-ledger, corridor, refugee, fatigue, opinion, and Supply Access effects, cleanup, dedicated localisation, survivor Event Log routing, dedicated report art, a reviewed source specification, and `FALLOUT_MUTANT_ENVOY_GATE_CHAIN_PROOF.md`. The authoritative workbook will carry exported row `FALLOUT-761` with `Needs Testing` status. The reviewed ordinary pilot now has `80` rows and `642` defined blocks through `chaosx.fallout.767`. Countable release-floor credit remains `0 of 660` while both scheduler activation flags remain unset. The wider pilot still has stale cleanup and live option-competition priority gaps in earlier reviewed rows. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log delivery, Deaths readback, player-visible art, and the exact all-valid-province sweep remain unproven.
+The latest dormant tranche is The Envoy at the Gate at `chaosx.fallout.761` through `chaosx.fallout.767`, candidate `761`, transaction `710080`, route `7192`, and survivor Event Log history `9186`. Its source package defines one state-targeted Congo Green Basin mutant-polity row with a deterministic state selector that requires a foreign neighbor, current Air Winter and survival ledgers, dedicated civic legitimacy and external pressure, and at least one complete affordable branch. Open recognition, Offer a Voluntary Inspection, Hold a Symbolic Meeting, and Refuse Contact share deterministic `42` day result and `300` day bilateral review contracts, hidden-AI parity, bounded Deaths failure, Air Winter, envoy-ledger, corridor, refugee, fatigue, opinion, and Supply Access effects, cleanup, dedicated localisation, survivor Event Log routing, dedicated report art, a reviewed source specification, and `FALLOUT_MUTANT_ENVOY_GATE_CHAIN_PROOF.md`. Candidate `FALLOUT-761` is an internal identity and is not exported to the public workbook or CSV. The reviewed ordinary pilot now has `80` rows and `642` defined blocks through `chaosx.fallout.767`. Countable release-floor credit remains `0 of 660` while both scheduler activation flags remain unset. The wider pilot still has stale cleanup and live option-competition priority gaps in earlier reviewed rows. Scheduler dispatch, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log delivery, Deaths readback, player-visible art, and the exact all-valid-province sweep remain unproven.
 
 The dormant B7 USA continuity pilot now includes a route-locked continuity-project category with five authored actions, resource costs, capital-control gates, cancellation penalties, generation-bound memory receipts, dedicated decision aliases, and a USA-specific AI plan. It remains a bounded successor proof and does not promote the general successor matrix, scheduler, release-floor count, or runtime acceptance.
 
@@ -34,7 +42,7 @@ The locked admission also settles active wars, exiles, volunteers, and civil-war
 
 The preceding New Year Without Fireworks tranche remains documented at `chaosx.fallout.649` through `chaosx.fallout.655`, candidate `649`, transaction `710064`, route `7164`, and Event Log history `9170`. Its hidden-AI priority competition is statically repaired alongside Second Dust Bowl and Great Lakes.
 
-Static asset evidence is retained in `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and the registered sprite path. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and its exported row `FALLOUT-649` is present at `docs/spreadsheets/chaos_redux_events_catalog.csv:612` with the requested identity ledger and `Needs Testing` status. The asset manifest remains `handed_off`, so static registration does not promote the tranche to runtime acceptance.
+Static asset evidence is retained in `docs/assets/649_new_year_without_fireworks/` with source, processed PNG, runtime DDS, manifest hashes, and the registered sprite path. Candidate `FALLOUT-649` is retained as an internal identity only and is absent from the public workbook and CSV. The asset manifest remains `handed_off`, so static registration does not promote the tranche to runtime acceptance.
 
 Overall system status reviewed against the live working tree on 2026-07-29. The numerical approval gate was reconciled on 2026-07-18.
 
@@ -262,11 +270,11 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 - Orientation government-authority pilot proof: `FALLOUT_ORIENTATION_GOVERNMENT_PILOT_EVENT_PROOF.md`
 - Implementation tranches: `IMPLEMENTATION_TRANCHE_PLAN.md`
 - Gameplay status for Air Cleanliness: `docs/systems/air_contamination_mechanic.md`
-- Manual runtime constants: `common/script_constants/fallout_manual_scenario_constants.txt`
-- Manual sweep effects: `common/scripted_effects/fallout_manual_province_sweep_effects.txt`
-- Manual coordinator effects: `common/scripted_effects/fallout_manual_scenario_effects.txt`
-- Fallout transition effects: `common/scripted_effects/fallout_world_end_effects.txt`
-- Fallout postcondition triggers: `common/scripted_triggers/fallout_world_end_triggers.txt`
+- Manual runtime constants: `common/script_constants/fallout_consolidated_constants.txt`
+- Manual sweep effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Manual coordinator effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Fallout transition effects: `common/scripted_effects/fallout_consolidated_effects.txt`
+- Fallout postcondition triggers: `common/scripted_triggers/fallout_consolidated_triggers.txt`
 - Fallout event tokens and phase events: `events/fallout_world_end_events.txt`
 - Dormant scheduler proof: `FALLOUT_EVENT_SCHEDULER_PROOF.md`
 - Strategic-singularity request proof: `FALLOUT_STRATEGIC_SINGULARITY_REQUEST_PROOF.md`

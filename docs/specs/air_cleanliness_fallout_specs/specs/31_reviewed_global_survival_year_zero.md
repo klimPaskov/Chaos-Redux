@@ -27,4 +27,4 @@ AI selects a branch from legitimacy, anniversary cohesion, calendar memory, reco
 
 ## Asset and localisation surfaces
 
-The dedicated report art is `GFX_report_event_fallout_year_zero` and is documented under `docs/assets/air_cleanliness_fallout/fallout_year_zero/`. Localisation is in `localisation/english/fallout_world_end_year_zero_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.
+The dedicated report art is `GFX_report_event_fallout_year_zero` and is documented under `docs/assets/air_cleanliness_fallout/fallout_year_zero/`. Localisation is in `localisation/english/fallout_consolidated_l_english.yml`. Event Log name, detail, and fifteen payload descriptions are authored in the same package.

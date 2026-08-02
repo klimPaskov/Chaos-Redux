@@ -25,11 +25,11 @@ This proof records the static implementation of The Ghost Convoy. The chain is s
 | Government archetype | `fallout_government_archetype.maritime_remnant` `10` |
 | Required prior memory | `fallout_event_768_memory_closed` |
 
-The global id and candidate tables are extended in `common/script_constants/fallout_world_end_event_constants.txt`. Event-local branches, timing, costs, thresholds, modifier values, and Event Log payloads are in `common/script_constants/fallout_world_end_ghost_convoy_constants.txt`.
+The global id and candidate tables are extended in `common/script_constants/fallout_consolidated_constants.txt`. Event-local branches, timing, costs, thresholds, modifier values, and Event Log payloads are in `common/script_constants/fallout_consolidated_constants.txt`.
 
 ## Candidate and admission evidence
 
-`common/scripted_effects/fallout_world_end_event_candidate_effects.txt` clears the `fallout_event_775_candidate_state_id` scratch value during registry rebuild. The producer gates on the exact West African Port Confederacies memory and maritime-remnant archetype, initializes the dedicated convoy ledgers before state inspection, and chooses the lowest owned state id that passes `fallout_event_pilot_ghost_convoy_state_is_current`. The state trigger requires current identity, durable survival resources, current Supply Access, surviving population, Shelter, Adaptation, Exposure, Disease, a valid Air Winter phase, the closed Captain's Articles state memory, a coastal state or surviving naval base, and a foreign neighboring state.
+`common/scripted_effects/fallout_consolidated_effects.txt` clears the `fallout_event_775_candidate_state_id` scratch value during registry rebuild. The producer gates on the exact West African Port Confederacies memory and maritime-remnant archetype, initializes the dedicated convoy ledgers before state inspection, and chooses the lowest owned state id that passes `fallout_event_pilot_ghost_convoy_state_is_current`. The state trigger requires current identity, durable survival resources, current Supply Access, surviving population, Shelter, Adaptation, Exposure, Disease, a valid Air Winter phase, the closed Captain's Articles state memory, a coastal state or surviving naval base, and a foreign neighboring state.
 
 The producer calls the existing candidate-row initializer and appender. The row carries candidate `775`, transaction `710082`, crisis-incident class, diplomacy-trade-war-settlement family, diplomacy cooldown, human and hidden-AI event tokens, rival-orders preferred phase, open-continuation secondary phase, Fuel resource requirement, state target type, target state id, route `7196`, and one required maritime archetype and Air Winter match. It never sets a scheduler activation flag and never fires an event directly.
 
@@ -37,7 +37,7 @@ The producer calls the existing candidate-row initializer and appender. The row 
 
 ## Human and AI chain
 
-`common/scripted_triggers/fallout_world_end_ghost_convoy_event_triggers.txt` provides generation-bound opening, delayed result, callback, cleanup, state, target, registry, and affordability triggers. Human and hidden-AI lanes use separate event tokens and dispatch modes. Hidden AI evaluates four authored priorities and can only select a branch that remains affordable.
+`common/scripted_triggers/fallout_consolidated_triggers.txt` provides generation-bound opening, delayed result, callback, cleanup, state, target, registry, and affordability triggers. Human and hidden-AI lanes use separate event tokens and dispatch modes. Hidden AI evaluates four authored priorities and can only select a branch that remains affordable.
 
 `events/fallout_world_end_events.txt` contains the seven dedicated blocks. The human opening has four options. The delayed result has twelve branch and outcome descriptions. The callback has success, partial, and failure descriptions. The cleanup is hidden and triggered only by the authenticated delayed-cleanup receipt. All three visible blocks use `GFX_report_event_fallout_ghost_convoy`.
 
@@ -51,11 +51,11 @@ The callback is scheduled three hundred days after the result. It grades current
 
 ## Event Log and localisation
 
-`common/scripted_localisation/fallout_world_end_ghost_convoy_event_log_scripted_localisation.txt` defines `GetFalloutEvent775EventLogDetail` for the four choices, twelve branch outcomes, three callback outcomes, and cancellation. Shared routing in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps history `9188` to the detail and name surfaces. The UTF-8 BOM localisation file is `localisation/english/fallout_world_end_ghost_convoy_l_english.yml`. It contains concrete West African port, lighthouse watch, reef channel, signal mast, convoy hull, and neighboring-government wording.
+`common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` defines `GetFalloutEvent775EventLogDetail` for the four choices, twelve branch outcomes, three callback outcomes, and cancellation. Shared routing in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` maps history `9188` to the detail and name surfaces. The UTF-8 BOM localisation file is `localisation/english/fallout_consolidated_l_english.yml`. It contains concrete West African port, lighthouse watch, reef channel, signal mast, convoy hull, and neighboring-government wording.
 
 ## Assets
 
-The generated fictional report image is retained at `docs/assets/775_ghost_convoy/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_ghost_convoy.dds`. The sprite is registered in `interface/fallout_world_end.gfx`. No zombie asset, audio, sprite, or path is referenced.
+The generated fictional report image is retained at `docs/assets/775_ghost_convoy/`. The source, processed preview, runtime DDS, hashes, dimensions, and source-mode disclaimer are in `manifest.md`. The runtime file is `gfx/event_pictures/fallout/report_event_fallout_ghost_convoy.dds`. The sprite is registered in `interface/fallout_consolidated.gfx`. No zombie asset, audio, sprite, or path is referenced.
 
 ## Static review boundary
 

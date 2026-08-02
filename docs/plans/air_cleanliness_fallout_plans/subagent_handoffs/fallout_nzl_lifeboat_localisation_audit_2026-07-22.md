@@ -1,7 +1,7 @@
 # Fallout NZL Lifeboat State localisation audit
 
 Date: 2026-07-22
-Scope: `localisation/english/fallout_nzl_lifeboat_l_english.yml` and `common/scripted_localisation/fallout_nzl_lifeboat_scripted_localisation.txt`
+Scope: `localisation/english/fallout_consolidated_l_english.yml` and `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt`
 Status: dormant package preserved
 
 ## Audit findings
@@ -19,7 +19,7 @@ Status: dormant package preserved
 
 Changed file:
 
-- `localisation/english/fallout_nzl_lifeboat_l_english.yml`
+- `localisation/english/fallout_consolidated_l_english.yml`
 
 The patch changes player-facing values to New Zealand English while leaving every identifier, variable token, scripted-localisation name, and dormant gate unchanged.
 
@@ -88,7 +88,7 @@ Meaningful checks run:
 - Parsed the package localisation keys and found no duplicates. Confirmed UTF-8 BOM on the `.yml` file.
 - Resolved all scripted-localisation references, all 15 decision cost triplets, all 42 actual focus title and description pairs, all 14 idea title and description pairs, and the 51 limited-chain event tokens.
 - Scanned player-facing values for em dashes, semicolons, and the targeted American spellings. No prohibited punctuation or targeted spelling remains. The only visible `License` is the intentional verb title.
-- Confirmed `common/scripted_localisation/fallout_nzl_lifeboat_scripted_localisation.txt` was audited but not modified. Its non-BOM text encoding is unchanged.
+- Confirmed `common/scripted_localisation/fallout_consolidated_scripted_localisation.txt` was audited but not modified. Its non-BOM text encoding is unchanged.
 
 Skipped meaningful validation:
 

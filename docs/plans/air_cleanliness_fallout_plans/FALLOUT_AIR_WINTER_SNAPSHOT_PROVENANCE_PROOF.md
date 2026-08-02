@@ -10,15 +10,15 @@ This is static source proof. Hearts of Iron IV was not launched.
 
 Air Winter owns the live producer contract in:
 
-- `common/script_constants/air_cleanliness_winter_constants.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 
 Fallout owns the frozen transport and transition contract in:
 
-- `common/script_constants/fallout_world_end_constants.txt`
-- `common/scripted_triggers/fallout_world_end_triggers.txt`
-- `common/scripted_effects/fallout_world_end_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
 
 Fallout opens one Air Winter producer generation inside its existing complete snapshot transaction. No new daily, weekly, monthly, country, or state effect iterator was added. The existing Fallout `every_state` pass remains the only state mutation pass. Snapshot validation also evaluates `game:all_states` collection proofs.
 

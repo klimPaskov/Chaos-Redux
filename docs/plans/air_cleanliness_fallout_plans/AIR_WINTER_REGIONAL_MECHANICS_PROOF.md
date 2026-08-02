@@ -8,9 +8,9 @@ The implementation does not infer climate or geography at runtime. Each valid st
 
 ## Source ownership
 
-Shared tuning lives in `air_winter_regional_mechanics` inside `common/script_constants/air_cleanliness_winter_constants.txt`.
+Shared tuning lives in `air_winter_regional_mechanics` inside `common/script_constants/fallout_consolidated_constants.txt`.
 
-The state consumers live in `common/scripted_effects/air_cleanliness_winter_effects.txt`:
+The state consumers live in `common/scripted_effects/fallout_consolidated_effects.txt`:
 
 - `air_winter_calculate_state_pressure` applies one regional pressure adjustment before adaptation, food, shelter, and reclamation resistance.
 - `air_winter_update_survival_ledgers` applies one regional food-loss adjustment during an active winter phase.

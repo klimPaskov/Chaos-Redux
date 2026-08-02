@@ -2,9 +2,9 @@
 
 ## Static evidence
 
-- Candidate row: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `345`.
-- Trigger contract: `common/scripted_triggers/fallout_world_end_manual_nobody_read_event_triggers.txt`.
-- Transaction effects: `common/scripted_effects/fallout_world_end_manual_nobody_read_event_effects.txt`.
+- Candidate row: `common/scripted_effects/fallout_consolidated_effects.txt`, candidate `345`.
+- Trigger contract: `common/scripted_triggers/fallout_consolidated_triggers.txt`.
+- Transaction effects: `common/scripted_effects/fallout_consolidated_effects.txt`.
 - Event ids `345` through `351`: `events/fallout_world_end_events.txt`.
 - Constants: `fallout_event_345_*` groups in the dedicated constants file plus shared event identity, cooldown, and candidate reservation groups.
 - Event Log history `9128`: shared type and name-detail mappings plus the dedicated fifteen-payload mapping.

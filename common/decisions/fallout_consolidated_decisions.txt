@@ -1,0 +1,2480 @@
+# ============================================================================
+# CHAOS REDUX - FALLOUT_CONSOLIDATED_DECISIONS.TXT
+# Consolidated Fallout and Air Cleanliness loader surface.
+# Source files are preserved in lexical order to retain existing load order.
+# ============================================================================
+
+# ============================================================================
+# Consolidated source: common/decisions/air_cleanliness_treaty_decisions.txt
+# ============================================================================
+# ============================================================================
+# AIR CLEANLINESS TREATY DECISIONS
+# ============================================================================
+# Treaty projects spend equipment at start, acquire explicit transaction locks,
+# revalidate on completion, and clean their receipts on cancellation.
+# ============================================================================
+
+air_cleanliness_treaty_category = {
+	air_cleanliness_global_cleaning_day = {
+		icon = GFX_decision_generic_operation
+
+		visible = {
+			OR = {
+				NOT = { has_global_flag = air_cleanliness_treaty_cleaning_day_in_progress }
+				has_country_flag = air_cleanliness_treaty_cleaning_day_sponsor
+			}
+		}
+
+		available = { air_cleanliness_treaty_can_start_cleaning_day = yes }
+		cost = constant:air_cleanliness_treaty_runtime.zero
+		days_remove = constant:air_cleanliness_treaty_runtime.cleaning_day_duration_days
+		modifier = {
+			civilian_factory_use = constant:air_cleanliness_treaty_runtime.cleaning_day_civilian_factories
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_cleaning_day_project = yes }
+			custom_effect_tooltip = air_cleanliness_global_cleaning_day_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_cleaning_day_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_cleaning_day_project = yes }
+		remove_effect = { air_cleanliness_treaty_complete_cleaning_day_project = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.cleaning_day_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.cleaning_day_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.cleaning_day_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.cleaning_day_high_contamination_factor
+				check_variable = {
+					var = global.air_contamination_bp
+					value = constant:air_cleanliness_treaty_runtime.cleaning_day_high_contamination_bp
+					compare = greater_than_or_equals
+				}
+			}
+		}
+	}
+
+	air_cleanliness_joint_filter_convoy = {
+		icon = GFX_decision_generic_operation
+		target_root_trigger = { air_cleanliness_treaty_country_is_live_member = yes }
+		target_array = global.air_cleanliness_treaty_members
+
+		visible = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				air_cleanliness_treaty_country_is_live_member = yes
+			}
+		}
+
+		available = { air_cleanliness_treaty_can_send_joint_filter_convoy = yes }
+		cost = constant:air_cleanliness_treaty_runtime.zero
+		days_remove = constant:air_cleanliness_treaty_runtime.filter_convoy_duration_days
+		modifier = {
+			civilian_factory_use = constant:air_cleanliness_treaty_runtime.filter_convoy_civilian_factories
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_joint_filter_convoy = yes }
+			custom_effect_tooltip = air_cleanliness_joint_filter_convoy_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_filter_convoy_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_joint_filter_convoy = yes }
+		remove_effect = { air_cleanliness_treaty_complete_joint_filter_convoy = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_major_donor_factor
+				is_major = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_wartime_donor_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_phase_4_factor
+				FROM = {
+					var:air_winter_response_priority_state = { air_winter_is_phase_4 = yes }
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_phase_5_factor
+				FROM = {
+					var:air_winter_response_priority_state = { air_winter_is_phase_5 = yes }
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_phase_6_factor
+				FROM = {
+					var:air_winter_response_priority_state = { air_winter_is_phase_6 = yes }
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_critical_survival_factor
+				FROM = {
+					var:air_winter_response_priority_state = {
+						check_variable = {
+							var = air_winter_survival_value
+							value = constant:air_cleanliness_treaty_lifecycle_ai.filter_convoy_critical_survival_value
+							compare = less_than
+						}
+					}
+				}
+			}
+		}
+	}
+
+	air_cleanliness_treaty_verification_mission = {
+		icon = GFX_decision_generic_operation
+		target_root_trigger = { air_cleanliness_treaty_country_is_current_founder = yes }
+		target_array = global.air_cleanliness_treaty_members
+
+		visible = {
+			air_cleanliness_treaty_country_is_current_founder = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				air_cleanliness_treaty_country_is_live_member = yes
+			}
+		}
+
+		available = { air_cleanliness_treaty_can_start_verification_mission = yes }
+		cost = constant:air_cleanliness_treaty_runtime.zero
+		days_remove = constant:air_cleanliness_treaty_runtime.verification_mission_duration_days
+		modifier = {
+			civilian_factory_use = constant:air_cleanliness_treaty_runtime.verification_civilian_factories
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_verification_mission = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_verification_mission_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_verification_mission_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_verification_transaction = yes }
+		remove_effect = { air_cleanliness_treaty_complete_verification_mission = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_founder_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_new_subject_factor
+				FROM = { NOT = { has_country_flag = air_cleanliness_treaty_ever_opened_inspection } }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_prior_refusal_factor
+				FROM = { has_country_flag = air_cleanliness_treaty_ever_refused_inspection }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_fascist_subject_factor
+				FROM = { has_government = fascism }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/decisions/air_cleanliness_winter_decisions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - AIR WINTER PRE-FALLOUT RESPONSE DECISIONS
+# ============================================================================
+# One state-target category advances from prevention through terminal choices.
+# Each timed card locks one state, pays exact material and national costs,
+# applies a state cooldown on completion, and clears its lock on cancellation.
+# ============================================================================
+
+air_winter_response_category = {
+	# -----------------------------------------------------------------------
+	# Single-state response priority
+	# -----------------------------------------------------------------------
+
+	air_winter_designate_response_priority = {
+		icon = GFX_decision_air_winter_response_priority
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_re_enable = constant:air_winter_response_timing.designate_priority_days_reenable
+
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = {
+			air_winter_response_category_is_visible = yes
+			any_controlled_state = {
+				is_owned_by = ROOT
+				air_winter_state_is_valid = yes
+				air_winter_is_active = yes
+			}
+		}
+		available = {
+			air_winter_response_category_is_visible = yes
+			NOT = { has_country_flag = air_winter_response_project_active }
+		}
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_designate_response_priority_requirements_tt
+					hidden_trigger = { air_winter_response_priority_state_is_available = yes }
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = air_winter_designate_response_priority_effect_tt
+			hidden_effect = { air_winter_response_designate_priority_state = yes }
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = 0 air_winter_has_valid_priority_state = yes }
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+		}
+	}
+
+	air_winter_response_priority_summary = {
+		icon = GFX_decision_air_winter_response_priority
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { air_winter_has_valid_priority_state = yes }
+		visible = { air_winter_has_valid_priority_state = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_response_priority_summary_locked_tt
+				always = no
+			}
+		}
+		target_trigger = { FROM = { air_winter_response_is_priority_target = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	# -----------------------------------------------------------------------
+	# Reception state designation
+	# -----------------------------------------------------------------------
+
+	air_winter_designate_reception_state = {
+		icon = GFX_decision_air_winter_reception
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_re_enable = constant:air_winter_response_timing.designate_reception_days_reenable
+
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = {
+			air_winter_response_category_is_visible = yes
+			any_controlled_state = {
+				is_owned_by = ROOT
+				air_winter_response_is_reception_state = yes
+			}
+		}
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_designate_reception_state_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_reception_state_is_available = yes
+						NOT = {
+							is_in_array = {
+								array = ROOT.air_winter_reception_states
+								value = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_designation = yes }
+		custom_cost_text = air_winter_designate_reception_state_cost
+		complete_effect = {
+			custom_effect_tooltip = air_winter_designate_reception_state_effect_tt
+			hidden_effect = { air_winter_response_designate_reception_state = yes }
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = 0 air_winter_has_valid_reception_state = yes }
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = {
+				factor = constant:air_winter_response_ai.high_population_factor
+				FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } }
+			}
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_reception_state_summary = {
+		icon = GFX_decision_air_winter_reception
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { air_winter_has_valid_reception_state = yes }
+		visible = { air_winter_has_valid_reception_state = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_reception_state_summary_locked_tt
+				always = no
+			}
+		}
+		target_trigger = { FROM = { air_winter_response_is_designated_reception_state = yes } }
+		ai_will_do = { base = 0 }
+	}
+
+	# -----------------------------------------------------------------------
+	# Phase 1 and 2 prevention
+	# -----------------------------------------------------------------------
+
+	air_winter_distribute_respirator_kits = {
+		icon = GFX_decision_air_winter_respirators
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.mask_distribution_days
+		days_re_enable = constant:air_winter_response_timing.early_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_distribute_respirator_kits_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_1_or_2 = yes
+						NOT = { has_state_flag = air_winter_masks_distributed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_respirators = yes }
+		custom_cost_text = air_winter_distribute_respirator_kits_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_respirators = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_distribute_respirator_kits_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_respirators = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_convert_respiratory_clinics = {
+		icon = GFX_decision_air_winter_clinics
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.clinic_conversion_days
+		days_re_enable = constant:air_winter_response_timing.early_reenable_days
+		modifier = { civilian_factory_use = constant:air_winter_response_cost.clinic_civilian_factories }
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_convert_respiratory_clinics_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_1_or_2 = yes
+						air_winter_response_is_city = yes
+						NOT = { has_state_flag = air_winter_respiratory_clinic }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_clinics = yes }
+		custom_cost_text = air_winter_convert_respiratory_clinics_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_clinics = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_convert_respiratory_clinics_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_clinics = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_station_roof_samplers = {
+		icon = GFX_decision_air_winter_samplers
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.air_sampling_days
+		days_re_enable = constant:air_winter_response_timing.early_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_station_roof_samplers_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_1_or_2 = yes
+						NOT = { has_state_flag = air_winter_sampling_stations }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_samplers = yes }
+		custom_cost_text = air_winter_station_roof_samplers_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_samplers = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_station_roof_samplers_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_samplers = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_protect_crop_trials = {
+		icon = GFX_decision_air_winter_crop_trials
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.protected_crop_days
+		days_re_enable = constant:air_winter_response_timing.early_reenable_days
+		modifier = { civilian_factory_use = constant:air_winter_response_cost.crop_civilian_factories }
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_1_or_2 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_protect_crop_trials_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_1_or_2 = yes
+						air_winter_response_is_food_state = yes
+						NOT = { has_state_flag = air_winter_protected_crop_trials }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_crop_trials = yes }
+		custom_cost_text = air_winter_protect_crop_trials_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_crop_trials = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_protect_crop_trials_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_crop_trials = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_early
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Phase 3 infrastructure preservation
+	# -----------------------------------------------------------------------
+
+	air_winter_clear_ash_routes = {
+		icon = GFX_decision_air_winter_ash_clearance
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.ash_clearance_days
+		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_clear_ash_routes_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_3 = yes
+						air_winter_response_is_transport_state = yes
+						NOT = { has_state_flag = air_winter_ash_clearance_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_ash_clearance = yes }
+		custom_cost_text = air_winter_clear_ash_routes_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_ash_clearance = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_clear_ash_routes_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_ash_clearance = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_infrastructure
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = 0 FROM = { check_variable = { air_winter_survival_value < constant:air_winter_response_ai.ash_clearance_minimum_survival } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_protect_rail_corridors = {
+		icon = GFX_decision_air_winter_rail_corridors
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.rail_protection_days
+		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_protect_rail_corridors_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_3 = yes
+						OR = { rail_way > constant:air_winter_runtime.zero supply_node > constant:air_winter_runtime.zero }
+						NOT = { has_state_flag = air_winter_rail_protection_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_rail_protection = yes }
+		custom_cost_text = air_winter_protect_rail_corridors_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_rail_protection = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_protect_rail_corridors_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_rail_protection = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_infrastructure
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_close_exposed_airfields = {
+		icon = GFX_decision_air_winter_airfield_closure
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.airbase_closure_days
+		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_close_exposed_airfields_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_3 = yes
+						air_base > constant:air_winter_runtime.zero
+						NOT = { has_state_flag = air_winter_airbase_closure_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_airbase_closure = yes }
+		custom_cost_text = air_winter_close_exposed_airfields_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_airbase_closure = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_close_exposed_airfields_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_airbase_closure = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_infrastructure
+			modifier = { factor = 0 has_war = yes }
+			modifier = { factor = 0 FROM = { is_capital = yes } }
+			modifier = { factor = 0 FROM = { air_base > constant:air_winter_response_ai.airbase_closure_maximum_ai_level } }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_prepare_evacuation_ledger = {
+		icon = GFX_decision_air_winter_evacuation_ledger
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.evacuation_plan_days
+		days_re_enable = constant:air_winter_response_timing.infrastructure_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_3 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_prepare_evacuation_ledger_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_3 = yes
+						NOT = { has_state_flag = air_winter_evacuation_plan_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_evacuation_plan = yes }
+		custom_cost_text = air_winter_prepare_evacuation_ledger_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_evacuation_plan = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_prepare_evacuation_ledger_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_evacuation_plan = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_infrastructure
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Phase 4 severe-state survival
+	# -----------------------------------------------------------------------
+
+	air_winter_enact_emergency_shelter_law = {
+		icon = GFX_decision_air_winter_shelter_law
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.shelter_law_days
+		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_enact_emergency_shelter_law_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_4 = yes
+						NOT = { has_state_flag = air_winter_emergency_shelter_law }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_shelter_law = yes }
+		custom_cost_text = air_winter_enact_emergency_shelter_law_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_shelter_law = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_enact_emergency_shelter_law_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_shelter_law = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_severe
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_convert_greenhouse_refuge = {
+		icon = GFX_decision_air_winter_greenhouse_refuge
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.greenhouse_conversion_days
+		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
+		modifier = { civilian_factory_use = constant:air_winter_response_cost.greenhouse_civilian_factories }
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_convert_greenhouse_refuge_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_4 = yes
+						air_winter_response_is_city = yes
+						NOT = { has_state_flag = air_winter_greenhouse_refuge }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_greenhouse_refuge = yes }
+		custom_cost_text = air_winter_convert_greenhouse_refuge_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_greenhouse_refuge = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_convert_greenhouse_refuge_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_greenhouse_refuge = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_severe
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_controlled_evacuation = {
+		icon = GFX_decision_air_winter_controlled_evacuation
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.controlled_evacuation_days
+		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
+		available = { air_winter_response_category_is_visible = yes air_winter_has_valid_reception_state = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_controlled_evacuation_requirements_tt
+				hidden_trigger = {
+					FROM = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_is_controlled_evacuation_source = yes
+					}
+					air_winter_has_valid_different_reception_state = yes
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_controlled_evacuation = yes }
+		custom_cost_text = air_winter_controlled_evacuation_cost
+		complete_effect = { hidden_effect = { air_winter_response_start_controlled_evacuation = yes } }
+		cancel_trigger = {
+			OR = {
+				air_winter_response_project_should_cancel = yes
+				NOT = { air_winter_response_controlled_evacuation_project_is_valid = yes }
+			}
+		}
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_controlled_evacuation_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					air_winter_response_complete_controlled_evacuation = yes
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_severe
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.planned_evacuation_factor FROM = { has_state_flag = air_winter_evacuation_plan_completed } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_state_medical_triage = {
+		icon = GFX_decision_air_winter_medical_triage
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.state_triage_days
+		days_re_enable = constant:air_winter_response_timing.severe_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_4 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_state_medical_triage_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_4 = yes
+						air_winter_response_is_city = yes
+						NOT = { has_state_flag = air_winter_state_triage_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_triage = yes }
+		custom_cost_text = air_winter_state_medical_triage_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_triage = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_state_medical_triage_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_triage = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_severe
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Phase 5 terminal choices
+	# -----------------------------------------------------------------------
+
+	air_winter_hold_abandonment_vote = {
+		icon = GFX_decision_air_winter_abandonment_vote
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.abandonment_vote_days
+		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_hold_abandonment_vote_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_is_sustained_phase_5 = yes
+						NOT = { has_state_flag = air_winter_abandonment_vote_completed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_abandonment_vote = yes }
+		custom_cost_text = air_winter_hold_abandonment_vote_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_abandonment_vote = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_hold_abandonment_vote_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					air_winter_response_complete_abandonment_vote = yes
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_terminal
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.terminal_abandonment_factor always = yes }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_seal_bunker_doors = {
+		icon = GFX_decision_air_winter_bunker_seal
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.bunker_closure_days
+		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_seal_bunker_doors_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_state_is_available = yes
+						air_winter_response_is_phase_5 = yes
+						bunker > constant:air_winter_runtime.zero
+						NOT = { has_state_flag = air_winter_bunker_sealed }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_bunker_seal = yes }
+		custom_cost_text = air_winter_seal_bunker_doors_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_bunker_seal = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_seal_bunker_doors_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					FROM = { air_winter_response_complete_bunker_seal = yes }
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_terminal
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_final_evacuation = {
+		icon = GFX_decision_air_winter_final_evacuation
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.final_evacuation_days
+		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
+		available = { air_winter_response_category_is_visible = yes air_winter_has_valid_reception_state = yes }
+		target_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = air_winter_final_evacuation_requirements_tt
+				hidden_trigger = {
+					FROM = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_is_final_evacuation_source = yes
+					}
+					air_winter_has_valid_different_reception_state = yes
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_final_evacuation = yes }
+		custom_cost_text = air_winter_final_evacuation_cost
+		complete_effect = { hidden_effect = { air_winter_response_start_final_evacuation = yes } }
+		cancel_trigger = {
+			OR = {
+				air_winter_response_project_should_cancel = yes
+				NOT = { air_winter_response_final_evacuation_project_is_valid = yes }
+			}
+		}
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_final_evacuation_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					air_winter_response_complete_final_evacuation = yes
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_terminal
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.planned_evacuation_factor FROM = { has_state_flag = air_winter_evacuation_plan_completed } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+
+	air_winter_decontamination_gamble = {
+		icon = GFX_decision_air_winter_decontamination
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:air_winter_response_timing.decontamination_days
+		days_re_enable = constant:air_winter_response_timing.terminal_reenable_days
+		target_root_trigger = { air_winter_response_category_is_visible = yes }
+		visible = { air_winter_response_category_is_visible = yes any_controlled_state = { air_winter_state_is_valid = yes air_winter_response_is_priority_target = yes air_winter_response_is_phase_5 = yes } }
+		available = { air_winter_response_category_is_visible = yes }
+		target_trigger = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = air_winter_decontamination_gamble_requirements_tt
+					hidden_trigger = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						air_winter_response_is_sustained_phase_5 = yes
+						NOT = { has_state_flag = air_winter_decontamination_attempted }
+					}
+				}
+			}
+		}
+		custom_cost_trigger = { air_winter_response_can_pay_decontamination = yes }
+		custom_cost_text = air_winter_decontamination_gamble_cost
+		complete_effect = { hidden_effect = { air_winter_response_pay_decontamination = yes FROM = { air_winter_response_start_state_project = yes } } }
+		cancel_trigger = { air_winter_response_project_should_cancel = yes }
+		cancel_effect = { hidden_effect = { FROM = { air_winter_response_cancel_state_project = yes } } }
+		remove_effect = {
+			custom_effect_tooltip = air_winter_decontamination_gamble_effect_tt
+			hidden_effect = {
+				if = {
+					limit = { air_winter_response_mutation_is_allowed = yes }
+					air_winter_response_complete_decontamination = yes
+				}
+				else = { FROM = { air_winter_response_cancel_state_project = yes } }
+			}
+		}
+		ai_will_do = {
+			base = constant:air_winter_response_ai.base_terminal
+			modifier = { factor = constant:air_winter_response_ai.capital_factor FROM = { is_capital = yes } }
+			modifier = { factor = constant:air_winter_response_ai.high_population_factor FROM = { check_variable = { var = state_population_k value = constant:air_winter_response_ai.high_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.critical_survival_factor FROM = { check_variable = { var = air_winter_survival_value value = constant:air_winter_response_ai.critical_survival compare = less_than_or_equals } } }
+			modifier = { factor = constant:air_winter_response_ai.war_strain_factor has_war = yes }
+			modifier = { factor = constant:air_winter_response_ai.resource_strain_factor air_winter_response_country_is_resource_strained = yes }
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/decisions/fallout_food_security_decisions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FALLOUT FOOD SECURITY DECISIONS
+# ============================================================================
+# These two dormant missions are opened by The Last Inventory callback. They
+# spend survival-ledger resources rather than political power and close after
+# one authored review. They never activate the Fallout scheduler.
+# ============================================================================
+
+fallout_food_security_category = {
+	fallout_event_100_ration_law = {
+		icon = GFX_idea_fallout_state_grade
+		selectable_mission = yes
+		visible = {
+			has_country_flag = fallout_event_100_ration_law_chain_open
+			NOT = { has_country_flag = fallout_event_100_ration_law_active }
+			NOT = { has_country_flag = fallout_event_100_ration_law_complete }
+		}
+		activation = {
+			fallout_survival_country_resource_row_is_durable = yes
+			fallout_event_orientation_is_complete = yes
+		}
+		available = {
+			fallout_survival_country_resource_row_is_durable = yes
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			fallout_survival_country_resource_row_is_durable = yes
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.ration_law_food_cost compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^7 value = constant:fallout_event_100_decision.ration_law_filter_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = fallout.event_log.last_inventory.ration_law_cost
+		days_mission_timeout = constant:fallout_event_100_decision.ration_law_days
+		complete_effect = {
+			set_country_flag = fallout_event_100_ration_law_active
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_100_decision.ration_law_food_cost }
+			subtract_from_variable = { fallout_survival_current_entries^7 = constant:fallout_event_100_decision.ration_law_filter_cost }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = fallout_event_100_ration_law_chain_open }
+				NOT = { fallout_survival_country_resource_row_is_durable = yes }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = fallout_event_100_ration_law_active
+			set_country_flag = fallout_event_100_ration_law_failed
+			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.grievance_modifier_days }
+			add_dynamic_modifier = { modifier = fallout_food_grievance_aftershock days = fallout_event_100_modifier_days }
+			clear_temp_variable = fallout_event_100_modifier_days
+		}
+		timeout_effect = {
+			clr_country_flag = fallout_event_100_ration_law_active
+			set_country_flag = fallout_event_100_ration_law_complete
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_100_decision.ration_law_food_gain }
+			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_100_decision.ration_law_recognition_gain }
+			set_temp_variable = { fallout_event_100_cohesion_delta = constant:fallout_event_100_decision.ration_law_cohesion_gain }
+			fallout_survival_apply_cohesion_delta = yes
+			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.ration_modifier_days }
+			add_dynamic_modifier = { modifier = fallout_food_public_ration_law days = fallout_event_100_modifier_days }
+			fallout_orientation_clamp_resources = yes
+			clear_temp_variable = fallout_event_100_cohesion_delta
+			clear_temp_variable = fallout_event_100_modifier_days
+		}
+		fire_only_once = yes
+		ai_will_do = { base = 4 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_threshold.food_partial compare = less_than } } }
+	}
+
+	fallout_event_100_first_hunger_mission = {
+		icon = GFX_idea_fallout_state_grade
+		selectable_mission = yes
+		visible = {
+			has_country_flag = fallout_event_100_first_hunger_mission_open
+			NOT = { has_country_flag = fallout_event_100_first_hunger_mission_active }
+			NOT = { has_country_flag = fallout_event_100_first_hunger_mission_complete }
+		}
+		activation = {
+			fallout_survival_country_resource_row_is_durable = yes
+			fallout_event_orientation_is_complete = yes
+		}
+		available = {
+			fallout_survival_country_resource_row_is_durable = yes
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
+		}
+		custom_cost_trigger = {
+			fallout_survival_country_resource_row_is_durable = yes
+			check_variable = { fallout_survival_current_entries^1 value = constant:fallout_event_100_decision.hunger_mission_food_cost compare = greater_than_or_equals }
+			check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals }
+		}
+		custom_cost_text = fallout.event_log.last_inventory.hunger_mission_cost
+		days_mission_timeout = constant:fallout_event_100_decision.hunger_mission_days
+		complete_effect = {
+			set_country_flag = fallout_event_100_first_hunger_mission_active
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_event_100_decision.hunger_mission_food_cost }
+			subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_event_100_decision.hunger_mission_medicine_cost }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = fallout_event_100_first_hunger_mission_open }
+				NOT = { fallout_survival_country_resource_row_is_durable = yes }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = fallout_event_100_first_hunger_mission_active
+			set_country_flag = fallout_event_100_first_hunger_mission_failed
+			set_temp_variable = { fallout_event_100_modifier_days = constant:fallout_event_100_timing.grievance_modifier_days }
+			add_dynamic_modifier = { modifier = fallout_food_grievance_aftershock days = fallout_event_100_modifier_days }
+			clear_temp_variable = fallout_event_100_modifier_days
+		}
+		timeout_effect = {
+			clr_country_flag = fallout_event_100_first_hunger_mission_active
+			set_country_flag = fallout_event_100_first_hunger_mission_complete
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_event_100_decision.hunger_mission_food_gain }
+			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_event_100_decision.hunger_mission_recognition_gain }
+			set_temp_variable = { fallout_event_100_cohesion_delta = constant:fallout_event_100_decision.hunger_mission_cohesion_gain }
+			fallout_survival_apply_cohesion_delta = yes
+			fallout_orientation_clamp_resources = yes
+			clear_temp_variable = fallout_event_100_cohesion_delta
+		}
+		fire_only_once = yes
+		ai_will_do = { base = 5 modifier = { factor = 2 check_variable = { fallout_survival_current_entries^3 value = constant:fallout_event_100_decision.hunger_mission_medicine_cost compare = greater_than_or_equals } } }
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/decisions/fallout_nzl_lifeboat_decisions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT STATE DECISIONS
+# ============================================================================
+# Existing missions and route-locked actions spend equipment, manpower, command
+# resources, or visible value capacity. Timed actions cancel when the current
+# Lifeboat package or their recorded target ceases to be valid.
+# ============================================================================
+
+@FALLOUT_NZL_CIVILIAN_FACTORY_USE_LOW = 2
+@FALLOUT_NZL_CIVILIAN_FACTORY_USE_HIGH = 3
+
+fallout_nzl_lifeboat_category = {
+	fallout_nzl_wellington_breakwater_works = {
+		icon = GFX_decision_fallout_nzl_wellington_breakwater_works
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_wellington_breakwater_decision_open
+			NOT = { has_country_flag = fallout_nzl_major_repair_active }
+			NOT = { has_country_flag = fallout_nzl_wellington_breakwater_complete }
+		}
+		available = {
+			284 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+		}
+		custom_cost_trigger = {
+			284 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+		}
+		custom_cost_text = fallout_nzl_cost_breakwater
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_LOW }
+		days_mission_timeout = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_country_flag = fallout_nzl_major_repair_active
+			if = {
+				limit = { has_country_flag = fallout_nzl_weather_warning_current }
+				set_country_flag = fallout_nzl_wellington_weather_window
+				clr_country_flag = fallout_nzl_weather_warning_current
+			}
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.motorized_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = fallout_nzl_equipment_cost }
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } 284 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			clr_country_flag = fallout_nzl_major_repair_active
+			set_country_flag = fallout_nzl_major_mission_ever_failed
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_loss }
+			if = {
+				limit = { has_country_flag = fallout_nzl_wellington_weather_window }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			}
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+			clr_country_flag = fallout_nzl_wellington_weather_window
+		}
+		timeout_effect = {
+			clr_country_flag = fallout_nzl_major_repair_active
+			set_country_flag = fallout_nzl_wellington_breakwater_complete
+			284 = { add_building_construction = { type = naval_base level = 1 instant_build = yes } }
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_harbor_capacity = yes
+			if = {
+				limit = { has_country_flag = fallout_nzl_wellington_weather_window }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+				fallout_nzl_change_sea_lane_security = yes
+			}
+			clr_country_flag = fallout_nzl_wellington_weather_window
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes } }
+	}
+
+	fallout_nzl_auckland_storm_port_works = {
+		icon = GFX_decision_fallout_nzl_auckland_storm_port_works
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_devonport_repair_mission_open
+			NOT = { has_country_flag = fallout_nzl_major_repair_active }
+			NOT = { has_country_flag = fallout_nzl_auckland_storm_port_complete }
+		}
+		available = {
+			1079 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_medium } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+		}
+		custom_cost_trigger = {
+			1079 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_medium } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+		}
+		custom_cost_text = fallout_nzl_cost_storm_port
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_HIGH }
+		days_mission_timeout = constant:fallout_nzl_duration.long
+		complete_effect = {
+			set_country_flag = fallout_nzl_major_repair_active
+			if = {
+				limit = { has_country_flag = fallout_nzl_weather_warning_current }
+				set_country_flag = fallout_nzl_auckland_weather_window
+				clr_country_flag = fallout_nzl_weather_warning_current
+			}
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.support_equipment_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_manpower_cost = constant:fallout_nzl_cost.manpower_medium }
+			multiply_temp_variable = { fallout_nzl_manpower_cost = -1 }
+			add_manpower = fallout_nzl_manpower_cost
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } 1079 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			clr_country_flag = fallout_nzl_major_repair_active
+			set_country_flag = fallout_nzl_major_mission_ever_failed
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_loss }
+			if = {
+				limit = { has_country_flag = fallout_nzl_auckland_weather_window }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			}
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_harbor_capacity = yes
+			clr_country_flag = fallout_nzl_auckland_weather_window
+		}
+		timeout_effect = {
+			clr_country_flag = fallout_nzl_major_repair_active
+			set_country_flag = fallout_nzl_auckland_storm_port_complete
+			1079 = {
+				add_building_construction = { type = naval_base level = 1 instant_build = yes }
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_harbor_capacity = yes
+			if = {
+				limit = { has_country_flag = fallout_nzl_auckland_weather_window }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+				fallout_nzl_change_sea_lane_security = yes
+			}
+			clr_country_flag = fallout_nzl_auckland_weather_window
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.high }
+	}
+
+	fallout_nzl_milk_rail_assignments = {
+		icon = GFX_decision_fallout_nzl_milk_rail_assignments
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_milk_rail_decision_open
+			NOT = { has_country_flag = fallout_nzl_milk_rail_assignments_complete }
+		}
+		available = {
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+			NOT = { has_equipment = { train_equipment < constant:fallout_nzl_cost.train_low } }
+			723 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = {
+			723 = { is_owned_and_controlled_by = ROOT }
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+			NOT = { has_equipment = { train_equipment < constant:fallout_nzl_cost.train_low } }
+		}
+		custom_cost_text = fallout_nzl_cost_milk_rail
+		days_mission_timeout = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.motorized_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.train_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = train_equipment amount = fallout_nzl_equipment_cost }
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } 723 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { set_country_flag = fallout_nzl_major_mission_ever_failed remove_ideas = fallout_nzl_dairy_rations add_ideas = fallout_nzl_spoiled_stores }
+		timeout_effect = {
+			set_country_flag = fallout_nzl_milk_rail_assignments_complete
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_food_security = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.high modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes } }
+	}
+
+	fallout_nzl_fishery_quota_compact = {
+		icon = GFX_decision_fallout_nzl_fishery_quota_compact
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_fishery_compact_decision_open
+		}
+		available = {
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
+			check_variable = { fallout_nzl_sea_lane_security > constant:fallout_nzl_value.critical }
+			OR = {
+				NOT = { fallout_nzl_sea_road_licensing_is_current = yes }
+				NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			}
+		}
+		cost = constant:fallout_nzl_cost.political_power_low
+		custom_cost_trigger = {
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
+			OR = {
+				NOT = { fallout_nzl_sea_road_licensing_is_current = yes }
+				NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			}
+		}
+		custom_cost_text = fallout_nzl_cost_fishery_compact
+		days_remove = constant:fallout_nzl_duration.quick
+		days_re_enable = constant:fallout_nzl_duration.cooldown
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_manpower_cost = constant:fallout_nzl_cost.manpower_low }
+			multiply_temp_variable = { fallout_nzl_manpower_cost = -1 }
+			add_manpower = fallout_nzl_manpower_cost
+			if = {
+				limit = { fallout_nzl_sea_road_licensing_is_current = yes }
+				set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_low }
+				multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+				add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			}
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		remove_effect = {
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			fallout_nzl_change_food_security = yes
+			if = {
+				limit = { fallout_nzl_sea_road_licensing_is_current = yes }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+				fallout_nzl_change_sea_lane_security = yes
+				custom_effect_tooltip = fallout_nzl_issue_sea_road_patrol_window_tt
+				hidden_effect = { fallout_nzl_issue_sea_road_patrol_window = yes }
+			}
+			else = {
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+				multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+				fallout_nzl_change_sea_lane_security = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.normal
+			modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes }
+			modifier = {
+				factor = constant:fallout_nzl_ai.blocked
+				fallout_nzl_sea_road_licensing_is_current = yes
+				has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium }
+			}
+			modifier = {
+				factor = constant:fallout_nzl_ai.preferred
+				fallout_nzl_sea_road_licensing_is_current = yes
+				NOT = { fallout_nzl_sea_road_patrol_window_is_current = yes }
+			}
+		}
+	}
+
+	fallout_nzl_weather_station_chain = {
+		icon = GFX_decision_fallout_nzl_weather_station_chain
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_weather_chain_decision_open
+		}
+		available = { NOT = { command_power < constant:fallout_nzl_cost.command_power_low } 1079 = { is_owned_and_controlled_by = ROOT } }
+		custom_cost_trigger = {
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			1079 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_text = fallout_nzl_cost_weather_chain
+		days_remove = constant:fallout_nzl_duration.quick
+		days_re_enable = constant:fallout_nzl_duration.cooldown
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.command_power_low }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			add_command_power = fallout_nzl_cost_value
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } 1079 = { NOT = { is_controlled_by = ROOT } } } }
+		remove_effect = {
+			set_temp_variable = { fallout_nzl_weather_warning_days = constant:fallout_nzl_duration.cooldown }
+			set_country_flag = {
+				flag = fallout_nzl_weather_warning_current
+				value = 1
+				days = fallout_nzl_weather_warning_days
+			}
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			fallout_nzl_change_sea_lane_security = yes
+		}
+		ai_will_do = { base = constant:fallout_nzl_ai.normal }
+	}
+
+	fallout_nzl_port_militia_training_mission = {
+		icon = GFX_decision_fallout_nzl_port_militia_drill
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_port_militia_drill_open
+			NOT = { has_country_flag = fallout_nzl_port_militia_drill_complete }
+		}
+		available = {
+			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_medium } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_medium } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+		}
+		custom_cost_text = fallout_nzl_cost_port_militia
+		days_mission_timeout = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.infantry_equipment_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_manpower_cost = constant:fallout_nzl_cost.manpower_medium }
+			multiply_temp_variable = { fallout_nzl_manpower_cost = -1 }
+			add_manpower = fallout_nzl_manpower_cost
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.army_experience }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			army_experience = fallout_nzl_cost_value
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		cancel_effect = { set_country_flag = fallout_nzl_major_mission_ever_failed }
+		timeout_effect = {
+			set_country_flag = fallout_nzl_port_militia_drill_complete
+			army_experience = constant:fallout_nzl_effect.army_experience_small
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			fallout_nzl_change_sea_lane_security = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal }
+	}
+
+	fallout_nzl_convoy_volunteer_corps_mission = {
+		icon = GFX_decision_fallout_nzl_convoy_volunteer_corps
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_convoy_volunteer_mission_open
+			NOT = { has_country_flag = fallout_nzl_extra_escort_formation_created }
+		}
+		available = {
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_low } }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_high } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_low } }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_high } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_medium }
+		}
+		custom_cost_text = fallout_nzl_cost_convoy_volunteers
+		days_mission_timeout = constant:fallout_nzl_duration.long
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.support_equipment_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_high }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_manpower_cost = constant:fallout_nzl_cost.manpower_medium }
+			multiply_temp_variable = { fallout_nzl_manpower_cost = -1 }
+			add_manpower = fallout_nzl_manpower_cost
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } 1079 = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = { set_country_flag = fallout_nzl_major_mission_ever_failed }
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = fallout_nzl_extra_escort_formation_created } }
+				set_country_flag = fallout_nzl_extra_escort_formation_created
+				add_to_variable = { fallout_nzl_extra_escort_formation_count = constant:fallout_nzl_schema.one }
+				fallout_nzl_create_extra_escort_formation = yes
+			}
+			else = { set_country_flag = fallout_nzl_free_unit_duplication_detected }
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal }
+	}
+
+	fallout_nzl_arm_rescue_cutters_action = {
+		icon = GFX_decision_fallout_nzl_armed_rescue_cutters
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_rescue_cutter_decision_open
+			NOT = { has_country_flag = fallout_nzl_armed_rescue_cutters_complete }
+		}
+		available = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+		}
+		custom_cost_text = fallout_nzl_cost_rescue_cutters
+		days_remove = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.navy_experience }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			navy_experience = fallout_nzl_cost_value
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_harbor_capacity = yes
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		remove_effect = {
+			set_country_flag = fallout_nzl_armed_rescue_cutters_complete
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_sea_lane_security = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal }
+	}
+
+	fallout_nzl_refugee_fleet_admission = {
+		icon = GFX_decision_fallout_nzl_refugee_fleet_admission
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_refugee_fleet_mission_open
+			NOT = { has_country_flag = fallout_nzl_external_mission_active }
+		}
+		available = {
+			check_variable = { fallout_nzl_harbor_capacity > constant:fallout_nzl_value.strained }
+			check_variable = { fallout_nzl_food_security > constant:fallout_nzl_value.strained }
+		}
+		cost = constant:fallout_nzl_cost.political_power_medium
+		days_mission_timeout = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_country_flag = fallout_nzl_external_mission_active
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_harbor_capacity = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_food_security = yes
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		cancel_effect = { clr_country_flag = fallout_nzl_external_mission_active set_country_flag = fallout_nzl_major_mission_ever_failed }
+		timeout_effect = {
+			clr_country_flag = fallout_nzl_external_mission_active
+			set_country_flag = fallout_nzl_refugee_fleet_admitted
+			add_manpower = constant:fallout_nzl_cost.manpower_medium
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
+	}
+
+	fallout_nzl_last_berth_closure = {
+		icon = GFX_decision_fallout_nzl_last_berth_closure
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_last_berth_decision_open
+			NOT = { has_country_flag = fallout_nzl_last_berth_closure_complete }
+		}
+		available = { check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.critical } }
+		cost = constant:fallout_nzl_cost.political_power_high
+		days_remove = constant:fallout_nzl_duration.quick
+		complete_effect = {
+			set_country_flag = fallout_nzl_last_berths_ever_closed
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		remove_effect = {
+			set_country_flag = fallout_nzl_last_berth_closure_complete
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_sea_lane_security = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			fallout_nzl_change_food_security = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal }
+	}
+
+	fallout_nzl_offer_rescue_passage = {
+		icon = GFX_decision_fallout_nzl_offer_rescue_passage
+		selectable_mission = yes
+		activation = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_rescue_passage_decision_open
+			fallout_nzl_external_transaction_is_current = yes
+			NOT = { has_country_flag = fallout_nzl_external_mission_active }
+		}
+		available = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_high } }
+			check_variable = { fallout_nzl_food_security > constant:fallout_nzl_value.stable }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_high } }
+			check_variable = { fallout_nzl_food_security > constant:fallout_nzl_value.stable }
+		}
+		custom_cost_text = fallout_nzl_cost_rescue_passage
+		days_mission_timeout = constant:fallout_nzl_duration.long
+		complete_effect = {
+			set_country_flag = fallout_nzl_external_mission_active
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_high }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_food_security = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_nzl_lifeboat_package_is_current = yes }
+				NOT = { fallout_nzl_external_transaction_is_current = yes }
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = fallout_nzl_external_mission_active
+			set_country_flag = fallout_nzl_major_mission_ever_failed
+			fallout_nzl_cleanup_external_transaction = yes
+		}
+		timeout_effect = {
+			clr_country_flag = fallout_nzl_external_mission_active
+			fallout_nzl_record_current_relief_partner = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			fallout_nzl_change_parliament_trust = yes
+			fallout_nzl_record_external_mission_event_log = yes
+			fallout_nzl_cleanup_external_transaction = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.normal modifier = { factor = constant:fallout_nzl_ai.deferred fallout_nzl_food_is_critical = yes } }
+	}
+
+	fallout_nzl_anti_piracy_bearing = {
+		icon = GFX_decision_fallout_nzl_anti_piracy_bearing
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_anti_piracy_decision_open
+			fallout_nzl_pirate_war_is_current = yes
+			NOT = { fallout_nzl_pirate_settlement_is_current = yes }
+		}
+		available = {
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_medium }
+			fallout_nzl_pirate_can_be_forced_to_settle = yes
+		}
+		custom_cost_trigger = {
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_medium }
+			fallout_nzl_pirate_can_be_forced_to_settle = yes
+		}
+		custom_cost_text = fallout_nzl_cost_anti_piracy
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.command_power_medium }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			add_command_power = fallout_nzl_cost_value
+			var:fallout_nzl_pirate_aggressor = { white_peace = ROOT }
+			fallout_nzl_record_pirate_settlement = yes
+		}
+		fire_only_once = yes
+		ai_will_do = { base = constant:fallout_nzl_ai.high }
+	}
+
+	fallout_nzl_mobilize_home_guard_state = {
+		icon = GFX_decision_fallout_nzl_mobilize_home_guard_state
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_home_guard_decision_open
+		}
+		state_target = any_controlled_state
+		target_trigger = {
+			FROM = {
+				is_fully_controlled_by = ROOT
+				OR = {
+					state = 284
+					state = 1079
+					state = 723
+					state = 1080
+					state = 1081
+				}
+				NOT = {
+					AND = {
+						has_state_flag = fallout_nzl_home_guard_mobilized
+						has_variable = fallout_nzl_home_guard_mobilization_generation
+						check_variable = {
+							var = fallout_nzl_home_guard_mobilization_generation
+							value = global.fallout_transition_generation
+							compare = equals
+						}
+					}
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			NOT = { has_country_flag = fallout_nzl_home_guard_mobilization_active }
+			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_low } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
+			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { infantry_equipment < constant:fallout_nzl_cost.infantry_equipment_low } }
+			NOT = { has_manpower < constant:fallout_nzl_cost.manpower_low }
+			NOT = { army_experience < constant:fallout_nzl_cost.army_experience }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
+		}
+		custom_cost_text = fallout_nzl_cost_home_guard
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_LOW }
+		days_remove = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_country_flag = fallout_nzl_home_guard_mobilization_active
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.infantry_equipment_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_manpower_cost = constant:fallout_nzl_cost.manpower_low }
+			multiply_temp_variable = { fallout_nzl_manpower_cost = -1 }
+			add_manpower = fallout_nzl_manpower_cost
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.army_experience }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			army_experience = fallout_nzl_cost_value
+		}
+		cancel_trigger = { OR = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } FROM = { NOT = { is_controlled_by = ROOT } } } }
+		cancel_effect = {
+			clr_country_flag = fallout_nzl_home_guard_mobilization_active
+			set_country_flag = fallout_nzl_major_mission_ever_failed
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		remove_effect = {
+			clr_country_flag = fallout_nzl_home_guard_mobilization_active
+			FROM = {
+				set_state_flag = fallout_nzl_home_guard_mobilized
+				set_variable = { fallout_nzl_home_guard_mobilization_generation = global.fallout_transition_generation }
+				add_building_construction = { type = bunker level = 1 instant_build = yes }
+			}
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_sea_lane_security = yes
+		}
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.normal
+			modifier = { factor = constant:fallout_nzl_ai.preferred has_war = yes }
+		}
+	}
+
+	fallout_nzl_dispatch_dairy_relief_convoy = {
+		icon = GFX_decision_fallout_nzl_dispatch_dairy_relief_convoy
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_dairy_convoy_decisions_open
+			NOT = { has_country_flag = fallout_nzl_two_island_supply_ring_complete }
+		}
+		available = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+			check_variable = { fallout_nzl_harbor_capacity > constant:fallout_nzl_value.critical }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			NOT = { has_equipment = { motorized_equipment < constant:fallout_nzl_cost.motorized_low } }
+			check_variable = { fallout_nzl_harbor_capacity > constant:fallout_nzl_value.critical }
+		}
+		custom_cost_text = fallout_nzl_cost_dairy_relief_convoy
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_LOW }
+		days_remove = constant:fallout_nzl_duration.standard
+		days_re_enable = constant:fallout_nzl_duration.cooldown
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.motorized_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = fallout_nzl_equipment_cost }
+		}
+		cancel_trigger = { NOT = { fallout_nzl_lifeboat_package_is_current = yes } }
+		cancel_effect = {
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		remove_effect = {
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			fallout_nzl_change_food_security = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.normal
+			modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes }
+		}
+	}
+
+	fallout_nzl_rebuild_partner_relief_port = {
+		icon = GFX_decision_fallout_nzl_rebuild_partner_relief_port
+		target_root_trigger = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_humanitarian_route
+			has_country_flag = fallout_nzl_postwar_relief_decisions_open
+			NOT = { has_country_flag = fallout_nzl_external_mission_active }
+		}
+		target_trigger = {
+			FROM = {
+				fallout_nzl_relief_partner_is_current = yes
+				NOT = { has_war_with = ROOT }
+				capital_scope = {
+					is_coastal = yes
+					is_owned_and_controlled_by = PREV
+				}
+				NOT = {
+					AND = {
+						has_country_flag = fallout_nzl_postwar_relief_received
+						has_variable = fallout_nzl_postwar_relief_generation
+						check_variable = {
+							var = fallout_nzl_postwar_relief_generation
+							value = global.fallout_transition_generation
+							compare = equals
+						}
+					}
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_medium } }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
+		}
+		custom_cost_trigger = {
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+			NOT = { has_equipment = { support_equipment < constant:fallout_nzl_cost.support_equipment_medium } }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.strained }
+		}
+		custom_cost_text = fallout_nzl_cost_partner_relief_port
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_HIGH }
+		days_remove = constant:fallout_nzl_duration.long
+		complete_effect = {
+			set_country_flag = fallout_nzl_external_mission_active
+			FROM = {
+				capital_scope = { save_global_event_target_as = fallout_nzl_partner_relief_port_state }
+			}
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.support_equipment_medium }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = support_equipment amount = fallout_nzl_equipment_cost }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_nzl_lifeboat_package_is_current = yes }
+				FROM = { NOT = { fallout_nzl_relief_partner_is_current = yes } }
+				FROM = { has_war_with = ROOT }
+				NOT = { has_event_target = fallout_nzl_partner_relief_port_state }
+				event_target:fallout_nzl_partner_relief_port_state = {
+					OR = {
+						NOT = { is_coastal = yes }
+						NOT = { is_owned_and_controlled_by = FROM }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = fallout_nzl_external_mission_active
+			clear_global_event_target = fallout_nzl_partner_relief_port_state
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		remove_effect = {
+			clr_country_flag = fallout_nzl_external_mission_active
+			event_target:fallout_nzl_partner_relief_port_state = {
+				add_building_construction = { type = naval_base level = 1 instant_build = yes }
+				set_state_flag = fallout_nzl_partner_relief_port_rebuilt
+				set_variable = { fallout_nzl_partner_relief_port_generation = global.fallout_transition_generation }
+			}
+			clear_global_event_target = fallout_nzl_partner_relief_port_state
+			FROM = {
+				set_country_flag = fallout_nzl_postwar_relief_received
+				set_variable = { fallout_nzl_postwar_relief_generation = global.fallout_transition_generation }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_nzl_cost.support_equipment_low }
+			}
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_sea_lane_security = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.low
+			modifier = { factor = constant:fallout_nzl_ai.preferred NOT = { fallout_nzl_harbor_is_critical = yes } }
+		}
+	}
+
+	fallout_nzl_guarantee_relief_partner = {
+		icon = GFX_decision_fallout_nzl_guarantee_relief_partner
+		target_root_trigger = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_humanitarian_route
+			has_country_flag = fallout_nzl_postwar_relief_decisions_open
+			NOT = { has_variable = fallout_nzl_guaranteed_relief_partner }
+		}
+		target_trigger = {
+			FROM = {
+				fallout_nzl_relief_partner_is_current = yes
+				NOT = { has_war_with = ROOT }
+				NOT = { is_guaranteed_by = ROOT }
+				NOT = {
+					AND = {
+						has_country_flag = fallout_nzl_relief_guarantee_received
+						has_variable = fallout_nzl_relief_guarantee_generation
+						check_variable = {
+							var = fallout_nzl_relief_guarantee_generation
+							value = global.fallout_transition_generation
+							compare = equals
+						}
+					}
+				}
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			NOT = { has_variable = fallout_nzl_guaranteed_relief_partner }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.stable }
+		}
+		custom_cost_trigger = {
+			NOT = { has_variable = fallout_nzl_guaranteed_relief_partner }
+			NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.stable }
+		}
+		custom_cost_text = fallout_nzl_cost_relief_guarantee
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_low }
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.command_power_low }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			add_command_power = fallout_nzl_cost_value
+			give_guarantee = FROM
+			set_variable = { fallout_nzl_guaranteed_relief_partner = FROM.id }
+			set_variable = { fallout_nzl_guaranteed_relief_partner_generation = global.fallout_transition_generation }
+			FROM = {
+				set_country_flag = fallout_nzl_relief_guarantee_received
+				set_variable = { fallout_nzl_relief_guarantee_generation = global.fallout_transition_generation }
+			}
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_sea_lane_security = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		fire_only_once = no
+		ai_will_do = { base = constant:fallout_nzl_ai.low }
+	}
+
+	fallout_nzl_revoke_raider_access = {
+		icon = GFX_decision_fallout_nzl_revoke_raider_access
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_isolation_route
+			has_country_flag = fallout_nzl_quiet_seas_decisions_open
+			fallout_nzl_pirate_aggressor_is_current = yes
+			NOT = { has_country_flag = fallout_nzl_quiet_seas_access_revoked }
+		}
+		available = {
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.critical }
+		}
+		custom_cost_trigger = {
+			NOT = { command_power < constant:fallout_nzl_cost.command_power_low }
+			check_variable = { fallout_nzl_parliament_trust > constant:fallout_nzl_value.critical }
+		}
+		custom_cost_text = fallout_nzl_cost_revoke_raider_access
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.command_power_low }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			add_command_power = fallout_nzl_cost_value
+			diplomatic_relation = {
+				country = var:fallout_nzl_pirate_aggressor
+				relation = military_access
+				active = no
+			}
+			diplomatic_relation = {
+				country = var:fallout_nzl_pirate_aggressor
+				relation = docking_rights
+				active = no
+			}
+			var:fallout_nzl_pirate_aggressor = {
+				diplomatic_relation = {
+					country = ROOT
+					relation = military_access
+					active = no
+				}
+				diplomatic_relation = {
+					country = ROOT
+					relation = docking_rights
+					active = no
+				}
+			}
+			set_country_flag = fallout_nzl_quiet_seas_access_revoked
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_gain }
+			fallout_nzl_change_sea_lane_security = yes
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		fire_only_once = no
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.normal
+			modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_pirate_war_is_current = yes }
+		}
+	}
+
+	fallout_nzl_quiet_seas_patrol = {
+		icon = GFX_decision_fallout_nzl_quiet_seas_patrol
+		visible = {
+			fallout_nzl_lifeboat_package_is_current = yes
+			has_country_flag = fallout_nzl_isolation_route
+			has_country_flag = fallout_nzl_quiet_seas_decisions_open
+			has_country_flag = fallout_nzl_quiet_seas_access_revoked
+			fallout_nzl_pirate_war_is_current = yes
+			NOT = { fallout_nzl_pirate_settlement_is_current = yes }
+		}
+		available = {
+			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			OR = {
+				AND = {
+					fallout_nzl_sea_road_licensing_is_current = yes
+					NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+				}
+				AND = {
+					NOT = { fallout_nzl_sea_road_licensing_is_current = yes }
+					NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			NOT = { navy_experience < constant:fallout_nzl_cost.navy_experience }
+			OR = {
+				AND = {
+					fallout_nzl_sea_road_licensing_is_current = yes
+					NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_medium } }
+				}
+				AND = {
+					NOT = { fallout_nzl_sea_road_licensing_is_current = yes }
+					NOT = { has_equipment = { convoy_1 < constant:fallout_nzl_cost.convoy_low } }
+				}
+			}
+		}
+		custom_cost_text = fallout_nzl_cost_quiet_seas_patrol
+		modifier = { civilian_factory_use = @FALLOUT_NZL_CIVILIAN_FACTORY_USE_LOW }
+		days_remove = constant:fallout_nzl_duration.standard
+		complete_effect = {
+			set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_low }
+			if = {
+				limit = { fallout_nzl_sea_road_licensing_is_current = yes }
+				set_temp_variable = { fallout_nzl_equipment_cost = constant:fallout_nzl_cost.convoy_medium }
+			}
+			multiply_temp_variable = { fallout_nzl_equipment_cost = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = fallout_nzl_equipment_cost }
+			set_temp_variable = { fallout_nzl_cost_value = constant:fallout_nzl_cost.navy_experience }
+			multiply_temp_variable = { fallout_nzl_cost_value = -1 }
+			navy_experience = fallout_nzl_cost_value
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_nzl_lifeboat_package_is_current = yes }
+				NOT = { fallout_nzl_pirate_war_is_current = yes }
+				fallout_nzl_pirate_settlement_is_current = yes
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.minor_loss }
+			multiply_temp_variable = { fallout_nzl_value_delta = -1 }
+			fallout_nzl_change_parliament_trust = yes
+		}
+		remove_effect = {
+			set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.moderate_gain }
+			if = {
+				limit = { fallout_nzl_sea_road_licensing_is_current = yes }
+				set_temp_variable = { fallout_nzl_value_delta = constant:fallout_nzl_value.major_gain }
+			}
+			fallout_nzl_change_sea_lane_security = yes
+			if = {
+				limit = { fallout_nzl_sea_road_licensing_is_current = yes }
+				custom_effect_tooltip = fallout_nzl_issue_sea_road_patrol_window_tt
+				hidden_effect = { fallout_nzl_issue_sea_road_patrol_window = yes }
+			}
+		}
+		fire_only_once = yes
+		ai_will_do = {
+			base = constant:fallout_nzl_ai.normal
+			modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_pirate_war_is_current = yes }
+			modifier = {
+				factor = constant:fallout_nzl_ai.preferred
+				fallout_nzl_sea_road_licensing_is_current = yes
+				NOT = { fallout_nzl_sea_road_patrol_window_is_current = yes }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# Consolidated source: common/decisions/fallout_successor_b7_usa_decisions.txt
+# ============================================================================
+# ============================================================================
+# CHAOS REDUX - FALLOUT USA CONTINUITY PROJECTS
+# ============================================================================
+# These projects are visible only after the B7 USA continuity receipt is
+# current. They change the frozen federal capital, strategic stocks, or memory
+# ledger and therefore remain separate from the Fallout consequence itself.
+#
+
+fallout_usa_continuity_projects_category = {
+	visible = {
+		fallout_successor_b7_usa_package_receipts_are_current = yes
+	}
+	icon = GFX_decision_category_fallout_usa_continuity_projects
+	priority = 96
+
+	fallout_usa_repair_inland_depot = {
+		name = fallout_usa_repair_inland_depot
+		desc = fallout_usa_repair_inland_depot_desc
+		icon = GFX_decision_fallout_usa_depot_belt_repair
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_supply_corridors_complete
+			NOT = { has_country_flag = fallout_usa_depot_belt_repair_complete }
+		}
+		available = { fallout_successor_b7_usa_depot_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_depot_project_is_available = yes }
+		custom_cost_text = fallout_usa_repair_inland_depot_cost
+		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.depot_civilian_factories }
+		days_remove = constant:fallout_successor_b7_project.depot_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.depot_infantry_spend }
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.depot_train_spend }
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_repair_inland_depot_effect_tt
+			fallout_successor_b7_usa_complete_depot_belt_repair = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.depot
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_muster_guard_compacts = {
+		name = fallout_usa_muster_guard_compacts
+		desc = fallout_usa_muster_guard_compacts_desc
+		icon = GFX_decision_fallout_usa_guard_muster
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_guard_compacts_complete
+			NOT = { has_country_flag = fallout_usa_guard_muster_complete }
+		}
+		available = { fallout_successor_b7_usa_guard_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_guard_project_is_available = yes }
+		custom_cost_text = fallout_usa_muster_guard_compacts_cost
+		days_remove = constant:fallout_successor_b7_project.guard_duration
+		complete_effect = {
+			add_manpower = constant:fallout_successor_b7_project.guard_manpower_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fallout_successor_b7_project.guard_infantry_spend }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.guard_support_spend }
+			add_command_power = constant:fallout_successor_b7_project.guard_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_muster_guard_compacts_effect_tt
+			fallout_successor_b7_usa_complete_guard_muster = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.guard
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_ratify_lakes_charter = {
+		name = fallout_usa_ratify_lakes_charter
+		desc = fallout_usa_ratify_lakes_charter_desc
+		icon = GFX_decision_fallout_usa_lakes_charter
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_bilateral_reconstruction_open
+			NOT = { has_country_flag = fallout_usa_lakes_charter_complete }
+		}
+		available = { fallout_successor_b7_usa_charter_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_charter_project_is_available = yes }
+		custom_cost_text = fallout_usa_ratify_lakes_charter_cost
+		days_remove = constant:fallout_successor_b7_project.charter_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = convoy amount = constant:fallout_successor_b7_project.charter_convoy_spend }
+			add_command_power = constant:fallout_successor_b7_project.charter_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_ratify_lakes_charter_effect_tt
+			fallout_successor_b7_usa_complete_lakes_charter = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.charter
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_sweep_radio_dead_zones = {
+		name = fallout_usa_sweep_radio_dead_zones
+		desc = fallout_usa_sweep_radio_dead_zones_desc
+		icon = GFX_decision_fallout_usa_radio_sweep
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_continental_radio_net_complete
+			NOT = { has_country_flag = fallout_usa_radio_sweep_complete }
+		}
+		available = { fallout_successor_b7_usa_radio_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_radio_project_is_available = yes }
+		custom_cost_text = fallout_usa_sweep_radio_dead_zones_cost
+		days_remove = constant:fallout_successor_b7_project.radio_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:fallout_successor_b7_project.radio_support_spend }
+			add_command_power = constant:fallout_successor_b7_project.radio_command_spend
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_sweep_radio_dead_zones_effect_tt
+			fallout_successor_b7_usa_complete_radio_sweep = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.radio
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+
+	fallout_usa_launch_federal_reconstruction_drive = {
+		name = fallout_usa_launch_federal_reconstruction_drive
+		desc = fallout_usa_launch_federal_reconstruction_drive_desc
+		icon = GFX_decision_fallout_usa_reconstruction_drive
+		visible = {
+			fallout_successor_b7_usa_package_receipts_are_current = yes
+			has_country_flag = fallout_usa_federal_reconstruction_complete
+			NOT = { has_country_flag = fallout_usa_reconstruction_drive_complete }
+		}
+		available = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
+		custom_cost_trigger = { fallout_successor_b7_usa_reconstruction_project_is_available = yes }
+		custom_cost_text = fallout_usa_launch_federal_reconstruction_drive_cost
+		modifier = { civilian_factory_use = constant:fallout_successor_b7_project.reconstruction_civilian_factories }
+		days_remove = constant:fallout_successor_b7_project.reconstruction_duration
+		complete_effect = {
+			add_equipment_to_stockpile = { type = train_equipment amount = constant:fallout_successor_b7_project.reconstruction_train_spend }
+		}
+		remove_effect = {
+			custom_effect_tooltip = fallout_usa_launch_federal_reconstruction_drive_effect_tt
+			fallout_successor_b7_usa_complete_reconstruction_drive = yes
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { fallout_successor_b7_usa_package_receipts_are_current = yes }
+				capital_scope = { NOT = { is_controlled_by = ROOT } }
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = fallout_usa_continuity_project_cancelled_tt
+			fallout_successor_b7_usa_project_cancel_penalty = yes
+		}
+		ai_will_do = {
+			base = constant:fallout_successor_b7_project_ai.reconstruction
+			modifier = { factor = constant:fallout_successor_b7_project_ai.war_multiplier has_war = yes }
+		}
+	}
+}

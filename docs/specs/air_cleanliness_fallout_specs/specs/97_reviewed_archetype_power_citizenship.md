@@ -32,4 +32,4 @@ The chain does not request Fallout, create countries, transfer population across
 
 The dedicated report art source, processed PNG, manifest, and GFX handoff live under `docs/assets/866_power_citizenship/`. The runtime texture is `gfx/event_pictures/fallout/report_event_fallout_power_citizenship.dds`, registered as `GFX_report_event_fallout_power_citizenship`.
 
-Player-facing text is in `localisation/english/fallout_world_end_power_citizenship_l_english.yml`. The Event Log detail and name routers use `fallout.event_log.power_citizenship.detail` and `fallout.event_log.power_citizenship.name`.
+Player-facing text is in `localisation/english/fallout_consolidated_l_english.yml`. The Event Log detail and name routers use `fallout.event_log.power_citizenship.detail` and `fallout.event_log.power_citizenship.name`.

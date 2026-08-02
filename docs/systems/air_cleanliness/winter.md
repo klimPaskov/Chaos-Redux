@@ -8,17 +8,17 @@ Air Winter does not own the Fallout request coordinator, blackout presentation, 
 
 The implementation is distributed across:
 
-- `common/script_constants/air_cleanliness_winter_constants.txt`
-- `common/script_constants/air_cleanliness_winter_presentation_states.txt`
-- `common/script_constants/air_cleanliness_winter_event_constants.txt`
-- `common/script_constants/air_cleanliness_winter_response_constants.txt`
-- `common/scripted_triggers/air_cleanliness_winter_triggers.txt`
-- `common/scripted_effects/air_cleanliness_winter_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_event_effects.txt`
-- `common/scripted_effects/air_cleanliness_winter_response_effects.txt`
-- `common/dynamic_modifiers/air_cleanliness_winter_dynamic_modifiers.txt`
-- `common/decisions/categories/air_cleanliness_winter_categories.txt`
-- `common/decisions/air_cleanliness_winter_decisions.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
+- `common/scripted_triggers/fallout_consolidated_triggers.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`
+- `common/decisions/categories/fallout_consolidated_categories.txt`
+- `common/decisions/fallout_consolidated_decisions.txt`
 - `events/fallout_world_end_events.txt`
 
 ## Monthly integration
@@ -73,7 +73,7 @@ Boolean state uses flags. Normalization clamps every bounded ledger from 0 throu
 
 ## Reviewed regional classification
 
-`common/script_constants/air_cleanliness_winter_presentation_states.txt` is the authoritative typed state-ID ledger. It covers state IDs 1 through 1081 exactly once. It includes impassable states for presentation audit coverage, while gameplay effects still skip invalid states.
+`common/script_constants/fallout_consolidated_constants.txt` is the authoritative typed state-ID ledger. It covers state IDs 1 through 1081 exactly once. It includes impassable states for presentation audit coverage, while gameplay effects still skip invalid states.
 
 | Value | Class | Reviewed state count |
 | ---: | --- | ---: |
@@ -214,13 +214,13 @@ The retired state-64 proof established stable state-bound entity creation and cl
 Proof files are:
 
 - `gfx/entities/air_cleanliness_winter_proof.asset`
-- `common/scripted_effects/air_cleanliness_winter_visual_effects.txt`
-- `common/script_constants/air_cleanliness_winter_visual_constants.txt`
+- `common/scripted_effects/fallout_consolidated_effects.txt`
+- `common/script_constants/fallout_consolidated_constants.txt`
 - `gfx/entities/air_cleanliness_winter_regional_visuals.asset`
 - `gfx/entities/air_cleanliness_winter_regional_particles.asset`
-- `common/scripted_guis/air_cleanliness_winter_visual_proof_scripted_gui.txt`
-- `interface/air_cleanliness_winter_visual_proof.gfx`
-- `interface/air_cleanliness_winter_visual_proof.gui`
+- `common/scripted_guis/fallout_consolidated_scripted_gui.txt`
+- `interface/fallout_consolidated.gfx`
+- `interface/fallout_consolidated.gui`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_NORMAL_MAP_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_REGIONAL_VISUAL_WIRING_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_LIFECYCLE_PROOF.md`
@@ -234,12 +234,12 @@ All current final Air Winter art is Fallout-owned and uses dedicated paths.
 
 | Use | Sprite identifiers | Runtime path | Registry |
 | --- | --- | --- | --- |
-| Phase modifiers | `GFX_air_winter_phase_1` through `GFX_air_winter_phase_6` | `gfx/interface/air_cleanliness_winter/modifiers/` | `interface/air_cleanliness_winter.gfx` |
-| Country air operations | `GFX_air_winter_phase_2` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_phase_2.dds` | `interface/air_cleanliness_winter.gfx` |
-| Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/air_cleanliness_winter.gfx` |
-| Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, `GFX_report_event_air_winter_recovery`, `GFX_report_event_air_winter_island_refugee_harbor`, `GFX_report_event_air_winter_desert_water_convoy`, and `GFX_report_event_air_winter_dead_city_salvage` | `gfx/event_pictures/fallout/` | `interface/air_cleanliness_winter.gfx` |
+| Phase modifiers | `GFX_air_winter_phase_1` through `GFX_air_winter_phase_6` | `gfx/interface/air_cleanliness_winter/modifiers/` | `interface/fallout_consolidated.gfx` |
+| Country air operations | `GFX_air_winter_phase_2` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_phase_2.dds` | `interface/fallout_consolidated.gfx` |
+| Disease modifier | `GFX_air_winter_disease_pressure_state` | `gfx/interface/air_cleanliness_winter/modifiers/air_winter_disease_pressure_state.dds` | `interface/fallout_consolidated.gfx` |
+| Report events | `GFX_report_event_air_winter_phase_1` through `GFX_report_event_air_winter_phase_6`, `GFX_report_event_air_winter_recovery`, `GFX_report_event_air_winter_island_refugee_harbor`, `GFX_report_event_air_winter_desert_water_convoy`, and `GFX_report_event_air_winter_dead_city_salvage` | `gfx/event_pictures/fallout/` | `interface/fallout_consolidated.gfx` |
 | Map mode buttons | Selected and deselected sprites for phase, exposure, and survival | `gfx/interface/mapmode/custom/` | `interface/mapmodes_interface.gfx` |
-| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/air_cleanliness_winter.gfx` |
+| Response decisions | `GFX_decision_air_winter_*` | `gfx/interface/air_cleanliness_winter/decisions/` | `interface/fallout_consolidated.gfx` |
 | Regional ground and props | `air_winter_class_<class>_phase_<phase>_entity` and class prop aliases | `gfx/models/air_cleanliness_winter/regional/` | `gfx/entities/air_cleanliness_winter_regional_visuals.asset` |
 | Regional weather | Snow, cold-rain, ash, and thaw particle entities | `gfx/particles/air_cleanliness_winter/` | `gfx/entities/air_cleanliness_winter_regional_particles.asset` |
 

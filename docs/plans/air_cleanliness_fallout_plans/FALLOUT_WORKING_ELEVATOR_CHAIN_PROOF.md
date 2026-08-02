@@ -2,11 +2,11 @@
 
 ## Static evidence
 
-- Candidate row: `common/scripted_effects/fallout_world_end_event_candidate_effects.txt`, candidate `324`.
-- Trigger contract: `common/scripted_triggers/fallout_world_end_working_elevator_event_triggers.txt`.
-- Transaction effects: `common/scripted_effects/fallout_world_end_working_elevator_event_effects.txt`.
+- Candidate row: `common/scripted_effects/fallout_consolidated_effects.txt`, candidate `324`.
+- Trigger contract: `common/scripted_triggers/fallout_consolidated_triggers.txt`.
+- Transaction effects: `common/scripted_effects/fallout_consolidated_effects.txt`.
 - Event ids `324` through `330`: `events/fallout_world_end_events.txt`.
-- Constants: `fallout_event_324_*` groups in `common/script_constants/fallout_world_end_working_elevator_constants.txt`.
+- Constants: `fallout_event_324_*` groups in `common/script_constants/fallout_consolidated_constants.txt`.
 - Event Log id `9125`: shared effects and scripted localisation plus the dedicated fifteen-payload mapping.
 - Report asset: source, processed preview, DDS, manifest, and GFX handoff under `docs/assets/air_cleanliness_fallout/fallout_working_elevator/`.
 
