@@ -291,6 +291,8 @@ black_plague_rat_king_complete_terminal_capital_campaign = {
 		}
 		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_campaign_capital_terminal_gain }
 		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		add_to_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_decision.terminal_campaign_capital_dominion_gain }
+		clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		FROM = {
 			save_event_target_as = black_plague_terminal_campaign_state
 			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_spread.rat_occupation_base }
@@ -329,6 +331,14 @@ black_plague_rat_king_cancel_terminal_capital_campaign = {
 			NOT = { has_global_flag = black_plague_terminal_takeover_active }
 			NOT = { has_global_flag = world_end }
 		}
+		if = {
+			limit = { NOT = { has_variable = global.black_plague_rat_king_terminal_preparation } }
+			set_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_value.zero }
+		}
+		add_to_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_decision.terminal_campaign_capital_failure_terminal_gain }
+		clamp_variable = { var = global.black_plague_rat_king_terminal_preparation min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+		add_to_variable = { black_plague_rat_king_hunger = constant:black_plague_rat_decision.terminal_campaign_capital_failure_hunger_gain }
+		clamp_variable = { var = black_plague_rat_king_hunger min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
 		country_event = { id = chaosx.nr20.86 }
 	}
 	clr_country_flag = black_plague_rat_king_terminal_campaign_active
