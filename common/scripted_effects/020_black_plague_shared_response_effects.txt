@@ -896,7 +896,9 @@ black_plague_cancel_shared_country_action = {
 # COUNTRY scope. Terminal cleanup is deliberately explicit: shared response
 # flags are state-scoped and must not survive a cured episode or a world-end
 # cleanup pass. Existing four-lane response helpers are reused where ownership
-# is still valid, then all shared flags are removed from every live record.
+# is still valid, then ordinary response flags are removed from every live
+# record. Timed aftermath programmes and the permanent memorial/condemnation
+# records intentionally remain under their own expiry and country-history gates.
 black_plague_clear_country_response_runtime = {
 	for_each_scope_loop = {
 		array = global.black_plague_response_states
@@ -948,10 +950,6 @@ black_plague_clear_country_response_runtime = {
 	clr_country_flag = black_plague_shared_protocol_hoarded
 	clr_country_flag = black_plague_shared_steal_progress_cooldown
 	clr_country_flag = black_plague_shared_international_mission_active
-	clr_country_flag = black_plague_shared_reconstruction_vigilance_active
-	clr_country_flag = black_plague_shared_inspection_compact_active
-	clr_country_flag = black_plague_weaponization_condemnation_history
-	clr_country_flag = black_plague_memorial_biosecurity_charter
 	clear_variable = black_plague_shared_country_action
 	clear_variable = black_plague_shared_action_pending
 	black_plague_recompute_country_response_capacity = yes
@@ -974,7 +972,6 @@ black_plague_clear_shared_state_flags = {
 	clr_state_flag = black_plague_shared_burial_sanitation_active
 	clr_state_flag = black_plague_shared_transport_sealed
 	clr_state_flag = black_plague_shared_perimeter_evacuated
-	clr_state_flag = black_plague_population_recovery_program_active
 	clr_state_flag = black_plague_shared_foreign_medical_mission_active
 	clr_state_flag = black_plague_shared_maintain_containment_active
 	clr_state_flag = black_plague_shared_controlled_reopening_active
@@ -987,8 +984,6 @@ black_plague_clear_shared_state_flags = {
 	clr_state_flag = black_plague_shared_armored_clearance_complete
 	clr_state_flag = black_plague_shared_air_reconnaissance_complete
 	clr_state_flag = black_plague_shared_liberation_quarantine_active
-	if = { limit = { has_dynamic_modifier = { modifier = black_plague_population_recovery_program } } remove_dynamic_modifier = { modifier = black_plague_population_recovery_program } }
-	if = { limit = { has_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } } remove_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } }
 	clear_variable = black_plague_shared_action
 	clear_variable = black_plague_shared_action_owner
 	clear_variable = black_plague_shared_action_scale
