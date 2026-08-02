@@ -140,6 +140,21 @@ country_event = {
 		custom_effect_tooltip = africa_world_order.1.e.tt
 		ai_chance = {
 			base = constant:africa_world_order.response_event_low_chance
+			# An ultimatum can still be chosen by a human as a bluff, but an AI
+			# expedition profile must have the same material footprint that the
+			# final declaration validator requires. This prevents weak colonial
+			# participants from consuming the bounded response weight and starving
+			# a viable expedition planner.
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_half
+				is_ai = yes
+				NOT = { africa_ai_scramble_expedition_materially_ready = yes }
+			}
+			modifier = {
+				factor = constant:africa_world_order.ai_modifier_double
+				is_ai = yes
+				africa_ai_scramble_expedition_materially_ready = yes
+			}
 			modifier = {
 				factor = constant:africa_world_order.ai_modifier_quadruple
 				check_variable = { africa_ai_scramble_pre_response_profile = constant:africa_ai_profile.power_expedition_coalition }
