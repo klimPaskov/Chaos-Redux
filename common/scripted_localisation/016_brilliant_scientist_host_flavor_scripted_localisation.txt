@@ -275,3 +275,51 @@ defined_text = {
 	}
 	text = { localization_key = brilliant_scientist_news_breakthrough_clause_default }
 }
+
+defined_text = {
+	name = GetBrilliantScientistNewsContainmentClause
+
+	text = {
+		trigger = {
+			has_event_target = brilliant_scientist_current_host
+			event_target:brilliant_scientist_current_host = {
+				OR = {
+					has_country_flag = brilliant_scientist_singularity_armed
+					has_country_flag = brilliant_scientist_singularity_arming_ever_started
+				}
+			}
+		}
+		localization_key = brilliant_scientist_news_containment_clause_singularity
+	}
+	text = {
+		trigger = {
+			has_event_target = brilliant_scientist_current_host
+			event_target:brilliant_scientist_current_host = {
+				check_variable = {
+					var = brilliant_scientist_project_weaponization_count
+					value = constant:brilliant_scientist_value.zero
+					compare = greater_than
+				}
+			}
+		}
+		localization_key = brilliant_scientist_news_containment_clause_weaponized
+	}
+	text = {
+		trigger = {
+			has_event_target = brilliant_scientist_current_host
+			event_target:brilliant_scientist_current_host = {
+				OR = {
+					check_variable = { brilliant_scientist_project_force_teleportation_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_cloning_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_robotics_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_paleogenetics_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_xenobiological_synthesis_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_alien_arms_formation_count > constant:brilliant_scientist_value.zero }
+					check_variable = { brilliant_scientist_project_force_temporal_formation_count > constant:brilliant_scientist_value.zero }
+				}
+			}
+		}
+		localization_key = brilliant_scientist_news_containment_clause_forces
+	}
+	text = { localization_key = brilliant_scientist_news_containment_clause_default }
+}
