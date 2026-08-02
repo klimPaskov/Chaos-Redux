@@ -2,6 +2,8 @@
 
 ## Scope
 
+Current focus-ownership decision (2026-08-02): the installed CAT carrier exposes only `generic_focus`, so the package uses the full Event 006 framework after proving that no meaningful existing tree needs preservation. This minimal-tree exception supersedes the earlier “additive” label for focus ownership; the package remains fail-closed for the separate FORM-07 identity, flag, member-adapter, and readiness gates.
+
 The CAT carrier now has an additive Event 006 package. Vanilla CAT history, capital state 165, flag, and `CAT_lluis_companys` remain authoritative; no country, history, portrait, or advisor asset was created.
 
 ## Changed surfaces
