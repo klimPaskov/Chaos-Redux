@@ -7704,6 +7704,11 @@ africa_cleanup_action = {
 		africa_diaspora_cleanup_action_state = yes
 		set_variable = { africa_last_action_id = africa_active_action_id }
 		set_variable = { africa_last_action_outcome = africa_active_action_outcome }
+		# Preserve the immutable row-specific objective for the result event.
+		# The live objective is cleared below with the rest of the active record;
+		# retaining this snapshot keeps the action log and detail window aligned
+		# with the matrix row that actually ran.
+		set_variable = { africa_last_action_objective = africa_active_action_objective }
 		set_variable = { africa_last_action_generation = africa_active_action_generation }
 		set_country_flag = africa_has_action_history
 		africa_remove_current_action_mission = yes
