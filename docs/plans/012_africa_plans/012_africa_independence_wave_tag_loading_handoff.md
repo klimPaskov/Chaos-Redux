@@ -90,8 +90,8 @@ Soviet-collapse provenance remains excluded for both shell and vanilla-carrier r
 
 The nine vanilla councils are recruited only by the hidden Event 012 event after package activation. Replaying the queue or re-running a registration recovery path cannot duplicate a council, and political ratification still installs the leader role and party route through the existing settlement helpers.
 
-## Reconciled sovereign visual boundary (2026-08-01)
+## Reconciled sovereign visual boundary (2026-08-02)
 
-The character and portrait surface described above is superseded by the installed Event 012 sovereign package. Runtime character definitions use the sixteen `africa_priority_*_sovereign` identities, and the v2 portrait handoff records one decorated African king or queen per package on a plain, low-detail background in the HOI4 painted style. These are the player-facing leaders after the package reaches its ratification gate. No council, delegation, crowd, or institutional body is used as the leader portrait.
+The character and portrait surface described above is superseded by the installed Event 012 sovereign package. Runtime character definitions use the sixteen `africa_priority_*_sovereign` identities, and the v3 portrait handoff records one decorated African king or queen per package on a plain, low-detail matte background in the HOI4 painted style. These are the player-facing leaders after the package reaches its ratification gate. No council, delegation, crowd, or institutional body is used as the leader portrait.
 
 The existing `africa_priority_member_install_council_government` helper name and the `*_council_party` localisation keys remain internal constitutional route labels because the accepted payoff matrix still distinguishes council institutions from sovereign leadership. They do not replace the sovereign character or portrait and must not be read as permission to add a collective leader image. No tag, cosmetic tag, or alternate carrier is introduced by this reconciliation.
