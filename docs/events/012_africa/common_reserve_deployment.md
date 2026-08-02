@@ -12,6 +12,8 @@ Activation records the host's opening day, a bounded settlement window, and the 
 
 `on_war_relation_added` treats `ROOT` as the attacker and `FROM` as the defender. A protected, achievement-counted partner with a controlled capital can receive one deployment when the current host's reserve posture is active and the stockpile can pay the configured per-war cost. The host stockpile is debited at deployment, the partner receives a deployment flag and deadline, and the sequence is copied to the partner for exact positive-proof counting.
 
+The defensive trigger also requires `africa_member_host_generation_is_current`, so a protected receipt from a superseded host cannot spend the successor host's reserve.
+
 Protected partners that start an offensive war receive no reserve. The host records `africa_achievement_reserve_offensive_abuse` so the achievement cannot be satisfied by a misused posture.
 
 ## Settlement and cleanup
