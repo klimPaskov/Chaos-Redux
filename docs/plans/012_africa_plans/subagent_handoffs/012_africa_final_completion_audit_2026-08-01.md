@@ -122,7 +122,7 @@ The final B1-B5 plan remains active:
 | B2: Charter, overlays, constitutions, and thirteen reachable priority packages | Source-present; end-to-end acceptance and provenance remain open. Three additional package/host bindings remain dormant. |
 | B3: achievement exact owners and disqualifiers | Source tranches installed; live acceptance remains open. Rows 24, 28, 30, 32, 33, and 38 have bounded owner callsites. Row 37 remains fail-closed until an exact civilian-damage owner exists, and remaining matrix disqualifiers still require authoritative transitions. |
 | B4: AI, focus, Scramble, package, and terminal scenarios | Static checks only; two AI blockers, focus layout ambiguity, package readiness, and terminal scenarios remain open. |
-| B5: localisation, log, docs, ledger, specs, workbook, and final audits | Docs, ledger, and catalog/export snapshots reconciled; gameplay acceptance remains open | Native-language review, player-facing wording, spec promotion, and final acceptance remain open. |
+| B5: localisation, log, docs, ledger, specs, workbook, and final audits | Docs, ledger, and catalog/export snapshots are reconciled. Native-language review, player-facing wording, spec promotion, and final acceptance remain open. |
 
 No accepted blocker is safely disposable as “future polish.”
 
