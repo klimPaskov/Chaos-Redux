@@ -63,7 +63,7 @@ The mapped read-only audits were performed by the Event 016 focus-tree, decision
 
 - Focused Event Chain Viewer lint returned no Event 016 issue records. Workspace-wide helper projection remained partial because of repository size.
 - All Event 016 `.gfx` texture paths checked in the core audit resolve to runtime files.
-- Runtime presentation includes fifteen leader/scientist portraits, fifteen advisor cards, six real severe-stage frame sheets and static fallbacks, 64 Directorate UI textures, 100 focus icons, 51 achievement states, seven flag triplets, seven reports, six super-event images, and six owned WAV cues.
+- Runtime presentation includes fifteen leader/scientist portraits, fifteen advisor cards, six real severe-stage frame sheets and static fallbacks, 64 Directorate UI textures, 100 focus icons, 51 achievement states, seven flag triplets, thirteen reports, six super-event images, and six owned WAV cues.
 - Six super-event packages have image, text, quotation, button, description, sound, settings, trigger, and aftermath wiring.
 
 ## Static timing review
