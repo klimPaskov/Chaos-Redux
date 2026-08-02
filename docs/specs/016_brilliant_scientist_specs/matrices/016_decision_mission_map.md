@@ -14,7 +14,7 @@ Project Capacity is visible. Independent Capacity and Grievance are hidden. The 
 | Governance | Scientific authority | Publish method, compartmentalize, safety board, final authority, replication teams | Time, project capacity, prestige | Mandate, Dependence, Exposure | Match public or secret strategy |
 | Security | Protection and counterintelligence | State security, lab guard, loyalty review, relocation, false trails | Equipment, units, intelligence, logistics | Exposure, Independent Capacity, Grievance | React to actual threat |
 | Resources | National commitment | Civilian teams, military production, field trials, medical programs, strategic materials | Factories, equipment, manpower, fuel, XP | Project progress, Dependence | Check stockpiles and war pressure |
-| Projects | Portfolio | Approve, suspend, publish, weaponize, dismantle | Project-specific | All values and project stage | Finish fewer coherent projects |
+| Projects | Portfolio | Approve, suspend, publish, weaponize, dismantle, qualify high-speed delivery | Project-specific | All values and project stage | Finish fewer coherent projects |
 | Foreign | Contact management | Invitation response, joint lab, protection pact, public challenge | Diplomacy, access, technology | Exposure, dependence, relations | Select relevant countries only |
 | Sovereignty | Final confrontation | Negotiate, charter, dismiss, confine, kill, seize | Units, supply, legitimacy, territory | Control status, Grievance | Estimate capacity before action |
 | Recovery | Post-Kruger | Rebuild research, recover archives, amnesty, inspection | Time, factories, security | Scientific Vacuum, project remnants | Prioritize urgent sites |
@@ -91,6 +91,7 @@ Project Capacity is visible. Independent Capacity and Grievance are hidden. The 
 | Robot force | Military factories, power, rare materials, support equipment |
 | Creature force | Medical capacity, handlers, support equipment, food proxy |
 | Portal operation | Energy, terminal capacity, advanced materials |
+| High-speed qualification | Air Experience, support and motorized equipment, fuel, manpower, civilian factories, time |
 | Temporal action | Synchronization capacity, temporal debt, bounded target record, anchor availability |
 | Biological use | Stockpile, aircraft or delivery, condemnation, deaths, contamination |
 | Singularity | Several facilities, strategic materials, energy, years, world-threat exposure |

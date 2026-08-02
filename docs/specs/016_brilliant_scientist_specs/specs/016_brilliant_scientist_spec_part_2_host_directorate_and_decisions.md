@@ -320,6 +320,8 @@ Purpose:
 
 Test rockets, weapons, monsters, portals, temporal devices, or biological systems away from the main population.
 
+The Advanced Materials plus Rocketry qualification action is a distinct paid test-range consumer. After Materials Deployment, Rocketry Prototype, expanded prototype works, healthy ledgers, and two valid facilities, the host targets one owned, controlled, core, non-impassable state for a 180-day corridor. It consumes Air Experience, support and motorized equipment, fuel, manpower, Political Power, and three civilian factories. The resulting report chooses a host-local national qualification board or a portable Kruger proprietary flight envelope; invalid transfer, project damage, containment, or terminal cleanup cancels the unfinished corridor without refund.
+
 Requirements:
 
 - Suitable low-population state or controlled overseas site.
