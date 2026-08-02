@@ -6,6 +6,8 @@ Scope: static and runtime-contract audit of the KRG country package and the host
 
 ## Executive disposition
 
+Post-audit note, 2026-08-02: the country-tag mapping remains correctly pointed at `common/countries/Kruger State KRG.txt`, while the separate history path is `history/countries/KRG - Kruger State.txt`. The tracked-holder repair adds `KRG_warren_kruger` to that dormant history and removes the opening chain's hard-coded DJX dependency.
+
 The static KRG package is broadly covered: the tag, country definition, dormant history, fixed Warren Kruger character, route portraits and flags, 100-focus tree, route AI plans, project-force equipment/technologies, localisation, and static map data are present. The package is intentionally dormant until a formation or takeover path activates it.
 
 The audit found a country-instantiation gap for the charter, rebellion, and enclave routes. `brilliant_scientist_form_kruger_state_from_verified_plan` required `KRG = { exists = no }`, then transferred states directly with `set_state_owner_to = KRG` and `set_state_controller_to = KRG` before entering a `KRG = { ... }` scope. The vanilla effects documentation defines `set_state_owner_to` only as assigning the owner of a state, while `release` and `create_dynamic_country` are the documented country-instantiation effects. The parent repair now cores only the verified capital for KRG, calls the documented `release = KRG` effect, and leaves the existing route-specific transfer and revalidation sequence in place. This resolves the static instantiation omission; live formation and cleanup acceptance remain user-owned.
