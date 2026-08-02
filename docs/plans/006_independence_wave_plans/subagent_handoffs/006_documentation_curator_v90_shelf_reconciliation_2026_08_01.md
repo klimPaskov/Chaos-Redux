@@ -4,6 +4,8 @@ Date: 2026-08-01
 
 Role: documentation curator, current-status reconciliation only
 
+> **Superseded current-count notice (2026-08-02):** The v102 evidence handoff and current portrait-shelf index reconciliation supersede this dated v90 shelf snapshot. Preserve its 75-master workspace count as historical evidence only. Current authority is 80 masters with all 80 indexed or explicitly recorded, represented by 79 table rows plus the retry-2 tail record.
+
 ## Disposition
 
 Event 006 remains **HOLD / PARTIAL**. The current shelf contains 75 original-size PNG masters in the flat `portraits_generated_png` directory after the CHU Bolgar v90 v1/v2 original-size repaint copies, plus its README and manifest (77 files total). This count is an asset-workspace fact only; it does not promote a package, portrait, character, DDS, `.gfx` consumer, or content attestation.

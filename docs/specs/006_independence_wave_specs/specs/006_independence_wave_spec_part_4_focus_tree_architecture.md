@@ -2,9 +2,13 @@
 
 All names in this file are working labels, not final localisation.
 
+## Accepted implementation scope (2026-08-02)
+
+Every admitted Event 006 release uses the single shared `independence_wave_focus_tree` generic framework. Package and regional differences are gated shared-focus nodes and scripted adapters inside that tree. An existing meaningful carrier may retain its own tree only through a reviewed additive carrier contract, currently represented by IW-012 ICE. Bespoke country `focus_tree = {}` definitions are not in the current implementation scope. The broader layered architecture and country-ambition language below remains accepted design intent, but those modules are implemented as gated content inside the shared tree unless a later parent decision changes this scope.
+
 ## Shared framework, adapted identity
 
-Every Independence Wave country receives a deep common framework. The framework is not one identical generic tree.
+Every Independence Wave country receives a deep common framework. Under the accepted current scope, that framework is materialized as one shared generic tree with gated identity, regional, and package modules rather than separate bespoke country trees.
 
 It is assembled from four layers:
 
@@ -562,7 +566,7 @@ This route must be explicit and should cleanly close incompatible Event 6 conten
 
 ### Expansion lane
 
-Every full tree has a distinct regional ambition lane.
+The shared generic tree exposes a distinct regional ambition lane for each package and region through gated modules.
 
 The lane uses candidate package data and formable families.
 
@@ -662,7 +666,7 @@ The detailed regional matrix is in `matrices/006_regional_overlay_matrix.csv`.
 
 ## Country ambition modules
 
-Selected candidates receive one bespoke ambition module. Other candidates use a regional ambition family with package-specific states and names.
+Selected candidates receive one gated ambition module inside the shared generic tree. Other candidates use a regional ambition family with package-specific states and names inside that same tree. This is module-level variation, not a separate bespoke country focus tree.
 
 A module can include:
 

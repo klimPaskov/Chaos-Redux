@@ -2,11 +2,13 @@
 
 Date: 2026-08-02
 
+> **Superseded current-count notice (2026-08-02):** This v100 snapshot predates the same-day index reconciliation in `006_portrait_shelf_index_reconciliation_2026_08_02.md`. Preserve its 80-master evidence, but read its 74-row and six-unindexed wording as historical. Current authority is 80 physical masters with all 80 indexed or explicitly recorded, represented by 79 table rows plus the retry-2 tail record.
+
 ## Scope
 
 This handoff records a documentation-only reconciliation of the current Event 006 portrait shelf. It does not promote a package, create or wire an asset, add an advisor icon, or change gameplay.
 
-## Current authority
+## Historical v100 authority snapshot
 
 - `docs/assets/006_independence_wave/portraits_generated_png/` contains 80 original-size PNG masters in one flat directory.
 - The current index records 74 rows.

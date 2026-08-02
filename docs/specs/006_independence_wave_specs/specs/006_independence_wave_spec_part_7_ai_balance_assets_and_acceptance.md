@@ -2,6 +2,10 @@
 
 All names in this file are working labels, not final localisation.
 
+## Accepted implementation scope (2026-08-02)
+
+AI, balance, asset, achievement, and acceptance checks apply to the single shared `independence_wave_focus_tree` generic framework used by every admitted Event 006 release. Package and regional variation is gated shared content and scripted adapters inside that tree. A reviewed additive carrier may preserve a meaningful existing tree, currently IW-012 ICE. Bespoke country focus-tree definitions and live/in-game testing are outside the current implementation scope. This scope decision does not waive package, formable, asset, AI, balance, rights, or runtime gates.
+
 ## AI design promise
 
 Every Event 6 country must behave like a new state trying to survive. AI behavior changes with package type, government route, former-host threat, patron access, league state, geography, force strength, and chaos.
@@ -748,7 +752,7 @@ Completion is evaluated from source and static evidence. Repository source inspe
 
 - every released country has an origin marker
 - every country receives values, decisions, ideas, forces, and AI
-- every country receives a full tree or additive overlay
+- every country receives the shared generic tree or a reviewed additive carrier assignment
 - existing meaningful trees are preserved
 - no serious fighting country spawns empty
 - all new tags and route tags end in `X`
@@ -765,7 +769,7 @@ Completion is evaluated from source and static evidence. Repository source inspe
 - survival, government, economy, military, diplomacy, former host, expansion, league, and ambition content exists
 - routes have real depth and payoffs
 - regional overlays change play
-- signature countries have bespoke modules
+- signature countries have gated package modules inside the shared generic tree; no separate bespoke focus-tree definition is required in the current scope
 - AI route behavior exists
 - negative ideas have lifecycles
 - icons and localisation are complete

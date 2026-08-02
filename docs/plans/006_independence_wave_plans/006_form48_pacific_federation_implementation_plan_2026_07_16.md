@@ -8,6 +8,8 @@ Status: implemented design tranche, runtime admission blocked, and superseded as
 >
 > Historical promotion note (2026-07-18, superseded): the parent promotion recorded IW-173 `HAW`, IW-179 `FSM`, and IW-184 `HBX` as attested and treated family 48 readiness as promoted. The later sourced-only portrait gate withdrew those package admissions. This status correction preserves the locked design, implementation, and audit evidence below for traceability and does not claim FORM-48 completion.
 
+> **Current focus-scope correction (2026-08-02):** This dated FORM-48 plan predates the accepted one-tree decision. Any wording such as “bespoke Pacific branch” denotes package-gated shared nodes inside `independence_wave_focus_tree`, not a separate country `focus_tree = {}` definition. IW-179 FSM remains withdrawn behind `independence_wave_fsm_sourced_identity_ready`.
+
 ## Locked direction
 
 Implement FORM-48, the Pacific Regional Federation, as Event 006's first

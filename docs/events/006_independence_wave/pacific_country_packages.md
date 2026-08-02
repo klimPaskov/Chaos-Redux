@@ -17,9 +17,9 @@ registry or central asset ledger:
 
 | Package | Country | Tag | Depth | Anchor | Focus treatment |
 | --- | --- | --- | --- | --- | --- |
-| IW-184 | California | Event 006 `HBX` | Level 2 | state 378 | full Event 006 tree plus a bespoke Pacific branch |
-| IW-173 | Hawai'i | registered vanilla `HAW` | Level 2 | state 629 | full Event 006 tree plus a bespoke seven-focus Hawaiian shared group |
-| IW-179 | Micronesia | registered vanilla `FSM` | Level 1 | state 684 | shared generic tree plus additive package decisions and ideas |
+| IW-184 | California | Event 006 `HBX` | Level 2 | state 378 | full Event 006 generic tree with package-gated shared nodes |
+| IW-173 | Hawai'i | registered vanilla `HAW` | Level 2 | state 629 | full Event 006 generic tree with package-gated shared nodes |
+| IW-179 | Micronesia | registered vanilla `FSM` | Level 1 | state 684 | full Event 006 generic tree with the fail-closed sourced-identity gate plus package decisions and ideas |
 
 The accepted registry, corrected FORM-48 plan, installed-map bindings, and
 force map align on these IDs. California is the exact carrier candidate.
@@ -48,10 +48,11 @@ after the coordinated PASS audits, sets all six shared adapter readiness flags,
 `independence_wave_form48_registry_surface_registered`, and
 `independence_wave_form48_readiness_attested`. No annexation or integration
 fallback is used. FORM-06 through FORM-47 remain fail-closed, including
-FORM-42. The current whole-event authority is
-`../../plans/006_independence_wave_plans/subagent_handoffs/006_event_completion_audit_v33_2026_07_29.md`,
-which retains **HOLD / PARTIAL** while FSM admission, live allocation, scenario,
-focus geometry, AI, and synchronized transaction evidence remain open.
+FORM-42. The current whole-event evidence authority is
+`../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_completion_evidence_v102_2026_08_02.md`.
+The narrowed v98 handoff remains generic-focus evidence only. The whole event stays
+**HOLD / PARTIAL** while FSM admission, live allocation, scenario, focus geometry,
+AI, and synchronized transaction evidence remain open.
 IW-012 Iceland belongs to the Northern and Western Europe scope and its static
 admission is documented in `northern_western_europe_packages.md` and the
 dedicated Iceland package reference rather than duplicated in this Pacific
@@ -70,10 +71,10 @@ derivatives.
 
 That sentence is a dated historical snapshot. The current portrait-shelf authority
 is 80 original-size PNG masters directly under
-`docs/assets/006_independence_wave/portraits_generated_png/`, with 74 indexed rows
-and six unindexed physical files outside the index (four ARX masters, the CHU
-Mirsaid master, and the first DOX Prempeh-II master); no normalized 156x210 shelf
-files, advisor portraits, dossier derivatives, or small consumers are authorized.
+`docs/assets/006_independence_wave/portraits_generated_png/`, with all 80 indexed or
+explicitly recorded in the two flat-shelf manifests (79 table rows plus the retry-2
+tail record); no normalized 156x210 shelf files, advisor portraits, dossier
+derivatives, or small consumers are authorized.
 CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY
 Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum v93
 passes its independent audit and v94 promotes only the existing concordat-council

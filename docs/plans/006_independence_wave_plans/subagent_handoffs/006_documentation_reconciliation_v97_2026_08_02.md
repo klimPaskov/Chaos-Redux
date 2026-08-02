@@ -2,6 +2,8 @@
 
 Date: 2026-08-02.
 
+> **Superseded for current routing (2026-08-02):** v102 current completion evidence and the current portrait-shelf index reconciliation supersede this v97 documentation snapshot. Preserve its dated findings only. Current whole-event state is incomplete and active with an 80-master all-indexed-or-explicitly-recorded shelf, 318 unique and 345 raw focus entries, the 6/8/10/14/20 ladder, fourteen attestations across thirteen compatible groups and fourteen anchors, the FSM fail-closed gate, blocked 6001 audio, one generic tree, and no live tests in scope.
+
 Scope: documentation-only reconciliation of the Event 006 source-of-truth map, resume packet, and overview against the v96 whole-event audit, v97 focus-ownership audit, CAT decision, Barsoum v94 promotion, and current shelf evidence. This handoff does not claim gameplay completion, package admission, focus validation, CAT admission, asset completion, or runtime evidence.
 
 ## Current source-of-truth map

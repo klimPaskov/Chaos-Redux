@@ -2,6 +2,8 @@
 
 Date: 2026-08-01
 
+> **Superseded current-count notice (2026-08-02):** The v102 evidence handoff and current portrait-shelf index reconciliation supersede this dated v95 shelf snapshot. Preserve the 78-master and 73-row counts as historical evidence only. Current authority is 80 masters with all 80 indexed or explicitly recorded, represented by 79 table rows plus the retry-2 tail record.
+
 Role: `chaosx_documentation_curator`
 
 Scope: documentation-only reconciliation of the current Event 006 portrait-shelf authority and related resume/source-of-truth references. Gameplay, localisation, GFX, DDS, source assets, manifests, and the event catalog workbook were outside this pass.

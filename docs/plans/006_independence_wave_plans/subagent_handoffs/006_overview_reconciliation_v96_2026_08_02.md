@@ -4,6 +4,8 @@ Date: 2026-08-02
 
 Scope: documentation-only reconciliation of `docs/events/006_independence_wave/overview.md` against the current source-of-truth map, resume packet, CAT package handoff, and Event 006 completion audit v96.
 
+> **Superseded for current routing (2026-08-02):** v102 current completion evidence and the current portrait-shelf index reconciliation supersede this v96 overview snapshot. Preserve its dated findings only. Current whole-event state is incomplete and active with an 80-master all-indexed-or-explicitly-recorded shelf, 318 unique and 345 raw focus entries, the 6/8/10/14/20 ladder, fourteen attestations across thirteen compatible groups and fourteen anchors, the FSM fail-closed gate, blocked 6001 audio, one generic tree, and no live tests in scope.
+
 This handoff does not claim gameplay completion, package admission, CAT admission, focus validation, asset completion, or runtime evidence.
 
 ## Source-of-truth map
