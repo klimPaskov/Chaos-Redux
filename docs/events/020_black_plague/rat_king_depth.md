@@ -14,10 +14,10 @@ Two shared late lanes sit beside the crisis and terminal branches. Royal Node Wa
 
 Every added reward writes to an existing Rat King register or existing terminal-preparation variable. No focus creates a country tag, a human division, normal equipment, or a political-power store. The existing Evolution V gate still requires the route flag, sentience/cohesion thresholds, terminal preparation, continental control, designated capitals, and refuge nodes before the world-end effect can fire.
 
-The `black_plague_rat_king_court_category` also exposes one route operation per government: Crown Tithe spends Dominion for Brood Mass, Council Audit spends Cohesion for Sentience and renewed Cohesion, and Hierophant Broadcast spends Sentience for Terminal Preparation. Each operation has a visible meter cost and a timed, idempotent country flag so a route choice changes the living court rather than remaining focus-only text.
+The `black_plague_rat_king_court_category` also exposes one route operation per government: Crown Tithe spends Dominion for Brood Mass, Council Audit spends Cohesion for Sentience and renewed Cohesion, and Hierophant Broadcast spends Sentience for Terminal Preparation. Each operation has a visible meter cost and a timed, idempotent country flag so a route choice changes the living court rather than remaining focus-only text. The three government root focuses also fire the guarded `chaosx.nr20.77` route report once per RTX lifecycle, applying a distinct first-decree effect to Dominion, Cohesion, or Sentience and recording the route's Hunger tradeoff where appropriate.
 
 All added focus names and descriptions are in `localisation/english/020_black_plague_rat_focus_l_english.yml`. The tree uses the existing Event 020 custom focus sprites; no new models are required for this route pass.
 
 ## Future depth
 
-Further depth can add route-specific report text and crisis art without changing the three-route or two-tag contract. Live in-game focus timing, AI completion order, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.
+Further depth can add route-specific crisis art without changing the three-route or two-tag contract. Live in-game focus timing, AI completion order, and visual spacing remain user-side validation surfaces because the repository workflow does not launch Hearts of Iron IV.
