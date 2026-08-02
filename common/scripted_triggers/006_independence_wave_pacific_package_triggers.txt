@@ -184,8 +184,8 @@ should_cancel_independence_wave_fsm_government_settlement = {
 # attention, manpower, and convoy capacity rather than an impossible factory
 # reservation.
 can_pay_independence_wave_pacific_island_strategic_cost = {
-	stability > constant:independence_wave_decision_cost.stability_standard
-	war_support > constant:independence_wave_decision_cost.war_support_minor
+	check_variable = { var = stability value = constant:independence_wave_decision_cost.stability_standard compare = greater_than }
+	check_variable = { var = war_support value = constant:independence_wave_decision_cost.war_support_minor compare = greater_than }
 	command_power > constant:independence_wave_decision_cost.command_power_standard
 	has_manpower > constant:independence_wave_decision_cost.manpower_light
 	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
@@ -225,6 +225,12 @@ can_initialize_independence_wave_iw_173_package = {
 
 can_initialize_independence_wave_iw_179_package = {
 	is_independence_wave_fsm_package = yes
+	# FSM is a real-world country. Its package must not promote the retired
+	# fictional chair or expose the portrait chain until an attributable,
+	# identity-preserving male Micronesian source has passed the asset and role
+	# gates. The admission flag is intentionally unset while that research is
+	# unresolved; allocator/runtime attestation remains independently fail-closed.
+	has_country_flag = independence_wave_fsm_sourced_identity_ready
 	check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_179 }
 	check_variable = { independence_wave_region = constant:independence_wave_region.southeast_east_asia_oceania }
 	check_variable = { independence_wave_package_depth = constant:independence_wave_package_depth.standard }

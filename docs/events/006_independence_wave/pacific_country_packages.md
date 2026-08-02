@@ -109,6 +109,12 @@ allocator may execute an attested adapter only when the exact country, focus,
 decision/mission, localisation, portrait-DDS, host, anchor, reservation, Event
 005, force, and transaction gates pass at runtime.
 
+The FSM setup trigger additionally requires the explicit
+`independence_wave_fsm_sourced_identity_ready` admission flag. That flag is
+unset until a named adult male Micronesian source clears identity, era, role,
+and rights review, so a direct setup call cannot promote the retired fictional
+Elias Kihleng portrait while the package is held.
+
 Setup proves the released country owns and controls its exact anchor, its
 capital is still that anchor, the dynamic former host still exists, and the
 former host retains the protected state reserved by the shared release
