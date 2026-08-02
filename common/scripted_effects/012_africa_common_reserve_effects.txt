@@ -76,62 +76,87 @@ africa_common_reserve_deploy_on_defensive_war = {
 africa_common_reserve_resolve_deployment = {
 	if = {
 		limit = { has_country_flag = africa_common_reserve_deployment_active }
-		set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.one }
-		if = {
-			limit = { has_capitulated = yes }
-			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
-			africa_achievement_record_reserve_capital_loss = yes
-		}
-		if = {
-			limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
-			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
-			africa_achievement_record_reserve_capital_loss = yes
-		}
+		# Deployment callbacks are scoped to the host generation recorded when
+		# the reserve was opened. A succession or explicit transfer invalidates
+		# the callback; stale callbacks still clear local deployment state below
+		# but cannot write achievements or mutate the successor's reserve posture.
+		set_temp_variable = { africa_common_reserve_generation_current = constant:africa_value.zero }
 		if = {
 			limit = {
+				has_variable = africa_common_reserve_deployment_host_generation
+				has_event_target = africa_host
+				event_target:africa_host = {
+					exists = yes
+					has_country_flag = africa_host_commit_completed
+					has_variable = africa_host_generation
+				}
 				check_variable = {
-					var = global.num_days
-					value = africa_common_reserve_deployment_deadline_day
-					compare = greater_than
+					var = africa_common_reserve_deployment_host_generation
+					value = event_target:africa_host.africa_host_generation
+					compare = equals
 				}
 			}
-			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
-			africa_achievement_record_reserve_deadline_missed = yes
+			set_temp_variable = { africa_common_reserve_generation_current = constant:africa_value.one }
 		}
 		if = {
-			limit = { check_variable = { africa_common_reserve_settlement_valid > constant:africa_value.zero } }
-			set_country_flag = africa_common_reserve_deployment_completed
-			africa_achievement_record_reserve_war_answered = yes
+			limit = { check_variable = { africa_common_reserve_generation_current > constant:africa_value.zero } }
+			set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.one }
+			if = {
+				limit = { has_capitulated = yes }
+				set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+				africa_achievement_record_reserve_capital_loss = yes
+			}
+			if = {
+				limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
+				set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+				africa_achievement_record_reserve_capital_loss = yes
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.num_days
+						value = africa_common_reserve_deployment_deadline_day
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { africa_common_reserve_settlement_valid = constant:africa_value.zero }
+				africa_achievement_record_reserve_deadline_missed = yes
+			}
+			if = {
+				limit = { check_variable = { africa_common_reserve_settlement_valid > constant:africa_value.zero } }
+				set_country_flag = africa_common_reserve_deployment_completed
+				africa_achievement_record_reserve_war_answered = yes
+			}
+			if = {
+				limit = { has_event_target = africa_host }
+				event_target:africa_host = {
+					if = {
+						limit = {
+							OR = {
+								check_variable = {
+									var = africa_common_defence_stockpile
+									value = constant:africa_common_reserve.deployment_cost
+									compare = less_than
+								}
+								AND = {
+									has_variable = africa_common_reserve_activation_deadline_day
+									check_variable = {
+										var = global.num_days
+										value = africa_common_reserve_activation_deadline_day
+										compare = greater_than_or_equals
+									}
+								}
+							}
+						}
+						clr_country_flag = africa_common_reserve_active
+					}
+				}
+			}
 		}
 		clr_country_flag = africa_common_reserve_deployment_active
 		clear_variable = africa_common_reserve_deployment_started_day
 		clear_variable = africa_common_reserve_deployment_deadline_day
 		clear_variable = africa_common_reserve_deployment_host_generation
 		clear_variable = africa_common_reserve_deployment_sequence
-		if = {
-			limit = { has_event_target = africa_host }
-			event_target:africa_host = {
-				if = {
-					limit = {
-						OR = {
-							check_variable = {
-								var = africa_common_defence_stockpile
-								value = constant:africa_common_reserve.deployment_cost
-								compare = less_than
-							}
-							AND = {
-								has_variable = africa_common_reserve_activation_deadline_day
-								check_variable = {
-									var = global.num_days
-									value = africa_common_reserve_activation_deadline_day
-									compare = greater_than_or_equals
-								}
-							}
-						}
-					}
-					clr_country_flag = africa_common_reserve_active
-				}
-			}
-		}
 	}
 }

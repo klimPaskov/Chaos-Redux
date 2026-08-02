@@ -20,6 +20,8 @@ Protected partners that start an offensive war receive no reserve. The abuse cal
 
 The existing `on_peace`, `on_capitulation`, and `on_annex` callbacks close the deployment without a daily scan. An on-time settlement with the partner's capital still controlled calls `africa_achievement_record_reserve_war_answered`. Capitulation, capital loss, or an out-of-window settlement writes sticky achievement disqualifiers. Partner deployment flags and deadline variables are cleared in every terminal path.
 
+Every deployment stores the host generation that funded it. Settlement accounting and host-posture cleanup run only when that snapshot still matches the committed `africa_host` generation; a stale callback from a succession or explicit transfer is ignored for achievements and reserve posture, but its partner-side deployment state is still cleared. A missing host, missing generation, or missing commit proof therefore fails closed without leaving a dangling deployment flag.
+
 The reserve remains a finite stockpile-backed posture. When the store cannot fund another deployment, or the bounded posture window expires, the deployment trigger fails closed and the next war callback clears the posture; no negative stockpile or passive free unit store is created. RSA exile succession carries the stockpile, deployment sequence, and active posture markers to the accepted successor host.
 
 ## Icons and UI
