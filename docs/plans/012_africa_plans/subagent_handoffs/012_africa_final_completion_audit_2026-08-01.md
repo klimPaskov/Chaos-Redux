@@ -6,9 +6,9 @@ Status: **Incomplete. No hard static load blocker was found, but accepted gamepl
 
 Mode: Read-only completion audit.
 
-Audited revision: current Event 012 source at `3ba90abaf`; the Event 012 scoped source is clean against that revision.
+Audited revision: current Event 012 gameplay source at `b3bc0f9c1`; the Event 012 scoped source is clean against that revision. The later documentation-only reconciliations recorded in `c0eef39c4`, `f8cf61798`, `5249bf888`, and `b3bc0f9c1` do not alter gameplay claims.
 
-The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision. The later Event 012 corrections `b7ba59bd9`, `dbcb62bed`, `9e573505a`, and `3ba90abaf` are also included.
+The requested commits `70ab0821b`, `79dbdbac7`, `b812329ed`, `08da3e4cc`, `919bb76ec`, `444dadccb`, `d03017bb5`, and `9749bf37c` are ancestors of the audited revision. The later Event 012 corrections `b7ba59bd9`, `dbcb62bed`, `9e573505a`, and `3ba90abaf` are also included. The carrier-history reconciliation at `b3bc0f9c1` is the latest Event 012 gameplay-adjacent documentation state.
 
 The shared worktree also contains unrelated Event 016, Event 020, fallout, workbook, and catalog-export changes; those changes were not treated as Event 012 gameplay evidence.
 
@@ -40,6 +40,14 @@ Limits: this was not an engine launch, live campaign, GUI click, sound playback,
 
 Three narrow owner corrections landed after the earlier source census and are included in the audited revision. The disease-containment recorder now requires a positive active-outbreak ledger value, so research-site cleanup cannot manufacture an outbreak-containment receipt. Both Scramble aftermath settlement paths now call `africa_achievement_capture_scramble_settlement_snapshot` before response-roster cleanup, so the settled hostile-control count is preserved for negotiated and Africa-only deferred closure as well as the coalition-break action. The rival-confederation achievement refresh now requires the member's own `africa_priority_member_rival_bloc_victory` receipt in addition to the existing host target, so a reused helper cannot award the milestone from a relationship or departure state alone. These corrections do not close live acceptance, W5, model, audio, native-review, or external-package gates.
 
+## 2b. Post-audit documentation reconciliation
+
+The no-model boundary is now explicit in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_model_requirements_2026-08-01.md`. It lists the six deferred country-visual packages and ten deferred unit/entity identities, requires the approved one-image 3D pipeline and reimport evidence for later work, and records that no model, entity, unit template, or readiness setter was created.
+
+The current carrier/package handoff in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_priority_member_country_package_audit_2026-08-01.md` supersedes the older direct-carrier provenance wording in the July 24 Independence Wave audit. The three dormant DYX/Luba, DZX/Lunda, and EMX/Kilwa bindings, exact Event 006 receipt gates, focus-tree precedence, and no-new-tag constraint remain open evidence requirements.
+
+The catalog handoff in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_event_catalog_merge_2026-08-02.md` verifies that the Event 012 workbook row already contains the accepted World-End and status text and that the required exporter was rerun. The refreshed workbook and export snapshots remain in a shared dirty worktree containing unrelated event edits, so they were not staged or promoted by this audit; this is a release-hygiene blocker, not a missing Event 012 cell write.
+
 ## 3. Completion status by surface
 
 | Surface | Status | Evidence and disposition |
@@ -57,7 +65,7 @@ Three narrow owner corrections landed after the earlier source census and are in
 | Event 006 carrier integration | Partial | Asante `DOX`/state 274, Oyo `DSX`/558, Kanem-Bornu `DUX`/901, and Zulu `EQX`/719 have current Event 006 receipt paths. No new tags were added. The carrier loaders preserve meaningful trees and completed focus history where allowed. |
 | RSA | Source-complete; runtime acceptance open | Original SAF can enter through the narrow Allied-rupture gate, preserves `south_african_focus`, and calls the public civil-war effect once. Opening, three settlement, exile, and no-patron log payloads exist. Civil-war, settlement, exile, and weighted candidate behavior lack live acceptance; the weighted selector can choose an RSA candidate before the frozen-roster patron test and then reject it without a fallback. |
 | Diaspora | Source-complete; UI/runtime acceptance open | Consent, counterterms, refusal, withdrawal, emergency, capacity, skills, citizenship, representation, and local-ownership writers exist. Temporary targets are cleaned up. The route is voluntary and has no forced-relocation fallback. The Charter GUI does not expose the newer capacity lanes, although the action surface remains usable. |
-| Baseline and Evolutions I-III | Source and current catalog present; committed catalog stale | Baseline tier 4, Evolution I tier 4, Evolution II tier 5, and Evolution III tier 6 content exists. Evolution IV was deliberately recast as post-unification state rather than an extra event-log row. The current dirty workbook/export row contains the three evolutions, cluster metadata, `Needs Testing`, and the gated World scenario; the committed `HEAD` CSV contains only Evolution I and leaves the later event metadata blank. |
+| Baseline and Evolutions I-III | Source and current catalog present; clean catalog promotion pending | Baseline tier 4, Evolution I tier 4, Evolution II tier 5, and Evolution III tier 6 content exists. Evolution IV was deliberately recast as post-unification state rather than an extra event-log row. The current workbook and refreshed exports contain the three evolutions, cluster metadata, `Needs Testing`, and the gated World scenario; a clean commit is withheld because the shared workbook/export files also contain unrelated event edits. |
 | Scramble | Source-complete; scenario acceptance open | Five interest classes, a bounded coalition, material outcomes, and Africa-only closure exist. The final launch validator prevents an unsafe declaration, and both aftermath settlement paths capture the settled hostile-control snapshot before transient roster cleanup. Participant ranking still does not prove naval/deployable strength, ports, distance, or material readiness and can starve viable candidates. Several classification subhelpers are definition-only, suggesting an inlined implementation or stale scaffolding. |
 | W0-W5 and terminal World | W0-W4 source-complete; W5 blocked | W0-W4 include roster, consent/refusal/counterterms/withdrawal/coercion, six continent loops, four sponsorship modes, union, war, succession, exile, breakup, and terminal lifecycle. There is no initial all-six certification trigger/setter for W5. The only writer of `africa_world_package_implementation_ready` serves successor continuity, not initial package certification. `africa_the_world_super_event_package_ready` remains unset. |
 | 44 achievements | Registry/art complete; gameplay acceptance blocked | All 44 definitions, localisation triplets, and 132 three-state DDS files exist. The shared ledger still marks all 44 blocked. The latest B3 work gives narrow evidence for row 24 and row 28, and row 24 now has a bounded direct-host capitulation caller; live victory acceptance remains open. Rows 30, 32, 33, 37, and 38 retain exact-owner gaps; row 37 deliberately fails closed because the civilian-damage owner does not exist. Four rows are model-gated and row 44 is terminal-gated. |
@@ -176,7 +184,7 @@ Still missing and materially relevant:
 - One hundred sixty-eight of 239 visual rows remain deferred, including all 16 model rows and seven unique package rows.
 - Two of four required super-event audio masters are absent, and the completed two remain dormant under the atomic gate.
 - Exact Afaan Oromoo localisation is absent pending native review.
-- Current workbook/export content is not cleanly committed, while the committed Event 012 catalog row is stale.
+- Current workbook/export content is not cleanly committed because the shared files also contain unrelated event edits; the Event 012 workbook row and refreshed export values were verified, but catalog promotion remains pending.
 
 No fallback tag, proxy achievement owner, substitute model, generic continent identity, unlicensed audio, or silent readiness setter was accepted.
 
