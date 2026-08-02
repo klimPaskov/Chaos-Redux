@@ -75,6 +75,8 @@ The host also stores the attempted call's calculated strength in `africa_last_na
 
 Accepted calls set `africa_natural_disaster_call_accepted`, mark the numeric resolved-primary-country target with `africa_natural_disaster_targeted`, and copy the current `africa_host_generation` onto that target. The same accepted result records the member-disaster disqualifier when the target is already a current-generation Charter member or cooperative partner, and records the neutral-African disqualifier when the target is an African sovereign with an outside relationship.
 
+The first ordinary Event 013 impact that records positive civilian deaths invokes `natural_disaster_record_event012_civilian_weaponisation` in the impacted state. It requires the persisted `hostile_actor` caller type and Event 012 caller ID, then scopes back to the persisted Event 012 host and sets the existing civilian-weaponisation disqualifier. Accepted-call status, warning cards, building damage, generic Event 013 callers, and impact targeting alone do not set this flag.
+
 When the marked target later capitulates directly to the same Event 012 host generation, the `on_capitulation` owner calls `africa_achievement_record_weather_army_defeated` on that distinct target and opens the weather-war milestone through `africa_achievement_record_weather_war_won`. A host transfer, peace conference, or third-party victory cannot satisfy this owner.
 
 The target receipt flags used by scripted localisation are cleared when a new Rain or Drought action record starts, so a later result cannot inherit an earlier call's wording.

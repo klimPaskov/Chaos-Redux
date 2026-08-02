@@ -5323,6 +5323,29 @@ natural_disaster_apply_population_loss = {
 	add_to_variable = { natural_disaster_total_deaths = chaos_deaths_change }
 }
 
+# State scope after population loss. Event 012's hostile nature action persists
+# its caller type, caller ID, and caller country on the impacted state. Record
+# the civilian-weaponisation disqualifier only after this exact Event 013
+# impact has produced positive civilian deaths. Generic Event 013 calls,
+# warnings, building damage, and target selection alone cannot open the flag.
+natural_disaster_record_event012_civilian_weaponisation = {
+	if = {
+		limit = {
+			has_variable = natural_disaster_caller_type
+			check_variable = { natural_disaster_caller_type = constant:natural_disaster_caller.hostile_actor }
+			has_variable = natural_disaster_caller_event_id
+			check_variable = { natural_disaster_caller_event_id = constant:africa_natural_disaster.caller_event_id }
+			has_variable = natural_disaster_caller_country
+			has_variable = natural_disaster_last_deaths
+			check_variable = { natural_disaster_last_deaths > 0 }
+			NOT = { has_global_flag = africa_achievement_disaster_weaponised_against_civilians }
+		}
+		var:natural_disaster_caller_country = {
+			africa_achievement_record_disaster_weaponised_against_civilians = yes
+		}
+	}
+}
+
 natural_disaster_clear_family_disruption_modifiers = {
 	remove_dynamic_modifier = { modifier = natural_disaster_seismic_disruption }
 	remove_dynamic_modifier = { modifier = natural_disaster_water_coastal_disruption }
@@ -9372,6 +9395,7 @@ natural_disaster_execute_impact = {
 			set_temp_variable = { nd_effect_death_scale = 0 }
 			set_temp_variable = { nd_effect_building_scale = 0 }
 			natural_disaster_apply_population_loss = yes
+			natural_disaster_record_event012_civilian_weaponisation = yes
 			natural_disaster_apply_family_building_damage = yes
 			natural_disaster_achievement_track_impact = yes
 			natural_disaster_resolve_causal_chain_risk = yes
