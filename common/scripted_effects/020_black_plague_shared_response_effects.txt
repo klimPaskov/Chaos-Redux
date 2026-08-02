@@ -476,6 +476,105 @@ black_plague_cancel_shared_state_action = {
 	}
 }
 
+# COUNTRY scope. Native Crown Strike mission timeout resolves the marked state
+# through the existing shared action effect, preserving the original success
+# and timeout reports while making the timer a real mission.
+black_plague_resolve_shared_crown_mission_timeout = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_crown_mission_active }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_shared_crown_mission_target
+				has_variable = black_plague_shared_crown_mission_owner
+				check_variable = { var = black_plague_shared_crown_mission_owner value = ROOT compare = equals }
+			}
+			black_plague_finish_shared_state_action = yes
+			clr_state_flag = black_plague_shared_crown_mission_target
+			clear_variable = black_plague_shared_crown_mission_owner
+		}
+		remove_mission = black_plague_shared_strike_the_crown_mission
+		clr_country_flag = black_plague_shared_crown_mission_active
+		clear_variable = black_plague_shared_action_pending
+		set_global_flag = black_plague_mapmode_dirty
+		if = {
+			limit = { NOT = { has_variable = disease_containment_board_dirty } }
+			set_variable = { disease_containment_board_dirty = constant:black_plague_value.zero }
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+	}
+}
+
+# COUNTRY scope. Cancellation is deliberately outcome-free; the shared action
+# helper only releases capacity and applies its normal short cooldown.
+black_plague_resolve_shared_crown_mission_cancel = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_crown_mission_active }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_shared_crown_mission_target
+				has_variable = black_plague_shared_crown_mission_owner
+				check_variable = { var = black_plague_shared_crown_mission_owner value = ROOT compare = equals }
+			}
+			black_plague_cancel_shared_state_action = yes
+			clr_state_flag = black_plague_shared_crown_mission_target
+			clear_variable = black_plague_shared_crown_mission_owner
+		}
+		remove_mission = black_plague_shared_strike_the_crown_mission
+		clr_country_flag = black_plague_shared_crown_mission_active
+		clear_variable = black_plague_shared_action_pending
+		black_plague_recompute_country_response_capacity = yes
+	}
+}
+
+# COUNTRY scope. Native Seal Royal Burrows mission timeout resolves the marked
+# former Royal Node or Royal Basin through the same anti-rat response result.
+black_plague_resolve_shared_seal_mission_timeout = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_seal_mission_active }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_shared_seal_mission_target
+				has_variable = black_plague_shared_seal_mission_owner
+				check_variable = { var = black_plague_shared_seal_mission_owner value = ROOT compare = equals }
+			}
+			black_plague_finish_shared_state_action = yes
+			clr_state_flag = black_plague_shared_seal_mission_target
+			clear_variable = black_plague_shared_seal_mission_owner
+		}
+		remove_mission = black_plague_shared_seal_royal_burrows_mission
+		clr_country_flag = black_plague_shared_seal_mission_active
+		clear_variable = black_plague_shared_action_pending
+		set_global_flag = black_plague_mapmode_dirty
+		if = {
+			limit = { NOT = { has_variable = disease_containment_board_dirty } }
+			set_variable = { disease_containment_board_dirty = constant:black_plague_value.zero }
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+	}
+}
+
+# COUNTRY scope. Seal cancellation releases the response lane without applying
+# containment or infestation changes.
+black_plague_resolve_shared_seal_mission_cancel = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_seal_mission_active }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_shared_seal_mission_target
+				has_variable = black_plague_shared_seal_mission_owner
+				check_variable = { var = black_plague_shared_seal_mission_owner value = ROOT compare = equals }
+			}
+			black_plague_cancel_shared_state_action = yes
+			clr_state_flag = black_plague_shared_seal_mission_target
+			clear_variable = black_plague_shared_seal_mission_owner
+		}
+		remove_mission = black_plague_shared_seal_royal_burrows_mission
+		clr_country_flag = black_plague_shared_seal_mission_active
+		clear_variable = black_plague_shared_action_pending
+		black_plague_recompute_country_response_capacity = yes
+	}
+}
+
 # STATE scope. Called once per disease pulse after the Black Plague-specific
 # response deltas have been collected, so shared actions stack safely.
 black_plague_apply_shared_action_pulse = {
@@ -673,7 +772,11 @@ black_plague_clear_country_response_runtime = {
 			black_plague_clear_current_state_persistent_measures = yes
 		}
 	}
+	remove_mission = black_plague_shared_strike_the_crown_mission
+	remove_mission = black_plague_shared_seal_royal_burrows_mission
 	clr_country_flag = black_plague_shared_country_action_active
+	clr_country_flag = black_plague_shared_crown_mission_active
+	clr_country_flag = black_plague_shared_seal_mission_active
 	clr_country_flag = black_plague_shared_emergency_countermeasure_drive_active
 	clr_country_flag = black_plague_shared_findings_published
 	clr_country_flag = black_plague_shared_alliance_exchange_active
@@ -690,6 +793,8 @@ black_plague_clear_country_response_runtime = {
 black_plague_clear_shared_state_flags = {
 	clr_state_flag = black_plague_shared_action_active
 	clr_state_flag = black_plague_shared_action_cooldown
+	clr_state_flag = black_plague_shared_crown_mission_target
+	clr_state_flag = black_plague_shared_seal_mission_target
 	clr_state_flag = black_plague_shared_transport_inspections_active
 	clr_state_flag = black_plague_shared_threatened_corridor_active
 	clr_state_flag = black_plague_shared_port_inspections_active
@@ -716,4 +821,6 @@ black_plague_clear_shared_state_flags = {
 	clear_variable = black_plague_shared_action_owner
 	clear_variable = black_plague_shared_action_scale
 	clear_variable = black_plague_shared_action_burden
+	clear_variable = black_plague_shared_crown_mission_owner
+	clear_variable = black_plague_shared_seal_mission_owner
 }

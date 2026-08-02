@@ -1,6 +1,6 @@
 # Event 020 incremental decision and mission audit handoff
 
-> Historical audit snapshot, reconciled 2026-08-01. The current Crown Strike and Seal Royal Burrows surfaces use shared timed state actions and the current route-crisis/aftermath event wiring is recorded in the consequence/aftermath addendum. Retain this handoff for still-open mission-API, Rat lifecycle, Royal Node outcome, cost-clarity, and validation findings; do not recreate a second action family from its earlier “missing mission” wording without a parent decision.
+> Historical audit snapshot, reconciled 2026-08-01. A later parent tranche converted Crown Strike and Seal Royal Burrows to native mission bridges with explicit state markers while retaining their shared outcome resolver. Retain this handoff for still-open Rat lifecycle, Royal Node outcome, cost-clarity, and validation findings; do not recreate a second action family from its earlier “missing mission” wording.
 
 ## Scope and result
 

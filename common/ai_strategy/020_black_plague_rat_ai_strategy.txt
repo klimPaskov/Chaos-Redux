@@ -1,3 +1,16 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_BURROW_TEMPLATE_PRIORITY = 900
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_FRONT_REQUEST_PRIORITY = 520
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_SPARE_UNIT_FACTOR = 180
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_SWARM_TEMPLATE_PRIORITY = 700
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_BRUTE_TEMPLATE_PRIORITY = 1000
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_CONCENTRATION_FACTOR = 300
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_FRONT_REQUEST_PRIORITY = 700
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_GUARD_TEMPLATE_PRIORITY = 800
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_BRUTE_TEMPLATE_PRIORITY = 700
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_DOCK_TEMPLATE_PRIORITY = 1000
+@CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_FRONT_REQUEST_PRIORITY = 650
 # ============================================================================
 # CHAOS REDUX - EVENT 020 RAT AI STRATEGIES
 # ============================================================================
@@ -230,17 +243,17 @@ black_plague_rat_hierarchy_distributed_ai = {
 		black_plague_rat_hierarchy_is_distributed = yes
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = template_prio id = rat_burrowers value = constant:black_plague_rat_hierarchy_route.distributed_burrow_template_priority }
-	ai_strategy = { type = template_prio id = rat_swarm value = constant:black_plague_rat_hierarchy_route.distributed_swarm_template_priority }
+	ai_strategy = { type = template_prio id = rat_burrowers value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_BURROW_TEMPLATE_PRIORITY }
+	ai_strategy = { type = template_prio id = rat_swarm value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_SWARM_TEMPLATE_PRIORITY }
 	ai_strategy = { type = role_ratio id = rat_burrowers value = 2 }
-	ai_strategy = { type = spare_unit_factor value = constant:black_plague_rat_hierarchy_route.distributed_spare_unit_factor }
+	ai_strategy = { type = spare_unit_factor value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_SPARE_UNIT_FACTOR }
 	ai_strategy = {
 		type = front_unit_request
 		state_trigger = {
 			NOT = { is_controlled_by = ROOT }
 			any_neighbor_state = { is_controlled_by = ROOT }
 		}
-		value = constant:black_plague_rat_hierarchy_route.distributed_front_request_priority
+		value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DISTRIBUTED_FRONT_REQUEST_PRIORITY
 	}
 }
 
@@ -251,10 +264,10 @@ black_plague_rat_hierarchy_dominant_ai = {
 		black_plague_rat_hierarchy_is_dominant = yes
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = template_prio id = rat_brutes value = constant:black_plague_rat_hierarchy_route.dominant_brute_template_priority }
-	ai_strategy = { type = template_prio id = rat_carrion_guard value = constant:black_plague_rat_hierarchy_route.dominant_guard_template_priority }
+	ai_strategy = { type = template_prio id = rat_brutes value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_BRUTE_TEMPLATE_PRIORITY }
+	ai_strategy = { type = template_prio id = rat_carrion_guard value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_GUARD_TEMPLATE_PRIORITY }
 	ai_strategy = { type = role_ratio id = rat_brutes value = 2 }
-	ai_strategy = { type = force_concentration_factor value = constant:black_plague_rat_hierarchy_route.dominant_concentration_factor }
+	ai_strategy = { type = force_concentration_factor value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_CONCENTRATION_FACTOR }
 	ai_strategy = {
 		type = front_unit_request
 		state_trigger = {
@@ -262,7 +275,7 @@ black_plague_rat_hierarchy_dominant_ai = {
 			any_neighbor_state = { is_controlled_by = ROOT }
 			has_state_flag = black_plague_rat_nation_state
 		}
-		value = constant:black_plague_rat_hierarchy_route.dominant_front_request_priority
+		value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_DOMINANT_FRONT_REQUEST_PRIORITY
 	}
 }
 
@@ -273,8 +286,8 @@ black_plague_rat_hierarchy_emergent_ai = {
 		black_plague_rat_hierarchy_is_emergent = yes
 	}
 	abort_when_not_enabled = yes
-	ai_strategy = { type = template_prio id = rat_dock_stowaways value = constant:black_plague_rat_hierarchy_route.emergent_dock_template_priority }
-	ai_strategy = { type = template_prio id = rat_brutes value = constant:black_plague_rat_hierarchy_route.emergent_brute_template_priority }
+	ai_strategy = { type = template_prio id = rat_dock_stowaways value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_DOCK_TEMPLATE_PRIORITY }
+	ai_strategy = { type = template_prio id = rat_brutes value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_BRUTE_TEMPLATE_PRIORITY }
 	ai_strategy = { type = role_ratio id = rat_dock_stowaways value = 2 }
 	ai_strategy = {
 		type = front_unit_request
@@ -283,7 +296,7 @@ black_plague_rat_hierarchy_emergent_ai = {
 			any_neighbor_state = { is_controlled_by = ROOT }
 			black_plague_rat_state_has_logistics_pressure_target = yes
 		}
-		value = constant:black_plague_rat_hierarchy_route.emergent_front_request_priority
+		value = @CR_SC_BLACK_PLAGUE_RAT_HIERARCHY_ROUTE_EMERGENT_FRONT_REQUEST_PRIORITY
 	}
 }
 

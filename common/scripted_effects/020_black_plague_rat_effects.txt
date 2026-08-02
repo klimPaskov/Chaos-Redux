@@ -988,7 +988,7 @@ black_plague_rat_king_resolve_defeat = {
 					has_event_target = black_plague_rat_king_defeat_actor
 					event_target:black_plague_rat_king_defeat_actor = {
 						exists = yes
-						is_human = yes
+						is_ai = no
 						black_plague_country_is_human_host = yes
 					}
 				}
@@ -1006,7 +1006,7 @@ black_plague_rat_king_resolve_defeat = {
 				if = {
 					limit = {
 						exists = yes
-						is_human = yes
+						is_ai = no
 						NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
 					}
 					set_global_flag = black_plague_rat_king_aftermath_dispatched
@@ -1020,7 +1020,7 @@ black_plague_rat_king_resolve_defeat = {
 			every_country = {
 				limit = {
 					exists = yes
-					is_human = yes
+					is_ai = no
 					black_plague_country_is_human_host = yes
 					NOT = { has_global_flag = black_plague_rat_king_aftermath_dispatched }
 				}
@@ -2372,7 +2372,7 @@ black_plague_rat_cleanup_retired_country = {
 		clear_array = global.black_plague_rat_controlled_states
 		set_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.zero }
 		if = { limit = { is_in_array = { array = global.black_plague_rat_countries value = THIS } } remove_from_array = { array = global.black_plague_rat_countries value = THIS } }
-		if = { limit = { global.black_plague_rat_countries_count > constant:black_plague_value.zero } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
+		if = { limit = { check_variable = { var = global.black_plague_rat_countries_count value = constant:black_plague_value.zero compare = greater_than } } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
 		set_variable = { black_plague_rat_retirement_date = global.date }
 		add_to_variable = { black_plague_rat_retirement_date = constant:black_plague_rat_pool.retirement_quarantine_days }
 		set_country_flag = black_plague_rat_slot_release_pending

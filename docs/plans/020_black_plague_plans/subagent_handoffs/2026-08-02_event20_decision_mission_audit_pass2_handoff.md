@@ -1,5 +1,7 @@
 # Event 020 decision and mission audit pass 2 handoff
 
+> Superseded for the Crown/Seal API disposition by the parent 2026-08-02 native mission bridge tranche. The audit's state-target selector correction and other findings remain useful; its deferred shared-timed-action wording is historical.
+
 ## Scope and result
 
 This audit covered the Event 020 shared disease-response category, state-targeted response, weaponization, Rat Nation, Rat King, and last-response mission surfaces against the accepted runtime contract.
