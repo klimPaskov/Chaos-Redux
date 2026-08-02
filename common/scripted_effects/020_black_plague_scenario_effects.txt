@@ -498,7 +498,7 @@ black_plague_scenario_expand_king_basin = {
 			if = {
 				limit = { check_variable = { global.black_plague_scenario_king_states_transferred < global.black_plague_scenario_king_state_target } }
 				clear_temp_array = black_plague_scenario_king_state_pool
-				every_state = { limit = { black_plague_scenario_valid_human_state = yes is_neighbor_of = RTX NOT = { has_state_flag = black_plague_scenario_king_reserved } } add_to_temp_array = { black_plague_scenario_king_state_pool = THIS } }
+				every_state = { limit = { black_plague_scenario_valid_human_state = yes any_neighbor_state = { is_controlled_by = RTX } NOT = { has_state_flag = black_plague_scenario_king_reserved } } add_to_temp_array = { black_plague_scenario_king_state_pool = THIS } }
 				if = { limit = { check_variable = { black_plague_scenario_king_state_pool^num > constant:black_plague_value.zero } } random_scope_in_array = { array = black_plague_scenario_king_state_pool save_event_target_as = black_plague_scenario_king_next_state set_state_flag = black_plague_scenario_king_reserved } }
 				if = {
 					limit = { has_event_target = black_plague_scenario_king_next_state }

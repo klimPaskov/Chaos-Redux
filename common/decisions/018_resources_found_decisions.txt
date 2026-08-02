@@ -1,3 +1,13 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_ANTI_CAVE_CONSUMER_GOODS = 0.08
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_ANTI_CAVE_FACTORY_OUTPUT = -0.10
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_CONTAINMENT_CONSUMER_GOODS = 0.10
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_CONTAINMENT_FACTORY_OUTPUT = -0.08
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_FIELD_CONSUMER_GOODS = 0.05
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_FIELD_FACTORY_OUTPUT = -0.03
+@CR_SC_RESOURCES_FOUND_DECISION_BURDEN_TRADE_CONSUMER_GOODS = 0.03
+@CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS = 3
 # ============================================================================
 # CHAOS REDUX - EVENT 018 RESOURCES FOUND DECISIONS AND MISSIONS
 # ============================================================================
@@ -292,9 +302,10 @@ resources_found_field_management_category = {
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = resources_found_active_project_days
+		days_remove = resources_found_active_project_days
 		available = { always = no }
 		cancel_trigger = { OR = { NOT = { has_variable = resources_found_active_project_field } var:resources_found_active_project_field = { OR = { NOT = { is_owned_by = ROOT } NOT = { is_controlled_by = ROOT } has_state_flag = resources_found_field_closed_permanently has_state_flag = resources_found_field_converted_to_cave_origin } } } }
-		modifier = { consumer_goods_factor = constant:resources_found_decision_burden.field_consumer_goods production_factory_max_efficiency_factor = constant:resources_found_decision_burden.field_factory_output }
+		modifier = { consumer_goods_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_FIELD_CONSUMER_GOODS production_factory_max_efficiency_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_FIELD_FACTORY_OUTPUT }
 		cancel_effect = { resources_found_fail_selected_field_project = yes }
 		timeout_effect = { resources_found_complete_selected_field_project = yes }
 	}
@@ -537,7 +548,7 @@ resources_found_trade_and_security_category = {
 	resources_found_restore_commission_compliance = {
 		icon = GFX_decision_resources_found_demilitarization
 		visible = { resources_found_decision_trade_queue_available = yes var:resources_found_selected_field = { has_state_flag = resources_found_commission_violation } }
-		available = { resources_found_decision_has_base_diplomacy_inputs = yes divisions_in_state = { state = var:resources_found_selected_field size < constant:resources_found_decision_gate.commission_troop_limit_divisions } }
+		available = { resources_found_decision_has_base_diplomacy_inputs = yes divisions_in_state = { state = var:resources_found_selected_field size < @CR_SC_RESOURCES_FOUND_DECISION_GATE_COMMISSION_TROOP_LIMIT_DIVISIONS } }
 		custom_cost_trigger = { resources_found_decision_has_base_diplomacy_inputs = yes }
 		custom_cost_text = resources_found_project_estimate_c7_d4
 		complete_effect = { custom_effect_tooltip = resources_found_restore_commission_compliance_tt hidden_effect = { set_temp_variable = { resources_found_project_kind = constant:resources_found_decision_project.restore_commission_compliance } set_temp_variable = { resources_found_project_profile = constant:resources_found_decision_profile.diplomacy } set_temp_variable = { resources_found_project_base_days = constant:resources_found_decision_duration.diplomacy } set_temp_variable = { resources_found_project_family = constant:resources_found_decision_family.trade } resources_found_start_decision_project = yes } }
@@ -669,9 +680,10 @@ resources_found_trade_and_security_category = {
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = resources_found_active_project_days
+		days_remove = resources_found_active_project_days
 		available = { always = no }
 		cancel_trigger = { OR = { NOT = { has_variable = resources_found_active_project_field } NOT = { resources_found_decision_active_trade_project_partner_valid = yes } var:resources_found_active_project_field = { OR = { NOT = { is_owned_by = ROOT } NOT = { is_controlled_by = ROOT } has_state_flag = resources_found_field_closed_permanently has_state_flag = resources_found_field_converted_to_cave_origin } } } }
-		modifier = { consumer_goods_factor = constant:resources_found_decision_burden.trade_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_TRADE_CONSUMER_GOODS }
 		cancel_effect = { resources_found_fail_selected_field_project = yes }
 		timeout_effect = { resources_found_complete_selected_field_project = yes }
 	}
@@ -949,9 +961,10 @@ resources_found_containment_category = {
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = resources_found_active_project_days
+		days_remove = resources_found_active_project_days
 		available = { always = no }
 		cancel_trigger = { OR = { NOT = { has_variable = resources_found_active_project_field } var:resources_found_active_project_field = { OR = { NOT = { is_owned_by = ROOT } NOT = { is_controlled_by = ROOT } has_state_flag = resources_found_field_closed_permanently has_state_flag = resources_found_field_converted_to_cave_origin } } } }
-		modifier = { consumer_goods_factor = constant:resources_found_decision_burden.containment_consumer_goods production_factory_max_efficiency_factor = constant:resources_found_decision_burden.containment_factory_output }
+		modifier = { consumer_goods_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_CONTAINMENT_CONSUMER_GOODS production_factory_max_efficiency_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_CONTAINMENT_FACTORY_OUTPUT }
 		cancel_effect = { resources_found_fail_selected_field_project = yes }
 		timeout_effect = { resources_found_complete_selected_field_project = yes }
 	}
@@ -1207,6 +1220,7 @@ resources_found_cave_brood_network_category = {
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = resources_found_active_project_days
+		days_remove = resources_found_active_project_days
 		available = { always = no }
 		cancel_trigger = {
 			OR = {
@@ -1370,6 +1384,7 @@ resources_found_anti_cave_response_category = {
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = resources_found_active_project_days
+		days_remove = resources_found_active_project_days
 		available = { always = no }
 		cancel_trigger = {
 			OR = {
@@ -1385,7 +1400,7 @@ resources_found_anti_cave_response_category = {
 				}
 			}
 		}
-		modifier = { consumer_goods_factor = constant:resources_found_decision_burden.anti_cave_consumer_goods production_factory_max_efficiency_factor = constant:resources_found_decision_burden.anti_cave_factory_output }
+		modifier = { consumer_goods_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_ANTI_CAVE_CONSUMER_GOODS production_factory_max_efficiency_factor = @CR_SC_RESOURCES_FOUND_DECISION_BURDEN_ANTI_CAVE_FACTORY_OUTPUT }
 		cancel_effect = { clear_variable = resources_found_pending_project_partner resources_found_clear_decision_project_runtime = yes }
 		timeout_effect = { resources_found_complete_anti_cave_project = yes }
 	}

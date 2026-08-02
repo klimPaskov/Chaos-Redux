@@ -3622,7 +3622,7 @@ infantry_spawn_natural_derivative_remove_and_prove_destination_replacements = {
 		add_to_temp_variable = { infantry_spawn_natural_derivative_destination_cleanup_index = constant:infantry_spawn_weight_result.one }
 	}
 	if = {
-		limit = { NOT = { num_divisions = constant:infantry_spawn_weight_result.zero } }
+		limit = { num_divisions > constant:infantry_spawn_weight_result.zero }
 		set_temp_variable = { infantry_spawn_natural_derivative_destination_cleanup_valid = constant:infantry_spawn_weight_result.zero }
 	}
 }
@@ -3685,7 +3685,10 @@ infantry_spawn_recover_natural_derivative_revolt_transaction = {
 			limit = { check_variable = { infantry_spawn_natural_derivative_destination_cleanup_valid > constant:infantry_spawn_weight_result.zero } }
 			event_target:infantry_spawn_natural_derivative_actor = {
 				every_owned_state = {
-					if = { limit = { is_core_of = event_target:infantry_spawn_natural_derivative_actor } remove_state_core = event_target:infantry_spawn_natural_derivative_actor }
+					if = {
+						limit = { is_core_of = event_target:infantry_spawn_natural_derivative_actor }
+						event_target:infantry_spawn_natural_derivative_actor = { remove_state_core = PREV }
+					}
 				}
 			}
 			set_temp_variable = { infantry_spawn_natural_derivative_recovery_actor_core_count = constant:infantry_spawn_weight_result.zero }
@@ -5785,7 +5788,7 @@ infantry_spawn_derivative_rally_claimant_guard = {
 					clear_variable = infantry_spawn_country_stage
 					set_temp_variable = { infantry_spawn_derivative_claimant_guard_xp_cost = constant:infantry_spawn_claimant_cost.another_formation_army_experience }
 					multiply_temp_variable = { infantry_spawn_derivative_claimant_guard_xp_cost = constant:infantry_spawn_derivative_package_value.negative_one }
-					add_army_experience = infantry_spawn_derivative_claimant_guard_xp_cost
+					army_experience = infantry_spawn_derivative_claimant_guard_xp_cost
 					add_to_variable = { infantry_spawn_derivative_reinforcement_count = constant:infantry_spawn_derivative_package_value.one }
 					set_country_flag = infantry_spawn_derivative_family_sustained
 					set_temp_variable = { infantry_spawn_derivative_cooldown_days = constant:infantry_spawn_derivative_runtime.reinforcement_cooldown_days }
@@ -6057,7 +6060,7 @@ infantry_spawn_derivative_centralize_collective_muster = {
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.collective_centralize_muster_xp }
-		add_army_experience = infantry_spawn_derivative_negative_cost
+		army_experience = infantry_spawn_derivative_negative_cost
 		clr_country_flag = infantry_spawn_derivative_collective_rotating_commands
 		set_country_flag = infantry_spawn_derivative_collective_central_muster
 		set_temp_variable = { infantry_spawn_derivative_governance_shift = constant:infantry_spawn_derivative_package_value.zero }
@@ -6095,7 +6098,7 @@ infantry_spawn_derivative_proclaim_family_primacy = {
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.species_proclaim_primacy_xp }
-		add_army_experience = infantry_spawn_derivative_negative_cost
+		army_experience = infantry_spawn_derivative_negative_cost
 		clr_country_flag = infantry_spawn_derivative_species_compact_governance
 		set_country_flag = infantry_spawn_derivative_species_family_primacy
 		set_temp_variable = { infantry_spawn_derivative_governance_shift = constant:infantry_spawn_derivative_package_value.zero }
@@ -6620,7 +6623,7 @@ infantry_spawn_derivative_replace_claimant = {
 							set_country_flag = infantry_spawn_derivative_claimant_replaced
 							set_country_flag = infantry_spawn_derivative_claimant_continuity_decided
 							add_stability = constant:infantry_spawn_derivative_reward.stability_small
-							add_army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
+							army_experience = constant:infantry_spawn_derivative_reward.army_experience_small
 							set_temp_variable = { infantry_spawn_derivative_replacement_succeeded = constant:infantry_spawn_derivative_package_value.one }
 						}
 					}
@@ -6983,7 +6986,7 @@ infantry_spawn_derivative_suppress_fragmentation = {
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp }
-		add_army_experience = infantry_spawn_derivative_negative_cost
+		army_experience = infantry_spawn_derivative_negative_cost
 		add_stability = constant:infantry_spawn_derivative_reward.stability_medium
 		add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
 		set_country_flag = infantry_spawn_derivative_fragmentation_suppressed
@@ -7227,20 +7230,22 @@ infantry_spawn_derivative_clear_owned_state_markers = {
 		limit = { has_variable = infantry_spawn_derivative_package_owner_uid }
 		for_each_scope_loop = {
 			array = infantry_spawn_derivative_owned_marker_states
-			limit = {
-				has_variable = infantry_spawn_derivative_site_owner_uid
-				check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+			if = {
+				limit = {
+					has_variable = infantry_spawn_derivative_site_owner_uid
+					check_variable = { var = infantry_spawn_derivative_site_owner_uid value = ROOT.infantry_spawn_derivative_package_owner_uid compare = equals }
+				}
+				clr_state_flag = infantry_spawn_derivative_muster_depot
+				clr_state_flag = infantry_spawn_derivative_sustainment_site
+				clr_state_flag = infantry_spawn_derivative_integration_underway
+				clr_state_flag = infantry_spawn_derivative_integrated_district
+				clr_state_flag = infantry_spawn_derivative_zombie_muster_district
+				clr_state_flag = infantry_spawn_derivative_zombie_population_pressure
+				clr_state_flag = infantry_spawn_derivative_ghost_recognized_anchor
+				clr_state_flag = infantry_spawn_derivative_golem_bound_district
+				clr_state_flag = infantry_spawn_derivative_ghost_population_pressure
+				clear_variable = infantry_spawn_derivative_site_owner_uid
 			}
-			clr_state_flag = infantry_spawn_derivative_muster_depot
-			clr_state_flag = infantry_spawn_derivative_sustainment_site
-			clr_state_flag = infantry_spawn_derivative_integration_underway
-			clr_state_flag = infantry_spawn_derivative_integrated_district
-			clr_state_flag = infantry_spawn_derivative_zombie_muster_district
-			clr_state_flag = infantry_spawn_derivative_zombie_population_pressure
-			clr_state_flag = infantry_spawn_derivative_ghost_recognized_anchor
-			clr_state_flag = infantry_spawn_derivative_golem_bound_district
-			clr_state_flag = infantry_spawn_derivative_ghost_population_pressure
-			clear_variable = infantry_spawn_derivative_site_owner_uid
 		}
 	}
 	clear_array = infantry_spawn_derivative_owned_marker_states

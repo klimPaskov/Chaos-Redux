@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CAMP_REWORK_IDEA_MODIFIER_GENERIC_BASE_RESOURCES = 0.03
+@CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS = 0.05
 # ============================================================================
 # CHAOS REDUX - COLONIAL CAMP AND REPRESSION COUNTRY DECISIONS
 # ============================================================================
@@ -19,7 +23,7 @@ camp_repression_network_category = {
 		cost = constant:camp_rework_cost.survey_pp
 		days_remove = constant:camp_rework_timing.short_action_days
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.generic_base_resources }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_GENERIC_BASE_RESOURCES }
 		allowed = { original_tag = ENG }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
@@ -77,7 +81,7 @@ camp_repression_network_category = {
 		}
 		available = {
 			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
-			manpower > constant:camp_rework_cost.activation_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			OR = {
 				AND = {
@@ -248,7 +252,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
-			manpower > constant:camp_rework_cost.expansion_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 			command_power > constant:camp_rework_cost.expansion_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -374,7 +378,7 @@ camp_repression_network_category = {
 		}
 		available = {
 			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
-			manpower > constant:camp_rework_cost.guard_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			OR = {
@@ -582,12 +586,13 @@ camp_repression_network_category = {
 
 	uk_complete_raj_military_works = {
 		icon = GFX_decision_uk_colonial_labor_works
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ENG }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_uk_military_works_active }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.uk_complete_raj_military_works_days
+		days_remove = constant:camp_rework_timing.uk_complete_raj_military_works_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -604,12 +609,13 @@ camp_repression_network_category = {
 
 	uk_postwar_raj_review = {
 		icon = GFX_decision_uk_raj_detention
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ENG }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_dismantlement_in_progress }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.uk_postwar_raj_review_days
+		days_remove = constant:camp_rework_timing.uk_postwar_raj_review_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -624,12 +630,13 @@ camp_repression_network_category = {
 
 	uk_negotiate_indian_release_terms = {
 		icon = GFX_decision_uk_raj_detention
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ENG }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_reform_route_open }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.uk_negotiate_indian_release_terms_days
+		days_remove = constant:camp_rework_timing.uk_negotiate_indian_release_terms_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -741,7 +748,7 @@ camp_repression_network_category = {
 		cost = constant:camp_rework_cost.expansion_pp
 		days_remove = constant:camp_rework_timing.construction_days
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
@@ -750,7 +757,7 @@ camp_repression_network_category = {
 		}
 		available = {
 			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
-			manpower > constant:camp_rework_cost.expansion_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
 			OR = {
@@ -800,7 +807,7 @@ camp_repression_network_category = {
 		cost = constant:camp_rework_cost.labor_project_pp
 		days_remove = constant:camp_rework_timing.construction_days
 		days_re_enable = constant:camp_rework_timing.construction_days
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
@@ -982,7 +989,7 @@ camp_repression_network_category = {
 		cost = constant:camp_rework_cost.dismantle_pp
 		days_remove = constant:camp_rework_timing.usa_security_authority_sunset_days
 		days_re_enable = constant:camp_rework_timing.dismantle_days
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
@@ -1035,16 +1042,17 @@ camp_repression_network_category = {
 
 	usa_court_review_period = {
 		icon = GFX_decision_usa_court_review
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_inspection_active }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.usa_court_review_period_days
+		days_remove = constant:camp_rework_timing.usa_court_review_period_days
 		is_good = yes
 		timeout_effect = {
 			if = {
-				limit = { has_government = democratic has_country_flag = camp_rework_expansion_frozen stability > constant:camp_rework_threshold.low_stability }
+				limit = { has_government = democratic has_country_flag = camp_rework_expansion_frozen check_variable = { var = stability value = constant:camp_rework_threshold.low_stability compare = greater_than } }
 				custom_effect_tooltip = usa_court_review_period_success_tt
 			}
 			else = { custom_effect_tooltip = usa_court_review_period_failure_tt }
@@ -1074,12 +1082,13 @@ camp_repression_network_category = {
 
 	usa_redress_commission_work = {
 		icon = GFX_decision_usa_redress_commission
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_redress_pending }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.usa_redress_commission_work_days
+		days_remove = constant:camp_rework_timing.usa_redress_commission_work_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -1152,7 +1161,7 @@ camp_repression_network_category = {
 		available = {
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 		}
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		complete_effect = {
 			custom_effect_tooltip = fr_close_camp_legacy_sites_effect_tt
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.fr_close_legacy_camp_system }
@@ -1336,7 +1345,7 @@ camp_repression_network_category = {
 					has_country_flag = camp_rework_france_refugee_route_suppression
 				}
 			}
-			manpower > constant:camp_rework_cost.activation_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
 			command_power > constant:camp_rework_cost.guard_command
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_variable = fr_refugee_response_state_id
@@ -1491,12 +1500,13 @@ camp_repression_network_category = {
 
 	fr_gurs_legacy_review = {
 		icon = GFX_decision_fr_camp_legacy_review
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { OR = { original_tag = FRA tag = VIC } }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_france_legacy_inspected }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.fr_gurs_legacy_review_days
+		days_remove = constant:camp_rework_timing.fr_gurs_legacy_review_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -1511,12 +1521,13 @@ camp_repression_network_category = {
 
 	fr_north_africa_rail_labor_project = {
 		icon = GFX_decision_fr_north_africa_labor
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { OR = { original_tag = FRA tag = VIC } }
 		activation = { always = no }
 		visible = { has_variable = fr_north_africa_project_state_id }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.fr_north_africa_rail_labor_project_days
+		days_remove = constant:camp_rework_timing.fr_north_africa_rail_labor_project_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -1570,12 +1581,13 @@ camp_repression_network_category = {
 
 	fr_post_liberation_reckoning = {
 		icon = GFX_decision_fr_camp_legacy_review
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { OR = { original_tag = FRA tag = VIC } }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_france_colonial_review_open }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.fr_post_liberation_reckoning_days
+		days_remove = constant:camp_rework_timing.fr_post_liberation_reckoning_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -1783,7 +1795,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
-			manpower > constant:camp_rework_cost.expansion_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
 			command_power > constant:camp_rework_cost.expansion_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			OR = {
@@ -1816,7 +1828,7 @@ camp_repression_network_category = {
 		available = {
 			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
 			NOT = { has_decision = ita_colonial_security_sweep }
-			manpower > constant:camp_rework_cost.guard_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			OR = {
@@ -1935,12 +1947,13 @@ camp_repression_network_category = {
 
 	ita_desert_road_labor_project = {
 		icon = GFX_decision_ita_colonial_road_labor
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ITA }
 		activation = { always = no }
 		visible = { has_variable = ita_desert_road_project_state_id }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.ita_desert_road_labor_project_days
+		days_remove = constant:camp_rework_timing.ita_desert_road_labor_project_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -1989,12 +2002,13 @@ camp_repression_network_category = {
 
 	ita_desert_camp_closure = {
 		icon = GFX_decision_ita_camp_closure
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ITA }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_dismantlement_in_progress }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.ita_desert_camp_closure_days
+		days_remove = constant:camp_rework_timing.ita_desert_camp_closure_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -2009,12 +2023,13 @@ camp_repression_network_category = {
 
 	ita_postwar_colonial_compensation = {
 		icon = GFX_decision_ita_camp_closure
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = ITA }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_redress_pending }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.ita_postwar_colonial_compensation_days
+		days_remove = constant:camp_rework_timing.ita_postwar_colonial_compensation_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -2053,7 +2068,7 @@ camp_repression_network_category = {
 		available = {
 			NOT = { has_decision = bel_congo_resource_quota_cycle }
 			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
-			manpower > constant:camp_rework_cost.activation_manpower
+			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
 			command_power > constant:camp_rework_cost.activation_command
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
@@ -2304,7 +2319,7 @@ camp_repression_network_category = {
 		cost = constant:camp_rework_cost.review_pp
 		days_remove = constant:camp_rework_timing.reform_days
 		days_re_enable = constant:camp_rework_timing.reform_days
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = BEL }
 		visible = {
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
@@ -2407,12 +2422,13 @@ camp_repression_network_category = {
 
 	bel_congo_resource_quota_cycle = {
 		icon = GFX_decision_bel_congo_concession_quota
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.generic_base_resources }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_GENERIC_BASE_RESOURCES }
 		allowed = { original_tag = BEL }
 		activation = { always = no }
 		visible = { has_variable = bel_congo_quota_state_id }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.bel_congo_resource_quota_cycle_days
+		days_remove = constant:camp_rework_timing.bel_congo_resource_quota_cycle_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -2429,12 +2445,13 @@ camp_repression_network_category = {
 
 	bel_congo_transport_corridor_project = {
 		icon = GFX_decision_bel_congo_transport_corridor
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = BEL }
 		activation = { always = no }
 		visible = { has_variable = bel_congo_corridor_state_id }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.bel_congo_transport_corridor_project_days
+		days_remove = constant:camp_rework_timing.bel_congo_transport_corridor_project_days
 		is_good = yes
 		timeout_effect = {
 			if = {
@@ -2488,12 +2505,13 @@ camp_repression_network_category = {
 
 	bel_concession_reform_mandate = {
 		icon = GFX_decision_bel_colonial_inspection
-		modifier = { consumer_goods_factor = constant:camp_rework_idea_modifier.reform_consumer_goods }
+		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = BEL }
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_belgium_inspection_open }
 		available = { hidden_trigger = { always = no } }
 		days_mission_timeout = constant:camp_rework_timing.bel_concession_reform_mandate_days
+		days_remove = constant:camp_rework_timing.bel_concession_reform_mandate_days
 		is_good = yes
 		timeout_effect = {
 			if = {

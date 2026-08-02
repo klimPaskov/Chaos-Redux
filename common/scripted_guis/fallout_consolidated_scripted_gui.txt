@@ -21,10 +21,13 @@ scripted_gui = {
 	air_winter_normal_map_grade_proof_gui = {
 		context_type = player_context
 		window_name = "air_winter_normal_map_grade_proof"
-		parent_window_window = "mapicons_container"
+		# Uses the documented default main-window attachment. The installed
+		# parser does not implement parent_window_window despite listing it.
 
 		visible = {
-			@AIR_WINTER_NORMAL_MAP_GRADE_PROOF_STATE = {
+			# Scope keys do not expand file-scoped constants; this mirrors the
+			# authoritative proof-state constant immediately above.
+			64 = {
 				check_variable = { air_winter_phase > constant:air_winter_phase.clear }
 			}
 		}
