@@ -2,7 +2,7 @@
 
 > Runtime reconciliation, 2026-08-02: the live chain preserves the accepted `.4` neighboring-threat report and uses `.90` for the SCN-012 launch report. The rows below are now implemented event surfaces, not requests to allocate additional IDs. The two-tag correction also replaces every historical multi-country Rat Nation reference with the reusable `RTA` carrier and separate `RTX` Rat King.
 
-All event numbers after the canonical entry are planning allocations. The implementation agent must inspect existing namespace use before final assignment.
+Event numbers after the canonical entry are retained here as the accepted Event 020 namespace map. The live implementation has resolved the named rows, including `.4`, `.45`, `.57-.59`, `.64-.75`, and `.90`; this matrix is behavioral documentation, not an instruction to allocate new IDs.
 
 | Working event | Role | Primary actor | Player-facing | Repeats |
 | --- | --- | --- | --- | --- |
@@ -21,8 +21,8 @@ All event numbers after the canonical entry are planning allocations. The implem
 | `chaosx.nr20.21` | country adaptation milestone | country | yes | limited by country |
 | `chaosx.nr20.30` | Evolution II resolution | global | news | no |
 | `chaosx.nr20.31` | first overseas infection | destination owner | news | no global, local later |
-| `chaosx.nr20.40` | Evolution III resolution and first rat emergence | basin owner and new rat tag | report plus news | no |
-| `chaosx.nr20.41` | later rat emergence | basin owner and new rat tag | selective report | yes with basin and global caps |
+| `chaosx.nr20.40` | Evolution III resolution and first RTA emergence | basin owner and reusable RTA carrier | report plus news | no |
+| `chaosx.nr20.41` | later internal brood emergence | basin owner and reusable RTA carrier | selective report | yes with basin and global caps |
 | `chaosx.nr20.42` | rat dominance standoff | superseded by the two-tag correction; no third Rat Nation is created | no separate event | no |
 | `chaosx.nr20.43` | state-level brood absorption | reusable RTA carrier | report or log | yes |
 | `chaosx.nr20.44` | rat resurgence | affected human owner and rat tag | yes | limited by basin cooldown |

@@ -291,9 +291,9 @@ A country can reintroduce the disease after natural eradication through a comple
 
 Event 20 remains registered as a Minor Fire-Once event. It should become enabled by default only after the rework is implemented and audited.
 
-The event belongs to a new **Diseases** cluster with **Severe** member severity. The cluster should initially list only Event 20 as a confirmed member. Event 41 Disease in Divisions and Event 163 Doctor Wu are related systems, but they should not be added as cluster members until their own reworks define compatible cluster behavior.
+The event belongs to the live **Diseases** cluster with **Severe** member severity. The registry assigns cluster ID `8`, and the cluster initially lists only Event 20 as a confirmed member. Event 41 Disease in Divisions and Event 163 Doctor Wu are related systems, but they remain outside the cluster until their own reworks define compatible cluster behavior.
 
-The final numeric cluster ID must be checked against the live repository. The catalog currently has IDs 1 through 4, so ID 5 is a planning candidate rather than an implementation guarantee.
+The live implementation has resolved the numeric cluster ID as `8`. The catalog and event overview retain this ID as the source for Event 20 cluster references.
 
 The normal random-event opening still begins in one mainland state. The triggerable scenario in Part 9 is a separate manual setup that deliberately bypasses the ordinary origin and evolution sequence for one instant multi-continent challenge. It must reuse this same disease identity and state machine rather than creating a parallel scenario-only plague.
 

@@ -1,5 +1,7 @@
 # Manual Improvement Loop Closure Review
 
+> Historical review note, reconciled 2026-08-02: the former finite Rat Nation pool and independently tagged broods are superseded. Current runtime identity is the reusable `RTA` carrier plus separate `RTX` Rat King, with additional broods represented by internal RTA state markers. The review findings remain useful as planning provenance, but its old tag-pool wording is not an implementation requirement.
+
 ## Disclosure
 
 The `chaosx_improvement_loop_planner` contract was read in full. This environment did not expose a custom subagent spawning tool, so this is a manual parent-agent review using the same planning and anti-bloat standard. It is not represented as a spawned subagent output.
@@ -37,7 +39,7 @@ A normal disease colour would make the event visually indistinct. The final reso
 
 ### Triggerable instant-chaos setup
 
-The original closure pass rejected a manual scenario because it was not in the first request. The user later explicitly required one. Part 9 now defines a data-driven scenario with four intensities, multi-continent disease seeding, forced Evolutions I through IV, multiple independent Rat Nations, a separate Rat King Royal Basin, a coexistence grace period, idempotent setup, achievement disqualification, and a full mapmode refresh. It never grants Evolution V or terminal victory.
+The original closure pass rejected a manual scenario because it was not in the first request. The user later explicitly required one. Part 9 now defines a data-driven scenario with four intensities, multi-continent disease seeding, forced Evolutions I through IV, several internal RTA broods, a separate Rat King Royal Basin, a coexistence grace period, idempotent setup, achievement disqualification, and a full mapmode refresh. It never grants Evolution V or terminal victory.
 
 ### Liberated states
 
@@ -57,11 +59,11 @@ After the difficult terminal conditions are met, a deterministic takeover resolv
 
 ### Performance and tag limits
 
-The final design uses a finite tag pool, basin cooldowns, pulse caps, active registries, intensity caps, consolidation rules, and map-size-aware thresholds.
+The final design uses the two-tag `RTA`/`RTX` identity contract, internal basin markers, basin cooldowns, pulse caps, active registries, intensity caps, consolidation rules, and map-size-aware thresholds.
 
 ### Super-event distinction
 
-Coronation and world end have separate campaign roles and require unique image, quote, and audio research. Scenario coronation wording must work while independent broods still exist.
+Coronation and world end have separate campaign roles and require unique image, quote, and audio research. Scenario coronation wording must work while internal RTA broods still exist.
 
 ## Anti-bloat findings
 
@@ -71,7 +73,7 @@ The following additions remain rejected because they duplicate or weaken the eve
 - a second disease mapmode
 - a duplicate contamination or death meter
 - a Black Plague-only doomsday button outside the shared biowarfare structure
-- one bespoke focus tree for every base Rat Nation tag
+- one bespoke focus tree for every internal RTA brood marker
 - ordinary diplomatic routes between Rat Nations and human countries
 - a super-event for every brood emergence
 - a new ideology family without live-repository need

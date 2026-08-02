@@ -113,7 +113,7 @@ Reserved manual scenario placeholder for Event 012. It remains listed in the man
 
 Black Plague Unbound owns the collision-free `SCN-012` identity, fixed Instant Plague Kingdoms profile, shared intensity slider, and all four shared list-sort views.
 
-The adapter launches the atomic Event 20 scenario transaction directly. It seeds established outbreaks across the intensity-appropriate continents, forces Evolutions I through IV, creates independent Rat Nations and the separate Rat King, initializes their forces and AI, records the scenario and evolution state, and performs one mapmode rebuild. The scoped setup bypass is cleared after launch, repeat launches are idempotent, and the scenario never grants Evolution V, `world_end`, or automatic victory.
+The adapter launches the atomic Event 20 scenario transaction directly. It seeds established outbreaks across the intensity-appropriate continents, forces Evolutions I through IV, creates or reuses the single `RTA` Rat Nation carrier with separate internal brood state markers, and creates or preserves the separate `RTX` Rat King. It initializes their forces and AI, records the scenario and evolution state, and performs one mapmode rebuild. The scoped setup bypass is cleared after launch, repeat launches are idempotent, and the scenario never grants Evolution V, `world_end`, or automatic victory.
 
 The implementation handoff is at `docs/plans/020_black_plague_plans/subagent_handoffs/2026-07-24_part9_scn012_adapter_handoff.md`.
 

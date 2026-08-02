@@ -207,9 +207,9 @@ Create route portrait variants only when the government route changes the public
 
 ## Flags
 
-### Base Rat Nation tag pool
+### Reusable RTA carrier flag family
 
-Create one complete unique flag design for every final registered base rat tag. Planning target: 12 designs.
+Create one complete RTA base flag family for the reusable carrier. Internal brood markers are represented through state markers, basin variables, and UI accents rather than additional country flags or tags.
 
 Each design needs:
 
@@ -219,7 +219,7 @@ Each design needs:
 - correct vanilla TGA origin
 - contact-sheet orientation validation
 
-Design a shared family with distinct motifs such as tails, teeth, burrow spirals, grain, harbor hooks, broken rails, trenches, or plague marks. Do not create palette swaps, flipped copies, or copied emblems.
+Design the RTA family with a distinct motif such as tails, teeth, burrow spirals, grain, harbor hooks, broken rails, trenches, or plague marks. Do not create palette swaps, flipped copies, or copied emblems for unregistered brood tags.
 
 ### Rat King
 

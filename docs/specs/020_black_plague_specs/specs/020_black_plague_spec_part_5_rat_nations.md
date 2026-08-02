@@ -74,7 +74,7 @@ The package must be playable when a human takes control. A human rat player uses
 
 The triggerable scenario creates several full internal RTA broods immediately and creates or preserves the separate RTX package. Each brood uses the same valid state, army allocation, focus, portrait, flag, mechanic, and AI rules as a naturally emerged RTA brood. Scenario broods are not reduced temporary versions and do not consume extra country tags.
 
-The scenario distributes broods among selected continents and assigns one origin archetype from the local basin. Independent broods remain visible during the initial royal-consolidation grace period even though the Rat King also exists. Dominance timers and royal absorption resume after that grace period.
+The scenario distributes internal broods among selected continents and assigns one origin archetype from each local basin. Separate RTA brood markers remain visible during the initial royal-consolidation grace period even though the Rat King also exists. Dominance timers and royal absorption resume after that grace period.
 
 ## Map and state safety
 
