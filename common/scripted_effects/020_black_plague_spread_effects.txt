@@ -210,6 +210,19 @@ black_plague_calculate_current_source_exposure = {
 		}
 		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_response_result.countermeasure_source_spread_factor }
 	}
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_shared_inspection_compact_active }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.refugee_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_shared_result.inspection_compact_spread_factor }
+	}
 
 	set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.natural }
 	if = {
@@ -254,6 +267,19 @@ black_plague_adjust_exposure_for_current_target = {
 	}
 	divide_temp_variable = { black_plague_target_countermeasure_reduction = constant:black_plague_spread.target_countermeasure_divisor }
 	subtract_from_temp_variable = { black_plague_exposure_amount = black_plague_target_countermeasure_reduction }
+	if = {
+		limit = {
+			CONTROLLER = { has_country_flag = black_plague_shared_inspection_compact_active }
+			OR = {
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.internal_transport }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.troop_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.refugee_movement }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.port_local }
+				check_variable = { black_plague_exposure_route = constant:black_plague_route.overseas_port }
+			}
+		}
+		multiply_temp_variable = { black_plague_exposure_amount = constant:black_plague_shared_result.inspection_compact_spread_factor }
+	}
 
 	if = {
 		limit = { has_state_flag = black_plague_cordon_active }

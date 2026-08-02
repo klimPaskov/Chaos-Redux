@@ -33,13 +33,13 @@ The historical planning package supplied research leads only. The current tranch
 
 ## Mapmode and black fog
 
-The existing disease mapmode must render every established Black Plague state with a black base colour. This is a mandatory design requirement, not an optional visual. Its final resolver hook and overlay method remain unverified until the live GUI and scripted mapmode files are inspected.
+The existing disease mapmode must render every established Black Plague state with a black base colour. This is a mandatory design requirement, not an optional visual. Static inspection confirms the black base resolver and phase/containment/weaponization/rat-control overlay hooks; live map rendering remains user validation. State-attached black fog remains technically uncertain.
 
 State-attached black fog remains technically uncertain. The spec requires a real prototype and a reproducible blocker report if the live engine cannot support it safely. Failure of the fog prototype does not permit failure of the black mapmode colour.
 
 ## Triggerable scenario
 
-The scenario design is complete and the live implementation uses `SCN-012` with the corrected two-tag contract. The scenario remains idempotent, preserves or creates only the accepted `RTA` and `RTX` actors, and must not set Evolution V or `world_end`; focused launch and lifecycle validation remains open.
+The scenario design is complete and the live implementation uses `SCN-012` with the corrected two-tag contract. The scenario remains idempotent, preserves or creates only the accepted `RTA` and `RTX` actors, and must not set Evolution V or `world_end`; focused launch and lifecycle validation remains open. The preflight fails closed and clears reservation markers on downstream failure, but a full journaled rollback of already-applied disease, transfer, country, and Chaos mutations is still an explicit blocker.
 
 ## Balance status
 

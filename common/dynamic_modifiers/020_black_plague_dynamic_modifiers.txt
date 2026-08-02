@@ -23,3 +23,32 @@ black_plague_affected_state = {
 		NOT = { black_plague_state_is_established = yes }
 	}
 }
+
+# A completed recovery programme leaves a measurable state legacy. The flag
+# owns its lifetime, while the modifier preserves local labour, repairs, and
+# civil administration during the long population-recovery window.
+black_plague_population_recovery_program = {
+	icon = GFX_idea_black_death
+	local_manpower = constant:black_plague_recovery_modifier.local_manpower
+	local_resources = constant:black_plague_recovery_modifier.local_resources
+	state_production_speed_buildings_factor = constant:black_plague_recovery_modifier.production
+	resistance_target = constant:black_plague_recovery_modifier.resistance
+	compliance_growth = constant:black_plague_recovery_modifier.compliance
+	remove_trigger = {
+		NOT = { has_state_flag = black_plague_population_recovery_program_active }
+	}
+}
+
+# A memorial charter is a durable civic record rather than a disease cure. It
+# protects the recovered state's administrative memory while the country keeps
+# the treaty and the countermeasure findings visible.
+black_plague_memorial_biosecurity_stewardship = {
+	icon = GFX_idea_black_death
+	local_manpower = constant:black_plague_recovery_modifier.memorial_local_manpower
+	state_production_speed_buildings_factor = constant:black_plague_recovery_modifier.memorial_production
+	resistance_target = constant:black_plague_recovery_modifier.memorial_resistance
+	compliance_growth = constant:black_plague_recovery_modifier.memorial_compliance
+	remove_trigger = {
+		NOT = { CONTROLLER = { has_country_flag = black_plague_memorial_biosecurity_charter } }
+	}
+}

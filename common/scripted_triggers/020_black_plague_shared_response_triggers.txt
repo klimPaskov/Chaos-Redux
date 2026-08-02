@@ -352,6 +352,9 @@ black_plague_shared_country_knowledge_visible = {
 		has_country_flag = black_plague_countermeasure_program_active
 		has_country_flag = black_plague_countermeasure_findings_available
 		any_controlled_state = { black_plague_shared_state_is_infected_or_worse = yes }
+		has_global_flag = black_plague_rat_king_defeated
+		has_global_flag = black_plague_report_rat_nation_defeated
+		has_global_flag = black_plague_system_eradicated
 	}
 }
 
@@ -398,6 +401,104 @@ black_plague_shared_can_international_mission = {
 	has_country_flag = black_plague_countermeasure_program_active
 	NOT = { has_country_flag = black_plague_shared_international_mission_active }
 	black_plague_shared_country_can_pay_country_materials = yes
+}
+
+# COUNTRY scope: recurring post-crisis reconstruction and vigilance. The
+# project stays inside the shared disease category and is available only after
+# a rat defeat or full eradication while the country still has recovery ground.
+black_plague_shared_can_start_reconstruction_vigilance = {
+	black_plague_shared_country_knowledge_visible = yes
+	OR = {
+		has_global_flag = black_plague_rat_king_defeated
+		has_global_flag = black_plague_report_rat_nation_defeated
+		has_global_flag = black_plague_system_eradicated
+	}
+	NOT = { has_country_flag = black_plague_shared_country_action_active }
+	NOT = { has_country_flag = black_plague_shared_reconstruction_vigilance_active }
+	black_plague_shared_country_can_pay_country_materials = yes
+	any_controlled_state = {
+		OR = {
+			black_plague_state_is_recovering = yes
+			black_plague_state_is_cured = yes
+		}
+	}
+}
+
+# COUNTRY scope: an international inspection compact requires a live
+# countermeasure programme, one faction partner, and a reachable coastal or
+# logistics hub. Its timed country flag is consumed by the spread calculator.
+black_plague_shared_can_start_inspection_compact = {
+	black_plague_shared_country_knowledge_visible = yes
+	has_country_flag = black_plague_countermeasure_program_active
+	NOT = { has_country_flag = black_plague_shared_country_action_active }
+	NOT = { has_country_flag = black_plague_shared_inspection_compact_active }
+	black_plague_shared_country_can_pay_country_materials = yes
+	any_controlled_state = { black_plague_shared_state_is_coastal_hub = yes }
+	any_country = {
+		is_in_faction_with = ROOT
+		NOT = { tag = ROOT }
+		NOT = { is_actual_nonhuman_country = yes }
+	}
+}
+
+# COUNTRY scope: the post-crisis condemnation is optional, but once adopted it
+# blocks a future Event 020 weaponization project through the existing
+# `black_plague_weaponization_condemned` country flag.
+black_plague_shared_can_condemn_future_weaponization = {
+	black_plague_shared_country_knowledge_visible = yes
+	OR = {
+		has_global_flag = black_plague_rat_king_defeated
+		has_global_flag = black_plague_report_rat_nation_defeated
+		has_global_flag = black_plague_system_eradicated
+	}
+	has_country_flag = black_plague_countermeasure_findings_available
+	NOT = { has_country_flag = black_plague_weaponization_condemned }
+	NOT = { has_country_flag = black_plague_shared_country_action_active }
+	black_plague_shared_country_can_pay_country_materials = yes
+}
+
+# COUNTRY scope: long-term population and ruined-state recovery. The project
+# is available only after the rat crisis has ended and at least one controlled
+# recovery or cured state still carries measurable devastation.
+black_plague_shared_can_start_population_recovery = {
+	black_plague_shared_country_knowledge_visible = yes
+	OR = {
+		has_global_flag = black_plague_rat_king_defeated
+		has_global_flag = black_plague_report_rat_nation_defeated
+		has_global_flag = black_plague_system_eradicated
+	}
+	NOT = { has_country_flag = black_plague_shared_country_action_active }
+	NOT = { has_country_flag = black_plague_population_recovery_program_active }
+	black_plague_shared_country_can_pay_country_materials = yes
+	any_controlled_state = {
+		OR = {
+			black_plague_state_is_recovering = yes
+			black_plague_state_is_cured = yes
+		}
+		check_variable = { var = black_plague_devastation value = constant:black_plague_value.zero compare = greater_than }
+	}
+}
+
+# COUNTRY scope: a durable memorial and anti-biowarfare charter. It remains a
+# country-level promise, but places stewardship modifiers on every recovered
+# or cured Black Plague state.
+black_plague_shared_can_start_memorial_biosecurity_charter = {
+	black_plague_shared_country_knowledge_visible = yes
+	OR = {
+		has_global_flag = black_plague_rat_king_defeated
+		has_global_flag = black_plague_report_rat_nation_defeated
+		has_global_flag = black_plague_system_eradicated
+	}
+	NOT = { has_country_flag = black_plague_shared_country_action_active }
+	NOT = { has_country_flag = black_plague_memorial_biosecurity_charter }
+	has_country_flag = black_plague_countermeasure_findings_available
+	black_plague_shared_country_can_pay_country_materials = yes
+	any_controlled_state = {
+		OR = {
+			black_plague_state_is_recovering = yes
+			black_plague_state_is_cured = yes
+		}
+	}
 }
 
 # Anti-rat state actions.
@@ -452,7 +553,7 @@ black_plague_shared_crown_target_is_valid = {
 black_plague_shared_crown_target_can_continue = {
 	OR = {
 		is_controlled_by = RTX
-		is_controlled_by = ROOT
+		CONTROLLER = { black_plague_country_is_human_host = yes }
 	}
 	NOT = { has_global_flag = black_plague_terminal_takeover_active }
 	NOT = { has_global_flag = black_plague_rat_king_defeated }
@@ -467,6 +568,22 @@ black_plague_shared_crown_mission_target_can_continue = {
 		has_variable = black_plague_shared_crown_mission_owner
 		check_variable = { var = black_plague_shared_crown_mission_owner value = ROOT compare = equals }
 		black_plague_shared_crown_target_can_continue = yes
+	}
+}
+
+# COUNTRY scope. A Crown Strike succeeds as soon as the marked royal target is
+# no longer under RTX control and a human host controls the state. This keeps
+# coalition liberation valid without treating an uncontrolled or rat-held
+# target as a success.
+black_plague_shared_crown_mission_target_success = {
+	any_state = {
+		has_state_flag = black_plague_shared_crown_mission_target
+		has_variable = black_plague_shared_crown_mission_owner
+		check_variable = { var = black_plague_shared_crown_mission_owner value = ROOT compare = equals }
+		NOT = { is_controlled_by = RTX }
+		CONTROLLER = { black_plague_country_is_human_host = yes }
+		NOT = { has_global_flag = black_plague_terminal_takeover_active }
+		NOT = { has_global_flag = black_plague_rat_king_defeated }
 	}
 }
 
@@ -489,7 +606,6 @@ black_plague_shared_can_strike_crown = {
 	black_plague_shared_state_has_military_route = yes
 	ROOT = {
 		black_plague_country_can_direct_response = yes
-		is_ai = no
 		is_at_war_with = RTX
 		has_country_flag = black_plague_royal_node_strike_contributor
 		NOT = { has_country_flag = black_plague_shared_crown_mission_active }

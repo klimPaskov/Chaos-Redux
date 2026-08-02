@@ -584,8 +584,12 @@ black_plague_evolution_refresh_king_progress = {
 		set_variable = { global.black_plague_rat_king_target_continent_total = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_target_continent_states = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_target_continent_ratio = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_capital_targets = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_rat_king_target_refuge_targets = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_target_capital_targets_controlled = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_target_refuge_targets_controlled = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_terminal_human_state_count = constant:black_plague_value.zero }
+		set_variable = { global.black_plague_terminal_human_response_strength = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_europe_total = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_europe_controlled = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_europe_capital_targets = constant:black_plague_value.zero }
@@ -610,7 +614,7 @@ black_plague_evolution_refresh_king_progress = {
 		set_variable = { global.black_plague_rat_king_australia_controlled = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_australia_capital_targets = constant:black_plague_value.zero }
 		set_variable = { global.black_plague_rat_king_australia_refuge_targets = constant:black_plague_value.zero }
-		every_state = {
+			every_state = {
 			limit = {
 				impassable = no
 				NOT = { has_state_category = wasteland }
@@ -665,6 +669,22 @@ black_plague_evolution_refresh_king_progress = {
 			}
 			if = {
 				limit = {
+					black_plague_state_is_established = yes
+					NOT = { black_plague_state_is_rat_controlled = yes }
+					CONTROLLER = { black_plague_country_is_human_host = yes }
+				}
+				add_to_variable = { global.black_plague_terminal_human_state_count = constant:black_plague_value.one }
+			}
+			if = {
+				limit = { has_state_flag = black_plague_rat_terminal_capital_target }
+				add_to_variable = { global.black_plague_rat_king_target_capital_targets = constant:black_plague_value.one }
+			}
+			if = {
+				limit = { has_state_flag = black_plague_rat_terminal_refuge_node }
+				add_to_variable = { global.black_plague_rat_king_target_refuge_targets = constant:black_plague_value.one }
+			}
+			if = {
+				limit = {
 					is_controlled_by = RTX
 					has_state_flag = black_plague_rat_terminal_capital_target
 				}
@@ -695,6 +715,17 @@ black_plague_evolution_refresh_king_progress = {
 					}
 					add_to_variable = { global.black_plague_rat_king_target_refuge_targets_controlled = constant:black_plague_value.one }
 				}
+			}
+		}
+		for_each_scope_loop = {
+			array = global.black_plague_response_countries
+			if = {
+				limit = {
+					exists = yes
+					black_plague_country_is_human_host = yes
+					has_variable = black_plague_response_capacity_remaining
+				}
+				add_to_variable = { global.black_plague_terminal_human_response_strength = black_plague_response_capacity_remaining }
 			}
 		}
 		black_plague_evolution_compare_king_continent = yes

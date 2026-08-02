@@ -712,11 +712,15 @@ chaosx_disease_containment_category = {
 		days_remove = constant:doctor_wu_access.request_duration_days
 		complete_effect = {
 			custom_effect_tooltip = black_plague_request_doctor_wu_access_start_tt
-			remove_equipment_to_stockpile = { type = support_equipment amount = constant:doctor_wu_access.request_support_equipment }
-			remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:doctor_wu_access.request_motorized_equipment }
-			remove_equipment_to_stockpile = { type = convoy_1 amount = constant:doctor_wu_access.request_convoys }
+			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_support_equipment }
+			remove_support_equipment_from_stockpile = yes
+			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_motorized_equipment }
+			remove_motorized_equipment_from_stockpile = yes
+			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_convoys }
+			remove_convoys_from_stockpile = yes
 			set_temp_variable = { doctor_wu_request_fuel_payment = constant:doctor_wu_access.request_fuel }
-			subtract_from_fuel = doctor_wu_request_fuel_payment
+			set_temp_variable = { fuel_stockpile_removal_amount = doctor_wu_request_fuel_payment }
+			remove_fuel_from_stockpile = yes
 			hidden_effect = { doctor_wu_send_foreign_access_request = yes }
 		}
 		ai_will_do = {

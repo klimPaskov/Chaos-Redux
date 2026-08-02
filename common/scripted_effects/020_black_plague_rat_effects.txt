@@ -37,6 +37,8 @@ black_plague_rat_initialize_runtime = {
 		clr_global_flag = black_plague_rat_king_defeated
 		clr_global_flag = black_plague_rat_king_defeat_aftermath_emitted
 		clr_global_flag = black_plague_rat_king_reconstruction_reported
+		clr_global_flag = black_plague_rat_king_restoration_used
+		clr_global_flag = black_plague_rat_king_restored
 		clr_global_flag = black_plague_rat_runtime_failure
 		clr_global_flag = black_plague_evolution_i_active
 		clr_global_flag = black_plague_evolution_ii_active
@@ -2702,6 +2704,43 @@ black_plague_rat_transfer_to_king = {
 		}
 		else = {
 			set_global_flag = black_plague_rat_king_activation_failed
+		}
+	}
+}
+
+# Rebuild the separate RTX crown from the surviving RTA carrier after a
+# defeated king. This is a one-use, delayed route. It reuses the normal royal
+# basin transfer and initializer, preserves the RTA carrier, and deliberately
+# does not call the Evolution IV recorder a second time.
+black_plague_rat_restore_king_after_defeat = {
+	if = {
+		limit = { black_plague_rat_king_restoration_can_start = yes }
+		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.king_restoration_mass_cost }
+		clr_global_flag = black_plague_rat_king_activation_failed
+		black_plague_rat_select_king_source = yes
+		if = {
+			limit = { has_event_target = black_plague_rat_king_source }
+			black_plague_rat_transfer_to_king = yes
+			if = {
+				limit = { has_global_flag = black_plague_rat_king_active }
+				set_global_flag = black_plague_rat_king_restoration_used
+				set_global_flag = black_plague_rat_king_restored
+				clear_variable = global.black_plague_rat_king_terminal_preparation
+				set_global_flag = black_plague_mapmode_dirty
+				news_event = { id = chaosx.nr20.88 }
+			}
+			else = {
+				add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.king_restoration_mass_cost }
+				set_temp_variable = { black_plague_rat_restoration_cooldown_days = constant:black_plague_rat_decision.king_restoration_cooldown_days }
+				set_country_flag = { flag = black_plague_rat_king_restoration_cooldown days = black_plague_rat_restoration_cooldown_days }
+				country_event = { id = chaosx.nr20.89 }
+			}
+		}
+		else = {
+			add_to_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.king_restoration_mass_cost }
+			set_temp_variable = { black_plague_rat_restoration_cooldown_days = constant:black_plague_rat_decision.king_restoration_cooldown_days }
+			set_country_flag = { flag = black_plague_rat_king_restoration_cooldown days = black_plague_rat_restoration_cooldown_days }
+			country_event = { id = chaosx.nr20.89 }
 		}
 	}
 }

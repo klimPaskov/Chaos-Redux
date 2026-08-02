@@ -16,6 +16,7 @@ An effect belongs here when its contract is useful across events or systems, eve
 - [call_natural_disaster](#call_natural_disaster)
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
+- [Stockpile debit helpers](#stockpile-debit-helpers)
 
 ## modify_value_based_on_chaos_tier
 
@@ -344,4 +345,30 @@ set_temp_variable = { state_civilian_population_loss_applied = 0 }
 set_temp_variable = { state_civilian_population_loss_result = 0 }
 set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
 apply_exact_state_civilian_population_loss = yes
+```
+
+## Stockpile debit helpers
+
+Purpose: remove a positive, dynamically calculated amount from a country's equipment or fuel stockpile through the current supported `add_equipment_to_stockpile` and `add_fuel` effects.
+
+Scope: country.
+
+Inputs: `equipment_stockpile_removal_amount` for equipment helpers or `fuel_stockpile_removal_amount` for `remove_fuel_from_stockpile`. The supplied amount must be positive.
+
+Helpers: `remove_support_equipment_from_stockpile`, `remove_motorized_equipment_from_stockpile`, `remove_convoys_from_stockpile`, `remove_trains_from_stockpile`, `remove_plague_bombs_from_stockpile`, `remove_infantry_equipment_from_stockpile`, and `remove_fuel_from_stockpile`.
+
+Outputs: the requested amount is removed from the matching stockpile.
+
+Defaults: no default amount is inferred. A zero input performs a zero-value transaction.
+
+Side effects: the helper negates its temporary amount input in place before applying the debit.
+
+Example:
+
+```txt
+set_temp_variable = { equipment_stockpile_removal_amount = 250 }
+remove_support_equipment_from_stockpile = yes
+
+set_temp_variable = { fuel_stockpile_removal_amount = 500 }
+remove_fuel_from_stockpile = yes
 ```

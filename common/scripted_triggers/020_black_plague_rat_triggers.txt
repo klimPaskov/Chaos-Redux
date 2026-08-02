@@ -181,6 +181,51 @@ black_plague_rat_king_defeat_aftermath_is_eligible = {
 	}
 }
 
+# A surviving RTA carrier can attempt one constrained restoration after the
+# RTX crown falls. The route needs a living human basin for the new Royal
+# Basin, enough sentience to remember the old court, and enough coherence to
+# keep the carrier from splitting while the crown is rebuilt.
+black_plague_rat_king_restoration_can_start = {
+	black_plague_rat_country_is_active = yes
+	has_global_flag = black_plague_rat_king_defeated
+	has_global_flag = black_plague_evolution_iv_active
+	NOT = { has_global_flag = black_plague_rat_king_restoration_used }
+	NOT = { has_global_flag = black_plague_rat_king_restored }
+	NOT = { has_global_flag = black_plague_evolution_v_active }
+	NOT = { has_global_flag = black_plague_evolution_v_recorded }
+	NOT = { has_global_flag = black_plague_evolution_v_route_open }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_country_flag = black_plague_rat_country_retired }
+	NOT = { has_country_flag = black_plague_rat_king_restoration_cooldown }
+	check_variable = {
+		var = black_plague_rat_brood_mass
+		value = constant:black_plague_rat_decision.king_restoration_mass_cost
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_sentience
+		value = constant:black_plague_rat_decision.king_restoration_sentience_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = black_plague_rat_coherence
+		value = constant:black_plague_rat_decision.king_restoration_cohesion_gate
+		compare = greater_than_or_equals
+	}
+	num_of_controlled_states > 1
+	any_state = {
+		black_plague_state_is_rat_controlled = yes
+		CONTROLLER = { black_plague_rat_country_is_active = yes }
+	}
+	any_state = {
+		black_plague_state_is_established = yes
+		NOT = { black_plague_state_is_rat_controlled = yes }
+		NOT = { has_state_flag = black_plague_rat_royal_basin_reserved }
+		CONTROLLER = { black_plague_country_is_human_host = yes }
+	}
+}
+
 black_plague_rat_country_is_nonhuman_army = {
 	OR = {
 		black_plague_rat_country_is_active = yes

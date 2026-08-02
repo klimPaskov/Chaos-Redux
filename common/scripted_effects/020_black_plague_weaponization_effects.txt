@@ -106,13 +106,16 @@ black_plague_weaponization_trigger_accident = {
 # COUNTRY scope. The four approach decisions pay real material, military, and
 # fuel costs before changing the scientific posture.
 black_plague_weaponization_pay_approach_cost = {
-	remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.approach_support_equipment }
-	remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_weaponization_program.approach_motorized_equipment }
+	set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.approach_support_equipment }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.approach_motorized_equipment }
+	remove_motorized_equipment_from_stockpile = yes
 	set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.approach_command_power }
 	multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
 	add_command_power = black_plague_weaponization_command_debit
 	set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.approach_fuel }
-	subtract_from_fuel = black_plague_weaponization_fuel_debit
+	set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_fuel_debit }
+	remove_fuel_from_stockpile = yes
 }
 
 black_plague_weaponization_choose_safety_first = {
@@ -212,13 +215,16 @@ black_plague_weaponization_complete_program = {
 black_plague_weaponization_expand_stockpile = {
 	if = {
 		limit = { black_plague_weaponization_can_expand_stockpile = yes }
-		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
-		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment }
+		remove_motorized_equipment_from_stockpile = yes
 		set_temp_variable = { black_plague_weaponization_expansion_command_debit = constant:black_plague_weaponization_program.stockpile_expansion_command_power }
 		multiply_temp_variable = { black_plague_weaponization_expansion_command_debit = -1 }
 		add_command_power = black_plague_weaponization_expansion_command_debit
 		set_temp_variable = { black_plague_weaponization_expansion_fuel_debit = constant:black_plague_weaponization_program.stockpile_expansion_fuel }
-		subtract_from_fuel = black_plague_weaponization_expansion_fuel_debit
+		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_expansion_fuel_debit }
+		remove_fuel_from_stockpile = yes
 		add_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.stockpile_expansion_batch }
 		set_country_flag = black_plague_weaponization_stockpile_active
 		set_country_flag = black_plague_weaponization_stockpile_expansion_history
@@ -236,13 +242,16 @@ black_plague_weaponization_expand_stockpile = {
 black_plague_weaponization_destroy_stockpile = {
 	if = {
 		limit = { black_plague_weaponization_can_destroy_stockpile = yes }
-		remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.stockpile_destroy_amount }
-		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_destroy_amount }
+		remove_plague_bombs_from_stockpile = yes
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
+		remove_support_equipment_from_stockpile = yes
 		set_temp_variable = { black_plague_weaponization_destruction_command_debit = constant:black_plague_weaponization_program.stockpile_destroy_command_power }
 		multiply_temp_variable = { black_plague_weaponization_destruction_command_debit = -1 }
 		add_command_power = black_plague_weaponization_destruction_command_debit
 		set_temp_variable = { black_plague_weaponization_destruction_fuel_debit = constant:black_plague_weaponization_program.stockpile_destroy_fuel }
-		subtract_from_fuel = black_plague_weaponization_destruction_fuel_debit
+		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_destruction_fuel_debit }
+		remove_fuel_from_stockpile = yes
 		clr_country_flag = black_plague_weaponization_stockpile_active
 		set_country_flag = black_plague_weaponization_stockpile_destroyed_history
 		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.stockpile_destroy_risk_loss }
@@ -264,7 +273,7 @@ black_plague_weaponization_process_stockpile = {
 			NOT = { has_country_flag = black_plague_weaponization_accident_cooldown }
 		}
 		random_list = {
-			2 = { remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.weapon_stockpile_batch } black_plague_weaponization_trigger_accident = yes }
+			2 = { set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.weapon_stockpile_batch } remove_plague_bombs_from_stockpile = yes black_plague_weaponization_trigger_accident = yes }
 			98 = { }
 		}
 	}
@@ -280,13 +289,16 @@ black_plague_weaponization_deliver_to_state = {
 			FROM = { black_plague_weaponization_delivery_state_is_valid = yes }
 		}
 		black_plague_achievement_record_weaponization_started = yes
-		remove_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.weapon_stockpile_batch }
-		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_weaponization_program.delivery_support_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.weapon_stockpile_batch }
+		remove_plague_bombs_from_stockpile = yes
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.delivery_support_equipment }
+		remove_support_equipment_from_stockpile = yes
 		set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.delivery_command_power }
 		multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
 		add_command_power = black_plague_weaponization_command_debit
 		set_temp_variable = { black_plague_weaponization_fuel_debit = constant:black_plague_weaponization_program.delivery_fuel }
-		subtract_from_fuel = black_plague_weaponization_fuel_debit
+		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_fuel_debit }
+		remove_fuel_from_stockpile = yes
 		FROM = {
 			save_event_target_as = black_plague_weaponization_delivery_state
 			set_temp_variable = { black_plague_exposure_amount = constant:black_plague_weaponization_program.delivery_exposure }
