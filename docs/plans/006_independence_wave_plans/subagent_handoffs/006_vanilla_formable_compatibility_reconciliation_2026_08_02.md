@@ -4,7 +4,7 @@ Date: 2026-08-02
 
 ## Decision
 
-The durable authority is the tracked `common/decisions/formable_nation_decisions.txt` mirror. It is byte-for-byte equivalent to the installed vanilla decision source except for three intended Event 006 guard insertions:
+The durable authority is the tracked `common/decisions/formable_nation_decisions.txt` mirror. Its normalized content is equivalent to the installed vanilla decision source except for three intended Event 006 guard insertions:
 
 - `can_access_vanilla_chu_formable_shortcuts = yes` in `form_idel_uralic_republic`.
 - `can_access_vanilla_asy_formable_shortcuts = yes` in `neo_assyrian_empire_decision`.
