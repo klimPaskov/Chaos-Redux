@@ -14,7 +14,7 @@ Biological deliberate-use adapters append immutable identity rows before the inc
 
 ## Event Log consumer
 
-Each deliberate row calls `record_events_log_system_history_entry` with event id 991, event type `event_system_event_type.cbrn_action`, and the ledger row index as payload. The dedicated type keeps these rows out of the Fallout-memory classification. The existing Chaos Redux Event Log shows the attacker and affected country and uses the CBRN detail localisation to expose the record's weapon class, agent, route, outcome, tracked deaths, contamination/outbreak change, evidence, attribution, retaliation, first-use status, and bounded repeat-use classification. The log is an observation surface; it does not replace the authoritative Deaths, Air Cleanliness, outbreak, Condemnation, or diplomacy ledgers.
+Each deliberate row calls `record_events_log_system_history_entry` with event id 991, event type `event_system_event_type.cbrn_action`, and the ledger row index as payload. The dedicated type keeps these rows out of the Fallout-memory classification. The existing Chaos Redux Event Log shows the attacker and affected country and uses the CBRN detail localisation to expose the record's weapon class, agent, route, outcome, tracked deaths, contamination/outbreak change, evidence, attribution, retaliation, first-use status, and bounded repeat-use classification. The log is an observation surface. It does not replace the authoritative Deaths, Air Cleanliness, outbreak, Condemnation, or diplomacy ledgers.
 
 ## Engine boundary
 

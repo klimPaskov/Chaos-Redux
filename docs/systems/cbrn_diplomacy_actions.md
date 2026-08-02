@@ -29,9 +29,9 @@ The publishing country consumes:
 
 When the action begins, the system selects and locks the eligible record with the greatest evidence value. Equal evidence keeps the earlier candidate in the fixed inspection order. A later attack or outbreak cannot replace the locked record while the timer is active. Biological weapon potency never affects selection: Tularemia, Anthrax, Plague, and Smallpox receive no different publication priority, just as their delivery success remains separate from their consequence hierarchy.
 
-Each accepted chemical action appends one exact row to aligned persistent state arrays. A failed or aborted chemical air raid that releases no agent also appends an exact attempt row when it creates evidence or Condemnation, rather than leaving aggregate liability without an accountable action. The row stores its UID, actor, victim, date, agent, agent class, route, severity, source label, explicit release status, native raid result where applicable, civilian deaths, contamination, medical load, evidence, attribution, retaliation status, exact public and hidden Condemnation, exact public and hidden retaliation relief, status, and confirmation-registration state. Rows are never overwritten or deleted; only their evidence, attribution, settlement, confirmation, and status fields advance. No-release rows can expose responsibility for the attempt but cannot create confirmed weapon-use history, treaty callbacks, or retaliation authority. The `cbrn_last_chemical_*` values remain compatibility and latest-display mirrors; forensic selection and settlement use only the append-only rows.
+Each accepted chemical action appends one exact row to aligned persistent state arrays. A failed or aborted chemical air raid that releases no agent also appends an exact attempt row when it creates evidence or Condemnation. This preserves an accountable action for aggregate liability. The row stores its UID, actor, victim, date, agent, agent class, route, severity, source label, explicit release status, native raid result where applicable, civilian deaths, contamination, medical load, evidence, attribution, retaliation status, exact public and hidden Condemnation, exact public and hidden retaliation relief, status, and confirmation-registration state. Rows are never overwritten or deleted. Their evidence, attribution, settlement, confirmation, and status fields advance over time. No-release rows can expose responsibility for the attempt but cannot create confirmed weapon-use history, treaty callbacks, or retaliation authority. The `cbrn_last_chemical_*` values remain compatibility and latest-display mirrors. Forensic selection and settlement use only the append-only rows.
 
-The actor also stores an aligned state-and-UID registry for those rows. Existing targeted inspection and observer disclosures apply their normal fraction independently to every registered exact row and expose only the amount actually reconciled to those rows. Aggregate hidden Chemical liability that has no exact row remains hidden; the system does not assign it to a guessed action, state, victim, or actor.
+The actor also stores an aligned state-and-UID registry for those rows. Existing targeted inspection and observer disclosures apply their normal fraction independently to every registered exact row and expose only the amount actually reconciled to those rows. Aggregate hidden Chemical liability that has no exact row remains hidden. The system does not assign it to a guessed action, state, victim, or actor.
 
 For a chemical record, publication:
 
@@ -78,7 +78,7 @@ At completion the mission removes contamination according to the current state b
 | Severe | 8 |
 | Catastrophic | 5 |
 
-The lower cleanup rate in worse bands represents the larger contaminated area and material load, not weaker effort. An International Medical Mission designer raises cleanup by 25%. The mission also lowers current Medical Saturation by 12. If the state still contains observable chemical evidence, observer access adds 8 evidence and may expose an additional part of that exact action's unpaid Chemical liability. Repeating a mission at the same attribution band cannot expose the same liability again; only a stronger evidence band can justify a further transfer.
+Worse bands have lower cleanup rates because the contaminated area and material load are larger. An International Medical Mission designer raises cleanup by 25%. The mission also lowers current Medical Saturation by 12. If the state still contains observable chemical evidence, observer access adds 8 evidence and may expose an additional part of that exact action's unpaid Chemical liability. Repeating a mission at the same attribution band cannot expose the same liability again. Only a stronger evidence band can justify a further transfer.
 
 Cleanup never erases civilian deaths, military losses, evidence already acquired, attribution, the recorded action, contamination history, medical-saturation history, Condemnation history, or weapon-use history.
 
@@ -88,7 +88,7 @@ Confirmed chemical or biological use records an exact bilateral first-use ledger
 
 The system compares the earliest exact action date in both directions. A country that struck first cannot obtain mitigation by being attacked later. If both countries have a confirmed action on the same engine day, the result is contested and neither side receives retaliation mitigation.
 
-Strategic or civilian-target retaliation may become policy-legal, but it receives no participant-pressure mitigation. Nerve-agent suppression and doomsday releases remain outside Retaliation Authority and require their own extreme-use gates. A verified battlefield or military-target response receives a 0.75 participant-pressure multiplier. That multiplier changes only the international participant pressure attached to the new use; it does not reduce the source Condemnation, deaths, evidence, attribution, contamination, medical saturation, resistance trauma, use history, or domestic consequences.
+Strategic or civilian-target retaliation may become policy-legal, but it receives no participant-pressure mitigation. Nerve-agent suppression and doomsday releases remain outside Retaliation Authority and require their own extreme-use gates. A verified battlefield or military-target response receives a 0.75 participant-pressure multiplier. That multiplier changes only the international participant pressure attached to the new use. It does not reduce the source Condemnation, deaths, evidence, attribution, contamination, medical saturation, resistance trauma, use history, or domestic consequences.
 
 ## AI
 
@@ -99,7 +99,7 @@ AI weights are route-aware and consume the same equipment as player actions.
 - Forensic publication rises when chemical or biological evidence has reached confirmed attribution.
 - Defensive CBRN profiles favor international decontamination.
 - Decontamination rises for serious or worse contamination and for faction partners, while active war lowers priority.
-- Retaliation weights require an active bilateral right against the selected target; a generic retaliation policy or another enemy's use does not qualify.
+- Retaliation weights require an active bilateral right against the selected target. A generic retaliation policy or another enemy's use does not qualify.
 
 No AI path receives free equipment, free evidence, inferred attribution, or hidden cleanup.
 

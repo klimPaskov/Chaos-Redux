@@ -38,7 +38,7 @@ Pool ordering is country-specific and deterministic for AI selection. Occupied a
 
 ## Building Icon Assets
 
-The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces. Both families follow the vanilla HOI4 building language: compact ochre pictograms, chunky painterly highlights, and—on the indexed strip—the standard charcoal beveled tile.
+The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces. Both families follow the vanilla HOI4 building language: compact ochre pictograms, chunky painterly highlights, and the standard charcoal beveled tile on the indexed strip.
 
 - `GFX_building_concentration_camp` reads `gfx/interface/buildings/building_concentration_camp.dds` as a native `27x23` standalone icon.
 - `GFX_building_extermination_camp` reads `gfx/interface/buildings/building_extermination_camp.dds` as a native `27x23` standalone icon.

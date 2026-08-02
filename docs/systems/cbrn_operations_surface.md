@@ -4,7 +4,7 @@
 
 Chaos Warfare uses the native decision-category presentation accepted by Stage 11 of the implementation plan. The `cbrn_operations_category` category is the national command surface for doctrine establishment, Chemical Readiness, use policy, headquarters preparation, and conditional technology commissions. Related categories expose procurement, civil defence, occupation measures, and international response without duplicating the same transaction.
 
-The category presentation is deliberate rather than an undisclosed custom-GUI substitute. It keeps native decision targeting, exact-state targets, trigger tooltips, AI scoring, cooldowns, and cleanup visible to the engine surfaces that own those systems. The existing Chaos Meter tabs remain the readout for global contamination and do not replace the CBRN decision categories.
+The category uses native decision targeting, exact-state targets, trigger tooltips, AI scoring, cooldowns, and cleanup. The existing Chaos Meter tabs remain the readout for global contamination, while the CBRN decision categories provide the operation controls.
 
 ## Category mapping
 
@@ -16,13 +16,13 @@ The category presentation is deliberate rather than an undisclosed custom-GUI su
 | International response | `cbrn_international_response_category` | Inspections, sanctions, protective aid, retaliation, and stockpile destruction. |
 | Occupation measures | `cbrn_occupation_measures_category` | Coercive Security authorization and exact-state nerve-agent suppression. |
 | Chemical battlefield release | state-targeted decisions plus native chemical raids | Explicit target-state operations. Idle aircraft and continuous missions never call the exposure pipeline. |
-| Biological release | native biological raids, exact covert sabotage surfaces, Japan-China decisions, and the doomsday decision | Route-specific deployment; the four ordinary agents share lifecycle helpers but not delivery success odds. |
+| Biological release | native biological raids, exact covert sabotage surfaces, Japan-China decisions, and the doomsday decision | Route-specific deployment. The four ordinary agents share lifecycle helpers but not delivery success odds. |
 
 ## Visible values and tooltip contract
 
 The category decisions expose current resources and requirements through native decision tooltips: Chemical Readiness, Command Power, payload lots, support equipment, gas-mask reserve and filter condition, decontamination equipment, medical capacity, headquarters and regimental support, cooldowns, route shortage, selected state, selected agent, evidence, attribution, contamination, Condemnation, and cleanup. A transaction must repeat its exact target, payload, policy, protection, and consequence gates in the completion effect.
 
-The operation category does not authorize a delivery by itself. Headquarters preparation supplies authorization and preparation; delivery surfaces consume payload and dispatch the shared chemical or biological lifecycle. Doctrine may make an authorized CBRN action more potent and reduce its Condemnation impact, but it does not erase evidence, attribution, deaths, contamination, medical saturation, resistance trauma, or responsibility.
+The operation category does not authorize a delivery by itself. Headquarters preparation supplies authorization and preparation. Delivery surfaces consume payload and dispatch the shared chemical or biological lifecycle. Doctrine may make an authorized CBRN action more potent and reduce its Condemnation impact, but it does not erase evidence, attribution, deaths, contamination, medical saturation, resistance trauma, or responsibility.
 
 ## Engine boundaries
 
