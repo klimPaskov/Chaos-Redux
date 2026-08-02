@@ -7878,6 +7878,107 @@ africa_resolve_action = {
 	}
 }
 
+# COUNTRY scope on an action target that is still present during on_annex.
+# Current-generation records use the normal cancel owner. A stale or
+# hostless record cannot safely refund a successor host, so it receives only
+# target-local teardown; state locks are cleared only when both stored
+# generations still match the victim's immutable action receipt.
+africa_cleanup_annexed_action_target = {
+	if = {
+		limit = { has_country_flag = africa_action_record_active }
+		if = {
+			limit = { africa_active_action_generation_is_current = yes }
+			africa_cancel_action = yes
+		}
+		else = {
+			set_variable = { africa_last_action_id = africa_active_action_id }
+			set_variable = { africa_last_action_outcome = africa_active_action_outcome }
+			set_variable = { africa_last_action_objective = africa_active_action_objective }
+			set_variable = { africa_last_action_generation = africa_active_action_generation }
+			set_country_flag = africa_has_action_history
+			africa_diaspora_cleanup_action_state = yes
+			if = {
+				limit = { has_event_target = africa_host }
+				africa_unregister_current_relationship_state = yes
+				event_target:africa_host = { africa_reconcile_relationship_counts_and_caps = yes }
+			}
+			for_each_scope_loop = {
+				array = africa_action_state_targets
+				if = {
+					limit = {
+						has_state_flag = africa_action_project_active
+						has_variable = africa_action_project_generation
+						has_variable = africa_action_project_host_generation
+						ROOT = {
+							has_variable = africa_active_action_generation
+							has_variable = africa_active_action_host_generation
+						}
+						check_variable = { var = africa_action_project_generation value = ROOT.africa_active_action_generation compare = equals }
+						check_variable = { var = africa_action_project_host_generation value = ROOT.africa_active_action_host_generation compare = equals }
+					}
+					clr_state_flag = africa_action_project_active
+					clear_variable = africa_action_project_generation
+					clear_variable = africa_action_project_host_generation
+				}
+			}
+			clear_array = africa_action_state_targets
+			set_variable = { africa_action_cooldown_days = constant:africa_action_threshold.cooldown_days }
+			set_country_flag = { flag = africa_action_recent_target days = var:africa_action_cooldown_days }
+			clear_variable = africa_action_cooldown_days
+			clr_country_flag = africa_action_record_active
+			clr_country_flag = africa_action_duration_short
+			clr_country_flag = africa_action_duration_medium
+			clr_country_flag = africa_action_duration_long
+			clr_country_flag = africa_action_duration_epic
+			clear_variable = africa_active_action_id
+			clear_variable = africa_active_action_family
+			clear_variable = africa_active_action_kernel
+			clear_variable = africa_active_action_status
+			clear_variable = africa_active_action_outcome
+			clear_variable = africa_active_action_generation
+			clear_variable = africa_active_action_host_generation
+			clear_variable = africa_active_action_duration_band
+			clear_variable = africa_active_action_duration_minimum
+			clear_variable = africa_active_action_duration_maximum
+			clear_variable = africa_active_action_duration_days
+			clear_variable = africa_active_action_response_days
+			clear_variable = africa_active_action_objective
+			clear_variable = africa_active_action_started_at_war
+			clear_variable = africa_active_action_target_mode
+			clear_variable = africa_active_action_risk
+			clear_variable = africa_active_action_cost_pp
+			clear_variable = africa_active_action_cost_cp
+			clear_variable = africa_active_action_cost_manpower
+			clear_variable = africa_active_action_cost_infantry
+			clear_variable = africa_active_action_cost_support
+			clear_variable = africa_active_action_cost_motorized
+			clear_variable = africa_active_action_cost_trains
+			clear_variable = africa_active_action_cost_convoys
+			clear_variable = africa_active_action_cost_fuel
+			clear_variable = africa_active_action_civilian_reservation
+			clear_variable = africa_active_action_intelligence_reservation
+			clear_variable = africa_active_action_cost_stability
+			clear_variable = africa_active_action_cost_war_support
+			clear_variable = africa_active_action_natural_disaster_cost_reserved
+			clear_variable = africa_active_action_state_id
+			clear_variable = africa_active_diaspora_origin_group
+			clear_variable = africa_active_diaspora_skill_programme
+			if = {
+				limit = { has_event_target = africa_action_target }
+				event_target:africa_action_target = {
+					if = { limit = { tag = ROOT } clear_global_event_target = africa_action_target }
+				}
+			}
+			if = {
+				limit = { has_event_target = africa_natural_disaster_action_actor }
+				event_target:africa_natural_disaster_action_actor = {
+					if = { limit = { tag = ROOT } clear_global_event_target = africa_natural_disaster_action_actor }
+				}
+			}
+		}
+	}
+}
+
 # COUNTRY scope on an active target.
 africa_cancel_action = {
 	if = {

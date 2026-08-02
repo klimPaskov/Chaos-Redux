@@ -14,7 +14,7 @@ No response grants African membership, integration, annexation, or cores. The fo
 2. One explicit post-unification census registers foreign majors, faction leaders, and governments with African holdings. Its first bounded sweep prioritises eligible non-African majors, faction leaders, and current African-state owners that pass the shared expedition material-readiness gate; a second bounded sweep fills any remaining roster slots from the same registration pool. No recurring daily, weekly, or monthly world scan exists.
 3. Each participant explicitly chooses recognition, conditional recognition, sanctions, or an ultimatum in `africa_world_order.1`.
 4. Four timed phases track diplomatic shock, coalition formation, intervention or settlement, and aftermath.
-5. Intervention can produce a real war. Pairwise on-actions record war, capitulation, and peace without periodic country iteration.
+5. Intervention can produce a real war. Pairwise on-actions record war, capitulation, and peace without periodic country iteration, and the host advances only after every flagged expedition actor is out of its war with the host.
 6. During the aftermath, Action 85 can install one documented actor for each of the six external continent packages only after the per-candidate `africa_world_package_implementation_ready` gate is intentionally certified. Sponsorship creates a separate 180-day material obligation.
 7. Full world-order opening requires all six dedicated packages, a resolved Scramble, and the missing initial W5 certification receipt contract. A documented mixed or absent roster can instead close the Africa-only docket without opening world-order actions.
 8. Settled packages can consent to union, remain sovereign, become rivals, fight a prepared continental war, or accept a postwar submission settlement.
@@ -33,6 +33,8 @@ When no external candidate carries the reviewed `africa_world_package_implementa
 - Candidate countries qualify only if they still use the generic focus tree or carry the explicit `africa_world_package_focus_replacement_approved` audit flag. Meaningful existing country trees are not replaced.
 - A candidate also needs `africa_world_package_implementation_ready` before Action 85 can install it. This is an implementation gate, not a gameplay fallback.
 - Every continent-package loader preserves completed-focus history. The installer remains one-shot through the candidate-to-installed state transition, so activating a reviewed package cannot silently erase earlier national progress.
+
+Pairwise settlement hooks clear only the actor that actually left the war, while `africa_scramble_reconcile_intervention_war` closes the intervention global and opens aftermath only when no flagged coalition actor remains at war with the host.
 
 ### Scramble interest census and response roster
 

@@ -198,6 +198,14 @@ on_actions = {
 				limit = { FROM = { africa_world_package_is_installed = yes } }
 				FROM = { africa_world_handle_package_actor_loss = yes }
 			}
+			# An active action target can disappear before its targeted mission
+			# evaluates the NOT-exists cancellation path. Resolve the victim-owned
+			# ledger first; the helper refunds only a current host generation and
+			# uses generation-matched state locks for stale records.
+			if = {
+				limit = { FROM = { has_country_flag = africa_action_record_active } }
+				FROM = { africa_cleanup_annexed_action_target = yes }
+			}
 			# A priority-member country can be removed by an ordinary annexation
 			# before a later relationship callback runs. Consume its transient
 			# package mission and relationship runtime only after the achievement
@@ -332,10 +340,7 @@ on_actions = {
 					}
 				}
 				FROM = {
-					set_country_flag = africa_scramble_defensive_war_won
-					set_country_flag = africa_scramble_armistice_signed
-					clr_country_flag = africa_scramble_defensive_war_active
-					clr_global_flag = africa_scramble_intervention_war_active
+					africa_scramble_reconcile_intervention_war = yes
 				}
 			}
 			else_if = {
@@ -377,6 +382,25 @@ on_actions = {
 			if = {
 				limit = { FROM = { has_country_flag = africa_common_reserve_deployment_active } }
 				FROM = { africa_common_reserve_resolve_deployment = yes }
+			}
+			# A negotiated end to an expedition war clears only the settling
+			# actor. The host remains in the intervention phase until every
+			# flagged expedition actor has left its war with the host.
+			if = {
+				limit = {
+					ROOT = { has_country_flag = africa_scramble_intervention_war_actor }
+					FROM = { africa_is_current_host = yes }
+				}
+				ROOT = { clr_country_flag = africa_scramble_intervention_war_actor }
+				FROM = { africa_scramble_reconcile_intervention_war = yes }
+			}
+			else_if = {
+				limit = {
+					FROM = { has_country_flag = africa_scramble_intervention_war_actor }
+					ROOT = { africa_is_current_host = yes }
+				}
+				FROM = { clr_country_flag = africa_scramble_intervention_war_actor }
+				ROOT = { africa_scramble_reconcile_intervention_war = yes }
 			}
 			if = {
 				limit = {
@@ -423,12 +447,6 @@ on_actions = {
 					ROOT = { africa_is_current_host = yes }
 					FROM = { has_country_flag = africa_scramble_intervention_war_actor }
 				}
-				ROOT = {
-					set_country_flag = africa_scramble_defensive_war_won
-					set_country_flag = africa_scramble_armistice_signed
-					clr_country_flag = africa_scramble_defensive_war_active
-					clr_global_flag = africa_scramble_intervention_war_active
-				}
 				FROM = {
 					clr_country_flag = africa_scramble_intervention_war_actor
 					if = {
@@ -442,6 +460,7 @@ on_actions = {
 						africa_achievement_record_major_intervention_defeated = yes
 					}
 				}
+				ROOT = { africa_scramble_reconcile_intervention_war = yes }
 			}
 			else_if = {
 				limit = {
@@ -484,6 +503,23 @@ on_actions = {
 					set_country_flag = africa_postwar_constitutional_review_pending
 					clr_country_flag = africa_continental_war_active
 				}
+			}
+			# The peace-conference callback can arrive after on_peace has already
+			# cleared the actor flag. Re-run the host owner while the intervention
+			# global is live so the final actor still opens aftermath deterministically.
+			if = {
+				limit = {
+					has_global_flag = africa_scramble_intervention_war_active
+					OR = {
+						ROOT = { africa_is_current_host = yes }
+						FROM = { africa_is_current_host = yes }
+					}
+				}
+				if = {
+					limit = { ROOT = { africa_is_current_host = yes } }
+					ROOT = { africa_scramble_reconcile_intervention_war = yes }
+				}
+				else = { FROM = { africa_scramble_reconcile_intervention_war = yes } }
 			}
 			if = {
 				limit = {
