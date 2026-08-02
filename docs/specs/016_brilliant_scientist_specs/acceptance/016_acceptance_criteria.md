@@ -63,6 +63,21 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] AI has equivalent paths for every human-only GUI action.
 - [ ] Final host resolutions close or transform the category cleanly.
 
+## Accepted country-specific institutional settlement pilot (implementation in progress)
+
+The accepted 2026-08-02 addendum is promoted as a four-country contract. These checks remain open until the runtime, localisation, and AI evidence exist.
+
+- [ ] `chaosx.nr16.5` preserves generic `.5.a`, `.5.b`, and `.5.c` and exposes `chaosx.nr16.5.d_eng`, `.5.e_usa`, `.5.f_sov`, or `.5.g_jap` only under the exact tag and context gates.
+- [ ] Every national option clears `brilliant_scientist_context_assistant_conflict_pending`, sets `brilliant_scientist_assistant_conflict_resolved`, calls its named base and settlement resolvers once, and calls `brilliant_scientist_try_schedule_impossible_lecture` at most once.
+- [ ] The four settlement resolvers produce the accepted total vectors for British research associations, American federal contracts, the Soviet Academy plan, and the Japanese RIKEN council.
+- [ ] Settlement deltas are centralized under `brilliant_scientist_country_settlement_delta` and use the existing bounded `brilliant_scientist_change_*` effects.
+- [ ] Settlement receipts are mutually exclusive host-local history and are absent from ordinary transfer-copy and Kruger State formation-copy blocks.
+- [ ] Transfer before `.5` evaluates the recipient tag, while transfer after `.5` leaves the former host receipt local and does not replay the national settlement on the recipient.
+- [ ] `chaosx.nr16.7` and `.8` retain their existing three-way player choices and add only receipt-driven description clauses and named AI factors.
+- [ ] Countries outside `ENG`, `USA`, `SOV`, and `JAP`, including `GER`, `FRA`, `ITA`, `CHI`, `POL`, and `CZE`, retain the complete generic `.5` option pool and current country presentation clause.
+- [ ] The centralized AI values are `10`, `2.25`, `0.50`, `1.50`, and `0.70` for option base, preferred option, cautious option, preferred reaction, and cautious reaction respectively; no factor is zero and high-pressure modifiers can reverse the preference.
+- [ ] Existing `.5`, `.7`, and `.8` sprites resolve without new textures, models, icons, flags, portraits, animation, audio, GUI, or super-event surfaces.
+
 ## Project portfolio
 
 - [ ] Conventional foundation families exist for computation, electronics, materials, rocketry, high energy, and biomedical work.
@@ -244,6 +259,7 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] Event text follows project writing standards.
 - [ ] Event Details describes premise without mechanics.
 - [ ] Dynamic names and states are shown where needed.
+- [ ] The four national option keys, four numeric effect tooltips, eight receipt clauses, two intentional empty clauses, and the `GetBrilliantScientistCountrySettlementFacilityClause` and `GetBrilliantScientistCountrySettlementCustodyClause` selectors exist with direction-complete English text.
 - [ ] Hidden routes, values, and achievements are not spoiled.
 - [ ] Event log, evolution views, selected details, docs, and catalog wording agree.
 - [ ] `docs/events/016_brilliant_scientist/overview.md` is complete.

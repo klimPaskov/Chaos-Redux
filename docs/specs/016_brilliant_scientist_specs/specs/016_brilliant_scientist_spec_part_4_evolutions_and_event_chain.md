@@ -566,6 +566,14 @@ Evolutions should never happen instantly after the normal requirement is met unl
 - Public demonstration.
 - Ethics and publication conflict.
 
+#### Accepted country-specific institutional settlement pilot (implementation in progress, 2026-08-02)
+
+The accepted country-specific settlement contract is a bounded extension of the existing assistant-conflict node, not a new evolution family. `chaosx.nr16.5` retains its generic `.5.a` through `.5.c` choices and adds one conditional national settlement for `ENG`, `USA`, `SOV`, or `JAP` under the exact compatible context gates recorded in the core and Directorate specifications. Each national choice resolves the existing assistant obligation, calls one existing base resolver plus one bounded settlement resolver, and schedules the existing impossible lecture once.
+
+The settlement receipt remains host-local institutional history. It does not copy through ordinary transfer or Kruger State formation, and it does not change the current actor, Kruger identity, project ledger, evolution timing, cluster registration, or event-log ownership. Transfer before `.5` evaluates the recipient's current tag; transfer after `.5` leaves the former host receipt with the former host while the recipient receives only the existing generic assistant state.
+
+The existing `.7` facility and `.8` custody reports remain the only downstream reaction nodes. A national receipt appends its specified description clause and AI preference or caution factor without adding an option, effect, delay, substitute incident, project reward, or model reference. The six other named tags and all unnamed countries remain on the complete generic `.5` option pool. Static source inspection now confirms the promoted runtime identifiers, while status remains accepted / implementation in progress pending targeted balance, transfer, cleanup, and live-acceptance evidence.
+
 ### Breakthrough family
 
 - Conventional discovery.

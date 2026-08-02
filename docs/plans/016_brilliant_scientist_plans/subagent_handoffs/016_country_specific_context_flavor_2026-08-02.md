@@ -18,6 +18,10 @@ The existing host-archetype clause remains the broader fallback for every countr
 
 No model, animation, sprite, or new GFX reference was introduced.
 
+## Scope boundary after the accepted settlement addendum
+
+This handoff remains the source for the implemented ten-tag presentation clause layer. The accepted `016_country_specific_institutional_settlement_tranche_addendum.md` is a separate four-country causal pilot inside `.5`, `.7`, and `.8`; its documentation is promoted and its implementation is in progress. This presentation handoff neither implements nor rejects that pilot, and it must not be used to restart a broader ten-country event-chain plan.
+
 ## Validation
 
 - Confirmed every new scripted-localisation key has one matching English key.

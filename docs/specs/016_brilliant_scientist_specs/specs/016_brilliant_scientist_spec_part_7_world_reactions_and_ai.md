@@ -446,6 +446,12 @@ Final implementation should build flavor from host context without writing a sep
 - The host can build a plural scientific community.
 - Foreign persecution and asylum influence assistant loyalty.
 
+### Accepted country-specific institutional settlement pilot (implementation in progress, 2026-08-02)
+
+The accepted addendum makes four country contexts mechanically distinct inside the existing institutional sequence without creating separate country chains. Britain (`ENG`) can select a DSIR-style research-association compact in public-science or distributed-research context, the United States (`USA`) can select a federal university-industry contract network in industrial-mobilization or distributed-research context, the Soviet Union (`SOV`) can select an Academy institute plan in strategic-security or industrial-mobilization context, and Japan (`JAP`) can select a RIKEN-centered joint technical council in strategic-security or industrial-mobilization context. The six other named tags and all unnamed countries retain the generic assistant choices and current country presentation clauses.
+
+The national option uses the existing `.5` settlement path and its base resolver, then applies the fixed bounded vector and writes one host-local receipt. The existing `.7` and `.8` three-way choices remain unchanged; receipts add only the facility or custody clause and the named downstream AI factors. No substitute incident, additional timing value, new route, reward, model, or historical scientist identity is introduced. Static source inspection now confirms the promoted runtime identifiers, while status remains accepted / implementation in progress pending targeted balance, transfer, cleanup, and live-acceptance evidence.
+
 ### Ideology variation
 
 Democratic route direction:
@@ -660,6 +666,19 @@ AI route selection should evaluate:
 - Use paleogenetic and xenobiological routes only when the relevant project exists.
 - Avoid biological weaponization unless ideology, desperation, or high chaos supports it.
 - Avoid singularity research unless Evolution IV and world-end content are enabled.
+
+### Country-settlement AI contract
+
+The accepted pilot centralizes its tuning in `common/script_constants/016_brilliant_scientist_country_settlement_constants.txt` under `brilliant_scientist_country_settlement_ai`: `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The four national `.5` options use the base and preferred factor only in their compatible context and may combine with the existing mutually exclusive host-archetype factor.
+
+| Receipt | `.7` preference | `.7` caution | `.8` preference | `.8` caution |
+| --- | --- | --- | --- | --- |
+| British research associations | Civic compact `x1.50` | Restricted district `x0.70` | Public trust `x1.50` | Executive reserve `x0.70` |
+| American federal contracts | Industrial charter `x1.50` | None | Patent pool `x1.50` | None |
+| Soviet Academy plan | Restricted district `x1.50` | Civic compact `x0.70` | Executive reserve `x1.50` | Public trust `x0.70` |
+| Japanese RIKEN council | Industrial charter `x1.50` | None | Executive reserve `x1.50` | None |
+
+Britain adds the existing university archetype factor and applies the caution factor separately at war and high Exposure. The United States adds the existing industrial archetype factor and applies the caution factor separately at high Dependence and high Exposure. The Soviet Union adds the existing militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. Japan adds its applicable industrial or militarized archetype factor and applies the caution factor separately at high Dependence and high Grievance. No factor is zero, country identity never forces an outcome, and existing war, accident-pressure, Exposure, Dependence, and Grievance modifiers can reverse the national preference.
 
 ### AI confrontation rules
 
