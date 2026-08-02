@@ -16,7 +16,7 @@ The current whole-event authority is `subagent_handoffs/006_event6_current_compl
 
 The v102 authority supersedes any downstream line in this packet that still calls v98, v97, or v96 current. The corrected count is 206 total registry rows minus 13 overlay-only rows, yielding 193 non-overlay rows, of which fourteen are attested and 179 remain unattested.
 
-Current 6001 audio authority (2026-08-02): the accepted London Brass Players recording remains rights-blocked and absent from runtime. The bounded research handoff `subagent_handoffs/006_super_event_6001_audio_research_v101_2026_08_02.md` records a possible Sousa *Hands Across the Sea* / United States Marine Band 2018 replacement with a documented U.S. federal public-domain basis, but selection reopening, worldwide-jurisdiction review, tonal acceptance, phrase-safe trimming, and parent-owned conversion/wiring remain open. No fallback or runtime audio is implied.
+Current 6001 audio authority (2026-08-02): the accepted London Brass Players recording remains rights-blocked and absent from runtime. The bounded research handoff `subagent_handoffs/006_super_event_6001_audio_research_v108_2026_08_02.md` records a stronger conditional Sousa *Hands Across the Sea* / United States Navy Band 1992 replacement with a documented U.S. federal public-domain basis, while the Marine Band 2018 candidate remains secondary. Selection reopening, worldwide-jurisdiction review, tonal acceptance, phrase-safe trimming, and parent-owned conversion/wiring remain open. No fallback or runtime audio is implied.
 
 The later 2026-08-02 user decision narrows the focus-tree work to one generic `independence_wave_focus_tree` for every admitted Event 006 release. The shared tree owns the dynamic survival, government, economy, military, diplomacy/host, regional, network/league, formable, and high-chaos lanes; regional/package differences remain gated shared nodes and scripted adapters inside that tree. Existing meaningful carrier trees use reviewed additive overlays. Bespoke country focus trees and live/in-game testing are out of scope for this pass. The source contract and fail-closed final validator are recorded in `subagent_handoffs/006_generic_focus_tree_contract_2026_08_02.md` and `docs/events/006_independence_wave/systems/generic_focus_tree.md`.
 
@@ -370,7 +370,7 @@ they are not current routing documents.
   2, 3, and 5 are reachable; the hidden-formable predicate now has a promoted
   FORM-48 carrier but remains conditional on its high-chaos league/action proof.
   FORM-42 remains fail-closed.
-- `6001` remains blocked on exact recording rights and the accepted brass-and-organ tone. v22 research identifies same-composition Candidates A, B, and C, but none is selected, downloaded, or wired; no fallback is authorized without explicit user approval.
+- `6001` remains blocked on exact recording rights and the accepted brass-and-organ tone. v108 identifies a stronger Navy Band 1992 candidate and retains the Marine Band 2018 candidate as secondary, but neither is selected, globally cleared, converted, or wired; no fallback is authorized without explicit user approval.
 
 The bounded RG-RHINE-SAAR re-audit `006_rhine_saar_shared_group_capacity_reaudit_v22_2026_07_27.md` is source-level PASS / runtime HOLD: the exact IW-008/IW-010 pair is admitted only with distinct anchors, while same-host protected-remnant, both-order, Event 005 collision, rollback/save-load, and exact-ten execution evidence remain open.
 
