@@ -14,6 +14,8 @@ The four Event 006 focus files contain one `independence_wave_focus_tree` defini
 
 The generic assignment barrier is source-wired for the thirteen admitted full-framework packages, while IW-012 ICE remains the sole reviewed additive carrier preserving its meaningful vanilla tree. Bespoke country trees are outside the current scope. The current `hoi4.focus_render` attempt against `common/national_focus/006_independence_wave_focus.txt` and `independence_wave_focus_tree` returned `SCAN_BYTE_LIMIT` with zero scanned files, artifacts, diagnostics, or validation checks; the retained v82 static geometry state remains 184 regular nodes, 223 prerequisite connectors, 53 straight-segment crossings, 2 point-on-segment hits, 28 long connectors, 5 same-row gaps under two units, and zero duplicate coordinates.
 
+The MCP probability service lists all 11 weighted-logic adapters. A targeted `ai_strategy_factor` inspection of `common/ai_strategy/006_independence_wave_generic.txt` also returns `SCAN_BYTE_LIMIT` with no scanned files or diagnostics, so the repository's source AI handoffs and static allocator receipts remain the current evidence boundary.
+
 ## Fresh source checks
 
 | Check | Result |
