@@ -131,6 +131,8 @@ The post-commit IW-012 route-arbitration evidence from `3570ed8ff` and `72d8549e
 
 Super-event 6002 is implemented at source level but only partly reachable while the hidden-formable predicate lacks an admitted carrier and the twenty-country predicate lacks a source-level package-capacity route. Super-event 6001 remains blocked by exact-recording rights, with no fallback or substitute authorized. The Radical Bloc achievement definition, trigger scaffolding, and league-expulsion disqualifier writer are source-wired; the source-only 16-row receipt records its static route/disqualifier matrix, and the admitted IW-184/HBX route is source-reachable through its existing route, League, danger, containment, and survival gates, but no live completion or runtime occurrence is claimed.
 
+Current 6001 audio authority (2026-08-02): the accepted London Brass Players recording remains rights-blocked and absent from runtime. The bounded research handoff `../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_6001_audio_research_v101_2026_08_02.md` records a possible Sousa *Hands Across the Sea* / United States Marine Band 2018 replacement with a documented U.S. federal public-domain basis, but selection reopening, worldwide-jurisdiction review, tonal acceptance, phrase-safe trimming, and parent-owned conversion/wiring remain open. No fallback or runtime audio is implied.
+
 The former 2026-07-22 admission paragraph below is retained as historical evidence and is superseded by this current gate.
 
 ## Historical bounded audit reconciliation (2026-08-01, superseded by v96)
