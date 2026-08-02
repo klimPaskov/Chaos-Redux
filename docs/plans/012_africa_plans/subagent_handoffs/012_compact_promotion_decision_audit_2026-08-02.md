@@ -61,6 +61,14 @@ No game launch or live-session validation was run, because live consumer validat
 
 Parent review needs an accepted source for each refusal, access-failure, and overlap-dispute writer, together with an explicit repair or expiry path where those states should be recoverable.
 
+## Source reconciliation follow-up (2026-08-02)
+
+The original static search was performed against an earlier flag contract and is stale for the active runtime gates. The compact promotion triggers now reject `africa_overlap_dispute_active` and `africa_project_access_damaged`; both have writers in the shared action result path, and congress settlement or successful recovery clears the active dispute/access state. `africa_compact_promotion_refused` also has an explicit decision writer and a paid reopen decision.
+
+`africa_compact_access_failure` and `africa_compact_overlap_dispute_active` remain legacy compatibility names without direct writers. They are not substituted for the active gates, and no artificial writer was added merely to satisfy the old audit wording. The successful-promotion clear for `africa_compact_access_failure` is retained for save compatibility only.
+
+The remaining lifecycle gap is therefore limited to the legacy aliases and the absence of a compact-specific unavailable-state tooltip. The active refusal, overlap, and damaged-access gates are source-wired; scenario acceptance and final player-facing failure detail remain open.
+
 After those writers exist, remove the unreachable clear calls or move cleanup to a recovery effect whose gate can actually see the active state, while preserving the refusal gate.
 
 Add compact-proof and compact-promotion custom requirement tooltips when the parent selects the final failure and recovery lifecycle, so the disabled state exposes concise current requirements instead of a long raw scripted-trigger contract.
