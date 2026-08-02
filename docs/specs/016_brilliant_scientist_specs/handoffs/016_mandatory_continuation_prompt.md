@@ -1,6 +1,6 @@
 # Temporary continuation prompt, not part of the event specification
 
-> Superseded 2026-08-01. Do not use this prompt to rerun the improvement planner or to restore its default-disabled wording. Continue from `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. The current map records the default-enabled core runtime, the `.10`/`.11` host-archetype dossier continuation, and the first four KRG foundation report origin continuation. Broader country flavour, bespoke project/news/remnant art, quantitative balance evidence, live acceptance, and the seven Event 016-specific 3D packages remain deferred.
+> Superseded 2026-08-01. Do not use this prompt to rerun the improvement planner or to restore its default-disabled wording. Continue from `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. The current map records the default-enabled core runtime, the `.10`/`.11` host-archetype dossier continuation, and the KRG foundation, route, and foreign-integration portfolio presentation continuations. Broader country flavour, bespoke project/news/remnant art, quantitative balance evidence, live acceptance, and the seven Event 016-specific 3D packages remain deferred.
 
 Continue the Chaos Redux Event 16 `Brilliant Scientist` planning and implementation handoff from the exact stopping point below. Do not restart the design, summarize away completed material, or rewrite finished sections unless the mandatory planner finds a concrete defect.
 
