@@ -15,7 +15,7 @@
 - Runtime identity: exactly two Rat tags, reusable `RTA` and separate `RTX`; no additional Rat country tags are permitted
 - Focus surfaces: 51 RTA focus nodes and 71 RTX focus nodes are the current documented runtime counts
 - Native last-response missions: `Hold the Line` and `Secure the Refuge` use native `activate_mission` and `days_mission_timeout` declarations
-- Promoted visual/audio evidence: the dedicated weapon-delivery icon, source-frame Rat King portrait, source-frame Royal Burrows seal, and three 44.1 kHz Event 020 WAVs are wired or registered in their owning runtime surfaces
+- Promoted visual/audio evidence: the dedicated weapon-delivery icon, source-frame Rat King portrait, source-frame Royal Burrows seal, Severe/Collapsed crisis seal pair, Rat King terminal-readiness seal pair, and three 44.1 kHz Event 020 WAVs are wired or registered in their owning runtime surfaces
 - Model boundary: no bespoke 3D models are required or planned; the registered infantry entity remains the accepted Rat visual consumer
 - In-game validation: not run in this documentation pass; live playback, scenario, mission, balance, and release-attribution checks remain parent/user-owned
 

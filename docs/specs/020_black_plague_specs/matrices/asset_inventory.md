@@ -1,6 +1,6 @@
 # Asset Inventory
 
-> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020.
+> Runtime reconciliation, 2026-08-02: the accepted runtime identity is exactly two tags, reusable `RTA` and separate `RTX`. The former twelve-design Rat Nation pool is historical planning residue and must not be produced or wired. Current flag production covers the two live identities plus route/cosmetic variants owned by `RTX`; no bespoke 3D model is required or planned for Event 020. The crisis-board `black_plague_crisis_seal` and terminal `black_plague_rat_king_terminal_readiness` packages now have promoted eight-frame runtime DDS sheets, static fallbacks, manifests, and parent-owned GFX consumers.
 
 Every name is a proposed stable working name. Preserve any live-repository sprite name that already exists. Final files must follow the event-scoped asset folder rules.
 
@@ -21,7 +21,8 @@ Every name is a proposed stable working name. Preserve any live-repository sprit
 | `status_black_plague_weaponized` | UI status icon | live UI pattern | generated icon | known weapon provenance | static | icon artist |
 | `status_black_plague_rat_controlled` | UI status icon | live UI pattern | generated icon | Rat-Controlled state | static | icon artist |
 | `black_plague_countermeasure_stage_1_6` | progress-state family | live UI pattern | generated UI art | countermeasure milestones | static variants | generated art or icon artist |
-| `black_plague_crisis_seal` | scripted GUI seal | size from live board | generated icon art | active crisis header | 8 real frames plus static fallback | icon artist and frame animation |
+| `black_plague_crisis_seal` | scripted GUI seal | size from live board | generated icon art | selected-card crisis header for Severe Crisis and Collapsed states | 8 real frames plus static fallback | icon artist and frame animation |
+| `black_plague_rat_king_terminal_readiness` | decision or scripted GUI seal | 64 by 64 source/runtime canvas | generated icon art | earned Evolution V readiness before terminal execution | 8 real frames plus static fallback | icon artist and frame animation |
 | `black_plague_black_fog` | map or UI overlay prototype | engine dependent | generated non-icon art | state disease fog | 8 to 12 real frames plus static fallback | generated art and frame animation |
 | `black_plague_board_background` | UI panel art | live GUI size | generated UI art | shared board enhancement | static | generated art |
 | `black_plague_value_icons` | UI icon family | live GUI size | generated icons | load, mortality, spread, containment, treatment, relapse | static | icon artist |

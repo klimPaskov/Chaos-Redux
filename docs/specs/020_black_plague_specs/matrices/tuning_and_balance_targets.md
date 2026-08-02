@@ -157,4 +157,4 @@ Final formula should use nonlinear population scaling so one huge state does not
 17. **Triggerable scenario Medium and High**. Check independent broods remain visible, AI prioritization, disease-category clutter, and Rat Infestation decisions.
 18. **Triggerable scenario Maximum**. Check every eligible continent, tag and division caps, Chaos floor 999, and no automatic world end.
 19. **Scenario over active outbreak**. Check existing progress, actors, history, evolutions, and deaths are reused without duplication.
-20. **Scenario repeat and reload**. Check second launch is blocked and save-reload preserves states, actors, decisions, pulses, and mapmode colours.
+20. **Scenario repeat and reload**. Check a second launch performs reconciliation only, while save-reload preserves states, actors, decisions, pulses, and mapmode colours.

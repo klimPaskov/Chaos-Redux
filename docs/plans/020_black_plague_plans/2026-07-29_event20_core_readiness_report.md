@@ -51,8 +51,8 @@ The HOI4 event inspection completed without a blocking focused diagnostic, but i
 
 ## Current tranche delta and unresolved surfaces
 
-The RTA hierarchy, RTX crises, Crown Strike, static defeat/aftermath surfaces, native last-response missions, dedicated weapon-delivery icon, source-frame Rat King/seal packages, and three 44.1 kHz Event 020 WAVs are now present as implementation evidence, so the older broad “additional crisis and aftermath events” wording below is superseded.
-The remaining queued work is broader narrative and route-specific decision depth beyond the implemented RTA/RTX trees, Crown Strike and Seal Royal Burrows native-mission API review, dedicated crisis/Doctor Wu/aftermath art and six hierarchy icons, rights attribution, and focused live validation. The scoped actor hooks, defeat metrics/gate, `.72` coupling, slot-087 package wiring, and the 51-focus RTA plus 71-focus RTX route surfaces are no longer queued.
+The RTA hierarchy, RTX crises, Crown Strike, static defeat/aftermath surfaces, native last-response missions, dedicated weapon-delivery icon, source-frame Rat King portrait and Royal Burrows seal packages, Severe/Collapsed crisis seal, Rat King terminal-readiness seal, and three 44.1 kHz Event 020 WAVs are now present as implementation evidence, so the older broad “additional crisis and aftermath events” wording below is superseded.
+The remaining queued work is broader narrative and route-specific decision depth beyond the implemented RTA/RTX trees, Crown Strike and Seal Royal Burrows native-mission API review, dedicated crisis-report/Doctor Wu/aftermath art and six hierarchy icons, rights attribution, and focused live validation. The shared-board crisis seal and final-order decision seal are promoted; the scoped actor hooks, defeat metrics/gate, `.72` coupling, slot-087 package wiring, and the 51-focus RTA plus 71-focus RTX route surfaces are no longer queued.
 
 Current tranche evidence is `common/on_actions/020_black_plague_on_actions.txt` for the narrow actor hooks; `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, and `common/script_constants/020_black_plague_constants.txt` for participant tracking, duration/peak metrics, and the explicit gate; `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html` for slot-087 art/text/audio registration; and the resolver-owned `.72` dispatch in `common/scripted_effects/020_black_plague_rat_effects.txt`.
 
@@ -64,9 +64,9 @@ The following are explicitly outside this core-stabilization commit:
 - additional triggerable scenario variants and scenario-specific narrative content;
 - deeper route branches, additional accident/court narrative, and any further aftermath expansion;
 - broader route-specific narrative, court-crisis presentation, and aftermath depth beyond the implemented 51-focus RTA and 71-focus RTX trees and the currently wired continuing decisions;
-- additional source-frame crisis and evolution presentation beyond the promoted Rat King portrait and Royal Burrows seal packages;
+- additional source-frame crisis and evolution presentation beyond the promoted Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages;
 - a unique Doctor Wu report image;
-- broader crisis, Doctor Wu, route/hierarchy, and aftermath presentation beyond the promoted source-frame Rat King portrait and Royal Burrows seal packages;
+- broader crisis, Doctor Wu, route/hierarchy, and aftermath presentation beyond the promoted source-frame Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages;
 - state-clipped black fog, pending a verified safe engine rendering method;
 - broader nonessential narrative presentation beyond the promoted defeat-aftermath super-event 87 package.
 

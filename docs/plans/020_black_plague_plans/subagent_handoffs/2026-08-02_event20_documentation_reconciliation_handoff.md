@@ -229,3 +229,84 @@ The parent retains final runtime wiring, live-consumer validation, balance claim
 ### Simplifications, omissions, and blockers
 
 This pass made no gameplay simplifications and did not claim Event 020 full completion. Remaining blockers are the explicitly listed live-validation, rights-attribution, Crown/Seal mission-API, black-fog, broader narrative/presentation, and workbook-owner surfaces.
+
+## Pass-4 current-tranche seal and SCN-012 contract addendum (2026-08-02)
+
+### Scope and evidence boundary
+
+This narrow follow-up reconciles the completed Event 020 crisis-seal and Rat King terminal-readiness seal packages, their exact runtime names and paths, the shared-board trigger and tooltip contract, and the current SCN-012/idempotent scenario wording. Current gameplay, GUI, GFX, and localisation files were read as evidence only; no gameplay, localisation, scripted GUI, GFX, asset binary, spreadsheet, or CSV file was edited.
+
+### Current source-of-truth map
+
+| Surface | Current authority and evidence | Disposition |
+| --- | --- | --- |
+| Severe/Collapsed crisis seal package | `docs/assets/020_black_plague/animations/black_plague_crisis_seal/manifest.md` and `gfx_handoff.md`, `docs/assets/020_black_plague/manifest.md`, and `interface/020_black_plague_rat_identity.gfx` | Promoted. `GFX_black_plague_crisis_seal_static` points to `gfx/interface/animated/020_black_plague/crisis_seal/black_plague_crisis_seal_static.dds`; `GFX_black_plague_crisis_seal_animated` points to `gfx/interface/animated/020_black_plague/crisis_seal/black_plague_crisis_seal_sheet.dds`; both are eight-frame, 6 FPS siblings. |
+| Shared-board crisis gate and tooltip | `interface/biowarfare_disease_containment.gui`, `common/scripted_guis/biowarfare_disease_containment_scripted_gui.txt`, `common/scripted_triggers/biowarfare_disease_containment_triggers.txt`, and `localisation/english/biowarfare_disease_containment_l_english.yml` | Promoted. `disease_containment_board_selected_card` mounts the static and animated icons; `disease_containment_board_black_plague_crisis_seal_visible` and `_animated_visible` share `disease_containment_board_view_state_is_black_plague_crisis`, which requires `black_plague_state_is_severe` or `black_plague_state_is_collapsed`; both use `disease_containment.gui.selected.black_plague_crisis_seal.tt`. |
+| Rat King terminal-readiness seal package | `docs/assets/020_black_plague/animations/rat_king_world_end_readiness_seal/manifest.md` and `gfx_handoff.md`, `docs/assets/020_black_plague/manifest.md`, and `interface/020_black_plague_rat_identity.gfx` | Promoted. `GFX_black_plague_rat_king_terminal_readiness_static` points to `gfx/interface/animated/020_black_plague/world_end_readiness_seal/black_plague_rat_king_terminal_readiness_static.dds` and `_animated` points to `gfx/interface/animated/020_black_plague/world_end_readiness_seal/black_plague_rat_king_terminal_readiness_sheet.dds`; the pair is eight frames at 6 FPS. |
+| Terminal decision consumer | `common/decisions/020_black_plague_rat_decisions.txt` and `localisation/english/020_black_plague_rat_decisions_l_english.yml` | Promoted decision wiring. `black_plague_rat_king_execute_terminal_takeover` consumes the animated readiness sprite and resolves through the existing Evolution V gate; its name, description, and cost keys resolve. No separate scripted-GUI terminal-readiness rectangle exists in the current tree. |
+| SCN-012 repeat and intensity contract | Part 9 spec, triggerable-scenario matrix, `docs/events/020_black_plague/overview.md`, `common/scripted_effects/020_black_plague_scenario_effects.txt`, and `common/scripted_triggers/020_black_plague_scenario_triggers.txt` | Accepted current contract. Successful repeat signals are idempotent and reconciliation-only; they preserve history and existing identity, reconcile the configured-intensity brood target and RTA/RTX division floors, refresh board/mapmode/threat state, and do not replay Evolutions I-IV or duplicate reports. A failed downstream postcondition clears temporary state and remains retryable; atomic inverse rollback of every prior mutation is not claimed. |
+| SCN-012 status localisation | `localisation/english/chaosx_gui_l_english.yml` and `localisation/english/020_black_plague_scenario_l_english.yml` | Current. `chaosx.scenarios.launch_status.black_plague.terminal_lock` has one authoritative definition in `chaosx_gui_l_english.yml`; the Event 020 scenario file does not redeclare it. The repeat-ready, already-launched, setup-failed, and unavailable strings describe the accepted idempotent/retryable contract. |
+
+### Unresolved plan and handoff disposition
+
+| Item | Disposition | Remaining owner or reason |
+| --- | --- | --- |
+| Crisis seal source-frame package and shared-board wiring | Promoted and documented | Parent owns live GUI visibility, scale, and tooltip validation. |
+| Rat King terminal-readiness source-frame package and final-order decision icon | Promoted and documented | Parent owns live decision visibility and should decide whether a separate scripted-GUI readiness panel is still required. |
+| SCN-012 repeat reconciliation and configured-intensity postcondition | Implemented statically and promoted | Parent/user owns fresh launch, repeat, save/reload, and failure-retry validation; no full inverse rollback claim is made. |
+| Duplicate `terminal_lock` localisation key | Resolved in this tranche | The divergent Event 020 scenario-file definition was removed; `chaosx_gui_l_english.yml` is the sole current owner and preserves the accepted terminal-lock meaning. |
+
+### Contradictions and stale surfaces
+
+- The two seal asset manifests previously described parent-owned or absent consumers; the current manifests now distinguish promoted GFX/decision wiring from the still-absent dedicated terminal-readiness panel.
+- The root asset manifest previously ended with a blanket “No GFX, GUI, gameplay, localisation, or model files were changed” statement; it now records the promoted runtime registration and the remaining panel boundary.
+- The previously divergent `chaosx.scenarios.launch_status.black_plague.terminal_lock` definition was removed from `localisation/english/020_black_plague_scenario_l_english.yml`; the key now has one owner in `localisation/english/chaosx_gui_l_english.yml`.
+- Historical content and audit handoffs may still call broader crisis report art queued. That wording refers to report/presentation depth, not the now-promoted shared-board crisis seal; their historical notices remain intact.
+
+### Duplicate or superseded document list
+
+- No Event 020 document was deleted or merged in this follow-up.
+- The two animation package manifests and GFX handoffs are current runtime evidence after this addendum; older parent-owned/no-consumer sentences were replaced in place rather than preserved as active instructions.
+- Historical 2026-08-01 handoffs remain archival and are governed by the current reconciliation handoff; no stale prompt was promoted.
+
+### Stale prompt or instruction list
+
+- Older asset and completion handoffs retain historical “source-frame crisis” or “readiness” absence claims beneath superseded notices. Use the package manifests, `docs/events/020_black_plague/overview.md`, and this addendum for the promoted seal status.
+- No prompt currently authorizes a separate terminal-readiness scripted GUI; the absence is documented as a remaining parent decision rather than silently filled with a fallback.
+
+### Files changed in this follow-up
+
+- `docs/assets/020_black_plague/animations/black_plague_crisis_seal/manifest.md`
+- `docs/assets/020_black_plague/animations/black_plague_crisis_seal/gfx_handoff.md`
+- `docs/assets/020_black_plague/animations/rat_king_world_end_readiness_seal/manifest.md`
+- `docs/assets/020_black_plague/animations/rat_king_world_end_readiness_seal/gfx_handoff.md`
+- `docs/assets/020_black_plague/manifest.md`
+- `docs/events/020_black_plague/overview.md`
+- `docs/events/020_black_plague/shared_response.md`
+- `docs/specs/020_black_plague_specs/README.md`
+- `docs/specs/020_black_plague_specs/manifest.md`
+- `docs/specs/020_black_plague_specs/review/completion_audit.md`
+- `docs/specs/020_black_plague_specs/review/limitations_and_blockers.md`
+- `docs/specs/020_black_plague_specs/review/source_of_truth_and_plan_disposition.md`
+- `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`
+- `docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-02_event20_documentation_reconciliation_handoff.md`
+
+### Validation performed
+
+- Targeted `rg` checks matched every crisis and terminal sprite name to `interface/020_black_plague_rat_identity.gfx` and matched both DDS directory families to the package manifests and current event docs.
+- Targeted `rg` checks matched the shared-board icon types, the Severe/Collapsed state trigger, and `disease_containment.gui.selected.black_plague_crisis_seal.tt` across GUI, scripted GUI, scripted trigger, and localisation evidence.
+- Targeted `rg` checks matched the RTX final-order decision icon and its name, description, and cost localisation keys.
+- Targeted `rg` checks verified SCN-012 repeat-ready, setup-failed, terminal-lock, and configured-intensity/idempotent wording in the active overview and scenario implementation evidence.
+- A duplicate-key check across the Event 020/shared disease localisation surfaces found no duplicate keys after the terminal-lock owner was consolidated.
+- No HOI4 process, save, scenario launch, GUI render, or live consumer validation was run.
+
+### Recommended parent decisions
+
+1. Preserve the promoted crisis seal contract and use `disease_containment_board_view_state_is_black_plague_crisis` as the single Severe/Collapsed gate for both icon siblings.
+2. Decide whether the terminal-readiness asset remains decision-only or receives a dedicated scripted-GUI panel; do not claim that panel until a consumer rectangle and trigger exist.
+3. Keep `chaosx.scenarios.launch_status.black_plague.terminal_lock` owned only by `localisation/english/chaosx_gui_l_english.yml` while preserving the accepted terminal/unavailable distinction.
+4. Run the user-owned live checks for crisis-card visibility, terminal decision visibility, SCN-012 repeat reconciliation, configured-intensity floors, failure retry, and save/reload persistence.
+
+### Simplifications, omissions, and blockers
+
+No gameplay simplification was introduced. The remaining documentation-visible boundary in this tranche is the absence of a dedicated scripted-GUI terminal-readiness panel; live validation remains unrun and no Event 020 full-completion claim is made.
