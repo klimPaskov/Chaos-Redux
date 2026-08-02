@@ -10,13 +10,13 @@
 | Source status | Reconciled implementation specification |
 | Package date | 2026-08-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11` and formation-origin presentation added to the first four KRG foundation reports; broader optional content, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11`, ten authored country-tag clauses added to `.4` through `.9`, and formation-origin presentation added to the first four KRG foundation reports; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
 | Custom UI | Kruger Directorate, working interface label |
 | Super-event text research | Complete for all six retained packages |
-| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, and seven Event 016 news images are present and registered; broader country-specific flavour remains queued |
+| Visual asset status | All fifteen Kruger leader/scientist and advisor portrait states, six real severe-stage frame sheets, static fallbacks, Directorate UI, 100 focus icons, 51 achievement states, seven flag triplets, decision/category packages, twenty-five report images, six super-event images, and seven Event 016 news images are present and registered; the country-tag clauses reuse existing report art and introduce no new asset requirement |
 | Audio status | Six Event 016-owned WAVs, sound tracks, volume variants, and super-event presentation selectors are wired |
 | World-end reservations | `11` Laboratory World, `12` Strategic Singularity |
 | Visible super-event reservations | `90` recognition, `91` formation, `92` threat, `93` Laboratory World, `94` Singularity, `95` defeat |
