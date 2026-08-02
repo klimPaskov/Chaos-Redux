@@ -14,7 +14,7 @@ The refreshed set covers `asante`, `oyo`, `sokoto`, `kanem_bornu`, `manden`, `ko
 
 ## Visual direction and review
 
-Each portrait is a single decorated African king or queen in a restrained HOI4 painted treatment: simple woven or draped regalia, bounded bead/metal adornment, readable facial silhouette, and one flat matte background. The v3 pass removes council/delegation compositions, modern props, text, gore, scenic settings, and sacred-object motifs. The set remains fantastical through material, colour, silhouette, and sovereign styling without caricaturing African identities. No portrait is used to imply forced migration or a collective institution.
+The v3 files are a dormant concept set, not a historical-source substitute. Each draft is a single decorated African king or queen in a restrained HOI4 painted treatment: simple woven or draped regalia, bounded bead/metal adornment, readable facial silhouette, and one flat matte background. The v3 pass removes council/delegation compositions, modern props, text, gore, scenic settings, and sacred-object motifs. The fantastical material, colour, silhouette, and sovereign styling is permitted only for fictional, alternate-history, nonhuman, or supernatural high-chaos identities. A grounded historical country or named historical officeholder must instead use the attributed real-person, exact-crop, source-locked repaint path in `docs/assets/012_africa_priority_portraits_real_sources/manifest.md`; no generated draft may fill that source gap. No portrait is used to imply forced migration or a collective institution.
 
 The source masters, processed PNGs, DDS conversion inputs, decoded DDS review images, v3 prompt records, and contact sheets are retained under the ignored asset workspace:
 

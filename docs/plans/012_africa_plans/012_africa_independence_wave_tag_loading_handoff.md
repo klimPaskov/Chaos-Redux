@@ -58,9 +58,9 @@ No new tag identity means no `AFRICA_PRIORITY_*` flag family is required.
 
 The seven existing Event 006 tags still require complete base and ideology flag coverage where their Independence Wave package has not supplied it.
 
-The sixteen registered council portrait sprites keep their existing names in `interface/012_africa_priority_member_characters.gfx` and their final DDS paths under `gfx/leaders/012_africa/priority_members/`.
+The sixteen registered sovereign portrait sprites keep their existing names in `interface/012_africa_priority_member_characters.gfx` and their final DDS paths under `gfx/leaders/012_africa/priority_members/`. Their files may remain dormant, but only a source-approved historical row or an explicitly fictional/high-chaos identity may receive a runtime role.
 
-The portrait brief requires dramatic, fantastical, source-locked HOI4-style institutional compositions grounded in authentic archival material; it does not permit invented historical rulers or generic faces.
+Historical countries and named historical officeholders require an attributed real-person source, exact crop, source-locked identity-preserving repaint, and independent review. Fictional, alternate-history, nonhuman, or supernatural high-chaos identities may use ImageGen in a one-person HOI4 composition with a plain background, but those portraits remain dormant behind their accepted package/model gates and never replace a missing historical source.
 
 ## Touched runtime surfaces
 
@@ -88,7 +88,7 @@ When Event 006 has not created `DYX`, `DZX`, or `EMX`, those three tags remain b
 
 Soviet-collapse provenance remains excluded for both shell and vanilla-carrier registration paths.
 
-The nine vanilla councils are recruited only by the hidden Event 012 event after package activation. Replaying the queue or re-running a registration recovery path cannot duplicate a council, and political ratification still installs the leader role and party route through the existing settlement helpers.
+The nine vanilla carriers receive their package-specific sovereign only through the hidden Event 012 event after package activation. Replaying the queue or re-running a registration recovery path cannot duplicate the sovereign, and political ratification still installs the leader role and party route through the existing settlement helpers.
 
 ## Reconciled sovereign visual boundary (2026-08-02)
 
