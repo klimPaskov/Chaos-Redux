@@ -1,12 +1,14 @@
 # Event 006 generic focus tree
 
-`common/national_focus/006_independence_wave_focus.txt` defines the one shared Event 006 focus tree, `independence_wave_focus_tree`. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
+`common/national_focus/006_independence_wave_focus.txt` defines the one shared Event 006 focus tree, `independence_wave_focus_tree` (207 blocks: 184 regular and 23 shared). Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
 
 ## Assignment contract
 
 `common/scripted_effects/006_independence_wave_focus_effects.txt` is the sole assignment surface. A full-framework assignment sets `independence_wave_full_focus_framework` and `independence_wave_generic_focus_tree_assigned`, then loads `independence_wave_focus_tree`. An additive assignment never calls `load_focus_tree`; it sets `independence_wave_additive_focus_overlay` and `independence_wave_generic_focus_overlay_assigned` only after a package has registered a reviewed owning carrier. `common/scripted_triggers/006_independence_wave_focus_triggers.txt` exposes `has_independence_wave_generic_focus_contract` for validators and downstream loaders.
 
 `common/scripted_effects/006_independence_wave_package_dispatch_effects.txt` applies the common finalization barrier. If a package adapter reports success without either contract, its final validation is changed to failure and the frozen release cannot commit. This keeps the generic tree universal without overwriting a living meaningful carrier tree.
+
+The same assignment surface sets `independence_wave_generic_ai_profile` for every accepted full-framework or reviewed additive carrier, and generation cleanup clears it. The identity-neutral baseline profiles in `common/ai_strategy/006_independence_wave_generic.txt` read the public capacity, instability, recognition, host, and security values; package-specific AI remains additive. A release cannot pass final validation with the focus contract but without this baseline profile.
 
 ## Shared lanes
 
