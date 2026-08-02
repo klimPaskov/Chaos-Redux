@@ -85,9 +85,9 @@ Eight offer-response rows (11-18) can additionally open `chaosx.nr12.210`, but t
 
 The remaining timed records resolve through the common timeout outcome roll without a matrix-specific active objective.
 
-Row 51 `open_voluntary_return_registry` is separately `queued_with_owner`: the matrix specifies a 90-180-day policy action, but its current `instant_bilateral/host/instant` profile resolves immediately.
+Row 51 `open_voluntary_return_registry` now uses the shared `timed_country/host/medium` profile. Its existing row-specific contract supplies a 90-180-day range with a 135-day default, and the shared medium mission resolves the registry through the normal timeout/outcome path rather than opening it immediately.
 
-The D1 action-duration/objective owner must use an engine-safe record representation for dynamic duration and bind objectives only where the matrix requires active play, or promote an explicit revision to the source matrix.
+The D1 action-duration/objective owner still uses an engine-safe record representation for dynamic duration and binds objectives only where the matrix requires active play. This tranche closes the row-51 instant mismatch without revising the source matrix.
 
 The prior scoped `days_mission_timeout` proposal remains unsafe because no vanilla or approved reference evidence proves a scoped variable is accepted by that targeted decision field.
 
@@ -131,7 +131,7 @@ Their precise missing owner is the D1 decision-surface/UI owner; retain the norm
 
 ## Exact remaining queue
 
-1. D1: implement or explicitly revise the matrix-required objective and duration representation for all `queued_with_owner` rows, including the row-51 instant mismatch and the 95 live non-instant profile records documented in the ledger.
+1. D1: implement or explicitly revise the matrix-required objective and duration representation for the remaining `queued_with_owner` rows and the 95 live non-instant profile records documented in the ledger.
 2. D1/UI: decide the six decision-list-only family presentations without silently treating the current list as accepted GUI coverage.
 3. D1 design/API: retain Action 73 blocked until the parent approves an abstract fictional disease contract and, only if needed, an Event 013 disease API.
 4. Model/formation package: retain Actions 74-76 blocked until approved models, entities, templates, consumers, caps, and cleanup can set `africa_strange_formation_package_ready` truthfully.
@@ -147,4 +147,3 @@ It also verified the six shared lifecycle identifiers and counted exactly 95 non
 No campaign simulation, HOI4 launch, live GUI fidelity review, or new probability run was performed because this task changed documentation only and the underlying gameplay files are concurrently owned.
 
 No models, tags, gameplay changes, fallback claims, or commits were made.
-
