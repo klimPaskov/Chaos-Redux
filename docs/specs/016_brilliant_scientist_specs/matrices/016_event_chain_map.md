@@ -45,7 +45,7 @@ Kruger State or takeover
       -> Strategic Singularity and Fallout terminal
 ```
 
-## Accepted country-specific institutional settlement pilot (implementation in progress, 2026-08-02)
+## Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
 
 The accepted pilot stays inside the existing institution sequence and does not create a parallel country ladder:
 
@@ -64,7 +64,7 @@ Existing context report .4
 
 The national options are gated by the current tag plus public-science or distributed-research context for `ENG`, industrial-mobilization or distributed-research context for `USA`, strategic-security or industrial-mobilization context for `SOV`, and strategic-security or industrial-mobilization context for `JAP`. `GER`, `FRA`, `ITA`, `CHI`, `POL`, `CZE`, and every unnamed country retain the complete generic `.5` option pool. No event ID, fire path, delay, evolution, cluster entry, decision, focus, GUI, country, scientist, project reward, or asset package is added, and existing `.7` and `.8` player-facing choices remain three-way.
 
-The four settlement receipts are host-local and are intentionally excluded from ordinary transfer-copy and Kruger State formation-copy blocks. Transfer before `.5` uses the recipient tag; transfer after `.5` leaves the former host receipt local and gives the recipient only the existing generic assistant state. Static source inspection now confirms the promoted identifiers and existing route wiring; the contract remains accepted / implementation in progress pending targeted balance, transfer, cleanup, and live-acceptance evidence.
+The four settlement receipts are host-local and are intentionally excluded from ordinary transfer-copy and Kruger State formation-copy blocks. Transfer before `.5` uses the recipient tag; transfer after `.5` leaves the former host receipt local and gives the recipient only the existing generic assistant state. Static source inspection confirms the promoted identifiers and existing route wiring; the bounded source implementation is complete in the working tree, with targeted balance, transfer, cleanup, and live-acceptance evidence pending.
 
 ## Baseline stage map
 

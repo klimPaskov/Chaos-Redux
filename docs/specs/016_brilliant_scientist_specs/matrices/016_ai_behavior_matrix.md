@@ -19,7 +19,7 @@ AI treats paleogenetics and xenobiological synthesis as distinct production, sup
 | Morally restrictive | Public | Safety board and replication | Conventional and defensive | Ordinary security | Early removal or public settlement |
 | High-chaos extremist | Secret | Unrestricted laboratory | Forbidden and singularity families | Private project guard | Sovereignty, takeover, or world route |
 
-## Accepted country-specific institutional settlement AI (implementation in progress, 2026-08-02)
+## Accepted country-specific institutional settlement AI (static implementation complete; targeted validation pending, 2026-08-02)
 
 The four conditional `.5` options use the centralized `brilliant_scientist_country_settlement_ai` values `option_base = 10`, `option_preferred_factor = 2.25`, `option_cautious_factor = 0.50`, `reaction_preferred_factor = 1.50`, and `reaction_cautious_factor = 0.70`. The options are compatible only with the named tag and context gate; the existing generic `.5` options retain their current triggers, effects, and AI weights.
 

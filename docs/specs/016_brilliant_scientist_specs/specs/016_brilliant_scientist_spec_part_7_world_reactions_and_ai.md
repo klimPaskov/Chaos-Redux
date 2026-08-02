@@ -446,11 +446,11 @@ Final implementation should build flavor from host context without writing a sep
 - The host can build a plural scientific community.
 - Foreign persecution and asylum influence assistant loyalty.
 
-### Accepted country-specific institutional settlement pilot (implementation in progress, 2026-08-02)
+### Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending, 2026-08-02)
 
 The accepted addendum makes four country contexts mechanically distinct inside the existing institutional sequence without creating separate country chains. Britain (`ENG`) can select a DSIR-style research-association compact in public-science or distributed-research context, the United States (`USA`) can select a federal university-industry contract network in industrial-mobilization or distributed-research context, the Soviet Union (`SOV`) can select an Academy institute plan in strategic-security or industrial-mobilization context, and Japan (`JAP`) can select a RIKEN-centered joint technical council in strategic-security or industrial-mobilization context. The six other named tags and all unnamed countries retain the generic assistant choices and current country presentation clauses.
 
-The national option uses the existing `.5` settlement path and its base resolver, then applies the fixed bounded vector and writes one host-local receipt. The existing `.7` and `.8` three-way choices remain unchanged; receipts add only the facility or custody clause and the named downstream AI factors. No substitute incident, additional timing value, new route, reward, model, or historical scientist identity is introduced. Static source inspection now confirms the promoted runtime identifiers, while status remains accepted / implementation in progress pending targeted balance, transfer, cleanup, and live-acceptance evidence.
+The national option uses the existing `.5` settlement path and its base resolver, then applies the fixed bounded vector and writes one host-local receipt. The existing `.7` and `.8` three-way choices remain unchanged; receipts add only the facility or custody clause and the named downstream AI factors. No substitute incident, additional timing value, new route, reward, model, or historical scientist identity is introduced. Static source inspection confirms the promoted runtime identifiers and the bounded source implementation is complete in the working tree; targeted balance, transfer, cleanup, and live-acceptance evidence remain pending.
 
 ### Ideology variation
 

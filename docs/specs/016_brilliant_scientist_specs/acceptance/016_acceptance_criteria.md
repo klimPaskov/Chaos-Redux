@@ -63,9 +63,9 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] AI has equivalent paths for every human-only GUI action.
 - [ ] Final host resolutions close or transform the category cleanly.
 
-## Accepted country-specific institutional settlement pilot (implementation in progress)
+## Accepted country-specific institutional settlement pilot (static implementation complete; targeted validation pending)
 
-The accepted 2026-08-02 addendum is promoted as a four-country contract. These checks remain open until the runtime, localisation, and AI evidence exist.
+The accepted 2026-08-02 addendum is implemented in the working tree as a four-country contract. These checks remain open for targeted transfer, cleanup, balance, and live acceptance; they do not reopen the generic pool or authorize model production.
 
 - [ ] `chaosx.nr16.5` preserves generic `.5.a`, `.5.b`, and `.5.c` and exposes `chaosx.nr16.5.d_eng`, `.5.e_usa`, `.5.f_sov`, or `.5.g_jap` only under the exact tag and context gates.
 - [ ] Every national option clears `brilliant_scientist_context_assistant_conflict_pending`, sets `brilliant_scientist_assistant_conflict_resolved`, calls its named base and settlement resolvers once, and calls `brilliant_scientist_try_schedule_impossible_lecture` at most once.
