@@ -69,11 +69,15 @@ shelf now contains 63 original-size masters with no normalized or advisor
 derivatives.
 
 That sentence is a dated historical snapshot. The current portrait-shelf authority
-is 78 original-size PNG masters in one flat directory, with 73 indexed rows and
-five older physical files outside the index; no normalized 156x210 shelf files,
-advisor portraits, dossier derivatives, or small consumers are authorized. CHU
-Karim Tinchurin v3 and ASY Haydo remain rights/date-gated evidence, and the
-alternate ASY Barsoum package remains pending independent audit.
+is 80 original-size PNG masters directly under
+`docs/assets/006_independence_wave/portraits_generated_png/`, with 74 indexed rows
+and six unindexed physical files outside the index (four ARX masters, the CHU
+Mirsaid master, and the first DOX Prempeh-II master); no normalized 156x210 shelf
+files, advisor portraits, dossier derivatives, or small consumers are authorized.
+CHU Karim Tinchurin v3, the other CHU evidence rows, the two MNT masters, and ASY
+Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum v93
+passes its independent audit and v94 promotes only the existing concordat-council
+DDS consumer; the wider IW-058 package remains outside attestation.
 
 That package now has the v93 independent audit recorded: identity/likeness,
 HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with

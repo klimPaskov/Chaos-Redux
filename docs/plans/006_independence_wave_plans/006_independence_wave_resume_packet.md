@@ -33,6 +33,8 @@ The v99 narrowed generic/core wrap audit and the `d6a364040`/`1d9bdba96` failure
 | Decisions and localisation | Preserve v71's no-defect source result, the v98/v99 static SCN-008 receipt PASS, and v72's static localisation/catalog PASS, while keeping package, runtime, bounded GUI/render presentation, and catalog/source evidence boundaries visible. The Statehood Ledger and League selector source contract is PASS after the parent patch; the semantic GUI matrix and current achievement receipt remain follow-up evidence. |
 | Whole event | Continue **HOLD / PARTIAL** for package capacity/admission, focus/formable/asset/AI/balance/super-event/catalog/source blockers. |
 
+Current portrait-status clarification: the two MNT masters and all unpromoted CHU evidence rows remain `needs_user_review` for rights, provenance, date, or role gates. Shelf presence, the scoped Galimzhan/Spasov consumers, and the single v94 Barsoum DDS promotion do not admit a package or authorize advisor, dossier, or small derivatives.
+
 ## 2026-07-29 current-authority reconciliation
 
 Controlling acceptance authority (2026-08-02): Event 006 completion is evaluated from repository source/static evidence under `subagent_handoffs/006_event6_narrowed_generic_focus_completion_audit_v98_2026_08_02.md`. Source inspection, MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. The v98 audit is the current whole-event completion matrix; v97, v96, v33, and earlier audits remain dated evidence, while static package-capacity, incomplete package/formable/asset, focus-diagnostic, `6001` rights, unreachable source-route, missing AI/source-proof, and unwired-content blockers remain current.
@@ -178,8 +180,8 @@ The current flat shelf check is `root_pngs=63`, `child_dirs=0`, and `normalized=
 `006_galimzhan_portrait_v2_independent_audit_2026_07_28.md` supersedes the v1 bounded visual audit for the portrait candidate. `006_decision_mission_reaudit_2026_07_28.md`, `006_shared_focus_reaudit_2026_07_28.md`, `006_dm58_participant_invalidation_repair_2026_07_28.md`, and `006_event_completion_audit_v31_2026_07_28.md` supersede their older bounded surfaces; v30 remains historical traceability only. The post-commit IW-012 route-arbitration handoffs are static source evidence. The whole goal remains HOLD / PARTIAL for the static blockers; live runtime evidence is optional future QA.
 
 Any remaining v23/v28/v30/v31/v32, 49/50/51/54/56/61-master, or pre-repair wording later in this packet is
-historical traceability rather than current authority. Use the v96 completion
-handoff, the current 78-master/73-indexed shelf authority described above, and the
+historical traceability rather than current authority. Use the v98 completion
+handoff, the current 80-master/74-indexed shelf authority described above, and the
 bounded 2026-07-28/29 handoffs above for the current status. The installed-mod scan includes MFX and reports
 zero reserved/custom-cosmetic collisions, but that result does not admit FORM-39
 or make its `needs_user_review` package a readiness fallback.
@@ -297,11 +299,12 @@ they are not current routing documents.
   and 977.
 - The current portrait authority is the sourced-only workflow in the event-asset
   skill. The flat reference shelf at
-  `docs/assets/006_independence_wave/portraits_generated_png/` now records 78
+  `docs/assets/006_independence_wave/portraits_generated_png/` now records 80
   original-size pre-resize PNG masters directly in one directory after the CHU
-  Bolgar v90 v1/v2/v3, ASY Haydo, and ASY Barsoum copies; the current authority
-  declares 73 indexed rows, with five older physical PNGs outside that index (four
-  ARX masters and the CHU Mirsaid master). There are no
+  Bolgar v90 v1/v2/v3, ASY Haydo, ASY Barsoum, and first DOX Prempeh-II copies; the
+  current authority declares 74 indexed rows, with six unindexed physical PNGs
+  outside that index (four ARX masters, the CHU Mirsaid master, and the first DOX
+  Prempeh-II master). There are no
   nested folders, normalized 156x210 PNGs, or advisor/small/dossier derivatives;
   the manifest records the byte/hash inventory. The v90 Karim Tinchurin
   source/repaint package is
