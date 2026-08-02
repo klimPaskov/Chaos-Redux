@@ -452,6 +452,29 @@ brilliant_scientist_try_schedule_alien_artifact_contact = {
 	}
 }
 
+# COUNTRY scope. The time-traveler idea may arrive before or after the Kruger
+# appointment. The appointment calls this helper for an already-known traveler,
+# while Event 030 calls the same guarded path when the traveler is observed
+# after the appointment. The contact receipt is distinct from the temporary
+# idea so the report cannot be duplicated across either ordering.
+brilliant_scientist_try_schedule_time_traveler_contact = {
+	if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			has_idea = time_traveler
+			NOT = { has_global_flag = world_end }
+			NOT = { has_country_flag = brilliant_scientist_time_traveler_contact }
+			NOT = { has_country_flag = brilliant_scientist_time_traveler_contact_report_seen }
+		}
+		set_country_flag = brilliant_scientist_time_traveler_contact
+		set_country_flag = brilliant_scientist_time_traveler_contact_pending
+		country_event = {
+			id = chaosx.nr16.16
+			days = constant:brilliant_scientist_directorate_timing.time_traveler_contact_report_days
+		}
+	}
+}
+
 # COUNTRY scope. Event 036 records physical spacecraft evidence on the country
 # that recovered it. This helper only presents the one-time lead when that
 # evidence belongs to the active Kruger host and never advances Alien Arms.
