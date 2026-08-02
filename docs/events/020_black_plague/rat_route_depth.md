@@ -18,7 +18,7 @@ The hierarchy layer adds three route-locked continuing actions. Distributed Inst
 
 Each route operation now opens a short report through `chaosx.nr20.78`. The report distinguishes the citadel reserve, migration lanes, overseas tide, rail breach, distributed signal, alpha command, and route-memory actions, so the living carrier's choice is visible at the moment the operation completes rather than only in a hidden flag or later pulse.
 
-The route focuses reuse the existing Event 020 rat goal sprites registered in `interface/020_black_plague_rat_identity.gfx`. No additional icon file is required for this tranche. Future presentation work can replace reused sprites with route-specific art after the gameplay route has live visual evidence.
+The route focuses use the six dedicated Event 020 hierarchy goal sprites registered in `interface/020_black_plague_rat_identity.gfx`: `GFX_goal_black_plague_rat_four_mouths`, `GFX_goal_black_plague_rat_choose_a_voice`, `GFX_goal_black_plague_rat_read_the_marks`, `GFX_goal_black_plague_rat_many_nests_one_signal`, `GFX_goal_black_plague_rat_fang_above_the_warren`, and `GFX_goal_black_plague_rat_stolen_route_memory`. Their source, processed previews, final 94x86 DDS files, and contact sheet are recorded in `docs/assets/020_black_plague/manifests/event020_rat_hierarchy_icons_manifest.md`.
 
 ## Future extension
 
