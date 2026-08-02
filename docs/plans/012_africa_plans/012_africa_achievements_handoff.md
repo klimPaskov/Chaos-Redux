@@ -63,6 +63,8 @@ The direction cells below retain their original visual wording while every row n
 
 Every icon entry below maps to the installed three-file set `gfx/achievements/<key>.dds`, `gfx/achievements/<key>_grey.dds`, and `gfx/achievements/<key>_not_eligible.dds`. No `.gfx` registration is required for custom achievement IDs. Presence of the triplet does not close the row's gameplay proof or owner-system callsite.
 
+The `africa_guardians_without_borders` protection-war start owner requires `africa_member_host_generation_is_current`, so a stale prior-host protected receipt cannot inflate the settled-versus-started ledger.
+
 | # | Achievement key | Gameplay proof and remaining dependency | Callsite audit classification | Icon direction and disposition |
 |---:|---|---|---|---|
 | 1 | `africa_guardians_without_borders` | Full guarantee actions count distinct independent partners; protection-war helpers and the Africa-is-One live snapshot prove survival/settlement. Annexation, destruction, or broken-guarantee owners must call the matching DQ hook. | REACHABLE/PARTIAL | Open shield around distinct state seals — triplet installed. |
