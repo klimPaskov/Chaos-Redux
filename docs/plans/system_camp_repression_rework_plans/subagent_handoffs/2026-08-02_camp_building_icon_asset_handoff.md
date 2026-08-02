@@ -1,5 +1,7 @@
 # Camp building icon asset handoff — 2026-08-02
 
+> Superseded for visual acceptance by `2026-08-02_camp_building_icon_hoi4_style_correction.md`. The dimensions and frame-order history below remain useful, but its dark freeform artwork was rejected because it did not match the vanilla HOI4 building-tile style.
+
 ## Completed asset package
 
 - Standalone concentration icon: `gfx/interface/buildings/building_concentration_camp.dds`, 27x23, SHA-256 `988589e8d6902cd7b53bf2f292ee5ad1e03062c10bf567e74c68b90c994b0c20`.
