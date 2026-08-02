@@ -8,6 +8,17 @@ The profiles read the public Event 006 values rather than storing a separate che
 - `independence_wave_generic_recovery_profile` turns on after functioning capacity and de facto recognition when severe instability or a living former host still demands recovery. It shifts weight toward industry and infrastructure while retaining defensive restraint.
 - `independence_wave_generic_consolidation_profile` turns on after functioning capacity, de facto recognition, prepared security, and a non-severe instability band. It raises army and industry priorities and permits limited outward development without forcing a war.
 
+Static stacking is intentional and bounded. Survival and recovery may overlap
+when a recognized country is still severely unstable; the combined negative
+war-restraint weights keep the country defensive while the recovery profile
+rebuilds industry. Recovery and consolidation may overlap while a living former
+host still demands recovery, but consolidation is excluded during severe
+instability. Survival and consolidation cannot overlap because consolidation
+requires functioning capacity and non-severe instability. Package, regional,
+patron, host, League, and rival-bloc strategies remain additive and retain their
+own exact setup or route gates; no profile creates an unconditional war or
+world-wide scan.
+
 All numeric priorities live in `common/script_constants/006_independence_wave_constants.txt` under `independence_wave_generic_ai`. The targetless `avoid_starting_wars` values are negative additive weights (`-240`, `-140`, and `-45`) so the baseline actually restrains opportunistic wars; package-specific strategy files remain additive and can override the baseline through their own route, regional, patron, host, or signature conditions. No profile creates a faction, starts a war, scans every country, or grants free equipment or divisions.
 
 The profiles are source-level AI wiring. Final scenario weight, timing, and live AI observation remain outside the current non-live scope.
