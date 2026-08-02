@@ -8446,41 +8446,6 @@ soviet_collapse_apply_foreign_trade_aid = {
     }
 }
 
-# Event 005-owned sponsor-economy scaling for foreign construction packages.
-# Inputs: economy_scaled_factory_grant_step, economy_scaled_factory_grant_min,
-# economy_scaled_factory_grant_cap. Output: economy_scaled_factory_grant_count.
-calculate_economy_scaled_factory_grant = {
-	set_temp_variable = { economy_scaled_factory_grant_pool = num_of_civilian_factories }
-	add_to_temp_variable = { economy_scaled_factory_grant_pool = num_of_military_factories }
-	set_temp_variable = { economy_scaled_factory_grant_count = 0 }
-	while_loop_effect = {
-		limit = {
-			check_variable = {
-				var = economy_scaled_factory_grant_pool
-				value = economy_scaled_factory_grant_step
-				compare = greater_than_or_equals
-			}
-			check_variable = {
-				var = economy_scaled_factory_grant_count
-				value = economy_scaled_factory_grant_cap
-				compare = less_than
-			}
-		}
-		add_to_temp_variable = { economy_scaled_factory_grant_count = 1 }
-		subtract_from_temp_variable = { economy_scaled_factory_grant_pool = economy_scaled_factory_grant_step }
-	}
-	if = {
-		limit = {
-			check_variable = {
-				var = economy_scaled_factory_grant_count
-				value = economy_scaled_factory_grant_min
-				compare = less_than
-			}
-		}
-		set_temp_variable = { economy_scaled_factory_grant_count = economy_scaled_factory_grant_min }
-	}
-}
-
 soviet_collapse_apply_foreign_civilian_construction_aid = {
     if = { limit = { has_war_with = SOV } set_country_flag = soviet_collapse_hostile_patron_double_game }
     soviet_collapse_mark_foreign_general_aid_sponsor = yes

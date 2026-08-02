@@ -101,7 +101,7 @@ This behavior applies to both unified destinations:
 
 ### Final live implementation and closure evidence
 
-`common/scripted_effects/014_cannibalism_effects.txt` defines the Event 014-owned `union_compatible_researched_technologies_from_donor`. The recipient is current country scope and the donor is the regular event target `technology_union_donor`. The helper iterates `event_target:technology_union_donor.researched_techs`, checks `has_tech = var:technology_union_entry`, and grants a missing token with `set_technology = { var:technology_union_entry = 1 popup = no }`.
+`common/scripted_effects/chaosx_dynamic_effects.txt` now defines `union_compatible_researched_technologies_from_donor`. The recipient is current country scope and the donor is the regular event target `technology_union_donor`. The helper iterates `event_target:technology_union_donor.researched_techs`, checks `has_tech = var:technology_union_entry`, and grants a missing token with `set_technology = { var:technology_union_entry = 1 popup = no }`.
 
 The current call-site wiring covers all three required transfers:
 
@@ -130,8 +130,8 @@ Closure requires all of these rules:
 7. Never create a persistent copied array.
 8. Execute before donor slot cleanup and annexation.
 9. Execute only inside a successful absorption transaction.
-10. Keep the technology-loop helper free of unrelated system state while retaining Event 014 ownership.
-11. Keep the contract in the Event 014 spec and event documentation aligned with the helper.
+10. Keep the generic technology-loop helper free of Event 014 state so other systems can reuse it.
+11. Keep the full public contract in `common/scripted_effects/chaosx_dynamic_effects.md` aligned with the helper.
 12. Document that `set_technology` executes any technology `on_research_complete` payload for newly granted tokens. The recipient `has_tech` check prevents the payload from repeating for technology already owned.
 
 ### Mutually exclusive and special technology rule
@@ -160,7 +160,8 @@ All three calls currently occur before donor cleanup and annexation. The ordinar
 
 Required gameplay and documentation surfaces:
 
-- `common/scripted_effects/014_cannibalism_effects.txt`
+- `common/scripted_effects/chaosx_dynamic_effects.txt`
+- `common/scripted_effects/chaosx_dynamic_effects.md`
 - `common/scripted_effects/014_cannibalism_unification_effects.txt`
 - `common/scripted_effects/014_cannibalism_wendigo_effects.txt`
 - `docs/events/014_cannibalism/overview.md`

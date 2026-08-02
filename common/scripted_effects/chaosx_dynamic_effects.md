@@ -1,15 +1,133 @@
 # chaosx_dynamic_effects
 
-This registry documents only the public effects defined in `common/scripted_effects/chaosx_dynamic_effects.txt` that have demonstrated reuse across unrelated events or shared systems.
+This registry documents the public, generally reusable effects defined in `common/scripted_effects/chaosx_dynamic_effects.txt`.
 
-Event-owned and subsystem-private helpers belong in their owning scripted-effect files and system documentation.
+An effect belongs here when its contract is useful across events or systems, even if it currently has only one caller. Event-framework orchestration and subsystem-private helpers belong in their owning scripted-effect files and system documentation.
 
 ## Table of contents
 
+- [modify_value_based_on_chaos_tier](#modify_value_based_on_chaos_tier)
+- [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
+- [damage_buildings_in_random_states](#damage_buildings_in_random_states)
+- [get_random_sea_region](#get_random_sea_region)
+- [clear_special_chaos_country_civilian_effects](#clear_special_chaos_country_civilian_effects)
 - [refresh_world_threat_state](#refresh_world_threat_state)
+- [union_compatible_researched_technologies_from_donor](#union_compatible_researched_technologies_from_donor)
 - [call_natural_disaster](#call_natural_disaster)
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
+
+## modify_value_based_on_chaos_tier
+
+Purpose: derive a temporary value by adding a chaos-tier-scaled increment to a supplied base.
+
+Scope: any scope.
+
+Inputs: `base_value` and `add_value` temporary variables.
+
+Output: `modified_value` temporary variable.
+
+Defaults: chaos tier `0` adds nothing, tiers `1` through `3` add one through three copies of `add_value`, and tiers above `3` add four copies.
+
+Side effects: the effect multiplies the temporary `add_value` input in place.
+
+Example:
+
+```txt
+set_temp_variable = { base_value = 10 }
+set_temp_variable = { add_value = 2 }
+modify_value_based_on_chaos_tier = yes
+```
+
+## calculate_economy_scaled_factory_grant
+
+Purpose: convert the current country's civilian and military factory total into a bounded grant count.
+
+Scope: country.
+
+Inputs: positive `economy_scaled_factory_grant_step`, `economy_scaled_factory_grant_min`, and `economy_scaled_factory_grant_cap` temporary variables.
+
+Output: `economy_scaled_factory_grant_count` temporary variable.
+
+Defaults: the result begins at zero, counts complete step-sized blocks, stops at the cap, and then rises to the supplied minimum when necessary.
+
+Side effects: none beyond temporary working variables. The effect does not grant buildings.
+
+Example:
+
+```txt
+set_temp_variable = { economy_scaled_factory_grant_step = 10 }
+set_temp_variable = { economy_scaled_factory_grant_min = 1 }
+set_temp_variable = { economy_scaled_factory_grant_cap = 5 }
+calculate_economy_scaled_factory_grant = yes
+```
+
+## damage_buildings_in_random_states
+
+Purpose: damage a configurable number of eligible buildings in a configurable share of the current country's controlled states.
+
+Scope: country.
+
+Inputs: `buildings_to_damage_per_state`, `percent_of_states_to_target`, `damage_modifier`, and `state_population_percent` variables.
+
+Outputs: direct state building damage and, when the population branch is selected, a proportional state population reduction.
+
+Defaults: the effect derives the target-state count from controlled states and ensures that a positive percentage targets at least one state. Individual building choices with no available level receive zero random weight.
+
+Side effects: mutates buildings or population in randomly selected controlled states and uses working variables during selection.
+
+Example:
+
+```txt
+set_variable = { buildings_to_damage_per_state = 2 }
+set_variable = { percent_of_states_to_target = 0.25 }
+set_variable = { damage_modifier = 1 }
+set_variable = { state_population_percent = 0.01 }
+damage_buildings_in_random_states = yes
+```
+
+## get_random_sea_region
+
+Purpose: select one strategic-region ID from the shared curated sea-region pool.
+
+Scope: any scope.
+
+Inputs: none.
+
+Output: `global.rand_sea_region`.
+
+Defaults: every branch writes a region ID. Repeated entries intentionally preserve the pool's existing weights.
+
+Side effects: replaces `global.rand_sea_region`.
+
+Example:
+
+```txt
+get_random_sea_region = yes
+```
+
+## clear_special_chaos_country_civilian_effects
+
+Purpose: remove transient civilian penalties from a special Chaos country when a bounded caller decides cleanup is due.
+
+Scope: country.
+
+Inputs: none.
+
+Outputs: clears `mass_panic` and removes `galaxies_mix` when present.
+
+Defaults: absent flags or ideas produce no change.
+
+Side effects: mutates the scoped country's flag and idea state. No periodic whole-world caller is enabled by this contract.
+
+Example:
+
+```txt
+if = {
+	limit = { is_special_chaos_country = yes }
+	clear_special_chaos_country_civilian_effects = yes
+}
+```
 
 ## refresh_world_threat_state
 
@@ -51,6 +169,27 @@ else = {
 	clr_global_flag = world_threat_source_my_threat
 }
 refresh_world_threat_state = yes
+```
+
+## union_compatible_researched_technologies_from_donor
+
+Purpose: add every compatible missing researched technology from a donor country to the current country without removing the recipient's existing research.
+
+Scope: country recipient.
+
+Input: `event_target:technology_union_donor`, saved as the donor country before the call.
+
+Outputs: missing donor technologies granted to the recipient with popups disabled.
+
+Defaults: technologies already held by the recipient are skipped. Flexible and streamlined production remain mutually exclusive, as do the concentrated and dispersed industry branches.
+
+Side effects: newly granted technologies execute any engine behavior associated with `set_technology`. The effect does not change research slots, remove technologies, clear the donor target, or annex the donor.
+
+Example:
+
+```txt
+FROM = { save_event_target_as = technology_union_donor }
+union_compatible_researched_technologies_from_donor = yes
 ```
 
 ## call_natural_disaster
