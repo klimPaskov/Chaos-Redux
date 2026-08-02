@@ -16,6 +16,8 @@ The shared `black_plague_rat_brood_category` now exposes four route operations w
 
 The hierarchy layer adds three route-locked continuing actions. Distributed Instinct can distribute nest signals once the carrier controls more than one state, restoring Coherence and adding capped capacity behind a cooldown. Dominant Beast can seat an alpha command pattern when Coherence is stable, trading Brood Mass and time for Sentience and capacity while raising Hunger. Emergent Cunning can decode a selected human enemy logistics target beside rat-held ground, spending Brood Mass and applying a bounded internal-transport exposure through the canonical disease ledger. The target cooldown and existing exposure rules keep this action from becoming a free global spread button.
 
+Each route operation now opens a short report through `chaosx.nr20.78`. The report distinguishes the citadel reserve, migration lanes, overseas tide, rail breach, distributed signal, alpha command, and route-memory actions, so the living carrier's choice is visible at the moment the operation completes rather than only in a hidden flag or later pulse.
+
 The route focuses reuse the existing Event 020 rat goal sprites registered in `interface/020_black_plague_rat_identity.gfx`. No additional icon file is required for this tranche. Future presentation work can replace reused sprites with route-specific art after the gameplay route has live visual evidence.
 
 ## Future extension
