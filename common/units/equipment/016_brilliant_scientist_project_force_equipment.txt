@@ -92,6 +92,13 @@
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_TEMPORAL_SPEED = 4.50
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_TEMPORAL_TUNGSTEN = 4
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_VARIANT_PRIORITY = 60
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TELEPORTATION = 7
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ROBOTICS = 9
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_PALEOGENETICS = 10
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_XENOBIOLOGICAL = 11
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS = 13
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TEMPORAL = 14
+@BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT = 3
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_XENOBIOLOGICAL_AIR_ATTACK = 0
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_XENOBIOLOGICAL_ARMOR = 22
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_XENOBIOLOGICAL_BREAKTHROUGH = 22
@@ -138,7 +145,33 @@ equipments = {
 			tungsten = @BRILLIANT_SCIENTIST_PROJECT_FORCE_PORTAL_TUNGSTEN
 			chromium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_PORTAL_CHROMIUM
 		}
-		can_be_produced = { brilliant_scientist_has_teleportation_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TELEPORTATION } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TELEPORTATION } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TELEPORTATION } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^6
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_teleportation_deployment
+							has_character_flag = brilliant_scientist_personal_teleportation_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_teleportation_deployment_completed
+					has_country_flag = brilliant_scientist_quantum_transit_network_ready
+				}
+			}
+			has_country_flag = brilliant_scientist_quantum_transit_network_ready
+			any_owned_state = { has_state_flag = brilliant_scientist_quantum_transit_terminal }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
@@ -180,7 +213,33 @@ equipments = {
 			chromium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ROBOT_CHROMIUM
 			rubber = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ROBOT_RUBBER
 		}
-		can_be_produced = { brilliant_scientist_has_robotics_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ROBOTICS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ROBOTICS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ROBOTICS } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^8
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_robotics_deployment
+							has_character_flag = brilliant_scientist_personal_robotics_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_robotics_deployment_completed
+					has_country_flag = brilliant_scientist_robotics_assembly_complex
+				}
+			}
+			has_country_flag = brilliant_scientist_robotics_assembly_complex
+			any_owned_state = { has_state_flag = brilliant_scientist_robotics_assembly_complex }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
@@ -220,7 +279,34 @@ equipments = {
 			steel = @BRILLIANT_SCIENTIST_PROJECT_FORCE_PALEOGENETIC_STEEL
 			rubber = @BRILLIANT_SCIENTIST_PROJECT_FORCE_PALEOGENETIC_RUBBER
 		}
-		can_be_produced = { brilliant_scientist_has_paleogenetics_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_PALEOGENETICS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_PALEOGENETICS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_PALEOGENETICS } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^9
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_paleogenetics_deployment
+							has_character_flag = brilliant_scientist_personal_paleogenetics_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_paleogenetics_deployment_completed
+					has_country_flag = brilliant_scientist_paleogenetic_sites_ready
+				}
+			}
+			has_country_flag = brilliant_scientist_paleogenetic_sites_ready
+			any_owned_state = { has_state_flag = brilliant_scientist_paleogenetic_reserve }
+			any_owned_state = { has_state_flag = brilliant_scientist_paleogenetic_hatchery }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
@@ -261,7 +347,60 @@ equipments = {
 			chromium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_XENOBIOLOGICAL_CHROMIUM
 			rubber = @BRILLIANT_SCIENTIST_PROJECT_FORCE_XENOBIOLOGICAL_RUBBER
 		}
-		can_be_produced = { brilliant_scientist_has_xenobiological_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_XENOBIOLOGICAL } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_XENOBIOLOGICAL } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_XENOBIOLOGICAL } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^10
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_xenobiological_synthesis_deployment
+							has_character_flag = brilliant_scientist_personal_xenobiological_synthesis_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_xenobiological_synthesis_deployment_completed
+					has_country_flag = brilliant_scientist_xenobiological_sites_ready
+				}
+			}
+			OR = {
+				AND = {
+					has_country_flag = brilliant_scientist_xeno_control_chemical
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_neural }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_machine }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_researched }
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_xeno_control_neural
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_chemical }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_machine }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_researched }
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_xeno_control_machine
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_chemical }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_neural }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_researched }
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_xeno_control_researched
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_chemical }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_neural }
+					NOT = { has_country_flag = brilliant_scientist_xeno_control_machine }
+				}
+			}
+			has_country_flag = brilliant_scientist_xenobiological_sites_ready
+			any_owned_state = { has_state_flag = brilliant_scientist_xenobiological_vat_complex }
+			any_owned_state = { has_state_flag = brilliant_scientist_xenobiological_control_center }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
@@ -302,7 +441,33 @@ equipments = {
 			chromium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_CHROMIUM
 			aluminium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_EXOTIC_ALUMINIUM
 		}
-		can_be_produced = { brilliant_scientist_has_alien_arms_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_ALIEN_ARMS } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^12
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_alien_arms_deployment
+							has_character_flag = brilliant_scientist_personal_alien_arms_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_alien_arms_deployment_completed
+					has_country_flag = brilliant_scientist_alien_interface_chamber
+				}
+			}
+			has_country_flag = brilliant_scientist_alien_interface_chamber
+			any_owned_state = { has_state_flag = brilliant_scientist_alien_interface_chamber }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
@@ -344,7 +509,33 @@ equipments = {
 			aluminium = @BRILLIANT_SCIENTIST_PROJECT_FORCE_TEMPORAL_ALUMINIUM
 			rubber = @BRILLIANT_SCIENTIST_PROJECT_FORCE_TEMPORAL_RUBBER
 		}
-		can_be_produced = { brilliant_scientist_has_temporal_force_deployment = yes }
+		can_be_produced = {
+			NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TEMPORAL } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TEMPORAL } }
+			NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_FAMILY_TEMPORAL } }
+			check_variable = {
+				var = brilliant_scientist_project_stage_entries^13
+				value = @BRILLIANT_SCIENTIST_PROJECT_FORCE_STAGE_DEPLOYMENT
+				compare = greater_than_or_equals
+			}
+			OR = {
+				AND = {
+					has_character = KRG_warren_kruger
+					KRG_warren_kruger = {
+						OR = {
+							has_character_flag = brilliant_scientist_personal_temporal_deployment
+							has_character_flag = brilliant_scientist_personal_temporal_weaponization
+						}
+					}
+				}
+				AND = {
+					has_country_flag = brilliant_scientist_temporal_deployment_completed
+					has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+				}
+			}
+			has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+			any_owned_state = { has_state_flag = brilliant_scientist_temporal_anchor }
+		}
 		can_be_lend_leased = { always = no }
 	}
 
