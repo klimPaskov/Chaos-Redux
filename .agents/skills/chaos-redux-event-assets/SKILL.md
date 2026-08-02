@@ -351,15 +351,12 @@ This skill owns its visual-reference library under:
 
 `assets/vanilla_reference/` is the canonical semantic library, with Vanilla HOI4
 as the primary source and explicitly marked Chaos Redux examples where needed.
-`assets/leader_portraits/` is the user-requested, curated male-only quick-reference pack for HOI4 country-leader and army/navy-commander styling.
 Do not route reference work through project-root asset folders or another skill-local copy.
 
 Start with:
 
 - library rules and contact sheets: `assets/vanilla_reference/README.md`
 - exact source provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
-- leader-portrait routing: `assets/leader_portraits/README.md`
-- copied portrait provenance and hashes: `assets/leader_portraits/REFERENCE_MANIFEST.md`
 
 Unless a path below begins with `assets/`, interpret it relative to
 `assets/vanilla_reference/`.
@@ -373,9 +370,8 @@ Canonical portrait paths:
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
 Country leaders, commanders, and operatives are full `156x210` portrait textures.
-For portrait work, inspect both the canonical role-specific contact sheet and the matching `assets/leader_portraits/leaders/` or `assets/leader_portraits/commanders/` quick-reference contact sheet.
-The copied pack is reference-only; its source mapping and hashes are recorded in `assets/leader_portraits/REFERENCE_MANIFEST.md`.
-Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute the full portrait or quick-reference packs for this family.
+For portrait work, inspect the canonical role-specific contact sheet.
+Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
 
 Canonical flag and event-art paths:
 
@@ -424,7 +420,6 @@ Canonical unit-visual paths:
 The tree is semantic, not a bank of interchangeable pictures. Use the folder for the exact owning UI or model surface, then follow the cataloged source, native canvas, frame count, transparency, and owning definition.
 
 The canonical `assets/vanilla_reference/` tree remains the source of truth for exact engine surfaces and semantic ownership.
-The curated `assets/leader_portraits/` pack is the deliberate portrait-review aid requested for agents and must stay aligned with its manifest; it is never a runtime asset source.
 
 The reusable achievement not-eligible compositing overlay lives at
 `icons/achievements/overlay.png`. It is a workflow
@@ -432,7 +427,7 @@ input rather than a reference example, so it is excluded from the achievement
 contact sheet and coverage count.
 
 Do not add new reference images outside the skill-local `assets/` root.
-Add semantic references under `assets/vanilla_reference/`; add male leader or commander review copies under `assets/leader_portraits/` only with exact provenance, dimensions, hashes, and contact-sheet coverage recorded in its manifest.
+Add semantic references under `assets/vanilla_reference/` only with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog.
 
 Before generating, sourcing, processing, or wiring an asset, read the library
 rules, inspect the matching category and contact sheet, and follow the vanilla
