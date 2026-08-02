@@ -2685,7 +2685,22 @@ scripted_gui = {
             }
 
             scenario_trigger_button_click = {
-                open_triggerable_scenario_confirmation = yes
+                # SCN-012 is an explicit bootstrap rather than a reversible
+                # confirmation flow. Its availability trigger already fails
+                # closed for terminal states, so launch it directly while
+                # preserving the confirmation window for every other scenario.
+                if = {
+                    limit = {
+                        check_variable = {
+                            var = triggerable_scenarios_selected
+                            value = constant:triggerable_scenario_id.black_plague
+                            compare = equals
+                        }
+                    }
+                    close_chaosx_scenarios = yes
+                    trigger_selected_chaosx_scenario = yes
+                }
+                else = { open_triggerable_scenario_confirmation = yes }
             }
         }
 
