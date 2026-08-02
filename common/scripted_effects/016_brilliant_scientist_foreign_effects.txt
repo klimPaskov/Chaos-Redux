@@ -1252,7 +1252,13 @@ brilliant_scientist_foreign_dispatch_covert_events = {
 		limit = { check_variable = { brilliant_scientist_foreign_last_operation_detected > constant:brilliant_scientist_value.zero } }
 		if = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.observation } }
-			event_target:brilliant_scientist_foreign_operation_host = { country_event = { id = chaosx.nr16.120 } }
+			event_target:brilliant_scientist_foreign_operation_host = {
+				if = {
+					limit = { brilliant_scientist_is_current_host = yes }
+					set_country_flag = brilliant_scientist_foreign_observer_contact
+				}
+				country_event = { id = chaosx.nr16.120 }
+			}
 		}
 		else_if = {
 			limit = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assistant_recruitment } }
