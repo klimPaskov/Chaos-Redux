@@ -38,14 +38,14 @@ Pool ordering is country-specific and deterministic for AI selection. Occupied a
 
 ## Building Icon Assets
 
-The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces.
+The concentration-camp and extermination-camp buildings use distinct custom artwork on both building-icon surfaces. Both families follow the vanilla HOI4 building language: compact ochre pictograms, chunky painterly highlights, and—on the indexed strip—the standard charcoal beveled tile.
 
 - `GFX_building_concentration_camp` reads `gfx/interface/buildings/building_concentration_camp.dds` as a native `27x23` standalone icon.
 - `GFX_building_extermination_camp` reads `gfx/interface/buildings/building_extermination_camp.dds` as a native `27x23` standalone icon.
 - `GFX_buildings_strip` reads `gfx/interface/buildings/building_icon_strip.dds` as a `35`-frame strip of `46x46` frames.
 - Strip frame `34` belongs to `concentration_camp`; strip frame `35` belongs to `extermination_camp`.
 
-The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`, while the indexed strip is registered in `interface/countrystateview.gfx`. The generated source art, transparency review, frame-order review, final hashes, and prompt provenance are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_icon_asset_handoff.md`.
+The standalone sprite aliases are registered in `interface/chaosx_buildings.gfx`, while the indexed strip is registered in `interface/countrystateview.gfx`. The corrected HOI4-style source art, direct vanilla comparison, transparency review, frame-order review, final hashes, and prompt provenance are recorded in `docs/plans/system_camp_repression_rework_plans/subagent_handoffs/2026-08-02_camp_building_icon_hoi4_style_correction.md`.
 
 Future visual extensions should preserve the existing frame order and append new building frames at the end of the strip. A later gulag-network art pass should remain a separate building-icon requirement rather than reusing either camp icon.
 
