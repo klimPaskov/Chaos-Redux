@@ -1,3 +1,10 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_AI_NONE = 0
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_COST_REDUCTION = 0.25
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_USES = 1
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS = 0.5
+@CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES = 1
 @independence_wave_focus_short = 5
 @independence_wave_focus_standard = 7
 @independence_wave_focus_long = 10
@@ -28,7 +35,7 @@ focus_tree = {
 	id = independence_wave_focus_tree
 
 	country = {
-		factor = constant:independence_wave_focus_ai.none
+		factor = @CR_SC_INDEPENDENCE_WAVE_FOCUS_AI_NONE
 		modifier = {
 			add = constant:independence_wave_focus_ai.urgent
 			has_country_flag = independence_wave_full_focus_framework
@@ -415,7 +422,7 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = independence_wave_create_independent_treasury_tt
 			hidden_effect = {
-				add_tech_bonus = { name = independence_wave_industrial_administration_bonus bonus = constant:independence_wave_focus_reward.technology_bonus uses = constant:independence_wave_focus_reward.technology_uses category = industry }
+				add_tech_bonus = { name = independence_wave_industrial_administration_bonus bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES category = industry }
 				set_country_flag = independence_wave_economy_capstone_complete
 				add_ideas = independence_wave_independent_treasury
 				independence_wave_focus_reward_stabilization = yes
@@ -545,7 +552,7 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = independence_wave_found_professional_defense_institution_tt
 			hidden_effect = {
-				add_doctrine_cost_reduction = { name = independence_wave_professional_defense_bonus cost_reduction = constant:independence_wave_focus_reward.doctrine_cost_reduction uses = constant:independence_wave_focus_reward.doctrine_uses category = land_doctrine }
+				add_doctrine_cost_reduction = { name = independence_wave_professional_defense_bonus cost_reduction = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_COST_REDUCTION uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_USES category = land_doctrine }
 				set_country_flag = independence_wave_unlock_professional_army
 				set_country_flag = independence_wave_defense_capstone_complete
 				independence_wave_focus_reward_stabilization = yes
@@ -620,7 +627,7 @@ focus_tree = {
 		cost = @independence_wave_focus_short
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 		available = { can_use_independence_wave_full_focus_framework = yes }
-		completion_reward = { custom_effect_tooltip = independence_wave_fund_domestic_arsenals_tt hidden_effect = { set_country_flag = independence_wave_military_choice_domestic_arsenals independence_wave_focus_reward_administration = yes add_tech_bonus = { name = independence_wave_domestic_arsenal_bonus bonus = constant:independence_wave_focus_reward.technology_bonus uses = constant:independence_wave_focus_reward.technology_uses category = infantry_weapons } } }
+		completion_reward = { custom_effect_tooltip = independence_wave_fund_domestic_arsenals_tt hidden_effect = { set_country_flag = independence_wave_military_choice_domestic_arsenals independence_wave_focus_reward_administration = yes add_tech_bonus = { name = independence_wave_domestic_arsenal_bonus bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES category = infantry_weapons } } }
 		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor has_country_flag = independence_wave_focus_economy_industrial_breakaway } }
 	}
 
@@ -676,7 +683,7 @@ focus_tree = {
 		cost = @independence_wave_focus_short
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
 		available = { can_participate_in_independence_wave_network_focuses = yes }
-		completion_reward = { custom_effect_tooltip = independence_wave_standardize_with_league_tt hidden_effect = { set_country_flag = independence_wave_military_choice_league_standardization independence_wave_focus_reward_network_cooperation = yes add_doctrine_cost_reduction = { name = independence_wave_league_standardization_bonus cost_reduction = constant:independence_wave_focus_reward.doctrine_cost_reduction uses = constant:independence_wave_focus_reward.doctrine_uses category = land_doctrine } } }
+		completion_reward = { custom_effect_tooltip = independence_wave_standardize_with_league_tt hidden_effect = { set_country_flag = independence_wave_military_choice_league_standardization independence_wave_focus_reward_network_cooperation = yes add_doctrine_cost_reduction = { name = independence_wave_league_standardization_bonus cost_reduction = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_COST_REDUCTION uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_DOCTRINE_USES category = land_doctrine } } }
 		ai_will_do = { base = constant:independence_wave_focus_ai.high }
 	}
 
@@ -869,7 +876,7 @@ focus_tree = {
 		id = independence_wave_ratify_constitution
 		icon = GFX_goal_independence_wave_constitutional_state
 		prerequisite = { focus = independence_wave_prepare_first_assembly }
-		mutually_exclusive = { focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders }
+		mutually_exclusive = { focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 8
 		y = 5
 		cost = @independence_wave_focus_standard
@@ -929,7 +936,7 @@ focus_tree = {
 		id = independence_wave_organize_popular_councils
 		icon = GFX_goal_independence_wave_popular_councils
 		prerequisite = { focus = independence_wave_complete_founding_settlement }
-		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 12
 		y = 4
 		cost = @independence_wave_focus_standard
@@ -998,7 +1005,7 @@ focus_tree = {
 		id = independence_wave_restore_legitimate_authority
 		icon = GFX_goal_independence_wave_traditional_restoration
 		prerequisite = { focus = independence_wave_prepare_traditional_confirmation }
-		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 16
 		y = 5
 		cost = @independence_wave_focus_standard
@@ -1052,7 +1059,7 @@ focus_tree = {
 		id = independence_wave_establish_emergency_command
 		icon = GFX_goal_independence_wave_military_emergency
 		prerequisite = { focus = independence_wave_complete_founding_settlement }
-		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_accept_protected_future focus = independence_wave_reject_inherited_borders focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 20
 		y = 4
 		cost = @independence_wave_focus_standard
@@ -1121,7 +1128,7 @@ focus_tree = {
 		id = independence_wave_accept_protected_future
 		icon = GFX_goal_independence_wave_patron_client
 		prerequisite = { focus = independence_wave_open_guarantor_talks }
-		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_reject_inherited_borders }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_reject_inherited_borders focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 24
 		y = 5
 		cost = @independence_wave_focus_standard
@@ -1140,7 +1147,7 @@ focus_tree = {
 		cost = @independence_wave_focus_standard
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 		available = { has_independence_wave_patron_client_route = yes }
-		completion_reward = { custom_effect_tooltip = independence_wave_accept_advisers_and_credits_tt hidden_effect = { independence_wave_focus_reward_client_development = yes add_tech_bonus = { name = independence_wave_patron_industry_bonus bonus = constant:independence_wave_focus_reward.technology_bonus uses = constant:independence_wave_focus_reward.technology_uses category = industry } } }
+		completion_reward = { custom_effect_tooltip = independence_wave_accept_advisers_and_credits_tt hidden_effect = { independence_wave_focus_reward_client_development = yes add_tech_bonus = { name = independence_wave_patron_industry_bonus bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES category = industry } } }
 		ai_will_do = { base = constant:independence_wave_focus_ai.high }
 	}
 
@@ -1176,7 +1183,7 @@ focus_tree = {
 		id = independence_wave_reject_inherited_borders
 		icon = GFX_goal_independence_wave_high_chaos_sovereignty
 		prerequisite = { focus = independence_wave_complete_founding_settlement }
-		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future }
+		mutually_exclusive = { focus = independence_wave_ratify_constitution focus = independence_wave_organize_popular_councils focus = independence_wave_restore_legitimate_authority focus = independence_wave_establish_emergency_command focus = independence_wave_accept_protected_future focus = independence_wave_ajx_appoint_neutral_commission_focus }
 		x = 28
 		y = 4
 		cost = @independence_wave_focus_standard
@@ -1326,7 +1333,7 @@ focus_tree = {
 		allow_branch = { has_country_flag = independence_wave_host_negotiation_route_available }
 		available = { can_pursue_independence_wave_negotiated_separation = yes }
 		completion_reward = { custom_effect_tooltip = independence_wave_open_separation_talks_tt hidden_effect = { set_country_flag = independence_wave_host_negotiation_route_selected independence_wave_focus_progress_host_negotiations = yes independence_wave_focus_reward_diplomatic_step = yes } }
-		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor check_variable = { independence_wave_hostility value = constant:independence_wave_host_relation.calm_gate compare = less_than } } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.high modifier = { factor = constant:independence_wave_focus_ai.preferred_factor check_variable = { var = independence_wave_hostility value = constant:independence_wave_host_relation.calm_gate compare = less_than } } }
 	}
 
 	focus = {
@@ -1395,7 +1402,7 @@ focus_tree = {
 		allow_branch = { has_country_flag = independence_wave_host_association_route_available }
 		available = { can_pursue_independence_wave_association_route = yes }
 		completion_reward = { custom_effect_tooltip = independence_wave_convene_association_conference_tt hidden_effect = { set_country_flag = independence_wave_host_association_route_selected independence_wave_focus_progress_association = yes independence_wave_focus_reward_diplomatic_step = yes } }
-		ai_will_do = { base = constant:independence_wave_focus_ai.standard modifier = { factor = constant:independence_wave_focus_ai.preferred_factor check_variable = { independence_wave_hostility value = constant:independence_wave_host_relation.calm_gate compare = less_than } } }
+		ai_will_do = { base = constant:independence_wave_focus_ai.standard modifier = { factor = constant:independence_wave_focus_ai.preferred_factor check_variable = { var = independence_wave_hostility value = constant:independence_wave_host_relation.calm_gate compare = less_than } } }
 	}
 
 	focus = {
@@ -1578,7 +1585,7 @@ focus_tree = {
 		cost = @independence_wave_focus_standard
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
 		available = { can_participate_in_independence_wave_network_focuses = yes }
-		completion_reward = { custom_effect_tooltip = independence_wave_exchange_civil_servants_tt hidden_effect = { independence_wave_focus_reward_network_cooperation = yes independence_wave_focus_reward_administration = yes add_tech_bonus = { name = independence_wave_network_industry_bonus bonus = constant:independence_wave_focus_reward.technology_bonus uses = constant:independence_wave_focus_reward.technology_uses category = industry } } }
+		completion_reward = { custom_effect_tooltip = independence_wave_exchange_civil_servants_tt hidden_effect = { independence_wave_focus_reward_network_cooperation = yes independence_wave_focus_reward_administration = yes add_tech_bonus = { name = independence_wave_network_industry_bonus bonus = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_BONUS uses = @CR_SC_INDEPENDENCE_WAVE_FOCUS_REWARD_TECHNOLOGY_USES category = industry } } }
 		ai_will_do = { base = constant:independence_wave_focus_ai.high }
 	}
 
