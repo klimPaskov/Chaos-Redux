@@ -77,8 +77,9 @@ alternate ASY Barsoum package remains pending independent audit.
 
 That package now has the v93 independent audit recorded: identity/likeness,
 HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with
-a low-resolution group-photo caveat. Parent release acceptance is still required;
-no runtime, DDS, GFX, advisor, or small-portrait promotion occurred.
+a low-resolution group-photo caveat. Parent release acceptance is recorded in v94,
+which updates only the existing concordat-council DDS consumer; no GFX, advisor,
+or small-portrait promotion occurred and IW-058 remains outside attestation.
 
 ## Availability and release safety
 

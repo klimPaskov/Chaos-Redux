@@ -4,7 +4,7 @@ Updated: 2026-08-01 after the Event 006 v33 completion audit, the IW-012 ICE pac
 
 Status: **Event 006 is incomplete and the goal remains active.**
 
-The 2026-08-02 ASY Barsoum v93 audit now passes identity/likeness, HOI4 leader style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat. Parent release acceptance remains required; no DDS, GFX, character, localisation, runtime, advisor, or small-portrait promotion occurred, so IW-058 remains outside the fourteen-package attestation set.
+The 2026-08-02 ASY Barsoum v93 audit now passes identity/likeness, HOI4 leader style/framing, provenance, and the PD-1923/1921 rights/date basis with a low-resolution group-photo caveat. Parent follow-up v94 promotes only the existing concordat-council DDS consumer; no GFX, character, localisation, advisor, or small-portrait promotion occurred, so IW-058 remains outside the fourteen-package attestation set.
 
 The current documentation pass also records commit `9231c15f5` and its five-family evolution incident resolution handoff. The v67 SCN-008 repair adds a temporary target-uniqueness policy only to Universal Former Hosts; Wars of Separation retains one viable host war per release. The fourteen-package attestation set and the shared-core versus package-blocker boundary remain unchanged.
 

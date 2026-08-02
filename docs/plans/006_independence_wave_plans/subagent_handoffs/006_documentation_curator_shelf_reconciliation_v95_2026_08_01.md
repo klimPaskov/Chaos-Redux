@@ -56,4 +56,4 @@ The overview, resume packet, and source-of-truth map now use 78 physical masters
 
 ## Post-audit addendum (2026-08-02)
 
-The requested audit is now recorded in `006_iw058_asy_barsoum_pd1923_portrait_visual_audit_v93_2026_08_02.md` (commit `eaa0b6789`). Identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with the documented low-resolution group-photo caveat; parent release acceptance is still required. No DDS/GFX/character/localisation/runtime/advisor/small-portrait promotion occurred, so the shelf remains reference-only and IW-058 remains outside attestation.
+The requested audit is now recorded in `006_iw058_asy_barsoum_pd1923_portrait_visual_audit_v93_2026_08_02.md` (commit `eaa0b6789`). Identity/likeness, HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with the documented low-resolution group-photo caveat; parent follow-up v94 promotes only the existing concordat-council DDS consumer. No GFX/character/localisation/advisor/small-portrait promotion occurred, so the shelf remains reference-only and IW-058 remains outside attestation.
