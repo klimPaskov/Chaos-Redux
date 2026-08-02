@@ -488,8 +488,8 @@ and player-owned observation are optional future QA.
    until all required packages pass current admission. Keep FORM-42 and FORM-06
    through FORM-47 fail-closed. Then continue the remaining packages with
    bespoke gameplay, AI, localisation, assets, and audits.
-5. Preserve the audited vanilla-formable compatibility adapter and the exact
-   CHU/ASY signature tranche. Keep FORM-12/13/18 transactions, paid 180-day
+5. Preserve the tracked vanilla decision mirror and its audited three-guard
+   compatibility contract alongside the exact CHU/ASY signature tranche. Keep FORM-12/13/18 transactions, paid 180-day
    consent and anchor ledgers, staged integration, and sole proof writers
    scoped to their implemented carriers while runtime admission remains closed.
    Preserve the sovereign-autonomy

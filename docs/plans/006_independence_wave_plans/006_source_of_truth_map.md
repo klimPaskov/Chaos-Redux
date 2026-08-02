@@ -305,7 +305,9 @@ Package rows that retain the phrase “live allocation proof” refer to the sou
 
 SCN-008 mode authority (2026-08-02, v98 continuation; v67 repair 2026-08-01): the source retains six numeric scenario families, Universal Belligerence has three independently selectable rules, and the player-facing selector therefore exposes eight modes. The committed static receipts `subagent_handoffs/006_scn008_32_cell_static_acceptance_2026_08_02.md` and `subagent_handoffs/006_scn008_edge_case_static_matrix_2026_08_02.md` pass all eight modes at four intensities and the eight required edge cases under `python -B .tools/audit_event6_scenario_matrix.py`; the failure-summary repair in `subagent_handoffs/006_scn008_failure_summary_ledger_repair_2026_08_02.md` keeps failed releases out of the released ledger and preserves positional package/country/reason alignment. Broader static source/MCP collision, rollback, persistence, balance, package-capacity, and live-execution evidence remain separate boundaries; live scenario playback is optional future QA. Universal Former Hosts now reserves a surviving former host once per launch, while Wars of Separation deliberately permits one viable separation war per release even when hosts are shared. This clarification follows current constants, selector effects, scripted triggers, localisation, catalog mirror evidence, and the v27/v67 improvement-loop handoffs. It does not promote runtime evidence or change the workbook/CSV.
 
-The vanilla-formable compatibility audit is PASS. The `zz_006...` override
+The vanilla-formable compatibility audit is PASS. The tracked
+`common/decisions/formable_nation_decisions.txt` mirror matches the installed
+vanilla decision file except for three explicit Event 006 guard insertions. It
 blocks only active Event 006 CHU/ASY shortcuts; ordinary CHU/ASY and Event 005
 behavior remains vanilla. IW-043 and IW-058 retain their implemented exact
 package identities, centralized politics, force, and formable contracts, but
@@ -661,7 +663,7 @@ only migration history, is not Event 006 authority, and remains untouched.
 | Pacific admission handoffs say HOLD/FAIL-CLOSED | The current IW-184 post-wire package audit supersedes HBX's prior withdrawal and records a full static/package PASS with William D. Stephens. IW-173 HAW is also admitted after the Samuel Wilder King v46 portrait and v45 package audits; FSM remains outside the current fourteen-ID attestation gate. IW-184 and IW-173 attestation plus the Event 005-aware capacity witness are implemented, while source-level allocation checks remain required and live observation is optional future QA. |
 | Older tag ledgers report 128 new tags, 107 shells, 21 inert identities, or 78/103/90 reuse splits | Superseded first-pass snapshots. The current identity authority is the candidate registry CSV, current binding CSV, and tag collision/reuse audit; only `CHU` and `BIA` are intentionally shared carriers |
 | IW-043/IW-058 improvement addendum says neither package is admitted and all assets are absent | Partly superseded implementation evidence. Final CHU/ASY assets and operational transactions exist, and the v45 Spasov portrait now has an approved runtime replacement, but IW-043 and IW-058 remain outside the current fourteen-ID content-attestation set |
-| Vanilla CHU/ASY formable decisions bypass exact Event 006 contracts | Compatibility PASS: `zz_006_independence_wave_vanilla_formable_compatibility_decisions.txt` blocks only active Event 006 CHU/ASY shortcuts; ordinary and Event 005 behavior remains vanilla. FORM-12/13/18 contract logic exists, but its carrier packages are not currently content-attested |
+| Vanilla CHU/ASY formable decisions bypass exact Event 006 contracts | Compatibility PASS: the tracked vanilla mirror `common/decisions/formable_nation_decisions.txt` adds only `can_access_vanilla_chu_formable_shortcuts` to `form_idel_uralic_republic` and `can_access_vanilla_asy_formable_shortcuts` to `neo_assyrian_empire_decision` and `neo_mesopotamia_decision`. Ordinary and Event 005 behavior remains vanilla. FORM-12/13/18 contract logic exists, but its carrier packages are not currently content-attested |
 | Older IW-043/IW-058 country, achievement, tag, and super-event audits say CHU/ASY are absent or Assyria art is missing | Historical implementation snapshots. Their collision, proof-writer, asset, and no-advisor findings remain useful; neither package is currently runtime-admitted |
 | Specification README still describes major implementation work as future | Preserve it as accepted-design context. Use this map for current implementation status |
 | Event documentation and workbook may lag current gameplay | Resolved for the shared Event Details, five evolutions, Liberations cluster, and SCN-008 mirror fields by the dated direct comparison. Recheck only when those player-facing localisation sources change |
@@ -693,8 +695,9 @@ Parent decisions still required:
    already reconciled; repeat the workbook-source/export workflow for future
    player-facing changes. Live rendering is optional future QA, while static
    localisation/catalog alignment remains required.
-6. Keep the exact vanilla-formable compatibility PASS. Preserve the implemented
-   CHU/ASY formable adapters, paid 180-day congresses, consent and anchor
+6. Keep the exact vanilla-formable compatibility PASS. Preserve the tracked
+   vanilla decision mirror and its three narrow guard insertions, together with
+   the implemented CHU/ASY formable adapters, paid 180-day congresses, consent and anchor
    ledgers, staged sovereignty-preserving integration, and sole proof writers.
    Preserve the former-host-or-regional-partner autonomy contract, locked
    counterpart, five treaty records, permanent terminal-choice lock, and sole
