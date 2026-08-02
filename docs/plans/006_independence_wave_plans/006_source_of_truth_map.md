@@ -761,6 +761,17 @@ Current portrait-shelf authority (2026-08-02): `docs/assets/006_independence_wav
 The parent-owned v49 core-contract re-audit and hidden-event character-recruit
 repair are recorded in `subagent_handoffs/006_core_contract_reaudit_v49_2026_08_01.md`.
 
+## Current authority correction (2026-08-02)
+
+The long completion-state and portrait-shelf paragraphs above are dated
+traceability snapshots, not current arithmetic. Current authority is 80
+original-size masters with all 80 indexed or explicitly recorded (79 table
+rows plus the retry-2 tail record), and 184 direct focus definitions, 134 full
+shared-focus definitions, and 27 import references (318 unique definitions;
+345 raw source entries). The whole-event status remains incomplete and active;
+these counts do not expand package attestation or clear rights, role, formable,
+audio, AI, balance, or runtime-rendering gates.
+
 ## Current portrait-shelf indexing override (2026-08-02)
 
 The flat pre-resize shelf now has a one-to-one physical/indexed reconciliation: 80 original-size PNG masters are present and all 80 are indexed or explicitly recorded in `docs/assets/006_independence_wave/portraits_generated_png/PRE_RESIZE_MANIFEST.md` (79 table rows plus the retry-2 tail record). The six previously unindexed files are now named rows for traceability: four ARX v76 masters, the CHU Mirsaid repaint, and the first DOX Prempeh-II repaint. This closes the shelf-index/documentation gap only; the evidence is recorded in `subagent_handoffs/006_portrait_shelf_index_reconciliation_2026_08_02.md`. The ARX Solinas, CHU Mirsaid, and DOX Prempeh-II rows remain evidence or review holds as documented; no DDS, `.gfx`, character, advisor, small/dossier, package admission, or attestation is implied.

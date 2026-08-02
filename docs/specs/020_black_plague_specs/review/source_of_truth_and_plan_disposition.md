@@ -19,7 +19,7 @@ When two files appear to conflict, the later user corrections and Part 9 control
 
 The 2026-07-29 two-tag correction supersedes every earlier multi-tag Rat Nation pool: `RTA` is the only reusable Rat Nation carrier, `RTX` is the separate Rat King, and additional broods are state-level markers, infestation, mass, and pulse state inside `RTA`.
 
-The current static runtime ledger records 51 RTA focus nodes and 71 RTX focus nodes, native `activate_mission`/`days_mission_timeout` declarations for Hold the Line, Secure the Refuge, Crown Strike, and Seal Royal Burrows, the dedicated weapon-delivery icon, promoted source-frame Rat King, Royal Burrows, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages, and three 44.1 kHz Event 020 WAVs. No bespoke 3D models are required or planned; the registered infantry entity is the accepted Rat visual consumer. Live playback, scenario, mission, balance, rights, and whole-spec validation remain open.
+The current static runtime ledger records 51 RTA focus nodes and 71 RTX focus nodes, native `activate_mission`/`days_mission_timeout` declarations for Hold the Line, Secure the Refuge, Crown Strike, and Seal Royal Burrows, five paid post-defeat recovery, inspection, condemnation, population, and memorial projects, the dedicated weapon-delivery icon, promoted source-frame Rat King, Royal Burrows, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages, and three 44.1 kHz Event 020 WAVs. No bespoke 3D models are required or planned; the registered infantry entity is the accepted Rat visual consumer. Live playback, scenario rollback, mission, balance, rights, and whole-spec validation remain open.
 
 ## Plan disposition
 

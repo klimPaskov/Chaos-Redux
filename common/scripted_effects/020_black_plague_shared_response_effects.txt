@@ -104,9 +104,12 @@ black_plague_begin_shared_state_action = {
 				multiply_variable = { black_plague_shared_payment_motorized = constant:black_plague_shared_cost.standard_motorized_equipment }
 				set_variable = { black_plague_shared_payment_fuel = PREV.black_plague_shared_action_scale }
 				multiply_variable = { black_plague_shared_payment_fuel = constant:black_plague_shared_cost.standard_fuel }
-				remove_equipment_to_stockpile = { type = support_equipment amount = var:black_plague_shared_payment_support }
-				remove_equipment_to_stockpile = { type = motorized_equipment amount = var:black_plague_shared_payment_motorized }
-				subtract_from_fuel = black_plague_shared_payment_fuel
+				set_temp_variable = { equipment_stockpile_removal_amount = var:black_plague_shared_payment_support }
+				remove_support_equipment_from_stockpile = yes
+				set_temp_variable = { equipment_stockpile_removal_amount = var:black_plague_shared_payment_motorized }
+				remove_motorized_equipment_from_stockpile = yes
+				set_temp_variable = { fuel_stockpile_removal_amount = black_plague_shared_payment_fuel }
+				remove_fuel_from_stockpile = yes
 			}
 			if = {
 				limit = {
@@ -116,7 +119,8 @@ black_plague_begin_shared_state_action = {
 						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.evacuate_threatened_perimeter compare = equals }
 					}
 				}
-				remove_equipment_to_stockpile = { type = train_equipment amount = constant:black_plague_shared_cost.standard_trains }
+				set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_shared_cost.standard_trains }
+				remove_trains_from_stockpile = yes
 			}
 			if = {
 				limit = {
@@ -396,7 +400,10 @@ black_plague_finish_shared_state_action = {
 			limit = { check_variable = { var = black_plague_shared_action value = constant:black_plague_shared_action.strike_the_crown compare = equals } }
 			set_temp_variable = { black_plague_shared_cooldown_days = constant:black_plague_shared_duration.strike_the_crown }
 			if = {
-				limit = { is_controlled_by = ROOT NOT = { is_controlled_by = RTX } }
+				limit = {
+					NOT = { is_controlled_by = RTX }
+					CONTROLLER = { black_plague_country_is_human_host = yes }
+				}
 				set_state_flag = black_plague_shared_crown_strike_succeeded
 				set_global_flag = black_plague_mapmode_dirty
 				ROOT = {
@@ -476,9 +483,39 @@ black_plague_cancel_shared_state_action = {
 	}
 }
 
+# COUNTRY scope. Native Crown Strike mission completion resolves the marked
+# state through the existing shared action effect, preserving the original
+# success report when a human coalition captures the target before timeout.
+black_plague_resolve_shared_crown_mission_success = {
+	if = {
+		limit = { has_country_flag = black_plague_shared_crown_mission_active }
+		every_state = {
+			limit = {
+				has_state_flag = black_plague_shared_crown_mission_target
+				has_variable = black_plague_shared_crown_mission_owner
+				check_variable = { var = black_plague_shared_crown_mission_owner value = ROOT compare = equals }
+				NOT = { is_controlled_by = RTX }
+				CONTROLLER = { black_plague_country_is_human_host = yes }
+			}
+			black_plague_finish_shared_state_action = yes
+			clr_state_flag = black_plague_shared_crown_mission_target
+			clear_variable = black_plague_shared_crown_mission_owner
+		}
+		remove_mission = black_plague_shared_strike_the_crown_mission
+		clr_country_flag = black_plague_shared_crown_mission_active
+		clear_variable = black_plague_shared_action_pending
+		set_global_flag = black_plague_mapmode_dirty
+		if = {
+			limit = { NOT = { has_variable = disease_containment_board_dirty } }
+			set_variable = { disease_containment_board_dirty = constant:black_plague_value.zero }
+		}
+		add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+	}
+}
+
 # COUNTRY scope. Native Crown Strike mission timeout resolves the marked state
-# through the existing shared action effect, preserving the original success
-# and timeout reports while making the timer a real mission.
+# through the existing shared action effect, preserving the original timeout
+# report while making the timer a real mission.
 black_plague_resolve_shared_crown_mission_timeout = {
 	if = {
 		limit = { has_country_flag = black_plague_shared_crown_mission_active }
@@ -664,9 +701,12 @@ black_plague_begin_shared_country_action = {
 		}
 		set_variable = { black_plague_shared_country_action = black_plague_shared_action_pending }
 		set_country_flag = black_plague_shared_country_action_active
-		remove_equipment_to_stockpile = { type = support_equipment amount = constant:black_plague_shared_cost.country_support_equipment }
-		remove_equipment_to_stockpile = { type = motorized_equipment amount = constant:black_plague_shared_cost.country_motorized_equipment }
-		subtract_from_fuel = constant:black_plague_shared_cost.country_fuel
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_shared_cost.country_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_shared_cost.country_motorized_equipment }
+		remove_motorized_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = constant:black_plague_shared_cost.country_fuel }
+		remove_fuel_from_stockpile = yes
 		black_plague_register_response_country = yes
 		clear_variable = black_plague_shared_action_pending
 	}
@@ -708,6 +748,131 @@ black_plague_finish_shared_country_action = {
 			set_country_flag = { flag = black_plague_shared_international_mission_active days = black_plague_international_mission_days }
 			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.international_progress }
 			black_plague_record_countermeasure_findings = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.reconstruction_vigilance compare = equals } }
+			set_temp_variable = { black_plague_reconstruction_vigilance_days = constant:black_plague_shared_duration.reconstruction_vigilance }
+			set_country_flag = { flag = black_plague_shared_reconstruction_vigilance_active days = black_plague_reconstruction_vigilance_days }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.reconstruction_progress }
+			black_plague_record_countermeasure_findings = yes
+			add_stability = constant:black_plague_shared_result.reconstruction_stability
+			for_each_scope_loop = {
+				array = global.black_plague_active_states
+				if = {
+					limit = {
+						is_controlled_by = ROOT
+						OR = {
+							black_plague_state_is_recovering = yes
+							black_plague_state_is_cured = yes
+						}
+					}
+					black_plague_ensure_current_state_values = yes
+					add_to_variable = { black_plague_containment = constant:black_plague_shared_result.reconstruction_containment }
+					add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.reconstruction_treatment }
+					subtract_from_variable = { black_plague_relapse_risk = constant:black_plague_shared_result.reconstruction_relapse_reduction }
+					clamp_variable = { var = black_plague_containment min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_treatment_coverage min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_relapse_risk min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+				}
+			}
+			set_global_flag = black_plague_mapmode_dirty
+			add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+			country_event = { id = chaosx.nr20.91 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.international_inspection_compact compare = equals } }
+			set_temp_variable = { black_plague_inspection_compact_days = constant:black_plague_shared_duration.international_inspection_compact }
+			set_country_flag = { flag = black_plague_shared_inspection_compact_active days = black_plague_inspection_compact_days }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.inspection_compact_progress }
+			black_plague_record_countermeasure_findings = yes
+			for_each_scope_loop = {
+				array = global.black_plague_active_states
+				if = {
+					limit = {
+						is_controlled_by = ROOT
+						black_plague_state_is_established = yes
+						black_plague_shared_state_is_coastal_hub = yes
+					}
+					black_plague_ensure_current_state_values = yes
+					add_to_variable = { black_plague_containment = constant:black_plague_shared_result.inspection_compact_containment }
+					subtract_from_variable = { black_plague_spread_pressure = constant:black_plague_shared_result.inspection_compact_progress }
+					subtract_from_variable = { black_plague_incoming_exposure = constant:black_plague_shared_result.inspection_compact_progress }
+					clamp_variable = { var = black_plague_containment min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_spread_pressure min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_incoming_exposure min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+				}
+			}
+			set_global_flag = black_plague_mapmode_dirty
+			add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+			country_event = { id = chaosx.nr20.92 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.condemn_future_weaponization compare = equals } }
+			set_country_flag = black_plague_weaponization_condemned
+			set_country_flag = black_plague_weaponization_condemnation_history
+			add_stability = constant:black_plague_shared_result.condemnation_stability
+			add_war_support = constant:black_plague_shared_result.condemnation_war_support
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.condemnation_progress }
+			black_plague_record_countermeasure_findings = yes
+			country_event = { id = chaosx.nr20.93 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.population_recovery_program compare = equals } }
+			set_temp_variable = { black_plague_population_recovery_days = constant:black_plague_shared_duration.population_recovery_program }
+			set_country_flag = { flag = black_plague_population_recovery_program_active days = black_plague_population_recovery_days }
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.population_recovery_progress }
+			black_plague_record_countermeasure_findings = yes
+			add_stability = constant:black_plague_shared_result.population_recovery_stability
+			for_each_scope_loop = {
+				array = global.black_plague_active_states
+				if = {
+					limit = {
+						is_controlled_by = ROOT
+						OR = {
+							black_plague_state_is_recovering = yes
+							black_plague_state_is_cured = yes
+						}
+					}
+					black_plague_ensure_current_state_values = yes
+					add_to_variable = { black_plague_treatment_coverage = constant:black_plague_shared_result.population_recovery_treatment }
+					subtract_from_variable = { black_plague_relapse_risk = constant:black_plague_shared_result.population_recovery_relapse_reduction }
+					subtract_from_variable = { black_plague_devastation = constant:black_plague_shared_result.population_recovery_devastation }
+					clamp_variable = { var = black_plague_treatment_coverage min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_relapse_risk min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					clamp_variable = { var = black_plague_devastation min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					if = { limit = { has_state_flag = black_plague_population_recovery_program_active } clr_state_flag = black_plague_population_recovery_program_active }
+					set_state_flag = { flag = black_plague_population_recovery_program_active days = black_plague_population_recovery_days }
+					if = { limit = { has_dynamic_modifier = { modifier = black_plague_population_recovery_program } } remove_dynamic_modifier = { modifier = black_plague_population_recovery_program } }
+					add_dynamic_modifier = { modifier = black_plague_population_recovery_program days = black_plague_population_recovery_days }
+				}
+			}
+			set_global_flag = black_plague_mapmode_dirty
+			add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+			country_event = { id = chaosx.nr20.94 }
+		}
+		else_if = {
+			limit = { check_variable = { var = black_plague_shared_country_action value = constant:black_plague_shared_action.memorial_biosecurity_charter compare = equals } }
+			set_country_flag = black_plague_memorial_biosecurity_charter
+			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.memorial_progress }
+			black_plague_record_countermeasure_findings = yes
+			add_stability = constant:black_plague_shared_result.memorial_stability
+			add_war_support = constant:black_plague_shared_result.memorial_war_support
+			for_each_scope_loop = {
+				array = global.black_plague_active_states
+				if = {
+					limit = {
+						is_controlled_by = ROOT
+						OR = {
+							black_plague_state_is_recovering = yes
+							black_plague_state_is_cured = yes
+						}
+					}
+					if = { limit = { NOT = { has_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } } } add_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } }
+				}
+			}
+			set_global_flag = black_plague_mapmode_dirty
+			add_to_variable = { disease_containment_board_dirty = constant:black_plague_value.one }
+			country_event = { id = chaosx.nr20.95 }
 		}
 		clear_variable = black_plague_shared_country_action
 		clr_country_flag = black_plague_shared_country_action_active
@@ -783,6 +948,10 @@ black_plague_clear_country_response_runtime = {
 	clr_country_flag = black_plague_shared_protocol_hoarded
 	clr_country_flag = black_plague_shared_steal_progress_cooldown
 	clr_country_flag = black_plague_shared_international_mission_active
+	clr_country_flag = black_plague_shared_reconstruction_vigilance_active
+	clr_country_flag = black_plague_shared_inspection_compact_active
+	clr_country_flag = black_plague_weaponization_condemnation_history
+	clr_country_flag = black_plague_memorial_biosecurity_charter
 	clear_variable = black_plague_shared_country_action
 	clear_variable = black_plague_shared_action_pending
 	black_plague_recompute_country_response_capacity = yes
@@ -805,6 +974,7 @@ black_plague_clear_shared_state_flags = {
 	clr_state_flag = black_plague_shared_burial_sanitation_active
 	clr_state_flag = black_plague_shared_transport_sealed
 	clr_state_flag = black_plague_shared_perimeter_evacuated
+	clr_state_flag = black_plague_population_recovery_program_active
 	clr_state_flag = black_plague_shared_foreign_medical_mission_active
 	clr_state_flag = black_plague_shared_maintain_containment_active
 	clr_state_flag = black_plague_shared_controlled_reopening_active
@@ -817,6 +987,8 @@ black_plague_clear_shared_state_flags = {
 	clr_state_flag = black_plague_shared_armored_clearance_complete
 	clr_state_flag = black_plague_shared_air_reconnaissance_complete
 	clr_state_flag = black_plague_shared_liberation_quarantine_active
+	if = { limit = { has_dynamic_modifier = { modifier = black_plague_population_recovery_program } } remove_dynamic_modifier = { modifier = black_plague_population_recovery_program } }
+	if = { limit = { has_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } } remove_dynamic_modifier = { modifier = black_plague_memorial_biosecurity_stewardship } }
 	clear_variable = black_plague_shared_action
 	clear_variable = black_plague_shared_action_owner
 	clear_variable = black_plague_shared_action_scale

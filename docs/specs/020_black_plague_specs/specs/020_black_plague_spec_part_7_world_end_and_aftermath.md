@@ -408,6 +408,8 @@ A limited Rat King restoration can occur only when:
 
 The system should not create repeated coronation super-events every few months. The first coronation remains the only global super-event. A restoration uses a normal event or news item.
 
+The implemented route keeps these limits concrete. RTA must control more than one marked state, retain an established human basin for the new Royal Basin, meet the Sentience and Coherence gates, and spend the centralized Brood Mass cost over a 180-day decision. Evolution V flags, terminal takeover, and world end permanently block the attempt. A successful restoration reuses RTX and the existing King initializer, keeps RTA alive, emits a normal news report, and never records a second Evolution IV or coronation super-event. A failed basin selection refunds the reserve and applies a 240-day cooldown before the route can be considered again.
+
 ## Defeat aftermath package
 
 A defeat aftermath super-event is justified only if the Rat King crisis was global or near-global, lasted long enough, and caused enormous deaths or destruction.
@@ -429,6 +431,8 @@ A defeat aftermath super-event is justified only if the Rat King crisis was glob
 - optional restrictions on future Black Plague weaponization
 
 The reserved global defeat super-event remains intentionally gated behind the catastrophic eligibility package. The current static tranche promotes final slot-087 art, selected quote/localisation, audio ID 103, sprite registration, and shared sound/music wiring; release attribution and live consumer validation remain open.
+
+The accepted aftermath actions now have concrete shared-category runtime surfaces. Rebuild and Keep Vigilance, International Inspection Compact, and Condemn Future Weaponization use paid timed country projects with phase, defeat, partner, findings, and material gates. Population Recovery is a 420-day ruined-state programme that applies a timed stewardship modifier, reduces tracked devastation, improves treatment, and lowers relapse risk in controlled recovering or cured states. Memorial and Biosecurity Charter is a 120-day country project that preserves a permanent memorial and anti-biowarfare record, advances countermeasure findings, and applies durable stewardship to recovered states. These projects remain ordinary disease responses; they do not create another category, cure by fiat, or open Evolution V.
 
 A short regional rat outbreak should not create a new world order or global treaty.
 

@@ -6,6 +6,8 @@ This audit compares the complete Event 20 request, including later corrections, 
 
 > Documentation reconciliation, 2026-08-02: the design-only scope above remains authoritative for this audit, but its historical implementation disclaimer must not be read as a current no-code claim. The current static tranche is documented in the Event 020 overview and core-readiness report: exactly two Rat tags (`RTA` and `RTX`), 51/71 focus nodes, native last-response missions, promoted weapon-delivery, Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal assets, and three 44.1 kHz Event 020 WAVs. Full-design and live-validation completion remain open.
 
+> Runtime reconciliation, 2026-08-02: the current tranche also wires the one-use RTA Crown restoration route and five paid shared-category aftermath projects (Rebuild and Keep Vigilance, International Inspection Compact, Condemn Future Weaponization, Population Recovery Programme, and Memorial and Biosecurity Charter). These projects use the existing disease category, shared action resolver, response-capacity register, native material helpers, logged completion events, and documented state modifiers; they do not add a disease category, Rat tag, instant cure, or model asset. SCN-012 still fails closed before mutation when preflight cannot satisfy the selected intensity, but a complete journaled rollback after a downstream mutation failure remains unproven and is carried as an explicit blocker.
+
 ## User requirement coverage
 
 | Requirement | Coverage | Evidence |
