@@ -16,6 +16,10 @@ The generic assignment barrier is source-wired for the thirteen admitted full-fr
 
 The MCP probability service lists all 11 weighted-logic adapters. A targeted `ai_strategy_factor` inspection of `common/ai_strategy/006_independence_wave_generic.txt` also returns `SCAN_BYTE_LIMIT` with no scanned files or diagnostics, so the repository's source AI handoffs and static allocator receipts remain the current evidence boundary.
 
+## Current MCP focus-render addendum (2026-08-03)
+
+The byte-limited result above is historical for focus inspection. A fresh bounded `hoi4.focus_inspect` and `hoi4.focus_render` completed against the same source and tree. The render receipt is `006_event6_focus_render_current_2026_08_03.md`; it reports 184 direct focuses, 223 prerequisite connectors, and 14 blocking diagnostics: 43 connector crossings, 7 node intersections, 28 long connectors, and 5 same-row close pairs. A compact rewrite request was quality-blocked and left the source hash unchanged. The focus tree therefore has a current rendered artifact but remains geometry-blocked; no completion or live validation claim follows.
+
 ## Fresh source checks
 
 | Check | Result |
@@ -45,7 +49,7 @@ The portrait shelf is traceability-only for non-admitted candidates. Rights, pro
    male Micronesian identity clears the asset gates. The older FORM-48 portrait
    directory is evidence-only; its HBX output is superseded by the 2026-07-24
    William D. Stephens source package.
-1. The current MCP focus inspect/render is byte-limited, and the retained source geometry has unresolved crossings and through-node hits; no fresh rendered validation artifact exists.
+1. The current focus source geometry has unresolved crossings and through-node hits. Fresh MCP inspect/render artifacts exist, but the 14 blocking diagnostics remain and the compact rewrite was quality-blocked without a source change.
 2. Only fourteen of 193 non-overlay packages are attested, so the accepted 14/20 capacity promise and several scenario/formable routes remain fail-closed.
 3. 6001 has no authorized final audio/runtime package; the v101 candidate cannot be silently substituted for the accepted cue.
 4. The accepted formable registry is not closed for the listed fail-closed families, and several sensitive country packages still lack approved identity, territory, symbol, leader, or role evidence.
