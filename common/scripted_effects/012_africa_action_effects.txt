@@ -4507,12 +4507,6 @@ africa_begin_quoted_action_against_target = {
 			check_variable = { africa_diaspora_capacity_validation_result > constant:africa_value.zero }
 			NOT = { has_country_flag = africa_diaspora_request_pending }
 			has_event_target = africa_action_target
-			NOT = {
-				AND = {
-					check_variable = { africa_quote_kernel = constant:africa_action_kernel.offer_response }
-					event_target:africa_action_target = { has_country_flag = africa_action_response_callback_pending }
-				}
-			}
 			event_target:africa_action_target = { NOT = { has_country_flag = africa_action_record_active } }
 		}
 		if = {
@@ -4532,18 +4526,6 @@ africa_begin_quoted_action_against_target = {
 		}
 		else = {
 			africa_activate_shared_action_mission = yes
-			if = {
-				limit = { check_variable = { africa_quote_kernel = constant:africa_action_kernel.offer_response } }
-				event_target:africa_action_target = {
-					set_variable = { africa_action_response_callback_generation = africa_active_action_generation }
-					set_variable = { africa_action_response_callback_host_generation = africa_active_action_host_generation }
-					set_temp_variable = { africa_action_response_callback_days = africa_active_action_response_days }
-					add_to_temp_variable = { africa_action_response_callback_days = constant:africa_value.one }
-					set_country_flag = { flag = africa_action_response_callback_pending days = var:africa_action_response_callback_days }
-					clear_variable = africa_action_response_callback_days
-					country_event = { id = chaosx.nr12.210 days = africa_active_action_response_days }
-				}
-			}
 		}
 		set_temp_variable = { africa_action_begin_result = constant:africa_value.one }
 		set_variable = { africa_selected_action_id = constant:africa_action.none }
@@ -4561,12 +4543,19 @@ africa_begin_quoted_action_against_target = {
 	}
 }
 
-# COUNTRY scope on an offer-response target. The delayed response event clears
-# this receipt only immediately before resolving the matching action record.
-africa_clear_action_response_callback = {
-	clr_country_flag = africa_action_response_callback_pending
-	clear_variable = africa_action_response_callback_generation
-	clear_variable = africa_action_response_callback_host_generation
+# COUNTRY scope on an active target. Shared mission timeout dispatches the
+# response event in the target scope, avoiding delayed-event backlogs when a
+# country temporarily ceases to exist.
+africa_timeout_current_action = {
+	if = {
+		limit = {
+			africa_action_response_is_current = yes
+		}
+		country_event = { id = chaosx.nr12.210 }
+	}
+	else = {
+		africa_resolve_action = yes
+	}
 }
 
 # COUNTRY scope on the resolved target. Records every one of the 102 matrix

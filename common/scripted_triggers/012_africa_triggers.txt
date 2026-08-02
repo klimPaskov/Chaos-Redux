@@ -1252,31 +1252,19 @@ africa_active_action_generation_is_current = {
 	}
 }
 
-# COUNTRY scope on an offer-response target. The delayed event must consume the
-# exact action and host generation that scheduled it; a cancelled, superseded,
-# transferred, or backlogged callback fails closed without touching a later row.
-africa_action_response_callback_is_current = {
-	has_country_flag = africa_action_response_callback_pending
+# COUNTRY scope on an offer-response target. The response event is dispatched
+# by the target's shared mission timeout, so the live action and committed host
+# generation are the immutable receipt; no delayed country-event backlog exists.
+africa_action_response_is_current = {
 	has_country_flag = africa_action_record_active
+	check_variable = { africa_active_action_status = constant:africa_action_status.active }
 	check_variable = { africa_active_action_kernel = constant:africa_action_kernel.offer_response }
-	has_variable = africa_action_response_callback_generation
-	check_variable = {
-		var = africa_action_response_callback_generation
-		value = africa_active_action_generation
-		compare = equals
-	}
-	has_variable = africa_action_response_callback_host_generation
-	check_variable = {
-		var = africa_action_response_callback_host_generation
-		value = africa_active_action_host_generation
-		compare = equals
-	}
 	africa_active_action_generation_is_current = yes
 }
 
 # COUNTRY scope on an active target. Objective completion is deliberately
 # narrow: war-end rows can resolve when the target is no longer at war, while
-# response rows resolve through their delayed response event and all other
+# response rows resolve through their shared-mission timeout event and all other
 # rows use their contract timeout or existing action callbacks.
 africa_action_objective_is_complete = {
 	has_country_flag = africa_action_record_active
