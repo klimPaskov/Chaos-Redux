@@ -15,7 +15,7 @@ Source atlases, source tiles, processed transparent PNGs, and contact sheets are
 
 ## Fictional high-chaos leader portrait handoff (v3)
 
-The six portrait subassets below are generated fictional or supernatural identities mapped to existing Event-012 asset-matrix rows. The v3 sources are intentionally absurd but still use the vanilla HOI4 head-and-shoulders crop, single-figure composition, plain low-detail matte backgrounds, and painted finish. All six are male-presenting or explicitly nonhuman; no female character was generated in this revision. Their stable sprite registrations are present in `interface/012_africa_leaders_fictional.gfx`; character definitions, model/entity production, and runtime gates remain deferred.
+The six portrait subassets below are generated fictional or supernatural identities mapped to existing Event-012 asset-matrix rows. The v3 sources are intentionally absurd but still use the vanilla HOI4 head-and-shoulders crop, single-figure composition, plain low-detail matte backgrounds, and painted finish. All six are male-presenting or explicitly nonhuman; no female character was generated in this revision. Their stable sprite registrations are present in `interface/012_africa_leaders_fictional.gfx`, and dormant character consumers are declared in `common/characters/012_africa_fictional_characters.txt`; country-leader roles, model/entity production, and runtime gates remain deferred.
 
 | Matrix row | Final DDS | Proposed sprite | Target `.gfx` | Status |
 | --- | --- | --- | --- | --- |
