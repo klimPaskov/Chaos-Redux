@@ -363,3 +363,15 @@ Successor package production, player materialization, general allocation, countr
 | The Fertility Question localisation and Event Log | `localisation/english/fallout_world_end_fertility_question_l_english.yml`, `common/scripted_localisation/fallout_world_end_fertility_question_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
 | The Fertility Question art and workbook | `docs/assets/894_fertility_question/manifest.md`, `interface/fallout_world_end.gfx`, `gfx/event_pictures/fertility_question/report_event_fallout_fertility_question.dds`, `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-894` |
 | The Fertility Question status boundary | dormant source package with four fictional household branches, hidden AI parity, 49-day result, 365-day next-generation review, bounded Deaths effects, household and bilateral memories, Event Log history `9205`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |
+
+## The Old Doctor's Trial source map row
+
+| Surface | Source of truth |
+| --- | --- |
+| The Old Doctor's Trial design | `docs/specs/air_cleanliness_fallout_specs/specs/102_reviewed_archetype_old_doctors_trial.md` |
+| The Old Doctor's Trial runtime proof | `docs/plans/air_cleanliness_fallout_plans/FALLOUT_OLD_DOCTOR_TRIAL_CHAIN_PROOF.md` |
+| The Old Doctor's Trial gameplay | `events/fallout_world_end_events.txt`, `common/scripted_triggers/fallout_world_end_old_doctor_trial_event_triggers.txt`, `common/scripted_effects/fallout_world_end_old_doctor_trial_event_effects.txt`, and `common/dynamic_modifiers/fallout_world_end_old_doctor_trial_dynamic_modifiers.txt` |
+| The Old Doctor's Trial constants and registry | `common/script_constants/fallout_world_end_old_doctor_trial_constants.txt`, `common/script_constants/fallout_world_end_event_constants.txt`, and `common/scripted_effects/fallout_world_end_event_candidate_effects.txt` |
+| The Old Doctor's Trial localisation and Event Log | `localisation/english/fallout_world_end_old_doctor_trial_l_english.yml`, `common/scripted_localisation/fallout_world_end_old_doctor_trial_event_log_scripted_localisation.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` |
+| The Old Doctor's Trial opinion and assets | `common/opinion_modifiers/fallout_old_doctor_trial_opinion_modifiers.txt`, `docs/assets/901_old_doctor_trial/manifest.md`, `interface/fallout_world_end.gfx`, and `gfx/event_pictures/old_doctor_trial/report_event_fallout_old_doctor_trial.dds` |
+| The Old Doctor's Trial status boundary | dormant source package with four fictional medical-justice branches, hidden AI parity, 56-day result, 420-day witness review, bounded Deaths effects, justice and bilateral memories, Event Log history `9206`, authenticated cleanup, no Fallout ordinary-event registration, no HOI4 runtime acceptance, and zero release-floor credit |

@@ -21063,6 +21063,114 @@ country_event = {
 
 
 
+# Dormant Fallout mutant medical-justice chain: The Old Doctor's Trial
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.fallout.1023
+	title = chaosx.fallout.1023.t
+	desc = chaosx.fallout.1023.opening.d
+	picture = GFX_report_event_fallout_old_doctor_trial
+	is_triggered_only = yes
+	trigger = { fallout_event_901_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1023.a
+		trigger = { fallout_event_901_public_trial_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_901_requested_branch = constant:fallout_event_901_branch.public_trial } fallout_event_901_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1023.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1023.b
+		trigger = { fallout_event_901_truth_commission_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_901_requested_branch = constant:fallout_event_901_branch.truth_commission } fallout_event_901_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1023.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1023.c
+		trigger = { fallout_event_901_pardon_for_knowledge_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_901_requested_branch = constant:fallout_event_901_branch.pardon_for_knowledge } fallout_event_901_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1023.c.tt
+	}
+	option = {
+		name = chaosx.fallout.1023.d
+		trigger = { fallout_event_901_secret_retention_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_event_901_requested_branch = constant:fallout_event_901_branch.secret_retention } fallout_event_901_choose_branch = yes }
+		custom_effect_tooltip = chaosx.fallout.1023.d.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1024
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_901_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_event_901_choose_ai_branch_and_schedule_result = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1025
+	title = chaosx.fallout.1025.t
+	desc = { text = chaosx.fallout.1025.public_trial.success.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.public_trial compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1025.public_trial.partial.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.public_trial compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1025.public_trial.failure.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.public_trial compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1025.truth_commission.success.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.truth_commission compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1025.truth_commission.partial.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.truth_commission compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1025.truth_commission.failure.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.truth_commission compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1025.pardon_for_knowledge.success.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.pardon_for_knowledge compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1025.pardon_for_knowledge.partial.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.pardon_for_knowledge compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = { text = chaosx.fallout.1025.pardon_for_knowledge.failure.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.pardon_for_knowledge compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } }
+	desc = { text = chaosx.fallout.1025.secret_retention.success.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.secret_retention compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1025.secret_retention.partial.d trigger = { check_variable = { fallout_event_901_selected_branch value = constant:fallout_event_901_branch.secret_retention compare = equals } check_variable = { fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1025.secret_retention.failure.d
+	picture = GFX_report_event_fallout_old_doctor_trial
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_901_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.old_doctor_trial_result compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = { name = chaosx.fallout.1025.a hidden_effect = { fallout_event_901_resolve_result_and_schedule_callback = yes } custom_effect_tooltip = chaosx.fallout.1025.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1026
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_901_delayed_result_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.old_doctor_trial_result_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_event_901_resolve_result_and_schedule_callback = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1027
+	title = chaosx.fallout.1027.t
+	desc = { text = chaosx.fallout.1027.success.d trigger = { check_variable = { fallout_event_901_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } }
+	desc = { text = chaosx.fallout.1027.partial.d trigger = { check_variable = { fallout_event_901_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } }
+	desc = chaosx.fallout.1027.failure.d
+	picture = GFX_report_event_fallout_old_doctor_trial
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_event_901_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.old_doctor_trial_callback compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } fallout_event_901_registry_is_current = yes }
+	immediate = { fallout_event_901_calculate_callback_outcome = yes }
+	option = { name = chaosx.fallout.1027.a hidden_effect = { fallout_event_901_resolve_callback_and_prepare_cleanup = yes } custom_effect_tooltip = chaosx.fallout.1027.a.tt }
+}
+
+country_event = {
+	id = chaosx.fallout.1028
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_event_901_callback_can_enter = yes check_variable = { fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.old_doctor_trial_callback_ai compare = equals } check_variable = { fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } fallout_event_901_registry_is_current = yes }
+	immediate = { fallout_event_901_calculate_callback_outcome = yes fallout_event_901_resolve_callback_and_prepare_cleanup = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1029
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_901_cleanup_can_enter = yes }
+	immediate = { fallout_event_901_cleanup = yes }
+}
+
+
+
+
+
+
+
 # Dormant Fallout maritime chain: The Captain's Articles
 # ---------------------------------------------------------------------------
 

@@ -1140,3 +1140,17 @@ The chain carries Offer Voluntary Household Support, Build Public Cohort Service
 The asset evidence is `docs/assets/894_fertility_question/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_fertility_question`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-894` is recorded with `Needs Testing` status.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_FERTILITY_QUESTION_CHAIN_PROOF.md`.
+
+## The Old Doctor's Trial tranche
+
+The Old Doctor's Trial adds dormant event ids `1023` through `1029` with candidate id `901`, transaction key `710100`, route `7232`, and history `9206`. These ids are the next free reviewed suffixes after the existing manual and dormant Fallout ranges.
+
+The human opening is `1023`, the hidden AI opening is `1024`, the human and hidden AI delayed results are `1025` and `1026`, the human and hidden AI witness reviews are `1027` and `1028`, and cleanup is `1029`.
+
+The row requires the Congo Green Basin country memory and mutant-polity archetype, a closed Fertility Question state memory, a current living hearing ward, current Air Winter and Supply Access receipts, Shelter, Adaptation, Exposure, bounded Disease Pressure, a foreign witness, trial legitimacy, atrocity pressure, Medicine, Cohesion, Recognition, and one affordable branch. It selects the lowest eligible state and freezes the state, owner, controller, witness, generation, Air Winter values, Supply Access, and justice ledgers.
+
+The chain carries Open a Public Trial, Convene a Truth Commission, Pardon the Doctor for Retained Knowledge, and Keep the Records Under Seal branches with distinct survival costs, deterministic result and witness-review grading, a 56-day result, a 420-day review, bounded Deaths effects, Air Winter and Supply Access effects, justice and bilateral memories, Event Log history `9206`, hidden AI parity, dedicated report art, and authenticated cleanup.
+
+The asset evidence is `docs/assets/901_old_doctor_trial/` with source, processed PNG, runtime DDS, prompt, manifest, hashes, and sprite `GFX_report_event_fallout_old_doctor_trial`. The authoritative workbook is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, and exported row `FALLOUT-901` is recorded with `Needs Testing` status.
+
+The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, player-visible art, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_OLD_DOCTOR_TRIAL_CHAIN_PROOF.md`.
