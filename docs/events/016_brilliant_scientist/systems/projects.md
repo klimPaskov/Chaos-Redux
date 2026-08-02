@@ -27,6 +27,12 @@ The fifteen family-specific recovery missions carry the same retained host-arche
 
 The first valid primary facility after a resolved Prototype can then receive `chaosx.nr16.7`, and the second resolved Prototype can receive `chaosx.nr16.8`. These reports settle facility terms and method custody as persistent governance receipts rather than advancing a project. A detected foreign operation resolved after any Prototype can schedule `chaosx.nr16.9`, which retains the named actor and operation and offers a bounded diplomatic response. None of these three reports creates another project reward, evolution, or event-log entry.
 
+## Electronics plus Teleportation calibration
+
+Once Electronics and Teleportation both reach Prototype, the current host can establish `brilliant_scientist_establish_portal_calibration_network` from the existing Directorate category. The decision requires the canonical project stage array, a valid primary and secondary facility, an idle project board, and healthy, non-stolen ledgers. It consumes 85 Political Power, 250 Support Equipment, 125 Motorized Equipment, 2,000 fuel, 2,500 manpower, and two civilian factories for 150 days. Transfer, containment, a project incident, a lost facility, or a terminal transition cancels an unfinished transaction without refund; a completed transaction writes `brilliant_scientist_portal_calibration_network_established` once and records the same history on Kruger.
+
+The receipt is a countermeasure rather than another stage or force package. While both facilities and both ledgers remain valid, teleportation accident pressure is reduced by the fixed calibration amount before the normal clamp. Foreign operations apply the matching success penalty and detection increase only when their actor selected Teleportation, so theft, sabotage, defection, extraction, and assassination remain probabilistic and retain their existing ledgers. Ordinary transfers carry the completed receipt through Kruger's character history; Kruger State formation preserves the history but does not create a free terminal or a new active host surface. No 3D model, equipment archetype, CBRN reservation, report event, or spreadsheet row is introduced by this synergy.
+
 Prototype projects are not charged a second wrapper clock. Their native facility time, breakthrough points, resources, and prototype iterations are the prototype cost.
 
 ## Stage and capacity contract

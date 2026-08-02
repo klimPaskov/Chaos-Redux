@@ -40,3 +40,87 @@ brilliant_scientist_cross_domain_review_resolution_is_valid = {
 	KRG_warren_kruger = { NOT = { has_character_flag = brilliant_scientist_personal_host_synthesis_review_completed } }
 	NOT = { has_global_flag = world_end }
 }
+
+# COUNTRY scope. Electronics and Teleportation keep their own ledgers; this
+# shared reader proves that the two prototype records remain usable before the
+# portal-calibration receipt can affect accidents or foreign operations.
+brilliant_scientist_portal_calibration_network_projects_are_healthy = {
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^1
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_project_stage_entries^6
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = greater_than_or_equals
+	}
+	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.electronics } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.electronics } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.electronics } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.electronics } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.teleportation } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.teleportation } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.teleportation } }
+	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.teleportation } }
+}
+
+# COUNTRY scope. A new calibration network needs both controlled facilities,
+# a free project board, and no containment transaction. It is deliberately a
+# one-time receipt rather than another project stage or capacity grant.
+brilliant_scientist_portal_calibration_network_is_ready = {
+	brilliant_scientist_project_board_is_ready = yes
+	brilliant_scientist_secondary_facility_is_valid = yes
+	brilliant_scientist_portal_calibration_network_projects_are_healthy = yes
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_portal_calibration_network_established }
+	NOT = { has_country_flag = brilliant_scientist_portal_calibration_network_pending }
+	NOT = { has_country_flag = brilliant_scientist_portal_calibration_network_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. This cost gate is kept separate so the decision's custom cost
+# text and AI availability always read the same equipment, fuel, manpower, and
+# political-authority burden.
+brilliant_scientist_can_pay_portal_calibration_network = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_portal_calibration_network.civilian_factory_use }
+	has_equipment = { support_equipment > constant:brilliant_scientist_portal_calibration_network.support_equipment_gate }
+	has_equipment = { motorized_equipment > constant:brilliant_scientist_portal_calibration_network.motorized_equipment_gate }
+	has_fuel > constant:brilliant_scientist_portal_calibration_network.fuel_gate
+	check_variable = { var = manpower value = constant:brilliant_scientist_portal_calibration_network.manpower_gate compare = greater_than }
+	check_variable = { var = political_power value = constant:brilliant_scientist_portal_calibration_network.political_power_gate compare = greater_than }
+}
+
+# COUNTRY scope. The completed receipt is active only while both project
+# records and both physical facilities remain valid on the current host.
+brilliant_scientist_portal_calibration_network_is_active = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	brilliant_scientist_secondary_facility_is_valid = yes
+	brilliant_scientist_portal_calibration_network_projects_are_healthy = yes
+	has_country_flag = brilliant_scientist_portal_calibration_network_established
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. The delayed decision revalidates the two project ledgers and
+# facilities before writing its persistent receipt. Transfer or a terminal
+# transition clears the pending transaction instead of creating a free receipt.
+brilliant_scientist_portal_calibration_network_resolution_is_valid = {
+	brilliant_scientist_is_current_host = yes
+	brilliant_scientist_primary_facility_is_valid = yes
+	brilliant_scientist_secondary_facility_is_valid = yes
+	brilliant_scientist_portal_calibration_network_projects_are_healthy = yes
+	has_country_flag = brilliant_scientist_portal_calibration_network_pending
+	has_country_flag = brilliant_scientist_portal_calibration_network_in_progress
+	NOT = { has_country_flag = brilliant_scientist_portal_calibration_network_established }
+	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
+	NOT = { has_global_flag = world_end }
+}
