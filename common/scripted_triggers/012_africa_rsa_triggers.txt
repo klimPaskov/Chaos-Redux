@@ -77,6 +77,21 @@ africa_rsa_has_exile_patron_candidate = {
 	}
 }
 
+# COUNTRY scope during the one-shot host candidate build, after the
+# prospective host's temporary contact pool exists. This prevents original
+# SAF from entering the weighted pool when its frozen contact set contains no
+# valid African exile patron; existing relationship or selected-target patrons
+# remain accepted by the shared candidate helper.
+africa_rsa_prefire_contact_pool_has_patron = {
+	OR = {
+		africa_rsa_has_exile_patron_candidate = yes
+		any_of_scopes = {
+			array = africa_prefire_contact_pool
+			africa_rsa_is_valid_exile_patron = yes
+		}
+	}
+}
+
 # COUNTRY scope during the shared Event 12 fire-once selection pass. South
 # Africa keeps its meaningful vanilla focus tree, so it enters through this
 # narrow branch instead of the generic-focus host gate. Before the prefire
