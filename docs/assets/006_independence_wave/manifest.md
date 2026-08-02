@@ -521,9 +521,11 @@ independent audits remain authoritative for runtime admission.
 ## 2026-08-02 current admission and shelf authority
 
 The current 2026-08-02 authority addendum supersedes the dated shelf snapshot. The
-flat shelf contains 80 original-size RGB PNG masters, with 74
-indexed rows and six unindexed physical files outside that index, namely four ARX
-masters, the CHU Mirsaid master, and the first DOX Prempeh-II master. There are no normalized `156x210` shelf files,
+flat shelf contains 80 original-size RGB PNG masters, and all 80 are now indexed
+or explicitly recorded in the two shelf manifests (79 table rows plus the
+retry-2 DOX tail record). The six rows reconciled on this pass are traceability
+records only; they do not change any rights, role, provenance, or runtime gates.
+There are no normalized `156x210` shelf files,
 advisor portraits, dossier derivatives, or small consumers. ASY Barsoum v93 passes
 the independent identity, HOI4 style, provenance, and stated PD-1923/1921 rights/date
 basis with a documented
@@ -558,9 +560,9 @@ IW-093 DOX, IW-098 SOK, IW-179 FSM, IW-030 MNT, IW-177 FIJ, and IW-014 CAT remai
 **HOLD / fail-closed** pending their current sourced-roster, role, identity/flag,
 formable, or carrier-contract evidence gates; the shared IW-046 CHU overlay row
 is also unadmitted. The current source shelf is `portraits_generated_png/` with 80
-physical masters and 74 indexed rows. Six unindexed physical PNGs remain
-reconciliation debt, namely four ARX masters, the CHU Mirsaid master, and the
-first DOX Prempeh-II master. No
-normalized `156x210` files, advisor portraits, dossier derivatives, or small
+physical masters; all 80 are indexed or explicitly recorded. Six traceability-only
+rows were reconciled on this pass, and no rights, role, provenance, or runtime
+gate changed.
+No normalized `156x210` files, advisor portraits, dossier derivatives, or small
 portraits are authorized. Event 006 does not authorize custom advisor icons or
 advisor portrait blocks.

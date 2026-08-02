@@ -79,6 +79,11 @@ Haydo remain `needs_user_review` rights/date or provenance evidence. ASY Barsoum
 passes its independent audit and v94 promotes only the existing concordat-council
 DDS consumer; the wider IW-058 package remains outside attestation.
 
+Current shelf-index override (2026-08-02): all 80 physical masters are now indexed
+or explicitly recorded in the two flat-shelf manifests (79 table rows plus the
+retry-2 DOX tail record). The six reconciled rows are traceability-only and do not
+change any rights, provenance, role, or runtime admission gates.
+
 That package now has the v93 independent audit recorded: identity/likeness,
 HOI4 style/framing, provenance, and the PD-1923/1921 rights/date basis pass with
 a low-resolution group-photo caveat. Parent release acceptance is recorded in v94,
