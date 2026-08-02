@@ -40,7 +40,7 @@ The portrait shelf is traceability-only for non-admitted candidates. Rights, pro
 2. Only fourteen of 193 non-overlay packages are attested, so the accepted 14/20 capacity promise and several scenario/formable routes remain fail-closed.
 3. 6001 has no authorized final audio/runtime package; the v101 candidate cannot be silently substituted for the accepted cue.
 4. The accepted formable registry is not closed for the listed fail-closed families, and several sensitive country packages still lack approved identity, territory, symbol, leader, or role evidence.
-5. Focused offline GUI interaction/threshold/return-to-state evidence and the row-level achievement condition/disqualifier matrix remain unrecorded, while the source semantic matrix passes.
+5. Focused offline GUI interaction/threshold/return-to-state evidence remains unrecorded, while the source semantic matrix and the current 16-row achievement condition/disqualifier receipt pass statically; live/save-load proof is not claimed.
 6. The catalog correctly remains conservative (`Event 006` and `Liberations` in progress; `SCN-008` needs testing) and cannot be promoted from static source checks alone.
 
 No fallback, generic portrait, shallow package, advisor icon, bespoke-tree requirement, or live-test substitution was introduced by this evidence pass.
