@@ -321,6 +321,45 @@ africa_charter_council_category = {
 		ai_will_do = { base = 0 }
 	}
 
+	africa_record_compact_promotion_proof = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+		}
+		available = {
+			africa_compact_promotion_proof_is_available = yes
+			check_variable = { var = political_power value = constant:africa_compact_promotion.proof_pp_cost compare = greater_than }
+		}
+		cost = constant:africa_compact_promotion.proof_pp_cost
+		custom_effect_tooltip = africa_record_compact_promotion_proof_tt
+		complete_effect = { africa_record_compact_promotion_proof = yes }
+		ai_will_do = {
+			base = constant:africa_compact_promotion.ai_base
+			modifier = { factor = constant:africa_compact_promotion.ai_security_factor has_country_flag = africa_host_security_prepared }
+		}
+	}
+
+	africa_promote_compact_host = {
+		icon = GFX_decision_012_africa_charter_ledger
+		visible = {
+			africa_is_current_host = yes
+			check_variable = { africa_host_depth = constant:africa_host_depth.compact }
+			has_country_flag = africa_compact_promotion_criteria_met
+		}
+		available = {
+			africa_compact_host_can_be_promoted = yes
+			check_variable = { var = political_power value = constant:africa_compact_promotion.promotion_pp_cost compare = greater_than }
+		}
+		cost = constant:africa_compact_promotion.promotion_pp_cost
+		custom_effect_tooltip = africa_promote_compact_host_tt
+		complete_effect = { africa_promote_compact_host_package = yes }
+		ai_will_do = {
+			base = constant:africa_compact_promotion.ai_base
+			modifier = { factor = constant:africa_compact_promotion.ai_security_factor has_country_flag = africa_host_security_prepared }
+		}
+	}
+
 	africa_select_action_state_target = {
 		icon = GFX_decision_012_africa_charter_ledger
 		state_target = yes
