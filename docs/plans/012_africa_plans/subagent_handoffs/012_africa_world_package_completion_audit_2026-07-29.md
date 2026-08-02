@@ -8,6 +8,12 @@ Scope: Actions 77-92, the Scramble response and aftermath, the six external cont
 
 Explicit exclusion: no 3D model or formation package was audited or requested in this tranche.
 
+## Current-state amendment (2026-08-02)
+
+This dated audit is retained as a pre-integration baseline. Since it was written, W0 through W4 have source callsites recorded by the lifecycle, constituent, package-loop, sponsorship, and union/war handoffs. Those callsites are implementation evidence only and do not prove live acceptance. W5 remains unresolved in `docs/plans/012_africa_plans/012_africa_final_improvement_loop_addendum_2026-08-01.md`, and the initial all-six certification trigger and atomic setter remain absent.
+
+The successor continuity path may copy an existing `africa_world_package_implementation_ready` flag to a reviewed successor. That continuity write is not the missing W5 certification. `africa_the_world_super_event_package_ready` remains unset. The historical surface table below should not be reused as the current W0-W4 status ledger.
+
 ## Completion conclusion
 
 The non-model Scramble and world-order package is **incomplete and correctly gated**.
@@ -16,7 +22,7 @@ The repository contains a substantial reusable dormant foundation: a four-phase 
 
 That foundation is not sufficient to set either readiness flag.
 
-- `africa_world_package_implementation_ready` has no setter under `common/` or `events/`. Installation checks it in `common/scripted_effects/012_africa_world_order_effects.txt:471-551`, candidate selection checks it in `common/decisions/012_africa_decisions.txt:1678-1694`, and the Africa-only closure checks for its absence in `common/scripted_triggers/012_africa_world_order_triggers.txt:235-250`.
+- The initial all-six certification setter for `africa_world_package_implementation_ready` is absent. Installation checks the flag in `common/scripted_effects/012_africa_world_order_effects.txt:471-551`, candidate selection checks it in `common/decisions/012_africa_decisions.txt:1678-1694`, and the Africa-only closure checks for its absence in `common/scripted_triggers/012_africa_world_order_triggers.txt:235-250`. The successor continuity helper writes the flag only while transferring an already-installed package and is not W5 certification.
 - `africa_the_world_super_event_package_ready` has no setter under `common/` or `events/`. The terminal trigger requires it in `common/scripted_triggers/012_africa_world_order_triggers.txt:305-338`, and the identity commit checks it again in `common/scripted_effects/012_africa_world_order_effects.txt:1680-1701`.
 - Enabling one external package independently would create an aftermath deadlock risk. The ordinary aftermath requires all six installed packages at `common/scripted_triggers/012_africa_world_order_triggers.txt:221-231`, while the Africa-only closure is forbidden as soon as any nominated candidate is ready at `:235-250`.
 - The six focus capstones currently prove only scripted flags, variables, ideas, and a cosmetic tag on one candidate country. No world-package focus or world-order effect integrates the other countries of that continent through territory, cores, member governments, subjects, a federation ledger, a successor/exile contract, or a continent-scale heartland proof.
