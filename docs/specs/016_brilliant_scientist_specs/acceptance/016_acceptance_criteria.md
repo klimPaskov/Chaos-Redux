@@ -173,6 +173,9 @@ The accepted 2026-08-02 addendum is implemented in the working tree as a four-co
 - [ ] Reinforcement uses production, facilities, resources, and time rather than infinite free loops.
 - [ ] Starting technology and project access derive from host and archive history.
 - [ ] Supply, production, manpower, equipment, and resource assumptions are viable.
+- [ ] KRG biological deployment owns a bounded stockpile, reservation, production-cost, and confirmed-consumption ledger rather than a free payload.
+- [ ] Native biological reservation, failed-delivery return, confirmed-use, transfer, formation, defeat, and terminal cleanup callbacks are idempotent and preserve shared CBRN condemnation, contamination, retaliation, and Fallout history.
+- [ ] Biological production and AI stop safely when containment, security, authority, or the native delivery boundary is unavailable.
 - [ ] Country is registered in `is_special_chaos_country`.
 - [ ] Actual nonhuman classification is added only after a real nonhuman transformation.
 - [ ] AI can survive, defend facilities, use project armies, and pursue route goals.
