@@ -84,10 +84,14 @@ The host can record one constitutional successor before annexation for an atomic
 If no designation exists, a resolver event either commits the sole valid candidate, opens the targeted successor congress for several valid candidates, or records an explicit suspended-host crisis when the pool is empty or the resolver declines.
 The successful transfer increments `africa_host_generation`, rebuilds the League rosters on the successor, retargets member autonomy, resets action and quote generations, refreshes the focus layout, and records a dedicated Event Log payload.
 The suspended path intentionally retains the staged ledger and obligations for review instead of inventing a host or treating opinion as consent.
+First-proof witnesses and evidence arrays, including the one-attempt recovery receipt, Scramble phase and pressure, world-order route counters, roster flags, and Scramble relationship arrays travel with the same staged ledger.
+Peace-exemption registries are closed and discarded with their missions rather than copied to the successor.
+If an opened congress later has no valid recorded candidate, the resolver can close it into the suspended crisis; if the one-use successor is later annexed, the terminal bridge clears the host pointer, resolves the Event 12 lifecycle, and records the end of the League.
 
 The immediate designation route copies completed continental focuses from `africa_previous_host` while that source still exists.
 The staged post-annex congress reloads the continental tree and marks `africa_host_focus_completion_transfer_deferred` because the removed host cannot be used as a focus-copy source after the on-action chain ends.
-This deferred completion-copy behavior is a known release-candidate simplification and remains a live acceptance item.
+The successor notice consumes that marker into `africa_host_focus_completion_transfer_reviewed`, keeping the limitation visible without leaving a write-only flag.
+The missing completed-focus copy from an already-removed source remains a known release-candidate simplification and live acceptance item.
 
 ## Interactions
 
