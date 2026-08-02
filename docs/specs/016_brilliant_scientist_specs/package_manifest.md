@@ -10,7 +10,7 @@
 | Source status | Reconciled implementation specification |
 | Package date | 2026-08-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11`, ten authored country-tag clauses added to `.4` through `.9`, the base/evolved opening and referral reports, the loyalty/relocation dossiers, the four logged evolution reports, and the `.30` through `.32` containment reports, and formation-origin presentation added to the first four KRG foundation reports; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
+| Planning state | Improvement addendum disposition complete; default-enabled core runtime and bounded `.4` through `.9` context/first-Prototype flavour implemented, with host-archetype presentation continued through `.10` and `.11`, ten authored country-tag clauses added to `.4` through `.9`, the base/evolved opening and referral reports, the loyalty/relocation dossiers, the four logged evolution reports, and the `.30` through `.32` containment reports, formation-origin presentation added to the first four KRG foundation reports, and the tracked Kruger holder and KRG history loader repaired; broader optional event chains, seven Event 016 3D packages, balance evidence, and live acceptance remain blocked |
 | Cluster | None |
 | World-end capability | Yes, conditional late branch |
 | Custom country | Kruger State, working public label |
@@ -66,4 +66,4 @@
 - Severe portrait animation families: `6`.
 - Integrity ledger: `package_checksums.sha256`.
 
-The checksum ledger preserves the established 55-entry reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.
+The checksum ledger preserves the established reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.
