@@ -12,12 +12,17 @@ skill-local root:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
 
-The organized canonical library is `vanilla_reference/`.
+The organized canonical library is `vanilla_reference/`. The user-facing
+compatibility shelf `leader_portraits/` mirrors the curated Vanilla leader
+references for agents that need the explicit portrait path; it is review-only
+and must remain byte-aligned with `vanilla_reference/portraits/leaders/`.
 
 Start every review with:
 
 - `vanilla_reference/README.md` for library and contact-sheet rules
 - `vanilla_reference/CATALOG.md` for exact source provenance, native canvas, frame count, and owning definition
+- `leader_portraits/README.md` and `leader_portraits/REFERENCE_MANIFEST.md` for
+  the explicit leader-portrait reference path and its HOI4 framing notes
 
 Reference PNGs teach framing, scale, transparency, style, and engine pipeline. They are review material only: never recolor, trace, wire, or ship them as runtime assets.
 
