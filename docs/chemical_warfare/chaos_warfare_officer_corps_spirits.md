@@ -1,96 +1,77 @@
 # Chaos Warfare Officer Corps Spirits
 
 ## Overview
-This adds three doctrine-gated officer corps spirits that become selectable when a country has `chaos_warfare` selected as its land grand doctrine, plus one doctrine-independent academy spirit:
+The active officer-corps package uses three mutually exclusive army-command postures and three mutually exclusive division-command postures. The former academy and air identifiers remain hidden compatibility records:
 
-1. Army spirit: `chemical_command_reagent_optimization_spirit`
-2. Division command spirit: `chemical_division_contamination_command_spirit`
-3. Air spirit: `chemical_air_deep_strike_spirit`
-4. Academy spirit: `chemical_operations_academy_spirit` (no `chaos_warfare` requirement)
+1. Army: `chemical_command_reagent_optimization_spirit`, `cbrn_theater_contamination_doctrine_spirit`, and `cbrn_terminal_hazard_doctrine_spirit`.
+2. Division command: `cbrn_mask_discipline_spirit`, `cbrn_hazard_assault_cadres_spirit`, and `chemical_division_contamination_command_spirit`.
+3. Compatibility-only identifiers: `chemical_operations_academy_spirit` and `chemical_air_deep_strike_spirit`.
 
 ## Implemented Spirits
-### 1. Army Spirit
+### 1. Army command postures
 - Key: `chemical_command_reagent_optimization_spirit`
 - Category: `army_spirit`
-- Availability gate: `has_doctrine = chaos_warfare`
-- Effects:
-  - Chemical cylinder abilities refund command power via scripted effect (`20%` of the ability CP cost).
-  - Chemical cylinder abilities consume fewer cylinders (`20%` reduction).
-  - Chemical sub-unit template design XP cost is set to zero via `unit_<unit>_design_cost_factor = -1` for:
-    - All Livens chemical support variants.
-    - All light/medium/heavy chemical tank support variants.
-    - `chaos_battalion`.
+- Availability: Chaos Warfare plus the Protective Foundation milestone.
+- Effects: +20% army organisation, +30 maximum Command Power, and 15% lower military mask/filter consumption.
 
-### 2. Division Command Spirit
+- Key: `cbrn_theater_contamination_doctrine_spirit`
+- Availability: Theater Exploitation milestone.
+- Effects: +30% planning speed, -20% attrition, and +20% supply consumption, with the larger CBRN delivery, biological-lifecycle, preparation, and cleanup effects documented in `docs/systems/chaos_warfare_doctrine.md`.
+
+- Key: `cbrn_terminal_hazard_doctrine_spirit`
+- Availability: Terminal CBRN Command milestone plus Unrestricted Chaos Warfare policy.
+- Effects: +35% army attack, +25% coordination, +25% supply consumption, and the Terminal Hazard chemical/biological lethality, contamination, medical-pressure, camp-network, and reduced-Condemnation multipliers.
+
+### 2. Division command postures
+- Key: `cbrn_mask_discipline_spirit`
+- Availability: Hazard Assault Formations Mastery 1.
+- Effects: +20% army organisation and -20% organisation loss when moving; the shared mask ledger applies its separate military consumption multiplier.
+
+- Key: `cbrn_hazard_assault_cadres_spirit`
+- Availability: Hazard Assault Formations Mastery 3 plus `chaos_battalion_tech`.
+- Effects: +10% special-forces capacity, +25% army experience gain, and +30% attack and defence for Hazard Pioneers and Chaos Assault Battalions.
+
 - Key: `chemical_division_contamination_command_spirit`
 - Category: `division_command_spirit`
-- Availability gate: `has_doctrine = chaos_warfare`
-- Effects:
-  - Buffs Livens projector support combat-effect profiles (`dose`, `duration`, `condemnation`) by `20%`.
-  - Buffs chemical tank support combat-effect profiles (`dose`, `duration`, `condemnation`) by `20%`.
-  - Buffs chaos battalion state contamination, direct enemy damage, and combat condemnation output by `20%`.
+- Availability: Contaminant Fire Support Mastery 2.
+- Effects: +35% army artillery attack and +25% reliability for Livens projectors and chemical payload-cylinder equipment.
 
-### 3. Air Spirit
-- Key: `chemical_air_deep_strike_spirit`
-- Category: `air_force_command_spirit`
-- Availability gate: `has_air_force_command = yes` and `has_doctrine = chaos_warfare`
-- Effects:
-  - Buffs chemical raid effectiveness by multiplying raid damage and raid contamination potency.
-  - Buffs chemical air-bomb effects by increasing dose and contamination duration multipliers.
-
-### 4. Academy Spirit
+### 3. Compatibility identifiers
 - Key: `chemical_operations_academy_spirit`
 - Category: `academy_spirit`
-- Availability gate: no `chaos_warfare` doctrine requirement.
-- Effects:
-  - Adds a 50% roll on general creation and on general level-up to grant `chemical_operations_commander`.
-  - Uses shared scripted effect `chem_try_grant_chemical_operations_trait_from_academy_spirit`.
-  - Unlocks manual assignment of `chemical_operations_commander`; without this spirit, the trait is not a valid assignable trait choice.
+- Availability: hidden and unavailable.
+- Effects: none. It is retained only so existing saves can resolve the former identifier.
+- Manual assignment of `chemical_operations_commander` requires only `has_doctrine = chaos_warfare`.
+- Key: `chemical_air_deep_strike_spirit`
+- Category: `air_force_command_spirit`
+- Availability: hidden and unavailable.
+- Effects: none. Existing chemical raids and air operations use their current route-specific multipliers and the shared exposure pipeline.
 
 ## Script Integration
-### New constants
-- File: `common/script_constants/chemical_spirit_constants.txt`
-- Constant group: `chem_chaos_warfare_spirit`
-  - `army.ability_cylinder_cost_mult = 0.80`
-  - `army.ability_cp_refund_factor = 0.20`
-  - `division.support_profile_mult = 1.20`
-  - `division.chaos_state_effect_mult = 1.20`
-  - `division.chaos_damage_mult = 1.20`
-  - `division.chaos_condemnation_mult = 1.20`
-  - `division.barrage_preferred_weight_factor = 1.00`
-  - `academy.chemical_operations_trait_gain_chance = 50`
-  - `air.raid_effect_mult = 1.20`
-  - `air.air_bomb_dose_mult = 1.20`
-  - `air.air_bomb_duration_base_mult = 1.20`
-  - `air.air_bomb_duration_per_pressure_mult = 1.20`
+### Tuning and script integration
+- Active officer-corps modifiers use the file-local constants at the top of `common/ideas/cbw_spirits.txt`.
+- CBRN delivery, protection, cleanup, evidence, casualty, and Condemnation multipliers use the shared tables in `common/script_constants/cbrn_doctrine_constants.txt` and `common/script_constants/chemical_warfare_constants.txt`.
+- `common/script_constants/chemical_spirit_constants.txt` remains only for legacy scripted-effect parsing and contains no active academy or air-spirit bonus.
 
 ### Idea definitions
 - File: `common/ideas/cbw_spirits.txt`
 
 ### Hook points
-- Ability CP refund + cylinder cost reduction:
-  - `common/scripted_effects/chemical_warfare_effects.txt`
-  - `common/scripted_effects/chemical_ability_effects.txt`
-  - `common/abilities/chemical_abilities.txt`
-- Division-command chemical subunit amplification:
-  - `common/scripted_effects/chemical_warfare_effects.txt`
-  - `common/scripted_effects/chemical_livens_support_effects.txt`
-  - `common/scripted_effects/chemical_tank_shell_effects.txt`
-  - `common/scripted_effects/chemical_infantry_effects.txt`
-- Chemical raid and air-bomb amplification:
-  - `common/scripted_effects/chemical_warfare_effects.txt`
-  - `common/scripted_effects/chemical_air_bomb_effects.txt`
+- Doctrine availability and milestone effects: `common/ideas/cbw_spirits.txt`, `common/doctrines/`, and `common/scripted_effects/cbrn_doctrine_effects.txt`.
+- Delivery, protection, cleanup, consequence, and route-specific effects: `common/scripted_effects/cbrn_*.txt` and `common/scripted_effects/chemical_*.txt`.
+- Trait assignment and its prerequisite: `common/unit_leader/chaosx_traits.txt`.
 
 ### Localisation
 - File: `localisation/english/chaosx_ideas_l_english.yml`
 
-## Icons Needed
-No new icon assets are required for this implementation.
+## Icons and Runtime Wiring
+The active spirits use the generated Chaos Warfare officer-corps art package. The six spirit sprites are registered in `interface/cbrn_doctrine.gfx` under the `stage_5_chaos_warfare` officer-corps folder, while the grand doctrine and mastery icons use the dedicated doctrine-style paths documented in `docs/assets/chaos_warfare_system/stage_5_doctrine_officer_corps/manifest.md`.
 
-- Reason: all three spirits currently use standard officer-corps presentation and scripted effects without new `picture` sprite keys.
-- If custom art is later desired, define dedicated spirit icons in an ideas `.gfx` file and bind them to these three spirit keys.
+- Army spirits: `GFX_idea_chemical_command_reagent_optimization_spirit`, `GFX_idea_cbrn_theater_contamination_doctrine_spirit`, and `GFX_idea_cbrn_terminal_hazard_doctrine_spirit`.
+- Division spirits: `GFX_idea_cbrn_mask_discipline_spirit`, `GFX_idea_cbrn_hazard_assault_cadres_spirit`, and `GFX_idea_chemical_division_contamination_command_spirit`.
+- The original grand doctrine icon remains `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`; the four subdoctrines use the generated `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/` files.
 
 ## Future Plans / Suggestions
-1. Add dedicated spirit-specific icons and custom UI tooltips that preview exact CP/cylinder savings from current army size.
-2. Split the air-spirit raid bonus into separate tunables for direct unit damage vs contamination strength/duration.
-3. Add AI preference weights based on cylinder stockpile depth and active chemical airframe deployment share.
+1. Add spirit-specific UI previews that show exact Command Power, mask, filter, and payload consequences when the officer-corps interface exposes those dynamic values.
+2. Add AI preference weights based on reserve depth, military mask condition, and active route readiness.
+3. Keep the generated doctrine-style and officer-corps assets under the stage 5 asset manifest so future art revisions cannot silently replace the preserved grand-doctrine icon or the legacy raid icon family.

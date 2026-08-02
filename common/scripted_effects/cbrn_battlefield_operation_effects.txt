@@ -429,11 +429,11 @@ cbrn_battlefield_commit_readiness_and_command_power = {
 	}
 	add_to_variable = { cbrn_battlefield_pending_readiness_recovery = cbrn_battlefield_readiness_cost }
 	set_variable = { cbrn_battlefield_readiness_recovery_due_day = global.num_days }
-	add_to_variable = { cbrn_battlefield_readiness_recovery_due_day = constant:cbrn_battlefield_operation_timing.readiness_recovery_days }
+	add_to_variable = { cbrn_battlefield_readiness_recovery_due_day = constant:cbrn_battlefield_operation_readiness.readiness_recovery_days }
 	if = {
 		limit = { NOT = { has_country_flag = cbrn_battlefield_readiness_recovery_event_pending } }
 		set_country_flag = cbrn_battlefield_readiness_recovery_event_pending
-		country_event = { id = cbrn_battlefield.1 days = constant:cbrn_battlefield_operation_timing.readiness_recovery_days }
+		country_event = { id = cbrn_battlefield.1 days = constant:cbrn_battlefield_operation_readiness.readiness_recovery_days }
 	}
 }
 
@@ -761,7 +761,7 @@ cbrn_battlefield_clear_operation_state = {
 			clear_variable = cbrn_battlefield_start_date
 		}
 	}
-	clear_country_flag = cbrn_battlefield_operation_in_progress
+	clr_country_flag = cbrn_battlefield_operation_in_progress
 	clear_variable = cbrn_battlefield_active_route
 	clear_variable = cbrn_battlefield_active_agent
 	clear_variable = cbrn_battlefield_active_payload

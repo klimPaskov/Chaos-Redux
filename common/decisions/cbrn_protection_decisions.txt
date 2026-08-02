@@ -1,3 +1,18 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_PROTECTION_DECISION_COST_CONVERT_INDUSTRY_FACTORIES = 3
+@CR_SC_CBRN_PROTECTION_DECISION_COST_ESTABLISH_RESERVE_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_FULL_DISTRIBUTION_FACTORIES = 3
+@CR_SC_CBRN_PROTECTION_DECISION_COST_IMPORT_MASKS_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_ISSUE_FIELD_ARMY_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_PRIORITY_DISTRIBUTION_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_RECONDITION_MASKS_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_REGISTER_POPULATION_FACTORIES = 2
+@CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES = 1
+@CR_SC_CBRN_PROTECTION_DECISION_COST_SIMPLIFY_FILTERS_FACTORIES = 2
 # ============================================================================
 # CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT AND CIVIL-DEFENCE DECISIONS
 # ============================================================================
@@ -14,7 +29,7 @@ cbrn_program_management_category = {
 		icon = GFX_decision_cbrn_establish_national_respirator_reserve
 		cost = constant:cbrn_protection_decision_cost.establish_reserve_pp
 		days_remove = constant:cbrn_protection_decision_timing.establish_reserve_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.establish_reserve_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_ESTABLISH_RESERVE_FACTORIES }
 		visible = {
 			cbrn_protection_program_category_visible = yes
 			NOT = { has_country_flag = cbrn_national_respirator_reserve }
@@ -50,7 +65,7 @@ cbrn_program_management_category = {
 		icon = GFX_decision_cbrn_register_and_fit_population
 		cost = constant:cbrn_protection_decision_cost.register_population_pp
 		days_remove = constant:cbrn_protection_decision_timing.register_population_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.register_population_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_REGISTER_POPULATION_FACTORIES }
 		visible = {
 			has_country_flag = cbrn_national_respirator_reserve
 			NOT = { has_country_flag = cbrn_population_registered_and_fitted }
@@ -86,7 +101,7 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.issue_field_army_pp
 		days_remove = constant:cbrn_protection_decision_timing.issue_field_army_days
 		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.issue_field_army_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_ISSUE_FIELD_ARMY_FACTORIES }
 		visible = { cbrn_protection_program_category_visible = yes }
 		available = {
 			custom_trigger_tooltip = {
@@ -122,7 +137,7 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.replace_filters_pp
 		days_remove = constant:cbrn_protection_decision_timing.replace_filters_days
 		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.replace_filters_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES }
 		visible = {
 			has_variable = cbrn_military_mask_crates
 			check_variable = { cbrn_military_mask_crates > constant:cbrn_math.zero }
@@ -153,7 +168,7 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.recondition_masks_pp
 		days_remove = constant:cbrn_protection_decision_timing.recondition_masks_days
 		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.recondition_masks_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_RECONDITION_MASKS_FACTORIES }
 		visible = {
 			OR = {
 				check_variable = { cbrn_reconditionable_mask_cache > constant:cbrn_math.zero }
@@ -189,7 +204,7 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.convert_industry_pp
 		days_remove = constant:cbrn_protection_decision_timing.convert_industry_days
 		days_re_enable = constant:cbrn_protection_decision_timing.procurement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.convert_industry_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_CONVERT_INDUSTRY_FACTORIES }
 		visible = { has_tech = basic_gas_masks }
 		available = {
 			custom_trigger_tooltip = {
@@ -220,7 +235,7 @@ cbrn_program_management_category = {
 		icon = GFX_decision_cbrn_simplify_filters_for_mass_issue
 		cost = constant:cbrn_protection_decision_cost.simplify_filters_pp
 		days_remove = constant:cbrn_protection_decision_timing.simplify_filters_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.simplify_filters_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_SIMPLIFY_FILTERS_FACTORIES }
 		visible = {
 			has_tech = basic_gas_masks
 			NOT = { has_country_flag = cbrn_simplified_filter_program_active }
@@ -256,12 +271,12 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.export_masks_pp
 		days_remove = constant:cbrn_protection_decision_timing.export_masks_days
 		days_re_enable = constant:cbrn_protection_decision_timing.export_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.export_masks_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_FACTORIES }
 		visible = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
 		target_root_trigger = {
 			cbrn_protection_program_category_visible = yes
 			cbrn_country_has_exportable_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.export_masks_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_EXPORT_MASKS_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_target_can_receive_exported_masks = yes } }
 		available = {
@@ -296,12 +311,12 @@ cbrn_program_management_category = {
 		cost = constant:cbrn_protection_decision_cost.import_masks_pp
 		days_remove = constant:cbrn_protection_decision_timing.import_masks_days
 		days_re_enable = constant:cbrn_protection_decision_timing.procurement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.import_masks_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_IMPORT_MASKS_FACTORIES }
 		visible = { FROM = { cbrn_target_can_supply_imported_masks = yes } }
 		target_root_trigger = {
 			cbrn_protection_program_category_visible = yes
 			cbrn_country_needs_imported_masks = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.import_masks_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_IMPORT_MASKS_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_target_can_supply_imported_masks = yes } }
 		available = {
@@ -334,7 +349,7 @@ cbrn_program_management_category = {
 		target_array = ROOT.allies
 		cost = constant:cbrn_protection_decision_cost.license_design_pp
 		days_remove = constant:cbrn_protection_decision_timing.license_design_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.license_design_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_FACTORIES }
 		visible = {
 			NOT = { has_country_flag = cbrn_foreign_respirator_license_acquired }
 			FROM = { cbrn_target_can_license_respirator_design = yes }
@@ -342,7 +357,7 @@ cbrn_program_management_category = {
 		target_root_trigger = {
 			cbrn_protection_program_category_visible = yes
 			NOT = { has_country_flag = cbrn_foreign_respirator_license_acquired }
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.license_design_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_target_can_license_respirator_design = yes } }
 		available = { FROM = { cbrn_target_can_license_respirator_design = yes } }
@@ -377,13 +392,13 @@ cbrn_civil_defence_category = {
 		cost = constant:cbrn_protection_decision_cost.priority_distribution_pp
 		days_remove = constant:cbrn_protection_decision_timing.priority_distribution_days
 		days_re_enable = constant:cbrn_protection_decision_timing.state_distribution_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.priority_distribution_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_PRIORITY_DISTRIBUTION_FACTORIES }
 		visible = { cbrn_civil_defence_category_visible = yes }
 		target_root_trigger = {
 			cbrn_civil_defence_category_visible = yes
 			has_country_flag = cbrn_national_respirator_reserve
 			cbrn_country_has_any_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.priority_distribution_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_PRIORITY_DISTRIBUTION_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_state_can_receive_priority_masks = yes } }
 		available = {
@@ -423,14 +438,14 @@ cbrn_civil_defence_category = {
 		cost = constant:cbrn_protection_decision_cost.full_distribution_pp
 		days_remove = constant:cbrn_protection_decision_timing.full_distribution_days
 		days_re_enable = constant:cbrn_protection_decision_timing.state_distribution_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.full_distribution_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_FULL_DISTRIBUTION_FACTORIES }
 		visible = { cbrn_civil_defence_category_visible = yes }
 		target_root_trigger = {
 			cbrn_civil_defence_category_visible = yes
 			has_country_flag = cbrn_national_respirator_reserve
 			has_country_flag = cbrn_population_registered_and_fitted
 			cbrn_country_has_any_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.full_distribution_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_FULL_DISTRIBUTION_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_state_can_receive_full_distribution = yes } }
 		available = {
@@ -497,12 +512,12 @@ cbrn_civil_defence_category = {
 		cost = constant:cbrn_protection_decision_cost.replace_filters_pp
 		days_remove = constant:cbrn_protection_decision_timing.replace_filters_days
 		days_re_enable = constant:cbrn_protection_decision_timing.filter_replacement_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.replace_filters_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES }
 		visible = { cbrn_civil_defence_category_visible = yes }
 		target_root_trigger = {
 			cbrn_civil_defence_category_visible = yes
 			cbrn_country_has_any_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.replace_filters_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_REPLACE_FILTERS_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_state_can_replace_civilian_filters = yes } }
 		available = {
@@ -538,12 +553,12 @@ cbrn_civil_defence_category = {
 		cost = constant:cbrn_protection_decision_cost.occupied_distribution_pp
 		days_remove = constant:cbrn_protection_decision_timing.occupied_distribution_days
 		days_re_enable = constant:cbrn_protection_decision_timing.occupied_distribution_reenable_days
-		modifier = { civilian_factory_use = constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+		modifier = { civilian_factory_use = @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_FACTORIES }
 		visible = { cbrn_civil_defence_category_visible = yes }
 		target_root_trigger = {
 			cbrn_civil_defence_category_visible = yes
 			cbrn_country_has_any_mask_stock = yes
-			NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+			NOT = { num_of_civilian_factories_available_for_projects < @CR_SC_CBRN_PROTECTION_DECISION_COST_OCCUPIED_DISTRIBUTION_FACTORIES }
 		}
 		target_trigger = { FROM = { cbrn_state_can_receive_occupied_masks = yes } }
 		available = {

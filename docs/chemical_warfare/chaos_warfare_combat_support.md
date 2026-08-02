@@ -89,11 +89,11 @@ Localisation keys added in:
 Doctrine icon registration:
 - `interface/chaosx_doctrines.gfx`
 - Sprite key: `GFX_doctrine_contaminant_firebases_medium`
-- Current texture mapping: `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`
+- Current texture mapping: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`
 
 ## Icons Needed
 1. Optional dedicated doctrine icon
-- Path: `gfx/interface/doctrines/icons/doctrine_contaminant_firebases.dds`
+- Path: `gfx/interface/doctrines/icons/chaos_warfare_doctrine_style/doctrine_contaminant_fire_support.dds`
 - GFX key: `GFX_doctrine_contaminant_firebases_medium`
 - GFX file: `interface/chaosx_doctrines.gfx`
 

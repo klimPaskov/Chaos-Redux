@@ -1,3 +1,7 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_BONUS = 0.50
+@CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_USES = 1
 # ============================================================================
 # CHAOS REDUX - CBRN PROTECTIVE-EQUIPMENT DECISION EFFECTS
 # ============================================================================
@@ -312,8 +316,8 @@ cbrn_license_respirator_design_from_partner = {
 		}
 		add_tech_bonus = {
 			name = cbrn_foreign_respirator_design_bonus
-			bonus = constant:cbrn_protection_decision_cost.license_design_bonus
-			uses = constant:cbrn_protection_decision_cost.license_design_uses
+			bonus = @CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_BONUS
+			uses = @CR_SC_CBRN_PROTECTION_DECISION_COST_LICENSE_DESIGN_USES
 			category = gas_masks_tech
 		}
 		set_country_flag = cbrn_program_established
@@ -385,10 +389,10 @@ cbrn_register_exact_state_chemical_raid_alert = {
 		clr_state_flag = cbrn_civilians_moved_to_shelters
 		clr_state_flag = cbrn_hospitals_utilities_secured
 		clr_state_flag = cbrn_industry_ordered_to_continue
-		remove_dynamic_modifier = cbrn_chemical_alarm_disruption
-		remove_dynamic_modifier = cbrn_civilian_shelter_disruption
-		remove_dynamic_modifier = cbrn_hospitals_utilities_protected
-		remove_dynamic_modifier = cbrn_industry_kept_operating
+		remove_dynamic_modifier = { modifier = cbrn_chemical_alarm_disruption }
+		remove_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption }
+		remove_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected }
+		remove_dynamic_modifier = { modifier = cbrn_industry_kept_operating }
 		set_state_flag = { flag = cbrn_chemical_raid_alert_active days = var:cbrn_alert_duration_local }
 	}
 }

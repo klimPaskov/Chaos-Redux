@@ -32,6 +32,8 @@ Protective Logistics and Mobile Decontamination do not receive generic organizat
 5. Each installment rechecks active status, company, context, and the full weekly package for the force band stored at activation. Reorganizing the army therefore cannot lower a commitment after it is placed. A failed payment removes benefits and stops the chain. Medical or manpower committed at activation remains unavailable until the planned recovery date.
 6. One targeted final leader event clears the operation identity and status. Targeted country events restore the exact committed medical or manpower amount. There is no daily, weekly, monthly, or other all-country pulse.
 
+The temporary HQ status packages are intentionally strong and are paid for by the active order and its upkeep. Chemical Offensive grants +20 percent planning speed, +20 percent maximum planning, and a 25 percent supply-consumption burden. Theater Protective Posture imposes -15 percent army speed, -10 percent army attack, -15 percent organization loss while moving, -25 percent wounded chance, and +20 percent supply consumption; its reduced-resistance posture uses -10, -7, -10, and +12 percent respectively. Decontamination Corridor and Sealed Operational Area impose -10 and -15 percent army speed with +15 percent supply consumption. Mass Antidote Response grants -40 percent wounded and sickness chance with +20 percent supply consumption, while Seal Infection Corridor grants -50 percent sickness chance with -15 percent army speed and +25 percent supply consumption. Combined CBRN Overmatch grants +30 percent planning speed, +20 percent maximum planning, -10 percent army speed, -30 percent wounded and sickness chance, and +35 percent supply consumption.
+
 ## Force bands, preparation, and costs
 
 The commander’s exact `num_battalions` selects the band:
@@ -40,7 +42,7 @@ The commander’s exact `num_battalions` selects the band:
 - standard: 100 through 199;
 - mass: 200 or more.
 
-Chemical Readiness modifies preparation: below 40 takes 150 percent, 40–59 is baseline, 60–79 takes 85 percent, and 80–100 takes 75 percent. The Operations Section shortens Prepare Chemical Offensive and Combined CBRN Overmatch by ten percent, and those two preparations receive a further five-percent reduction at 90 or more military respiratory protection. Theater Contamination Doctrine then multiplies only those two offensive preparation times by 0.90; Terminal Hazard Doctrine multiplies them by 0.80. Every result is rounded and clamped to the ability range.
+Chemical Readiness modifies preparation: below 40 takes 150 percent, 40–59 is baseline, 60–79 takes 85 percent, and 80–100 takes 75 percent. The Operations Section shortens Prepare Chemical Offensive and Combined CBRN Overmatch by ten percent, and those two preparations receive a further five-percent reduction at 90 or more military respiratory protection. Theater Contamination Doctrine then multiplies only those two offensive preparation times by 0.75; Terminal Hazard Doctrine multiplies them by 0.60. Every result is rounded and clamped to the ability range.
 
 | Ability | Preparation | Active | Cooldown | Full command power by band |
 | --- | ---: | ---: | ---: | ---: |
@@ -68,7 +70,7 @@ Combined CBRN Overmatch follows the stricter matrix composition: Theater CBRN He
 
 ## Exact-state decontamination assignment
 
-While at least one commander has an active Decontamination Corridor and Theater Exploitation is established, `cbrn_assign_decontamination_corridor` can target one controlled state with actual chemical contamination. The assignment removes 10 points from Trace/Local contamination, 8 from Serious, 5 from Severe, or 3 from Catastrophic, records the amount actually removed through the state ledger, and applies a 28-day state and national assignment lock. Theater Contamination Doctrine multiplies cleanup output by 1.25.
+While at least one commander has an active Decontamination Corridor and Theater Exploitation is established, `cbrn_assign_decontamination_corridor` can target one controlled state with actual chemical contamination. The assignment removes 10 points from Trace/Local contamination, 8 from Serious, 5 from Severe, or 3 from Catastrophic, records the amount actually removed through the state ledger, and applies a 28-day state and national assignment lock. Theater Contamination Doctrine multiplies cleanup output by 1.75.
 
 The assignment never clears evidence, attribution, deaths, Condemnation, or confirmed-use history. The national lock is the conservative current-version binding: commander abilities do not expose a stable selected-state pointer, so no unsupported random-state, capital-state, or multi-state substitute is used.
 

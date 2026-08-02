@@ -1,3 +1,8 @@
+# Static database fields in this file do not accept script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_DOCTRINE_AI_HIGH_COMMAND_BASE = 1
+@CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST = 500
+
 leader_traits = {
 	in_antarctica = {
 		type = all
@@ -25,18 +30,14 @@ leader_traits = {
 		override_effect_tooltip = chemical_operations_commander_tt
 		custom_prerequisite_tooltip = chemical_operations_commander_prerequisite_tt
 		prerequisites = {
-			FROM = {
-				has_doctrine = chaos_warfare
-				has_country_flag = cbrn_milestone_protective_foundation
-				cbrn_chaos_warfare_has_fielded_operations_hq = yes
-			}
+			FROM = { has_doctrine = chaos_warfare }
 		}
 		gain_xp = {
 			always = no
 		}
-		cost = constant:cbrn_doctrine_leader.operations_commander_trait_cost
+		cost = @CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST
 		ai_will_do = {
-			factor = constant:cbrn_doctrine_ai.high_command_base
+			factor = @CR_SC_CBRN_DOCTRINE_AI_HIGH_COMMAND_BASE
 			modifier = {
 				factor = constant:cbrn_doctrine_ai.nonhuman_factor
 				FROM = { is_actual_nonhuman_country = yes }

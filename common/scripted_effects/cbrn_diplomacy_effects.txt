@@ -1,3 +1,6 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_CBRN_MATH_ZERO = 0
 # ============================================================================
 # CHAOS REDUX - CBRN DIPLOMACY SCRIPTED EFFECTS
 # ============================================================================
@@ -80,7 +83,7 @@ cbrn_diplomacy_classify_biological_seed_retaliation = {
 					tag = event_target:bio_seed_victim
 					divisions_in_state = {
 						state = PREV
-						size > constant:cbrn_math.zero
+						size > @CR_SC_CBRN_MATH_ZERO
 					}
 				}
 			}
@@ -329,7 +332,7 @@ cbrn_diplomacy_append_chemical_action_record = {
 		}
 		if = {
 			limit = { NOT = { has_variable = global.cbrn_chemical_action_uid_next } }
-			set_variable = { global.cbrn_chemical_action_uid_next = constant:cbrn_math.zero }
+			set_variable = { global.cbrn_chemical_action_uid_next = @CR_SC_CBRN_MATH_ZERO }
 		}
 		add_to_variable = { global.cbrn_chemical_action_uid_next = constant:cbrn_math.one }
 		set_temp_variable = { cbrn_chemical_record_uid = global.cbrn_chemical_action_uid_next }
@@ -358,13 +361,13 @@ cbrn_diplomacy_append_chemical_action_record = {
 		}
 		clamp_temp_variable = {
 			var = cbrn_chemical_record_evidence
-			min = constant:cbrn_math.zero
+			min = @CR_SC_CBRN_MATH_ZERO
 			max = constant:cbrn_evidence_threshold.maximum
 		}
 		set_temp_variable = { cbrn_chemical_record_status_value = constant:cbrn_chemical_record_status.settled }
 		if = {
 			limit = {
-				check_variable = { cbrn_chemical_hidden_liability_delta > constant:cbrn_math.zero }
+				check_variable = { cbrn_chemical_hidden_liability_delta > @CR_SC_CBRN_MATH_ZERO }
 			}
 			set_temp_variable = { cbrn_chemical_record_status_value = constant:cbrn_chemical_record_status.unavailable }
 			if = {
@@ -378,12 +381,12 @@ cbrn_diplomacy_append_chemical_action_record = {
 				set_temp_variable = { cbrn_chemical_record_status_value = constant:cbrn_chemical_record_status.open }
 				if = {
 					limit = { NOT = { has_variable = cbrn_chemical_open_forensic_record_count } }
-					set_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.zero }
+					set_variable = { cbrn_chemical_open_forensic_record_count = @CR_SC_CBRN_MATH_ZERO }
 				}
 				add_to_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.one }
 			}
 		}
-		set_temp_variable = { cbrn_chemical_record_confirmed_registered = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_chemical_record_confirmed_registered = @CR_SC_CBRN_MATH_ZERO }
 		if = {
 			limit = {
 				check_variable = {
@@ -433,8 +436,8 @@ cbrn_diplomacy_append_chemical_action_record = {
 # settlement fields and returns the actual reconciled amounts in temporary
 # accumulator variables owned by the calling country chain.
 cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
-	set_temp_variable = { cbrn_diplomacy_reconcile_row = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_diplomacy_reconcile_row_found = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_reconcile_row = @CR_SC_CBRN_MATH_ZERO }
+	set_temp_variable = { cbrn_diplomacy_reconcile_row_found = @CR_SC_CBRN_MATH_ZERO }
 	while_loop_effect = {
 		limit = {
 			check_variable = {
@@ -444,7 +447,7 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 			}
 			check_variable = {
 				var = cbrn_diplomacy_reconcile_row_found
-				value = constant:cbrn_math.zero
+				value = @CR_SC_CBRN_MATH_ZERO
 				compare = equals
 			}
 		}
@@ -465,12 +468,12 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 			}
 			clamp_temp_variable = {
 				var = cbrn_diplomacy_reconcile_liability
-				min = constant:cbrn_math.zero
+				min = @CR_SC_CBRN_MATH_ZERO
 				max = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_reconcile_row
 			}
 			clamp_temp_variable = {
 				var = cbrn_diplomacy_reconcile_liability
-				min = constant:cbrn_math.zero
+				min = @CR_SC_CBRN_MATH_ZERO
 				max = cbrn_diplomacy_generic_liability_remaining
 			}
 			add_to_variable = {
@@ -494,12 +497,12 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 			}
 			clamp_temp_variable = {
 				var = cbrn_diplomacy_reconcile_relief
-				min = constant:cbrn_math.zero
+				min = @CR_SC_CBRN_MATH_ZERO
 				max = cbrn_chemical_record_relief_unpaid_entries^cbrn_diplomacy_reconcile_row
 			}
 			clamp_temp_variable = {
 				var = cbrn_diplomacy_reconcile_relief
-				min = constant:cbrn_math.zero
+				min = @CR_SC_CBRN_MATH_ZERO
 				max = cbrn_diplomacy_generic_relief_remaining
 			}
 			add_to_variable = {
@@ -524,7 +527,7 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 					}
 					check_variable = {
 						var = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_reconcile_row
-						value = constant:cbrn_math.zero
+						value = @CR_SC_CBRN_MATH_ZERO
 						compare = less_than_or_equals
 					}
 				}
@@ -534,7 +537,7 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 				subtract_from_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.one }
 				clamp_variable = {
 					var = cbrn_chemical_open_forensic_record_count
-					min = constant:cbrn_math.zero
+					min = @CR_SC_CBRN_MATH_ZERO
 					max = cbrn_chemical_record_status_entries^num
 				}
 			}
@@ -548,8 +551,8 @@ cbrn_diplomacy_reconcile_exact_row_generic_exposure = {
 # fraction is applied independently to each row; unmatched aggregate liability
 # remains hidden instead of being assigned to an inferred action.
 cbrn_diplomacy_reconcile_actor_generic_chemical_exposure = {
-	set_temp_variable = { cbrn_diplomacy_generic_exposed_liability = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_diplomacy_generic_exposed_relief = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_generic_exposed_liability = @CR_SC_CBRN_MATH_ZERO }
+	set_temp_variable = { cbrn_diplomacy_generic_exposed_relief = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_diplomacy_generic_liability_remaining = condemnation_hidden_chemical }
 	multiply_temp_variable = {
 		cbrn_diplomacy_generic_liability_remaining = cbrn_diplomacy_generic_exposure_fraction
@@ -560,7 +563,7 @@ cbrn_diplomacy_reconcile_actor_generic_chemical_exposure = {
 	multiply_temp_variable = {
 		cbrn_diplomacy_generic_relief_remaining = cbrn_diplomacy_generic_exposure_fraction
 	}
-	set_temp_variable = { cbrn_diplomacy_reconcile_actor_row = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_reconcile_actor_row = @CR_SC_CBRN_MATH_ZERO }
 	while_loop_effect = {
 		limit = {
 			check_variable = {
@@ -574,8 +577,8 @@ cbrn_diplomacy_reconcile_actor_generic_chemical_exposure = {
 				compare = less_than
 			}
 			OR = {
-				check_variable = { cbrn_diplomacy_generic_liability_remaining > constant:cbrn_math.zero }
-				check_variable = { cbrn_diplomacy_generic_relief_remaining > constant:cbrn_math.zero }
+				check_variable = { cbrn_diplomacy_generic_liability_remaining > @CR_SC_CBRN_MATH_ZERO }
+				check_variable = { cbrn_diplomacy_generic_relief_remaining > @CR_SC_CBRN_MATH_ZERO }
 			}
 		}
 		set_temp_variable = {
@@ -592,8 +595,8 @@ cbrn_diplomacy_reconcile_actor_generic_chemical_exposure = {
 # older row. Agent identity never changes delivery reliability or selection.
 cbrn_diplomacy_select_chemical_forensic_record = {
 	set_temp_variable = { cbrn_diplomacy_selected_chemical_row = constant:cbrn_diplomacy_index.invalid }
-	set_temp_variable = { cbrn_diplomacy_selected_chemical_evidence = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_diplomacy_chemical_scan_row = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_selected_chemical_evidence = @CR_SC_CBRN_MATH_ZERO }
+	set_temp_variable = { cbrn_diplomacy_chemical_scan_row = @CR_SC_CBRN_MATH_ZERO }
 	while_loop_effect = {
 		limit = {
 			check_variable = {
@@ -611,7 +614,7 @@ cbrn_diplomacy_select_chemical_forensic_record = {
 				}
 				check_variable = {
 					var = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_chemical_scan_row
-					value = constant:cbrn_math.zero
+					value = @CR_SC_CBRN_MATH_ZERO
 					compare = greater_than
 				}
 				check_variable = {
@@ -636,7 +639,7 @@ cbrn_diplomacy_select_chemical_forensic_record = {
 # exact actor/victim event targets. Dead countries remain exact historical
 # scopes; live-country effects are gated separately.
 cbrn_diplomacy_load_selected_chemical_record = {
-	set_temp_variable = { cbrn_diplomacy_record_loaded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_record_loaded = @CR_SC_CBRN_MATH_ZERO }
 	if = {
 		limit = {
 			check_variable = { cbrn_diplomacy_selected_chemical_row > constant:cbrn_diplomacy_index.invalid }
@@ -675,8 +678,8 @@ cbrn_diplomacy_load_selected_chemical_record = {
 # caller supplies the exact UID in cbrn_diplomacy_projection_uid.
 # ROOT is the viewing country. No latest-use mirror is accepted as evidence.
 cbrn_diplomacy_project_chemical_record_for_condemnation_detail = {
-	set_temp_variable = { cbrn_diplomacy_projection_found = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_diplomacy_projection_row = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_projection_found = @CR_SC_CBRN_MATH_ZERO }
+	set_temp_variable = { cbrn_diplomacy_projection_row = @CR_SC_CBRN_MATH_ZERO }
 	while_loop_effect = {
 		limit = {
 			check_variable = {
@@ -686,7 +689,7 @@ cbrn_diplomacy_project_chemical_record_for_condemnation_detail = {
 			}
 			check_variable = {
 				var = cbrn_diplomacy_projection_found
-				value = constant:cbrn_math.zero
+				value = @CR_SC_CBRN_MATH_ZERO
 				compare = equals
 			}
 		}
@@ -727,7 +730,7 @@ cbrn_diplomacy_project_chemical_record_for_condemnation_detail = {
 cbrn_diplomacy_select_forensic_record = {
 	set_temp_variable = { cbrn_diplomacy_selected_source = constant:cbrn_diplomacy_source.none }
 	set_temp_variable = { cbrn_diplomacy_selected_agent = constant:bio_lifecycle_agent.none }
-	set_temp_variable = { cbrn_diplomacy_selected_evidence = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_selected_evidence = @CR_SC_CBRN_MATH_ZERO }
 
 	cbrn_diplomacy_select_chemical_forensic_record = yes
 	if = {
@@ -869,7 +872,7 @@ cbrn_diplomacy_classify_loaded_chemical_record = {
 # A dead perpetrator remains historically identified, but no country effect is
 # redirected to a successor or inferred proxy.
 cbrn_diplomacy_expose_recorded_chemical_responsibility = {
-	set_temp_variable = { cbrn_diplomacy_target_paid_share = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_target_paid_share = @CR_SC_CBRN_MATH_ZERO }
 	if = {
 		limit = { check_variable = { var = cbrn_diplomacy_published_attribution value = constant:cbrn_attribution_state.confirmed compare = equals } }
 		set_temp_variable = { cbrn_diplomacy_target_paid_share = constant:cbrn_diplomacy_evidence.confirmed_hidden_exposure }
@@ -883,12 +886,12 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 		set_temp_variable = { cbrn_diplomacy_target_paid_share = constant:cbrn_diplomacy_evidence.suspected_hidden_exposure }
 	}
 
-	set_temp_variable = { condemnation_exact_hidden_exposed_gain = constant:cbrn_math.zero }
-	set_temp_variable = { condemnation_exact_hidden_retaliation_relief_exposed = constant:cbrn_math.zero }
+	set_temp_variable = { condemnation_exact_hidden_exposed_gain = @CR_SC_CBRN_MATH_ZERO }
+	set_temp_variable = { condemnation_exact_hidden_retaliation_relief_exposed = @CR_SC_CBRN_MATH_ZERO }
 	if = {
 		limit = {
-			check_variable = { cbrn_diplomacy_record_loaded > constant:cbrn_math.zero }
-			check_variable = { cbrn_diplomacy_record_condemnation_unpaid > constant:cbrn_math.zero }
+			check_variable = { cbrn_diplomacy_record_loaded > @CR_SC_CBRN_MATH_ZERO }
+			check_variable = { cbrn_diplomacy_record_condemnation_unpaid > @CR_SC_CBRN_MATH_ZERO }
 			has_event_target = cbrn_diplomacy_record_actor
 			event_target:cbrn_diplomacy_record_actor = { exists = yes }
 		}
@@ -896,12 +899,12 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 		multiply_temp_variable = { cbrn_diplomacy_desired_paid_liability = cbrn_diplomacy_target_paid_share }
 		set_temp_variable = { cbrn_diplomacy_exact_liability_delta = cbrn_diplomacy_desired_paid_liability }
 		subtract_from_temp_variable = { cbrn_diplomacy_exact_liability_delta = cbrn_diplomacy_record_condemnation_paid }
-		clamp_temp_variable = { var = cbrn_diplomacy_exact_liability_delta min = constant:cbrn_math.zero max = cbrn_diplomacy_record_condemnation_unpaid }
+		clamp_temp_variable = { var = cbrn_diplomacy_exact_liability_delta min = @CR_SC_CBRN_MATH_ZERO max = cbrn_diplomacy_record_condemnation_unpaid }
 		set_temp_variable = { cbrn_diplomacy_desired_paid_relief = cbrn_diplomacy_record_relief_total }
 		multiply_temp_variable = { cbrn_diplomacy_desired_paid_relief = cbrn_diplomacy_target_paid_share }
 		set_temp_variable = { cbrn_diplomacy_exact_relief_delta = cbrn_diplomacy_desired_paid_relief }
 		subtract_from_temp_variable = { cbrn_diplomacy_exact_relief_delta = cbrn_diplomacy_record_relief_paid }
-		clamp_temp_variable = { var = cbrn_diplomacy_exact_relief_delta min = constant:cbrn_math.zero max = cbrn_diplomacy_record_relief_unpaid }
+		clamp_temp_variable = { var = cbrn_diplomacy_exact_relief_delta min = @CR_SC_CBRN_MATH_ZERO max = cbrn_diplomacy_record_relief_unpaid }
 		event_target:cbrn_diplomacy_record_actor = {
 			set_temp_variable = { condemnation_source_type = constant:condemnation_source.chemical }
 			set_temp_variable = { condemnation_context_type = constant:condemnation_context.forensic_disclosure }
@@ -910,9 +913,9 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 			condemnation_expose_exact_hidden_source_amount = yes
 			condemnation_recalculate_hidden_total = yes
 			condemnation_recalculate_total = yes
-			clamp_variable = { var = condemnation_recent_gain min = constant:cbrn_math.zero max = constant:condemnation_threshold.recent_gain_cap }
+			clamp_variable = { var = condemnation_recent_gain min = @CR_SC_CBRN_MATH_ZERO max = constant:condemnation_threshold.recent_gain_cap }
 			if = {
-				limit = { check_variable = { condemnation_exact_hidden_exposed_gain > constant:cbrn_math.zero } }
+				limit = { check_variable = { condemnation_exact_hidden_exposed_gain > @CR_SC_CBRN_MATH_ZERO } }
 				set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
 				set_country_flag = { flag = condemnation_recent_gain_visible days = var:condemnation_recent_gain_days }
 			}
@@ -927,7 +930,7 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 		}
 		clamp_variable = {
 			var = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_selected_chemical_row
-			min = constant:cbrn_math.zero
+			min = @CR_SC_CBRN_MATH_ZERO
 			max = cbrn_diplomacy_record_condemnation_total
 		}
 		add_to_variable = {
@@ -938,7 +941,7 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 		}
 		clamp_variable = {
 			var = cbrn_chemical_record_relief_unpaid_entries^cbrn_diplomacy_selected_chemical_row
-			min = constant:cbrn_math.zero
+			min = @CR_SC_CBRN_MATH_ZERO
 			max = cbrn_diplomacy_record_relief_total
 		}
 	}
@@ -948,7 +951,7 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 			OR = {
 				check_variable = {
 					var = cbrn_chemical_record_condemnation_unpaid_entries^cbrn_diplomacy_selected_chemical_row
-					value = constant:cbrn_math.zero
+					value = @CR_SC_CBRN_MATH_ZERO
 					compare = less_than_or_equals
 				}
 				AND = {
@@ -979,7 +982,7 @@ cbrn_diplomacy_expose_recorded_chemical_responsibility = {
 		subtract_from_variable = { cbrn_chemical_open_forensic_record_count = constant:cbrn_math.one }
 		clamp_variable = {
 			var = cbrn_chemical_open_forensic_record_count
-			min = constant:cbrn_math.zero
+			min = @CR_SC_CBRN_MATH_ZERO
 			max = cbrn_chemical_record_status_entries^num
 		}
 	}
@@ -999,7 +1002,7 @@ cbrn_diplomacy_register_newly_confirmed_chemical_record = {
 			}
 			check_variable = {
 				var = cbrn_chemical_record_confirmed_registered_entries^cbrn_diplomacy_selected_chemical_row
-				value = constant:cbrn_math.zero
+				value = @CR_SC_CBRN_MATH_ZERO
 				compare = equals
 			}
 		}
@@ -1042,11 +1045,11 @@ cbrn_diplomacy_register_newly_confirmed_chemical_record = {
 }
 
 cbrn_diplomacy_advance_selected_chemical_record = {
-	set_temp_variable = { cbrn_diplomacy_chemical_advance_proof = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_diplomacy_chemical_advance_proof = @CR_SC_CBRN_MATH_ZERO }
 	cbrn_diplomacy_load_selected_chemical_record = yes
 	if = {
 		limit = {
-			check_variable = { cbrn_diplomacy_record_loaded > constant:cbrn_math.zero }
+			check_variable = { cbrn_diplomacy_record_loaded > @CR_SC_CBRN_MATH_ZERO }
 			check_variable = {
 				var = cbrn_chemical_record_status_entries^cbrn_diplomacy_selected_chemical_row
 				value = constant:cbrn_chemical_record_status.open
@@ -1058,7 +1061,7 @@ cbrn_diplomacy_advance_selected_chemical_record = {
 		}
 		clamp_variable = {
 			var = cbrn_chemical_record_evidence_entries^cbrn_diplomacy_selected_chemical_row
-			min = constant:cbrn_math.zero
+			min = @CR_SC_CBRN_MATH_ZERO
 			max = constant:cbrn_evidence_threshold.maximum
 		}
 		set_temp_variable = {
@@ -1084,7 +1087,7 @@ cbrn_diplomacy_observe_best_chemical_record = {
 
 # State scope. Advances the record locked when the timed action began.
 cbrn_diplomacy_publish_best_forensic_record = {
-	set_temp_variable = { cbrn_forensic_publication_applied = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_forensic_publication_applied = @CR_SC_CBRN_MATH_ZERO }
 	if = {
 		limit = {
 			has_variable = cbrn_forensic_selected_source
@@ -1140,7 +1143,7 @@ cbrn_diplomacy_publish_best_forensic_record = {
 			BIO_AGENT = "[?cbrn_diplomacy_selected_agent|.0]"
 		}
 		if = {
-			limit = { check_variable = { cbrn_forensic_publication_applied > constant:cbrn_math.zero } }
+			limit = { check_variable = { cbrn_forensic_publication_applied > @CR_SC_CBRN_MATH_ZERO } }
 			set_temp_variable = { bio_active_agent = cbrn_diplomacy_selected_agent }
 			bio_lifecycle_load_current_agent_record = yes
 			bio_lifecycle_update_current_agent_attribution = yes
@@ -1149,7 +1152,7 @@ cbrn_diplomacy_publish_best_forensic_record = {
 	}
 
 	if = {
-		limit = { check_variable = { cbrn_forensic_publication_applied > constant:cbrn_math.zero } }
+		limit = { check_variable = { cbrn_forensic_publication_applied > @CR_SC_CBRN_MATH_ZERO } }
 		set_state_flag = cbrn_forensic_evidence_published_history
 		CONTROLLER = {
 			add_to_variable = { cbrn_forensic_publications_completed = constant:cbrn_math.one }
@@ -1289,7 +1292,7 @@ cbrn_diplomacy_complete_international_decon_mission = {
 			}
 			clamp_variable = {
 				var = cbrn_medical_saturation
-				min = constant:cbrn_math.zero
+				min = @CR_SC_CBRN_MATH_ZERO
 				max = constant:cbrn_chemical_dispatch.state_medical_maximum
 			}
 		}

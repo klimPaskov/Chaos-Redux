@@ -589,7 +589,7 @@ The following country-scope triggers return true only when the named non-researc
 - `cbrn_can_set_retaliation_authority_policy`: policy-change gate, not already retaliation, 5 Command Power, and readiness 10.
 - `cbrn_can_set_limited_battlefield_policy`: Delivery Integration, 15 Command Power, readiness 40, operational payload reserve, and not already limited.
 - `cbrn_can_set_strategic_release_policy`: Theater Exploitation, 25 Command Power, readiness 65, strategic payload reserve, and not already strategic.
-- `cbrn_can_set_unrestricted_policy`: Terminal Command, 40 Command Power, readiness 85, terminal payload reserve, and not already at extreme-use policy.
+- `cbrn_can_set_unrestricted_policy`: Terminal CBRN Command, 40 Command Power, readiness 85, terminal payload reserve, and not already at extreme-use policy.
 - `cbrn_ai_route_allows_first_use`: explicit first-use/unrestricted route, high-chaos Soviet successor, or mapped Japan-China chemical campaign context.
 - `cbrn_ai_route_allows_unrestricted_use`: explicit unrestricted route or high-chaos Soviet successor.
 - `cbrn_ai_has_defensive_cbrn_profile`: mass civil defence, prepared power, civil-defence network, or an ordinary democratic country without an accepted first-use route.

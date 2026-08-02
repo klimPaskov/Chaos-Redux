@@ -12,12 +12,40 @@
 @CBRN_TOXIC_ARMOR_AI_BASE = 1.00
 @CBRN_TOXIC_ARMOR_AI_UNAVAILABLE = 0
 @CBRN_TOXIC_ARMOR_AI_COMMITTED = 2.00
-@CBRN_TOXIC_ARMOR_MASTERY_MULT = 6.00
+@CBRN_TOXIC_ARMOR_MASTERY_MULT = 14.00
 @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD = 100
-@CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH = 0.03
-@CBRN_TOXIC_ARMOR_M1_RELIABILITY = 0.03
-@CBRN_TOXIC_ARMOR_M4_SUPPLY = -0.05
-@CBRN_TOXIC_ARMOR_M5_COORDINATION = 0.01
+@CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH = 0.25
+@CBRN_TOXIC_ARMOR_ADOPTION_TANK_SUPPRESSION = 0.40
+@CBRN_TOXIC_ARMOR_ADOPTION_INFANTRY_SUPPRESSION = 0.15
+@CBRN_TOXIC_ARMOR_ADOPTION_INFANTRY_DEFENSE = 0.10
+@CBRN_TOXIC_ARMOR_M1_RELIABILITY = 0.15
+@CBRN_TOXIC_ARMOR_M1_TANK_SUPPRESSION = 1.00
+@CBRN_TOXIC_ARMOR_M1_CHEMICAL_SUPPRESSION = 2.00
+@CBRN_TOXIC_ARMOR_M1_INFANTRY_SUPPRESSION = 0.25
+@CBRN_TOXIC_ARMOR_M1_INFANTRY_DEFENSE = 0.15
+@CBRN_TOXIC_ARMOR_M1_GARRISON_DAMAGE = -0.30
+@CBRN_TOXIC_ARMOR_M2_CHEMICAL_ORGANISATION = 25
+@CBRN_TOXIC_ARMOR_M2_CHEMICAL_MORALE = 0.30
+@CBRN_TOXIC_ARMOR_M2_COORDINATION = 0.15
+@CBRN_TOXIC_ARMOR_M2_INFANTRY_ORGANISATION = 10
+@CBRN_TOXIC_ARMOR_M2_INFANTRY_SOFT_ATTACK = 0.10
+@CBRN_TOXIC_ARMOR_M3_CHEMICAL_SUPPRESSION = 3.00
+@CBRN_TOXIC_ARMOR_M3_INFANTRY_SUPPRESSION = 1.00
+@CBRN_TOXIC_ARMOR_M4_ARMOR_SUPPLY = -0.20
+@CBRN_TOXIC_ARMOR_M4_ARMOR_BREAKTHROUGH = 0.25
+@CBRN_TOXIC_ARMOR_M4_CHEMICAL_SUPPLY = -0.75
+@CBRN_TOXIC_ARMOR_M4_CHEMICAL_RELIABILITY = 0.30
+@CBRN_TOXIC_ARMOR_M4_INFANTRY_SUPPLY = -0.10
+@CBRN_TOXIC_ARMOR_M4_INFANTRY_DEFENSE = 0.10
+@CBRN_TOXIC_ARMOR_M5_PLANNING = 0.30
+@CBRN_TOXIC_ARMOR_M5_COORDINATION = 0.15
+@CBRN_TOXIC_ARMOR_M5_INITIATIVE = 0.10
+@CBRN_TOXIC_ARMOR_M5_TANK_BREAKTHROUGH = 0.30
+@CBRN_TOXIC_ARMOR_M5_TANK_SOFT_ATTACK = 0.30
+@CBRN_TOXIC_ARMOR_M5_TANK_HARD_ATTACK = 0.30
+@CBRN_TOXIC_ARMOR_M5_CHEMICAL_INITIATIVE = 0.15
+@CBRN_TOXIC_ARMOR_M5_CHEMICAL_RELIABILITY = 0.25
+@CBRN_TOXIC_ARMOR_M5_ARMY_MORALE = 0.20
 
 chemical_suppression = {
 	track = armor
@@ -61,14 +89,32 @@ chemical_suppression = {
 		breakthrough = @CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH
 	}
 
+	category_tanks = {
+		suppression = @CBRN_TOXIC_ARMOR_ADOPTION_TANK_SUPPRESSION
+	}
+
+	category_all_infantry = {
+		suppression = @CBRN_TOXIC_ARMOR_ADOPTION_INFANTRY_SUPPRESSION
+		defense = @CBRN_TOXIC_ARMOR_ADOPTION_INFANTRY_DEFENSE
+	}
+
 	effect = { cbrn_record_toxic_armored_adoption = yes }
 
 	rewards = {
 		adamsite_emission_cells = {
 			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_tanks = {
+				suppression = @CBRN_TOXIC_ARMOR_M1_TANK_SUPPRESSION
+			}
 			category_chemical_tank_support_companies = {
 				reliability = @CBRN_TOXIC_ARMOR_M1_RELIABILITY
+				suppression = @CBRN_TOXIC_ARMOR_M1_CHEMICAL_SUPPRESSION
 			}
+			category_all_infantry = {
+				suppression = @CBRN_TOXIC_ARMOR_M1_INFANTRY_SUPPRESSION
+				defense = @CBRN_TOXIC_ARMOR_M1_INFANTRY_DEFENSE
+			}
+			resistance_damage_to_garrison_on_our_occupied_states = @CBRN_TOXIC_ARMOR_M1_GARRISON_DAMAGE
 			effect = {
 				set_country_flag = cbrn_sealed_crew_compartments_unlocked
 				cbrn_record_armor_mastery_one = yes
@@ -77,6 +123,15 @@ chemical_suppression = {
 
 		armored_chemical_support_liaison = {
 			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_chemical_tank_support_companies = {
+				max_organisation = @CBRN_TOXIC_ARMOR_M2_CHEMICAL_ORGANISATION
+				default_morale = @CBRN_TOXIC_ARMOR_M2_CHEMICAL_MORALE
+			}
+			coordination_bonus = @CBRN_TOXIC_ARMOR_M2_COORDINATION
+			category_all_infantry = {
+				max_organisation = @CBRN_TOXIC_ARMOR_M2_INFANTRY_ORGANISATION
+				soft_attack = @CBRN_TOXIC_ARMOR_M2_INFANTRY_SOFT_ATTACK
+			}
 			effect = {
 				set_country_flag = cbrn_armored_agent_delivery_operations_unlocked
 				cbrn_record_armor_mastery_two = yes
@@ -85,6 +140,12 @@ chemical_suppression = {
 
 		zyklon_b_saturation_drills = {
 			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_chemical_tank_support_companies = {
+				suppression = @CBRN_TOXIC_ARMOR_M3_CHEMICAL_SUPPRESSION
+			}
+			category_all_infantry = {
+				suppression = @CBRN_TOXIC_ARMOR_M3_INFANTRY_SUPPRESSION
+			}
 			effect = {
 				set_country_flag = cbrn_mobile_nerve_suppression_operations_unlocked
 				cbrn_record_armor_mastery_three = yes
@@ -94,8 +155,17 @@ chemical_suppression = {
 
 		sealed_pressure_logistics = {
 			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_all_armor = {
+				supply_consumption = @CBRN_TOXIC_ARMOR_M4_ARMOR_SUPPLY
+				breakthrough = @CBRN_TOXIC_ARMOR_M4_ARMOR_BREAKTHROUGH
+			}
 			category_chemical_tank_support_companies = {
-				supply_consumption = @CBRN_TOXIC_ARMOR_M4_SUPPLY
+				supply_consumption = @CBRN_TOXIC_ARMOR_M4_CHEMICAL_SUPPLY
+				reliability = @CBRN_TOXIC_ARMOR_M4_CHEMICAL_RELIABILITY
+			}
+			category_all_infantry = {
+				supply_consumption = @CBRN_TOXIC_ARMOR_M4_INFANTRY_SUPPLY
+				defense = @CBRN_TOXIC_ARMOR_M4_INFANTRY_DEFENSE
 			}
 			effect = {
 				set_country_flag = cbrn_protected_breakthrough_logistics_unlocked
@@ -105,7 +175,21 @@ chemical_suppression = {
 
 		catastrophic_shock_breakthrough = {
 			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			planning_speed = @CBRN_TOXIC_ARMOR_M5_PLANNING
 			coordination_bonus = @CBRN_TOXIC_ARMOR_M5_COORDINATION
+			category_army = {
+				initiative = @CBRN_TOXIC_ARMOR_M5_INITIATIVE
+			}
+			category_tanks = {
+				breakthrough = @CBRN_TOXIC_ARMOR_M5_TANK_BREAKTHROUGH
+				soft_attack = @CBRN_TOXIC_ARMOR_M5_TANK_SOFT_ATTACK
+				hard_attack = @CBRN_TOXIC_ARMOR_M5_TANK_HARD_ATTACK
+			}
+			category_chemical_tank_support_companies = {
+				initiative = @CBRN_TOXIC_ARMOR_M5_CHEMICAL_INITIATIVE
+				reliability = @CBRN_TOXIC_ARMOR_M5_CHEMICAL_RELIABILITY
+			}
+			army_morale = @CBRN_TOXIC_ARMOR_M5_ARMY_MORALE
 			effect = {
 				set_country_flag = cbrn_catastrophic_shock_operation_unlocked
 				cbrn_record_armor_mastery_five = yes

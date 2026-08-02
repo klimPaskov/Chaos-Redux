@@ -178,7 +178,7 @@ Chemical air bomb modules are active content.
 
 - Seven standard-agent racks and the two project-gated incapacitating-agent racks fit CAS and tactical-bomber designs; strategic bombers are not eligible.
 - They are present in aircraft progression and UI as payload-handling and selected-state-operation eligibility components.
-- Their ordinary CAS and logistics-attack values are deliberately modest and do not represent toxic exposure.
+- Their ordinary CAS and logistics-attack values provide a real combat payload, while toxic consequences still require a selected-state operation and the shared CBRN exposure pipeline.
 - Ordinary missions, deployed aircraft counts, and ground combat never prove chemical release.
 - The former ground-operation-heat and regional aircraft estimator is retired.
 - Only an explicit selected-state raid may reserve payload and enter the shared CBRN exposure and Condemnation pipeline.
