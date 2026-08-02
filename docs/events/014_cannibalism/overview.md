@@ -74,7 +74,13 @@ The reveal publicly identifies Hannibal Lecter and unlocks the reveal super-even
 
 The unified country inherits territory, divisions, surviving characters, technologies, ideas, route choices, cells, and stored Larder value through explicit transfer effects. Its 108-focus tree covers convergence politics, warlord disposition, supreme hierarchy, continental Larder doctrine, army, navy, air, intelligence and cells, expansion, world counterwar, and the ordinary terminal route. Completed cannibal routes are intentionally absurd and overpowered, but they are gated by difficult progression, world hostility, finite Larder pressure, counterplay, territorial requirements, and terminal checks.
 
-Every successful absorption also calls the shared additive technology-union helper before donor cleanup and annexation. CBL and transformed ZZZ keep their existing technologies, research slots, and established mutually exclusive industry branch while gaining every other compatible researched technology token from the absorbed constituent. Autonomous, resistant, or challenging warlords transfer nothing until a later transaction actually absorbs them. Completed special-project state is outside this token-transfer contract, while the in-place ZZZ transformation preserves its own existing special-project state.
+Every successful absorption also calls the Event 014 additive technology-union helper before donor cleanup and annexation. CBL and transformed ZZZ keep their existing technologies, research slots, and established mutually exclusive industry branch while gaining every other compatible researched technology token from the absorbed constituent. Autonomous, resistant, or challenging warlords transfer nothing until a later transaction actually absorbs them. Completed special-project state is outside this token-transfer contract, while the in-place ZZZ transformation preserves its own existing special-project state.
+
+### Event-owned technology union helper
+
+`union_compatible_researched_technologies_from_donor` lives in `common/scripted_effects/014_cannibalism_effects.txt` because its three callers are Event 014 absorption transactions.
+
+The current country is the recipient and `event_target:technology_union_donor` is the donor. The helper iterates the donor's `researched_techs`, grants only missing tokens, preserves the recipient's flexible or streamlined production branch, preserves the recipient's concentrated or dispersed industry branch, never removes recipient technology, and never changes research slots. Callers invoke it before donor cleanup or annexation.
 
 ## Unified operational contracts
 
