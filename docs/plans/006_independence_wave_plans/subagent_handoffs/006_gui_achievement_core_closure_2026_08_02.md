@@ -16,7 +16,7 @@ One bounded core correction was required before the GUI/achievement source surfa
 
 The current code therefore maps `congress_failed` to `league_drafting`, `consultative_league` to `league_vote`, and `dissolved_network` to `league_activated`.
 
-The parent replaced those three `greater_than_or_equals` checks with explicit phase groups and clears `independence_wave_status_gui_show_animation` in `independence_wave_reset_current_generation`. The source-level selector and cleanup contract are now closed; the semantic render matrix below remains a bounded offline-QA receipt rather than a live-game claim.
+The parent replaced those three `greater_than_or_equals` checks with explicit phase groups and clears `independence_wave_status_gui_show_animation` in `independence_wave_reset_current_generation`. The source-level selector and cleanup contract are now closed; the static semantic matrix receipt is `006_gui_semantic_matrix_static_receipt_2026_08_02.md`, while live-game rendering and save/load evidence remain outside this handoff.
 
 The older claim that no admitted package can complete the Radical Bloc route is also stale.
 
@@ -136,6 +136,8 @@ After the League-frame selector is corrected, run the same two resolutions with 
 | Refresh | mutate a founding value or phase, then invoke refresh | Text band and selected frame agree after the refresh effect |
 | Cleanup | active non-default tab and animation flag, then country reset | Flags and frame variables clear; default government/static presentation returns on the next valid setup |
 
+The source-only matrix for these scenarios is recorded in `006_gui_semantic_matrix_static_receipt_2026_08_02.md` and passes `.tools/audit_event6_gui_matrix.py`. It does not replace the optional live rendering, save/load, and player-owned observation boundary.
+
 ## Radical Bloc source trace
 
 The admitted route is concrete:
@@ -192,7 +194,7 @@ After the parent applies and validates the exact League-frame correction, reconc
 
 ## Completion boundary
 
-This tranche is complete only when the explicit League phase groups are implemented, the post-patch GUI scenario matrix is recorded, the sixteen-row achievement receipt is current, and the stale Radical Bloc reachability statements are corrected.
+This tranche is complete for static source evidence: the explicit League phase groups are implemented, the source-only GUI scenario matrix is recorded, the sixteen-row achievement receipt is current, and the stale Radical Bloc reachability statements are corrected. Live rendering, save/load, and player-owned observation remain optional bounded QA rather than a source-closure claim.
 
 It does not close whole Event 006 completion.
 
