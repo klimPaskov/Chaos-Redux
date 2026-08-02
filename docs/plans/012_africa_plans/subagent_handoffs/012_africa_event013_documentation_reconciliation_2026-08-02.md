@@ -10,17 +10,17 @@ This pass covered `docs/specs/012_africa_specs/`, `docs/events/012_africa/`, and
 
 The current Event 013 effect defines `natural_disaster_record_event012_civilian_weaponisation` after `natural_disaster_apply_population_loss` and calls it once from the ordinary impact path in `natural_disaster_execute_impact`.
 
-The helper requires the persisted `hostile_actor` caller type, the Event 012 caller ID, a persisted caller country, and `natural_disaster_last_deaths > 0` before invoking `africa_achievement_record_disaster_weaponised_against_civilians` on the persisted Event 012 host.
+The helper requires the persisted `hostile_actor` caller type, the Event 012 caller ID, a persisted caller country, and `natural_disaster_last_deaths > 0` before invoking `africa_achievement_record_disaster_weaponised_against_civilians` on the persisted Event 012 host. The accepted sequence guard additionally requires a fresh pending witness and an exact Event 013 sequence-ID match, so delayed reports cannot inherit stale caller metadata.
 
 The current exact owner handoff is `docs/plans/012_africa_plans/subagent_handoffs/012_africa_event013_civilian_weaponisation_owner_2026-08-02.md`.
 
-The shared worktree also contains a separate uncommitted sequence-guard tranche documented in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_event013_civilian_weaponisation_sequence_guard_2026-08-02.md`. This reconciliation did not own that source patch, so its pending-state and sequence-ID requirements remain a parent review item.
+The sequence-guard tranche is included in the parent review and is documented in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_event013_civilian_weaponisation_sequence_guard_2026-08-02.md`.
 
 ## Source-of-truth map
 
 | Surface | Current authority | Disposition |
 | --- | --- | --- |
-| Accepted Event 012 design | `docs/specs/012_africa_specs/` and the row 38 achievement matrix entry | Unchanged normative design. The civilian-weaponisation clause remains an intended disqualifier. |
+| Accepted Event 012 design | `docs/specs/012_africa_specs/` and row 38 of `docs/specs/012_africa_specs/matrices/012_africa_achievement_matrix.csv` | Unchanged normative design. The civilian-weaponisation clause remains an intended disqualifier. |
 | Current event status | `docs/events/012_africa/overview.md` | Updated to distinguish the stable public Event 013 call contract from the newer effect callback. |
 | Hostile nature mechanics | `docs/events/012_africa/natural_disaster_weapons.md` | Updated to document the Event 013 callback owner and preserve the Event 012 wrapper boundary. |
 | Current row disposition | `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` row 37 | Updated from future-owner wording to source-wired owner evidence with live ecological-covenant proof still blocked. |
@@ -69,7 +69,7 @@ The stale wording found in scoped plans is confined to dated audit handoffs list
 2. Keep the Event 013 public call contract as the shared API boundary and treat the effect callback as the sole civilian-death witness for this owner.
 3. Schedule live ecological-covenant acceptance for row 37 and decide separately whether actor-rampage and duration-reset requirements need another owner tranche.
 4. Leave the dated audit wording unchanged unless a later archival policy requires a superseded banner. No such banner was necessary for this bounded pass.
-5. Review the separate sequence-guard tranche before treating the current working-tree callback contract as final, then update the row 37 evidence if that tranche is accepted.
+5. Keep the sequence-guard handoff alongside the owner handoff when reviewing the current callback contract. Its fresh pending witness and exact sequence-ID match are part of the current source evidence, while live ecological-covenant proof remains open.
 
 ## Files changed
 
