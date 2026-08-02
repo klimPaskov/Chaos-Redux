@@ -7,10 +7,10 @@
 - Current catalog detail: a random province gains 100 production of one resource
 - Type: Minor Repeatable
 - Current status: To Be Reworked
-- Required cluster: Economy (pos)
+- Cluster: none
 - Required member severity: Medium
 
-The cluster catalog currently lists Economy (pos) as a new Chaos Level 1 cluster without assigned members. Event 018 should become one of its medium-severity members. Its first impression must remain positive enough to fit that cluster. The later horror does not change the cluster identity because the event is selected as an economic discovery and only becomes dangerous through continued development and evolution.
+The cluster catalog lists Economy (pos) as a Chaos Level 1 cluster without assigned members. Event 018 remains outside that cluster, and its later horror develops through its own persistent field and evolution systems.
 
 ## Nearby catalog ideas that must remain distinct
 
@@ -48,7 +48,7 @@ These events already create existential nonhuman threats. Event 018 must use the
 
 ## Cluster connections
 
-The Economy (pos) cluster can eventually include Event 016 Brilliant Scientist, Event 018 Resources Found, Event 034 Industrial Boom, Event 055 Great Infrastructure Project, Event 058 Industrial Complex, Event 066 International Market Funding, Event 089 Tech Sharing, Event 132 Investment, Event 135 Equipment Choice, and Event 137 Research Investment after their reworks. Event 018 should occupy the field-development and strategic-trade niche.
+The Economy (pos) cluster can eventually include suitable positive economic events after their reworks. Event 018 remains independent as the field-development and strategic-trade event.
 
 The cluster firing should not reveal the hidden horror. Cluster detail text should describe a state gaining an unexpectedly valuable deposit and the opportunities created by developing it. Evolution and world-end material belongs in evolution details and later event surfaces.
 

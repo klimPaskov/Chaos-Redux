@@ -1,6 +1,6 @@
 # Event 018 - Resources Found
 
-Event 018 is a Minor Repeatable Economy (pos) event with Medium cluster severity. Its canonical entry is `chaosx.nr18.1`. Each accepted firing selects one valid state owned and controlled by the firing country, then either creates a persistent field or enriches an existing eligible field. The baseline is complete with all evolutions disabled.
+Event 018 is a Minor Repeatable event that is not assigned to an event cluster. Its canonical entry is `chaosx.nr18.1`. Each accepted firing selects one valid state owned and controlled by the firing country, then either creates a persistent field or enriches an existing eligible field. The baseline is complete with all evolutions disabled.
 
 The system uses the six standard HOI4 resources only: oil, aluminium, rubber, tungsten, steel, and chromium. A baseline discovery chooses one of them with equal probability and adds 80 to 120 units, centered on 100. Resource legality is never terrain-gated. Terrain, infrastructure, coast, population, and existing development affect state weighting and presentation only.
 
@@ -167,7 +167,7 @@ Definitions, visible requirements, and icon triplets are documented in `docs/ach
 - scripted GUI: `common/scripted_guis/018_resources_found_scripted_gui.txt`, `interface/018_resources_found.gui`, and `interface/018_resources_found.gfx`;
 - English text: `localisation/english/018_random_resource_l_english.yml` and `localisation/english/018_resources_found_system_l_english.yml`;
 - scripted text: `common/scripted_localisation/018_resources_found_scripted_localisation.txt` plus the shared Event Details, settings, and super-event selectors;
-- shared integrations: event dispatcher, cluster 7, Event Details/log, the clickable World Opens Below world-end row and independent automatic-selection checkbox, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries;
+- shared integrations: event dispatcher, Event Details/log, the clickable World Opens Below world-end row and independent automatic-selection checkbox, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries;
 - catalog: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
 ## Asset wiring

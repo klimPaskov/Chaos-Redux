@@ -18,8 +18,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Event ID remains 18.
 - [x] Canonical entry uses the `chaosx.nr18.1` root.
 - [x] Event remains Minor Repeatable.
-- [x] Event belongs to Economy (pos).
-- [x] Cluster member severity is Medium.
+- [x] Event is not assigned to an event cluster.
 - [x] Event is enabled by default only after the rework is implementation-ready.
 - [x] Baseline works when all four evolutions are disabled.
 - [x] Baseline lifecycle stages are not logged as evolutions.
@@ -415,7 +414,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Event catalog workbook matches final in-game Event Details wording.
 - [x] Evolution fields match final in-game evolution wording.
 - [x] World-end field matches implemented terminal state.
-- [x] Cluster field shows Economy (pos) and Medium severity.
+- [x] Cluster and member-severity fields are blank.
 - [x] No stale plan or handoff remains without disposition.
 - [x] Focus auditor has reviewed the final tree.
 - [x] Decision and mission auditor has reviewed the final categories.

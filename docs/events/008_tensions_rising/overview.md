@@ -66,7 +66,7 @@ These ideas nudge diplomacy, readiness, and defensive behavior without creating 
 
 The event-log detail body is `chaosx.events_log.window.event_details.tensions_rising`. The Diplomatic Fever evolution type uses `constant:tensions_rising_event_log.evolution_type`, records one milestone for each reached stage, and exposes stage title/body text through the history, evolution view, event-detail preview, and selected-evolution panes.
 
-`Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with medium danger and a Calm World minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
+`Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with low danger and a Calm World minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
 
 ## Terminal scope
 

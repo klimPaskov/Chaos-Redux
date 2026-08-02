@@ -442,9 +442,9 @@ Claimants become more aggressive when the state is already disputed, the owner i
 
 ## Connections to other Chaos Redux systems
 
-### Economy (pos) cluster
+### Event cluster exclusion
 
-Event 018 is a medium-severity positive economy member. Cluster firing should present it as the resource-production and trade opportunity. It should not make the entire cluster supernatural.
+Event 018 remains outside the event-cluster system. Its resource-production, trade, and later subterranean escalation run only through its ordinary event and evolution paths.
 
 ### Tensions Rising, Event 8
 

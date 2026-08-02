@@ -38,7 +38,7 @@ The uploaded catalog workbook still had Event 8 detail text equivalent to `Incre
 - Event 8 stays a global pressure event, not a country/focus/formable event.
 - The hidden side effects are concentrated in a capped `Tension Pulse`, timed relation damage, follow-up incidents, temporary AI posture pressure, and rare safe non-transfer border wars.
 - Stage IV remains a high-pressure non-terminal event-log/evolution state and does not receive a super-event.
-- `Diplomatic Panic` is kept as a small cluster note: for now one member, Event 8, with medium severity.
+- `Diplomatic Panic` is kept as a small cluster note: for now one member, Event 8, with low severity.
 - Achievements reward rare timing and deep-stage consequences, not merely seeing the popup once.
 
 ## Files created

@@ -6,7 +6,7 @@ All names in this file are working labels for design structure. They are not fin
 
 ## Event identity
 
-Event 018 remains a **Minor Repeatable** event in the **Economy (pos)** cluster. Its cluster member severity is **Medium**. The ordinary event is a major economic opportunity rather than a disguised punishment. A country discovers that one valid state contains far more of one normal strategic resource than existing surveys indicated. The first visible consequence is a large deposit, new investment demand, and foreign trade interest.
+Event 018 remains a **Minor Repeatable** event and is not assigned to an event cluster. The ordinary event is a major economic opportunity rather than a disguised punishment. A country discovers that one valid state contains far more of one normal strategic resource than existing surveys indicated. The first visible consequence is a large deposit, new investment demand, and foreign trade interest.
 
 The event can become dangerous through repeated development and its evolution tracks. The ordinary discovery should still feel desirable after the player knows that deeper branches exist. The event fails if the correct strategy is always to reject the deposit immediately. Safe exploitation, regulated growth, foreign partnership, national development, strategic militarisation, suspension, and closure must each be viable in different campaign situations.
 

@@ -21,4 +21,4 @@ Generated package files:
 No gameplay files, localisation files, assets, or spreadsheets were modified by this planning task.
 
 
-`Diplomatic Panic` current note: for now one member, Event 8 `Tensions Rising`, with medium member severity.
+`Diplomatic Panic` current note: for now one member, Event 8 `Tensions Rising`, with low member severity.

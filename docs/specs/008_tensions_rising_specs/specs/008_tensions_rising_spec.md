@@ -8,7 +8,7 @@
 **Event name:** `Tensions Rising`  
 **Type:** Minor Repeatable  
 **Status:** To Be Reworked  
-**Cluster handling:** `Diplomatic Panic` may be kept, with for now one member at medium severity
+**Cluster handling:** `Diplomatic Panic` may be kept, with for now one member at low severity
 **World-end scenario:** None
 
 `Tensions Rising` is the small headline that makes the rest of the world feel less stable. It does not release a country, start a focus tree, create a formable, or end the world. It is a pressure event that makes the ordinary Chaos Redux timer and diplomatic memory feel alive: early it nudges world tension upward, later it becomes a ritual of public denials, secret cables, mobilization scares, poisoned relations, insurance spikes, propaganda opportunism, and exhausted general staffs.
@@ -280,7 +280,7 @@ Current cluster: **Diplomatic Panic**
 
 | Member | Role | Member severity | Notes |
 | --- | --- | --- | --- |
-| Event 8: Tensions Rising | required | medium | for now one member, applies normal Event 8 effects |
+| Event 8: Tensions Rising | required | low | for now one member, applies normal Event 8 effects |
 
 ### Cluster unlock and chance
 

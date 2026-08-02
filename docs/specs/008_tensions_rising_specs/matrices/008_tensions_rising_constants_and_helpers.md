@@ -151,7 +151,7 @@ If a delayed incident must name exact countries, schedule it from inside the sam
 ### Cluster system
 
 - If registering `Diplomatic Panic`, keep the current member note simple.
-- For now one member: Event 8 `Tensions Rising`, required, medium severity.
+- For now one member: Event 8 `Tensions Rising`, required, low severity.
 - If not implementing, keep it as queued documentation.
 
 ## Validation notes for implementer

@@ -427,15 +427,7 @@ Event 139 is a lone hunted creature. Event 018 is an underground labor crisis th
 
 ## Event cluster behavior
 
-Event 018 belongs to Economy (pos) with medium member severity. In a cluster firing:
-
-- the discovery remains the main contribution
-- member timing counts according to the shared cluster rules
-- field creation or enrichment still records its normal history
-- the cluster does not skip persistent-field initialization
-- the event’s later evolutions remain independent of the cluster firing
-
-The cluster detail should describe a major resource discovery and the resulting investment and trade interest. It should not expose monsters.
+Event 018 is not assigned to an event cluster. Field creation, enrichment, history, and later evolutions remain owned by its ordinary event path.
 
 ## Terminal and aftermath completion standard
 

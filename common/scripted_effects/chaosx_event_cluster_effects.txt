@@ -19,6 +19,7 @@
 @event_cluster_natural_disasters_cooldown_days = 120
 @event_cluster_formables_cooldown_days = 120
 @event_cluster_economy_positive_cooldown_days = 120
+@event_cluster_diseases_cooldown_days = 120
 @event_cluster_event013_context_sentinel = 0
 @event_cluster_event013_baseline_first_slot = 1
 @event_cluster_event013_evolution_i_slot = 3
@@ -147,7 +148,7 @@ initialize_event_cluster_definitions = {
 	add_to_array = { global.event_clusters = constant:event_cluster_id.diseases }
 	add_to_array = {
 		array = global.event_cluster_type_entries
-		value = constant:event_cluster_type.one_time
+		value = constant:event_cluster_type.repeatable
 	}
 	add_to_array = {
 		array = global.event_cluster_unlock_tier_entries
@@ -395,16 +396,6 @@ event_belongs_to_cluster = {
 		limit = {
 			check_variable = {
 				var = event_id
-				value = constant:resources_found_event.id
-				compare = equals
-			}
-		}
-		set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.economy_positive }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = event_id
 				value = constant:black_plague_identity.event_id
 				compare = equals
 			}
@@ -452,13 +443,13 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.independence_wave }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
-		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
 
 		add_to_array = { array = temp_event_cluster_member_event_id_entries value = 5 }
 		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.soviet_collapse }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
-		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.severe }
 	}
 	else_if = {
 		limit = {
@@ -511,7 +502,7 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.required }
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.tensions_rising }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
-		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
+		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.low }
 
 		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:random_faction_event.id }
 		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.optional }
@@ -546,20 +537,6 @@ load_event_cluster_members = {
 		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.required }
 		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_4 }
 		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.severe }
-	}
-	else_if = {
-		limit = {
-			check_variable = {
-				var = event_cluster_id
-				value = constant:event_cluster_id.economy_positive
-				compare = equals
-			}
-		}
-		add_to_array = { array = temp_event_cluster_member_event_id_entries value = constant:resources_found_event.id }
-		add_to_array = { array = temp_event_cluster_member_role_entries value = constant:event_cluster_member_role.required }
-		add_to_array = { array = temp_event_cluster_member_chance_entries value = constant:event_cluster_member_participation.resources_found }
-		add_to_array = { array = temp_event_cluster_member_min_tier_entries value = constant:chaos_meter_tier_id.tier_0 }
-		add_to_array = { array = temp_event_cluster_member_danger_entries value = constant:event_cluster_member_danger.medium }
 	}
 	else_if = {
 		limit = {
@@ -735,6 +712,16 @@ can_event_cluster_fire = {
 							compare = equals
 						}
 						has_global_flag = event_cluster_economy_positive_cooldown
+					}
+				}
+				NOT = {
+					AND = {
+						check_variable = {
+							var = event_cluster_id
+							value = constant:event_cluster_id.diseases
+							compare = equals
+						}
+						has_global_flag = event_cluster_diseases_cooldown
 					}
 				}
                 NOT = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
@@ -1513,6 +1500,16 @@ mark_event_cluster_fired_state = {
 			}
 		}
 		set_global_flag = { flag = event_cluster_economy_positive_cooldown days = @event_cluster_economy_positive_cooldown_days }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_id
+				value = constant:event_cluster_id.diseases
+				compare = equals
+			}
+		}
+		set_global_flag = { flag = event_cluster_diseases_cooldown days = @event_cluster_diseases_cooldown_days }
 	}
 }
 
