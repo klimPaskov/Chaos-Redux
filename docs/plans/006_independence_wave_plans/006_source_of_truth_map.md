@@ -18,6 +18,8 @@ The GUI and achievement closure handoff is the current bounded authority for tho
 
 Current portrait-status clarification: the two MNT masters and all unpromoted CHU evidence rows remain `needs_user_review` for rights, provenance, date, or role gates. Shelf presence, the scoped Galimzhan/Spasov consumers, and the single v94 Barsoum DDS promotion do not admit a package or authorize advisor, dossier, or small derivatives.
 
+Post-v100 bounded repairs: the CHU IW-043 setup effect now rebuilds `independence_wave_iw043_cosmetic_identity_ready` from the current IW-043 force mapping, applied package, and generation-bound force receipt; the exact source/evidence is `subagent_handoffs/006_iw043_chu_country_package_audit_continuation_2026_08_02.md`. The approved Spasov river-security civilian-large DDS is hash-verified at the existing sprite path in `subagent_handoffs/006_iw043_chu_spasov_postwire_portrait_receipt_2026_08_02.md`. Neither narrow repair changes CHU attestation, opens a fallback, or authorizes advisor/small art.
+
 ## 2026-08-02 historical whole-event authority (v97)
 
 `subagent_handoffs/006_event6_completion_audit_v97_2026_08_02.md` is the latest whole-event completion authority and supersedes v96 and earlier completion matrices for current disposition; those dated bodies remain historical evidence. Its verdict is **partial and blocked**, with no newly admitted package, fallback, or unauthorized simplification. The exact compile-time attestation set remains fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors.
