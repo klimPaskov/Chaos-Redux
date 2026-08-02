@@ -920,7 +920,6 @@ africa_scramble_advance_to_intervention_phase = {
 
 africa_scramble_launch_expedition_if_unresolved = {
 	set_temp_variable = { africa_scramble_expedition_launched = constant:africa_value.zero }
-	set_temp_variable = { africa_scramble_expedition_loop_break = constant:africa_value.zero }
 	if = {
 		limit = {
 			africa_scramble_phase_is_intervention = yes
@@ -928,7 +927,6 @@ africa_scramble_launch_expedition_if_unresolved = {
 		}
 		for_each_scope_loop = {
 			array = africa_scramble_coalition_members
-			break = africa_scramble_expedition_loop_break
 			if = {
 				limit = {
 					has_country_flag = africa_scramble_expedition_planner
@@ -988,6 +986,25 @@ africa_scramble_launch_expedition_if_unresolved = {
 		limit = { check_variable = { africa_scramble_expedition_launched = constant:africa_value.zero } }
 		set_country_flag = africa_scramble_expedition_planning_collapsed
 		set_country_flag = africa_intervention_coalition_withdrawn
+	}
+}
+
+# COUNTRY scope on the host. Actor flags are cleared by the pairwise
+# settlement hooks first; this owner closes the intervention only after every
+# remaining flagged expedition actor is out of war with the host.
+africa_scramble_reconcile_intervention_war = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+			has_global_flag = africa_scramble_intervention_war_active
+			africa_scramble_has_no_active_intervention_war = yes
+			NOT = { has_country_flag = africa_scramble_defensive_war_lost }
+		}
+		set_country_flag = africa_scramble_defensive_war_won
+		set_country_flag = africa_scramble_armistice_signed
+		clr_country_flag = africa_scramble_defensive_war_active
+		clr_global_flag = africa_scramble_intervention_war_active
+		africa_scramble_advance_to_aftermath = yes
 	}
 }
 

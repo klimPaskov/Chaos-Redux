@@ -16,7 +16,7 @@ The four targeted missions read `FROM.africa_active_action_duration_days`. The d
 
 `peace_or_timeout` completes an active action when a target that was already at war reaches peace. It is used for the aid corridor, volunteer deployment, and blockade rows. `war_preparation` completes the intervention preparation when the target is at war with the executing host. `response_window` marks the eight existing offer-response rows; those rows resolve through the shared mission timeout event, while all three response options remain explicit full, partial, or refusal outcomes. All other rows use `none`, so their existing timeout, event, or result kernels remain authoritative until a narrower external success predicate exists.
 
-`africa_action_contract_should_cancel` handles target capitulation or loss of scope and routes through the existing cancellation cleanup. Event-active and generation guards remain in each mission's current cancel trigger. Cancellation removes the shared mission before clearing the active action, so no independent delayed response event survives the action lifecycle.
+`africa_action_contract_should_cancel` handles target capitulation or loss of scope and routes through the existing cancellation cleanup. Event-active and generation guards remain in each mission's current cancel trigger. Cancellation removes the shared mission before clearing the active action, so no independent delayed response event survives the action lifecycle. If an active target is annexed before the mission can cancel itself, the `on_annex` owner consumes the current-generation action or performs generation-matched target-local teardown and relationship reconciliation.
 
 ## Inputs, outputs, and side effects
 
